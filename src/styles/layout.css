@@ -1,0 +1,149 @@
+
+/* ─── Global Responsive Layout System: Mobile-First Priority ─── */
+
+/* 1. Core Container System */
+.container,
+.container-custom {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;   /* Mobile standard: px-4 (1rem) */
+  padding-right: 1rem;
+}
+
+.px-mobile {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container,
+  .container-custom {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container,
+  .container-custom {
+    max-width: 768px;
+    padding-left: 2rem; /* Desktop standard: px-8 (2rem) */
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container,
+  .container-custom {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container,
+  .container-custom {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container,
+  .container-custom {
+    max-width: 1400px; /* Cap for professional readability */
+  }
+}
+
+/* 2. Responsive Typography Utilities */
+.text-responsive-h1 {
+  @apply text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black leading-[1.1] tracking-tight;
+}
+
+.text-responsive-h2 {
+  @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-tight tracking-tight;
+}
+
+.text-responsive-body {
+  @apply text-sm sm:text-base leading-relaxed;
+}
+
+/* 3. Section Spacing Standards */
+.section-padding {
+  @apply py-8 md:py-16 lg:py-24;
+}
+
+.compact-padding {
+  @apply py-6 md:py-12;
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* 4. Layout & Behavior */
+header {
+  height: 72px; /* Standard Header Height */
+}
+
+/* Perfect alignment for LiveAlerts below Header */
+.live-alerts-container {
+  height: 40px;
+}
+
+/* Prevent body scroll when mobile menu is open - Robust for iOS */
+.no-scroll {
+  overflow: hidden !important;
+  height: 100vh !important;
+  position: fixed !important;
+  width: 100% !important;
+  touch-action: none;
+}
+
+/* 5. Utility & Fixes */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+/* Image Aspect Ratio Helpers */
+.aspect-hero {
+  aspect-ratio: 4 / 5; /* Mobile-first vertical hero */
+}
+
+@media (min-width: 768px) {
+  .aspect-hero {
+    aspect-ratio: 16 / 9; /* Desktop wide hero */
+  }
+}
+
+/* Ensure no horizontal scroll from animations or wide elements */
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+html {
+  -webkit-overflow-scrolling: touch;
+}
+
+* {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* 6. Z-Index Layer System */
+:root {
+  --z-header: 40;
+  --z-alerts: 35;
+  --z-cta: 50;
+  --z-menu: 60;
+  --z-modal: 70;
+  --z-fab: 100;
+}

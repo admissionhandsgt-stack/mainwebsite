@@ -1,0 +1,53 @@
+const fs = require('fs');
+const path = require('path');
+const dataPath = path.join(__dirname, 'pg_colleges_data.json');
+const existing = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
+
+const moreStates = [
+  {"state":"Maharashtra","colleges":[
+    {"college_name":"AIIMS Nagpur","city":"Nagpur","college_type":"Government","ownership":"Central Govt (INI)","year_established":2018,"total_pg_seats":60,"key_specialties":["MD General Medicine","MD Community Medicine","MD Pathology"],"short_description":"An emerging AIIMS with modern infrastructure."},
+    {"college_name":"Grant Medical College","city":"Mumbai","college_type":"Government","ownership":"State Govt","year_established":1845,"total_pg_seats":250,"key_specialties":["MD Medicine","MS Surgery","MD Radiology"],"short_description":"One of the oldest and most prestigious medical colleges in India."},
+    {"college_name":"Seth GS Medical College","city":"Mumbai","college_type":"Government","ownership":"State Govt","year_established":1926,"total_pg_seats":300,"key_specialties":["MD Medicine","MS Surgery","MD Pediatrics"],"short_description":"A premier government medical college associated with KEM Hospital."},
+    {"college_name":"BJ Government Medical College","city":"Pune","college_type":"Government","ownership":"State Govt","year_established":1946,"total_pg_seats":280,"key_specialties":["MD Medicine","MS Surgery","MD Radiology"],"short_description":"A top government medical college associated with Sassoon Hospital."},
+    {"college_name":"Topiwala National Medical College","city":"Mumbai","college_type":"Government","ownership":"State Govt","year_established":1921,"total_pg_seats":250,"key_specialties":["MD Medicine","MS Surgery","MD Dermatology"],"short_description":"A reputed government institution associated with Nair Hospital."},
+    {"college_name":"Government Medical College Nagpur","city":"Nagpur","college_type":"Government","ownership":"State Govt","year_established":1947,"total_pg_seats":230,"key_specialties":["MD Medicine","MS Surgery","MD Pediatrics"],"short_description":"A major government medical college in central India."},
+    {"college_name":"Government Medical College Aurangabad","city":"Aurangabad","college_type":"Government","ownership":"State Govt","year_established":1956,"total_pg_seats":200,"key_specialties":["MD Medicine","MS Surgery","MD Obstetrics & Gynecology"],"short_description":"A well-established government college serving Marathwada."},
+    {"college_name":"Government Medical College Miraj","city":"Miraj","college_type":"Government","ownership":"State Govt","year_established":1962,"total_pg_seats":180,"key_specialties":["MD Medicine","MS Surgery","MD Pediatrics"],"short_description":"A reputed government institution."},
+    {"college_name":"Government Medical College Akola","city":"Akola","college_type":"Government","ownership":"State Govt","year_established":2002,"total_pg_seats":150,"key_specialties":["MD Medicine","MS Surgery","MD Pathology"],"short_description":"A developing government college."},
+    {"college_name":"Government Medical College Latur","city":"Latur","college_type":"Government","ownership":"State Govt","year_established":2002,"total_pg_seats":150,"key_specialties":["MD Medicine","MS Surgery","MD Anesthesia"],"short_description":"A government medical college with steady academic growth."},
+    {"college_name":"Government Medical College Nanded","city":"Nanded","college_type":"Government","ownership":"State Govt","year_established":1988,"total_pg_seats":160,"key_specialties":["MD Medicine","MS Surgery","MD Radiology"],"short_description":"A well-known government institution in Marathwada."},
+    {"college_name":"Government Medical College Kolhapur","city":"Kolhapur","college_type":"Government","ownership":"State Govt","year_established":2000,"total_pg_seats":150,"key_specialties":["MD Medicine","MS Surgery","MD Dermatology"],"short_description":"A developing government institution."},
+    {"college_name":"Armed Forces Medical College","city":"Pune","college_type":"Government","ownership":"Central Govt","year_established":1948,"total_pg_seats":150,"key_specialties":["MD Medicine","MS Surgery","MD Radiology"],"short_description":"A premier central government medical college under the Armed Forces."},
+    {"college_name":"Lokmanya Tilak Municipal Medical College","city":"Mumbai","college_type":"Government","ownership":"State Govt","year_established":1964,"total_pg_seats":200,"key_specialties":["MD Medicine","MS Surgery","MD Pediatrics"],"short_description":"A reputed municipal medical college associated with Sion Hospital."},
+    {"college_name":"Dr. DY Patil Medical College Pune","city":"Pune","college_type":"Deemed","ownership":"Deemed University","year_established":1996,"total_pg_seats":220,"key_specialties":["MD Medicine","MS Surgery","MD Radiology"],"short_description":"A well-known deemed university."},
+    {"college_name":"Dr. DY Patil Medical College Navi Mumbai","city":"Navi Mumbai","college_type":"Deemed","ownership":"Deemed University","year_established":1989,"total_pg_seats":220,"key_specialties":["MD Medicine","MS Surgery","MD Pediatrics"],"short_description":"A reputed deemed institution."},
+    {"college_name":"Bharati Vidyapeeth Medical College","city":"Pune","college_type":"Deemed","ownership":"Deemed University","year_established":1989,"total_pg_seats":200,"key_specialties":["MD Medicine","MS Surgery","MD Radiology"],"short_description":"A prominent deemed university."},
+    {"college_name":"Krishna Institute of Medical Sciences","city":"Karad","college_type":"Deemed","ownership":"Deemed University","year_established":1984,"total_pg_seats":200,"key_specialties":["MD Medicine","MS Surgery","MD Pediatrics"],"short_description":"A reputed deemed university."},
+    {"college_name":"Jawaharlal Nehru Medical College Wardha","city":"Wardha","college_type":"Deemed","ownership":"Deemed University","year_established":1990,"total_pg_seats":180,"key_specialties":["MD Medicine","MS Surgery","MD Radiology"],"short_description":"Part of Datta Meghe Institute."},
+    {"college_name":"MGM Medical College Aurangabad","city":"Aurangabad","college_type":"Private","ownership":"Trust","year_established":1990,"total_pg_seats":150,"key_specialties":["MD Medicine","MS Surgery","MD Dermatology"],"short_description":"A well-established private medical college."},
+    {"college_name":"Terna Medical College","city":"Navi Mumbai","college_type":"Private","ownership":"Trust","year_established":1991,"total_pg_seats":120,"key_specialties":["MD Medicine","MS Surgery","MD Radiology"],"short_description":"A well-known private institution."},
+    {"college_name":"NKP Salve Institute of Medical Sciences","city":"Nagpur","college_type":"Private","ownership":"Trust","year_established":1990,"total_pg_seats":140,"key_specialties":["MD Medicine","MS Surgery","MD Pediatrics"],"short_description":"A reputed private medical college."},
+    {"college_name":"ACPM Medical College","city":"Dhule","college_type":"Private","ownership":"Trust","year_established":1990,"total_pg_seats":100,"key_specialties":["MD Medicine","MS Surgery","MD Pathology"],"short_description":"A private medical college with steady academic growth."}
+  ]},
+  {"state":"Manipur","colleges":[
+    {"college_name":"Regional Institute of Medical Sciences","city":"Imphal","college_type":"Government","ownership":"Central Govt","year_established":1972,"total_pg_seats":150,"key_specialties":["MD General Medicine","MS General Surgery","MD Pediatrics"],"short_description":"A premier centrally funded institute in Northeast India."},
+    {"college_name":"Jawaharlal Nehru Institute of Medical Sciences","city":"Imphal","college_type":"Government","ownership":"State Govt","year_established":2010,"total_pg_seats":100,"key_specialties":["MD Medicine","MS Surgery","MD Community Medicine"],"short_description":"A leading state government medical college."}
+  ]},
+  {"state":"Meghalaya","colleges":[
+    {"college_name":"NEIGRIHMS","city":"Shillong","college_type":"Government","ownership":"Central Govt","year_established":2008,"total_pg_seats":120,"key_specialties":["MD General Medicine","MS General Surgery","MD Pediatrics"],"short_description":"A premier central government institute serving the Northeast region."}
+  ]},
+  {"state":"Odisha","colleges":[
+    {"college_name":"AIIMS Bhubaneswar","city":"Bhubaneswar","college_type":"Government","ownership":"Central Govt (INI)","year_established":2012,"total_pg_seats":150,"key_specialties":["MD General Medicine","MS General Surgery","MD Radiology"],"short_description":"An Institute of National Importance with strong academic ecosystem."},
+    {"college_name":"SCB Medical College","city":"Cuttack","college_type":"Government","ownership":"State Govt","year_established":1944,"total_pg_seats":250,"key_specialties":["MD Medicine","MS Surgery","MD Pediatrics"],"short_description":"The oldest and most prestigious medical college in Odisha."},
+    {"college_name":"MKCG Medical College","city":"Berhampur","college_type":"Government","ownership":"State Govt","year_established":1962,"total_pg_seats":180,"key_specialties":["MD Medicine","MS Surgery","MD Obstetrics & Gynecology"],"short_description":"A major government medical college in southern Odisha."},
+    {"college_name":"VIMSAR","city":"Burla","college_type":"Government","ownership":"State Govt","year_established":1959,"total_pg_seats":200,"key_specialties":["MD Medicine","MS Surgery","MD Radiology"],"short_description":"A reputed government institution in western Odisha."},
+    {"college_name":"Hi-Tech Medical College","city":"Bhubaneswar","college_type":"Private","ownership":"Trust","year_established":2005,"total_pg_seats":120,"key_specialties":["MD Medicine","MS Surgery","MD Dermatology"],"short_description":"A leading private medical college in Odisha."},
+    {"college_name":"Kalinga Institute of Medical Sciences","city":"Bhubaneswar","college_type":"Deemed","ownership":"Deemed University","year_established":2007,"total_pg_seats":200,"key_specialties":["MD Medicine","MS Surgery","MD Pediatrics"],"short_description":"A premier deemed university under KIIT."},
+    {"college_name":"IMS and SUM Hospital","city":"Bhubaneswar","college_type":"Deemed","ownership":"Deemed University","year_established":2007,"total_pg_seats":180,"key_specialties":["MD Medicine","MS Surgery","MD Radiology"],"short_description":"A reputed deemed institution under SOA University."}
+  ]}
+];
+
+const merged = existing.concat(moreStates);
+fs.writeFileSync(dataPath, JSON.stringify(merged, null, 2), 'utf-8');
+const total = merged.reduce((acc, s) => acc + s.colleges.length, 0);
+console.log(`Merged: ${merged.length} states, ${total} colleges total`);

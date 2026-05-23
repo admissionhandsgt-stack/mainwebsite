@@ -1,0 +1,107 @@
+
+
+  .container-custom {
+    @apply mx-auto px-2 sm:px-3 lg:px-4 max-w-7xl w-full;
+  }
+  
+  .btn-primary {
+    @apply bg-medical-500 hover:bg-medical-600 text-white font-semibold py-1.5 px-3 sm:py-2 sm:px-4 rounded-md transition-all shadow-md hover:shadow-lg;
+  }
+  
+  .btn-secondary {
+    @apply bg-teal-500 hover:bg-teal-600 text-white font-semibold py-1.5 px-3 sm:py-2 sm:px-4 rounded-md transition-all shadow-md hover:shadow-lg;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-medical-500 text-medical-500 hover:bg-medical-50 font-semibold py-1.5 px-3 sm:py-2 sm:px-4 rounded-md transition-all;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+  }
+
+  /* Reduced spacing for sections */
+  .section-padding {
+    @apply py-4 sm:py-6 md:py-8;
+  }
+
+  /* Adjusted responsive grid layouts with reduced gaps */
+  .responsive-grid-2 {
+    @apply grid grid-cols-1 sm:grid-cols-2 gap-2;
+  }
+
+  .responsive-grid-3 {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2;
+  }
+
+  .responsive-grid-4 {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2;
+  }
+  
+  /* Responsive text utilities */
+  .text-responsive {
+    @apply text-sm sm:text-base md:text-lg;
+  }
+  
+  /* Indian tricolor theme for MBBS pages */
+  .india-saffron {
+    @apply bg-orange-500 text-white;
+  }
+  
+  .india-white {
+    @apply bg-white text-gray-800;
+  }
+  
+  .india-green {
+    @apply bg-green-600 text-white;
+  }
+
+  /* Indian flag tricolor text */
+  .text-tricolor-saffron {
+    @apply text-orange-600;
+  }
+  
+  .text-tricolor-white {
+    @apply text-blue-600;
+  }
+  
+  .text-tricolor-green {
+    @apply text-green-600;
+  }
+  
+  .bg-tricolor-gradient {
+    @apply bg-gradient-to-r from-orange-100 via-white to-green-100;
+  }
+  
+  /* Tricolor text styling */
+  .tricolor-text {
+    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
+  }
+  
+  /* Style state pages with tricolor theme */
+  .state-page-saffron {
+    background: linear-gradient(135deg, #FF9933 0%, #FF9933 100%);
+    color: white;
+  }
+
+  .state-page-white {
+    background: white;
+    color: #333;
+  }
+
+  .state-page-green {
+    background: linear-gradient(135deg, #138808 0%, #138808 100%);
+    color: white;
+  }
+
+  /* Single row scrollable menu styles */
+  .mbbs-states-scroll {
+    @apply flex overflow-x-auto snap-x snap-mandatory gap-3 py-2 px-4;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .mbbs-state-card {
+    @apply flex-shrink-0 snap-start transition-all transform hover:scale-105 hover:shadow-md rounded-md;
+  }
+

@@ -1,0 +1,103 @@
+import React from "react";
+import Image from "next/image";
+import { mbbsData } from "@/data/mbbs-india";
+import { ShieldCheck, TrendingUp, Search, UserCheck, Heart } from "lucide-react";
+
+const icons = [TrendingUp, ShieldCheck, Search, Heart, UserCheck];
+
+export const MBBSWhyUs = () => {
+  const { whyUs } = mbbsData;
+
+  return (
+    <section className="py-12 bg-white relative overflow-hidden">
+      <div className="container-custom relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-3xl font-black text-slate-900 mb-4 tracking-tight leading-tight">
+                Why Students Trust <br/> <span className="text-blue-600">Admission Hands</span>
+              </h2>
+              <p className="text-base text-slate-600 font-medium leading-relaxed">
+                Professional medical counselling with zero compromises on quality and transparency.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4">
+              {whyUs.points.map((item, idx) => {
+                const Icon = icons[idx] || ShieldCheck;
+                return (
+                  <div key={idx} className="flex gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 group transition-all">
+                    <div className="shrink-0 w-10 h-10 rounded-xl bg-white text-blue-600 flex items-center justify-center border border-slate-200 group-hover:bg-blue-600 group-hover:text-white transition-all shadow-sm">
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-black text-slate-900 leading-tight">
+                        {item.title}
+                      </h3>
+                      <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">
+                        {item.desc}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="absolute -inset-10 bg-blue-600/5 rounded-full blur-[100px] -z-10" />
+            
+            {/* Trust Stats Box - With Doctors Background */}
+            <div className="glass rounded-[3rem] p-8 md:p-12 border border-white shadow-2xl space-y-8 bg-white/40 backdrop-blur-xl relative overflow-hidden">
+              {/* Background Image of Doctors */}
+              <div className="absolute inset-0 z-0">
+                <Image 
+                  src="/assets/images/misc/indian-doctors-stats.png"
+                  alt="Professional Doctors"
+                  fill
+                  className="object-cover opacity-20 grayscale-[0.5]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-white via-white/40 to-transparent" />
+              </div>
+
+              <div className="text-center relative z-10">
+                <p className="text-6xl font-black text-blue-600 tracking-tighter">100%</p>
+                <p className="text-base font-black text-slate-900 uppercase tracking-widest">Transparency</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 relative z-10">
+                <div className="text-center p-4 rounded-2xl bg-white/80 backdrop-blur-sm border border-slate-100 shadow-sm">
+                  <p className="text-2xl font-black text-slate-900 leading-none">2100+</p>
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Admits</p>
+                </div>
+                <div className="text-center p-4 rounded-2xl bg-white/80 backdrop-blur-sm border border-slate-100 shadow-sm">
+                  <p className="text-2xl font-black text-slate-900 leading-none">12+</p>
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Years Exp</p>
+                </div>
+              </div>
+
+              <div className="flex -space-x-2 justify-center relative z-10">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-slate-200 shadow-sm overflow-hidden">
+                     <Image 
+                      src={`/assets/images/hero/indian_doctors.png`}
+                      alt="Doctor"
+                      width={40}
+                      height={40}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                ))}
+                <div className="w-10 h-10 rounded-full border-2 border-white bg-blue-600 text-white flex items-center justify-center font-black text-[10px] shadow-sm z-10">
+                  +1k
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+};
