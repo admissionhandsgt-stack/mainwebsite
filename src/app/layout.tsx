@@ -5,6 +5,7 @@ import SiteShell from '@/components/SiteShell'
 import type { Metadata } from 'next'
 import Script from 'next/script'
 import { Plus_Jakarta_Sans, Inter } from 'next/font/google'
+import { ThemeProvider } from '@/components/theme-provider'
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -22,6 +23,15 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'AdmissionHands - Expert Medical College Admission Guidance',
   description: 'Get expert guidance for MBBS, MD/MS admissions in top medical colleges. Personalized counseling, guaranteed results.',
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/logo.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/logo.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
 }
 
 export default function RootLayout({
@@ -30,8 +40,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${jakarta.variable} ${inter.variable}`}>
-      <body className="antialiased font-body overflow-x-hidden">
+    <html lang="en" className={`${jakarta.variable} ${inter.variable}`} suppressHydrationWarning>
+      <body className="antialiased font-body overflow-x-hidden bg-background text-foreground transition-colors duration-200">
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-SCQ3V4NFLS"
           strategy="afterInteractive"
@@ -45,9 +55,11 @@ export default function RootLayout({
             gtag('config', 'G-SCQ3V4NFLS');
           `}
         </Script>
-        <SiteShell>
-          {children}
-        </SiteShell>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <SiteShell>
+            {children}
+          </SiteShell>
+        </ThemeProvider>
         <Toaster />
         <SonnerToaster />
       </body>

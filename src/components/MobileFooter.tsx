@@ -1,12 +1,13 @@
 "use client";
 
 import { Phone } from 'lucide-react';
-import { CONTACT_INFO } from '@/lib/constants';
+import { useContactInfo } from '@/hooks/useContactInfo';
 import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon';
 import { motion } from 'framer-motion';
 
 const MobileFooter = () => {
-  const phoneNumber = CONTACT_INFO.phone;
+  const { contactInfo } = useContactInfo();
+  const phoneNumber = contactInfo?.phone_number || '+919873133846';
 
   const handleWhatsAppClick = () => {
     window.open(`https://wa.me/${phoneNumber.replace(/[+\s-]/g, '')}?text=${encodeURIComponent("Hi, I'm interested in MD/MS counselling")}`, '_blank');

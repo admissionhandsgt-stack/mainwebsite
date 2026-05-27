@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 
 const AboutHero: React.FC = () => {
   return (
-    <section className="relative py-24 min-h-[50vh] flex items-center overflow-hidden mesh-gradient">
+    <section className="relative py-24 min-h-[50vh] flex items-center overflow-hidden bg-slate-950 text-white mesh-gradient">
       {/* Background Image Overlay */}
       <div className="absolute inset-0 z-0">
         <img 

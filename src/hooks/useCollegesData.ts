@@ -13,15 +13,31 @@ export function useRecommendedColleges(domain?: 'ug' | 'pg') {
     async function fetchColleges() {
       try {
         setLoading(true);
-        let query = supabase.from('recommended_colleges').select('*');
-        if (domain) {
-          query = query.eq('domain', domain);
-        }
+        // Determine table based on domain ('ug' by default or if unspecified)
+        const tableName = domain === 'pg' ? 'pg_recommended_colleges' : 'ug_recommended_colleges';
         
-        const { data, error } = await query.order('name') as unknown as { data: RecommendedCollege[] | null, error: Error | null };
+        const { data, error } = await supabase
+          .from(tableName as any)
+          .select('*')
+          .order('display_order', { ascending: true, nullsFirst: false })
+          .order('college_name');
 
         if (error) throw error;
-        setColleges(data || []);
+        
+        // Map new schema to the expected frontend structure
+        const mappedData = (data || []).map((item: any) => ({
+          id: String(item.id),
+          name: item.college_name,
+          image: item.image_url || 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800',
+          location: item.city ? `${item.city}, ${item.state}` : item.state,
+          fees: "Contact us", // Can be added to DB later if needed
+          seats: item.intake || 0,
+          domain: domain || 'ug',
+          created_at: item.created_at,
+          updated_at: item.updated_at
+        }));
+
+        setColleges(mappedData);
       } catch (err) {
         console.error('Error fetching recommended colleges:', err);
         setError(err instanceof Error ? err : new Error('Failed to fetch colleges'));
@@ -32,23 +48,12 @@ export function useRecommendedColleges(domain?: 'ug' | 'pg') {
 
     fetchColleges();
 
-    // Subscribe to realtime database changes for recommended colleges
-    const channel = supabase
-      .channel('public:recommended_colleges')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'recommended_colleges' }, () => {
-        fetchColleges();
-      })
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
   }, [domain]);
 
   return { colleges, loading, error };
 }
 
-export function useDeemedUniversities() {
+export function useDeemedUniversities(domain?: 'ug' | 'pg') {
   const [universities, setUniversities] = useState<DeemedUniversity[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -57,8 +62,9 @@ export function useDeemedUniversities() {
     async function fetchUniversities() {
       try {
         setLoading(true);
+        const tableName = domain === 'pg' ? 'pg_deemed_colleges' : 'deemed_colleges';
         const { data, error } = await supabase
-          .from('deemed_colleges')
+          .from(tableName as any)
           .select('*')
           .order('college_name') as any;
 
@@ -85,7 +91,7 @@ export function useDeemedUniversities() {
     }
 
     fetchUniversities();
-  }, []);
+  }, [domain]);
 
   return { universities, loading, error };
 }

@@ -37,33 +37,200 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 222 47% 11%;
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 222 47% 14%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 222 47% 14%;
     --popover-foreground: 210 40% 98%;
 
     --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary-foreground: 222 47% 11%;
 
-    --secondary: 217.2 32.6% 17.5%;
+    --secondary: 222 30% 18%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
+    --muted: 222 30% 18%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 222 30% 18%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
+    --border: 222 30% 18%;
+    --input: 222 30% 18%;
     --ring: 212.7 26.8% 83.9%;
+  }
+
+  /* Theme override bridges to make hardcoded classes adaptive */
+  .dark .bg-white,
+  .dark .india-white,
+  .dark .state-page-white,
+  .dark .glass-white {
+    background-color: hsl(var(--card)) !important;
+    border-color: hsl(var(--border)) !important;
+  }
+  
+  .dark .bg-white\/95 {
+    background-color: hsl(var(--card) / 0.95) !important;
+  }
+  .dark .bg-white\/90 {
+    background-color: hsl(var(--card) / 0.9) !important;
+  }
+  .dark .bg-white\/80 {
+    background-color: hsl(var(--card) / 0.8) !important;
+  }
+  .dark .bg-white\/60 {
+    background-color: hsl(var(--card) / 0.6) !important;
+  }
+  
+  .dark .bg-slate-50,
+  .dark .bg-slate-50\/50,
+  .dark .bg-slate-100\/40,
+  .dark .bg-slate-100\/30 {
+    background-color: hsl(var(--background)) !important;
+  }
+
+  .dark .bg-slate-100 {
+    background-color: hsl(var(--secondary)) !important;
+  }
+
+  .dark .text-slate-900,
+  .dark .text-slate-800,
+  .dark .text-slate-700,
+  .dark .text-slate-600,
+  .dark .text-slate-655,
+  .dark .text-gray-900,
+  .dark .text-gray-800,
+  .dark .text-gray-700,
+  .dark .text-gray-600,
+  .dark .text-zinc-900,
+  .dark .text-zinc-850,
+  .dark .text-zinc-800,
+  .dark .text-zinc-700,
+  .dark .text-zinc-600 {
+    color: hsl(var(--card-foreground)) !important;
+  }
+
+  .dark .text-slate-555,
+  .dark .text-slate-505,
+  .dark .text-slate-655,
+  .dark .text-slate-455,
+  .dark .text-slate-550,
+  .dark .text-slate-450,
+  .dark .text-slate-350,
+  .dark .text-slate-500,
+  .dark .text-gray-550,
+  .dark .text-gray-500,
+  .dark .text-gray-400,
+  .dark .text-zinc-550,
+  .dark .text-zinc-500,
+  .dark .text-zinc-450,
+  .dark .text-zinc-400 {
+    color: hsl(var(--muted-foreground)) !important;
+  }
+
+  .dark .border-slate-200,
+  .dark .border-slate-250,
+  .dark .border-slate-200\/80,
+  .dark .border-slate-200\/60,
+  .dark .border-slate-100,
+  .dark .border-slate-100\/60,
+  .dark .border-slate-850,
+  .dark .border-slate-855,
+  .dark .border-gray-200,
+  .dark .border-gray-100 {
+    border-color: hsl(var(--border)) !important;
+  }
+
+  .dark .shadow-sm,
+  .dark .shadow-md,
+  .dark .shadow-lg,
+  .dark .shadow-xl {
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  /* Adaptive overrides for hardcoded gradients */
+  .dark .from-white {
+    --tw-gradient-from: hsl(var(--card)) var(--tw-gradient-from-position) !important;
+    --tw-gradient-to: transparent var(--tw-gradient-to-position) !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+  }
+  .dark .via-white {
+    --tw-gradient-to: transparent var(--tw-gradient-to-position) !important;
+    --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--card)) var(--tw-gradient-via-position), var(--tw-gradient-to) !important;
+  }
+  .dark .to-white {
+    --tw-gradient-to: hsl(var(--card)) var(--tw-gradient-to-position) !important;
+  }
+  
+  .dark .from-white\/90 {
+    --tw-gradient-from: hsl(var(--card) / 0.9) var(--tw-gradient-from-position) !important;
+    --tw-gradient-to: transparent var(--tw-gradient-to-position) !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+  }
+  .dark .via-white\/95 {
+    --tw-gradient-to: transparent var(--tw-gradient-to-position) !important;
+    --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--card) / 0.95) var(--tw-gradient-via-position), var(--tw-gradient-to) !important;
+  }
+  .dark .to-white\/80 {
+    --tw-gradient-to: hsl(var(--card) / 0.8) var(--tw-gradient-to-position) !important;
+  }
+  .dark .from-white\/85 {
+    --tw-gradient-from: hsl(var(--card) / 0.85) var(--tw-gradient-from-position) !important;
+    --tw-gradient-to: transparent var(--tw-gradient-to-position) !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+  }
+  .dark .via-white\/25,
+  .dark .via-white\/20 {
+    --tw-gradient-to: transparent var(--tw-gradient-to-position) !important;
+    --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--card) / 0.2) var(--tw-gradient-via-position), var(--tw-gradient-to) !important;
+  }
+  .dark .to-white\/70 {
+    --tw-gradient-to: hsl(var(--card) / 0.7) var(--tw-gradient-to-position) !important;
+  }
+  .dark .from-white\/60 {
+    --tw-gradient-from: hsl(var(--card) / 0.6) var(--tw-gradient-from-position) !important;
+    --tw-gradient-to: transparent var(--tw-gradient-to-position) !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+  }
+  .dark .from-white\/95 {
+    --tw-gradient-from: hsl(var(--card) / 0.95) var(--tw-gradient-from-position) !important;
+    --tw-gradient-to: transparent var(--tw-gradient-to-position) !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+  }
+  .dark .via-white\/85 {
+    --tw-gradient-to: transparent var(--tw-gradient-to-position) !important;
+    --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--card) / 0.85) var(--tw-gradient-via-position), var(--tw-gradient-to) !important;
+  }
+  .dark .from-white\/70 {
+    --tw-gradient-from: hsl(var(--card) / 0.7) var(--tw-gradient-from-position) !important;
+    --tw-gradient-to: transparent var(--tw-gradient-to-position) !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+  }
+  .dark .via-white\/30 {
+    --tw-gradient-to: transparent var(--tw-gradient-to-position) !important;
+    --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--card) / 0.3) var(--tw-gradient-via-position), var(--tw-gradient-to) !important;
+  }
+  .dark .via-white\/40 {
+    --tw-gradient-to: transparent var(--tw-gradient-to-position) !important;
+    --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--card) / 0.4) var(--tw-gradient-via-position), var(--tw-gradient-to) !important;
+  }
+  
+  .dark .from-blue-50\/80 {
+    --tw-gradient-from: hsl(var(--background) / 0.8) var(--tw-gradient-from-position) !important;
+    --tw-gradient-to: transparent var(--tw-gradient-to-position) !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+  }
+  .dark .to-slate-50 {
+    --tw-gradient-to: hsl(var(--background)) var(--tw-gradient-to-position) !important;
+  }
+  .dark .to-medical-50 {
+    --tw-gradient-to: hsl(var(--background)) var(--tw-gradient-to-position) !important;
   }
 }
 

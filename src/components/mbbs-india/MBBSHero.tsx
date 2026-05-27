@@ -31,9 +31,9 @@ export const MBBSHero = () => {
           
           {/* Left Side Content - Original */}
           <div className="lg:col-span-8 space-y-4 md:space-y-6 text-center md:text-left pt-4 md:pt-0">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-600/5 border border-blue-600/10 rounded-full backdrop-blur-md self-center md:self-start">
-              <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
-              <span className="text-blue-900 text-[10px] font-black uppercase tracking-widest">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-600/5 dark:bg-blue-950/30 border border-blue-600/10 dark:border-blue-900/30 rounded-full backdrop-blur-md self-center md:self-start">
+              <ShieldCheck className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+              <span className="text-blue-900 dark:text-blue-300 text-[10px] font-black uppercase tracking-widest">
                 Trusted, Data-Driven Guidance for AIQ & State Counselling
               </span>
             </div>
@@ -70,27 +70,27 @@ export const MBBSHero = () => {
 
           {/* Right Side - New Block */}
           <div className="lg:col-span-4 hidden lg:block">
-            <div className="p-8 rounded-[3rem] bg-white/60 backdrop-blur-2xl border border-white shadow-2xl space-y-6 relative overflow-hidden group">
+            <div className="p-8 rounded-[3rem] bg-white/60 dark:bg-slate-900/60 backdrop-blur-2xl border border-white dark:border-slate-800 shadow-2xl space-y-6 relative overflow-hidden group">
               <div className="absolute -top-10 -right-10 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl group-hover:bg-amber-500/20 transition-all duration-700" />
               
               <div className="space-y-4 relative z-10">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 border border-amber-500/20 rounded-full">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                  <span className="text-amber-900 text-[10px] font-black uppercase tracking-[0.2em]">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/20 rounded-full">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                  <span className="text-amber-900 dark:text-amber-300 text-[10px] font-black uppercase tracking-[0.2em]">
                     Start Your Journey
                   </span>
                 </div>
                 
-                <h2 className="text-3xl font-black text-slate-900 tracking-tight leading-tight">
-                  Secure Your <br/> <span className="text-blue-600">MBBS Seat</span> Now
+                <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
+                  Secure Your <br/> <span className="text-blue-600 dark:text-blue-400">MBBS Seat</span> Now
                 </h2>
                 
-                <p className="text-sm text-slate-600 font-bold leading-relaxed">
+                <p className="text-sm text-slate-600 dark:text-slate-300 font-bold leading-relaxed">
                   Every rank has a best-fit college. Don't let yours go waste. Talk to our experts and get the best possible seat for your rank.
                 </p>
 
                 <div className="pt-2">
-                  <CTAButton action="call" className="w-full bg-slate-900 hover:bg-slate-800 text-white rounded-2xl py-4 font-black flex items-center justify-center gap-2 shadow-lg">
+                  <CTAButton action="call" className="w-full bg-slate-900 hover:bg-slate-800 dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-2xl py-4 font-black flex items-center justify-center gap-2 shadow-lg">
                     <Phone size={18} />
                     Talk to an Expert
                   </CTAButton>

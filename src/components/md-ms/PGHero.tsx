@@ -152,7 +152,7 @@ export const PGHero = () => {
             className="relative hidden md:flex items-center justify-center lg:justify-end h-[400px] md:h-full"
           >
             <div className="absolute w-[85%] h-[85%] rounded-full bg-gradient-to-br from-blue-100/60 via-sky-50/40 to-transparent blur-3xl" />
-            <div className="absolute w-[75%] aspect-square rounded-full border border-blue-100/50" />
+            <div className="absolute w-[75%] aspect-square rounded-full border border-blue-100/50 dark:border-slate-800/80 [clip-path:inset(0_0_12%_0)]" />
             
             <div className="relative w-full max-w-[500px]">
               <Image

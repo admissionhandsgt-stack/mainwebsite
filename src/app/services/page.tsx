@@ -293,7 +293,7 @@ export default function ServicesPage() {
     <main className="min-h-screen bg-slate-50 flex flex-col">
 
       {/* Hero */}
-      <section className="relative min-h-[60vh] md:min-h-[75vh] flex items-center overflow-hidden py-16 md:py-24">
+      <section className="relative min-h-[55vh] md:min-h-[65vh] flex items-center overflow-hidden py-14 md:py-20 bg-slate-950 text-white">
         <HeroImageRotator />
         
         <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-500/20 blur-[120px] pointer-events-none" />
@@ -363,9 +363,9 @@ export default function ServicesPage() {
       </section>
 
       {/* Why Students Choose Us */}
-      <section className="py-12 md:py-16">
+      <section className="py-8 md:py-12">
         <div className="container-custom">
-          <div className="text-center mb-8 md:mb-12">
+          <div className="text-center mb-6 md:mb-8">
             <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
               className="inline-block px-4 py-1.5 mb-4 text-[10px] font-black tracking-widest text-blue-600 uppercase bg-blue-600/10 rounded-full"
             >
@@ -404,9 +404,9 @@ export default function ServicesPage() {
       </section>
 
       {/* Services Grid */}
-      <section className="py-12 md:py-16 bg-white">
+      <section className="py-8 md:py-12 bg-white">
         <div className="container-custom">
-          <div className="text-center mb-8 md:mb-12">
+          <div className="text-center mb-6 md:mb-8">
             <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
               className="inline-block px-4 py-1.5 mb-4 text-[10px] font-black tracking-widest text-indigo-600 uppercase bg-indigo-600/10 rounded-full"
             >
@@ -431,9 +431,9 @@ export default function ServicesPage() {
       </section>
 
       {/* Process Timeline */}
-      <section className="py-12 md:py-16 bg-slate-50">
+      <section className="py-8 md:py-12 bg-slate-50">
         <div className="container-custom">
-          <div className="text-center mb-8 md:mb-12">
+          <div className="text-center mb-6 md:mb-8">
             <motion.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               className="text-2xl md:text-4xl font-black text-slate-900 tracking-tight mb-3"
             >
@@ -467,34 +467,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-12 md:py-20 bg-slate-900 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:32px_32px]" />
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 blur-[120px] pointer-events-none rounded-full" />
 
-        <div className="container-custom relative z-10 text-center max-w-3xl mx-auto">
-          <motion.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="text-2xl md:text-4xl font-black text-white tracking-tight mb-4"
-          >
-            Ready to Secure Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">MBBS Seat?</span>
-          </motion.h2>
-          <p className="text-blue-100/60 text-sm md:text-base font-medium mb-8 max-w-xl mx-auto">
-            Don&apos;t navigate the most critical decision of your medical career alone. Talk to our experts today — the first consultation is free.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <button onClick={() => CTA.call()}
-              className="inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-8 py-4 rounded-2xl font-black text-sm md:text-base hover:bg-blue-50 transition-all shadow-xl active:scale-95"
-            >
-              <Phone className="w-4 h-4" /> Call Now — Free Consultation
-            </button>
-            <button onClick={() => CTA.whatsapp("Hi, I want to enroll for NEET counselling services")}
-              className="inline-flex items-center justify-center gap-2 border-2 border-white/50 text-white px-8 py-4 rounded-2xl font-black text-sm md:text-base hover:bg-white/10 transition-all active:scale-95"
-            >
-              <WhatsAppIcon size={18} /> WhatsApp Us
-            </button>
-          </div>
-        </div>
-      </section>
     </main>
   );
 }

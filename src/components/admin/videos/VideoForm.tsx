@@ -80,20 +80,25 @@ const VideoForm = ({ video, isEditing, isLoading, onSubmit, onChange, onCancel }
           </div>
         </div>
         
-        <div className="md:col-span-2 flex items-center p-4 bg-amber-50/50 border border-amber-100 rounded-xl mt-2 transition-colors hover:bg-amber-50/80 cursor-pointer" onClick={() => onChange('featured', !video.featured)}>
-          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-amber-100 mr-4">
+        <div className="md:col-span-2 flex items-center p-4 bg-amber-50/50 border border-amber-100 rounded-xl mt-2 transition-colors hover:bg-amber-50/80">
+          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-amber-100 mr-4 shrink-0">
             <Star className={`w-5 h-5 ${video.featured ? 'fill-amber-500 text-amber-500' : 'text-amber-400'}`} />
           </div>
-          <div className="flex-1">
-            <Label htmlFor="featured" className="text-amber-900 font-semibold cursor-pointer text-base">Feature this Video</Label>
-            <p className="text-xs text-amber-700/70">Pin this video to highlight it across the platform.</p>
+          <div className="flex-1 min-w-0">
+            <Label htmlFor="featured-toggle" className="text-amber-900 font-semibold text-base block cursor-pointer">
+              Feature this Video
+            </Label>
+            <p className="text-xs text-amber-700/70 mt-0.5">Pin this video to highlight it across the platform.</p>
           </div>
-          <Checkbox 
-            id="featured"
-            checked={video.featured}
-            onCheckedChange={(checked) => onChange('featured', checked === true)}
-            className="data-[state=checked]:bg-amber-500 data-[state=checked]:border-amber-500 scale-125 mr-2"
-          />
+          <div className="shrink-0 pl-4">
+            <Checkbox 
+              id="featured-toggle"
+              checked={video.featured}
+              onCheckedChange={(checked) => onChange('featured', !!checked)}
+              disabled={isLoading}
+              className="data-[state=checked]:bg-amber-500 data-[state=checked]:border-amber-500 scale-125 mr-2"
+            />
+          </div>
         </div>
       </div>
       

@@ -1,7 +1,10 @@
 import React from "react";
+export const revalidate = 0;
+
 import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
 import SEO from "@/components/SEO";
+import { getRecommendedColleges } from "@/lib/colleges";
 
 const ServicesList = dynamic(() => import('@/components/ServicesList'), { loading: () => <SectionLoader /> });
 const HowItWorks = dynamic(() => import('@/components/home/HowItWorks'), { loading: () => <SectionLoader /> });
@@ -9,7 +12,7 @@ const DataInsights = dynamic(() => import('@/components/home/DataInsights'), { l
 const WhyAdmissionHands = dynamic(() => import('@/components/home/WhyAdmissionHands'), { loading: () => <SectionLoader /> });
 const TopMedicalInstitutes = dynamic(() => import('@/components/home/TopMedicalInstitutes'), { loading: () => <SectionLoader /> });
 const Testimonials = dynamic(() => import('@/components/home/Testimonials'), { loading: () => <SectionLoader /> });
-const FinalCTA = dynamic(() => import('@/components/home/FinalCTA'), { loading: () => <SectionLoader /> });
+const FeaturedVideos = dynamic(() => import('@/components/home/FeaturedVideos'), { ssr: false, loading: () => null });
 
 // Loading placeholder
 const SectionLoader = () => (
@@ -28,7 +31,9 @@ const SectionLoader = () => (
   </div>
 );
 
-const Index = () => {
+const Index = async () => {
+  const initialColleges = await getRecommendedColleges();
+
   // Organization structured data for SEO
   const organizationSchema = {
     "@context": "https://schema.org",
@@ -70,7 +75,7 @@ const Index = () => {
       <DataInsights />
 
       {/* 5b. Top Tier Medical Institutes */}
-      <TopMedicalInstitutes />
+      <TopMedicalInstitutes initialColleges={initialColleges} />
 
       {/* 6. Why Admission Hands */}
       <WhyAdmissionHands />
@@ -78,8 +83,8 @@ const Index = () => {
       {/* 7. Testimonials */}
       <Testimonials />
 
-      {/* 8. Final CTA */}
-      <FinalCTA />
+      {/* 8. Featured Videos */}
+      <FeaturedVideos />
     </div>
   );
 };

@@ -12,11 +12,11 @@ const DeemedCollegesListing = dynamic(
   { loading: () => <div className="py-20 text-center text-slate-400 font-bold uppercase tracking-widest animate-pulse">Loading College Data...</div>, ssr: false }
 );
 
-// Hero background images for rotation
 const heroBgImages = [
-  "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=1600",
-  "https://images.unsplash.com/photo-1580281658626-ee379f384018?auto=format&fit=crop&q=80&w=1600",
-  "https://images.unsplash.com/photo-1551601651-2a8555f1a136?auto=format&fit=crop&q=80&w=1600",
+  "/assets/images/colleges/deemed-campus-1.png",
+  "/assets/images/colleges/medical-campus-2.png",
+  "/assets/images/colleges/medical-campus-3.png",
+  "/assets/images/colleges/medical-campus-4.png",
 ];
 
 function HeroImageRotator() {
@@ -27,19 +27,19 @@ function HeroImageRotator() {
   }, []);
 
   return (
-    <div className="absolute inset-0 -z-10">
+    <div className="absolute inset-0 -z-10 bg-slate-950">
       {heroBgImages.map((src, i) => (
         <div
           key={i}
           className="absolute inset-0 bg-cover bg-center transition-opacity duration-[2000ms]"
           style={{
             backgroundImage: `url(${src})`,
-            opacity: i === current ? 1 : 0,
+            opacity: i === current ? 0.45 : 0,
           }}
         />
       ))}
-      {/* ~65% dark overlay */}
-      <div className="absolute inset-0 bg-slate-900/65" />
+      {/* ~55% dark overlay */}
+      <div className="absolute inset-0 bg-slate-900/55" />
       <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-transparent to-slate-900/80" />
     </div>
   );
@@ -64,7 +64,7 @@ export default function DeemedUniversities() {
 
       <div className="flex-grow">
         {/* ─── Hero Section ─── */}
-        <section className="relative min-h-[75vh] md:min-h-[85vh] flex items-center overflow-hidden">
+        <section className="relative min-h-[75vh] md:min-h-[85vh] flex items-center overflow-hidden text-white">
           <HeroImageRotator />
 
           <div className="container-custom relative z-10 py-12 md:py-16">
@@ -79,11 +79,11 @@ export default function DeemedUniversities() {
                 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] tracking-tight mb-5"
               >
                 India&apos;s Finest <br className="hidden sm:block" />
-                <span className="gradient-text">Deemed Universities</span> for MBBS
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">Deemed Universities</span> for MBBS
               </motion.h1>
 
               <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-                className="text-blue-100/80 text-sm sm:text-base lg:text-lg font-medium leading-relaxed max-w-2xl mb-8"
+                className="text-blue-100/85 text-sm sm:text-base lg:text-lg font-medium leading-relaxed max-w-2xl mb-8"
               >
                 Discover world-class deemed medical institutions offering autonomous curricula, global research exposure, and NMC-recognized MBBS programs — with expert-guided admission support through every MCC counselling round.
               </motion.p>
@@ -162,51 +162,68 @@ export default function DeemedUniversities() {
         </div>
 
         {/* ─── CTA Section ─── */}
-        <section className="compact-padding relative overflow-hidden">
-          <div className="absolute inset-0 bg-slate-900 -z-20" />
-          <div className="absolute inset-0 mesh-gradient opacity-40 -z-10" />
-
-          <div className="container-custom">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-              <div>
-                <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                  className="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-tight tracking-tight mb-5"
-                >
-                  Need Help with <span className="gradient-text">Deemed University</span> Admissions?
-                </motion.h2>
-                <p className="text-blue-100/70 text-sm md:text-base font-medium mb-8 leading-relaxed">
-                  Our counselors navigate the complex admission process, choose the right university, and maximize your chances of securing a seat.
-                </p>
-                <div className="flex flex-wrap gap-3">
-                  <a href={`tel:${phoneNumber}`} className="bg-white text-slate-900 hover:bg-slate-100 font-black py-3 px-6 rounded-xl text-sm transition-all shadow-lg flex items-center gap-2 active:scale-95">
-                    <Phone className="w-4 h-4" /> Call Our Experts
-                  </a>
-                  <button onClick={() => CTA.whatsapp("Hi, I need guidance for deemed university MBBS admission")}
-                    className="border-2 border-white text-white hover:bg-white/10 font-black py-3 px-6 rounded-xl text-sm transition-all active:scale-95"
+        <section className="py-8 md:py-10 relative overflow-hidden bg-slate-50 border-t border-slate-100">
+          {/* Light background effects */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#cbd5e110_1px,transparent_1px),linear-gradient(to_bottom,#cbd5e110_1px,transparent_1px)] bg-[size:32px_32px]" />
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-400/10 blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none rounded-full" />
+          
+          <div className="container-custom relative z-10">
+            <div className="bg-white rounded-[2rem] p-5 md:p-8 border border-slate-200/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
+              <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-500" />
+              
+              <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-6 lg:gap-10 items-center">
+                <div>
+                  <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                    className="inline-flex items-center gap-2 px-3 py-1.5 mb-5 text-[10px] font-black tracking-widest text-blue-600 uppercase bg-blue-50 border border-blue-100 rounded-full"
                   >
-                    WhatsApp Us
-                  </button>
+                    <Sparkles className="w-3.5 h-3.5" /> Direct Support
+                  </motion.div>
+                  <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
+                    className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 leading-tight tracking-tight mb-3"
+                  >
+                    Need Help with <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Deemed University</span> Admissions?
+                  </motion.h2>
+                  <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+                    className="text-slate-600 text-sm font-medium mb-5 leading-relaxed max-w-lg"
+                  >
+                    Our counselors navigate the complex admission process, choose the right university, and maximize your chances of securing a seat.
+                  </motion.p>
+                  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
+                    className="flex flex-wrap gap-3"
+                  >
+                    <a href={`tel:${phoneNumber}`} className="bg-gradient-to-br from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 font-black py-3 px-6 rounded-xl text-sm transition-all shadow-lg shadow-blue-500/20 flex items-center gap-2 active:scale-95">
+                      <Phone className="w-4 h-4" /> Call Our Experts
+                    </a>
+                    <button onClick={() => CTA.whatsapp("Hi, I need guidance for deemed university MBBS admission")}
+                      className="bg-slate-50 border-2 border-slate-200 text-slate-700 hover:bg-slate-100 hover:border-slate-300 font-black py-3 px-6 rounded-xl text-sm transition-all active:scale-95"
+                    >
+                      WhatsApp Us
+                    </button>
+                  </motion.div>
                 </div>
-              </div>
-
-              <div className="bg-white/5 backdrop-blur-md p-6 md:p-8 rounded-2xl md:rounded-[2.5rem] border border-white/10 shadow-xl">
-                <h3 className="text-xl font-black text-white mb-6 tracking-tight">Our Admission Support</h3>
-                <div className="space-y-5">
-                  {[
-                    { icon: University, title: "University Selection", desc: "Personalized recommendation based on your NEET score and preferences." },
-                    { icon: GraduationCap, title: "Counseling Assistance", desc: "Step-by-step support during the MCC counselling and admission process." },
-                    { icon: Award, title: "Documentation Support", desc: "Complete assistance with preparation of all required documents." },
-                  ].map((s, idx) => (
-                    <div key={idx} className="flex items-start gap-4 group">
-                      <div className="w-10 h-10 rounded-xl bg-blue-600/20 flex items-center justify-center text-blue-400 border border-blue-500/20 group-hover:bg-blue-600 group-hover:text-white transition-all shrink-0">
-                        <s.icon className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="text-xs font-black text-white uppercase tracking-[0.15em] mb-1">{s.title}</h4>
-                        <p className="text-blue-100/60 text-xs md:text-sm font-medium leading-relaxed">{s.desc}</p>
-                      </div>
-                    </div>
-                  ))}
+  
+                <div className="bg-slate-50/50 p-4 md:p-6 rounded-2xl md:rounded-[1.5rem] border border-slate-100 shadow-sm relative group overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-indigo-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <h3 className="text-base md:text-lg font-black text-slate-900 mb-4 tracking-tight relative z-10">Our Support Highlights</h3>
+                  <div className="space-y-2 relative z-10">
+                    {[
+                      { icon: University, title: "University Selection", desc: "Personalized recommendation based on your NEET score." },
+                      { icon: GraduationCap, title: "Counseling Assistance", desc: "Step-by-step support during MCC counselling." },
+                      { icon: Award, title: "Documentation Support", desc: "Complete assistance with all required documents." },
+                    ].map((s, idx) => (
+                      <motion.div key={idx} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 + (idx * 0.1) }}
+                        className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-white transition-colors duration-300"
+                      >
+                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-white flex items-center justify-center text-blue-600 border border-slate-100 shadow-sm shrink-0">
+                          <s.icon className="w-4 h-4" />
+                        </div>
+                        <div className="pt-0.5">
+                          <h4 className="text-[10px] md:text-xs font-black text-slate-800 uppercase tracking-widest mb-0.5">{s.title}</h4>
+                          <p className="text-slate-500 text-xs font-medium leading-relaxed line-clamp-1">{s.desc}</p>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

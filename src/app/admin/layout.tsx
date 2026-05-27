@@ -3,7 +3,7 @@
 import React, { ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ArrowLeft, Users, Bell, Video, Map, School, LogOut, ChevronRight, LayoutDashboard } from 'lucide-react';
+import { ArrowLeft, Users, Bell, Video, School, LogOut, ChevronRight, LayoutDashboard } from 'lucide-react';
 import { AuthProvider, useAuth } from '@/hooks/useAuth';
 import { ProtectedRoute } from '@/components/admin/ProtectedRoute';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -15,8 +15,8 @@ interface AdminLayoutProps {
 
 const navigation = [
   { name: 'Live Alerts', href: '/admin/live-alerts', icon: Bell },
-  { name: 'Colleges', href: '/admin/colleges', icon: School },
-  { name: 'MBBS States', href: '/admin/mbbs-states', icon: Map },
+  { name: 'UG Colleges', href: '/admin/colleges', icon: School },
+  { name: 'PG Colleges', href: '/admin/pg-colleges', icon: School },
   { name: 'Contacts', href: '/admin/contacts', icon: Users },
   { name: 'Videos', href: '/admin/videos', icon: Video },
 ];

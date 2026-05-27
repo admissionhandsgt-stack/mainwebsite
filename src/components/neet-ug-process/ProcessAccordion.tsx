@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, CheckCircle2, Info } from 'lucide-react';
+import { ChevronDown, CheckCircle2, Info, ArrowRight } from 'lucide-react';
 
 interface Step {
   id: number;
@@ -14,12 +14,14 @@ interface Step {
 
 interface Phase {
   title: string;
+  shortTitle: string;
   steps: Step[];
 }
 
 const phases: Phase[] = [
   {
     title: "Phase 1: Before Exam",
+    shortTitle: "Before Exam",
     steps: [
       {
         id: 1,
@@ -49,6 +51,7 @@ const phases: Phase[] = [
   },
   {
     title: "Phase 2: After Result",
+    shortTitle: "After Result",
     steps: [
       {
         id: 5,
@@ -72,6 +75,7 @@ const phases: Phase[] = [
   },
   {
     title: "Phase 3: Counselling Process",
+    shortTitle: "Counselling",
     steps: [
       {
         id: 8,
@@ -107,6 +111,7 @@ const phases: Phase[] = [
   },
   {
     title: "Phase 4: Final Admission",
+    shortTitle: "Final Admission",
     steps: [
       {
         id: 13,
@@ -145,93 +150,144 @@ const phases: Phase[] = [
 ];
 
 const ProcessAccordion = () => {
-  const [openId, setOpenId] = useState<number | null>(1);
+  const [activePhaseIndex, setActivePhaseIndex] = useState(0);
+  const [openStepId, setOpenStepId] = useState<number | null>(phases[0].steps[0].id);
+
+  const activePhase = phases[activePhaseIndex];
 
   return (
-    <div className="space-y-8">
-      {phases.map((phase, phaseIdx) => (
-        <div key={phaseIdx} className="space-y-4">
-          <h3 className="text-xl font-bold text-slate-900 border-l-4 border-primary pl-4 py-1 bg-slate-50">
-            {phase.title}
-          </h3>
-          <div className="space-y-3">
-            {phase.steps.map((step) => (
-              <div 
-                key={step.id} 
-                className={`border rounded-2xl transition-all duration-300 overflow-hidden ${
-                  openId === step.id ? 'border-primary/30 shadow-lg shadow-primary/5 bg-white' : 'border-slate-100 bg-white hover:border-slate-200'
+    <div className="bg-white dark:bg-slate-950 rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden flex flex-col md:flex-row">
+      {/* Sidebar Tabs for Phases */}
+      <div className="w-full md:w-1/3 bg-slate-50 dark:bg-slate-900 border-b md:border-b-0 md:border-r border-slate-200 dark:border-slate-800 p-3 sm:p-5">
+        <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-4 px-2">Admission Phases</h3>
+        <div className="flex flex-row md:flex-col gap-3 overflow-x-auto pb-3 md:pb-0 hide-scrollbar">
+          {phases.map((phase, idx) => {
+            const isActive = activePhaseIndex === idx;
+            return (
+              <button
+                key={idx}
+                onClick={() => {
+                  setActivePhaseIndex(idx);
+                  setOpenStepId(phases[idx].steps[0].id);
+                }}
+                className={`flex items-center justify-between text-left px-4 py-3.5 rounded-xl font-black transition-all whitespace-nowrap md:whitespace-normal shrink-0 ${
+                  isActive 
+                    ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20' 
+                    : 'bg-transparent text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800'
                 }`}
               >
-                <button
-                  onClick={() => setOpenId(openId === step.id ? null : step.id)}
-                  className="w-full px-6 py-5 flex items-center justify-between text-left group"
+                <div className="flex items-center gap-3">
+                  <span className={`flex items-center justify-center w-6 h-6 rounded-full text-xs ${isActive ? 'bg-white/20 text-white' : 'bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200'}`}>
+                    {idx + 1}
+                  </span>
+                  {phase.shortTitle}
+                </div>
+                {isActive && <ArrowRight className="w-4 h-4 hidden md:block opacity-50" />}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Accordion Steps for Active Phase */}
+      <div className="w-full md:w-2/3 p-4 sm:p-5 bg-white dark:bg-slate-950 min-h-[300px]">
+        <div className="mb-4">
+          <div className="inline-flex px-2 py-0.5 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-300 font-black uppercase tracking-wider text-[10px] rounded-full mb-1.5">
+            Phase {activePhaseIndex + 1}
+          </div>
+          <h2 className="text-xl font-black text-slate-900 dark:text-white">{activePhase.title}</h2>
+        </div>
+
+        <div className="space-y-2">
+          <AnimatePresence mode="popLayout">
+            {activePhase.steps.map((step) => {
+              const isOpen = openStepId === step.id;
+              
+              return (
+                <motion.div 
+                  key={step.id} 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className={`border rounded-2xl transition-all duration-300 overflow-hidden ${
+                    isOpen 
+                      ? 'border-blue-200 dark:border-blue-900/50 shadow-lg shadow-blue-900/5 bg-slate-50 dark:bg-slate-900/40' 
+                      : 'border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-950 hover:border-blue-200 dark:hover:border-slate-850 hover:shadow-md'
+                  }`}
                 >
-                  <div className="flex items-center gap-4">
-                    <span className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold transition-colors ${
-                      openId === step.id ? 'bg-primary text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-slate-200'
-                    }`}>
-                      {step.id}
-                    </span>
-                    <h4 className={`font-bold transition-colors ${openId === step.id ? 'text-primary' : 'text-slate-800'}`}>
-                      {step.title}
-                    </h4>
-                  </div>
-                  <ChevronDown className={`h-5 w-5 text-slate-400 transition-transform duration-300 ${openId === step.id ? 'rotate-180 text-primary' : ''}`} />
-                </button>
-                
-                <AnimatePresence>
-                  {openId === step.id && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <div className="px-6 pb-6 pt-0 space-y-4">
-                        <p className="text-slate-600 text-sm leading-relaxed">
-                          {step.description}
-                        </p>
-                        
-                        {step.list && (
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                            {step.list.map((item, i) => (
-                              <div key={i} className="flex items-center gap-2 text-sm text-slate-700">
-                                <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-                                {item}
-                              </div>
-                            ))}
-                          </div>
-                        )}
+                  <button
+                    onClick={() => setOpenStepId(isOpen ? null : step.id)}
+                    className="w-full px-4 py-3.5 flex items-center justify-between text-left group"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-black transition-all shadow-sm ${
+                        isOpen ? 'bg-blue-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 group-hover:bg-blue-100 group-hover:text-blue-700 dark:group-hover:bg-blue-900/30'
+                      }`}>
+                        {step.id}
+                      </span>
+                      <h4 className={`text-sm font-bold transition-colors ${isOpen ? 'text-blue-900 dark:text-blue-200' : 'text-slate-800 dark:text-slate-300'}`}>
+                        {step.title}
+                      </h4>
+                    </div>
+                    <div className={`flex items-center justify-center w-6 h-6 rounded-full transition-colors ${isOpen ? 'bg-blue-100 dark:bg-blue-900/40' : 'bg-slate-50 dark:bg-slate-905 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20'}`}>
+                      <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${isOpen ? 'rotate-180 text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500 group-hover:text-blue-500 dark:group-hover:text-blue-400'}`} />
+                    </div>
+                  </button>
+                  
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <div className="px-4 pb-4 pt-0 space-y-3">
+                          <p className="text-slate-600 dark:text-slate-400 text-xs font-medium leading-relaxed pl-9">
+                            {step.description}
+                          </p>
+                          
+                          {step.list && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pl-9">
+                              {step.list.map((item, i) => (
+                                <div key={i} className="flex items-center gap-2 text-xs font-bold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-900 py-1.5 px-2.5 rounded-md border border-slate-100 dark:border-slate-800 shadow-sm">
+                                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+                                  {item}
+                                </div>
+                              ))}
+                            </div>
+                          )}
 
-                        {step.rounds && (
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            {step.rounds.map((round, i) => (
-                              <div key={i} className="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                <p className="text-xs font-bold text-slate-900 mb-1">{round.name}</p>
-                                <p className="text-[11px] text-slate-500">{round.description}</p>
-                              </div>
-                            ))}
-                          </div>
-                        )}
+                          {step.rounds && (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pl-9">
+                              {step.rounds.map((round, i) => (
+                                <div key={i} className="p-2.5 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm">
+                                  <p className="text-[11px] font-black uppercase tracking-wider text-slate-900 dark:text-slate-200 mb-1">{round.name}</p>
+                                  <p className="text-xs font-medium text-slate-500 dark:text-slate-400">{round.description}</p>
+                                </div>
+                              ))}
+                            </div>
+                          )}
 
-                        <div className="p-4 bg-primary/5 rounded-xl border border-primary/10 flex gap-3">
-                          <div className="flex-shrink-0 mt-0.5">
-                            <Info className="h-5 w-5 text-primary" />
-                          </div>
-                          <div>
-                            <p className="text-[10px] font-bold text-primary uppercase tracking-wider mb-1">Admission Hands Support</p>
-                            <p className="text-sm text-slate-700 font-medium">{step.support}</p>
+                          <div className="ml-9 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-lg border border-blue-100/50 dark:border-blue-900/30 flex gap-2.5 shadow-inner">
+                            <div className="flex-shrink-0 mt-0.5">
+                              <Info className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                            </div>
+                            <div>
+                              <p className="text-[9px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest mb-0.5">Admission Hands Support</p>
+                              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">{step.support}</p>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ))}
-          </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
         </div>
-      ))}
+      </div>
     </div>
   );
 };

@@ -40,7 +40,7 @@ const StateTemplate: React.FC<StateTemplateProps> = ({ stateName }) => {
       try {
         const [stateRes, collegesRes] = await Promise.all([
           supabase.from('mbbs_states').select('*').eq('name', stateName).single(),
-          supabase.from('ug_colleges').select('*').eq('state', stateName).eq('is_active', true)
+          supabase.from('ug_all_colleges').select('*').eq('state', stateName).eq('is_active', true)
         ]);
 
         if (stateRes.error) {
@@ -66,7 +66,7 @@ const StateTemplate: React.FC<StateTemplateProps> = ({ stateName }) => {
             type: c.college_type,
             location: c.city,
             established: c.established_year?.toString() || 'N/A',
-            description: c.short_description || ''
+            description: c.university_name || ''
           })));
         } else {
           setColleges([]); // Strict empty fallback if no data in db

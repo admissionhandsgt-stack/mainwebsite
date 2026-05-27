@@ -54,7 +54,7 @@ const ServicesList = () => {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-50px" }}
               className="inline-flex items-center justify-center px-3 py-1.5 mb-4 text-[10px] font-black tracking-widest text-blue-600 uppercase bg-blue-50 border border-blue-100 rounded-full"
             >
               What We Offer
@@ -62,7 +62,7 @@ const ServicesList = () => {
             <motion.h2
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-50px" }}
               transition={{ delay: 0.1 }}
               className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight"
             >
@@ -71,14 +71,14 @@ const ServicesList = () => {
             <motion.p
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-50px" }}
               transition={{ delay: 0.2 }}
               className="text-sm md:text-base text-slate-500 max-w-xl mx-auto font-medium leading-relaxed"
             >
               From your first NEET score to the day you wear your white coat — we guide you every step of the way.
             </motion.p>
           </div>
-
+ 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6">
             {services.map((service, index) => {
               const Icon = service.icon;
@@ -87,8 +87,8 @@ const ServicesList = () => {
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ delay: 0.3 + index * 0.1 }}
                   className="group relative rounded-[2rem] bg-white border border-slate-100/60 p-6 md:p-8 flex flex-col justify-between h-[300px] md:h-[340px] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
                 >
                   <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${service.gradient} opacity-[0.03] rounded-full blur-2xl group-hover:opacity-10 transition-opacity duration-500`} />

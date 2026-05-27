@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 interface YouTubeIframePlayerProps {
   videoId: string;
@@ -43,36 +43,16 @@ const YouTubeIframePlayer: React.FC<YouTubeIframePlayerProps> = ({
   };
 
   const finalVideoId = extractVideoId(videoId);
-  
-  // Handle iframe load event
-  const handleIframeLoad = () => {
-    setIsLoading(false);
-  };
 
   return (
-    <div className="youtube-iframe-container w-full">
-      {/* Loading placeholder */}
-      {isLoading && (
-        <div className="aspect-video w-full bg-gray-200 rounded-t-xl flex items-center justify-center">
-          <div className="animate-pulse flex flex-col items-center">
-            <div className="w-14 h-14 rounded-full bg-red-500/20 flex items-center justify-center">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-red-600">
-                <path d="M10 8L16 12L10 16V8Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
-            <p className="text-gray-500 mt-2 text-sm">Loading video...</p>
-          </div>
-        </div>
-      )}
-      
-      <div className="aspect-video relative w-full">
+    <div className="youtube-iframe-container relative w-full rounded-xl overflow-hidden shadow-sm">
+      <div className="aspect-video relative w-full bg-slate-900">
         <iframe 
           src={`https://www.youtube.com/embed/${finalVideoId}?rel=0&modestbranding=1`}
           title={title || "YouTube video player"}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
           allowFullScreen
-          className="absolute top-0 left-0 w-full h-full rounded-t-xl"
-          onLoad={handleIframeLoad}
+          className="absolute inset-0 w-full h-full border-0"
           loading="lazy"
         ></iframe>
       </div>

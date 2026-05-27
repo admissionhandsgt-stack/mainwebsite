@@ -44,6 +44,8 @@ export function VideosClient({ videos }: { videos: VideoRecord[] }) {
     }
   };
 
+  if (!videos || videos.length === 0) return null;
+
   return (
     <section className="py-16 container-custom">
       {selectedVideo ? (
@@ -102,6 +104,12 @@ export function VideosClient({ videos }: { videos: VideoRecord[] }) {
                 </div>
               </div>
               <div className="flex-grow">
+                {video.featured && (
+                  <div className="inline-flex items-center gap-1 px-2 py-0.5 mb-3 rounded bg-amber-100 text-amber-800 text-[9px] font-black uppercase tracking-wider">
+                    <svg className="w-2.5 h-2.5 fill-amber-500 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    Featured
+                  </div>
+                )}
                 <h3 className="mb-3 text-sm font-black uppercase tracking-widest text-slate-900 transition-colors group-hover:text-blue-600">
                   {video.title}
                 </h3>

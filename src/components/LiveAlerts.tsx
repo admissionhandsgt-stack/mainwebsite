@@ -76,7 +76,7 @@ export default function LiveAlerts() {
             {[...activeAlerts, ...activeAlerts, ...activeAlerts].map((alert, idx) => (
               <div key={`${alert.id}-${idx}`} className="flex items-center mx-3 md:mx-4 group">
                 <span className="text-white/60 mr-1.5 md:mr-2">⚲</span>
-                <Link href={alert.link || "#"} className="text-xs md:text-sm font-medium hover:underline text-white/90 group-hover:text-white transition-colors">
+                <Link href={alert.link || "#"} target="_blank" rel="noopener noreferrer" className="text-xs md:text-sm font-medium hover:underline text-white/90 group-hover:text-white transition-colors">
                   {alert.title}
                 </Link>
                 <span className="ml-3 md:ml-4 text-white/30">|</span>

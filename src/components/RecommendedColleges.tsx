@@ -6,9 +6,13 @@ import { ChevronLeft, ChevronRight, Sparkles, MapPin, GraduationCap, ArrowRight,
 import { useRecommendedColleges } from '@/hooks/useCollegesData';
 import { cn } from "@/lib/utils";
 
-const RecommendedColleges: React.FC = () => {
+interface RecommendedCollegesProps {
+  domain?: 'ug' | 'pg';
+}
+
+const RecommendedColleges: React.FC<RecommendedCollegesProps> = ({ domain }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const { colleges, loading: isLoading } = useRecommendedColleges();
+  const { colleges, loading: isLoading } = useRecommendedColleges(domain);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollContainerRef.current) {

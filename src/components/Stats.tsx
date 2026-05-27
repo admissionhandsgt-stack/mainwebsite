@@ -155,11 +155,11 @@ const Stats: React.FC = () => {
   };
 
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section className="py-24 relative overflow-hidden bg-slate-50/30 dark:bg-slate-950/40">
       {/* Premium Background Elements */}
-      <div className="absolute inset-0 bg-slate-50/50 -z-10" />
-      <div className="absolute -top-24 -right-24 w-96 h-96 bg-blue-100/30 rounded-full blur-3xl" />
-      <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-teal-100/30 rounded-full blur-3xl" />
+      <div className="absolute inset-0 bg-slate-50/50 dark:bg-slate-950/20 -z-10" />
+      <div className="absolute -top-24 -right-24 w-96 h-96 bg-blue-100/30 dark:bg-blue-900/10 rounded-full blur-3xl" />
+      <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-teal-100/30 dark:bg-teal-900/10 rounded-full blur-3xl" />
       <div className="container-custom">
 
         {/* Section header */}
@@ -169,7 +169,7 @@ const Stats: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
-            className="inline-block text-blue-600 font-semibold text-sm uppercase tracking-widest mb-3"
+            className="inline-block text-blue-600 dark:text-blue-400 font-semibold text-sm uppercase tracking-widest mb-3"
           >
             Our Impact
           </motion.span>
@@ -178,7 +178,7 @@ const Stats: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
+            className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4"
             style={{ fontFamily: "var(--font-jakarta), system-ui, sans-serif" }}
           >
             Numbers That <span className="gradient-text">Speak for Themselves</span>
@@ -188,7 +188,7 @@ const Stats: React.FC = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-gray-500 max-w-xl mx-auto"
+            className="text-gray-500 dark:text-slate-400 max-w-xl mx-auto"
           >
             Transforming medical aspirations into achievements, one student at a time.
           </motion.p>
@@ -206,7 +206,7 @@ const Stats: React.FC = () => {
                 whileInView="visible"
                 viewport={{ once: true, margin: "-30px" }}
                 variants={cardVariants}
-                className={`rounded-3xl glass p-7 flex flex-col items-center text-center card-hover overflow-hidden relative group`}
+                className={`rounded-3xl glass dark:bg-slate-900/40 dark:border-slate-800/50 p-7 flex flex-col items-center text-center card-hover overflow-hidden relative group`}
               >
                 {/* Status-specific background glow */}
                 <div className={`absolute -right-4 -top-4 w-24 h-24 rounded-full bg-gradient-to-br ${stat.gradient} opacity-5 group-hover:opacity-10 transition-opacity`} />
@@ -219,8 +219,8 @@ const Stats: React.FC = () => {
                 >
                   {stat.value}
                 </div>
-                <div className="font-semibold text-gray-800 text-sm mb-1">{stat.label}</div>
-                <p className="text-gray-500 text-xs">{stat.description}</p>
+                <div className="font-semibold text-gray-800 dark:text-slate-200 text-sm mb-1">{stat.label}</div>
+                <p className="text-gray-500 dark:text-slate-400 text-xs">{stat.description}</p>
               </motion.div>
             );
           })}
@@ -234,7 +234,7 @@ const Stats: React.FC = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="text-2xl font-bold text-gray-900"
+              className="text-2xl font-bold text-gray-900 dark:text-white"
               style={{ fontFamily: "var(--font-jakarta), sans-serif" }}
             >
               What Our <span className="gradient-text">Students Say</span>
@@ -243,24 +243,24 @@ const Stats: React.FC = () => {
               <button
                 onClick={() => handleScroll('left')}
                 disabled={!canScrollLeft}
-                className="p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                className="p-2 rounded-full bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 shadow-sm hover:bg-gray-50 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
                 aria-label="Scroll left"
               >
-                <ChevronLeft className="h-5 w-5 text-blue-600" />
+                <ChevronLeft className="h-5 w-5 text-blue-600 dark:text-blue-400" />
               </button>
               <button
                 onClick={() => handleScroll('right')}
                 disabled={!canScrollRight}
-                className="p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                className="p-2 rounded-full bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 shadow-sm hover:bg-gray-50 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
                 aria-label="Scroll right"
               >
-                <ChevronRight className="h-5 w-5 text-blue-600" />
+                <ChevronRight className="h-5 w-5 text-blue-600 dark:text-blue-400" />
               </button>
             </div>
           </div>
 
           <div className="relative overflow-hidden">
-            <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+            <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white dark:from-slate-950 to-transparent z-10 pointer-events-none" />
             <div
               className="overflow-x-scroll scrollbar-hide pb-4"
               ref={scrollContainerRef}
@@ -273,12 +273,12 @@ const Stats: React.FC = () => {
                 {[...testimonials, ...testimonials].map((t, index) => (
                   <div
                     key={index}
-                    className="relative glass rounded-3xl shadow-xl p-7 min-w-[320px] max-w-[360px] flex-shrink-0 flex flex-col gap-5 hover:shadow-2xl transition-all duration-300 border border-white/40"
+                    className="relative glass dark:bg-slate-900/40 rounded-3xl shadow-xl p-7 min-w-[320px] max-w-[360px] flex-shrink-0 flex flex-col gap-5 hover:shadow-2xl transition-all duration-300 border border-white/40 dark:border-slate-850"
                   >
                     {/* Gradient accent bar */}
                     <div className={`absolute top-0 left-0 right-0 h-1 rounded-t-2xl bg-gradient-to-r ${t.color}`} />
 
-                    <Quote className="h-7 w-7 text-gray-200 absolute top-5 right-5" />
+                    <Quote className="h-7 w-7 text-gray-200 dark:text-slate-800 absolute top-5 right-5" />
 
                     {/* Stars */}
                     <div className="flex gap-0.5 mt-1">
@@ -287,23 +287,23 @@ const Stats: React.FC = () => {
                       ))}
                     </div>
 
-                    <p className="text-gray-600 text-sm leading-relaxed italic flex-1">
+                    <p className="text-gray-600 dark:text-slate-300 text-sm leading-relaxed italic flex-1">
                       &ldquo;{t.content}&rdquo;
                     </p>
 
-                    <div className="flex items-center gap-3 pt-2 border-t border-gray-100">
+                    <div className="flex items-center gap-3 pt-2 border-t border-gray-100 dark:border-slate-800">
                       <div className={`h-9 w-9 rounded-full bg-gradient-to-br ${t.color} flex items-center justify-center flex-shrink-0`}>
                         <span className="text-white text-xs font-bold">
                           {t.name.split(' ').slice(-1)[0]?.[0] ?? 'A'}
                         </span>
                       </div>
-                      <span className="text-sm font-semibold text-gray-800">{t.name}</span>
+                      <span className="text-sm font-semibold text-gray-800 dark:text-slate-200">{t.name}</span>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white dark:from-slate-950 to-transparent z-10 pointer-events-none" />
           </div>
         </div>
       </div>

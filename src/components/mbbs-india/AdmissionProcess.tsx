@@ -19,7 +19,7 @@ export const AdmissionProcess = () => {
   const { process } = mbbsData;
 
   return (
-    <section className="py-14 bg-white relative overflow-hidden">
+    <section className="py-14 bg-white dark:bg-slate-950 relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.015] pointer-events-none" style={{
         backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(0,0,0,0.4) 1px, transparent 0)',
         backgroundSize: '36px 36px'
@@ -29,16 +29,16 @@ export const AdmissionProcess = () => {
         {/* Header */}
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mb-12">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 border border-blue-100 rounded-full mb-4">
-              <Calendar className="w-3.5 h-3.5 text-blue-600" />
-              <span className="text-[10px] font-black text-blue-700 uppercase tracking-widest">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/30 rounded-full mb-4">
+              <Calendar className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+              <span className="text-[10px] font-black text-blue-700 dark:text-blue-300 uppercase tracking-widest">
                 Timeline: {process.timeline}
               </span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight leading-tight mb-3">
-              Step-by-Step <span className="text-blue-600">Admission Journey</span>
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-tight mb-3">
+              Step-by-Step <span className="text-blue-600 dark:text-blue-400">Admission Journey</span>
             </h2>
-            <p className="text-sm text-slate-500 font-medium max-w-xl leading-relaxed">
+            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium max-w-xl leading-relaxed">
               We&apos;ve simplified the complex admission cycle into 6 clear steps to keep you ahead of the competition.
             </p>
           </div>
@@ -69,28 +69,28 @@ export const AdmissionProcess = () => {
               >
                 {/* Connector arrow on desktop (not for last in row) */}
                 {!isLast && (idx + 1) % 3 !== 0 && (
-                  <div className="hidden lg:flex absolute -right-2.5 top-1/2 -translate-y-1/2 z-20 w-5 h-5 rounded-full bg-slate-100 border border-slate-200 items-center justify-center">
-                    <ArrowRight className="w-3 h-3 text-slate-400" />
+                  <div className="hidden lg:flex absolute -right-2.5 top-1/2 -translate-y-1/2 z-20 w-5 h-5 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 items-center justify-center">
+                    <ArrowRight className="w-3 h-3 text-slate-400 dark:text-slate-200" />
                   </div>
                 )}
 
-                <div className={`relative p-6 rounded-3xl bg-white border-2 ${color.border} group-hover:shadow-xl group-hover:${color.shadow} group-hover:-translate-y-1 transition-all duration-300 h-full flex flex-col gap-4`}>
+                <div className={`relative p-6 rounded-3xl bg-white dark:bg-slate-900/60 border-2 ${color.border} dark:border-slate-800/80 group-hover:shadow-xl group-hover:${color.shadow} dark:group-hover:shadow-black/40 group-hover:-translate-y-1 transition-all duration-300 h-full flex flex-col gap-4`}>
                   {/* Step number badge */}
                   <div className="flex items-center justify-between">
                     <div className={`w-12 h-12 rounded-2xl ${color.bg} flex items-center justify-center shadow-lg ${color.shadow}`}>
                       <Icon className="w-6 h-6 text-white" />
                     </div>
-                    <span className={`text-5xl font-black ${color.text} opacity-10 select-none leading-none`}>
+                    <span className={`text-5xl font-black ${color.text} opacity-10 dark:opacity-30 select-none leading-none`}>
                       {String(idx + 1).padStart(2, '0')}
                     </span>
                   </div>
 
                   {/* Step label */}
                   <div>
-                    <div className={`inline-block px-2 py-0.5 rounded-full ${color.light} ${color.text} text-[9px] font-black uppercase tracking-widest mb-2`}>
+                    <div className={`inline-block px-2 py-0.5 rounded-full ${color.light} dark:bg-slate-800 ${color.text} dark:text-slate-300 text-[9px] font-black uppercase tracking-widest mb-2`}>
                       Step {idx + 1}
                     </div>
-                    <p className="text-base font-black text-slate-900 leading-snug">
+                    <p className="text-base font-black text-slate-900 dark:text-white leading-snug">
                       {step}
                     </p>
                   </div>
@@ -98,8 +98,8 @@ export const AdmissionProcess = () => {
                   {/* Mobile connector */}
                   {!isLast && (
                     <div className="lg:hidden flex items-center justify-center pt-1">
-                      <div className={`w-6 h-6 rounded-full ${color.light} ${color.border} border flex items-center justify-center`}>
-                        <ArrowRight className={`w-3 h-3 ${color.text} rotate-90`} />
+                      <div className={`w-6 h-6 rounded-full ${color.light} dark:bg-slate-800 ${color.border} dark:border-slate-800 border flex items-center justify-center`}>
+                        <ArrowRight className={`w-3 h-3 ${color.text} dark:text-slate-300 rotate-90`} />
                       </div>
                     </div>
                   )}

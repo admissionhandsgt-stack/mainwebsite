@@ -11,8 +11,9 @@ interface DeemedCollegeCardProps {
 
 export function DeemedCollegeCard({ college }: DeemedCollegeCardProps) {
   const CTA = useCTA();
+
   return (
-    <div className="group bg-white rounded-2xl border border-slate-100 hover:border-blue-200 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col">
+    <div className="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 hover:border-blue-200 dark:hover:border-blue-900 hover:shadow-xl dark:hover:shadow-black/20 transition-all duration-300 overflow-hidden flex flex-col">
       {/* College Image or Gradient Bar */}
       {college.image_url ? (
         <div className="relative w-full h-40 md:h-44 overflow-hidden">
@@ -30,21 +31,21 @@ export function DeemedCollegeCard({ college }: DeemedCollegeCardProps) {
 
       <div className="p-4 md:p-5 flex flex-col flex-1">
         {/* College Name */}
-        <h3 className="text-sm md:text-base font-black text-slate-900 leading-snug mb-2 group-hover:text-blue-700 transition-colors line-clamp-2">
+        <h3 className="text-sm md:text-base font-black text-slate-900 dark:text-slate-100 leading-snug mb-2 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
           {college.college_name}
         </h3>
 
         {/* University */}
         {college.university_name && (
-          <div className="flex items-center gap-1.5 text-slate-500 mb-2">
+          <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 mb-2">
             <Building2 className="w-3.5 h-3.5 shrink-0 text-blue-500" />
             <span className="text-[11px] font-bold truncate">{college.university_name}</span>
           </div>
         )}
 
         {/* Location */}
-        <div className="flex items-center gap-1.5 text-slate-400 mb-3">
-          <MapPin className="w-3.5 h-3.5 shrink-0" />
+        <div className="flex items-center gap-1.5 text-slate-400 dark:text-slate-500 mb-3">
+          <MapPin className="w-3.5 h-3.5 shrink-0 text-slate-400 dark:text-slate-500" />
           <span className="text-[11px] font-bold uppercase tracking-wide">
             {[college.city, college.state].filter(Boolean).join(', ') || 'India'}
           </span>
@@ -52,11 +53,11 @@ export function DeemedCollegeCard({ college }: DeemedCollegeCardProps) {
 
         {/* Intake */}
         {college.intake != null && (
-          <div className="flex items-center gap-1.5 text-slate-500 mb-3">
+          <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 mb-3">
             <Users className="w-3.5 h-3.5 shrink-0 text-emerald-500" />
             <span className="text-[11px] font-bold">{college.intake} Seats</span>
             {college.nri_seats != null && (
-              <span className="text-[10px] text-amber-600 font-bold ml-1">({college.nri_seats} NRI)</span>
+              <span className="text-[10px] text-amber-600 dark:text-amber-400 font-bold ml-1">({college.nri_seats} NRI)</span>
             )}
           </div>
         )}
@@ -64,17 +65,17 @@ export function DeemedCollegeCard({ college }: DeemedCollegeCardProps) {
         {/* Badges */}
         <div className="flex flex-wrap gap-1.5 mb-4">
           {college.has_nri_seats && (
-            <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-amber-50 text-amber-700 border border-amber-200">
+            <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-900/40">
               NRI
             </span>
           )}
           {college.has_minority_seats && (
-            <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-violet-50 text-violet-700 border border-violet-200">
+            <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-violet-50 dark:bg-violet-950/30 text-violet-700 dark:text-violet-400 border border-violet-200 dark:border-violet-900/40">
               Minority
             </span>
           )}
           {college.is_women_only && (
-            <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-pink-50 text-pink-700 border border-pink-200">
+            <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-pink-50 dark:bg-pink-950/30 text-pink-700 dark:text-pink-400 border border-pink-200 dark:border-pink-900/40">
               Women Only
             </span>
           )}
@@ -84,13 +85,13 @@ export function DeemedCollegeCard({ college }: DeemedCollegeCardProps) {
         <div className="mt-auto flex gap-2">
           <button
             onClick={() => CTA.whatsapp(`Hi, I need guidance for admission in ${college.college_name}`)}
-            className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-[11px] font-black bg-slate-900 text-white hover:bg-blue-600 transition-all active:scale-95 shadow-sm"
+            className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-[11px] font-black bg-slate-900 dark:bg-slate-800 text-white hover:bg-blue-600 dark:hover:bg-blue-600 transition-all active:scale-95 shadow-sm"
           >
             Get Guidance
           </button>
           <button
             onClick={CTA.call}
-            className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-[11px] font-black border-2 border-slate-200 text-slate-700 hover:border-blue-300 hover:text-blue-700 hover:bg-blue-50 transition-all active:scale-95"
+            className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-[11px] font-black border-2 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-blue-300 dark:hover:border-blue-900 hover:text-blue-700 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-all active:scale-95"
           >
             <Phone className="w-3 h-3" /> Call
           </button>

@@ -2,26 +2,53 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
-  fullyParallel: false, // Run tests sequentially to avoid local race conditions
+  fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: 0,
-  workers: 1, // Use a single worker locally for stable DB interactions
-  reporter: 'list',
+  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 1 : undefined,
+  reporter: [['html'], ['list']],
   use: {
-    baseURL: 'http://localhost:3005',
+    baseURL: 'http://localhost:3000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
+    headless: true, // Run headless in sandbox environment to avoid display server dependency
   },
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'desktop-light',
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1440, height: 1100 },
+        colorScheme: 'light',
+      },
+    },
+    {
+      name: 'desktop-dark',
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1440, height: 1100 },
+        colorScheme: 'dark',
+      },
+    },
+    {
+      name: 'mobile-light',
+      use: {
+        ...devices['iPhone 14'],
+        colorScheme: 'light',
+      },
+    },
+    {
+      name: 'mobile-dark',
+      use: {
+        ...devices['iPhone 14'],
+        colorScheme: 'dark',
+      },
     },
   ],
   webServer: {
-    command: 'npx next dev -p 3005',
-    url: 'http://localhost:3005',
+    command: 'npm run dev',
+    url: 'http://localhost:3000',
     reuseExistingServer: true,
-    timeout: 120000, // 2 minutes
   },
 });

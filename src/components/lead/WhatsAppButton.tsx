@@ -1,15 +1,18 @@
 "use client";
 import React from 'react';
 import { trackEvent } from '@/lib/analytics';
-import { CONTACT_INFO } from '@/lib/constants';
+import { useContactInfo } from '@/hooks/useContactInfo';
 import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon';
 
 export const WhatsAppButton = () => {
+  const { contactInfo } = useContactInfo();
+  const whatsapp = contactInfo?.whatsapp_number?.replace(/[+\s-]/g, '') || '919873133846';
+
   const handleClick = () => {
     trackEvent('whatsapp_click', { location: 'floating_button' });
     // Slight delay to ensure tracking fires before navigation
     setTimeout(() => {
-      window.open(`https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent("Hi, I'm interested in MD/MS counselling")}`, '_blank');
+      window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent("Hi, I'm interested in MD/MS counselling")}`, '_blank');
     }, 150);
   };
 

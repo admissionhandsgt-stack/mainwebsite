@@ -57,7 +57,7 @@ const DataInsights = () => {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-50px" }}
             className="inline-block px-4 py-1.5 mb-4 text-[10px] font-black tracking-widest text-blue-400 uppercase bg-blue-500/10 rounded-full border border-blue-500/20"
           >
             Admission Intelligence
@@ -65,7 +65,7 @@ const DataInsights = () => {
           <motion.h2
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-50px" }}
             className="text-responsive-h2 text-white mb-4"
           >
             Data-Driven <span className="text-blue-400">Insights</span> & Eligibility
@@ -73,7 +73,7 @@ const DataInsights = () => {
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-50px" }}
             className="text-responsive-body text-slate-400 font-medium max-w-2xl mx-auto"
           >
             Essential admission data combined with eligibility criteria — everything you need to plan your MBBS journey strategically.
@@ -87,8 +87,8 @@ const DataInsights = () => {
               key={index}
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ delay: 0.2 + index * 0.1 }}
               className="bg-white/5 backdrop-blur-md rounded-2xl md:rounded-[2rem] p-5 sm:p-6 border border-white/10 hover:border-white/20 transition-all group flex items-start gap-4"
             >
               <div className={`flex-shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white shadow-xl group-hover:scale-110 transition-transform`}>
@@ -109,7 +109,8 @@ const DataInsights = () => {
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ delay: 0.5 }}
             className="bg-white/[0.04] backdrop-blur-md rounded-2xl md:rounded-[2rem] p-5 md:p-7 border border-white/10"
           >
             <div className="flex items-center gap-3 mb-5">
@@ -124,8 +125,8 @@ const DataInsights = () => {
                   key={i}
                   initial={{ opacity: 0, x: -10 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.06 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ delay: 0.6 + i * 0.06 }}
                   className="flex items-start gap-3 group"
                 >
                   <div className="mt-0.5 w-5 h-5 rounded-md bg-emerald-500/20 flex items-center justify-center shrink-0 group-hover:bg-emerald-500/30 transition-colors">
@@ -141,7 +142,8 @@ const DataInsights = () => {
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ delay: 0.5 }}
             className="bg-white/[0.04] backdrop-blur-md rounded-2xl md:rounded-[2rem] p-5 md:p-7 border border-white/10"
           >
             <div className="flex items-center gap-3 mb-5">
@@ -156,8 +158,8 @@ const DataInsights = () => {
                   key={i}
                   initial={{ opacity: 0, x: 10 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.06 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ delay: 0.6 + i * 0.06 }}
                   className="flex items-start gap-3 group"
                 >
                   <div className="mt-0.5 w-5 h-5 rounded-md bg-blue-500/20 flex items-center justify-center shrink-0 group-hover:bg-blue-500/30 transition-colors">

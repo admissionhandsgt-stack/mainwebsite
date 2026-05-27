@@ -141,10 +141,7 @@ export const mbbsData = {
         title: "Data-Driven Predictions",
         desc: "Powered by 5+ years of cutoff data and real-time analytics",
       },
-      {
-        title: "Zero Donation Policy",
-        desc: "100% transparent process — no hidden charges or capitation",
-      },
+
       {
         title: "Pan-India Coverage",
         desc: "Expertise across AIQ, all 36 state counsellings & private",

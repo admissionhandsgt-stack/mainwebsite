@@ -7,9 +7,8 @@ export interface VideoRecord {
   featured?: boolean;
 }
 
-const SUPABASE_URL = "https://autynwxwiplmuajizwfm.supabase.co";
-const SUPABASE_ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXR5bnd4d2lwbG11YWppendmbSIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzQ0NTM5OTk2LCJleHAiOjIwNjAxMTU5OTZ9.l8UEWyXi98bn-lPQfGSgY1wFsz4WtW2PtHKR53gq6zE";
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://nlxbqseaumhjenlnigxd.supabase.co";
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5seGJxc2VhdW1oamVubG5pZ3hkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2NjQ3MTAsImV4cCI6MjA5NDI0MDcxMH0.GG6dnO5WeeQsEfGCnU06fuhAZKb8qvkeqEb083ZqvwM";
 
 export const DEFAULT_VIDEOS: VideoRecord[] = [
   {
@@ -50,7 +49,7 @@ const mapVideo = (item: Record<string, unknown>): VideoRecord => ({
 export async function getVideos(limit?: number): Promise<VideoRecord[]> {
   const query = new URLSearchParams({
     select: "*",
-    order: "created_at.desc",
+    order: "featured.desc,created_at.desc",
   });
 
   if (limit) {
@@ -72,7 +71,7 @@ export async function getVideos(limit?: number): Promise<VideoRecord[]> {
 
     const data = (await response.json()) as Record<string, unknown>[];
     const videos = data.map(mapVideo).filter((item) => item.videos_id);
-    return videos.length > 0 ? videos : DEFAULT_VIDEOS.slice(0, limit ?? DEFAULT_VIDEOS.length);
+    return videos; // Return empty array if no videos, do not fallback to mock data unless network fails
   } catch {
     return DEFAULT_VIDEOS.slice(0, limit ?? DEFAULT_VIDEOS.length);
   }

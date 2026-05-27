@@ -1,40 +1,35 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Users, Building2, Sparkles, Stethoscope } from "lucide-react";
+import { MapPin, Users, Sparkles, Stethoscope } from "lucide-react";
+import { GroupedColleges } from "@/lib/colleges";
 
 type Category = "Govt" | "Private" | "Deemed";
 
-interface College {
-  name: string;
-  state: string;
-  seats: number;
-  image: string;
+interface TopMedicalInstitutesProps {
+  initialColleges: GroupedColleges;
 }
 
-const collegesData: Record<Category, College[]> = {
-  Govt: [
-    { name: "AIIMS New Delhi", state: "New Delhi", seats: 125, image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
-    { name: "Maulana Azad Medical College", state: "New Delhi", seats: 250, image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop" },
-    { name: "Grant Medical College", state: "Maharashtra", seats: 250, image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=800&auto=format&fit=crop" },
-    { name: "JIPMER", state: "Puducherry", seats: 200, image: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?q=80&w=800&auto=format&fit=crop" },
-  ],
-  Private: [
-    { name: "Christian Medical College", state: "Tamil Nadu", seats: 100, image: "https://images.unsplash.com/photo-1504439468489-c8920d796a29?q=80&w=800&auto=format&fit=crop" },
-    { name: "St. John's Medical College", state: "Karnataka", seats: 150, image: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
-    { name: "Kasturba Medical College", state: "Karnataka", seats: 250, image: "https://images.unsplash.com/photo-1551601651-2a8555f1a136?q=80&w=800&auto=format&fit=crop" },
-    { name: "Sri Ramachandra Medical College", state: "Tamil Nadu", seats: 250, image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=800&auto=format&fit=crop" },
-  ],
-  Deemed: [
-    { name: "Amrita Institute of Medical Sciences", state: "Kerala", seats: 150, image: "https://images.unsplash.com/photo-1580281658626-ee379f384018?q=80&w=800&auto=format&fit=crop" },
-    { name: "SRM Medical College", state: "Tamil Nadu", seats: 250, image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=800&auto=format&fit=crop" },
-    { name: "DY Patil Medical College", state: "Maharashtra", seats: 250, image: "https://images.unsplash.com/photo-1568667256549-094345857637?q=80&w=800&auto=format&fit=crop" },
-    { name: "Saveetha Medical College", state: "Tamil Nadu", seats: 250, image: "https://images.unsplash.com/photo-1519494140681-8b17d830a3e9?q=80&w=800&auto=format&fit=crop" },
-  ]
-};
+export default function TopMedicalInstitutes({ initialColleges }: TopMedicalInstitutesProps) {
+  const availableTabs = (["Govt", "Private", "Deemed"] as Category[]).filter(
+    (tab) => initialColleges && initialColleges[tab] && initialColleges[tab].length > 0
+  );
 
-export default function TopMedicalInstitutes() {
-  const [activeTab, setActiveTab] = useState<Category>("Govt");
+  const [activeTab, setActiveTab] = useState<Category | null>(
+    availableTabs.length > 0 ? availableTabs[0] : null
+  );
+
+  useEffect(() => {
+    if (availableTabs.length > 0 && (!activeTab || !availableTabs.includes(activeTab))) {
+      setActiveTab(availableTabs[0]);
+    }
+  }, [availableTabs, activeTab]);
+
+  if (!initialColleges || availableTabs.length === 0 || !activeTab) {
+    return null;
+  }
+
+  const collegesToDisplay = initialColleges[activeTab] || [];
 
   return (
     <section id="top-medical-institutes" className="compact-padding relative bg-slate-50 overflow-hidden">
@@ -47,7 +42,7 @@ export default function TopMedicalInstitutes() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-50px" }}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 mb-4 text-[10px] sm:text-xs font-black tracking-widest text-blue-600 uppercase bg-blue-50 border border-blue-100 rounded-full shadow-sm"
           >
             <Sparkles className="w-3 h-3" />
@@ -56,7 +51,7 @@ export default function TopMedicalInstitutes() {
           <motion.h2
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-50px" }}
             transition={{ delay: 0.1 }}
             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 leading-[1.1] tracking-tight mb-4"
           >
@@ -65,7 +60,7 @@ export default function TopMedicalInstitutes() {
         </div>
 
         <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-10">
-          {(["Govt", "Private", "Deemed"] as Category[]).map((tab) => (
+          {availableTabs.map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -91,11 +86,11 @@ export default function TopMedicalInstitutes() {
           ))}
         </div>
 
-        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 min-h-[300px]">
           <AnimatePresence mode="popLayout">
-            {collegesData[activeTab].map((college, idx) => (
+            {collegesToDisplay.map((college, idx) => (
               <motion.div
-                key={college.name + idx}
+                key={college.college_name + idx}
                 layout
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -108,7 +103,7 @@ export default function TopMedicalInstitutes() {
                 <div className="relative h-40 w-full overflow-hidden">
                   <div
                     className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                    style={{ backgroundImage: `url(${college.image})` }}
+                    style={{ backgroundImage: `url(${college.image_url || 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop'})` }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent" />
                   <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between">
@@ -120,7 +115,7 @@ export default function TopMedicalInstitutes() {
 
                 <div className="p-5 flex flex-col flex-grow relative z-10">
                   <h3 className="text-base font-black text-slate-900 leading-tight mb-3 group-hover:text-blue-600 transition-colors line-clamp-2">
-                    {college.name}
+                    {college.college_name}
                   </h3>
 
                   <div className="mt-auto space-y-2.5">
@@ -129,12 +124,14 @@ export default function TopMedicalInstitutes() {
                       <span className="text-xs font-semibold">{college.state}</span>
                     </div>
                     
-                    <div className="flex items-center gap-2 text-slate-500">
-                      <Users className="w-4 h-4 text-emerald-500 shrink-0" />
-                      <span className="text-xs font-semibold">
-                        <span className="text-slate-700 font-bold">{college.seats}</span> Seats
-                      </span>
-                    </div>
+                    {college.intake && (
+                      <div className="flex items-center gap-2 text-slate-500">
+                        <Users className="w-4 h-4 text-emerald-500 shrink-0" />
+                        <span className="text-xs font-semibold">
+                          <span className="text-slate-700 font-bold">{college.intake}</span> Seats
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
                 

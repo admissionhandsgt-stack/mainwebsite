@@ -3,7 +3,7 @@ import Image from "next/image";
 import { mbbsData } from "@/data/mbbs-india";
 import { ShieldCheck, TrendingUp, Search, UserCheck, Heart } from "lucide-react";
 
-const icons = [TrendingUp, ShieldCheck, Search, Heart, UserCheck];
+const icons = [TrendingUp, Search, Heart, UserCheck];
 
 export const MBBSWhyUs = () => {
   const { whyUs } = mbbsData;

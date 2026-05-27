@@ -51,7 +51,7 @@ const WhyAdmissionHands = () => {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-50px" }}
               className="inline-flex items-center justify-center px-3 py-1.5 mb-4 text-[10px] font-black tracking-widest text-blue-600 uppercase bg-blue-100/50 border border-blue-200/50 rounded-full"
             >
               Why Choose Us
@@ -59,7 +59,7 @@ const WhyAdmissionHands = () => {
             <motion.h2
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-50px" }}
               className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight leading-tight"
             >
               Why Families Trust{' '}
@@ -71,7 +71,7 @@ const WhyAdmissionHands = () => {
             <motion.p
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-50px" }}
               className="text-sm md:text-base text-slate-500 mb-8 font-medium leading-relaxed"
             >
               In a landscape full of misinformation, we bring clarity, credibility, and real outcomes. Our track record speaks louder than promises.
@@ -81,10 +81,10 @@ const WhyAdmissionHands = () => {
               {["95% Success Rate", "2100+ Families Guided", "Pan-India Coverage", "Zero Hidden Fees"].map((point, i) => (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, x: -10 }}
+                  initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ delay: 0.2 + i * 0.1 }}
                   className="flex items-center gap-3 p-3 rounded-2xl bg-white border border-slate-100 shadow-sm"
                 >
                   <div className="bg-emerald-50 w-8 h-8 rounded-xl flex items-center justify-center shrink-0">
@@ -103,8 +103,8 @@ const WhyAdmissionHands = () => {
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: 0.3 + index * 0.1 }}
                 className="group relative bg-white p-5 md:p-6 rounded-[2rem] border border-slate-100/60 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
               >
                 {/* Animated Gradient Border Bottom */}

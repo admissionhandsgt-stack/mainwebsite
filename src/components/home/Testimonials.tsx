@@ -36,9 +36,9 @@ const Testimonials = () => {
       <div className="container-custom">
         <div className="text-center mb-10">
           <motion.span
-            initial={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-50px" }}
             className="inline-block px-4 py-1.5 mb-4 text-[10px] font-black tracking-[0.2em] text-blue-600 uppercase bg-blue-600/10 rounded-full"
           >
             Student Stories
@@ -46,7 +46,8 @@ const Testimonials = () => {
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ delay: 0.1 }}
             className="text-responsive-h2 text-slate-900 mb-4"
           >
             Real Results from <span className="text-blue-600">Real Students</span>
@@ -60,10 +61,10 @@ const Testimonials = () => {
           {testimonials.map((t, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.12 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ delay: 0.2 + index * 0.12 }}
               className="group relative p-6 md:p-8 rounded-3xl md:rounded-[2.5rem] bg-white border border-slate-100 hover:border-blue-200 hover:shadow-2xl transition-all h-full flex flex-col justify-between"
             >
               <div>

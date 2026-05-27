@@ -58,7 +58,7 @@ const HowItWorks = () => {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-50px" }}
             className="inline-block px-3 py-1.5 mb-3 text-[10px] font-black tracking-widest text-blue-600 uppercase bg-blue-100/50 border border-blue-200/50 rounded-full"
           >
             How We Secure Your Best Seat
@@ -66,7 +66,8 @@ const HowItWorks = () => {
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ delay: 0.1 }}
             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 mb-3 tracking-tight"
           >
             Your NEET Journey in <span className="text-blue-600">6 Steps</span>
@@ -74,7 +75,8 @@ const HowItWorks = () => {
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ delay: 0.2 }}
             className="text-sm md:text-base text-slate-500 max-w-xl mx-auto font-medium leading-relaxed"
           >
             The path to your dream medical college is clear with our expert-designed roadmap.
@@ -88,8 +90,8 @@ const HowItWorks = () => {
             <motion.div 
               initial={{ width: 0 }}
               whileInView={{ width: "100%" }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 1.5, ease: "easeInOut", delay: 0.3 }}
               className="h-full bg-gradient-to-r from-blue-400 via-indigo-400 to-teal-400"
             />
           </div>
@@ -100,8 +102,8 @@ const HowItWorks = () => {
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: 0.4 + index * 0.1 }}
                 className="relative group"
               >
                 <div className="bg-white lg:bg-transparent lg:border-none border border-slate-100 p-4 lg:p-0 rounded-2xl shadow-sm lg:shadow-none flex flex-row lg:flex-col items-center text-left lg:text-center gap-4 lg:gap-0 h-full transition-all hover:border-blue-200 hover:shadow-md lg:hover:shadow-none">

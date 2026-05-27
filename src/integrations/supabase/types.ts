@@ -237,40 +237,139 @@ export type Database = {
         }
         Relationships: []
       }
-      ug_colleges: {
+      ug_all_colleges: {
         Row: {
-          id: string
+          id: number
+          slug: string
           college_name: string
-          city: string
-          state: string
           college_type: string
+          state: string
+          city: string | null
+          university_name: string | null
           established_year: number | null
-          short_description: string | null
+          intake: number | null
+          nri_seats: number | null
+          minority_seats: number | null
+          has_nri_seats: boolean
+          has_minority_seats: boolean
+          is_women_only: boolean
+          display_order: number
           is_active: boolean
+          source_type: string
+          image_url: string | null
           created_at: string
           updated_at: string
         }
         Insert: {
-          id?: string
+          id?: number
+          slug: string
           college_name: string
-          city: string
+          college_type?: string
           state: string
-          college_type: string
+          city?: string | null
+          university_name?: string | null
           established_year?: number | null
-          short_description?: string | null
+          intake?: number | null
+          nri_seats?: number | null
+          minority_seats?: number | null
+          has_nri_seats?: boolean
+          has_minority_seats?: boolean
+          is_women_only?: boolean
+          display_order?: number
           is_active?: boolean
+          source_type?: string
+          image_url?: string | null
           created_at?: string
           updated_at?: string
         }
         Update: {
-          id?: string
+          id?: number
+          slug?: string
           college_name?: string
-          city?: string
-          state?: string
           college_type?: string
+          state?: string
+          city?: string | null
+          university_name?: string | null
           established_year?: number | null
-          short_description?: string | null
+          intake?: number | null
+          nri_seats?: number | null
+          minority_seats?: number | null
+          has_nri_seats?: boolean
+          has_minority_seats?: boolean
+          is_women_only?: boolean
+          display_order?: number
           is_active?: boolean
+          source_type?: string
+          image_url?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ug_recommended_colleges: {
+        Row: {
+          id: number
+          slug: string
+          college_name: string
+          college_type: string
+          state: string
+          city: string | null
+          university_name: string | null
+          established_year: number | null
+          intake: number | null
+          nri_seats: number | null
+          minority_seats: number | null
+          has_nri_seats: boolean
+          has_minority_seats: boolean
+          is_women_only: boolean
+          display_order: number
+          is_active: boolean
+          source_type: string
+          image_url: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          slug: string
+          college_name: string
+          college_type?: string
+          state: string
+          city?: string | null
+          university_name?: string | null
+          established_year?: number | null
+          intake?: number | null
+          nri_seats?: number | null
+          minority_seats?: number | null
+          has_nri_seats?: boolean
+          has_minority_seats?: boolean
+          is_women_only?: boolean
+          display_order?: number
+          is_active?: boolean
+          source_type?: string
+          image_url?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          slug?: string
+          college_name?: string
+          college_type?: string
+          state?: string
+          city?: string | null
+          university_name?: string | null
+          established_year?: number | null
+          intake?: number | null
+          nri_seats?: number | null
+          minority_seats?: number | null
+          has_nri_seats?: boolean
+          has_minority_seats?: boolean
+          is_women_only?: boolean
+          display_order?: number
+          is_active?: boolean
+          source_type?: string
+          image_url?: string | null
           created_at?: string
           updated_at?: string
         }
