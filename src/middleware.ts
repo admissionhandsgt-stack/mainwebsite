@@ -7,8 +7,8 @@ export function middleware(req: NextRequest) {
 
   const isProduction = process.env.NODE_ENV === 'production';
   
-  // Detect if the request is for the admin subdomain
-  const isAdminSubdomain = hostname.startsWith('admin.admissionhands.com') || hostname.startsWith('admin.localhost');
+  // Detect if the request is for the admin subdomain (matches any domain/host starting with "admin.")
+  const isAdminSubdomain = hostname.startsWith('admin.');
 
   // 1. If accessing via the admin subdomain
   if (isAdminSubdomain) {
