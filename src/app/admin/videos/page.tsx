@@ -1,14 +1,25 @@
 "use client";
 
 import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import VideoForm from '@/components/admin/videos/VideoForm';
-import VideoList from '@/components/admin/videos/VideoList';
 import { useVideoManager } from '@/hooks/useVideoManager';
 import { Plus, RefreshCw, Video, Star, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+
+const VideoForm = dynamic(() => import('@/components/admin/videos/VideoForm'), {
+  loading: () => <div className="h-64 flex items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-medical-500" /></div>
+});
+
+const VideoList = dynamic(() => import('@/components/admin/videos/VideoList'), {
+  loading: () => <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
+    {[1, 2, 3].map(n => (
+      <div key={n} className="bg-slate-100 dark:bg-slate-800 rounded-xl h-60"></div>
+    ))}
+  </div>
+});
 
 const VideoManager = () => {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
@@ -63,7 +74,7 @@ const VideoManager = () => {
                 Add Video
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[525px] rounded-2xl">
+            <DialogContent className="sm:max-w-[525px] rounded-2xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle className="text-xl font-bold">{isEditing ? 'Edit Video' : 'Add New Video'}</DialogTitle>
               </DialogHeader>

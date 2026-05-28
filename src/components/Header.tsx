@@ -75,12 +75,12 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 w-full z-[40] bg-white/95 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/60 shadow-sm transition-all duration-200">
+      <header className="fixed top-0 left-0 right-0 w-full z-[100] bg-white/95 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/60 shadow-sm transition-all duration-200">
         <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between gap-4">
           {/* Extreme Left: Logo */}
           <Link href="/" className="flex items-center justify-start shrink-0 mr-2">
             <Image 
-              src="/assets/images/logos/logo-4k.webp" 
+              src="/assets/images/logos/logo-4k.avif" 
               alt="Admission Hands Logo" 
               width={220}
               height={55}
@@ -170,7 +170,7 @@ export default function Header() {
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
               className="lg:hidden fixed inset-0 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-sm"
-              style={{ zIndex: 65 }}
+              style={{ zIndex: 110 }}
             />
             <motion.div
               initial={{ x: '100%' }}
@@ -178,7 +178,7 @@ export default function Header() {
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
               className="lg:hidden fixed top-0 right-0 bottom-0 w-[78%] max-w-[320px] bg-white dark:bg-slate-950 shadow-2xl flex flex-col border-l border-slate-100 dark:border-slate-800"
-              style={{ zIndex: 68 }}
+              style={{ zIndex: 120 }}
             >
               <div className="p-4 pt-16 flex-1 overflow-y-auto">
                 <nav className="flex flex-col gap-0.5" role="navigation">
@@ -190,6 +190,7 @@ export default function Header() {
                           <div className="flex items-center gap-0">
                             <Link
                               href={link.href}
+                              onClick={() => setIsMobileMenuOpen(false)}
                               className={`flex-1 flex items-center gap-2 p-2 rounded-xl transition-all active:scale-[0.97] ${
                                 isActive ? 'bg-blue-50/80 dark:bg-blue-950/20 text-blue-750 dark:text-blue-400' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-900/40'
                               }`}
@@ -221,6 +222,7 @@ export default function Header() {
                                       <Link
                                         key={sub.href}
                                         href={sub.href}
+                                        onClick={() => setIsMobileMenuOpen(false)}
                                         className={`flex items-center justify-between p-2 pl-3 rounded-lg text-[11px] font-bold transition-all active:scale-[0.97] ${
                                           subActive ? 'bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400' : 'text-slate-550 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900/40 hover:text-slate-800'
                                         }`}
@@ -241,6 +243,7 @@ export default function Header() {
                       <Link
                         key={link.name}
                         href={link.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
                         className={`flex items-center gap-2 p-2 rounded-xl transition-all active:scale-[0.97] ${
                           isActive ? 'bg-blue-50/80 dark:bg-blue-950/20 text-blue-750 dark:text-blue-400' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-900/40'
                         }`}
@@ -257,7 +260,7 @@ export default function Header() {
               <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/30">
                 <div className="flex items-center justify-center">
                   <Image 
-                    src="/assets/images/logos/logo-4k.webp" 
+                    src="/assets/images/logos/logo-4k.avif" 
                     alt="Admission Hands Logo" 
                     width={130}
                     height={32}

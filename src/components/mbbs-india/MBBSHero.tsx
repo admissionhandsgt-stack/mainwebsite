@@ -7,21 +7,27 @@ import { CTAButton } from "@/components/CTAButton";
 import { ArrowRight, ShieldCheck, Phone, Sparkles } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
-export const MBBSHero = () => {
+interface MBBSHeroProps {
+  backgroundImageUrl?: string;
+}
+
+export const MBBSHero = ({ backgroundImageUrl }: MBBSHeroProps) => {
   const { hero } = mbbsData;
 
   return (
     <section className="relative w-full min-h-[420px] md:min-h-[600px] md:h-screen flex items-center overflow-hidden bg-white dark:bg-slate-950 transition-colors duration-200">
       {/* Background with DY Patil College Mumbai */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <Image
-          src="/assets/images/hero/dy-patil-mumbai.png"
-          alt="DY Patil Medical College Mumbai"
-          fill
-          priority
-          className="object-cover object-[75%_center] md:object-center opacity-40 md:opacity-60 dark:opacity-30 scale-105 transition-all duration-700 aspect-[4/5] md:aspect-auto"
-          sizes="100vw"
-        />
+        {backgroundImageUrl && backgroundImageUrl !== "none" && (
+          <Image
+            src={backgroundImageUrl}
+            alt="DY Patil Medical College Mumbai"
+            fill
+            priority
+            className="object-cover object-[75%_center] md:object-center opacity-40 md:opacity-60 dark:opacity-30 scale-105 transition-all duration-700 aspect-[4/5] md:aspect-auto"
+            sizes="100vw"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/75 to-white/90 md:from-white/85 md:via-white/20 md:to-white/70 dark:from-slate-950/95 dark:via-slate-950/50 dark:to-slate-950/80" />
         <div className="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-transparent dark:from-slate-950 dark:via-slate-950/70 dark:to-transparent hidden md:block" />
       </div>

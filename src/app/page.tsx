@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
 import SEO from "@/components/SEO";
 import { getRecommendedColleges } from "@/lib/colleges";
+import { getMediaAsset } from "@/lib/mediaService";
 
 const ServicesList = dynamic(() => import('@/components/ServicesList'), { loading: () => <SectionLoader /> });
 const HowItWorks = dynamic(() => import('@/components/home/HowItWorks'), { loading: () => <SectionLoader /> });
@@ -33,6 +34,8 @@ const SectionLoader = () => (
 
 const Index = async () => {
   const initialColleges = await getRecommendedColleges();
+  const campusHero = await getMediaAsset('homepage_hero_campus');
+  const doctorsHero = await getMediaAsset('homepage_hero_doctors');
 
   // Organization structured data for SEO
   const organizationSchema = {
@@ -63,7 +66,10 @@ const Index = async () => {
       />
 
       {/* 1. Hero */}
-      <Hero />
+      <Hero
+        backgroundImageUrl={campusHero?.image_url}
+        doctorsImageUrl={doctorsHero?.image_url}
+      />
 
       {/* 2. How Admission Works */}
       <HowItWorks />
@@ -78,13 +84,19 @@ const Index = async () => {
       <TopMedicalInstitutes initialColleges={initialColleges} />
 
       {/* 6. Why Admission Hands */}
-      <WhyAdmissionHands />
+      <div className="content-visibility-auto">
+        <WhyAdmissionHands />
+      </div>
 
       {/* 7. Testimonials */}
-      <Testimonials />
+      <div className="content-visibility-auto">
+        <Testimonials />
+      </div>
 
       {/* 8. Featured Videos */}
-      <FeaturedVideos />
+      <div className="content-visibility-auto">
+        <FeaturedVideos />
+      </div>
     </div>
   );
 };

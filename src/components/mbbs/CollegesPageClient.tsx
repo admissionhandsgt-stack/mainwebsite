@@ -116,29 +116,26 @@ const staggerItem = {
   },
 };
 
-const heroBgImages = [
-  "/assets/images/colleges/aiims-delhi.png",
-  "/assets/images/colleges/medical-campus-1.png",
-  "/assets/images/colleges/medical-campus-2.png",
-  "/assets/images/colleges/medical-campus-3.png",
-];
+interface HeroImageRotatorProps {
+  images: string[];
+}
 
-function HeroImageRotator() {
+function HeroImageRotator({ images }: HeroImageRotatorProps) {
   const [current, setCurrent] = useState(0);
   useEffect(() => {
-    const t = setInterval(() => setCurrent(p => (p + 1) % heroBgImages.length), 5000);
+    const t = setInterval(() => setCurrent(p => (p + 1) % images.length), 5000);
     return () => clearInterval(t);
-  }, []);
+  }, [images]);
 
   return (
-    <div className="absolute inset-0 bg-slate-950 pointer-events-none">
-      {heroBgImages.map((src, i) => (
+    <div className="absolute inset-0 bg-slate-900 pointer-events-none">
+      {images.map((src, i) => (
         <div
           key={i}
           className="absolute inset-0 bg-cover bg-center transition-opacity duration-[2000ms]"
           style={{
             backgroundImage: `url(${src})`,
-            opacity: i === current ? 0.45 : 0,
+            opacity: i === current ? 1 : 0,
           }}
         />
       ))}
@@ -148,8 +145,15 @@ function HeroImageRotator() {
   );
 }
 
-export default function CollegesPageClient({ states }: { states: StateData[] }) {
+export default function CollegesPageClient({ states, heroImages }: { states: StateData[]; heroImages?: string[] }) {
   const CTA = useCTA();
+  
+  const finalHeroImages = heroImages && heroImages.length > 0 ? heroImages : [
+    "/assets/images/colleges/aiims-delhi.avif",
+    "/assets/images/colleges/medical-campus-1.avif",
+    "/assets/images/colleges/medical-campus-2.avif",
+    "/assets/images/colleges/medical-campus-3.avif",
+  ];
 
   /* --- State --- */
   const [search, setSearch] = useState("");
@@ -266,7 +270,7 @@ export default function CollegesPageClient({ states }: { states: StateData[] }) 
 
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-16 pb-20 sm:pt-20 sm:pb-28 bg-slate-955 text-white border-b border-slate-900">
-        <HeroImageRotator />
+        <HeroImageRotator images={finalHeroImages} />
 
         <div className="container-custom px-4 max-w-5xl mx-auto text-center relative z-10">
           <motion.div

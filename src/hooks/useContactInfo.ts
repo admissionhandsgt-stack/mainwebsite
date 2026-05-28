@@ -8,13 +8,15 @@ interface ContactInfo {
   email: string;
   phone_number: string;
   whatsapp_number: string;
+  lead_notification_phone: string;
 }
 
 export const useContactInfo = () => {
   const [contactInfo, setContactInfo] = useState<ContactInfo>({
     email: 'info@admissionhands.com',
     phone_number: '+919873133846',
-    whatsapp_number: '+919873133846'
+    whatsapp_number: '+919873133846',
+    lead_notification_phone: '+919310301949'
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -34,7 +36,14 @@ export const useContactInfo = () => {
       if (error) throw error;
       
       if (data) {
-        setContactInfo(data);
+        const d = data as any;
+        setContactInfo({
+          id: d.id,
+          email: d.email,
+          phone_number: d.phone_number,
+          whatsapp_number: d.whatsapp_number,
+          lead_notification_phone: d.lead_notification_phone || '+919310301949'
+        });
       }
     } catch (err: any) {
       console.error('Error fetching contact info:', err);
@@ -59,7 +68,8 @@ export const useContactInfo = () => {
           .update({
             email: contactInfo.email,
             phone_number: contactInfo.phone_number,
-            whatsapp_number: contactInfo.whatsapp_number
+            whatsapp_number: contactInfo.whatsapp_number,
+            lead_notification_phone: contactInfo.lead_notification_phone
           })
           .eq('id', contactInfo.id);
       } else {
@@ -69,7 +79,8 @@ export const useContactInfo = () => {
           .insert({
             email: contactInfo.email,
             phone_number: contactInfo.phone_number,
-            whatsapp_number: contactInfo.whatsapp_number
+            whatsapp_number: contactInfo.whatsapp_number,
+            lead_notification_phone: contactInfo.lead_notification_phone
           });
       }
       

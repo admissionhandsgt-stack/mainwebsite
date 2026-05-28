@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileCheck, Shield } from 'lucide-react';
 import TermsOfService from '@/components/terms/TermsOfService';
@@ -8,11 +6,6 @@ import PrivacyPolicy from '@/components/terms/PrivacyPolicy';
 
 const Terms = () => {
   const currentDate = "April 30, 2025";
-  
-  // Effect to scroll to top on page load
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   return (
     <div className="flex flex-col flex-grow bg-slate-50">

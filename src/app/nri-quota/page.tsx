@@ -1,6 +1,5 @@
-"use client";
-
 import React from 'react';
+export const revalidate = 0;
 import NRIHero from '@/components/nri/NRIHero';
 import NRIEligibility from '@/components/nri/NRIEligibility';
 import NRIFees from '@/components/nri/NRIFees';
@@ -8,8 +7,9 @@ import NRIProcess from '@/components/nri/NRIProcess';
 import NRIFAQ from '@/components/nri/NRIFAQ';
 import NRICTA from '@/components/nri/NRICTA';
 import SEO from '@/components/SEO';
+import { getMediaAsset } from '@/lib/mediaService';
 
-const NRIQuotaPage = () => {
+const NRIQuotaPage = async () => {
   // FAQ structured data for better SEO
   const faqSchema = {
     "@context": "https://schema.org",
@@ -34,6 +34,8 @@ const NRIQuotaPage = () => {
     ]
   };
 
+  const nriHeroAsset = await getMediaAsset('nri_hero');
+
   return (
     <div className="flex flex-col flex-grow">
       <SEO 
@@ -45,7 +47,7 @@ const NRIQuotaPage = () => {
       />
       
       <div className="flex-grow">
-        <NRIHero />
+        <NRIHero backgroundImageUrl={nriHeroAsset?.image_url} />
         <NRIEligibility />
         <NRIProcess />
         <NRIFees />

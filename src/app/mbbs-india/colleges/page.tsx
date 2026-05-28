@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import CollegesPageClient from "@/components/mbbs/CollegesPageClient";
 import { supabase } from "@/integrations/supabase/client";
+import { getMediaAsset } from "@/lib/mediaService";
 
 export const metadata: Metadata = {
   title: "MBBS Colleges in India 2026 | Government & Private Medical Colleges",
@@ -18,6 +19,18 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function CollegesPage() {
+  // Fetch hero images server-side
+  const heroKeys = ['college_aiims', 'college_campus_1', 'college_campus_2', 'college_campus_3'];
+  const heroImages: string[] = [];
+  try {
+    for (const key of heroKeys) {
+      const asset = await getMediaAsset(key);
+      if (asset?.image_url) heroImages.push(asset.image_url);
+    }
+  } catch (e) {
+    console.error("Error fetching colleges hero assets:", e);
+  }
+
   try {
     const { data: statesRaw, error: statesError } = await supabase
       .from('mbbs_states')
@@ -79,7 +92,7 @@ export default async function CollegesPage() {
             No colleges available at the moment. Please check back later.
           </div>
         ) : (
-          <CollegesPageClient states={statesData} />
+          <CollegesPageClient states={statesData} heroImages={heroImages} />
         )}
       </main>
     );

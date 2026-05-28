@@ -27,7 +27,7 @@ test.describe('Admin Dashboard and Colleges Listings', () => {
     await expect(page.getByRole('button', { name: /Secure Login/i })).toBeVisible();
     
     // Check for email and password fields
-    await expect(page.getByLabel(/Email Address/i)).toBeVisible();
+    await expect(page.getByLabel(/Email ID/i)).toBeVisible();
     await expect(page.getByLabel(/Password/i)).toBeVisible();
   });
 });

@@ -18,7 +18,7 @@ test.describe('Video System Verification', () => {
     });
 
     // Navigate to homepage
-    await page.goto('http://localhost:3005/');
+    await page.goto('/');
 
     // Check if the section exists
     const section = page.locator('[data-testid="featured-videos"]');
@@ -30,9 +30,12 @@ test.describe('Video System Verification', () => {
     const isVisible = await section.isVisible();
     
     if (isVisible) {
-      // Confirm the featured badge appears
+      // Confirm the featured badge is visible on desktop (hidden on mobile sm screens)
       const featuredBadge = section.locator('text=Featured').first();
-      await expect(featuredBadge).toBeVisible();
+      const isMobile = page.viewportSize()?.width && page.viewportSize()!.width < 640;
+      if (!isMobile) {
+        await expect(featuredBadge).toBeVisible();
+      }
 
       // Check if the player iframe is present
       const iframe = section.locator('iframe');
@@ -72,7 +75,7 @@ test.describe('Video System Verification', () => {
 
     // Set viewport to mobile
     await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto('http://localhost:3005/');
+    await page.goto('/');
 
     const section = page.locator('[data-testid="featured-videos"]');
     

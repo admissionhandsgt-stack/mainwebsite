@@ -6,7 +6,7 @@ const Logo = () => {
     <Link href="/" className="flex items-center">
       <div className="transition-transform duration-300 hover:-translate-y-0.5">
         <Image 
-          src="/assets/images/logos/logo-4k.webp" 
+          src="/assets/images/logos/logo-4k.avif" 
           alt="Admission Hands Logo" 
           width={180} 
           height={60} 

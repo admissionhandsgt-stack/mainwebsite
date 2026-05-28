@@ -40,3 +40,22 @@
   font-family: 'Inter';
   src: local('Inter');
 }
+
+/* content-visibility for lazy rendering of below-the-fold sections */
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 1000px;
+}
+
+/* Tone down backdrop-blur on mobile screens to save GPU rendering paint cost */
+@media (max-width: 768px) {
+  .backdrop-blur-xl,
+  .backdrop-blur-lg,
+  .backdrop-blur-md,
+  .glass,
+  .glass-white,
+  .glass-dark {
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+  }
+}

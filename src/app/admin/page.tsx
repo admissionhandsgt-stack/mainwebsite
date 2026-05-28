@@ -20,7 +20,8 @@ export default function AdminLogin() {
 
   useEffect(() => {
     if (!loading && user) {
-      router.replace('/admin/live-alerts');
+      const isSubdomain = typeof window !== 'undefined' && window.location.hostname.startsWith('admin.');
+      router.replace(isSubdomain ? '/live-alerts' : '/admin/live-alerts');
     }
   }, [user, loading, router]);
 
@@ -71,9 +72,13 @@ export default function AdminLogin() {
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-              className="w-16 h-16 bg-gradient-to-tr from-medical-600 to-teal-500 rounded-2xl mx-auto flex items-center justify-center mb-6 shadow-lg shadow-medical-500/30"
+              className="mb-6 flex justify-center"
             >
-              <Shield className="w-8 h-8 text-white" />
+              <img 
+                src="/assets/images/logos/logo-4k.avif" 
+                alt="Admission Hands Logo" 
+                className="h-16 object-contain w-auto"
+              />
             </motion.div>
             <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-medical-900 to-medical-600">
               Admin Portal
@@ -88,7 +93,7 @@ export default function AdminLogin() {
             <form onSubmit={handleLogin} className="space-y-5">
               <div className="space-y-2 group">
                 <Label htmlFor="email" className="text-gray-700 font-medium text-sm ml-1 group-focus-within:text-medical-600 transition-colors">
-                  Email Address
+                  Email ID
                 </Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400 group-focus-within:text-medical-500 transition-colors" />
@@ -97,7 +102,7 @@ export default function AdminLogin() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="admin@admissionhands.com"
+                    placeholder="Enter Email ID"
                     required
                     disabled={isLoading}
                     className="pl-10 bg-white/50 border-gray-200 focus:border-medical-500 focus:ring-medical-500/20 rounded-xl h-12 transition-all duration-300"
@@ -116,7 +121,7 @@ export default function AdminLogin() {
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
+                    placeholder="Enter Password"
                     required
                     disabled={isLoading}
                     className="pl-10 bg-white/50 border-gray-200 focus:border-medical-500 focus:ring-medical-500/20 rounded-xl h-12 transition-all duration-300"

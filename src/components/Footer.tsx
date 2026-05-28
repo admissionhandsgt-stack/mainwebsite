@@ -30,7 +30,7 @@ const Footer: React.FC = () => {
               <div className="flex flex-col">
                 <Link href="/" className="flex items-center justify-start">
                   <Image 
-                    src="/assets/images/logos/logo-4k.webp" 
+                    src="/assets/images/logos/logo-4k.avif" 
                     alt="Admission Hands Logo" 
                     width={240}
                     height={60}

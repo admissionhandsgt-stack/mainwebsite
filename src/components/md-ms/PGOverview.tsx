@@ -1,85 +1,50 @@
 "use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ClipboardCheck, Calendar, Scale, Users2, Landmark, GraduationCap } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { GraduationCap, BookOpen, Clock, Building2, ShieldCheck, RotateCcw } from "lucide-react";
 
-const OverviewCard = ({ icon: Icon, title, content, subtext, color }: { icon: any, title: string, content: string, subtext?: string, color: string }) => (
-  <motion.div
-    whileHover={{ y: -5 }}
-    className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm hover:shadow-xl transition-all relative overflow-hidden group"
-  >
-    <div className={cn("absolute top-0 right-0 w-32 h-32 blur-3xl opacity-5 transition-opacity group-hover:opacity-10", color)} />
-    <div className="flex items-start gap-5 relative z-10">
-      <div className={cn("w-14 h-14 rounded-2xl flex items-center justify-center shrink-0", color.replace('bg-', 'bg-').replace('blur-3xl', 'bg-opacity-10'))}>
-        <Icon className={cn("w-7 h-7", color.replace('bg-', 'text-'))} />
-      </div>
-      <div>
-        <h3 className="text-slate-900 font-bold text-lg mb-2">{title}</h3>
-        <p className="text-slate-600 font-semibold leading-relaxed mb-1">{content}</p>
-        {subtext && <p className="text-slate-400 text-xs font-medium uppercase tracking-wider">{subtext}</p>}
-      </div>
-    </div>
-  </motion.div>
-);
+const overviewItems = [
+  { icon: GraduationCap, gradient: "from-blue-600 to-blue-700", title: "Eligibility", desc: "MBBS degree from a recognized institution with completed 1-year internship and NMC/State Medical Council registration." },
+  { icon: BookOpen, gradient: "from-indigo-600 to-indigo-700", title: "NEET PG Exam", desc: "National-level entrance by NBE. Computer-based, 200 MCQs. Qualifying cutoff at 50th percentile for General/EWS." },
+  { icon: Clock, gradient: "from-violet-600 to-violet-700", title: "Internship", desc: "1-year compulsory rotating internship must be completed before counselling. Completion certificate mandatory." },
+  { icon: Building2, gradient: "from-emerald-600 to-emerald-700", title: "Counselling Bodies", desc: "MCC handles AIQ, Deemed & Central seats. State authorities manage State Quota. Both run in parallel." },
+  { icon: ShieldCheck, gradient: "from-amber-500 to-amber-600", title: "Reservation", desc: "SC, ST, OBC-NCL, EWS, PwD — each category has specific cutoffs, seat pools, and documentation requirements." },
+  { icon: RotateCcw, gradient: "from-rose-500 to-rose-600", title: "Counselling Rounds", desc: "4 rounds typically: Round 1, Round 2, Mop-Up, and Stray Vacancy. Each round opens new opportunities." },
+];
 
 export const PGOverview = () => {
-  return (
-    <section className="py-24 bg-white">
-      <div className="container-custom">
-        <div className="mb-16">
-          <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight">
-            NEET PG 2026 <span className="text-blue-600">Essential Overview</span>
-          </h2>
-          <p className="text-lg text-slate-500 max-w-2xl font-medium">
-            Stay informed with the critical data points and requirements for the MD/MS admission cycle in India.
-          </p>
-        </div>
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <OverviewCard 
-            icon={GraduationCap}
-            title="Eligibility"
-            content="MBBS Degree from recognized institute with MCI/NMC registration."
-            subtext="MANDATORY REQUIREMENT"
-            color="bg-blue-600 text-blue-600"
-          />
-          <OverviewCard 
-            icon={ClipboardCheck}
-            title="NEET PG Requirement"
-            content="Must qualify NEET PG entrance exam with required percentile."
-            subtext="QUALIFYING CRITERIA"
-            color="bg-emerald-600 text-emerald-600"
-          />
-          <OverviewCard 
-            icon={Calendar}
-            title="Internship Deadline"
-            content="Completion of one-year rotating internship by the cutoff date."
-            subtext="IMPORTANT DEADLINE"
-            color="bg-amber-600 text-amber-600"
-          />
-          <OverviewCard 
-            icon={Landmark}
-            title="Counselling Authorities"
-            content="MCC for All India Quota & Deemed; State Authorities for State Quota."
-            subtext="OFFICIAL CHANNELS"
-            color="bg-indigo-600 text-indigo-600"
-          />
-          <OverviewCard 
-            icon={Scale}
-            title="Reservation Rules"
-            content="SC/ST/OBC/EWS/PwD categories as per Government norms."
-            subtext="QUOTA GUIDELINES"
-            color="bg-purple-600 text-purple-600"
-          />
-          <OverviewCard 
-            icon={Users2}
-            title="Counselling Rounds"
-            content="Round 1, Round 2, Mop-up Round, and Stray Vacancy Round."
-            subtext="PROCESS OVERVIEW"
-            color="bg-rose-600 text-rose-600"
-          />
+  return (
+    <section className="py-12 md:py-16 bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900">
+      <div className="container-custom max-w-5xl">
+        <div className="text-center mb-10">
+          <motion.div initial={mounted ? { opacity: 0, y: 10 } : false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 text-[10px] font-black tracking-widest uppercase mb-3">
+            PG Admission Overview
+          </motion.div>
+          <motion.h2 initial={mounted ? { opacity: 0, y: 10 } : false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            className="text-2xl md:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white tracking-tight mb-3">
+            Everything You Need to Know About <span className="text-blue-600 dark:text-blue-400">MD/MS Admissions</span>
+          </motion.h2>
+          <motion.p initial={mounted ? { opacity: 0, y: 10 } : false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            className="text-slate-500 dark:text-slate-400 text-sm md:text-base font-medium max-w-2xl mx-auto">
+            The PG medical admission landscape is complex — multiple exams, parallel counselling systems, and high-stakes decisions at every step.
+          </motion.p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {overviewItems.map((item, i) => (
+            <motion.div key={i} initial={mounted ? { opacity: 0, y: 15 } : false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}
+              className="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-100 dark:border-slate-700 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group">
+              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${item.gradient} flex items-center justify-center mb-3 shadow-lg group-hover:scale-105 transition-transform`}>
+                <item.icon className="w-5 h-5 text-white" />
+              </div>
+              <h3 className="font-black text-base text-slate-900 dark:text-white mb-1.5">{item.title}</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{item.desc}</p>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

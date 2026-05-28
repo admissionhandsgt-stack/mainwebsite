@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { mbbsData } from "@/data/mbbs-india";
 import { ShieldCheck, TrendingUp, Search, UserCheck, Heart } from "lucide-react";
+import { BackendImage } from "@/components/ui/BackendImage";
 
 const icons = [TrendingUp, Search, Heart, UserCheck];
 
@@ -52,8 +53,9 @@ export const MBBSWhyUs = () => {
             <div className="glass rounded-[3rem] p-8 md:p-12 border border-white dark:border-slate-800 shadow-2xl space-y-8 bg-white/40 dark:bg-slate-900/60 backdrop-blur-xl relative overflow-hidden">
               {/* Background Image of Doctors */}
               <div className="absolute inset-0 z-0">
-                <Image 
-                  src="/assets/images/misc/indian-doctors-stats.png"
+                <BackendImage 
+                  mediaKey="mbbs_doctors_stats"
+                  fallbackSrc="/assets/images/misc/indian-doctors-stats.avif"
                   alt="Professional Doctors"
                   fill
                   className="object-cover opacity-20 grayscale-[0.5]"
@@ -79,9 +81,10 @@ export const MBBSWhyUs = () => {
 
               <div className="flex -space-x-2 justify-center relative z-10">
                 {[1, 2, 3, 4, 5].map((i) => (
-                  <div key={i} className="w-10 h-10 rounded-full border-2 border-white dark:border-slate-900 bg-slate-200 shadow-sm overflow-hidden">
-                     <Image 
-                      src={`/assets/images/hero/indian_doctors.png`}
+                  <div key={i} className="w-10 h-10 rounded-full border-2 border-white dark:border-slate-900 bg-slate-200 shadow-sm overflow-hidden relative">
+                     <BackendImage 
+                      mediaKey="mbbs_doctors_image"
+                      fallbackSrc="/assets/images/hero/indian_doctors.avif"
                       alt="Doctor"
                       width={40}
                       height={40}

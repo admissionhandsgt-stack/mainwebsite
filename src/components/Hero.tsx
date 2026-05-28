@@ -5,20 +5,27 @@ import { useCTA } from "@/hooks/useCTA";
 import { ArrowRight, Building2, Users, GraduationCap, ShieldCheck, Phone } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
-export default function Hero() {
+interface HeroProps {
+  backgroundImageUrl?: string;
+  doctorsImageUrl?: string;
+}
+
+export default function Hero({ backgroundImageUrl, doctorsImageUrl }: HeroProps) {
   const CTA = useCTA();
   return (
     <section className="relative w-full min-h-[calc(100svh-112px)] flex items-center overflow-hidden bg-white dark:bg-slate-950">
       {/* Background Image (College Campus) */}
       <div className="absolute inset-0 z-0">
-        <Image
-          src="/assets/images/hero/india-medical-college-campus.png"
-          alt="Medical College Campus"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center opacity-15 md:opacity-100 transition-all duration-700 dark:opacity-10"
-        />
+        {backgroundImageUrl && backgroundImageUrl !== "none" && (
+          <Image
+            src={backgroundImageUrl}
+            alt="Medical College Campus"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center opacity-15 md:opacity-100 transition-all duration-700 dark:opacity-10 pointer-events-none"
+          />
+        )}
         {/* Gradient overlays */}
         <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/80 md:from-white/95 md:via-white/85 md:to-transparent dark:from-slate-950 dark:via-slate-950/95 dark:to-slate-950/80 md:dark:from-slate-950/95 md:dark:via-slate-950/85 md:dark:to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-b from-white/60 via-transparent to-white md:hidden dark:from-slate-950/60 dark:via-transparent dark:to-slate-950" />
@@ -97,17 +104,19 @@ export default function Hero() {
         {/* Right Area - Doctors Cutout — HIDDEN on mobile, shown on desktop */}
         <div className="hidden lg:flex w-full lg:w-[45%] relative justify-center lg:justify-end items-end h-[400px] sm:h-[500px] lg:h-[calc(100svh-112px)] max-h-[700px]">
           {/* Doctors Image (Cutout) */}
-          <div className="relative w-full h-[90%] max-w-[500px] z-10">
-            <Image
-              src="/assets/images/hero/indian_doctors.png"
-              alt="Medical Experts"
-              fill
-              priority
-              className="object-contain object-bottom drop-shadow-2xl"
-            />
+          <div className="relative w-full h-[90%] max-w-[500px] z-10 pointer-events-none">
+            {doctorsImageUrl && doctorsImageUrl !== "none" && (
+              <Image
+                src={doctorsImageUrl}
+                alt="Medical Experts"
+                fill
+                priority
+                className="object-contain object-bottom drop-shadow-2xl pointer-events-none"
+              />
+            )}
 
             {/* Embedded Floating Card */}
-            <div className="absolute bottom-12 -right-4 lg:-right-8 z-20 w-[320px] bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-[1.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.12)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.4)] border border-slate-100 dark:border-slate-800 p-4 flex flex-col gap-3 transition-transform duration-300 hover:-translate-y-1 group">
+            <div className="absolute bottom-12 -right-4 lg:-right-8 z-20 w-[320px] bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-[1.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.12)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.4)] border border-slate-100 dark:border-slate-800 p-4 flex flex-col gap-3 transition-transform duration-300 hover:-translate-y-1 group pointer-events-auto">
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => CTA.whatsapp()}

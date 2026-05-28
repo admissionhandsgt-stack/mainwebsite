@@ -12,6 +12,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import type { VideoRecord } from "@/lib/videos";
+import { Play, PlayCircle, Star, ArrowRight, HelpCircle, Laptop } from "lucide-react";
 
 const VIDEOS_PER_PAGE = 6;
 
@@ -47,11 +48,14 @@ export function VideosClient({ videos }: { videos: VideoRecord[] }) {
   if (!videos || videos.length === 0) return null;
 
   return (
-    <section className="py-16 container-custom">
+    <section className="py-10 md:py-12 container-custom">
       {selectedVideo ? (
-        <div className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">Now Playing</h2>
-          <div className="bg-white rounded-lg shadow-md p-4">
+        <div className="mb-8 max-w-4xl mx-auto">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="h-2 w-2 rounded-full bg-red-500 animate-ping" />
+            <h2 className="text-lg font-black uppercase tracking-wider text-slate-800 dark:text-slate-200">Now Playing</h2>
+          </div>
+          <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 p-4 md:p-6 transition-all duration-300">
             <YouTubeIframePlayer
               videoId={selectedVideo.videos_id}
               title={selectedVideo.title}
@@ -60,82 +64,90 @@ export function VideosClient({ videos }: { videos: VideoRecord[] }) {
               hasPrevious={currentVideoIndex > 0}
               hasNext={currentVideoIndex < videos.length - 1}
             />
-            <div className="mt-4">
-              <h3 className="text-xl font-semibold">{selectedVideo.title}</h3>
+            <div className="mt-6">
+              <h3 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white leading-snug">{selectedVideo.title}</h3>
               {selectedVideo.description && (
-                <p className="mt-2 text-gray-600">{selectedVideo.description}</p>
+                <p className="mt-3 text-sm leading-relaxed font-semibold text-slate-500 dark:text-slate-400 italic bg-slate-50 dark:bg-slate-950 p-4 rounded-2xl border border-slate-100/80 dark:border-slate-900">
+                  "{selectedVideo.description}"
+                </p>
               )}
             </div>
           </div>
-          <button
-            onClick={() => setSelectedVideoId(null)}
-            className="mt-4 text-medical-600 hover:text-medical-800 underline"
-          >
-            Close player and view all videos
-          </button>
+          <div className="flex justify-end mt-4">
+            <button
+              onClick={() => setSelectedVideoId(null)}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border-2 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-350 hover:bg-slate-55 dark:hover:bg-slate-900/60 font-black text-xs uppercase tracking-wider transition-all active:scale-95 shadow-sm"
+            >
+              Back to all videos
+            </button>
+          </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {paginatedVideos.map((video) => (
-            <button
+            <div
               key={video.id}
-              type="button"
-              className="group flex h-full flex-col rounded-[2.5rem] border border-slate-100 bg-white p-6 text-left shadow-xl transition-all duration-500 hover:shadow-2xl"
-              onClick={() => setSelectedVideoId(video.id)}
+              className="group relative flex h-full flex-col rounded-[2rem] border border-slate-100/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_50px_rgba(59,130,246,0.1)] dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] transition-all duration-300 transform hover:-translate-y-1"
             >
-              <div className="relative mb-6 aspect-video overflow-hidden rounded-[1.5rem]">
+              <div 
+                className="relative mb-5 aspect-video overflow-hidden rounded-[1.25rem] cursor-pointer"
+                onClick={() => setSelectedVideoId(video.id)}
+              >
                 <Image
                   src={`https://img.youtube.com/vi/${video.videos_id}/mqdefault.jpg`}
                   alt={video.title}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 flex items-center justify-center bg-slate-900/40 opacity-0 transition-all duration-500 group-hover:opacity-100">
-                  <div className="flex h-16 w-16 scale-50 items-center justify-center rounded-full border border-white/30 bg-white/20 backdrop-blur-md transition-transform duration-500 group-hover:scale-100">
-                    <svg className="h-8 w-8 fill-current text-white" viewBox="0 0 20 20">
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
+                <div className="absolute inset-0 flex items-center justify-center bg-slate-950/30 opacity-100 transition-all duration-300">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/95 dark:bg-slate-900/95 text-blue-600 dark:text-blue-400 shadow-md transform group-hover:scale-110 transition-transform duration-300">
+                    <Play size={18} className="fill-current ml-0.5" />
                   </div>
                 </div>
               </div>
-              <div className="flex-grow">
-                {video.featured && (
-                  <div className="inline-flex items-center gap-1 px-2 py-0.5 mb-3 rounded bg-amber-100 text-amber-800 text-[9px] font-black uppercase tracking-wider">
-                    <svg className="w-2.5 h-2.5 fill-amber-500 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                    Featured
+              <div className="flex-grow flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center gap-2 mb-2.5">
+                    {video.featured && (
+                      <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-955/20 text-amber-700 dark:text-amber-450 border border-amber-200 dark:border-amber-900/30 text-[9px] font-black uppercase tracking-wider">
+                        <Star size={10} className="fill-current" />
+                        Featured
+                      </span>
+                    )}
+                    <span className="text-[10px] font-black uppercase tracking-wider text-blue-600 dark:text-blue-400">
+                      Counselling Guide
+                    </span>
                   </div>
-                )}
-                <h3 className="mb-3 text-sm font-black uppercase tracking-widest text-slate-900 transition-colors group-hover:text-blue-600">
-                  {video.title}
-                </h3>
-                {video.description && (
-                  <p className="line-clamp-3 text-sm font-medium italic leading-relaxed text-slate-600">
-                    "{video.description}"
-                  </p>
-                )}
-              </div>
-              <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-6">
-                <span className="text-xs font-black uppercase tracking-widest text-blue-500">
-                  Medical Guide
-                </span>
-                <div className="text-slate-400 transition-transform group-hover:translate-x-1">
-                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
+                  <h3 
+                    onClick={() => setSelectedVideoId(video.id)}
+                    className="mb-2 text-sm md:text-base font-black text-slate-800 dark:text-slate-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer leading-snug line-clamp-2"
+                  >
+                    {video.title}
+                  </h3>
+                  {video.description && (
+                    <p className="line-clamp-2 text-xs md:text-sm font-semibold italic text-slate-400 dark:text-slate-500 leading-relaxed mb-4">
+                      "{video.description}"
+                    </p>
+                  )}
+                </div>
+                <div className="mt-4 flex items-center justify-between border-t border-slate-50 dark:border-slate-800/60 pt-4">
+                  <button
+                    onClick={() => setSelectedVideoId(video.id)}
+                    className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-blue-600 dark:text-blue-400 group/btn"
+                  >
+                    Watch Now
+                    <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
+                  </button>
                 </div>
               </div>
-            </button>
+            </div>
           ))}
         </div>
       )}
 
       {totalPages > 1 && !selectedVideo && (
-        <Pagination className="mt-8">
+        <Pagination className="mt-10">
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious
@@ -167,13 +179,13 @@ export function VideosClient({ videos }: { videos: VideoRecord[] }) {
       )}
 
       {videos.length > 0 && (
-        <div className="mt-4 flex items-center justify-between text-sm text-gray-500">
+        <div className="mt-6 flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-550">
           <div>
             Showing{" "}
             {selectedVideo
               ? `video ${currentVideoIndex + 1}`
               : `${Math.min(startIndex + 1, videos.length)}-${Math.min(startIndex + VIDEOS_PER_PAGE, videos.length)}`}{" "}
-            of {videos.length} videos
+            of {videos.length} guides
           </div>
         </div>
       )}

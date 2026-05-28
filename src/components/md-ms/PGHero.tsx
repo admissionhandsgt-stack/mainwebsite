@@ -1,181 +1,103 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
-import { CheckCircle, ArrowRight, Phone } from "lucide-react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { CONTACT_INFO } from "@/lib/constants";
+import { motion } from "framer-motion";
+import { Phone, Sparkles, CheckCircle2 } from "lucide-react";
+import { useCTA } from "@/hooks/useCTA";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
-/* ─── animation variants ─── */
-const container = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.14, delayChildren: 0.15 },
-  },
-};
+interface PGHeroProps {
+  backgroundImageUrl?: string;
+}
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
-  },
-};
+export const PGHero = ({ backgroundImageUrl }: PGHeroProps) => {
+  const CTA = useCTA();
+  const bgImage = backgroundImageUrl || "/assets/images/hero/pg_hero_bg.avif";
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
 
-const fadeRight = {
-  hidden: { opacity: 0, x: 40, scale: 0.97 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    scale: 1,
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.3 },
-  },
-};
+  const trustBadges = [
+    "2100+ Students Guided",
+    "95%+ Success Rate",
+    "250+ PG Colleges",
+    "All Quotas Covered",
+  ];
 
-export const PGHero = () => {
   return (
     <section
       id="pg-hero"
-      className="relative w-full min-h-[480px] md:min-h-[600px] md:h-screen flex items-center overflow-hidden bg-white dark:bg-slate-950 transition-colors duration-200"
+      className="relative min-h-[70vh] md:min-h-[80vh] flex items-center overflow-hidden py-16 md:py-24 bg-slate-950 text-white"
       role="banner"
     >
-      {/* ── Background: DY Patil Mumbai Campus Image + soft gradient + radial glow ── */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <Image
-          src="/assets/images/hero/dy-patil-mumbai.png"
-          alt="DY Patil Mumbai Campus Background"
-          fill
-          priority
-          className="object-cover object-center opacity-15 dark:opacity-10 filter brightness-[0.95] dark:brightness-[0.85]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-br from-white/95 via-blue-50/90 to-slate-50/95 dark:from-slate-950/95 dark:via-slate-900/90 dark:to-slate-950/95" />
-        <div className="absolute -top-32 -right-32 w-[600px] h-[600px] rounded-full bg-blue-200/20 dark:bg-blue-900/10 blur-[120px]" />
-        <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full bg-sky-100/30 dark:bg-sky-900/10 blur-[100px]" />
-        <div
-          className="absolute inset-0 opacity-[0.035] dark:opacity-[0.02]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle, #3b82f6 1px, transparent 1px)",
-            backgroundSize: "32px 32px",
-          }}
-        />
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        {bgImage && bgImage !== "none" && (
+          <Image
+            src={bgImage}
+            alt="PG Medical Residents in Hospital"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+            placeholder="blur"
+            blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMjAiIGhlaWdodD0iMjQwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDcwZTFlIi8+PC9zdmc+"
+          />
+        )}
+        <div className="absolute inset-0 bg-slate-950/25" />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-slate-950/60" />
       </div>
 
-      {/* ── Main content ── */}
-      <div className="container-custom relative z-10 h-full flex flex-col justify-center">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          
-          {/* LEFT SIDE: Content */}
-          <motion.div
-            variants={container}
-            initial="hidden"
-            animate="visible"
-            className="max-w-xl lg:max-w-none text-center lg:text-left py-6 md:pt-0 md:pb-0"
-          >
-            {/* Tagline pill */}
-            <motion.div variants={fadeUp} className="mb-6 flex justify-center lg:justify-start">
-              <span className="inline-flex items-center gap-2 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-100/80 dark:border-blue-900/40 px-4 py-2 text-[10px] font-black text-blue-600 dark:text-blue-400 tracking-widest uppercase">
-                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-                NEET PG 2025 Counselling Guidance
-              </span>
-            </motion.div>
+      {/* Ambient glow */}
+      <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-500/10 blur-[120px] pointer-events-none" />
 
-            {/* Main heading */}
-            <motion.h1
-              variants={fadeUp}
-              className="text-responsive-h1 text-slate-900 dark:text-white mb-6"
-            >
-              Get Your{" "}
-              <span className="relative inline-block">
-                <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-500">
-                  PG MD/MS Seat
-                </span>
-                <span className="absolute -bottom-1 left-0 w-full h-2.5 bg-blue-100/70 dark:bg-blue-900/30 rounded-full -z-0" />
-              </span>
-              <br className="hidden sm:block" />
-              {" "}Without Confusion
-            </motion.h1>
-
-            {/* Subtext */}
-            <motion.p
-              variants={fadeUp}
-              className="text-responsive-body text-slate-500 dark:text-slate-400 mb-8 max-w-lg mx-auto lg:mx-0 font-medium"
-            >
-              Based on your NEET rank, budget &amp; category — get expert guidance
-              for government and private colleges.
-            </motion.p>
-
-            {/* CTA buttons */}
-            <motion.div
-              variants={fadeUp}
-              className="flex flex-col sm:flex-row gap-4 mb-8 justify-center lg:justify-start"
-            >
-              <a
-                href={`tel:${CONTACT_INFO.phone.replace(/[+\s-]/g, "")}`}
-                className="group relative inline-flex items-center justify-center gap-2 md:gap-3 rounded-xl md:rounded-2xl bg-blue-600 px-5 md:px-8 py-3.5 md:py-5 text-white font-black text-sm md:text-lg shadow-lg shadow-blue-500/25 hover:bg-blue-700 active:scale-[0.97] transition-all duration-300"
-              >
-                Check Your Chances
-                <ArrowRight
-                  size={20}
-                  className="group-hover:translate-x-1 transition-transform duration-200"
-                />
-              </a>
-
-              <a
-                href={`https://wa.me/${CONTACT_INFO.whatsapp}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center justify-center gap-2 md:gap-3 rounded-xl md:rounded-2xl border-2 border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 backdrop-blur-sm px-5 md:px-8 py-3.5 md:py-5 text-slate-800 dark:text-slate-200 font-black text-sm md:text-lg hover:bg-white dark:hover:bg-slate-800 hover:border-blue-200 dark:hover:border-slate-700 hover:text-blue-600 dark:hover:text-blue-400 active:scale-[0.97] transition-all duration-300"
-              >
-                <WhatsAppIcon size={20} className="text-emerald-500" />
-                Talk to Expert
-              </a>
-            </motion.div>
-
-            {/* Micro trust line */}
-            <motion.div
-              variants={fadeUp}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500"
-            >
-              <span className="inline-flex items-center gap-2">
-                <CheckCircle size={14} className="text-emerald-500" />
-                Trusted by 2100+ students
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <CheckCircle size={14} className="text-emerald-500" />
-                Transparent process
-              </span>
-            </motion.div>
-          </motion.div>
-
-          {/* RIGHT SIDE: Doctor Image */}
-          <motion.div
-            variants={fadeRight}
-            initial="hidden"
-            animate="visible"
-            className="relative hidden md:flex items-center justify-center lg:justify-end h-[400px] md:h-full"
-          >
-            <div className="absolute w-[85%] h-[85%] rounded-full bg-gradient-to-br from-blue-100/60 via-sky-50/40 to-transparent blur-3xl" />
-            <div className="absolute w-[75%] aspect-square rounded-full border border-blue-100/50 dark:border-slate-800/80 [clip-path:inset(0_0_12%_0)]" />
-            
-            <div className="relative w-full max-w-[500px]">
-              <Image
-                src="/assets/images/hero/indian_doctors.png"
-                alt="Professional doctors ready to guide NEET PG aspirants"
-                width={600}
-                height={650}
-                priority
-                className="w-full h-auto object-contain drop-shadow-2xl scale-110 origin-bottom"
-                sizes="(max-width: 768px) 90vw, (max-width: 1024px) 45vw, 540px"
-              />
-            </div>
-          </motion.div>
+      {/* Content */}
+      <motion.div
+        initial={mounted ? { opacity: 0, y: 15 } : false}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="container-custom relative z-10 max-w-5xl mx-auto text-center lg:text-left"
+      >
+        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-blue-300 text-[10px] font-black tracking-widest uppercase mb-5 backdrop-blur-md">
+          <Sparkles className="w-3 h-3 text-blue-400" /> NEET PG 2025-26 · Expert Counselling
         </div>
-      </div>
+
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.4rem] font-black text-white leading-[1.08] tracking-tight mb-5">
+          Your MBBS Was the Beginning.{" "}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-indigo-300">
+            Your Specialty Defines Your Legacy.
+          </span>
+        </h1>
+
+        <p className="text-blue-100/90 text-sm md:text-base font-medium leading-relaxed max-w-2xl mx-auto lg:mx-0 mb-7">
+          From rank analysis to college reporting — we engineer PG admissions with 5-year cutoff intelligence, dual-quota mastery, and dedicated 1-on-1 mentorship across 250+ medical colleges.
+        </p>
+
+        <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-8">
+          <button
+            onClick={() => CTA.call()}
+            className="inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-6 py-3 rounded-xl font-black text-sm hover:bg-blue-50 transition-all shadow-lg active:scale-95"
+          >
+            <Phone className="w-4 h-4" /> Book Free PG Strategy Call
+          </button>
+          <button
+            onClick={() => CTA.whatsapp("Hi, I need guidance for NEET PG counselling")}
+            className="inline-flex items-center justify-center gap-2 border-2 border-white/60 backdrop-blur-sm text-white px-6 py-3 rounded-xl font-black text-sm hover:bg-white/10 transition-all active:scale-95"
+          >
+            <WhatsAppIcon size={16} /> WhatsApp Us
+          </button>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2">
+          {trustBadges.map((badge, i) => (
+            <span key={i} className="inline-flex items-center gap-1.5 text-[10px] font-black text-blue-200/80 uppercase tracking-widest">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+              {badge}
+            </span>
+          ))}
+        </div>
+      </motion.div>
     </section>
   );
 };
-

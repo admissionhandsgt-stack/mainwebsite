@@ -7,6 +7,8 @@ import Script from 'next/script'
 import { Plus_Jakarta_Sans, Inter } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 
+import { headers } from 'next/headers'
+
 const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
   variable: '--font-jakarta',
@@ -39,6 +41,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const host = headers().get('host') || ''
+  const isAdminSubdomain = host.startsWith('admin.')
+
   return (
     <html lang="en" className={`${jakarta.variable} ${inter.variable}`} suppressHydrationWarning>
       <body className="antialiased font-body overflow-x-hidden bg-background text-foreground transition-colors duration-200">
@@ -56,9 +61,13 @@ export default function RootLayout({
           `}
         </Script>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <SiteShell>
-            {children}
-          </SiteShell>
+          {isAdminSubdomain ? (
+            <main className="w-full">{children}</main>
+          ) : (
+            <SiteShell>
+              {children}
+            </SiteShell>
+          )}
         </ThemeProvider>
         <Toaster />
         <SonnerToaster />

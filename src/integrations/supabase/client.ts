@@ -10,5 +10,19 @@ if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
 
 export const supabase = createClient<Database>(
   SUPABASE_URL || '', 
-  SUPABASE_PUBLISHABLE_KEY || ''
+  SUPABASE_PUBLISHABLE_KEY || '',
+  {
+    auth: {
+      persistSession: false,
+    },
+    global: {
+      fetch: (url, options) => {
+        console.log('[SUPABASE FETCH]', url);
+        return fetch(url, {
+          ...options,
+          cache: 'no-store',
+        });
+      },
+    },
+  }
 );

@@ -2,6 +2,7 @@
 
 import React, { useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ChevronLeft, ChevronRight, Sparkles, MapPin, GraduationCap, ArrowRight, Loader2 } from 'lucide-react';
 import { useRecommendedColleges } from '@/hooks/useCollegesData';
 import { cn } from "@/lib/utils";
@@ -83,10 +84,14 @@ const RecommendedColleges: React.FC<RecommendedCollegesProps> = ({ domain }) => 
               >
                 <div className="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm group-hover:shadow-xl transition-all duration-500 group-hover:-translate-y-2">
                   <div className="relative h-56 overflow-hidden">
-                    <img 
+                    <Image 
                       src={college.image} 
                       alt={college.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      className="object-cover group-hover:scale-110 transition-transform duration-700"
+                      placeholder="blur"
+                      blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMjAiIGhlaWdodD0iMjQwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDcwZTFlIi8+PC9zdmc+"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-60" />
                     <div className="absolute top-4 right-4">

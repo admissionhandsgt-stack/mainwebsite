@@ -63,6 +63,7 @@ CREATE TABLE IF NOT EXISTS public.contact_info (
   phone_number     TEXT NOT NULL DEFAULT '+919873133846',
   whatsapp_number  TEXT NOT NULL DEFAULT '+919873133846',
   email            TEXT NOT NULL DEFAULT 'info@admissionhands.com',
+  lead_notification_phone TEXT NOT NULL DEFAULT '+919310301949',
   created_at       TIMESTAMPTZ DEFAULT NOW(),
   updated_at       TIMESTAMPTZ DEFAULT NOW()
 );
@@ -73,8 +74,8 @@ DROP POLICY IF EXISTS "Auth write contact_info" ON public.contact_info;
 CREATE POLICY "Auth write contact_info" ON public.contact_info FOR ALL USING (auth.role() = 'authenticated');
 
 -- Insert default contact info if none exists
-INSERT INTO public.contact_info (phone_number, whatsapp_number, email)
-SELECT '+919873133846', '+919873133846', 'info@admissionhands.com'
+INSERT INTO public.contact_info (phone_number, whatsapp_number, email, lead_notification_phone)
+SELECT '+919873133846', '+919873133846', 'info@admissionhands.com', '+919310301949'
 WHERE NOT EXISTS (SELECT 1 FROM public.contact_info);
 
 -- ---- 5. pg_colleges ----
@@ -135,6 +136,45 @@ CREATE POLICY "Public read college images" ON storage.objects
 DROP POLICY IF EXISTS "Auth upload college images" ON storage.objects;
 CREATE POLICY "Auth upload college images" ON storage.objects
   FOR INSERT WITH CHECK (bucket_id = 'colleges' AND auth.role() = 'authenticated');
+
+-- ---- 8. pg_leads ----
+CREATE TABLE IF NOT EXISTS public.pg_leads (
+  id                 UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name               TEXT NOT NULL,
+  phone              TEXT NOT NULL,
+  rank               INTEGER,
+  preferred_branch   TEXT,
+  preferred_state    TEXT,
+  quota_interest     TEXT,
+  internship_status  TEXT,
+  source_page        TEXT DEFAULT 'PG Page',
+  lead_status        TEXT DEFAULT 'New',
+  is_read            BOOLEAN DEFAULT false,
+  created_at         TIMESTAMPTZ DEFAULT NOW(),
+  updated_at         TIMESTAMPTZ DEFAULT NOW()
+);
+ALTER TABLE public.pg_leads ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow public insert pg_leads" ON public.pg_leads;
+CREATE POLICY "Allow public insert pg_leads" ON public.pg_leads FOR INSERT WITH CHECK (true);
+DROP POLICY IF EXISTS "Admin read/write pg_leads" ON public.pg_leads;
+CREATE POLICY "Admin read/write pg_leads" ON public.pg_leads FOR ALL USING (auth.role() = 'authenticated');
+
+-- ---- 9. leads (fallback / generic) ----
+CREATE TABLE IF NOT EXISTS public.leads (
+  id                 UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name               TEXT NOT NULL,
+  phone              TEXT NOT NULL,
+  rank               TEXT,
+  source             TEXT,
+  is_read            BOOLEAN DEFAULT false,
+  created_at         TIMESTAMPTZ DEFAULT NOW(),
+  updated_at         TIMESTAMPTZ DEFAULT NOW()
+);
+ALTER TABLE public.leads ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow public insert leads" ON public.leads;
+CREATE POLICY "Allow public insert leads" ON public.leads FOR INSERT WITH CHECK (true);
+DROP POLICY IF EXISTS "Admin read/write leads" ON public.leads;
+CREATE POLICY "Admin read/write leads" ON public.leads FOR ALL USING (auth.role() = 'authenticated');
 
 -- ============================================================
 -- Done! All tables created.

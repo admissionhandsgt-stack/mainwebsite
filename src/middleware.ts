@@ -9,6 +9,8 @@ export function middleware(req: NextRequest) {
   
   // Detect if the request is for the admin subdomain (matches any domain/host starting with "admin.")
   const isAdminSubdomain = hostname.startsWith('admin.');
+  
+  console.log(`[Middleware] Path: ${url.pathname} | Host: ${hostname} | IsAdminSubdomain: ${isAdminSubdomain}`);
 
   // 1. If accessing via the admin subdomain
   if (isAdminSubdomain) {

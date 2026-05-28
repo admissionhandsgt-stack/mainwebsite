@@ -23,7 +23,7 @@ interface Filters {
   search: string;
 }
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 8; // Modified to 8 (2 rows of 4 cards)
 
 export function usePGColleges() {
   const [colleges, setColleges] = useState<PGCollege[]>([]);
@@ -55,7 +55,7 @@ export function usePGColleges() {
 
   // Build and execute query
   const fetchColleges = useCallback(async (pageNum: number, append = false) => {
-    if (pageNum === 0) setLoading(true);
+    if (pageNum === 0 && !append) setLoading(true);
     else setLoadingMore(true);
 
     try {
@@ -115,6 +115,24 @@ export function usePGColleges() {
     fetchColleges(nextPage, true);
   }, [page, fetchColleges]);
 
+  const goToPage = useCallback((pageNum: number) => {
+    setPage(pageNum);
+    fetchColleges(pageNum, false);
+  }, [fetchColleges]);
+
+  const nextPage = useCallback(() => {
+    const maxPage = Math.ceil(totalCount / PAGE_SIZE) - 1;
+    if (page < maxPage) {
+      goToPage(page + 1);
+    }
+  }, [page, totalCount, goToPage]);
+
+  const prevPage = useCallback(() => {
+    if (page > 0) {
+      goToPage(page - 1);
+    }
+  }, [page, goToPage]);
+
   const updateFilters = useCallback((newFilters: Partial<Filters>) => {
     setFilters(prev => ({ ...prev, ...newFilters }));
   }, []);
@@ -127,6 +145,10 @@ export function usePGColleges() {
     return filters.state.length + filters.college_type.length + (filters.search ? 1 : 0);
   }, [filters]);
 
+  const totalPages = useMemo(() => {
+    return Math.ceil(totalCount / PAGE_SIZE);
+  }, [totalCount]);
+
   return {
     colleges,
     allStates,
@@ -135,9 +157,14 @@ export function usePGColleges() {
     error,
     hasMore,
     totalCount,
+    totalPages,
+    currentPage: page,
     filters,
     activeFilterCount,
     loadMore,
+    goToPage,
+    nextPage,
+    prevPage,
     updateFilters,
     clearFilters,
   };

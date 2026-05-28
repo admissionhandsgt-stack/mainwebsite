@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Header from './Header';
 import dynamic from 'next/dynamic';
@@ -11,7 +12,15 @@ const LiveAlerts = dynamic(() => import('@/components/LiveAlerts'), {
 
 export default function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isAdminRoute = pathname?.startsWith('/admin');
+  const [isAdminSubdomain, setIsAdminSubdomain] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsAdminSubdomain(window.location.hostname.startsWith('admin.'));
+    }
+  }, []);
+
+  const isAdminRoute = pathname?.startsWith('/admin') || isAdminSubdomain;
 
   if (isAdminRoute) {
     return <main className="w-full">{children}</main>;

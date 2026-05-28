@@ -12,7 +12,8 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     // Only redirect after auth loading is complete and user is confirmed null
     if (!loading && !user) {
-      router.replace('/admin');
+      const isSubdomain = typeof window !== 'undefined' && window.location.hostname.startsWith('admin.');
+      router.replace(isSubdomain ? '/' : '/admin');
     }
   }, [user, loading, router]);
 

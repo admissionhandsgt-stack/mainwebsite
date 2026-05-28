@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Search, MapPin, ThumbsUp, ExternalLink } from 'lucide-react';
@@ -223,11 +224,15 @@ const NRICollegesPage = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {filteredColleges.map(college => (
                       <div key={college.id} className="bg-white rounded-xl shadow-md hover:shadow-lg overflow-hidden transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
-                        <div className="h-48 overflow-hidden">
-                          <img 
+                        <div className="h-48 overflow-hidden relative">
+                          <Image 
                             src={college.image} 
                             alt={college.name} 
-                            className="w-full h-full object-cover"
+                            fill
+                            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                            className="object-cover"
+                            placeholder="blur"
+                            blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMjAiIGhlaWdodD0iMjQwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDcwZTFlIi8+PC9zdmc+"
                           />
                         </div>
                         <div className="p-6">

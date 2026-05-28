@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { sendWhatsAppNotification } from '@/lib/whatsappService';
 
 // Force dynamic rendering so env vars are available at runtime, not build time
 export const dynamic = 'force-dynamic';
@@ -29,7 +30,6 @@ export async function POST(req: Request) {
 
     // Get IP for rate limiting
     const ip = req.headers.get('x-forwarded-for') || 'unknown';
-    const userAgent = req.headers.get('user-agent') || 'unknown';
 
     // 2. Rate Limiting Check
     const now = Date.now();
@@ -51,11 +51,20 @@ export async function POST(req: Request) {
 
     // 3. Parse Request
     const body = await req.json();
-    const { name, phone, rank, source = 'PG Page', honeypot } = body;
+    const { 
+      name, 
+      phone, 
+      rank, 
+      preferred_branch, 
+      preferred_state, 
+      quota_interest, 
+      internship_status, 
+      source = 'PG Page', 
+      honeypot 
+    } = body;
 
     // 4. Bot Protection (Honeypot)
     if (honeypot) {
-      // If honeypot is filled, it's likely a bot. Pretend it was successful.
       clearTimeout(timeoutId);
       console.warn(`[Security] Bot detected via honeypot from IP: ${ip}`);
       return NextResponse.json({ success: true, message: 'Lead captured successfully' });
@@ -77,50 +86,116 @@ export async function POST(req: Request) {
     
     if (normalizedPhone.length < 10) {
       clearTimeout(timeoutId);
-      return NextResponse.json({ error: 'Invalid phone number' }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid phone number. Minimum 10 digits required.' }, { status: 400 });
     }
 
-    // Optionally format to +91 if Indian number is expected, but keeping digits is safer for DB storage.
+    // Format phone number
     const finalPhone = normalizedPhone.length === 10 ? `+91${normalizedPhone}` : `+${normalizedPhone}`;
 
     // 6. Duplicate Check (Last 5 minutes)
     const fiveMinsAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
-    const { data: existingLeads, error: checkError } = await (supabase
-      .from('leads') as any)
-      .select('id')
-      .eq('phone', finalPhone)
-      .gte('created_at', fiveMinsAgo)
-      .limit(1);
+    let isDuplicate = false;
 
-    if (checkError) {
-      console.error('[Database] Error checking duplicates:', checkError);
-      // We log but continue, might be RLS preventing read, which is fine if insert only.
-      // Actually, if RLS prevents read for anon, this check might fail. 
-      // A robust duplicate check requires a backend service key or a specific RPC function.
-      // For now, we assume if it fails, we just proceed to insert.
-    } else if (existingLeads && existingLeads.length > 0) {
+    // Check pg_leads first, fall back to leads if table doesn't exist
+    try {
+      const { data: pgDup, error: pgDupErr } = await (supabase
+        .from('pg_leads') as any)
+        .select('id')
+        .eq('phone', finalPhone)
+        .gte('created_at', fiveMinsAgo)
+        .limit(1);
+
+      if (!pgDupErr && pgDup && pgDup.length > 0) {
+        isDuplicate = true;
+      }
+    } catch {
+      // Fallback check on generic leads table
+      try {
+        const { data: standardDup } = await (supabase
+          .from('leads') as any)
+          .select('id')
+          .eq('phone', finalPhone)
+          .gte('created_at', fiveMinsAgo)
+          .limit(1);
+
+        if (standardDup && standardDup.length > 0) {
+          isDuplicate = true;
+        }
+      } catch {
+        // Safe skip if neither is accessible
+      }
+    }
+
+    if (isDuplicate) {
       clearTimeout(timeoutId);
       return NextResponse.json({ error: 'A request with this phone number was recently submitted.' }, { status: 429 });
     }
 
-    // 7. Insert Lead
-    const { error: insertError } = await (supabase
-      .from('leads') as any)
-      .insert([
-        {
-          name: name.trim(),
-          phone: finalPhone,
-          rank: rank ? String(rank).trim() : null,
-          source: String(source).trim()
-        }
-      ]);
+    let insertSuccess = false;
+
+    // 7. Attempt Insert into pg_leads
+    try {
+      const { error: insertPgError } = await (supabase
+        .from('pg_leads') as any)
+        .insert([
+          {
+            name: name.trim(),
+            phone: finalPhone,
+            rank: rank ? parseInt(String(rank).replace(/,/g, ''), 10) : null,
+            preferred_branch: preferred_branch || null,
+            preferred_state: preferred_state || null,
+            quota_interest: quota_interest || null,
+            internship_status: internship_status || null,
+            source_page: String(source).trim(),
+            lead_status: 'New'
+          }
+        ]);
+
+      if (!insertPgError) {
+        insertSuccess = true;
+      } else {
+        console.warn('[Database] Insertion to pg_leads failed. Falling back to leads table. Error:', insertPgError.message);
+      }
+    } catch (err: any) {
+      console.warn('[Database] Exception writing to pg_leads table. Falling back to leads table. Error:', err.message);
+    }
+
+    // 8. Fallback to generic leads table
+    if (!insertSuccess) {
+      const fallbackSource = `${String(source).trim()} (PG Fallback: Branch=${preferred_branch || 'None'}, State=${preferred_state || 'None'}, Quota=${quota_interest || 'None'}, Internship=${internship_status || 'None'})`;
+      const { error: insertStandardError } = await (supabase
+        .from('leads') as any)
+        .insert([
+          {
+            name: name.trim(),
+            phone: finalPhone,
+            rank: rank ? String(rank).trim() : null,
+            source: fallbackSource
+          }
+        ]);
+
+      if (insertStandardError) {
+        console.error('[Database] Fallback leads insertion failed:', insertStandardError.message);
+        clearTimeout(timeoutId);
+        return NextResponse.json({ error: 'Failed to capture lead. Please try again.' }, { status: 500 });
+      }
+      insertSuccess = true;
+    }
 
     clearTimeout(timeoutId);
 
-    if (insertError) {
-      console.error('[Database] Insert error:', insertError);
-      return NextResponse.json({ error: 'Failed to capture lead. Please try again.' }, { status: 500 });
-    }
+    // 9. Asynchronously dispatch WhatsApp Alert to counselor (Non-blocking)
+    const formattedRank = rank ? String(rank).replace(/,/g, '') : undefined;
+    sendWhatsAppNotification({
+      name: name.trim(),
+      phone: finalPhone,
+      rank: formattedRank,
+      preferred_branch: preferred_branch,
+      preferred_state: preferred_state,
+      quota_interest: quota_interest,
+      internship_status: internship_status,
+      source: source
+    }).catch(err => console.error('[WhatsApp Notification Engine] Error sending alert:', err));
 
     return NextResponse.json({ success: true, message: 'Lead captured successfully' });
 

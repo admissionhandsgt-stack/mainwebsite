@@ -1,11 +1,27 @@
-"use client";
-
 import React from 'react';
 import { CheckCircle, Download, FileText, AlertTriangle } from 'lucide-react';
-import { useCTA } from '@/hooks/useCTA';
+import { supabase } from '@/integrations/supabase/client';
 
-const NRIDocumentsPage = () => {
-  const CTA = useCTA();
+export const revalidate = 0;
+
+const NRIDocumentsPage = async () => {
+  let phone = '+919310301949';
+  
+  try {
+    const { data } = await supabase
+      .from('contact_info')
+      .select('*')
+      .order('id', { ascending: false })
+      .limit(1)
+      .single();
+      
+    if (data) {
+      phone = data.phone_number || phone;
+    }
+  } catch (err) {
+    console.error('Error fetching contact info server-side:', err);
+  }
+
   return (
     <div className="flex flex-col">
       <div className="flex-grow">
@@ -32,25 +48,25 @@ const NRIDocumentsPage = () => {
                     <ul className="space-y-3">
                       <li>
                         <a href="#essential" className="text-medical-600 hover:text-medical-800 font-medium flex items-center transition-colors group">
-                          <span className="w-2 h-2 bg-medical-500 rounded-full mr-2 group-hover:scale-125 transition-transform"></span>
+                           <span className="w-2 h-2 bg-medical-500 rounded-full mr-2 group-hover:scale-125 transition-transform"></span>
                           Essential Documents
                         </a>
                       </li>
                       <li>
                         <a href="#category-wise" className="text-medical-600 hover:text-medical-800 font-medium flex items-center transition-colors group">
-                          <span className="w-2 h-2 bg-medical-500 rounded-full mr-2 group-hover:scale-125 transition-transform"></span>
+                           <span className="w-2 h-2 bg-medical-500 rounded-full mr-2 group-hover:scale-125 transition-transform"></span>
                           Category-wise List
                         </a>
                       </li>
                       <li>
                         <a href="#financial" className="text-medical-600 hover:text-medical-800 font-medium flex items-center transition-colors group">
-                          <span className="w-2 h-2 bg-medical-500 rounded-full mr-2 group-hover:scale-125 transition-transform"></span>
+                           <span className="w-2 h-2 bg-medical-500 rounded-full mr-2 group-hover:scale-125 transition-transform"></span>
                           Financial Proofs
                         </a>
                       </li>
                       <li>
                         <a href="#translation" className="text-medical-600 hover:text-medical-800 font-medium flex items-center transition-colors group">
-                          <span className="w-2 h-2 bg-medical-500 rounded-full mr-2 group-hover:scale-125 transition-transform"></span>
+                           <span className="w-2 h-2 bg-medical-500 rounded-full mr-2 group-hover:scale-125 transition-transform"></span>
                           Translation Rules
                         </a>
                       </li>
@@ -62,12 +78,12 @@ const NRIDocumentsPage = () => {
                     <p className="text-gray-700 mb-5 text-sm leading-relaxed">
                       Our experts can help you prepare the right documents for your NRI quota application and avoid rejections.
                     </p>
-                    <button 
-                      onClick={CTA.call}
+                    <a 
+                      href={`tel:${phone}`}
                       className="bg-medical-600 text-white w-full text-center px-4 py-2.5 rounded-lg inline-block hover:bg-medical-700 transition-all font-medium"
                     >
                       Get Assistance
-                    </button>
+                    </a>
                   </div>
                 </div>
               </div>

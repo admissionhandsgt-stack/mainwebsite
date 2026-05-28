@@ -1,160 +1,197 @@
 "use client";
 
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useSpecializations } from '@/hooks/useSpecializations';
-import { cn } from '@/lib/utils';
-import { Loader2, GraduationCap, Scissors, Stethoscope, Microscope, ChevronRight } from 'lucide-react';
-import Link from 'next/link';
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Heart,
+  Baby,
+  Sparkles,
+  BrainCircuit,
+  Wind,
+  Zap,
+  Activity,
+  Siren,
+  Scissors,
+  Bone,
+  Eye,
+  Ear,
+  HeartPulse,
+  ScanLine,
+  Pill,
+  Wand2,
+  Microscope,
+  Bug,
+  FlaskConical,
+  Atom,
+  PersonStanding,
+  Users,
+  Shield,
+  Stethoscope,
+} from "lucide-react";
+import { useCTA } from "@/hooks/useCTA";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
-const categoryMap: Record<string, { label: string, icon: any, color: string }> = {
-  clinical: { label: "Clinical", icon: Stethoscope, color: "bg-blue-600" },
-  surgical: { label: "Surgical", icon: Scissors, color: "bg-rose-600" },
-  non_clinical: { label: "Non-Clinical", icon: Microscope, color: "bg-emerald-600" }
+const specializations = {
+  clinical: {
+    label: "Clinical",
+    gradient: "from-blue-500 to-blue-600",
+    items: [
+      { name: "General Medicine", icon: Heart, duration: "3 Years" },
+      { name: "Pediatrics", icon: Baby, duration: "3 Years" },
+      { name: "Dermatology", icon: Sparkles, duration: "3 Years" },
+      { name: "Psychiatry", icon: BrainCircuit, duration: "3 Years" },
+      { name: "Respiratory Medicine", icon: Wind, duration: "3 Years" },
+      { name: "Radiotherapy", icon: Zap, duration: "3 Years" },
+      { name: "Physical Medicine", icon: Activity, duration: "3 Years" },
+      { name: "Emergency Medicine", icon: Siren, duration: "3 Years" },
+    ],
+  },
+  surgical: {
+    label: "Surgical",
+    gradient: "from-emerald-500 to-emerald-600",
+    items: [
+      { name: "General Surgery", icon: Scissors, duration: "3 Years" },
+      { name: "Orthopedics", icon: Bone, duration: "3 Years" },
+      { name: "Ophthalmology", icon: Eye, duration: "3 Years" },
+      { name: "ENT", icon: Ear, duration: "3 Years" },
+      { name: "Obstetrics & Gynecology", icon: HeartPulse, duration: "3 Years" },
+      { name: "Radiology", icon: ScanLine, duration: "3 Years" },
+      { name: "Anesthesiology", icon: Pill, duration: "3 Years" },
+      { name: "Plastic Surgery", icon: Wand2, duration: "3 Years" },
+    ],
+  },
+  "non-clinical": {
+    label: "Non-Clinical",
+    gradient: "from-violet-500 to-violet-600",
+    items: [
+      { name: "Pathology", icon: Microscope, duration: "3 Years" },
+      { name: "Microbiology", icon: Bug, duration: "3 Years" },
+      { name: "Pharmacology", icon: FlaskConical, duration: "3 Years" },
+      { name: "Biochemistry", icon: Atom, duration: "3 Years" },
+      { name: "Physiology", icon: Activity, duration: "3 Years" },
+      { name: "Anatomy", icon: PersonStanding, duration: "3 Years" },
+      { name: "Community Medicine", icon: Users, duration: "3 Years" },
+      { name: "Forensic Medicine", icon: Shield, duration: "3 Years" },
+    ],
+  },
 };
 
-const SPECIALIZATION_IMAGES: Record<string, string> = {
-  'general-medicine': '/images/pg/general-medicine.png',
-  'pediatrics': '/images/pg/pediatrics.png',
-  'radiology': '/images/pg/radiology.png',
-  'dermatology': '/images/pg/dermatology.png',
-  'general-surgery': '/images/pg/general-surgery.png',
-  'orthopedics': '/images/pg/orthopedics.png',
-  'obgyn': '/images/pg/obgyn.png',
-  'psychiatry': '/images/pg/psychiatry.png',
-  'ent': '/images/pg/ent.png',
-  'pathology': '/images/pg/pathology.png',
-  'pulmonology': '/images/pg/pulmonology.png',
-  'anesthesiology': '/images/pg/anesthesiology.png',
-  'ophthalmology': '/images/pg/ophthalmology.png',
-  'emergency-medicine': '/images/pg/emergency-medicine.png',
-  'radiation-oncology': '/images/pg/radiation-oncology.png',
-  'nuclear-medicine': '/images/pg/nuclear-medicine.png',
-  'geriatrics': '/images/pg/geriatrics.png',
-  'pmr': '/assets/images/hero/indian_doctors.png',
-  'microbiology': '/assets/images/hero/indian_doctors.png',
-  'pharmacology': '/assets/images/hero/indian_doctors.png',
-  'psm': '/assets/images/hero/indian_doctors.png',
-  'forensic': '/assets/images/hero/indian_doctors.png',
-  'anatomy': '/assets/images/hero/indian_doctors.png',
-  'physiology': '/assets/images/hero/indian_doctors.png',
-  'biochemistry': '/assets/images/hero/indian_doctors.png',
-  'transfusion-medicine': '/assets/images/hero/indian_doctors.png',
+const tabStyles: Record<string, { active: string }> = {
+  clinical: { active: "from-blue-500 to-blue-600" },
+  surgical: { active: "from-emerald-500 to-emerald-600" },
+  "non-clinical": { active: "from-violet-500 to-violet-600" },
 };
 
 export const PGSpecializations = () => {
-  const { specializations, loading, error } = useSpecializations();
-  const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [mounted, setMounted] = useState(false);
+  const [activeCategory, setActiveCategory] = useState("clinical");
+  const CTA = useCTA();
 
-  const filteredSpecs = activeCategory === 'all' 
-    ? specializations 
-    : specializations.filter(s => s.category === activeCategory);
+  useEffect(() => setMounted(true), []);
 
-  if (loading) {
-    return (
-      <div className="py-24 flex flex-col items-center justify-center min-h-[400px]">
-        <Loader2 className="w-10 h-10 text-blue-600 animate-spin mb-4" />
-        <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">Loading Specializations...</p>
-      </div>
-    );
-  }
+  const currentData = specializations[activeCategory as keyof typeof specializations];
 
   return (
-    <section className="py-12 md:py-24 bg-white overflow-hidden">
+    <section className="py-12 md:py-16 bg-white dark:bg-slate-950">
       <div className="container-custom">
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-8 md:mb-16 gap-6 md:gap-8">
-          <div className="max-w-2xl">
-            <h2 className="text-2xl sm:text-3xl md:text-5xl font-black text-slate-900 mb-4 md:mb-6 tracking-tight leading-tight">
-              MD/MS <span className="text-blue-600">Specializations</span>
-            </h2>
-            <p className="text-base md:text-lg text-slate-500 font-medium leading-relaxed">
-              Choose from 25+ specialized medical branches. Get data-driven insights on branch-specific cutoffs and career prospects.
-            </p>
-          </div>
+        {/* Header */}
+        <motion.div
+          initial={mounted ? { opacity: 0, y: 15 } : false}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-8"
+        >
+          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400 mb-4">
+            Explore Specializations
+          </span>
+          <h2 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-3">
+            Find Your <span className="text-blue-600 dark:text-blue-400">Perfect Medical Specialty</span>
+          </h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400 max-w-xl mx-auto">
+            Browse through all MD/MS branches across clinical, surgical, and non-clinical disciplines available through NEET PG counselling.
+          </p>
+        </motion.div>
 
-          {/* Filter Chips */}
-          <div className="flex flex-wrap gap-2 md:gap-3">
+        {/* Tab Buttons */}
+        <motion.div
+          initial={mounted ? { opacity: 0, y: 15 } : false}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex justify-center gap-2 mb-8"
+        >
+          {Object.entries(specializations).map(([key, { label }]) => (
             <button
-              onClick={() => setActiveCategory('all')}
-              className={cn(
-                "px-4 py-2 md:px-6 md:py-3 rounded-xl md:rounded-2xl text-[10px] md:text-xs font-black uppercase tracking-widest transition-all",
-                activeCategory === 'all' 
-                  ? "bg-slate-900 text-white shadow-lg md:shadow-xl shadow-slate-900/20" 
-                  : "bg-slate-50 text-slate-400 hover:bg-slate-100"
-              )}
+              key={key}
+              onClick={() => setActiveCategory(key)}
+              className={`px-4 py-2 rounded-full text-xs font-black uppercase tracking-wider cursor-pointer transition-all ${
+                activeCategory === key
+                  ? `bg-gradient-to-r ${tabStyles[key].active} text-white shadow-lg`
+                  : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-900 dark:text-slate-400 dark:hover:bg-slate-800"
+              }`}
             >
-              All Branches
+              {label}
             </button>
-            {Object.entries(categoryMap).map(([key, value]) => (
-              <button
-                key={key}
-                onClick={() => setActiveCategory(key)}
-                className={cn(
-                  "px-4 py-2 md:px-6 md:py-3 rounded-xl md:rounded-2xl text-[10px] md:text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2",
-                  activeCategory === key 
-                    ? `${value.color} text-white shadow-lg md:shadow-xl shadow-blue-900/20` 
-                    : "bg-slate-50 text-slate-400 hover:bg-slate-100"
-                )}
-              >
-                <value.icon className="w-3 h-3 md:w-4 md:h-4" />
-                {value.label}
-              </button>
-            ))}
-          </div>
-        </div>
+          ))}
+        </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          <AnimatePresence mode="popLayout">
-            {filteredSpecs.map((spec, i) => (
-              <motion.div
-                key={spec.id}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3, delay: i * 0.02 }}
-                className="group relative h-60 md:h-80 rounded-2xl md:rounded-[2.5rem] overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-500"
-              >
-                <div className="absolute inset-0 bg-slate-100">
-                  <img 
-                    src={SPECIALIZATION_IMAGES[spec.slug] || spec.image_url || "/assets/images/hero/indian_doctors.png"} 
-                    alt={spec.name}
-                    loading="lazy"
-                    decoding="async" 
-                    className={cn(
-                      "absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700",
-                      (!SPECIALIZATION_IMAGES[spec.slug] && !spec.image_url) && "opacity-40 grayscale blur-sm"
-                    )}
-                  />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent opacity-80" />
-                
-                <Link href={`/specializations/${spec.slug}`} className="absolute inset-0 p-5 md:p-8 flex flex-col justify-end z-10">
-                  <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
-                    <span className={cn(
-                      "text-[9px] md:text-[10px] font-black uppercase tracking-widest px-2.5 py-1 md:px-3 md:py-1.5 rounded-lg md:rounded-xl shadow-lg text-white",
-                      categoryMap[spec.category]?.color || "bg-blue-600"
-                    )}>
-                      {categoryMap[spec.category]?.label || spec.category}
-                    </span>
+        {/* Cards Grid */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeCategory}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.25 }}
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3"
+          >
+            {currentData.items.map((item, index) => {
+              const IconComponent = item.icon;
+              return (
+                <motion.div
+                  key={item.name}
+                  initial={mounted ? { opacity: 0, y: 15 } : false}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.04 }}
+                  className="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-100 dark:border-slate-800 hover:shadow-md hover:border-blue-200 dark:hover:border-blue-800 transition-all group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={`w-9 h-9 rounded-lg bg-gradient-to-br ${currentData.gradient} flex items-center justify-center flex-shrink-0`}
+                    >
+                      <IconComponent className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-black text-sm text-slate-900 dark:text-white">{item.name}</p>
+                      <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">
+                        {item.duration}
+                      </p>
+                    </div>
                   </div>
-                  
-                  <h3 className="text-xl font-bold text-white leading-tight group-hover:text-blue-400 transition-colors">
-                    {spec.name}
-                  </h3>
-                  
-                  <div className="mt-4 flex items-center gap-2 transition-all duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100 md:translate-y-4 md:group-hover:translate-y-0">
-                    <span className="text-[10px] font-black text-white/60 uppercase tracking-widest flex items-center gap-2">
-                      <GraduationCap className="w-3 h-3" />
-                      View Details
-                      <ChevronRight className="w-3 h-3 text-blue-400" />
-                    </span>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Bottom Note */}
+        <motion.div
+          initial={mounted ? { opacity: 0, y: 15 } : false}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="bg-slate-50 dark:bg-slate-900 rounded-xl p-5 mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 border border-slate-100 dark:border-slate-800"
+        >
+          <p className="text-sm text-slate-600 dark:text-slate-400 font-bold">
+            Not sure which branch suits your rank and career goals?
+          </p>
+          <button
+            onClick={() => CTA.whatsapp("Hi, I need help choosing the right PG specialization for my rank.")}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs font-black uppercase tracking-wider hover:shadow-lg transition-all flex-shrink-0"
+          >
+            <WhatsAppIcon className="w-4 h-4" />
+            Ask on WhatsApp
+          </button>
+        </motion.div>
       </div>
     </section>
   );

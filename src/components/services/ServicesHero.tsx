@@ -1,17 +1,29 @@
 import React from 'react';
+import Image from 'next/image';
 import SupportSection from './SupportSection';
 import { Card, CardContent } from '@/components/ui/card';
 
-const ServicesHero = () => {
+interface ServicesHeroProps {
+  backgroundImageUrl?: string;
+}
+
+const ServicesHero = ({ backgroundImageUrl }: ServicesHeroProps) => {
   return (
     <section className="relative w-full h-auto min-h-[480px] md:h-screen md:min-h-[700px] flex items-center overflow-hidden mesh-gradient pt-[88px] md:pt-[112px] pb-12 md:pb-0">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src="/assets/images/hero/medical-admission-counselling-session.png" 
-          alt="Personalized Medical Counseling"
-          className="w-full h-full object-cover opacity-20 transition-opacity duration-1000"
-        />
+        {backgroundImageUrl && backgroundImageUrl !== "none" && (
+          <Image 
+            src={backgroundImageUrl} 
+            alt="Personalized Medical Counseling"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover opacity-20 transition-opacity duration-1000"
+            placeholder="blur"
+            blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMjAiIGhlaWdodD0iMjQwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDcwZTFlIi8+PC9zdmc+"
+          />
+        )}
         <div className="absolute inset-0 bg-slate-900/40" />
       </div>
 

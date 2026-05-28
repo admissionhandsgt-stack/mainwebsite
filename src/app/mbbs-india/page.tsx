@@ -1,10 +1,12 @@
 import React from "react";
+export const revalidate = 0;
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { mbbsData } from "@/data/mbbs-india";
 import { MBBSHero } from "@/components/mbbs-india/MBBSHero";
 import { QuickOverview } from "@/components/mbbs-india/QuickOverview";
 import { StickyDecisionBar } from "@/components/mbbs-india/StickyDecisionBar";
+import { getMediaAsset } from "@/lib/mediaService";
 
 // Lazy load sections for better performance
 const EligibilityInfo = dynamic(() => import("@/components/mbbs-india/EligibilityCutoff").then(mod => mod.MBBSEligibilityInfo));
@@ -22,7 +24,8 @@ export const metadata: Metadata = {
   keywords: ["MBBS India", "NEET UG Counselling", "Medical Admission India", "MBBS Fees", "Medical College Guide"],
 };
 
-export default function MBBSIndiaPage() {
+export default async function MBBSIndiaPage() {
+  const mbbsHeroAsset = await getMediaAsset('mbbs_hero_campus');
   // JSON-LD FAQ Schema
   const faqSchema = {
     "@context": "https://schema.org",
@@ -46,7 +49,7 @@ export default function MBBSIndiaPage() {
       />
 
       {/* Hero (Critical Path) */}
-      <MBBSHero />
+      <MBBSHero backgroundImageUrl={mbbsHeroAsset?.image_url} />
 
       {/* Overview */}
       <QuickOverview />

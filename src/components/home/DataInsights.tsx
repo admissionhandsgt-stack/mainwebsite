@@ -89,7 +89,7 @@ const DataInsights = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ delay: 0.2 + index * 0.1 }}
-              className="bg-white/5 backdrop-blur-md rounded-2xl md:rounded-[2rem] p-5 sm:p-6 border border-white/10 hover:border-white/20 transition-all group flex items-start gap-4"
+              className="bg-white/5 backdrop-blur-md rounded-2xl md:rounded-[2rem] p-5 sm:p-6 border border-white/10 hover:border-white/20 transition-all group flex flex-col sm:flex-row items-start gap-4"
             >
               <div className={`flex-shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white shadow-xl group-hover:scale-110 transition-transform`}>
                 <item.icon className="w-5 h-5 md:w-6 md:h-6" />

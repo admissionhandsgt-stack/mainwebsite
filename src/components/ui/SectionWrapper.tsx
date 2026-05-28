@@ -28,7 +28,7 @@ export const SectionWrapper = ({ id, className, children, bgWhite = true }: Sect
       id={id} 
       className={cn(
         "py-16 md:py-24 relative overflow-hidden",
-        bgWhite ? "bg-white" : "bg-slate-50",
+        bgWhite ? "bg-white dark:bg-slate-950" : "bg-slate-50 dark:bg-slate-900/50",
         className
       )}
     >

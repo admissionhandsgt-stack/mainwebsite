@@ -157,26 +157,7 @@ export const mbbsData = {
     ],
   },
 
-  topColleges: [
-    {
-      name: "AIIMS New Delhi",
-      location: "New Delhi",
-      rank: "AIQ Top 50",
-      image: "/assets/images/colleges/aiims-delhi.jpg",
-    },
-    {
-      name: "JIPMER Puducherry",
-      location: "Puducherry",
-      rank: "AIQ Top 200",
-      image: "/assets/images/colleges/jipmer.jpg",
-    },
-    {
-      name: "CMC Vellore",
-      location: "Tamil Nadu",
-      rank: "AIQ Top 100",
-      image: "/assets/images/colleges/cmc-vellore.jpg",
-    },
-  ],
+  topColleges: [] as { name: string; location: string; rank: string; image: string }[],
 
   seats: {
     distribution: [

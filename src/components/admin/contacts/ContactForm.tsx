@@ -9,6 +9,7 @@ interface ContactFormData {
   email: string;
   phone_number: string;
   whatsapp_number: string;
+  lead_notification_phone: string;
 }
 
 interface ContactFormProps {
@@ -75,6 +76,24 @@ const ContactForm = ({ contact, onSubmit, onChange }: ContactFormProps) => {
               />
             </div>
             <p className="text-xs text-gray-400 ml-1">Format: +919873133846 (Used for chat links)</p>
+          </div>
+
+          <div className="space-y-3 group">
+            <Label htmlFor="lead_notification_phone" className="text-gray-700 font-medium text-sm ml-1 group-focus-within:text-medical-600 transition-colors">
+              Callback Leads Alert Number (WhatsApp)
+            </Label>
+            <div className="relative">
+              <MessageCircle className="absolute left-4 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-indigo-500 transition-colors" />
+              <Input
+                id="lead_notification_phone"
+                value={contact.lead_notification_phone || ''}
+                onChange={(e) => onChange('lead_notification_phone', e.target.value)}
+                placeholder="+91 98731 33846"
+                required
+                className="pl-12 bg-white/50 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500/20 rounded-xl transition-all duration-300 h-12"
+              />
+            </div>
+            <p className="text-xs text-gray-400 ml-1">Format: +919873133846 (counselor number to receive PG leads alerts)</p>
           </div>
         </div>
 

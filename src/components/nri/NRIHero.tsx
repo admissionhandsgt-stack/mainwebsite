@@ -1,18 +1,30 @@
 
 import React from 'react';
+import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
-const NRIHero = () => {
+interface NRIHeroProps {
+  backgroundImageUrl?: string;
+}
+
+const NRIHero = ({ backgroundImageUrl }: NRIHeroProps) => {
   return (
     <section className="relative w-full h-screen min-h-[700px] flex items-center overflow-hidden mesh-gradient pt-[112px]">
       {/* Background Image Overlay */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src="/assets/images/hero/india-medical-college-campus.png" 
-          alt="Indian Medical College"
-          className="w-full h-full object-cover opacity-15"
-        />
+        {backgroundImageUrl && backgroundImageUrl !== "none" && (
+          <Image 
+            src={backgroundImageUrl} 
+            alt="Indian Medical College"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover opacity-15"
+            placeholder="blur"
+            blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMjAiIGhlaWdodD0iMjQwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDcwZTFlIi8+PC9zdmc+"
+          />
+        )}
         <div className="absolute inset-0 bg-slate-900/50" />
       </div>
 
@@ -42,12 +54,17 @@ const NRIHero = () => {
           </div>
           <div className="relative h-[400px] lg:h-[550px] group hidden lg:block">
             <div className="absolute -inset-4 bg-gradient-to-br from-blue-600/30 to-teal-500/30 rounded-[3rem] blur-2xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
-            <img
-              src="/assets/images/hero/india-medical-college-campus.png"
-              alt="Medical college campus"
-              className="relative inset-0 w-full h-full object-cover rounded-[2.5rem] shadow-2xl border border-white/20"
-              loading="lazy"
-            />
+            {backgroundImageUrl && backgroundImageUrl !== "none" && (
+              <Image
+                src={backgroundImageUrl}
+                alt="Medical college campus"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover rounded-[2.5rem] shadow-2xl border border-white/20"
+                placeholder="blur"
+                blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMjAiIGhlaWdodD0iMjQwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDcwZTFlIi8+PC9zdmc+"
+              />
+            )}
             <div className="absolute bottom-10 -left-10 glass-white p-6 rounded-3xl shadow-2xl border border-white/40 max-w-xs group-hover:translate-x-2 transition-transform">
               <div className="flex items-start gap-4">
                 <div className="shrink-0 bg-blue-600 text-white p-3 rounded-2xl shadow-lg">

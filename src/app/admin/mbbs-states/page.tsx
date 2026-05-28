@@ -159,7 +159,7 @@ const MBBSStateManager = () => {
                 Add State
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-lg rounded-2xl">
+            <DialogContent className="max-w-lg rounded-2xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle className="text-xl font-bold">{editingId ? 'Edit State' : 'Add New State'}</DialogTitle>
               </DialogHeader>
