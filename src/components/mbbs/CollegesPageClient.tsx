@@ -332,7 +332,7 @@ export default function CollegesPageClient({ states }: { states: StateData[] }) 
           >
             <a
               href="#explorer"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-slate-900 hover:bg-blue-50 font-black text-sm rounded-xl shadow-lg shadow-blue-500/10 active:scale-95 transition-all"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-teal-500/30 text-slate-900 dark:text-teal-400 hover:bg-slate-50 dark:hover:bg-slate-900/60 font-black text-sm rounded-xl shadow-lg active:scale-95 transition-all"
             >
               Explore Colleges <ArrowRight className="w-4 h-4" />
             </a>
@@ -346,11 +346,13 @@ export default function CollegesPageClient({ states }: { states: StateData[] }) 
         </div>
       </section>
 
-      {/* College List Header & Insights */}
-      <section className="py-8 bg-slate-50 dark:bg-slate-950/40 border-b border-slate-200/60 dark:border-slate-900/60 transition-colors duration-200">
+      {/* College List Explorer Header & Filter Menu (Unified Box) */}
+      <section id="explorer" className="pt-8 pb-4 bg-slate-50 dark:bg-slate-950 transition-colors duration-200">
         <div className="container-custom px-4 max-w-6xl mx-auto">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl p-5 shadow-sm">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl p-5 shadow-sm space-y-6">
+            
+            {/* Header info inside the card */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <h2 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
                   MBBS Colleges in India List
@@ -367,6 +369,7 @@ export default function CollegesPageClient({ states }: { states: StateData[] }) 
               </div>
             </div>
 
+            {/* 3 columns of insights inside the card */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-slate-100 dark:border-slate-800/60">
               <div className="p-3 bg-slate-50/50 dark:bg-slate-900/50 rounded-xl border border-slate-100/80 dark:border-slate-800/40">
                 <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Counselling Merit</span>
@@ -387,129 +390,128 @@ export default function CollegesPageClient({ states }: { states: StateData[] }) 
                 </p>
               </div>
             </div>
+
+            {/* Separator / Divider */}
+            <div className="border-t border-slate-100 dark:border-slate-800/60 pt-6" />
+
+            {/* Search and Filters Controls inside the same card */}
+            <div className="space-y-4">
+              <div className="flex flex-col md:flex-row gap-2">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500" />
+                  <input
+                    type="text"
+                    placeholder="Search by college, city, or state..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="w-full pl-9 pr-4 py-2.5 bg-slate-100/50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-lg text-xs text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none focus:border-slate-400 dark:focus:border-slate-600 transition-colors"
+                  />
+                </div>
+
+                <select
+                  value={selectedState}
+                  onChange={(e) => setSelectedState(e.target.value)}
+                  className="px-3 py-2.5 bg-slate-100/50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-lg text-xs text-slate-700 dark:text-zinc-300 outline-none focus:border-slate-400 dark:focus:border-slate-600 transition-colors cursor-pointer md:w-44"
+                >
+                  <option value="all">All States</option>
+                  {uniqueStatesList.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+
+                <select
+                  value={selectedType}
+                  onChange={(e) => setSelectedType(e.target.value as "all" | CollegeType)}
+                  className="px-3 py-2.5 bg-slate-100/50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-lg text-xs text-slate-700 dark:text-zinc-300 outline-none focus:border-slate-400 dark:focus:border-slate-600 transition-colors cursor-pointer md:w-40"
+                >
+                  <option value="all">All Types</option>
+                  <option value="govt">Government</option>
+                  <option value="private">Private</option>
+                </select>
+              </div>
+
+              <div className="flex flex-row items-center justify-between gap-4 pt-1">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                    Showing{" "}
+                    <span className="text-slate-900 dark:text-zinc-200 font-semibold">{filteredColleges.length}</span> of{" "}
+                    <span className="text-slate-900 dark:text-zinc-200 font-semibold">{allColleges.length}</span> colleges
+                  </span>
+
+                  {hasActiveFilters && (
+                    <>
+                      <span className="text-slate-300 dark:text-slate-700 mx-0.5">·</span>
+                      {search && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded text-[10px] text-slate-700 dark:text-zinc-300 shadow-sm">
+                          &quot;{search}&quot;
+                          <X
+                            className="w-2.5 h-2.5 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-white cursor-pointer"
+                            onClick={() => setSearch("")}
+                          />
+                        </span>
+                      )}
+                      {selectedState !== "all" && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded text-[10px] text-slate-700 dark:text-zinc-300 shadow-sm">
+                          {selectedState}
+                          <X
+                            className="w-2.5 h-2.5 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-white cursor-pointer"
+                            onClick={() => setSelectedState("all")}
+                          />
+                        </span>
+                      )}
+                      {selectedType !== "all" && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded text-[10px] text-slate-700 dark:text-zinc-300 shadow-sm">
+                          {selectedType === "govt" ? "Government" : "Private"}
+                          <X
+                            className="w-2.5 h-2.5 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-white cursor-pointer"
+                            onClick={() => setSelectedType("all")}
+                          />
+                        </span>
+                      )}
+                      <button
+                        onClick={clearAll}
+                        className="text-[10px] text-slate-500 hover:text-slate-800 dark:text-slate-500 dark:hover:text-white transition-colors ml-1"
+                      >
+                        Clear all
+                      </button>
+                    </>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-1 p-0.5 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80 rounded-md shrink-0">
+                  <button
+                    onClick={() => setLayoutView("list")}
+                    className={`flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium transition-all ${
+                      layoutView === "list"
+                        ? "bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm"
+                        : "text-slate-500 hover:text-slate-800 dark:text-slate-500 dark:hover:text-zinc-300"
+                    }`}
+                    title="List View"
+                  >
+                    <List className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">List</span>
+                  </button>
+                  <button
+                    onClick={() => setLayoutView("grid")}
+                    className={`flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium transition-all ${
+                      layoutView === "grid"
+                        ? "bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm"
+                        : "text-slate-500 hover:text-slate-800 dark:text-slate-500 dark:hover:text-zinc-300"
+                    }`}
+                    title="Grid View"
+                  >
+                    <LayoutGrid className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Grid</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
-
-      {/* Sticky Filter Bar */}
-      <div
-        id="explorer"
-        className="sticky top-[72px] z-30 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-900/80 transition-colors duration-200"
-      >
-        <div className="container-custom px-4 max-w-6xl mx-auto py-3">
-          <div className="flex flex-col md:flex-row gap-2">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500" />
-              <input
-                type="text"
-                placeholder="Search by college, city, or state..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-9 pr-4 py-2.5 bg-slate-100/50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-lg text-xs text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none focus:border-slate-400 dark:focus:border-slate-600 transition-colors"
-              />
-            </div>
-
-            <select
-              value={selectedState}
-              onChange={(e) => setSelectedState(e.target.value)}
-              className="px-3 py-2.5 bg-slate-100/50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-lg text-xs text-slate-700 dark:text-zinc-300 outline-none focus:border-slate-400 dark:focus:border-slate-600 transition-colors cursor-pointer md:w-44"
-            >
-              <option value="all">All States</option>
-              {uniqueStatesList.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
-            </select>
-
-            <select
-              value={selectedType}
-              onChange={(e) => setSelectedType(e.target.value as "all" | CollegeType)}
-              className="px-3 py-2.5 bg-slate-100/50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-lg text-xs text-slate-700 dark:text-zinc-300 outline-none focus:border-slate-400 dark:focus:border-slate-600 transition-colors cursor-pointer md:w-40"
-            >
-              <option value="all">All Types</option>
-              <option value="govt">Government</option>
-              <option value="private">Private</option>
-            </select>
-          </div>
-
-          <div className="flex flex-row items-center justify-between gap-4 mt-2.5">
-            <div className="flex flex-wrap items-center gap-1.5">
-              <span className="text-[11px] text-slate-500 dark:text-slate-400">
-                Showing{" "}
-                <span className="text-slate-900 dark:text-zinc-200 font-semibold">{filteredColleges.length}</span> of{" "}
-                <span className="text-slate-900 dark:text-zinc-200 font-semibold">{allColleges.length}</span> colleges
-              </span>
-
-              {hasActiveFilters && (
-                <>
-                  <span className="text-slate-300 dark:text-slate-700 mx-0.5">·</span>
-                  {search && (
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded text-[10px] text-slate-700 dark:text-zinc-300 shadow-sm">
-                      &quot;{search}&quot;
-                      <X
-                        className="w-2.5 h-2.5 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-white cursor-pointer"
-                        onClick={() => setSearch("")}
-                      />
-                    </span>
-                  )}
-                  {selectedState !== "all" && (
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded text-[10px] text-slate-700 dark:text-zinc-300 shadow-sm">
-                      {selectedState}
-                      <X
-                        className="w-2.5 h-2.5 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-white cursor-pointer"
-                        onClick={() => setSelectedState("all")}
-                      />
-                    </span>
-                  )}
-                  {selectedType !== "all" && (
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded text-[10px] text-slate-700 dark:text-zinc-300 shadow-sm">
-                      {selectedType === "govt" ? "Government" : "Private"}
-                      <X
-                        className="w-2.5 h-2.5 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-white cursor-pointer"
-                        onClick={() => setSelectedType("all")}
-                      />
-                    </span>
-                  )}
-                  <button
-                    onClick={clearAll}
-                    className="text-[10px] text-slate-500 hover:text-slate-800 dark:text-slate-500 dark:hover:text-white transition-colors ml-1"
-                  >
-                    Clear all
-                  </button>
-                </>
-              )}
-            </div>
-
-            <div className="flex items-center gap-1 p-0.5 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-md shrink-0">
-              <button
-                onClick={() => setLayoutView("list")}
-                className={`flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium transition-all ${
-                  layoutView === "list"
-                    ? "bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm"
-                    : "text-slate-500 hover:text-slate-800 dark:text-slate-500 dark:hover:text-zinc-300"
-                }`}
-                title="List View"
-              >
-                <List className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">List</span>
-              </button>
-              <button
-                onClick={() => setLayoutView("grid")}
-                className={`flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium transition-all ${
-                  layoutView === "grid"
-                    ? "bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm"
-                    : "text-slate-500 hover:text-slate-800 dark:text-slate-500 dark:hover:text-zinc-300"
-                }`}
-                title="Grid View"
-              >
-                <LayoutGrid className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Grid</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* College Explorer Section */}
       <section className="py-6 bg-slate-50 dark:bg-slate-950 transition-colors duration-200">
@@ -518,7 +520,7 @@ export default function CollegesPageClient({ states }: { states: StateData[] }) 
             <>
               {layoutView === "list" ? (
                 /* Compact List Layout (Grid 6 - 3 - 3 columns, perfectly aligned) */
-                <div className="flex flex-col gap-2.5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
                   <AnimatePresence mode="popLayout">
                     {paginatedColleges.map((college) => (
                       <motion.div
@@ -528,62 +530,38 @@ export default function CollegesPageClient({ states }: { states: StateData[] }) 
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.98 }}
                         transition={{ duration: 0.25, ease: smoothEase }}
-                        className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700/80 rounded-xl p-3.5 shadow-sm hover:shadow-md dark:hover:shadow-zinc-950/20 transition-all duration-200"
+                        className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700/80 rounded-xl p-2.5 shadow-sm hover:shadow-md dark:hover:shadow-zinc-950/20 transition-all duration-200"
                       >
-                        <div className="hidden md:grid grid-cols-12 items-center gap-4">
-                          {/* LEFT (col-span-6): College Name, Location, and Affiliation */}
-                          <div className="col-span-6 min-w-0 pr-4 space-y-1">
-                            <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-snug">
+                        <div className="hidden md:grid grid-cols-12 items-center gap-3">
+                          {/* LEFT (col-span-8): College Name and Location only */}
+                          <div className="col-span-8 min-w-0 pr-2 space-y-1">
+                            <h4 className="text-xs md:text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-snug break-words">
                               {college.name}
                             </h4>
-                            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-slate-500 dark:text-slate-400">
-                              <span className="flex items-center gap-1 shrink-0">
-                                <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                                {college.city}, {college.state}
-                              </span>
-                              <span className="text-slate-300 dark:text-slate-700 hidden sm:inline">•</span>
-                              <span className="font-medium text-slate-500 dark:text-slate-400 break-words">
-                                {getFullUniversityName(college.universityName)}
-                              </span>
+                            <div className="flex items-center gap-1 text-[10px] text-slate-500 dark:text-slate-400">
+                              <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
+                              {college.city}, {college.state}
                             </div>
                           </div>
 
-                          {/* CENTER (col-span-3): Type badge & Seats */}
-                          <div className="col-span-3 flex items-center gap-3">
+                          {/* RIGHT (col-span-4): Type badge & Enquire button */}
+                          <div className="col-span-4 flex items-center justify-end gap-2.5">
                             <span
-                              className={`shrink-0 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border ${
+                              className={`shrink-0 text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${
                                 college.type === "govt"
-                                  ? "bg-emerald-50 dark:bg-emerald-955/20 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-900/30"
-                                  : "bg-violet-50 dark:bg-violet-955/20 text-violet-600 dark:text-violet-400 border-violet-200 dark:border-violet-900/30"
+                                  ? "bg-emerald-50 dark:bg-emerald-400 text-emerald-600 dark:text-black border-emerald-200 dark:border-emerald-400"
+                                  : "bg-violet-50 dark:bg-violet-400 text-violet-600 dark:text-black border-violet-200 dark:border-violet-400"
                               }`}
                             >
                               {college.type === "govt" ? "Govt" : "Private"}
                             </span>
-                            {college.intake && (
-                              <span className="text-xs text-slate-600 dark:text-slate-400 flex items-center gap-1.5 whitespace-nowrap">
-                                <Users className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                                <strong>{college.intake}</strong> seats
-                              </span>
-                            )}
-                          </div>
-
-                          {/* RIGHT (col-span-3): Establishment Year & Compact CTA */}
-                          <div className="col-span-3 flex items-center justify-end gap-3.5">
-                            {college.establishedYear ? (
-                              <span className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5 whitespace-nowrap mr-1">
-                                <Calendar className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                                Est. {college.establishedYear}
-                              </span>
-                            ) : (
-                              <div className="flex-1" />
-                            )}
                             <button
                               onClick={() =>
                                 CTA.whatsapp(
                                   `Hi, I would like to get information regarding admissions at ${college.name}`
                                 )
                               }
-                              className="px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:hover:bg-blue-900/40 text-blue-600 dark:text-blue-400 border border-blue-100/60 dark:border-blue-900/40 transition-colors text-xs font-bold flex items-center justify-center gap-1.5 shrink-0"
+                              className="px-2.5 py-1 rounded bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:hover:bg-blue-900/40 text-blue-600 dark:text-blue-400 border border-blue-100/60 dark:border-blue-900/40 transition-colors text-[11px] font-bold flex items-center justify-center gap-1 shrink-0"
                             >
                               Enquire
                             </button>
@@ -592,47 +570,28 @@ export default function CollegesPageClient({ states }: { states: StateData[] }) 
 
                         {/* Mobile Layout */}
                         <div className="md:hidden flex flex-col gap-2">
-                          <div className="flex items-start justify-between gap-2">
+                          <div className="flex items-start justify-between gap-2.5">
                             <div className="min-w-0">
-                              <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100 leading-snug">
+                              <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100 leading-snug break-words">
                                 {college.name}
                               </h4>
-                              <p className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-1">
+                              <p className="text-[10px] text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-1">
                                 <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
-                                <span className="truncate">{college.city}, {college.state}</span>
+                                <span>{college.city}, {college.state}</span>
                               </p>
                             </div>
                             <span
-                              className={`shrink-0 text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${
+                              className={`shrink-0 text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${
                                 college.type === "govt"
-                                  ? "bg-emerald-50 dark:bg-emerald-905/20 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-900/30"
-                                  : "bg-violet-50 dark:bg-violet-905/20 text-violet-600 dark:text-violet-450 border-violet-200 dark:border-violet-900/30"
+                                  ? "bg-emerald-50 dark:bg-emerald-400 text-emerald-600 dark:text-black border-emerald-200 dark:border-emerald-400"
+                                  : "bg-violet-50 dark:bg-violet-400 text-violet-600 dark:text-black border-violet-200 dark:border-violet-400"
                               }`}
                             >
                               {college.type === "govt" ? "Govt" : "Private"}
                             </span>
                           </div>
 
-                          <div className="text-xs text-slate-500 dark:text-slate-400 leading-normal border-t border-slate-100 dark:border-slate-800/80 pt-1.5 mt-0.5">
-                            <span className="text-[9px] text-slate-400 dark:text-slate-500 uppercase tracking-wider font-semibold block mb-0.5">Affiliation</span>
-                            {getFullUniversityName(college.universityName)}
-                          </div>
-
-                          <div className="flex items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400 mt-1">
-                            <div className="flex items-center gap-3">
-                              {college.intake && (
-                                <span className="flex items-center gap-1">
-                                  <Users className="w-3 h-3 text-slate-400 shrink-0" />
-                                  <strong>{college.intake}</strong> seats
-                                </span>
-                              )}
-                              {college.establishedYear && (
-                                <span className="flex items-center gap-1">
-                                  <Calendar className="w-3 h-3 text-slate-400 shrink-0" />
-                                  Est. {college.establishedYear}
-                                </span>
-                              )}
-                            </div>
+                          <div className="flex items-center justify-end mt-1 pt-1.5 border-t border-slate-100 dark:border-slate-800/80">
                             <button
                               onClick={() =>
                                 CTA.whatsapp(
@@ -1059,68 +1018,7 @@ export default function CollegesPageClient({ states }: { states: StateData[] }) 
         </div>
       </section>
 
-      {/* Explore by State Section */}
-      <section className="py-8 bg-slate-100/40 dark:bg-slate-900/20 border-y border-slate-200/60 dark:border-slate-900/60 transition-colors duration-200">
-        <div className="container-custom px-4 max-w-6xl mx-auto">
-          <motion.div
-            variants={fadeUp()}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-6"
-          >
-            <span className="text-[10px] font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-1.5 block">
-              State-wise Selection
-            </span>
-            <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">
-              Explore Colleges by{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
-                State
-              </span>
-            </h2>
-            <p className="text-slate-500 dark:text-slate-400 text-xs max-w-md mx-auto mt-1.5">
-              Browse top medical hubs with clinical opportunities and direct counselling support.
-            </p>
-          </motion.div>
 
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-3"
-          >
-            {topStates.map((s) => {
-              const total = s.govtColleges + s.privateColleges;
-              return (
-                <motion.button
-                  key={s.slug}
-                  variants={staggerItem}
-                  onClick={() => {
-                    setSelectedState(s.name);
-                    document.getElementById("explorer")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  className="text-left p-3.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700/80 transition-all group shadow-sm"
-                >
-                  <h3 className="text-xs font-bold text-slate-800 dark:text-zinc-100 mb-0.5 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                    {s.name}
-                  </h3>
-                  <p className="text-[10px] text-slate-500 dark:text-slate-400 mb-1.5">
-                    {total} college{total !== 1 ? "s" : ""}
-                  </p>
-                  <div className="flex gap-2 text-[10px]">
-                    <span className="text-emerald-600 dark:text-emerald-400 font-semibold">{s.govtColleges} Govt</span>
-                    <span className="text-violet-600 dark:text-violet-400 font-semibold">{s.privateColleges} Private</span>
-                  </div>
-                  <div className="flex items-center gap-1 text-[10px] text-slate-400 dark:text-slate-500 mt-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                    Explore <ChevronRight className="w-3.5 h-3.5" />
-                  </div>
-                </motion.button>
-              );
-            })}
-          </motion.div>
-        </div>
-      </section>
 
       {/* FAQ Section */}
       <section className="py-12 bg-slate-50 dark:bg-slate-950 transition-colors duration-200 border-t border-b border-slate-100 dark:border-slate-900">

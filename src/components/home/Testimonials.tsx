@@ -32,14 +32,14 @@ const testimonials = [
 
 const Testimonials = () => {
   return (
-    <section className="compact-padding bg-gradient-to-b from-slate-50 to-white relative overflow-hidden">
+    <section className="compact-padding bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900 relative overflow-hidden transition-colors duration-200">
       <div className="container-custom">
         <div className="text-center mb-10">
           <motion.span
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            className="inline-block px-4 py-1.5 mb-4 text-[10px] font-black tracking-[0.2em] text-blue-600 uppercase bg-blue-600/10 rounded-full"
+            className="inline-block px-4 py-1.5 mb-4 text-[10px] font-black tracking-[0.2em] text-blue-600 dark:text-blue-450 uppercase bg-blue-600/10 dark:bg-blue-900/20 rounded-full"
           >
             Student Stories
           </motion.span>
@@ -48,11 +48,11 @@ const Testimonials = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ delay: 0.1 }}
-            className="text-responsive-h2 text-slate-900 mb-4"
+            className="text-responsive-h2 text-slate-900 dark:text-white mb-4"
           >
-            Real Results from <span className="text-blue-600">Real Students</span>
+            Real Results from <span className="text-blue-600 dark:text-blue-400">Real Students</span>
           </motion.h2>
-          <p className="text-responsive-body text-slate-600 max-w-2xl mx-auto font-medium">
+          <p className="text-responsive-body text-slate-600 dark:text-slate-400 max-w-2xl mx-auto font-medium">
             Don&apos;t just take our word for it — hear from families who navigated NEET admissions with our guidance.
           </p>
         </div>
@@ -65,7 +65,7 @@ const Testimonials = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ delay: 0.2 + index * 0.12 }}
-              className="group relative p-6 md:p-8 rounded-3xl md:rounded-[2.5rem] bg-white border border-slate-100 hover:border-blue-200 hover:shadow-2xl transition-all h-full flex flex-col justify-between"
+              className="group relative p-6 md:p-8 rounded-3xl md:rounded-[2.5rem] bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 hover:border-blue-200 dark:hover:border-blue-800 hover:shadow-2xl transition-all h-full flex flex-col justify-between"
             >
               <div>
                 {/* Quote icon */}
@@ -75,24 +75,24 @@ const Testimonials = () => {
                       <Star key={i} size={14} className="text-amber-400 fill-amber-400 md:w-4 md:h-4" />
                     ))}
                   </div>
-                  <Quote className="w-6 h-6 md:w-8 md:h-8 text-blue-100/50 group-hover:text-blue-200 transition-colors" />
+                  <Quote className="w-6 h-6 md:w-8 md:h-8 text-blue-100/50 dark:text-blue-900/10 group-hover:text-blue-200 dark:group-hover:text-blue-800 transition-colors" />
                 </div>
 
                 {/* Text */}
-                <p className="text-slate-600 leading-relaxed mb-6 md:mb-8 text-[13px] md:text-sm font-medium italic">&ldquo;{t.text}&rdquo;</p>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6 md:mb-8 text-[13px] md:text-sm font-medium italic">&ldquo;{t.text}&rdquo;</p>
               </div>
 
               {/* Author */}
-              <div className="flex items-center gap-3 md:gap-4 pt-4 md:pt-6 border-t border-slate-100">
+              <div className="flex items-center gap-3 md:gap-4 pt-4 md:pt-6 border-t border-slate-100 dark:border-slate-800">
                 <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-white font-black text-xs shrink-0 shadow-lg shadow-blue-900/10">
                   {t.avatar}
                 </div>
                 <div>
-                  <h4 className="text-sm md:text-base font-black text-slate-900 tracking-tight">{t.name}</h4>
-                  <p className="text-[9px] md:text-[10px] text-slate-500 font-bold uppercase tracking-wider">{t.course}</p>
+                  <h4 className="text-sm md:text-base font-black text-slate-900 dark:text-white tracking-tight">{t.name}</h4>
+                  <p className="text-[9px] md:text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">{t.course}</p>
                   <div className="mt-1 flex items-center gap-1.5">
                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                    <p className="text-[9px] md:text-[10px] text-emerald-600 font-black uppercase tracking-widest">{t.outcome}</p>
+                    <p className="text-[9px] md:text-[10px] text-emerald-600 dark:text-emerald-400 font-black uppercase tracking-widest">{t.outcome}</p>
                   </div>
                 </div>
               </div>

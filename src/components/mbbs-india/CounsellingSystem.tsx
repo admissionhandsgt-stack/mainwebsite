@@ -24,8 +24,8 @@ export const CounsellingSystem = () => {
           <h2 className="text-3xl md:text-4xl font-black mb-4 tracking-tight leading-tight">
             The <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">Counselling System</span> Visualized
           </h2>
-          <p className="text-base text-blue-100/60 font-medium leading-relaxed">
-            Understanding seat division is vital. Click on each category to see our recommended **Goal Strategy**.
+          <p className="text-base text-blue-100/60 font-medium leading-relaxed md:whitespace-nowrap">
+            Understanding seat division is vital. Click on each category to see our recommended <span className="text-teal-400 font-black">Goal Strategy</span>.
           </p>
         </div>
 

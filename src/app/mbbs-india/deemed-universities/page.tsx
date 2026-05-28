@@ -92,7 +92,7 @@ export default function DeemedUniversities() {
                 className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start"
               >
                 <a href={`tel:${phoneNumber}`}
-                  className="inline-flex justify-center items-center gap-2 bg-white text-slate-900 px-5 py-3 rounded-xl font-black text-sm hover:bg-blue-50 transition-all shadow-xl shadow-blue-500/10 active:scale-95"
+                  className="inline-flex justify-center items-center gap-2 bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-teal-500/30 text-slate-900 dark:text-teal-400 px-5 py-3 rounded-xl font-black text-sm hover:bg-blue-50 dark:hover:bg-slate-900/60 transition-all shadow-xl active:scale-95"
                 >
                   <Phone className="w-4 h-4" /> Get Expert Guidance
                 </a>

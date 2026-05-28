@@ -52,14 +52,14 @@ const steps = [
 
 const HowItWorks = () => {
   return (
-    <section className="compact-padding bg-slate-50/50 relative overflow-hidden">
+    <section className="compact-padding bg-slate-50/50 dark:bg-slate-955 relative overflow-hidden">
       <div className="container-custom relative z-10">
         <div className="text-center mb-8 md:mb-12">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            className="inline-block px-3 py-1.5 mb-3 text-[10px] font-black tracking-widest text-blue-600 uppercase bg-blue-100/50 border border-blue-200/50 rounded-full"
+            className="inline-block px-3 py-1.5 mb-3 text-[10px] font-black tracking-widest text-blue-600 dark:text-blue-400 uppercase bg-blue-100/50 dark:bg-blue-950/40 border border-blue-200/50 dark:border-blue-900/30 rounded-full"
           >
             How We Secure Your Best Seat
           </motion.div>
@@ -68,16 +68,16 @@ const HowItWorks = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ delay: 0.1 }}
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 mb-3 tracking-tight"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white mb-3 tracking-tight"
           >
-            Your NEET Journey in <span className="text-blue-600">6 Steps</span>
+            Your NEET Journey in <span className="text-blue-600 dark:text-blue-400">6 Steps</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ delay: 0.2 }}
-            className="text-sm md:text-base text-slate-500 max-w-xl mx-auto font-medium leading-relaxed"
+            className="text-sm md:text-base text-slate-500 dark:text-slate-400 max-w-xl mx-auto font-medium leading-relaxed"
           >
             The path to your dream medical college is clear with our expert-designed roadmap.
           </motion.p>
@@ -86,7 +86,7 @@ const HowItWorks = () => {
         {/* Timeline / Card Hybrid Grid */}
         <div className="relative max-w-5xl mx-auto">
           {/* Animated Connector Line (Desktop only) */}
-          <div className="hidden lg:block absolute top-[45px] left-8 right-8 h-1 bg-slate-200/60 rounded-full overflow-hidden">
+          <div className="hidden lg:block absolute top-[55px] left-12 right-12 h-1 bg-slate-200/60 dark:bg-slate-800 rounded-full overflow-hidden">
             <motion.div 
               initial={{ width: 0 }}
               whileInView={{ width: "100%" }}
@@ -106,20 +106,20 @@ const HowItWorks = () => {
                 transition={{ delay: 0.4 + index * 0.1 }}
                 className="relative group"
               >
-                <div className="bg-white lg:bg-transparent lg:border-none border border-slate-100 p-4 lg:p-0 rounded-2xl shadow-sm lg:shadow-none flex flex-row lg:flex-col items-center text-left lg:text-center gap-4 lg:gap-0 h-full transition-all hover:border-blue-200 hover:shadow-md lg:hover:shadow-none">
+                <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-5 lg:p-6 lg:pt-8 lg:pb-6 rounded-2xl shadow-sm flex flex-row lg:flex-col items-center text-left lg:text-center gap-4 lg:gap-0 h-full transition-all hover:border-blue-200 dark:hover:border-blue-900/60 hover:shadow-md dark:hover:shadow-zinc-950/50 lg:min-h-[240px]">
                   {/* Icon Node */}
                   <div className={`relative z-10 flex-shrink-0 flex items-center justify-center w-12 h-12 lg:w-16 lg:h-16 rounded-xl lg:rounded-2xl bg-gradient-to-br ${step.color} text-white shadow-lg lg:mx-auto lg:mb-4 group-hover:scale-110 transition-transform duration-300`}>
                     <step.icon size={20} className="lg:hidden" />
                     <step.icon size={24} className="hidden lg:block" />
-                    <div className="absolute -top-1 -right-1 lg:-top-2 lg:-right-2 flex h-5 w-5 lg:h-6 lg:w-6 items-center justify-center rounded-full border-2 border-white bg-slate-900 text-[9px] lg:text-[10px] font-black text-white">
+                    <div className="absolute -top-1 -right-1 lg:-top-2 lg:-right-2 flex h-5 w-5 lg:h-6 lg:w-6 items-center justify-center rounded-full border-2 border-white dark:border-slate-900 bg-slate-900 dark:bg-blue-600 text-[9px] lg:text-[10px] font-black text-white">
                       {index + 1}
                     </div>
                   </div>
                   
                   {/* Text Content */}
                   <div className="flex-1 lg:mt-2">
-                    <h3 className="text-sm lg:text-base font-black text-slate-900 mb-1 lg:mb-2 group-hover:text-blue-600 transition-colors tracking-tight">{step.title}</h3>
-                    <p className="text-slate-500 text-[11px] lg:text-xs font-medium leading-snug">{step.description}</p>
+                    <h3 className="text-sm lg:text-base font-black text-slate-900 dark:text-white mb-1 lg:mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors tracking-tight">{step.title}</h3>
+                    <p className="text-slate-500 dark:text-slate-400 text-[11px] lg:text-xs font-medium leading-snug">{step.description}</p>
                   </div>
                 </div>
               </motion.div>
@@ -129,7 +129,7 @@ const HowItWorks = () => {
 
         <div className="mt-8 md:mt-12 text-center">
           <Link href="/neet-ug-process">
-            <Button size="lg" className="rounded-xl px-6 py-4 md:px-8 md:py-6 text-xs md:text-sm font-black bg-slate-900 hover:bg-blue-600 text-white shadow-lg transition-all active:scale-95 group">
+            <Button size="lg" className="rounded-xl px-6 py-4 md:px-8 md:py-6 text-xs md:text-sm font-black bg-slate-900 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-white shadow-lg transition-all active:scale-95 group border-0">
               Detailed NEET Process 
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Button>

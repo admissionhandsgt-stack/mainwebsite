@@ -28,7 +28,7 @@ const NeetUgProcessPage = () => {
   };
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-white transition-colors duration-200">
       {/* 1. HERO SECTION */}
       <section className="relative min-h-[50vh] h-auto py-24 md:py-32 flex items-center justify-center overflow-hidden">
         <Image
@@ -66,13 +66,13 @@ const NeetUgProcessPage = () => {
       </section>
 
       {/* 2. OVERVIEW SECTION */}
-      <section className="py-8 bg-white">
+      <section className="py-8 bg-white dark:bg-slate-950">
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
             <div className="space-y-4">
               <div>
-                <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-2">Overview of Admission Lifecycle</h2>
-                <p className="text-slate-600 text-base leading-relaxed">
+                <h2 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-2">Overview of Admission Lifecycle</h2>
+                <p className="text-slate-600 dark:text-slate-400 text-base leading-relaxed">
                   NEET UG is the single national-level entrance examination for MBBS admissions in India. The process is managed by multiple authorities depending on the quota and college type.
                 </p>
               </div>
@@ -83,21 +83,21 @@ const NeetUgProcessPage = () => {
                   { title: "MCC", desc: "Handles AIQ, Deemed & Central counselling", icon: Building2 },
                   { title: "State Authorities", desc: "Manage state quota (85%) and private admissions", icon: Users }
                 ].map((item, idx) => (
-                  <div key={idx} className="flex items-start gap-4 p-4 rounded-xl bg-slate-50 border border-slate-100 transition-hover hover:shadow-sm">
-                    <div className="bg-white p-2.5 rounded-lg shadow-sm text-primary">
+                  <div key={idx} className="flex items-start gap-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 transition-hover hover:shadow-sm">
+                    <div className="bg-white dark:bg-slate-950 p-2.5 rounded-lg shadow-sm text-primary">
                       <item.icon className="h-5 w-5" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-slate-900 text-sm">{item.title}</h3>
-                      <p className="text-slate-500 text-xs">{item.desc}</p>
+                      <h3 className="font-bold text-slate-900 dark:text-white text-sm">{item.title}</h3>
+                      <p className="text-slate-500 dark:text-slate-400 text-xs">{item.desc}</p>
                     </div>
                   </div>
                 ))}
               </div>
 
-              <div className="p-5 bg-amber-50 rounded-xl border border-amber-100 flex gap-4">
+              <div className="p-5 bg-amber-50 dark:bg-amber-950/20 rounded-xl border border-amber-100 dark:border-amber-900/30 flex gap-4">
                 <ShieldAlert className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
-                <p className="text-amber-900 text-sm font-medium italic mb-0">
+                <p className="text-amber-900 dark:text-amber-200 text-sm font-medium italic mb-0">
                   Navigating this process correctly is crucial, as small mistakes can cost valuable seats.
                 </p>
               </div>
@@ -115,11 +115,11 @@ const NeetUgProcessPage = () => {
       </section>
 
       {/* 3. CORE PROCESS SECTION */}
-      <section id="steps-section" className="py-8 bg-slate-50">
+      <section id="steps-section" className="py-8 bg-slate-50 dark:bg-slate-950/40">
         <div className="container-custom">
           <div className="text-center mb-6">
-            <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-2">Step-by-Step Journey</h2>
-            <p className="text-slate-500 text-sm">We break down the 15 critical milestones of your admission process.</p>
+            <h2 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-2">Step-by-Step Journey</h2>
+            <p className="text-slate-500 dark:text-slate-400 text-sm">We break down the 15 critical milestones of your admission process.</p>
           </div>
           
           <ProcessAccordion />
@@ -153,11 +153,11 @@ const NeetUgProcessPage = () => {
       </section>
 
       {/* 4. COMMON MISTAKES SECTION */}
-      <section className="py-8 bg-white">
+      <section className="py-8 bg-white dark:bg-slate-950">
         <div className="container-custom">
           <div className="text-center mb-6">
-            <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-2">Common Mistakes to Avoid</h2>
-            <p className="text-slate-500 text-sm">Every year, thousands of students lose their seats due to these avoidable errors.</p>
+            <h2 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-2">Common Mistakes to Avoid</h2>
+            <p className="text-slate-500 dark:text-slate-400 text-sm">Every year, thousands of students lose their seats due to these avoidable errors.</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             {[
@@ -175,7 +175,7 @@ const NeetUgProcessPage = () => {
               </div>
             ))}
           </div>
-          <div className="mt-8 p-4 bg-slate-900 rounded-xl text-center">
+          <div className="mt-8 p-4 bg-slate-900 dark:bg-slate-900/60 border border-slate-800/80 rounded-xl text-center">
             <p className="text-slate-300 text-sm font-medium">
               <span className="text-rose-400 font-black uppercase tracking-widest mr-2 text-xs">Critical:</span> 
               These mistakes often result in losing better colleges.
@@ -185,11 +185,11 @@ const NeetUgProcessPage = () => {
       </section>
 
       {/* 5. HOW ADMISSION HANDS HELPS */}
-      <section className="py-6 bg-slate-50">
+      <section className="py-6 bg-slate-50 dark:bg-slate-950">
         <div className="container-custom">
           <div className="text-center mb-6">
-            <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-2">How Admission Hands Helps</h2>
-            <p className="text-slate-500 max-w-2xl mx-auto text-sm">We provide the data, strategy, and peace of mind you need for a successful admission.</p>
+            <h2 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-2">How Admission Hands Helps</h2>
+            <p className="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto text-sm">We provide the data, strategy, and peace of mind you need for a successful admission.</p>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
             {[
@@ -200,12 +200,15 @@ const NeetUgProcessPage = () => {
               { title: "Documentation Support", icon: UserCheck },
               { title: "End-to-End Guidance", icon: ShieldAlert }
             ].map((feature, idx) => (
-              <div key={idx} className="p-6 rounded-2xl bg-white border border-slate-100 shadow-sm transition-all hover:shadow-lg hover:border-primary/20 group text-center md:text-left">
-                <div className="w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center text-primary mb-5 transition-colors group-hover:bg-primary group-hover:text-white mx-auto md:mx-0">
+              <div key={idx} className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 shadow-sm transition-all hover:shadow-lg hover:border-primary/20 dark:hover:border-teal-500/40 group text-center md:text-left relative overflow-hidden before:absolute before:top-0 before:left-0 before:right-0 before:h-[3px] before:bg-gradient-to-r before:from-blue-500 before:to-teal-400 before:opacity-0 group-hover:before:opacity-100 before:transition-opacity">
+                <div className="absolute top-3 right-4 text-5xl font-black text-slate-100/70 dark:text-slate-800/30 group-hover:text-blue-500/10 dark:group-hover:text-teal-400/10 select-none font-sans tracking-tighter transition-colors">
+                  {String(idx + 1).padStart(2, '0')}
+                </div>
+                <div className="w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-950/60 flex items-center justify-center text-primary dark:text-blue-400 mb-5 transition-colors group-hover:bg-primary group-hover:text-white dark:group-hover:bg-blue-500 dark:group-hover:text-white mx-auto md:mx-0">
                   <feature.icon size={24} />
                 </div>
-                <h4 className="text-lg font-bold text-slate-900 mb-2">{feature.title}</h4>
-                <p className="text-slate-500 text-xs leading-relaxed">Expert intervention at every step to ensure you get the best college for your rank.</p>
+                <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{feature.title}</h4>
+                <p className="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">Expert intervention at every step to ensure you get the best college for your rank.</p>
               </div>
             ))}
           </div>
@@ -213,11 +216,11 @@ const NeetUgProcessPage = () => {
       </section>
 
       {/* 6. FINAL CTA */}
-      <section className="py-6 md:py-10 bg-white relative overflow-hidden hidden md:block">
+      <section className="py-6 md:py-10 bg-white dark:bg-slate-950 border-t border-slate-100 dark:border-slate-900 relative overflow-hidden hidden md:block">
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div className="order-2 lg:order-1 text-center lg:text-left">
-              <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
+              <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-6 leading-tight">
                 Secure Your MBBS Seat with <span className="text-primary">Expert Guidance</span>
               </h2>
               <ul className="space-y-3 mb-8 inline-block text-left">
@@ -226,7 +229,7 @@ const NeetUgProcessPage = () => {
                   "Strategic admission planning",
                   "Full support till college joining"
                 ].map((point, idx) => (
-                  <li key={idx} className="flex items-center gap-3 text-base text-slate-700 font-medium">
+                  <li key={idx} className="flex items-center gap-3 text-base text-slate-700 dark:text-slate-300 font-medium">
                     <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-600">
                       <ChevronRight size={14} />
                     </div>
@@ -263,10 +266,10 @@ const NeetUgProcessPage = () => {
       </section>
 
       {/* 7. DISCLAIMER */}
-      <section className="py-8 bg-slate-50 border-t border-slate-100">
+      <section className="py-8 bg-slate-50 dark:bg-slate-950 border-t border-slate-100 dark:border-slate-900">
         <div className="container-custom text-center">
-          <h5 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3">Disclaimer</h5>
-          <p className="text-xs text-slate-500 leading-relaxed italic max-w-4xl mx-auto">
+          <h5 className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-3">Disclaimer</h5>
+          <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed italic max-w-4xl mx-auto">
             All information is for guidance purposes only. Admission processes, seat matrix, eligibility, and counselling rules are subject to updates by NTA, MCC, and respective State Authorities. We strongly advise students to verify details from official portals regularly.
           </p>
         </div>

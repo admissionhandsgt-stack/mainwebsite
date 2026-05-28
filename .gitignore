@@ -29,3 +29,6 @@ dist-ssr
 test-results/
 .env*.local
 
+
+.vercel
+.open-next

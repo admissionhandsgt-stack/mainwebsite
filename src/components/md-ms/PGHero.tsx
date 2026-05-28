@@ -39,16 +39,23 @@ export const PGHero = () => {
   return (
     <section
       id="pg-hero"
-      className="relative w-full min-h-[480px] md:min-h-[600px] md:h-screen flex items-center overflow-hidden bg-white"
+      className="relative w-full min-h-[480px] md:min-h-[600px] md:h-screen flex items-center overflow-hidden bg-white dark:bg-slate-950 transition-colors duration-200"
       role="banner"
     >
-      {/* ── Background: soft gradient + radial glow ── */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-white via-blue-50/80 to-slate-50" />
-        <div className="absolute -top-32 -right-32 w-[600px] h-[600px] rounded-full bg-blue-200/30 blur-[120px]" />
-        <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full bg-sky-100/40 blur-[100px]" />
+      {/* ── Background: DY Patil Mumbai Campus Image + soft gradient + radial glow ── */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <Image
+          src="/assets/images/hero/dy-patil-mumbai.png"
+          alt="DY Patil Mumbai Campus Background"
+          fill
+          priority
+          className="object-cover object-center opacity-15 dark:opacity-10 filter brightness-[0.95] dark:brightness-[0.85]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-white/95 via-blue-50/90 to-slate-50/95 dark:from-slate-950/95 dark:via-slate-900/90 dark:to-slate-950/95" />
+        <div className="absolute -top-32 -right-32 w-[600px] h-[600px] rounded-full bg-blue-200/20 dark:bg-blue-900/10 blur-[120px]" />
+        <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full bg-sky-100/30 dark:bg-sky-900/10 blur-[100px]" />
         <div
-          className="absolute inset-0 opacity-[0.035]"
+          className="absolute inset-0 opacity-[0.035] dark:opacity-[0.02]"
           style={{
             backgroundImage:
               "radial-gradient(circle, #3b82f6 1px, transparent 1px)",
@@ -70,7 +77,7 @@ export const PGHero = () => {
           >
             {/* Tagline pill */}
             <motion.div variants={fadeUp} className="mb-6 flex justify-center lg:justify-start">
-              <span className="inline-flex items-center gap-2 rounded-full bg-blue-50 border border-blue-100 px-4 py-2 text-[10px] font-black text-blue-600 tracking-widest uppercase">
+              <span className="inline-flex items-center gap-2 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-100/80 dark:border-blue-900/40 px-4 py-2 text-[10px] font-black text-blue-600 dark:text-blue-400 tracking-widest uppercase">
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
                 NEET PG 2025 Counselling Guidance
               </span>
@@ -79,14 +86,14 @@ export const PGHero = () => {
             {/* Main heading */}
             <motion.h1
               variants={fadeUp}
-              className="text-responsive-h1 text-slate-900 mb-6"
+              className="text-responsive-h1 text-slate-900 dark:text-white mb-6"
             >
               Get Your{" "}
               <span className="relative inline-block">
                 <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-500">
                   PG MD/MS Seat
                 </span>
-                <span className="absolute -bottom-1 left-0 w-full h-2.5 bg-blue-100/70 rounded-full -z-0" />
+                <span className="absolute -bottom-1 left-0 w-full h-2.5 bg-blue-100/70 dark:bg-blue-900/30 rounded-full -z-0" />
               </span>
               <br className="hidden sm:block" />
               {" "}Without Confusion
@@ -95,7 +102,7 @@ export const PGHero = () => {
             {/* Subtext */}
             <motion.p
               variants={fadeUp}
-              className="text-responsive-body text-slate-500 mb-8 max-w-lg mx-auto lg:mx-0 font-medium"
+              className="text-responsive-body text-slate-500 dark:text-slate-400 mb-8 max-w-lg mx-auto lg:mx-0 font-medium"
             >
               Based on your NEET rank, budget &amp; category — get expert guidance
               for government and private colleges.
@@ -121,7 +128,7 @@ export const PGHero = () => {
                 href={`https://wa.me/${CONTACT_INFO.whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center justify-center gap-2 md:gap-3 rounded-xl md:rounded-2xl border-2 border-slate-200 bg-white/70 backdrop-blur-sm px-5 md:px-8 py-3.5 md:py-5 text-slate-800 font-black text-sm md:text-lg hover:bg-white hover:border-blue-200 hover:text-blue-600 active:scale-[0.97] transition-all duration-300"
+                className="group inline-flex items-center justify-center gap-2 md:gap-3 rounded-xl md:rounded-2xl border-2 border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 backdrop-blur-sm px-5 md:px-8 py-3.5 md:py-5 text-slate-800 dark:text-slate-200 font-black text-sm md:text-lg hover:bg-white dark:hover:bg-slate-800 hover:border-blue-200 dark:hover:border-slate-700 hover:text-blue-600 dark:hover:text-blue-400 active:scale-[0.97] transition-all duration-300"
               >
                 <WhatsAppIcon size={20} className="text-emerald-500" />
                 Talk to Expert
@@ -131,7 +138,7 @@ export const PGHero = () => {
             {/* Micro trust line */}
             <motion.div
               variants={fadeUp}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 text-[10px] font-black uppercase tracking-widest text-slate-400"
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500"
             >
               <span className="inline-flex items-center gap-2">
                 <CheckCircle size={14} className="text-emerald-500" />

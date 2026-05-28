@@ -15,7 +15,7 @@ const TrackRecord = () => {
     },
     {
       icon: <Medal className="w-8 h-8" />,
-      value: "10+",
+      value: "12+",
       label: "Years Experience",
       description: "In Education Consultancy",
       gradient: "from-purple-500 to-pink-500"

@@ -11,7 +11,7 @@ export const MBBSHero = () => {
   const { hero } = mbbsData;
 
   return (
-    <section className="relative w-full min-h-[420px] md:min-h-[600px] md:h-screen flex items-center overflow-hidden bg-white">
+    <section className="relative w-full min-h-[420px] md:min-h-[600px] md:h-screen flex items-center overflow-hidden bg-white dark:bg-slate-950 transition-colors duration-200">
       {/* Background with DY Patil College Mumbai */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <Image
@@ -19,11 +19,11 @@ export const MBBSHero = () => {
           alt="DY Patil Medical College Mumbai"
           fill
           priority
-          className="object-cover object-[75%_center] md:object-center opacity-60 scale-105 transition-all duration-700 aspect-[4/5] md:aspect-auto"
+          className="object-cover object-[75%_center] md:object-center opacity-40 md:opacity-60 dark:opacity-30 scale-105 transition-all duration-700 aspect-[4/5] md:aspect-auto"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/30 to-white/80 md:from-white/85 md:via-white/20 md:to-white/70" />
-        <div className="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-transparent hidden md:block" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/75 to-white/90 md:from-white/85 md:via-white/20 md:to-white/70 dark:from-slate-950/95 dark:via-slate-950/50 dark:to-slate-950/80" />
+        <div className="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-transparent dark:from-slate-950 dark:via-slate-950/70 dark:to-transparent hidden md:block" />
       </div>
 
       <div className="container-custom relative z-10 pt-2 pb-2 md:pt-4 md:pb-4 h-full flex flex-col justify-center">
@@ -38,8 +38,8 @@ export const MBBSHero = () => {
               </span>
             </div>
 
-            <h1 className="text-responsive-h1 text-slate-900">
-              MBBS <span className="text-blue-600">Admission</span> in India Made Simple
+            <h1 className="text-responsive-h1 text-slate-900 dark:text-white">
+              MBBS <span className="text-blue-600 dark:text-blue-400">Admission</span> in India Made Simple
             </h1>
 
             {/* Promising Info - Minimal */}
@@ -48,8 +48,8 @@ export const MBBSHero = () => {
                 <div key={idx} className="flex items-center gap-2 md:gap-3">
                   <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-blue-600" />
                   <div className="text-left">
-                    <p className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] md:tracking-[0.2em] leading-none mb-1">{stat.label}</p>
-                    <p className="text-sm md:text-lg font-black text-slate-900 leading-none">{stat.value}</p>
+                    <p className="text-[9px] md:text-[10px] font-black text-slate-700 md:text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] md:tracking-[0.2em] leading-none mb-1">{stat.label}</p>
+                    <p className="text-sm md:text-lg font-black text-slate-955 md:text-slate-900 dark:text-white leading-none">{stat.value}</p>
                   </div>
                 </div>
               ))}
@@ -61,7 +61,7 @@ export const MBBSHero = () => {
                 <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5" />
               </CTAButton>
               
-              <CTAButton action="call" variant="ghost" className="rounded-xl md:rounded-2xl px-5 md:px-4 py-3.5 md:py-3 text-sm text-blue-600 hover:bg-blue-50 font-black border-2 border-slate-200 bg-white">
+              <CTAButton action="call" variant="ghost" className="rounded-xl md:rounded-2xl px-5 md:px-4 py-3.5 md:py-3 text-sm text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/45 font-black border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
                 <Phone className="w-4 h-4 mr-2" />
                 Call Expert
               </CTAButton>

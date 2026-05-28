@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import { useDeemedColleges, type DeemedCollegeFilters } from '@/hooks/useDeemedColleges';
 import { DeemedCollegeCard, DeemedCollegeCardSkeleton } from './DeemedCollegeCard';
 import { DeemedCollegeFilterBar } from './DeemedCollegeFilterBar';
-import { SearchX, ArrowDown } from 'lucide-react';
+import { SearchX, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const DEFAULT_FILTERS: DeemedCollegeFilters = {
   search: '',
@@ -38,6 +38,7 @@ export function DeemedCollegesListing() {
     colleges,
     isLoading,
     error,
+    page,
     hasMore,
     totalCount,
     states,
@@ -91,9 +92,27 @@ export function DeemedCollegesListing() {
     syncFiltersToURL(DEFAULT_FILTERS);
   }, [syncFiltersToURL]);
 
-  const handleLoadMore = useCallback(() => {
-    loadMore(filters);
-  }, [loadMore, filters]);
+  const totalPages = Math.ceil(totalCount / 10);
+
+  const handlePageChange = useCallback((pageNum: number) => {
+    if (pageNum < 1 || pageNum > totalPages) return;
+    fetchColleges(filters, pageNum, false);
+    document.getElementById("deemed-listing")?.scrollIntoView({ behavior: 'smooth' });
+  }, [filters, fetchColleges, totalPages]);
+
+  const paginationNumbers = React.useMemo(() => {
+    const numbers: number[] = [];
+    const maxVisible = 5;
+    let start = Math.max(1, page - 2);
+    let end = Math.min(totalPages, start + maxVisible - 1);
+    if (end - start + 1 < maxVisible) {
+      start = Math.max(1, end - maxVisible + 1);
+    }
+    for (let i = start; i <= end; i++) {
+      numbers.push(i);
+    }
+    return numbers;
+  }, [page, totalPages]);
 
   return (
     <div>
@@ -109,8 +128,8 @@ export function DeemedCollegesListing() {
       <section className="compact-padding bg-slate-50/50">
         <div className="container-custom">
           {isLoading && colleges.length === 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
-              {Array.from({ length: 8 }).map((_, i) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+              {Array.from({ length: 10 }).map((_, i) => (
                 <DeemedCollegeCardSkeleton key={i} />
               ))}
             </div>
@@ -150,31 +169,49 @@ export function DeemedCollegesListing() {
 
           {colleges.length > 0 && (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
                 {colleges.map((college) => (
                   <DeemedCollegeCard key={college.id} college={college} />
                 ))}
               </div>
 
-              {hasMore && (
-                <div className="mt-8 text-center">
+              {totalPages > 1 && (
+                <div className="mt-8 flex justify-end items-center gap-1.5 flex-wrap">
+                  {/* Previous Button */}
                   <button
-                    onClick={handleLoadMore}
-                    disabled={isLoading}
-                    className="inline-flex items-center gap-2 px-8 py-3 bg-slate-900 text-white rounded-2xl text-sm font-black hover:bg-blue-600 transition-all shadow-lg shadow-slate-900/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                    onClick={() => handlePageChange(page - 1)}
+                    disabled={page === 1 || isLoading}
+                    className="p-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800/60 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm flex items-center justify-center shrink-0"
+                    title="Previous Page"
                   >
-                    {isLoading ? 'Loading...' : (
-                      <>Load More Colleges <ArrowDown className="w-4 h-4" /></>
-                    )}
+                    <ChevronLeft className="w-3.5 h-3.5" />
                   </button>
-                </div>
-              )}
 
-              {!hasMore && colleges.length > 0 && (
-                <div className="mt-8 text-center">
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                    Showing all {totalCount} colleges
-                  </p>
+                  {/* Page Numbers */}
+                  {paginationNumbers.map((pNum) => (
+                    <button
+                      key={pNum}
+                      onClick={() => handlePageChange(pNum)}
+                      disabled={isLoading}
+                      className={`h-8 min-w-[2rem] px-2 rounded-lg text-xs font-bold transition-all shadow-sm ${
+                        pNum === page
+                          ? 'bg-blue-600 text-white border border-blue-600'
+                          : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-350 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60'
+                      }`}
+                    >
+                      {pNum}
+                    </button>
+                  ))}
+
+                  {/* Next Button */}
+                  <button
+                    onClick={() => handlePageChange(page + 1)}
+                    disabled={page === totalPages || isLoading}
+                    className="p-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800/60 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm flex items-center justify-center shrink-0"
+                    title="Next Page"
+                  >
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
                 </div>
               )}
             </>

@@ -12,7 +12,7 @@ import Image from 'next/image';
 
 const mbbsSubLinks = [
   { name: 'Deemed Universities', href: '/mbbs-india/deemed-universities' },
-  { name: 'All Colleges', href: '/mbbs-india/colleges' },
+  { name: 'Govt & Pvt Colleges', href: '/mbbs-india/colleges' },
   { name: 'NEET UG Process', href: '/neet-ug-process' },
 ];
 
@@ -31,10 +31,15 @@ export default function Header() {
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.classList.add('no-scroll');
+      window.dispatchEvent(new CustomEvent('mobileMenuToggle', { detail: { open: true } }));
     } else {
       document.body.classList.remove('no-scroll');
+      window.dispatchEvent(new CustomEvent('mobileMenuToggle', { detail: { open: false } }));
     }
-    return () => document.body.classList.remove('no-scroll');
+    return () => {
+      document.body.classList.remove('no-scroll');
+      window.dispatchEvent(new CustomEvent('mobileMenuToggle', { detail: { open: false } }));
+    };
   }, [isMobileMenuOpen]);
 
   useEffect(() => {
@@ -69,89 +74,91 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 w-full z-[40] bg-white/95 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/60 shadow-sm transition-all duration-200">
-      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between gap-4">
-        {/* Extreme Left: Logo */}
-        <Link href="/" className="flex items-center justify-start shrink-0 mr-2">
-          <Image 
-            src="/assets/images/logos/logo-4k.webp" 
-            alt="Admission Hands Logo" 
-            width={220}
-            height={55}
-            className="object-contain w-[160px] h-[40px] sm:w-[180px] sm:h-[45px] md:w-[200px] md:h-[50px] transition-all dark:brightness-110 dark:hue-rotate-15"
-            priority
-          />
-        </Link>
+    <>
+      <header className="fixed top-0 left-0 right-0 w-full z-[40] bg-white/95 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/60 shadow-sm transition-all duration-200">
+        <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between gap-4">
+          {/* Extreme Left: Logo */}
+          <Link href="/" className="flex items-center justify-start shrink-0 mr-2">
+            <Image 
+              src="/assets/images/logos/logo-4k.webp" 
+              alt="Admission Hands Logo" 
+              width={220}
+              height={55}
+              className="object-contain w-[160px] h-[40px] sm:w-[180px] sm:h-[45px] md:w-[200px] md:h-[50px] transition-all dark:brightness-110 dark:hue-rotate-15"
+              priority
+            />
+          </Link>
 
-        {/* Center: Centered Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-1 xl:gap-2 mx-auto">
-          {navLinks.map((link) => {
-            const isActive = pathname === link.href;
-            return (
-              <div key={link.name} className="relative group">
-                <Link
-                  href={link.href}
-                  className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs xl:text-sm font-semibold transition-all ${
-                    isActive 
-                      ? 'bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400' 
-                      : 'text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-900/60'
-                  }`}
-                >
-                  {link.name}
-                  {link.hasDropdown && <ChevronDown className="w-3.5 h-3.5" />}
-                </Link>
-                {link.hasDropdown && (
-                  <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                    <div className="bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-100 dark:border-slate-800/80 p-1.5 min-w-[210px]">
-                      {mbbsSubLinks.map((sub) => (
-                        <Link
-                          key={sub.href}
-                          href={sub.href}
-                          className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-350 hover:bg-blue-50 dark:hover:bg-blue-950/20 hover:text-blue-700 dark:hover:text-blue-400 transition-all"
-                        >
-                          {sub.name}
-                          <ChevronRight className="w-3 h-3 opacity-40" />
-                        </Link>
-                      ))}
+          {/* Center: Centered Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-2 mx-auto">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <div key={link.name} className="relative group">
+                  <Link
+                    href={link.href}
+                    className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs xl:text-sm font-semibold transition-all ${
+                      isActive 
+                        ? 'bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400' 
+                        : 'text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-900/60'
+                    }`}
+                  >
+                    {link.name}
+                    {link.hasDropdown && <ChevronDown className="w-3.5 h-3.5" />}
+                  </Link>
+                  {link.hasDropdown && (
+                    <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                      <div className="bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-100 dark:border-slate-800/80 p-1.5 min-w-[210px]">
+                        {mbbsSubLinks.map((sub) => (
+                          <Link
+                            key={sub.href}
+                            href={sub.href}
+                            className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-350 hover:bg-blue-50 dark:hover:bg-blue-950/20 hover:text-blue-700 dark:hover:text-blue-400 transition-all"
+                          >
+                            {sub.name}
+                            <ChevronRight className="w-3 h-3 opacity-40" />
+                          </Link>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </nav>
+                  )}
+                </div>
+              );
+            })}
+          </nav>
 
-        {/* Extreme Right: WhatsApp, Call, Theme Toggle */}
-        <div className="hidden lg:flex items-center gap-1.5 shrink-0">
-          <button
-            onClick={() => CTA.whatsapp()}
-            className="w-10 h-10 rounded-full flex items-center justify-center text-emerald-600 dark:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 transition-colors"
-            aria-label="WhatsApp Us"
-          >
-            <WhatsAppIcon size={18} />
-          </button>
-          <button
-            onClick={CTA.call}
-            className="w-10 h-10 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/20 transition-colors"
-            aria-label="Call Us"
-          >
-            <Phone className="w-4 h-4" />
-          </button>
-          {renderThemeToggle()}
-        </div>
+          {/* Extreme Right: WhatsApp, Call, Theme Toggle */}
+          <div className="hidden lg:flex items-center gap-1.5 shrink-0">
+            <button
+              onClick={() => CTA.whatsapp()}
+              className="w-10 h-10 rounded-full flex items-center justify-center text-emerald-600 dark:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 transition-colors"
+              aria-label="WhatsApp Us"
+            >
+              <WhatsAppIcon size={18} />
+            </button>
+            <button
+              onClick={CTA.call}
+              className="w-10 h-10 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/20 transition-colors"
+              aria-label="Call Us"
+            >
+              <Phone className="w-4 h-4" />
+            </button>
+            {renderThemeToggle()}
+          </div>
 
-        {/* Mobile menu trigger + theme toggle row */}
-        <div className="flex lg:hidden items-center gap-1 shrink-0">
-          {renderThemeToggle()}
-          <button
-            className="p-2 -mr-2 text-slate-600 dark:text-slate-400 min-w-[44px] min-h-[44px] flex items-center justify-center transition-transform active:scale-90"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle Menu"
-          >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          {/* Mobile menu trigger + theme toggle row */}
+          <div className="flex lg:hidden items-center gap-1 shrink-0">
+            {renderThemeToggle()}
+            <button
+              className="p-2 -mr-2 text-slate-600 dark:text-slate-400 min-w-[44px] min-h-[44px] flex items-center justify-center transition-transform active:scale-90"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle Menu"
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
-      </div>
+      </header>
 
       {/* Mobile Drawer Navigation */}
       <AnimatePresence>
@@ -247,22 +254,8 @@ export default function Header() {
               </div>
 
               {/* Quick Actions */}
-              <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/30 space-y-2">
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    onClick={CTA.call}
-                    className="flex items-center justify-center gap-1.5 bg-slate-900 dark:bg-slate-800 text-white py-2 rounded-xl text-[11px] font-bold active:scale-95 transition-transform"
-                  >
-                    <Phone className="w-3 h-3" /> Call Now
-                  </button>
-                  <button
-                    onClick={() => CTA.whatsapp()}
-                    className="flex items-center justify-center gap-1.5 bg-[#25D366] text-white py-2 rounded-xl text-[11px] font-bold active:scale-95 transition-transform"
-                  >
-                    <WhatsAppIcon size={12} /> WhatsApp
-                  </button>
-                </div>
-                <div className="flex items-center justify-center pt-1.5">
+              <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/30">
+                <div className="flex items-center justify-center">
                   <Image 
                     src="/assets/images/logos/logo-4k.webp" 
                     alt="Admission Hands Logo" 
@@ -276,6 +269,6 @@ export default function Header() {
           </>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 }

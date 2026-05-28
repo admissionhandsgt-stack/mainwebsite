@@ -12,10 +12,10 @@ import {
 import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon';
 
 const heroBgImages = [
-  "https://images.unsplash.com/photo-1551076805-e18690c5e561?auto=format&fit=crop&q=80&w=1600",
-  "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=1600",
-  "https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?auto=format&fit=crop&q=80&w=1600",
-  "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=1600",
+  "/assets/images/hero/medical-admission-counselling-session.png",
+  "/assets/images/hero/neet-counselling-students.png",
+  "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=1600",
+  "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80&w=1600",
 ];
 
 function HeroImageRotator() {
@@ -52,7 +52,7 @@ const services = [
     accent: "blue",
     description: "Every NEET rank has a unique set of possibilities. Our experts analyze your exact rank, category, domicile, and budget to build a customized admission roadmap — not generic advice.",
     features: [
-      "1-on-1 sessions with senior NEET counsellors (10+ yrs experience)",
+      "1-on-1 sessions with senior NEET counsellors (12+ yrs experience)",
       "Category-specific strategy: General, OBC, SC/ST, EWS, PwD",
       "Domicile advantage mapping for state quota seats",
       "Budget-aligned college recommendations (₹5L to ₹2Cr range)",
@@ -90,7 +90,7 @@ const services = [
       "Real-time updates during live counselling rounds",
       "Probability scoring for each target college"
     ],
-    stat: { value: "93%", label: "Prediction Accuracy" }
+    stat: { value: "95%", label: "Prediction Accuracy" }
   },
   {
     icon: Map,
@@ -122,7 +122,7 @@ const services = [
       "Management/NRI quota seat procurement guidance",
       "Scholarship and fee waiver identification"
     ],
-    stat: { value: "70+", label: "Deemed Colleges" }
+    stat: { value: "1-1 Guidance", label: "Support" }
   },
   {
     icon: FileCheck,
@@ -138,7 +138,7 @@ const services = [
       "NRI sponsorship documentation and embassy attestation",
       "Category certificate cross-verification with state norms"
     ],
-    stat: { value: "0%", label: "Doc Rejection Rate" }
+    stat: { value: "100%", label: "Success Rate" }
   },
   {
     icon: ShieldCheck,
@@ -208,8 +208,8 @@ const services = [
 
 const trustStats = [
   { icon: Users, value: "2100+", label: "Students Placed", color: "text-blue-600" },
-  { icon: TrendingUp, value: "93%", label: "Success Rate", color: "text-emerald-600" },
-  { icon: Clock, value: "10+", label: "Years Experience", color: "text-violet-600" },
+  { icon: TrendingUp, value: "95%", label: "Success Rate", color: "text-emerald-600" },
+  { icon: Clock, value: "12+", label: "Years Experience", color: "text-violet-600" },
   { icon: Award, value: "36", label: "States Covered", color: "text-amber-600" },
 ];
 
@@ -299,42 +299,113 @@ export default function ServicesPage() {
         <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-500/20 blur-[120px] pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-1/3 h-1/2 bg-indigo-500/10 blur-[100px] pointer-events-none" />
 
-        <div className="container-custom relative z-10 text-center max-w-5xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-blue-300 text-xs font-black tracking-widest uppercase mb-6 backdrop-blur-md"
-          >
-            <Sparkles className="w-3.5 h-3.5" /> Expert NEET Counselling
-          </motion.div>
+        <div className="container-custom relative z-10 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            {/* Left side Content */}
+            <div className="lg:col-span-7 text-center lg:text-left space-y-5 md:space-y-6">
+              <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-blue-300 text-xs font-black tracking-widest uppercase mb-2 backdrop-blur-md"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-blue-400" /> Expert NEET Counselling
+              </motion.div>
 
-          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] tracking-tight mb-5 drop-shadow-lg"
-          >
-            Your Unfair Advantage in{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-indigo-300 drop-shadow-md">
-              MBBS Admissions
-            </span>
-          </motion.h1>
+              <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] tracking-tight drop-shadow-lg"
+              >
+                Your Unfair Advantage in{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-indigo-300 drop-shadow-md">
+                  MBBS Admissions
+                </span>
+              </motion.h1>
 
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-            className="text-blue-100/90 text-sm md:text-lg font-medium leading-relaxed max-w-3xl mx-auto mb-10 drop-shadow-md"
-          >
-            While others guess, our students get data-driven strategy, insider cutoff intelligence, and dedicated counsellors who&apos;ve guided 2100+ students to their dream medical colleges. Every rank has a best-fit seat — we find yours.
-          </motion.p>
+              <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+                className="text-blue-100/90 text-sm md:text-base font-medium leading-relaxed max-w-2xl mx-auto lg:mx-0 drop-shadow-md"
+              >
+                While others guess, our students get data-driven strategy, insider cutoff intelligence, and dedicated counsellors who&apos;ve guided 2100+ students to their dream medical colleges. Every rank has a best-fit seat — we find yours.
+              </motion.p>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
-            className="flex flex-col sm:flex-row gap-3 justify-center"
-          >
-            <button onClick={() => CTA.call()}
-              className="inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-6 py-3.5 rounded-xl font-black text-sm hover:bg-blue-50 transition-all shadow-xl active:scale-95"
+              {/* Highlights */}
+              <motion.ul initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}
+                className="space-y-3 hidden sm:inline-block text-left text-blue-100/80 text-sm font-semibold max-w-md"
+              >
+                {[
+                  "1-on-1 Personalized counseling with senior experts",
+                  "95% accuracy in rank-based college predictions",
+                  "100% success rate in document verification",
+                ].map((point, idx) => (
+                  <li key={idx} className="flex items-center gap-3">
+                    <div className="h-5 w-5 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                      <ShieldCheck size={14} />
+                    </div>
+                    {point}
+                  </li>
+                ))}
+              </motion.ul>
+
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
+                className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start"
+              >
+                <button onClick={() => CTA.call()}
+                  className="inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-6 py-3.5 rounded-xl font-black text-sm hover:bg-blue-50 transition-all shadow-xl active:scale-95"
+                >
+                  <Phone className="w-4 h-4" /> Talk to an Expert
+                </button>
+                <button onClick={() => CTA.whatsapp("Hi, I want to know about your NEET counselling services")}
+                  className="inline-flex items-center justify-center gap-2 border-2 border-white/60 backdrop-blur-sm text-white px-6 py-3.5 rounded-xl font-black text-sm hover:bg-white/10 transition-all active:scale-95"
+                >
+                  <WhatsAppIcon size={16} /> WhatsApp Us
+                </button>
+              </motion.div>
+            </div>
+
+            {/* Right side - Counselor / Stat Card */}
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}
+              className="lg:col-span-5"
             >
-              <Phone className="w-4 h-4" /> Talk to an Expert
-            </button>
-            <button onClick={() => CTA.whatsapp("Hi, I want to know about your NEET counselling services")}
-              className="inline-flex items-center justify-center gap-2 border-2 border-white/60 backdrop-blur-sm text-white px-6 py-3.5 rounded-xl font-black text-sm hover:bg-white/10 transition-all active:scale-95"
-            >
-              <WhatsAppIcon size={16} /> WhatsApp Us
-            </button>
-          </motion.div>
+              <div className="relative p-6 md:p-8 rounded-[2.5rem] bg-slate-900/60 backdrop-blur-xl border border-white/10 dark:border-slate-800/80 shadow-2xl space-y-6 overflow-hidden max-w-md mx-auto">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl" />
+                
+                <div className="flex items-center gap-4">
+                  <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-blue-400/50 flex-shrink-0">
+                    <img
+                      src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=200"
+                      alt="Senior Admissions Team"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-black text-white leading-tight">Senior Admissions Team</h3>
+                    <p className="text-xs text-blue-300 font-bold flex items-center gap-1.5 mt-1.5">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Active Counselling Session
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3.5 pt-2">
+                  <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+                    <p className="text-[10px] font-black text-blue-300 uppercase tracking-wider mb-1">Experience</p>
+                    <p className="text-lg font-black text-white leading-none">12+ Years</p>
+                  </div>
+                  <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+                    <p className="text-[10px] font-black text-blue-300 uppercase tracking-wider mb-1">Guidance</p>
+                    <p className="text-lg font-black text-white leading-none">1-on-1</p>
+                  </div>
+                  <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+                    <p className="text-[10px] font-black text-blue-300 uppercase tracking-wider mb-1">Success Rate</p>
+                    <p className="text-lg font-black text-white leading-none">95%</p>
+                  </div>
+                  <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+                    <p className="text-[10px] font-black text-blue-300 uppercase tracking-wider mb-1">Accuracy</p>
+                    <p className="text-lg font-black text-white leading-none">95%</p>
+                  </div>
+                </div>
+
+                <div className="pt-2 text-center text-xs text-slate-300/80 font-medium italic border-t border-white/5">
+                  "Pre-verifying all documentation to guarantee zero rejections."
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 

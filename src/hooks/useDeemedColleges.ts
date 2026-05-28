@@ -31,7 +31,7 @@ export interface DeemedCollegeFilters {
   sortBy: string;
 }
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 10;
 
 // Use type assertion once at module level to avoid `as any` everywhere
 const db = supabase as ReturnType<typeof supabase['from']> & { from: (table: string) => ReturnType<typeof supabase['from']> };

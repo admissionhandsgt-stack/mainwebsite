@@ -19,7 +19,7 @@ export const AdmissionProcess = () => {
   const { process } = mbbsData;
 
   return (
-    <section className="py-14 bg-white dark:bg-slate-950 relative overflow-hidden">
+    <section className="pt-4 pb-14 bg-white dark:bg-slate-955 relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.015] pointer-events-none" style={{
         backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(0,0,0,0.4) 1px, transparent 0)',
         backgroundSize: '36px 36px'
@@ -29,12 +29,6 @@ export const AdmissionProcess = () => {
         {/* Header */}
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mb-12">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/30 rounded-full mb-4">
-              <Calendar className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-              <span className="text-[10px] font-black text-blue-700 dark:text-blue-300 uppercase tracking-widest">
-                Timeline: {process.timeline}
-              </span>
-            </div>
             <h2 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-tight mb-3">
               Step-by-Step <span className="text-blue-600 dark:text-blue-400">Admission Journey</span>
             </h2>
