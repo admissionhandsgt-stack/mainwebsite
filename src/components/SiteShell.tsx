@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import Header from './Header';
 import dynamic from 'next/dynamic';
 import Footer from './Footer';
+import { isAdminSubdomain as checkIsAdminSubdomain } from '@/utils/envHelper';
 
 const LiveAlerts = dynamic(() => import('@/components/LiveAlerts'), {
   ssr: false,
@@ -16,7 +17,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setIsAdminSubdomain(window.location.hostname.startsWith('admin.'));
+      setIsAdminSubdomain(checkIsAdminSubdomain(window.location.hostname));
     }
   }, []);
 

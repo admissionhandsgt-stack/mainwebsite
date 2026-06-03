@@ -8,6 +8,7 @@ import { Plus_Jakarta_Sans, Inter } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 
 import { headers } from 'next/headers'
+import { isAdminSubdomain } from '@/utils/envHelper'
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -42,7 +43,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   const host = headers().get('host') || ''
-  const isAdminSubdomain = host.startsWith('admin.')
+  const isAdmin = isAdminSubdomain(host)
 
   return (
     <html lang="en" className={`${jakarta.variable} ${inter.variable}`} suppressHydrationWarning>
@@ -61,7 +62,7 @@ export default function RootLayout({
           `}
         </Script>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {isAdminSubdomain ? (
+          {isAdmin ? (
             <main className="w-full">{children}</main>
           ) : (
             <SiteShell>

@@ -7,6 +7,7 @@ import { ArrowLeft, Users, Bell, Video, School, LogOut, ChevronRight, ImageIcon,
 import { AuthProvider, useAuth } from '@/hooks/useAuth';
 import { ProtectedRoute } from '@/components/admin/ProtectedRoute';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getBaseWebsiteUrl } from '@/utils/envHelper';
 
 interface AdminLayoutClientProps {
   children: ReactNode;
@@ -118,7 +119,7 @@ function AdminSidebar({ isAdminSubdomain }: { isAdminSubdomain: boolean }) {
         {/* Footer Actions */}
         <div className="flex-shrink-0 border-t border-gray-100/50 p-4 space-y-2 relative z-10 bg-white/50">
           <a
-            href={isAdminSubdomain ? (process.env.NODE_ENV === 'production' ? 'https://admissionhands.com' : 'http://localhost:3000') : '/'}
+            href={isAdminSubdomain ? (typeof window !== 'undefined' ? getBaseWebsiteUrl(window.location.hostname) : '#') : '/'}
             className="flex items-center px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-colors"
           >
             <ArrowLeft className="h-4 w-4 mr-3 text-gray-400" />

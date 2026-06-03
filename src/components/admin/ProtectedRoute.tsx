@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { Loader2 } from 'lucide-react';
+import { isAdminSubdomain } from '@/utils/envHelper';
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
@@ -12,7 +13,7 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     // Only redirect after auth loading is complete and user is confirmed null
     if (!loading && !user) {
-      const isSubdomain = typeof window !== 'undefined' && window.location.hostname.startsWith('admin.');
+      const isSubdomain = typeof window !== 'undefined' && isAdminSubdomain(window.location.hostname);
       router.replace(isSubdomain ? '/' : '/admin');
     }
   }, [user, loading, router]);

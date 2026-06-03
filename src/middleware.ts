@@ -1,63 +1,40 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { 
+  isAdminSubdomain, 
+  isProdFrontend, 
+  isUatFrontend, 
+  getAdminRedirectUrl 
+} from './utils/envHelper';
 
 export function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
-  const hostname = req.headers.get('host') || '';
+  // Using url.hostname (derived by Next.js from request) to avoid host header resolution issues
+  const hostname = url.hostname;
 
-  const isProduction = process.env.NODE_ENV === 'production';
+  console.log(`[Middleware] Path: ${url.pathname} | Hostname: ${hostname}`);
 
-  // Detect Cloudflare workers.dev URLs
-  const isWorkersDev = hostname.includes('workers.dev');
-
-  // Detect admin subdomain
-  const isAdminSubdomain = hostname.startsWith('admin.');
-
-  console.log(
-    `[Middleware] Path: ${url.pathname} | Host: ${hostname} | IsAdminSubdomain: ${isAdminSubdomain} | IsWorkersDev: ${isWorkersDev}`
-  );
-
-  /**
-   * 1. Handle admin subdomain requests
-   * Example:
-   * admin.admissionhands.com/colleges
-   * → internally rewrites to /admin/colleges
-   */
-  if (isAdminSubdomain) {
-    // Prevent duplicate /admin paths
+  // 1. Handle admin subdomain requests (e.g., admin.admissionhands.com, admin-uat.admissionhands.com)
+  if (isAdminSubdomain(hostname)) {
+    // If the path already starts with /admin, redirect to clean path on the same host
+    // e.g., admin.admissionhands.com/admin/contacts -> admin.admissionhands.com/contacts
     if (url.pathname.startsWith('/admin')) {
       const newPath = url.pathname.replace(/^\/admin/, '') || '/';
       url.pathname = newPath;
       return NextResponse.redirect(url);
     }
 
-    // Rewrite to admin route structure
+    // Rewrite internally to the /admin route structure
     url.pathname = `/admin${url.pathname}`;
     return NextResponse.rewrite(url);
   }
 
-  /**
-   * 2. Redirect production /admin URLs to admin subdomain
-   *
-   * Example:
-   * admissionhands.com/admin/colleges
-   * → admin.admissionhands.com/colleges
-   *
-   * BUT:
-   * workers.dev URLs should NOT redirect
-   * so we can test admin in UAT.
-   */
-  if (
-    url.pathname.startsWith('/admin') &&
-    isProduction &&
-    !isWorkersDev
-  ) {
-    const targetHost = 'admin.admissionhands.com';
-    const targetPath = url.pathname.replace(/^\/admin/, '') || '/';
-
-    return NextResponse.redirect(
-      new URL(`https://${targetHost}${targetPath}`, req.url)
-    );
+  // 2. Handle /admin path requests on main domains (production)
+  if (url.pathname.startsWith('/admin')) {
+    if (isProdFrontend(hostname)) {
+      const redirectTarget = getAdminRedirectUrl(hostname, url.pathname);
+      return NextResponse.redirect(new URL(redirectTarget, req.url));
+    }
   }
 
   return NextResponse.next();

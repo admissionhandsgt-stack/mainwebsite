@@ -9,6 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import { Shield, Lock, Mail, Loader2 } from 'lucide-react';
+import { isAdminSubdomain } from '@/utils/envHelper';
 
 // No AuthProvider here — it comes from admin/layout.tsx which wraps all /admin/* pages
 export default function AdminLogin() {
@@ -20,7 +21,7 @@ export default function AdminLogin() {
 
   useEffect(() => {
     if (!loading && user) {
-      const isSubdomain = typeof window !== 'undefined' && window.location.hostname.startsWith('admin.');
+      const isSubdomain = typeof window !== 'undefined' && isAdminSubdomain(window.location.hostname);
       router.replace(isSubdomain ? '/live-alerts' : '/admin/live-alerts');
     }
   }, [user, loading, router]);
