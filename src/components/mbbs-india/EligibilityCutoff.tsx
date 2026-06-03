@@ -15,7 +15,7 @@ export const MBBSEligibilityInfo = () => {
   const insightIcons = [Map, ShieldCheck, Zap, BookOpen, Users];
 
   return (
-    <section className="pt-16 pb-6 md:pt-24 md:pb-8 bg-white dark:bg-slate-955 relative overflow-hidden transition-colors duration-200">
+    <section className="pt-16 pb-6 md:pt-24 md:pb-8 bg-white dark:bg-slate-950 relative overflow-hidden transition-colors duration-200">
       {/* Premium Background Elements */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:40px_40px]" />
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-50/50 dark:bg-blue-900/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
@@ -121,7 +121,7 @@ export const MBBSEligibilityInfo = () => {
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-4">
                         {documents.list.map((doc, idx) => (
                           <div key={idx} className="flex items-start gap-3">
-                            <div className="w-5 h-5 rounded-full bg-blue-50 dark:bg-blue-955/20 flex items-center justify-center shrink-0 mt-0.5">
+                            <div className="w-5 h-5 rounded-full bg-blue-50 dark:bg-blue-950/20 flex items-center justify-center shrink-0 mt-0.5">
                               <CheckCircle2 className="w-3 h-3 text-blue-500 dark:text-blue-400" />
                             </div>
                             <span className="text-sm font-bold text-slate-700 dark:text-slate-350 leading-snug">{doc}</span>
@@ -170,7 +170,7 @@ export const MBBSEligibilityInfo = () => {
                     transition={{ delay: idx * 0.1 + 0.1 }}
                     className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-blue-200 dark:hover:border-blue-900/60 transition-all duration-300 group flex items-start gap-5"
                   >
-                    <div className="w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-955 flex items-center justify-center shrink-0 group-hover:bg-blue-50 dark:group-hover:bg-blue-955/20 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors text-slate-400 dark:text-slate-500">
+                    <div className="w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-950 flex items-center justify-center shrink-0 group-hover:bg-blue-50 dark:group-hover:bg-blue-950/20 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors text-slate-400 dark:text-slate-500">
                       <InsightIcon className="w-6 h-6" />
                     </div>
                     <div>

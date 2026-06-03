@@ -4,7 +4,7 @@ export const mbbsData = {
       { label: "Total MBBS Seats", value: "1,08,940+" },
       { label: "Govt Colleges", value: "380+" },
       { label: "Private Colleges", value: "300+" },
-      { label: "Success Rate", value: "98%" },
+      { label: "Success Rate", value: "95%" },
     ],
   },
 

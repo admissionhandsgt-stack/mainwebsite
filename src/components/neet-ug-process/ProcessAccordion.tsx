@@ -156,11 +156,11 @@ const ProcessAccordion = () => {
   const activePhase = phases[activePhaseIndex];
 
   return (
-    <div className="bg-white dark:bg-slate-950 rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden flex flex-col md:flex-row">
+    <div className="bg-white dark:bg-slate-950 rounded-2xl md:rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden flex flex-col md:flex-row">
       {/* Sidebar Tabs for Phases */}
-      <div className="w-full md:w-1/3 bg-slate-50 dark:bg-slate-900 border-b md:border-b-0 md:border-r border-slate-200 dark:border-slate-800 p-3 sm:p-5">
-        <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-4 px-2">Admission Phases</h3>
-        <div className="flex flex-row md:flex-col gap-3 overflow-x-auto pb-3 md:pb-0 hide-scrollbar">
+      <div className="w-full md:w-1/3 bg-slate-50 dark:bg-slate-900 border-b md:border-b-0 md:border-r border-slate-200 dark:border-slate-800 p-2.5 sm:p-5">
+        <h3 className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2 md:mb-4 px-2">Admission Phases</h3>
+        <div className="flex flex-row md:flex-col gap-1.5 md:gap-3 overflow-x-auto pb-2 md:pb-0 hide-scrollbar">
           {phases.map((phase, idx) => {
             const isActive = activePhaseIndex === idx;
             return (
@@ -170,14 +170,14 @@ const ProcessAccordion = () => {
                   setActivePhaseIndex(idx);
                   setOpenStepId(phases[idx].steps[0].id);
                 }}
-                className={`flex items-center justify-between text-left px-4 py-3.5 rounded-xl font-black transition-all whitespace-nowrap md:whitespace-normal shrink-0 ${
+                className={`flex items-center justify-between text-left px-2.5 py-1.5 md:px-4 md:py-3.5 rounded-lg md:rounded-xl font-black text-xs md:text-sm transition-all whitespace-nowrap md:whitespace-normal shrink-0 ${
                   isActive 
                     ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20' 
                     : 'bg-transparent text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800'
                 }`}
               >
-                <div className="flex items-center gap-3">
-                  <span className={`flex items-center justify-center w-6 h-6 rounded-full text-xs ${isActive ? 'bg-white/20 text-white' : 'bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200'}`}>
+                <div className="flex items-center gap-1.5 md:gap-3">
+                  <span className={`flex items-center justify-center w-4 h-4 md:w-6 md:h-6 rounded-full text-[9px] md:text-xs ${isActive ? 'bg-white/20 text-white' : 'bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200'}`}>
                     {idx + 1}
                   </span>
                   {phase.shortTitle}
@@ -190,15 +190,15 @@ const ProcessAccordion = () => {
       </div>
 
       {/* Accordion Steps for Active Phase */}
-      <div className="w-full md:w-2/3 p-4 sm:p-5 bg-white dark:bg-slate-950 min-h-[300px]">
-        <div className="mb-4">
-          <div className="inline-flex px-2 py-0.5 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-300 font-black uppercase tracking-wider text-[10px] rounded-full mb-1.5">
+      <div className="w-full md:w-2/3 p-3 sm:p-5 bg-white dark:bg-slate-950 min-h-[250px] md:min-h-[300px]">
+        <div className="mb-3 md:mb-4">
+          <div className="inline-flex px-2 py-0.5 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-300 font-black uppercase tracking-wider text-[9px] md:text-[10px] rounded-full mb-1">
             Phase {activePhaseIndex + 1}
           </div>
-          <h2 className="text-xl font-black text-slate-900 dark:text-white">{activePhase.title}</h2>
+          <h2 className="text-base md:text-xl font-black text-slate-900 dark:text-white">{activePhase.title}</h2>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1.5 md:space-y-2">
           <AnimatePresence mode="popLayout">
             {activePhase.steps.map((step) => {
               const isOpen = openStepId === step.id;
@@ -209,7 +209,7 @@ const ProcessAccordion = () => {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className={`border rounded-2xl transition-all duration-300 overflow-hidden ${
+                  className={`border rounded-xl md:rounded-2xl transition-all duration-305 overflow-hidden ${
                     isOpen 
                       ? 'border-blue-200 dark:border-blue-900/50 shadow-lg shadow-blue-900/5 bg-slate-50 dark:bg-slate-900/40' 
                       : 'border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-950 hover:border-blue-200 dark:hover:border-slate-850 hover:shadow-md'
@@ -217,20 +217,20 @@ const ProcessAccordion = () => {
                 >
                   <button
                     onClick={() => setOpenStepId(isOpen ? null : step.id)}
-                    className="w-full px-4 py-3.5 flex items-center justify-between text-left group"
+                    className="w-full px-2.5 py-2.5 md:px-4 md:py-3.5 flex items-center justify-between text-left group"
                   >
-                    <div className="flex items-center gap-3">
-                      <span className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-black transition-all shadow-sm ${
+                    <div className="flex items-center gap-2 md:gap-3">
+                      <span className={`flex h-5 w-5 md:h-6 md:w-6 items-center justify-center rounded-full text-[10px] md:text-xs font-black transition-all shadow-sm ${
                         isOpen ? 'bg-blue-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 group-hover:bg-blue-100 group-hover:text-blue-700 dark:group-hover:bg-blue-900/30'
                       }`}>
                         {step.id}
                       </span>
-                      <h4 className={`text-sm font-bold transition-colors ${isOpen ? 'text-blue-900 dark:text-blue-200' : 'text-slate-800 dark:text-slate-300'}`}>
+                      <h4 className={`text-xs md:text-sm font-bold transition-colors ${isOpen ? 'text-blue-900 dark:text-blue-200 font-extrabold' : 'text-slate-800 dark:text-slate-300'}`}>
                         {step.title}
                       </h4>
                     </div>
-                    <div className={`flex items-center justify-center w-6 h-6 rounded-full transition-colors ${isOpen ? 'bg-blue-100 dark:bg-blue-900/40' : 'bg-slate-50 dark:bg-slate-905 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20'}`}>
-                      <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${isOpen ? 'rotate-180 text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500 group-hover:text-blue-500 dark:group-hover:text-blue-400'}`} />
+                    <div className={`flex items-center justify-center w-5 h-5 md:w-6 md:h-6 rounded-full transition-colors ${isOpen ? 'bg-blue-100 dark:bg-blue-900/40' : 'bg-slate-50 dark:bg-slate-905 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20'}`}>
+                      <ChevronDown className={`h-3 w-3 md:h-4 md:w-4 transition-transform duration-300 ${isOpen ? 'rotate-180 text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500 group-hover:text-blue-500 dark:group-hover:text-blue-400'}`} />
                     </div>
                   </button>
                   
@@ -240,18 +240,18 @@ const ProcessAccordion = () => {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.25 }}
                       >
-                        <div className="px-4 pb-4 pt-0 space-y-3">
-                          <p className="text-slate-600 dark:text-slate-400 text-xs font-medium leading-relaxed pl-9">
+                        <div className="px-2.5 pb-2.5 pt-0 space-y-2 md:px-4 md:pb-4 md:space-y-3">
+                          <p className="text-slate-600 dark:text-slate-400 text-[11px] md:text-xs font-medium leading-relaxed pl-1.5 md:pl-9">
                             {step.description}
                           </p>
                           
                           {step.list && (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pl-9">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-1.5 pl-1.5 md:pl-9">
                               {step.list.map((item, i) => (
-                                <div key={i} className="flex items-center gap-2 text-xs font-bold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-900 py-1.5 px-2.5 rounded-md border border-slate-100 dark:border-slate-800 shadow-sm">
-                                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+                                <div key={i} className="flex items-center gap-1.5 text-[10px] md:text-xs font-bold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-900 py-1 px-2 md:py-1.5 md:px-2.5 rounded-md border border-slate-100 dark:border-slate-800 shadow-sm">
+                                  <CheckCircle2 className="h-3 w-3 md:h-3.5 md:w-3.5 text-emerald-500 shrink-0" />
                                   {item}
                                 </div>
                               ))}
@@ -259,23 +259,23 @@ const ProcessAccordion = () => {
                           )}
 
                           {step.rounds && (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pl-9">
+                            <div className="grid grid-cols-2 sm:grid-cols-2 gap-1.5 pl-1.5 md:pl-9">
                               {step.rounds.map((round, i) => (
-                                <div key={i} className="p-2.5 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm">
-                                  <p className="text-[11px] font-black uppercase tracking-wider text-slate-900 dark:text-slate-200 mb-1">{round.name}</p>
-                                  <p className="text-xs font-medium text-slate-500 dark:text-slate-400">{round.description}</p>
+                                <div key={i} className="p-1.5 md:p-2.5 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm">
+                                  <p className="text-[9px] md:text-[11px] font-black uppercase tracking-wider text-slate-900 dark:text-slate-200 mb-0.5 md:mb-1">{round.name}</p>
+                                  <p className="text-[10px] md:text-xs font-medium text-slate-500 dark:text-slate-400 leading-tight">{round.description}</p>
                                 </div>
                               ))}
                             </div>
                           )}
 
-                          <div className="ml-9 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-lg border border-blue-100/50 dark:border-blue-900/30 flex gap-2.5 shadow-inner">
+                          <div className="ml-1.5 md:ml-9 p-2 md:p-3 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-lg border border-blue-100/50 dark:border-blue-900/30 flex gap-2 shadow-inner">
                             <div className="flex-shrink-0 mt-0.5">
-                              <Info className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                              <Info className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                             </div>
                             <div>
-                              <p className="text-[9px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest mb-0.5">Admission Hands Support</p>
-                              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">{step.support}</p>
+                              <p className="text-[8px] md:text-[9px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest mb-0.5">Admission Hands Support</p>
+                              <p className="text-[10px] md:text-xs text-slate-700 dark:text-slate-300 font-medium leading-tight">{step.support}</p>
                             </div>
                           </div>
                         </div>

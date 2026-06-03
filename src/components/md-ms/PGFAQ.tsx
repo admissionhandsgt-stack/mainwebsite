@@ -71,7 +71,7 @@ const faqItems = [
     category: "eligibility",
     question: "How is Admission Hands different from other counselling services?",
     answer:
-      "We are data-first: our recommendations are backed by 5-year cutoff analytics, not opinions. You get a single named expert counsellor from Day 1 through college reporting. We manage AIQ + State + Deemed quotas in parallel. And we have a 0% document rejection rate across 2100+ students.",
+      "We are data-first: our recommendations are backed by 5-year cutoff analytics, not opinions. You get a single named expert counsellor from Day 1 through college reporting. We manage AIQ + State + Deemed quotas in parallel. And we have a 100% success rate in documentation across 2100+ students.",
   },
 ];
 
@@ -103,7 +103,7 @@ export const PGFAQ = () => {
       <div className="container-custom max-w-4xl">
         {/* Header */}
         <div className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest bg-blue-50 text-blue-600 dark:bg-blue-955/40 dark:text-blue-400 mb-2">
+          <span className="inline-block px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400 mb-2">
             Got Questions? We Have Answers
           </span>
           <h2 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-2 tracking-tight">

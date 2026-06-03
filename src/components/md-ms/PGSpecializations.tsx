@@ -92,7 +92,7 @@ export const PGSpecializations = () => {
   const currentData = specializations[activeCategory as keyof typeof specializations];
 
   return (
-    <section className="py-12 md:py-16 bg-white dark:bg-slate-950">
+    <section className="pt-5 pb-12 md:pt-6 md:pb-16 bg-white dark:bg-slate-950">
       <div className="container-custom">
         {/* Header */}
         <motion.div
@@ -142,7 +142,7 @@ export const PGSpecializations = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.25 }}
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3"
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-3"
           >
             {currentData.items.map((item, index) => {
               const IconComponent = item.icon;
@@ -153,17 +153,17 @@ export const PGSpecializations = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.04 }}
-                  className="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-100 dark:border-slate-800 hover:shadow-md hover:border-blue-200 dark:hover:border-blue-800 transition-all group"
+                  className="bg-slate-50 dark:bg-slate-900 p-2.5 md:p-4 rounded-xl border border-slate-100 dark:border-slate-800 hover:shadow-md hover:border-blue-200 dark:hover:border-blue-800 transition-all group flex flex-col justify-between min-h-[92px] md:min-h-0"
                 >
-                  <div className="flex items-center gap-3">
+                  <div className="flex flex-col md:flex-row md:items-center gap-1.5 md:gap-3 w-full min-w-0">
                     <div
-                      className={`w-9 h-9 rounded-lg bg-gradient-to-br ${currentData.gradient} flex items-center justify-center flex-shrink-0`}
+                      className={`w-7 h-7 md:w-9 md:h-9 rounded-lg bg-gradient-to-br ${currentData.gradient} flex items-center justify-center flex-shrink-0`}
                     >
-                      <IconComponent className="w-4 h-4 text-white" />
+                      <IconComponent className="w-3.5 h-3.5 md:w-4 h-4 text-white" />
                     </div>
-                    <div>
-                      <p className="font-black text-sm text-slate-900 dark:text-white">{item.name}</p>
-                      <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">
+                    <div className="w-full min-w-0">
+                      <p className="font-black text-[11px] sm:text-xs md:text-sm text-slate-900 dark:text-white leading-tight break-words">{item.name}</p>
+                      <p className="text-[8px] md:text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider mt-0.5">
                         {item.duration}
                       </p>
                     </div>
@@ -179,16 +179,16 @@ export const PGSpecializations = () => {
           initial={mounted ? { opacity: 0, y: 15 } : false}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="bg-slate-50 dark:bg-slate-900 rounded-xl p-5 mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 border border-slate-100 dark:border-slate-800"
+          className="bg-slate-50 dark:bg-slate-900 rounded-xl p-3.5 md:p-5 mt-5 md:mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 border border-slate-100 dark:border-slate-800"
         >
-          <p className="text-sm text-slate-600 dark:text-slate-400 font-bold">
+          <p className="text-xs md:text-sm text-slate-650 dark:text-slate-400 font-bold text-center sm:text-left">
             Not sure which branch suits your rank and career goals?
           </p>
           <button
             onClick={() => CTA.whatsapp("Hi, I need help choosing the right PG specialization for my rank.")}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs font-black uppercase tracking-wider hover:shadow-lg transition-all flex-shrink-0"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white text-[10px] md:text-xs font-black uppercase tracking-wider hover:shadow-lg transition-all flex-shrink-0"
           >
-            <WhatsAppIcon className="w-4 h-4" />
+            <WhatsAppIcon className="w-3.5 h-3.5" />
             Ask on WhatsApp
           </button>
         </motion.div>

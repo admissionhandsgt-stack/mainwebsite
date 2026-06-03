@@ -7,7 +7,7 @@ export const TopColleges = () => {
   const { topColleges } = mbbsData;
 
   return (
-    <section className="py-12 bg-slate-50 dark:bg-slate-955 relative overflow-hidden transition-colors duration-200">
+    <section className="py-12 bg-slate-50 dark:bg-slate-950 relative overflow-hidden transition-colors duration-200">
       <div className="container-custom relative z-10">
         <div className="flex flex-col md:flex-row items-end justify-between gap-8 mb-12">
           <div className="max-w-2xl">

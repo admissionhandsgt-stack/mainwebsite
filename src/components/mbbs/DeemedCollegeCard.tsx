@@ -65,22 +65,22 @@ export function DeemedCollegeCard({ college }: DeemedCollegeCardProps) {
         {/* Badges */}
         <div className="flex flex-wrap gap-1 mb-3">
           {college.has_nri_seats && (
-            <span className="px-1.5 py-0.5 rounded text-[8px] font-black uppercase tracking-wider bg-amber-50 dark:bg-amber-955/20 text-amber-700 dark:text-amber-450 border border-amber-200 dark:border-amber-900/30">
+            <span className="px-1.5 py-0.5 rounded text-[8px] font-black uppercase tracking-wider bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-900/30">
               NRI
             </span>
           )}
           {college.has_minority_seats && (
-            <span className="px-1.5 py-0.5 rounded text-[8px] font-black uppercase tracking-wider bg-violet-50 dark:bg-violet-955/20 text-violet-700 dark:text-violet-450 border border-violet-200 dark:border-violet-900/30">
+            <span className="px-1.5 py-0.5 rounded text-[8px] font-black uppercase tracking-wider bg-violet-50 dark:bg-violet-950/20 text-violet-700 dark:text-violet-400 border border-violet-200 dark:border-violet-900/30">
               Minority
             </span>
           )}
           {college.is_women_only && (
-            <span className="px-1.5 py-0.5 rounded text-[8px] font-black uppercase tracking-wider bg-pink-50 dark:bg-pink-955/20 text-pink-700 dark:text-pink-450 border border-pink-200 dark:border-pink-900/30">
+            <span className="px-1.5 py-0.5 rounded text-[8px] font-black uppercase tracking-wider bg-pink-50 dark:bg-pink-950/20 text-pink-700 dark:text-pink-400 border border-pink-200 dark:border-pink-900/30">
               Women Only
             </span>
           )}
         </div>
-
+ 
         {/* CTA — No detail page link */}
         <div className="mt-auto flex gap-1.5 pt-2 border-t border-slate-50 dark:border-slate-800/60">
           <button
@@ -91,7 +91,7 @@ export function DeemedCollegeCard({ college }: DeemedCollegeCardProps) {
           </button>
           <button
             onClick={CTA.call}
-            className="flex items-center justify-center gap-1 px-2.5 py-2 rounded-lg text-[10px] font-black border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-350 hover:border-blue-300 dark:hover:border-blue-900 hover:text-blue-700 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-955/20 transition-all active:scale-95"
+            className="flex items-center justify-center gap-1 px-2.5 py-2 rounded-lg text-[10px] font-black border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-350 hover:border-blue-300 dark:hover:border-blue-900 hover:text-blue-700 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/20 transition-all active:scale-95"
           >
             <Phone className="w-3 h-3" /> Call
           </button>

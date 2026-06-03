@@ -89,19 +89,19 @@ const ServicesList = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ delay: 0.3 + index * 0.1 }}
-                  className="group relative rounded-[2rem] bg-white border border-slate-100/60 p-6 md:p-8 flex flex-col justify-between h-[300px] md:h-[340px] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+                  className="group relative rounded-2xl md:rounded-[2rem] bg-white border border-slate-100/60 p-4 md:p-8 flex flex-col justify-between h-auto min-h-[170px] md:h-[340px] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
                 >
                   <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${service.gradient} opacity-[0.03] rounded-full blur-2xl group-hover:opacity-10 transition-opacity duration-500`} />
                   
-                  <div className={`w-14 h-14 rounded-2xl ${service.iconBg} flex items-center justify-center text-white mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300 relative z-10`}>
-                    <Icon size={24} />
+                  <div className={`w-9 h-9 md:w-14 md:h-14 rounded-xl md:rounded-2xl ${service.iconBg} flex items-center justify-center text-white mb-3 md:mb-6 shadow-md md:shadow-lg group-hover:scale-110 transition-transform duration-300 relative z-10 shrink-0`}>
+                    <Icon className="w-5 h-5 md:w-6 md:h-6" />
                   </div>
 
-                  <div className="relative z-10 flex-1 flex flex-col">
-                    <h3 className="text-lg md:text-xl font-black text-slate-900 mb-2 leading-tight group-hover:text-blue-600 transition-colors">
+                  <div className="relative z-10 flex-1 flex flex-col min-w-0 w-full break-words">
+                    <h3 className="text-sm md:text-xl font-black text-slate-900 mb-1 md:mb-2 leading-tight group-hover:text-blue-600 transition-colors">
                       {service.title}
                     </h3>
-                    <p className="text-slate-500 text-xs md:text-sm font-medium leading-relaxed mb-6 flex-1">
+                    <p className="text-slate-500 text-[10px] md:text-sm font-medium leading-relaxed mb-3 md:mb-6 flex-1">
                       {service.description}
                     </p>
 
@@ -109,18 +109,18 @@ const ServicesList = () => {
                       {service.isModal ? (
                         <button
                           onClick={() => setIsModalOpen(true)}
-                          className="inline-flex items-center text-xs md:text-sm font-black text-slate-900 hover:text-blue-600 group/btn transition-colors"
+                          className="inline-flex items-center text-[10px] md:text-sm font-black text-slate-900 hover:text-blue-600 group/btn transition-colors"
                         >
                           {service.cta}
-                          <ArrowRight className="ml-1.5 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                          <ArrowRight className="ml-1 w-1.5 h-1.5 md:ml-1.5 md:w-4 md:h-4 group-hover/btn:translate-x-1 transition-transform" />
                         </button>
                       ) : (
                         <Link
                           href={service.href}
-                          className="inline-flex items-center text-xs md:text-sm font-black text-slate-900 hover:text-blue-600 group/btn transition-colors"
+                          className="inline-flex items-center text-[10px] md:text-sm font-black text-slate-900 hover:text-blue-600 group/btn transition-colors"
                         >
                           {service.cta}
-                          <ArrowRight className="ml-1.5 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                          <ArrowRight className="ml-1 w-1.5 h-1.5 md:ml-1.5 md:w-4 md:h-4 group-hover/btn:translate-x-1 transition-transform" />
                         </Link>
                       )}
                     </div>

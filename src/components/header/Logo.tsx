@@ -12,6 +12,7 @@ const Logo = () => {
           height={60} 
           className="object-contain w-auto h-10 sm:h-12 md:h-14"
           priority
+          unoptimized
         />
       </div>
     </Link>

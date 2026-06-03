@@ -269,7 +269,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
     <div className="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-zinc-100 min-h-screen font-body selection:bg-blue-600/30 selection:text-white transition-colors duration-200">
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-16 pb-20 sm:pt-20 sm:pb-28 bg-slate-955 text-white border-b border-slate-900">
+      <section className="relative overflow-hidden pt-16 pb-20 sm:pt-20 sm:pb-28 bg-slate-950 text-white border-b border-slate-900">
         <HeroImageRotator images={finalHeroImages} />
 
         <div className="container-custom px-4 max-w-5xl mx-auto text-center relative z-10">
@@ -336,7 +336,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
           >
             <a
               href="#explorer"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-teal-500/30 text-slate-900 dark:text-teal-400 hover:bg-slate-50 dark:hover:bg-slate-900/60 font-black text-sm rounded-xl shadow-lg active:scale-95 transition-all"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white dark:!bg-blue-600 border border-slate-200 dark:!border-blue-600 text-slate-900 dark:!text-white hover:bg-slate-50 dark:!hover:bg-blue-500 font-black text-sm rounded-xl shadow-lg active:scale-95 transition-all"
             >
               Explore Colleges <ArrowRight className="w-4 h-4" />
             </a>
@@ -457,7 +457,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
                         </span>
                       )}
                       {selectedState !== "all" && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded text-[10px] text-slate-700 dark:text-zinc-300 shadow-sm">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded text-[10px] text-slate-700 dark:text-zinc-300 shadow-sm">
                           {selectedState}
                           <X
                             className="w-2.5 h-2.5 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-white cursor-pointer"
@@ -466,7 +466,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
                         </span>
                       )}
                       {selectedType !== "all" && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded text-[10px] text-slate-700 dark:text-zinc-300 shadow-sm">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded text-[10px] text-slate-700 dark:text-zinc-300 shadow-sm">
                           {selectedType === "govt" ? "Government" : "Private"}
                           <X
                             className="w-2.5 h-2.5 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-white cursor-pointer"

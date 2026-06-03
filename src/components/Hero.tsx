@@ -13,7 +13,7 @@ interface HeroProps {
 export default function Hero({ backgroundImageUrl, doctorsImageUrl }: HeroProps) {
   const CTA = useCTA();
   return (
-    <section className="relative w-full min-h-[calc(100svh-112px)] flex items-center overflow-hidden bg-white dark:bg-slate-950">
+    <section className="relative w-full min-h-0 lg:min-h-[calc(100svh-112px)] flex items-center overflow-hidden bg-white dark:bg-slate-950">
       {/* Background Image (College Campus) */}
       <div className="absolute inset-0 z-0">
         {backgroundImageUrl && backgroundImageUrl !== "none" && (

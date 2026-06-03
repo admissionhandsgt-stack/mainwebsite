@@ -19,7 +19,7 @@ export const AdmissionProcess = () => {
   const { process } = mbbsData;
 
   return (
-    <section className="pt-4 pb-14 bg-white dark:bg-slate-955 relative overflow-hidden">
+    <section className="pt-4 pb-14 bg-white dark:bg-slate-950 relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.015] pointer-events-none" style={{
         backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(0,0,0,0.4) 1px, transparent 0)',
         backgroundSize: '36px 36px'
@@ -39,14 +39,14 @@ export const AdmissionProcess = () => {
 
           <div className="shrink-0 flex flex-row lg:flex-col gap-3">
             <div className="px-5 py-4 rounded-2xl bg-blue-600 text-white text-center shadow-xl shadow-blue-600/25">
-              <p className="text-3xl font-black leading-none">98%</p>
+              <p className="text-3xl font-black leading-none">95%</p>
               <p className="text-[9px] font-bold uppercase tracking-widest mt-1 opacity-80">Success Rate</p>
             </div>
           </div>
         </div>
 
         {/* Step Flow */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-5">
           {process.steps.map((step, idx) => {
             const Icon = stepIcons[idx] || stepIcons[0];
             const color = stepColors[idx] || stepColors[0];
@@ -68,35 +68,26 @@ export const AdmissionProcess = () => {
                   </div>
                 )}
 
-                <div className={`relative p-6 rounded-3xl bg-white dark:bg-slate-900/60 border-2 ${color.border} dark:border-slate-800/80 group-hover:shadow-xl group-hover:${color.shadow} dark:group-hover:shadow-black/40 group-hover:-translate-y-1 transition-all duration-300 h-full flex flex-col gap-4`}>
+                <div className={`relative p-2.5 md:p-6 rounded-2xl md:rounded-3xl bg-white dark:bg-slate-900/60 border-2 ${color.border} dark:border-slate-800/80 group-hover:shadow-xl group-hover:${color.shadow} dark:group-hover:shadow-black/40 group-hover:-translate-y-1 transition-all duration-300 h-full flex flex-col justify-between gap-2.5 md:gap-4`}>
                   {/* Step number badge */}
-                  <div className="flex items-center justify-between">
-                    <div className={`w-12 h-12 rounded-2xl ${color.bg} flex items-center justify-center shadow-lg ${color.shadow}`}>
-                      <Icon className="w-6 h-6 text-white" />
+                  <div className="flex items-center justify-between gap-1">
+                    <div className={`w-7 h-7 md:w-12 md:h-12 rounded-lg md:rounded-2xl ${color.bg} flex items-center justify-center shadow-lg ${color.shadow} shrink-0`}>
+                      <Icon className="w-3.5 h-3.5 md:w-6 md:h-6 text-white" />
                     </div>
-                    <span className={`text-5xl font-black ${color.text} opacity-10 dark:opacity-30 select-none leading-none`}>
+                    <span className={`text-[18px] md:text-5xl font-black ${color.text} opacity-10 dark:opacity-30 select-none leading-none`}>
                       {String(idx + 1).padStart(2, '0')}
                     </span>
                   </div>
 
                   {/* Step label */}
-                  <div>
-                    <div className={`inline-block px-2 py-0.5 rounded-full ${color.light} dark:bg-slate-800 ${color.text} dark:text-slate-300 text-[9px] font-black uppercase tracking-widest mb-2`}>
+                  <div className="min-w-0 w-full break-words">
+                    <div className={`inline-block px-1.5 py-0.5 rounded-full ${color.light} dark:bg-slate-800 ${color.text} dark:text-slate-300 text-[7px] md:text-[9px] font-black uppercase tracking-widest mb-1 md:mb-2`}>
                       Step {idx + 1}
                     </div>
-                    <p className="text-base font-black text-slate-900 dark:text-white leading-snug">
+                    <p className="text-[10px] md:text-base font-black text-slate-900 dark:text-white leading-snug break-words">
                       {step}
                     </p>
                   </div>
-
-                  {/* Mobile connector */}
-                  {!isLast && (
-                    <div className="lg:hidden flex items-center justify-center pt-1">
-                      <div className={`w-6 h-6 rounded-full ${color.light} dark:bg-slate-800 ${color.border} dark:border-slate-800 border flex items-center justify-center`}>
-                        <ArrowRight className={`w-3 h-3 ${color.text} dark:text-slate-300 rotate-90`} />
-                      </div>
-                    </div>
-                  )}
                 </div>
               </motion.div>
             );

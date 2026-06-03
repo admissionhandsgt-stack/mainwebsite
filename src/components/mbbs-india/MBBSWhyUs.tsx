@@ -10,7 +10,7 @@ export const MBBSWhyUs = () => {
   const { whyUs } = mbbsData;
 
   return (
-    <section className="py-12 bg-white dark:bg-slate-955 relative overflow-hidden transition-colors duration-200">
+    <section className="py-12 bg-white dark:bg-slate-950 relative overflow-hidden transition-colors duration-200">
       <div className="container-custom relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           

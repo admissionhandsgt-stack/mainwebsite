@@ -76,7 +76,7 @@ export function VideosClient({ videos }: { videos: VideoRecord[] }) {
           <div className="flex justify-end mt-4">
             <button
               onClick={() => setSelectedVideoId(null)}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border-2 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-350 hover:bg-slate-55 dark:hover:bg-slate-900/60 font-black text-xs uppercase tracking-wider transition-all active:scale-95 shadow-sm"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border-2 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-900/60 font-black text-xs uppercase tracking-wider transition-all active:scale-95 shadow-sm"
             >
               Back to all videos
             </button>
@@ -110,7 +110,7 @@ export function VideosClient({ videos }: { videos: VideoRecord[] }) {
                 <div>
                   <div className="flex items-center gap-2 mb-2.5">
                     {video.featured && (
-                      <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-955/20 text-amber-700 dark:text-amber-450 border border-amber-200 dark:border-amber-900/30 text-[9px] font-black uppercase tracking-wider">
+                      <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-900/30 text-[9px] font-black uppercase tracking-wider">
                         <Star size={10} className="fill-current" />
                         Featured
                       </span>

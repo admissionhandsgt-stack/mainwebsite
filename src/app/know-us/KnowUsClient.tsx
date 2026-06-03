@@ -28,7 +28,7 @@ export default function KnowUsClient({ backgroundImageUrl }: KnowUsClientProps) 
   }, []);
 
   return (
-    <main className="min-h-screen bg-slate-50 flex flex-col text-slate-800">
+    <main className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col text-slate-800 dark:text-slate-100 transition-colors duration-200">
       
       {/* ═══════════════ HERO SECTION ═══════════════ */}
       <section className="relative min-h-[62vh] md:min-h-[68vh] flex items-center overflow-hidden py-16 md:py-24 bg-slate-950 text-white">
@@ -45,7 +45,7 @@ export default function KnowUsClient({ backgroundImageUrl }: KnowUsClientProps) 
               blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMjAiIGhlaWdodD0iMjQwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDcwZTFlIi8+PC9zdmc+"
             />
           )}
-          <div className="absolute inset-0 bg-slate-955/20" />
+          <div className="absolute inset-0 bg-slate-950/20" />
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-950/40 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-slate-950/50" />
         </div>
@@ -76,7 +76,7 @@ export default function KnowUsClient({ backgroundImageUrl }: KnowUsClientProps) 
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mt-6">
               <button onClick={() => CTA.call()}
-                className="inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-6 py-3 rounded-xl font-black text-sm hover:bg-blue-50 transition-all shadow-lg active:scale-95 cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 bg-white dark:!bg-blue-600 text-slate-900 dark:!text-white px-6 py-3 rounded-xl font-black text-sm hover:bg-blue-50 dark:!hover:bg-blue-500 transition-all shadow-lg active:scale-95 cursor-pointer"
               >
                 <Phone className="w-4 h-4" /> Talk to Our Experts
               </button>
@@ -99,11 +99,11 @@ export default function KnowUsClient({ backgroundImageUrl }: KnowUsClientProps) 
             viewport={{ once: true }}
             className="text-center mb-8"
           >
-            <div className="inline-block px-3 py-1 mb-3 text-[9px] font-black tracking-widest text-blue-600 uppercase bg-blue-50 rounded-full">
+            <div className="inline-block px-3 py-1 mb-3 text-[9px] font-black tracking-widest text-blue-600 dark:text-blue-400 uppercase bg-blue-50 dark:bg-blue-950/40 rounded-full">
               OUR STORY
             </div>
-            <h2 className="text-2xl md:text-4xl font-black text-slate-900 tracking-tight mb-3">
-              Built by Obsession. <span className="text-blue-600">Proven by Results.</span>
+            <h2 className="text-2xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight mb-3">
+              Built by Obsession. <span className="text-blue-600 dark:text-blue-400">Proven by Results.</span>
             </h2>
           </motion.div>
 
@@ -115,17 +115,17 @@ export default function KnowUsClient({ backgroundImageUrl }: KnowUsClientProps) 
               viewport={{ once: true }}
               className="space-y-4"
             >
-              <p className="text-slate-700 text-sm md:text-base font-medium leading-relaxed">
-                Admission Hands was founded with a singular vision: <strong className="text-slate-900">every NEET rank — whether 500 or 500,000 — deserves a strategic, expert-driven path to the best possible medical college.</strong>
+              <p className="text-slate-700 dark:text-slate-300 text-sm md:text-base font-medium leading-relaxed">
+                Admission Hands was founded with a singular vision: <strong className="text-slate-900 dark:text-white">every NEET rank — whether 500 or 500,000 — deserves a strategic, expert-driven path to the best possible medical college.</strong>
               </p>
-              <p className="text-slate-700 text-sm md:text-base font-medium leading-relaxed">
-                Over the past 12+ years, we&apos;ve evolved from a small counselling desk into India&apos;s most analytically rigorous medical admission advisory. Our team reverse-engineers the NEET counselling system every single year — tracking round-wise seat movements, cutoff drift patterns, category-specific vacancy flows, and institutional fee changes across <strong className="text-slate-900">600+ medical colleges in 36 states.</strong>
+              <p className="text-slate-700 dark:text-slate-300 text-sm md:text-base font-medium leading-relaxed">
+                Over the past 12+ years, we&apos;ve evolved from a small counselling desk into India&apos;s most analytically rigorous medical admission advisory. Our team reverse-engineers the NEET counselling system every single year — tracking round-wise seat movements, cutoff drift patterns, category-specific vacancy flows, and institutional fee changes across <strong className="text-slate-900 dark:text-white">600+ medical colleges in 36 states.</strong>
               </p>
-              <p className="text-slate-700 text-sm md:text-base font-medium leading-relaxed">
-                While most families navigate the medical admission labyrinth with hearsay and hope, our students enter each counselling round armed with <strong className="text-slate-900">proprietary cutoff intelligence, pre-verified documentation, and a named expert counsellor</strong> who stays with them from Day 1 until they physically report to their college.
+              <p className="text-slate-700 dark:text-slate-300 text-sm md:text-base font-medium leading-relaxed">
+                While most families navigate the medical admission labyrinth with hearsay and hope, our students enter each counselling round armed with <strong className="text-slate-900 dark:text-white">proprietary cutoff intelligence, pre-verified documentation, and a named expert counsellor</strong> who stays with them from Day 1 until they physically report to their college.
               </p>
-              <p className="text-slate-700 text-sm md:text-base font-medium leading-relaxed">
-                This isn&apos;t generic advice. This is <strong className="text-slate-900">precision admission engineering</strong> — and it&apos;s why 95% of our students secure seats in their top-3 preferred colleges.
+              <p className="text-slate-700 dark:text-slate-300 text-sm md:text-base font-medium leading-relaxed">
+                This isn&apos;t generic advice. This is <strong className="text-slate-900 dark:text-white">precision admission engineering</strong> — and it&apos;s why 95% of our students secure seats in their top-3 preferred colleges.
               </p>
             </motion.div>
 
@@ -134,22 +134,22 @@ export default function KnowUsClient({ backgroundImageUrl }: KnowUsClientProps) 
               initial={mounted ? { opacity: 0, x: 15 } : false}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-white rounded-xl border border-slate-100 shadow-sm p-5 md:p-6 space-y-4"
+              className="bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800/80 shadow-sm p-5 md:p-6 space-y-4"
             >
-              <h3 className="text-lg font-black text-slate-900 tracking-tight mb-1">What Makes Us Different</h3>
+              <h3 className="text-lg font-black text-slate-900 dark:text-white tracking-tight mb-1">What Makes Us Different</h3>
               {[
-                { icon: Brain, text: "Proprietary cutoff prediction engine with 95%+ historical accuracy", color: "text-blue-600 bg-blue-50" },
-                { icon: Target, text: "Named, dedicated counsellor from NEET score release to college reporting", color: "text-emerald-600 bg-emerald-50" },
-                { icon: BarChart3, text: "5-year cutoff trend analysis across 600+ medical colleges", color: "text-violet-600 bg-violet-50" },
-                { icon: FileCheck, text: "Zero document rejection track record — every paper pre-audited", color: "text-amber-600 bg-amber-50" },
-                { icon: Shield, text: "Round-by-round seat upgrade strategy with real-time decision support", color: "text-rose-600 bg-rose-50" },
-                { icon: Zap, text: "Parallel AIQ + State Quota management to maximize allotment probability", color: "text-cyan-600 bg-cyan-50" },
+                { icon: Brain, text: "Proprietary cutoff prediction engine with 95%+ historical accuracy", color: "text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-950/40" },
+                { icon: Target, text: "Named, dedicated counsellor from NEET score release to college reporting", color: "text-emerald-600 bg-emerald-50 dark:text-emerald-400 dark:bg-emerald-950/20" },
+                { icon: BarChart3, text: "5-year cutoff trend analysis across 600+ medical colleges", color: "text-violet-600 bg-violet-50 dark:text-violet-400 dark:bg-violet-950/20" },
+                { icon: FileCheck, text: "Zero document rejection track record — every paper pre-audited", color: "text-amber-600 bg-amber-50 dark:text-amber-400 dark:bg-amber-950/20" },
+                { icon: Shield, text: "Round-by-round seat upgrade strategy with real-time decision support", color: "text-rose-600 bg-rose-50 dark:text-rose-400 dark:bg-rose-950/20" },
+                { icon: Zap, text: "Parallel AIQ + State Quota management to maximize allotment probability", color: "text-cyan-600 bg-cyan-50 dark:text-cyan-400 dark:bg-cyan-950/20" },
               ].map((item, idx) => (
                 <div key={idx} className="flex items-start gap-3">
                   <div className={`w-8 h-8 rounded-lg ${item.color} flex items-center justify-center shrink-0 mt-0.5`}>
                     <item.icon className="w-4 h-4" />
                   </div>
-                  <p className="text-slate-700 text-xs md:text-sm font-semibold leading-snug">{item.text}</p>
+                  <p className="text-slate-700 dark:text-slate-350 text-xs md:text-sm font-semibold leading-snug">{item.text}</p>
                 </div>
               ))}
             </motion.div>
@@ -158,7 +158,7 @@ export default function KnowUsClient({ backgroundImageUrl }: KnowUsClientProps) 
       </section>
 
       {/* ═══════════════ WHAT WE DELIVER ═══════════════ */}
-      <section className="py-10 md:py-14 bg-white">
+      <section className="py-10 md:py-14 bg-white dark:bg-slate-900/40 border-y border-slate-100 dark:border-slate-800/60">
         <div className="container-custom max-w-5xl">
           <motion.div 
             initial={mounted ? { opacity: 0, y: 10 } : false}
@@ -166,13 +166,13 @@ export default function KnowUsClient({ backgroundImageUrl }: KnowUsClientProps) 
             viewport={{ once: true }}
             className="text-center mb-8"
           >
-            <div className="inline-block px-3 py-1 mb-3 text-[9px] font-black tracking-widest text-indigo-600 uppercase bg-indigo-50 rounded-full">
+            <div className="inline-block px-3 py-1 mb-3 text-[9px] font-black tracking-widest text-indigo-600 dark:text-indigo-400 uppercase bg-indigo-50 dark:bg-indigo-950/40 rounded-full">
               WHAT WE DELIVER
             </div>
-            <h2 className="text-2xl md:text-4xl font-black text-slate-900 tracking-tight mb-3">
-              End-to-End <span className="text-blue-600">Admission Intelligence</span>
+            <h2 className="text-2xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight mb-3">
+              End-to-End <span className="text-blue-600 dark:text-blue-400">Admission Intelligence</span>
             </h2>
-            <p className="text-sm text-slate-600 font-semibold max-w-2xl mx-auto">
+            <p className="text-sm text-slate-600 dark:text-slate-400 font-semibold max-w-2xl mx-auto">
               From the moment your NEET score drops to the day you walk into your college — we architect every step.
             </p>
           </motion.div>
@@ -201,7 +201,7 @@ export default function KnowUsClient({ backgroundImageUrl }: KnowUsClientProps) 
                 icon: BookOpen,
                 title: "Strategic Choice Filling",
                 desc: "Choice order can make or break your allotment. We build optimized choice lists that balance aspiration with security, ensuring you don't leave a single high-value seat on the table.",
-                color: "from-violet-600 to-purple-600"
+                color: "from-violet-600 to-purple-650"
               },
               {
                 icon: FileCheck,
@@ -224,21 +224,20 @@ export default function KnowUsClient({ backgroundImageUrl }: KnowUsClientProps) 
             ].map((item, idx) => (
               <div 
                 key={idx}
-                className="bg-slate-50 p-5 rounded-xl border border-slate-100 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-200 group"
+                className="bg-slate-50 dark:bg-slate-900 p-5 rounded-xl border border-slate-100 dark:border-slate-800/80 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-200 dark:hover:border-blue-800/60 group"
               >
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white mb-3 shadow-sm transition-transform duration-300 group-hover:scale-105">
                   <item.icon className="w-5 h-5" />
                 </div>
-                <h3 className="text-sm md:text-base font-black text-slate-900 mb-1.5 tracking-tight">{item.title}</h3>
-                <p className="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">{item.desc}</p>
+                <h3 className="text-sm md:text-base font-black text-slate-900 dark:text-white mb-1.5 tracking-tight">{item.title}</h3>
+                <p className="text-slate-600 dark:text-slate-350 text-xs md:text-sm font-medium leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* ═══════════════ THE ADMISSION HANDS EDGE ═══════════════ */}
-      <section className="py-10 md:py-14 bg-gradient-to-b from-slate-50 to-white">
+      <section className="py-10 md:py-14 bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-950">
         <div className="container-custom max-w-5xl">
           <motion.div 
             initial={mounted ? { opacity: 0, y: 10 } : false}
@@ -246,13 +245,13 @@ export default function KnowUsClient({ backgroundImageUrl }: KnowUsClientProps) 
             viewport={{ once: true }}
             className="text-center mb-8"
           >
-            <div className="inline-block px-3 py-1 mb-3 text-[9px] font-black tracking-widest text-emerald-600 uppercase bg-emerald-50 rounded-full">
+            <div className="inline-block px-3 py-1 mb-3 text-[9px] font-black tracking-widest text-emerald-600 dark:text-emerald-400 uppercase bg-emerald-50 dark:bg-emerald-950/40 rounded-full">
               THE ADMISSION HANDS EDGE
             </div>
-            <h2 className="text-2xl md:text-4xl font-black text-slate-900 tracking-tight mb-3">
-              Why <span className="text-blue-600">2100+ Families</span> Chose Us
+            <h2 className="text-2xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight mb-3">
+              Why <span className="text-blue-600 dark:text-blue-400">2100+ Families</span> Chose Us
             </h2>
-            <p className="text-sm text-slate-600 font-semibold max-w-2xl mx-auto">
+            <p className="text-sm text-slate-600 dark:text-slate-400 font-semibold max-w-2xl mx-auto">
               In a landscape filled with noise, here&apos;s what sets us apart — and why families come back year after year.
             </p>
           </motion.div>
@@ -281,7 +280,7 @@ export default function KnowUsClient({ backgroundImageUrl }: KnowUsClientProps) 
                 icon: Shield,
                 title: "Zero-Error Documentation Standard",
                 desc: "Document rejection is the most heartbreaking way to lose a confirmed seat. Our document audit team pre-verifies every single paper — domicile certificates, category proofs, gap year affidavits, NRI sponsorships — against state-specific norms, weeks before deadlines.",
-                highlight: "0% document rejection rate across 2100+ students"
+                highlight: "100% success rate in documentation across 2100+ students"
               },
               {
                 icon: Clock,
@@ -292,16 +291,16 @@ export default function KnowUsClient({ backgroundImageUrl }: KnowUsClientProps) 
             ].map((item, idx) => (
               <div 
                 key={idx}
-                className="bg-white p-5 md:p-6 rounded-xl border border-slate-100 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-200 group"
+                className="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-xl border border-slate-100 dark:border-slate-800/80 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-200 dark:hover:border-blue-800/60 group"
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-11 h-11 rounded-xl bg-slate-900 flex items-center justify-center text-white shrink-0 transition-transform duration-300 group-hover:scale-105">
+                  <div className="w-11 h-11 rounded-xl bg-slate-900 dark:bg-slate-800 flex items-center justify-center text-white shrink-0 transition-transform duration-300 group-hover:scale-105">
                     <item.icon className="w-5 h-5" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-base font-black text-slate-900 mb-1.5 tracking-tight">{item.title}</h3>
-                    <p className="text-slate-600 text-xs md:text-sm font-medium leading-relaxed mb-3">{item.desc}</p>
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-black uppercase tracking-wider">
+                    <h3 className="text-base font-black text-slate-900 dark:text-white mb-1.5 tracking-tight">{item.title}</h3>
+                    <p className="text-slate-600 dark:text-slate-350 text-xs md:text-sm font-medium leading-relaxed mb-3">{item.desc}</p>
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 text-[10px] font-black uppercase tracking-wider">
                       <CheckCircle2 className="w-3 h-3" /> {item.highlight}
                     </div>
                   </div>
@@ -370,7 +369,7 @@ export default function KnowUsClient({ backgroundImageUrl }: KnowUsClientProps) 
       </section>
 
       {/* ═══════════════ OUR PROCESS — HOW IT WORKS ═══════════════ */}
-      <section className="py-10 md:py-14 bg-white">
+      <section className="py-10 md:py-14 bg-white dark:bg-slate-900/40 border-y border-slate-100 dark:border-slate-800/60">
         <div className="container-custom max-w-5xl">
           <motion.div 
             initial={mounted ? { opacity: 0, y: 10 } : false}
@@ -378,11 +377,11 @@ export default function KnowUsClient({ backgroundImageUrl }: KnowUsClientProps) 
             viewport={{ once: true }}
             className="text-center mb-8"
           >
-            <div className="inline-block px-3 py-1 mb-3 text-[9px] font-black tracking-widest text-violet-600 uppercase bg-violet-50 rounded-full">
+            <div className="inline-block px-3 py-1 mb-3 text-[9px] font-black tracking-widest text-violet-600 dark:text-violet-400 uppercase bg-violet-50 dark:bg-violet-950/20 rounded-full">
               OUR PROCESS
             </div>
-            <h2 className="text-2xl md:text-4xl font-black text-slate-900 tracking-tight mb-3">
-              From First Call to <span className="text-blue-600">College Reporting</span>
+            <h2 className="text-2xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight mb-3">
+              From First Call to <span className="text-blue-600 dark:text-blue-400">College Reporting</span>
             </h2>
           </motion.div>
 
@@ -395,18 +394,18 @@ export default function KnowUsClient({ backgroundImageUrl }: KnowUsClientProps) 
           >
             {[
               { step: "01", title: "Free Expert Consultation", desc: "Share your NEET score, category, domicile, and budget. In a free 15-minute call, we map your realistic college options and outline a strategy." },
-              { step: "02", title: "Personalized Strategy Blueprint", desc: "Receive a detailed admission playbook with target college lists, cutoff predictions, fee breakdowns, bond clauses, and a timeline for every counselling round." },
+              { step: "02", title: "Personalized Strategy Blueprint", desc: "Receive a detailed playbook with target college lists, cutoff predictions, fee breakdowns, bond clauses, and a timeline for every counselling round." },
               { step: "03", title: "Active Counselling Management", desc: "We manage your MCC/State registrations, build optimized choice-filling lists, handle documentation, and provide real-time support during every round." },
               { step: "04", title: "Seat Secured & College Reporting", desc: "From allotment letter to physical reporting — fee payment, document verification, hostel allotment, anti-ragging compliance — we ensure zero last-mile issues." },
             ].map((item, idx) => (
               <div 
                 key={idx}
-                className="relative bg-slate-50 p-5 rounded-xl border border-slate-100 hover:shadow-md transition-all duration-300"
+                className="relative bg-slate-50 dark:bg-slate-900 p-5 rounded-xl border border-slate-100 dark:border-slate-800/80 hover:shadow-md transition-all duration-300"
               >
-                <div className="text-4xl font-black text-slate-100 absolute top-3 right-4 select-none">{item.step}</div>
+                <div className="text-4xl font-black text-slate-100 dark:text-slate-800 absolute top-3 right-4 select-none">{item.step}</div>
                 <div className="relative z-10">
-                  <h3 className="text-sm font-black text-slate-900 mb-1.5 tracking-tight">{item.title}</h3>
-                  <p className="text-xs text-slate-600 font-medium leading-relaxed">{item.desc}</p>
+                  <h3 className="text-sm font-black text-slate-900 dark:text-white mb-1.5 tracking-tight">{item.title}</h3>
+                  <p className="text-xs text-slate-600 dark:text-slate-350 font-medium leading-relaxed">{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -444,67 +443,67 @@ export default function KnowUsClient({ backgroundImageUrl }: KnowUsClientProps) 
       </section>
 
       {/* ═══════════════ CONTACT & MAP ═══════════════ */}
-      <section className="py-10 md:py-14 bg-slate-50">
+      <section className="py-10 md:py-14 bg-slate-50 dark:bg-slate-950">
         <div className="container-custom max-w-5xl">
           <div className="text-center mb-6">
-            <h2 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">Visit Our Office</h2>
-            <p className="text-xs md:text-sm text-slate-600 font-medium max-w-md mx-auto mt-1">
+            <h2 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white tracking-tight">Visit Our Office</h2>
+            <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 font-medium max-w-md mx-auto mt-1">
               Our doors are always open. Walk in for a face-to-face strategy discussion.
             </p>
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
             {/* Contact Details */}
-            <div className="lg:col-span-5 bg-white p-5 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between">
+            <div className="lg:col-span-5 bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-100 dark:border-slate-800/80 shadow-sm flex flex-col justify-between">
               <div className="space-y-4">
-                <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider mb-2">Get In Touch</h3>
+                <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider mb-2">Get In Touch</h3>
                 
                 <div className="flex items-start gap-3">
-                  <div className="bg-blue-50 p-2 rounded-lg text-blue-600 shrink-0">
+                  <div className="bg-blue-50 dark:bg-blue-950/20 p-2 rounded-lg text-blue-600 shrink-0">
                     <Phone className="h-4 w-4" />
                   </div>
                   <div>
-                    <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Phone</h4>
-                    <a href={`tel:${CONTACT_INFO.phone}`} className="text-xs md:text-sm font-black text-slate-800 hover:text-blue-600 transition-colors">
+                    <h4 className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Phone</h4>
+                    <a href={`tel:${CONTACT_INFO.phone}`} className="text-xs md:text-sm font-black text-slate-800 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                       {CONTACT_INFO.phone}
                     </a>
                   </div>
                 </div>
                 
                 <div className="flex items-start gap-3">
-                  <div className="bg-emerald-50 p-2 rounded-lg text-emerald-600 shrink-0">
+                  <div className="bg-emerald-50 dark:bg-emerald-950/20 p-2 rounded-lg text-emerald-600 shrink-0">
                     <Mail className="h-4 w-4" />
                   </div>
                   <div>
-                    <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Email</h4>
-                    <a href={`mailto:${CONTACT_INFO.email}`} className="text-xs md:text-sm font-black text-slate-800 hover:text-blue-600 transition-colors">
+                    <h4 className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Email</h4>
+                    <a href={`mailto:${CONTACT_INFO.email}`} className="text-xs md:text-sm font-black text-slate-800 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                       {CONTACT_INFO.email}
                     </a>
                   </div>
                 </div>
                 
                 <div className="flex items-start gap-3">
-                  <div className="bg-violet-50 p-2 rounded-lg text-violet-600 shrink-0">
+                  <div className="bg-violet-50 dark:bg-violet-950/20 p-2 rounded-lg text-violet-600 shrink-0">
                     <MapPin className="h-4 w-4" />
                   </div>
                   <div>
-                    <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Address</h4>
-                    <p className="text-xs text-slate-700 font-medium leading-relaxed">
+                    <h4 className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Address</h4>
+                    <p className="text-xs text-slate-700 dark:text-slate-350 font-medium leading-relaxed">
                       {CONTACT_INFO.address}
                     </p>
                   </div>
                 </div>
               </div>
               
-              <div className="mt-4 pt-4 border-t border-slate-100 flex flex-col sm:flex-row gap-2 justify-between">
+              <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row gap-2 justify-between">
                 <div>
-                  <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Office Hours</h4>
-                  <p className="text-xs text-slate-700 font-semibold mt-0.5">Mon - Sat: 10:00 AM - 7:00 PM</p>
+                  <h4 className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Office Hours</h4>
+                  <p className="text-xs text-slate-700 dark:text-slate-300 font-semibold mt-0.5">Mon - Sat: 10:00 AM - 7:00 PM</p>
                 </div>
                 <div className="flex items-end gap-2 mt-2 sm:mt-0">
                   <button 
                     onClick={() => CTA.call()}
-                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1 bg-slate-900 text-white px-3.5 py-2 rounded-lg font-black text-[10px] hover:bg-slate-800 transition-all cursor-pointer"
+                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1 bg-slate-900 dark:bg-slate-800 text-white px-3.5 py-2 rounded-lg font-black text-[10px] hover:bg-slate-800 dark:hover:bg-slate-700 transition-all cursor-pointer"
                   >
                     Call Now
                   </button>
@@ -519,7 +518,7 @@ export default function KnowUsClient({ backgroundImageUrl }: KnowUsClientProps) 
             </div>
             
             {/* Embedded Map */}
-            <div className="lg:col-span-7 h-[280px] lg:h-auto rounded-xl overflow-hidden shadow-sm border border-slate-100 bg-white">
+            <div className="lg:col-span-7 h-[280px] lg:h-auto rounded-xl overflow-hidden shadow-sm border border-slate-100 dark:border-slate-800/80 bg-white dark:bg-slate-900">
               <iframe 
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.0154924824307!2d77.3701033!3d28.6303843!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce5f55555555%3A0xd6e6726c5fb03344!2sBhutani%20City%20Center%2C%20Sector%2032%2C%20Noida%2C%20Uttar%20Pradesh%20201301!5e0!3m2!1sen!2sin!4v1652888888888!5m2!1sen!2sin" 
                 width="100%" 

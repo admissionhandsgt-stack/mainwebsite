@@ -52,7 +52,7 @@ const steps = [
 
 const HowItWorks = () => {
   return (
-    <section className="compact-padding bg-slate-50/50 dark:bg-slate-955 relative overflow-hidden">
+    <section className="compact-padding bg-slate-50/50 dark:bg-slate-950 relative overflow-hidden">
       <div className="container-custom relative z-10">
         <div className="text-center mb-8 md:mb-12">
           <motion.div

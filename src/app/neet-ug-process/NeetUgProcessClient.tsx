@@ -35,7 +35,7 @@ const NeetUgProcessClient = ({ heroImageUrl, examImageUrl, collegeImageUrl }: Ne
   return (
     <main className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-white transition-colors duration-200">
       {/* 1. HERO SECTION */}
-      <section className="relative min-h-[50vh] h-auto py-24 md:py-32 flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[55vh] md:min-h-[50vh] h-auto flex flex-col overflow-hidden">
         {heroImageUrl && heroImageUrl !== "none" && (
           <Image
             src={heroImageUrl}
@@ -46,24 +46,26 @@ const NeetUgProcessClient = ({ heroImageUrl, examImageUrl, collegeImageUrl }: Ne
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-transparent" />
-        <div className="container-custom relative z-10 text-white">
-          <div className="max-w-3xl space-y-3">
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight">
-              NEET UG Admission Process – <span className="text-primary">Complete Step-by-Step Guide</span>
-            </h1>
-            <p className="text-base md:text-lg lg:text-xl text-slate-200 max-w-2xl">
-              Understand the full MBBS admission journey from exam to college joining with expert guidance.
-            </p>
-            <div className="flex flex-wrap gap-4 pt-2 md:pt-4">
+        <div className="container-custom relative z-10 text-white flex-1 flex flex-col pt-24 pb-6 md:py-32">
+          <div className="max-w-3xl flex-1 flex flex-col">
+            <div className="space-y-3 flex-1 flex flex-col justify-center">
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight">
+                NEET UG Admission Process – <span className="text-primary">Complete Step-by-Step Guide</span>
+              </h1>
+              <p className="text-base md:text-lg lg:text-xl text-slate-200 max-w-2xl">
+                Understand the full MBBS admission journey from exam to college joining with expert guidance.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-3 w-full max-w-[340px] md:max-w-md mt-8 md:mt-6 pb-2 md:pb-0">
               <a 
                 href={`tel:${CONTACT_INFO.phone}`}
-                className="inline-flex items-center justify-center rounded-full bg-primary hover:bg-primary/90 text-white px-8 py-3.5 text-sm md:text-base font-bold transition-all shadow-lg hover:shadow-primary/20"
+                className="flex items-center justify-center rounded-full bg-primary hover:bg-primary/90 text-white px-2 py-2.5 md:py-3 text-xs sm:text-sm font-bold transition-all shadow-lg hover:shadow-primary/20 whitespace-nowrap"
               >
                 Start Consultation
               </a>
               <button 
                 onClick={scrollToSteps}
-                className="inline-flex items-center justify-center rounded-full border-white/60 bg-white/10 text-white hover:bg-white hover:text-slate-900 px-8 py-3.5 text-sm md:text-base font-bold transition-all backdrop-blur-sm"
+                className="flex items-center justify-center rounded-full border border-white/60 bg-white/10 text-white hover:bg-white hover:text-slate-900 px-2 py-2.5 md:py-3 text-xs sm:text-sm font-bold transition-all backdrop-blur-sm whitespace-nowrap"
               >
                 Explore Steps
               </button>
@@ -124,36 +126,36 @@ const NeetUgProcessClient = ({ heroImageUrl, examImageUrl, collegeImageUrl }: Ne
       </section>
 
       {/* 3. CORE PROCESS SECTION */}
-      <section id="steps-section" className="py-8 bg-slate-50 dark:bg-slate-950/40">
+      <section id="steps-section" className="py-5 md:py-8 bg-slate-50 dark:bg-slate-950/40">
         <div className="container-custom">
-          <div className="text-center mb-6">
-            <h2 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-2">Step-by-Step Journey</h2>
-            <p className="text-slate-500 dark:text-slate-400 text-sm">We break down the 15 critical milestones of your admission process.</p>
+          <div className="text-center mb-4 md:mb-6">
+            <h2 className="text-xl md:text-3xl font-black text-slate-900 dark:text-white mb-1 md:mb-2">Step-by-Step Journey</h2>
+            <p className="text-slate-500 dark:text-slate-400 text-xs md:text-sm">We break down the 15 critical milestones of your admission process.</p>
           </div>
           
           <ProcessAccordion />
 
           {/* MID CTA */}
-          <div className="mt-8 md:mt-10 p-6 md:p-8 rounded-3xl bg-gradient-to-br from-primary to-blue-700 text-white text-center relative overflow-hidden">
+          <div className="mt-6 md:mt-10 p-4 md:p-8 rounded-2xl md:rounded-3xl bg-gradient-to-br from-primary to-blue-700 text-white text-center relative overflow-hidden">
             <div className="absolute top-0 right-0 p-6 opacity-10">
               <GraduationCap size={100} />
             </div>
             <div className="relative z-10">
-              <h3 className="text-xl md:text-3xl font-bold mb-3">Not sure which counselling route is right for you?</h3>
-              <p className="text-blue-100 mb-8 max-w-xl mx-auto text-sm">Get a personalized roadmap based on your predicted rank and budget.</p>
-              <div className="flex flex-wrap justify-center gap-4">
+              <h3 className="text-base md:text-3xl font-black mb-1.5 md:mb-3">Not sure which counselling route is right for you?</h3>
+              <p className="text-blue-100/90 mb-4 md:mb-8 max-w-xl mx-auto text-xs md:text-sm font-medium">Get a personalized roadmap based on your predicted rank and budget.</p>
+              <div className="flex flex-wrap justify-center gap-2 md:gap-4">
                 <a 
                   href={`tel:${CONTACT_INFO.phone}`}
-                  className="inline-flex items-center justify-center rounded-full bg-white text-primary hover:bg-slate-100 px-8 py-3.5 text-sm md:text-base font-bold transition-all"
+                  className="inline-flex items-center justify-center rounded-full bg-white text-primary hover:bg-slate-100 px-5 py-2.5 text-xs md:px-8 md:py-3.5 md:text-base font-extrabold transition-all"
                 >
                   Talk to Expert
                 </a>
                 <a 
                   href={`https://api.whatsapp.com/send?phone=${CONTACT_INFO.whatsapp}`}
                   target="_blank"
-                  className="inline-flex items-center justify-center rounded-full border-white/30 bg-white/10 hover:bg-white/20 text-white px-8 py-3.5 text-sm md:text-base font-bold transition-all"
+                  className="inline-flex items-center justify-center rounded-full border-white/30 bg-white/10 hover:bg-white/20 text-white px-5 py-2.5 text-xs md:px-8 md:py-3.5 md:text-base font-extrabold transition-all"
                 >
-                  <MessageCircle className="mr-2 h-5 w-5" /> WhatsApp Now
+                  <MessageCircle className="mr-1.5 h-4 w-4 md:mr-2 md:h-5 md:w-5" /> WhatsApp Now
                 </a>
               </div>
             </div>
@@ -162,13 +164,13 @@ const NeetUgProcessClient = ({ heroImageUrl, examImageUrl, collegeImageUrl }: Ne
       </section>
 
       {/* 4. COMMON MISTAKES SECTION */}
-      <section className="py-8 bg-white dark:bg-slate-950">
+      <section className="py-5 md:py-8 bg-white dark:bg-slate-950">
         <div className="container-custom">
-          <div className="text-center mb-6">
-            <h2 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-2">Common Mistakes to Avoid</h2>
-            <p className="text-slate-500 dark:text-slate-400 text-sm">Every year, thousands of students lose their seats due to these avoidable errors.</p>
+          <div className="text-center mb-4 md:mb-6">
+            <h2 className="text-xl md:text-3xl font-black text-slate-900 dark:text-white mb-1 md:mb-2">Common Mistakes to Avoid</h2>
+            <p className="text-slate-500 dark:text-slate-400 text-xs md:text-sm">Every year, thousands of students lose their seats due to these avoidable errors.</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-3">
             {[
               "Filling limited choices",
               "Ignoring state counselling",
@@ -176,17 +178,17 @@ const NeetUgProcessClient = ({ heroImageUrl, examImageUrl, collegeImageUrl }: Ne
               "Missing deadlines",
               "Wrong category selection"
             ].map((mistake, idx) => (
-              <div key={idx} className="p-5 rounded-xl bg-rose-50 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/30 group transition-all hover:bg-rose-100 dark:hover:bg-rose-950/40 hover:-translate-y-1">
-                <div className="mb-3 text-rose-500 dark:text-rose-400 group-hover:scale-110 transition-transform">
-                  <AlertTriangle className="h-6 w-6" />
+              <div key={idx} className="p-3 md:p-5 rounded-lg md:rounded-xl bg-rose-50 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/30 group transition-all hover:bg-rose-100 dark:hover:bg-rose-950/40 hover:-translate-y-1">
+                <div className="mb-1.5 md:mb-3 text-rose-500 dark:text-rose-400 group-hover:scale-110 transition-transform">
+                  <AlertTriangle className="h-4 w-4 md:h-6 md:w-6" />
                 </div>
-                <h4 className="font-bold text-slate-900 dark:text-rose-100 leading-tight text-sm">{mistake}</h4>
+                <h4 className="font-extrabold text-slate-900 dark:text-rose-100 leading-tight text-[11px] sm:text-sm">{mistake}</h4>
               </div>
             ))}
           </div>
-          <div className="mt-8 p-4 bg-slate-900 dark:bg-slate-900/60 border border-slate-800/80 rounded-xl text-center">
-            <p className="text-slate-300 text-sm font-medium">
-              <span className="text-rose-400 font-black uppercase tracking-widest mr-2 text-xs">Critical:</span> 
+          <div className="mt-5 md:mt-8 p-3 md:p-4 bg-slate-900 dark:bg-slate-900/60 border border-slate-800/80 rounded-xl text-center">
+            <p className="text-slate-300 text-xs md:text-sm font-medium">
+              <span className="text-rose-400 font-black uppercase tracking-widest mr-2 text-[10px] md:text-xs">Critical:</span> 
               These mistakes often result in losing better colleges.
             </p>
           </div>
@@ -199,25 +201,25 @@ const NeetUgProcessClient = ({ heroImageUrl, examImageUrl, collegeImageUrl }: Ne
           <div className="text-center mb-6">
             <h2 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-2">How Admission Hands Helps</h2>
             <p className="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto text-sm">We provide the data, strategy, and peace of mind you need for a successful admission.</p>
-          </div>
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                    </div>
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
             {[
-              { title: "Rank-based College Shortlisting", icon: Search },
-              { title: "Multi-counselling Strategy", icon: Map },
-              { title: "Smart Choice Filling", icon: Settings2 },
-              { title: "Budget & Quota Optimization", icon: FileCheck },
-              { title: "Documentation Support", icon: UserCheck },
-              { title: "End-to-End Guidance", icon: ShieldAlert }
+              { title: "Rank-based Shortlisting", icon: Search, desc: "Get a strategic list of target MBBS colleges matching your rank, category, and budget." },
+              { title: "Multi-counselling Strategy", icon: Map, desc: "Manage AIQ, State, and Deemed university counsellings in parallel to maximize allotment." },
+              { title: "Smart Choice Filling", icon: Settings2, desc: "Optimize your choices to ensure you secure the highest value seat without losing safety options." },
+              { title: "Budget Optimization", icon: FileCheck, desc: "Align college fees, security deposits, and bond rules with your financial choices." },
+              { title: "Documentation Support", icon: UserCheck, desc: "Pre-audit all certificates, affidavits, and NRI papers to prevent seat rejections." },
+              { title: "End-to-End Guidance", icon: ShieldAlert, desc: "Continuous support from registration through choices to final college joining." }
             ].map((feature, idx) => (
-              <div key={idx} className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 shadow-sm transition-all hover:shadow-lg hover:border-primary/20 dark:hover:border-teal-500/40 group text-center md:text-left relative overflow-hidden before:absolute before:top-0 before:left-0 before:right-0 before:h-[3px] before:bg-gradient-to-r before:from-blue-500 before:to-teal-400 before:opacity-0 group-hover:before:opacity-100 before:transition-opacity">
-                <div className="absolute top-3 right-4 text-5xl font-black text-slate-100/70 dark:text-slate-800/30 group-hover:text-blue-500/10 dark:group-hover:text-teal-400/10 select-none font-sans tracking-tighter transition-colors">
+              <div key={idx} className="p-2.5 md:p-6 rounded-xl md:rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 shadow-sm transition-all hover:shadow-lg hover:border-primary/20 dark:hover:border-teal-500/40 group text-center md:text-left relative overflow-hidden before:absolute before:top-0 before:left-0 before:right-0 before:h-[3px] before:bg-gradient-to-r before:from-blue-500 before:to-teal-400 before:opacity-0 group-hover:before:opacity-100 before:transition-opacity">
+                <div className="absolute top-1 right-2 text-xl md:text-5xl font-black text-slate-100/70 dark:text-slate-800/30 group-hover:text-blue-500/10 dark:group-hover:text-teal-400/10 select-none font-sans tracking-tighter transition-colors">
                   {String(idx + 1).padStart(2, '0')}
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-950/60 flex items-center justify-center text-primary dark:text-blue-400 mb-5 transition-colors group-hover:bg-primary group-hover:text-white dark:group-hover:bg-blue-500 dark:group-hover:text-white mx-auto md:mx-0">
-                  <feature.icon size={24} />
+                <div className="w-8 h-8 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-slate-50 dark:bg-slate-950/60 flex items-center justify-center text-primary dark:text-blue-400 mb-2 md:mb-5 transition-colors group-hover:bg-primary group-hover:text-white dark:group-hover:bg-blue-500 dark:group-hover:text-white mx-auto md:mx-0">
+                  <feature.icon className="h-4 w-4 md:h-6 md:w-6" />
                 </div>
-                <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{feature.title}</h4>
-                <p className="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">Expert intervention at every step to ensure you get the best college for your rank.</p>
+                <h4 className="text-[11px] sm:text-base md:text-lg font-bold text-slate-900 dark:text-white mb-1 md:mb-2 leading-tight">{feature.title}</h4>
+                <p className="text-[9.5px] sm:text-xs text-slate-500 dark:text-slate-400 leading-normal md:leading-relaxed">{feature.desc}</p>
               </div>
             ))}
           </div>

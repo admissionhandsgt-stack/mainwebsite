@@ -89,15 +89,15 @@ const DataInsights = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ delay: 0.2 + index * 0.1 }}
-              className="bg-white/5 backdrop-blur-md rounded-2xl md:rounded-[2rem] p-5 sm:p-6 border border-white/10 hover:border-white/20 transition-all group flex flex-col sm:flex-row items-start gap-4"
+              className="bg-white/5 backdrop-blur-md rounded-xl md:rounded-[2rem] p-3.5 sm:p-6 border border-white/10 hover:border-white/20 transition-all group flex flex-row items-center sm:items-start gap-3 sm:gap-4"
             >
-              <div className={`flex-shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white shadow-xl group-hover:scale-110 transition-transform`}>
-                <item.icon className="w-5 h-5 md:w-6 md:h-6" />
+              <div className={`flex-shrink-0 w-8 h-8 md:w-12 md:h-12 rounded-lg md:rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white shadow-xl group-hover:scale-110 transition-transform`}>
+                <item.icon className="w-4.5 h-4.5 md:w-6 md:h-6" />
               </div>
-              <div>
-                <h3 className="text-[9px] md:text-xs font-black text-slate-400 uppercase tracking-widest mb-1">{item.title}</h3>
-                <div className="text-2xl sm:text-3xl font-black text-white mb-1 tracking-tight">{item.value}</div>
-                <p className="text-slate-400 text-[11px] md:text-sm font-medium leading-relaxed">{item.description}</p>
+              <div className="min-w-0 flex-1">
+                <h3 className="text-[8px] md:text-xs font-black text-slate-400 uppercase tracking-widest mb-0.5 md:mb-1">{item.title}</h3>
+                <div className="text-lg sm:text-3xl font-black text-white mb-0.5 md:mb-1 tracking-tight leading-none">{item.value}</div>
+                <p className="text-slate-400 text-[10px] md:text-sm font-medium leading-normal md:leading-relaxed">{item.description}</p>
               </div>
             </motion.div>
           ))}
@@ -111,15 +111,15 @@ const DataInsights = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ delay: 0.5 }}
-            className="bg-white/[0.04] backdrop-blur-md rounded-2xl md:rounded-[2rem] p-5 md:p-7 border border-white/10"
+            className="bg-white/[0.04] backdrop-blur-md rounded-xl md:rounded-[2rem] p-3.5 md:p-7 border border-white/10"
           >
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-8 h-8 rounded-xl bg-blue-600/20 flex items-center justify-center">
-                <TrendingUp className="w-4 h-4 text-blue-400" />
+            <div className="flex items-center gap-2 md:gap-3 mb-3.5 md:mb-5">
+              <div className="w-6 h-6 md:w-8 md:h-8 rounded-lg md:rounded-xl bg-blue-600/20 flex items-center justify-center shrink-0">
+                <TrendingUp className="w-3.5 h-3.5 md:w-4 md:h-4 text-blue-400" />
               </div>
-              <h3 className="text-sm md:text-base font-black text-white uppercase tracking-wider">Essential Admission Insights</h3>
+              <h3 className="text-xs md:text-base font-black text-white uppercase tracking-wider">Essential Admission Insights</h3>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-2 md:space-y-3">
               {admissionInsights.map((point, i) => (
                 <motion.div
                   key={i}
@@ -127,12 +127,12 @@ const DataInsights = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ delay: 0.6 + i * 0.06 }}
-                  className="flex items-start gap-3 group"
+                  className="flex items-start gap-2 md:gap-3 group"
                 >
-                  <div className="mt-0.5 w-5 h-5 rounded-md bg-emerald-500/20 flex items-center justify-center shrink-0 group-hover:bg-emerald-500/30 transition-colors">
-                    <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                  <div className="mt-0.5 w-4 h-4 md:w-5 md:h-5 rounded-md bg-emerald-500/20 flex items-center justify-center shrink-0 group-hover:bg-emerald-500/30 transition-colors">
+                    <CheckCircle2 className="w-2.5 h-2.5 md:w-3 md:h-3 text-emerald-400" />
                   </div>
-                  <p className="text-slate-300 text-xs md:text-sm font-medium leading-relaxed">{point}</p>
+                  <p className="text-slate-300 text-[10px] md:text-sm font-medium leading-relaxed">{point}</p>
                 </motion.div>
               ))}
             </div>
@@ -144,15 +144,15 @@ const DataInsights = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ delay: 0.5 }}
-            className="bg-white/[0.04] backdrop-blur-md rounded-2xl md:rounded-[2rem] p-5 md:p-7 border border-white/10"
+            className="bg-white/[0.04] backdrop-blur-md rounded-xl md:rounded-[2rem] p-3.5 md:p-7 border border-white/10"
           >
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-8 h-8 rounded-xl bg-amber-500/20 flex items-center justify-center">
-                <ClipboardCheck className="w-4 h-4 text-amber-400" />
+            <div className="flex items-center gap-2 md:gap-3 mb-3.5 md:mb-5">
+              <div className="w-6 h-6 md:w-8 md:h-8 rounded-lg md:rounded-xl bg-amber-500/20 flex items-center justify-center shrink-0">
+                <ClipboardCheck className="w-3.5 h-3.5 md:w-4 md:h-4 text-amber-400" />
               </div>
-              <h3 className="text-sm md:text-base font-black text-white uppercase tracking-wider">MBBS Eligibility Criteria</h3>
+              <h3 className="text-xs md:text-base font-black text-white uppercase tracking-wider">MBBS Eligibility Criteria</h3>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-2 md:space-y-3">
               {eligibilityPoints.map((point, i) => (
                 <motion.div
                   key={i}
@@ -160,12 +160,12 @@ const DataInsights = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ delay: 0.6 + i * 0.06 }}
-                  className="flex items-start gap-3 group"
+                  className="flex items-start gap-2 md:gap-3 group"
                 >
-                  <div className="mt-0.5 w-5 h-5 rounded-md bg-blue-500/20 flex items-center justify-center shrink-0 group-hover:bg-blue-500/30 transition-colors">
-                    <point.icon className="w-3 h-3 text-blue-400" />
+                  <div className="mt-0.5 w-4 h-4 md:w-5 md:h-5 rounded-md bg-blue-500/20 flex items-center justify-center shrink-0 group-hover:bg-blue-500/30 transition-colors">
+                    <point.icon className="w-2.5 h-2.5 md:w-3 md:h-3 text-blue-400" />
                   </div>
-                  <p className="text-slate-300 text-xs md:text-sm font-medium leading-relaxed">{point.text}</p>
+                  <p className="text-slate-300 text-[10px] md:text-sm font-medium leading-relaxed">{point.text}</p>
                 </motion.div>
               ))}
             </div>

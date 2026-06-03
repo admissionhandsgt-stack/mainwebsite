@@ -77,9 +77,9 @@ export const PGHero = ({ backgroundImageUrl }: PGHeroProps) => {
         <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-8">
           <button
             onClick={() => CTA.call()}
-            className="inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-6 py-3 rounded-xl font-black text-sm hover:bg-blue-50 transition-all shadow-lg active:scale-95"
+            className="inline-flex items-center justify-center gap-2 bg-white dark:!bg-blue-600 text-slate-900 dark:!text-white px-6 py-3 rounded-xl font-black text-sm hover:bg-blue-50 dark:!hover:bg-blue-500 transition-all shadow-lg active:scale-95"
           >
-            <Phone className="w-4 h-4" /> Book Free PG Strategy Call
+            <Phone className="w-4 h-4" /> Talk to an PG Expert
           </button>
           <button
             onClick={() => CTA.whatsapp("Hi, I need guidance for NEET PG counselling")}

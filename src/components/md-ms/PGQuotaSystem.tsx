@@ -105,22 +105,22 @@ export const PGQuotaSystem = () => {
             initial={mounted ? { opacity: 0, y: 15 } : false}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="grid grid-cols-2 gap-4"
+            className="grid grid-cols-2 gap-2.5 md:gap-4"
           >
             {quotaCards.slice(0, 2).map((card) => (
               <div
                 key={card.title}
-                className={`${card.bg} border ${card.border} rounded-xl p-5`}
+                className={`${card.bg} border ${card.border} rounded-lg md:rounded-xl p-3.5 md:p-5`}
               >
-                <p className={`text-4xl font-black ${card.percentColor} mb-1`}>
+                <p className={`text-2xl md:text-4xl font-black ${card.percentColor} mb-0.5 md:mb-1`}>
                   {card.percentage}
                 </p>
-                <p className="text-sm font-black text-white mb-3">{card.title}</p>
-                <ul className="space-y-2">
+                <p className="text-xs md:text-sm font-black text-white mb-2 md:mb-3">{card.title}</p>
+                <ul className="space-y-1 md:space-y-2">
                   {card.bullets.map((bullet) => (
-                    <li key={bullet} className="flex items-start gap-2">
-                      <CheckCircle2 className={`w-3.5 h-3.5 ${card.iconColor} flex-shrink-0 mt-0.5`} />
-                      <span className={`text-xs ${card.bulletColor}`}>{bullet}</span>
+                    <li key={bullet} className="flex items-start gap-1.5 md:gap-2">
+                      <CheckCircle2 className={`w-3 h-3 md:w-3.5 md:h-3.5 ${card.iconColor} flex-shrink-0 mt-0.5`} />
+                      <span className={`text-[10.5px] md:text-xs ${card.bulletColor}`}>{bullet}</span>
                     </li>
                   ))}
                 </ul>
@@ -134,25 +134,25 @@ export const PGQuotaSystem = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="flex flex-col gap-4"
+            className="flex flex-col gap-2.5 md:gap-4"
           >
             {quotaCards.slice(2).map((card) => (
               <div
                 key={card.title}
-                className={`${card.bg} border ${card.border} rounded-xl p-5`}
+                className={`${card.bg} border ${card.border} rounded-lg md:rounded-xl p-3.5 md:p-5`}
               >
-                <div className="flex items-start gap-4">
+                <div className="flex items-start gap-3 md:gap-4">
                   <div>
-                    <p className={`text-4xl font-black ${card.percentColor} mb-1`}>
+                    <p className={`text-2xl md:text-4xl font-black ${card.percentColor} mb-0.5 md:mb-1`}>
                       {card.percentage}
                     </p>
-                    <p className="text-sm font-black text-white mb-3">{card.title}</p>
+                    <p className="text-xs md:text-sm font-black text-white mb-2 md:mb-3">{card.title}</p>
                   </div>
-                  <ul className="space-y-2 mt-1">
+                  <ul className="space-y-1 md:space-y-2 mt-1 flex-1">
                     {card.bullets.map((bullet) => (
-                      <li key={bullet} className="flex items-start gap-2">
-                        <CheckCircle2 className={`w-3.5 h-3.5 ${card.iconColor} flex-shrink-0 mt-0.5`} />
-                        <span className={`text-xs ${card.bulletColor}`}>{bullet}</span>
+                      <li key={bullet} className="flex items-start gap-1.5 md:gap-2">
+                        <CheckCircle2 className={`w-3 h-3 md:w-3.5 md:h-3.5 ${card.iconColor} flex-shrink-0 mt-0.5`} />
+                        <span className={`text-[10.5px] md:text-xs ${card.bulletColor}`}>{bullet}</span>
                       </li>
                     ))}
                   </ul>
@@ -167,16 +167,16 @@ export const PGQuotaSystem = () => {
           initial={mounted ? { opacity: 0, y: 15 } : false}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="bg-white/5 rounded-xl p-5 mt-6 border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4"
+          className="bg-white/5 rounded-lg md:rounded-xl p-3.5 md:p-5 mt-5 md:mt-6 border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4"
         >
-          <p className="text-sm text-blue-100/80 font-medium">
+          <p className="text-xs md:text-sm text-blue-100/80 font-bold text-center sm:text-left">
             We manage registrations and strategy across ALL quota systems simultaneously.
           </p>
           <button
             onClick={() => CTA.call()}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-xs font-black uppercase tracking-wider hover:shadow-lg hover:shadow-blue-500/25 transition-all flex-shrink-0"
+            className="inline-flex items-center gap-1.5 px-4 py-2 md:px-5 md:py-2.5 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-[10px] md:text-xs font-black uppercase tracking-wider hover:shadow-lg hover:shadow-blue-500/25 transition-all flex-shrink-0"
           >
-            <Phone className="w-4 h-4" />
+            <Phone className="w-3.5 h-3.5 md:w-4 md:h-4" />
             Call Us Now
           </button>
         </motion.div>

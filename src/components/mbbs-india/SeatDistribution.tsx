@@ -6,7 +6,7 @@ export const SeatDistribution = () => {
   const { seats } = mbbsData;
 
   return (
-    <section className="compact-padding bg-white dark:bg-slate-955 relative overflow-hidden transition-colors duration-200">
+    <section className="compact-padding bg-white dark:bg-slate-950 relative overflow-hidden transition-colors duration-200">
       <div className="container-custom relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
@@ -23,7 +23,7 @@ export const SeatDistribution = () => {
               <div className="grid grid-cols-3 sm:grid-cols-3 gap-2 md:gap-4 min-w-[280px]">
                 {seats.distribution.map((item, idx) => (
                   <div key={idx} className="p-2.5 md:p-6 rounded-[1.3rem] md:rounded-[2rem] bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 flex flex-col items-center text-center group hover:bg-white dark:hover:bg-slate-850 hover:shadow-xl transition-all duration-300">
-                    <div className="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-blue-100 dark:bg-blue-955/20 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-2 md:mb-4 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                    <div className="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-blue-100 dark:bg-blue-950/20 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-2 md:mb-4 group-hover:bg-blue-600 group-hover:text-white transition-all">
                       <Users className="w-4 h-4 md:w-6 md:h-6" />
                     </div>
                     <p className="text-base md:text-3xl font-black text-slate-900 dark:text-white leading-none mb-0.5 md:mb-1 tracking-tight">
@@ -37,9 +37,9 @@ export const SeatDistribution = () => {
               </div>
             </div>
 
-            <div className="mt-6 p-2.5 rounded-xl bg-blue-50 dark:bg-blue-955/20 border border-blue-100 dark:border-blue-900/30 flex gap-3">
+            <div className="mt-6 p-2.5 rounded-xl bg-blue-50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/30 flex gap-3">
               <Info className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
-              <p className="text-[11px] text-blue-800 dark:text-black font-bold leading-relaxed">
+              <p className="text-[11px] text-blue-800 dark:text-blue-200 font-bold leading-relaxed">
                 {seats.disclaimer}
               </p>
             </div>

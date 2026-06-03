@@ -8,7 +8,7 @@ export const QuickOverview = () => {
   const { overview } = mbbsData;
 
   return (
-    <section className="pt-2 md:pt-4 pb-8 md:pb-12 bg-white dark:bg-slate-955 relative overflow-hidden border-b border-slate-50 dark:border-slate-900 transition-colors duration-200">
+    <section className="pt-2 md:pt-4 pb-8 md:pb-12 bg-white dark:bg-slate-950 relative overflow-hidden border-b border-slate-50 dark:border-slate-900 transition-colors duration-200">
       <div className="container-custom relative z-10">
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-2 md:gap-4">
           {overview.items.map((item, idx) => {

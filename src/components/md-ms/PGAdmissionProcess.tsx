@@ -135,7 +135,7 @@ export const PGAdmissionProcess = () => {
   };
 
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900 overflow-hidden">
+    <section className="pt-16 pb-6 md:pt-24 md:pb-10 bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900 overflow-hidden">
       <div className="container-custom max-w-4xl">
         {/* Header */}
         <motion.div 
@@ -185,26 +185,26 @@ export const PGAdmissionProcess = () => {
                 {/* Step Header */}
                 <button
                   onClick={() => toggleStep(i)}
-                  className="w-full text-left p-5 md:p-6 flex items-center justify-between gap-4 focus:outline-none"
+                  className="w-full text-left p-3.5 md:p-6 flex items-center justify-between gap-3 md:gap-4 focus:outline-none"
                 >
-                  <div className="flex items-center gap-3 md:gap-5">
+                  <div className="flex items-center gap-2.5 md:gap-5">
                     {/* Glowing Icon */}
-                    <div className={`w-10 h-10 rounded-xl ${step.bgColor} flex items-center justify-center ${step.iconColor} shrink-0`}>
-                      <Icon className="w-5 h-5" />
+                    <div className={`w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl ${step.bgColor} flex items-center justify-center ${step.iconColor} shrink-0`}>
+                      <Icon className="w-4 h-4 md:w-5 md:h-5" />
                     </div>
                     <div>
-                      <span className="text-[10px] font-black tracking-widest text-slate-400 uppercase">
+                      <span className="text-[9px] md:text-[10px] font-black tracking-widest text-slate-400 uppercase">
                         {step.phase}
                       </span>
-                      <h3 className="text-base md:text-lg font-black text-slate-900 dark:text-white leading-tight mt-0.5">
+                      <h3 className="text-sm md:text-lg font-black text-slate-900 dark:text-white leading-tight mt-0.5">
                         {step.title}
                       </h3>
                     </div>
                   </div>
                   
                   {/* Chevron Toggle */}
-                  <div className={`w-8 h-8 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 transition-transform duration-300 ${isOpen ? "rotate-180 text-blue-600 dark:text-blue-400" : ""}`}>
-                    <ChevronDown className="w-4 h-4" />
+                  <div className={`w-7 h-7 md:w-8 md:h-8 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 transition-transform duration-300 shrink-0 ${isOpen ? "rotate-180 text-blue-600 dark:text-blue-400" : ""}`}>
+                    <ChevronDown className="w-3.5 h-3.5 md:w-4 md:h-4" />
                   </div>
                 </button>
 
@@ -217,23 +217,23 @@ export const PGAdmissionProcess = () => {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.25, ease: "easeInOut" }}
                     >
-                      <div className="px-5 pb-5 md:px-6 md:pb-6 border-t border-slate-50 dark:border-slate-800/40 pt-4">
-                        <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-5 font-medium">
+                      <div className="px-3.5 pb-3.5 md:px-6 md:pb-6 border-t border-slate-50 dark:border-slate-800/40 pt-3 md:pt-4">
+                        <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-3 md:mb-5 font-medium">
                           {step.desc}
                         </p>
                         
                         {/* Key Milestones Grid */}
-                        <div className="bg-slate-50 dark:bg-slate-950/40 rounded-xl p-4 md:p-5 border border-slate-100/50 dark:border-slate-800/40">
-                          <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-3">
+                        <div className="bg-slate-50 dark:bg-slate-950/40 rounded-xl p-3 md:p-5 border border-slate-100/50 dark:border-slate-800/40">
+                          <h4 className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-2 md:mb-3">
                             Key Activities & Safety Checks
                           </h4>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3.5">
                             {step.bullets.map((bullet, j) => (
-                              <div key={j} className="flex items-start gap-2.5">
-                                <div className="w-5 h-5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 flex items-center justify-center shrink-0 mt-0.5">
-                                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                              <div key={j} className="flex items-start gap-2">
+                                <div className="w-4.5 h-4.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 flex items-center justify-center shrink-0 mt-0.5">
+                                  <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                                 </div>
-                                <span className="text-xs md:text-sm font-bold text-slate-700 dark:text-slate-350 leading-snug">
+                                <span className="text-[11px] md:text-sm font-bold text-slate-700 dark:text-slate-350 leading-snug">
                                   {bullet}
                                 </span>
                               </div>

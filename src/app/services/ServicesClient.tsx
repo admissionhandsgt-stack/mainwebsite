@@ -349,7 +349,7 @@ export default function ServicesClient({ heroImages }: ServicesClientProps) {
                 className="flex flex-col sm:flex-row gap-2.5 justify-center lg:justify-start"
               >
                 <button onClick={() => CTA.call()}
-                  className="inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-5 py-3 rounded-xl font-black text-xs hover:bg-blue-50 transition-all shadow-lg active:scale-95"
+                  className="inline-flex items-center justify-center gap-2 bg-white dark:!bg-blue-600 text-slate-900 dark:!text-white px-5 py-3 rounded-xl font-black text-xs hover:bg-blue-50 dark:!hover:bg-blue-500 transition-all shadow-lg active:scale-95"
                 >
                   <Phone className="w-3.5 h-3.5" /> Talk to an Expert
                 </button>

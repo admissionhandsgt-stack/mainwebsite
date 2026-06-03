@@ -86,6 +86,7 @@ export default function Header() {
               height={55}
               className="object-contain w-[160px] h-[40px] sm:w-[180px] sm:h-[45px] md:w-[200px] md:h-[50px] transition-all dark:brightness-110 dark:hue-rotate-15"
               priority
+              unoptimized
             />
           </Link>
 
@@ -265,6 +266,7 @@ export default function Header() {
                     width={130}
                     height={32}
                     className="object-contain w-[130px] h-[32px]"
+                    unoptimized
                   />
                 </div>
               </div>

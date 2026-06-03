@@ -35,6 +35,7 @@ const Footer: React.FC = () => {
                     width={240}
                     height={60}
                     className="object-contain w-[200px] h-[50px] md:w-[240px] md:h-[60px]"
+                    unoptimized
                   />
                 </Link>
               </div>

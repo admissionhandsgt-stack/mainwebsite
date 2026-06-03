@@ -34,15 +34,15 @@ export const PGOverview = () => {
             The PG medical admission landscape is complex — multiple exams, parallel counselling systems, and high-stakes decisions at every step.
           </motion.p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
           {overviewItems.map((item, i) => (
             <motion.div key={i} initial={mounted ? { opacity: 0, y: 15 } : false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}
-              className="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-100 dark:border-slate-700 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group">
-              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${item.gradient} flex items-center justify-center mb-3 shadow-lg group-hover:scale-105 transition-transform`}>
-                <item.icon className="w-5 h-5 text-white" />
+              className="bg-white dark:bg-slate-800 p-3.5 md:p-5 rounded-xl border border-slate-100 dark:border-slate-700 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group">
+              <div className={`w-8.5 h-8.5 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-gradient-to-br ${item.gradient} flex items-center justify-center mb-2 md:mb-3 shadow-lg group-hover:scale-105 transition-transform`}>
+                <item.icon className="w-4.5 h-4.5 md:w-5 md:h-5 text-white" />
               </div>
-              <h3 className="font-black text-base text-slate-900 dark:text-white mb-1.5">{item.title}</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{item.desc}</p>
+              <h3 className="font-black text-sm md:text-base text-slate-900 dark:text-white mb-1 md:mb-1.5">{item.title}</h3>
+              <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{item.desc}</p>
             </motion.div>
           ))}
         </div>

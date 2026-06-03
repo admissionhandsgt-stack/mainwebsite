@@ -70,7 +70,7 @@ export const PGCutoffInsights = () => {
         </motion.div>
 
         {/* Cards Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-5">
           {counsellingQuotas.map((quota, i) => (
             <motion.div
               key={i}
@@ -81,20 +81,20 @@ export const PGCutoffInsights = () => {
               className="bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-md transition-all"
             >
               <div className={`h-1.5 bg-gradient-to-r ${quota.gradient}`} />
-              <div className="p-5">
-                <h3 className="font-black text-base text-slate-900 dark:text-white mb-4">
+              <div className="p-4 md:p-5">
+                <h3 className="font-black text-sm md:text-base text-slate-900 dark:text-white mb-2.5 md:mb-4">
                   {quota.title}
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-2 md:space-y-3">
                   {quota.items.map((item, j) => (
                     <div
                       key={j}
-                      className="flex flex-col py-1.5 border-b border-slate-50 dark:border-slate-800/40 last:border-0"
+                      className="flex flex-col py-1 md:py-1.5 border-b border-slate-50 dark:border-slate-800/40 last:border-0"
                     >
-                      <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+                      <span className="text-[9px] md:text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider">
                         {item.label}
                       </span>
-                      <span className="text-sm font-bold text-slate-800 dark:text-slate-200 mt-0.5">
+                      <span className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 mt-0.5">
                         {item.value}
                       </span>
                     </div>
@@ -111,13 +111,13 @@ export const PGCutoffInsights = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="bg-slate-900 dark:bg-slate-900/50 rounded-xl p-5 mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 border border-slate-800"
+          className="bg-slate-900 dark:bg-slate-900/50 rounded-xl p-3.5 md:p-5 mt-5 md:mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 border border-slate-800"
         >
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-              <TrendingUp className="w-5 h-5 text-white" />
+            <div className="w-8.5 h-8.5 md:w-10 md:h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+              <TrendingUp className="w-4.5 h-4.5 md:w-5 md:h-5 text-white" />
             </div>
-            <p className="text-sm text-slate-300">
+            <p className="text-xs md:text-sm text-slate-300 leading-normal">
               <span className="font-bold text-white">
                 Counselling rules, seat matrices, and state policies change every year.
               </span>{" "}
@@ -126,9 +126,9 @@ export const PGCutoffInsights = () => {
           </div>
           <button
             onClick={() => CTA.call()}
-            className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold px-5 py-2.5 rounded-lg transition-colors flex-shrink-0"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-[10px] md:text-sm font-black uppercase tracking-wider px-4 py-2 md:px-5 md:py-2.5 rounded-lg transition-colors flex-shrink-0"
           >
-            <Phone className="w-4 h-4" />
+            <Phone className="w-3.5 h-3.5 md:w-4 md:h-4" />
             Get Strategic Counselling Support
           </button>
         </motion.div>

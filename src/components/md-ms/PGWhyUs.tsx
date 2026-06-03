@@ -31,7 +31,7 @@ const cards = [
     gradient: "from-amber-500 to-orange-600",
     title: "Zero Document Failures",
     desc: "Internship completion certificates, NMC registration, domicile proofs, category certificates — PG documentation is more complex than UG. Our audit team pre-verifies every paper weeks before deadlines.",
-    highlight: "0% rejection rate across 2100+ students",
+    highlight: "100% success rate in documentation across 2100+ students",
   },
 ];
 
@@ -69,7 +69,7 @@ export const PGWhyUs = () => {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 md:gap-5">
           {cards.map((card, i) => (
             <motion.div
               key={i}
@@ -77,18 +77,18 @@ export const PGWhyUs = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.06 }}
-              className="group bg-slate-50 dark:bg-slate-900 p-5 md:p-6 rounded-xl border border-slate-100 dark:border-slate-800 hover:shadow-lg hover:shadow-slate-200/50 dark:hover:shadow-slate-900/50 hover:-translate-y-0.5 transition-all duration-300"
+              className="group bg-slate-50 dark:bg-slate-900 p-3.5 md:p-6 rounded-xl border border-slate-100 dark:border-slate-800 hover:shadow-lg hover:shadow-slate-200/50 dark:hover:shadow-slate-900/50 hover:-translate-y-0.5 transition-all duration-300"
             >
-              <div className="flex items-start gap-4">
-                <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${card.gradient} flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-105 transition-transform`}>
-                  <card.icon className="w-5 h-5 text-white" />
+              <div className="flex items-start gap-3 md:gap-4">
+                <div className={`w-9 h-9 md:w-11 md:h-11 rounded-lg md:rounded-xl bg-gradient-to-br ${card.gradient} flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-105 transition-transform`}>
+                  <card.icon className="w-4.5 h-4.5 md:w-5 md:h-5 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-black text-base text-slate-900 dark:text-white mb-1.5">{card.title}</h3>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-3">{card.desc}</p>
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900/40">
-                    <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
-                    <span className="text-[10px] font-black text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">{card.highlight}</span>
+                  <h3 className="font-black text-sm md:text-base text-slate-900 dark:text-white mb-1 md:mb-1.5">{card.title}</h3>
+                  <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-2 md:mb-3">{card.desc}</p>
+                  <div className="inline-flex items-center gap-1 md:gap-1.5 px-2 py-0.5 md:px-2.5 md:py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900/40">
+                    <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600 dark:text-emerald-400" />
+                    <span className="text-[9px] md:text-[10px] font-black text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">{card.highlight}</span>
                   </div>
                 </div>
               </div>
