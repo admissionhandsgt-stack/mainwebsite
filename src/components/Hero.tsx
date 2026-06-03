@@ -35,11 +35,16 @@ export default function Hero({ backgroundImageUrl, doctorsImageUrl }: HeroProps)
         {/* Left Content Area */}
         <div className="w-full lg:w-[55%] flex flex-col text-center lg:text-left">
           {/* Badge */}
-          <div className="inline-flex items-center justify-center lg:justify-start gap-2 mb-4 self-center lg:self-start">
+          <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-4 self-center lg:self-start">
             <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-405 rounded-full border border-emerald-100 dark:border-emerald-900/30 shadow-sm">
               <ShieldCheck className="w-3.5 h-3.5" />
               <span className="font-black text-[10px] md:text-xs tracking-wider uppercase">
                 Secure Your MBBS Seat — 2026 Admissions
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400 rounded-full border border-amber-100 dark:border-amber-900/30 shadow-sm">
+              <span className="font-black text-[10px] md:text-xs tracking-wider uppercase">
+                UAT Test
               </span>
             </div>
           </div>
