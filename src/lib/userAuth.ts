@@ -22,8 +22,7 @@ import { cookies } from "next/headers";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { normalisePhone, unlockFrom, verifyUnlock, UNLOCK_COOKIE } from "@/lib/leadGate";
-import { verifyEnabled } from "@/lib/waVerify";
-import { getIntegration } from "@/lib/integrations";
+import { verifyEnabled, gatewayReady } from "@/lib/waVerify";
 
 export const USER_COOKIE = "ah_user";
 
@@ -269,11 +268,10 @@ export async function rememberSearch(
  * itself on with no further change.
  */
 async function verificationRequired(): Promise<boolean> {
-  const [on, gateway] = await Promise.all([
-    verifyEnabled(),
-    getIntegration("whatsapp.gateway.url"),
-  ]);
-  return Boolean(on && gateway);
+  const on = await verifyEnabled();
+  if (!on) return false;
+  // And the gateway must be paired, not merely configured — see gatewayReady().
+  return gatewayReady();
 }
 
 /** For route handlers, which have the request. */

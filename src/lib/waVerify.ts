@@ -80,6 +80,55 @@ export async function verifyEnabled(): Promise<boolean> {
   return Boolean(on && number);
 }
 
+/**
+ * Whether the gateway is paired and able to receive.
+ *
+ * Configuring a gateway is not the same as having one that works. Between
+ * starting the container and scanning the QR, the session sits in
+ * `SCAN_QR_CODE` — codes can be issued and nothing can ever confirm them. If
+ * verification were treated as available in that window, every visitor would
+ * be locked out of data they were willing to give a number for.
+ *
+ * Cached for a minute. This is read on the access path, and a session does not
+ * change state often; a minute of staleness after pairing is a minute, not a
+ * fault.
+ */
+let readyCache: { at: number; ready: boolean } | null = null;
+const READY_TTL_MS = 60_000;
+
+export async function gatewayReady(): Promise<boolean> {
+  if (readyCache && Date.now() - readyCache.at < READY_TTL_MS) return readyCache.ready;
+
+  const [base, key] = await Promise.all([
+    getIntegration("whatsapp.gateway.url"),
+    getIntegration("whatsapp.gateway.api_key"),
+  ]);
+  if (!base) {
+    readyCache = { at: Date.now(), ready: false };
+    return false;
+  }
+
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 4000);
+    const res = await fetch(`${base.replace(/\/+$/, "")}/api/sessions/default`, {
+      signal: controller.signal,
+      headers: key ? { "X-Api-Key": key } : {},
+    });
+    clearTimeout(timer);
+
+    const body = (await res.json().catch(() => null)) as { status?: string } | null;
+    const ready = res.ok && body?.status === "WORKING";
+    readyCache = { at: Date.now(), ready };
+    return ready;
+  } catch {
+    // Unreachable gateway reads as not ready, which keeps the typed-number
+    // path open rather than closing the site.
+    readyCache = { at: Date.now(), ready: false };
+    return false;
+  }
+}
+
 export interface StartedAttempt {
   token: string;
   code: string;

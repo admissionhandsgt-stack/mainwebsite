@@ -148,6 +148,36 @@ export default function WhatsAppAdminPage() {
     return () => clearInterval(id);
   }, [pairing, load]);
 
+  /**
+   * Keep the QR alive.
+   *
+   * WhatsApp rotates it about every twenty seconds and the session fails after
+   * a few go unscanned, so a code fetched once is usually dead by the time the
+   * phone is unlocked. Refreshing on a shorter cycle means whatever is on
+   * screen is always scannable.
+   */
+  const qrShown = Boolean(qr) && gateway?.status === "SCAN_QR_CODE";
+  const qrRef = useRef(qrShown);
+  qrRef.current = qrShown;
+  useEffect(() => {
+    if (!qrShown) return;
+    const id = setInterval(async () => {
+      if (!qrRef.current) return;
+      try {
+        const res = await fetch("/api/admin/whatsapp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "qr" }),
+        });
+        const json = await res.json();
+        if (json?.image) setQr(json.image);
+      } catch {
+        /* A missed refresh is not worth surfacing; the next one will land. */
+      }
+    }, 18000);
+    return () => clearInterval(id);
+  }, [qrShown]);
+
   const post = async (payload: Record<string, unknown>, label: string) => {
     setBusy(label);
     setMsg(null);
@@ -490,12 +520,21 @@ export default function WhatsAppAdminPage() {
               </button>
             </div>
 
+            {gateway?.status === "FAILED" && (
+              <p className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+                The code expired before it was scanned and the session stopped. Press{" "}
+                <strong>Connect with QR</strong> again with the phone already open at WhatsApp &rarr;
+                Linked devices.
+              </p>
+            )}
+
             {qr && (
               <div className="mt-4 inline-block rounded-2xl border border-gray-200 bg-white p-4">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={qr} alt="QR code to pair WhatsApp" width={256} height={256} />
                 <p className="mt-2 max-w-[256px] text-xs text-gray-500">
-                  On the phone: WhatsApp → Settings → Linked devices → Link a device.
+                  On the phone: WhatsApp &rarr; Settings &rarr; Linked devices &rarr; Link a device.
+                  This code refreshes itself, so scan whatever is on screen.
                 </p>
               </div>
             )}
