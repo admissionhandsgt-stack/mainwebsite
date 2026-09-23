@@ -22,6 +22,8 @@ import { cookies } from "next/headers";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { normalisePhone, unlockFrom, verifyUnlock, UNLOCK_COOKIE } from "@/lib/leadGate";
+import { verifyEnabled } from "@/lib/waVerify";
+import { getIntegration } from "@/lib/integrations";
 
 export const USER_COOKIE = "ah_user";
 
@@ -253,14 +255,53 @@ export async function rememberSearch(
  * nothing about users, and keeping the dependency one-way avoids a cycle.
  */
 
+/**
+ * Whether a *proved* number is required, rather than merely a given one.
+ *
+ * Switched on by capability, not by intent. Setting a verification number in
+ * the admin says we would like proof; it does not mean proof can be obtained.
+ * The inbound message has to arrive through the WAHA gateway, so without a
+ * gateway configured the code is issued, nothing can ever confirm it, and
+ * every visitor is locked out of data they were willing to pay a number for.
+ *
+ * So both must be true: verification is switched on *and* there is a gateway
+ * for the message to arrive through. Configure the gateway and this turns
+ * itself on with no further change.
+ */
+async function verificationRequired(): Promise<boolean> {
+  const [on, gateway] = await Promise.all([
+    verifyEnabled(),
+    getIntegration("whatsapp.gateway.url"),
+  ]);
+  return Boolean(on && gateway);
+}
+
 /** For route handlers, which have the request. */
 export async function hasAccess(request: Request): Promise<boolean> {
-  if (await userFromRequest(request)) return true;
+  const strict = await verificationRequired();
+  const user = await userFromRequest(request);
+  if (user) return strict ? user.verified : true;
+  // Without an account, an unlock cookie only counts when proof is not needed.
+  if (strict) return false;
   return Boolean(await unlockFrom(request));
 }
 
 /** For server components, which read cookies from context. */
 export async function hasAccessServer(): Promise<boolean> {
-  if (await currentUser()) return true;
+  const strict = await verificationRequired();
+  const user = await currentUser();
+  if (user) return strict ? user.verified : true;
+  if (strict) return false;
   return Boolean(await verifyUnlock(cookies().get(UNLOCK_COOKIE)?.value));
+}
+
+/** What the UI should ask for: nothing, a number, or a verified number. */
+export async function accessState(request: Request): Promise<{
+  open: boolean;
+  needsVerification: boolean;
+  signedIn: boolean;
+}> {
+  const [strict, user] = await Promise.all([verificationRequired(), userFromRequest(request)]);
+  const open = user ? (strict ? user.verified : true) : strict ? false : Boolean(await unlockFrom(request));
+  return { open, needsVerification: strict, signedIn: Boolean(user) };
 }

@@ -31,9 +31,25 @@ const bad = (name, detail) => {
   console.log(`  \x1b[31mFAIL\x1b[0m  ${name}  \x1b[31m${detail}\x1b[0m`);
 };
 
+/**
+ * One request, retried twice.
+ *
+ * A dropped connection is not a failing site, and this suite is meant to be
+ * trusted after a deploy — a check that cries wolf on a flaky hop teaches
+ * people to ignore it. Three attempts with a short backoff; a site that is
+ * genuinely down still fails all three.
+ */
 async function get(path, init = {}) {
-  const res = await fetch(BASE + path, { redirect: "manual", ...init });
-  return res;
+  let last;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      return await fetch(BASE + path, { redirect: "manual", ...init });
+    } catch (error) {
+      last = error;
+      await new Promise((r) => setTimeout(r, 250 * (attempt + 1)));
+    }
+  }
+  throw last;
 }
 
 function section(title) {

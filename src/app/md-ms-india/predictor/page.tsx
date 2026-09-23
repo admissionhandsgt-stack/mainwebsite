@@ -3,6 +3,7 @@ import { resolveMetadata } from '@/lib/content';
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import PageHero from "@/components/ui/PageHero";
+import { getPredictorFacets } from "@/lib/predictorFacets";
 import PredictorClient from "@/components/predictor/PredictorClient";
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
 
@@ -19,59 +20,8 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-interface Facets {
-  states: string[];
-  categories: { code: string; label: string }[];
-  seatCount: number;
-  rankCount: number;
-}
-
-/**
- * Filter options come from the data itself rather than a hardcoded list, so a
- * re-import that adds a state or a category scheme shows up without a deploy.
- */
-async function getFacets(): Promise<Facets> {
-  try {
-    const [stateRows, catRows, seatRows, rankRows] = await Promise.all([
-      db.execute(sql`
-        SELECT DISTINCT st.name
-        FROM seat_options so
-        JOIN institutes i ON i.id = so.institute_id
-        JOIN states st ON st.id = i.state_id
-        WHERE so.level = 'pg'
-        ORDER BY st.name
-      `),
-      db.execute(sql`
-        SELECT cat.code, COUNT(*)::int AS n
-        FROM seat_options so
-        JOIN categories cat ON cat.id = so.category_id
-        WHERE so.level = 'pg'
-        GROUP BY cat.code
-        ORDER BY n DESC
-        LIMIT 12
-      `),
-      db.execute(sql`SELECT COUNT(*)::int AS n FROM seat_options WHERE level = 'pg'`),
-      db.execute(sql`SELECT COUNT(*)::int AS n FROM closing_ranks WHERE level = 'pg'`),
-    ]);
-
-    const rows = <T,>(r: unknown) => r as unknown as T[];
-
-    return {
-      states: rows<{ name: string }>(stateRows).map((r) => r.name),
-      categories: rows<{ code: string }>(catRows).map((r) => ({ code: r.code, label: r.code })),
-      seatCount: rows<{ n: number }>(seatRows)[0]?.n ?? 0,
-      rankCount: rows<{ n: number }>(rankRows)[0]?.n ?? 0,
-    };
-  } catch (error) {
-    // The page still works without facets — the rank box is the only required
-    // input — so a database hiccup degrades the filters rather than the page.
-    console.error("[predictor facets]", error);
-    return { states: [], categories: [{ code: "GEN", label: "GEN" }], seatCount: 0, rankCount: 0 };
-  }
-}
-
 export default async function PredictorPage() {
-  const facets = await getFacets();
+  const facets = await getPredictorFacets("pg");
 
   return (
     <main className="min-h-screen bg-background">
@@ -83,7 +33,7 @@ export default async function PredictorPage() {
               "Enter your NEET PG rank and see every MD/MS seat it reaches, backed by published closing ranks.",
             path: "/md-ms-india/predictor",
           }),
-          breadcrumb([{ name: "Home", path: "/" }, { name: "MD/MS India", path: "/md-ms-india" }, { name: "Seat predictor", path: "/md-ms-india/predictor" }]),
+          breadcrumb([{ name: "Home", path: "/" }, { name: "MD/MS India", path: "/md-ms-india" }, { name: "SeatPredict", path: "/md-ms-india/predictor" }]),
         ]}
       />
       <PageHero
@@ -106,8 +56,11 @@ export default async function PredictorPage() {
         level="pg"
         states={facets.states}
         categories={facets.categories}
+        branches={facets.branches}
+        ownerships={facets.ownerships}
         seatCount={facets.seatCount}
         rankCount={facets.rankCount}
+        collegeCount={facets.collegeCount}
       />
     </main>
   );

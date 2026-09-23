@@ -29,13 +29,15 @@ export const UNLOCK_COOKIE = "ah_unlock";
 const TTL_SECONDS = 30 * 24 * 60 * 60;
 
 /**
- * Seats shown before the gate.
+ * Seats shown before the gate: none.
  *
- * Enough to prove the tool works and that the answer is real — three seats a
- * counsellor would actually name first — and far too few to be worth
- * harvesting at 300 per unlock.
+ * The band counts are the free answer, and they are a real one — "30 safe, 194
+ * likely, 76 possible" tells a candidate their situation before they give up
+ * anything. Showing three seats on top of that was giving away the shape of
+ * the rows for no extra conversion, and it made the locked state look like a
+ * truncated list rather than a deliberate boundary.
  */
-export const PREVIEW_SEATS = 3;
+export const PREVIEW_SEATS = 0;
 
 /**
  * Signing key.

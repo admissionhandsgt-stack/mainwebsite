@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { logError } from "@/lib/logger";
 import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
 import { PREVIEW_SEATS } from "@/lib/leadGate";
-import { hasAccess } from "@/lib/userAuth";
+import { accessState } from "@/lib/userAuth";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { chanceFor, summarise, BAND_ORDER, type ChanceBand, type SeatOptionRow } from "@/lib/predictor";
@@ -18,6 +18,7 @@ interface PredictQuery {
   category: string;
   states: string[];
   ownership: string[];
+  branches: string[];
   maxFee: number | null;
 }
 
@@ -47,6 +48,7 @@ function parse(searchParams: URLSearchParams): PredictQuery | { error: string } 
     category,
     states: list("states"),
     ownership: list("ownership"),
+    branches: list("branches"),
     maxFee: Number.isFinite(maxFee as number) && (maxFee as number) > 0 ? (maxFee as number) : null,
   };
 }
@@ -69,7 +71,7 @@ export async function GET(request: Request) {
   if ("error" in parsed) {
     return NextResponse.json({ error: parsed.error }, { status: 400 });
   }
-  const { rank, level, category, states, ownership, maxFee } = parsed;
+  const { rank, level, category, states, ownership, branches, maxFee } = parsed;
 
   try {
     // Pull every seat whose widest recorded cut could still contain this rank,
@@ -112,6 +114,7 @@ export async function GET(request: Request) {
         AND COALESCE(so.furthest_ever, so.widest_latest) >= ${rank}
         ${states.length ? sql`AND st.name IN (${sql.join(states.map((s) => sql`${s}`), sql`, `)})` : sql``}
         ${ownership.length ? sql`AND i.ownership::text IN (${sql.join(ownership.map((o) => sql`${o}`), sql`, `)})` : sql``}
+        ${branches.length ? sql`AND c.name IN (${sql.join(branches.map((b) => sql`${b}`), sql`, `)})` : sql``}
         ${maxFee ? sql`AND (so.fee_inr IS NULL OR so.fee_inr <= ${maxFee})` : sql``}
       ORDER BY so.widest_latest ASC NULLS LAST
       LIMIT ${MAX_RESULTS}
@@ -173,16 +176,19 @@ export async function GET(request: Request) {
     // anything. Only the seat-by-seat detail is behind the gate, and it is cut
     // here rather than hidden in the UI: an unlocked payload never leaves the
     // server, so there is nothing to read out of the network tab.
-    const unlocked = Boolean(await hasAccess(request));
-    const visible = unlocked ? results : results.slice(0, PREVIEW_SEATS);
+    const access = await accessState(request);
+    const visible = access.open ? results : results.slice(0, PREVIEW_SEATS);
 
     return NextResponse.json({
-      query: { rank, level, category, states, ownership, maxFee },
+      query: { rank, level, category, states, ownership, branches, maxFee },
       counts: summarise(results),
       total: results.length,
-      truncated: unlocked && results.length === MAX_RESULTS,
-      locked: !unlocked,
-      lockedCount: unlocked ? 0 : Math.max(0, results.length - visible.length),
+      truncated: access.open && results.length === MAX_RESULTS,
+      locked: !access.open,
+      lockedCount: access.open ? 0 : Math.max(0, results.length - visible.length),
+      // What the UI should ask for: a number, or a number it can prove.
+      needsVerification: access.needsVerification,
+      signedIn: access.signedIn,
       results: visible,
     });
   } catch (error) {

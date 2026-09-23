@@ -43,7 +43,7 @@ const PGStickyMobileBar = dynamic(() => import('@/components/md-ms/PGStickyMobil
  */
 export async function generateMetadata(): Promise<Metadata> {
   return resolveMetadata('/md-ms-india', {
-    title: 'MD/MS Admission in India 2026 | NEET PG Counselling & Seat Predictor | Admission Hands',
+    title: 'MD/MS Admission in India 2026 | NEET PG Counselling & College Predictor | Admission Hands',
     description: 'MD/MS admissions in India, checked against 2.3 lakh published NEET PG closing ranks across 2,168 colleges. Seat predictor, round-by-round movement, dual-quota and choice-filling guidance.',
     keywords: 'MD MS admission India, NEET PG counselling, PG medical colleges, Government medical colleges, Deemed university PG, NEET PG cutoff, AIQ State Quota PG, MD MS seat counselling',
   });

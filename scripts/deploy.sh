@@ -47,10 +47,21 @@ rm -rf "$STAGE"
 mkdir -p "$STAGE"
 
 # `standalone` omits these two on purpose — Next expects them copied in.
+#
+# The trailing `/.` on every source matters. `cp -r public "$STAGE/public"`
+# copies public *into* an existing directory of that name, and standalone
+# already ships one — which produced `public/public/assets` and a 404 on every
+# image, including the logo on every page. Copying contents merges instead.
 cp -r .next/standalone/. "$STAGE/"
-mkdir -p "$STAGE/.next"
-cp -r .next/static "$STAGE/.next/static"
-cp -r public "$STAGE/public"
+mkdir -p "$STAGE/.next/static" "$STAGE/public"
+cp -r .next/static/. "$STAGE/.next/static/"
+cp -r public/. "$STAGE/public/"
+
+# Fail loudly rather than shipping a release with no images.
+[[ -f "$STAGE/public/assets/images/logos/logo-4k.avif" ]] || {
+  echo "Packaging lost public/assets — refusing to ship." >&2
+  exit 1
+}
 
 tar czf .deploy.tgz -C "$STAGE" .
 rm -rf "$STAGE"
