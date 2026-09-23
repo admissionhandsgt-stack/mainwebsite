@@ -12,6 +12,8 @@ import { getBaseWebsiteUrl } from '@/utils/envHelper';
 interface AdminLayoutClientProps {
   children: ReactNode;
   isAdminSubdomain: boolean;
+  /** Where "Back to Website" goes. Resolved on the server so the markup matches. */
+  baseWebsiteUrl: string;
 }
 
 // Grouped so the sidebar reads as "what am I here to do" rather than one flat
@@ -49,7 +51,13 @@ const navGroups = [
   },
 ];
 
-function AdminSidebar({ isAdminSubdomain }: { isAdminSubdomain: boolean }) {
+function AdminSidebar({
+  isAdminSubdomain,
+  baseWebsiteUrl,
+}: {
+  isAdminSubdomain: boolean;
+  baseWebsiteUrl: string;
+}) {
   const pathname = usePathname();
   const { signOut, user } = useAuth();
 
@@ -149,7 +157,7 @@ function AdminSidebar({ isAdminSubdomain }: { isAdminSubdomain: boolean }) {
         {/* Footer Actions */}
         <div className="flex-shrink-0 border-t border-gray-100/50 p-3 space-y-1 relative z-10 bg-white/50">
           <a
-            href={isAdminSubdomain ? (typeof window !== 'undefined' ? getBaseWebsiteUrl(window.location.hostname) : '#') : '/'}
+            href={isAdminSubdomain ? baseWebsiteUrl : '/'}
             className="flex items-center px-3.5 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-colors"
           >
             <ArrowLeft className="h-4 w-4 mr-3 text-gray-400" />
@@ -168,9 +176,31 @@ function AdminSidebar({ isAdminSubdomain }: { isAdminSubdomain: boolean }) {
   );
 }
 
-function AdminContent({ children, isAdminSubdomain }: { children: ReactNode; isAdminSubdomain: boolean }) {
+function AdminContent({
+  children,
+  isAdminSubdomain,
+  baseWebsiteUrl,
+}: {
+  children: ReactNode;
+  isAdminSubdomain: boolean;
+  baseWebsiteUrl: string;
+}) {
   const pathname = usePathname();
-  const isLoginPage = pathname === '/admin' || (isAdminSubdomain && pathname === '/');
+
+  /**
+   * Which route is the login form.
+   *
+   * `/admin` is what the server sees; `/` is what the browser shows on the
+   * admin subdomain, because the middleware rewrites the path and
+   * `usePathname()` reports the URL the visitor is actually at. Both have to
+   * count, and neither needs the host: this layout only wraps admin routes, so
+   * a pathname of `/` here cannot be the marketing homepage.
+   *
+   * Reading the host instead made server and client disagree after hydration —
+   * the login page was wrapped in ProtectedRoute, which found no session and
+   * sat on "Redirecting to login…" forever.
+   */
+  const isLoginPage = pathname === '/admin' || pathname === '/';
 
   if (isLoginPage) {
     // Login page: no sidebar, no protection
@@ -185,7 +215,7 @@ function AdminContent({ children, isAdminSubdomain }: { children: ReactNode; isA
         <div className="fixed top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-medical-200/20 blur-[120px] pointer-events-none" />
         <div className="fixed bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-teal-200/20 blur-[120px] pointer-events-none" />
 
-        <AdminSidebar isAdminSubdomain={isAdminSubdomain} />
+        <AdminSidebar isAdminSubdomain={isAdminSubdomain} baseWebsiteUrl={baseWebsiteUrl} />
 
         {/* Main content area */}
         <div className="md:pl-72 flex flex-col flex-1 w-full relative z-10">
@@ -209,7 +239,11 @@ function AdminContent({ children, isAdminSubdomain }: { children: ReactNode; isA
   );
 }
 
-export default function AdminLayoutClient({ children, isAdminSubdomain }: AdminLayoutClientProps) {
+export default function AdminLayoutClient({
+  children,
+  isAdminSubdomain,
+  baseWebsiteUrl,
+}: AdminLayoutClientProps) {
   React.useEffect(() => {
     const html = document.documentElement;
     
@@ -243,7 +277,9 @@ export default function AdminLayoutClient({ children, isAdminSubdomain }: AdminL
 
   return (
     <AuthProvider>
-      <AdminContent isAdminSubdomain={isAdminSubdomain}>{children}</AdminContent>
+      <AdminContent isAdminSubdomain={isAdminSubdomain} baseWebsiteUrl={baseWebsiteUrl}>
+        {children}
+      </AdminContent>
     </AuthProvider>
   );
 }
