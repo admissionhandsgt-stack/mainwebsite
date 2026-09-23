@@ -73,6 +73,7 @@ async function readAll() {
 async function waha(
   path: string,
   init: RequestInit = {},
+  timeoutMs = 8000,
 ): Promise<{ ok: boolean; status: number; body: unknown; error?: string }> {
   const [base, key] = await Promise.all([
     getIntegration("whatsapp.gateway.url"),
@@ -82,7 +83,7 @@ async function waha(
 
   const url = `${base.replace(/\/+$/, "")}${path}`;
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 8000);
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
     const res = await fetch(url, {
@@ -109,7 +110,7 @@ async function waha(
       status: 0,
       body: null,
       error: aborted
-        ? "The gateway did not answer in 8 seconds."
+        ? `The gateway did not answer in ${Math.round(timeoutMs / 1000)} seconds.`
         : "Could not reach the gateway from the website.",
     };
   } finally {
@@ -224,40 +225,88 @@ export async function POST(request: Request) {
 
       /* ---------------- the session ---------------- */
       case "connect": {
-        // Create if missing, then start. WAHA answers 422 when it already
-        // exists, which is success for our purposes.
-        const created = await waha("/api/sessions", {
-          method: "POST",
-          body: JSON.stringify({ name: SESSION, start: true }),
-        });
-        if (!created.ok && created.status !== 422 && created.status !== 409) {
-          const started = await waha(`/api/sessions/${SESSION}/start`, { method: "POST" });
-          if (!started.ok) {
+        const created = await waha(
+          "/api/sessions",
+          { method: "POST", body: JSON.stringify({ name: SESSION, start: true }) },
+          20000,
+        );
+
+        // 422/409 mean it already exists — and by now it is usually FAILED,
+        // because an unscanned QR expires. Restart it for a fresh one.
+        if (!created.ok) {
+          const restarted = await waha(
+            `/api/sessions/${SESSION}/restart`,
+            { method: "POST" },
+            20000,
+          );
+          if (!restarted.ok) {
             return NextResponse.json(
-              { error: started.error ?? `The gateway answered ${started.status}.` },
+              {
+                error:
+                  restarted.error ??
+                  `The gateway could not start the session (${restarted.status}).`,
+              },
               { status: 502 },
             );
           }
         }
+
+        // The QR is not ready the instant a session starts; the screen asks
+        // for it immediately afterwards, so give the engine a moment first.
+        await new Promise((r) => setTimeout(r, 3500));
         return NextResponse.json({ ok: true });
       }
 
       case "qr": {
-        const res = await waha(`/api/${SESSION}/auth/qr?format=image`, {
-          headers: { Accept: "image/png" },
-        });
-        if (!res.ok) {
+        /**
+         * WAHA answers `?format=image` with a raw PNG, not JSON.
+         *
+         * The shared `waha()` helper reads every response as text and tries to
+         * parse it, which turned the image into mojibake and reported "the
+         * gateway returned no QR image" on a perfectly good code. This reads
+         * the bytes and encodes them itself.
+         */
+        const [base, key] = await Promise.all([
+          getIntegration("whatsapp.gateway.url"),
+          getIntegration("whatsapp.gateway.api_key"),
+        ]);
+        if (!base) {
+          return NextResponse.json({ error: "No gateway address saved yet." }, { status: 400 });
+        }
+
+        try {
+          const controller = new AbortController();
+          const timer = setTimeout(() => controller.abort(), 15000);
+          const res = await fetch(
+            `${base.replace(/\/+$/, "")}/api/${SESSION}/auth/qr?format=image`,
+            { signal: controller.signal, headers: key ? { "X-Api-Key": key } : {} },
+          );
+          clearTimeout(timer);
+
+          if (!res.ok) {
+            const detail =
+              res.status === 422
+                ? "The session is not waiting for a scan. Press Connect again to restart it."
+                : `No QR available (${res.status}).`;
+            return NextResponse.json({ error: detail }, { status: 502 });
+          }
+
+          const bytes = Buffer.from(await res.arrayBuffer());
+          if (bytes.length < 100) {
+            return NextResponse.json({ error: "The gateway returned an empty QR." }, { status: 502 });
+          }
+          const mime = res.headers.get("content-type") ?? "image/png";
+          return NextResponse.json({
+            ok: true,
+            image: `data:${mime};base64,${bytes.toString("base64")}`,
+          });
+        } catch (error) {
+          logError(error, { route: "/api/admin/whatsapp:qr" });
           return NextResponse.json(
-            { error: res.error ?? `No QR available (${res.status}). The session may already be connected.` },
+            { error: "Could not fetch the QR from the gateway." },
             { status: 502 },
           );
         }
-        const b = res.body as { data?: string; mimetype?: string } | string;
-        const data = typeof b === "object" && b?.data ? b.data : null;
-        if (!data) {
-          return NextResponse.json({ error: "The gateway returned no QR image." }, { status: 502 });
-        }
-        return NextResponse.json({ ok: true, image: `data:${(typeof b === "object" && b.mimetype) || "image/png"};base64,${data}` });
       }
 
       case "pair-code": {
