@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { TrendingUp, TrendingDown, Loader2 } from "lucide-react";
-import UnlockCard from "@/components/lead/UnlockCard";
+import { useCallback, useEffect, useState } from "react";
+import { TrendingUp, TrendingDown, Loader2, Lock, Search } from "lucide-react";
+import AuthDialog from "@/components/lead/AuthDialog";
 
 /**
  * A college's cutoff table, with the gate on the deep end of it.
@@ -76,6 +76,23 @@ export default function CollegeCutoffs({
   const [state, setState] = useState<"preview" | "loading" | "open">(
     total > preview.length ? "loading" : "open",
   );
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  /** Fetch the full table. Used on mount and again after signing in. */
+  const loadAll = useCallback(() => {
+    setState("loading");
+    fetch(`/api/college-cutoffs?slug=${encodeURIComponent(slug)}&level=${level}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => {
+        if (j?.rows) {
+          setRows(j.rows);
+          setState("open");
+        } else {
+          setState("preview");
+        }
+      })
+      .catch(() => setState("preview"));
+  }, [slug, level]);
 
   // One request, and only when something is actually hidden. The unlock cookie
   // is HttpOnly so the browser cannot check it itself — asking the server is
@@ -185,31 +202,39 @@ export default function CollegeCutoffs({
       </div>
 
       {state === "preview" && hidden > 0 && (
-        <UnlockCard
-          lockedCount={hidden}
-          level={level}
-          // The gate normally works off a rank the visitor has typed. Here
-          // there is none — they are reading one college — so the seat count
-          // is what it counts.
-          rank={0}
-          category=""
-          noun="seat rows"
-          onUnlocked={() => {
-            setState("loading");
-            fetch(`/api/college-cutoffs?slug=${encodeURIComponent(slug)}&level=${level}`)
-              .then((r) => (r.ok ? r.json() : null))
-              .then((j) => {
-                if (j?.rows) {
-                  setRows(j.rows);
-                  setState("open");
-                } else {
-                  setState("preview");
-                }
-              })
-              .catch(() => setState("preview"));
-          }}
-        />
+        <div className="mt-4 rounded-2xl border border-border bg-surface-2 px-6 py-8 text-center">
+          <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-primary/30 bg-primary-soft">
+            <Lock className="h-5 w-5 text-primary" aria-hidden="true" />
+          </span>
+          <h3 className="font-heading mt-3 text-lg font-bold text-foreground">
+            <span className="tnum">{hidden}</span> more seat rows for {collegeName}
+          </h3>
+          <p className="mx-auto mt-1.5 max-w-[52ch] text-[14px] leading-relaxed text-muted-foreground">
+            Every branch and quota published for this college, with the round each one closed in.
+          </p>
+          <button
+            type="button"
+            onClick={() => setDialogOpen(true)}
+            className="mt-5 inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-gradient-brand px-7 text-[15px] font-bold text-white shadow-glow transition-all hover:-translate-y-0.5 hover:shadow-glow-lg active:translate-y-0"
+          >
+            <Search className="h-4 w-4" aria-hidden="true" />
+            Show all {hidden + rows.length} rows
+          </button>
+        </div>
       )}
+
+      <AuthDialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        onUnlocked={loadAll}
+        lockedCount={hidden}
+        level={level}
+        // No rank here — the visitor is reading one college, not searching.
+        rank={0}
+        category=""
+        noun="seat rows"
+        alreadyShown
+      />
     </>
   );
 }

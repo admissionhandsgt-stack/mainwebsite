@@ -31,6 +31,8 @@ export default function UnlockCard({
   rank,
   category,
   noun = "seats",
+  bare = false,
+  alreadyShown = false,
   onUnlocked,
 }: {
   lockedCount: number;
@@ -39,6 +41,21 @@ export default function UnlockCard({
   category: string;
   /** What is being counted, for pages that list something other than seats. */
   noun?: string;
+  /**
+   * Drop the card's own border and background.
+   *
+   * Inside a dialog the surrounding chrome is already there, and a bordered
+   * card inside a bordered panel reads as a mistake.
+   */
+  bare?: boolean;
+  /**
+   * Whether the visitor has already been shown some of these.
+   *
+   * "300 more seats" is wrong when none have been shown yet — on the predictor
+   * the free answer is the counts, so nothing has been listed. On a college
+   * page eight rows are already on screen and "more" is exactly right.
+   */
+  alreadyShown?: boolean;
   /**
    * Client pages re-run their own fetch. Server-rendered pages have no fetch
    * to re-run, so the default is a refresh — the cookie is set by then, and
@@ -175,8 +192,17 @@ export default function UnlockCard({
   }, [wa, unlocked]);
 
   return (
-    <div className="relative mt-4 overflow-hidden rounded-2xl border border-primary/25 bg-surface-2 p-6 md:p-8">
-      <div className="ambient-blob pointer-events-none absolute -right-16 -top-20 h-56 w-56 opacity-50" aria-hidden="true" />
+    <div
+      className={`relative overflow-hidden p-6 md:p-8 ${
+        bare ? "" : "mt-4 rounded-2xl border border-primary/25 bg-surface-2"
+      }`}
+    >
+      {!bare && (
+        <div
+          className="ambient-blob pointer-events-none absolute -right-16 -top-20 h-56 w-56 opacity-50"
+          aria-hidden="true"
+        />
+      )}
 
       <div className="relative mx-auto max-w-xl text-center">
         {/* Three contexts, and the same card has to read right in all of them:
@@ -184,13 +210,17 @@ export default function UnlockCard({
             where nothing is locked yet because nothing has been searched. */}
         <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary-soft px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-primary-strong dark:text-primary">
           <Lock className="h-3 w-3" aria-hidden="true" />
-          {lockedCount > 0 ? `${lockedCount.toLocaleString("en-IN")} more ${noun}` : "Sign in"}
+          {lockedCount > 0
+            ? `${lockedCount.toLocaleString("en-IN")}${alreadyShown ? " more" : ""} ${noun}`
+            : "Sign in"}
         </span>
 
         <h2 className="font-heading mt-3 text-xl font-extrabold text-foreground md:text-2xl">
           {lockedCount > 0 ? (
             <>
-              <span className="tnum">{lockedCount.toLocaleString("en-IN")}</span> more {noun}
+              <span className="tnum">{lockedCount.toLocaleString("en-IN")}</span>
+              {alreadyShown ? " more " : " "}
+              {noun}
               {rank > 0 ? (
                 <>
                   {" "}

@@ -14,7 +14,7 @@ import {
   Loader2,
 } from "lucide-react";
 import MultiSelect from "@/components/predictor/MultiSelect";
-import UnlockCard from "@/components/lead/UnlockCard";
+import AuthDialog from "@/components/lead/AuthDialog";
 import { bandLabel, type ChanceBand } from "@/lib/predictor";
 
 interface SeatResult {
@@ -458,10 +458,15 @@ export default function PredictorClient({
 /**
  * What a locked visitor sees.
  *
+ * One panel and one button. The sign-in form used to sit open underneath this,
+ * which made a finished search look like it had ended in a form — two stacked
+ * cards, a heading repeated, and fields demanding attention before the visitor
+ * had read their own result. The form now lives in a dialog behind the button,
+ * so the page ends on the answer and the ask is a single deliberate step.
+ *
  * The counts above are already a real answer, so this is not hiding whether
- * there is anything — it is asking for a number before naming the colleges.
- * Saying exactly what is behind it converts better than a vague wall, and is
- * simply more honest.
+ * there is anything. It is asking for a number before naming the colleges, and
+ * saying exactly what is behind it.
  */
 function LockedPanel({
   total,
@@ -478,32 +483,53 @@ function LockedPanel({
   needsVerification: boolean;
   onUnlocked: () => void;
 }) {
+  const [dialogOpen, setDialogOpen] = useState(false);
+
   return (
-    <div className="mt-6">
-      <div className="relative overflow-hidden rounded-2xl border border-border bg-surface-2 p-6 text-center md:p-8">
+    <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-surface-2">
+      <div className="relative px-6 py-10 text-center md:px-8 md:py-12">
         <div
-          className="ambient-blob pointer-events-none absolute -right-20 -top-24 h-64 w-64 opacity-40"
+          className="ambient-blob pointer-events-none absolute -right-24 -top-28 h-72 w-72 opacity-40"
           aria-hidden="true"
         />
-        <div className="relative">
+
+        <div className="relative mx-auto max-w-2xl">
           <span className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-primary/30 bg-primary-soft">
             <Lock className="h-5 w-5 text-primary" aria-hidden="true" />
           </span>
-          <h2 className="font-heading mt-4 text-xl font-extrabold text-foreground md:text-2xl">
+
+          <h2 className="font-heading mt-4 text-2xl font-extrabold text-foreground md:text-3xl">
             <span className="tnum">{total}</span> seats match rank{" "}
             <span className="tnum">{rank.toLocaleString("en-IN")}</span>
           </h2>
-          <p className="mx-auto mt-2 max-w-[56ch] text-[15px] leading-relaxed text-muted-foreground">
-            The counts above are yours for free. To see <em>which</em> colleges — with each seat&apos;s
-            round-1 close, the widest the cut reached, the fee and how it moved against last year —
-            {needsVerification
-              ? " confirm your number on WhatsApp."
-              : " tell us where to reach you."}
+
+          <p className="mx-auto mt-2.5 max-w-[58ch] text-[15px] leading-relaxed text-muted-foreground">
+            The counts above are yours for free. Sign in to see <em>which</em> colleges — each
+            seat&rsquo;s round-1 close, the widest the cut reached, the fee, and how it moved
+            against last year.
           </p>
 
-          {/* A sample of the columns behind the gate, so what is being asked for
-              is concrete rather than a mystery. */}
-          <div className="mx-auto mt-6 max-w-2xl overflow-hidden rounded-xl border border-border bg-card/60">
+          <button
+            type="button"
+            onClick={() => setDialogOpen(true)}
+            className="mt-7 inline-flex h-14 items-center justify-center gap-2.5 rounded-xl bg-gradient-brand px-8 text-[15px] font-bold text-white shadow-glow transition-all hover:-translate-y-0.5 hover:shadow-glow-lg active:translate-y-0"
+          >
+            <Search className="h-5 w-5" aria-hidden="true" />
+            Find my seats
+          </button>
+
+          <p className="mt-3 text-[13px] text-muted-foreground">
+            {needsVerification
+              ? "Takes one tap on WhatsApp. No password."
+              : "Takes a few seconds. No password."}
+          </p>
+
+          {/* The columns that are behind the gate, sketched — so what is being
+              asked for is concrete rather than a mystery. */}
+          <div
+            className="mx-auto mt-9 max-w-xl overflow-hidden rounded-xl border border-border bg-card/50"
+            aria-hidden="true"
+          >
             <div className="grid grid-cols-4 gap-2 border-b border-border bg-surface-3 px-4 py-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
               <span className="col-span-2 text-left">College &amp; branch</span>
               <span className="text-right">R1 close</span>
@@ -511,22 +537,27 @@ function LockedPanel({
             </div>
             {[0, 1, 2].map((i) => (
               <div key={i} className="grid grid-cols-4 items-center gap-2 px-4 py-3">
-                <span className="col-span-2 h-3 rounded bg-muted/70" style={{ width: `${70 - i * 12}%` }} />
-                <span className="ml-auto h-3 w-12 rounded bg-muted/70" />
-                <span className="ml-auto h-3 w-10 rounded bg-muted/70" />
+                <span
+                  className="col-span-2 h-3 rounded bg-muted/60"
+                  style={{ width: `${72 - i * 14}%` }}
+                />
+                <span className="ml-auto h-3 w-12 rounded bg-muted/60" />
+                <span className="ml-auto h-3 w-10 rounded bg-muted/60" />
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <UnlockCard
+      <AuthDialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        onUnlocked={onUnlocked}
         lockedCount={total}
         level={level}
         rank={rank}
         category={category}
         noun="seats"
-        onUnlocked={onUnlocked}
       />
     </div>
   );
