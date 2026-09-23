@@ -191,7 +191,7 @@ const NeetUgProcessClient = ({ heroImageUrl, examImageUrl, collegeImageUrl }: Ne
                 <div className="mb-1.5 md:mb-3 text-rose-500 dark:text-rose-400 group-hover:scale-110 transition-transform">
                   <AlertTriangle className="h-4 w-4 md:h-6 md:w-6" />
                 </div>
-                <h4 className="font-extrabold text-slate-900 dark:text-rose-100 leading-tight text-[13px] sm:text-sm">{mistake}</h4>
+                <h3 className="font-extrabold text-slate-900 dark:text-rose-100 leading-tight text-[13px] sm:text-sm">{mistake}</h3>
               </div>
             ))}
           </div>
@@ -227,7 +227,7 @@ const NeetUgProcessClient = ({ heroImageUrl, examImageUrl, collegeImageUrl }: Ne
                 <div className="w-8 h-8 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-slate-50 dark:bg-slate-950/60 flex items-center justify-center text-primary dark:text-cyan-400 mb-2 md:mb-5 transition-colors group-hover:bg-primary group-hover:text-white dark:group-hover:bg-cyan-500 dark:group-hover:text-white mx-auto md:mx-0">
                   <feature.icon className="h-4 w-4 md:h-6 md:w-6" />
                 </div>
-                <h4 className="text-[13px] sm:text-base md:text-lg font-bold text-slate-900 dark:text-white mb-1 md:mb-2 leading-tight">{feature.title}</h4>
+                <h3 className="text-[13px] sm:text-base md:text-lg font-bold text-slate-900 dark:text-white mb-1 md:mb-2 leading-tight">{feature.title}</h3>
                 <p className="text-[12px] sm:text-xs text-slate-500 dark:text-slate-400 leading-normal md:leading-relaxed">{feature.desc}</p>
               </div>
             ))}

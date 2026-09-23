@@ -76,7 +76,7 @@ export default function AdminLogin() {
               className="mb-6 flex justify-center"
             >
               <img 
-                src="/assets/images/logos/logo-4k.avif" 
+                src="/assets/images/logos/logo.avif" 
                 alt="Admission Hands Logo" 
                 className="h-16 object-contain w-auto"
               />

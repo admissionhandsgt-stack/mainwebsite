@@ -261,7 +261,7 @@ export default function PredictorClient({ streams, facets }: Props) {
               <span className="inline-flex h-11 items-center justify-center rounded-xl bg-white px-3 shadow-lg shadow-cyan-500/10">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/assets/images/logos/logo-4k.avif"
+                  src="/assets/images/logos/logo.avif"
                   alt="AdmissionHands"
                   width={140}
                   height={35}
@@ -314,7 +314,7 @@ export default function PredictorClient({ streams, facets }: Props) {
                 role="tab"
                 aria-selected={s.id === stream}
                 onClick={() => switchStream(s.id)}
-                className={`rounded-xl px-5 py-2.5 text-[14px] font-bold transition-colors ${
+                className={`min-h-[44px] rounded-xl px-5 py-2.5 text-[14px] font-bold transition-colors ${
                   s.id === stream
                     ? "bg-gradient-brand text-white shadow-glow"
                     : "text-muted-foreground hover:bg-surface-2 hover:text-foreground"
@@ -417,7 +417,7 @@ export default function PredictorClient({ streams, facets }: Props) {
                     type="button"
                     aria-pressed={c === category}
                     onClick={() => setCategory(c)}
-                    className={`rounded-full border px-3.5 py-2 text-[13px] font-semibold transition-colors md:py-1.5 ${
+                    className={`min-h-[44px] rounded-full border px-3.5 py-2 text-[13px] font-semibold transition-colors md:min-h-0 md:py-1.5 ${
                       category === c
                         ? "border-primary bg-primary-soft text-primary-strong dark:text-primary"
                         : "border-border bg-card text-muted-foreground hover:border-primary/40"
@@ -542,7 +542,7 @@ export default function PredictorClient({ streams, facets }: Props) {
                     role="tab"
                     aria-selected={view === id}
                     onClick={() => setView(id)}
-                    className={`flex-1 rounded-lg px-4 py-2.5 text-[14px] font-bold transition-colors ${
+                    className={`min-h-[44px] flex-1 rounded-lg px-4 py-2.5 text-[14px] font-bold transition-colors ${
                       view === id
                         ? "bg-card text-foreground shadow-sm"
                         : "text-muted-foreground hover:text-foreground"

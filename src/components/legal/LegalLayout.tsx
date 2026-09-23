@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import ReadingProgress from '@/components/legal/ReadingProgress';
 import LegalSidebar from '@/components/legal/LegalSidebar';
 import LegalMobileNav from '@/components/legal/LegalMobileNav';
@@ -27,9 +27,37 @@ interface LegalLayoutProps {
 export default function LegalLayout({ sections }: LegalLayoutProps) {
   const [activeSection, setActiveSection] = useState<string>('terms');
 
+  /**
+   * Open the document the link asked for.
+   *
+   * Every legal document lives on this one page as a tab, so the footer's
+   * "Privacy" link landed on Terms — three differently-labelled links leading
+   * to the same text, on a site that collects phone numbers under DPDP. The
+   * hash now selects the tab, so `/terms#privacy` opens the Privacy Policy.
+   *
+   * Read on mount and on `hashchange`, because the tab is state: a link from
+   * another page arrives with the hash already set, a link from this page only
+   * changes it.
+   */
+  useEffect(() => {
+    const pick = () => {
+      const slug = decodeURIComponent(window.location.hash.replace(/^#/, '')).trim();
+      if (slug && sections.some((s) => s.slug === slug)) setActiveSection(slug);
+    };
+    pick();
+    window.addEventListener('hashchange', pick);
+    return () => window.removeEventListener('hashchange', pick);
+  }, [sections]);
+
   // Handle active section change (from sidebar click)
   const handleSectionChange = useCallback((slug: string) => {
     setActiveSection(slug);
+    // Keep the URL honest, so the document someone is reading is the one they
+    // can send to somebody else. `replaceState` rather than a push: the tabs
+    // are one page, and the back button should leave it.
+    if (typeof window !== 'undefined') {
+      window.history.replaceState(null, '', `#${slug}`);
+    }
     
     // Scroll window back to top of the content pane smoothly
     const contentEl = document.getElementById('legal-content-top');

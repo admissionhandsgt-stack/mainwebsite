@@ -116,7 +116,8 @@ export const PGFAQ = ({ items: fromCms, copy }: { items?: FaqItem[]; copy?: FaqC
               placeholder="Search answers..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-8 pr-3 py-1.5 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-lg text-xs font-bold outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-400 dark:text-slate-200"
+              aria-label="Search questions"
+                className="w-full pl-8 pr-3 py-1.5 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-lg text-xs font-bold outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-400 dark:text-slate-200"
             />
           </div>
         </div>

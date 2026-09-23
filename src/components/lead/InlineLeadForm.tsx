@@ -284,6 +284,7 @@ Internship: ${formData.internship_status}`;
                 type="text"
                 required
                 className="w-full pl-9 pr-3 py-3 md:py-2 bg-slate-950/40 border border-white/10 focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-base md:text-xs text-white placeholder-slate-600 outline-none"
+                aria-label="Your NEET rank"
                 placeholder="e.g. 4500"
                 value={formData.rank}
                 onChange={e => setFormData({ ...formData, rank: e.target.value.replace(/\D/g, '') })}
@@ -459,6 +460,7 @@ Internship: ${formData.internship_status}`;
                 type="text"
                 required
                 className="w-full pl-9 pr-3 py-3 md:py-2 bg-slate-950/40 border border-white/10 focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-base md:text-xs text-white placeholder-slate-600 outline-none"
+                aria-label="Your name"
                 placeholder="Dr. Rahul Sharma"
                 value={formData.name}
                 onChange={e => setFormData({...formData, name: e.target.value})}
@@ -477,6 +479,7 @@ Internship: ${formData.internship_status}`;
                 type="tel"
                 required
                 className="w-full pl-9 pr-3 py-3 md:py-2 bg-slate-950/40 border border-white/10 focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-base md:text-xs text-white placeholder-slate-600 outline-none"
+                aria-label="Your mobile number"
                 placeholder="+91 98765 43210"
                 value={formData.phone}
                 onChange={e => setFormData({...formData, phone: e.target.value})}

@@ -159,7 +159,7 @@ const ProcessAccordion = () => {
     <div className="bg-white dark:bg-slate-950 rounded-2xl md:rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden flex flex-col md:flex-row">
       {/* Sidebar Tabs for Phases */}
       <div className="w-full md:w-1/3 bg-slate-50 dark:bg-slate-900 border-b md:border-b-0 md:border-r border-slate-200 dark:border-slate-800 p-2.5 sm:p-5">
-        <h3 className="text-[12px] md:text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2 md:mb-4 px-2">Admission Phases</h3>
+        <h2 className="text-[12px] md:text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2 md:mb-4 px-2">Admission Phases</h2>
         <div className="flex flex-row md:flex-col gap-1.5 md:gap-3 overflow-x-auto pb-2 md:pb-0 hide-scrollbar">
           {phases.map((phase, idx) => {
             const isActive = activePhaseIndex === idx;
@@ -225,9 +225,9 @@ const ProcessAccordion = () => {
                       }`}>
                         {step.id}
                       </span>
-                      <h4 className={`text-xs md:text-sm font-bold transition-colors ${isOpen ? 'text-cyan-900 dark:text-cyan-200 font-extrabold' : 'text-slate-800 dark:text-slate-300'}`}>
+                      <h3 className={`text-xs md:text-sm font-bold transition-colors ${isOpen ? 'text-cyan-900 dark:text-cyan-200 font-extrabold' : 'text-slate-800 dark:text-slate-300'}`}>
                         {step.title}
-                      </h4>
+                      </h3>
                     </div>
                     <div className={`flex items-center justify-center w-5 h-5 md:w-6 md:h-6 rounded-full transition-colors ${isOpen ? 'bg-cyan-100 dark:bg-cyan-900/40' : 'bg-slate-50 dark:bg-slate-905 group-hover:bg-cyan-50 dark:group-hover:bg-cyan-900/20'}`}>
                       <ChevronDown className={`h-3 w-3 md:h-4 md:w-4 transition-transform duration-300 ${isOpen ? 'rotate-180 text-cyan-600 dark:text-cyan-400' : 'text-slate-400 dark:text-slate-500 group-hover:text-cyan-500 dark:group-hover:text-cyan-400'}`} />

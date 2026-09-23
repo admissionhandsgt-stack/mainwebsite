@@ -9,6 +9,19 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Sign in | AdmissionHands",
+  description:
+    "Sign in to AdmissionHands to see the full seat list your NEET rank reaches, and to pick up where you left off.",
+  // Not indexed, but it still gets shared in WhatsApp groups — which is
+  // exactly where this audience passes links around, and an unfurled card
+  // with no title is a link nobody taps.
+  alternates: { canonical: "/login" },
+  openGraph: {
+    title: "Sign in | AdmissionHands",
+    description: "Your number is your account. Verified once, then you are in.",
+    url: "/login",
+    type: "website",
+    images: ["/assets/images/logos/logo-4k.avif"],
+  },
   robots: { index: false, follow: false },
 };
 

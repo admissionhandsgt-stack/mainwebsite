@@ -13,7 +13,7 @@ export const revalidate = 0;
 export async function generateMetadata(): Promise<Metadata> {
   return resolveMetadata('/know-us', {
     title: 'About Us & Expert Medical Counselling Team | AdmissionHands',
-    description: 'Learn about AdmissionHands - India\'s leading independent medical admission advisory. Read about our analytics-driven counselling services, our core values of integrity and transparency, and how to reach our team.',
+    description: 'AdmissionHands is an independent medical admission advisory. Meet the team, read how we work from published counselling data, and how to reach us.',
     keywords: 'about admission hands, medical admission expert, NEET counselling advisory, independent medical consultancy, noda medical admissions office',
   });
 }

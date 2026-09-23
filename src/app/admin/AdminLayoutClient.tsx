@@ -79,7 +79,7 @@ function AdminSidebar({
           <div className="flex flex-col px-4 mb-4">
             <Link href="/" className="group block mb-3 px-2">
               <img 
-                src="/assets/images/logos/logo-4k.avif" 
+                src="/assets/images/logos/logo.avif" 
                 alt="Admission Hands Logo" 
                 className="h-9 object-contain w-auto group-hover:scale-98 transition-transform duration-300"
               />

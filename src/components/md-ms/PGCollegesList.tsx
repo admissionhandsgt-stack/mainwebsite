@@ -69,6 +69,7 @@ export const PGCollegesList = () => {
               <input
                 type="text"
                 placeholder="Search by college name..."
+                aria-label="Search PG colleges"
                 className="w-full pl-9 pr-3 py-1.5 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-lg focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-400 outline-none transition-all font-bold text-xs text-slate-800 dark:text-slate-200"
                 value={filters.search}
                 onChange={(e) => updateFilters({ search: e.target.value })}
@@ -79,6 +80,7 @@ export const PGCollegesList = () => {
             <div className="relative w-full md:w-48">
               <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
               <select
+                aria-label="Filter PG colleges"
                 className="w-full pl-9 pr-8 py-1.5 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-lg appearance-none focus:ring-2 focus:ring-cyan-500/20 outline-none font-bold text-xs text-slate-800 dark:text-slate-200 cursor-pointer"
                 value={filters.state[0] || ''}
                 onChange={(e) => updateFilters({ state: e.target.value ? [e.target.value] : [] })}
@@ -181,11 +183,12 @@ export const PGCollegesList = () => {
                 <div className="flex items-center gap-1">
                   <Button
                     variant="outline"
+                    aria-label="Previous page"
                     onClick={prevPage}
                     disabled={currentPage === 0}
-                    className="w-7 h-7 p-0 rounded-lg border-slate-200 dark:border-slate-800 disabled:opacity-50 text-slate-700 dark:text-slate-300"
+                    className="w-11 h-11 p-0 rounded-lg border-slate-200 dark:border-slate-800 disabled:opacity-50 text-slate-700 dark:text-slate-300"
                   >
-                    <ChevronLeft className="w-3 h-3" />
+                    <ChevronLeft className="w-4 h-4" />
                   </Button>
                   
                   {getPageNumbers().map((pageNumber, idx) => {
@@ -218,11 +221,12 @@ export const PGCollegesList = () => {
 
                   <Button
                     variant="outline"
+                    aria-label="Next page"
                     onClick={nextPage}
                     disabled={currentPage === totalPages - 1}
-                    className="w-7 h-7 p-0 rounded-lg border-slate-200 dark:border-slate-800 disabled:opacity-50 text-slate-700 dark:text-slate-300"
+                    className="w-11 h-11 p-0 rounded-lg border-slate-200 dark:border-slate-800 disabled:opacity-50 text-slate-700 dark:text-slate-300"
                   >
-                    <ChevronRight className="w-3 h-3" />
+                    <ChevronRight className="w-4 h-4" />
                   </Button>
                 </div>
               )}

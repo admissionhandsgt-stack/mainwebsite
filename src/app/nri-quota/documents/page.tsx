@@ -58,7 +58,7 @@ const NRIDocumentsPage = async () => {
               <div className="lg:col-span-1">
                 <div className="sticky top-24">
                   <div className="bg-gray-50 p-6 rounded-xl shadow-sm mb-8">
-                    <h3 className="text-xl font-semibold mb-4 text-gray-900 border-b pb-2">Category Guide</h3>
+                    <h2 className="text-xl font-semibold mb-4 text-gray-900 border-b pb-2">Category Guide</h2>
                     <ul className="space-y-3">
                       <li>
                         <a href="#essential" className="text-medical-600 hover:text-medical-800 font-medium flex items-center transition-colors group">
@@ -111,7 +111,7 @@ const NRIDocumentsPage = async () => {
                         <FileText size={24} />
                       </div>
                       <div>
-                        <h4 className="font-semibold text-lg text-gray-900">Academic Records</h4>
+                        <h3 className="font-semibold text-lg text-gray-900">Academic Records</h3>
                         <ul className="mt-3 space-y-3">
                           <li className="flex items-start gap-3">
                             <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />

@@ -95,13 +95,13 @@ export default function Header({
     if (!showThemeToggle) return null;
     if (!mounted) {
       return (
-        <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800/40 animate-pulse shrink-0" />
+        <div className="w-11 h-11 rounded-full bg-slate-100 dark:bg-slate-800/40 animate-pulse shrink-0" />
       );
     }
     return (
       <button
         onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-        className="w-10 h-10 rounded-full flex items-center justify-center text-slate-500 hover:text-cyan-600 dark:text-slate-400 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors shrink-0"
+        className="w-11 h-11 rounded-full flex items-center justify-center text-slate-500 hover:text-cyan-600 dark:text-slate-400 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors shrink-0"
         aria-label="Toggle Theme"
       >
         {theme === 'dark' ? <Sun className="w-[18px] h-[18px]" /> : <Moon className="w-[18px] h-[18px]" />}
@@ -121,9 +121,9 @@ export default function Header({
       >
         <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between gap-4">
           {/* Extreme Left: Logo */}
-          <Link href="/" className="flex items-center justify-start shrink-0 mr-2">
+          <Link href="/" className="flex min-h-[44px] items-center justify-start shrink-0 mr-2">
             <Image 
-              src="/assets/images/logos/logo-4k.avif" 
+              src="/assets/images/logos/logo.avif" 
               alt="Admission Hands Logo" 
               width={220}
               height={55}
@@ -180,7 +180,7 @@ export default function Header({
           <div className="hidden lg:flex items-center gap-1.5 shrink-0">
             <button
               onClick={() => CTA.whatsapp()}
-              className="w-10 h-10 rounded-full flex items-center justify-center text-accent hover:bg-accent-soft transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="w-11 h-11 rounded-full flex items-center justify-center text-accent hover:bg-accent-soft transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               aria-label="Message us on WhatsApp"
             >
               <WhatsAppIcon size={18} />
@@ -330,7 +330,7 @@ export default function Header({
               <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/30">
                 <div className="flex items-center justify-center">
                   <Image 
-                    src="/assets/images/logos/logo-4k.avif" 
+                    src="/assets/images/logos/logo.avif" 
                     alt="Admission Hands Logo" 
                     width={130}
                     height={32}

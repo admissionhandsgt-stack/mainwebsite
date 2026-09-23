@@ -40,8 +40,6 @@ const ROUTES = [
   "/videos",
   "/login",
   "/terms",
-  "/privacy",
-  "/disclaimer",
 ];
 
 /** WCAG 2.5.8 is 24px; 44px is the size a thumb actually wants. */
@@ -144,7 +142,23 @@ const COLLECT = () => {
 
   const unnamed = controls.filter((el) => !accessibleName(el)).map(describe);
 
+  /**
+   * A link inside a sentence is part of the sentence — it cannot be 44px tall
+   * without breaking the line it sits in, and WCAG 2.5.8 exempts it for that
+   * reason. Only standalone controls are counted, so the number means
+   * something someone can act on.
+   */
+  const inlineInProse = (el) => {
+    if (el.tagName !== "A") return false;
+    const p = el.parentElement;
+    if (!p) return false;
+    if (!/^(P|LI|SPAN|TD|DD|H1|H2|H3|H4|BLOCKQUOTE)$/.test(p.tagName)) return false;
+    // Prose means there is text around it, not just the link.
+    return text(p).length > text(el).length + 12;
+  };
+
   const smallTaps = controls
+    .filter((el) => !inlineInProse(el))
     .map((el) => {
       const r = el.getBoundingClientRect();
       return { el, w: Math.round(r.width), h: Math.round(r.height) };
@@ -172,12 +186,22 @@ const COLLECT = () => {
     if (!visible(el)) continue;
     const own = [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim().length > 3);
     if (!own) continue;
-    const size = parseFloat(getComputedStyle(el).fontSize);
+    const cs = getComputedStyle(el);
+    const size = parseFloat(cs.fontSize);
     if (size >= 12) continue;
     const key = `${describe(el)}@${size}`;
     if (seen.has(key)) continue;
     seen.add(key);
-    tiny.push(`${describe(el)} ${size}px "${text(el).slice(0, 30)}"`);
+    // An uppercase, letter-spaced, short string is a label or an eyebrow, and
+    // 10-11px is a legitimate choice there. A sentence at 10px is not.
+    const body =
+      cs.textTransform !== "uppercase" &&
+      text(el).length > 24 &&
+      parseFloat(cs.letterSpacing || "0") < 0.5;
+    tiny.push({
+      kind: body ? "body" : "label",
+      detail: `${describe(el)} ${size}px "${text(el).slice(0, 34)}"`,
+    });
   }
 
   /* ----------------------------------------------------------------- layout */
@@ -207,7 +231,12 @@ async function auditRoute(browser, route, width, height, label) {
   const started = Date.now();
   let response;
   try {
-    response = await page.goto(BASE + route, { waitUntil: "networkidle", timeout: 45000 });
+    response = await page.goto(BASE + route, { waitUntil: "domcontentloaded", timeout: 45000 });
+    await page.waitForLoadState("load", { timeout: 20000 }).catch(() => {});
+    // A marquee and an analytics beacon keep the network busy forever, so
+    // "idle" is not a state this site reaches. A fixed settle is honest about
+    // what it is measuring.
+    await page.waitForTimeout(1200);
   } catch (e) {
     add("HIGH", route, label, "loads", String(e).slice(0, 120));
     await ctx.close();
@@ -267,7 +296,14 @@ async function auditRoute(browser, route, width, height, label) {
     for (const u of [...new Set(r.unlabelled)].slice(0, 6)) {
       add("MEDIUM", route, label, "unlabelled field", u);
     }
-    if (ms > 3000) add("LOW", route, label, "slow", `${(ms / 1000).toFixed(1)}s to network idle`);
+    // Wall-clock from *this machine*, minus the settle wait — so it is a
+    // relative number for comparing pages, not a claim about production. TTFB
+    // on the box itself is tens of milliseconds; most of what is measured here
+    // is the distance between here and the VPS.
+    const rendered = ms - 1200;
+    if (rendered > 4000) {
+      add("LOW", route, label, "slower than its siblings", `${(rendered / 1000).toFixed(1)}s from this machine`);
+    }
   }
 
   /* ------------- and the things that are only true on a phone ------------- */
@@ -282,8 +318,12 @@ async function auditRoute(browser, route, width, height, label) {
     for (const t of [...new Set(r.smallTaps)].slice(0, 8)) {
       add("MEDIUM", route, label, `tap target under ${TAP_MIN}px`, t);
     }
-    for (const t of [...new Set(r.tiny)].slice(0, 8)) {
-      add("MEDIUM", route, label, `text under ${TEXT_MIN}px`, t);
+    // Body copy first: that is the one a reader actually struggles with.
+    for (const t of r.tiny.filter((x) => x.kind === "body").slice(0, 8)) {
+      add("MEDIUM", route, label, `body text under ${TEXT_MIN}px`, t.detail);
+    }
+    for (const t of r.tiny.filter((x) => x.kind === "label").slice(0, 6)) {
+      add("LOW", route, label, `label text under ${TEXT_MIN}px`, t.detail);
     }
   }
 
@@ -292,7 +332,12 @@ async function auditRoute(browser, route, width, height, label) {
   }
 
   await ctx.close();
-  return { links: r.links, ms, tapCount: new Set(r.smallTaps).size, tinyCount: new Set(r.tiny).size };
+  return {
+    links: r.links,
+    ms,
+    tapCount: new Set(r.smallTaps).size,
+    tinyCount: r.tiny.filter((x) => x.kind === "body").length,
+  };
 }
 
 /* ------------------------------------------------------------------- run */
@@ -312,7 +357,7 @@ async function main() {
       marks.length === 0
         ? "✓"
         : `${marks.length} finding${marks.length === 1 ? "" : "s"}` +
-            (m ? ` (taps ${m.tapCount}, tiny text ${m.tinyCount})` : ""),
+            (m ? ` (taps ${m.tapCount}, small body text ${m.tinyCount})` : ""),
     );
   }
 

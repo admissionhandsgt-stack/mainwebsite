@@ -2,6 +2,7 @@ import React from 'react';
 import RecordActions from '../shared/RecordActions';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PlayCircle, Star, Calendar, FileText } from 'lucide-react';
+import { youtubeId } from "@/lib/youtube";
 
 interface Video {
   id: number;
@@ -47,7 +48,7 @@ const VideoList = ({ videos, onEdit, onDelete, isDeleting }: VideoListProps) => 
 
               <div className="relative aspect-video overflow-hidden">
                 <img 
-                  src={`https://img.youtube.com/vi/${video.videos_id}/hqdefault.jpg`}
+                  src={`https://img.youtube.com/vi/${youtubeId(video.videos_id)}/hqdefault.jpg`}
                   alt={video.title}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />

@@ -68,7 +68,7 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
               <div className="flex flex-col">
                 <Link href="/" className="flex items-center justify-start">
                   <Image 
-                    src="/assets/images/logos/logo-4k.avif" 
+                    src="/assets/images/logos/logo.avif" 
                     alt="Admission Hands Logo" 
                     width={240}
                     height={60}
@@ -89,7 +89,7 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
                     href={social.href} 
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={cn("bg-white/5 w-10 h-10 rounded-lg md:rounded-xl transition-all duration-300 border border-white/10 text-gray-400 hover:text-white flex items-center justify-center", social.color)}
+                    className={cn("bg-white/5 w-11 h-11 rounded-lg md:rounded-xl transition-all duration-300 border border-white/10 text-gray-400 hover:text-white flex items-center justify-center", social.color)}
                     aria-label="Social Link"
                   >
                     <social.icon size={16} className="w-4 h-4 md:w-5 md:h-5" />
@@ -106,7 +106,7 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
                   href={link.url}
                   target={link.newTab ? '_blank' : undefined}
                   rel={link.newTab ? 'noopener noreferrer' : undefined}
-                  className="bg-white/5 border border-white/10 px-4 py-2.5 rounded-full text-[10px] font-bold text-gray-300 hover:text-white hover:bg-white/10 transition-colors flex items-center justify-center min-h-[40px]"
+                  className="bg-white/5 border border-white/10 px-4 py-2.5 rounded-full text-[10px] font-bold text-gray-300 hover:text-white hover:bg-white/10 transition-colors flex items-center justify-center min-h-[44px]"
                 >
                   {link.label}
                 </Link>
@@ -116,7 +116,7 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
             {/* Desktop Explore / Mobile Accordion */}
             <div className="lg:col-span-2">
               <div className="hidden lg:block space-y-4">
-                <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-500">Explore</h4>
+                <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-500">Explore</h2>
                 <ul className="space-y-2">
                   {exploreLinks.map((item) => (
                     <li key={item.id}>
@@ -161,7 +161,7 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
             {/* Desktop Contact / Mobile Accordion */}
             <div className="lg:col-span-3">
               <div className="hidden lg:block space-y-4">
-                <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-500">Get in Touch</h4>
+                <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-500">Get in Touch</h2>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-3">
                     <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 shrink-0">
@@ -212,17 +212,18 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
 
             {/* Newsletter */}
             <div className="lg:col-span-3 space-y-3 lg:space-y-4">
-              <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-500 hidden lg:block">Updates</h4>
+              <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-500 hidden lg:block">Updates</h2>
               <p className="text-gray-400 text-[13px] md:text-xs font-medium leading-relaxed mt-2 lg:mt-0">
                 Stay updated with the latest admission notifications.
               </p>
               <div className="flex gap-2">
                 <input 
                   type="email" 
+                  aria-label="Your email address"
                   placeholder="Your email" 
-                  className="bg-white/5 border border-white/10 rounded-lg md:rounded-xl px-3 py-3 md:px-4 md:py-3 text-[13px] md:text-xs w-full focus:ring-2 focus:ring-cyan-600 outline-none transition-all placeholder:text-gray-600 min-h-[40px]"
+                  className="bg-white/5 border border-white/10 rounded-lg md:rounded-xl px-3 py-3 md:px-4 md:py-3 text-[13px] md:text-xs w-full focus:ring-2 focus:ring-cyan-600 outline-none transition-all placeholder:text-gray-600 min-h-[44px]"
                 />
-                <button className="bg-cyan-600 hover:bg-cyan-500 p-3 md:p-3 rounded-lg md:rounded-xl transition-all shrink-0 active:scale-95 shadow-lg shadow-cyan-900/20 flex items-center justify-center min-w-[40px] min-h-[40px]" aria-label="Subscribe">
+                <button className="bg-cyan-600 hover:bg-cyan-500 p-3 md:p-3 rounded-lg md:rounded-xl transition-all shrink-0 active:scale-95 shadow-lg shadow-cyan-900/20 flex items-center justify-center min-w-[44px] min-h-[44px]" aria-label="Subscribe">
                   <ArrowRight className="h-4 w-4 md:h-4 md:w-4" />
                 </button>
               </div>
@@ -235,9 +236,9 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
               &copy; {currentYear} AdmissionHands. All rights reserved.
             </p>
             <div className="flex gap-4 md:gap-6">
-              <Link href="/terms" className="text-[12px] md:text-[10px] font-bold text-gray-500 hover:text-white transition-colors block py-2.5 min-h-[40px] min-w-[44px] text-center">Privacy</Link>
-              <Link href="/terms" className="text-[12px] md:text-[10px] font-bold text-gray-500 hover:text-white transition-colors block py-2.5 min-h-[40px] min-w-[44px] text-center">Terms</Link>
-              <Link href="/terms" className="text-[12px] md:text-[10px] font-bold text-gray-500 hover:text-white transition-colors block py-2.5 min-h-[40px] min-w-[44px] text-center">Disclaimer</Link>
+              <Link href="/terms#privacy" className="text-[12px] md:text-[10px] font-bold text-gray-500 hover:text-white transition-colors block py-2.5 min-h-[44px] min-w-[44px] text-center">Privacy</Link>
+              <Link href="/terms#terms" className="text-[12px] md:text-[10px] font-bold text-gray-500 hover:text-white transition-colors block py-2.5 min-h-[44px] min-w-[44px] text-center">Terms</Link>
+              <Link href="/terms#dpdp" className="text-[12px] md:text-[10px] font-bold text-gray-500 hover:text-white transition-colors block py-2.5 min-h-[44px] min-w-[44px] text-center">Data &amp; DPDP</Link>
             </div>
           </div>
         </div>

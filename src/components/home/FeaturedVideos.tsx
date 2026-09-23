@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, Video, Star } from "lucide-react";
 import Image from "next/image";
+import { youtubeId } from "@/lib/youtube";
 
 interface VideoRecord {
   id: number;
@@ -32,7 +33,7 @@ export default function FeaturedVideos() {
           (v: { id: number; title: string; videoId: string; description: string | null; featured: boolean }) => ({
             id: v.id,
             title: v.title,
-            videos_id: v.videoId,
+            videos_id: youtubeId(v.videoId),
             description: v.description ?? undefined,
             created_at: "",
             featured: v.featured,

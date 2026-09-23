@@ -19,9 +19,11 @@ export const dynamic = "force-dynamic";
  */
 export async function generateMetadata(): Promise<Metadata> {
   return resolveMetadata("/neet-college-predictor", {
-    title: "NEET College Predictor 2026 — MBBS, BDS & MD/MS Seats by Rank | AdmissionHands",
+    // Kept under ~60 and ~155 characters: past that Google truncates, and a
+    // truncated title loses the phrase it was written to rank for.
+    title: "NEET College Predictor 2026 — MBBS, BDS & MD/MS by Rank",
     description:
-      "Enter your NEET rank and see the colleges it reaches — MBBS, BDS and MD/MS. Every seat placed against the round it actually closed in, from the counselling authorities' own published results.",
+      "Enter your NEET rank and see the colleges it reaches — MBBS, BDS and MD/MS, each placed against the round it actually closed in.",
     keywords: [
       "NEET college predictor",
       "NEET UG college predictor",

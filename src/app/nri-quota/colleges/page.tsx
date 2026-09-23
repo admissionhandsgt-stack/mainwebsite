@@ -177,7 +177,8 @@ const NRICollegesPage = () => {
                 <input
                   type="text"
                   placeholder="Search by college name or location..."
-                  className="w-full pl-12 pr-4 py-4 rounded-xl shadow-lg border border-gray-100 focus:outline-none focus:ring-2 focus:ring-medical-300"
+                  aria-label="Search NRI quota colleges"
+                className="w-full pl-12 pr-4 py-4 rounded-xl shadow-lg border border-gray-100 focus:outline-none focus:ring-2 focus:ring-medical-300"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -251,7 +252,7 @@ const NRICollegesPage = () => {
                         </div>
                         <div className="p-6">
                           <div className="flex justify-between items-start mb-2">
-                            <h3 className="text-lg font-semibold">{college.name}</h3>
+                            <h2 className="text-lg font-semibold">{college.name}</h2>
                             <span className="bg-medical-100 text-medical-800 text-xs px-2 py-1 rounded-full uppercase">
                               {college.type}
                             </span>

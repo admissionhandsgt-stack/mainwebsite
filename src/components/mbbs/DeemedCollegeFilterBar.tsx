@@ -43,7 +43,8 @@ export function DeemedCollegeFilterBar({
               placeholder="Search college, university, or city..."
               value={filters.search}
               onChange={(e) => onFilterChange('search', e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:border-cyan-300 transition-all placeholder:text-slate-400"
+              aria-label="Search deemed universities"
+                className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:border-cyan-300 transition-all placeholder:text-slate-400"
             />
           </div>
         </div>
@@ -52,6 +53,7 @@ export function DeemedCollegeFilterBar({
         <div className="overflow-x-auto w-full -mx-4 px-4 scrollbar-none">
           <div className="flex items-center gap-2 pb-1 min-w-[620px] md:min-w-0 md:flex-wrap">
             <select
+              aria-label="Filter by state"
               value={filters.state}
               onChange={(e) => onFilterChange('state', e.target.value)}
               className="px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-cyan-200 focus:border-cyan-300 transition-all appearance-none cursor-pointer min-w-[90px]"
@@ -63,6 +65,7 @@ export function DeemedCollegeFilterBar({
             </select>
 
             <select
+              aria-label="Filter by seat intake"
               value={filters.intake}
               onChange={(e) => onFilterChange('intake', e.target.value)}
               className="px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-cyan-200 focus:border-cyan-300 transition-all appearance-none cursor-pointer min-w-[90px]"
@@ -107,6 +110,7 @@ export function DeemedCollegeFilterBar({
             </button>
 
             <select
+              aria-label="Sort universities"
               value={filters.sortBy}
               onChange={(e) => onFilterChange('sortBy', e.target.value)}
               className="px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-cyan-200 focus:border-cyan-300 transition-all appearance-none cursor-pointer min-w-[120px] md:ml-auto"

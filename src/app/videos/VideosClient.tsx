@@ -65,7 +65,7 @@ export function VideosClient({ videos }: { videos: VideoRecord[] }) {
               hasNext={currentVideoIndex < videos.length - 1}
             />
             <div className="mt-6">
-              <h3 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white leading-snug">{selectedVideo.title}</h3>
+              <h2 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white leading-snug">{selectedVideo.title}</h2>
               {selectedVideo.description && (
                 <p className="mt-3 text-sm leading-relaxed font-semibold text-slate-500 dark:text-slate-400 italic bg-slate-50 dark:bg-slate-950 p-4 rounded-2xl border border-slate-100/80 dark:border-slate-900">
                   "{selectedVideo.description}"
@@ -119,12 +119,12 @@ export function VideosClient({ videos }: { videos: VideoRecord[] }) {
                       Counselling Guide
                     </span>
                   </div>
-                  <h3 
+                  <h2 
                     onClick={() => setSelectedVideoId(video.id)}
                     className="mb-2 text-sm md:text-base font-black text-slate-800 dark:text-slate-100 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors cursor-pointer leading-snug line-clamp-2"
                   >
                     {video.title}
-                  </h3>
+                  </h2>
                   {video.description && (
                     <p className="line-clamp-2 text-xs md:text-sm font-semibold italic text-slate-400 dark:text-slate-500 leading-relaxed mb-4">
                       "{video.description}"

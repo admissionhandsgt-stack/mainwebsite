@@ -154,7 +154,7 @@ export default function DeemedUniversitiesClient({ heroImages, phoneNumber = "+9
                   <div className={`w-11 h-11 md:w-13 md:h-13 rounded-xl md:rounded-2xl bg-gradient-to-br ${box.color} flex items-center justify-center text-white mb-4 shadow-lg group-hover:scale-110 transition-transform`}>
                     <box.icon className="w-5 h-5 md:w-6 md:h-6" />
                   </div>
-                  <h3 className="text-base md:text-lg font-black text-slate-900 mb-2 tracking-tight">{box.title}</h3>
+                  <h2 className="text-base md:text-lg font-black text-slate-900 mb-2 tracking-tight">{box.title}</h2>
                   <p className="text-slate-500 text-xs md:text-sm font-medium leading-relaxed">{box.desc}</p>
                 </motion.div>
               ))}
@@ -212,7 +212,7 @@ export default function DeemedUniversitiesClient({ heroImages, phoneNumber = "+9
   
                 <div className="bg-slate-50/50 p-4 md:p-6 rounded-2xl md:rounded-[1.5rem] border border-slate-100 shadow-sm relative group overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-cyan-600/5 to-teal-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <h3 className="text-base md:text-lg font-black text-slate-900 mb-4 tracking-tight relative z-10">Our Support Highlights</h3>
+                  <h2 className="text-base md:text-lg font-black text-slate-900 mb-4 tracking-tight relative z-10">Our Support Highlights</h2>
                   <div className="space-y-2 relative z-10">
                     {[
                       { icon: University, title: "University Selection", desc: "Personalized recommendation based on your NEET score." },
@@ -226,7 +226,7 @@ export default function DeemedUniversitiesClient({ heroImages, phoneNumber = "+9
                           <s.icon className="w-4 h-4" />
                         </div>
                         <div className="pt-0.5">
-                          <h4 className="text-[13px] md:text-xs font-black text-slate-800 uppercase tracking-widest mb-0.5">{s.title}</h4>
+                          <h3 className="text-[13px] md:text-xs font-black text-slate-800 uppercase tracking-widest mb-0.5">{s.title}</h3>
                           <p className="text-slate-500 text-xs font-medium leading-relaxed">{s.desc}</p>
                         </div>
                       </motion.div>

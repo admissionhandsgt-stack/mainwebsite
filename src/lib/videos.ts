@@ -6,6 +6,7 @@
  */
 
 import { getVideos as getVideosFromDb } from "@/lib/content";
+import { youtubeId } from "@/lib/youtube";
 
 export interface VideoRecord {
   id: number;
@@ -46,7 +47,7 @@ export async function getVideos(limit?: number): Promise<VideoRecord[]> {
   return rows.map((v) => ({
     id: v.id,
     title: v.title,
-    videos_id: v.videoId,
+    videos_id: youtubeId(v.videoId),
     description: v.description ?? undefined,
     created_at: new Date().toISOString(),
     featured: v.featured,

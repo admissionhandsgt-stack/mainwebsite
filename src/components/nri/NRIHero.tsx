@@ -83,7 +83,7 @@ const NRIHero = ({ backgroundImageUrl }: NRIHeroProps) => {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-slate-900 mb-1">Why NRI Quota?</h3>
+                  <h2 className="text-lg font-bold text-slate-900 mb-1">Why NRI Quota?</h2>
                   <p className="text-sm text-slate-600 leading-relaxed font-medium">Higher chances of admission with specialized seats reserved exclusively for NRI candidates.</p>
                 </div>
               </div>
