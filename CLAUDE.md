@@ -22,6 +22,9 @@ npm run build        # next build  <- run this to verify any structural change
 npm run typecheck    # tsc --noEmit
 npm run lint
 npm run test:e2e     # playwright (expects a running dev server, see playwright.config.ts)
+npm run smoke -- <url>                   # 57 black-box checks: routes, gate, redirects, claims
+node scripts/audit_site.mjs <url>        # in-browser QA: a11y, tap targets, metadata, links
+node scripts/verify_auth_flow.mjs <url>  # 21 checks: sends a real code, redeems it, signs in
 npm run build:cf     # OpenNext build for Cloudflare
 npm run deploy:cf    # deploy worker
 ```
@@ -325,8 +328,8 @@ It affects 7.4% of seats and always hides options from the candidate, so the ban
 - API `GET /api/predict?rank=&level=&category=&states=&ownership=&maxFee=`. Results sort by band, then by
   **tightest closing rank first** — of the seats you are safe for, the best ones lead. Sorting by comfort
   would surface the weakest seat first, which is the opposite of what a counsellor does.
-- UI: `/md-ms-india/predictor` and `/mbbs-india/predictor` (each server page fetches its own facets)
-  + `src/components/predictor/PredictorClient.tsx`, which takes `level`.
+- UI: **one tool at `/neet-college-predictor`** (see "One tool" below), which takes every stream's
+  facets and a `StreamSpec[]`. The two old per-level routes are 308 redirects.
 - **The general category is `GEN` in PG data and `UR` in UG data.** `PredictorClient` picks its default
   from the categories the level actually publishes; hardcoding `GEN` made the UG predictor open on a
   category it has almost no rows for.
@@ -334,6 +337,29 @@ It affects 7.4% of seats and always hides options from the candidate, so the ban
   Use `IN (${sql.join(arr.map((v) => sql`${v}`), sql`, `)})`.
 - `PageHero` is a client component: pass `eyebrowIcon` as a **name** (`"target"`), never a Lucide component —
   functions cannot cross the server/client boundary.
+
+### One tool — `/neet-college-predictor` (2026-09-23)
+
+MBBS, BDS and MD/MS each had a predictor and "after round 1" had two more pages: **five URLs for one
+question about one rank**, splitting the search traffic for the phrase candidates actually type, and
+making somebody retype their rank to ask the obvious follow-up.
+
+Now the course is a filter and the round movement is a tab.
+
+- `src/lib/predictorFacets.ts` defines `STREAMS` (`mbbs` | `bds` | `pg`). A stream is a `level` plus,
+  for the undergraduate ones, a single course. Facets are loaded and cached **per stream**, because
+  the categories genuinely differ — UG publishes `UR`, PG publishes `GEN` — and offering a category
+  the chosen course has no seats for is how the UG predictor used to open on an empty result.
+- **Branch only exists for PG** (`hasBranches`). State and college type always.
+- **BDS was in the data all along** — 3,244 seats, 326 colleges — and no page had ever offered it.
+- `/api/predict?stream=` is what the tool sends; `level=` is still accepted so old links work.
+  A single-course stream adds `AND c.name ILIKE ${course}`.
+- `/api/rounds` is fetched **alongside** `/api/predict` on the same search, so the "what changed after
+  round 1" tab is instant rather than a second wait. Gated the same way: totals free, rows behind
+  the sign-in.
+- All five old routes 308 to it with `?course=` set (`next.config.mjs`), and
+  `scripts/merge_predictor_nav.mjs` repointed `nav_items`, the footer and `page_seo`. The tool is a
+  **top-level header item** now; it used to be a third-level child of two different dropdowns.
 
 ### The lead gate on the seat data (2026-09-22)
 
@@ -345,8 +371,8 @@ call to anyone. The gate splits what is free from what is not:
 - **Behind a phone number:** the rest of the list. `src/lib/leadGate.ts` mints an HMAC-signed,
   `HttpOnly` cookie; `POST /api/unlock` records the lead and issues it. The cut happens **server-side** —
   a locked payload never leaves the process, so there is nothing to read out of the network tab.
-- The same rule applies to `/mbbs-india/rounds` and `/md-ms-india/rounds`, which render on the server,
-  so the slice happens in the page rather than in the markup.
+- The same rule applies to the after-round-1 data, now served by `/api/rounds` into the tool's second
+  tab: the two totals are free and the rows are not, and the slice happens server-side.
 
 **This is a gate, not verification.** Real OTP costs money per message (SMS and WhatsApp
 authentication templates both bill in India) and the brief was zero-cost, so nothing is sent. The
@@ -395,18 +421,62 @@ business runs on WhatsApp. And it costs nothing on any tier, because nothing is 
 - Gateway: WAHA (`devlikeapro/waha`, Apache-2.0, fully free since 2026.6.1), GOWS engine — that is
   `whatsmeow` over a WebSocket, so no headless Chromium on the database box. Setup, the exact Docker
   command and the verification results are in `docs/whatsapp-verify.md`.
-- Unset `WHATSAPP_VERIFY_NUMBER` and the whole path disappears cleanly: `/api/verify/start` answers
-  `503` and `UnlockCard` falls back to the typed-number form.
+- Unset `WHATSAPP_VERIFY_NUMBER` and the inbound path disappears cleanly: `/api/verify/start`
+  answers `503`. Since 2026-09-23 this is the *fallback* — see "Sending the code" below.
+
+### Sending the code (2026-09-23) — `src/lib/otp.ts`
+
+The section above argues, correctly, that outbound OTP is the worst thing you can do to a WhatsApp
+number: the ban models weight reply-ratio, contact-graph distance and timing regularity, and an OTP
+scores worst on all three. Sending anyway was a product decision — the receive-only flow was losing
+people — so the three signals are paid down deliberately rather than ignored:
+
+- **Volume.** 3 codes per number per hour, 8 per day, and a ceiling on the gateway's own daily total.
+  Counted **in `otp_codes`, not in memory** — an in-memory cap resets on every deploy and is
+  per-isolate, which for a guard whose job is keeping a phone number alive is no guard at all.
+- **Timing.** A randomised delay before the send, so it does not land a machine-exact interval after
+  the form submit.
+- **Reply-ratio.** The message invites a reply, into the inbox the counsellors already use.
+
+**The receive-only path from migration 0008 is still there and is the fallback.** When a send fails
+or the gateway is unpaired, `/api/auth/otp` returns `channel: "inbound"` with a `wa.me` link and the
+screen says why. It is the thing that works when nothing of ours is working.
+
+**Only the HMAC of a code is stored.** Six digits is too small a space for hashing to be brute-force
+protection; the point is that reading the table — or a backup, or a log line — does not hand over
+live credentials. Keyed by `OTP_SECRET`, falling back to `UNLOCK_SECRET`, then a per-process key.
+
+Digits come from `crypto.getRandomValues` with **rejection sampling**, not `% 10`, which would bias
+toward the low digits.
 
 ### Accounts (2026-09-22)
 
 Visitors have real accounts now, separate from `admin_users` in every way that matters.
 
-**Passwordless, phone-first.** The audience is students mid-counselling, often on a borrowed
-phone; a password is one more thing to lose at the worst moment. The number is the identity and
-the WhatsApp verification already proves it for free. So **signing up and signing in are the same
-action** — a known number is a login, a new one is a registration. There is no register screen, no
-password reset, nothing to forget.
+**Phone-first, with a password after the first time** (rebuilt 2026-09-23; migration `0012`).
+
+The original design was passwordless and proved the number over WhatsApp on *every* visit. That is
+fine on a phone and hostile on a laptop: it asked somebody to put the laptop down, find our number
+and send a message to read a page already open. So the number is still the identity and is still
+proved once — but a password gets them back in from any device.
+
+```
+first visit   phone -> code we send -> verified -> offered a password
+every visit   phone -> password
+forgot it     phone -> code -> set a new one
+```
+
+**The password is optional.** Skip it and the code path still works, so nobody is locked out by
+having forgotten something. `users.password_hash` reuses the admin's scrypt helpers from
+`src/lib/auth.ts` — one place that knows how a password is stored.
+
+The screen asks for the **number alone first** and `/api/auth/lookup` decides the next step, because
+"are you new here?" is a question only we can answer. That does reveal whether a number is
+registered; the route is rate-limited hard and returns nothing but a first name.
+
+Routes: `/api/auth/lookup` · `/api/auth/otp` · `/api/auth/verify` · `/api/auth/login` ·
+`/api/auth/password`. UI: `src/components/auth/AuthFlow.tsx` (used by both `AuthDialog` and
+`/login` via `LoginFlow`). `UnlockCard` is gone.
 
 - `src/lib/userAuth.ts`, tables `users` / `user_sessions` / `saved_colleges` (migration `0010`).
 - Sessions are **rows, not signed tokens**, like the admin's: signing out has to revoke, not merely
@@ -463,11 +533,8 @@ router push, because the page does not read the param.
 
 | Route | What it is |
 |---|---|
-| `/mbbs-india/predictor` | NEET-UG rank → MBBS seats, same four bands |
+| `/neet-college-predictor` | **The tool.** MBBS / BDS / MD-MS by rank, plus the after-round-1 tab |
 | `/mbbs-india/colleges/[slug]` | Per-college page for all 1,727; top 200 pre-rendered, rest ISR at 24h |
-| `/mbbs-india/rounds` | What opened and what tightened after round 1 |
-| `/md-ms-india/predictor` | Rank → seats, in four bands. Accepts `?rank=` so college pages can hand off |
-| `/md-ms-india/rounds` | What opened and what tightened after round 1 — the float/freeze question |
 | `/md-ms-india/colleges` | All 2,168, filters in the URL |
 | `/md-ms-india/colleges/[slug]` | **Per-college SEO page** — cutoffs, movement, fees, JSON-LD. Top 120 pre-rendered, rest ISR at 24h |
 
@@ -475,10 +542,11 @@ Queries live in `src/lib/collegeQueries.ts` (colleges, seat view) and `src/lib/c
 cutoffs, net cost). **All filters go through the URL**, never component state, so a filtered view is
 shareable, indexable, and the back button works.
 
-### After Round 1 — the float/freeze pages
+### After Round 1 — now a tab, not a page
 
-`/mbbs-india/rounds` and `/md-ms-india/rounds`, both from `src/components/rounds/RoundsPage.tsx`.
-Query layer: `src/lib/roundQueries.ts`.
+Served by `/api/rounds` into the tool's second tab. Query layer: `src/lib/roundQueries.ts`.
+It was two standalone pages with their own rank boxes, which asked people to retype the rank they
+had just entered to ask the question that follows immediately from the answer.
 
 A rank predictor answers a round-1 question and stops. The decision that costs people a year comes
 next: you hold a seat and have to choose whether to float for something better or freeze what you
@@ -581,6 +649,26 @@ animation that escapes that block.
   `contact_info` table via `useContactInfo`.
 - `POST /api/leads` is `force-dynamic`, rate-limits 5 req/min per IP in memory, and fires a WhatsApp notification.
   The in-memory limiter is per-isolate — it is not a real distributed limit.
+
+## Checking the work (2026-09-23)
+
+Three suites, all runnable against production:
+
+| Script | What it proves |
+|---|---|
+| `scripts/smoke.mjs` | 57 black-box checks — routes answer, the gate holds, removed pages redirect, no claim we cannot back, the sitemap is real |
+| `scripts/audit_site.mjs` | Renders every route in Chromium at 390px and 1440px: headings, labels, tap targets, text sizes, metadata, broken images and links, console errors |
+| `scripts/verify_auth_flow.mjs` | Sends a **real** code to our own gateway number, reads it back out of the gateway, redeems it, sets a password, signs in again on the password alone — then deletes its own rows |
+
+**Two traps the audit harness fell into first, both worth remembering:**
+
+1. `networkidle` never settles on a page with a marquee and an analytics beacon, so it timed itself
+   out and reported 22 working pages as broken. Wait for `load` and settle for a fixed beat instead.
+2. Counting every inline link in a sentence as an undersized tap target buried the standalone
+   controls that can actually be fixed. WCAG 2.5.8 exempts inline links for the same reason.
+
+A number a tool produces is worth nothing until you have checked the tool is measuring the thing you
+think it is.
 
 ## Cleanup baseline (2026-09-22)
 
