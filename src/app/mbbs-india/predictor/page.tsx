@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { resolveMetadata, getMediaAsset } from "@/lib/content";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
-import PageHero from "@/components/ui/PageHero";
 import { getPredictorFacets } from "@/lib/predictorFacets";
 import PredictorClient from "@/components/predictor/PredictorClient";
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
@@ -30,12 +29,6 @@ export default async function UgPredictorPage() {
     getMediaAsset("mbbs_hero_campus"),
   ]);
 
-  const yearLabel =
-    facets.years.length === 0
-      ? "—"
-      : facets.years.length === 1
-        ? String(facets.years[0])
-        : `${facets.years[0]}–${String(facets.years[facets.years.length - 1]).slice(2)}`;
 
   return (
     <main className="min-h-screen bg-background">
@@ -50,25 +43,6 @@ export default async function UgPredictorPage() {
           breadcrumb([{ name: "Home", path: "/" }, { name: "MBBS India", path: "/mbbs-india" }, { name: "SeatPredict", path: "/mbbs-india/predictor" }]),
         ]}
       />
-      <PageHero
-        eyebrow="NEET UG 2026"
-        eyebrowIcon="target"
-        title="Enter your rank."
-        titleAccent="See the MBBS seats it reaches."
-        subtitle="Every seat is placed against the round it actually closed in — round 1, the widest the cut went that year, and how far it has ever reached. No estimates, no scores invented to look precise."
-        image={
-          heroImage?.imageUrl && heroImage.imageUrl !== "none"
-            ? heroImage.imageUrl
-            : "/assets/images/hero/neet-hero.avif"
-        }
-        tone="dark"
-        stats={[
-          { value: facets.rankCount.toLocaleString("en-IN"), label: "Closing ranks" },
-          { value: facets.seatCount.toLocaleString("en-IN"), label: "Seats covered" },
-          { value: yearLabel, label: "Years published" },
-          { value: String(facets.states.length || "—"), label: "States" },
-        ]}
-      />
 
       <PredictorClient
         level="ug"
@@ -76,9 +50,6 @@ export default async function UgPredictorPage() {
         categories={facets.categories}
         branches={facets.branches}
         ownerships={facets.ownerships}
-        seatCount={facets.seatCount}
-        rankCount={facets.rankCount}
-        collegeCount={facets.collegeCount}
       />
     </main>
   );

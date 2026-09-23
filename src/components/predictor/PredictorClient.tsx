@@ -5,6 +5,8 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   Search,
+  ShieldCheck,
+  SlidersHorizontal,
   TrendingUp,
   TrendingDown,
   Minus,
@@ -57,9 +59,6 @@ interface Props {
   categories: string[];
   branches: string[];
   ownerships: string[];
-  seatCount: number;
-  rankCount: number;
-  collegeCount: number;
 }
 
 const BANDS: ChanceBand[] = ["safe", "likely", "possible", "stretch"];
@@ -106,9 +105,6 @@ export default function PredictorClient({
   categories,
   branches,
   ownerships,
-  seatCount,
-  rankCount,
-  collegeCount,
 }: Props) {
   const searchParams = useSearchParams();
   const seededRank = searchParams.get("rank") ?? "";
@@ -187,133 +183,188 @@ export default function PredictorClient({
   const locked = Boolean(data?.locked);
 
   return (
-    <div className="mx-auto w-full max-w-[1600px] px-4 py-8 sm:px-6 md:py-10 lg:px-8">
-      {/* ------------------------------ search ------------------------------ */}
-      <section
-        aria-label="Search"
-        className="rounded-2xl border border-border bg-card p-4 shadow-lift md:p-5"
-      >
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            run();
-            setTimeout(
-              () => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }),
-              80,
-            );
-          }}
-        >
-          <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto]">
-            <div>
-              <label
-                htmlFor="rank"
-                className="mb-1.5 block text-[13px] font-semibold text-muted-foreground"
-              >
-                Your NEET {level.toUpperCase()} all-India rank
-              </label>
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <input
-                  id="rank"
-                  inputMode="numeric"
-                  value={rank}
-                  onChange={(e) => setRank(e.target.value)}
-                  placeholder="e.g. 12450"
-                  aria-describedby={rank && !rankValid ? "rank-error" : undefined}
-                  className={`tnum font-heading h-14 w-full rounded-xl border bg-background px-4 text-2xl font-extrabold tracking-tight text-foreground outline-none transition-colors sm:max-w-xs ${
-                    rank && !rankValid ? "border-signal-stretch" : "border-border focus:border-primary"
-                  }`}
+    <>
+      {/* ---------------------- branded tool header ---------------------- */}
+      <section className="relative overflow-hidden bg-slate-950">
+        <div
+          className="ambient-blob pointer-events-none absolute -left-32 -top-40 h-[30rem] w-[30rem] opacity-60"
+          aria-hidden="true"
+        />
+        <div
+          className="ambient-blob pointer-events-none absolute -bottom-52 right-0 h-[26rem] w-[26rem] opacity-40"
+          aria-hidden="true"
+        />
+        <div className="bg-grid pointer-events-none absolute inset-0 opacity-[0.07]" aria-hidden="true" />
+
+        <div className="relative mx-auto w-full max-w-[1600px] px-4 pb-24 pt-10 sm:px-6 md:pt-12 lg:px-8">
+          {/* The tool is a product of the brand, and says so. */}
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
+            <div className="flex items-center gap-3">
+              <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white p-1.5 shadow-lg shadow-cyan-500/10">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/assets/images/logos/logo-4k.avif"
+                  alt="AdmissionHands"
+                  width={44}
+                  height={44}
+                  className="h-full w-full object-contain"
                 />
-                <button
-                  type="submit"
-                  disabled={!rankValid || loading}
-                  className="inline-flex h-14 shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-brand px-8 text-[15px] font-bold text-white shadow-glow transition-all hover:-translate-y-0.5 hover:shadow-glow-lg active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:shadow-none"
-                >
-                  {loading ? (
-                    <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
-                  ) : (
-                    <Search className="h-5 w-5" aria-hidden="true" />
-                  )}
-                  Show my seats
-                </button>
-              </div>
-              {rank && !rankValid && (
-                <p id="rank-error" className="mt-2 text-[13px] text-signal-stretch">
-                  Rank must be a number between 1 and 20,00,000.
-                </p>
-              )}
+              </span>
+              <span className="h-9 w-px bg-white/15" aria-hidden="true" />
+              <span>
+                <span className="font-heading block text-[21px] font-extrabold leading-none tracking-tight text-white">
+                  SeatPredict
+                </span>
+                <span className="mt-1 block text-[11px] font-semibold uppercase tracking-[0.14em] text-cyan-300/80">
+                  by AdmissionHands
+                </span>
+              </span>
             </div>
 
-            {/* Filters sit beside the rank on a wide screen, under it on a phone.
-                They are visible rather than hidden behind a button — a filter
-                nobody can see is a filter nobody uses. */}
-            <div className="flex flex-wrap items-end gap-2 lg:justify-end">
-              <MultiSelect
-                label="Branch"
-                options={branches}
-                selected={selectedBranches}
-                onChange={setSelectedBranches}
-              />
-              <MultiSelect
-                label="State"
-                options={states}
-                selected={selectedStates}
-                onChange={setSelectedStates}
-              />
-              <MultiSelect
-                label="College type"
-                options={ownerships}
-                selected={ownership}
-                onChange={setOwnership}
-                align="right"
-              />
-            </div>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-cyan-200 backdrop-blur-sm">
+              <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
+              NEET {level.toUpperCase()} 2026
+            </span>
           </div>
 
-          {/* Category is one choice, so it stays as chips rather than a dropdown. */}
-          <fieldset className="mt-4 border-t border-border pt-4">
-            <legend className="sr-only">Category</legend>
-            <div className="flex flex-wrap items-center gap-1.5">
-              <span className="mr-1 text-[12px] font-semibold uppercase tracking-wide text-muted-foreground">
-                Category
-              </span>
-              {categories.slice(0, 8).map((c) => (
-                <button
-                  key={c}
-                  type="button"
-                  aria-pressed={c === category}
-                  onClick={() => setCategory(c)}
-                  className={`rounded-full border px-3.5 py-2 text-[13px] font-semibold transition-colors md:py-1.5 ${
-                    category === c
-                      ? "border-primary bg-primary-soft text-primary-strong dark:text-primary"
-                      : "border-border bg-card text-muted-foreground hover:border-primary/40"
-                  }`}
-                >
-                  {c}
-                </button>
-              ))}
+          <h1 className="font-heading mt-8 max-w-[20ch] text-[clamp(2rem,4vw,3.25rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-white">
+            Enter your rank.{" "}
+            <span className="bg-gradient-to-r from-cyan-300 to-teal-200 bg-clip-text text-transparent">
+              See the seats it reaches.
+            </span>
+          </h1>
 
-              {activeFilters > 0 && (
-                <button
-                  type="button"
-                  onClick={clearFilters}
-                  className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-2 text-[13px] font-semibold text-muted-foreground transition-colors hover:border-signal-stretch/50 hover:text-foreground md:py-1.5"
-                >
-                  <X className="h-3.5 w-3.5" aria-hidden="true" />
-                  Clear {activeFilters} filter{activeFilters === 1 ? "" : "s"}
-                </button>
-              )}
-            </div>
-          </fieldset>
-        </form>
+          <p className="mt-4 max-w-[60ch] text-[15px] leading-relaxed text-slate-300 md:text-base">
+            Every seat placed against the round it actually closed in &mdash; round one, the widest
+            the cut went, and how far it has ever reached. Read from the counselling
+            authorities&rsquo; own published results. Nothing estimated.
+          </p>
+        </div>
       </section>
 
-      <p className="mt-3 text-center text-[13px] text-muted-foreground">
-        Checked against <span className="tnum font-semibold text-foreground">{fmt(rankCount)}</span>{" "}
-        published closing ranks across{" "}
-        <span className="tnum font-semibold text-foreground">{fmt(seatCount)}</span> seats at{" "}
-        <span className="tnum font-semibold text-foreground">{fmt(collegeCount)}</span> colleges.
-      </p>
+      {/* The search panel lifts off the header rather than sitting under it, so
+          the first thing on the page is the thing you came to use. */}
+      <div className="relative z-10 mx-auto -mt-12 w-full max-w-[1600px] px-4 sm:px-6 lg:px-8">
+        <section
+          aria-label="Search"
+          className="rounded-2xl border border-border bg-card p-4 shadow-lift md:p-6"
+        >
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              run();
+              setTimeout(
+                () => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }),
+                80,
+              );
+            }}
+          >
+            <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto]">
+              <div>
+                <label
+                  htmlFor="rank"
+                  className="mb-2 block text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground"
+                >
+                  Your NEET {level.toUpperCase()} all-India rank
+                </label>
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <input
+                    id="rank"
+                    inputMode="numeric"
+                    value={rank}
+                    onChange={(e) => setRank(e.target.value)}
+                    placeholder="e.g. 12450"
+                    aria-describedby={rank && !rankValid ? "rank-error" : undefined}
+                    className={`tnum font-heading h-14 w-full rounded-xl border-2 bg-background px-4 text-2xl font-extrabold tracking-tight text-foreground outline-none transition-colors sm:max-w-[16rem] ${
+                      rank && !rankValid
+                        ? "border-signal-stretch"
+                        : "border-border focus:border-primary"
+                    }`}
+                  />
+                  <button
+                    type="submit"
+                    disabled={!rankValid || loading}
+                    className="inline-flex h-14 shrink-0 items-center justify-center gap-2.5 rounded-xl bg-gradient-brand px-8 text-[15px] font-bold text-white shadow-glow transition-all hover:-translate-y-0.5 hover:shadow-glow-lg active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0 disabled:shadow-none"
+                  >
+                    {loading ? (
+                      <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
+                    ) : (
+                      <Search className="h-5 w-5" aria-hidden="true" />
+                    )}
+                    Find my seats
+                  </button>
+                </div>
+                {rank && !rankValid && (
+                  <p id="rank-error" className="mt-2 text-[13px] text-signal-stretch">
+                    Rank must be a number between 1 and 20,00,000.
+                  </p>
+                )}
+              </div>
 
+              {/* Visible rather than hidden behind a button — a filter nobody
+                  can see is a filter nobody uses. */}
+              <div className="flex flex-wrap items-end gap-2 lg:justify-end">
+                <MultiSelect
+                  label="Branch"
+                  options={branches}
+                  selected={selectedBranches}
+                  onChange={setSelectedBranches}
+                />
+                <MultiSelect
+                  label="State"
+                  options={states}
+                  selected={selectedStates}
+                  onChange={setSelectedStates}
+                />
+                <MultiSelect
+                  label="College type"
+                  options={ownerships}
+                  selected={ownership}
+                  onChange={setOwnership}
+                  align="right"
+                />
+              </div>
+            </div>
+
+            <fieldset className="mt-5 border-t border-border pt-4">
+              <legend className="sr-only">Category</legend>
+              <div className="flex flex-wrap items-center gap-1.5">
+                <span className="mr-1 text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+                  Category
+                </span>
+                {categories.slice(0, 8).map((c) => (
+                  <button
+                    key={c}
+                    type="button"
+                    aria-pressed={c === category}
+                    onClick={() => setCategory(c)}
+                    className={`rounded-full border px-3.5 py-2 text-[13px] font-semibold transition-colors md:py-1.5 ${
+                      category === c
+                        ? "border-primary bg-primary-soft text-primary-strong dark:text-primary"
+                        : "border-border bg-card text-muted-foreground hover:border-primary/40"
+                    }`}
+                  >
+                    {c}
+                  </button>
+                ))}
+
+                {activeFilters > 0 && (
+                  <button
+                    type="button"
+                    onClick={clearFilters}
+                    className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-2 text-[13px] font-semibold text-muted-foreground transition-colors hover:border-signal-stretch/50 hover:text-foreground md:py-1.5"
+                  >
+                    <X className="h-3.5 w-3.5" aria-hidden="true" />
+                    Clear {activeFilters} filter{activeFilters === 1 ? "" : "s"}
+                  </button>
+                )}
+              </div>
+            </fieldset>
+          </form>
+        </section>
+      </div>
+
+      <div className="mx-auto w-full max-w-[1600px] px-4 pb-12 pt-8 sm:px-6 lg:px-8">
       {/* ------------------------------ results ------------------------------ */}
       <div ref={resultsRef} className="mt-8 scroll-mt-24">
         {loading && (
@@ -440,16 +491,46 @@ export default function PredictorClient({
         )}
 
         {!data && !loading && !error && (
-          <div className="mx-auto max-w-xl py-10 text-center">
-            <p className="text-[15px] leading-relaxed text-muted-foreground">
-              Enter your rank above. You will see how many seats it reaches, split by how safely it
-              reaches them — with the closing rank behind each one, so you can check the number
-              yourself.
+          <div className="mx-auto max-w-4xl py-6">
+            <p className="mx-auto max-w-[56ch] text-center text-[15px] leading-relaxed text-muted-foreground">
+              Enter your rank above. Every seat it reaches, sorted by how safely it reaches them.
             </p>
+
+            <ul className="mt-9 grid gap-4 sm:grid-cols-3">
+              {[
+                {
+                  icon: ShieldCheck,
+                  title: "Published rounds only",
+                  body: "Round one, the widest the cut went that year, and how far it has ever reached. No invented scores.",
+                },
+                {
+                  icon: SlidersHorizontal,
+                  title: "Narrow it to your list",
+                  body: "Filter by branch, state and college type, and the bands recalculate against what is left.",
+                },
+                {
+                  icon: TrendingDown,
+                  title: "See which way it moved",
+                  body: "Each seat carries last year's cut beside this year's, so you can see the direction.",
+                },
+              ].map(({ icon: Icon, title, body }) => (
+                <li
+                  key={title}
+                  className="rounded-2xl border border-border bg-card p-5"
+                >
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-soft">
+                    <Icon className="h-5 w-5 text-primary" aria-hidden="true" />
+                  </span>
+                  <h2 className="font-heading mt-3.5 text-[15px] font-bold text-foreground">{title}</h2>
+                  <p className="mt-1.5 text-[13.5px] leading-relaxed text-muted-foreground">{body}</p>
+                </li>
+              ))}
+            </ul>
           </div>
         )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
