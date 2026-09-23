@@ -1,14 +1,21 @@
 /**
  * Accounts for site visitors, as distinct from the admin.
  *
- * Passwordless and phone-first. The audience is students in the middle of
- * counselling, often on a borrowed phone, and a password is one more thing to
- * lose at the worst possible moment. The phone number is the identity, and
- * `src/lib/waVerify.ts` already proves it for free by having them message us.
+ * Phone-first, with a password after the first time.
  *
- * So **signing up and signing in are the same action**: a known number is a
- * login, a new one is a registration. There is no "create account" screen, no
- * password reset, and nothing to forget.
+ * The number is the identity and it is proved once, by a code we send to it
+ * (`src/lib/otp.ts`). After that a password gets them back in from any device
+ * in two fields — which is what a visitor on a laptop needs, and what the
+ * original passwordless design got wrong: it made every single sign-in depend
+ * on picking up a phone and messaging us.
+ *
+ * The password stays **optional**. Skip it and the code path still works, so
+ * nobody is locked out by having forgotten something. What it removes is the
+ * need to repeat the proof.
+ *
+ *   first visit   phone -> code -> verified -> offered a password
+ *   every visit   phone -> password
+ *   forgot it     phone -> code -> set a new one
  *
  * Sessions are rows, not signed tokens, for the same reason the admin's are:
  * signing out has to actually revoke, not merely stop presenting.
@@ -22,6 +29,7 @@ import { cookies } from "next/headers";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { normalisePhone, unlockFrom, verifyUnlock, UNLOCK_COOKIE } from "@/lib/leadGate";
+import { hashPassword, verifyPassword } from "@/lib/auth";
 import { verifyEnabled, gatewayReady } from "@/lib/waVerify";
 
 export const USER_COOKIE = "ah_user";
@@ -38,6 +46,8 @@ export interface SiteUser {
   rank: number | null;
   category: string | null;
   verified: boolean;
+  /** Whether signing in can skip the code. */
+  hasPassword: boolean;
 }
 
 function newSessionId(): string {
@@ -83,7 +93,8 @@ export async function upsertUser(input: UpsertInput): Promise<SiteUser | null> {
       category    = COALESCE(EXCLUDED.category, users.category),
       verified_at = COALESCE(users.verified_at, EXCLUDED.verified_at),
       last_seen_at = now()
-    RETURNING id, phone, name, email, level::text AS level, rank, category, verified_at
+    RETURNING id, phone, name, email, level::text AS level, rank, category,
+              verified_at, password_hash
   `)) as unknown as Record<string, unknown>[];
 
   const r = rows[0];
@@ -97,6 +108,7 @@ export async function upsertUser(input: UpsertInput): Promise<SiteUser | null> {
     rank: (r.rank as number) ?? null,
     category: (r.category as string) ?? null,
     verified: Boolean(r.verified_at),
+    hasPassword: Boolean(r.password_hash),
   };
 }
 
@@ -146,7 +158,7 @@ export async function currentUser(): Promise<SiteUser | null> {
   try {
     const rows = (await db.execute(sql`
       SELECT u.id, u.phone, u.name, u.email, u.level::text AS level,
-             u.rank, u.category, u.verified_at, s.expires_at
+             u.rank, u.category, u.verified_at, u.password_hash, s.expires_at
         FROM user_sessions s
         JOIN users u ON u.id = s.user_id
        WHERE s.id = ${id}
@@ -170,6 +182,7 @@ export async function currentUser(): Promise<SiteUser | null> {
       rank: (r.rank as number) ?? null,
       category: (r.category as string) ?? null,
       verified: Boolean(r.verified_at),
+      hasPassword: Boolean(r.password_hash),
     };
   } catch (error) {
     // A database blip must read as "signed out", never as "signed in".
@@ -186,7 +199,7 @@ export async function userFromRequest(request: Request): Promise<SiteUser | null
 
   try {
     const rows = (await db.execute(sql`
-      SELECT u.id, u.phone, u.name, u.verified_at
+      SELECT u.id, u.phone, u.name, u.verified_at, u.password_hash
         FROM user_sessions s JOIN users u ON u.id = s.user_id
        WHERE s.id = ${id} AND s.expires_at > now()
        LIMIT 1
@@ -202,8 +215,118 @@ export async function userFromRequest(request: Request): Promise<SiteUser | null
       rank: null,
       category: null,
       verified: Boolean(r.verified_at),
+      hasPassword: Boolean(r.password_hash),
     };
   } catch {
+    return null;
+  }
+}
+
+/* ---------------------------- passwords ---------------------------- *
+ *
+ * Reusing the admin's scrypt helpers rather than a second scheme. One place
+ * that knows how a password is stored is one place to get it right, and the
+ * hashes are self-describing (`scrypt:salt:key`) so they can be told apart if
+ * the scheme ever changes.
+ */
+
+export interface AccountLookup {
+  exists: boolean;
+  hasPassword: boolean;
+  /** First name only, so the screen can greet them without printing the record. */
+  firstName: string | null;
+  verified: boolean;
+}
+
+/**
+ * What the sign-in screen needs to know after the number is entered: whether to
+ * ask for a password or send a code.
+ *
+ * This does reveal whether a number has an account here. That is the cost of a
+ * single-field first step, and it is the right trade for this product — the
+ * alternative is asking every visitor to self-identify as new or returning,
+ * which is a question only we can answer. The route rate-limits it so the
+ * answer cannot be harvested in bulk.
+ */
+export async function accountLookup(rawPhone: string): Promise<AccountLookup> {
+  const phone = normalisePhone(rawPhone);
+  const none = { exists: false, hasPassword: false, firstName: null, verified: false };
+  if (!phone) return none;
+
+  try {
+    const rows = (await db.execute(sql`
+      SELECT name, password_hash, verified_at FROM users WHERE phone = ${phone} LIMIT 1
+    `)) as unknown as Record<string, unknown>[];
+    const r = rows[0];
+    if (!r) return none;
+    const name = (r.name as string) ?? null;
+    return {
+      exists: true,
+      hasPassword: Boolean(r.password_hash),
+      firstName: name ? name.trim().split(/\s+/)[0] : null,
+      verified: Boolean(r.verified_at),
+    };
+  } catch (error) {
+    console.error("[userAuth] accountLookup:", error);
+    return none;
+  }
+}
+
+/** Sets or replaces the password on an account. */
+export async function setUserPassword(userId: number, password: string): Promise<boolean> {
+  if (typeof password !== "string" || password.length < 8) return false;
+  try {
+    const hash = await hashPassword(password);
+    await db.execute(sql`
+      UPDATE users SET password_hash = ${hash}, password_set_at = now() WHERE id = ${userId}
+    `);
+    return true;
+  } catch (error) {
+    console.error("[userAuth] setUserPassword:", error);
+    return false;
+  }
+}
+
+/**
+ * Phone plus password.
+ *
+ * A missing account still runs the hash comparison against a dummy, so a
+ * number that exists here does not answer faster than one that does not.
+ */
+export async function authenticateUser(
+  rawPhone: string,
+  password: string,
+): Promise<SiteUser | null> {
+  const phone = normalisePhone(rawPhone);
+  if (!phone || typeof password !== "string" || !password) return null;
+
+  try {
+    const rows = (await db.execute(sql`
+      SELECT id, phone, name, email, level::text AS level, rank, category,
+             verified_at, password_hash
+        FROM users WHERE phone = ${phone} LIMIT 1
+    `)) as unknown as Record<string, unknown>[];
+
+    const r = rows[0];
+    const stored = (r?.password_hash as string) ?? "scrypt:00:00";
+    const ok = await verifyPassword(password, stored);
+    if (!ok || !r) return null;
+
+    await db.execute(sql`UPDATE users SET last_seen_at = now() WHERE id = ${r.id}`);
+
+    return {
+      id: r.id as number,
+      phone: r.phone as string,
+      name: (r.name as string) ?? null,
+      email: (r.email as string) ?? null,
+      level: (r.level as "ug" | "pg") ?? null,
+      rank: (r.rank as number) ?? null,
+      category: (r.category as string) ?? null,
+      verified: Boolean(r.verified_at),
+      hasPassword: true,
+    };
+  } catch (error) {
+    console.error("[userAuth] authenticateUser:", error);
     return null;
   }
 }

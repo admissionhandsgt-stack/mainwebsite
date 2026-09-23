@@ -1,12 +1,10 @@
 import { NextResponse } from "next/server";
 import { logError } from "@/lib/logger";
-import { db } from "@/db/client";
-import { sql } from "drizzle-orm";
 import { rateLimit, clientKey } from "@/lib/rateLimit";
 import { attemptStatus } from "@/lib/waVerify";
 import { mintUnlock, unlockCookie } from "@/lib/leadGate";
 import { upsertUser, startSession, sessionCookie } from "@/lib/userAuth";
-import { sendWhatsAppNotification } from "@/lib/whatsappService";
+import { recordLead } from "@/lib/leadCapture";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -43,46 +41,20 @@ export async function GET(request: Request) {
     const phone = status.phone!;
 
     // The browser keeps polling after success (a slow network, a retry), so
-    // the lead is created once and then recognised. Same 24-hour rule as the
-    // typed-number path, so the two cannot double up on each other either.
-    const existing = (await db.execute(sql`
-      SELECT id FROM leads
-       WHERE phone = ${phone} AND created_at >= now() - interval '24 hours'
-       LIMIT 1
-    `)) as unknown as unknown[];
+    // `recordLead` deduplicates on a 24-hour window — the same rule the code
+    // path uses, so the two cannot double up on each other either.
+    await recordLead({
+      name: status.name ?? "WhatsApp verified",
+      phone,
+      level: status.level ?? "pg",
+      rank: status.rank ?? null,
+      category: status.category ?? null,
+      source: status.sourcePage ?? null,
+      verified: true,
+    });
 
-    if (existing.length === 0) {
-      const note = status.rank
-        ? `Verified on WhatsApp. Unlocked the seat list at rank ${status.rank}${
-            status.category ? ` (${status.category})` : ""
-          }.`
-        : "Verified on WhatsApp.";
-
-      await db.execute(sql`
-        INSERT INTO leads
-          (level, name, phone, rank, category, source_page, lead_status, message)
-        VALUES (
-          ${status.level ?? "pg"}::level,
-          ${status.name ?? "WhatsApp verified"},
-          ${phone},
-          ${status.rank ?? null},
-          ${status.category ?? null},
-          ${status.sourcePage ?? `Seat predictor — ${(status.level ?? "pg").toUpperCase()}`},
-          'New',
-          ${note}
-        )
-      `);
-
-      sendWhatsAppNotification({
-        name: status.name ?? "WhatsApp verified",
-        phone,
-        rank: status.rank ?? undefined,
-        source: status.sourcePage ?? "Seat predictor (WhatsApp verified)",
-      }).catch((err) => console.error("[verify/status] WhatsApp alert failed:", err));
-    }
-
-    // Same as the typed path, but the number was proved rather than claimed,
-    // so the account is marked verified.
+    // Same as the code path, but the number was proved by a message arriving
+    // from it, so the account is marked verified.
     const user = await upsertUser({
       name: status.name,
       phone,
@@ -92,7 +64,14 @@ export async function GET(request: Request) {
       verified: true,
     });
 
-    const response = NextResponse.json({ verified: true, phone, signedIn: Boolean(user) });
+    // `hasPassword` decides the flow's next step: offer one, or finish. The
+    // polling browser has no other way to know.
+    const response = NextResponse.json({
+      verified: true,
+      phone,
+      signedIn: Boolean(user),
+      hasPassword: Boolean(user?.hasPassword),
+    });
     response.cookies.set(unlockCookie(await mintUnlock(phone)));
     if (user) response.cookies.set(sessionCookie(await startSession(user.id)));
     return response;

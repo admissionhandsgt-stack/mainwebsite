@@ -3,6 +3,7 @@ import { logError } from "@/lib/logger";
 import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
 import { PREVIEW_SEATS } from "@/lib/leadGate";
 import { accessState } from "@/lib/userAuth";
+import { streamSpec, type Stream } from "@/lib/predictorFacets";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { chanceFor, summarise, BAND_ORDER, type ChanceBand, type SeatOptionRow } from "@/lib/predictor";
@@ -14,7 +15,11 @@ const MAX_RESULTS = 300;
 
 interface PredictQuery {
   rank: number;
+  /** MBBS, BDS or PG — one tool, the course decides the level. */
+  stream: Stream;
   level: "ug" | "pg";
+  /** Set for the single-course streams, null for PG. */
+  courseOnly: string | null;
   category: string;
   states: string[];
   ownership: string[];
@@ -29,8 +34,12 @@ function parse(searchParams: URLSearchParams): PredictQuery | { error: string } 
     return { error: "Rank must be a number between 1 and 20,00,000." };
   }
 
-  const level = searchParams.get("level") === "ug" ? "ug" : "pg";
-  const category = (searchParams.get("category") || "GEN").toUpperCase().slice(0, 48);
+  // `level` is still accepted so existing links keep working, but the stream
+  // is what the tool sends and it decides both the level and the course.
+  const spec = streamSpec(
+    searchParams.get("stream") ?? (searchParams.get("level") === "ug" ? "mbbs" : "pg"),
+  );
+  const category = (searchParams.get("category") || "").toUpperCase().slice(0, 48);
 
   const list = (k: string) =>
     (searchParams.get(k) || "")
@@ -44,8 +53,12 @@ function parse(searchParams: URLSearchParams): PredictQuery | { error: string } 
 
   return {
     rank: Math.round(rank),
-    level,
-    category,
+    stream: spec.id,
+    level: spec.level,
+    courseOnly: spec.course,
+    // Default to whichever "general" code this level publishes: UG says UR,
+    // PG says GEN. Guessing one broke the other.
+    category: category || (spec.level === "ug" ? "UR" : "GEN"),
     states: list("states"),
     ownership: list("ownership"),
     branches: list("branches"),
@@ -71,7 +84,7 @@ export async function GET(request: Request) {
   if ("error" in parsed) {
     return NextResponse.json({ error: parsed.error }, { status: 400 });
   }
-  const { rank, level, category, states, ownership, branches, maxFee } = parsed;
+  const { rank, stream, level, courseOnly, category, states, ownership, branches, maxFee } = parsed;
 
   try {
     // Pull every seat whose widest recorded cut could still contain this rank,
@@ -114,6 +127,7 @@ export async function GET(request: Request) {
         AND COALESCE(so.furthest_ever, so.widest_latest) >= ${rank}
         ${states.length ? sql`AND st.name IN (${sql.join(states.map((s) => sql`${s}`), sql`, `)})` : sql``}
         ${ownership.length ? sql`AND i.ownership::text IN (${sql.join(ownership.map((o) => sql`${o}`), sql`, `)})` : sql``}
+        ${courseOnly ? sql`AND c.name ILIKE ${courseOnly}` : sql``}
         ${branches.length ? sql`AND c.name IN (${sql.join(branches.map((b) => sql`${b}`), sql`, `)})` : sql``}
         ${maxFee ? sql`AND (so.fee_inr IS NULL OR so.fee_inr <= ${maxFee})` : sql``}
       ORDER BY so.widest_latest ASC NULLS LAST
@@ -180,7 +194,7 @@ export async function GET(request: Request) {
     const visible = access.open ? results : results.slice(0, PREVIEW_SEATS);
 
     return NextResponse.json({
-      query: { rank, level, category, states, ownership, branches, maxFee },
+      query: { rank, stream, level, category, states, ownership, branches, maxFee },
       counts: summarise(results),
       total: results.length,
       truncated: access.open && results.length === MAX_RESULTS,

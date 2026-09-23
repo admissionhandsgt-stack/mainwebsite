@@ -23,14 +23,13 @@ const BASE = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.admissionhands.co
 /** Routes that exist in code rather than in the database. */
 const STATIC: { path: string; priority: number; freq: MetadataRoute.Sitemap[number]["changeFrequency"] }[] = [
   { path: "/", priority: 1.0, freq: "weekly" },
+  // The tool is the acquisition page, so it ranks with the homepage rather
+  // than below the section landing pages it used to sit under.
+  { path: "/neet-college-predictor", priority: 1.0, freq: "weekly" },
   { path: "/mbbs-india", priority: 0.9, freq: "weekly" },
-  { path: "/mbbs-india/predictor", priority: 0.9, freq: "weekly" },
-  { path: "/mbbs-india/rounds", priority: 0.9, freq: "weekly" },
   { path: "/mbbs-india/colleges", priority: 0.8, freq: "weekly" },
   { path: "/mbbs-india/deemed-universities", priority: 0.7, freq: "monthly" },
   { path: "/md-ms-india", priority: 0.9, freq: "weekly" },
-  { path: "/md-ms-india/predictor", priority: 0.9, freq: "weekly" },
-  { path: "/md-ms-india/rounds", priority: 0.9, freq: "weekly" },
   { path: "/md-ms-india/colleges", priority: 0.8, freq: "weekly" },
   { path: "/nri-quota", priority: 0.7, freq: "monthly" },
   { path: "/nri-quota/colleges", priority: 0.6, freq: "monthly" },

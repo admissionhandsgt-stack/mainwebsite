@@ -182,7 +182,7 @@ export default async function UgCollegePage({ params }: { params: { slug: string
               hold for it. The rank checker below works across every college we do have.
             </p>
             <Link
-              href="/mbbs-india/predictor"
+              href="/neet-college-predictor?course=mbbs"
               className="mt-5 inline-block rounded-xl bg-gradient-brand px-5 py-2.5 text-sm font-bold text-white shadow-glow"
             >
               Check your rank across all colleges

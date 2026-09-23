@@ -228,7 +228,7 @@ export default async function PGCollegesPage({ searchParams }: PageProps) {
                 by how safely it reaches them.
               </p>
               <Link
-                href="/md-ms-india/predictor"
+                href="/neet-college-predictor?course=pg"
                 className="mt-4 inline-flex items-center gap-2 rounded-xl bg-gradient-brand px-5 py-3 text-sm font-bold text-white shadow-glow transition-all hover:shadow-glow-lg hover:-translate-y-0.5"
               >
                 Open the predictor

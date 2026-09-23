@@ -26,7 +26,7 @@ const FALLBACK_NAV: NavItem[] = [
   {
     id: -3, label: 'PG – MD/MS', url: '/md-ms-india', newTab: false,
     children: [
-      { id: -31, label: 'SeatPredict', url: '/md-ms-india/predictor', newTab: false, children: [] },
+      { id: -31, label: 'College Predictor', url: '/neet-college-predictor', newTab: false, children: [] },
       { id: -32, label: 'All PG Colleges', url: '/md-ms-india/colleges', newTab: false, children: [] },
       { id: -33, label: 'Closing Ranks', url: '/md-ms-india/cutoffs', newTab: false, children: [] },
     ],

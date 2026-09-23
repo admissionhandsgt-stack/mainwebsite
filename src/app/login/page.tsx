@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { ShieldCheck } from "lucide-react";
+import { KeyRound, ShieldCheck, Smartphone } from "lucide-react";
 import { currentUser } from "@/lib/userAuth";
 import PageHero from "@/components/ui/PageHero";
-import UnlockCard from "@/components/lead/UnlockCard";
+import LoginFlow from "@/components/auth/LoginFlow";
 
 export const dynamic = "force-dynamic";
 
@@ -15,11 +15,21 @@ export const metadata: Metadata = {
 /**
  * Signing in and signing up are the same screen.
  *
- * There is no password, so nothing distinguishes a returning visitor from a
- * new one until the number is entered — and once it is, we already know.
- * Asking someone to choose "login" or "register" first would be asking them a
- * question only we can answer.
+ * Nothing distinguishes a returning visitor from a new one until the number is
+ * entered — and once it is, we already know which they are. Asking someone to
+ * pick "login" or "register" first is asking them a question only we can
+ * answer, and half of them get it wrong.
  */
+/** The three things somebody standing on this page needs to know. */
+const POINTS = [
+  { icon: Smartphone, text: "New here? Your number creates the account — there is no separate sign-up form." },
+  { icon: KeyRound, text: "Been here before? Your number and password, and you are straight in." },
+  {
+    icon: ShieldCheck,
+    text: "The code is sent once, to prove the number is yours. Forgotten your password? Another code resets it.",
+  },
+];
+
 export default async function LoginPage({
   searchParams,
 }: {
@@ -37,26 +47,22 @@ export default async function LoginPage({
       <PageHero
         eyebrow="Sign in"
         eyebrowIcon="target"
-        title="One number."
-        titleAccent="No password to forget."
-        subtitle="Your phone number is your account. Confirm it on WhatsApp and everything opens — the full seat list, the round-by-round movement, and your rank saved for next time."
+        title="Your number is your account."
+        titleAccent="Verified once, then you are in."
+        subtitle="Enter your mobile number and we will send a code to it on WhatsApp. Set a password after that and next time it is just two fields — from a laptop or a phone, either way."
         image="/assets/images/hero/neet-hero.avif"
         tone="dark"
       />
 
       <div className="container-custom py-10 md:py-14">
         <div className="mx-auto max-w-2xl">
-          <UnlockCard lockedCount={0} level="pg" rank={0} category="" noun="seats" />
+          <LoginFlow next={searchParams.next} />
 
-          <ul className="mx-auto mt-8 max-w-[54ch] space-y-2.5 text-[14px] leading-relaxed text-muted-foreground">
-            {[
-              "New here? Entering your number creates the account. There is no separate sign-up.",
-              "Been here before? The same number signs you back in.",
-              "We never message you first — you message us, and that is what proves the number.",
-            ].map((t) => (
-              <li key={t} className="flex gap-2.5">
-                <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
-                {t}
+          <ul className="mx-auto mt-8 max-w-[56ch] space-y-3 text-[14px] leading-relaxed text-muted-foreground">
+            {POINTS.map(({ icon: Icon, text }) => (
+              <li key={text} className="flex gap-2.5">
+                <Icon className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+                {text}
               </li>
             ))}
           </ul>

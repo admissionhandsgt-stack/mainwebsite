@@ -61,9 +61,10 @@ function section(title) {
 async function checkRoutes() {
   section("Pages answer");
   const routes = [
-    "/", "/login", "/mbbs-india", "/mbbs-india/colleges", "/mbbs-india/predictor",
-    "/mbbs-india/rounds", "/mbbs-india/deemed-universities", "/md-ms-india",
-    "/md-ms-india/colleges", "/md-ms-india/predictor", "/md-ms-india/rounds",
+    "/", "/login", "/neet-college-predictor",
+    "/neet-college-predictor?course=mbbs", "/neet-college-predictor?course=bds",
+    "/mbbs-india", "/mbbs-india/colleges", "/mbbs-india/deemed-universities",
+    "/md-ms-india", "/md-ms-india/colleges",
     "/nri-quota", "/nri-quota/colleges", "/nri-quota/documents",
     "/services", "/know-us", "/videos", "/neet-ug-process", "/terms",
     "/sitemap.xml", "/robots.txt",
@@ -82,9 +83,15 @@ async function checkRoutes() {
 
 async function checkRedirects() {
   section("Removed pages redirect rather than 404");
+  // The five routes the one tool replaced, plus the fees page. Each has to
+  // land on the tool rather than 404, because they are what is in the index.
   const pairs = [
-    ["/mbbs-india/cutoffs", "/mbbs-india/predictor"],
-    ["/md-ms-india/cutoffs", "/md-ms-india/predictor"],
+    ["/mbbs-india/predictor", "/neet-college-predictor?course=mbbs"],
+    ["/md-ms-india/predictor", "/neet-college-predictor?course=pg"],
+    ["/mbbs-india/rounds", "/neet-college-predictor?course=mbbs"],
+    ["/md-ms-india/rounds", "/neet-college-predictor?course=pg"],
+    ["/mbbs-india/cutoffs", "/neet-college-predictor?course=mbbs"],
+    ["/md-ms-india/cutoffs", "/neet-college-predictor?course=pg"],
     ["/md-ms-india/fees", "/md-ms-india/colleges"],
   ];
   for (const [from, to] of pairs) {
@@ -118,7 +125,7 @@ async function checkSecurityHeaders() {
 async function checkGate() {
   section("The data gate holds");
 
-  const res = await get("/api/predict?rank=5000&level=pg&category=GEN");
+  const res = await get("/api/predict?rank=5000&stream=pg&category=GEN");
   if (!res.ok) return bad("/api/predict", `got ${res.status}`);
   const body = await res.json();
 

@@ -62,18 +62,32 @@ const nextConfig = {
   poweredByHeader: false,
 
   /**
-   * The row-level cutoff explorers are gone.
+   * Five URLs collapsed into one tool.
    *
-   * They asked a visitor to scan 230,000 rows for something the predictor
-   * answers from their own rank in one step, and the per-college pages cover
-   * the same numbers with context around them. These are permanent rather
-   * than temporary because the pages are not coming back — a 302 would leave
-   * the dead URLs in the index indefinitely.
+   * MBBS, BDS and MD/MS each had their own predictor, and "what happened after
+   * round 1" had two more pages — five routes for one question asked about one
+   * rank, splitting the search traffic for the phrase people actually type.
+   * The course is now a filter and the round movement is a tab, at
+   * /neet-college-predictor.
+   *
+   * The row-level cutoff explorers are gone for a different reason: they asked
+   * a visitor to scan 230,000 rows for something the predictor answers from
+   * their own rank in one step.
+   *
+   * All permanent, because none of these pages is coming back — a 302 would
+   * leave the dead URLs in the index indefinitely, and the link equity these
+   * have earned is the whole reason to redirect rather than delete. The
+   * `?course=` lands the visitor on the stream they asked for.
    */
   async redirects() {
+    const tool = "/neet-college-predictor";
     return [
-      { source: "/mbbs-india/cutoffs", destination: "/mbbs-india/predictor", permanent: true },
-      { source: "/md-ms-india/cutoffs", destination: "/md-ms-india/predictor", permanent: true },
+      { source: "/mbbs-india/predictor", destination: `${tool}?course=mbbs`, permanent: true },
+      { source: "/md-ms-india/predictor", destination: `${tool}?course=pg`, permanent: true },
+      { source: "/mbbs-india/rounds", destination: `${tool}?course=mbbs`, permanent: true },
+      { source: "/md-ms-india/rounds", destination: `${tool}?course=pg`, permanent: true },
+      { source: "/mbbs-india/cutoffs", destination: `${tool}?course=mbbs`, permanent: true },
+      { source: "/md-ms-india/cutoffs", destination: `${tool}?course=pg`, permanent: true },
       // Fees vs stipend was a whole page for one number, and that number is
       // already on every college's own page — where someone is standing when
       // they actually ask what a seat costs.

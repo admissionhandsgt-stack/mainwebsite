@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
-import UnlockCard from "@/components/lead/UnlockCard";
+import AuthFlow from "@/components/auth/AuthFlow";
 
 /**
  * Signing in without leaving the page.
@@ -111,23 +111,25 @@ export default function AuthDialog({
           <X className="h-5 w-5" aria-hidden="true" />
         </button>
 
-        {/* The heading the dialog is labelled by lives inside UnlockCard, so
-            this one is for assistive tech only and never duplicated on screen. */}
+        {/* The heading the dialog is labelled by lives inside AuthFlow and
+            changes with the step, so this one is for assistive tech only and is
+            never duplicated on screen. */}
         <h2 id="auth-dialog-title" className="sr-only">
           Sign in to see your {noun}
         </h2>
 
-        <UnlockCard
+        <AuthFlow
           lockedCount={lockedCount}
           level={level}
           rank={rank}
           category={category}
           noun={noun}
-          alreadyShown={alreadyShown}
           bare
-          onUnlocked={() => {
+          onDone={() => {
             onUnlocked();
-            close();
+            // A beat, so the "you are in" panel is actually seen rather than
+            // flashing as the dialog disappears.
+            setTimeout(close, 700);
           }}
         />
       </div>

@@ -18,48 +18,64 @@ import {
 import MultiSelect from "@/components/predictor/MultiSelect";
 import AuthDialog from "@/components/lead/AuthDialog";
 import { bandLabel, type ChanceBand } from "@/lib/predictor";
+import type { Facets, Stream, StreamSpec } from "@/lib/predictorFacets";
+
+/* ------------------------------------------------------------------ types */
 
 interface SeatResult {
   institute: string;
   instituteSlug: string;
   state: string | null;
-  district: string | null;
   ownership: string;
   course: string;
   quota: string;
-  counselling: string | null;
   category: string;
   feeInr: number | null;
-  seats: number | null;
   widestRank: number | null;
   firstRoundRank: number | null;
-  previousYearRank: number | null;
   year: number | null;
   band: ChanceBand;
-  score: number;
-  reason: string;
   movement: { delta: number; direction: "easier" | "tighter" | "flat" } | null;
 }
 
-interface ApiResponse {
+interface PredictResponse {
   counts: Record<ChanceBand, number>;
   total: number;
   truncated: boolean;
   locked?: boolean;
-  lockedCount?: number;
   needsVerification?: boolean;
-  signedIn?: boolean;
   results: SeatResult[];
   error?: string;
 }
 
-interface Props {
-  level: "ug" | "pg";
-  states: string[];
-  categories: string[];
-  branches: string[];
-  ownerships: string[];
+interface RoundMove {
+  institute: string;
+  instituteSlug: string;
+  state: string | null;
+  course: string;
+  quota: string;
+  year: number;
+  r1: number | null;
+  later: number | null;
+  laterRound: string | null;
+  movement: number | null;
 }
+
+interface RoundsResponse {
+  openedTotal: number;
+  tightenedTotal: number;
+  opened: RoundMove[];
+  tightened: RoundMove[];
+  locked?: boolean;
+  error?: string;
+}
+
+interface Props {
+  streams: StreamSpec[];
+  facets: Record<Stream, Facets>;
+}
+
+/* ------------------------------------------------------------------ style */
 
 const BANDS: ChanceBand[] = ["safe", "likely", "possible", "stretch"];
 
@@ -99,27 +115,43 @@ const money = (n: number | null | undefined) => {
   return `₹${n.toLocaleString("en-IN")}`;
 };
 
-export default function PredictorClient({
-  level,
-  states,
-  categories,
-  branches,
-  ownerships,
-}: Props) {
-  const searchParams = useSearchParams();
-  const seededRank = searchParams.get("rank") ?? "";
+/** Which answer is on screen. Both come from the same rank. */
+type View = "seats" | "rounds";
 
+/* ------------------------------------------------------------------- main */
+
+/**
+ * One tool, every NEET stream.
+ *
+ * MBBS, BDS and MD/MS were three pages asking the identical question, and
+ * "what opened after round 1" was two more. That is five URLs for one rank,
+ * splitting the search traffic and making a visitor retype their rank to ask
+ * the obvious follow-up. The course is a filter; the round-1 movement is a
+ * tab. Same rank, one page.
+ */
+export default function PredictorClient({ streams, facets }: Props) {
+  const searchParams = useSearchParams();
+
+  const [stream, setStream] = useState<Stream>(
+    () => streams.find((s) => s.id === searchParams.get("course"))?.id ?? "pg",
+  );
+  const spec = streams.find((s) => s.id === stream) ?? streams[0];
+  const f = facets[stream];
+
+  const seededRank = searchParams.get("rank") ?? "";
   const [rank, setRank] = useState(seededRank);
-  // GEN in PG data, UR in UG data — the default comes from what this level
-  // actually publishes rather than a guess.
+  // GEN in PG data, UR in UG data — the default comes from what the chosen
+  // course actually publishes rather than a guess.
   const [category, setCategory] = useState(
-    () => categories.find((c) => c === "GEN" || c === "UR") ?? categories[0] ?? "GEN",
+    () => facets[stream].categories.find((c) => c === "GEN" || c === "UR") ?? facets[stream].categories[0] ?? "GEN",
   );
   const [selectedStates, setSelectedStates] = useState<string[]>([]);
   const [selectedBranches, setSelectedBranches] = useState<string[]>([]);
   const [ownership, setOwnership] = useState<string[]>([]);
 
-  const [data, setData] = useState<ApiResponse | null>(null);
+  const [view, setView] = useState<View>("seats");
+  const [data, setData] = useState<PredictResponse | null>(null);
+  const [rounds, setRounds] = useState<RoundsResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
@@ -127,27 +159,52 @@ export default function PredictorClient({
   const rankNumber = Number(rank.replace(/[,\s]/g, ""));
   const rankValid = Number.isFinite(rankNumber) && rankNumber >= 1 && rankNumber <= 2000000;
 
+  /** Changing course changes which categories and branches even exist. */
+  const switchStream = (next: Stream) => {
+    if (next === stream) return;
+    setStream(next);
+    const cats = facets[next].categories;
+    setCategory(cats.find((c) => c === "GEN" || c === "UR") ?? cats[0] ?? "GEN");
+    setSelectedBranches([]);
+    setSelectedStates([]);
+    setOwnership([]);
+    setData(null);
+    setRounds(null);
+    setError(null);
+  };
+
   const run = useCallback(async () => {
     if (!rankValid) return;
     setLoading(true);
     setError(null);
     try {
-      const params = new URLSearchParams({ rank: String(rankNumber), level, category });
+      const params = new URLSearchParams({ rank: String(rankNumber), stream, category });
       if (selectedStates.length) params.set("states", selectedStates.join(","));
       if (selectedBranches.length) params.set("branches", selectedBranches.join(","));
       if (ownership.length) params.set("ownership", ownership.join(","));
 
-      const res = await fetch(`/api/predict?${params}`);
-      const json: ApiResponse = await res.json();
-      if (!res.ok || json.error) throw new Error(json.error || "Request failed");
-      setData(json);
+      // Both answers are fetched together: the second tab is the same question
+      // one step later, and nobody should wait again to ask it.
+      const [seats, moves] = await Promise.all([
+        fetch(`/api/predict?${params}`).then((r) => r.json()),
+        fetch(
+          `/api/rounds?rank=${rankNumber}&stream=${stream}&category=${encodeURIComponent(category)}`,
+        )
+          .then((r) => r.json())
+          .catch(() => null),
+      ]);
+
+      if (seats?.error) throw new Error(seats.error);
+      setData(seats);
+      setRounds(moves && !moves.error ? moves : null);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Could not load your seats. Try again.");
+      setError(e instanceof Error ? e.message : "Could not load your colleges. Try again.");
       setData(null);
+      setRounds(null);
     } finally {
       setLoading(false);
     }
-  }, [rankValid, rankNumber, level, category, selectedStates, selectedBranches, ownership]);
+  }, [rankValid, rankNumber, stream, category, selectedStates, selectedBranches, ownership]);
 
   // Arriving with ?rank= from a college page: search immediately rather than
   // showing a form they already filled in.
@@ -163,7 +220,7 @@ export default function PredictorClient({
   useEffect(() => {
     if (data || error) run();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [category, selectedStates, selectedBranches, ownership]);
+  }, [stream, category, selectedStates, selectedBranches, ownership]);
 
   const grouped = useMemo(() => {
     const out: Record<ChanceBand, SeatResult[]> = { safe: [], likely: [], possible: [], stretch: [] };
@@ -171,8 +228,7 @@ export default function PredictorClient({
     return out;
   }, [data]);
 
-  const activeFilters =
-    selectedStates.length + selectedBranches.length + ownership.length;
+  const activeFilters = selectedStates.length + selectedBranches.length + ownership.length;
 
   const clearFilters = () => {
     setSelectedStates([]);
@@ -200,20 +256,22 @@ export default function PredictorClient({
           {/* The tool is a product of the brand, and says so. */}
           <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
             <div className="flex items-center gap-3">
-              <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white p-1.5 shadow-lg shadow-cyan-500/10">
+              {/* The mark is a wide wordmark (roughly 3:1), so it gets a wide
+                  plate. Squeezed into a square it renders as a hairline. */}
+              <span className="inline-flex h-11 items-center justify-center rounded-xl bg-white px-3 shadow-lg shadow-cyan-500/10">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/assets/images/logos/logo-4k.avif"
                   alt="AdmissionHands"
-                  width={44}
-                  height={44}
-                  className="h-full w-full object-contain"
+                  width={140}
+                  height={35}
+                  className="h-[26px] w-auto object-contain"
                 />
               </span>
               <span className="h-9 w-px bg-white/15" aria-hidden="true" />
               <span>
                 <span className="font-heading block text-[21px] font-extrabold leading-none tracking-tight text-white">
-                  SeatPredict
+                  NEET College Predictor
                 </span>
                 <span className="mt-1 block text-[11px] font-semibold uppercase tracking-[0.14em] text-cyan-300/80">
                   by AdmissionHands
@@ -223,21 +281,21 @@ export default function PredictorClient({
 
             <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-cyan-200 backdrop-blur-sm">
               <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
-              NEET {level.toUpperCase()} 2026
+              Counselling 2026
             </span>
           </div>
 
-          <h1 className="font-heading mt-8 max-w-[20ch] text-[clamp(2rem,4vw,3.25rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-white">
+          <h1 className="font-heading mt-8 max-w-[22ch] text-[clamp(2rem,4vw,3.25rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-white">
             Enter your rank.{" "}
             <span className="bg-gradient-to-r from-cyan-300 to-teal-200 bg-clip-text text-transparent">
-              See the seats it reaches.
+              See the colleges it reaches.
             </span>
           </h1>
 
-          <p className="mt-4 max-w-[60ch] text-[15px] leading-relaxed text-slate-300 md:text-base">
-            Every seat placed against the round it actually closed in &mdash; round one, the widest
-            the cut went, and how far it has ever reached. Read from the counselling
-            authorities&rsquo; own published results. Nothing estimated.
+          <p className="mt-4 max-w-[62ch] text-[15px] leading-relaxed text-slate-300 md:text-base">
+            MBBS, BDS and MD/MS in one place. Every seat placed against the round it actually closed
+            in &mdash; round one, the widest the cut went, and how far it has ever reached. Read from
+            the counselling authorities&rsquo; own published results. Nothing estimated.
           </p>
         </div>
       </section>
@@ -245,11 +303,30 @@ export default function PredictorClient({
       {/* The search panel lifts off the header rather than sitting under it, so
           the first thing on the page is the thing you came to use. */}
       <div className="relative z-10 mx-auto -mt-12 w-full max-w-[1600px] px-4 sm:px-6 lg:px-8">
-        <section
-          aria-label="Search"
-          className="rounded-2xl border border-border bg-card p-4 shadow-lift md:p-6"
-        >
+        <section aria-label="Search" className="rounded-2xl border border-border bg-card shadow-lift">
+          {/* The course picker leads, because it decides what everything below
+              it means — which categories exist, and whether Branch applies. */}
+          <div className="flex flex-wrap gap-1 border-b border-border p-2" role="tablist" aria-label="Course">
+            {streams.map((s) => (
+              <button
+                key={s.id}
+                type="button"
+                role="tab"
+                aria-selected={s.id === stream}
+                onClick={() => switchStream(s.id)}
+                className={`rounded-xl px-5 py-2.5 text-[14px] font-bold transition-colors ${
+                  s.id === stream
+                    ? "bg-gradient-brand text-white shadow-glow"
+                    : "text-muted-foreground hover:bg-surface-2 hover:text-foreground"
+                }`}
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
+
           <form
+            className="p-4 md:p-6"
             onSubmit={(e) => {
               e.preventDefault();
               run();
@@ -265,7 +342,7 @@ export default function PredictorClient({
                   htmlFor="rank"
                   className="mb-2 block text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground"
                 >
-                  Your NEET {level.toUpperCase()} all-India rank
+                  Your NEET {spec.level.toUpperCase()} rank
                 </label>
                 <div className="flex flex-col gap-3 sm:flex-row">
                   <input
@@ -291,7 +368,7 @@ export default function PredictorClient({
                     ) : (
                       <Search className="h-5 w-5" aria-hidden="true" />
                     )}
-                    Find my seats
+                    Find my colleges
                   </button>
                 </div>
                 {rank && !rankValid && (
@@ -302,23 +379,25 @@ export default function PredictorClient({
               </div>
 
               {/* Visible rather than hidden behind a button — a filter nobody
-                  can see is a filter nobody uses. */}
+                  can see is a filter nobody uses. Branch only exists for PG. */}
               <div className="flex flex-wrap items-end gap-2 lg:justify-end">
-                <MultiSelect
-                  label="Branch"
-                  options={branches}
-                  selected={selectedBranches}
-                  onChange={setSelectedBranches}
-                />
+                {spec.hasBranches && f.branches.length > 0 && (
+                  <MultiSelect
+                    label="Branch"
+                    options={f.branches}
+                    selected={selectedBranches}
+                    onChange={setSelectedBranches}
+                  />
+                )}
                 <MultiSelect
                   label="State"
-                  options={states}
+                  options={f.states}
                   selected={selectedStates}
                   onChange={setSelectedStates}
                 />
                 <MultiSelect
                   label="College type"
-                  options={ownerships}
+                  options={f.ownerships}
                   selected={ownership}
                   onChange={setOwnership}
                   align="right"
@@ -332,7 +411,7 @@ export default function PredictorClient({
                 <span className="mr-1 text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
                   Category
                 </span>
-                {categories.slice(0, 8).map((c) => (
+                {f.categories.slice(0, 8).map((c) => (
                   <button
                     key={c}
                     type="button"
@@ -364,9 +443,11 @@ export default function PredictorClient({
         </section>
       </div>
 
-      <div className="mx-auto w-full max-w-[1600px] px-4 pb-12 pt-8 sm:px-6 lg:px-8">
       {/* ------------------------------ results ------------------------------ */}
-      <div ref={resultsRef} className="mt-8 scroll-mt-24">
+      <div
+        ref={resultsRef}
+        className="mx-auto w-full max-w-[1600px] scroll-mt-24 px-4 pb-14 pt-8 sm:px-6 lg:px-8"
+      >
         {loading && (
           <div className="space-y-3">
             {[...Array(5)].map((_, i) => (
@@ -404,12 +485,12 @@ export default function PredictorClient({
         {data && !loading && data.total === 0 && (
           <div className="mx-auto max-w-lg rounded-2xl border border-border bg-card p-8 text-center">
             <h2 className="font-heading text-lg font-bold text-foreground">
-              No seat on record reaches this rank
+              No {spec.label} seat on record reaches this rank
             </h2>
-            <p className="mx-auto mt-2 max-w-[42ch] text-[15px] leading-relaxed text-muted-foreground">
-              With these filters, no published round has ever closed at or past{" "}
-              <span className="tnum font-semibold text-foreground">{fmt(rankNumber)}</span>.
-              Widening the branch or state filter is usually what opens it up.
+            <p className="mx-auto mt-2 max-w-[44ch] text-[15px] leading-relaxed text-muted-foreground">
+              With these filters, no published round has closed at or past{" "}
+              <span className="tnum font-semibold text-foreground">{fmt(rankNumber)}</span>. Widening
+              the state filter, or trying another course above, is usually what opens it up.
             </p>
             {activeFilters > 0 && (
               <button
@@ -444,21 +525,58 @@ export default function PredictorClient({
               ))}
             </div>
 
+            {/* The follow-up question, on the same page and the same rank.
+                It used to be its own route, which meant retyping the rank to
+                ask the thing you ask immediately after seeing the answer. */}
+            {rounds && (rounds.openedTotal > 0 || rounds.tightenedTotal > 0) && (
+              <div className="mt-8 flex gap-1 rounded-xl border border-border bg-surface-2 p-1" role="tablist">
+                {(
+                  [
+                    ["seats", `Colleges for rank ${fmt(rankNumber)}`, null],
+                    ["rounds", "What changed after round 1", rounds.openedTotal],
+                  ] as [View, string, number | null][]
+                ).map(([id, label, badge]) => (
+                  <button
+                    key={id}
+                    type="button"
+                    role="tab"
+                    aria-selected={view === id}
+                    onClick={() => setView(id)}
+                    className={`flex-1 rounded-lg px-4 py-2.5 text-[14px] font-bold transition-colors ${
+                      view === id
+                        ? "bg-card text-foreground shadow-sm"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {label}
+                    {badge != null && badge > 0 && (
+                      <span className="tnum ml-2 text-[13px] font-semibold text-accent">
+                        +{fmt(badge)}
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+
             {locked ? (
               <LockedPanel
                 total={data.total}
                 rank={rankNumber}
-                level={level}
+                level={spec.level}
                 category={category}
                 needsVerification={Boolean(data.needsVerification)}
+                extra={rounds ? rounds.openedTotal + rounds.tightenedTotal : 0}
                 onUnlocked={run}
               />
+            ) : view === "rounds" ? (
+              <RoundsView rounds={rounds} rank={rankNumber} level={spec.level} />
             ) : (
               <>
                 {data.truncated && (
                   <p className="mt-5 rounded-xl border border-border bg-surface-2 px-4 py-3 text-[13px] text-muted-foreground">
-                    Showing the {data.total} most competitive seats you reach. Narrow by branch or
-                    state to see the rest.
+                    Showing the {data.total} most competitive seats you reach. Narrow by state
+                    {spec.hasBranches ? " or branch" : ""} to see the rest.
                   </p>
                 )}
 
@@ -476,7 +594,7 @@ export default function PredictorClient({
                       </div>
                       <p className="text-[14px] text-muted-foreground">{BAND_STYLE[band].blurb}</p>
                     </div>
-                    <SeatTable rows={grouped[band]} level={level} band={band} />
+                    <SeatTable rows={grouped[band]} level={spec.level} band={band} />
                   </section>
                 ))}
 
@@ -490,64 +608,64 @@ export default function PredictorClient({
           </>
         )}
 
-        {!data && !loading && !error && (
-          <div className="mx-auto max-w-4xl py-6">
-            <p className="mx-auto max-w-[56ch] text-center text-[15px] leading-relaxed text-muted-foreground">
-              Enter your rank above. Every seat it reaches, sorted by how safely it reaches them.
-            </p>
-
-            <ul className="mt-9 grid gap-4 sm:grid-cols-3">
-              {[
-                {
-                  icon: ShieldCheck,
-                  title: "Published rounds only",
-                  body: "Round one, the widest the cut went that year, and how far it has ever reached. No invented scores.",
-                },
-                {
-                  icon: SlidersHorizontal,
-                  title: "Narrow it to your list",
-                  body: "Filter by branch, state and college type, and the bands recalculate against what is left.",
-                },
-                {
-                  icon: TrendingDown,
-                  title: "See which way it moved",
-                  body: "Each seat carries last year's cut beside this year's, so you can see the direction.",
-                },
-              ].map(({ icon: Icon, title, body }) => (
-                <li
-                  key={title}
-                  className="rounded-2xl border border-border bg-card p-5"
-                >
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-soft">
-                    <Icon className="h-5 w-5 text-primary" aria-hidden="true" />
-                  </span>
-                  <h2 className="font-heading mt-3.5 text-[15px] font-bold text-foreground">{title}</h2>
-                  <p className="mt-1.5 text-[13.5px] leading-relaxed text-muted-foreground">{body}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-        </div>
+        {!data && !loading && !error && <EmptyState />}
       </div>
     </>
   );
 }
 
-/* ------------------------------------------------------------------ */
+/* ------------------------------------------------------------------ parts */
+
+function EmptyState() {
+  return (
+    <div className="mx-auto max-w-4xl py-6">
+      <p className="mx-auto max-w-[56ch] text-center text-[15px] leading-relaxed text-muted-foreground">
+        Pick your course above and enter your rank. Every college it reaches, sorted by how safely it
+        reaches them.
+      </p>
+
+      <ul className="mt-9 grid gap-4 sm:grid-cols-3">
+        {[
+          {
+            icon: ShieldCheck,
+            title: "Published rounds only",
+            body: "Round one, the widest the cut went that year, and how far it has ever reached. No invented scores.",
+          },
+          {
+            icon: SlidersHorizontal,
+            title: "Narrow it to your list",
+            body: "Filter by branch, state and college type, and the bands recalculate against what is left.",
+          },
+          {
+            icon: TrendingDown,
+            title: "And what came after round 1",
+            body: "Which seats opened up later and which closed tighter — the float-or-freeze call, on the same page.",
+          },
+        ].map(({ icon: Icon, title, body }) => (
+          <li key={title} className="rounded-2xl border border-border bg-card p-5">
+            <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-soft">
+              <Icon className="h-5 w-5 text-primary" aria-hidden="true" />
+            </span>
+            <h2 className="font-heading mt-3.5 text-[15px] font-bold text-foreground">{title}</h2>
+            <p className="mt-1.5 text-[13.5px] leading-relaxed text-muted-foreground">{body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 /**
  * What a locked visitor sees.
  *
  * One panel and one button. The sign-in form used to sit open underneath this,
- * which made a finished search look like it had ended in a form — two stacked
- * cards, a heading repeated, and fields demanding attention before the visitor
- * had read their own result. The form now lives in a dialog behind the button,
- * so the page ends on the answer and the ask is a single deliberate step.
+ * which made a finished search look like it had ended in a form. The form now
+ * lives in a dialog behind the button, so the page ends on the answer and the
+ * ask is a single deliberate step.
  *
  * The counts above are already a real answer, so this is not hiding whether
- * there is anything. It is asking for a number before naming the colleges, and
- * saying exactly what is behind it.
+ * there is anything. It asks for a number before naming the colleges, and says
+ * exactly what is behind it.
  */
 function LockedPanel({
   total,
@@ -555,6 +673,7 @@ function LockedPanel({
   level,
   category,
   needsVerification,
+  extra,
   onUnlocked,
 }: {
   total: number;
@@ -562,6 +681,7 @@ function LockedPanel({
   level: "ug" | "pg";
   category: string;
   needsVerification: boolean;
+  extra: number;
   onUnlocked: () => void;
 }) {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -587,7 +707,16 @@ function LockedPanel({
           <p className="mx-auto mt-2.5 max-w-[58ch] text-[15px] leading-relaxed text-muted-foreground">
             The counts above are yours for free. Sign in to see <em>which</em> colleges — each
             seat&rsquo;s round-1 close, the widest the cut reached, the fee, and how it moved
-            against last year.
+            against last year
+            {extra > 0 ? (
+              <>
+                {" "}
+                — plus the <span className="tnum font-semibold text-foreground">{fmt(extra)}</span>{" "}
+                seats that opened up or tightened after round 1.
+              </>
+            ) : (
+              "."
+            )}
           </p>
 
           <button
@@ -596,13 +725,13 @@ function LockedPanel({
             className="mt-7 inline-flex h-14 items-center justify-center gap-2.5 rounded-xl bg-gradient-brand px-8 text-[15px] font-bold text-white shadow-glow transition-all hover:-translate-y-0.5 hover:shadow-glow-lg active:translate-y-0"
           >
             <Search className="h-5 w-5" aria-hidden="true" />
-            Find my seats
+            Find my colleges
           </button>
 
           <p className="mt-3 text-[13px] text-muted-foreground">
             {needsVerification
-              ? "Takes one tap on WhatsApp. No password."
-              : "Takes a few seconds. No password."}
+              ? "One-time verification, then you are signed in."
+              : "Takes a few seconds."}
           </p>
 
           {/* The columns that are behind the gate, sketched — so what is being
@@ -645,13 +774,175 @@ function LockedPanel({
 }
 
 /**
+ * What happened after round 1, for the rank already entered.
+ *
+ * This was two standalone pages. It is the decision that comes straight after
+ * the predictor answers — you hold a seat, do you float for something better
+ * or freeze what you have — so it belongs beside the result, not behind
+ * another search box.
+ */
+function RoundsView({
+  rounds,
+  rank,
+  level,
+}: {
+  rounds: RoundsResponse | null;
+  rank: number;
+  level: "ug" | "pg";
+}) {
+  const base = level === "ug" ? "/mbbs-india/colleges" : "/md-ms-india/colleges";
+
+  if (!rounds) {
+    return (
+      <p className="mt-8 rounded-2xl border border-dashed border-border bg-card px-5 py-10 text-center text-[14px] text-muted-foreground">
+        Round-by-round movement is not available for this search.
+      </p>
+    );
+  }
+
+  const Table = ({ moves, opened }: { moves: RoundMove[]; opened: boolean }) => (
+    <div className="overflow-x-auto rounded-2xl border border-border bg-card">
+      <table className="w-full min-w-[620px] table-fixed border-collapse">
+        <thead>
+          <tr className="bg-surface-2">
+            {(
+              [
+                ["College", "w-[36%] text-left"],
+                ["Branch", "w-[22%] text-left"],
+                ["Round 1", "w-[14%] text-right"],
+                ["Later round", "w-[15%] text-right"],
+                ["Movement", "w-[13%] text-right"],
+              ] as [string, string][]
+            ).map(([h, cls]) => (
+              <th
+                key={h}
+                scope="col"
+                className={`px-4 py-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground ${cls}`}
+              >
+                {h}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {moves.map((m, i) => (
+            <tr key={`${m.instituteSlug}-${m.course}-${i}`} className="border-t border-border hover:bg-surface-2">
+              <td className="px-4 py-3 align-top">
+                <Link
+                  href={`${base}/${m.instituteSlug}`}
+                  className="text-[14px] font-semibold leading-snug text-foreground hover:text-primary"
+                >
+                  {m.institute}
+                </Link>
+                <p className="mt-0.5 text-[12px] text-muted-foreground">
+                  {m.state ?? "—"} · {m.year}
+                </p>
+              </td>
+              <td className="px-4 py-3 align-top">
+                <p className="text-[14px] leading-snug text-foreground">{m.course}</p>
+                <p className="mt-0.5 text-[12px] uppercase tracking-wide text-muted-foreground">
+                  {m.quota}
+                </p>
+              </td>
+              <td className="tnum px-4 py-3 text-right align-top text-[14px] text-muted-foreground">
+                {fmt(m.r1)}
+              </td>
+              <td className="tnum px-4 py-3 text-right align-top text-[14px] font-semibold text-foreground">
+                {fmt(m.later)}
+                {m.laterRound && (
+                  <span className="block text-[11px] font-normal text-muted-foreground">
+                    {m.laterRound}
+                  </span>
+                )}
+              </td>
+              <td className="px-4 py-3 text-right align-top">
+                <span
+                  className={`tnum inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[13px] font-bold ${
+                    opened ? "bg-accent-soft text-accent" : "bg-signal-stretch/10 text-signal-stretch"
+                  }`}
+                >
+                  {m.movement == null ? "—" : `${m.movement > 0 ? "+" : ""}${fmt(m.movement)}`}
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+
+  return (
+    <div className="mt-6">
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="rounded-2xl border border-accent/30 bg-accent-soft p-5">
+          <span className="text-[11px] font-bold uppercase tracking-wide text-accent">
+            Opened after round 1
+          </span>
+          <div className="tnum font-heading mt-1 text-3xl font-extrabold leading-none text-foreground">
+            {fmt(rounds.openedTotal)}
+          </div>
+          <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+            Seats round 1 closed above rank {fmt(rank)} that a later round reached. This is the case
+            for floating — counted, not promised.
+          </p>
+        </div>
+        <div className="rounded-2xl border border-signal-stretch/30 bg-signal-stretch/5 p-5">
+          <span className="text-[11px] font-bold uppercase tracking-wide text-signal-stretch">
+            Tightened after round 1
+          </span>
+          <div className="tnum font-heading mt-1 text-3xl font-extrabold leading-none text-foreground">
+            {fmt(rounds.tightenedTotal)}
+          </div>
+          <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+            Seats within reach in round 1 whose later rounds closed at better ranks only. Give one of
+            those up and you could not take it back.
+          </p>
+        </div>
+      </div>
+
+      {rounds.opened.length > 0 && (
+        <section className="mt-8">
+          <h2 className="font-heading text-lg font-bold text-foreground">What opened up</h2>
+          <p className="mt-1 max-w-[74ch] text-[14px] leading-relaxed text-muted-foreground">
+            Upgrades free seats, and a freed seat goes to whoever is next — which is why a later
+            round can reach much further down than round 1 did.
+          </p>
+          <div className="mt-4">
+            <Table moves={rounds.opened} opened />
+          </div>
+        </section>
+      )}
+
+      {rounds.tightened.length > 0 && (
+        <section className="mt-10">
+          <h2 className="font-heading text-lg font-bold text-foreground">
+            What tightened — why floating is not free
+          </h2>
+          <p className="mt-1 max-w-[74ch] text-[14px] leading-relaxed text-muted-foreground">
+            These were within reach in round 1 and then closed at better ranks only.
+          </p>
+          <div className="mt-4">
+            <Table moves={rounds.tightened} opened={false} />
+          </div>
+        </section>
+      )}
+
+      <p className="mt-8 text-center text-[13px] leading-relaxed text-muted-foreground">
+        Float and freeze rules differ by counselling authority. Read your own authority&rsquo;s
+        notice before acting on any of this.
+      </p>
+    </div>
+  );
+}
+
+/**
  * The results, as a table on desktop and cards on a phone.
  *
- * The previous version squeezed the college name into a 30%-wide cell with
- * `truncate`, which on a narrow viewport cut names down to "Ja…" and "Go…" —
- * the single most important column rendered useless. Here the name gets the
- * space it needs and the numeric columns are fixed-width, because they are the
- * ones with a predictable size.
+ * An earlier version squeezed the college name into a 30%-wide cell with
+ * `truncate`, which on a narrow viewport cut names down to "Ja…" — the single
+ * most important column rendered useless. Here the name gets the space it
+ * needs and the numeric columns are fixed-width, because they are the ones
+ * with a predictable size.
  */
 function SeatTable({
   rows,
@@ -670,24 +961,24 @@ function SeatTable({
       <table className="hidden w-full table-fixed border-collapse lg:table">
         <thead>
           <tr className="bg-surface-2">
-            <th scope="col" className="w-[34%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-              College
-            </th>
-            <th scope="col" className="w-[20%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-              Branch &amp; quota
-            </th>
-            <th scope="col" className="w-[11%] px-4 py-3 text-right text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-              R1 close
-            </th>
-            <th scope="col" className="w-[11%] px-4 py-3 text-right text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-              Widest
-            </th>
-            <th scope="col" className="w-[10%] px-4 py-3 text-right text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-              Fee / yr
-            </th>
-            <th scope="col" className="w-[14%] px-4 py-3 text-right text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-              vs last year
-            </th>
+            {(
+              [
+                ["College", "w-[34%] text-left"],
+                ["Branch & quota", "w-[20%] text-left"],
+                ["R1 close", "w-[11%] text-right"],
+                ["Widest", "w-[11%] text-right"],
+                ["Fee / yr", "w-[10%] text-right"],
+                ["vs last year", "w-[14%] text-right"],
+              ] as [string, string][]
+            ).map(([h, cls]) => (
+              <th
+                key={h}
+                scope="col"
+                className={`px-4 py-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground ${cls}`}
+              >
+                {h}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>
@@ -719,9 +1010,7 @@ function SeatTable({
               </td>
               <td className="tnum px-4 py-3 text-right align-top text-[14px] text-foreground">
                 {fmt(r.widestRank)}
-                {r.year && (
-                  <span className="block text-[11px] text-muted-foreground">{r.year}</span>
-                )}
+                {r.year && <span className="block text-[11px] text-muted-foreground">{r.year}</span>}
               </td>
               <td className="tnum px-4 py-3 text-right align-top text-[14px] text-foreground">
                 {money(r.feeInr)}

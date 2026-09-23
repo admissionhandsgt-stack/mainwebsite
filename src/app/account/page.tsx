@@ -28,9 +28,13 @@ export default async function AccountPage() {
   if (!user) redirect("/login?next=/account");
 
   const level = user.level ?? "pg";
-  const predictor = level === "ug" ? "/mbbs-india/predictor" : "/md-ms-india/predictor";
-  const rounds = level === "ug" ? "/mbbs-india/rounds" : "/md-ms-india/rounds";
-  const rankQuery = user.rank ? `?rank=${user.rank}${user.category ? `&category=${user.category}` : ""}` : "";
+  // One tool now, so the level only decides which course tab it opens on.
+  const course = level === "ug" ? "mbbs" : "pg";
+  const predictor = `/neet-college-predictor?course=${course}`;
+  const directory = level === "ug" ? "/mbbs-india/colleges" : "/md-ms-india/colleges";
+  const rankQuery = user.rank
+    ? `&rank=${user.rank}${user.category ? `&category=${user.category}` : ""}`
+    : "";
 
   return (
     <main className="min-h-screen bg-background">
@@ -107,7 +111,7 @@ export default async function AccountPage() {
             <h2 className="font-heading text-lg font-bold text-foreground">Pick up where you left off</h2>
             <p className="mt-1.5 text-[14px] leading-relaxed text-muted-foreground">
               {user.rank
-                ? "Both tools open with your saved rank already filled in."
+                ? "The predictor opens with your saved rank already filled in."
                 : "Run a search and your rank will be saved here automatically."}
             </p>
 
@@ -118,22 +122,26 @@ export default async function AccountPage() {
               >
                 <Search className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
                 <span className="flex-grow">
-                  <span className="block text-[15px] font-semibold text-foreground">Seat predictor</span>
+                  <span className="block text-[15px] font-semibold text-foreground">
+                    NEET College Predictor
+                  </span>
                   <span className="block text-[13px] text-muted-foreground">
-                    Every seat your rank reaches, in four bands
+                    Every college your rank reaches, in four bands — and what changed after round 1
                   </span>
                 </span>
               </Link>
 
               <Link
-                href={rounds + rankQuery}
+                href={directory}
                 className="flex items-center gap-3 rounded-xl border border-border bg-surface-2 px-4 py-3.5 transition-colors hover:border-primary/40"
               >
                 <TrendingDown className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
                 <span className="flex-grow">
-                  <span className="block text-[15px] font-semibold text-foreground">After round 1</span>
+                  <span className="block text-[15px] font-semibold text-foreground">
+                    Browse every college
+                  </span>
                   <span className="block text-[13px] text-muted-foreground">
-                    What opened up, and what closed tighter
+                    The full {level === "ug" ? "MBBS" : "MD/MS"} directory, with cutoffs on each page
                   </span>
                 </span>
               </Link>

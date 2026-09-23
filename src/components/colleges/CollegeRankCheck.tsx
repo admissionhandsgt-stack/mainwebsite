@@ -19,9 +19,8 @@ export default function CollegeRankCheck({
   collegeName: string;
   level?: "ug" | "pg";
 }) {
-  // The two predictors live on different routes and ask for different ranks,
-  // so the box has to know which side of the site it is on.
-  const predictorPath = level === "ug" ? "/mbbs-india/predictor" : "/md-ms-india/predictor";
+  // One tool covers every course, so the level only picks the tab it opens on.
+  const course = level === "ug" ? "mbbs" : "pg";
   const router = useRouter();
   const [rank, setRank] = useState("");
 
@@ -39,7 +38,7 @@ export default function CollegeRankCheck({
         className="mt-4"
         onSubmit={(e) => {
           e.preventDefault();
-          if (valid) router.push(`${predictorPath}?rank=${n}`);
+          if (valid) router.push(`/neet-college-predictor?course=${course}&rank=${n}`);
         }}
       >
         <label htmlFor="college-rank" className="sr-only">
