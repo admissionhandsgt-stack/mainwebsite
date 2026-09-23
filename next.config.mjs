@@ -42,6 +42,21 @@ const SECURITY_HEADERS = [
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  /**
+   * Built to run as a plain Node server on the VPS, beside Postgres.
+   *
+   * Cloudflare Workers were the original target and the build still succeeds
+   * for them, but they cannot reach this database: Postgres is bound to
+   * localhost on the VPS and should stay that way, and an edge worker has no
+   * route to it. (Workers also cannot hold a connection pool across requests —
+   * the preview served one page and then hung on every request after it.)
+   *
+   * `standalone` emits a self-contained server with only the dependencies it
+   * actually uses, so the deploy is a directory copy rather than an npm
+   * install on the box.
+   */
+  output: 'standalone',
+
   // Announcing the framework and its version only helps someone choosing an
   // exploit to try.
   poweredByHeader: false,

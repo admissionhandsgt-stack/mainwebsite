@@ -706,6 +706,44 @@ PG page's description came from there.
 Outcome claims that cannot be derived (2,100+ students guided, 12+ years) are the team's to state
 and were left alone. Anything that describes the data must come from `getDataStats()`.
 
+## Deployment (2026-09-23)
+
+**The app runs as a plain Node server on the VPS, beside Postgres.** Not on Cloudflare Workers.
+
+The Workers build succeeds and the worker boots, but it cannot serve this site: the OpenNext preview
+answered one page in 9.7s and then returned 500 on every request after it, because a connection pool
+held at module scope cannot be reused across Workers requests. That is fixable. What is not, is that
+**Postgres is bound to localhost on the VPS and should stay that way** — an edge worker has no route
+to it, and the only reason any of this ever worked locally is the SSH tunnel on the dev machine.
+`wrangler.jsonc` and `open-next.config.ts` are kept, but nothing uses them.
+
+On the box the difference is decisive: **TTFB is 44–59 ms** across every page, against ~14 s measured
+through the tunnel. The tunnel was always the slowness, never the queries.
+
+```bash
+./scripts/deploy.sh              # build, package, upload, switch, verify
+./scripts/deploy.sh --no-build   # ship what is already built
+npm run smoke -- http://localhost:8120   # 54 checks, through an SSH tunnel
+```
+
+- `output: 'standalone'` in `next.config.mjs`. The deploy is a directory copy, not an npm install
+  on the box — `.next/static` and `public/` are copied in separately because standalone omits them.
+- Releases are timestamped under `/opt/admissionhands/releases/` and `current` is a symlink, so a
+  switch is atomic and the previous five releases stay for rollback.
+- Runs as the unprivileged `admissionhands` user, `ProtectSystem=strict`, bound to **127.0.0.1:8120**.
+  Only Caddy should ever reach it. Secrets are in `/opt/admissionhands/.env`, mode 600.
+- **This box is shared.** mining-app, cryptoway, smartscanner, tradeos and upi-collect run here, plus
+  `/opt/ah-counselor` (a separate Python app on `ah.aismartscan.in`). Ports 8080 and 8090–8110 are
+  taken; this app uses 8120. Do not restart anything you did not deploy.
+- **Docker is not installed**, which WAHA needs — install it before wiring up WhatsApp verification.
+
+### Not yet live
+
+`admissionhands.com` still resolves to **93.127.173.119** (Hostinger) and serves the existing site.
+Nothing here is public: the new deployment answers only on localhost, there is no Caddy block for it,
+and no DNS points at it. Going live means adding the Caddy site blocks and moving DNS — a cutover on
+a running business, and the user's call to make.
+
 ## Known gaps (what is left before production)
 
 Ordered by what would hurt first.
