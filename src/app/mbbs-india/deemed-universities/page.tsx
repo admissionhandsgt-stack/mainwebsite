@@ -1,40 +1,40 @@
 import React from 'react';
 import DeemedUniversitiesClient from './DeemedUniversitiesClient';
-import { getMediaAsset } from '@/lib/mediaService';
-import { supabase } from '@/integrations/supabase/client';
+import { resolveMetadata, getMediaAssets } from '@/lib/content';
+import { getContactInfo } from '@/lib/content';
 import { Metadata } from 'next';
 
 export const revalidate = 0;
 
-export const metadata: Metadata = {
-  title: "Deemed Universities for MBBS in India 2026 | Admission Guide",
-  description: "Complete list of deemed medical universities in India for MBBS admission. Get expert counseling, cutoffs, and fees guide for 2026.",
-  keywords: ["deemed medical universities", "MBBS deemed universities", "deemed university fees", "deemed university cutoffs"],
-};
+/**
+ * Metadata the admin can override per route (Admin -> Search & sharing).
+ * Blank admin values fall through to the defaults below.
+ */
+export async function generateMetadata(): Promise<Metadata> {
+  return resolveMetadata('/mbbs-india/deemed-universities', {
+    title: "Deemed Universities for MBBS in India 2026 | Admission Guide",
+    description: "Complete list of deemed medical universities in India for MBBS admission. Get expert counseling, cutoffs, and fees guide for 2026.",
+    keywords: (["deemed medical universities", "MBBS deemed universities", "deemed university fees", "deemed university cutoffs"]).join(', '),
+  });
+}
 
 export default async function DeemedUniversitiesPage() {
-  // Fetch hero images server-side
   const heroKeys = ['deemed_campus_1', 'college_campus_2', 'college_campus_3', 'college_campus_4'];
-  const heroImages: string[] = [];
-  try {
-    for (const key of heroKeys) {
-      const asset = await getMediaAsset(key);
-      if (asset?.image_url) heroImages.push(asset.image_url);
-    }
-  } catch (e) {
-    console.error("Error fetching deemed universities hero assets:", e);
-  }
 
-  // Fetch contact info server-side
-  let phoneNumber = "+919873133846";
-  try {
-    const { data } = await supabase.from('contact_info').select('phone_number').single();
-    if (data?.phone_number) {
-      phoneNumber = data.phone_number;
-    }
-  } catch (e) {
-    console.error("Error fetching contact info server-side:", e);
-  }
+  // One round trip for every image plus one for the contact row, in parallel.
+  // The loop this replaces made four sequential trips through the tunnel on
+  // every request, which was most of the page's 3.7s response time.
+  const [mediaList, contact] = await Promise.all([
+    getMediaAssets(),
+    getContactInfo(),
+  ]);
+
+  const byKey = new Map(mediaList.map((m) => [m.media_key, m.image_url]));
+  const heroImages = heroKeys
+    .map((k) => byKey.get(k))
+    .filter((u): u is string => Boolean(u) && u !== 'none');
+
+  const phoneNumber = contact?.phoneNumber ?? "+919873133846";
 
   return (
     <DeemedUniversitiesClient 

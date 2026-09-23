@@ -2,11 +2,12 @@
 
 import React, { useState } from "react";
 import { mbbsData } from "@/data/mbbs-india";
+import type { MbbsContent } from '@/lib/pageContent';
 import { LayoutGrid, ArrowRight, ChevronDown, ChevronUp, Target } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export const CounsellingSystem = () => {
-  const { counselling } = mbbsData;
+export const CounsellingSystem = ({ data = mbbsData }: { data?: MbbsContent } = {}) => {
+  const { counselling } = data;
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
   const toggleExpand = (id: number) => {
@@ -16,15 +17,15 @@ export const CounsellingSystem = () => {
   return (
     <section className="py-12 bg-slate-950 relative overflow-hidden text-white">
       {/* Subtle background elements */}
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
-      <div className="absolute -top-24 -left-24 w-64 h-64 bg-blue-600/10 rounded-full blur-[100px]" />
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />
+      <div className="absolute -top-24 -left-24 w-64 h-64 bg-cyan-600/10 rounded-full blur-[100px]" />
 
       <div className="container-custom relative z-10">
         <div className="max-w-3xl mb-12">
           <h2 className="text-3xl md:text-4xl font-black mb-4 tracking-tight leading-tight">
-            The <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">Counselling System</span> Visualized
+            The <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400">Counselling System</span> Visualized
           </h2>
-          <p className="text-base text-blue-100/60 font-medium leading-relaxed md:whitespace-nowrap">
+          <p className="text-base text-cyan-100/60 font-medium leading-relaxed md:whitespace-nowrap">
             Understanding seat division is vital. Click on each category to see our recommended <span className="text-teal-400 font-black">Goal Strategy</span>.
           </p>
         </div>
@@ -37,25 +38,25 @@ export const CounsellingSystem = () => {
                 key={idx}
                 className={`p-3.5 md:p-6 rounded-2xl md:rounded-[2rem] border transition-all duration-300 ${
                   isOpen 
-                    ? 'bg-white/10 border-blue-500/50 shadow-[0_0_30px_rgba(37,99,235,0.2)]' 
+                    ? 'bg-white/10 border-cyan-500/50 shadow-[0_0_30px_rgba(37,99,235,0.2)]' 
                     : 'bg-white/5 border-white/10 hover:border-white/20'
                 }`}
               >
                 <div className="flex items-center justify-between gap-2 md:gap-4">
                   <div className="flex items-center gap-2 md:gap-4">
                     <div className={`w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl flex items-center justify-center border transition-all shrink-0 ${
-                      isOpen ? 'bg-blue-600 text-white border-blue-400' : 'bg-white/5 text-blue-400 border-white/10'
+                      isOpen ? 'bg-cyan-600 text-white border-cyan-400' : 'bg-white/5 text-cyan-400 border-white/10'
                     }`}>
                       <LayoutGrid className="w-4 h-4 md:w-5 md:h-5" />
                     </div>
-                    <h3 className={`text-sm md:text-lg font-black tracking-tight transition-colors leading-tight ${isOpen ? 'text-blue-400' : 'text-white'}`}>
+                    <h3 className={`text-sm md:text-lg font-black tracking-tight transition-colors leading-tight ${isOpen ? 'text-cyan-400' : 'text-white'}`}>
                       {item.title}
                     </h3>
                   </div>
                   <button 
                     onClick={() => toggleExpand(idx)}
                     className={`flex items-center gap-1 md:gap-2 px-2.5 md:px-4 py-1.5 md:py-2 rounded-full text-[8px] md:text-[10px] font-black uppercase tracking-widest transition-all shrink-0 ${
-                      isOpen ? 'bg-blue-600 text-white' : 'bg-white/10 text-blue-400 hover:bg-white/20'
+                      isOpen ? 'bg-cyan-600 text-white' : 'bg-white/10 text-cyan-400 hover:bg-white/20'
                     }`}
                   >
                     {isOpen ? 'Close Strategy' : 'Learn Strategy'}
@@ -63,7 +64,7 @@ export const CounsellingSystem = () => {
                   </button>
                 </div>
 
-                <p className="text-blue-100/60 text-xs md:text-sm font-medium leading-relaxed mt-2.5 md:mt-4">
+                <p className="text-cyan-100/60 text-xs md:text-sm font-medium leading-relaxed mt-2.5 md:mt-4">
                   {item.body}
                 </p>
 
@@ -75,11 +76,11 @@ export const CounsellingSystem = () => {
                       exit={{ height: 0, opacity: 0 }}
                       className="overflow-hidden"
                     >
-                      <div className="mt-3 md:mt-6 p-3 md:p-6 rounded-xl md:rounded-2xl bg-blue-600/20 border border-blue-500/30 flex gap-2 md:gap-4">
-                        <Target className="w-4 h-4 md:w-5 md:h-5 text-blue-400 shrink-0 mt-0.5" />
+                      <div className="mt-3 md:mt-6 p-3 md:p-6 rounded-xl md:rounded-2xl bg-cyan-600/20 border border-cyan-500/30 flex gap-2 md:gap-4">
+                        <Target className="w-4 h-4 md:w-5 md:h-5 text-cyan-400 shrink-0 mt-0.5" />
                         <div>
-                          <p className="text-[9px] md:text-xs font-black text-blue-400 uppercase tracking-widest mb-0.5 md:mb-1">Goal Strategy</p>
-                          <p className="text-xs md:text-sm text-blue-50 font-bold leading-relaxed">
+                          <p className="text-[9px] md:text-xs font-black text-cyan-400 uppercase tracking-widest mb-0.5 md:mb-1">Goal Strategy</p>
+                          <p className="text-xs md:text-sm text-cyan-50 font-bold leading-relaxed">
                             {item.goalStrategy}
                           </p>
                         </div>
@@ -92,7 +93,7 @@ export const CounsellingSystem = () => {
           })}
         </div>
 
-        <p className="mt-8 text-[10px] text-blue-200/40 font-medium leading-relaxed italic text-center">
+        <p className="mt-8 text-[10px] text-cyan-200/40 font-medium leading-relaxed italic text-center">
           *Disclaimer: {counselling.disclaimer}
         </p>
       </div>

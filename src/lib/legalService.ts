@@ -1,4 +1,7 @@
-import { supabase } from "@/integrations/supabase/client";
+import {
+  getLegalDocuments as dbGetAll,
+  getLegalDocument as dbGetOne,
+} from '@/lib/content';
 
 export interface LegalDocument {
   id: string;
@@ -41,133 +44,71 @@ export function extractHeadings(markdown: string): LegalHeading[] {
 }
 
 /**
- * Fetch all published legal documents in display order
+ * Published documents, in display order.
  */
 export async function getLegalDocuments(): Promise<LegalDocument[]> {
-  const slugOrder = ['terms', 'payment', 'data-privacy', 'privacy', 'data-security', 'cookies', 'dpdp', 'contact'];
-
-  const { data, error } = await (supabase as any)
-    .from('legal_documents')
-    .select('*')
-    .eq('is_published', true)
-    .order('created_at', { ascending: true });
-
-  if (error) {
-    console.error('Error fetching legal documents:', error);
-    return [];
-  }
-
-  // Sort by predefined slug order
-  const sorted = (data || []).sort((a, b) => {
-    const aIdx = slugOrder.indexOf(a.slug);
-    const bIdx = slugOrder.indexOf(b.slug);
-    return (aIdx === -1 ? 999 : aIdx) - (bIdx === -1 ? 999 : bIdx);
-  });
-
-  return sorted as LegalDocument[];
+  const docs = await dbGetAll();
+  return docs.map((d) => ({
+    id: d.slug,
+    slug: d.slug,
+    title: d.title,
+    content: d.content,
+    last_updated: d.lastUpdated ?? '',
+    is_published: true,
+  })) as LegalDocument[];
 }
 
-/**
- * Fetch a single legal document by slug
- */
 export async function getLegalDocument(slug: string): Promise<LegalDocument | null> {
-  const { data, error } = await (supabase as any)
-    .from('legal_documents')
-    .select('*')
-    .eq('slug', slug)
-    .eq('is_published', true)
-    .single();
-
-  if (error) {
-    console.error(`Error fetching legal document (${slug}):`, error);
-    return null;
-  }
-
-  return data as LegalDocument;
+  const d = await dbGetOne(slug);
+  if (!d) return null;
+  return {
+    id: d.slug,
+    slug: d.slug,
+    title: d.title,
+    content: d.content,
+    last_updated: d.lastUpdated ?? '',
+    is_published: true,
+  } as LegalDocument;
 }
 
 /**
- * Fetch all legal documents (including unpublished) for admin
+ * Admin listing. Goes through the admin API so unpublished drafts are only
+ * readable behind authentication, never from the public content layer.
  */
 export async function getAllLegalDocumentsAdmin(): Promise<LegalDocument[]> {
-  const { data, error } = await (supabase as any)
-    .from('legal_documents')
-    .select('*')
-    .order('created_at', { ascending: true });
-
-  if (error) {
-    console.error('Error fetching legal documents for admin:', error);
-    return [];
-  }
-
-  return (data || []) as LegalDocument[];
+  const res = await fetch('/api/admin/legal');
+  if (!res.ok) return [];
+  const { data } = await res.json();
+  return (data ?? []) as LegalDocument[];
 }
 
-/**
- * Create a new legal document
- */
 export async function createLegalDocument(doc: {
   slug: string;
   title: string;
   content: string;
-  is_published: boolean;
-}): Promise<LegalDocument | null> {
-  const { data, error } = await (supabase as any)
-    .from('legal_documents')
-    .insert({
-      ...doc,
-      last_updated: new Date().toISOString(),
-    })
-    .select()
-    .single();
-
-  if (error) {
-    console.error('Error creating legal document:', error);
-    return null;
-  }
-
-  return data as LegalDocument;
+  is_published?: boolean;
+}): Promise<boolean> {
+  const res = await fetch('/api/admin/legal', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(doc),
+  });
+  return res.ok;
 }
 
-/**
- * Update an existing legal document
- */
 export async function updateLegalDocument(
   id: string,
-  updates: Partial<Pick<LegalDocument, 'title' | 'content' | 'is_published' | 'slug'>>
-): Promise<LegalDocument | null> {
-  const { data, error } = await (supabase as any)
-    .from('legal_documents')
-    .update({
-      ...updates,
-      last_updated: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    })
-    .eq('id', id)
-    .select()
-    .single();
-
-  if (error) {
-    console.error('Error updating legal document:', error);
-    return null;
-  }
-
-  return data as LegalDocument;
+  patch: Partial<{ slug: string; title: string; content: string; is_published: boolean }>,
+): Promise<boolean> {
+  const res = await fetch(`/api/admin/legal/${encodeURIComponent(id)}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(patch),
+  });
+  return res.ok;
 }
 
-/**
- * Delete a legal document
- */
 export async function deleteLegalDocument(id: string): Promise<boolean> {
-  const { error } = await (supabase as any)
-    .from('legal_documents')
-    .delete()
-    .eq('id', id);
-
-  if (error) {
-    console.error('Error deleting legal document:', error);
-    return false;
-  }
-
-  return true;
+  const res = await fetch(`/api/admin/legal/${encodeURIComponent(id)}`, { method: 'DELETE' });
+  return res.ok;
 }

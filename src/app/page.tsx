@@ -3,9 +3,14 @@ export const revalidate = 0;
 
 import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
+import Reveal from "@/components/ui/Reveal";
+import CtaBand from "@/components/ui/CtaBand";
+import LeadCapture from "@/components/lead/LeadCapture";
 import SEO from "@/components/SEO";
+import type { Metadata } from "next";
+import { resolveMetadata } from "@/lib/content";
 import { getRecommendedColleges } from "@/lib/colleges";
-import { getMediaAsset } from "@/lib/mediaService";
+import { getMediaAsset, getSettings, setting, getBlocks, getSections } from "@/lib/content";
 
 const ServicesList = dynamic(() => import('@/components/ServicesList'), { loading: () => <SectionLoader /> });
 const HowItWorks = dynamic(() => import('@/components/home/HowItWorks'), { loading: () => <SectionLoader /> });
@@ -32,10 +37,109 @@ const SectionLoader = () => (
   </div>
 );
 
+/**
+ * Metadata the admin can override per route (Admin -> Search & sharing).
+ * Blank admin values fall through to the defaults below.
+ */
+export async function generateMetadata(): Promise<Metadata> {
+  return resolveMetadata("/", {
+    title: "AdmissionHands - MBBS & MD/MS Admission Experts | NEET Counselling Guidance",
+    description:
+      "Expert guidance for MBBS, MD/MS admissions in top medical colleges. AIQ, State & Deemed counselling with real seat, fee & cutoff insights.",
+    keywords:
+      "medical admissions, MBBS admission, MD MS admission, NEET counselling, medical college counseling, NRI quota, AIQ counselling, MCC counselling",
+  });
+}
+
 const Index = async () => {
-  const initialColleges = await getRecommendedColleges();
-  const campusHero = await getMediaAsset('homepage_hero_campus');
-  const doctorsHero = await getMediaAsset('homepage_hero_doctors');
+  const [initialColleges, campusHero, doctorsHero, s, serviceBlocks, stepBlocks, whyBlocks,
+    testimonialBlocks, sections] =
+    await Promise.all([
+      getRecommendedColleges(),
+      getMediaAsset('homepage_hero_campus'),
+      getMediaAsset('homepage_hero_doctors'),
+      getSettings(),
+      getBlocks('services'),
+      getBlocks('steps_ug'),
+      getBlocks('why_us'),
+      getBlocks('testimonials'),
+      getSections('home'),
+    ]);
+
+  // Everything below reads from the CMS with the shipped copy as the fallback,
+  // so an empty table renders the site exactly as it did before.
+  const heroCopy = {
+    badgeLeft: setting(s, 'home.hero.badge_left'),
+    badgeRight: setting(s, 'home.hero.badge_right'),
+    headline: setting(s, 'home.hero.headline'),
+    headlineAccent: setting(s, 'home.hero.headline_accent'),
+    subtitle: setting(s, 'home.hero.subtitle'),
+    ctaPrimary: setting(s, 'home.hero.cta_primary'),
+    ctaSecondary: setting(s, 'home.hero.cta_secondary'),
+    stats: [1, 2, 3]
+      .map((i) => ({
+        value: setting(s, `home.stats.${i}_value`),
+        label: setting(s, `home.stats.${i}_label`),
+      }))
+      .filter((stat) => stat.value && stat.label),
+  };
+
+  const services = serviceBlocks.map((b) => ({
+    title: b.title ?? '',
+    description: b.body ?? b.subtitle ?? '',
+    icon: b.icon,
+    href: b.linkUrl,
+    cta: b.linkLabel,
+  }));
+
+  const steps = stepBlocks.map((b) => ({
+    title: b.title ?? '',
+    description: b.body ?? '',
+    icon: b.icon,
+  }));
+
+  const reasons = whyBlocks.map((b) => ({
+    title: b.title ?? '',
+    description: b.body ?? '',
+    icon: b.icon,
+  }));
+
+  // Section headings, each falling back to the shipped copy when unset.
+  const servicesCopy = {
+    eyebrow: setting(s, 'home.services.eyebrow'),
+    title: setting(s, 'home.services.title'),
+    subtitle: setting(s, 'home.services.subtitle'),
+  };
+
+  const stepsCopy = {
+    eyebrow: setting(s, 'home.steps.eyebrow'),
+    title: setting(s, 'home.steps.title'),
+    subtitle: setting(s, 'home.steps.subtitle'),
+    button: setting(s, 'home.steps.button'),
+  };
+
+  const whyCopy = {
+    eyebrow: setting(s, 'home.why.eyebrow'),
+    title: setting(s, 'home.why.title'),
+    titleAccent: setting(s, 'home.why.title_accent'),
+    subtitle: setting(s, 'home.why.subtitle'),
+    points: [1, 2, 3, 4].map((i) => setting(s, `home.why.point_${i}`)).filter(Boolean),
+  };
+
+  const testimonialsCopy = {
+    eyebrow: setting(s, 'home.testimonials.eyebrow'),
+    title: setting(s, 'home.testimonials.title'),
+    titleAccent: setting(s, 'home.testimonials.title_accent'),
+    subtitle: setting(s, 'home.testimonials.subtitle'),
+  };
+
+  const testimonials = testimonialBlocks.map((b) => ({
+    name: b.title ?? '',
+    course: b.subtitle ?? '',
+    outcome: String(b.data?.outcome ?? ''),
+    text: b.body ?? '',
+    rating: Number(b.data?.rating ?? 5),
+  }));
 
   // Organization structured data for SEO
   const organizationSchema = {
@@ -58,45 +162,86 @@ const Index = async () => {
 
   return (
     <div className="relative">
-      <SEO
-        title="AdmissionHands - MBBS & MD/MS Admission Experts | NEET Counselling Guidance"
-        description="Expert guidance for MBBS, MD/MS admissions in top medical colleges. AIQ, State & Deemed counselling with real seat, fee & cutoff insights."
-        keywords="medical admissions, MBBS admission, MD MS admission, NEET counselling, medical college counseling, NRI quota, AIQ counselling, MCC counselling"
-        structuredData={organizationSchema}
-      />
+<SEO structuredData={organizationSchema} />
 
-      {/* 1. Hero */}
-      <Hero
-        backgroundImageUrl={campusHero?.image_url}
-        doctorsImageUrl={doctorsHero?.image_url}
-      />
+      {sections.shows('hero') && (
+        <Hero
+          backgroundImageUrl={campusHero?.image_url}
+          doctorsImageUrl={doctorsHero?.image_url}
+          copy={heroCopy}
+        />
+      )}
 
-      {/* 2. How Admission Works */}
-      <HowItWorks />
+      {/* Order and visibility come from the admin (Page Content -> Page layout).
+          A section with no row is shown, so adding one in code needs no row. */}
+      {sections
+        .sort([
+          { key: 'how_it_works', node: <Reveal><HowItWorks steps={steps} copy={stepsCopy} /></Reveal> },
+          { key: 'services', node: <Reveal><ServicesList services={services} copy={servicesCopy} /></Reveal> },
+          { key: 'data_insights', node: <Reveal><DataInsights /></Reveal> },
+          {
+            key: 'top_institutes',
+            node: <Reveal><TopMedicalInstitutes initialColleges={initialColleges} /></Reveal>,
+          },
+          {
+            key: 'cta_band',
+            node: (
+              <Reveal>
+                <CtaBand
+                  title={setting(s, 'home.cta.title', 'One wrong choice order costs a year')}
+                  body={setting(
+                    s,
+                    'home.cta.body',
+                    'A safe seat placed below a stretch one is how students lose a season. Our counsellors order your preference list against two years of closing ranks, then stay with you through every round.',
+                  )}
+                  image="/assets/images/hero/medical-admission-counselling-session.avif"
+                  primaryLabel={setting(s, 'home.cta.button', 'Book a free call')}
+                />
+              </Reveal>
+            ),
+          },
+          {
+            key: 'why_us',
+            node: (
+              <div className="content-visibility-auto">
+                <Reveal><WhyAdmissionHands reasons={reasons} copy={whyCopy} /></Reveal>
+              </div>
+            ),
+          },
+          {
+            key: 'testimonials',
+            node: (
+              <div className="content-visibility-auto">
+                <Reveal><Testimonials testimonials={testimonials} copy={testimonialsCopy} /></Reveal>
+              </div>
+            ),
+          },
+          {
+            key: 'enquiry',
+            node: (
+              <LeadCapture
+                source="Homepage enquiry"
+                level="ug"
+                title={setting(s, 'home.enquiry.title')}
+                body={setting(s, 'home.enquiry.body')}
+                points={[1, 2, 3, 4].map((i) => setting(s, `home.enquiry.point_${i}`))}
+              />
+            ),
+          },
+          {
+            key: 'videos',
+            node: (
+              <div className="content-visibility-auto">
+                <FeaturedVideos />
+              </div>
+            ),
+          },
+        ])
+        .filter((section) => sections.shows(section.key))
+        .map((section) => (
+          <React.Fragment key={section.key}>{section.node}</React.Fragment>
+        ))}
 
-      {/* 3. Services */}
-      <ServicesList />
-
-      {/* 4. Data Insights */}
-      <DataInsights />
-
-      {/* 5b. Top Tier Medical Institutes */}
-      <TopMedicalInstitutes initialColleges={initialColleges} />
-
-      {/* 6. Why Admission Hands */}
-      <div className="content-visibility-auto">
-        <WhyAdmissionHands />
-      </div>
-
-      {/* 7. Testimonials */}
-      <div className="content-visibility-auto">
-        <Testimonials />
-      </div>
-
-      {/* 8. Featured Videos */}
-      <div className="content-visibility-auto">
-        <FeaturedVideos />
-      </div>
     </div>
   );
 };

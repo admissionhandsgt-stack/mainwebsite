@@ -1,12 +1,22 @@
 "use client";
 
+import type { NriBenefit } from '@/lib/nriContent';
+
+const SHIPPED_BENEFITS: NriBenefit[] = [
+                { title: "Personalized Counseling", desc: "One-on-one sessions to understand your profile and suggest the best options." },
+                { title: "End-to-End Support", desc: "From document preparation to final admission, we handle it all." },
+                { title: "Direct College Connections", desc: "We have established relationships with top medical colleges across India." }
+];
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Phone, ArrowRight } from 'lucide-react';
 import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon';
 import { useCTA } from '@/hooks/useCTA';
 
-const NRICTA = () => {
+const NRICTA = ({ benefits: fromCms }: { benefits?: NriBenefit[] | null } = {}) => {
+  const benefits = fromCms?.length ? fromCms : SHIPPED_BENEFITS;
+
   const CTA = useCTA();
   
   return (
@@ -20,26 +30,22 @@ const NRICTA = () => {
             <h2 className="text-3xl md:text-6xl font-black text-white leading-tight tracking-tight">
               Get Expert Guidance for <span className="gradient-text">NRI Quota</span> Admissions
             </h2>
-            <p className="text-blue-100/70 text-xl font-medium leading-relaxed">
+            <p className="text-cyan-100/70 text-xl font-medium leading-relaxed">
               Don't navigate the complex admission process alone. Our experts have helped hundreds of students 
               secure medical seats through NRI quota across top colleges in India.
             </p>
             
             <div className="space-y-8">
-              {[
-                { title: "Personalized Counseling", desc: "One-on-one sessions to understand your profile and suggest the best options." },
-                { title: "End-to-End Support", desc: "From document preparation to final admission, we handle it all." },
-                { title: "Direct College Connections", desc: "We have established relationships with top medical colleges across India." }
-              ].map((item, idx) => (
+              {benefits.map((item, idx) => (
                 <div key={idx} className="flex gap-6 items-start group">
-                  <div className="bg-white/5 rounded-2xl p-4 border border-white/10 group-hover:bg-blue-600 transition-all shadow-xl">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-blue-400 group-hover:text-white">
+                  <div className="bg-white/5 rounded-2xl p-4 border border-white/10 group-hover:bg-cyan-600 transition-all shadow-xl">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-cyan-400 group-hover:text-white">
                       <path d="M22 11.0801V12.0001C21.9988 14.1565 21.3005 16.2548 20.0093 17.9819C18.7182 19.7091 16.9033 20.9726 14.8354 21.584C12.7674 22.1954 10.5573 22.122 8.53447 21.3747C6.51168 20.6274 4.78465 19.2462 3.61096 17.4372C2.43727 15.6281 1.87979 13.4882 2.02168 11.3364C2.16356 9.18467 2.99721 7.13443 4.39828 5.49718C5.79935 3.85994 7.69279 2.71553 9.79619 2.24025C11.8996 1.76497 14.1003 1.98245 16.07 2.86011M22 4.00011L12 14.0101L9 11.0101" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
                   <div>
                     <h3 className="font-black text-2xl text-white tracking-tight mb-2">{item.title}</h3>
-                    <p className="text-blue-100/60 font-medium">{item.desc}</p>
+                    <p className="text-cyan-100/60 font-medium">{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -65,33 +71,33 @@ const NRICTA = () => {
             <form className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label htmlFor="name" className="text-sm font-black text-blue-100/50 uppercase tracking-widest ml-1">Full Name</label>
+                  <label htmlFor="name" className="text-sm font-black text-cyan-100/50 uppercase tracking-widest ml-1">Full Name</label>
                   <input
                     type="text"
                     id="name"
                     placeholder="Your name"
-                    className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium"
+                    className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-medium"
                   />
                 </div>
                 
                 <div className="space-y-2">
-                  <label htmlFor="phone" className="text-sm font-black text-blue-100/50 uppercase tracking-widest ml-1">Phone Number</label>
+                  <label htmlFor="phone" className="text-sm font-black text-cyan-100/50 uppercase tracking-widest ml-1">Phone Number</label>
                   <input
                     type="tel"
                     id="phone"
                     placeholder="Your phone number"
-                    className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium"
+                    className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-medium"
                   />
                 </div>
               </div>
               
               <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-black text-blue-100/50 uppercase tracking-widest ml-1">Email Address</label>
+                <label htmlFor="email" className="text-sm font-black text-cyan-100/50 uppercase tracking-widest ml-1">Email Address</label>
                 <input
                   type="email"
                   id="email"
                   placeholder="Your email address"
-                  className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium"
+                  className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-medium"
                 />
               </div>
               

@@ -2,21 +2,22 @@
 
 import React from "react";
 import { mbbsData } from "@/data/mbbs-india";
+import type { MbbsContent } from '@/lib/pageContent';
 import { motion } from "framer-motion";
 import { Calendar, ArrowRight, FileSearch, ClipboardList, BarChart3, MousePointerClick, Trophy, Building2 } from "lucide-react";
 
 const stepIcons = [FileSearch, BarChart3, ClipboardList, MousePointerClick, Trophy, Building2];
 const stepColors = [
-  { bg: "bg-blue-600", light: "bg-blue-50", border: "border-blue-200", text: "text-blue-600", shadow: "shadow-blue-200" },
-  { bg: "bg-indigo-600", light: "bg-indigo-50", border: "border-indigo-200", text: "text-indigo-600", shadow: "shadow-indigo-200" },
-  { bg: "bg-violet-600", light: "bg-violet-50", border: "border-violet-200", text: "text-violet-600", shadow: "shadow-violet-200" },
+  { bg: "bg-cyan-600", light: "bg-cyan-50", border: "border-cyan-200", text: "text-cyan-600", shadow: "shadow-cyan-200" },
+  { bg: "bg-teal-600", light: "bg-teal-50", border: "border-teal-200", text: "text-teal-600", shadow: "shadow-teal-200" },
+  { bg: "bg-teal-600", light: "bg-teal-50", border: "border-teal-200", text: "text-teal-600", shadow: "shadow-teal-200" },
   { bg: "bg-teal-600", light: "bg-teal-50", border: "border-teal-200", text: "text-teal-600", shadow: "shadow-teal-200" },
   { bg: "bg-emerald-600", light: "bg-emerald-50", border: "border-emerald-200", text: "text-emerald-600", shadow: "shadow-emerald-200" },
   { bg: "bg-amber-600", light: "bg-amber-50", border: "border-amber-200", text: "text-amber-600", shadow: "shadow-amber-200" },
 ];
 
-export const AdmissionProcess = () => {
-  const { process } = mbbsData;
+export const AdmissionProcess = ({ data = mbbsData }: { data?: MbbsContent } = {}) => {
+  const { process } = data;
 
   return (
     <section className="pt-4 pb-14 bg-white dark:bg-slate-950 relative overflow-hidden">
@@ -30,7 +31,7 @@ export const AdmissionProcess = () => {
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mb-12">
           <div>
             <h2 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-tight mb-3">
-              Step-by-Step <span className="text-blue-600 dark:text-blue-400">Admission Journey</span>
+              Step-by-Step <span className="text-cyan-600 dark:text-cyan-400">Admission Journey</span>
             </h2>
             <p className="text-sm text-slate-500 dark:text-slate-400 font-medium max-w-xl leading-relaxed">
               We&apos;ve simplified the complex admission cycle into 6 clear steps to keep you ahead of the competition.
@@ -38,9 +39,9 @@ export const AdmissionProcess = () => {
           </div>
 
           <div className="shrink-0 flex flex-row lg:flex-col gap-3">
-            <div className="px-5 py-4 rounded-2xl bg-blue-600 text-white text-center shadow-xl shadow-blue-600/25">
-              <p className="text-3xl font-black leading-none">95%</p>
-              <p className="text-[9px] font-bold uppercase tracking-widest mt-1 opacity-80">Success Rate</p>
+            <div className="px-5 py-4 rounded-2xl bg-cyan-600 text-white text-center shadow-xl shadow-cyan-600/25">
+              <p className="text-3xl font-black leading-none">2.7L</p>
+              <p className="text-[9px] font-bold uppercase tracking-widest mt-1 opacity-80">Closing Ranks</p>
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { listRows, createRow, updateRow, deleteRow, uploadImage } from '@/lib/adminApi';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 
 interface MediaAsset {
-  id: string;
+  id: number;
   media_key: string;
   title: string | null;
   image_url: string | null;
@@ -33,8 +33,8 @@ type SectionTypeFilter = 'all' | 'hero' | 'content' | 'college' | 'marketing';
 const SECTION_TYPES: SectionTypeFilter[] = ['all', 'hero', 'content', 'college', 'marketing'];
 
 const sectionBadgeColors: Record<string, string> = {
-  hero: 'bg-purple-100 text-purple-700',
-  content: 'bg-blue-100 text-blue-700',
+  hero: 'bg-teal-100 text-teal-700',
+  content: 'bg-cyan-100 text-cyan-700',
   college: 'bg-emerald-100 text-emerald-700',
   marketing: 'bg-amber-100 text-amber-700',
 };
@@ -79,13 +79,7 @@ const MediaManager = () => {
     try {
       setIsLoading(true);
       setError(null);
-      const { data, error: fetchError } = await (supabase as any)
-        .from('media_assets')
-        .select('*')
-        .order('display_order', { ascending: true });
-
-      if (fetchError) throw fetchError;
-      setAssets((data as MediaAsset[]) || []);
+      setAssets(await listRows<MediaAsset>('media'));
     } catch (err: any) {
       console.error('Error fetching media assets:', err);
       setError(err.message || 'Failed to load media assets');
@@ -94,14 +88,7 @@ const MediaManager = () => {
     }
   };
 
-  const uploadFile = async (file: File, sectionType: string): Promise<string> => {
-    const ext = file.name.split('.').pop();
-    const filePath = `${sectionType}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-    const { data, error } = await (supabase as any).storage.from('media-assets').upload(filePath, file, { upsert: true });
-    if (error) throw error;
-    const { data: { publicUrl } } = (supabase as any).storage.from('media-assets').getPublicUrl(data.path);
-    return publicUrl;
-  };
+  const uploadFile = (file: File, sectionType: string) => uploadImage(file, sectionType);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'desktop' | 'mobile') => {
     const file = e.target.files?.[0];
@@ -146,7 +133,7 @@ const MediaManager = () => {
         mobileUrl = await uploadFile(mobileFile, formData.section_type);
       }
 
-      const { error } = await (supabase as any).from('media_assets').insert({
+      await createRow('media', {
         media_key: formData.media_key,
         title: formData.title || null,
         image_url: desktopUrl || '',
@@ -157,7 +144,6 @@ const MediaManager = () => {
         is_active: formData.is_active,
       });
 
-      if (error) throw error;
       toast.success('Media asset added successfully');
       setAddDialogOpen(false);
       resetForm();
@@ -189,22 +175,17 @@ const MediaManager = () => {
         mobileUrl = await uploadFile(mobileFile, formData.section_type);
       }
 
-      const { error } = await (supabase as any)
-        .from('media_assets')
-        .update({
-          media_key: formData.media_key,
-          title: formData.title || null,
-          image_url: desktopUrl,
-          mobile_image_url: mobileUrl,
-          alt_text: formData.alt_text || null,
-          section_type: formData.section_type,
-          display_order: formData.display_order,
-          is_active: formData.is_active,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', editingAsset.id);
+      await updateRow('media', editingAsset.id, {
+        media_key: formData.media_key,
+        title: formData.title || null,
+        image_url: desktopUrl,
+        mobile_image_url: mobileUrl,
+        alt_text: formData.alt_text || null,
+        section_type: formData.section_type,
+        display_order: formData.display_order,
+        is_active: formData.is_active,
+      });
 
-      if (error) throw error;
       toast.success('Media asset updated successfully');
       setEditDialogOpen(false);
       resetForm();
@@ -221,8 +202,7 @@ const MediaManager = () => {
     if (!deleteTarget) return;
     try {
       setIsDeleting(true);
-      const { error } = await (supabase as any).from('media_assets').delete().eq('id', deleteTarget.id);
-      if (error) throw error;
+      await deleteRow('media', deleteTarget.id);
       toast.success('Media asset deleted successfully');
       setDeleteDialogOpen(false);
       setDeleteTarget(null);
@@ -237,11 +217,7 @@ const MediaManager = () => {
 
   const toggleActive = async (asset: MediaAsset) => {
     try {
-      const { error } = await (supabase as any)
-        .from('media_assets')
-        .update({ is_active: !asset.is_active, updated_at: new Date().toISOString() })
-        .eq('id', asset.id);
-      if (error) throw error;
+      await updateRow('media', asset.id, { is_active: !asset.is_active });
       toast.success(`Asset ${asset.is_active ? 'deactivated' : 'activated'}`);
       fetchAssets();
     } catch (err: any) {
@@ -357,7 +333,7 @@ const MediaManager = () => {
               </div>
             )}
             <div className="flex-1">
-              <Label htmlFor={`desktop-upload-${isEdit ? 'edit' : 'add'}`} className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors">
+              <Label htmlFor={`desktop-upload-${isEdit ? 'edit' : 'add'}`} className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-cyan-600 transition-colors">
                 <ImagePlus className="w-4 h-4" />
                 {isEdit ? 'Change Image' : 'Choose Image'}
               </Label>
@@ -391,7 +367,7 @@ const MediaManager = () => {
               </div>
             )}
             <div className="flex-1">
-              <Label htmlFor={`mobile-upload-${isEdit ? 'edit' : 'add'}`} className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors">
+              <Label htmlFor={`mobile-upload-${isEdit ? 'edit' : 'add'}`} className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-cyan-600 transition-colors">
                 <ImagePlus className="w-4 h-4" />
                 {isEdit ? 'Change Mobile' : 'Choose Mobile'}
               </Label>
@@ -477,8 +453,8 @@ const MediaManager = () => {
         {[
           { label: 'Total Assets', value: assets.length, icon: ImageIcon, color: 'text-medical-600 bg-medical-50' },
           { label: 'Active', value: activeCount, icon: Eye, color: 'text-emerald-600 bg-emerald-50' },
-          { label: 'Hero Images', value: heroCount, icon: Star, color: 'text-purple-600 bg-purple-50' },
-          { label: 'Content', value: contentCount, icon: FileImage, color: 'text-blue-600 bg-blue-50' },
+          { label: 'Hero Images', value: heroCount, icon: Star, color: 'text-teal-600 bg-teal-50' },
+          { label: 'Content', value: contentCount, icon: FileImage, color: 'text-cyan-600 bg-cyan-50' },
         ].map((stat) => (
           <motion.div
             key={stat.label}
@@ -626,7 +602,7 @@ const MediaManager = () => {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-8 w-8 rounded-lg hover:bg-slate-100 hover:text-blue-600"
+                    className="h-8 w-8 rounded-lg hover:bg-slate-100 hover:text-cyan-600"
                     onClick={() => openEditDialog(asset)}
                     title="Edit"
                   >
@@ -661,8 +637,8 @@ const MediaManager = () => {
       <Dialog open={editDialogOpen} onOpenChange={(open) => { setEditDialogOpen(open); if (!open) resetForm(); }}>
         <DialogContent className="sm:max-w-[550px] bg-white border-slate-200 rounded-2xl shadow-2xl overflow-hidden p-0 max-h-[90vh] overflow-y-auto">
           <div className="px-6 py-5 bg-slate-50 border-b border-slate-100 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
-              <Pencil className="w-5 h-5 text-blue-600" />
+            <div className="w-10 h-10 rounded-xl bg-cyan-100 flex items-center justify-center">
+              <Pencil className="w-5 h-5 text-cyan-600" />
             </div>
             <div>
               <DialogTitle className="text-xl font-bold text-slate-900">Edit Media Asset</DialogTitle>

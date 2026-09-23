@@ -2,11 +2,12 @@
 
 import React, { useState } from "react";
 import { mbbsData } from "@/data/mbbs-india";
+import type { MbbsContent } from '@/lib/pageContent';
 import { CheckCircle2, FileText, ChevronDown, Info, GraduationCap, ShieldCheck, BookOpen, Users, Zap, Target, Map } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export const MBBSEligibilityInfo = () => {
-  const { eligibility, documents } = mbbsData;
+export const MBBSEligibilityInfo = ({ data = mbbsData }: { data?: MbbsContent } = {}) => {
+  const { eligibility, documents } = data;
   const [isDocsOpen, setIsDocsOpen] = useState(false);
 
   const eligIcons = [BookOpen, Target, Users];
@@ -18,8 +19,8 @@ export const MBBSEligibilityInfo = () => {
     <section className="pt-16 pb-6 md:pt-24 md:pb-8 bg-white dark:bg-slate-950 relative overflow-hidden transition-colors duration-200">
       {/* Premium Background Elements */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:40px_40px]" />
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-50/50 dark:bg-blue-900/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-50/50 dark:bg-indigo-900/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-50/50 dark:bg-cyan-900/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-teal-50/50 dark:bg-teal-900/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
       
       <div className="container-custom relative z-10">
         {/* Header */}
@@ -28,7 +29,7 @@ export const MBBSEligibilityInfo = () => {
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-100/50 dark:border-blue-900/30 text-blue-600 dark:text-blue-400 text-[10px] font-black tracking-widest uppercase mb-4"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-50 dark:bg-cyan-950/40 border border-cyan-100/50 dark:border-cyan-900/30 text-cyan-600 dark:text-cyan-400 text-[10px] font-black tracking-widest uppercase mb-4"
           >
             <ShieldCheck className="w-3.5 h-3.5" /> Admission Prerequisites
           </motion.div>
@@ -39,7 +40,7 @@ export const MBBSEligibilityInfo = () => {
             transition={{ delay: 0.1 }}
             className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight mb-4"
           >
-            Eligibility & <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">Key Insights</span>
+            Eligibility & <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-600 dark:from-cyan-400 dark:to-teal-400">Key Insights</span>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 10 }}
@@ -99,8 +100,8 @@ export const MBBSEligibilityInfo = () => {
                 className="w-full flex items-center justify-between p-6 bg-slate-900 text-white rounded-2xl font-black shadow-lg hover:bg-slate-800 transition-all active:scale-[0.98] group border border-slate-800"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
-                    <FileText className="w-5 h-5 text-blue-400" />
+                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors">
+                    <FileText className="w-5 h-5 text-cyan-400" />
                   </div>
                   <span className="text-base">Check Required Documents</span>
                 </div>
@@ -121,10 +122,10 @@ export const MBBSEligibilityInfo = () => {
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-4">
                         {documents.list.map((doc, idx) => (
                           <div key={idx} className="flex items-start gap-3">
-                            <div className="w-5 h-5 rounded-full bg-blue-50 dark:bg-blue-950/20 flex items-center justify-center shrink-0 mt-0.5">
-                              <CheckCircle2 className="w-3 h-3 text-blue-500 dark:text-blue-400" />
+                            <div className="w-5 h-5 rounded-full bg-cyan-50 dark:bg-cyan-950/20 flex items-center justify-center shrink-0 mt-0.5">
+                              <CheckCircle2 className="w-3 h-3 text-cyan-500 dark:text-cyan-400" />
                             </div>
-                            <span className="text-sm font-bold text-slate-700 dark:text-slate-350 leading-snug">{doc}</span>
+                            <span className="text-sm font-bold text-slate-700 dark:text-slate-300 leading-snug">{doc}</span>
                           </div>
                         ))}
                       </div>
@@ -147,7 +148,7 @@ export const MBBSEligibilityInfo = () => {
           {/* RIGHT: Admission Insights */}
           <div className="flex flex-col h-full">
             <div className="flex items-center gap-4 mb-8">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 text-white shrink-0">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-600 to-teal-600 flex items-center justify-center shadow-lg shadow-cyan-500/20 text-white shrink-0">
                 <GraduationCap className="w-6 h-6" />
               </div>
               <div>
@@ -168,9 +169,9 @@ export const MBBSEligibilityInfo = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: idx * 0.1 + 0.1 }}
-                    className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-blue-200 dark:hover:border-blue-900/60 transition-all duration-300 group flex items-start gap-5"
+                    className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-cyan-200 dark:hover:border-cyan-900/60 transition-all duration-300 group flex items-start gap-5"
                   >
-                    <div className="w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-950 flex items-center justify-center shrink-0 group-hover:bg-blue-50 dark:group-hover:bg-blue-950/20 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors text-slate-400 dark:text-slate-500">
+                    <div className="w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-950 flex items-center justify-center shrink-0 group-hover:bg-cyan-50 dark:group-hover:bg-cyan-950/20 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors text-slate-400 dark:text-slate-500">
                       <InsightIcon className="w-6 h-6" />
                     </div>
                     <div>
@@ -185,7 +186,7 @@ export const MBBSEligibilityInfo = () => {
             {/* Info Banner */}
             <div className="mt-4 p-6 rounded-2xl bg-slate-900 border border-slate-800 flex items-start gap-4 text-white">
               <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-                <Zap className="w-5 h-5 text-blue-400" />
+                <Zap className="w-5 h-5 text-cyan-400" />
               </div>
               <p className="text-sm text-white font-medium leading-relaxed pt-0.5">
                 Need clarity on domicile, quotas, or category benefits? Our experts have the most updated data to guide you to the right college.

@@ -1,19 +1,36 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import type { PgCard } from '@/lib/pgContent';
 import { motion } from "framer-motion";
 import { GraduationCap, BookOpen, Clock, Building2, ShieldCheck, RotateCcw } from "lucide-react";
 
-const overviewItems = [
-  { icon: GraduationCap, gradient: "from-blue-600 to-blue-700", title: "Eligibility", desc: "MBBS degree from a recognized institution with completed 1-year internship and NMC/State Medical Council registration." },
-  { icon: BookOpen, gradient: "from-indigo-600 to-indigo-700", title: "NEET PG Exam", desc: "National-level entrance by NBE. Computer-based, 200 MCQs. Qualifying cutoff at 50th percentile for General/EWS." },
-  { icon: Clock, gradient: "from-violet-600 to-violet-700", title: "Internship", desc: "1-year compulsory rotating internship must be completed before counselling. Completion certificate mandatory." },
+const SHIPPED_OVERVIEWITEMS = [
+  { icon: GraduationCap, gradient: "from-cyan-600 to-cyan-700", title: "Eligibility", desc: "MBBS degree from a recognized institution with completed 1-year internship and NMC/State Medical Council registration." },
+  { icon: BookOpen, gradient: "from-teal-600 to-teal-700", title: "NEET PG Exam", desc: "National-level entrance by NBE. Computer-based, 200 MCQs. Qualifying cutoff at 50th percentile for General/EWS." },
+  { icon: Clock, gradient: "from-teal-600 to-teal-700", title: "Internship", desc: "1-year compulsory rotating internship must be completed before counselling. Completion certificate mandatory." },
   { icon: Building2, gradient: "from-emerald-600 to-emerald-700", title: "Counselling Bodies", desc: "MCC handles AIQ, Deemed & Central seats. State authorities manage State Quota. Both run in parallel." },
   { icon: ShieldCheck, gradient: "from-amber-500 to-amber-600", title: "Reservation", desc: "SC, ST, OBC-NCL, EWS, PwD — each category has specific cutoffs, seat pools, and documentation requirements." },
   { icon: RotateCcw, gradient: "from-rose-500 to-rose-600", title: "Counselling Rounds", desc: "4 rounds typically: Round 1, Round 2, Mop-Up, and Stray Vacancy. Each round opens new opportunities." },
 ];
 
-export const PGOverview = () => {
+export const PGOverview = ({ items: fromCms }: { items?: PgCard[] | null } = {}) => {
+  // The CMS supplies the words; everything visual stays with the shipped item
+  // at the same position, so a design change is a code change and a copy
+  // change is not. Extra CMS rows reuse the last item's styling.
+  const overviewItems = (() => {
+    const cms = fromCms;
+    if (!cms?.length) return SHIPPED_OVERVIEWITEMS;
+    return cms.map((_, i) => {
+      const base = SHIPPED_OVERVIEWITEMS[i] ?? SHIPPED_OVERVIEWITEMS[SHIPPED_OVERVIEWITEMS.length - 1];
+      return {
+          ...base,
+          title: cms[i].title ?? base.title,
+          desc: cms[i].desc ?? base.desc,
+      };
+    });
+  })();
+
   const [mounted, setMounted] = useState(false);
   useEffect(() => { setMounted(true); }, []);
 
@@ -22,12 +39,12 @@ export const PGOverview = () => {
       <div className="container-custom max-w-5xl">
         <div className="text-center mb-10">
           <motion.div initial={mounted ? { opacity: 0, y: 10 } : false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 text-[10px] font-black tracking-widest uppercase mb-3">
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 dark:bg-teal-950/40 text-teal-600 dark:text-teal-400 text-[10px] font-black tracking-widest uppercase mb-3">
             PG Admission Overview
           </motion.div>
           <motion.h2 initial={mounted ? { opacity: 0, y: 10 } : false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             className="text-2xl md:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white tracking-tight mb-3">
-            Everything You Need to Know About <span className="text-blue-600 dark:text-blue-400">MD/MS Admissions</span>
+            Everything You Need to Know About <span className="text-cyan-600 dark:text-cyan-400">MD/MS Admissions</span>
           </motion.h2>
           <motion.p initial={mounted ? { opacity: 0, y: 10 } : false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             className="text-slate-500 dark:text-slate-400 text-sm md:text-base font-medium max-w-2xl mx-auto">

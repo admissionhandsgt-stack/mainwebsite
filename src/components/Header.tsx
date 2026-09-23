@@ -3,29 +3,71 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Phone, ChevronDown, ChevronRight, Sun, Moon } from 'lucide-react';
+import { Menu, X, Phone, ChevronDown, ChevronRight, Sun, Moon, UserRound } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useCTA } from '@/hooks/useCTA';
 import { WhatsAppIcon } from './icons/WhatsAppIcon';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
-const mbbsSubLinks = [
-  { name: 'Deemed Universities', href: '/mbbs-india/deemed-universities' },
-  { name: 'Govt & Pvt Colleges', href: '/mbbs-india/colleges' },
-  { name: 'NEET UG Process', href: '/neet-ug-process' },
+import type { NavItem } from '@/lib/content';
+
+/** What renders if the nav_items table is empty or unreachable. */
+const FALLBACK_NAV: NavItem[] = [
+  { id: -1, label: 'Home', url: '/', newTab: false, children: [] },
+  {
+    id: -2, label: 'MBBS India', url: '/mbbs-india', newTab: false,
+    children: [
+      { id: -21, label: 'Deemed Universities', url: '/mbbs-india/deemed-universities', newTab: false, children: [] },
+      { id: -22, label: 'Govt & Pvt Colleges', url: '/mbbs-india/colleges', newTab: false, children: [] },
+      { id: -23, label: 'NEET UG Process', url: '/neet-ug-process', newTab: false, children: [] },
+    ],
+  },
+  {
+    id: -3, label: 'PG – MD/MS', url: '/md-ms-india', newTab: false,
+    children: [
+      { id: -31, label: 'Seat Predictor', url: '/md-ms-india/predictor', newTab: false, children: [] },
+      { id: -32, label: 'All PG Colleges', url: '/md-ms-india/colleges', newTab: false, children: [] },
+      { id: -33, label: 'Closing Ranks', url: '/md-ms-india/cutoffs', newTab: false, children: [] },
+    ],
+  },
+  { id: -4, label: 'Services', url: '/services', newTab: false, children: [] },
+  { id: -5, label: 'Know Us', url: '/know-us', newTab: false, children: [] },
+  { id: -6, label: 'Terms', url: '/terms', newTab: false, children: [] },
 ];
 
-export default function Header() {
+export default function Header({
+  nav,
+  ctaLabel,
+  showThemeToggle = true,
+  accountName,
+}: {
+  nav?: NavItem[];
+  ctaLabel?: string;
+  showThemeToggle?: boolean;
+  /** First name when signed in, null when not. Decides Sign in vs Account. */
+  accountName?: string | null;
+}) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [mbbsExpanded, setMbbsExpanded] = useState(false);
+  // Keyed by item id: one shared flag meant opening MBBS also opened PG.
+  const [expanded, setExpanded] = useState<number | null>(null);
   const pathname = usePathname();
   const CTA = useCTA();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
+  const [scrolled, setScrolled] = useState(false);
+
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  // The bar starts flush with the hero and gains a surface once you leave it.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => {
@@ -44,19 +86,13 @@ export default function Header() {
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
-    setMbbsExpanded(false);
+    setExpanded(null);
   }, [pathname]);
 
-  const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'MBBS India', href: '/mbbs-india', hasDropdown: true },
-    { name: 'PG – MD/MS', href: '/md-ms-india' },
-    { name: 'Services', href: '/services' },
-    { name: 'Know Us', href: '/know-us' },
-    { name: 'Terms', href: '/terms' },
-  ];
+  const navLinks = nav?.length ? nav : FALLBACK_NAV;
 
   const renderThemeToggle = () => {
+    if (!showThemeToggle) return null;
     if (!mounted) {
       return (
         <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800/40 animate-pulse shrink-0" />
@@ -65,7 +101,7 @@ export default function Header() {
     return (
       <button
         onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-        className="w-10 h-10 rounded-full flex items-center justify-center text-slate-500 hover:text-blue-650 dark:text-slate-400 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors shrink-0"
+        className="w-10 h-10 rounded-full flex items-center justify-center text-slate-500 hover:text-cyan-600 dark:text-slate-400 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors shrink-0"
         aria-label="Toggle Theme"
       >
         {theme === 'dark' ? <Sun className="w-[18px] h-[18px]" /> : <Moon className="w-[18px] h-[18px]" />}
@@ -75,7 +111,14 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 w-full z-[100] bg-white/95 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/60 shadow-sm transition-all duration-200">
+      <header
+        data-site-header
+        className={`fixed top-0 left-0 right-0 w-full z-[100] transition-all duration-300 ${
+          scrolled
+            ? 'bg-background/80 backdrop-blur-xl border-b border-border/70 shadow-sm'
+            : 'bg-background/40 backdrop-blur-md border-b border-transparent'
+        }`}
+      >
         <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between gap-4">
           {/* Extreme Left: Logo */}
           <Link href="/" className="flex items-center justify-start shrink-0 mr-2">
@@ -93,30 +136,35 @@ export default function Header() {
           {/* Center: Centered Navigation Links */}
           <nav className="hidden lg:flex items-center gap-1 xl:gap-2 mx-auto">
             {navLinks.map((link) => {
-              const isActive = pathname === link.href;
+              const isActive = pathname === link.url;
+              const hasDropdown = link.children.length > 0;
               return (
-                <div key={link.name} className="relative group">
+                <div key={link.id} className="relative group">
                   <Link
-                    href={link.href}
-                    className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs xl:text-sm font-semibold transition-all ${
-                      isActive 
-                        ? 'bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400' 
-                        : 'text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-900/60'
+                    href={link.url}
+                    target={link.newTab ? '_blank' : undefined}
+                    rel={link.newTab ? 'noopener noreferrer' : undefined}
+                    className={`flex items-center gap-1 px-3.5 py-2 rounded-full text-xs xl:text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                      isActive
+                        ? 'bg-primary-soft text-primary-strong dark:text-primary'
+                        : 'text-muted-foreground hover:text-primary hover:bg-primary-soft/60'
                     }`}
                   >
-                    {link.name}
-                    {link.hasDropdown && <ChevronDown className="w-3.5 h-3.5" />}
+                    {link.label}
+                    {hasDropdown && <ChevronDown className="w-3.5 h-3.5" />}
                   </Link>
-                  {link.hasDropdown && (
-                    <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                      <div className="bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-100 dark:border-slate-800/80 p-1.5 min-w-[210px]">
-                        {mbbsSubLinks.map((sub) => (
+                  {hasDropdown && (
+                    <div className="absolute top-full left-0 pt-2 opacity-0 invisible translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 transition-all duration-200 z-50">
+                      <div className="rounded-xl border border-border bg-card p-1.5 shadow-lift min-w-[230px]">
+                        {link.children.map((sub) => (
                           <Link
-                            key={sub.href}
-                            href={sub.href}
-                            className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-350 hover:bg-blue-50 dark:hover:bg-blue-950/20 hover:text-blue-700 dark:hover:text-blue-400 transition-all"
+                            key={sub.id}
+                            href={sub.url}
+                            target={sub.newTab ? '_blank' : undefined}
+                            rel={sub.newTab ? 'noopener noreferrer' : undefined}
+                            className="flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium text-muted-foreground hover:bg-primary-soft hover:text-primary-strong dark:hover:text-primary transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                           >
-                            {sub.name}
+                            {sub.label}
                             <ChevronRight className="w-3 h-3 opacity-40" />
                           </Link>
                         ))}
@@ -132,19 +180,28 @@ export default function Header() {
           <div className="hidden lg:flex items-center gap-1.5 shrink-0">
             <button
               onClick={() => CTA.whatsapp()}
-              className="w-10 h-10 rounded-full flex items-center justify-center text-emerald-600 dark:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 transition-colors"
-              aria-label="WhatsApp Us"
+              className="w-10 h-10 rounded-full flex items-center justify-center text-accent hover:bg-accent-soft transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              aria-label="Message us on WhatsApp"
             >
               <WhatsAppIcon size={18} />
             </button>
+            {renderThemeToggle()}
+            {/* Sign in, or the account. One slot either way, so the header
+                does not reflow when somebody signs in. */}
+            <Link
+              href={accountName ? '/account' : '/login'}
+              className="ml-1 inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-2 text-xs font-bold text-foreground transition-colors hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <UserRound className="h-3.5 w-3.5" aria-hidden="true" />
+              {accountName || 'Sign in'}
+            </Link>
             <button
               onClick={CTA.call}
-              className="w-10 h-10 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/20 transition-colors"
-              aria-label="Call Us"
+              className="ml-1 inline-flex items-center gap-2 rounded-full bg-gradient-brand px-4 py-2.5 text-xs font-bold text-white shadow-glow transition-all duration-200 hover:shadow-glow-lg hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
-              <Phone className="w-4 h-4" />
+              <Phone className="w-3.5 h-3.5" />
+              {ctaLabel || 'Talk to a counsellor'}
             </button>
-            {renderThemeToggle()}
           </div>
 
           {/* Mobile menu trigger + theme toggle row */}
@@ -184,31 +241,39 @@ export default function Header() {
               <div className="p-4 pt-16 flex-1 overflow-y-auto">
                 <nav className="flex flex-col gap-0.5" role="navigation">
                   {navLinks.map((link) => {
-                    const isActive = pathname === link.href || (link.hasDropdown && pathname?.startsWith('/mbbs-india'));
-                    if (link.hasDropdown) {
+                    const hasDropdown = link.children.length > 0;
+                    const isActive =
+                      pathname === link.url ||
+                      (hasDropdown && link.url !== '/' && pathname?.startsWith(link.url));
+                    const isOpen = expanded === link.id;
+
+                    if (hasDropdown) {
                       return (
-                        <div key={link.name}>
+                        <div key={link.id}>
                           <div className="flex items-center gap-0">
                             <Link
-                              href={link.href}
+                              href={link.url}
+                              target={link.newTab ? '_blank' : undefined}
+                              rel={link.newTab ? 'noopener noreferrer' : undefined}
                               onClick={() => setIsMobileMenuOpen(false)}
                               className={`flex-1 flex items-center gap-2 p-2 rounded-xl transition-all active:scale-[0.97] ${
-                                isActive ? 'bg-blue-50/80 dark:bg-blue-950/20 text-blue-750 dark:text-blue-400' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-900/40'
+                                isActive ? 'bg-cyan-50/80 dark:bg-cyan-950/20 text-cyan-750 dark:text-cyan-400' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-900/40'
                               }`}
                             >
                               <div className={`w-1 h-3 rounded-full bg-emerald-500 ${isActive ? 'opacity-100' : 'opacity-20'}`} />
-                              <span className="text-[12px] font-bold tracking-tight">{link.name}</span>
+                              <span className="text-[12px] font-bold tracking-tight">{link.label}</span>
                             </Link>
                             <button
-                              onClick={() => setMbbsExpanded(!mbbsExpanded)}
+                              onClick={() => setExpanded(isOpen ? null : link.id)}
                               className="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900/40 transition-colors min-w-[40px] min-h-[40px] flex items-center justify-center"
-                              aria-label="Expand MBBS submenu"
+                              aria-expanded={isOpen}
+                              aria-label={`${isOpen ? 'Collapse' : 'Expand'} ${link.label} submenu`}
                             >
-                              <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${mbbsExpanded ? 'rotate-180' : ''}`} />
+                              <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
                             </button>
                           </div>
                           <AnimatePresence>
-                            {mbbsExpanded && (
+                            {isOpen && (
                               <motion.div
                                 initial={{ height: 0, opacity: 0 }}
                                 animate={{ height: 'auto', opacity: 1 }}
@@ -217,18 +282,20 @@ export default function Header() {
                                 className="overflow-hidden"
                               >
                                 <div className="pl-4 py-0.5 flex flex-col gap-0.5">
-                                  {mbbsSubLinks.map((sub) => {
-                                    const subActive = pathname === sub.href;
+                                  {link.children.map((sub) => {
+                                    const subActive = pathname === sub.url;
                                     return (
                                       <Link
-                                        key={sub.href}
-                                        href={sub.href}
+                                        key={sub.id}
+                                        href={sub.url}
+                                        target={sub.newTab ? '_blank' : undefined}
+                                        rel={sub.newTab ? 'noopener noreferrer' : undefined}
                                         onClick={() => setIsMobileMenuOpen(false)}
                                         className={`flex items-center justify-between p-2 pl-3 rounded-lg text-[11px] font-bold transition-all active:scale-[0.97] ${
-                                          subActive ? 'bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400' : 'text-slate-550 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900/40 hover:text-slate-800'
+                                          subActive ? 'bg-cyan-50 dark:bg-cyan-950/30 text-cyan-700 dark:text-cyan-400' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900/40 hover:text-slate-800'
                                         }`}
                                       >
-                                        <span>{sub.name}</span>
+                                        <span>{sub.label}</span>
                                         <ChevronRight className="w-3 h-3 opacity-30" />
                                       </Link>
                                     );
@@ -242,15 +309,17 @@ export default function Header() {
                     }
                     return (
                       <Link
-                        key={link.name}
-                        href={link.href}
+                        key={link.id}
+                        href={link.url}
+                        target={link.newTab ? '_blank' : undefined}
+                        rel={link.newTab ? 'noopener noreferrer' : undefined}
                         onClick={() => setIsMobileMenuOpen(false)}
                         className={`flex items-center gap-2 p-2 rounded-xl transition-all active:scale-[0.97] ${
-                          isActive ? 'bg-blue-50/80 dark:bg-blue-950/20 text-blue-750 dark:text-blue-400' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-900/40'
+                          isActive ? 'bg-cyan-50/80 dark:bg-cyan-950/20 text-cyan-750 dark:text-cyan-400' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-900/40'
                         }`}
                       >
-                        <div className={`w-1 h-3 rounded-full bg-blue-500 ${isActive ? 'opacity-100' : 'opacity-20'}`} />
-                        <span className="text-[12px] font-bold tracking-tight">{link.name}</span>
+                        <div className={`w-1 h-3 rounded-full bg-cyan-500 ${isActive ? 'opacity-100' : 'opacity-20'}`} />
+                        <span className="text-[12px] font-bold tracking-tight">{link.label}</span>
                       </Link>
                     );
                   })}

@@ -128,7 +128,7 @@ export function DeemedCollegesListing() {
       <section className="compact-padding bg-slate-50/50">
         <div className="container-custom">
           {isLoading && colleges.length === 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {Array.from({ length: 10 }).map((_, i) => (
                 <DeemedCollegeCardSkeleton key={i} />
               ))}
@@ -144,7 +144,7 @@ export function DeemedCollegesListing() {
               <p className="text-sm text-slate-500 mb-4">{error}</p>
               <button
                 onClick={() => fetchColleges(filters, 1, false)}
-                className="px-6 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-bold hover:bg-blue-600 transition-all"
+                className="px-6 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-bold hover:bg-cyan-600 transition-all"
               >
                 Retry
               </button>
@@ -160,7 +160,7 @@ export function DeemedCollegesListing() {
               <p className="text-sm text-slate-500 mb-4">Try adjusting your search or filters.</p>
               <button
                 onClick={handleReset}
-                className="px-6 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-bold hover:bg-blue-600 transition-all"
+                className="px-6 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-bold hover:bg-cyan-600 transition-all"
               >
                 Clear All Filters
               </button>
@@ -169,7 +169,7 @@ export function DeemedCollegesListing() {
 
           {colleges.length > 0 && (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 {colleges.map((college) => (
                   <DeemedCollegeCard key={college.id} college={college} />
                 ))}
@@ -181,7 +181,7 @@ export function DeemedCollegesListing() {
                   <button
                     onClick={() => handlePageChange(page - 1)}
                     disabled={page === 1 || isLoading}
-                    className="p-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800/60 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm flex items-center justify-center shrink-0"
+                    className="p-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm flex items-center justify-center shrink-0"
                     title="Previous Page"
                   >
                     <ChevronLeft className="w-3.5 h-3.5" />
@@ -195,8 +195,8 @@ export function DeemedCollegesListing() {
                       disabled={isLoading}
                       className={`h-8 min-w-[2rem] px-2 rounded-lg text-xs font-bold transition-all shadow-sm ${
                         pNum === page
-                          ? 'bg-blue-600 text-white border border-blue-600'
-                          : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-350 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60'
+                          ? 'bg-cyan-600 text-white border border-cyan-600'
+                          : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60'
                       }`}
                     >
                       {pNum}
@@ -207,7 +207,7 @@ export function DeemedCollegesListing() {
                   <button
                     onClick={() => handlePageChange(page + 1)}
                     disabled={page === totalPages || isLoading}
-                    className="p-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800/60 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm flex items-center justify-center shrink-0"
+                    className="p-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm flex items-center justify-center shrink-0"
                     title="Next Page"
                   >
                     <ChevronRight className="w-3.5 h-3.5" />

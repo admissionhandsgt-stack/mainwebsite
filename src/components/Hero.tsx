@@ -1,155 +1,221 @@
 "use client";
 
 import Image from "next/image";
+import { motion, useReducedMotion } from "framer-motion";
 import { useCTA } from "@/hooks/useCTA";
-import { ArrowRight, Building2, Users, GraduationCap, ShieldCheck, Phone } from "lucide-react";
+import { ArrowRight, Building2, Users, GraduationCap, ShieldCheck, Phone, Sparkles } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+
+/** Everything an editor can change here. Each field falls back to the copy
+ *  that shipped, so a missing setting never leaves the hero blank. */
+export interface HeroCopy {
+  badgeLeft?: string;
+  badgeRight?: string;
+  headline?: string;
+  headlineAccent?: string;
+  subtitle?: string;
+  ctaPrimary?: string;
+  ctaSecondary?: string;
+  stats?: { value: string; label: string }[];
+}
 
 interface HeroProps {
   backgroundImageUrl?: string;
   doctorsImageUrl?: string;
+  copy?: HeroCopy;
 }
 
-export default function Hero({ backgroundImageUrl, doctorsImageUrl }: HeroProps) {
+const DEFAULTS: Required<Omit<HeroCopy, "stats">> = {
+  badgeLeft: "NEET 2026 counselling",
+  badgeRight: "Real cutoffs, not estimates",
+  headline: "MBBS & PG admission",
+  headlineAccent: "in India, made simple",
+  subtitle:
+    "Every closing rank, fee and seat from the last two counselling years — turned into one straight answer about where your seat actually is.",
+  ctaPrimary: "Get expert guidance",
+  ctaSecondary: "Browse top colleges",
+};
+
+const STAT_ICONS = [Users, Building2, GraduationCap];
+
+const DEFAULT_STATS = [
+  { value: "2,100+", label: "Students guided" },
+  { value: "1,687", label: "MBBS colleges" },
+  { value: "2,168", label: "PG colleges" },
+];
+
+export default function Hero({ backgroundImageUrl, doctorsImageUrl, copy }: HeroProps) {
   const CTA = useCTA();
+  const reduce = useReducedMotion();
+
+  const text = { ...DEFAULTS, ...Object.fromEntries(
+    Object.entries(copy ?? {}).filter(([, v]) => typeof v === "string" && v !== ""),
+  ) } as Required<Omit<HeroCopy, "stats">>;
+  const stats = copy?.stats?.length ? copy.stats : DEFAULT_STATS;
+
+  // One orchestrated entrance on load. Nothing else on the page animates in.
+  const stage = {
+    hidden: {},
+    show: { transition: { staggerChildren: reduce ? 0 : 0.07, delayChildren: 0.05 } },
+  };
+  const item = {
+    hidden: reduce ? { opacity: 1 } : { opacity: 0, y: 16 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.2, 0, 0, 1] as const } },
+  };
+
   return (
-    <section className="relative w-full min-h-0 lg:min-h-[calc(100svh-112px)] flex items-center overflow-hidden bg-white dark:bg-slate-950">
-      {/* Background Image (College Campus) */}
-      <div className="absolute inset-0 z-0">
-        {backgroundImageUrl && backgroundImageUrl !== "none" && (
+    <section className="relative w-full overflow-hidden bg-background lg:min-h-[min(760px,calc(100svh-112px))] flex items-center">
+      {/* Ambient light — the page's only continuous motion */}
+      <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+        <div className="ambient-blob animate-drift -left-32 -top-40 h-[34rem] w-[34rem] bg-primary/25 dark:bg-primary/20" />
+        <div className="ambient-blob animate-drift-slow left-[42%] top-24 h-[26rem] w-[26rem] bg-secondary/20 dark:bg-secondary/15" />
+        <div className="ambient-blob animate-drift -bottom-40 right-[-6rem] h-[28rem] w-[28rem] bg-accent/15 dark:bg-accent/10 [animation-delay:-7s]" />
+      </div>
+
+      {/* Campus photograph, held well behind the type */}
+      {backgroundImageUrl && backgroundImageUrl !== "none" && (
+        <div className="absolute inset-0 z-0" aria-hidden="true">
           <Image
             src={backgroundImageUrl}
-            alt="Medical College Campus"
+            alt=""
             fill
             priority
             sizes="100vw"
-            className="object-cover object-center opacity-15 md:opacity-100 transition-all duration-700 dark:opacity-10 pointer-events-none"
+            className="object-cover object-center opacity-[0.035] sm:opacity-[0.07] dark:opacity-[0.08] dark:sm:opacity-[0.10]"
           />
-        )}
-        {/* Gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/80 md:from-white/95 md:via-white/85 md:to-transparent dark:from-slate-950 dark:via-slate-950/95 dark:to-slate-950/80 md:dark:from-slate-950/95 md:dark:via-slate-950/85 md:dark:to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/60 via-transparent to-white md:hidden dark:from-slate-950/60 dark:via-transparent dark:to-slate-950" />
-      </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/20 to-background sm:from-background/40 sm:via-transparent" />
+        </div>
+      )}
 
-      <div className="container-custom relative z-10 w-full flex flex-col lg:flex-row items-center justify-between gap-8 h-full py-8 lg:py-0">
-        {/* Left Content Area */}
-        <div className="w-full lg:w-[55%] flex flex-col text-center lg:text-left">
-          {/* Badge */}
-          <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-4 self-center lg:self-start">
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-405 rounded-full border border-emerald-100 dark:border-emerald-900/30 shadow-sm">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span className="font-black text-[10px] md:text-xs tracking-wider uppercase">
-                Secure Your MBBS Seat — 2026 Admissions
-              </span>
-            </div>
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400 rounded-full border border-amber-100 dark:border-amber-900/30 shadow-sm">
-              <span className="font-black text-[10px] md:text-xs tracking-wider uppercase">
-                UAT Test
-              </span>
-            </div>
-          </div>
-
-          {/* Headline */}
-          <h1 className="text-[clamp(2rem,5vw,4.5rem)] font-black leading-[1.1] tracking-tight text-slate-900 dark:text-white mb-4 md:mb-5">
-            MBBS & PG <br className="hidden lg:block" /> Admission in India <br className="hidden lg:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
-              Made Simple
+      <div className="container-custom relative z-10 w-full flex flex-col lg:flex-row items-center justify-between gap-10 py-12 lg:py-16">
+        {/* ---------------- Left: the message ---------------- */}
+        <motion.div
+          variants={stage}
+          initial="hidden"
+          animate="show"
+          className="w-full lg:w-[56%] flex flex-col text-center lg:text-left"
+        >
+          <motion.div variants={item} className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-5">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/25 bg-accent-soft px-2.5 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-accent dark:text-accent">
+              <ShieldCheck className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+              {text.badgeLeft}
             </span>
-          </h1>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/25 bg-primary-soft px-2.5 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-primary-strong dark:text-primary">
+              <Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+              {text.badgeRight}
+            </span>
+          </motion.div>
 
-          {/* Subheadline */}
-          <p className="text-sm md:text-base text-slate-600 dark:text-slate-300 mb-8 max-w-xl mx-auto lg:mx-0 font-bold leading-relaxed">
-            Expert guidance for NEET-based admissions in top medical colleges. Trusted counselling, transparent process, real results.
-          </p>
+          <motion.h1
+            variants={item}
+            className="font-heading text-[clamp(2.25rem,5.2vw,4.25rem)] font-extrabold leading-[1.04] tracking-[-0.035em] text-foreground mb-5"
+          >
+            {text.headline}
+            <br className="hidden sm:block" />{" "}
+            <span className="text-gradient-brand">{text.headlineAccent}</span>
+          </motion.h1>
 
-          {/* CTA Buttons — Compact, Premium, Modern */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start w-full sm:w-auto mb-8 lg:mb-10">
+          <motion.p
+            variants={item}
+            className="max-w-[54ch] mx-auto lg:mx-0 text-base md:text-[17px] leading-relaxed text-muted-foreground mb-8"
+          >
+            {text.subtitle}
+          </motion.p>
+
+          <motion.div variants={item} className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-10">
             <button
               onClick={() => CTA.counselling()}
-              className="group relative overflow-hidden bg-slate-900 dark:bg-blue-600 dark:hover:bg-blue-500 hover:bg-blue-600 text-white rounded-xl px-5 py-3 md:px-6 md:py-3.5 shadow-lg shadow-slate-900/20 dark:shadow-blue-900/20 text-xs md:text-sm font-black flex items-center justify-center gap-2 transition-all duration-300 active:scale-95"
+              className="group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-brand px-6 py-3.5 text-sm font-bold text-white shadow-glow transition-all duration-200 hover:shadow-glow-lg hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
-              <div className="absolute inset-0 bg-white/20 -skew-x-12 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
-              <Users className="w-4 h-4" />
-              <span className="relative z-10">Get Expert Guidance</span>
-              <ArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />
+              <Users className="h-4 w-4" />
+              {text.ctaPrimary}
+              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
             </button>
 
             <button
               onClick={() => {
-                const el = document.getElementById('top-medical-institutes');
-                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                document.getElementById("top-medical-institutes")?.scrollIntoView({ behavior: "smooth", block: "start" });
               }}
-              className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-blue-950/30 hover:border-blue-200 dark:hover:border-blue-900 hover:text-blue-700 dark:hover:text-blue-400 rounded-xl px-5 py-3 md:px-6 md:py-3.5 text-xs md:text-sm font-black flex items-center justify-center gap-2 shadow-sm transition-all duration-300 active:scale-95"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-6 py-3.5 text-sm font-bold text-foreground shadow-sm transition-all duration-200 hover:border-primary/40 hover:bg-primary-soft hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
-              <Building2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-              Top Tier Medical Institutes
+              <Building2 className="h-4 w-4 text-primary" />
+              {text.ctaSecondary}
             </button>
-          </div>
+          </motion.div>
 
-          {/* Trust Row — Compact inline on mobile, icon-boxes on desktop */}
-          <div className="flex flex-wrap justify-center lg:justify-start gap-4 md:gap-8 lg:gap-12 pt-6 border-t border-slate-200/60 dark:border-slate-800/40">
-            {[
-              { icon: Users, value: "2100+", label: "Students Guided", color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-950/20" },
-              { icon: Building2, value: "Top", label: "Medical Colleges", color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-50 dark:bg-blue-950/20" },
-              { icon: GraduationCap, value: "NEET", label: "Experts", color: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-50 dark:bg-indigo-950/20" },
-            ].map((item, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <div className={`hidden md:flex w-10 h-10 rounded-xl ${item.bg} items-center justify-center shadow-inner`}>
-                  <item.icon className={`w-5 h-5 ${item.color}`} />
-                </div>
-                <div className="flex flex-col text-left">
-                  <span className="text-base md:text-lg font-black text-slate-900 dark:text-white leading-none mb-0.5">{item.value}</span>
-                  <span className="text-[9px] md:text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{item.label}</span>
-                </div>
+          <motion.div
+            variants={item}
+            className="grid grid-cols-3 gap-4 sm:gap-8 border-t border-border/70 pt-7 max-w-lg mx-auto lg:mx-0"
+          >
+            {stats.map(({ value, label }, i) => {
+              const Icon = STAT_ICONS[i % STAT_ICONS.length];
+              return (
+              <div key={label} className="flex items-center gap-3">
+                <span className="hidden sm:flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary">
+                  <Icon className="h-5 w-5" />
+                </span>
+                <span className="flex flex-col text-left">
+                  <span className="tnum font-heading text-xl md:text-2xl font-extrabold leading-none text-foreground">{value}</span>
+                  <span className="mt-1 whitespace-nowrap text-[11px] font-medium uppercase tracking-wide text-muted-foreground">{label}</span>
+                </span>
               </div>
-            ))}
-          </div>
-        </div>
+              );
+            })}
+          </motion.div>
+        </motion.div>
 
-        {/* Right Area - Doctors Cutout — HIDDEN on mobile, shown on desktop */}
-        <div className="hidden lg:flex w-full lg:w-[45%] relative justify-center lg:justify-end items-end h-[400px] sm:h-[500px] lg:h-[calc(100svh-112px)] max-h-[700px]">
-          {/* Doctors Image (Cutout) */}
-          <div className="relative w-full h-[90%] max-w-[500px] z-10 pointer-events-none">
-            {doctorsImageUrl && doctorsImageUrl !== "none" && (
+        {/* ---------------- Right: the people, and the way in ---------------- */}
+        <motion.div
+          initial={reduce ? { opacity: 1 } : { opacity: 0, scale: 0.97 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.15, ease: [0.2, 0, 0, 1] }}
+          className="relative hidden lg:flex w-full lg:w-[42%] justify-end items-end h-[clamp(430px,62svh,620px)]"
+        >
+          {doctorsImageUrl && doctorsImageUrl !== "none" && (
+            <div className="relative h-full w-full max-w-[520px]">
               <Image
                 src={doctorsImageUrl}
-                alt="Medical Experts"
+                alt="AdmissionHands counselling team"
                 fill
                 priority
-                className="object-contain object-bottom drop-shadow-2xl pointer-events-none"
+                sizes="(max-width: 1024px) 0px, 520px"
+                className="object-contain object-bottom drop-shadow-2xl"
               />
-            )}
-
-            {/* Embedded Floating Card */}
-            <div className="absolute bottom-12 -right-4 lg:-right-8 z-20 w-[320px] bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-[1.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.12)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.4)] border border-slate-100 dark:border-slate-800 p-4 flex flex-col gap-3 transition-transform duration-300 hover:-translate-y-1 group pointer-events-auto">
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => CTA.whatsapp()}
-                  className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30 flex items-center justify-center hover:bg-emerald-100 transition-colors shrink-0"
-                  aria-label="WhatsApp Expert"
-                >
-                  <WhatsAppIcon size={20} className="text-emerald-600 dark:text-emerald-450" />
-                </button>
-                <div className="flex flex-col text-left">
-                  <h3 className="font-black text-slate-900 dark:text-white text-sm leading-tight">
-                    Confused About Admission?
-                  </h3>
-                  <p className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">
-                    Talk to our NEET experts
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => CTA.call()}
-                className="w-full h-10 rounded-xl bg-slate-900 dark:bg-blue-600 dark:hover:bg-blue-500 hover:bg-blue-600 flex items-center justify-center gap-2 text-white shadow-md transition-all active:scale-95 text-xs font-black"
-                aria-label="Call Expert"
-              >
-                <Phone size={14} />
-                Call Now
-              </button>
             </div>
-          </div>
-        </div>
+          )}
+
+          <motion.div
+            initial={reduce ? { opacity: 1 } : { opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5, ease: [0.2, 0, 0, 1] }}
+            className="panel-glass card-lift absolute bottom-10 -right-2 z-20 w-[320px] rounded-2xl p-4 shadow-lift"
+          >
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => CTA.whatsapp()}
+                aria-label="Message an expert on WhatsApp"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-accent/25 bg-accent-soft text-accent transition-colors hover:bg-accent/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <WhatsAppIcon size={20} />
+              </button>
+              <div className="text-left">
+                <h2 className="font-heading text-sm font-bold leading-tight text-foreground">
+                  Not sure where your rank lands?
+                </h2>
+                <p className="mt-0.5 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                  Talk to a NEET counsellor
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => CTA.call()}
+              className="mt-3 flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-gradient-brand text-xs font-bold text-white shadow-glow transition-all hover:shadow-glow-lg active:scale-[.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              <Phone size={14} />
+              Call now — free
+            </button>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

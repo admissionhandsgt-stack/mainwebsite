@@ -53,7 +53,7 @@ export default function LegalMobileNav({
               onClick={() => onSectionChange(section.slug)}
               className={`px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider transition-all duration-200 shrink-0 select-none ${
                 isActive
-                  ? "bg-blue-600 text-white shadow-md shadow-blue-500/25 active:scale-95"
+                  ? "bg-cyan-600 text-white shadow-md shadow-cyan-500/25 active:scale-95"
                   : "bg-slate-50 dark:bg-slate-900 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-98"
               }`}
             >

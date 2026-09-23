@@ -33,3 +33,15 @@ test-results/
 .vercel
 .open-next
 scratch/
+
+# Playwright artifacts (screenshots/reports are regenerated on every run)
+playwright-report/
+tests/evidence/
+tests/**/*.png
+tests/**/*.webm
+
+# Cloudflare / Wrangler local state
+.wrangler/
+
+# Local cleanup quarantine (review, then delete)
+.cleanup-quarantine/

@@ -38,8 +38,8 @@ export default function LegalSidebar({
                 onClick={() => scrollTo(section.slug)}
                 className={`block w-full text-left text-[14px] py-2.5 px-4 rounded-xl transition-all duration-150 border-l-2 ${
                   isSectionActive
-                    ? "bg-blue-50/50 dark:bg-blue-950/20 text-blue-650 dark:text-blue-400 font-bold border-blue-600"
-                    : "text-slate-600 dark:text-slate-450 border-transparent hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50/30 dark:hover:bg-slate-900/30"
+                    ? "bg-cyan-50/50 dark:bg-cyan-950/20 text-cyan-600 dark:text-cyan-400 font-bold border-cyan-600"
+                    : "text-slate-600 dark:text-slate-400 border-transparent hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50/30 dark:hover:bg-slate-900/30"
                 }`}
               >
                 {section.title}

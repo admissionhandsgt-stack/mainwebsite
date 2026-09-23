@@ -1,7 +1,12 @@
 import React from 'react';
-import Head from 'next/head';
 
 interface SEOProps {
+  /**
+   * Accepted and ignored. These used to become meta tags via `next/head`,
+   * which the App Router does not render — so they were silently doing
+   * nothing. Titles and descriptions now come from each page's
+   * `generateMetadata`, which the admin can override per route.
+   */
   title?: string;
   description?: string;
   keywords?: string;
@@ -10,53 +15,28 @@ interface SEOProps {
   ogImage?: string;
   ogUrl?: string;
   canonical?: string;
+  /** The one thing this component still emits. */
   structuredData?: object;
 }
 
-const SEO: React.FC<SEOProps> = ({
-  title = 'AdmissionHands - Expert Medical College Admission Guidance',
-  description = 'Get expert guidance for MBBS, MD/MS admissions in top medical colleges. Personalized counseling, guaranteed results.',
-  keywords = 'medical admissions, MBBS admission, medical college counseling, NRI quota, medical education',
-  ogTitle = 'AdmissionHands - Medical College Admission Experts',
-  ogDescription = 'Expert guidance for medical college admissions in India. Get personalized counseling for MBBS and MD/MS.',
-  ogImage = 'https://lovable.dev/opengraph-image-p98pqg.png',
-  ogUrl = 'https://www.admissionhands.com',
-  canonical = '',
-  structuredData,
-}) => {
-  const currentUrl = canonical || ogUrl;
+/**
+ * Renders a page's JSON-LD.
+ *
+ * In the App Router a `<script type="application/ld+json">` in the page body
+ * is the supported way to ship structured data; `next/head` is a Pages Router
+ * API and is ignored here, which is why nothing this component used to render
+ * ever reached the page.
+ */
+const SEO: React.FC<SEOProps> = ({ structuredData }) => {
+  if (!structuredData) return null;
 
   return (
-    <Head>
-      <title>{title}</title>
-      <meta name="description" content={description} />
-      <meta name="keywords" content={keywords} />
-
-      <meta property="og:title" content={ogTitle} />
-      <meta property="og:description" content={ogDescription} />
-      <meta property="og:type" content="website" />
-      <meta property="og:url" content={currentUrl} />
-      <meta property="og:image" content={ogImage} />
-      <meta property="og:site_name" content="AdmissionHands" />
-
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:site" content="@admission_hands" />
-      <meta name="twitter:title" content={ogTitle} />
-      <meta name="twitter:description" content={ogDescription} />
-      <meta name="twitter:image" content={ogImage} />
-
-      <meta name="theme-color" content="#2563EB" />
-      <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-      <link rel="canonical" href={currentUrl} />
-
-      {structuredData && (
-        <script type="application/ld+json">
-          {JSON.stringify(structuredData)}
-        </script>
-      )}
-    </Head>
+    <script
+      type="application/ld+json"
+      // The object is built in our own code, never from user input.
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+    />
   );
 };
 
 export default SEO;
-

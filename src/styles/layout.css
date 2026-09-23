@@ -80,8 +80,16 @@
 }
 
 /* 4. Layout & Behavior */
-header {
-  height: 72px; /* Standard Header Height */
+
+/*
+ * The site header is a fixed 72px bar, and LiveAlerts is positioned against
+ * that number. This used to be a bare `header { height: 72px }`, which forced
+ * every semantic <header> on every page to 72px — a page hero written as a
+ * <header> collapsed to a strip with its own white heading spilling onto the
+ * white page below it. Scoped to the site bar only.
+ */
+header[data-site-header] {
+  height: 72px;
 }
 
 /* Perfect alignment for LiveAlerts below Header */

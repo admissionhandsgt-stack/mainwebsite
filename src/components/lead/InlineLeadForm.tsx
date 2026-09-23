@@ -30,6 +30,12 @@ const AVAILABLE_STATES = [
 ];
 
 // Specialization branch suggestions
+// PG candidates pick a speciality; UG candidates do not have one yet, so the
+// UG form asks about the course instead.
+const UG_COURSE_SUGGESTIONS = [
+  'MBBS', 'BDS', 'BAMS', 'BHMS', 'B.Sc. Nursing', 'BVSc',
+];
+
 const BRANCH_SUGGESTIONS = [
   'Radiology', 'Dermatology', 'General Medicine', 'Pediatrics',
   'Orthopedics', 'General Surgery', 'Ob-Gyn', 'Anaesthesia',
@@ -77,7 +83,15 @@ const getRankAnalysis = (rankNum: number): RankAnalysis => {
   }
 };
 
-export const InlineLeadForm = ({ source = 'PG Page' }: { source?: string }) => {
+export const InlineLeadForm = ({
+  source = 'PG Page',
+  level = 'pg',
+}: {
+  source?: string;
+  /** Which counselling this enquiry is about. Without it every lead lands in
+   *  the admin as PG, because that is what the API defaults to. */
+  level?: 'ug' | 'pg';
+}) => {
   const { contactInfo } = useContactInfo();
   // Form steps: 1 = Clinical Profile, 2 = Contact Information
   const [step, setStep] = useState(1);
@@ -172,6 +186,7 @@ Internship: ${formData.internship_status}`;
       quota_interest: formData.quota_interest,
       internship_status: formData.internship_status,
       source,
+      level,
       honeypot: formData.honeypot
     };
 
@@ -190,7 +205,7 @@ Internship: ${formData.internship_status}`;
 
       setStatus('success');
       toast.success('Query Submitted Successfully! 🩺');
-      trackEvent('lead_submit', { source, rank: formData.rank });
+      trackEvent('lead_submit', { source, level, rank: formData.rank });
     } catch (err: any) {
       setStatus('error');
       setErrorMsg(err.message || 'Something went wrong. Please check your network and try again.');
@@ -206,7 +221,7 @@ Internship: ${formData.internship_status}`;
         
         <div>
           <h3 className="text-base font-black text-emerald-400 mb-1">Submitted Successfully!</h3>
-          <p className="text-xs text-slate-350 font-bold max-w-xs mx-auto">
+          <p className="text-xs text-slate-300 font-bold max-w-xs mx-auto">
             Opening your prefilled advice strategy chat on WhatsApp...
           </p>
         </div>
@@ -260,7 +275,7 @@ Internship: ${formData.internship_status}`;
         <form onSubmit={handleNextStep} className="space-y-4">
           {/* Rank Field */}
           <div>
-            <label className="block text-[10px] font-black text-slate-350 uppercase tracking-wider mb-1.5 ml-0.5">
+            <label className="block text-[10px] font-black text-slate-300 uppercase tracking-wider mb-1.5 ml-0.5">
               Expected / Current NEET PG Rank
             </label>
             <div className="relative">
@@ -268,7 +283,7 @@ Internship: ${formData.internship_status}`;
               <input
                 type="text"
                 required
-                className="w-full pl-9 pr-3 py-2 bg-slate-950/40 border border-white/10 focus:border-blue-500/70 focus:ring-1 focus:ring-blue-500/20 rounded-xl transition-all text-xs text-white placeholder-slate-600 outline-none"
+                className="w-full pl-9 pr-3 py-2 bg-slate-950/40 border border-white/10 focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-xs text-white placeholder-slate-600 outline-none"
                 placeholder="e.g. 4500"
                 value={formData.rank}
                 onChange={e => setFormData({ ...formData, rank: e.target.value.replace(/\D/g, '') })}
@@ -281,9 +296,9 @@ Internship: ${formData.internship_status}`;
 
           {/* Dynamic Rank Opportunity Analyzer */}
           {showAnalysis && analysisData && (
-            <div className="bg-blue-500/5 border border-blue-500/10 rounded-xl p-3.5 space-y-2 animate-fadeIn">
-              <div className="flex items-center gap-1.5 text-[10.5px] font-black text-blue-400">
-                <Sparkles className="w-3.5 h-3.5 text-blue-400" />
+            <div className="bg-cyan-500/5 border border-cyan-500/10 rounded-xl p-3.5 space-y-2 animate-fadeIn">
+              <div className="flex items-center gap-1.5 text-[10.5px] font-black text-cyan-400">
+                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
                 <span>Estimated Opportunity Zones (AIR {formData.rank})</span>
               </div>
               <div className="text-[10px] text-slate-300 leading-relaxed font-bold">
@@ -291,29 +306,32 @@ Internship: ${formData.internship_status}`;
               </div>
               <div className="flex flex-wrap gap-1 mt-1">
                 {analysisData.specialties.map((spec, i) => (
-                  <span key={i} className="text-[9px] bg-blue-500/10 border border-blue-500/20 text-blue-300 font-black px-2 py-0.5 rounded-md">
+                  <span key={i} className="text-[9px] bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 font-black px-2 py-0.5 rounded-md">
                     {spec}
                   </span>
                 ))}
               </div>
               <p className="text-[9px] text-slate-400 leading-normal font-bold">
-                💡 <span className="text-slate-350">{analysisData.strategy}</span>
+                💡 <span className="text-slate-300">{analysisData.strategy}</span>
               </p>
             </div>
           )}
 
-          {/* Preferred Branch */}
+          {/* Preferred branch (PG) or course (UG) */}
           <div>
-            <label className="block text-[10px] font-black text-slate-355 uppercase tracking-wider mb-1.5 ml-0.5">
-              Preferred Specialty Branch
+            <label htmlFor="lead-branch" className="block text-[10px] font-black text-slate-355 uppercase tracking-wider mb-1.5 ml-0.5">
+              {level === 'ug' ? 'Preferred Course' : 'Preferred Specialty Branch'}
             </label>
             <select
-              className="w-full px-3 py-2 bg-slate-950/40 border border-white/10 focus:border-blue-500/70 focus:ring-1 focus:ring-blue-500/20 rounded-xl transition-all text-xs text-white outline-none cursor-pointer"
+              id="lead-branch"
+              className="w-full px-3 py-2 bg-slate-950/40 border border-white/10 focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-xs text-white outline-none cursor-pointer"
               value={formData.preferred_branch}
               onChange={e => setFormData({ ...formData, preferred_branch: e.target.value })}
             >
-              <option className="bg-slate-950" value="">-- Select Preferred Specialty --</option>
-              {BRANCH_SUGGESTIONS.map((branch, i) => (
+              <option className="bg-slate-950" value="">
+                {level === 'ug' ? '-- Select Preferred Course --' : '-- Select Preferred Specialty --'}
+              </option>
+              {(level === 'ug' ? UG_COURSE_SUGGESTIONS : BRANCH_SUGGESTIONS).map((branch, i) => (
                 <option key={i} className="bg-slate-950" value={branch}>
                   {branch}
                 </option>
@@ -336,7 +354,7 @@ Internship: ${formData.internship_status}`;
                     onClick={() => handleStateToggle(state)}
                     className={`text-[9.5px] px-2 py-1 rounded-lg border font-bold transition-all cursor-pointer ${
                       isSelected 
-                        ? 'bg-blue-600/25 border-blue-500 text-blue-300' 
+                        ? 'bg-cyan-600/25 border-cyan-500 text-cyan-300' 
                         : 'bg-slate-950/20 border-white/10 text-slate-400 hover:border-white/20'
                     }`}
                   >
@@ -364,8 +382,8 @@ Internship: ${formData.internship_status}`;
                       onClick={() => setFormData({ ...formData, quota_interest: quota })}
                       className={`flex-1 text-[9.5px] py-1 rounded-lg font-black transition-all cursor-pointer ${
                         isActive 
-                          ? 'bg-blue-600/30 text-blue-300 border border-blue-500/20' 
-                          : 'text-slate-450 hover:text-white border border-transparent'
+                          ? 'bg-cyan-600/30 text-cyan-300 border border-cyan-500/20' 
+                          : 'text-slate-400 hover:text-white border border-transparent'
                       }`}
                     >
                       {quota}
@@ -390,8 +408,8 @@ Internship: ${formData.internship_status}`;
                       onClick={() => setFormData({ ...formData, internship_status: statusOption })}
                       className={`flex-1 text-[9.5px] py-1 rounded-lg font-black transition-all cursor-pointer ${
                         isActive 
-                          ? 'bg-blue-600/30 text-blue-300 border border-blue-500/20' 
-                          : 'text-slate-450 hover:text-white border border-transparent'
+                          ? 'bg-cyan-600/30 text-cyan-300 border border-cyan-500/20' 
+                          : 'text-slate-400 hover:text-white border border-transparent'
                       }`}
                     >
                       {statusOption === 'Completed' ? 'Done' : 'Ongoing'}
@@ -411,7 +429,7 @@ Internship: ${formData.internship_status}`;
 
           <button
             type="submit"
-            className="w-full flex items-center justify-center gap-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 active:scale-[0.98] text-white py-2.5 rounded-xl font-bold shadow-md shadow-blue-500/10 transition-all mt-1 cursor-pointer"
+            className="w-full flex items-center justify-center gap-1.5 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 active:scale-[0.98] text-white py-2.5 rounded-xl font-bold shadow-md shadow-cyan-500/10 transition-all mt-1 cursor-pointer"
           >
             <span className="text-xs uppercase tracking-wider">Generate Strategy</span>
             <ChevronRight className="w-4 h-4" />
@@ -440,7 +458,7 @@ Internship: ${formData.internship_status}`;
               <input
                 type="text"
                 required
-                className="w-full pl-9 pr-3 py-2 bg-slate-950/40 border border-white/10 focus:border-blue-500/70 focus:ring-1 focus:ring-blue-500/20 rounded-xl transition-all text-xs text-white placeholder-slate-650 outline-none"
+                className="w-full pl-9 pr-3 py-2 bg-slate-950/40 border border-white/10 focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-xs text-white placeholder-slate-600 outline-none"
                 placeholder="Dr. Rahul Sharma"
                 value={formData.name}
                 onChange={e => setFormData({...formData, name: e.target.value})}
@@ -458,7 +476,7 @@ Internship: ${formData.internship_status}`;
               <input
                 type="tel"
                 required
-                className="w-full pl-9 pr-3 py-2 bg-slate-950/40 border border-white/10 focus:border-blue-500/70 focus:ring-1 focus:ring-blue-500/20 rounded-xl transition-all text-xs text-white placeholder-slate-650 outline-none"
+                className="w-full pl-9 pr-3 py-2 bg-slate-950/40 border border-white/10 focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-xs text-white placeholder-slate-600 outline-none"
                 placeholder="+91 98765 43210"
                 value={formData.phone}
                 onChange={e => setFormData({...formData, phone: e.target.value})}

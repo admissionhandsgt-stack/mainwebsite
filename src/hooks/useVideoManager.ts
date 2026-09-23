@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 interface Video {
@@ -33,98 +32,74 @@ export const useVideoManager = (options: { silent?: boolean } = {}) => {
 
   const fetchVideos = async (silent = options.silent) => {
     setIsLoading(true);
-    const { data, error } = await supabase
-      .from('videos')
-      .select('*')
-      .order('created_at', { ascending: false });
+    try {
+      // The admin list needs every video, including ones not featured.
+      const res = await fetch('/api/admin/videos', { cache: 'no-store' });
+      if (!res.ok) throw new Error(`Request failed (${res.status})`);
+      const { data } = await res.json();
 
-    setIsLoading(false);
-    if (error) {
-      if (!silent) console.error('Error fetching videos:', error);
+      setVideos(
+        (data ?? []).map((item: Record<string, unknown>) => ({
+          id: item.id as number,
+          title: (item.title as string) || '',
+          videos_id: (item.videos_id as string) || '',
+          description: (item.description as string) || '',
+          created_at: (item.created_at as string) || new Date().toISOString(),
+          featured: !!item.featured,
+        })),
+      );
+      setError('');
+    } catch (e) {
+      if (!silent) console.error('Error fetching videos:', e);
       setError('Failed to fetch videos');
       if (!silent) toast.error('Failed to load videos');
-      return;
-    }
-
-    if (data) {
-      const mappedVideos: Video[] = (data || []).map((item: any) => ({
-        id: item.id,
-        title: item.title || '',
-        videos_id: item.videos_id || '',
-        description: item.description || '',
-        created_at: item.created_at || new Date().toISOString(),
-        featured: !!item.featured
-      }));
-      setVideos(mappedVideos);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    const channel = supabase
-      .channel('public:videos')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'videos' }, (payload) => {
-        fetchVideos(true);
-      })
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    fetchVideos(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!newVideo.title || !newVideo.videos_id) {
       setError('Title and YouTube Video ID are required fields');
       toast.error('Title and YouTube Video ID are required fields');
       return;
     }
-    
+
     setIsLoading(true);
-    
-    if (isEditing) {
-      const { error } = await supabase
-        .from('videos')
-        .update({
-          title: newVideo.title,
-          videos_id: newVideo.videos_id,
-          description: newVideo.description,
-          featured: newVideo.featured
-        })
-        .eq('id', isEditing)
-        .select();
+    try {
+      const res = await fetch(
+        isEditing ? `/api/admin/videos/${isEditing}` : '/api/admin/videos',
+        {
+          method: isEditing ? 'PATCH' : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title: newVideo.title,
+            videos_id: newVideo.videos_id,
+            description: newVideo.description,
+            featured: newVideo.featured,
+          }),
+        },
+      );
+      if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error ?? 'Save failed');
 
-      if (error) {
-        setError('Failed to update video');
-        toast.error('Failed to update video');
-      } else {
-        toast.success('Video updated successfully');
-        setIsEditing(null);
-      }
-    } else {
-      const { error } = await supabase
-        .from('videos')
-        .insert({
-          title: newVideo.title,
-          videos_id: newVideo.videos_id,
-          description: newVideo.description,
-          featured: newVideo.featured
-        })
-        .select();
-
-      if (error) {
-        setError('Failed to create video');
-        toast.error('Failed to create video');
-        console.error('Supabase error:', error);
-      } else {
-        toast.success('Video added successfully');
-      }
+      toast.success(isEditing ? 'Video updated' : 'Video added');
+      setIsEditing(null);
+      resetForm();
+      await fetchVideos();
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Could not save the video';
+      setError(msg);
+      toast.error(msg);
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
-    fetchVideos();
-    resetForm();
   };
 
   const handleEdit = (video: Video) => {
@@ -138,22 +113,19 @@ export const useVideoManager = (options: { silent?: boolean } = {}) => {
   };
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this video?')) return;
-    
+    if (!window.confirm('Delete this video? This cannot be undone.')) return;
+
     setIsLoading(true);
-    const { error } = await supabase
-      .from('videos')
-      .delete()
-      .eq('id', id);
-    
-    setIsLoading(false);
-    
-    if (error) {
+    try {
+      const res = await fetch(`/api/admin/videos/${id}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Delete failed');
+      toast.success('Video deleted');
+      await fetchVideos();
+    } catch (err) {
       setError('Failed to delete video');
-      toast.error('Failed to delete video');
-    } else {
-      toast.success('Video deleted successfully');
-      fetchVideos();
+      toast.error('Could not delete the video');
+    } finally {
+      setIsLoading(false);
     }
   };
 

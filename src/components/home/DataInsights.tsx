@@ -9,7 +9,7 @@ const insightCards = [
     value: "45% : 55%",
     description: "Detailed breakdown of seat availability across college types.",
     icon: PieChart,
-    color: "from-blue-600 to-indigo-700"
+    color: "from-cyan-600 to-teal-700"
   },
   {
     title: "AIQ vs State Distribution",
@@ -23,7 +23,7 @@ const insightCards = [
     value: "High Intensity",
     description: "Trend analysis of expected cutoff shifts.",
     icon: TrendingUp,
-    color: "from-purple-600 to-rose-700"
+    color: "from-teal-600 to-rose-700"
   }
 ];
 
@@ -48,7 +48,7 @@ const DataInsights = () => {
   return (
     <section className="compact-padding bg-slate-900 relative overflow-hidden">
       {/* Decorative Elements */}
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-blue-600/10 blur-[120px] -z-0 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-1/3 h-full bg-cyan-600/10 blur-[120px] -z-0 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-1/4 h-1/2 bg-teal-500/5 blur-[100px] -z-0 pointer-events-none" />
 
       <div className="container-custom relative z-10">
@@ -58,7 +58,7 @@ const DataInsights = () => {
             initial={{ opacity: 0, y: -10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            className="inline-block px-4 py-1.5 mb-4 text-[10px] font-black tracking-widest text-blue-400 uppercase bg-blue-500/10 rounded-full border border-blue-500/20"
+            className="inline-block px-4 py-1.5 mb-4 text-[10px] font-black tracking-widest text-cyan-400 uppercase bg-cyan-500/10 rounded-full border border-cyan-500/20"
           >
             Admission Intelligence
           </motion.div>
@@ -68,7 +68,7 @@ const DataInsights = () => {
             viewport={{ once: true, margin: "-50px" }}
             className="text-responsive-h2 text-white mb-4"
           >
-            Data-Driven <span className="text-blue-400">Insights</span> & Eligibility
+            Data-Driven <span className="text-cyan-400">Insights</span> & Eligibility
           </motion.h2>
           <motion.p
             initial={{ opacity: 0 }}
@@ -114,8 +114,8 @@ const DataInsights = () => {
             className="bg-white/[0.04] backdrop-blur-md rounded-xl md:rounded-[2rem] p-3.5 md:p-7 border border-white/10"
           >
             <div className="flex items-center gap-2 md:gap-3 mb-3.5 md:mb-5">
-              <div className="w-6 h-6 md:w-8 md:h-8 rounded-lg md:rounded-xl bg-blue-600/20 flex items-center justify-center shrink-0">
-                <TrendingUp className="w-3.5 h-3.5 md:w-4 md:h-4 text-blue-400" />
+              <div className="w-6 h-6 md:w-8 md:h-8 rounded-lg md:rounded-xl bg-cyan-600/20 flex items-center justify-center shrink-0">
+                <TrendingUp className="w-3.5 h-3.5 md:w-4 md:h-4 text-cyan-400" />
               </div>
               <h3 className="text-xs md:text-base font-black text-white uppercase tracking-wider">Essential Admission Insights</h3>
             </div>
@@ -162,8 +162,8 @@ const DataInsights = () => {
                   transition={{ delay: 0.6 + i * 0.06 }}
                   className="flex items-start gap-2 md:gap-3 group"
                 >
-                  <div className="mt-0.5 w-4 h-4 md:w-5 md:h-5 rounded-md bg-blue-500/20 flex items-center justify-center shrink-0 group-hover:bg-blue-500/30 transition-colors">
-                    <point.icon className="w-2.5 h-2.5 md:w-3 md:h-3 text-blue-400" />
+                  <div className="mt-0.5 w-4 h-4 md:w-5 md:h-5 rounded-md bg-cyan-500/20 flex items-center justify-center shrink-0 group-hover:bg-cyan-500/30 transition-colors">
+                    <point.icon className="w-2.5 h-2.5 md:w-3 md:h-3 text-cyan-400" />
                   </div>
                   <p className="text-slate-300 text-[10px] md:text-sm font-medium leading-relaxed">{point.text}</p>
                 </motion.div>

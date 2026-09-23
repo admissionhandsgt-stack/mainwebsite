@@ -3,7 +3,7 @@
  * Server-side service to trigger WhatsApp alerts for new admissions leads.
  * Supports sending notifications to multiple comma-separated numbers in parallel.
  */
-import { createClient } from '@supabase/supabase-js';
+import { getContactInfo } from '@/lib/content';
 
 interface LeadNotificationPayload {
   name: string;
@@ -16,31 +16,19 @@ interface LeadNotificationPayload {
   source: string;
 }
 
-// Dynamically fetch target recipient phone numbers from Supabase contact_info settings
+// Who gets alerted: the env override wins, otherwise the number the admin
+// set under Contacts.
 async function getRecipientNumbers(): Promise<string[]> {
   let recipientString = '';
 
   if (process.env.WHATSAPP_RECIPIENT_NUMBER) {
     recipientString = process.env.WHATSAPP_RECIPIENT_NUMBER;
   } else {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    if (url && key) {
-      try {
-        const supabase = createClient(url, key);
-        const { data, error } = await supabase
-          .from('contact_info')
-          .select('*')
-          .order('id', { ascending: false })
-          .limit(1)
-          .single();
-
-        if (!error && data) {
-          recipientString = (data.lead_notification_phone || data.whatsapp_number || '') as string;
-        }
-      } catch (err) {
-        console.error('[WhatsApp Alert] Error loading recipient from contact_info table:', err);
-      }
+    try {
+      const contact = await getContactInfo();
+      recipientString = contact?.leadNotificationPhone || contact?.whatsappNumber || '';
+    } catch (err) {
+      console.error('[WhatsApp Alert] Error loading recipient from contact_info:', err);
     }
   }
 

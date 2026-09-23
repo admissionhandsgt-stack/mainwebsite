@@ -1,4 +1,11 @@
-import { supabase } from "@/integrations/supabase/client";
+/**
+ * The curated homepage college list.
+ *
+ * Reads PostgreSQL through `content.ts`. Shape kept as it was so the homepage
+ * and TopMedicalInstitutes need no change.
+ */
+
+import { getCuratedColleges } from "@/lib/content";
 
 export interface CollegeData {
   college_name: string;
@@ -15,35 +22,22 @@ export type GroupedColleges = {
 };
 
 export async function getRecommendedColleges(): Promise<GroupedColleges> {
-  try {
-    const { data, error } = await supabase
-      .from("ug_recommended_colleges")
-      .select("college_name, state, intake, image_url, college_type")
-      .eq("is_active", true)
-      .order("display_order", { ascending: true })
-      .order("created_at", { ascending: false });
+  const grouped: GroupedColleges = { Govt: [], Private: [], Deemed: [] };
+  const list = await getCuratedColleges("ugRecommended");
 
-    if (error) {
-      console.error("Error fetching recommended colleges:", error);
-      return { Govt: [], Private: [], Deemed: [] };
-    }
-
-    const grouped: GroupedColleges = { Govt: [], Private: [], Deemed: [] };
-
-    data?.forEach((college) => {
-      const type = college.college_type?.toLowerCase() || '';
-      if (type === "government" || type === "govt") {
-        grouped.Govt.push(college as CollegeData);
-      } else if (type === "private") {
-        grouped.Private.push(college as CollegeData);
-      } else if (type === "deemed") {
-        grouped.Deemed.push(college as CollegeData);
-      }
-    });
-
-    return grouped;
-  } catch (error) {
-    console.error("Unexpected error fetching recommended colleges:", error);
-    return { Govt: [], Private: [], Deemed: [] };
+  for (const c of list) {
+    const row: CollegeData = {
+      college_name: c.collegeName,
+      state: c.state ?? "",
+      intake: c.intake ?? 0,
+      image_url: c.imageUrl ?? "",
+      college_type: c.collegeType ?? "",
+    };
+    const type = (c.collegeType ?? "").toLowerCase();
+    if (type === "government" || type === "govt") grouped.Govt.push(row);
+    else if (type === "private") grouped.Private.push(row);
+    else if (type === "deemed") grouped.Deemed.push(row);
   }
+
+  return grouped;
 }

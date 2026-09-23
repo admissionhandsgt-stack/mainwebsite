@@ -7,20 +7,58 @@ import { cn } from "@/lib/utils";
 import MobileFooter from './MobileFooter';
 import { CONTACT_INFO } from '@/lib/constants';
 import { useContactInfo } from '@/hooks/useContactInfo';
+import type { NavItem } from '@/lib/content';
+import type { SocialLinks } from './SiteShell';
 
-const Footer: React.FC = () => {
+const FALLBACK_EXPLORE: NavItem[] = [
+  { id: -1, label: 'MBBS India', url: '/mbbs-india', newTab: false, children: [] },
+  { id: -2, label: 'MD/MS India', url: '/md-ms-india', newTab: false, children: [] },
+  { id: -3, label: 'Services', url: '/services', newTab: false, children: [] },
+  { id: -4, label: 'Know Us', url: '/know-us', newTab: false, children: [] },
+  { id: -5, label: 'Terms', url: '/terms', newTab: false, children: [] },
+];
+
+const FALLBACK_QUICK: NavItem[] = FALLBACK_EXPLORE.slice(0, 4);
+
+const DEFAULT_TAGLINE =
+  'India\u2019s most trusted partner for MBBS & PG medical admissions. Expert guidance and transparent processes for your career.';
+
+const DEFAULT_SOCIAL: Required<SocialLinks> = {
+  facebook: 'https://facebook.com/admissionhands',
+  instagram: 'https://www.instagram.com/admissionhandss?igsh=cDEyd2dsdXBpeW5v',
+  youtube: 'https://youtube.com/@admissionhands',
+};
+
+interface FooterProps {
+  explore?: NavItem[];
+  quickLinks?: NavItem[];
+  tagline?: string;
+  social?: SocialLinks;
+}
+
+const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social }) => {
   const currentYear = new Date().getFullYear();
   const { contactInfo } = useContactInfo();
   const phoneNumber = contactInfo?.phone_number || CONTACT_INFO.phone;
   const emailAddress = contactInfo?.email || CONTACT_INFO.email;
+
+  const exploreLinks = explore?.length ? explore : FALLBACK_EXPLORE;
+  const quick = quickLinks?.length ? quickLinks : FALLBACK_QUICK;
+
+  // An empty setting means "use what shipped"; a blank URL hides that icon.
+  const socialLinks = [
+    { key: 'facebook', icon: Facebook, href: social?.facebook ?? DEFAULT_SOCIAL.facebook, color: 'hover:bg-cyan-600' },
+    { key: 'instagram', icon: Instagram, href: social?.instagram ?? DEFAULT_SOCIAL.instagram, color: 'hover:bg-emerald-600' },
+    { key: 'youtube', icon: Youtube, href: social?.youtube ?? DEFAULT_SOCIAL.youtube, color: 'hover:bg-red-600' },
+  ].filter((s) => s.href);
   
   return (
     <>
       <footer className="relative bg-[#060b16] text-white pt-6 pb-2 md:pt-10 md:pb-6 overflow-hidden">
         {/* Subtle mesh gradient background */}
         <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-          <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-blue-600 blur-[120px]" />
-          <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-blue-400 blur-[100px]" />
+          <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-cyan-600 blur-[120px]" />
+          <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-cyan-400 blur-[100px]" />
         </div>
 
         <div className="container-custom relative z-10">
@@ -41,17 +79,13 @@ const Footer: React.FC = () => {
               </div>
               
               <p className="text-gray-400 text-[11px] md:text-xs font-medium leading-relaxed max-w-sm">
-                India&apos;s most trusted partner for MBBS & PG medical admissions. Expert guidance and transparent processes for your career.
+                {tagline || DEFAULT_TAGLINE}
               </p>
               
               <div className="flex space-x-2 md:space-x-3">
-                {[
-                  { icon: Facebook, href: 'https://facebook.com/admissionhands', color: 'hover:bg-blue-600' },
-                  { icon: Instagram, href: 'https://www.instagram.com/admissionhandss?igsh=cDEyd2dsdXBpeW5v', color: 'hover:bg-pink-600' },
-                  { icon: Youtube, href: 'https://youtube.com/@admissionhands', color: 'hover:bg-red-600' }
-                ].map((social, idx) => (
-                  <a 
-                    key={idx}
+                {socialLinks.map((social) => (
+                  <a
+                    key={social.key}
                     href={social.href} 
                     target="_blank"
                     rel="noopener noreferrer"
@@ -66,18 +100,15 @@ const Footer: React.FC = () => {
 
             {/* Mobile Quick Links Row (Only on Mobile) */}
             <div className="lg:hidden flex flex-wrap gap-2 py-2 border-y border-white/5 mt-2">
-              {[
-                { name: 'MBBS India', href: '/mbbs-india' },
-                { name: 'PG/MD', href: '/md-ms-india' },
-                { name: 'Services', href: '/services' },
-                { name: 'Contact', href: '/contact' }
-              ].map((link) => (
-                <Link 
-                  key={link.name} 
-                  href={link.href}
+              {quick.map((link) => (
+                <Link
+                  key={link.id}
+                  href={link.url}
+                  target={link.newTab ? '_blank' : undefined}
+                  rel={link.newTab ? 'noopener noreferrer' : undefined}
                   className="bg-white/5 border border-white/10 px-4 py-2.5 rounded-full text-[10px] font-bold text-gray-300 hover:text-white hover:bg-white/10 transition-colors flex items-center justify-center min-h-[40px]"
                 >
-                  {link.name}
+                  {link.label}
                 </Link>
               ))}
             </div>
@@ -85,16 +116,18 @@ const Footer: React.FC = () => {
             {/* Desktop Explore / Mobile Accordion */}
             <div className="lg:col-span-2">
               <div className="hidden lg:block space-y-4">
-                <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500">Explore</h4>
+                <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-500">Explore</h4>
                 <ul className="space-y-2">
-                  {['MBBS India', 'MD/MS India', 'Services', 'Know Us', 'Terms'].map((item) => (
-                    <li key={item}>
-                      <Link 
-                        href={item === 'MBBS India' ? '/mbbs-india' : item === 'MD/MS India' ? '/md-ms-india' : `/${item.toLowerCase().replace(' ', '-')}`}
+                  {exploreLinks.map((item) => (
+                    <li key={item.id}>
+                      <Link
+                        href={item.url}
+                        target={item.newTab ? '_blank' : undefined}
+                        rel={item.newTab ? 'noopener noreferrer' : undefined}
                         className="text-gray-400 hover:text-white text-xs font-bold transition-colors flex items-center group"
                       >
                         <ArrowRight className="h-3 w-3 mr-2 opacity-0 group-hover:opacity-100 transition-all -ml-5 group-hover:ml-0" />
-                        {item}
+                        {item.label}
                       </Link>
                     </li>
                   ))}
@@ -102,19 +135,21 @@ const Footer: React.FC = () => {
               </div>
 
               <details className="lg:hidden group border-b border-white/5 pb-1">
-                <summary className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 cursor-pointer list-none py-2 [&::-webkit-details-marker]:hidden">
+                <summary className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em] text-cyan-500 cursor-pointer list-none py-2 [&::-webkit-details-marker]:hidden">
                   Explore
                   <ChevronDown className="w-3 h-3 group-open:rotate-180 transition-transform" />
                 </summary>
                 <div className="pt-1 pb-3 pl-1">
                   <ul className="space-y-2">
-                    {['MBBS India', 'MD/MS India', 'Services', 'Know Us'].map((item) => (
-                      <li key={item}>
-                        <Link 
-                          href={item === 'MBBS India' ? '/mbbs-india' : item === 'MD/MS India' ? '/md-ms-india' : `/${item.toLowerCase().replace(' ', '-')}`}
+                    {exploreLinks.map((item) => (
+                      <li key={item.id}>
+                        <Link
+                          href={item.url}
+                          target={item.newTab ? '_blank' : undefined}
+                          rel={item.newTab ? 'noopener noreferrer' : undefined}
                           className="text-gray-400 text-[11px] font-bold block py-3.5"
                         >
-                          {item}
+                          {item.label}
                         </Link>
                       </li>
                     ))}
@@ -126,10 +161,10 @@ const Footer: React.FC = () => {
             {/* Desktop Contact / Mobile Accordion */}
             <div className="lg:col-span-3">
               <div className="hidden lg:block space-y-4">
-                <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500">Get in Touch</h4>
+                <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-500">Get in Touch</h4>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-3">
-                    <div className="p-2 rounded-xl bg-blue-500/10 text-blue-400 shrink-0">
+                    <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 shrink-0">
                       <Phone className="h-4 w-4" />
                     </div>
                     <a href={`tel:${phoneNumber}`} className="text-gray-300 hover:text-white text-xs font-bold transition-colors mt-1.5">
@@ -137,7 +172,7 @@ const Footer: React.FC = () => {
                     </a>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="p-2 rounded-xl bg-blue-500/10 text-blue-400 shrink-0">
+                    <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 shrink-0">
                       <Mail className="h-4 w-4" />
                     </div>
                     <a href={`mailto:${emailAddress}`} className="text-gray-300 hover:text-white text-xs font-bold transition-colors mt-1.5 break-all">
@@ -145,7 +180,7 @@ const Footer: React.FC = () => {
                     </a>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="p-2 rounded-xl bg-blue-500/10 text-blue-400 shrink-0">
+                    <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 shrink-0">
                       <MapPin className="h-4 w-4" />
                     </div>
                     <p className="text-gray-300 text-xs font-bold leading-relaxed mt-1">
@@ -156,18 +191,18 @@ const Footer: React.FC = () => {
               </div>
 
               <details className="lg:hidden group border-b border-white/5 pb-1">
-                <summary className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 cursor-pointer list-none py-2 [&::-webkit-details-marker]:hidden">
+                <summary className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em] text-cyan-500 cursor-pointer list-none py-2 [&::-webkit-details-marker]:hidden">
                   Get in Touch
                   <ChevronDown className="w-3 h-3 group-open:rotate-180 transition-transform" />
                 </summary>
                 <div className="pt-1 pb-3 pl-1">
                   <ul className="space-y-2.5">
                     <li className="flex items-center gap-2">
-                      <Phone className="h-3 w-3 text-blue-400" />
+                      <Phone className="h-3 w-3 text-cyan-400" />
                       <a href={`tel:${phoneNumber}`} className="text-gray-400 text-[11px] font-bold block py-3.5">{phoneNumber}</a>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Mail className="h-3 w-3 text-blue-400" />
+                      <Mail className="h-3 w-3 text-cyan-400" />
                       <a href={`mailto:${emailAddress}`} className="text-gray-400 text-[11px] font-bold block py-3.5">{emailAddress}</a>
                     </li>
                   </ul>
@@ -177,7 +212,7 @@ const Footer: React.FC = () => {
 
             {/* Newsletter */}
             <div className="lg:col-span-3 space-y-3 lg:space-y-4">
-              <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 hidden lg:block">Updates</h4>
+              <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-500 hidden lg:block">Updates</h4>
               <p className="text-gray-400 text-[11px] md:text-xs font-medium leading-relaxed mt-2 lg:mt-0">
                 Stay updated with the latest admission notifications.
               </p>
@@ -185,9 +220,9 @@ const Footer: React.FC = () => {
                 <input 
                   type="email" 
                   placeholder="Your email" 
-                  className="bg-white/5 border border-white/10 rounded-lg md:rounded-xl px-3 py-3 md:px-4 md:py-3 text-[11px] md:text-xs w-full focus:ring-2 focus:ring-blue-600 outline-none transition-all placeholder:text-gray-600 min-h-[40px]"
+                  className="bg-white/5 border border-white/10 rounded-lg md:rounded-xl px-3 py-3 md:px-4 md:py-3 text-[11px] md:text-xs w-full focus:ring-2 focus:ring-cyan-600 outline-none transition-all placeholder:text-gray-600 min-h-[40px]"
                 />
-                <button className="bg-blue-650 hover:bg-blue-500 p-3 md:p-3 rounded-lg md:rounded-xl transition-all shrink-0 active:scale-95 shadow-lg shadow-blue-900/20 flex items-center justify-center min-w-[40px] min-h-[40px]" aria-label="Subscribe">
+                <button className="bg-cyan-600 hover:bg-cyan-500 p-3 md:p-3 rounded-lg md:rounded-xl transition-all shrink-0 active:scale-95 shadow-lg shadow-cyan-900/20 flex items-center justify-center min-w-[40px] min-h-[40px]" aria-label="Subscribe">
                   <ArrowRight className="h-4 w-4 md:h-4 md:w-4" />
                 </button>
               </div>

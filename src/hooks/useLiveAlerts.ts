@@ -1,9 +1,9 @@
+"use client";
 
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
+import { useState, useEffect, useCallback } from "react";
+import { toast } from "sonner";
 
-interface Alert {
+export interface Alert {
   id: number;
   title: string;
   link: string;
@@ -12,7 +12,7 @@ interface Alert {
   order_index: number;
 }
 
-interface AlertFormData {
+export interface AlertFormData {
   id?: number;
   title: string;
   link: string;
@@ -21,259 +21,168 @@ interface AlertFormData {
   order_index: number;
 }
 
+const EMPTY_FORM: AlertFormData = {
+  title: "",
+  link: "",
+  image_url: "",
+  is_active: true,
+  order_index: 0,
+};
+
+/**
+ * The scrolling notice bar, and the admin screen that edits it.
+ *
+ * Reads go through the public content API; writes go through the admin API,
+ * which is the only path that can change anything. `silent` suppresses toasts
+ * for the public bar, where a failed load should not interrupt a visitor.
+ */
 export const useLiveAlerts = (options: { silent?: boolean } = {}) => {
+  const { silent = false } = options;
+
   const [alerts, setAlerts] = useState<Alert[]>([]);
-  const [newAlert, setNewAlert] = useState<AlertFormData>({
-    title: '',
-    link: '',
-    image_url: '',
-    is_active: true,
-    order_index: 0
-  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [newAlert, setNewAlert] = useState<AlertFormData>(EMPTY_FORM);
   const [editingAlert, setEditingAlert] = useState<AlertFormData | null>(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
 
-  const fetchAlerts = async (silent = options.silent) => {
+  const fetchAlerts = useCallback(async () => {
     setIsLoading(true);
-    
+    setError(null);
     try {
-      const { data, error } = await supabase
-        .from('live_alerts')
-        .select('*')
-        .order('order_index', { ascending: true });
-
+      const res = await fetch("/api/content/alerts");
+      if (!res.ok) throw new Error("Could not load alerts");
+      const { data } = await res.json();
+      setAlerts(
+        (data ?? []).map(
+          (a: { id: number; title: string; link: string | null; imageUrl: string | null }): Alert => ({
+            id: a.id,
+            title: a.title,
+            link: a.link ?? "",
+            image_url: a.imageUrl ?? undefined,
+            is_active: true, // the content API only returns active rows
+            order_index: 0,
+          }),
+        ),
+      );
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "Could not load alerts";
+      setError(msg);
+      if (!silent) toast.error(msg);
+    } finally {
       setIsLoading(false);
-      
-      if (error) {
-        if (!silent) console.error('Error fetching alerts:', error.message || error);
-        setError('Failed to fetch alerts');
-        if (!silent) toast.error('Failed to fetch alerts');
-        return;
-      }
-
-      if (data) {
-        const mappedData: Alert[] = (data || []).map((item: any) => ({
-          id: item.id,
-          title: item.title || '',
-          link: item.link || '',
-          image_url: item.image_url || undefined,
-          is_active: !!item.is_active,
-          order_index: item.order_index || 0
-        }));
-        setAlerts(mappedData);
-        
-        if (data.length > 0) {
-          const maxOrderIndex = Math.max(...data.map(alert => alert.order_index));
-          setNewAlert(prev => ({
-            ...prev,
-            order_index: maxOrderIndex + 1
-          }));
-        }
-      }
-    } catch (err) {
-      if (!silent) console.error("Exception in fetchAlerts:", err);
-      setIsLoading(false);
-      setError('An unexpected error occurred');
-      if (!silent) toast.error('An unexpected error occurred');
     }
-  };
+  }, [silent]);
 
   useEffect(() => {
-    // We only need to auto-fetch if we are just calling the hook
-    // Usually the components call fetchAlerts inside useEffect themselves or we can do it here
-    // Wait, the original hook didn't have useEffect to fetch, it was called in components.
-    // Let's add the realtime subscription here.
-    const channel = supabase
-      .channel('public:live_alerts')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'live_alerts' }, (payload) => {
-        fetchAlerts(true); // silent refresh
-      })
-      .subscribe();
+    fetchAlerts();
+  }, [fetchAlerts]);
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
+  /* ----------------------------- admin ----------------------------- */
+
+  const write = useCallback(
+    async (method: "POST" | "PATCH" | "DELETE", body?: unknown, id?: number) => {
+      const res = await fetch(`/api/admin/alerts${id ? `/${id}` : ""}`, {
+        method,
+        headers: body ? { "Content-Type": "application/json" } : undefined,
+        body: body ? JSON.stringify(body) : undefined,
+      });
+      if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error ?? "Save failed");
+      await fetchAlerts();
+    },
+    [fetchAlerts],
+  );
+
+  const handleSubmit = useCallback(
+    async (e?: React.FormEvent) => {
+      e?.preventDefault();
+      try {
+        await write("POST", newAlert);
+        setNewAlert(EMPTY_FORM);
+        toast.success("Alert added");
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : "Could not add the alert");
+      }
+    },
+    [newAlert, write],
+  );
+
+  const handleUpdate = useCallback(
+    async (e?: React.FormEvent) => {
+      e?.preventDefault();
+      if (!editingAlert?.id) return;
+      try {
+        await write("PATCH", editingAlert, editingAlert.id);
+        setEditingAlert(null);
+        toast.success("Alert updated");
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : "Could not update the alert");
+      }
+    },
+    [editingAlert, write],
+  );
+
+  const handleDelete = useCallback(
+    async (id: number) => {
+      try {
+        await write("DELETE", undefined, id);
+        toast.success("Alert removed");
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : "Could not remove the alert");
+      }
+    },
+    [write],
+  );
+
+  const handleFormChange = useCallback((field: string, value: string | boolean | number) => {
+    setNewAlert((prev) => ({ ...prev, [field]: value }));
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    
-    if (!newAlert.title || !newAlert.link) {
-      setError('Title and Link are required fields');
-      toast.error('Title and Link are required fields');
-      setIsLoading(false);
-      return;
-    }
-    
-    const { data, error } = await supabase
-      .from('live_alerts')
-      .insert(newAlert)
-      .select()
-      .single();
+  const handleEditFormChange = useCallback((field: string, value: string | boolean | number) => {
+    setEditingAlert((prev) => (prev ? { ...prev, [field]: value } : prev));
+  }, []);
 
-    setIsLoading(false);
-      
-    if (error) {
-      setError('Failed to create alert');
-      toast.error('Failed to create alert');
-      return;
-    }
+  /** Flip a single alert on or off from the list, without opening the editor. */
+  const toggleActive = useCallback(
+    async (id: number, isActive: boolean) => {
+      try {
+        await write("PATCH", { is_active: isActive }, id);
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : "Could not change the alert");
+      }
+    },
+    [write],
+  );
 
-    toast.success('Alert created successfully');
-    if (data) {
-      const mappedNewAlert: Alert = {
-        id: data.id,
-        title: data.title || '',
-        link: data.link || '',
-        image_url: data.image_url || undefined,
-        is_active: !!data.is_active,
-        order_index: data.order_index || 0
-      };
-      setAlerts([...alerts, mappedNewAlert]);
-    }
-    resetForm();
-  };
-
-  const handleUpdate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!editingAlert || !editingAlert.id) return;
-    
-    if (!editingAlert.title || !editingAlert.link) {
-      setError('Title and Link are required fields');
-      toast.error('Title and Link are required fields');
-      return;
-    }
-    
-    setIsLoading(true);
-    const { error } = await supabase
-      .from('live_alerts')
-      .update({
-        title: editingAlert.title,
-        link: editingAlert.link,
-        image_url: editingAlert.image_url,
-        is_active: editingAlert.is_active,
-        order_index: editingAlert.order_index
-      })
-      .eq('id', editingAlert.id);
-
-    setIsLoading(false);
-      
-    if (error) {
-      setError('Failed to update alert');
-      toast.error('Failed to update alert');
-      return;
-    }
-
-    toast.success('Alert updated successfully');
-    fetchAlerts();
-    cancelEdit();
-  };
-
-  const toggleActive = async (id: number, currentStatus: boolean) => {
-    setIsLoading(true);
-    const { error } = await supabase
-      .from('live_alerts')
-      .update({ is_active: !currentStatus })
-      .eq('id', id);
-
-    setIsLoading(false);
-      
-    if (error) {
-      setError('Failed to update alert status');
-      toast.error('Failed to update alert status');
-      return;
-    }
-
-    toast.success('Alert status updated');
-    fetchAlerts();
-  };
-
-  const deleteAlert = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this alert?')) {
-      return;
-    }
-    
-    setIsLoading(true);
-    const { error } = await supabase
-      .from('live_alerts')
-      .delete()
-      .eq('id', id);
-
-    setIsLoading(false);
-      
-    if (error) {
-      setError('Failed to delete alert');
-      toast.error('Failed to delete alert');
-      return;
-    }
-
-    toast.success('Alert deleted successfully');
-    fetchAlerts();
-  };
-
-  const resetForm = () => {
-    setNewAlert({
-      title: '',
-      link: '',
-      image_url: '',
-      is_active: true,
-      order_index: alerts.length
-    });
-  };
-
-  const startEdit = (alert: Alert) => {
+  const resetForm = useCallback(() => setNewAlert(EMPTY_FORM), []);
+  const startEdit = useCallback((alert: Alert) => {
     setEditingAlert({
       id: alert.id,
       title: alert.title,
       link: alert.link,
-      image_url: alert.image_url || '',
+      image_url: alert.image_url ?? "",
       is_active: alert.is_active,
-      order_index: alert.order_index
+      order_index: alert.order_index,
     });
-    setIsEditing(true);
-  };
-
-  const cancelEdit = () => {
-    setEditingAlert(null);
-    setIsEditing(false);
-  };
-
-  const handleFormChange = (field: string, value: string | number | boolean) => {
-    setNewAlert(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-
-  const handleEditFormChange = (field: string, value: string | number | boolean) => {
-    if (editingAlert) {
-      setEditingAlert(prev => ({
-        ...prev!,
-        [field]: value
-      }));
-    }
-  };
+  }, []);
+  const cancelEdit = useCallback(() => setEditingAlert(null), []);
 
   return {
     alerts,
+    isLoading,
+    error,
     newAlert,
     editingAlert,
-    isEditing,
-    error,
-    isLoading,
+    isEditing: editingAlert !== null,
+    toggleActive,
+    deleteAlert: handleDelete,
+    fetchAlerts,
     handleSubmit,
     handleUpdate,
-    toggleActive,
-    deleteAlert,
+    handleDelete,
     handleFormChange,
     handleEditFormChange,
     resetForm,
-    fetchAlerts,
     startEdit,
-    cancelEdit
+    cancelEdit,
   };
 };

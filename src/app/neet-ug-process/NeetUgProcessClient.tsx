@@ -35,17 +35,26 @@ const NeetUgProcessClient = ({ heroImageUrl, examImageUrl, collegeImageUrl }: Ne
   return (
     <main className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-white transition-colors duration-200">
       {/* 1. HERO SECTION */}
-      <section className="relative min-h-[55vh] md:min-h-[50vh] h-auto flex flex-col overflow-hidden">
-        {heroImageUrl && heroImageUrl !== "none" && (
-          <Image
-            src={heroImageUrl}
-            alt="Medical college campus"
-            fill
-            priority
-            className="object-cover"
-          />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-transparent" />
+      <section className="relative min-h-[55vh] md:min-h-[50vh] h-auto flex flex-col overflow-hidden bg-slate-950">
+        <Image
+          src={
+            heroImageUrl && heroImageUrl !== "none"
+              ? heroImageUrl
+              : "/assets/images/exam/neet-exam.avif"
+          }
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover opacity-55"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-slate-950/35" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/50" />
+        {/* Ambient brand light */}
+        <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
+          <div className="ambient-blob animate-drift -left-24 -top-28 h-[24rem] w-[24rem] bg-primary/25" />
+          <div className="ambient-blob animate-drift-slow right-[-6rem] bottom-[-7rem] h-[20rem] w-[20rem] bg-secondary/20 [animation-delay:-6s]" />
+        </div>
         <div className="container-custom relative z-10 text-white flex-1 flex flex-col pt-24 pb-6 md:py-32">
           <div className="max-w-3xl flex-1 flex flex-col">
             <div className="space-y-3 flex-1 flex flex-col justify-center">
@@ -136,13 +145,13 @@ const NeetUgProcessClient = ({ heroImageUrl, examImageUrl, collegeImageUrl }: Ne
           <ProcessAccordion />
 
           {/* MID CTA */}
-          <div className="mt-6 md:mt-10 p-4 md:p-8 rounded-2xl md:rounded-3xl bg-gradient-to-br from-primary to-blue-700 text-white text-center relative overflow-hidden">
+          <div className="mt-6 md:mt-10 p-4 md:p-8 rounded-2xl md:rounded-3xl bg-gradient-to-br from-primary to-cyan-700 text-white text-center relative overflow-hidden">
             <div className="absolute top-0 right-0 p-6 opacity-10">
               <GraduationCap size={100} />
             </div>
             <div className="relative z-10">
               <h3 className="text-base md:text-3xl font-black mb-1.5 md:mb-3">Not sure which counselling route is right for you?</h3>
-              <p className="text-blue-100/90 mb-4 md:mb-8 max-w-xl mx-auto text-xs md:text-sm font-medium">Get a personalized roadmap based on your predicted rank and budget.</p>
+              <p className="text-cyan-100/90 mb-4 md:mb-8 max-w-xl mx-auto text-xs md:text-sm font-medium">Get a personalized roadmap based on your predicted rank and budget.</p>
               <div className="flex flex-wrap justify-center gap-2 md:gap-4">
                 <a 
                   href={`tel:${CONTACT_INFO.phone}`}
@@ -211,11 +220,11 @@ const NeetUgProcessClient = ({ heroImageUrl, examImageUrl, collegeImageUrl }: Ne
               { title: "Documentation Support", icon: UserCheck, desc: "Pre-audit all certificates, affidavits, and NRI papers to prevent seat rejections." },
               { title: "End-to-End Guidance", icon: ShieldAlert, desc: "Continuous support from registration through choices to final college joining." }
             ].map((feature, idx) => (
-              <div key={idx} className="p-2.5 md:p-6 rounded-xl md:rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 shadow-sm transition-all hover:shadow-lg hover:border-primary/20 dark:hover:border-teal-500/40 group text-center md:text-left relative overflow-hidden before:absolute before:top-0 before:left-0 before:right-0 before:h-[3px] before:bg-gradient-to-r before:from-blue-500 before:to-teal-400 before:opacity-0 group-hover:before:opacity-100 before:transition-opacity">
-                <div className="absolute top-1 right-2 text-xl md:text-5xl font-black text-slate-100/70 dark:text-slate-800/30 group-hover:text-blue-500/10 dark:group-hover:text-teal-400/10 select-none font-sans tracking-tighter transition-colors">
+              <div key={idx} className="p-2.5 md:p-6 rounded-xl md:rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 shadow-sm transition-all hover:shadow-lg hover:border-primary/20 dark:hover:border-teal-500/40 group text-center md:text-left relative overflow-hidden before:absolute before:top-0 before:left-0 before:right-0 before:h-[3px] before:bg-gradient-to-r before:from-cyan-500 before:to-teal-400 before:opacity-0 group-hover:before:opacity-100 before:transition-opacity">
+                <div className="absolute top-1 right-2 text-xl md:text-5xl font-black text-slate-100/70 dark:text-slate-800/30 group-hover:text-cyan-500/10 dark:group-hover:text-teal-400/10 select-none font-sans tracking-tighter transition-colors">
                   {String(idx + 1).padStart(2, '0')}
                 </div>
-                <div className="w-8 h-8 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-slate-50 dark:bg-slate-950/60 flex items-center justify-center text-primary dark:text-blue-400 mb-2 md:mb-5 transition-colors group-hover:bg-primary group-hover:text-white dark:group-hover:bg-blue-500 dark:group-hover:text-white mx-auto md:mx-0">
+                <div className="w-8 h-8 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-slate-50 dark:bg-slate-950/60 flex items-center justify-center text-primary dark:text-cyan-400 mb-2 md:mb-5 transition-colors group-hover:bg-primary group-hover:text-white dark:group-hover:bg-cyan-500 dark:group-hover:text-white mx-auto md:mx-0">
                   <feature.icon className="h-4 w-4 md:h-6 md:w-6" />
                 </div>
                 <h4 className="text-[11px] sm:text-base md:text-lg font-bold text-slate-900 dark:text-white mb-1 md:mb-2 leading-tight">{feature.title}</h4>

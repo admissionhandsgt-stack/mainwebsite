@@ -5,6 +5,9 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Search, MapPin, ThumbsUp, ExternalLink } from 'lucide-react';
+import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
+
+
 
 interface College {
   id: number;
@@ -27,7 +30,7 @@ const collegesList: College[] = [
     fees: '₹25-30 Lakhs/year',
     rating: 4.7,
     type: 'private',
-    image: 'https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
+    image: '/assets/images/colleges/medical-campus-1.avif',
     neetCutoff: '500-550',
     seats: 25,
     recognition: ['NMC', 'WHO', 'FAIMER']
@@ -39,7 +42,7 @@ const collegesList: College[] = [
     fees: '₹20-25 Lakhs/year',
     rating: 4.9,
     type: 'private',
-    image: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
+    image: '/assets/images/colleges/medical-college.avif',
     neetCutoff: '600+',
     seats: 15,
     recognition: ['NMC', 'WHO', 'FAIMER', 'NAAC A++']
@@ -51,7 +54,7 @@ const collegesList: College[] = [
     fees: '₹15-20 Lakhs/year',
     rating: 5.0,
     type: 'government',
-    image: 'https://images.unsplash.com/photo-1551076805-e1869033e561?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
+    image: '/assets/images/colleges/aiims-delhi.avif',
     neetCutoff: '650+',
     seats: 7,
     recognition: ['NMC', 'WHO', 'FAIMER', 'NAAC A++']
@@ -63,7 +66,7 @@ const collegesList: College[] = [
     fees: '₹20-25 Lakhs/year',
     rating: 4.5,
     type: 'deemed',
-    image: 'https://images.unsplash.com/photo-1631248055158-edec7a3c072c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
+    image: '/assets/images/colleges/deemed-campus-1.avif',
     neetCutoff: '500-550',
     seats: 30,
     recognition: ['NMC', 'WHO', 'FAIMER']
@@ -75,7 +78,7 @@ const collegesList: College[] = [
     fees: '₹25-30 Lakhs/year',
     rating: 4.6,
     type: 'private',
-    image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
+    image: '/assets/images/colleges/medical-campus-2.avif',
     neetCutoff: '520-570',
     seats: 20,
     recognition: ['NMC', 'WHO', 'FAIMER']
@@ -87,7 +90,7 @@ const collegesList: College[] = [
     fees: '₹15-20 Lakhs/year',
     rating: 4.8,
     type: 'government',
-    image: 'https://images.unsplash.com/photo-1527613426441-4da17471b66d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
+    image: '/assets/images/colleges/medical-campus-3.avif',
     neetCutoff: '580-630',
     seats: 10,
     recognition: ['NMC', 'WHO', 'FAIMER', 'NAAC A+']
@@ -99,7 +102,7 @@ const collegesList: College[] = [
     fees: '₹18-22 Lakhs/year',
     rating: 4.4,
     type: 'private',
-    image: 'https://images.unsplash.com/photo-1551601651-2a8c6c4d0c05?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
+    image: '/assets/images/colleges/medical-campus-4.avif',
     neetCutoff: '500-540',
     seats: 15,
     recognition: ['NMC', 'WHO', 'FAIMER']
@@ -111,7 +114,7 @@ const collegesList: College[] = [
     fees: '₹22-28 Lakhs/year',
     rating: 4.6,
     type: 'private',
-    image: 'https://images.unsplash.com/photo-1581360742512-021d5b2157d8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
+    image: '/assets/images/colleges/medical-campus-1.avif',
     neetCutoff: '540-580',
     seats: 12,
     recognition: ['NMC', 'WHO', 'FAIMER', 'NAAC A']
@@ -145,6 +148,17 @@ const NRICollegesPage = () => {
 
   return (
     <div className="flex flex-col">
+      <StructuredData
+        data={[
+          webPage({
+            name: "NRI Quota Medical Colleges",
+            description:
+              "Medical colleges offering NRI quota MBBS seats.",
+            path: "/nri-quota/colleges",
+          }),
+          breadcrumb([{ name: "Home", path: "/" }, { name: "NRI quota", path: "/nri-quota" }, { name: "Colleges", path: "/nri-quota/colleges" }]),
+        ]}
+      />
       <div className="flex-grow">
         <section className="bg-gradient-to-r from-medical-50 to-teal-50 py-16">
           <div className="container-custom">

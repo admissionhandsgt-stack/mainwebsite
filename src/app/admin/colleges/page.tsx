@@ -43,7 +43,7 @@ const CollegesManager: React.FC = () => {
         
         <TabsContent value="recommended">
           <GenericCollegeManager 
-            tableName="ug_recommended_colleges" 
+            resource="colleges-recommended" 
             title="UG Recommended Colleges" 
             description="Manage the list of highly recommended MBBS colleges shown on the frontend." 
           />
@@ -51,7 +51,7 @@ const CollegesManager: React.FC = () => {
 
         <TabsContent value="universities">
           <GenericCollegeManager 
-            tableName="deemed_colleges" 
+            resource="colleges-deemed" 
             title="UG Deemed Colleges" 
             description="Manage deemed universities for MBBS admissions." 
           />
@@ -59,7 +59,7 @@ const CollegesManager: React.FC = () => {
         
         <TabsContent value="all">
           <GenericCollegeManager 
-            tableName="ug_all_colleges" 
+            resource="colleges-ug" 
             title="UG All Colleges" 
             description="Manage the comprehensive database of all UG MBBS colleges." 
           />

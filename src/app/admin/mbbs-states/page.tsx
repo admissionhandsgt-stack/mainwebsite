@@ -8,15 +8,22 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Switch } from '@/components/ui/switch';
-import { supabase } from '@/integrations/supabase/client';
-import { Tables, TablesInsert } from '@/integrations/supabase/types';
+import { listRows, createRow, updateRow, deleteRow } from '@/lib/adminApi';
 import { toast } from 'sonner';
 import { Map, Plus, Pencil, Trash2, Loader2, RefreshCw, CheckCircle2, XCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-type MBBSState = Tables<'mbbs_states'>;
+interface MBBSState {
+  id: number;
+  name: string;
+  slug: string;
+  image_url: string | null;
+  colleges_count: number | null;
+  content: string | null;
+  is_active: boolean;
+}
 
-const emptyState: TablesInsert<'mbbs_states'> = {
+const emptyState = {
   name: '',
   slug: '',
   image_url: '',
@@ -27,7 +34,7 @@ const emptyState: TablesInsert<'mbbs_states'> = {
 
 const MBBSStateManager = () => {
   const [states, setStates] = useState<MBBSState[]>([]);
-  const [formData, setFormData] = useState<TablesInsert<'mbbs_states'>>(emptyState);
+  const [formData, setFormData] = useState<typeof emptyState>(emptyState);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -39,18 +46,15 @@ const MBBSStateManager = () => {
 
   const fetchStates = async () => {
     setIsLoading(true);
-    const { data, error } = await supabase
-      .from('mbbs_states')
-      .select('*')
-      .order('name');
-    setIsLoading(false);
-
-    if (error) {
-      setError('Failed to fetch states');
+    try {
+      setStates(await listRows<MBBSState>('states'));
+      setError('');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch states');
       toast.error('Failed to fetch states');
-      return;
+    } finally {
+      setIsLoading(false);
     }
-    if (data) setStates(data);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -62,31 +66,19 @@ const MBBSStateManager = () => {
 
     setIsLoading(true);
 
-    if (editingId !== null) {
-      // Update
-      const { error } = await supabase
-        .from('mbbs_states')
-        .update(formData)
-        .eq('id', editingId);
-      setIsLoading(false);
-      if (error) {
-        toast.error('Failed to update state');
-        return;
+    try {
+      if (editingId !== null) {
+        await updateRow('states', editingId, formData);
+        toast.success('State updated successfully');
+      } else {
+        await createRow('states', formData);
+        toast.success('State created successfully');
       }
-      toast.success('State updated successfully');
-    } else {
-      // Insert
-      const { error } = await supabase
-        .from('mbbs_states')
-        .insert(formData)
-        .select()
-        .single();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to save state');
+      return;
+    } finally {
       setIsLoading(false);
-      if (error) {
-        toast.error('Failed to create state');
-        return;
-      }
-      toast.success('State created successfully');
     }
 
     setDialogOpen(false);
@@ -110,22 +102,22 @@ const MBBSStateManager = () => {
   const handleDelete = async (id: number, name: string) => {
     if (!confirm(`Delete state "${name}"? This cannot be undone.`)) return;
     setIsLoading(true);
-    const { error } = await supabase.from('mbbs_states').delete().eq('id', id);
-    setIsLoading(false);
-    if (error) {
+    try {
+      await deleteRow('states', id);
+    } catch {
       toast.error('Failed to delete state');
       return;
+    } finally {
+      setIsLoading(false);
     }
     toast.success('State deleted');
     fetchStates();
   };
 
   const toggleStatus = async (id: number, current: boolean) => {
-    const { error } = await supabase
-      .from('mbbs_states')
-      .update({ is_active: !current })
-      .eq('id', id);
-    if (error) {
+    try {
+      await updateRow('states', id, { is_active: !current });
+    } catch {
       toast.error('Failed to update status');
       return;
     }

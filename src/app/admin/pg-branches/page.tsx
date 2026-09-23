@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { listRows, createRow, updateRow, deleteRow, uploadImage } from '@/lib/adminApi';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 
 interface PgBranch {
-  id: string;
+  id: number;
   branch_name: string;
   category: string;
   short_description: string | null;
@@ -28,7 +28,7 @@ interface PgBranch {
 }
 
 const categoryConfig: Record<string, { label: string; badge: string; icon: typeof Stethoscope }> = {
-  clinical: { label: 'Clinical', badge: 'bg-blue-100 text-blue-700', icon: Stethoscope },
+  clinical: { label: 'Clinical', badge: 'bg-cyan-100 text-cyan-700', icon: Stethoscope },
   surgical: { label: 'Surgical', badge: 'bg-rose-100 text-rose-700', icon: Scissors },
   non_clinical: { label: 'Non-Clinical', badge: 'bg-emerald-100 text-emerald-700', icon: Activity },
 };
@@ -69,13 +69,7 @@ const PgBranchesManager = () => {
     try {
       setIsLoading(true);
       setError(null);
-      const { data, error: fetchError } = await (supabase as any)
-        .from('pg_branches')
-        .select('*')
-        .order('display_order', { ascending: true });
-
-      if (fetchError) throw fetchError;
-      setBranches((data as PgBranch[]) || []);
+      setBranches(await listRows<PgBranch>('branches'));
     } catch (err: any) {
       console.error('Error fetching PG branches:', err);
       setError(err.message || 'Failed to load branches');
@@ -84,14 +78,7 @@ const PgBranchesManager = () => {
     }
   };
 
-  const uploadIcon = async (file: File): Promise<string> => {
-    const ext = file.name.split('.').pop();
-    const filePath = `branches/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-    const { data, error } = await (supabase as any).storage.from('media-assets').upload(filePath, file, { upsert: true });
-    if (error) throw error;
-    const { data: { publicUrl } } = (supabase as any).storage.from('media-assets').getPublicUrl(data.path);
-    return publicUrl;
-  };
+  const uploadIcon = (file: File) => uploadImage(file, 'branches');
 
   const handleIconChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -123,7 +110,7 @@ const PgBranchesManager = () => {
         iconUrl = await uploadIcon(iconFile);
       }
 
-      const { error } = await (supabase as any).from('pg_branches').insert({
+      await createRow('branches', {
         branch_name: formData.branch_name,
         category: formData.category,
         short_description: formData.short_description || null,
@@ -132,7 +119,6 @@ const PgBranchesManager = () => {
         is_active: formData.is_active,
       });
 
-      if (error) throw error;
       toast.success('Branch added successfully');
       setAddDialogOpen(false);
       resetForm();
@@ -160,20 +146,15 @@ const PgBranchesManager = () => {
         iconUrl = await uploadIcon(iconFile);
       }
 
-      const { error } = await (supabase as any)
-        .from('pg_branches')
-        .update({
-          branch_name: formData.branch_name,
-          category: formData.category,
-          short_description: formData.short_description || null,
-          icon_url: iconUrl,
-          display_order: formData.display_order,
-          is_active: formData.is_active,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', editingBranch.id);
+      await updateRow('branches', editingBranch.id, {
+        branch_name: formData.branch_name,
+        category: formData.category,
+        short_description: formData.short_description || null,
+        icon_url: iconUrl,
+        display_order: formData.display_order,
+        is_active: formData.is_active,
+      });
 
-      if (error) throw error;
       toast.success('Branch updated successfully');
       setEditDialogOpen(false);
       resetForm();
@@ -190,8 +171,7 @@ const PgBranchesManager = () => {
     if (!deleteTarget) return;
     try {
       setIsDeleting(true);
-      const { error } = await (supabase as any).from('pg_branches').delete().eq('id', deleteTarget.id);
-      if (error) throw error;
+      await deleteRow('branches', deleteTarget.id);
       toast.success('Branch deleted successfully');
       setDeleteDialogOpen(false);
       setDeleteTarget(null);
@@ -206,11 +186,7 @@ const PgBranchesManager = () => {
 
   const toggleActive = async (branch: PgBranch) => {
     try {
-      const { error } = await (supabase as any)
-        .from('pg_branches')
-        .update({ is_active: !branch.is_active, updated_at: new Date().toISOString() })
-        .eq('id', branch.id);
-      if (error) throw error;
+      await updateRow('branches', branch.id, { is_active: !branch.is_active });
       toast.success(`Branch ${branch.is_active ? 'deactivated' : 'activated'}`);
       fetchBranches();
     } catch (err: any) {
@@ -309,7 +285,7 @@ const PgBranchesManager = () => {
               </div>
             )}
             <div className="flex-1">
-              <Label htmlFor={`icon-upload-${isEdit ? 'edit' : 'add'}`} className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors">
+              <Label htmlFor={`icon-upload-${isEdit ? 'edit' : 'add'}`} className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-cyan-600 transition-colors">
                 <ImagePlus className="w-4 h-4" />
                 {isEdit ? 'Change Icon' : 'Choose Icon'}
               </Label>
@@ -395,7 +371,7 @@ const PgBranchesManager = () => {
         {[
           { label: 'Total Branches', value: branches.length, icon: GraduationCap, color: 'text-medical-600 bg-medical-50' },
           { label: 'Active', value: activeCount, icon: Eye, color: 'text-emerald-600 bg-emerald-50' },
-          { label: 'Clinical', value: clinicalCount, icon: Stethoscope, color: 'text-blue-600 bg-blue-50' },
+          { label: 'Clinical', value: clinicalCount, icon: Stethoscope, color: 'text-cyan-600 bg-cyan-50' },
           { label: 'Surgical', value: surgicalCount, icon: Scissors, color: 'text-rose-600 bg-rose-50' },
         ].map((stat) => (
           <motion.div
@@ -511,7 +487,7 @@ const PgBranchesManager = () => {
                     <Button
                       variant="secondary"
                       size="icon"
-                      className="h-8 w-8 rounded-lg shadow-sm border border-slate-200 bg-white hover:bg-slate-50 hover:text-blue-600"
+                      className="h-8 w-8 rounded-lg shadow-sm border border-slate-200 bg-white hover:bg-slate-50 hover:text-cyan-600"
                       onClick={() => openEditDialog(branch)}
                     >
                       <Pencil className="h-3.5 w-3.5" />
@@ -545,8 +521,8 @@ const PgBranchesManager = () => {
       <Dialog open={editDialogOpen} onOpenChange={(open) => { setEditDialogOpen(open); if (!open) resetForm(); }}>
         <DialogContent className="sm:max-w-[550px] bg-white border-slate-200 rounded-2xl shadow-2xl overflow-hidden p-0 max-h-[90vh] overflow-y-auto">
           <div className="px-6 py-5 bg-slate-50 border-b border-slate-100 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
-              <Pencil className="w-5 h-5 text-blue-600" />
+            <div className="w-10 h-10 rounded-xl bg-cyan-100 flex items-center justify-center">
+              <Pencil className="w-5 h-5 text-cyan-600" />
             </div>
             <div>
               <DialogTitle className="text-xl font-bold text-slate-900">Edit Branch</DialogTitle>

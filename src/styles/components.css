@@ -62,7 +62,7 @@
   }
   
   .text-tricolor-white {
-    @apply text-blue-600;
+    @apply text-cyan-600;
   }
   
   .text-tricolor-green {
@@ -105,3 +105,49 @@
     @apply flex-shrink-0 snap-start transition-all transform hover:scale-105 hover:shadow-md rounded-md;
   }
 
+
+/* =====================================================================
+   Interaction polish — applied globally so every surface responds the
+   same way. One transform, one duration, one easing.
+   ===================================================================== */
+
+/* Anything that behaves like a raised card gets the same lift on hover. */
+.rounded-2xl.shadow-sm,
+.rounded-2xl.shadow-md,
+.rounded-xl.shadow-sm {
+  transition: transform 180ms cubic-bezier(.2, 0, 0, 1),
+              box-shadow 180ms cubic-bezier(.2, 0, 0, 1),
+              border-color 180ms ease;
+}
+
+/* Buttons and links settle instead of snapping. */
+button,
+a[role="button"],
+[type="button"],
+[type="submit"] {
+  transition-timing-function: cubic-bezier(.2, 0, 0, 1);
+}
+
+/* Every interactive element shows a brand focus ring for keyboard users.
+   Never remove this — it is the only way keyboard users can see where
+   they are. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Smooth in-page scrolling for the anchor buttons in the hero. */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem; /* header + alerts bar */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}

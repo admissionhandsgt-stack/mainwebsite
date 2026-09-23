@@ -1,9 +1,9 @@
+"use client";
 
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
+import { useState, useEffect, useCallback } from "react";
+import { toast } from "sonner";
 
-interface ContactInfo {
+export interface ContactInfo {
   id?: number;
   email: string;
   phone_number: string;
@@ -11,127 +11,94 @@ interface ContactInfo {
   lead_notification_phone: string;
 }
 
+/**
+ * Site-wide contact details.
+ *
+ * Starts from the values in `lib/constants.ts` so the phone and WhatsApp
+ * buttons work on first paint, then replaces them with whatever the admin has
+ * set. A failed fetch leaves the defaults in place rather than blanking the
+ * CTAs — a visitor with no number to call is worse than a slightly stale one.
+ */
+const FALLBACK: ContactInfo = {
+  email: "info@admissionhands.com",
+  phone_number: "+919310301949",
+  whatsapp_number: "+919310301949",
+  lead_notification_phone: "+919310301949",
+};
+
 export const useContactInfo = () => {
-  const [contactInfo, setContactInfo] = useState<ContactInfo>({
-    email: 'info@admissionhands.com',
-    phone_number: '+919873133846',
-    whatsapp_number: '+919873133846',
-    lead_notification_phone: '+919310301949'
-  });
+  const [contactInfo, setContactInfo] = useState<ContactInfo>(FALLBACK);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchContactInfo = async () => {
+  const fetchContactInfo = useCallback(async () => {
     setIsLoading(true);
     setError(null);
-    
     try {
-      const { data, error } = await supabase
-        .from('contact_info')
-        .select('*')
-        .order('id', { ascending: false })
-        .limit(1)
-        .single();
-      
-      if (error) throw error;
-      
+      const res = await fetch("/api/content/contact");
+      if (!res.ok) throw new Error("Failed to load contact details");
+      const { data } = await res.json();
       if (data) {
-        const d = data as any;
         setContactInfo({
-          id: d.id,
-          email: d.email,
-          phone_number: d.phone_number,
-          whatsapp_number: d.whatsapp_number,
-          lead_notification_phone: d.lead_notification_phone || '+919310301949'
+          email: data.email ?? FALLBACK.email,
+          phone_number: data.phoneNumber ?? FALLBACK.phone_number,
+          whatsapp_number: data.whatsappNumber ?? FALLBACK.whatsapp_number,
+          lead_notification_phone: data.leadNotificationPhone ?? FALLBACK.lead_notification_phone,
         });
       }
-    } catch (err: any) {
-      console.error('Error fetching contact info:', err);
-      // If the error is because no rows found, we'll use the default values
-      if (err.code !== 'PGRST116') {
-        setError(err.message);
-        toast.error('Failed to load contact information');
-      }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to load contact details");
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const updateContactInfo = async () => {
-    try {
-      let response;
-      
-      if (contactInfo.id) {
-        // Update existing record
-        response = await supabase
-          .from('contact_info')
-          .update({
-            email: contactInfo.email,
-            phone_number: contactInfo.phone_number,
-            whatsapp_number: contactInfo.whatsapp_number,
-            lead_notification_phone: contactInfo.lead_notification_phone
-          })
-          .eq('id', contactInfo.id);
-      } else {
-        // Insert new record
-        response = await supabase
-          .from('contact_info')
-          .insert({
-            email: contactInfo.email,
-            phone_number: contactInfo.phone_number,
-            whatsapp_number: contactInfo.whatsapp_number,
-            lead_notification_phone: contactInfo.lead_notification_phone
-          });
-      }
-      
-      if (response.error) throw response.error;
-      
-      toast.success('Contact information updated successfully');
-      fetchContactInfo();
-      return true;
-    } catch (err: any) {
-      console.error('Error updating contact info:', err);
-      setError(err.message);
-      toast.error('Failed to update contact information');
-      return false;
-    }
-  };
-
-  const handleFormChange = (field: string, value: string) => {
-    setContactInfo(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    return await updateContactInfo();
-  };
+  }, []);
 
   useEffect(() => {
     fetchContactInfo();
+  }, [fetchContactInfo]);
 
-    // Subscribe to realtime changes
-    const channel = supabase
-      .channel('public:contact_info')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'contact_info' }, (payload) => {
-        // When contact info changes in DB, refresh it
-        fetchContactInfo();
-      })
-      .subscribe();
+  /** Admin: save new contact details. */
+  const updateContactInfo = useCallback(
+    async (patch: Partial<ContactInfo>) => {
+      try {
+        const res = await fetch("/api/admin/contact", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(patch),
+        });
+        if (!res.ok) throw new Error("Could not save");
+        await fetchContactInfo();
+        toast.success("Contact details saved");
+        return true;
+      } catch (e) {
+        toast.error(e instanceof Error ? e.message : "Could not save");
+        return false;
+      }
+    },
+    [fetchContactInfo],
+  );
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
+  /** Field-level change handler used by the admin form. */
+  const handleFormChange = useCallback((field: string, value: string) => {
+    setContactInfo((prev) => ({ ...prev, [field]: value }));
   }, []);
+
+  const handleSubmit = useCallback(
+    async (e?: React.FormEvent) => {
+      e?.preventDefault();
+      return updateContactInfo(contactInfo);
+    },
+    [contactInfo, updateContactInfo],
+  );
 
   return {
     contactInfo,
     isLoading,
     error,
+    fetchContactInfo,
+    refetch: fetchContactInfo,
+    updateContactInfo,
     handleFormChange,
     handleSubmit,
-    fetchContactInfo
   };
 };

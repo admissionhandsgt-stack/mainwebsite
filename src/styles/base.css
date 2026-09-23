@@ -4,66 +4,109 @@
 @tailwind utilities;
 
 @layer base {
+  /* ---------------------------------------------------------------------
+     AdmissionHands design tokens — teal/cyan medical system.
+     Hue family matches the logo mark. Primary carries actions, accent
+     carries success/confirmation, signal-* is reserved for admission
+     chance and is never used decoratively.
+     --------------------------------------------------------------------- */
   :root {
-    --background: 210 40% 98%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 180 25% 98%;
+    --foreground: 195 45% 11%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 195 45% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 195 45% 11%;
 
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
+    /* brand */
+    --primary: 192 91% 36%;          /* #0891B2 */
+    --primary-foreground: 0 0% 100%;
+    --primary-soft: 187 85% 95%;
+    --primary-strong: 194 92% 28%;
 
-    --secondary: 174.7 83.9% 31.6%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 188 86% 53%;        /* #22D3EE */
+    --secondary-foreground: 195 45% 11%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 142 76% 36%;           /* #16A34A */
+    --accent-foreground: 0 0% 100%;
+    --accent-soft: 141 70% 95%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --muted: 195 30% 95%;
+    --muted-foreground: 205 16% 42%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
+    --border: 192 30% 90%;
+    --input: 192 30% 90%;
+    --ring: 192 91% 36%;
 
-    --radius: 0.5rem;
+    /* surfaces — three levels of lift, used instead of stacking shadows */
+    --surface-1: 0 0% 100%;
+    --surface-2: 192 30% 97%;
+    --surface-3: 192 28% 94%;
+
+    /* gradient stops for hero / primary actions */
+    --grad-from: 194 92% 30%;
+    --grad-via: 192 91% 40%;
+    --grad-to: 188 86% 53%;
+
+    /* admission chance — semantic only, never decorative */
+    --signal-safe: 142 71% 34%;
+    --signal-borderline: 35 92% 40%;
+    --signal-stretch: 345 68% 48%;
+
+    --glow: 192 91% 36%;
+    --radius: 0.75rem;
   }
 
   .dark {
-    --background: 222 47% 11%;
-    --foreground: 210 40% 98%;
+    --background: 196 44% 6%;
+    --foreground: 180 22% 93%;
 
-    --card: 222 47% 14%;
-    --card-foreground: 210 40% 98%;
+    --card: 197 38% 10%;
+    --card-foreground: 180 22% 93%;
 
-    --popover: 222 47% 14%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 197 38% 10%;
+    --popover-foreground: 180 22% 93%;
 
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222 47% 11%;
+    --primary: 187 85% 53%;
+    --primary-foreground: 196 60% 8%;
+    --primary-soft: 194 60% 16%;
+    --primary-strong: 187 90% 65%;
 
-    --secondary: 222 30% 18%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 192 70% 42%;
+    --secondary-foreground: 180 22% 93%;
 
-    --muted: 222 30% 18%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 142 64% 48%;
+    --accent-foreground: 150 60% 8%;
+    --accent-soft: 146 45% 15%;
 
-    --accent: 222 30% 18%;
-    --accent-foreground: 210 40% 98%;
+    --muted: 197 30% 16%;
+    --muted-foreground: 190 14% 65%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 62% 48%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 222 30% 18%;
-    --input: 222 30% 18%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 197 26% 19%;
+    --input: 197 26% 19%;
+    --ring: 187 85% 53%;
+
+    --surface-1: 197 38% 10%;
+    --surface-2: 197 34% 13%;
+    --surface-3: 197 30% 17%;
+
+    --grad-from: 192 80% 34%;
+    --grad-via: 188 84% 46%;
+    --grad-to: 187 85% 60%;
+
+    --signal-safe: 142 64% 52%;
+    --signal-borderline: 38 92% 58%;
+    --signal-stretch: 345 80% 66%;
+
+    --glow: 187 85% 53%;
   }
 
   /* Theme override bridges to make hardcoded classes adaptive */
@@ -120,9 +163,9 @@
   .dark .text-slate-505,
   .dark .text-slate-655,
   .dark .text-slate-455,
-  .dark .text-slate-550,
-  .dark .text-slate-450,
-  .dark .text-slate-350,
+  .dark .text-slate-500,
+  .dark .text-slate-400,
+  .dark .text-slate-300,
   .dark .text-slate-500,
   .dark .text-gray-550,
   .dark .text-gray-500,
@@ -221,7 +264,7 @@
     --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--card) / 0.4) var(--tw-gradient-via-position), var(--tw-gradient-to) !important;
   }
   
-  .dark .from-blue-50\/80 {
+  .dark .from-cyan-50\/80 {
     --tw-gradient-from: hsl(var(--background) / 0.8) var(--tw-gradient-from-position) !important;
     --tw-gradient-to: transparent var(--tw-gradient-to-position) !important;
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;

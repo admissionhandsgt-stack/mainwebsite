@@ -59,3 +59,97 @@
     -webkit-backdrop-filter: blur(4px) !important;
   }
 }
+
+/* =====================================================================
+   AdmissionHands 2.0 — modern surface + motion utilities
+   ===================================================================== */
+
+/* Tabular figures. Every number that can be compared down a column
+   (rank, fee, seats, stipend) gets this, so digits stop shifting. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Brand gradient text — applied to a whole heading, never one word. */
+.text-gradient-brand {
+  background-image: linear-gradient(103deg,
+    hsl(var(--grad-from)),
+    hsl(var(--grad-via)) 48%,
+    hsl(var(--grad-to)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Filled gradient surface for primary actions and feature bands. */
+.bg-gradient-brand {
+  background-image: linear-gradient(118deg,
+    hsl(var(--grad-from)),
+    hsl(var(--grad-via)) 52%,
+    hsl(var(--grad-to)));
+}
+
+/* Ambient light. Three of these drift behind a hero and give the page
+   depth without a decorative gradient wash over the content itself. */
+.ambient-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(72px);
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Frosted panel that sits over imagery or ambient light. */
+.panel-glass {
+  background-color: hsl(var(--card) / 0.72);
+  border: 1px solid hsl(var(--border) / 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Card that lifts on hover — the only hover transform used site-wide. */
+.card-lift {
+  transition: transform 180ms cubic-bezier(.2, 0, 0, 1),
+              box-shadow 180ms cubic-bezier(.2, 0, 0, 1),
+              border-color 180ms ease;
+  will-change: transform;
+}
+.card-lift:hover {
+  transform: translateY(-3px);
+  border-color: hsl(var(--primary) / 0.35);
+}
+
+/* Fine grid, used behind data sections so they read as a matrix. */
+.bg-grid {
+  background-image:
+    linear-gradient(hsl(var(--border) / 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--border) / 0.5) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+}
+
+/* Marquee track: duplicate the children once, then translate -50%. */
+.marquee-track {
+  display: flex;
+  width: max-content;
+}
+
+/* Honour the OS setting everywhere, including the ambient light. */
+@media (prefers-reduced-motion: reduce) {
+  .ambient-blob,
+  .marquee-track,
+  .animate-drift,
+  .animate-drift-slow,
+  .animate-pulse-ring,
+  .animate-marquee,
+  .animate-rise,
+  .animate-float,
+  .animate-shimmer {
+    animation: none !important;
+  }
+  .card-lift:hover {
+    transform: none;
+  }
+}

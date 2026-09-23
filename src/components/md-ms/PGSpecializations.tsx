@@ -34,7 +34,7 @@ import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 const specializations = {
   clinical: {
     label: "Clinical",
-    gradient: "from-blue-500 to-blue-600",
+    gradient: "from-cyan-500 to-cyan-600",
     items: [
       { name: "General Medicine", icon: Heart, duration: "3 Years" },
       { name: "Pediatrics", icon: Baby, duration: "3 Years" },
@@ -62,7 +62,7 @@ const specializations = {
   },
   "non-clinical": {
     label: "Non-Clinical",
-    gradient: "from-violet-500 to-violet-600",
+    gradient: "from-teal-500 to-teal-600",
     items: [
       { name: "Pathology", icon: Microscope, duration: "3 Years" },
       { name: "Microbiology", icon: Bug, duration: "3 Years" },
@@ -77,9 +77,9 @@ const specializations = {
 };
 
 const tabStyles: Record<string, { active: string }> = {
-  clinical: { active: "from-blue-500 to-blue-600" },
+  clinical: { active: "from-cyan-500 to-cyan-600" },
   surgical: { active: "from-emerald-500 to-emerald-600" },
-  "non-clinical": { active: "from-violet-500 to-violet-600" },
+  "non-clinical": { active: "from-teal-500 to-teal-600" },
 };
 
 export const PGSpecializations = () => {
@@ -105,7 +105,7 @@ export const PGSpecializations = () => {
             Explore Specializations
           </span>
           <h2 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-3">
-            Find Your <span className="text-blue-600 dark:text-blue-400">Perfect Medical Specialty</span>
+            Find Your <span className="text-cyan-600 dark:text-cyan-400">Perfect Medical Specialty</span>
           </h2>
           <p className="text-sm text-slate-500 dark:text-slate-400 max-w-xl mx-auto">
             Browse through all MD/MS branches across clinical, surgical, and non-clinical disciplines available through NEET PG counselling.
@@ -153,7 +153,7 @@ export const PGSpecializations = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.04 }}
-                  className="bg-slate-50 dark:bg-slate-900 p-2.5 md:p-4 rounded-xl border border-slate-100 dark:border-slate-800 hover:shadow-md hover:border-blue-200 dark:hover:border-blue-800 transition-all group flex flex-col justify-between min-h-[92px] md:min-h-0"
+                  className="bg-slate-50 dark:bg-slate-900 p-2.5 md:p-4 rounded-xl border border-slate-100 dark:border-slate-800 hover:shadow-md hover:border-cyan-200 dark:hover:border-cyan-800 transition-all group flex flex-col justify-between min-h-[92px] md:min-h-0"
                 >
                   <div className="flex flex-col md:flex-row md:items-center gap-1.5 md:gap-3 w-full min-w-0">
                     <div
@@ -181,7 +181,7 @@ export const PGSpecializations = () => {
           viewport={{ once: true }}
           className="bg-slate-50 dark:bg-slate-900 rounded-xl p-3.5 md:p-5 mt-5 md:mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 border border-slate-100 dark:border-slate-800"
         >
-          <p className="text-xs md:text-sm text-slate-650 dark:text-slate-400 font-bold text-center sm:text-left">
+          <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 font-bold text-center sm:text-left">
             Not sure which branch suits your rank and career goals?
           </p>
           <button

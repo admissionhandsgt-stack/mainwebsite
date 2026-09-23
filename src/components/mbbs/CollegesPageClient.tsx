@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import React, { useState, useEffect, useMemo } from "react";
 import {
   Search, Building2, Landmark, GraduationCap, MapPin, ChevronDown,
@@ -10,12 +11,24 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { useCTA } from "@/hooks/useCTA";
 import Image from "next/image";
+import { CollegeCard } from "@/components/ui/CollegeCard";
 
 /* --- Types --- */
 
-type CollegeType = "govt" | "private";
+/** "unknown" is a real answer here: the UG import never carried ownership,
+ *  and guessing produced a PRIVATE badge on government colleges. */
+type CollegeType = "govt" | "private" | "unknown";
+
+import {
+  useRankLens,
+  RankLensBar,
+  BAND_CHIP,
+  BAND_ORDER as LENS_BAND_ORDER,
+  type Band,
+} from "@/components/colleges/RankLens";
 
 interface CollegeItem {
+  slug?: string;
   name: string;
   city: string;
   state: string;
@@ -23,6 +36,8 @@ interface CollegeItem {
   intake?: number | null;
   establishedYear?: number | null;
   universityName: string;
+  imageUrl?: string | null;
+  displayOrder?: number | null;
 }
 
 interface StateData {
@@ -31,12 +46,15 @@ interface StateData {
   govtColleges: number;
   privateColleges: number;
   colleges: Array<{
+    slug?: string;
     name: string;
     city: string;
-    type: "govt" | "private";
+    type: CollegeType;
     intake?: number | null;
     establishedYear?: number | null;
     universityName?: string;
+    imageUrl?: string | null;
+    displayOrder?: number | null;
   }>;
 }
 
@@ -153,6 +171,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
     "/assets/images/colleges/medical-campus-1.avif",
     "/assets/images/colleges/medical-campus-2.avif",
     "/assets/images/colleges/medical-campus-3.avif",
+    "/assets/images/hero/neet-hero.avif",
   ];
 
   /* --- State --- */
@@ -163,6 +182,11 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
   const [activeTab, setActiveTab] = useState<"education" | "process" | "comparison">("education");
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+
+  /* The rank lens. Without a rank this is an ordinary directory; with one,
+     every card carries a band and the list can be cut to what is reachable. */
+  const lens = useRankLens("ug");
+  const [bandFilter, setBandFilter] = useState<Band | null>(null);
 
   /* Reset page on filter change */
   useEffect(() => {
@@ -175,6 +199,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
     states.forEach((s) => {
       s.colleges.forEach((c) => {
         list.push({
+          slug: c.slug,
           name: c.name,
           city: c.city,
           state: s.name,
@@ -182,6 +207,8 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
           intake: c.intake,
           establishedYear: c.establishedYear,
           universityName: c.universityName || "",
+          imageUrl: c.imageUrl,
+          displayOrder: c.displayOrder,
         });
       });
     });
@@ -210,7 +237,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
 
   /* --- Filter logic --- */
   const filteredColleges = useMemo(() => {
-    return allColleges.filter((c) => {
+    const out = allColleges.filter((c) => {
       const q = search.toLowerCase();
       const matchSearch =
         !search ||
@@ -219,9 +246,21 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
         c.state.toLowerCase().includes(q);
       const matchState = selectedState === "all" || c.state === selectedState;
       const matchType = selectedType === "all" || c.type === selectedType;
-      return matchSearch && matchState && matchType;
+      const matchBand = !bandFilter || lens.bandOf(c.slug) === bandFilter;
+      return matchSearch && matchState && matchType && matchBand;
     });
-  }, [allColleges, search, selectedState, selectedType]);
+
+    // With a rank in hand, "safe first" is the only order that makes sense —
+    // alphabetical buries the colleges the visitor can actually get into.
+    if (lens.rank) {
+      const weight = (c: CollegeItem) => {
+        const b = lens.bandOf(c.slug);
+        return b ? LENS_BAND_ORDER.indexOf(b) : LENS_BAND_ORDER.length;
+      };
+      out.sort((a, b) => weight(a) - weight(b) || a.name.localeCompare(b.name));
+    }
+    return out;
+  }, [allColleges, search, selectedState, selectedType, bandFilter, lens]);
 
   /* --- Pagination --- */
   const totalPages = Math.ceil(filteredColleges.length / ITEMS_PER_PAGE);
@@ -266,7 +305,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
   /* --- RENDER --- */
 
   return (
-    <div className="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-zinc-100 min-h-screen font-body selection:bg-blue-600/30 selection:text-white transition-colors duration-200">
+    <div className="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-zinc-100 min-h-screen font-body selection:bg-cyan-600/30 selection:text-white transition-colors duration-200">
 
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-16 pb-20 sm:pt-20 sm:pb-28 bg-slate-950 text-white border-b border-slate-900">
@@ -277,7 +316,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
             variants={fadeUp(0)}
             initial="hidden"
             animate="visible"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 border border-white/25 text-[11px] font-black tracking-wider uppercase text-blue-200 mb-5 backdrop-blur-sm"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 border border-white/25 text-[11px] font-black tracking-wider uppercase text-cyan-200 mb-5 backdrop-blur-sm"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
             NMC Recognized · NEET 2026
@@ -290,7 +329,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
             className="font-heading text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-white mb-5 leading-[1.1]"
           >
             MBBS Colleges <br className="hidden sm:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-teal-300">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-teal-300">
               in India
             </span>
           </motion.h1>
@@ -299,7 +338,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
             variants={fadeUp(0.12)}
             initial="hidden"
             animate="visible"
-            className="text-blue-100/90 text-sm sm:text-base max-w-2xl mx-auto mb-8 leading-relaxed font-medium"
+            className="text-cyan-100/90 text-sm sm:text-base max-w-2xl mx-auto mb-8 leading-relaxed font-medium"
           >
             Explore {liveStats.total.toLocaleString()} NMC-recognized medical institutions across {liveStats.states} states. Access official seat matrices, government vs. private details, and find your ideal college.
           </motion.p>
@@ -311,9 +350,9 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
             className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl mx-auto mb-8"
           >
             {[
-              { label: "Total Colleges", value: liveStats.total.toLocaleString(), icon: Building2, color: "text-blue-300" },
+              { label: "Total Colleges", value: liveStats.total.toLocaleString(), icon: Building2, color: "text-cyan-300" },
               { label: "Government", value: liveStats.govt.toLocaleString(), icon: Landmark, color: "text-emerald-300" },
-              { label: "Private", value: liveStats.private.toLocaleString(), icon: GraduationCap, color: "text-purple-300" },
+              { label: "Private", value: liveStats.private.toLocaleString(), icon: GraduationCap, color: "text-teal-300" },
               { label: "States & UTs", value: liveStats.states.toString(), icon: MapPin, color: "text-rose-300" },
             ].map((s) => (
               <motion.div
@@ -323,7 +362,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
               >
                 <s.icon className={`w-5 h-5 ${s.color} mb-1.5 group-hover:scale-110 transition-transform`} />
                 <span className="text-lg font-black text-white">{s.value}</span>
-                <span className="text-[10px] uppercase font-bold text-blue-200/60 tracking-wider mt-0.5">{s.label}</span>
+                <span className="text-[10px] uppercase font-bold text-cyan-200/60 tracking-wider mt-0.5">{s.label}</span>
               </motion.div>
             ))}
           </motion.div>
@@ -336,7 +375,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
           >
             <a
               href="#explorer"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white dark:!bg-blue-600 border border-slate-200 dark:!border-blue-600 text-slate-900 dark:!text-white hover:bg-slate-50 dark:!hover:bg-blue-500 font-black text-sm rounded-xl shadow-lg active:scale-95 transition-all"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white dark:!bg-cyan-600 border border-slate-200 dark:!border-cyan-600 text-slate-900 dark:!text-white hover:bg-slate-50 dark:!hover:bg-cyan-500 font-black text-sm rounded-xl shadow-lg active:scale-95 transition-all"
             >
               Explore Colleges <ArrowRight className="w-4 h-4" />
             </a>
@@ -366,8 +405,8 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900/30 text-[10px] font-bold text-blue-600 dark:text-blue-400">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-100 dark:border-cyan-900/30 text-[10px] font-bold text-cyan-600 dark:text-cyan-400">
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
                   2026 Seat Matrix Active
                 </span>
               </div>
@@ -377,23 +416,31 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-slate-100 dark:border-slate-800/60">
               <div className="p-3 bg-slate-50/50 dark:bg-slate-900/50 rounded-xl border border-slate-100/80 dark:border-slate-800/40">
                 <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Counselling Merit</span>
-                <p className="text-xs text-slate-600 dark:text-slate-350 leading-relaxed font-medium">
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
                   All admissions are strictly via MCC & State NEET Counselling. No direct management/capitation seats permitted.
                 </p>
               </div>
               <div className="p-3 bg-slate-50/50 dark:bg-slate-900/50 rounded-xl border border-slate-100/80 dark:border-slate-800/40">
                 <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Fee Structure</span>
-                <p className="text-xs text-slate-600 dark:text-slate-350 leading-relaxed font-medium">
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
                   Govt fees range from ₹10k–₹1.5L/year. Private colleges range from ₹8L–₹25L/year based on category & state quotas.
                 </p>
               </div>
               <div className="p-3 bg-slate-50/50 dark:bg-slate-900/50 rounded-xl border border-slate-100/80 dark:border-slate-800/40">
                 <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Clinical Exposure</span>
-                <p className="text-xs text-slate-600 dark:text-slate-350 leading-relaxed font-medium">
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
                   Focus on high patient inflow (minimum 1000+ daily OPD count) when selecting private & deemed colleges.
                 </p>
               </div>
             </div>
+
+            <RankLensBar
+              lens={lens}
+              level="ug"
+              categories={["UR", "OBC", "SC", "ST", "EWS"]}
+              bandFilter={bandFilter}
+              onBandFilter={setBandFilter}
+            />
 
             {/* Separator / Divider */}
             <div className="border-t border-slate-100 dark:border-slate-800/60 pt-6" />
@@ -539,33 +586,48 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
                         <div className="hidden md:grid grid-cols-12 items-center gap-3">
                           {/* LEFT (col-span-8): College Name and Location only */}
                           <div className="col-span-8 min-w-0 pr-2 space-y-1">
-                            <h4 className="text-xs md:text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-snug break-words">
-                              {college.name}
+                            <h4 className="text-xs md:text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors leading-snug break-words">
+                              {college.slug ? (
+                                <Link href={`/mbbs-india/colleges/${college.slug}`} className="hover:underline">
+                                  {college.name}
+                                </Link>
+                              ) : (
+                                college.name
+                              )}
                             </h4>
                             <div className="flex items-center gap-1 text-[10px] text-slate-500 dark:text-slate-400">
                               <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
-                              {college.city}, {college.state}
+                              {[college.city, college.state].filter(Boolean).join(", ")}
                             </div>
                           </div>
 
                           {/* RIGHT (col-span-4): Type badge & Enquire button */}
                           <div className="col-span-4 flex items-center justify-end gap-2.5">
-                            <span
-                              className={`shrink-0 text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${
-                                college.type === "govt"
-                                  ? "bg-emerald-50 dark:bg-emerald-400 text-emerald-600 dark:text-black border-emerald-200 dark:border-emerald-400"
-                                  : "bg-violet-50 dark:bg-violet-400 text-violet-600 dark:text-black border-violet-200 dark:border-violet-400"
-                              }`}
-                            >
-                              {college.type === "govt" ? "Govt" : "Private"}
-                            </span>
+                            {lens.bandOf(college.slug) && (
+                              <span
+                                className={`shrink-0 rounded border px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider ${BAND_CHIP[lens.bandOf(college.slug)!].className}`}
+                              >
+                                {BAND_CHIP[lens.bandOf(college.slug)!].label}
+                              </span>
+                            )}
+                            {college.type !== "unknown" && (
+                              <span
+                                className={`shrink-0 text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${
+                                  college.type === "govt"
+                                    ? "bg-emerald-50 dark:bg-emerald-400 text-emerald-600 dark:text-black border-emerald-200 dark:border-emerald-400"
+                                    : "bg-teal-50 dark:bg-teal-400 text-teal-600 dark:text-black border-teal-200 dark:border-teal-400"
+                                }`}
+                              >
+                                {college.type === "govt" ? "Govt" : "Private"}
+                              </span>
+                            )}
                             <button
                               onClick={() =>
                                 CTA.whatsapp(
                                   `Hi, I would like to get information regarding admissions at ${college.name}`
                                 )
                               }
-                              className="px-2.5 py-1 rounded bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:hover:bg-blue-900/40 text-blue-600 dark:text-blue-400 border border-blue-100/60 dark:border-blue-900/40 transition-colors text-[11px] font-bold flex items-center justify-center gap-1 shrink-0"
+                              className="px-2.5 py-1 rounded bg-cyan-50 hover:bg-cyan-100 dark:bg-cyan-900/20 dark:hover:bg-cyan-900/40 text-cyan-600 dark:text-cyan-400 border border-cyan-100/60 dark:border-cyan-900/40 transition-colors text-[11px] font-bold flex items-center justify-center gap-1 shrink-0"
                             >
                               Enquire
                             </button>
@@ -573,36 +635,48 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
                         </div>
 
                         {/* Mobile Layout */}
-                        <div className="md:hidden flex flex-col gap-2">
-                          <div className="flex items-start justify-between gap-2.5">
-                            <div className="min-w-0">
-                              <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100 leading-snug break-words">
-                                {college.name}
-                              </h4>
-                              <p className="text-[10px] text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-1">
-                                <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
-                                <span>{college.city}, {college.state}</span>
-                              </p>
-                            </div>
-                            <span
-                              className={`shrink-0 text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${
-                                college.type === "govt"
-                                  ? "bg-emerald-50 dark:bg-emerald-400 text-emerald-600 dark:text-black border-emerald-200 dark:border-emerald-400"
-                                  : "bg-violet-50 dark:bg-violet-400 text-violet-600 dark:text-black border-violet-200 dark:border-violet-400"
-                              }`}
-                            >
-                              {college.type === "govt" ? "Govt" : "Private"}
-                            </span>
+                        <div className="md:hidden flex items-center justify-between gap-2">
+                          <div className="min-w-0 flex-1">
+                            <h4 className="text-[13px] font-bold text-slate-900 dark:text-slate-100 leading-snug break-words">
+                              {college.slug ? (
+                                <Link href={`/mbbs-india/colleges/${college.slug}`} className="hover:underline">
+                                  {college.name}
+                                </Link>
+                              ) : (
+                                college.name
+                              )}
+                            </h4>
+                            <p className="text-[10px] text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-0.5">
+                              <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
+                              <span className="truncate">{[college.city, college.state].filter(Boolean).join(", ")}</span>
+                            </p>
                           </div>
-
-                          <div className="flex items-center justify-end mt-1 pt-1.5 border-t border-slate-100 dark:border-slate-800/80">
+                          <div className="flex items-center gap-1.5 shrink-0">
+                            {lens.bandOf(college.slug) && (
+                              <span
+                                className={`shrink-0 rounded border px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider ${BAND_CHIP[lens.bandOf(college.slug)!].className}`}
+                              >
+                                {BAND_CHIP[lens.bandOf(college.slug)!].label}
+                              </span>
+                            )}
+                            {college.type !== "unknown" && (
+                              <span
+                                className={`shrink-0 text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${
+                                  college.type === "govt"
+                                    ? "bg-emerald-50 dark:bg-emerald-400 text-emerald-600 dark:text-black border-emerald-200 dark:border-emerald-400"
+                                    : "bg-teal-50 dark:bg-teal-400 text-teal-600 dark:text-black border-teal-200 dark:border-teal-400"
+                                }`}
+                              >
+                                {college.type === "govt" ? "Govt" : "Pvt"}
+                              </span>
+                            )}
                             <button
                               onClick={() =>
                                 CTA.whatsapp(
                                   `Hi, I would like to get information regarding admissions at ${college.name}`
                                 )
                               }
-                              className="px-2.5 py-1 text-[11px] font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 rounded transition-colors"
+                              className="px-2 py-1 rounded bg-cyan-50 hover:bg-cyan-100 dark:bg-cyan-900/20 dark:hover:bg-cyan-900/40 text-cyan-600 dark:text-cyan-400 border border-cyan-100/60 dark:border-cyan-900/40 transition-colors text-[10px] font-bold shrink-0"
                             >
                               Enquire
                             </button>
@@ -613,8 +687,8 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
                   </AnimatePresence>
                 </div>
               ) : (
-                /* Compact Grid View */
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                /* Compact Grid View - Standardized Uniform Cards */
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                   <AnimatePresence mode="popLayout">
                     {paginatedColleges.map((college) => (
                       <motion.div
@@ -624,62 +698,18 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.98 }}
                         transition={{ duration: 0.25, ease: smoothEase }}
-                        className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700/80 rounded-xl p-4 flex flex-col shadow-sm hover:shadow-md dark:hover:shadow-zinc-950/20 transition-all duration-200"
                       >
-                        <div className="flex items-center justify-between mb-2.5">
-                          <span className="text-[10px] text-slate-500 dark:text-slate-400 flex items-center gap-1 min-w-0">
-                            <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
-                            <span className="truncate">{college.city}, {college.state}</span>
-                          </span>
-                          <span
-                            className={`shrink-0 text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${
-                              college.type === "govt"
-                                ? "bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-900/30"
-                                : "bg-violet-50 dark:bg-violet-905/20 text-violet-600 dark:text-violet-400 border-violet-200 dark:border-violet-900/30"
-                            }`}
-                          >
-                            {college.type === "govt" ? "Govt" : "Private"}
-                          </span>
-                        </div>
-
-                        <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100 leading-snug line-clamp-2 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                          {college.name}
-                        </h4>
-
-                        <div className="border-t border-slate-100 dark:border-slate-800/80 my-2" />
-
-                        <p className="text-xs text-slate-500 dark:text-slate-400 leading-normal mb-3.5 min-h-[2.5rem] flex flex-col justify-start">
-                          <span className="text-[9px] text-slate-400 dark:text-slate-500 uppercase tracking-wider font-semibold block mb-0.5">Affiliation</span>
-                          {getFullUniversityName(college.universityName)}
-                        </p>
-
-                        <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-400 mb-3.5 mt-auto">
-                          {college.intake && (
-                            <span className="flex items-center gap-1">
-                              <Users className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                              <strong>{college.intake}</strong> seats
-                            </span>
-                          )}
-                          {college.establishedYear && (
-                            <span className="flex items-center gap-1">
-                              <Calendar className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                              Est. {college.establishedYear}
-                            </span>
-                          )}
-                        </div>
-
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() =>
-                              CTA.whatsapp(
-                                `Hi, I would like to get information regarding admissions at ${college.name}`
-                              )
-                            }
-                            className="flex-1 py-2 text-[11px] font-bold text-blue-600 dark:text-blue-400 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:hover:bg-blue-900/40 border border-blue-100/60 dark:border-blue-900/40 rounded-lg transition-colors flex items-center justify-center gap-1"
-                          >
-                            Enquire <ArrowRight className="w-3 h-3" />
-                          </button>
-                        </div>
+                        <CollegeCard
+                          collegeName={college.name}
+                          city={college.city}
+                          state={college.state}
+                          collegeType={college.type === "govt" ? "Government" : "Private"}
+                          description={null}
+                          imageUrl={college.imageUrl}
+                          yearEstablished={college.establishedYear}
+                          universityBody={getFullUniversityName(college.universityName)}
+                          seats={college.intake}
+                        />
                       </motion.div>
                     ))}
                   </AnimatePresence>
@@ -723,7 +753,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
                           onClick={() => goToPage(p)}
                           className={`w-7.5 h-7.5 flex items-center justify-center rounded text-[11px] font-bold transition-colors ${
                             currentPage === p
-                              ? "bg-blue-600 text-white shadow-sm"
+                              ? "bg-cyan-600 text-white shadow-sm"
                               : "text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800"
                           }`}
                         >
@@ -772,7 +802,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
             viewport={{ once: true }}
             className="text-center mb-6"
           >
-            <span className="text-[10px] font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-1.5 block">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-cyan-600 dark:text-cyan-400 mb-1.5 block">
               Complete Guide 2026
             </span>
             <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">
@@ -795,7 +825,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold border-b-2 transition-all whitespace-nowrap ${
                   activeTab === tab.id
-                    ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
+                    ? "border-cyan-600 text-cyan-600 dark:border-cyan-400 dark:text-cyan-400"
                     : "border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-zinc-300"
                 }`}
               >
@@ -827,7 +857,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
                     {[
                       {
                         title: "AIQ Quota (15%)",
-                        color: "text-blue-600 dark:text-blue-400",
+                        color: "text-cyan-600 dark:text-cyan-400",
                         desc: "15% of seats in all Government Medical Colleges are pooled into the All India Quota, open to students from any state. Managed by MCC.",
                       },
                       {
@@ -837,7 +867,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
                       },
                       {
                         title: "Management Quota",
-                        color: "text-violet-600 dark:text-violet-400",
+                        color: "text-teal-600 dark:text-teal-400",
                         desc: "Available in private medical institutions. Open state counselling allows students nationwide to apply, though fee structures are higher.",
                       },
                     ].map((item) => (
@@ -898,7 +928,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
                         key={s.step}
                         className="flex gap-3 p-3 bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-lg"
                       >
-                        <div className="w-6 h-6 rounded-md bg-blue-600 text-white flex items-center justify-center font-bold text-xs shrink-0">
+                        <div className="w-6 h-6 rounded-md bg-cyan-600 text-white flex items-center justify-center font-bold text-xs shrink-0">
                           {s.step}
                         </div>
                         <div>
@@ -940,7 +970,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
                     </div>
                     <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
                       <div className="flex items-center gap-1.5 mb-2">
-                        <GraduationCap className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" />
+                        <GraduationCap className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
                         <h4 className="font-bold text-slate-900 dark:text-white text-xs">
                           Private Institutions & Trusts
                         </h4>
@@ -970,7 +1000,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
             viewport={{ once: true }}
             className="text-center mb-6"
           >
-            <span className="text-[10px] font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-1.5 block">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-cyan-600 dark:text-cyan-400 mb-1.5 block">
               Expert Counselling Partner
             </span>
             <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">
@@ -997,7 +1027,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
               },
               {
                 title: "Smart College Predictor",
-                desc: "Data-driven algorithms analysing 5 years of NMC cutoffs to accurately predict Government and Private options.",
+                desc: "Your rank placed against the rounds that have actually been published — government, private and deemed, with the closing rank behind each one.",
                 icon: TrendingUp,
               },
               {
@@ -1012,7 +1042,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
                 className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700/80 transition-all shadow-sm"
               >
                 <div className="w-8 h-8 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/30 flex items-center justify-center mb-3">
-                  <feat.icon className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  <feat.icon className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
                 </div>
                 <h3 className="text-xs font-bold text-slate-900 dark:text-white mb-1">{feat.title}</h3>
                 <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">{feat.desc}</p>
@@ -1035,7 +1065,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
               viewport={{ once: true }}
               className="lg:sticky lg:top-24"
             >
-              <span className="text-[10px] font-bold uppercase tracking-widest text-blue-650 dark:text-blue-400 mb-2 block">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-cyan-600 dark:text-cyan-400 mb-2 block">
                 Common Questions
               </span>
               <h2 className="font-heading text-2xl md:text-3.5xl font-black text-slate-900 dark:text-white leading-tight">
@@ -1091,7 +1121,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
                           transition={{ duration: 0.2, ease: smoothEase }}
                           className="overflow-hidden"
                         >
-                          <div className="px-5 pb-4 text-xs text-slate-550 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-slate-800/80 pt-3">
+                          <div className="px-5 pb-4 text-xs text-slate-500 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-slate-800/80 pt-3">
                             {faq.a}
                           </div>
                         </motion.div>
@@ -1116,21 +1146,21 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
             className="bg-slate-900 dark:bg-slate-900/50 text-white rounded-[2rem] p-6 md:p-10 relative overflow-hidden shadow-xl border border-slate-800 dark:border-slate-800/60"
           >
             {/* Gradient Highlights */}
-            <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-blue-600/10 rounded-full blur-[80px] pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-[200px] h-[200px] bg-indigo-600/10 rounded-full blur-[60px] pointer-events-none" />
+            <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-cyan-600/10 rounded-full blur-[80px] pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-[200px] h-[200px] bg-teal-600/10 rounded-full blur-[60px] pointer-events-none" />
 
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 md:gap-8 relative z-10 text-left">
               <div className="max-w-xl">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/5 text-blue-200 text-[10px] font-bold mb-3.5 shadow-sm">
-                  <Sparkles className="w-3 h-3 text-blue-300" /> Expert Counselling 2026
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/5 text-cyan-200 text-[10px] font-bold mb-3.5 shadow-sm">
+                  <Sparkles className="w-3 h-3 text-cyan-300" /> Expert Counselling 2026
                 </span>
                 <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-black tracking-tight leading-tight">
                   Secure Your Seat in India's{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400">
                     Finest Medical Colleges
                   </span>
                 </h2>
-                <p className="text-blue-100/70 text-xs mt-2.5 leading-relaxed">
+                <p className="text-cyan-100/70 text-xs mt-2.5 leading-relaxed">
                   Don't leave your MBBS career to chance. Get verified choice lists, budget
                   calibrations, state quota filters, and complete support from top counsellors.
                 </p>
@@ -1139,7 +1169,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
               <div className="flex flex-row sm:flex-col lg:flex-row gap-3 shrink-0 w-full sm:w-auto">
                 <button
                   onClick={CTA.call}
-                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-blue-900/20 active:scale-95 transition-all"
+                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-cyan-900/20 active:scale-95 transition-all"
                 >
                   <Phone className="w-4 h-4" /> Book Free Call
                 </button>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { getMediaAsset, type MediaAsset } from '@/lib/mediaService';
+import type { MediaAsset } from '@/lib/mediaService';
 
 interface BackendImageProps {
   mediaKey: string;
@@ -36,15 +36,24 @@ export function BackendImage({
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    getMediaAsset(mediaKey)
-      .then((data) => {
-        setAsset(data);
+    let cancelled = false;
+
+    fetch(`/api/content/media/${encodeURIComponent(mediaKey)}`)
+      .then((res) => (res.ok ? res.json() : Promise.reject(new Error(String(res.status)))))
+      .then(({ data }) => {
+        if (cancelled) return;
+        setAsset(data ?? null);
         setLoading(false);
       })
       .catch(() => {
+        if (cancelled) return;
         setError(true);
         setLoading(false);
       });
+
+    return () => {
+      cancelled = true;
+    };
   }, [mediaKey]);
 
   const src = asset?.image_url || fallbackSrc;

@@ -24,7 +24,7 @@ const NRIFees = () => {
               hostel: "₹1-2 Lakhs", 
               dev: "₹50K-1 Lakh", 
               total: "₹85-1.35 Cr.", 
-              color: "bg-blue-600",
+              color: "bg-cyan-600",
               note: "Regulated by respective state authorities."
             },
             { 
@@ -44,7 +44,7 @@ const NRIFees = () => {
               hostel: "₹2-3.5 Lakhs", 
               dev: "₹2-5 Lakhs", 
               total: "₹1.5-2.3 Cr.", 
-              color: "bg-indigo-600",
+              color: "bg-teal-600",
               note: "May have additional one-time admission fees."
             }
           ].map((card, idx) => (
@@ -107,8 +107,8 @@ const NRIFees = () => {
               }
             ].map((item, idx) => (
               <div key={idx} className="flex items-start gap-5 group">
-                <div className="shrink-0 w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center border border-blue-200 group-hover:bg-blue-600 group-hover:border-blue-600 transition-all">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-blue-600 group-hover:text-white transition-colors">
+                <div className="shrink-0 w-12 h-12 rounded-xl bg-cyan-100 flex items-center justify-center border border-cyan-200 group-hover:bg-cyan-600 group-hover:border-cyan-600 transition-all">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-cyan-600 group-hover:text-white transition-colors">
                     <path d="M12 9V13M12 17H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </div>

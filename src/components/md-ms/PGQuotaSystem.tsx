@@ -1,20 +1,21 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import type { PgQuota } from '@/lib/pgContent';
 import { motion } from "framer-motion";
 import { CheckCircle2, Phone } from "lucide-react";
 import { useCTA } from "@/hooks/useCTA";
 
-const quotaCards = [
+const SHIPPED_QUOTACARDS = [
   {
     title: "All India Quota",
     percentage: "50%",
     colorClass: "blue",
-    bg: "bg-blue-500/10",
-    border: "border-blue-500/20",
-    percentColor: "text-blue-400",
-    iconColor: "text-blue-400",
-    bulletColor: "text-blue-200/80",
+    bg: "bg-cyan-500/10",
+    border: "border-cyan-500/20",
+    percentColor: "text-cyan-400",
+    iconColor: "text-cyan-400",
+    bulletColor: "text-cyan-200/80",
     bullets: [
       "Open to all domiciles",
       "Managed via MCC portal",
@@ -40,11 +41,11 @@ const quotaCards = [
     title: "Deemed Universities",
     percentage: "100%",
     colorClass: "violet",
-    bg: "bg-violet-500/10",
-    border: "border-violet-500/20",
-    percentColor: "text-violet-400",
-    iconColor: "text-violet-400",
-    bulletColor: "text-violet-200/80",
+    bg: "bg-teal-500/10",
+    border: "border-teal-500/20",
+    percentColor: "text-teal-400",
+    iconColor: "text-teal-400",
+    bulletColor: "text-teal-200/80",
     bullets: [
       "NEET PG based admission",
       "Centralized via MCC",
@@ -68,7 +69,24 @@ const quotaCards = [
   },
 ];
 
-export const PGQuotaSystem = () => {
+export const PGQuotaSystem = ({ items: fromCms }: { items?: PgQuota[] | null } = {}) => {
+  // The CMS supplies the words; everything visual stays with the shipped item
+  // at the same position, so a design change is a code change and a copy
+  // change is not. Extra CMS rows reuse the last item's styling.
+  const quotaCards = (() => {
+    const cms = fromCms;
+    if (!cms?.length) return SHIPPED_QUOTACARDS;
+    return cms.map((_, i) => {
+      const base = SHIPPED_QUOTACARDS[i] ?? SHIPPED_QUOTACARDS[SHIPPED_QUOTACARDS.length - 1];
+      return {
+          ...base,
+          title: cms[i].title ?? base.title,
+          percentage: cms[i].percentage ?? base.percentage,
+          bullets: cms[i].bullets ?? base.bullets,
+      };
+    });
+  })();
+
   const [mounted, setMounted] = useState(false);
   const CTA = useCTA();
 
@@ -84,16 +102,16 @@ export const PGQuotaSystem = () => {
           viewport={{ once: true }}
           className="text-center mb-8"
         >
-          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider border border-white/20 bg-white/10 text-blue-300 mb-4">
+          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider border border-white/20 bg-white/10 text-cyan-300 mb-4">
             Quota System
           </span>
           <h2 className="text-2xl md:text-3xl font-black mb-3">
             Understanding PG{" "}
-            <span className="bg-gradient-to-r from-blue-300 to-indigo-300 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-cyan-300 to-teal-300 bg-clip-text text-transparent">
               Seat Distribution
             </span>
           </h2>
-          <p className="text-sm text-blue-100/70 max-w-xl mx-auto">
+          <p className="text-sm text-cyan-100/70 max-w-xl mx-auto">
             PG medical seats are distributed across multiple quota systems. Understanding each one is key to maximizing your admission chances.
           </p>
         </motion.div>
@@ -169,12 +187,12 @@ export const PGQuotaSystem = () => {
           viewport={{ once: true }}
           className="bg-white/5 rounded-lg md:rounded-xl p-3.5 md:p-5 mt-5 md:mt-6 border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4"
         >
-          <p className="text-xs md:text-sm text-blue-100/80 font-bold text-center sm:text-left">
+          <p className="text-xs md:text-sm text-cyan-100/80 font-bold text-center sm:text-left">
             We manage registrations and strategy across ALL quota systems simultaneously.
           </p>
           <button
             onClick={() => CTA.call()}
-            className="inline-flex items-center gap-1.5 px-4 py-2 md:px-5 md:py-2.5 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-[10px] md:text-xs font-black uppercase tracking-wider hover:shadow-lg hover:shadow-blue-500/25 transition-all flex-shrink-0"
+            className="inline-flex items-center gap-1.5 px-4 py-2 md:px-5 md:py-2.5 rounded-full bg-gradient-to-r from-cyan-500 to-teal-600 text-white text-[10px] md:text-xs font-black uppercase tracking-wider hover:shadow-lg hover:shadow-cyan-500/25 transition-all flex-shrink-0"
           >
             <Phone className="w-3.5 h-3.5 md:w-4 md:h-4" />
             Call Us Now

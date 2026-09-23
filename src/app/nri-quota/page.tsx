@@ -7,7 +7,23 @@ import NRIProcess from '@/components/nri/NRIProcess';
 import NRIFAQ from '@/components/nri/NRIFAQ';
 import NRICTA from '@/components/nri/NRICTA';
 import SEO from '@/components/SEO';
-import { getMediaAsset } from '@/lib/mediaService';
+import { getMediaAsset, getBlocks, getSettings, setting, getSections, resolveMetadata } from '@/lib/content';
+import { getNriContent } from '@/lib/nriContent';
+import type { Metadata } from 'next';
+
+/**
+ * Metadata the admin can override per route (Admin -> Search & sharing).
+ * Blank admin values fall through to the defaults below.
+ */
+export async function generateMetadata(): Promise<Metadata> {
+  return resolveMetadata('/nri-quota', {
+    title: 'NRI Quota Medical Admissions - AdmissionHands',
+    description:
+      'Expert guidance for NRI quota MBBS admissions in India. Learn about eligibility, fees, required documents and admission process for NRI students.',
+    keywords:
+      'NRI quota, medical admissions, MBBS for NRI, NRI sponsored candidates, foreign students medical admission',
+  });
+}
 
 const NRIQuotaPage = async () => {
   // FAQ structured data for better SEO
@@ -34,25 +50,45 @@ const NRIQuotaPage = async () => {
     ]
   };
 
-  const nriHeroAsset = await getMediaAsset('nri_hero');
+  const [nriHeroAsset, faqBlocks, s, sections, nri] = await Promise.all([
+    getMediaAsset('nri_hero'),
+    getBlocks('faq_nri'),
+    getSettings(),
+    getSections('nri'),
+    getNriContent(),
+  ]);
+  const faqItems = faqBlocks.map((b) => ({ q: b.title ?? '', a: b.body ?? '' }));
 
   return (
     <div className="flex flex-col flex-grow">
-      <SEO 
-        title="NRI Quota Medical Admissions - AdmissionHands"
-        description="Expert guidance for NRI quota MBBS admissions in India. Learn about eligibility, fees, required documents and admission process for NRI students."
-        keywords="NRI quota, medical admissions, MBBS for NRI, NRI sponsored candidates, foreign students medical admission"
-        ogTitle="NRI Quota Medical College Admissions - AdmissionHands"
-        structuredData={faqSchema}
-      />
+<SEO structuredData={faqSchema} />
       
       <div className="flex-grow">
-        <NRIHero backgroundImageUrl={nriHeroAsset?.image_url} />
-        <NRIEligibility />
-        <NRIProcess />
-        <NRIFees />
-        <NRIFAQ />
-        <NRICTA />
+        {/* Order and visibility come from the admin (Page Content -> Page layout). */}
+        {sections
+          .sort([
+            { key: 'hero', node: <NRIHero backgroundImageUrl={nriHeroAsset?.image_url} /> },
+            { key: 'eligibility', node: <NRIEligibility /> },
+            { key: 'process', node: <NRIProcess steps={nri.steps} /> },
+            { key: 'fees', node: <NRIFees /> },
+            {
+              key: 'faq',
+              node: (
+                <NRIFAQ
+                  items={faqItems}
+                  copy={{
+                    title: setting(s, 'nri.faq.title'),
+                    subtitle: setting(s, 'nri.faq.subtitle'),
+                  }}
+                />
+              ),
+            },
+            { key: 'cta', node: <NRICTA benefits={nri.benefits} /> },
+          ])
+          .filter((section) => sections.shows(section.key))
+          .map((section) => (
+            <React.Fragment key={section.key}>{section.node}</React.Fragment>
+          ))}
       </div>
     </div>
   );

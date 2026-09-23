@@ -22,7 +22,7 @@ export default function AdminLogin() {
   useEffect(() => {
     if (!loading && user) {
       const isSubdomain = typeof window !== 'undefined' && isAdminSubdomain(window.location.hostname);
-      router.replace(isSubdomain ? '/live-alerts' : '/admin/live-alerts');
+      router.replace(isSubdomain ? '/dashboard' : '/admin/dashboard');
     }
   }, [user, loading, router]);
 

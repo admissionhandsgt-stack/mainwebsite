@@ -1,16 +1,17 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import type { PgCard } from '@/lib/pgContent';
 import { motion } from "framer-motion";
 import { BarChart3, Target, Brain, FileCheck, CheckCircle2 } from "lucide-react";
 
-const cards = [
+const SHIPPED_CARDS = [
   {
     icon: BarChart3,
-    gradient: "from-blue-600 to-indigo-600",
+    gradient: "from-cyan-600 to-teal-600",
     title: "Cutoff Intelligence Engine",
-    desc: "Our proprietary system processes 5 years of closing rank data across 250+ colleges and 60+ branches. We calculate your exact admission probability at each target institution — no guesswork, pure data.",
-    highlight: "95%+ prediction accuracy",
+    desc: "Every seat is placed against the round it actually closed in — round one, the widest the cut reached that year, and how far it has ever gone. Where the record is thin we say so, rather than inventing a percentage to look precise.",
+    highlight: "Published closing ranks, never an estimate",
   },
   {
     icon: Target,
@@ -21,7 +22,7 @@ const cards = [
   },
   {
     icon: Brain,
-    gradient: "from-violet-600 to-purple-600",
+    gradient: "from-teal-600 to-teal-600",
     title: "Branch Strategy Architect",
     desc: "Clinical, Surgical, or Non-Clinical? Your branch choice impacts your entire career. We analyze market demand, lifestyle factors, earning potential, and your rank to recommend the branches that truly fit your future.",
     highlight: "Career-aligned branch selection",
@@ -31,11 +32,28 @@ const cards = [
     gradient: "from-amber-500 to-orange-600",
     title: "Zero Document Failures",
     desc: "Internship completion certificates, NMC registration, domicile proofs, category certificates — PG documentation is more complex than UG. Our audit team pre-verifies every paper weeks before deadlines.",
-    highlight: "100% success rate in documentation across 2100+ students",
+    highlight: "documentation handled end to end for 2100+ students",
   },
 ];
 
-export const PGWhyUs = () => {
+export const PGWhyUs = ({ items: fromCms }: { items?: PgCard[] | null } = {}) => {
+  // The CMS supplies the words; everything visual stays with the shipped item
+  // at the same position, so a design change is a code change and a copy
+  // change is not. Extra CMS rows reuse the last item's styling.
+  const cards = (() => {
+    const cms = fromCms;
+    if (!cms?.length) return SHIPPED_CARDS;
+    return cms.map((_, i) => {
+      const base = SHIPPED_CARDS[i] ?? SHIPPED_CARDS[SHIPPED_CARDS.length - 1];
+      return {
+          ...base,
+          title: cms[i].title ?? base.title,
+          desc: cms[i].desc ?? base.desc,
+          highlight: cms[i].highlight ?? base.highlight,
+      };
+    });
+  })();
+
   const [mounted, setMounted] = useState(false);
   useEffect(() => { setMounted(true); }, []);
 
@@ -47,7 +65,7 @@ export const PGWhyUs = () => {
             initial={mounted ? { opacity: 0, y: 10 } : false}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 text-[10px] font-black tracking-widest uppercase mb-3"
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50 dark:bg-cyan-950/40 text-cyan-600 dark:text-cyan-400 text-[10px] font-black tracking-widest uppercase mb-3"
           >
             Why Admission Hands
           </motion.div>
@@ -57,7 +75,7 @@ export const PGWhyUs = () => {
             viewport={{ once: true }}
             className="text-2xl md:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white tracking-tight mb-3"
           >
-            The <span className="text-blue-600 dark:text-blue-400">Competitive Edge</span> Your PG Journey Deserves
+            The <span className="text-cyan-600 dark:text-cyan-400">Competitive Edge</span> Your PG Journey Deserves
           </motion.h2>
           <motion.p
             initial={mounted ? { opacity: 0, y: 10 } : false}

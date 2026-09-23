@@ -41,8 +41,8 @@ export default function ReadingProgress() {
       aria-valuemax={100}
       aria-label="Reading progress"
       className={`fixed top-0 left-0 z-50 h-[2px] print:hidden
-        bg-gradient-to-r from-blue-500 to-indigo-500
-        dark:from-blue-400 dark:to-indigo-400
+        bg-gradient-to-r from-cyan-500 to-teal-500
+        dark:from-cyan-400 dark:to-teal-400
         transition-[width] duration-150 ease-out
         motion-reduce:transition-none
         ${progress === 0 ? "opacity-0" : "opacity-100"}`}

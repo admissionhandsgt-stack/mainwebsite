@@ -2,6 +2,7 @@
 
 import React from "react";
 import { mbbsData } from "@/data/mbbs-india";
+import type { MbbsContent } from '@/lib/pageContent';
 import { ShieldCheck, Target, Zap, Clock, FileSearch, Headphones, ArrowRight } from "lucide-react";
 import { CTAButton } from "@/components/CTAButton";
 import { motion } from "framer-motion";
@@ -9,16 +10,16 @@ import { motion } from "framer-motion";
 const icons = [Target, Zap, ShieldCheck, Clock, FileSearch, Headphones];
 
 const stepColors = [
-  { bg: "bg-blue-600", light: "bg-blue-50", border: "border-blue-200", text: "text-blue-600", shadow: "shadow-blue-200" },
-  { bg: "bg-indigo-600", light: "bg-indigo-50", border: "border-indigo-200", text: "text-indigo-600", shadow: "shadow-indigo-200" },
-  { bg: "bg-violet-600", light: "bg-violet-50", border: "border-violet-200", text: "text-violet-600", shadow: "shadow-violet-200" },
+  { bg: "bg-cyan-600", light: "bg-cyan-50", border: "border-cyan-200", text: "text-cyan-600", shadow: "shadow-cyan-200" },
+  { bg: "bg-teal-600", light: "bg-teal-50", border: "border-teal-200", text: "text-teal-600", shadow: "shadow-teal-200" },
+  { bg: "bg-teal-600", light: "bg-teal-50", border: "border-teal-200", text: "text-teal-600", shadow: "shadow-teal-200" },
   { bg: "bg-teal-600", light: "bg-teal-50", border: "border-teal-200", text: "text-teal-600", shadow: "shadow-teal-200" },
   { bg: "bg-emerald-600", light: "bg-emerald-50", border: "border-emerald-200", text: "text-emerald-600", shadow: "shadow-emerald-200" },
   { bg: "bg-amber-600", light: "bg-amber-50", border: "border-amber-200", text: "text-amber-600", shadow: "shadow-amber-200" },
 ];
 
-export const CollegeSelectionGuide = () => {
-  const { whatWeDo } = mbbsData;
+export const CollegeSelectionGuide = ({ data = mbbsData }: { data?: MbbsContent } = {}) => {
+  const { whatWeDo } = data;
 
   return (
     <section className="py-14 bg-white dark:bg-slate-950 relative overflow-hidden">
@@ -29,14 +30,14 @@ export const CollegeSelectionGuide = () => {
 
       <div className="container-custom relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/30 rounded-full mb-4">
-            <Target className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-            <span className="text-[10px] font-black text-blue-700 dark:text-blue-300 uppercase tracking-widest">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-cyan-50 dark:bg-cyan-950/40 border border-cyan-100 dark:border-cyan-900/30 rounded-full mb-4">
+            <Target className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
+            <span className="text-[10px] font-black text-cyan-700 dark:text-cyan-300 uppercase tracking-widest">
               Strategic Approach
             </span>
           </div>
           <h2 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-3 tracking-tight leading-tight">
-            {whatWeDo.title.split('Secure')[0]} <span className="text-blue-600 dark:text-blue-400">Secure</span> {whatWeDo.title.split('Secure')[1]}
+            {whatWeDo.title.split('Secure')[0]} <span className="text-cyan-600 dark:text-cyan-400">Secure</span> {whatWeDo.title.split('Secure')[1]}
           </h2>
           <p className="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
             {whatWeDo.subtitle}

@@ -1,4 +1,11 @@
-import { supabase } from '@/integrations/supabase/client';
+/**
+ * CMS-managed images.
+ *
+ * Client-safe half of the media layer: the `MediaAsset` shape and the upload
+ * call. Reads live in `lib/content.ts`, which opens a database connection and
+ * therefore must never be imported from a component that runs in the browser.
+ */
+
 
 export interface MediaAsset {
   id: string;
@@ -14,44 +21,49 @@ export interface MediaAsset {
   updated_at: string;
 }
 
-export async function getMediaAsset(mediaKey: string): Promise<MediaAsset | null> {
-  const { data, error } = await (supabase as any)
-    .from('media_assets')
-    .select('*')
-    .eq('media_key', mediaKey)
-    .single();
-  if (error) return null;
-  
-  // If explicitly set to inactive in DB, return 'none' for image URLs to signal the UI not to render/fallback
-  if (!data.is_active) {
-    return {
-      ...data,
-      image_url: 'none',
-      mobile_image_url: 'none'
-    } as MediaAsset;
-  }
-  
-  return data as MediaAsset;
+function toLegacyShape(a: {
+  mediaKey: string;
+  title: string | null;
+  imageUrl: string;
+  mobileImageUrl: string | null;
+  altText: string | null;
+  isActive: boolean;
+}): MediaAsset {
+  return {
+    id: a.mediaKey,
+    media_key: a.mediaKey,
+    title: a.title,
+    image_url: a.imageUrl,
+    mobile_image_url: a.mobileImageUrl,
+    alt_text: a.altText,
+    section_type: null,
+    display_order: 0,
+    is_active: a.isActive,
+    created_at: "",
+    updated_at: "",
+  };
 }
 
-export async function getMediaAssets(sectionType?: string): Promise<MediaAsset[]> {
-  let query = (supabase as any)
-    .from('media_assets')
-    .select('*')
-    .eq('is_active', true)
-    .order('display_order');
-  if (sectionType) query = query.eq('section_type', sectionType);
-  const { data } = await query;
-  return (data as MediaAsset[]) || [];
-}
-
+/**
+ * Sends the file to /api/admin/upload, which stores it on the server and
+ * returns the public path. Returns null on failure so callers can show their
+ * own error rather than a thrown exception.
+ */
 export async function uploadMediaFile(file: File, folder: string): Promise<string | null> {
-  const ext = file.name.split('.').pop();
-  const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-  const { data, error } = await (supabase as any).storage
-    .from('media-assets')
-    .upload(fileName, file, { upsert: true });
-  if (error) { console.error('Upload error:', error); return null; }
-  const { data: { publicUrl } } = (supabase as any).storage.from('media-assets').getPublicUrl(data.path);
-  return publicUrl;
+  try {
+    const body = new FormData();
+    body.append("file", file);
+    body.append("folder", folder);
+
+    const res = await fetch("/api/admin/upload", { method: "POST", body });
+    if (!res.ok) {
+      console.error("Upload failed:", await res.text());
+      return null;
+    }
+    const { url } = (await res.json()) as { url?: string };
+    return url ?? null;
+  } catch (error) {
+    console.error("Upload error:", error);
+    return null;
+  }
 }

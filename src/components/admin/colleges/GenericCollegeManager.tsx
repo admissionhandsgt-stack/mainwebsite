@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { listRows, createRow, updateRow, deleteRow, uploadImage } from '@/lib/adminApi';
 import { toast } from 'sonner';
 import { Pencil, Trash2, Loader2, ImagePlus, Plus, Building2, MapPin, Users, Calendar, ShieldCheck, Search, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -26,12 +26,13 @@ export interface GenericCollege {
 }
 
 interface GenericCollegeManagerProps {
-  tableName: string;
+  /** Admin API resource this tab edits, e.g. "colleges-ug". */
+  resource: string;
   title: string;
   description: string;
 }
 
-const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ tableName, title, description }) => {
+const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ resource, title, description }) => {
   const [colleges, setColleges] = useState<GenericCollege[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -47,7 +48,8 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ tableName
     state: '',
     city: '',
     intake: 0,
-    image_url: ''
+    image_url: '',
+    display_order: 100
   });
   
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -55,20 +57,14 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ tableName
 
   useEffect(() => {
     fetchColleges();
-  }, [tableName]);
+  }, [resource]);
 
   const fetchColleges = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from(tableName as any)
-        .select('*')
-        .order('college_name');
-        
-      if (error) throw error;
-      setColleges((data as any[]) || []);
-    } catch (err: any) {
-      console.error(`Error fetching from ${tableName}:`, err);
+      setColleges(await listRows<GenericCollege>(resource));
+    } catch (err) {
+      console.error(`Error fetching ${resource}:`, err);
       toast.error(`Failed to load data for ${title}`);
     } finally {
       setLoading(false);
@@ -78,6 +74,22 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ tableName
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
+      // Validate file extension
+      const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'avif'];
+      const fileExtension = file.name.split('.').pop()?.toLowerCase();
+      if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
+        toast.error("Invalid file format. Only JPG, JPEG, PNG, WEBP, and AVIF are allowed.");
+        e.target.value = ''; // Reset input
+        return;
+      }
+
+      // Validate file size (5MB = 5 * 1024 * 1024 bytes)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("File is too large. Maximum allowed size is 5MB.");
+        e.target.value = ''; // Reset input
+        return;
+      }
+
       setImageFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -95,31 +107,24 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ tableName
 
     try {
       setIsSaving(true);
-      let imageUrl = newCollege.image_url || 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800';
+      let imageUrl = newCollege.image_url || null;
       
       if (imageFile) {
-        const fileName = `${Date.now()}-${imageFile.name}`;
-        const { error: uploadError } = await supabase.storage.from('universities').upload(fileName, imageFile);
-        if (uploadError) throw uploadError;
-        const { data: publicUrl } = supabase.storage.from('universities').getPublicUrl(fileName);
-        imageUrl = publicUrl.publicUrl;
+        imageUrl = await uploadImage(imageFile, 'colleges');
       }
 
       const slug = newCollege.college_name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
-      const { error } = await supabase.from(tableName as any).insert({
+      await createRow(resource, {
         college_name: newCollege.college_name,
         slug: slug,
         city: newCollege.city || null,
         state: newCollege.state,
         intake: newCollege.intake || 0,
         image_url: imageUrl,
-        source_type: 'manual',
         is_active: true,
-        display_order: colleges.length + 1
+        display_order: newCollege.display_order ?? ((colleges.length + 1) * 100)
       });
-
-      if (error) throw error;
       
       toast.success("College added successfully");
       setIsAddDialogOpen(false);
@@ -144,26 +149,23 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ tableName
       let imageUrl = selectedCollege.image_url;
       
       if (imageFile) {
-        const fileName = `${Date.now()}-${imageFile.name}`;
-        const { error: uploadError } = await supabase.storage.from('universities').upload(fileName, imageFile);
-        if (uploadError) throw uploadError;
-        const { data: publicUrl } = supabase.storage.from('universities').getPublicUrl(fileName);
-        imageUrl = publicUrl.publicUrl;
+        imageUrl = await uploadImage(imageFile, 'colleges');
+      } else if (previewUrl === null) {
+        imageUrl = null; // Explicitly remove the image
       }
 
       const slug = selectedCollege.college_name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
-      const { error } = await supabase.from(tableName as any).update({
+      await updateRow(resource, selectedCollege.id, {
         college_name: selectedCollege.college_name,
         slug: slug,
         city: selectedCollege.city || null,
         state: selectedCollege.state,
         intake: selectedCollege.intake,
         image_url: imageUrl,
-        updated_at: new Date().toISOString()
-      }).eq('id', selectedCollege.id);
+        display_order: selectedCollege.display_order
+      });
 
-      if (error) throw error;
       
       toast.success("College updated successfully");
       setIsEditDialogOpen(false);
@@ -183,8 +185,7 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ tableName
     if (!selectedCollege) return;
     try {
       setIsDeleting(true);
-      const { error } = await supabase.from(tableName as any).delete().eq('id', selectedCollege.id);
-      if (error) throw error;
+      await deleteRow(resource, selectedCollege.id);
       toast.success("College deleted successfully");
       setIsDeleteDialogOpen(false);
       setSelectedCollege(null);
@@ -198,7 +199,7 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ tableName
   };
 
   const resetForm = () => {
-    setNewCollege({ college_name: '', state: '', city: '', intake: 0, image_url: '' });
+    setNewCollege({ college_name: '', state: '', city: '', intake: 0, image_url: '', display_order: (colleges.length + 1) * 100 });
     setImageFile(null);
     setPreviewUrl(null);
   };
@@ -212,14 +213,14 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ tableName
   return (
     <div className="space-y-8 p-1">
       <div className="relative overflow-hidden bg-slate-900 rounded-[2rem] border border-slate-800 p-8 shadow-2xl">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-transparent to-emerald-500/10 opacity-60 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-transparent to-emerald-500/10 opacity-60 pointer-events-none" />
         <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <Badge className="bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/30 px-3 py-1 text-xs font-black uppercase tracking-wider">
+            <Badge className="bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 px-3 py-1 text-xs font-black uppercase tracking-wider">
               Management Portal
             </Badge>
             <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight leading-none">
-              {title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">Database</span>
+              {title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Database</span>
             </h2>
             <p className="text-slate-400 text-sm font-medium">
               {description}
@@ -228,15 +229,15 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ tableName
 
           <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
             <DialogTrigger asChild>
-              <Button onClick={resetForm} className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-full px-6 py-5 shadow-lg shadow-blue-500/20 text-sm font-black transition-all border border-blue-400/20">
+              <Button onClick={resetForm} className="flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white rounded-full px-6 py-5 shadow-lg shadow-cyan-500/20 text-sm font-black transition-all border border-cyan-400/20">
                 <Plus className="h-4 w-4" />
                 <span>Add College</span>
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[550px] bg-white border-slate-200 rounded-3xl shadow-2xl overflow-hidden p-0 max-h-[90vh] overflow-y-auto">
               <div className="px-6 py-5 bg-slate-50 border-b border-slate-100 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
-                  <Building2 className="w-5 h-5 text-blue-600" />
+                <div className="w-10 h-10 rounded-xl bg-cyan-100 flex items-center justify-center">
+                  <Building2 className="w-5 h-5 text-cyan-600" />
                 </div>
                 <div>
                   <DialogTitle className="text-xl font-black text-slate-900">Add New College</DialogTitle>
@@ -288,6 +289,17 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ tableName
                     />
                   </div>
                   
+                  <div className="space-y-2">
+                    <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Display Order</Label>
+                    <Input 
+                      type="number" 
+                      placeholder="e.g. 100" 
+                      value={newCollege.display_order === undefined ? '' : newCollege.display_order}
+                      onChange={(e) => setNewCollege({...newCollege, display_order: parseInt(e.target.value) || 0})}
+                      className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-colors"
+                    />
+                  </div>
+
                   <div className="space-y-2 pt-2">
                     <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 block">College Image</Label>
                     
@@ -307,7 +319,7 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ tableName
                       )}
                       
                       <div className="flex-1">
-                        <Label htmlFor="image-upload" className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors">
+                        <Label htmlFor="image-upload" className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-cyan-600 transition-colors">
                           <ImagePlus className="w-4 h-4" />
                           Choose Image
                         </Label>
@@ -327,7 +339,7 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ tableName
               
               <DialogFooter className="p-4 bg-slate-50 border-t border-slate-100">
                 <Button variant="outline" onClick={() => setIsAddDialogOpen(false)} className="rounded-xl">Cancel</Button>
-                <Button onClick={handleAddCollege} disabled={isSaving} className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white">
+                <Button onClick={handleAddCollege} disabled={isSaving} className="rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white">
                   {isSaving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : 'Add College'}
                 </Button>
               </DialogFooter>
@@ -344,7 +356,7 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ tableName
               placeholder="Search by name or location..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 bg-white border-slate-200 rounded-xl focus-visible:ring-blue-500"
+              className="pl-9 bg-white border-slate-200 rounded-xl focus-visible:ring-cyan-500"
             />
           </div>
           <Button variant="outline" size="sm" className="w-full sm:w-auto rounded-xl gap-2 border-slate-200">
@@ -355,14 +367,14 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ tableName
 
         {loading ? (
           <div className="flex flex-col items-center justify-center p-12 text-slate-400">
-            <Loader2 className="w-8 h-8 animate-spin mb-4 text-blue-500" />
+            <Loader2 className="w-8 h-8 animate-spin mb-4 text-cyan-500" />
             <p className="font-medium">Loading colleges...</p>
           </div>
         ) : filteredColleges.length === 0 ? (
           <div className="flex flex-col items-center justify-center p-12 text-slate-400">
             <Building2 className="w-12 h-12 mb-4 opacity-20" />
             <p className="font-medium">No colleges found matching your search.</p>
-            <Button variant="link" onClick={() => setSearchQuery('')} className="text-blue-500 mt-2">Clear search</Button>
+            <Button variant="link" onClick={() => setSearchQuery('')} className="text-cyan-500 mt-2">Clear search</Button>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-t border-slate-100 bg-slate-50/30">
@@ -388,21 +400,26 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ tableName
                   <div className="w-14 h-14 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img 
-                      src={college.image_url || 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800'} 
+                      src={college.image_url || '/assets/images/colleges/medical-college.avif'} 
                       alt={college.college_name} 
                       className="w-full h-full object-cover"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800';
+                        (e.target as HTMLImageElement).src = '/assets/images/colleges/medical-college.avif';
                       }}
                     />
                   </div>
                   <div className="flex-1 min-w-0">
                     <h3 className="text-sm font-black text-slate-900 truncate mb-1" title={college.college_name}>{college.college_name}</h3>
+                    <div className="flex gap-2 items-center mb-2">
+                      <Badge variant="outline" className="text-[8px] px-1 py-0 border-cyan-200 text-cyan-600 bg-cyan-50 shrink-0">
+                        Order: {college.display_order}
+                      </Badge>
+                    </div>
                     <div className="flex items-center gap-1.5 text-xs text-slate-500 mb-2">
                       <MapPin className="w-3.5 h-3.5 text-slate-400" />
                       <span className="truncate">{college.city ? `${college.city}, ` : ''}{college.state}</span>
                     </div>
-                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-black tracking-wide">
+                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-cyan-50 text-cyan-700 text-[10px] font-black tracking-wide">
                       <Users className="w-3 h-3" />
                       {college.intake} Seats
                     </div>
@@ -413,7 +430,7 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ tableName
                   <Button 
                     variant="secondary" 
                     size="icon" 
-                    className="h-8 w-8 rounded-lg shadow-sm border border-slate-200 bg-white hover:bg-slate-50 hover:text-blue-600"
+                    className="h-8 w-8 rounded-lg shadow-sm border border-slate-200 bg-white hover:bg-slate-50 hover:text-cyan-600"
                     onClick={() => {
                       setSelectedCollege(college);
                       setPreviewUrl(college.image_url);
@@ -443,8 +460,8 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ tableName
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent className="sm:max-w-[550px] bg-white border-slate-200 rounded-3xl shadow-2xl overflow-hidden p-0 max-h-[90vh] overflow-y-auto">
           <div className="px-6 py-5 bg-slate-50 border-b border-slate-100 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
-              <Pencil className="w-5 h-5 text-blue-600" />
+            <div className="w-10 h-10 rounded-xl bg-cyan-100 flex items-center justify-center">
+              <Pencil className="w-5 h-5 text-cyan-600" />
             </div>
             <div>
               <DialogTitle className="text-xl font-black text-slate-900">Edit College</DialogTitle>
@@ -492,6 +509,16 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ tableName
                     className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white"
                   />
                 </div>
+
+                <div className="space-y-2">
+                  <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Display Order</Label>
+                  <Input 
+                    type="number" 
+                    value={selectedCollege.display_order === undefined ? '' : selectedCollege.display_order}
+                    onChange={(e) => setSelectedCollege({...selectedCollege, display_order: parseInt(e.target.value) || 0})}
+                    className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white"
+                  />
+                </div>
                 
                 <div className="space-y-2 pt-2">
                   <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 block">College Image</Label>
@@ -500,6 +527,13 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ tableName
                       <div className="relative w-20 h-20 rounded-xl overflow-hidden border border-slate-200 group">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Trash2 className="w-4 h-4 text-white cursor-pointer" onClick={() => {
+                            setImageFile(null);
+                            setPreviewUrl(null);
+                            setSelectedCollege(prev => prev ? { ...prev, image_url: null } : null);
+                          }} />
+                        </div>
                       </div>
                     ) : (
                       <div className="w-20 h-20 rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 flex items-center justify-center text-slate-400">
@@ -507,7 +541,7 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ tableName
                       </div>
                     )}
                     <div className="flex-1">
-                      <Label htmlFor="edit-image-upload" className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors">
+                      <Label htmlFor="edit-image-upload" className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-cyan-600 transition-colors">
                         <ImagePlus className="w-4 h-4" />
                         Change Image
                       </Label>
@@ -527,7 +561,7 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ tableName
           
           <DialogFooter className="p-4 bg-slate-50 border-t border-slate-100">
             <Button variant="outline" onClick={() => setIsEditDialogOpen(false)} className="rounded-xl">Cancel</Button>
-            <Button onClick={handleEditCollege} disabled={isSaving} className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white">
+            <Button onClick={handleEditCollege} disabled={isSaving} className="rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white">
               {isSaving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : 'Save Changes'}
             </Button>
           </DialogFooter>

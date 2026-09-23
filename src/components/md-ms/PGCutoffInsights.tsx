@@ -1,14 +1,15 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import type { PgQuotaFacts } from '@/lib/pgContent';
 import { motion } from "framer-motion";
 import { CheckCircle2, TrendingUp, Phone } from "lucide-react";
 import { useCTA } from "@/hooks/useCTA";
 
-const counsellingQuotas = [
+const SHIPPED_COUNSELLINGQUOTAS = [
   {
     title: "All India Quota (AIQ)",
-    gradient: "from-blue-600 to-indigo-600",
+    gradient: "from-cyan-600 to-teal-600",
     items: [
       { label: "Counselling Body", value: "MCC (Centralized)" },
       { label: "Seat Scope", value: "50% Govt College Seats" },
@@ -30,7 +31,7 @@ const counsellingQuotas = [
   },
   {
     title: "Deemed Universities",
-    gradient: "from-violet-600 to-purple-600",
+    gradient: "from-teal-600 to-teal-600",
     items: [
       { label: "Counselling Body", value: "MCC Portal (Centralized)" },
       { label: "Seat Scope", value: "100% Deemed College Seats" },
@@ -41,7 +42,23 @@ const counsellingQuotas = [
   },
 ];
 
-export const PGCutoffInsights = () => {
+export const PGCutoffInsights = ({ items: fromCms }: { items?: PgQuotaFacts[] | null } = {}) => {
+  // The CMS supplies the words; everything visual stays with the shipped item
+  // at the same position, so a design change is a code change and a copy
+  // change is not. Extra CMS rows reuse the last item's styling.
+  const counsellingQuotas = (() => {
+    const cms = fromCms;
+    if (!cms?.length) return SHIPPED_COUNSELLINGQUOTAS;
+    return cms.map((_, i) => {
+      const base = SHIPPED_COUNSELLINGQUOTAS[i] ?? SHIPPED_COUNSELLINGQUOTAS[SHIPPED_COUNSELLINGQUOTAS.length - 1];
+      return {
+          ...base,
+          title: cms[i].title ?? base.title,
+          items: cms[i].items ?? base.items,
+      };
+    });
+  })();
+
   const [mounted, setMounted] = useState(false);
   const CTA = useCTA();
 
@@ -58,11 +75,11 @@ export const PGCutoffInsights = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-10"
         >
-          <span className="inline-block text-xs font-black tracking-widest text-indigo-600 bg-blue-50 dark:text-indigo-400 dark:bg-indigo-950/40 px-4 py-1.5 rounded-full mb-4">
+          <span className="inline-block text-xs font-black tracking-widest text-teal-600 bg-cyan-50 dark:text-teal-400 dark:bg-teal-950/40 px-4 py-1.5 rounded-full mb-4">
             QUOTA METRICS
           </span>
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white">
-            Counselling <span className="text-blue-600 dark:text-blue-400">Process Parameters</span>
+            Counselling <span className="text-cyan-600 dark:text-cyan-400">Process Parameters</span>
           </h2>
           <p className="text-sm md:text-base text-slate-500 dark:text-slate-400 mt-3 max-w-2xl mx-auto font-medium">
             Core parameters governing NEET PG seat allocation across centralized and state-level quota systems.
@@ -126,7 +143,7 @@ export const PGCutoffInsights = () => {
           </div>
           <button
             onClick={() => CTA.call()}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-[10px] md:text-sm font-black uppercase tracking-wider px-4 py-2 md:px-5 md:py-2.5 rounded-lg transition-colors flex-shrink-0"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-cyan-600 hover:bg-cyan-700 text-white text-[10px] md:text-sm font-black uppercase tracking-wider px-4 py-2 md:px-5 md:py-2.5 rounded-lg transition-colors flex-shrink-0"
           >
             <Phone className="w-3.5 h-3.5 md:w-4 md:h-4" />
             Get Strategic Counselling Support

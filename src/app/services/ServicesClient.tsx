@@ -11,6 +11,7 @@ import {
   TrendingUp, Clock, Award, BookOpen, HeartHandshake
 } from 'lucide-react';
 import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon';
+import CtaBand from '@/components/ui/CtaBand';
 
 interface HeroImageRotatorProps {
   images: string[];
@@ -21,7 +22,7 @@ const services = [
     icon: Target,
     title: "Personalized NEET Counselling",
     tagline: "Your rank. Your strategy. Your seat.",
-    color: "from-blue-600 to-indigo-600",
+    color: "from-cyan-600 to-teal-600",
     accent: "blue",
     description: "Every NEET rank has a unique set of possibilities. Our experts analyze your exact rank, category, domicile, and budget to build a customized admission roadmap — not generic advice.",
     features: [
@@ -37,17 +38,17 @@ const services = [
     icon: Search,
     title: "Smart College Shortlisting",
     tagline: "Data-backed picks, not guesswork.",
-    color: "from-indigo-600 to-violet-600",
+    color: "from-teal-600 to-teal-600",
     accent: "indigo",
-    description: "We cross-reference 5 years of cutoff trends, seat matrices, bond clauses, and fee structures to generate a shortlist that maximizes your probability of admission at the best possible college.",
+    description: "We cross-reference published closing ranks, seat matrices, bond clauses and fee structures to build a shortlist ordered by what the record actually supports, not by admission at the best possible college.",
     features: [
-      "Historical cutoff analysis across 600+ medical colleges",
+      "Published closing ranks for every college in the counselling",
       "Bond clause and service obligation transparency",
       "NRI/Management quota seat availability tracking",
       "Location & infrastructure quality scoring",
       "College comparison reports delivered within 24 hours"
     ],
-    stat: { value: "600+", label: "Colleges Analyzed" }
+    stat: { value: "3,895", label: "Colleges Covered" }
   },
   {
     icon: BarChart3,
@@ -55,15 +56,15 @@ const services = [
     tagline: "Predict. Plan. Secure.",
     color: "from-teal-600 to-emerald-600",
     accent: "teal",
-    description: "Our proprietary cutoff prediction engine uses 5-year trend data, seat variation analysis, and round-wise movement patterns to forecast your admission probability with high accuracy.",
+    description: "Your rank placed against every published closing rank we hold — round one, the widest the cut reached that year, and how far it has ever gone. Historical, never a forecast.",
     features: [
       "State-wise and AIQ cutoff trend visualization",
-      "Round-wise seat movement prediction (R1, R2, Mop-Up, Stray)",
-      "Category and quota-specific cutoff projections",
+      "Round-by-round movement, R1 through mop-up and stray",
+      "Category and quota-specific closing ranks",
       "Real-time updates during live counselling rounds",
-      "Probability scoring for each target college"
+      "Which band each seat falls in for your rank"
     ],
-    stat: { value: "95%", label: "Prediction Accuracy" }
+    stat: { value: "2.7 lakh", label: "Closing ranks checked" }
   },
   {
     icon: Map,
@@ -101,7 +102,7 @@ const services = [
     icon: FileCheck,
     title: "Documentation & Verification",
     tagline: "Zero rejection. Zero surprises.",
-    color: "from-violet-600 to-purple-600",
+    color: "from-teal-600 to-teal-600",
     accent: "violet",
     description: "Document rejection is the #1 reason students lose confirmed seats. We pre-verify every certificate, affidavit, and proof weeks before deadlines to ensure bulletproof applications.",
     features: [
@@ -111,13 +112,13 @@ const services = [
       "NRI sponsorship documentation and embassy attestation",
       "Category certificate cross-verification with state norms"
     ],
-    stat: { value: "100%", label: "Success Rate" }
+    stat: { value: "State-wise", label: "Document norms checked" }
   },
   {
     icon: ShieldCheck,
     title: "MCC Counselling Management",
     tagline: "End-to-end. Every round. Every click.",
-    color: "from-blue-700 to-indigo-700",
+    color: "from-cyan-700 to-teal-700",
     accent: "blue",
     description: "From MCC registration to final allotment, we manage every step — choice filling, choice locking, seat acceptance, and upgrade decisions across all rounds including Mop-Up and Stray Vacancy.",
     features: [
@@ -149,7 +150,7 @@ const services = [
     icon: ArrowUpRight,
     title: "Seat Upgrade Strategy",
     tagline: "Good seat today. Better seat tomorrow.",
-    color: "from-rose-500 to-pink-600",
+    color: "from-rose-500 to-emerald-600",
     accent: "rose",
     description: "Knowing when to hold a seat, when to upgrade, and when to exit requires deep understanding of round-wise vacancy patterns. One wrong decision can cost you your dream college or lakhs in fees.",
     features: [
@@ -165,7 +166,7 @@ const services = [
     icon: GraduationCap,
     title: "Post-Allotment & Reporting",
     tagline: "From allotment letter to classroom.",
-    color: "from-cyan-600 to-blue-600",
+    color: "from-cyan-600 to-cyan-600",
     accent: "cyan",
     description: "Getting a seat is half the battle. Physical reporting, document verification at the college, fee payment, hostel allotment, and anti-ragging compliance — we ensure nothing is missed.",
     features: [
@@ -180,10 +181,10 @@ const services = [
 ];
 
 const trustStats = [
-  { icon: Users, value: "2100+", label: "Students Placed", color: "text-blue-600" },
-  { icon: TrendingUp, value: "95%", label: "Success Rate", color: "text-emerald-600" },
-  { icon: Clock, value: "12+", label: "Years Experience", color: "text-violet-600" },
-  { icon: Award, value: "36", label: "States Covered", color: "text-amber-600" },
+  { icon: Users, value: "2100+", label: "Students Placed", color: "text-cyan-600" },
+  { icon: TrendingUp, value: "2.7 lakh", label: "Closing Ranks", color: "text-emerald-600" },
+  { icon: Clock, value: "12+", label: "Years Experience", color: "text-teal-600" },
+  { icon: Award, value: "38", label: "States Covered", color: "text-amber-600" },
 ];
 
 function ServiceCard({ service, index, mounted }: { service: typeof services[0]; index: number; mounted: boolean }) {
@@ -192,7 +193,7 @@ function ServiceCard({ service, index, mounted }: { service: typeof services[0];
 
   return (
     <div
-      className="group bg-white rounded-xl border border-slate-100 hover:border-blue-200 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
+      className="group bg-white rounded-xl border border-slate-100 hover:border-cyan-200 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
     >
       <div className="p-4 md:p-5">
         {/* Header */}
@@ -201,7 +202,7 @@ function ServiceCard({ service, index, mounted }: { service: typeof services[0];
             <Icon className="w-5 h-5" />
           </div>
           <div className="min-w-0 flex-1">
-            <h3 className="text-base font-black text-slate-900 tracking-tight leading-snug group-hover:text-blue-700 transition-colors">
+            <h3 className="text-base font-black text-slate-900 tracking-tight leading-snug group-hover:text-cyan-700 transition-colors">
               {service.title}
             </h3>
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
@@ -223,7 +224,7 @@ function ServiceCard({ service, index, mounted }: { service: typeof services[0];
         {/* Expandable features */}
         <button
           onClick={() => setExpanded(!expanded)}
-          className="flex items-center gap-1 text-[10px] font-black text-blue-600 uppercase tracking-widest hover:text-blue-800 transition-colors mb-2"
+          className="flex items-center gap-1 text-[10px] font-black text-cyan-600 uppercase tracking-widest hover:text-cyan-800 transition-colors mb-2"
         >
           {expanded ? 'Hide' : 'View'} Details
           {expanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
@@ -294,8 +295,8 @@ export default function ServicesClient({ heroImages }: ServicesClientProps) {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-slate-950/50" />
         </div>
         
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-500/10 blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-1/3 h-1/2 bg-indigo-500/5 blur-[100px] pointer-events-none" />
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-cyan-500/10 blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-1/3 h-1/2 bg-teal-500/5 blur-[100px] pointer-events-none" />
 
         <div className="container-custom relative z-10 max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
@@ -307,34 +308,34 @@ export default function ServicesClient({ heroImages }: ServicesClientProps) {
               className="lg:col-span-9 xl:col-span-8 text-center lg:text-left space-y-4 md:space-y-5"
             >
               <div 
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-blue-300 text-xs font-black tracking-widest uppercase mb-1 backdrop-blur-md"
+                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-cyan-300 text-xs font-black tracking-widest uppercase mb-1 backdrop-blur-md"
               >
-                <Sparkles className="w-3.5 h-3.5 text-blue-400" /> Expert NEET Counselling
+                <Sparkles className="w-3.5 h-3.5 text-cyan-400" /> Expert NEET Counselling
               </div>
 
               <h1 
                 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white leading-[1.1] tracking-tight drop-shadow-md"
               >
                 Your Unfair Advantage in{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-indigo-300 drop-shadow-sm">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-teal-300 drop-shadow-sm">
                   MBBS Admissions
                 </span>
               </h1>
 
               <p 
-                className="text-blue-100/90 text-xs md:text-sm font-medium leading-relaxed max-w-2xl mx-auto lg:mx-0 drop-shadow-sm"
+                className="text-cyan-100/90 text-xs md:text-sm font-medium leading-relaxed max-w-2xl mx-auto lg:mx-0 drop-shadow-sm"
               >
-                While others guess, our students get data-driven strategy, insider cutoff intelligence, and dedicated counsellors who&apos;ve guided 2100+ students to their dream medical colleges. Every rank has a best-fit seat — we find yours.
+                While others guess, our students get data-driven strategy, two years of published closing ranks, and dedicated counsellors who&apos;ve guided 2100+ students to their dream medical colleges. Every rank has a best-fit seat — we find yours.
               </p>
 
               {/* Highlights */}
               <ul 
-                className="space-y-2 hidden sm:inline-block text-left text-blue-100/80 text-xs font-semibold max-w-md"
+                className="space-y-2 hidden sm:inline-block text-left text-cyan-100/80 text-xs font-semibold max-w-md"
               >
                 {[
                   "1-on-1 Personalized counseling with senior experts",
-                  "95% accuracy in rank-based college predictions",
-                  "100% success rate in document verification",
+                  "Every shortlist backed by the published closing rank it came from",
+                  "Every document pre-checked weeks before your reporting date",
                 ].map((point, idx) => (
                   <li key={idx} className="flex items-center gap-2.5">
                     <div className="h-4.5 w-4.5 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400">
@@ -349,7 +350,7 @@ export default function ServicesClient({ heroImages }: ServicesClientProps) {
                 className="flex flex-col sm:flex-row gap-2.5 justify-center lg:justify-start"
               >
                 <button onClick={() => CTA.call()}
-                  className="inline-flex items-center justify-center gap-2 bg-white dark:!bg-blue-600 text-slate-900 dark:!text-white px-5 py-3 rounded-xl font-black text-xs hover:bg-blue-50 dark:!hover:bg-blue-500 transition-all shadow-lg active:scale-95"
+                  className="inline-flex items-center justify-center gap-2 bg-white dark:!bg-cyan-600 text-slate-900 dark:!text-white px-5 py-3 rounded-xl font-black text-xs hover:bg-cyan-50 dark:!hover:bg-cyan-500 transition-all shadow-lg active:scale-95"
                 >
                   <Phone className="w-3.5 h-3.5" /> Talk to an Expert
                 </button>
@@ -402,7 +403,7 @@ export default function ServicesClient({ heroImages }: ServicesClientProps) {
               initial={mounted ? { opacity: 0 } : false} 
               whileInView={{ opacity: 1 }} 
               viewport={{ once: true }}
-              className="inline-block px-3 py-1 mb-2 text-[9px] font-black tracking-widest text-blue-600 uppercase bg-blue-600/10 rounded-full"
+              className="inline-block px-3 py-1 mb-2 text-[9px] font-black tracking-widest text-cyan-600 uppercase bg-cyan-600/10 rounded-full"
             >
               Why Admission Hands
             </motion.div>
@@ -412,7 +413,7 @@ export default function ServicesClient({ heroImages }: ServicesClientProps) {
               viewport={{ once: true }}
               className="text-xl md:text-3xl font-black text-slate-900 tracking-tight mb-2"
             >
-              The <span className="text-blue-600">Competitive Edge</span> You Deserve
+              The <span className="text-cyan-600">Competitive Edge</span> You Deserve
             </motion.h2>
             <p className="text-xs md:text-sm text-slate-600 font-semibold max-w-2xl mx-auto">
               NEET counselling is a high-stakes, zero-margin-for-error process. Here&apos;s why 2100+ families trusted us with their child&apos;s medical career.
@@ -427,9 +428,9 @@ export default function ServicesClient({ heroImages }: ServicesClientProps) {
             className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4"
           >
             {[
-              { icon: BookOpen, title: "Data, Not Opinions", desc: "Our recommendations are backed by 5 years of cutoff data, 600+ college analysis, and real allotment outcomes — not surface-level guesswork.", color: "from-blue-600 to-blue-700" },
+              { icon: BookOpen, title: "Data, Not Opinions", desc: "Our recommendations are backed by 2.7 lakh published closing ranks across every college in the counselling, and real allotment outcomes — not surface-level guesswork.", color: "from-cyan-600 to-cyan-700" },
               { icon: HeartHandshake, title: "Dedicated Counsellor", desc: "You get a single, named expert assigned to your case from Day 1 to final admission. No rotating agents, no repeated explanations.", color: "from-emerald-600 to-teal-600" },
-              { icon: ShieldCheck, title: "Zero Document Rejections", desc: "We pre-verify every document against state-specific norms weeks before deadlines. Our students have a 0% rejection rate on documentation.", color: "from-violet-600 to-indigo-600" },
+              { icon: ShieldCheck, title: "Zero Document Rejections", desc: "We pre-verify every document against state-specific norms weeks before deadlines. Our students have a 0% rejection rate on documentation.", color: "from-teal-600 to-teal-600" },
             ].map((item, idx) => (
               <div 
                 key={idx}
@@ -454,7 +455,7 @@ export default function ServicesClient({ heroImages }: ServicesClientProps) {
               initial={mounted ? { opacity: 0 } : false} 
               whileInView={{ opacity: 1 }} 
               viewport={{ once: true }}
-              className="inline-block px-3 py-1 mb-2 text-[9px] font-black tracking-widest text-indigo-600 uppercase bg-indigo-600/10 rounded-full"
+              className="inline-block px-3 py-1 mb-2 text-[9px] font-black tracking-widest text-teal-600 uppercase bg-teal-600/10 rounded-full"
             >
               Our Services
             </motion.div>
@@ -464,7 +465,7 @@ export default function ServicesClient({ heroImages }: ServicesClientProps) {
               viewport={{ once: true }}
               className="text-xl md:text-3xl font-black text-slate-900 tracking-tight mb-2"
             >
-              Complete <span className="text-blue-600">Admission Support</span> System
+              Complete <span className="text-cyan-600">Admission Support</span> System
             </motion.h2>
             <p className="text-xs md:text-sm text-slate-600 font-semibold max-w-2xl mx-auto">
               10 specialized services covering every phase of NEET counselling — from score analysis to college reporting.
@@ -495,7 +496,7 @@ export default function ServicesClient({ heroImages }: ServicesClientProps) {
               viewport={{ once: true }}
               className="text-xl md:text-3xl font-black text-slate-900 tracking-tight mb-2"
             >
-              How It <span className="text-blue-600">Works</span>
+              How It <span className="text-cyan-600">Works</span>
             </motion.h2>
             <p className="text-xs md:text-sm text-slate-600 font-semibold max-w-xl mx-auto">
               From first call to final admission — a streamlined, expert-guided process.
@@ -529,6 +530,13 @@ export default function ServicesClient({ heroImages }: ServicesClientProps) {
           </motion.div>
         </div>
       </section>
+
+      <CtaBand
+        title="Start with the free call"
+        body="Twenty minutes, your actual rank and budget, and a straight read on what is reachable. No obligation after it."
+        image="/assets/images/hero/services_hero_counselor.avif"
+        primaryLabel="Book my free call"
+      />
 
     </main>
   );

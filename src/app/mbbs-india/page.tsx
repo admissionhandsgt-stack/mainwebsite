@@ -6,7 +6,8 @@ import { mbbsData } from "@/data/mbbs-india";
 import { MBBSHero } from "@/components/mbbs-india/MBBSHero";
 import { QuickOverview } from "@/components/mbbs-india/QuickOverview";
 import { StickyDecisionBar } from "@/components/mbbs-india/StickyDecisionBar";
-import { getMediaAsset } from "@/lib/mediaService";
+import { getMediaAsset, getSections, resolveMetadata } from '@/lib/content';
+import { getMbbsContent } from '@/lib/pageContent';
 
 // Lazy load sections for better performance
 const EligibilityInfo = dynamic(() => import("@/components/mbbs-india/EligibilityCutoff").then(mod => mod.MBBSEligibilityInfo));
@@ -18,19 +19,30 @@ const CollegeSelectionGuide = dynamic(() => import("@/components/mbbs-india/Coll
 const MBBSWhyUs = dynamic(() => import("@/components/mbbs-india/MBBSWhyUs").then(mod => mod.MBBSWhyUs));
 const GlobalDisclaimer = dynamic(() => import("@/components/mbbs-india/GlobalDisclaimer").then(mod => mod.GlobalDisclaimer));
 
-export const metadata: Metadata = {
-  title: "MBBS Admission in India 2026 | Eligibility, Fees & Counselling Guide",
-  description: "Complete guide to MBBS admissions in India. Get expert advice on NEET cutoffs, fee structures, and the counseling process for 2026.",
-  keywords: ["MBBS India", "NEET UG Counselling", "Medical Admission India", "MBBS Fees", "Medical College Guide"],
-};
+/**
+ * Metadata the admin can override per route (Admin -> Search & sharing).
+ * Blank admin values fall through to the defaults below.
+ */
+export async function generateMetadata(): Promise<Metadata> {
+  return resolveMetadata('/mbbs-india', {
+    title: "MBBS Admission in India 2026 | Eligibility, Fees & Counselling Guide",
+    description: "Complete guide to MBBS admissions in India. Get expert advice on NEET cutoffs, fee structures, and the counseling process for 2026.",
+    keywords: (["MBBS India", "NEET UG Counselling", "Medical Admission India", "MBBS Fees", "Medical College Guide"]).join(', '),
+  });
+}
 
 export default async function MBBSIndiaPage() {
-  const mbbsHeroAsset = await getMediaAsset('mbbs_hero_campus');
+  const [mbbsHeroAsset, sections, data] = await Promise.all([
+    getMediaAsset('mbbs_hero_campus'),
+    getSections('mbbs'),
+    // The CMS layered over the shipped copy — see src/lib/pageContent.ts.
+    getMbbsContent(),
+  ]);
   // JSON-LD FAQ Schema
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": mbbsData.faqs.map(faq => ({
+    "mainEntity": data.faqs.map(faq => ({
       "@type": "Question",
       "name": faq.question,
       "acceptedAnswer": {
@@ -49,24 +61,29 @@ export default async function MBBSIndiaPage() {
       />
 
       {/* Hero (Critical Path) */}
-      <MBBSHero backgroundImageUrl={mbbsHeroAsset?.image_url} />
-
-      {/* Overview */}
-      <QuickOverview />
+      {sections.shows('hero') && <MBBSHero backgroundImageUrl={mbbsHeroAsset?.image_url} data={data} />}
 
       {/* Sticky Conversion Element */}
       <StickyDecisionBar />
 
-      {/* Main Content Sections - Optimized Flow */}
+      {/* Order and visibility come from the admin (Page Content -> Page layout). */}
       <div className="space-y-0">
-        <EligibilityInfo />
-        <AdmissionProcess />
-        <CounsellingSystem />
-        <SeatDistribution />
-        <FeesStructure />
-        <CollegeSelectionGuide />
-        <MBBSWhyUs />
-        <GlobalDisclaimer />
+        {sections
+          .sort([
+            { key: 'overview', node: <QuickOverview data={data} /> },
+            { key: 'eligibility', node: <EligibilityInfo data={data} /> },
+            { key: 'process', node: <AdmissionProcess data={data} /> },
+            { key: 'counselling', node: <CounsellingSystem data={data} /> },
+            { key: 'seats', node: <SeatDistribution data={data} /> },
+            { key: 'fees', node: <FeesStructure data={data} /> },
+            { key: 'selection_guide', node: <CollegeSelectionGuide data={data} /> },
+            { key: 'why_us', node: <MBBSWhyUs data={data} /> },
+            { key: 'disclaimer', node: <GlobalDisclaimer data={data} /> },
+          ])
+          .filter((section) => sections.shows(section.key))
+          .map((section) => (
+            <React.Fragment key={section.key}>{section.node}</React.Fragment>
+          ))}
       </div>
     </main>
   );

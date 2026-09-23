@@ -172,7 +172,7 @@ const ProcessAccordion = () => {
                 }}
                 className={`flex items-center justify-between text-left px-2.5 py-1.5 md:px-4 md:py-3.5 rounded-lg md:rounded-xl font-black text-xs md:text-sm transition-all whitespace-nowrap md:whitespace-normal shrink-0 ${
                   isActive 
-                    ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20' 
+                    ? 'bg-cyan-600 text-white shadow-md shadow-cyan-600/20' 
                     : 'bg-transparent text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800'
                 }`}
               >
@@ -192,7 +192,7 @@ const ProcessAccordion = () => {
       {/* Accordion Steps for Active Phase */}
       <div className="w-full md:w-2/3 p-3 sm:p-5 bg-white dark:bg-slate-950 min-h-[250px] md:min-h-[300px]">
         <div className="mb-3 md:mb-4">
-          <div className="inline-flex px-2 py-0.5 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-300 font-black uppercase tracking-wider text-[9px] md:text-[10px] rounded-full mb-1">
+          <div className="inline-flex px-2 py-0.5 bg-cyan-50 dark:bg-cyan-950/40 text-cyan-600 dark:text-cyan-300 font-black uppercase tracking-wider text-[9px] md:text-[10px] rounded-full mb-1">
             Phase {activePhaseIndex + 1}
           </div>
           <h2 className="text-base md:text-xl font-black text-slate-900 dark:text-white">{activePhase.title}</h2>
@@ -211,8 +211,8 @@ const ProcessAccordion = () => {
                   exit={{ opacity: 0, y: -10 }}
                   className={`border rounded-xl md:rounded-2xl transition-all duration-305 overflow-hidden ${
                     isOpen 
-                      ? 'border-blue-200 dark:border-blue-900/50 shadow-lg shadow-blue-900/5 bg-slate-50 dark:bg-slate-900/40' 
-                      : 'border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-950 hover:border-blue-200 dark:hover:border-slate-850 hover:shadow-md'
+                      ? 'border-cyan-200 dark:border-cyan-900/50 shadow-lg shadow-cyan-900/5 bg-slate-50 dark:bg-slate-900/40' 
+                      : 'border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-950 hover:border-cyan-200 dark:hover:border-slate-850 hover:shadow-md'
                   }`}
                 >
                   <button
@@ -221,16 +221,16 @@ const ProcessAccordion = () => {
                   >
                     <div className="flex items-center gap-2 md:gap-3">
                       <span className={`flex h-5 w-5 md:h-6 md:w-6 items-center justify-center rounded-full text-[10px] md:text-xs font-black transition-all shadow-sm ${
-                        isOpen ? 'bg-blue-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 group-hover:bg-blue-100 group-hover:text-blue-700 dark:group-hover:bg-blue-900/30'
+                        isOpen ? 'bg-cyan-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 group-hover:bg-cyan-100 group-hover:text-cyan-700 dark:group-hover:bg-cyan-900/30'
                       }`}>
                         {step.id}
                       </span>
-                      <h4 className={`text-xs md:text-sm font-bold transition-colors ${isOpen ? 'text-blue-900 dark:text-blue-200 font-extrabold' : 'text-slate-800 dark:text-slate-300'}`}>
+                      <h4 className={`text-xs md:text-sm font-bold transition-colors ${isOpen ? 'text-cyan-900 dark:text-cyan-200 font-extrabold' : 'text-slate-800 dark:text-slate-300'}`}>
                         {step.title}
                       </h4>
                     </div>
-                    <div className={`flex items-center justify-center w-5 h-5 md:w-6 md:h-6 rounded-full transition-colors ${isOpen ? 'bg-blue-100 dark:bg-blue-900/40' : 'bg-slate-50 dark:bg-slate-905 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20'}`}>
-                      <ChevronDown className={`h-3 w-3 md:h-4 md:w-4 transition-transform duration-300 ${isOpen ? 'rotate-180 text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500 group-hover:text-blue-500 dark:group-hover:text-blue-400'}`} />
+                    <div className={`flex items-center justify-center w-5 h-5 md:w-6 md:h-6 rounded-full transition-colors ${isOpen ? 'bg-cyan-100 dark:bg-cyan-900/40' : 'bg-slate-50 dark:bg-slate-905 group-hover:bg-cyan-50 dark:group-hover:bg-cyan-900/20'}`}>
+                      <ChevronDown className={`h-3 w-3 md:h-4 md:w-4 transition-transform duration-300 ${isOpen ? 'rotate-180 text-cyan-600 dark:text-cyan-400' : 'text-slate-400 dark:text-slate-500 group-hover:text-cyan-500 dark:group-hover:text-cyan-400'}`} />
                     </div>
                   </button>
                   
@@ -269,12 +269,12 @@ const ProcessAccordion = () => {
                             </div>
                           )}
 
-                          <div className="ml-1.5 md:ml-9 p-2 md:p-3 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-lg border border-blue-100/50 dark:border-blue-900/30 flex gap-2 shadow-inner">
+                          <div className="ml-1.5 md:ml-9 p-2 md:p-3 bg-gradient-to-r from-cyan-50 to-teal-50 dark:from-cyan-950/20 dark:to-teal-950/20 rounded-lg border border-cyan-100/50 dark:border-cyan-900/30 flex gap-2 shadow-inner">
                             <div className="flex-shrink-0 mt-0.5">
-                              <Info className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+                              <Info className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />
                             </div>
                             <div>
-                              <p className="text-[8px] md:text-[9px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest mb-0.5">Admission Hands Support</p>
+                              <p className="text-[8px] md:text-[9px] font-black text-cyan-600 dark:text-cyan-400 uppercase tracking-widest mb-0.5">Admission Hands Support</p>
                               <p className="text-[10px] md:text-xs text-slate-700 dark:text-slate-300 font-medium leading-tight">{step.support}</p>
                             </div>
                           </div>

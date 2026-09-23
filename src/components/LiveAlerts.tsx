@@ -34,13 +34,13 @@ export default function LiveAlerts() {
   if (isLoading) {
     return (
       <div 
-        className="live-alerts-container bg-gradient-to-r from-blue-700 via-blue-600 to-blue-800 text-white flex items-center shadow-md overflow-hidden py-2"
+        className="live-alerts-container bg-gradient-brand text-white flex items-center shadow-md overflow-hidden py-2"
         style={{ zIndex: "var(--z-alerts, 35)" }}
       >
         <div className="container-custom flex items-center h-full w-full max-w-full relative gap-4">
-          <div className="h-6 w-20 bg-blue-500/50 rounded animate-pulse shrink-0"></div>
-          <div className="h-4 w-64 bg-blue-500/40 rounded animate-pulse"></div>
-          <div className="h-4 w-48 bg-blue-500/30 rounded animate-pulse hidden md:block"></div>
+          <div className="h-6 w-20 bg-white/25 rounded animate-pulse shrink-0"></div>
+          <div className="h-4 w-64 bg-white/20 rounded animate-pulse"></div>
+          <div className="h-4 w-48 bg-white/15 rounded animate-pulse hidden md:block"></div>
         </div>
       </div>
     );
@@ -52,7 +52,7 @@ export default function LiveAlerts() {
 
   return (
     <div 
-      className="live-alerts-container bg-gradient-to-r from-blue-700 via-blue-600 to-blue-800 text-white flex items-center shadow-md overflow-hidden py-2"
+      className="live-alerts-container bg-gradient-brand text-white flex items-center shadow-md overflow-hidden py-2"
       style={{ zIndex: "var(--z-alerts, 35)" }}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
@@ -62,7 +62,7 @@ export default function LiveAlerts() {
       <div className="container-custom flex items-center h-full w-full max-w-full relative">
         
         {/* Label block: sticky on the left */}
-        <div className="flex items-center gap-1.5 px-2 md:px-3 h-7 bg-white text-blue-700 rounded-md shrink-0 z-10 shadow-sm font-black text-[9px] md:text-[10px] tracking-tight">
+        <div className="flex items-center gap-1.5 px-2 md:px-3 h-7 bg-white text-primary-strong rounded-md shrink-0 z-10 shadow-sm font-black text-[9px] md:text-[10px] tracking-tight">
           <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
           UPDATES
         </div>

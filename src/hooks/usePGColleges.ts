@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 
 export interface PGCollege {
   id: string;
@@ -39,15 +38,13 @@ export function usePGColleges() {
   // Fetch unique states for filter options
   useEffect(() => {
     async function fetchStates() {
-      const { data } = await (supabase
-        .from('pg_colleges') as any)
-        .select('state')
-        .eq('is_active', true)
-        .order('state');
-
-      if (data) {
-        const unique = Array.from(new Set(data.map((r: any) => r.state))) as string[];
-        setAllStates(unique);
+      try {
+        const res = await fetch('/api/content/college-list?source=pg&perPage=1');
+        if (!res.ok) return;
+        const json = await res.json();
+        setAllStates((json.states ?? []).filter(Boolean));
+      } catch (e) {
+        console.error('[usePGColleges] states', e);
       }
     }
     fetchStates();
@@ -59,41 +56,23 @@ export function usePGColleges() {
     else setLoadingMore(true);
 
     try {
-      let query = (supabase.from('pg_colleges') as any)
-        .select('*', { count: 'exact' })
-        .eq('is_active', true)
-        .order('state')
-        .order('total_pg_seats', { ascending: false });
+      const params = new URLSearchParams({
+        source: 'pg',
+        page: String(pageNum + 1), // the API pages from 1, this hook from 0
+        perPage: String(PAGE_SIZE),
+      });
+      if (filters.state.length > 0) params.set('state', filters.state.join(','));
+      if (filters.college_type.length > 0) params.set('collegeType', filters.college_type.join(','));
+      if (filters.search.trim()) params.set('search', filters.search.trim());
 
-      if (filters.state.length > 0) {
-        query = query.in('state', filters.state);
-      }
-      if (filters.college_type.length > 0) {
-        query = query.in('college_type', filters.college_type);
-      }
-      if (filters.search.trim()) {
-        query = query.or(`college_name.ilike.%${filters.search.trim()}%,city.ilike.%${filters.search.trim()}%`);
-      }
+      const res = await fetch(`/api/content/college-list?${params}`);
+      if (!res.ok) throw new Error(`Request failed (${res.status})`);
+      const json = await res.json();
+      const data = (json.data ?? []) as PGCollege[];
 
-      const from = pageNum * PAGE_SIZE;
-      const to = from + PAGE_SIZE - 1;
-      query = query.range(from, to);
-
-      const { data, error: queryError, count } = await query;
-
-      if (queryError) {
-        setError(queryError.message);
-        return;
-      }
-
-      if (append) {
-        setColleges(prev => [...prev, ...(data || [])]);
-      } else {
-        setColleges(data || []);
-      }
-
-      setTotalCount(count || 0);
-      setHasMore((data?.length || 0) === PAGE_SIZE);
+      setColleges(prev => (append ? [...prev, ...data] : data));
+      setTotalCount(json.total ?? 0);
+      setHasMore(data.length === PAGE_SIZE);
       setError(null);
     } catch (e: any) {
       setError(e.message || 'Failed to fetch colleges');

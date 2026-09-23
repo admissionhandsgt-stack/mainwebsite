@@ -1,60 +1,84 @@
-import { useState, useEffect, createContext, useContext } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { Session, User } from '@supabase/supabase-js';
+"use client";
+
+import { useState, useEffect, createContext, useContext, useCallback, type ReactNode } from "react";
+
+export interface AdminUser {
+  id: number;
+  email: string;
+  name: string | null;
+}
 
 interface AuthContextType {
-  session: Session | null;
-  user: User | null;
+  user: AdminUser | null;
   loading: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: any }>;
+  signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
-  session: null,
   user: null,
   loading: true,
-  signIn: async () => ({ error: new Error('Not implemented') }),
+  signIn: async () => ({ error: new Error("Not ready") }),
   signOut: async () => {},
 });
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [session, setSession] = useState<Session | null>(null);
-  const [user, setUser] = useState<User | null>(null);
+/**
+ * Admin session state.
+ *
+ * The session itself is an httpOnly cookie the browser cannot read, so this
+ * asks the server who is signed in rather than decoding a token client-side.
+ * That also means a session revoked on the server takes effect on the next
+ * request instead of living on until a JWT expires.
+ */
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [user, setUser] = useState<AdminUser | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Get initial session first
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
+  const refresh = useCallback(async () => {
+    try {
+      const res = await fetch("/api/admin/auth", { cache: "no-store" });
+      const { user: u } = await res.json();
+      setUser(u ?? null);
+    } catch {
+      setUser(null);
+    } finally {
       setLoading(false);
-    });
-
-    // Then listen for future auth changes (sign in, sign out, token refresh)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        // If we get an auth change event, loading is definitely done
-        setLoading(false);
-      }
-    );
-
-    return () => subscription.unsubscribe();
+    }
   }, []);
 
-  const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return { error };
-  };
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
 
-  const signOut = async () => {
-    await supabase.auth.signOut();
-  };
+  const signIn = useCallback(
+    async (email: string, password: string) => {
+      try {
+        const res = await fetch("/api/admin/auth", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+        const body = await res.json();
+        if (!res.ok) return { error: new Error(body.error ?? "Sign-in failed") };
+        setUser(body.user);
+        return { error: null };
+      } catch (e) {
+        return { error: e instanceof Error ? e : new Error("Sign-in failed") };
+      }
+    },
+    [],
+  );
+
+  const signOut = useCallback(async () => {
+    try {
+      await fetch("/api/admin/auth", { method: "DELETE" });
+    } finally {
+      setUser(null);
+    }
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ session, user, loading, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, loading, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

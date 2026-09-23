@@ -70,7 +70,7 @@ function CopyableHeading({
       <button
         type="button"
         onClick={handleCopy}
-        className="absolute top-1/2 -translate-y-1/2 -left-6 opacity-0 group-hover:opacity-100 transition-opacity duration-150 text-slate-400 hover:text-blue-600 dark:hover:text-blue-400"
+        className="absolute top-1/2 -translate-y-1/2 -left-6 opacity-0 group-hover:opacity-100 transition-opacity duration-150 text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400"
         aria-label={`Copy link to ${id}`}
       >
         <Link2 className="h-4 w-4" />
@@ -151,7 +151,7 @@ export default function LegalContent({ sections }: LegalContentProps) {
       );
     },
     p: ({ children }: { children?: ReactNode }) => (
-      <p className="text-[13px] md:text-[13.5px] leading-[1.6] text-slate-600 dark:text-slate-350 mb-2">
+      <p className="text-[13px] md:text-[13.5px] leading-[1.6] text-slate-600 dark:text-slate-300 mb-2">
         {children}
       </p>
     ),
@@ -159,19 +159,19 @@ export default function LegalContent({ sections }: LegalContentProps) {
       const isShort = isShortList(children);
       if (isShort) {
         return (
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-0.5 text-[13px] md:text-[13.5px] leading-[1.6] text-slate-600 dark:text-slate-350 mb-2 list-none [&>li]:relative [&>li]:pl-4 [&>li]:before:content-['•'] [&>li]:before:absolute [&>li]:before:left-0.5 [&>li]:before:text-slate-400 [&>li]:dark:before:text-slate-600">
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-0.5 text-[13px] md:text-[13.5px] leading-[1.6] text-slate-600 dark:text-slate-300 mb-2 list-none [&>li]:relative [&>li]:pl-4 [&>li]:before:content-['•'] [&>li]:before:absolute [&>li]:before:left-0.5 [&>li]:before:text-slate-400 [&>li]:dark:before:text-slate-600">
             {children}
           </ul>
         );
       }
       return (
-        <ul className="text-[13px] md:text-[13.5px] leading-[1.6] text-slate-600 dark:text-slate-350 pl-5 mb-2 list-disc">
+        <ul className="text-[13px] md:text-[13.5px] leading-[1.6] text-slate-600 dark:text-slate-300 pl-5 mb-2 list-disc">
           {children}
         </ul>
       );
     },
     ol: ({ children }: { children?: ReactNode }) => (
-      <ol className="text-[13px] md:text-[13.5px] leading-[1.6] text-slate-600 dark:text-slate-350 pl-5 mb-2 list-decimal">
+      <ol className="text-[13px] md:text-[13.5px] leading-[1.6] text-slate-600 dark:text-slate-300 pl-5 mb-2 list-decimal">
         {children}
       </ol>
     ),
@@ -192,7 +192,7 @@ export default function LegalContent({ sections }: LegalContentProps) {
     }) => (
       <a
         href={href}
-        className="text-blue-600 dark:text-blue-400 underline"
+        className="text-cyan-600 dark:text-cyan-400 underline"
         target="_blank"
         rel="noopener noreferrer"
       >

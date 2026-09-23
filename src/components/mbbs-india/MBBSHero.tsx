@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { mbbsData } from "@/data/mbbs-india";
+import type { MbbsContent } from '@/lib/pageContent';
 import { CTAButton } from "@/components/CTAButton";
 import { ArrowRight, ShieldCheck, Phone, Sparkles } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
@@ -11,25 +12,35 @@ interface MBBSHeroProps {
   backgroundImageUrl?: string;
 }
 
-export const MBBSHero = ({ backgroundImageUrl }: MBBSHeroProps) => {
-  const { hero } = mbbsData;
+export const MBBSHero = ({ backgroundImageUrl, data = mbbsData }: MBBSHeroProps & { data?: MbbsContent }) => {
+  const { hero } = data;
+  // Falls back to the campus photograph shipped with the site when the CMS
+  // has no media row for this slot.
+  const bg =
+    backgroundImageUrl && backgroundImageUrl !== "none"
+      ? backgroundImageUrl
+      : "/assets/images/hero/india-medical-college-campus.avif";
 
   return (
-    <section className="relative w-full min-h-[420px] md:min-h-[600px] md:h-screen flex items-center overflow-hidden bg-white dark:bg-slate-950 transition-colors duration-200">
-      {/* Background with DY Patil College Mumbai */}
+    <section className="relative w-full min-h-[420px] md:min-h-[min(760px,100svh)] flex items-center overflow-hidden bg-background transition-colors duration-200">
+      {/* Campus photograph, held behind a gradient so type stays readable */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        {backgroundImageUrl && backgroundImageUrl !== "none" && (
-          <Image
-            src={backgroundImageUrl}
-            alt="DY Patil Medical College Mumbai"
-            fill
-            priority
-            className="object-cover object-[75%_center] md:object-center opacity-40 md:opacity-60 dark:opacity-30 scale-105 transition-all duration-700 aspect-[4/5] md:aspect-auto"
-            sizes="100vw"
-          />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/75 to-white/90 md:from-white/85 md:via-white/20 md:to-white/70 dark:from-slate-950/95 dark:via-slate-950/50 dark:to-slate-950/80" />
-        <div className="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-transparent dark:from-slate-950 dark:via-slate-950/70 dark:to-transparent hidden md:block" />
+        <Image
+          src={bg}
+          alt=""
+          fill
+          priority
+          className="object-cover object-[75%_center] md:object-center opacity-30 md:opacity-45 dark:opacity-25"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/70 to-background" />
+        <div className="absolute inset-0 hidden md:block bg-gradient-to-r from-background via-background/75 to-transparent" />
+      </div>
+
+      {/* Ambient brand light */}
+      <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+        <div className="ambient-blob animate-drift -left-28 -top-36 h-[28rem] w-[28rem] bg-primary/25" />
+        <div className="ambient-blob animate-drift-slow right-[-7rem] bottom-[-9rem] h-[24rem] w-[24rem] bg-secondary/20 [animation-delay:-6s]" />
       </div>
 
       <div className="container-custom relative z-10 pt-2 pb-2 md:pt-4 md:pb-4 h-full flex flex-col justify-center">
@@ -37,22 +48,22 @@ export const MBBSHero = ({ backgroundImageUrl }: MBBSHeroProps) => {
           
           {/* Left Side Content - Original */}
           <div className="lg:col-span-8 space-y-4 md:space-y-6 text-center md:text-left pt-4 md:pt-0">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-600/5 dark:bg-blue-950/30 border border-blue-600/10 dark:border-blue-900/30 rounded-full backdrop-blur-md self-center md:self-start">
-              <ShieldCheck className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-              <span className="text-blue-900 dark:text-blue-300 text-[10px] font-black uppercase tracking-widest">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-cyan-600/5 dark:bg-cyan-950/30 border border-cyan-600/10 dark:border-cyan-900/30 rounded-full backdrop-blur-md self-center md:self-start">
+              <ShieldCheck className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
+              <span className="text-cyan-900 dark:text-cyan-300 text-[10px] font-black uppercase tracking-widest">
                 Trusted, Data-Driven Guidance for AIQ & State Counselling
               </span>
             </div>
 
             <h1 className="text-responsive-h1 text-slate-900 dark:text-white">
-              MBBS <span className="text-blue-600 dark:text-blue-400">Admission</span> in India Made Simple
+              MBBS <span className="text-cyan-600 dark:text-cyan-400">Admission</span> in India Made Simple
             </h1>
 
             {/* Promising Info - Minimal */}
             <div className="grid grid-cols-2 md:flex md:flex-wrap justify-center md:justify-start gap-3 md:gap-x-8 md:gap-y-3 py-3 md:py-4">
               {hero.promisingInfo.map((stat, idx) => (
                 <div key={idx} className="flex items-center gap-2 md:gap-3">
-                  <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-blue-600" />
+                  <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-cyan-600" />
                   <div className="text-left">
                     <p className="text-[9px] md:text-[10px] font-black text-slate-700 md:text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] md:tracking-[0.2em] leading-none mb-1">{stat.label}</p>
                     <p className="text-sm md:text-lg font-black text-slate-950 md:text-slate-900 dark:text-white leading-none">{stat.value}</p>
@@ -62,12 +73,12 @@ export const MBBSHero = ({ backgroundImageUrl }: MBBSHeroProps) => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 pt-3 md:pt-4 justify-center md:justify-start">
-              <CTAButton action="counselling" className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl md:rounded-2xl px-5 md:px-10 py-3.5 md:py-6 text-sm md:text-lg font-black shadow-lg shadow-blue-600/20 active:scale-95 transition-all">
+              <CTAButton action="counselling" className="bg-cyan-600 hover:bg-cyan-700 text-white rounded-xl md:rounded-2xl px-5 md:px-10 py-3.5 md:py-6 text-sm md:text-lg font-black shadow-lg shadow-cyan-600/20 active:scale-95 transition-all">
                 Secure Your MBBS Seat
                 <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5" />
               </CTAButton>
               
-              <CTAButton action="call" variant="ghost" className="rounded-xl md:rounded-2xl px-5 md:px-4 py-3.5 md:py-3 text-sm text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/45 font-black border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+              <CTAButton action="call" variant="ghost" className="rounded-xl md:rounded-2xl px-5 md:px-4 py-3.5 md:py-3 text-sm text-cyan-600 dark:text-cyan-400 hover:bg-cyan-50 dark:hover:bg-cyan-950/45 font-black border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
                 <Phone className="w-4 h-4 mr-2" />
                 Call Expert
               </CTAButton>
@@ -88,7 +99,7 @@ export const MBBSHero = ({ backgroundImageUrl }: MBBSHeroProps) => {
                 </div>
                 
                 <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
-                  Secure Your <br/> <span className="text-blue-600 dark:text-blue-400">MBBS Seat</span> Now
+                  Secure Your <br/> <span className="text-cyan-600 dark:text-cyan-400">MBBS Seat</span> Now
                 </h2>
                 
                 <p className="text-sm text-slate-600 dark:text-slate-300 font-bold leading-relaxed">
@@ -96,7 +107,7 @@ export const MBBSHero = ({ backgroundImageUrl }: MBBSHeroProps) => {
                 </p>
 
                 <div className="pt-2">
-                  <CTAButton action="call" className="w-full bg-slate-900 hover:bg-slate-800 dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-2xl py-4 font-black flex items-center justify-center gap-2 shadow-lg">
+                  <CTAButton action="call" className="w-full bg-slate-900 hover:bg-slate-800 dark:bg-cyan-600 dark:hover:bg-cyan-700 text-white rounded-2xl py-4 font-black flex items-center justify-center gap-2 shadow-lg">
                     <Phone size={18} />
                     Talk to an Expert
                   </CTAButton>

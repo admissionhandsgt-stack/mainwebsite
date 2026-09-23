@@ -47,7 +47,7 @@ export const StickyDecisionBar = () => {
             <p className="text-white font-black tracking-tight leading-none mb-1 text-sm">
               Need Direct Answer?
             </p>
-            <p className="text-blue-300/60 text-[9px] font-black uppercase tracking-widest">
+            <p className="text-cyan-300/60 text-[9px] font-black uppercase tracking-widest">
               Experts Online Now
             </p>
           </div>
@@ -55,7 +55,7 @@ export const StickyDecisionBar = () => {
           <div className="flex -space-x-1.5">
             {[1, 2, 3].map((i) => (
               <div key={i} className="w-8 h-8 rounded-full border-2 border-slate-900 bg-slate-800 overflow-hidden shadow-sm">
-                <div className={`w-full h-full bg-gradient-to-br ${i === 1 ? 'from-blue-400 to-blue-600' : i === 2 ? 'from-emerald-400 to-emerald-600' : 'from-indigo-400 to-indigo-600'}`} />
+                <div className={`w-full h-full bg-gradient-to-br ${i === 1 ? 'from-cyan-400 to-cyan-600' : i === 2 ? 'from-emerald-400 to-emerald-600' : 'from-teal-400 to-teal-600'}`} />
               </div>
             ))}
           </div>
@@ -65,7 +65,7 @@ export const StickyDecisionBar = () => {
           <CTAButton 
             action="call" 
             variant="outline"
-            className="bg-white dark:bg-white text-slate-950 dark:text-slate-950 border-transparent dark:border-transparent rounded-full px-5 py-2.5 h-auto text-[11px] font-black flex items-center gap-1.5 hover:bg-blue-50 dark:hover:bg-blue-50 transition-colors shrink-0"
+            className="bg-white dark:bg-white text-slate-950 dark:text-slate-950 border-transparent dark:border-transparent rounded-full px-5 py-2.5 h-auto text-[11px] font-black flex items-center gap-1.5 hover:bg-cyan-50 dark:hover:bg-cyan-50 transition-colors shrink-0"
           >
             <Phone className="w-3.5 h-3.5" />
             Book Free Call

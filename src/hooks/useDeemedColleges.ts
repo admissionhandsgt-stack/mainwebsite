@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 
 export interface DeemedCollege {
   id: number;
@@ -34,7 +33,6 @@ export interface DeemedCollegeFilters {
 const PAGE_SIZE = 10;
 
 // Use type assertion once at module level to avoid `as any` everywhere
-const db = supabase as ReturnType<typeof supabase['from']> & { from: (table: string) => ReturnType<typeof supabase['from']> };
 
 export function useDeemedColleges() {
   const [colleges, setColleges] = useState<DeemedCollege[]>([]);
@@ -55,59 +53,24 @@ export function useDeemedColleges() {
     setError(null);
 
     try {
-      let query = (supabase as any)
-        .from('deemed_colleges')
-        .select('*', { count: 'exact' })
-        .eq('is_active', true)
-        .eq('source_type', 'deemed_mbbs');
+      const params = new URLSearchParams({
+        source: 'deemed',
+        page: String(pageNum),
+        perPage: String(PAGE_SIZE),
+        sortBy: filters.sortBy ?? 'default',
+      });
+      if (filters.search) params.set('search', filters.search);
+      if (filters.state) params.set('state', filters.state);
+      if (filters.intake) params.set('intake', filters.intake);
+      if (filters.nriSeats) params.set('nriSeats', 'true');
+      if (filters.minoritySeats) params.set('minoritySeats', 'true');
+      if (filters.womenOnly) params.set('womenOnly', 'true');
 
-      // Search
-      if (filters.search) {
-        query = query.or(
-          `college_name.ilike.%${filters.search}%,university_name.ilike.%${filters.search}%,city.ilike.%${filters.search}%`
-        );
-      }
+      const res = await fetch(`/api/content/college-list?${params}`);
+      if (!res.ok) throw new Error(`Request failed (${res.status})`);
+      const json = await res.json();
 
-      // Filters
-      if (filters.state) query = query.eq('state', filters.state);
-      if (filters.intake) query = query.eq('intake', parseInt(filters.intake));
-      if (filters.nriSeats) query = query.eq('has_nri_seats', true);
-      if (filters.minoritySeats) query = query.eq('has_minority_seats', true);
-      if (filters.womenOnly) query = query.eq('is_women_only', true);
-
-      // Sorting
-      switch (filters.sortBy) {
-        case 'name_asc':
-          query = query.order('college_name', { ascending: true });
-          break;
-        case 'intake_high':
-          query = query.order('intake', { ascending: false, nullsFirst: false });
-          break;
-        case 'intake_low':
-          query = query.order('intake', { ascending: true, nullsFirst: false });
-          break;
-        case 'state_asc':
-          query = query.order('state', { ascending: true });
-          break;
-        default:
-          query = query.order('display_order', { ascending: true });
-      }
-
-      // Pagination
-      const from = (pageNum - 1) * PAGE_SIZE;
-      const to = from + PAGE_SIZE - 1;
-      query = query.range(from, to);
-
-      const { data, error: fetchError, count } = await query;
-
-      if (fetchError) {
-        setError(`Failed to fetch colleges: ${fetchError.message}`);
-        console.error('[useDeemedColleges]', fetchError);
-        setIsLoading(false);
-        return;
-      }
-
-      const mapped: DeemedCollege[] = (data ?? []).map((item: Record<string, unknown>) => ({
+      const mapped: DeemedCollege[] = (json.data ?? []).map((item: Record<string, unknown>) => ({
         id: item.id as number,
         slug: (item.slug as string) ?? '',
         college_name: (item.college_name as string) ?? '',
@@ -127,55 +90,30 @@ export function useDeemedColleges() {
         image_url: (item.image_url as string) ?? null,
       }));
 
-      if (append) {
-        setColleges(prev => [...prev, ...mapped]);
-      } else {
-        setColleges(mapped);
-      }
+      setColleges((prev) => (append ? [...prev, ...mapped] : mapped));
 
-      const total = count ?? 0;
+      const total = json.total ?? 0;
       setTotalCount(total);
-      setHasMore(from + mapped.length < total);
+      setHasMore((pageNum - 1) * PAGE_SIZE + mapped.length < total);
       setPage(pageNum);
-      setIsLoading(false);
     } catch (err) {
-      console.error('[useDeemedColleges] Exception:', err);
-      setError('An unexpected error occurred');
+      console.error('[useDeemedColleges]', err);
+      setError('Could not load colleges. Try again.');
+    } finally {
       setIsLoading(false);
     }
   }, []);
 
+  /** State and intake options come back with the first page of results. */
   const fetchFilterOptions = useCallback(async () => {
     try {
-      const { data: stateData } = await (supabase as any)
-        .from('deemed_colleges')
-        .select('state')
-        .eq('is_active', true)
-        .eq('source_type', 'deemed_mbbs')
-        .not('state', 'is', null);
-
-      if (stateData) {
-        const unique = Array.from(
-          new Set((stateData as Array<{ state: string }>).map(r => r.state).filter(Boolean))
-        ) as string[];
-        setStates(unique.sort());
-      }
-
-      const { data: intakeData } = await (supabase as any)
-        .from('deemed_colleges')
-        .select('intake')
-        .eq('is_active', true)
-        .eq('source_type', 'deemed_mbbs')
-        .not('intake', 'is', null);
-
-      if (intakeData) {
-        const unique = Array.from(
-          new Set((intakeData as Array<{ intake: number }>).map(r => r.intake).filter(Boolean))
-        ) as number[];
-        setIntakeValues(unique.sort((a, b) => a - b));
-      }
+      const res = await fetch('/api/content/college-list?source=deemed&perPage=1');
+      if (!res.ok) return;
+      const json = await res.json();
+      setStates((json.states ?? []).filter(Boolean).sort());
+      setIntakeValues((json.intakes ?? []).filter(Boolean).sort((a: number, b: number) => a - b));
     } catch (err) {
-      console.error('[useDeemedColleges] Filter options error:', err);
+      console.error('[useDeemedColleges] filter options', err);
     }
   }, []);
 

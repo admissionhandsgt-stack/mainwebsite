@@ -19,10 +19,10 @@ const NRIEligibility = () => {
 
         <Tabs defaultValue="nri" className="max-w-5xl mx-auto">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto p-1.5 glass-white rounded-2xl border border-white/40 shadow-sm">
-            <TabsTrigger value="nri" className="rounded-xl py-3 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all font-bold">NRI</TabsTrigger>
-            <TabsTrigger value="nri-sponsored" className="rounded-xl py-3 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all font-bold">NRI Sponsored</TabsTrigger>
-            <TabsTrigger value="oci-pio" className="rounded-xl py-3 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all font-bold">OCI/PIO</TabsTrigger>
-            <TabsTrigger value="foreign" className="rounded-xl py-3 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all font-bold">Foreign Nationals</TabsTrigger>
+            <TabsTrigger value="nri" className="rounded-xl py-3 data-[state=active]:bg-cyan-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all font-bold">NRI</TabsTrigger>
+            <TabsTrigger value="nri-sponsored" className="rounded-xl py-3 data-[state=active]:bg-cyan-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all font-bold">NRI Sponsored</TabsTrigger>
+            <TabsTrigger value="oci-pio" className="rounded-xl py-3 data-[state=active]:bg-cyan-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all font-bold">OCI/PIO</TabsTrigger>
+            <TabsTrigger value="foreign" className="rounded-xl py-3 data-[state=active]:bg-cyan-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all font-bold">Foreign Nationals</TabsTrigger>
           </TabsList>
           
           <TabsContent value="nri" className="mt-8 p-8 md:p-12 glass-white rounded-[2.5rem] shadow-xl border border-white/60 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -40,16 +40,16 @@ const NRIEligibility = () => {
                     "NEET qualification (for most colleges)",
                     "Must have completed 10+2 with PCB"
                   ].map((text, idx) => (
-                    <div key={idx} className="flex items-center gap-3 p-4 bg-white/40 rounded-2xl border border-white/40 group hover:border-blue-500/30 transition-colors">
-                      <CheckCircle className="h-6 w-6 text-blue-600 flex-shrink-0" />
+                    <div key={idx} className="flex items-center gap-3 p-4 bg-white/40 rounded-2xl border border-white/40 group hover:border-cyan-500/30 transition-colors">
+                      <CheckCircle className="h-6 w-6 text-cyan-600 flex-shrink-0" />
                       <p className="font-bold text-slate-800">{text}</p>
                     </div>
                   ))}
                 </div>
               </div>
-              <div className="w-full md:w-72 bg-blue-600 text-white p-8 rounded-[2rem] shadow-xl shadow-blue-900/20">
+              <div className="w-full md:w-72 bg-cyan-600 text-white p-8 rounded-[2rem] shadow-xl shadow-cyan-900/20">
                 <h4 className="font-black text-xl mb-4">Documentation</h4>
-                <p className="text-blue-50 leading-relaxed font-medium">NRI status certificate, passport copies, visa stamps, bank statements showing foreign transactions.</p>
+                <p className="text-cyan-50 leading-relaxed font-medium">NRI status certificate, passport copies, visa stamps, bank statements showing foreign transactions.</p>
               </div>
             </div>
           </TabsContent>
@@ -68,7 +68,7 @@ const NRIEligibility = () => {
                     "Must have a clear blood relation",
                     "NEET qualification required",
                   ].map((text, idx) => (
-                    <div key={idx} className="flex items-center gap-3 p-4 bg-white/40 rounded-2xl border border-white/40 group hover:border-blue-500/30 transition-colors">
+                    <div key={idx} className="flex items-center gap-3 p-4 bg-white/40 rounded-2xl border border-white/40 group hover:border-cyan-500/30 transition-colors">
                       <CheckCircle className="h-6 w-6 text-teal-600 flex-shrink-0" />
                       <p className="font-bold text-slate-800">{text}</p>
                     </div>
@@ -91,8 +91,8 @@ const NRIEligibility = () => {
             <p className="mb-4 text-slate-700 text-lg">
               Overseas Citizen of India (OCI) or Person of Indian Origin (PIO) card holders.
             </p>
-            <div className="mt-6 p-4 bg-blue-50 rounded-2xl border border-blue-100">
-              <p className="text-blue-900 font-medium">
+            <div className="mt-6 p-4 bg-cyan-50 rounded-2xl border border-cyan-100">
+              <p className="text-cyan-900 font-medium">
                 Required documents: OCI/PIO card, foreign passport, 10+2 mark sheets, NEET score card (if applicable)
               </p>
             </div>
@@ -103,8 +103,8 @@ const NRIEligibility = () => {
             <p className="mb-4 text-slate-700 text-lg">
               Non-Indian citizens who wish to study medicine in India.
             </p>
-            <div className="mt-6 p-4 bg-blue-50 rounded-2xl border border-blue-100">
-              <p className="text-blue-900 font-medium">
+            <div className="mt-6 p-4 bg-cyan-50 rounded-2xl border border-cyan-100">
+              <p className="text-cyan-900 font-medium">
                 Required documents: Foreign passport, visa, 10+2 equivalent mark sheets, NEET score card (if applicable)
               </p>
             </div>
@@ -122,13 +122,13 @@ const NRIEligibility = () => {
                 "English language proficiency"
               ].map((item, idx) => (
                 <li key={idx} className="flex items-center gap-4 group">
-                  <div className="w-2 h-2 rounded-full bg-blue-600 ring-4 ring-blue-50" />
+                  <div className="w-2 h-2 rounded-full bg-cyan-600 ring-4 ring-cyan-50" />
                   <span className="text-lg text-slate-700 font-bold">{item}</span>
                 </li>
               ))}
             </ul>
             <div className="p-6 bg-slate-900 rounded-3xl text-white shadow-2xl">
-              <p className="text-blue-100/70 font-medium leading-relaxed italic">
+              <p className="text-cyan-100/70 font-medium leading-relaxed italic">
                 Eligibility varies by state and institution. Contact our NRI desk for a personalized profile assessment.
               </p>
             </div>

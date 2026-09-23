@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { listRows, createRow, updateRow, deleteRow, uploadImage } from '@/lib/adminApi';
 import { toast } from 'sonner';
 import { Pencil, Trash2, Loader2, ImagePlus, Plus, Building2, MapPin, Users, Calendar, ShieldCheck, Search, Filter, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -13,8 +13,21 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { motion } from 'framer-motion';
 
+/** key_specialties is a JSON array kept in a text column. */
+function parseSpecialties(v: unknown): string[] {
+  if (Array.isArray(v)) return v as string[];
+  if (typeof v !== 'string' || v.trim() === '') return [];
+  try {
+    const parsed = JSON.parse(v);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    // Older rows may hold a plain comma-separated list.
+    return v.split(',').map((x) => x.trim()).filter(Boolean);
+  }
+}
+
 export interface PGCollege {
-  id: string;
+  id: number;
   college_name: string;
   city: string;
   state: string;
@@ -26,6 +39,7 @@ export interface PGCollege {
   short_description: string | null;
   image_url: string | null;
   is_active: boolean;
+  display_order: number;
   created_at?: string;
   updated_at?: string;
 }
@@ -55,7 +69,8 @@ const PGCollegeManager: React.FC = () => {
     key_specialties: [],
     short_description: '',
     image_url: '',
-    is_active: true
+    is_active: true,
+    display_order: 100
   });
   
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -68,14 +83,11 @@ const PGCollegeManager: React.FC = () => {
   const fetchColleges = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('pg_colleges')
-        .select('*')
-        .order('college_name');
-        
-      if (error) throw error;
-      setColleges((data as PGCollege[]) || []);
-    } catch (err: any) {
+      const rows = await listRows<Omit<PGCollege, 'key_specialties'> & { key_specialties: unknown }>(
+        'colleges-pg',
+      );
+      setColleges(rows.map((r) => ({ ...r, key_specialties: parseSpecialties(r.key_specialties) })));
+    } catch (err) {
       console.error('Error fetching pg_colleges:', err);
       toast.error('Failed to load PG colleges');
     } finally {
@@ -86,6 +98,22 @@ const PGCollegeManager: React.FC = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
+      // Validate file extension
+      const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'avif'];
+      const fileExtension = file.name.split('.').pop()?.toLowerCase();
+      if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
+        toast.error("Invalid file format. Only JPG, JPEG, PNG, WEBP, and AVIF are allowed.");
+        e.target.value = ''; // Reset input
+        return;
+      }
+
+      // Validate file size (5MB = 5 * 1024 * 1024 bytes)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("File is too large. Maximum allowed size is 5MB.");
+        e.target.value = ''; // Reset input
+        return;
+      }
+
       setImageFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -103,14 +131,10 @@ const PGCollegeManager: React.FC = () => {
 
     try {
       setIsSaving(true);
-      let imageUrl = newCollege.image_url || 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800';
+      let imageUrl = newCollege.image_url || null;
       
       if (imageFile) {
-        const fileName = `pg-${Date.now()}-${imageFile.name}`;
-        const { error: uploadError } = await supabase.storage.from('colleges').upload(fileName, imageFile);
-        if (uploadError) throw uploadError;
-        const { data: publicUrl } = supabase.storage.from('colleges').getPublicUrl(fileName);
-        imageUrl = publicUrl.publicUrl;
+        imageUrl = await uploadImage(imageFile, 'colleges');
       }
 
       const specialties = specialtiesText
@@ -118,7 +142,7 @@ const PGCollegeManager: React.FC = () => {
         .map(s => s.trim())
         .filter(Boolean);
 
-      const { error } = await supabase.from('pg_colleges').insert({
+      await createRow('colleges-pg', {
         college_name: newCollege.college_name,
         city: newCollege.city,
         state: newCollege.state,
@@ -126,14 +150,13 @@ const PGCollegeManager: React.FC = () => {
         ownership: newCollege.ownership || null,
         year_established: newCollege.year_established || null,
         total_pg_seats: newCollege.total_pg_seats || 0,
-        key_specialties: specialties,
+        key_specialties: JSON.stringify(specialties),
         short_description: newCollege.short_description || null,
         image_url: imageUrl,
-        is_active: newCollege.is_active ?? true
+        is_active: newCollege.is_active ?? true,
+        display_order: newCollege.display_order ?? ((colleges.length + 1) * 100)
       });
 
-      if (error) throw error;
-      
       toast.success("PG College added successfully");
       setIsAddDialogOpen(false);
       resetForm();
@@ -157,11 +180,9 @@ const PGCollegeManager: React.FC = () => {
       let imageUrl = selectedCollege.image_url;
       
       if (imageFile) {
-        const fileName = `pg-${Date.now()}-${imageFile.name}`;
-        const { error: uploadError } = await supabase.storage.from('colleges').upload(fileName, imageFile);
-        if (uploadError) throw uploadError;
-        const { data: publicUrl } = supabase.storage.from('colleges').getPublicUrl(fileName);
-        imageUrl = publicUrl.publicUrl;
+        imageUrl = await uploadImage(imageFile, 'colleges');
+      } else if (previewUrl === null) {
+        imageUrl = null; // Explicitly remove the image
       }
 
       const specialties = specialtiesText
@@ -169,7 +190,7 @@ const PGCollegeManager: React.FC = () => {
         .map(s => s.trim())
         .filter(Boolean);
 
-      const { error } = await supabase.from('pg_colleges').update({
+      await updateRow('colleges-pg', selectedCollege.id, {
         college_name: selectedCollege.college_name,
         city: selectedCollege.city,
         state: selectedCollege.state,
@@ -177,15 +198,13 @@ const PGCollegeManager: React.FC = () => {
         ownership: selectedCollege.ownership || null,
         year_established: selectedCollege.year_established || null,
         total_pg_seats: selectedCollege.total_pg_seats,
-        key_specialties: specialties,
+        key_specialties: JSON.stringify(specialties),
         short_description: selectedCollege.short_description || null,
         image_url: imageUrl,
         is_active: selectedCollege.is_active,
-        updated_at: new Date().toISOString()
-      }).eq('id', selectedCollege.id);
+        display_order: selectedCollege.display_order
+      });
 
-      if (error) throw error;
-      
       toast.success("PG College updated successfully");
       setIsEditDialogOpen(false);
       setSelectedCollege(null);
@@ -204,8 +223,7 @@ const PGCollegeManager: React.FC = () => {
     if (!selectedCollege) return;
     try {
       setIsDeleting(true);
-      const { error } = await supabase.from('pg_colleges').delete().eq('id', selectedCollege.id);
-      if (error) throw error;
+      await deleteRow('colleges-pg', selectedCollege.id);
       toast.success("College deleted successfully");
       setIsDeleteDialogOpen(false);
       setSelectedCollege(null);
@@ -230,7 +248,8 @@ const PGCollegeManager: React.FC = () => {
       key_specialties: [],
       short_description: '',
       image_url: '',
-      is_active: true
+      is_active: true,
+      display_order: (colleges.length + 1) * 100
     });
     setSpecialtiesText('');
     setImageFile(null);
@@ -250,14 +269,14 @@ const PGCollegeManager: React.FC = () => {
   return (
     <div className="space-y-8 p-1">
       <div className="relative overflow-hidden bg-slate-900 rounded-[2rem] border border-slate-800 p-8 shadow-2xl">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-transparent to-emerald-500/10 opacity-60 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-transparent to-emerald-500/10 opacity-60 pointer-events-none" />
         <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <Badge className="bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/30 px-3 py-1 text-xs font-black uppercase tracking-wider">
+            <Badge className="bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 px-3 py-1 text-xs font-black uppercase tracking-wider">
               Management Portal
             </Badge>
             <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight leading-none">
-              PG Colleges <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">Database</span>
+              PG Colleges <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Database</span>
             </h2>
             <p className="text-slate-400 text-sm font-medium">
               Manage the list of PG medical colleges offering MD/MS seats in India.
@@ -266,15 +285,15 @@ const PGCollegeManager: React.FC = () => {
 
           <Dialog open={isAddDialogOpen} onOpenChange={(open) => { setIsAddDialogOpen(open); if(open) resetForm(); }}>
             <DialogTrigger asChild>
-              <Button className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-full px-6 py-5 shadow-lg shadow-blue-500/20 text-sm font-black transition-all border border-blue-400/20">
+              <Button className="flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white rounded-full px-6 py-5 shadow-lg shadow-cyan-500/20 text-sm font-black transition-all border border-cyan-400/20">
                 <Plus className="h-4 w-4" />
                 <span>Add PG College</span>
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[600px] bg-white border-slate-200 rounded-3xl shadow-2xl overflow-hidden p-0 max-h-[90vh] overflow-y-auto">
               <div className="px-6 py-5 bg-slate-50 border-b border-slate-100 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
-                  <Building2 className="w-5 h-5 text-blue-600" />
+                <div className="w-10 h-10 rounded-xl bg-cyan-100 flex items-center justify-center">
+                  <Building2 className="w-5 h-5 text-cyan-600" />
                 </div>
                 <div>
                   <DialogTitle className="text-xl font-black text-slate-900">Add New PG College</DialogTitle>
@@ -367,6 +386,16 @@ const PGCollegeManager: React.FC = () => {
                     />
                     <Label htmlFor="new-active" className="text-xs font-bold text-slate-700 uppercase tracking-wider cursor-pointer">Is Active / Visible</Label>
                   </div>
+                  <div className="space-y-2 pt-8">
+                    <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Display Order</Label>
+                    <Input 
+                      type="number"
+                      placeholder="e.g. 100" 
+                      value={newCollege.display_order === undefined ? '' : newCollege.display_order}
+                      onChange={(e) => setNewCollege({...newCollege, display_order: parseInt(e.target.value) || 0})}
+                      className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-colors w-24"
+                    />
+                  </div>
                 </div>
 
                 <div className="space-y-2">
@@ -407,7 +436,7 @@ const PGCollegeManager: React.FC = () => {
                     )}
                     
                     <div className="flex-1">
-                      <Label htmlFor="image-upload-pg" className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors">
+                      <Label htmlFor="image-upload-pg" className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-cyan-600 transition-colors">
                         <ImagePlus className="w-4 h-4" />
                         Choose Image
                       </Label>
@@ -426,7 +455,7 @@ const PGCollegeManager: React.FC = () => {
               
               <DialogFooter className="p-4 bg-slate-50 border-t border-slate-100">
                 <Button variant="outline" onClick={() => setIsAddDialogOpen(false)} className="rounded-xl">Cancel</Button>
-                <Button onClick={handleAddCollege} disabled={isSaving} className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white">
+                <Button onClick={handleAddCollege} disabled={isSaving} className="rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white">
                   {isSaving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : 'Add College'}
                 </Button>
               </DialogFooter>
@@ -443,7 +472,7 @@ const PGCollegeManager: React.FC = () => {
               placeholder="Search by PG college name or state..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 bg-white border-slate-200 rounded-xl focus-visible:ring-blue-500"
+              className="pl-9 bg-white border-slate-200 rounded-xl focus-visible:ring-cyan-500"
             />
           </div>
           
@@ -463,14 +492,14 @@ const PGCollegeManager: React.FC = () => {
 
         {loading ? (
           <div className="flex flex-col items-center justify-center p-12 text-slate-400">
-            <Loader2 className="w-8 h-8 animate-spin mb-4 text-blue-500" />
+            <Loader2 className="w-8 h-8 animate-spin mb-4 text-cyan-500" />
             <p className="font-medium">Loading PG colleges...</p>
           </div>
         ) : filteredColleges.length === 0 ? (
           <div className="flex flex-col items-center justify-center p-12 text-slate-400">
             <Building2 className="w-12 h-12 mb-4 opacity-20" />
             <p className="font-medium">No PG colleges found matching search criteria.</p>
-            <Button variant="link" onClick={() => { setSearchQuery(''); setTypeFilter('all'); }} className="text-blue-500 mt-2">Clear filters</Button>
+            <Button variant="link" onClick={() => { setSearchQuery(''); setTypeFilter('all'); }} className="text-cyan-500 mt-2">Clear filters</Button>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-t border-slate-100 bg-slate-50/30">
@@ -484,11 +513,11 @@ const PGCollegeManager: React.FC = () => {
                     <div className="w-14 h-14 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img 
-                        src={college.image_url || 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800'} 
+                        src={college.image_url || '/assets/images/colleges/medical-college.avif'} 
                         alt={college.college_name} 
                         className="w-full h-full object-cover"
                         onError={(e) => {
-                          (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800';
+                          (e.target as HTMLImageElement).src = '/assets/images/colleges/medical-college.avif';
                         }}
                       />
                     </div>
@@ -500,6 +529,9 @@ const PGCollegeManager: React.FC = () => {
                         {!college.is_active && (
                           <Badge variant="outline" className="text-[8px] px-1 py-0 border-red-200 text-red-500 bg-red-50 shrink-0">Inactive</Badge>
                         )}
+                        <Badge variant="outline" className="text-[8px] px-1 py-0 border-cyan-200 text-cyan-600 bg-cyan-50 shrink-0">
+                          Order: {college.display_order}
+                        </Badge>
                       </div>
                       
                       <div className="flex items-center gap-1 text-xs text-slate-500 mb-1">
@@ -508,7 +540,7 @@ const PGCollegeManager: React.FC = () => {
                       </div>
                       
                       <div className="flex flex-wrap gap-1 mb-2">
-                        <Badge className="bg-blue-50 text-blue-700 border-0 hover:bg-blue-100 text-[9px] py-0 px-1.5 font-bold">
+                        <Badge className="bg-cyan-50 text-cyan-700 border-0 hover:bg-cyan-100 text-[9px] py-0 px-1.5 font-bold">
                           {college.college_type}
                         </Badge>
                         {college.ownership && (
@@ -564,7 +596,7 @@ const PGCollegeManager: React.FC = () => {
                   <Button 
                     variant="ghost" 
                     size="icon" 
-                    className="h-7 w-7 rounded-md text-slate-600 hover:text-blue-600 hover:bg-slate-50"
+                    className="h-7 w-7 rounded-md text-slate-600 hover:text-cyan-600 hover:bg-slate-50"
                     onClick={() => {
                       setSelectedCollege(college);
                       setSpecialtiesText(college.key_specialties.join(', '));
@@ -595,8 +627,8 @@ const PGCollegeManager: React.FC = () => {
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent className="sm:max-w-[600px] bg-white border-slate-200 rounded-3xl shadow-2xl overflow-hidden p-0 max-h-[90vh] overflow-y-auto">
           <div className="px-6 py-5 bg-slate-50 border-b border-slate-100 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
-              <Pencil className="w-5 h-5 text-blue-600" />
+            <div className="w-10 h-10 rounded-xl bg-cyan-100 flex items-center justify-center">
+              <Pencil className="w-5 h-5 text-cyan-600" />
             </div>
             <div>
               <DialogTitle className="text-xl font-black text-slate-900">Edit PG College</DialogTitle>
@@ -685,6 +717,15 @@ const PGCollegeManager: React.FC = () => {
                     />
                     <Label htmlFor="edit-active" className="text-xs font-bold text-slate-700 uppercase tracking-wider cursor-pointer">Is Active / Visible</Label>
                   </div>
+                  <div className="space-y-2 pt-8">
+                    <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Display Order</Label>
+                    <Input 
+                      type="number"
+                      value={selectedCollege.display_order === undefined ? '' : selectedCollege.display_order}
+                      onChange={(e) => setSelectedCollege({...selectedCollege, display_order: parseInt(e.target.value) || 0})}
+                      className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white w-24"
+                    />
+                  </div>
                 </div>
 
                 <div className="space-y-2">
@@ -712,6 +753,13 @@ const PGCollegeManager: React.FC = () => {
                       <div className="relative w-20 h-20 rounded-xl overflow-hidden border border-slate-200 group shrink-0">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Trash2 className="w-4 h-4 text-white cursor-pointer" onClick={() => {
+                            setImageFile(null);
+                            setPreviewUrl(null);
+                            setSelectedCollege(prev => prev ? { ...prev, image_url: null } : null);
+                          }} />
+                        </div>
                       </div>
                     ) : (
                       <div className="w-20 h-20 rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 flex items-center justify-center text-slate-400 shrink-0">
@@ -719,7 +767,7 @@ const PGCollegeManager: React.FC = () => {
                       </div>
                     )}
                     <div className="flex-1">
-                      <Label htmlFor="edit-image-upload-pg" className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors">
+                      <Label htmlFor="edit-image-upload-pg" className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-cyan-600 transition-colors">
                         <ImagePlus className="w-4 h-4" />
                         Change Image
                       </Label>
@@ -739,7 +787,7 @@ const PGCollegeManager: React.FC = () => {
           
           <DialogFooter className="p-4 bg-slate-50 border-t border-slate-100">
             <Button variant="outline" onClick={() => setIsEditDialogOpen(false)} className="rounded-xl">Cancel</Button>
-            <Button onClick={handleEditCollege} disabled={isSaving} className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white">
+            <Button onClick={handleEditCollege} disabled={isSaving} className="rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white">
               {isSaving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : 'Save Changes'}
             </Button>
           </DialogFooter>

@@ -38,7 +38,7 @@ export const PGStickyMobileBar = () => {
         onClick={cta.call}
         className="flex-1 flex items-center justify-center gap-1.5 bg-slate-900 border border-white/10 text-white rounded-xl py-2.5 text-xs font-black active:scale-[0.97] transition-all cursor-pointer"
       >
-        <Phone className="w-3.5 h-3.5 text-blue-400" />
+        <Phone className="w-3.5 h-3.5 text-cyan-400" />
         <span>Call Expert</span>
       </button>
 
@@ -54,7 +54,7 @@ export const PGStickyMobileBar = () => {
       {/* 3. Request Callback Strategy */}
       <button
         onClick={handleScrollToForm}
-        className="flex-[1.3] flex items-center justify-center gap-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl py-2.5 text-xs font-black shadow-md shadow-blue-500/10 active:scale-[0.97] transition-all cursor-pointer"
+        className="flex-[1.3] flex items-center justify-center gap-1 bg-gradient-to-r from-cyan-600 to-teal-600 text-white rounded-xl py-2.5 text-xs font-black shadow-md shadow-cyan-500/10 active:scale-[0.97] transition-all cursor-pointer"
       >
         <Calendar className="w-3.5 h-3.5 shrink-0" />
         <span>Intake Strategy</span>

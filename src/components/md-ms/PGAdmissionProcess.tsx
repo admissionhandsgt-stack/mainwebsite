@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import type { PgStep } from '@/lib/pgContent';
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   GraduationCap, 
@@ -14,7 +15,7 @@ import {
   ChevronDown
 } from "lucide-react";
 
-const steps = [
+const SHIPPED_STEPS = [
   { 
     icon: GraduationCap, 
     phase: "Phase 01",
@@ -26,24 +27,24 @@ const steps = [
       "Results typically within 2-3 weeks", 
       "Score valid for one counselling cycle"
     ],
-    color: "from-blue-500 to-indigo-500",
-    iconColor: "text-blue-500 dark:text-blue-400",
-    bgColor: "bg-blue-50/50 dark:bg-blue-950/20"
+    color: "from-cyan-500 to-teal-500",
+    iconColor: "text-cyan-500 dark:text-cyan-400",
+    bgColor: "bg-cyan-50/50 dark:bg-cyan-950/20"
   },
   { 
     icon: BarChart3, 
     phase: "Phase 02",
     title: "Score Analysis & Strategy", 
-    desc: "We analyze your rank against 5-year cutoff trends to build your personalized admission blueprint.", 
+    desc: "We place your rank against every published closing round we hold, and build your list from what the record supports.", 
     bullets: [
       "Rank-based college predictions across all quotas", 
       "Branch recommendations aligned to career goals", 
       "Budget analysis including fees, bonds, and stipends", 
       "Realistic vs aspirational target mapping"
     ],
-    color: "from-indigo-500 to-violet-500",
-    iconColor: "text-indigo-500 dark:text-indigo-400",
-    bgColor: "bg-indigo-50/50 dark:bg-indigo-950/20"
+    color: "from-teal-500 to-teal-500",
+    iconColor: "text-teal-500 dark:text-teal-400",
+    bgColor: "bg-teal-50/50 dark:bg-teal-950/20"
   },
   { 
     icon: ClipboardList, 
@@ -56,9 +57,9 @@ const steps = [
       "Document pre-audit against state-specific norms", 
       "Deadline tracking across all portals"
     ],
-    color: "from-violet-500 to-purple-500",
-    iconColor: "text-violet-500 dark:text-violet-400",
-    bgColor: "bg-violet-50/50 dark:bg-violet-950/20"
+    color: "from-teal-500 to-teal-500",
+    iconColor: "text-teal-500 dark:text-teal-400",
+    bgColor: "bg-teal-50/50 dark:bg-teal-950/20"
   },
   { 
     icon: ListChecks, 
@@ -71,9 +72,9 @@ const steps = [
       "Round-wise strategy for different rounds", 
       "Live support during choice filling windows"
     ],
-    color: "from-purple-500 to-pink-500",
-    iconColor: "text-purple-500 dark:text-purple-400",
-    bgColor: "bg-purple-50/50 dark:bg-purple-950/20"
+    color: "from-teal-500 to-emerald-500",
+    iconColor: "text-teal-500 dark:text-teal-400",
+    bgColor: "bg-teal-50/50 dark:bg-teal-950/20"
   },
   { 
     icon: Trophy, 
@@ -86,9 +87,9 @@ const steps = [
       "Upgrade probability for next rounds", 
       "Parallel AIQ + State allotment management"
     ],
-    color: "from-pink-500 to-rose-500",
-    iconColor: "text-pink-500 dark:text-pink-400",
-    bgColor: "bg-pink-50/50 dark:bg-pink-950/20"
+    color: "from-emerald-500 to-rose-500",
+    iconColor: "text-emerald-500 dark:text-emerald-400",
+    bgColor: "bg-emerald-50/50 dark:bg-emerald-950/20"
   },
   { 
     icon: FileCheck, 
@@ -122,7 +123,25 @@ const steps = [
   },
 ];
 
-export const PGAdmissionProcess = () => {
+export const PGAdmissionProcess = ({ items: fromCms }: { items?: PgStep[] | null } = {}) => {
+  // The CMS supplies the words; everything visual stays with the shipped item
+  // at the same position, so a design change is a code change and a copy
+  // change is not. Extra CMS rows reuse the last item's styling.
+  const steps = (() => {
+    const cms = fromCms;
+    if (!cms?.length) return SHIPPED_STEPS;
+    return cms.map((_, i) => {
+      const base = SHIPPED_STEPS[i] ?? SHIPPED_STEPS[SHIPPED_STEPS.length - 1];
+      return {
+          ...base,
+          phase: cms[i].phase ?? base.phase,
+          title: cms[i].title ?? base.title,
+          desc: cms[i].desc ?? base.desc,
+          bullets: cms[i].bullets ?? base.bullets,
+      };
+    });
+  })();
+
   const [mounted, setMounted] = useState(false);
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
@@ -144,11 +163,11 @@ export const PGAdmissionProcess = () => {
           viewport={{ once: true }} 
           className="text-center mb-12"
         >
-          <span className="inline-block text-xs font-black tracking-widest text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-950/40 px-4 py-1.5 rounded-full mb-4">
+          <span className="inline-block text-xs font-black tracking-widest text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-950/40 px-4 py-1.5 rounded-full mb-4">
             THE PG ADMISSION JOURNEY
           </span>
           <h2 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
-            From NEET PG Score to <span className="text-blue-600 dark:text-blue-400">College Reporting</span>
+            From NEET PG Score to <span className="text-cyan-600 dark:text-cyan-400">College Reporting</span>
           </h2>
           <p className="text-sm md:text-base text-slate-500 dark:text-slate-400 mt-3 max-w-2xl mx-auto font-medium">
             Explore the seven critical phases that decide your PG seat. We manage timelines, documentation, and strategy at every single step.
@@ -166,7 +185,7 @@ export const PGAdmissionProcess = () => {
                 key={i} 
                 className={`relative group bg-white dark:bg-slate-900 border ${
                   isOpen 
-                    ? "border-blue-200 dark:border-blue-900/60 shadow-md shadow-blue-500/5" 
+                    ? "border-cyan-200 dark:border-cyan-900/60 shadow-md shadow-cyan-500/5" 
                     : "border-slate-100 dark:border-slate-800/80 hover:border-slate-200 dark:hover:border-slate-700"
                 } rounded-2xl md:rounded-3xl transition-all duration-300 overflow-hidden`}
               >
@@ -175,11 +194,11 @@ export const PGAdmissionProcess = () => {
                   onClick={() => toggleStep(i)}
                   className={`absolute left-[-25px] md:left-[-41px] top-6 w-5 h-5 md:w-6 md:h-6 rounded-full border-2 bg-white dark:bg-slate-900 flex items-center justify-center cursor-pointer transition-all duration-300 z-10 ${
                     isOpen 
-                      ? "border-blue-600 dark:border-blue-400 ring-4 ring-blue-50 dark:ring-blue-950" 
+                      ? "border-cyan-600 dark:border-cyan-400 ring-4 ring-cyan-50 dark:ring-cyan-950" 
                       : "border-slate-300 dark:border-slate-700"
                   }`}
                 >
-                  <span className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full ${isOpen ? "bg-blue-600 dark:bg-blue-400" : "bg-transparent"}`} />
+                  <span className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full ${isOpen ? "bg-cyan-600 dark:bg-cyan-400" : "bg-transparent"}`} />
                 </div>
 
                 {/* Step Header */}
@@ -203,7 +222,7 @@ export const PGAdmissionProcess = () => {
                   </div>
                   
                   {/* Chevron Toggle */}
-                  <div className={`w-7 h-7 md:w-8 md:h-8 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 transition-transform duration-300 shrink-0 ${isOpen ? "rotate-180 text-blue-600 dark:text-blue-400" : ""}`}>
+                  <div className={`w-7 h-7 md:w-8 md:h-8 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 transition-transform duration-300 shrink-0 ${isOpen ? "rotate-180 text-cyan-600 dark:text-cyan-400" : ""}`}>
                     <ChevronDown className="w-3.5 h-3.5 md:w-4 md:h-4" />
                   </div>
                 </button>
@@ -233,7 +252,7 @@ export const PGAdmissionProcess = () => {
                                 <div className="w-4.5 h-4.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 flex items-center justify-center shrink-0 mt-0.5">
                                   <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                                 </div>
-                                <span className="text-[11px] md:text-sm font-bold text-slate-700 dark:text-slate-350 leading-snug">
+                                <span className="text-[11px] md:text-sm font-bold text-slate-700 dark:text-slate-300 leading-snug">
                                   {bullet}
                                 </span>
                               </div>

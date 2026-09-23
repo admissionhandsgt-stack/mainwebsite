@@ -1,31 +1,45 @@
+import type { Metadata } from 'next';
 import React from 'react';
 import { CheckCircle, Download, FileText, AlertTriangle } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+import { getContactInfo, resolveMetadata } from '@/lib/content';
+import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
+
+/**
+ * Metadata the admin can override per route (Admin -> Search & sharing).
+ * Blank admin values fall through to the defaults below.
+ */
+export async function generateMetadata(): Promise<Metadata> {
+  return resolveMetadata('/nri-quota/documents', {
+    title: "NRI Quota Documents Checklist | AdmissionHands",
+    description:
+      "Every document an NRI or NRI-sponsored candidate needs for medical admission in India, and what each one has to prove.",
+  });
+}
+
 
 export const revalidate = 0;
 
 const NRIDocumentsPage = async () => {
   let phone = '+919310301949';
   
-  try {
-    const { data } = await supabase
-      .from('contact_info')
-      .select('*')
-      .order('id', { ascending: false })
-      .limit(1)
-      .single();
-      
-    if (data) {
-      phone = data.phone_number || phone;
-    }
-  } catch (err) {
-    console.error('Error fetching contact info server-side:', err);
-  }
+  const contact = await getContactInfo();
+  phone = contact?.phoneNumber || phone;
 
   return (
     <div className="flex flex-col">
+      <StructuredData
+        data={[
+          webPage({
+            name: "NRI Quota Documents Checklist",
+            description:
+              "Every document an NRI or NRI-sponsored candidate needs for medical admission in India.",
+            path: "/nri-quota/documents",
+          }),
+          breadcrumb([{ name: "Home", path: "/" }, { name: "NRI quota", path: "/nri-quota" }, { name: "Documents", path: "/nri-quota/documents" }]),
+        ]}
+      />
       <div className="flex-grow">
-        <section className="bg-gradient-to-r from-medical-50 to-blue-50 py-16">
+        <section className="bg-gradient-to-r from-medical-50 to-cyan-50 py-16">
           <div className="container-custom">
             <div className="max-w-4xl mx-auto text-center">
               <h1 className="text-4xl md:text-5xl font-bold mb-6">
@@ -124,10 +138,10 @@ const NRIDocumentsPage = async () => {
 
                 <div id="financial" className="scroll-mt-24">
                   <h2 className="text-2xl font-bold mb-6 pb-2 border-b-2 border-medical-100 text-gray-900">3. Financial Capacity Proof</h2>
-                  <div className="bg-blue-50/50 p-6 rounded-xl border border-blue-100">
+                  <div className="bg-cyan-50/50 p-6 rounded-xl border border-cyan-100">
                     <li className="flex items-start gap-3">
-                      <div className="bg-white p-1 rounded border border-blue-200">
-                        <CheckCircle className="h-5 w-5 text-blue-600" />
+                      <div className="bg-white p-1 rounded border border-cyan-200">
+                        <CheckCircle className="h-5 w-5 text-cyan-600" />
                       </div>
                       <span className="text-gray-800 font-medium">6 Months NRI Bank Statement</span>
                     </li>
