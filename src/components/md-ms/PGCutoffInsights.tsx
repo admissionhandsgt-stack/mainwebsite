@@ -108,7 +108,7 @@ export const PGCutoffInsights = ({ items: fromCms }: { items?: PgQuotaFacts[] | 
                       key={j}
                       className="flex flex-col py-1 md:py-1.5 border-b border-slate-50 dark:border-slate-800/40 last:border-0"
                     >
-                      <span className="text-[9px] md:text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+                      <span className="text-[12px] md:text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider">
                         {item.label}
                       </span>
                       <span className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 mt-0.5">
@@ -143,7 +143,7 @@ export const PGCutoffInsights = ({ items: fromCms }: { items?: PgQuotaFacts[] | 
           </div>
           <button
             onClick={() => CTA.call()}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-cyan-600 hover:bg-cyan-700 text-white text-[10px] md:text-sm font-black uppercase tracking-wider px-4 py-2 md:px-5 md:py-2.5 rounded-lg transition-colors flex-shrink-0"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-cyan-600 hover:bg-cyan-700 text-white text-[13px] md:text-sm font-black uppercase tracking-wider px-4 py-2 md:px-5 md:py-2.5 rounded-lg transition-colors flex-shrink-0"
           >
             <Phone className="w-3.5 h-3.5 md:w-4 md:h-4" />
             Get Strategic Counselling Support

@@ -58,10 +58,10 @@ export const PGDocumentChecklist = ({ items: fromCms }: { items?: PgDocument[] |
           {documents.map((doc, i) => (
             <motion.div key={i} initial={mounted ? { opacity: 0, y: 15 } : false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.05 }}
               className="bg-slate-50 dark:bg-slate-900 p-2.5 md:p-3.5 rounded-lg border border-slate-100 dark:border-slate-800 hover:border-cyan-200 dark:hover:border-cyan-800 transition flex items-start gap-2.5 md:gap-3">
-              <div className="w-5.5 h-5.5 rounded-full bg-cyan-50 dark:bg-cyan-950/40 text-cyan-600 dark:text-cyan-400 font-black text-[10px] md:text-xs flex items-center justify-center flex-shrink-0">{i + 1}</div>
+              <div className="w-5.5 h-5.5 rounded-full bg-cyan-50 dark:bg-cyan-950/40 text-cyan-600 dark:text-cyan-400 font-black text-[13px] md:text-xs flex items-center justify-center flex-shrink-0">{i + 1}</div>
               <div className="min-w-0">
                 <p className="font-bold text-xs md:text-sm text-slate-900 dark:text-white leading-tight">{doc.name}</p>
-                <p className="text-[10px] md:text-xs text-slate-500 dark:text-slate-400 mt-0.5">{doc.note}</p>
+                <p className="text-[13px] md:text-xs text-slate-500 dark:text-slate-400 mt-0.5">{doc.note}</p>
               </div>
             </motion.div>
           ))}
@@ -79,7 +79,7 @@ export const PGDocumentChecklist = ({ items: fromCms }: { items?: PgDocument[] |
             </p>
           </div>
           <button onClick={() => CTA.whatsapp("Hi, I need help with document preparation for NEET PG counselling.")}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] md:text-sm font-black uppercase tracking-wider px-4 py-2 md:px-5 md:py-2.5 rounded-lg transition-colors flex-shrink-0">
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[13px] md:text-sm font-black uppercase tracking-wider px-4 py-2 md:px-5 md:py-2.5 rounded-lg transition-colors flex-shrink-0">
             <WhatsAppIcon className="w-3.5 h-3.5" /> Chat With Us
           </button>
         </motion.div>

@@ -104,7 +104,7 @@ export function CollegeCard({
       {/* Content — flex-1 so it grows naturally, no fixed height */}
       <div className="p-3 flex flex-col flex-1 gap-1.5 min-h-0">
         {/* College Name */}
-        <h3 className="text-[11px] sm:text-xs font-extrabold text-slate-900 dark:text-white leading-tight line-clamp-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
+        <h3 className="text-[13px] sm:text-xs font-extrabold text-slate-900 dark:text-white leading-tight line-clamp-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
           {collegeName}
         </h3>
 

@@ -128,11 +128,11 @@ const Testimonials = ({
                   {initials(t.name)}
                 </div>
                 <div>
-                  <h4 className="text-sm md:text-base font-black text-slate-900 dark:text-white tracking-tight">{t.name}</h4>
-                  <p className="text-[9px] md:text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">{t.course}</p>
+                  <h3 className="text-sm md:text-base font-black text-slate-900 dark:text-white tracking-tight">{t.name}</h3>
+                  <p className="text-[12px] md:text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">{t.course}</p>
                   <div className="mt-1 flex items-center gap-1.5">
                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                    <p className="text-[9px] md:text-[10px] text-emerald-600 dark:text-emerald-400 font-black uppercase tracking-widest">{t.outcome}</p>
+                    <p className="text-[12px] md:text-[10px] text-emerald-600 dark:text-emerald-400 font-black uppercase tracking-widest">{t.outcome}</p>
                   </div>
                 </div>
               </div>

@@ -80,7 +80,7 @@ export default function RoundControls({
               type="button"
               aria-pressed={c === category}
               onClick={() => valid && go(parsed, c)}
-              className={`rounded-full border px-3 py-1.5 text-xs font-bold transition-colors ${
+              className={`rounded-full border px-3.5 py-2.5 md:py-1.5 text-xs font-bold transition-colors ${
                 c === category
                   ? "border-primary bg-primary-soft text-primary-strong dark:text-primary"
                   : "border-border text-muted-foreground hover:border-primary/40"

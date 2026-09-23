@@ -96,11 +96,11 @@ export default function Hero({ backgroundImageUrl, doctorsImageUrl, copy }: Hero
           className="w-full lg:w-[56%] flex flex-col text-center lg:text-left"
         >
           <motion.div variants={item} className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-5">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/25 bg-accent-soft px-2.5 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-accent dark:text-accent">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/25 bg-accent-soft px-2.5 py-1 sm:px-3 sm:py-1.5 text-[13px] sm:text-[11px] font-semibold uppercase tracking-wider text-accent dark:text-accent">
               <ShieldCheck className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
               {text.badgeLeft}
             </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/25 bg-primary-soft px-2.5 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-primary-strong dark:text-primary">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/25 bg-primary-soft px-2.5 py-1 sm:px-3 sm:py-1.5 text-[13px] sm:text-[11px] font-semibold uppercase tracking-wider text-primary-strong dark:text-primary">
               <Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
               {text.badgeRight}
             </span>

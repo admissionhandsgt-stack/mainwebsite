@@ -283,7 +283,7 @@ Internship: ${formData.internship_status}`;
               <input
                 type="text"
                 required
-                className="w-full pl-9 pr-3 py-2 bg-slate-950/40 border border-white/10 focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-xs text-white placeholder-slate-600 outline-none"
+                className="w-full pl-9 pr-3 py-3 md:py-2 bg-slate-950/40 border border-white/10 focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-base md:text-xs text-white placeholder-slate-600 outline-none"
                 placeholder="e.g. 4500"
                 value={formData.rank}
                 onChange={e => setFormData({ ...formData, rank: e.target.value.replace(/\D/g, '') })}
@@ -324,7 +324,7 @@ Internship: ${formData.internship_status}`;
             </label>
             <select
               id="lead-branch"
-              className="w-full px-3 py-2 bg-slate-950/40 border border-white/10 focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-xs text-white outline-none cursor-pointer"
+              className="w-full px-3 py-3 md:py-2 bg-slate-950/40 border border-white/10 focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-base md:text-xs text-white outline-none cursor-pointer"
               value={formData.preferred_branch}
               onChange={e => setFormData({ ...formData, preferred_branch: e.target.value })}
             >
@@ -352,7 +352,7 @@ Internship: ${formData.internship_status}`;
                     type="button"
                     key={i}
                     onClick={() => handleStateToggle(state)}
-                    className={`text-[9.5px] px-2 py-1 rounded-lg border font-bold transition-all cursor-pointer ${
+                    className={`text-xs md:text-[9.5px] px-3 md:px-2 py-2.5 md:py-1 rounded-lg border font-bold transition-all cursor-pointer ${
                       isSelected 
                         ? 'bg-cyan-600/25 border-cyan-500 text-cyan-300' 
                         : 'bg-slate-950/20 border-white/10 text-slate-400 hover:border-white/20'
@@ -380,7 +380,7 @@ Internship: ${formData.internship_status}`;
                       type="button"
                       key={quota}
                       onClick={() => setFormData({ ...formData, quota_interest: quota })}
-                      className={`flex-1 text-[9.5px] py-1 rounded-lg font-black transition-all cursor-pointer ${
+                      className={`flex-1 text-xs md:text-[9.5px] py-2.5 md:py-1 rounded-lg font-black transition-all cursor-pointer ${
                         isActive 
                           ? 'bg-cyan-600/30 text-cyan-300 border border-cyan-500/20' 
                           : 'text-slate-400 hover:text-white border border-transparent'
@@ -406,7 +406,7 @@ Internship: ${formData.internship_status}`;
                       type="button"
                       key={statusOption}
                       onClick={() => setFormData({ ...formData, internship_status: statusOption })}
-                      className={`flex-1 text-[9.5px] py-1 rounded-lg font-black transition-all cursor-pointer ${
+                      className={`flex-1 text-xs md:text-[9.5px] py-2.5 md:py-1 rounded-lg font-black transition-all cursor-pointer ${
                         isActive 
                           ? 'bg-cyan-600/30 text-cyan-300 border border-cyan-500/20' 
                           : 'text-slate-400 hover:text-white border border-transparent'
@@ -429,7 +429,7 @@ Internship: ${formData.internship_status}`;
 
           <button
             type="submit"
-            className="w-full flex items-center justify-center gap-1.5 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 active:scale-[0.98] text-white py-2.5 rounded-xl font-bold shadow-md shadow-cyan-500/10 transition-all mt-1 cursor-pointer"
+            className="w-full flex items-center justify-center gap-1.5 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 active:scale-[0.98] text-white py-3.5 md:py-2.5 rounded-xl font-bold shadow-md shadow-cyan-500/10 transition-all mt-1 cursor-pointer"
           >
             <span className="text-xs uppercase tracking-wider">Generate Strategy</span>
             <ChevronRight className="w-4 h-4" />
@@ -458,7 +458,7 @@ Internship: ${formData.internship_status}`;
               <input
                 type="text"
                 required
-                className="w-full pl-9 pr-3 py-2 bg-slate-950/40 border border-white/10 focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-xs text-white placeholder-slate-600 outline-none"
+                className="w-full pl-9 pr-3 py-3 md:py-2 bg-slate-950/40 border border-white/10 focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-base md:text-xs text-white placeholder-slate-600 outline-none"
                 placeholder="Dr. Rahul Sharma"
                 value={formData.name}
                 onChange={e => setFormData({...formData, name: e.target.value})}
@@ -476,7 +476,7 @@ Internship: ${formData.internship_status}`;
               <input
                 type="tel"
                 required
-                className="w-full pl-9 pr-3 py-2 bg-slate-950/40 border border-white/10 focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-xs text-white placeholder-slate-600 outline-none"
+                className="w-full pl-9 pr-3 py-3 md:py-2 bg-slate-950/40 border border-white/10 focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-base md:text-xs text-white placeholder-slate-600 outline-none"
                 placeholder="+91 98765 43210"
                 value={formData.phone}
                 onChange={e => setFormData({...formData, phone: e.target.value})}
@@ -522,7 +522,7 @@ Internship: ${formData.internship_status}`;
             <button
               type="button"
               onClick={() => setStep(1)}
-              className="flex-1 flex items-center justify-center gap-1.5 border border-white/10 hover:border-white/20 active:scale-[0.98] text-white py-2.5 rounded-xl font-bold text-xs transition-all cursor-pointer"
+              className="flex-1 flex items-center justify-center gap-1.5 border border-white/10 hover:border-white/20 active:scale-[0.98] text-white py-3.5 md:py-2.5 rounded-xl font-bold text-xs transition-all cursor-pointer"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Back</span>
@@ -531,7 +531,7 @@ Internship: ${formData.internship_status}`;
             <button
               type="submit"
               disabled={status === 'loading'}
-              className="flex-[2] flex items-center justify-center gap-1.5 bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:from-[#2ee374] hover:to-[#149d8e] active:scale-[0.98] text-white py-2.5 rounded-xl font-bold shadow-md shadow-emerald-500/20 transition-all disabled:opacity-75 disabled:active:scale-100 cursor-pointer"
+              className="flex-[2] flex items-center justify-center gap-1.5 bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:from-[#2ee374] hover:to-[#149d8e] active:scale-[0.98] text-white py-3.5 md:py-2.5 rounded-xl font-bold shadow-md shadow-emerald-500/20 transition-all disabled:opacity-75 disabled:active:scale-100 cursor-pointer"
             >
               {status === 'loading' ? (
                 <Loader2 className="w-4 h-4 animate-spin" />

@@ -62,7 +62,7 @@ export default function LiveAlerts() {
       <div className="container-custom flex items-center h-full w-full max-w-full relative">
         
         {/* Label block: sticky on the left */}
-        <div className="flex items-center gap-1.5 px-2 md:px-3 h-7 bg-white text-primary-strong rounded-md shrink-0 z-10 shadow-sm font-black text-[9px] md:text-[10px] tracking-tight">
+        <div className="flex items-center gap-1.5 px-2 md:px-3 h-7 bg-white text-primary-strong rounded-md shrink-0 z-10 shadow-sm font-black text-[12px] md:text-[10px] tracking-tight">
           <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
           UPDATES
         </div>

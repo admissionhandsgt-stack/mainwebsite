@@ -219,7 +219,7 @@ export function RankLensBar({
                 type="button"
                 aria-pressed={c === lens.category}
                 onClick={() => lens.apply(lens.rank ?? (valid ? parsed : null), c)}
-                className={`rounded-full border px-3 py-1.5 text-xs font-bold transition-colors ${
+                className={`rounded-full border px-3.5 py-2.5 md:py-1.5 text-xs font-bold transition-colors ${
                   c === lens.category
                     ? "border-primary bg-primary-soft text-primary-strong dark:text-primary"
                     : "border-border bg-card text-muted-foreground hover:border-primary/40"

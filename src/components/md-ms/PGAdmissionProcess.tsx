@@ -212,7 +212,7 @@ export const PGAdmissionProcess = ({ items: fromCms }: { items?: PgStep[] | null
                       <Icon className="w-4 h-4 md:w-5 md:h-5" />
                     </div>
                     <div>
-                      <span className="text-[9px] md:text-[10px] font-black tracking-widest text-slate-400 uppercase">
+                      <span className="text-[12px] md:text-[10px] font-black tracking-widest text-slate-400 uppercase">
                         {step.phase}
                       </span>
                       <h3 className="text-sm md:text-lg font-black text-slate-900 dark:text-white leading-tight mt-0.5">
@@ -243,7 +243,7 @@ export const PGAdmissionProcess = ({ items: fromCms }: { items?: PgStep[] | null
                         
                         {/* Key Milestones Grid */}
                         <div className="bg-slate-50 dark:bg-slate-950/40 rounded-xl p-3 md:p-5 border border-slate-100/50 dark:border-slate-800/40">
-                          <h4 className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-2 md:mb-3">
+                          <h4 className="text-[12px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-2 md:mb-3">
                             Key Activities & Safety Checks
                           </h4>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3.5">
@@ -252,7 +252,7 @@ export const PGAdmissionProcess = ({ items: fromCms }: { items?: PgStep[] | null
                                 <div className="w-4.5 h-4.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 flex items-center justify-center shrink-0 mt-0.5">
                                   <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                                 </div>
-                                <span className="text-[11px] md:text-sm font-bold text-slate-700 dark:text-slate-300 leading-snug">
+                                <span className="text-[13px] md:text-sm font-bold text-slate-700 dark:text-slate-300 leading-snug">
                                   {bullet}
                                 </span>
                               </div>

@@ -226,7 +226,7 @@ export default function DeemedUniversitiesClient({ heroImages, phoneNumber = "+9
                           <s.icon className="w-4 h-4" />
                         </div>
                         <div className="pt-0.5">
-                          <h4 className="text-[10px] md:text-xs font-black text-slate-800 uppercase tracking-widest mb-0.5">{s.title}</h4>
+                          <h4 className="text-[13px] md:text-xs font-black text-slate-800 uppercase tracking-widest mb-0.5">{s.title}</h4>
                           <p className="text-slate-500 text-xs font-medium leading-relaxed">{s.desc}</p>
                         </div>
                       </motion.div>

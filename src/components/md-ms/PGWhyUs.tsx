@@ -106,7 +106,7 @@ export const PGWhyUs = ({ items: fromCms }: { items?: PgCard[] | null } = {}) =>
                   <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-2 md:mb-3">{card.desc}</p>
                   <div className="inline-flex items-center gap-1 md:gap-1.5 px-2 py-0.5 md:px-2.5 md:py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900/40">
                     <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600 dark:text-emerald-400" />
-                    <span className="text-[9px] md:text-[10px] font-black text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">{card.highlight}</span>
+                    <span className="text-[12px] md:text-[10px] font-black text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">{card.highlight}</span>
                   </div>
                 </div>
               </div>

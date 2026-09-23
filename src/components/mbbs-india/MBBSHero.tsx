@@ -65,7 +65,7 @@ export const MBBSHero = ({ backgroundImageUrl, data = mbbsData }: MBBSHeroProps 
                 <div key={idx} className="flex items-center gap-2 md:gap-3">
                   <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-cyan-600" />
                   <div className="text-left">
-                    <p className="text-[9px] md:text-[10px] font-black text-slate-700 md:text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] md:tracking-[0.2em] leading-none mb-1">{stat.label}</p>
+                    <p className="text-[12px] md:text-[10px] font-black text-slate-700 md:text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] md:tracking-[0.2em] leading-none mb-1">{stat.label}</p>
                     <p className="text-sm md:text-lg font-black text-slate-950 md:text-slate-900 dark:text-white leading-none">{stat.value}</p>
                   </div>
                 </div>

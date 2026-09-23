@@ -114,7 +114,7 @@ const HowItWorks = ({ steps: fromCms, copy }: { steps?: Step[]; copy?: StepsCopy
                   <div className={`relative z-10 flex-shrink-0 flex items-center justify-center w-12 h-12 lg:w-16 lg:h-16 rounded-xl lg:rounded-2xl bg-gradient-to-br ${tone.color} text-white shadow-lg lg:mx-auto lg:mb-4 group-hover:scale-110 transition-transform duration-300`}>
                     <BlockIcon name={step.icon} fallback="ClipboardCheck" size={20} className="lg:hidden" />
                     <BlockIcon name={step.icon} fallback="ClipboardCheck" size={24} className="hidden lg:block" />
-                    <div className="absolute -top-1 -right-1 lg:-top-2 lg:-right-2 flex h-5 w-5 lg:h-6 lg:w-6 items-center justify-center rounded-full border-2 border-white dark:border-slate-900 bg-gradient-brand text-[9px] lg:text-[10px] font-bold text-white">
+                    <div className="absolute -top-1 -right-1 lg:-top-2 lg:-right-2 flex h-5 w-5 lg:h-6 lg:w-6 items-center justify-center rounded-full border-2 border-white dark:border-slate-900 bg-gradient-brand text-[12px] lg:text-[10px] font-bold text-white">
                       {index + 1}
                     </div>
                   </div>
@@ -122,7 +122,7 @@ const HowItWorks = ({ steps: fromCms, copy }: { steps?: Step[]; copy?: StepsCopy
                   {/* Text Content */}
                   <div className="flex-1 lg:mt-2">
                     <h3 className="text-sm lg:text-base font-black text-slate-900 dark:text-white mb-1 lg:mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors tracking-tight">{step.title}</h3>
-                    <p className="text-slate-500 dark:text-slate-400 text-[11px] lg:text-xs font-medium leading-snug">{step.description}</p>
+                    <p className="text-slate-500 dark:text-slate-400 text-[13px] lg:text-xs font-medium leading-snug">{step.description}</p>
                   </div>
                 </div>
               </motion.div>

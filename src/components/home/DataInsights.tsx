@@ -97,7 +97,7 @@ const DataInsights = () => {
               <div className="min-w-0 flex-1">
                 <h3 className="text-[8px] md:text-xs font-black text-slate-400 uppercase tracking-widest mb-0.5 md:mb-1">{item.title}</h3>
                 <div className="text-lg sm:text-3xl font-black text-white mb-0.5 md:mb-1 tracking-tight leading-none">{item.value}</div>
-                <p className="text-slate-400 text-[10px] md:text-sm font-medium leading-normal md:leading-relaxed">{item.description}</p>
+                <p className="text-slate-400 text-[13px] md:text-sm font-medium leading-normal md:leading-relaxed">{item.description}</p>
               </div>
             </motion.div>
           ))}
@@ -132,7 +132,7 @@ const DataInsights = () => {
                   <div className="mt-0.5 w-4 h-4 md:w-5 md:h-5 rounded-md bg-emerald-500/20 flex items-center justify-center shrink-0 group-hover:bg-emerald-500/30 transition-colors">
                     <CheckCircle2 className="w-2.5 h-2.5 md:w-3 md:h-3 text-emerald-400" />
                   </div>
-                  <p className="text-slate-300 text-[10px] md:text-sm font-medium leading-relaxed">{point}</p>
+                  <p className="text-slate-300 text-[13px] md:text-sm font-medium leading-relaxed">{point}</p>
                 </motion.div>
               ))}
             </div>
@@ -165,7 +165,7 @@ const DataInsights = () => {
                   <div className="mt-0.5 w-4 h-4 md:w-5 md:h-5 rounded-md bg-cyan-500/20 flex items-center justify-center shrink-0 group-hover:bg-cyan-500/30 transition-colors">
                     <point.icon className="w-2.5 h-2.5 md:w-3 md:h-3 text-cyan-400" />
                   </div>
-                  <p className="text-slate-300 text-[10px] md:text-sm font-medium leading-relaxed">{point.text}</p>
+                  <p className="text-slate-300 text-[13px] md:text-sm font-medium leading-relaxed">{point.text}</p>
                 </motion.div>
               ))}
             </div>

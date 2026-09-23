@@ -85,7 +85,7 @@ export const CollegeSelectionGuide = ({ data = mbbsData }: { data?: MbbsContent 
                     <h3 className="text-xs md:text-base font-black text-slate-900 dark:text-white leading-snug mb-1 break-words">
                       {point.title}
                     </h3>
-                    <p className="text-[10px] md:text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed break-words">
+                    <p className="text-[13px] md:text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed break-words">
                       {point.desc}
                     </p>
                   </div>

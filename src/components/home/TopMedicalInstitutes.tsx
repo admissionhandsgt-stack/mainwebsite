@@ -44,7 +44,7 @@ export default function TopMedicalInstitutes({ initialColleges }: TopMedicalInst
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 mb-4 text-[10px] sm:text-xs font-black tracking-widest text-cyan-600 uppercase bg-cyan-50 border border-cyan-100 rounded-full shadow-sm"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 mb-4 text-[13px] sm:text-xs font-black tracking-widest text-cyan-600 uppercase bg-cyan-50 border border-cyan-100 rounded-full shadow-sm"
           >
             <Sparkles className="w-3 h-3" />
             Top Tier Medical Institutes

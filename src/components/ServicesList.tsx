@@ -131,7 +131,7 @@ const ServicesList = ({
                     <h3 className="text-sm md:text-xl font-black text-slate-900 mb-1 md:mb-2 leading-tight group-hover:text-cyan-600 transition-colors">
                       {service.title}
                     </h3>
-                    <p className="text-slate-500 text-[10px] md:text-sm font-medium leading-relaxed mb-3 md:mb-6 flex-1">
+                    <p className="text-slate-500 text-[13px] md:text-sm font-medium leading-relaxed mb-3 md:mb-6 flex-1">
                       {service.description}
                     </p>
 
@@ -139,7 +139,7 @@ const ServicesList = ({
                       {service.href ? (
                         <Link
                           href={service.href}
-                          className="inline-flex items-center text-[10px] md:text-sm font-black text-slate-900 hover:text-cyan-600 group/btn transition-colors"
+                          className="inline-flex items-center text-[13px] md:text-sm font-black text-slate-900 hover:text-cyan-600 group/btn transition-colors"
                         >
                           {cta}
                           <ArrowRight className="ml-1 w-1.5 h-1.5 md:ml-1.5 md:w-4 md:h-4 group-hover/btn:translate-x-1 transition-transform" />
@@ -147,7 +147,7 @@ const ServicesList = ({
                       ) : (
                         <button
                           onClick={() => setIsModalOpen(true)}
-                          className="inline-flex items-center text-[10px] md:text-sm font-black text-slate-900 hover:text-cyan-600 group/btn transition-colors"
+                          className="inline-flex items-center text-[13px] md:text-sm font-black text-slate-900 hover:text-cyan-600 group/btn transition-colors"
                         >
                           {cta}
                           <ArrowRight className="ml-1 w-1.5 h-1.5 md:ml-1.5 md:w-4 md:h-4 group-hover/btn:translate-x-1 transition-transform" />

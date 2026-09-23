@@ -157,7 +157,7 @@ const StateTemplate: React.FC<StateTemplateProps> = ({ stateName }) => {
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 text-[10px] md:text-xs font-black tracking-widest uppercase mb-6"
+                className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 text-[13px] md:text-xs font-black tracking-widest uppercase mb-6"
               >
                 <MapPin className="w-3 h-3 md:w-4 md:h-4" /> State Wise MBBS
               </motion.div>
@@ -213,7 +213,7 @@ const StateTemplate: React.FC<StateTemplateProps> = ({ stateName }) => {
                     <div className="w-10 h-10 md:w-12 md:h-12 bg-cyan-100 text-cyan-600 rounded-xl flex items-center justify-center mb-3">
                       <item.icon className="w-5 h-5 md:w-6 md:h-6" />
                     </div>
-                    <p className="text-[10px] md:text-xs font-black uppercase tracking-widest text-slate-400 mb-1">{item.label}</p>
+                    <p className="text-[13px] md:text-xs font-black uppercase tracking-widest text-slate-400 mb-1">{item.label}</p>
                     <p className="text-lg md:text-2xl font-black text-slate-900">{item.value}</p>
                   </div>
                 ))}
@@ -224,7 +224,7 @@ const StateTemplate: React.FC<StateTemplateProps> = ({ stateName }) => {
                   <div className="flex items-center gap-3">
                     <ShieldCheck className="w-6 h-6 md:w-8 md:h-8 text-cyan-600 shrink-0" />
                     <div>
-                      <p className="text-[10px] md:text-xs font-black uppercase tracking-widest text-cyan-500 mb-1">Counselling Authority</p>
+                      <p className="text-[13px] md:text-xs font-black uppercase tracking-widest text-cyan-500 mb-1">Counselling Authority</p>
                       <p className="text-sm md:text-lg font-black text-slate-900">{facts.counsellingAuthority}</p>
                     </div>
                   </div>

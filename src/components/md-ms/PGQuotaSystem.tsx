@@ -192,7 +192,7 @@ export const PGQuotaSystem = ({ items: fromCms }: { items?: PgQuota[] | null } =
           </p>
           <button
             onClick={() => CTA.call()}
-            className="inline-flex items-center gap-1.5 px-4 py-2 md:px-5 md:py-2.5 rounded-full bg-gradient-to-r from-cyan-500 to-teal-600 text-white text-[10px] md:text-xs font-black uppercase tracking-wider hover:shadow-lg hover:shadow-cyan-500/25 transition-all flex-shrink-0"
+            className="inline-flex items-center gap-1.5 px-4 py-2 md:px-5 md:py-2.5 rounded-full bg-gradient-to-r from-cyan-500 to-teal-600 text-white text-[13px] md:text-xs font-black uppercase tracking-wider hover:shadow-lg hover:shadow-cyan-500/25 transition-all flex-shrink-0"
           >
             <Phone className="w-3.5 h-3.5 md:w-4 md:h-4" />
             Call Us Now

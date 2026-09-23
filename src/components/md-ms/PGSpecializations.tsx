@@ -162,7 +162,7 @@ export const PGSpecializations = () => {
                       <IconComponent className="w-3.5 h-3.5 md:w-4 h-4 text-white" />
                     </div>
                     <div className="w-full min-w-0">
-                      <p className="font-black text-[11px] sm:text-xs md:text-sm text-slate-900 dark:text-white leading-tight break-words">{item.name}</p>
+                      <p className="font-black text-[13px] sm:text-xs md:text-sm text-slate-900 dark:text-white leading-tight break-words">{item.name}</p>
                       <p className="text-[8px] md:text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider mt-0.5">
                         {item.duration}
                       </p>
@@ -186,7 +186,7 @@ export const PGSpecializations = () => {
           </p>
           <button
             onClick={() => CTA.whatsapp("Hi, I need help choosing the right PG specialization for my rank.")}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white text-[10px] md:text-xs font-black uppercase tracking-wider hover:shadow-lg transition-all flex-shrink-0"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white text-[13px] md:text-xs font-black uppercase tracking-wider hover:shadow-lg transition-all flex-shrink-0"
           >
             <WhatsAppIcon className="w-3.5 h-3.5" />
             Ask on WhatsApp

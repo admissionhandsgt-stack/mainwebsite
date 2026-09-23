@@ -191,13 +191,13 @@ const NeetUgProcessClient = ({ heroImageUrl, examImageUrl, collegeImageUrl }: Ne
                 <div className="mb-1.5 md:mb-3 text-rose-500 dark:text-rose-400 group-hover:scale-110 transition-transform">
                   <AlertTriangle className="h-4 w-4 md:h-6 md:w-6" />
                 </div>
-                <h4 className="font-extrabold text-slate-900 dark:text-rose-100 leading-tight text-[11px] sm:text-sm">{mistake}</h4>
+                <h4 className="font-extrabold text-slate-900 dark:text-rose-100 leading-tight text-[13px] sm:text-sm">{mistake}</h4>
               </div>
             ))}
           </div>
           <div className="mt-5 md:mt-8 p-3 md:p-4 bg-slate-900 dark:bg-slate-900/60 border border-slate-800/80 rounded-xl text-center">
             <p className="text-slate-300 text-xs md:text-sm font-medium">
-              <span className="text-rose-400 font-black uppercase tracking-widest mr-2 text-[10px] md:text-xs">Critical:</span> 
+              <span className="text-rose-400 font-black uppercase tracking-widest mr-2 text-[13px] md:text-xs">Critical:</span> 
               These mistakes often result in losing better colleges.
             </p>
           </div>
@@ -227,8 +227,8 @@ const NeetUgProcessClient = ({ heroImageUrl, examImageUrl, collegeImageUrl }: Ne
                 <div className="w-8 h-8 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-slate-50 dark:bg-slate-950/60 flex items-center justify-center text-primary dark:text-cyan-400 mb-2 md:mb-5 transition-colors group-hover:bg-primary group-hover:text-white dark:group-hover:bg-cyan-500 dark:group-hover:text-white mx-auto md:mx-0">
                   <feature.icon className="h-4 w-4 md:h-6 md:w-6" />
                 </div>
-                <h4 className="text-[11px] sm:text-base md:text-lg font-bold text-slate-900 dark:text-white mb-1 md:mb-2 leading-tight">{feature.title}</h4>
-                <p className="text-[9.5px] sm:text-xs text-slate-500 dark:text-slate-400 leading-normal md:leading-relaxed">{feature.desc}</p>
+                <h4 className="text-[13px] sm:text-base md:text-lg font-bold text-slate-900 dark:text-white mb-1 md:mb-2 leading-tight">{feature.title}</h4>
+                <p className="text-[12px] sm:text-xs text-slate-500 dark:text-slate-400 leading-normal md:leading-relaxed">{feature.desc}</p>
               </div>
             ))}
           </div>

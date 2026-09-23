@@ -79,7 +79,7 @@ export const CounsellingSystem = ({ data = mbbsData }: { data?: MbbsContent } = 
                       <div className="mt-3 md:mt-6 p-3 md:p-6 rounded-xl md:rounded-2xl bg-cyan-600/20 border border-cyan-500/30 flex gap-2 md:gap-4">
                         <Target className="w-4 h-4 md:w-5 md:h-5 text-cyan-400 shrink-0 mt-0.5" />
                         <div>
-                          <p className="text-[9px] md:text-xs font-black text-cyan-400 uppercase tracking-widest mb-0.5 md:mb-1">Goal Strategy</p>
+                          <p className="text-[12px] md:text-xs font-black text-cyan-400 uppercase tracking-widest mb-0.5 md:mb-1">Goal Strategy</p>
                           <p className="text-xs md:text-sm text-cyan-50 font-bold leading-relaxed">
                             {item.goalStrategy}
                           </p>
