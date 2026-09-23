@@ -72,6 +72,11 @@ say "Uploading release $RELEASE"
 ssh_ "mkdir -p $APP_DIR/releases/$RELEASE"
 scp -i "$KEY" -o BatchMode=yes -q .deploy.tgz "$HOST:$APP_DIR/releases/$RELEASE/"
 ssh_ "cd $APP_DIR/releases/$RELEASE && tar xzf .deploy.tgz && rm .deploy.tgz"
+
+# The service runs unprivileged, and Next writes its ISR cache inside the
+# release. Unpacked as root, every revalidation failed with EACCES and the
+# page fell back to rendering on each request.
+ssh_ "mkdir -p $APP_DIR/releases/$RELEASE/.next/cache && chown -R admissionhands:admissionhands $APP_DIR/releases/$RELEASE"
 rm -f .deploy.tgz
 
 # ------------------------------------------------------------------ switch
