@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logError } from "@/lib/logger";
 import { requireAdmin } from "@/lib/auth";
 import {
   getIntegration,
@@ -293,7 +294,7 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "Unknown action." }, { status: 400 });
     }
   } catch (error) {
-    console.error("[/api/admin/whatsapp]", error);
+    logError(error, { route: "/api/admin/whatsapp", request });
     return NextResponse.json({ error: "Something went wrong." }, { status: 500 });
   }
 }

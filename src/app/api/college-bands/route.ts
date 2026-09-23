@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logError } from "@/lib/logger";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
@@ -87,7 +88,7 @@ export async function GET(request: Request) {
       { headers: rateLimitHeaders(limit, LIMIT) },
     );
   } catch (error) {
-    console.error("[/api/college-bands]", error);
+    logError(error, { route: "/api/college-bands", request });
     return NextResponse.json({ error: "Could not read the cutoff data." }, { status: 500 });
   }
 }

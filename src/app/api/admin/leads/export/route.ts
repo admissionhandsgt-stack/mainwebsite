@@ -1,6 +1,7 @@
 import { requireAdmin } from "@/lib/auth";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
+import { logError } from "@/lib/logger";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -72,7 +73,7 @@ export async function GET() {
       },
     });
   } catch (error) {
-    console.error("[/api/admin/leads/export]", error);
+    logError(error, { route: "/api/admin/leads/export" });
     return Response.json({ error: "Could not build the export." }, { status: 500 });
   }
 }

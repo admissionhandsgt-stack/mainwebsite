@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logError } from "@/lib/logger";
 import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
@@ -134,7 +135,7 @@ export async function GET(request: Request) {
       intakes,
     });
   } catch (error) {
-    console.error("[/api/content/college-list]", error);
+    logError(error, { route: "/api/content/college-list", request });
     return NextResponse.json({ error: "Could not load colleges." }, { status: 500 });
   }
 }

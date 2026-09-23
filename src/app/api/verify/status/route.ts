@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logError } from "@/lib/logger";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { rateLimit, clientKey } from "@/lib/rateLimit";
@@ -96,7 +97,7 @@ export async function GET(request: Request) {
     if (user) response.cookies.set(sessionCookie(await startSession(user.id)));
     return response;
   } catch (error) {
-    console.error("[/api/verify/status]", error);
+    logError(error, { route: "/api/verify/status", request });
     return NextResponse.json({ error: "Could not check the verification." }, { status: 500 });
   }
 }

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logError } from "@/lib/logger";
 import { authenticate, createSession, destroySession, getSessionUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
@@ -65,7 +66,7 @@ export async function POST(request: Request) {
     attempts.delete(ip);
     return NextResponse.json({ user });
   } catch (error) {
-    console.error("[/api/admin/auth]", error);
+    logError(error, { route: "/api/admin/auth", request });
     return NextResponse.json({ error: "Could not sign you in. Try again." }, { status: 500 });
   }
 }

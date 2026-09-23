@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logError } from "@/lib/logger";
 import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
 import { hasAccess } from "@/lib/userAuth";
 import { getCollegeCutoffs } from "@/lib/collegeQueries";
@@ -46,7 +47,7 @@ export async function GET(request: Request) {
     const rows = await getCollegeCutoffs(slug, level);
     return NextResponse.json({ rows }, { headers: rateLimitHeaders(limit, LIMIT) });
   } catch (error) {
-    console.error("[/api/college-cutoffs]", error);
+    logError(error, { route: "/api/college-cutoffs", request });
     return NextResponse.json({ error: "Could not read the cutoff data." }, { status: 500 });
   }
 }

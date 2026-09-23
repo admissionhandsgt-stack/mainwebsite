@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logError } from "@/lib/logger";
 import { requireAdmin } from "@/lib/auth";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
@@ -100,7 +101,7 @@ export async function GET() {
       },
     });
   } catch (error) {
-    console.error("[/api/admin/dashboard]", error);
+    logError(error, { route: "/api/admin/dashboard" });
     return NextResponse.json({ error: "Could not load the dashboard." }, { status: 500 });
   }
 }

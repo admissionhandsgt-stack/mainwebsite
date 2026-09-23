@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logError } from "@/lib/logger";
 import { writeFile, mkdir } from "node:fs/promises";
 import path from "node:path";
 import { randomBytes } from "node:crypto";
@@ -70,7 +71,7 @@ export async function POST(request: Request) {
       bytes: buffer.length,
     });
   } catch (error) {
-    console.error("[/api/admin/upload]", error);
+    logError(error, { route: "/api/admin/upload", request });
     return NextResponse.json({ error: "Upload failed." }, { status: 500 });
   }
 }

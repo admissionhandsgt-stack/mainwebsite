@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logError } from "@/lib/logger";
 import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
 import { startAttempt, verifyEnabled } from "@/lib/waVerify";
 
@@ -66,7 +67,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(started, { headers: rateLimitHeaders(limit, LIMIT) });
   } catch (error) {
-    console.error("[/api/verify/start]", error);
+    logError(error, { route: "/api/verify/start", request });
     return NextResponse.json({ error: "Could not start verification." }, { status: 500 });
   }
 }

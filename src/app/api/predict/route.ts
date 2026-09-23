@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logError } from "@/lib/logger";
 import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
 import { PREVIEW_SEATS } from "@/lib/leadGate";
 import { hasAccess } from "@/lib/userAuth";
@@ -185,7 +186,7 @@ export async function GET(request: Request) {
       results: visible,
     });
   } catch (error) {
-    console.error("[/api/predict]", error);
+    logError(error, { route: "/api/predict", request });
     return NextResponse.json(
       { error: "Could not read the counselling data. Try again in a moment." },
       { status: 500 },

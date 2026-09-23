@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logError } from "@/lib/logger";
 import { resolveInbound, verifyWebhookSignature } from "@/lib/waVerify";
 
 export const dynamic = "force-dynamic";
@@ -48,7 +49,7 @@ export async function POST(request: Request) {
     // that retries on non-2xx would hammer us for every unrelated chat.
     return NextResponse.json({ ok: true, matched: result.matched });
   } catch (error) {
-    console.error("[/api/whatsapp/inbound]", error);
+    logError(error, { route: "/api/whatsapp/inbound", request });
     return NextResponse.json({ error: "Could not process the message." }, { status: 500 });
   }
 }

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logError } from "@/lib/logger";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
@@ -104,7 +105,7 @@ export async function POST(request: Request) {
     if (user) response.cookies.set(sessionCookie(await startSession(user.id)));
     return response;
   } catch (error) {
-    console.error("[/api/unlock]", error);
+    logError(error, { route: "/api/unlock", request });
     return NextResponse.json(
       { error: "Could not complete that just now. Please try again." },
       { status: 500 },
