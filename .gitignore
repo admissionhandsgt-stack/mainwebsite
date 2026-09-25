@@ -45,3 +45,6 @@ tests/**/*.webm
 
 # Local cleanup quarantine (review, then delete)
 .cleanup-quarantine/
+
+# Uploaded documents in local development. Never committed.
+.data/

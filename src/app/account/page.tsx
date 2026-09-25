@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ShieldCheck, Phone, Target, LogOut, Search, TrendingDown } from "lucide-react";
+import { ShieldCheck, Phone, Target, LogOut, Search, TrendingDown, FileText } from "lucide-react";
 import { currentUser } from "@/lib/userAuth";
 import PageHero from "@/components/ui/PageHero";
 import SignOutButton from "@/components/account/SignOutButton";
@@ -127,6 +127,21 @@ export default async function AccountPage() {
                   </span>
                   <span className="block text-[13px] text-muted-foreground">
                     Every college your rank reaches, in four bands — and what changed after round 1
+                  </span>
+                </span>
+              </Link>
+
+              <Link
+                href="/account/documents"
+                className="flex items-center gap-3 rounded-xl border border-border bg-surface-2 px-4 py-3.5 transition-colors hover:border-primary/40"
+              >
+                <FileText className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                <span className="flex-grow">
+                  <span className="block text-[15px] font-semibold text-foreground">
+                    Your counselling documents
+                  </span>
+                  <span className="block text-[13px] text-muted-foreground">
+                    Upload what reporting asks for, and see what is still missing
                   </span>
                 </span>
               </Link>

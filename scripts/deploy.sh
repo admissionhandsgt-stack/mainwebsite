@@ -77,6 +77,19 @@ ssh_ "cd $APP_DIR/releases/$RELEASE && tar xzf .deploy.tgz && rm .deploy.tgz"
 # release. Unpacked as root, every revalidation failed with EACCES and the
 # page fell back to rendering on each request.
 ssh_ "mkdir -p $APP_DIR/releases/$RELEASE/.next/cache && chown -R admissionhands:admissionhands $APP_DIR/releases/$RELEASE"
+
+# Uploaded files must outlive the release that received them.
+#
+# A release is a timestamped directory and `current` is a symlink to it, so
+# anything written inside the app disappears at the next deploy. That was
+# already true of every image an admin uploaded: the 43 files in
+# public/assets/images/uploads only survive because they are committed to git,
+# and anything added since the last commit was silently lost.
+#
+# The real store is $APP_DIR/uploads/images, outside the releases, and the
+# release gets a symlink to it. Student documents never go near public/ at all
+# — see DOCUMENT_STORE and src/lib/documents.ts.
+ssh_ "install -d -o admissionhands -g admissionhands -m 755 $APP_DIR/uploads/images       && install -d -o admissionhands -g admissionhands -m 700 $APP_DIR/uploads/documents       && if [ -d $APP_DIR/releases/$RELEASE/public/assets/images/uploads ] && [ ! -L $APP_DIR/releases/$RELEASE/public/assets/images/uploads ]; then            cp -an $APP_DIR/releases/$RELEASE/public/assets/images/uploads/. $APP_DIR/uploads/images/ 2>/dev/null || true;            rm -rf $APP_DIR/releases/$RELEASE/public/assets/images/uploads;          fi       && ln -sfn $APP_DIR/uploads/images $APP_DIR/releases/$RELEASE/public/assets/images/uploads       && chown -h admissionhands:admissionhands $APP_DIR/releases/$RELEASE/public/assets/images/uploads       && chown -R admissionhands:admissionhands $APP_DIR/uploads"
 rm -f .deploy.tgz
 
 # ------------------------------------------------------------------ switch
