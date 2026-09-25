@@ -28,34 +28,23 @@ interface HeroProps {
  * How the answers here are made — the hero's trust element.
  *
  * This replaced three counts ("1,687 MBBS colleges" against a real 834 that
- * teach MBBS), and then replaced the counts that were correct too.
- *
- * Volume is the weakest thing a counselling site can put in front of someone.
- * Every competitor claims a bigger database and a higher accuracy percentage,
- * none of it is checkable, and a visitor has learned nothing from reading it.
- * It also describes our warehouse rather than their problem.
- *
- * What cannot be copied is the method. Each line below is a commitment the
- * product actually keeps, and the second one is a commitment our competitors
- * cannot make at all, because they publish a forecast and we publish the
+ * teach MBBS), and then replaced the counts that were correct too. Volume is
+ * the weakest thing a counselling site can claim: every competitor claims a
+ * bigger database and a higher accuracy percentage, none of it is checkable,
+ * and it describes our warehouse rather than the visitor's problem. What
+ * cannot be copied is the method — and the middle one is a promise our
+ * competitors cannot make, because they sell a forecast and we publish the
  * authority's own result.
+ *
+ * Three words each, on one line. The first version of this gave every point a
+ * sentence of explanation, which pushed the hero past the fold and turned a
+ * signal into an essay. A hero has room for a mark of quality, not an
+ * argument for one; the argument belongs further down the page.
  */
 const ASSURANCES = [
-  {
-    icon: Landmark,
-    title: "Straight from the counselling authorities",
-    body: "MCC, the state authorities and the deemed universities — read from their own published results.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Published, never predicted",
-    body: "We show where the cut actually landed. We do not invent a cutoff and we do not sell a percentage.",
-  },
-  {
-    icon: Layers,
-    title: "Every round, not just the last one",
-    body: "A final round can close tighter than the second. Reading only the last one hides seats you could have had.",
-  },
+  { icon: Landmark, label: "From the authorities" },
+  { icon: ShieldCheck, label: "Published, not predicted" },
+  { icon: Layers, label: "Every round, not the last" },
 ];
 
 const DEFAULTS: Required<Omit<HeroCopy, "stats">> = {
@@ -168,35 +157,25 @@ export default function Hero({ backgroundImageUrl, doctorsImageUrl, copy }: Hero
           </motion.div>
 
           {/* ---------------------- how this is made ---------------------- */}
-          <motion.div
+          <motion.ul
             variants={item}
-            className="mt-8 max-w-xl mx-auto lg:mx-0 overflow-hidden rounded-2xl border border-border/80 bg-card/70 backdrop-blur-sm shadow-lift"
+            aria-label="How every answer here is made"
+            className="mt-8 flex flex-wrap justify-center gap-x-2 gap-y-2 lg:justify-start"
           >
-            <p className="flex items-center gap-2.5 border-b border-border/70 bg-primary-soft/60 px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.16em] text-primary-strong dark:text-primary">
-              <Sparkles className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-              How every answer here is made
-            </p>
-
-            <ul className="divide-y divide-border/70">
-              {ASSURANCES.map(({ icon: Icon, title, body }) => (
-                // `text-left` because the hero centres everything on a phone,
-                // and a centred body line under a heading reads as a poem.
-                <li key={title} className="flex gap-3.5 px-4 py-3.5 text-left">
-                  <span className="mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-soft text-primary">
-                    <Icon className="h-4 w-4" aria-hidden="true" />
-                  </span>
-                  <span className="min-w-0">
-                    <span className="block text-[14px] font-bold leading-snug text-foreground">
-                      {title}
-                    </span>
-                    <span className="mt-0.5 block text-[12.5px] leading-relaxed text-muted-foreground">
-                      {body}
-                    </span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
+            {ASSURANCES.map(({ icon: Icon, label }) => (
+              <li
+                key={label}
+                className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-card/70 py-2 pl-2 pr-3.5 shadow-sm backdrop-blur-sm"
+              >
+                <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary">
+                  <Icon className="h-3.5 w-3.5" aria-hidden="true" />
+                </span>
+                <span className="text-[12.5px] font-bold tracking-tight text-foreground">
+                  {label}
+                </span>
+              </li>
+            ))}
+          </motion.ul>
         </motion.div>
 
         {/* ---------------- Right: the people, and the way in ---------------- */}
