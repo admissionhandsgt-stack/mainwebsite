@@ -57,12 +57,26 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   // `collegePlace` drops a place already in the name, which was producing
   // "SMS Medical College, Jaipur, Jaipur, Rajasthan" on every such page.
   const where = collegePlace(college);
+  // No brand suffix: the college's own name is what is being searched, and
+  // "| AdmissionHands" was pushing these past the ~60 characters Google shows.
+  const title = `${college.name} — MD/MS Cutoff & Fees 2026`;
+  const description = `Closing ranks, fee structure, stipend and seat matrix for ${college.name}${
+    where ? `, ${where}` : ""
+  }. ${college.seatsTotal ?? ""} PG seats across ${college.branchCount ?? ""} branches, from published counselling data.`;
+
   return {
-    title: `${college.name} — MD/MS Cutoff, Fees & Seats 2026 | AdmissionHands`,
-    description: `Closing ranks, fee structure, stipend and seat matrix for ${college.name}${
-      where ? `, ${where}` : ""
-    }. ${college.seatsTotal ?? ""} PG seats across ${college.branchCount ?? ""} branches, from published counselling data.`,
+    title,
+    description,
     alternates: { canonical: `/md-ms-india/colleges/${college.slug}` },
+    // These links get shared into WhatsApp groups constantly, and without
+    // these tags they unfurl as a bare URL.
+    openGraph: {
+      title,
+      description,
+      url: `/md-ms-india/colleges/${college.slug}`,
+      type: "article",
+      images: ["/assets/images/logos/logo-4k.avif"],
+    },
   };
 }
 

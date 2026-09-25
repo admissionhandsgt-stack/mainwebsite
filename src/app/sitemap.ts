@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { unstable_cache } from "next/cache";
+import { getBranches } from "@/lib/branchQueries";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 
@@ -31,6 +32,7 @@ const STATIC: { path: string; priority: number; freq: MetadataRoute.Sitemap[numb
   { path: "/mbbs-india/deemed-universities", priority: 0.7, freq: "monthly" },
   { path: "/md-ms-india", priority: 0.9, freq: "weekly" },
   { path: "/md-ms-india/colleges", priority: 0.8, freq: "weekly" },
+  { path: "/md-ms-india/branches", priority: 0.8, freq: "weekly" },
   { path: "/nri-quota", priority: 0.7, freq: "monthly" },
   { path: "/nri-quota/colleges", priority: 0.6, freq: "monthly" },
   { path: "/nri-quota/documents", priority: 0.6, freq: "monthly" },
@@ -130,6 +132,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.6,
     });
+  }
+
+  // One page per PG branch. These target the branch-level queries — "MD
+  // Radiology cutoff", "rank required for MD Dermatology" — which the site
+  // could not answer at all before, despite holding the data.
+  try {
+    for (const b of await getBranches()) {
+      entries.push({
+        url: `${BASE}/md-ms-india/branches/${b.slug}`,
+        lastModified: now,
+        changeFrequency: "monthly",
+        priority: 0.7,
+      });
+    }
+  } catch (error) {
+    console.error("[sitemap] branches could not be listed", error);
   }
 
   for (const c of colleges) {

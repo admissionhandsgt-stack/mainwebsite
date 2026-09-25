@@ -16,7 +16,7 @@
 import { chromium } from "playwright";
 import { writeFileSync } from "node:fs";
 
-const BASE = (process.argv[2] || "https://admissionhands.com").replace(/\/+$/, "");
+const BASE = (process.argv[2] || "https://www.admissionhands.com").replace(/\/+$/, "");
 const jsonAt = process.argv.indexOf("--json");
 const JSON_OUT = jsonAt > -1 ? process.argv[jsonAt + 1] : null;
 
@@ -31,6 +31,9 @@ const ROUTES = [
   "/mbbs-india/deemed-universities",
   "/md-ms-india",
   "/md-ms-india/colleges",
+  "/md-ms-india/branches",
+  "/md-ms-india/branches/md-radio-diagnosis",
+  "/md-ms-india/colleges/sms-medical-college-jaipur",
   "/nri-quota",
   "/nri-quota/colleges",
   "/nri-quota/documents",

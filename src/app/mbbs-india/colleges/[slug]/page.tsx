@@ -60,10 +60,14 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   if (!college) return { title: "College not found | AdmissionHands" };
 
   const extras = await getUgCollegeExtras(params.slug);
-  const where = [extras?.city, college.state].filter(Boolean).join(", ");
+  // `collegePlace` drops a place already in the name, so these stop reading
+  // "Government Medical College, Kottayam, Kottayam, Kerala".
+  const where = collegePlace({ ...college, city: extras?.city ?? college.city });
 
   return {
-    title: `${college.name} — MBBS Cutoff, Fees & Seats 2026 | AdmissionHands`,
+    // No brand suffix: the college's own name is what is searched, and the
+    // suffix pushed these past the ~60 characters Google shows.
+    title: `${college.name} — MBBS Cutoff & Fees 2026`,
     description:
       `NEET UG closing ranks, fees and seat details for ${college.name}` +
       `${where ? `, ${where}` : ""}. Published counselling data, round by round.`,
@@ -72,7 +76,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       title: `${college.name} — MBBS Cutoff & Fees`,
       description: `NEET UG closing ranks and fees for ${college.name}, from published counselling data.`,
       url: `/mbbs-india/colleges/${college.slug}`,
-      type: "website",
+      type: "article",
+      images: ["/assets/images/logos/logo-4k.avif"],
     },
   };
 }
