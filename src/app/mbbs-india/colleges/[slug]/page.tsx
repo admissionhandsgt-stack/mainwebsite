@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { collegeFaqs, collegeJsonLd, collegePlace } from "@/lib/collegeSeo";
+import CollegeFaq from "@/components/colleges/CollegeFaq";
 import Link from "next/link";
 import Image from "next/image";
 import { GraduationCap, Landmark, MapPin, Banknote, Users } from "lucide-react";
@@ -105,20 +107,11 @@ export default async function UgCollegePage({ params }: { params: { slug: string
     null,
   );
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "CollegeOrUniversity",
-    name: college.name,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: extras?.city ?? undefined,
-      addressRegion: college.state ?? undefined,
-      addressCountry: "IN",
-    },
-    foundingDate: college.establishedYear ? String(college.establishedYear) : undefined,
-    parentOrganization: extras?.universityName ?? undefined,
-    url: `https://www.admissionhands.com/mbbs-india/colleges/${college.slug}`,
-  };
+  // Answered from this college's own numbers, and rendered on the page as
+  // well as in the markup — see the note in `lib/collegeSeo.ts` about what
+  // FAQ schema does and does not buy since Google restricted it.
+  const faqs = collegeFaqs(college, cutoffs, fees, "ug");
+  const jsonLd = collegeJsonLd({ college, level: "ug", faqs });
 
   const facts = [
     { icon: MapPin, label: "Location", value: where || "—" },
@@ -129,7 +122,13 @@ export default async function UgCollegePage({ params }: { params: { slug: string
 
   return (
     <main className="min-h-screen bg-background">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {jsonLd.map((schema, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
 
       {/* ---------------- header ---------------- */}
       <header className="relative overflow-hidden border-b border-border">
@@ -274,6 +273,8 @@ export default async function UgCollegePage({ params }: { params: { slug: string
             </div>
           </section>
         )}
+
+        <CollegeFaq faqs={faqs} />
       </div>
 
       <CtaBand

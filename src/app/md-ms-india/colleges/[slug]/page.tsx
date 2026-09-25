@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { collegeFaqs, collegeJsonLd, collegePlace } from "@/lib/collegeSeo";
+import CollegeFaq from "@/components/colleges/CollegeFaq";
 import Link from "next/link";
 import Image from "next/image";
 import { BedDouble, GraduationCap, Landmark, MapPin, Banknote, TrendingUp, TrendingDown } from "lucide-react";
@@ -52,7 +54,9 @@ const num = (n: number | null) => (n == null ? "—" : n.toLocaleString("en-IN")
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const college = await getCollege(params.slug, "pg");
   if (!college) return { title: "College not found | AdmissionHands" };
-  const where = [college.district, college.state].filter(Boolean).join(", ");
+  // `collegePlace` drops a place already in the name, which was producing
+  // "SMS Medical College, Jaipur, Jaipur, Rajasthan" on every such page.
+  const where = collegePlace(college);
   return {
     title: `${college.name} — MD/MS Cutoff, Fees & Seats 2026 | AdmissionHands`,
     description: `Closing ranks, fee structure, stipend and seat matrix for ${college.name}${
@@ -72,7 +76,7 @@ export default async function CollegePage({ params }: { params: { slug: string }
     getSimilarColleges(params.slug, "pg"),
   ]);
 
-  const where = [college.district, college.state].filter(Boolean).join(", ");
+  const where = collegePlace(college);
   const bestRank = cutoffs.reduce<number | null>(
     (m, c) => (c.r1Latest != null && (m == null || c.r1Latest < m) ? c.r1Latest : m),
     null,
@@ -90,24 +94,21 @@ export default async function CollegePage({ params }: { params: { slug: string }
   const threeYearNet =
     minFee != null && maxStipend != null ? maxStipend * 36 - minFee * 3 : null;
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "CollegeOrUniversity",
-    name: college.name,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: college.district ?? college.city ?? undefined,
-      addressRegion: college.state ?? undefined,
-      addressCountry: "IN",
-    },
-    foundingDate: college.establishedYear ? String(college.establishedYear) : undefined,
-    parentOrganization: college.university ?? undefined,
-    url: `https://www.admissionhands.com/md-ms-india/colleges/${college.slug}`,
-  };
+  // Answered from this college's own numbers, and rendered on the page as
+  // well as in the markup — see the note in `lib/collegeSeo.ts` about what
+  // FAQ schema does and does not buy since Google restricted it.
+  const faqs = collegeFaqs(college, cutoffs, fees, "pg");
+  const jsonLd = collegeJsonLd({ college, level: "pg", faqs });
 
   return (
     <main className="min-h-screen bg-background">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {jsonLd.map((schema, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
 
       {/* ---------------- Hero ---------------- */}
       <section className="relative overflow-hidden bg-slate-950">
@@ -294,6 +295,8 @@ export default async function CollegePage({ params }: { params: { slug: string }
             )}
           </aside>
         </div>
+
+        <CollegeFaq faqs={faqs} />
       </div>
 
       <CtaBand
