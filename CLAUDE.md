@@ -652,6 +652,51 @@ animation that escapes that block.
 - `POST /api/leads` is `force-dynamic`, rate-limits 5 req/min per IP in memory, and fires a WhatsApp notification.
   The in-memory limiter is per-isolate — it is not a real distributed limit.
 
+## The candidate document vault (2026-09-25)
+
+Counselling asks for fourteen documents at reporting. They used to arrive over WhatsApp, mixed into
+chat history, where nobody could tell whose set was complete. Now a signed-in candidate fills a
+checklist at `/account/documents`, and `/admin/documents` shows them **grouped by person** — staff
+are answering "can this one report?", which a flat list of everybody's files cannot answer.
+`/admin/dashboard` carries the to-check count.
+
+**The bytes are a `bytea` column, not a file** (migration `0015`). The first version wrote to
+`/opt/admissionhands/uploads/documents`, which was covered by no backup at all — so a lost disk meant
+every candidate's certificates were gone while the rows describing them survived. `pg-backup.timer`
+already dumps this database nightly, so one store means one backup, and it is the one that already
+exists and is already tested.
+
+Three things fall out of that and each was a thing to get wrong: a row and its file can no longer
+disagree (no orphan holding an identity document with nothing to say whose); there is no path, so
+nothing to traverse and no filename to sanitise into one; and deploys stop mattering, which for a
+release-directory layout is a hazard somebody has to remember every time they add a write.
+
+The cost is size — a few GB per thousand candidates in the nightly dump. Deliberate: a slower backup
+is a problem you can see coming, an unbacked-up directory is one you find out about once.
+
+- **Access control is `/api/documents/[id]`** and nothing else. Exactly two parties can read a
+  document: the candidate it belongs to, and signed-in staff. Anyone else gets **404, not 403** —
+  a 403 confirms it exists. Ownership is checked *before* `content` is selected, so a stranger's
+  request never pulls 15 MB out of the database.
+- Served `Content-Disposition: attachment` with `default-src 'none'; sandbox`. Rendering an upload
+  inline would run script inside a mislabelled file in our own origin against a signed-in session.
+- **Format comes from magic bytes**, never the filename or the declared type — both are supplied by
+  whoever is uploading. A `.docx` is the one exception: every Office file and every zip share a
+  header, so the declared type is consulted to tell them apart. It can only narrow, never widen.
+- `content` is **never selected by the list endpoints**. Postgres leaves a TOASTed column alone
+  unless asked for, so listing stays cheap however large the files are.
+- `src/lib/documentCatalogue.ts` holds the fourteen types and has **no imports**, because both the
+  student and admin screens are client components — `documents.ts` is server-only.
+
+**Google Drive was built and then removed.** It mirrored each candidate into a named folder, and it
+brought a Google Cloud project, an OAuth consent screen, a refresh token that expires silently if the
+screen is left in Testing, and a second copy of every identity document somewhere with its own
+sharing rules. One copy, one backup, one permission model was the better trade. If it is ever wanted
+again, the commit is in the history — the reason it went is not that it did not work.
+
+Verified by `node scripts/verify_documents.mjs <url>`: 19 checks, most of them about who *cannot*
+read a document.
+
 ## Checking the work (2026-09-23)
 
 Three suites, all runnable against production:
@@ -661,6 +706,7 @@ Three suites, all runnable against production:
 | `scripts/smoke.mjs` | 57 black-box checks — routes answer, the gate holds, removed pages redirect, no claim we cannot back, the sitemap is real |
 | `scripts/audit_site.mjs` | Renders every route in Chromium at 390px and 1440px: headings, labels, tap targets, text sizes, metadata, broken images and links, console errors |
 | `scripts/verify_auth_flow.mjs` | Sends a **real** code to our own gateway number, reads it back out of the gateway, redeems it, sets a password, signs in again on the password alone — then deletes its own rows |
+| `scripts/verify_documents.mjs` | Uploads as one candidate and proves another candidate, an anonymous caller and three guessed URLs all fail to reach it; that magic bytes beat the filename; and that deleting the account takes the documents with it |
 
 **Two traps the audit harness fell into first, both worth remembering:**
 

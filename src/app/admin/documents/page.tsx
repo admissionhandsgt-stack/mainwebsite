@@ -1,5 +1,4 @@
 import DocumentsClient from "./DocumentsClient";
-import DrivePanel from "./DrivePanel";
 
 export const dynamic = "force-dynamic";
 
@@ -10,11 +9,7 @@ export const dynamic = "force-dynamic";
  * could tell whose set was complete without scrolling back through a
  * conversation. This is the same documents, in one place, with a state on each.
  */
-export default function AdminDocumentsPage({
-  searchParams,
-}: {
-  searchParams: { drive?: string };
-}) {
+export default function AdminDocumentsPage() {
   return (
     <div className="max-w-5xl space-y-6">
       <div>
@@ -26,14 +21,13 @@ export default function AdminDocumentsPage({
         </p>
       </div>
 
-      <DrivePanel flash={searchParams.drive} />
-
       <DocumentsClient />
 
       <p className="max-w-[70ch] rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-[13px] leading-relaxed text-amber-900">
-        These are identity documents. They are stored outside the public web root and can only be
-        opened by the candidate or by a signed-in member of staff — there is no shareable link.
-        Download them only when you need them, and delete local copies afterwards.
+        These are identity documents. They are held in our own database, backed up with everything
+        else, and can only be opened by the candidate or by a signed-in member of staff — there is no
+        shareable link and no copy anywhere else. Download one only when you need it, and delete the
+        local copy afterwards.
       </p>
     </div>
   );

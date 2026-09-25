@@ -1,12 +1,9 @@
 import { NextResponse } from "next/server";
-import { readFile } from "node:fs/promises";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { logError } from "@/lib/logger";
 import { userFromRequest } from "@/lib/userAuth";
 import { getSessionUser } from "@/lib/auth";
-import { resolveStoredPath, removeStoredFile } from "@/lib/documents";
-import { deleteFile } from "@/lib/googleDrive";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -14,31 +11,15 @@ export const runtime = "nodejs";
 /**
  * One document: fetch the bytes, or delete it.
  *
- * **This route is the access control.** The files sit outside the web root, so
- * there is no URL that reaches them without passing through here, and here the
- * answer to "may you have this?" is exactly two people: the student it belongs
- * to, and a signed-in member of staff.
+ * **This route is the access control.** The bytes are a column in Postgres, so
+ * there is no file to reach by any other means, and here the answer to "may you
+ * have this?" is exactly two people: the student it belongs to, and a signed-in
+ * member of staff.
  *
  * Both checks run against session cookies. Nothing is decided by a parameter
  * the caller supplies — an id that is not yours simply 404s, so the endpoint
  * cannot be used to discover that a document exists.
  */
-
-interface Row {
-  id: number;
-  user_id: number;
-  stored_name: string;
-  original_name: string;
-  mime_type: string;
-}
-
-async function load(id: number): Promise<Row | null> {
-  const rows = (await db.execute(sql`
-    SELECT id, user_id, stored_name, original_name, mime_type
-      FROM student_documents WHERE id = ${id} LIMIT 1
-  `)) as unknown as Row[];
-  return rows[0] ?? null;
-}
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   const id = Number(params.id);
@@ -47,7 +28,14 @@ export async function GET(request: Request, { params }: { params: { id: string }
   }
 
   try {
-    const row = await load(id);
+    // Ownership is settled before the bytes are asked for, so a stranger's
+    // request never reads a 15 MB column out of the database.
+    const meta = (await db.execute(sql`
+      SELECT user_id, original_name, mime_type
+        FROM student_documents WHERE id = ${id} LIMIT 1
+    `)) as unknown as { user_id: number; original_name: string; mime_type: string }[];
+
+    const row = meta[0];
     if (!row) return NextResponse.json({ error: "Not found." }, { status: 404 });
 
     const [student, admin] = await Promise.all([userFromRequest(request), getSessionUser()]);
@@ -57,10 +45,14 @@ export async function GET(request: Request, { params }: { params: { id: string }
       return NextResponse.json({ error: "Not found." }, { status: 404 });
     }
 
-    const full = resolveStoredPath(row.stored_name);
-    if (!full) return NextResponse.json({ error: "Not found." }, { status: 404 });
+    const data = (await db.execute(sql`
+      SELECT content FROM student_documents WHERE id = ${id} LIMIT 1
+    `)) as unknown as { content: Buffer }[];
 
-    const bytes = await readFile(full);
+    const content = data[0]?.content;
+    if (!content) return NextResponse.json({ error: "Not found." }, { status: 404 });
+
+    const bytes = Buffer.isBuffer(content) ? content : Buffer.from(content);
 
     // `attachment` on purpose. Rendering an uploaded file inline would run any
     // script inside an SVG or an HTML file mislabelled as something else, in
@@ -89,6 +81,9 @@ export async function GET(request: Request, { params }: { params: { id: string }
  * Only the student who uploaded it, and only while it is still theirs to
  * change. Once staff have marked it verified it is part of a record, so
  * replacing it is an upload, not a deletion.
+ *
+ * One statement, and the bytes go with the row — "remove" means removed, with
+ * no second copy anywhere to forget about.
  */
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
   const id = Number(params.id);
@@ -103,19 +98,12 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
     const rows = (await db.execute(sql`
       DELETE FROM student_documents
        WHERE id = ${id} AND user_id = ${user.id} AND status <> 'verified'
-      RETURNING stored_name, drive_file_id
-    `)) as unknown as { stored_name: string; drive_file_id: string | null }[];
+      RETURNING id
+    `)) as unknown as { id: number }[];
 
     if (rows.length === 0) {
       return NextResponse.json({ error: "Not found." }, { status: 404 });
     }
-
-    // The row is the record; the file is the data. Row first, so a failure
-    // here leaves an orphaned file rather than a row pointing at nothing.
-    await removeStoredFile(rows[0].stored_name);
-    // And the mirror, so "remove" does not leave a copy in Drive that the
-    // student believes they deleted.
-    if (rows[0].drive_file_id) deleteFile(rows[0].drive_file_id).catch(() => {});
     return NextResponse.json({ ok: true });
   } catch (error) {
     logError(error, { route: "/api/documents/[id]:DELETE", request });

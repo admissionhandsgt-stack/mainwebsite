@@ -49,8 +49,6 @@ export default function DocumentsClient() {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState<number | null>(null);
   const [saving, setSaving] = useState<number | null>(null);
-  const [sweep, setSweep] = useState<{ orphans: number; bytes: number } | null>(null);
-  const [sweeping, setSweeping] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -68,24 +66,7 @@ export default function DocumentsClient() {
 
   useEffect(() => {
     load();
-    // Files with no row left: somebody's document with nothing saying whose.
-    fetch("/api/admin/documents/sweep")
-      .then((r) => (r.ok ? r.json() : null))
-      .then((j) => j && j.orphans > 0 && setSweep({ orphans: j.orphans, bytes: j.bytes }))
-      .catch(() => {});
   }, [load]);
-
-  const runSweep = async () => {
-    setSweeping(true);
-    try {
-      const res = await fetch("/api/admin/documents/sweep", { method: "POST" });
-      const json = await res.json();
-      if (res.ok) setSweep(null);
-      else alert(json.error ?? "Could not clean up.");
-    } finally {
-      setSweeping(false);
-    }
-  };
 
   const review = async (doc: Doc, status: Doc["status"], note?: string) => {
     setSaving(doc.id);
@@ -142,24 +123,6 @@ export default function DocumentsClient() {
           className="h-11 w-full rounded-xl border border-gray-200 bg-white pl-9 pr-3 text-sm outline-none focus:border-cyan-500"
         />
       </div>
-
-      {sweep && (
-        <div className="flex flex-wrap items-center gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
-          <span className="flex-grow text-[13px] leading-relaxed text-amber-900">
-            <strong>{sweep.orphans} file(s)</strong> on disk belong to no candidate — usually an
-            account that was deleted. They are somebody&rsquo;s documents with nothing left to say
-            whose, so they should not be kept.
-          </span>
-          <button
-            onClick={runSweep}
-            disabled={sweeping}
-            className="inline-flex h-10 shrink-0 items-center gap-2 rounded-lg bg-amber-600 px-4 text-[13px] font-bold text-white hover:bg-amber-700 disabled:opacity-50"
-          >
-            {sweeping && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-            Delete them
-          </button>
-        </div>
-      )}
 
       {filtered.length === 0 ? (
         <div className="rounded-2xl border border-gray-200 bg-white p-10 text-center">

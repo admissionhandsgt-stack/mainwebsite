@@ -21,6 +21,9 @@ interface Lead {
 }
 
 interface Dashboard {
+  documents: {
+    total: number; candidates: number; pending: number; week: number; bytes: number;
+  };
   leads: {
     total: number; unread: number; today: number; week: number;
     recent: Lead[];
@@ -136,6 +139,57 @@ export default function AdminDashboard() {
             { label: "Leads today", value: data.leads.today },
             { label: "Last 7 days", value: data.leads.week },
             { label: "All time", value: data.leads.total },
+          ].map((s) => (
+            <div key={s.label} className="rounded-2xl border border-slate-200 bg-white p-5">
+              <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">{s.label}</div>
+              <div className="mt-2 text-3xl font-extrabold text-slate-900">{n(s.value)}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Candidate documents — the other thing a candidate sends us */}
+      <section>
+        <div className="mb-3 flex items-baseline justify-between gap-3">
+          <h2 className="text-sm font-bold text-slate-900">Candidate documents</h2>
+          <Link href="/admin/documents" className="text-sm font-semibold text-cyan-700">
+            Open documents &rarr;
+          </Link>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <Link
+            href="/admin/documents"
+            className={`rounded-2xl border p-5 transition-colors ${
+              data.documents.pending > 0
+                ? "border-amber-300 bg-amber-50 hover:border-amber-400"
+                : "border-slate-200 bg-white hover:border-cyan-300"
+            }`}
+          >
+            <div className="flex items-center gap-2 text-slate-500">
+              <FileText className="h-4 w-4" />
+              <span className="text-xs font-semibold uppercase tracking-wide">To check</span>
+            </div>
+            <div
+              className={`mt-2 text-3xl font-extrabold ${
+                data.documents.pending > 0 ? "text-amber-700" : "text-slate-900"
+              }`}
+            >
+              {n(data.documents.pending)}
+            </div>
+            <div className="mt-1 text-xs text-slate-500">
+              {data.documents.pending > 0
+                ? "Uploaded and not yet reviewed"
+                : data.documents.total > 0
+                  ? "Everything has been checked"
+                  : "Nothing uploaded yet"}
+            </div>
+          </Link>
+
+          {[
+            { label: "Candidates", value: data.documents.candidates },
+            { label: "Last 7 days", value: data.documents.week },
+            { label: "Documents held", value: data.documents.total },
           ].map((s) => (
             <div key={s.label} className="rounded-2xl border border-slate-200 bg-white p-5">
               <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">{s.label}</div>

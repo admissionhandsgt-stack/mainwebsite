@@ -63,6 +63,21 @@ export async function GET() {
       `),
     ]);
 
+    // Candidate documents: how many people have started, and how much is
+    // waiting for somebody to check it. Counted separately because the
+    // dashboard's big Promise.all was already at its readable limit.
+    const docs = (await db.execute(sql`
+      SELECT
+        COUNT(*)::int                                            AS total,
+        COUNT(DISTINCT user_id)::int                             AS candidates,
+        COUNT(*) FILTER (WHERE status = 'uploaded')::int          AS pending,
+        COUNT(*) FILTER (WHERE uploaded_at >= now() - interval '7 days')::int AS week,
+        COALESCE(SUM(size_bytes), 0)::bigint                      AS bytes
+      FROM student_documents
+    `)) as unknown as {
+      total: number; candidates: number; pending: number; week: number; bytes: string;
+    }[];
+
     // UG counselling data is not loaded yet; surfacing it here means nobody
     // has to wonder why the UG predictor looks empty.
     const ugRanks = one(
@@ -70,6 +85,13 @@ export async function GET() {
     );
 
     return NextResponse.json({
+      documents: {
+        total: docs[0]?.total ?? 0,
+        candidates: docs[0]?.candidates ?? 0,
+        pending: docs[0]?.pending ?? 0,
+        week: docs[0]?.week ?? 0,
+        bytes: Number(docs[0]?.bytes ?? 0),
+      },
       leads: {
         total: one(leadsTotal),
         unread: one(leadsUnread),

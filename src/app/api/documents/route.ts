@@ -1,23 +1,12 @@
 import { NextResponse } from "next/server";
-import { writeFile } from "node:fs/promises";
-import path from "node:path";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { logError } from "@/lib/logger";
 import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
 import { userFromRequest } from "@/lib/userAuth";
 import { documentType } from "@/lib/documentCatalogue";
-import {
-  MAX_BYTES,
-  ACCEPTED_LABEL,
-  detectFormat,
-  ensureStore,
-  generateStoredName,
-  removeStoredFile,
-  safeDisplayName,
-} from "@/lib/documents";
+import { MAX_BYTES, ACCEPTED_LABEL, detectFormat, safeDisplayName } from "@/lib/documents";
 import { notifyDocumentUpload } from "@/lib/documentNotify";
-import { syncDocument } from "@/lib/driveSync";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -32,6 +21,14 @@ export const runtime = "nodejs";
  * Both require a session, and both are scoped to that session's user. There is
  * no `userId` parameter anywhere on this route: the only way to read or write
  * somebody's documents is to hold their cookie.
+ *
+ * The bytes go in the row (migration `0015`), so an upload is one statement.
+ * There is no window in which a file and a row can disagree, and nothing to
+ * clean up if the process stops midway.
+ *
+ * **`content` is never selected here.** Listing fourteen documents does not
+ * need their contents, and Postgres leaves a TOASTed column alone unless it is
+ * asked for — so the list stays cheap however large the files are.
  */
 
 /** Fourteen documents, plus retries and corrections. */
@@ -113,39 +110,19 @@ export async function POST(request: Request) {
     );
   }
 
-  const storedName = generateStoredName(format.ext);
-
   try {
-    const dir = await ensureStore();
-    // Written before the row exists, so a row never points at a missing file.
-    // The reverse — a file with no row — is recoverable; a broken row is not.
-    await writeFile(path.join(dir, storedName), buffer, { mode: 0o600 });
-  } catch (error) {
-    logError(error, { route: "/api/documents:write", request });
-    return NextResponse.json({ error: "Could not save that file." }, { status: 500 });
-  }
-
-  try {
-    // Replacing: the previous file is unlinked after the row is repointed, so
-    // a failure here leaves the old document intact rather than neither.
-    const previous = (await db.execute(sql`
-      SELECT stored_name FROM student_documents
-       WHERE user_id = ${user.id} AND doc_type = ${docType}
-       LIMIT 1
-    `)) as unknown as { stored_name: string }[];
-
     const rows = (await db.execute(sql`
       INSERT INTO student_documents
-        (user_id, doc_type, original_name, stored_name, mime_type, size_bytes)
+        (user_id, doc_type, original_name, mime_type, size_bytes, content)
       VALUES (
-        ${user.id}, ${docType}, ${safeDisplayName(file.name)}, ${storedName},
-        ${format.mime}, ${buffer.length}
+        ${user.id}, ${docType}, ${safeDisplayName(file.name)},
+        ${format.mime}, ${buffer.length}, ${buffer}
       )
       ON CONFLICT (user_id, doc_type) DO UPDATE SET
         original_name = EXCLUDED.original_name,
-        stored_name   = EXCLUDED.stored_name,
         mime_type     = EXCLUDED.mime_type,
         size_bytes    = EXCLUDED.size_bytes,
+        content       = EXCLUDED.content,
         -- A replacement has not been reviewed, whatever the old one was.
         status        = 'uploaded',
         admin_note    = NULL,
@@ -153,15 +130,6 @@ export async function POST(request: Request) {
         uploaded_at   = now()
       RETURNING id, uploaded_at
     `)) as unknown as { id: number; uploaded_at: string }[];
-
-    if (previous[0]?.stored_name && previous[0].stored_name !== storedName) {
-      await removeStoredFile(previous[0].stored_name);
-    }
-
-    // Mirrored into the team's Drive folder for this candidate. Fire and
-    // forget, and it swallows its own failures: the document is already saved
-    // and already served, so a Drive outage is our problem, not the student's.
-    if (rows[0]?.id) syncDocument(rows[0].id as number).catch(() => {});
 
     // The team hears about it without anyone watching a screen. Fire and
     // forget: an alerting outage must not fail the upload.
@@ -189,8 +157,6 @@ export async function POST(request: Request) {
       { headers: rateLimitHeaders(limit, LIMIT) },
     );
   } catch (error) {
-    // The row failed, so the file we just wrote is an orphan. Remove it.
-    await removeStoredFile(storedName);
     logError(error, { route: "/api/documents:POST", request });
     return NextResponse.json({ error: "Could not save that document." }, { status: 500 });
   }

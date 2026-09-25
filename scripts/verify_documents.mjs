@@ -4,9 +4,11 @@
  * These are identity documents, so the tests that matter are the ones about
  * who *cannot* read them. Two throwaway accounts are created directly in the
  * database, one uploads a file, and the other is used to prove it cannot be
- * reached — along with an anonymous caller and a guessed URL.
+ * reached — along with an anonymous caller and a few guessed URLs.
  *
- * Cleans up after itself: both accounts, their rows and their files.
+ * Cleans up completely: deleting the accounts cascades the rows, and since
+ * migration 0015 the bytes are a column on those rows, so unlike a filesystem
+ * store there is nothing that can be left behind.
  *
  * Run: node scripts/verify_documents.mjs [baseUrl]
  */
@@ -14,13 +16,11 @@
 import postgres from "postgres";
 import { config } from "dotenv";
 import { randomBytes } from "node:crypto";
-import { readdir } from "node:fs/promises";
 
 config({ path: ".env.local" });
 
 const BASE = (process.argv[2] || "http://127.0.0.1:3100").replace(/\/+$/, "");
 const sql = postgres(process.env.DATABASE_URL, { prepare: false });
-const STORE = process.env.DOCUMENT_STORE || ".data/documents";
 
 let pass = 0;
 let fail = 0;
@@ -113,12 +113,28 @@ async function main() {
   if (zip.status === 415) ok("a bare zip is refused", "only Word's own type passes");
   else bad("a bare zip is refused", `got ${zip.status}`);
 
+  /* ------------------------------------------------ the bytes are in the row */
+  const stored = (
+    await sql`
+      SELECT length(content) AS len, size_bytes, mime_type
+        FROM student_documents WHERE user_id = ${owner.id} AND doc_type = 'photo-id'
+    `
+  )[0];
+  if (stored && Number(stored.len) === PNG.length && stored.size_bytes === PNG.length) {
+    ok("the file itself is stored in Postgres", `${stored.len} bytes in the row`);
+  } else {
+    bad("the file itself is stored in Postgres", JSON.stringify(stored));
+  }
+
   /* ------------------------------------------------------- who may read it */
   if (docId) {
     const mine = await fetch(`${BASE}/api/documents/${docId}`, { headers: { Cookie: owner.cookie } });
     if (mine.status === 200) {
       const cd = mine.headers.get("content-disposition") ?? "";
+      const body = Buffer.from(await mine.arrayBuffer());
       ok("the owner can download it", cd.startsWith("attachment") ? "as an attachment" : cd);
+      if (body.equals(PNG)) ok("the bytes come back unchanged", `${body.length} bytes`);
+      else bad("the bytes come back unchanged", `${body.length} vs ${PNG.length}`);
       if (!cd.startsWith("attachment")) bad("served as an attachment", cd);
     } else {
       bad("the owner can download it", `got ${mine.status}`);
@@ -140,76 +156,57 @@ async function main() {
     });
     if (del.status === 404) ok("another candidate cannot delete it", "404");
     else bad("another candidate cannot delete it", `got ${del.status}`);
-  }
 
-  /* ------------------------------------------------ nothing is public */
-  const [row] = await sql`
-    SELECT stored_name FROM student_documents WHERE user_id = ${owner.id} LIMIT 1
-  `;
-  if (row) {
+    /* --------------------------------------------- nothing else serves them */
+    // There is no path to guess any more, but a route that leaked them would
+    // still be a leak, so the guesses stay.
     for (const guess of [
-      `/uploads/documents/${row.stored_name}`,
-      `/assets/images/uploads/${row.stored_name}`,
-      `/${row.stored_name}`,
+      `/uploads/documents/${docId}`,
+      `/assets/images/uploads/${docId}`,
+      `/api/documents/${docId}/raw`,
     ]) {
       const res = await fetch(BASE + guess);
-      if (res.status === 404) ok(`not served statically at ${guess.slice(0, 34)}…`);
-      else bad(`not served statically at ${guess}`, `got ${res.status}`);
+      if (res.status === 404) ok(`nothing served at ${guess}`);
+      else bad(`nothing served at ${guess}`, `got ${res.status}`);
     }
   }
 
-  /* -------------------------------------------- replacing removes the old */
-  const before = (await sql`SELECT stored_name FROM student_documents WHERE user_id = ${owner.id} AND doc_type = 'photo-id'`)[0];
-  await upload(owner.cookie, "photo-id", PNG, "better id.png", "image/png");
-  const after = (await sql`SELECT stored_name FROM student_documents WHERE user_id = ${owner.id} AND doc_type = 'photo-id'`)[0];
+  /* --------------------------------------------- replacing keeps one row */
+  const before = (
+    await sql`SELECT id FROM student_documents
+               WHERE user_id = ${owner.id} AND doc_type = 'photo-id'`
+  )[0];
+  await upload(owner.cookie, "photo-id", PDF, "better id.pdf", "application/pdf");
+  const after = (
+    await sql`SELECT id, original_name, mime_type, length(content) AS len
+                FROM student_documents WHERE user_id = ${owner.id} AND doc_type = 'photo-id'`
+  )[0];
 
-  if (before && after && before.stored_name !== after.stored_name) {
-    ok("re-uploading replaces rather than duplicates");
-    try {
-      const files = await readdir(STORE);
-      if (!files.includes(before.stored_name)) ok("the replaced file is deleted from disk");
-      else bad("the replaced file is deleted from disk", "the old file is still there");
-    } catch {
-      console.log("    (disk check skipped — store not readable from here)");
-    }
+  if (before && after && before.id === after.id && after.original_name === "better id.pdf") {
+    ok("re-uploading replaces in place", "same row, new contents");
   } else {
-    bad("re-uploading replaces rather than duplicates");
+    bad("re-uploading replaces in place", JSON.stringify({ before, after }));
+  }
+  if (after && Number(after.len) === PDF.length && after.mime_type === "application/pdf") {
+    ok("the old bytes are gone", `${after.len} bytes, ${after.mime_type}`);
+  } else {
+    bad("the old bytes are gone", JSON.stringify(after));
   }
 
-  const count = (await sql`SELECT count(*)::int n FROM student_documents WHERE user_id = ${owner.id}`)[0].n;
+  const count = (
+    await sql`SELECT count(*)::int n FROM student_documents WHERE user_id = ${owner.id}`
+  )[0].n;
   if (count === 2) ok("one row per document type", `${count} rows for 2 types`);
   else bad("one row per document type", `${count} rows`);
 
   /* ------------------------------------------------------------ clean up */
-  const leftovers = await sql`SELECT stored_name FROM student_documents WHERE user_id IN (${owner.id}, ${stranger.id})`;
   await sql`DELETE FROM users WHERE id IN (${owner.id}, ${stranger.id})`;
-  let unlinked = 0;
-  try {
-    const { unlink } = await import("node:fs/promises");
-    const path = await import("node:path");
-    for (const l of leftovers) {
-      await unlink(path.join(STORE, l.stored_name)).then(
-        () => {
-          unlinked += 1;
-        },
-        () => {},
-      );
-    }
-  } catch {
-    /* store not reachable from here */
-  }
-
-  if (unlinked === leftovers.length) {
-    console.log("\n  (test accounts and files removed)");
-  } else {
-    // Running against a remote server: the rows are gone but the files are on
-    // that box, so they are orphans now. Say so rather than leave them quietly.
-    const stranded = leftovers.length - unlinked;
-    console.log(
-      `\n  (test accounts removed; ${stranded} file(s) left on the server — ` +
-        "clear them from Admin -> Documents, which offers to when it finds any)",
-    );
-  }
+  const stray = (
+    await sql`SELECT count(*)::int n FROM student_documents
+               WHERE user_id IN (${owner.id}, ${stranger.id})`
+  )[0].n;
+  if (stray === 0) ok("deleting the account takes the documents with it", "nothing left behind");
+  else bad("deleting the account takes the documents with it", `${stray} left`);
 
   console.log(`\n${pass} passed, ${fail} failed\n`);
   await sql.end();
