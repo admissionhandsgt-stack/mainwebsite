@@ -88,15 +88,24 @@ export function collegeFaqs(
     const tightest = ranked.reduce((a, b) => (b.r1Latest! < a.r1Latest! ? b : a));
     const widest = ranked.reduce((a, b) => (b.r1Latest! > a.r1Latest! ? b : a));
 
+    // The quota is named alongside the rank on purpose. A rank without its
+    // quota invites the reader to assume a government seat and a government
+    // fee; at most colleges the widest rank is a management or NRI seat
+    // costing several times more.
+    const seat = (c: CourseCutoff) =>
+      `${c.course} (${c.quota}, ${c.category})`;
+
     faqs.push({
       q: `What is the closing rank for ${college.name}?`,
       a:
-        tightest.course === widest.course
-          ? `In ${year ?? "the latest round"}, ${tightest.course} closed at rank ${inr(tightest.r1Latest!)} in round 1 for the ${tightest.category} category.`
-          : `In ${year ?? "the latest round"}, the hardest seat to get was ${tightest.course}, ` +
-            `closing at rank ${inr(tightest.r1Latest!)} in round 1 (${tightest.category}). ` +
-            `The most accessible was ${widest.course} at ${inr(widest.r1Latest!)}. ` +
-            `These are the counselling authority's own published closing ranks, not estimates.`,
+        tightest.course === widest.course && tightest.quota === widest.quota
+          ? `In ${year ?? "the latest round"}, ${seat(tightest)} closed at rank ${inr(tightest.r1Latest!)} in round 1.`
+          : `In ${year ?? "the latest round"}, the hardest seat here was ${seat(tightest)}, ` +
+            `closing at rank ${inr(tightest.r1Latest!)} in round 1. The most accessible was ` +
+            `${seat(widest)} at ${inr(widest.r1Latest!)} — a different quota, usually at a very ` +
+            `different fee, so the two are not interchangeable. The table above keeps each seat's ` +
+            `rank, quota and fee on one row. These are the authority's own published closing ranks, ` +
+            `not estimates.`,
     });
 
     // The thing that costs people a seat, and nobody else publishes it.
@@ -128,8 +137,10 @@ export function collegeFaqs(
       a:
         cheapest.feeInr === dearest.feeInr
           ? `${money(cheapest.feeInr!)} a year, as published in the counselling fee schedule.`
-          : `From ${money(cheapest.feeInr!)} to ${money(dearest.feeInr!)} a year depending on the branch and quota, ` +
-            `as published in the counselling fee schedule.`,
+          : `From ${money(cheapest.feeInr!)} a year on a ${cheapest.quota} seat to ` +
+            `${money(dearest.feeInr!)} on a ${dearest.quota} seat. The difference is the quota, not ` +
+            `the college — the cheapest figure here does not apply to the seats open at the largest ` +
+            `ranks. Both are from the published counselling fee schedule.`,
     });
   }
 

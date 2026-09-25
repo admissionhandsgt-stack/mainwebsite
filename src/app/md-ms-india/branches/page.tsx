@@ -70,8 +70,8 @@ export default async function BranchesPage() {
                   ["Branch", "w-[40%] text-left"],
                   ["Colleges", "w-[15%] text-right"],
                   ["Seats", "w-[15%] text-right"],
-                  ["Best R1 rank", "w-[15%] text-right"],
-                  ["Widest reach", "w-[15%] text-right"],
+                  ["Best R1 (GEN)", "w-[15%] text-right"],
+                  ["Widest (GEN)", "w-[15%] text-right"],
                 ].map(([h, cls]) => (
                   <th
                     key={h}
@@ -107,9 +107,10 @@ export default async function BranchesPage() {
         </div>
 
         <p className="mt-6 max-w-[74ch] text-[13.5px] leading-relaxed text-muted-foreground">
-          &ldquo;Best R1 rank&rdquo; is the tightest any college closed at in round 1 — the hardest
-          version of that branch to get. &ldquo;Widest reach&rdquo; is the furthest down any round
-          travelled, which is the one worth reading if your rank is large.
+          Both rank columns are the <strong>general category</strong> only. Mixing a general rank
+          with a reserved one in the same figure would compare two seats nobody can hold at once —
+          open a branch to pick your own category, and to see each seat&rsquo;s quota and fee
+          beside its rank.
         </p>
       </div>
 

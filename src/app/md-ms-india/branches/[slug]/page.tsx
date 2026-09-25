@@ -1,23 +1,26 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, Building2, MapPin, Search, TrendingDown } from "lucide-react";
-import { getBranch, getBranches } from "@/lib/branchQueries";
+import { AlertTriangle, ArrowRight, Building2, MapPin, Search, TrendingDown } from "lucide-react";
+import { getBranch, getBranches, DEFAULT_CATEGORY } from "@/lib/branchQueries";
 import StructuredData from "@/components/seo/StructuredData";
 import CtaBand from "@/components/ui/CtaBand";
 
 export const revalidate = 86400;
 
 /**
- * One PG branch: where it is offered, and what it closed at.
+ * One PG branch: where it is offered, and what each seat closed at.
  *
- * "MD Radiology cutoff", "rank required for MD Dermatology" and their kind are
- * among the highest-intent queries in this market, and the site had no page
- * for any of them — the data was reachable only by knowing which college to
- * open first, which is the opposite of how somebody chooses.
+ * **Every row is one seat type.** College, quota and category together, so the
+ * round-1 close, the widest reach and the fee on a row all describe the same
+ * seat. An earlier version collapsed a college into one row and took the best
+ * rank, the widest rank and the cheapest fee from wherever each happened to
+ * be lowest — which produced rows like "KVG Medical College, reaches rank
+ * 2,20,761, ₹7.83 lakh a year", where the seat at that rank is actually
+ * management and costs up to ₹1.6 crore. See `lib/branchQueries.ts`.
  *
- * The 24 most-taken branches are pre-rendered and the rest are ISR at a day,
- * the same shape the per-college pages use.
+ * The category is chosen, never averaged over: a candidate is in exactly one,
+ * and a general rank beside a reserved one is not a comparison.
  */
 const SITE = "https://www.admissionhands.com";
 
@@ -39,11 +42,10 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const b = await getBranch(params.slug);
   if (!b) return { title: "Branch not found | AdmissionHands" };
 
-  // The phrase people type, first, and under 60 characters.
   const title = `${b.name} Cutoff ${b.year ?? 2026} — Colleges, Ranks & Fees`;
   const description =
-    `${b.name} closing ranks across ${inr(b.colleges)} colleges and ${b.states} states. ` +
-    `Round-1 cuts from rank ${inr(b.bestRank)}, with ${inr(b.seats)} seats — published counselling results, not estimates.`;
+    `${b.name} closing ranks across ${inr(b.colleges)} colleges and ${b.states} states, ` +
+    `by quota and category. ${inr(b.seats)} seats — published counselling results, not estimates.`;
 
   return {
     title,
@@ -59,39 +61,39 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function BranchPage({ params }: { params: { slug: string } }) {
-  const b = await getBranch(params.slug);
+export default async function BranchPage({
+  params,
+  searchParams,
+}: {
+  params: { slug: string };
+  searchParams: { category?: string };
+}) {
+  const category = (searchParams.category ?? DEFAULT_CATEGORY).toUpperCase().slice(0, 24);
+  const b = await getBranch(params.slug, category);
   if (!b) notFound();
-
-  const govt = b.colleges_list.filter((c) => c.ownership === "government").length;
 
   const faqs = [
     {
       q: `What rank is needed for ${b.name}?`,
       a:
-        `Round 1 closed anywhere from rank ${inr(b.bestRank)} at the most competitive college to ` +
-        `${inr(b.widestRank)} at the most accessible, across ${inr(b.colleges)} colleges in ${b.states} states. ` +
-        `Where your own rank lands depends on category, quota and state — the predictor answers that from the same data.`,
+        `It depends on the quota as much as on the rank. In the ${b.category} category, round 1 closed ` +
+        `from rank ${inr(b.bestRank)} at the most competitive college. Management and NRI seats at the ` +
+        `same colleges stay open to far larger ranks, but cost several times more — so a large rank ` +
+        `does not mean a cheap seat. The table on this page keeps each seat's rank and its own fee ` +
+        `on the same row for exactly that reason.`,
     },
     {
       q: `How many ${b.name} seats are there?`,
-      a: `${inr(b.seats)} seats across ${inr(b.colleges)} colleges, counted from the published seat matrix${b.year ? ` for ${b.year}` : ""}.`,
+      a: `${inr(b.seats)} seats across ${inr(b.colleges)} colleges in ${b.states} states, counted from the published seat matrix${b.year ? ` for ${b.year}` : ""}.`,
     },
     ...(b.movedCount > 0
       ? [
           {
             q: `Does the ${b.name} cutoff loosen in later rounds?`,
             a:
-              `For ${inr(b.movedCount)} of its ${inr(b.seats)} seats, yes — a later round reached a worse rank than round 1 did, ` +
-              `because upgrades free seats and a freed seat goes to whoever is next. The rest closed tighter or did not move.`,
-          },
-        ]
-      : []),
-    ...(b.minFee != null
-      ? [
-          {
-            q: `What do ${b.name} fees start at?`,
-            a: `From ${money(b.minFee)} a year at the cheapest college publishing a fee, rising sharply at private and deemed institutions.`,
+              `For ${inr(b.movedCount)} of the ${inr(b.seatsInCategory)} ${b.category} seats, yes — a later round reached a ` +
+              `worse rank than round 1 did, because upgrades free seats and a freed seat goes to whoever ` +
+              `is next. The rest closed tighter or did not move.`,
           },
         ]
       : []),
@@ -106,7 +108,12 @@ export default async function BranchPage({ params }: { params: { slug: string } 
             "@type": "BreadcrumbList",
             itemListElement: [
               { "@type": "ListItem", position: 1, name: "Home", item: SITE },
-              { "@type": "ListItem", position: 2, name: "MD/MS branches", item: `${SITE}/md-ms-india/branches` },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "MD/MS branches",
+                item: `${SITE}/md-ms-india/branches`,
+              },
               {
                 "@type": "ListItem",
                 position: 3,
@@ -146,8 +153,8 @@ export default async function BranchPage({ params }: { params: { slug: string } 
           <h1 className="font-heading mt-4 max-w-[22ch] text-[clamp(2rem,4.2vw,3.1rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-white">
             {b.name}
           </h1>
-          <p className="mt-3 max-w-[64ch] text-[15px] leading-relaxed text-slate-300 md:text-base">
-            Every college offering it, what each one closed at, and what it costs — read from the
+          <p className="mt-3 max-w-[66ch] text-[15px] leading-relaxed text-slate-300 md:text-base">
+            Every seat, with its own quota, its own closing rank and its own fee — read from the
             counselling authorities&rsquo; published results{b.year ? ` for ${b.year}` : ""}.
           </p>
 
@@ -155,8 +162,8 @@ export default async function BranchPage({ params }: { params: { slug: string } 
             {[
               { k: "Colleges", v: inr(b.colleges) },
               { k: "Seats", v: inr(b.seats) },
-              { k: "Best round-1 rank", v: inr(b.bestRank) },
-              { k: "Widest reach", v: inr(b.widestRank) },
+              { k: `Best R1 (${DEFAULT_CATEGORY})`, v: inr(b.bestRank) },
+              { k: "States", v: inr(b.states) },
             ].map(({ k, v }) => (
               <div key={k}>
                 <dt className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{k}</dt>
@@ -167,7 +174,7 @@ export default async function BranchPage({ params }: { params: { slug: string } 
 
           <Link
             href={`/neet-college-predictor?course=pg&branch=${encodeURIComponent(b.name)}`}
-            className="mt-8 inline-flex h-13 items-center gap-2.5 rounded-xl bg-gradient-brand px-6 py-3.5 text-[15px] font-bold text-white shadow-glow transition-all hover:-translate-y-0.5"
+            className="mt-8 inline-flex items-center gap-2.5 rounded-xl bg-gradient-brand px-6 py-3.5 text-[15px] font-bold text-white shadow-glow transition-all hover:-translate-y-0.5"
           >
             <Search className="h-5 w-5" aria-hidden="true" />
             Check {b.name} against your rank
@@ -177,72 +184,129 @@ export default async function BranchPage({ params }: { params: { slug: string } 
       </section>
 
       <div className="container-custom py-10 md:py-14">
-        {/* ----------------------------- colleges ----------------------------- */}
-        <section>
+        {/* --------------------------- the warning --------------------------- */}
+        <p className="flex gap-3 rounded-2xl border border-signal-borderline/30 bg-signal-borderline/[0.07] px-5 py-4 text-[14px] leading-relaxed text-foreground">
+          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-signal-borderline" aria-hidden="true" />
+          <span>
+            <span className="font-bold">Read the quota column with the rank.</span> The same college
+            often has a government seat closing at a few thousand and a management or NRI seat open
+            to two lakh — at many times the fee. A large rank here does not mean a cheap seat.
+          </span>
+        </p>
+
+        {/* --------------------------- categories --------------------------- */}
+        {b.categories.length > 1 && (
+          <div className="mt-7">
+            <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+              Category
+            </p>
+            <div className="mt-2.5 flex flex-wrap gap-1.5">
+              {b.categories.map((c) => (
+                <Link
+                  key={c}
+                  href={`/md-ms-india/branches/${b.slug}?category=${encodeURIComponent(c)}`}
+                  className={`inline-flex min-h-[44px] items-center rounded-full border px-4 text-[13px] font-semibold transition-colors ${
+                    c === b.category
+                      ? "border-primary bg-primary-soft text-primary-strong dark:text-primary"
+                      : "border-border bg-card text-muted-foreground hover:border-primary/40"
+                  }`}
+                >
+                  {c}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ----------------------------- the seats ----------------------------- */}
+        <section className="mt-8">
           <h2 className="font-heading text-xl font-bold text-foreground md:text-2xl">
-            Colleges offering {b.name}
+            {b.name} seats in the {b.category} category
           </h2>
-          <p className="mt-1.5 max-w-[70ch] text-[14px] leading-relaxed text-muted-foreground">
-            Widest reach first — the colleges whose cut travelled furthest down are the ones most
-            ranks can actually reach. {govt > 0 && `${inr(govt)} of these are government colleges.`}
+          <p className="mt-1.5 max-w-[72ch] text-[14px] leading-relaxed text-muted-foreground">
+            One row per college and quota, widest reach first — the seats most ranks can actually
+            get to. Everything on a row describes that one seat.
           </p>
 
-          <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
-            <table className="w-full min-w-[640px] table-fixed border-collapse">
-              <thead>
-                <tr className="bg-surface-2">
-                  {[
-                    ["College", "w-[40%] text-left"],
-                    ["Seats", "w-[12%] text-right"],
-                    ["R1 close", "w-[16%] text-right"],
-                    ["Widest", "w-[16%] text-right"],
-                    ["Fee / yr", "w-[16%] text-right"],
-                  ].map(([h, cls]) => (
-                    <th
-                      key={h}
-                      scope="col"
-                      className={`px-4 py-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground ${cls}`}
-                    >
-                      {h}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {b.colleges_list.map((c) => (
-                  <tr key={c.slug} className="border-t border-border hover:bg-surface-2">
-                    <td className="px-4 py-3 align-top">
-                      <Link
-                        href={`/md-ms-india/colleges/${c.slug}`}
-                        className="text-[14px] font-semibold leading-snug text-foreground hover:text-primary"
+          {b.rowsList.length === 0 ? (
+            <p className="mt-5 rounded-2xl border border-dashed border-border bg-card px-5 py-10 text-center text-[14px] text-muted-foreground">
+              No {b.category} seats are published for this branch. Try another category above.
+            </p>
+          ) : (
+            <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
+              <table className="w-full min-w-[760px] table-fixed border-collapse">
+                <thead>
+                  <tr className="bg-surface-2">
+                    {[
+                      ["College", "w-[32%] text-left"],
+                      ["Quota", "w-[20%] text-left"],
+                      ["Seats", "w-[10%] text-right"],
+                      ["R1 close", "w-[12%] text-right"],
+                      ["Widest", "w-[13%] text-right"],
+                      ["Fee / yr", "w-[13%] text-right"],
+                    ].map(([h, cls]) => (
+                      <th
+                        key={h}
+                        scope="col"
+                        className={`px-4 py-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground ${cls}`}
                       >
-                        {c.name}
-                      </Link>
-                      <p className="mt-0.5 flex items-center gap-1 text-[12px] text-muted-foreground">
-                        <MapPin className="h-3 w-3" aria-hidden="true" />
-                        {c.state ?? "—"}
-                        {c.ownership !== "other" && (
-                          <>
-                            <span aria-hidden="true">·</span>
-                            <span className="capitalize">{c.ownership}</span>
-                          </>
-                        )}
-                      </p>
-                    </td>
-                    <td className="tnum px-4 py-3 text-right align-top text-[14px] text-foreground">{c.seats}</td>
-                    <td className="tnum px-4 py-3 text-right align-top text-[14px] text-muted-foreground">{inr(c.r1)}</td>
-                    <td className="tnum px-4 py-3 text-right align-top text-[14px] font-semibold text-foreground">{inr(c.widest)}</td>
-                    <td className="tnum px-4 py-3 text-right align-top text-[14px] text-foreground">{money(c.feeInr)}</td>
+                        {h}
+                      </th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {b.rowsList.map((r) => (
+                    <tr key={`${r.slug}-${r.quota}`} className="border-t border-border hover:bg-surface-2">
+                      <td className="px-4 py-3 align-top">
+                        <Link
+                          href={`/md-ms-india/colleges/${r.slug}`}
+                          className="text-[14px] font-semibold leading-snug text-foreground hover:text-primary"
+                        >
+                          {r.college}
+                        </Link>
+                        <p className="mt-0.5 flex items-center gap-1 text-[12px] text-muted-foreground">
+                          <MapPin className="h-3 w-3" aria-hidden="true" />
+                          {r.state ?? "—"}
+                          {r.ownership !== "other" && (
+                            <>
+                              <span aria-hidden="true">·</span>
+                              <span className="capitalize">{r.ownership}</span>
+                            </>
+                          )}
+                        </p>
+                      </td>
+                      <td className="px-4 py-3 align-top text-[13px] leading-snug text-foreground">
+                        {r.quota}
+                      </td>
+                      <td className="tnum px-4 py-3 text-right align-top text-[14px] text-foreground">
+                        {r.seats}
+                      </td>
+                      <td className="tnum px-4 py-3 text-right align-top text-[14px] text-muted-foreground">
+                        {inr(r.r1)}
+                      </td>
+                      <td className="tnum px-4 py-3 text-right align-top text-[14px] font-semibold text-foreground">
+                        {inr(r.widest)}
+                      </td>
+                      <td className="tnum px-4 py-3 text-right align-top text-[14px] text-foreground">
+                        {money(r.feeInr)}
+                        {r.feeMaxInr != null && (
+                          <span className="block text-[11px] text-muted-foreground">
+                            to {money(r.feeMaxInr)}
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
 
-          {b.colleges_list.length >= 400 && (
+          {b.truncated && (
             <p className="mt-3 text-[13px] text-muted-foreground">
-              Showing the 400 colleges whose cut reached furthest. The predictor narrows all{" "}
-              {inr(b.colleges)} to the ones your own rank reaches.
+              Showing the 300 seats whose cut reached furthest. The predictor narrows all of them to
+              the ones your own rank reaches.
             </p>
           )}
         </section>
@@ -282,8 +346,8 @@ export default async function BranchPage({ params }: { params: { slug: string } 
       </div>
 
       <CtaBand
-        title={`Where does {b.name} actually sit for your rank?`}
-        body="The table above is every college, not your shortlist. Bring your rank and category and our counsellors will tell you which of these are realistic, which are a stretch, and the order to put them in."
+        title={`Where does ${b.name} actually sit for your rank?`}
+        body="The table above is every seat, not your shortlist. Bring your rank, category and quota and our counsellors will tell you which of these are realistic, which are a stretch, and the order to put them in."
         image="/assets/images/hero/medical-admission-counselling-session.avif"
         primaryLabel="Ask a counsellor"
       />
