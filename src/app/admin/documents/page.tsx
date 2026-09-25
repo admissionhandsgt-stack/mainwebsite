@@ -1,4 +1,5 @@
 import DocumentsClient from "./DocumentsClient";
+import DrivePanel from "./DrivePanel";
 
 export const dynamic = "force-dynamic";
 
@@ -9,7 +10,11 @@ export const dynamic = "force-dynamic";
  * could tell whose set was complete without scrolling back through a
  * conversation. This is the same documents, in one place, with a state on each.
  */
-export default function AdminDocumentsPage() {
+export default function AdminDocumentsPage({
+  searchParams,
+}: {
+  searchParams: { drive?: string };
+}) {
   return (
     <div className="max-w-5xl space-y-6">
       <div>
@@ -20,6 +25,8 @@ export default function AdminDocumentsPage() {
           candidate will see on their own screen.
         </p>
       </div>
+
+      <DrivePanel flash={searchParams.drive} />
 
       <DocumentsClient />
 

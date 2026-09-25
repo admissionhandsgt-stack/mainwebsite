@@ -23,7 +23,16 @@ export type IntegrationKey =
   | "whatsapp.verify.number"
   | "whatsapp.gateway.url"
   | "whatsapp.gateway.api_key"
-  | "whatsapp.webhook.secret";
+  | "whatsapp.webhook.secret"
+  // Google Drive, for mirroring the candidate document vault. The refresh
+  // token is a long-lived credential for a real Google account, so it belongs
+  // here with the API keys and nowhere a browser can reach.
+  | "google.drive.enabled"
+  | "google.drive.client_id"
+  | "google.drive.client_secret"
+  | "google.drive.refresh_token"
+  | "google.drive.root_folder_id"
+  | "google.drive.account_email";
 
 /**
  * The environment variable that overrides each key, where one exists.
@@ -36,6 +45,8 @@ const ENV_OVERRIDE: Partial<Record<IntegrationKey, string>> = {
   "whatsapp.webhook.secret": "WAHA_WEBHOOK_SECRET",
   "whatsapp.gateway.url": "WAHA_GATEWAY_URL",
   "whatsapp.gateway.api_key": "WAHA_API_KEY",
+  "google.drive.client_id": "GOOGLE_DRIVE_CLIENT_ID",
+  "google.drive.client_secret": "GOOGLE_DRIVE_CLIENT_SECRET",
 };
 
 /**

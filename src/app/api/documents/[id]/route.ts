@@ -6,6 +6,7 @@ import { logError } from "@/lib/logger";
 import { userFromRequest } from "@/lib/userAuth";
 import { getSessionUser } from "@/lib/auth";
 import { resolveStoredPath, removeStoredFile } from "@/lib/documents";
+import { deleteFile } from "@/lib/googleDrive";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -102,8 +103,8 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
     const rows = (await db.execute(sql`
       DELETE FROM student_documents
        WHERE id = ${id} AND user_id = ${user.id} AND status <> 'verified'
-      RETURNING stored_name
-    `)) as unknown as { stored_name: string }[];
+      RETURNING stored_name, drive_file_id
+    `)) as unknown as { stored_name: string; drive_file_id: string | null }[];
 
     if (rows.length === 0) {
       return NextResponse.json({ error: "Not found." }, { status: 404 });
@@ -112,6 +113,9 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
     // The row is the record; the file is the data. Row first, so a failure
     // here leaves an orphaned file rather than a row pointing at nothing.
     await removeStoredFile(rows[0].stored_name);
+    // And the mirror, so "remove" does not leave a copy in Drive that the
+    // student believes they deleted.
+    if (rows[0].drive_file_id) deleteFile(rows[0].drive_file_id).catch(() => {});
     return NextResponse.json({ ok: true });
   } catch (error) {
     logError(error, { route: "/api/documents/[id]:DELETE", request });

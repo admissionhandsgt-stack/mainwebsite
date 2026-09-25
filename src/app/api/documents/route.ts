@@ -17,6 +17,7 @@ import {
   safeDisplayName,
 } from "@/lib/documents";
 import { notifyDocumentUpload } from "@/lib/documentNotify";
+import { syncDocument } from "@/lib/driveSync";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -156,6 +157,11 @@ export async function POST(request: Request) {
     if (previous[0]?.stored_name && previous[0].stored_name !== storedName) {
       await removeStoredFile(previous[0].stored_name);
     }
+
+    // Mirrored into the team's Drive folder for this candidate. Fire and
+    // forget, and it swallows its own failures: the document is already saved
+    // and already served, so a Drive outage is our problem, not the student's.
+    if (rows[0]?.id) syncDocument(rows[0].id as number).catch(() => {});
 
     // The team hears about it without anyone watching a screen. Fire and
     // forget: an alerting outage must not fail the upload.
