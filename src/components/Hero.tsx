@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { useCTA } from "@/hooks/useCTA";
-import { ArrowRight, Building2, Users, GraduationCap, ShieldCheck, Phone, Sparkles } from "lucide-react";
+import { ArrowRight, Building2, Users, ShieldCheck, Landmark, Layers, Phone, Sparkles } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 /** Everything an editor can change here. Each field falls back to the copy
@@ -16,7 +16,6 @@ export interface HeroCopy {
   subtitle?: string;
   ctaPrimary?: string;
   ctaSecondary?: string;
-  stats?: { value: string; label: string }[];
 }
 
 interface HeroProps {
@@ -24,6 +23,40 @@ interface HeroProps {
   doctorsImageUrl?: string;
   copy?: HeroCopy;
 }
+
+/**
+ * How the answers here are made — the hero's trust element.
+ *
+ * This replaced three counts ("1,687 MBBS colleges" against a real 834 that
+ * teach MBBS), and then replaced the counts that were correct too.
+ *
+ * Volume is the weakest thing a counselling site can put in front of someone.
+ * Every competitor claims a bigger database and a higher accuracy percentage,
+ * none of it is checkable, and a visitor has learned nothing from reading it.
+ * It also describes our warehouse rather than their problem.
+ *
+ * What cannot be copied is the method. Each line below is a commitment the
+ * product actually keeps, and the second one is a commitment our competitors
+ * cannot make at all, because they publish a forecast and we publish the
+ * authority's own result.
+ */
+const ASSURANCES = [
+  {
+    icon: Landmark,
+    title: "Straight from the counselling authorities",
+    body: "MCC, the state authorities and the deemed universities — read from their own published results.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Published, never predicted",
+    body: "We show where the cut actually landed. We do not invent a cutoff and we do not sell a percentage.",
+  },
+  {
+    icon: Layers,
+    title: "Every round, not just the last one",
+    body: "A final round can close tighter than the second. Reading only the last one hides seats you could have had.",
+  },
+];
 
 const DEFAULTS: Required<Omit<HeroCopy, "stats">> = {
   badgeLeft: "NEET 2026 counselling",
@@ -36,22 +69,13 @@ const DEFAULTS: Required<Omit<HeroCopy, "stats">> = {
   ctaSecondary: "Browse top colleges",
 };
 
-const STAT_ICONS = [Users, Building2, GraduationCap];
-
-const DEFAULT_STATS = [
-  { value: "2,100+", label: "Students guided" },
-  { value: "1,687", label: "MBBS colleges" },
-  { value: "2,168", label: "PG colleges" },
-];
-
 export default function Hero({ backgroundImageUrl, doctorsImageUrl, copy }: HeroProps) {
   const CTA = useCTA();
   const reduce = useReducedMotion();
 
   const text = { ...DEFAULTS, ...Object.fromEntries(
     Object.entries(copy ?? {}).filter(([, v]) => typeof v === "string" && v !== ""),
-  ) } as Required<Omit<HeroCopy, "stats">>;
-  const stats = copy?.stats?.length ? copy.stats : DEFAULT_STATS;
+  ) } as Required<HeroCopy>;
 
   // One orchestrated entrance on load. Nothing else on the page animates in.
   const stage = {
@@ -143,24 +167,35 @@ export default function Hero({ backgroundImageUrl, doctorsImageUrl, copy }: Hero
             </button>
           </motion.div>
 
+          {/* ---------------------- how this is made ---------------------- */}
           <motion.div
             variants={item}
-            className="grid grid-cols-3 gap-4 sm:gap-8 border-t border-border/70 pt-7 max-w-lg mx-auto lg:mx-0"
+            className="mt-8 max-w-xl mx-auto lg:mx-0 overflow-hidden rounded-2xl border border-border/80 bg-card/70 backdrop-blur-sm shadow-lift"
           >
-            {stats.map(({ value, label }, i) => {
-              const Icon = STAT_ICONS[i % STAT_ICONS.length];
-              return (
-              <div key={label} className="flex items-center gap-3">
-                <span className="hidden sm:flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary">
-                  <Icon className="h-5 w-5" />
-                </span>
-                <span className="flex flex-col text-left">
-                  <span className="tnum font-heading text-xl md:text-2xl font-extrabold leading-none text-foreground">{value}</span>
-                  <span className="mt-1 whitespace-nowrap text-[11px] font-medium uppercase tracking-wide text-muted-foreground">{label}</span>
-                </span>
-              </div>
-              );
-            })}
+            <p className="flex items-center gap-2.5 border-b border-border/70 bg-primary-soft/60 px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.16em] text-primary-strong dark:text-primary">
+              <Sparkles className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+              How every answer here is made
+            </p>
+
+            <ul className="divide-y divide-border/70">
+              {ASSURANCES.map(({ icon: Icon, title, body }) => (
+                // `text-left` because the hero centres everything on a phone,
+                // and a centred body line under a heading reads as a poem.
+                <li key={title} className="flex gap-3.5 px-4 py-3.5 text-left">
+                  <span className="mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-soft text-primary">
+                    <Icon className="h-4 w-4" aria-hidden="true" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-[14px] font-bold leading-snug text-foreground">
+                      {title}
+                    </span>
+                    <span className="mt-0.5 block text-[12.5px] leading-relaxed text-muted-foreground">
+                      {body}
+                    </span>
+                  </span>
+                </li>
+              ))}
+            </ul>
           </motion.div>
         </motion.div>
 

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Play, Video, Star } from "lucide-react";
 import Image from "next/image";
 import { youtubeId } from "@/lib/youtube";
+import VideoTheatre from "@/components/video/VideoTheatre";
 
 interface VideoRecord {
   id: number;
@@ -19,6 +20,8 @@ export default function FeaturedVideos() {
   const [videos, setVideos] = useState<VideoRecord[]>([]);
   const [activeVideo, setActiveVideo] = useState<VideoRecord | null>(null);
   const [loading, setLoading] = useState(true);
+  /** Only true after a deliberate press — nothing from YouTube loads before. */
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -101,30 +104,47 @@ export default function FeaturedVideos() {
         <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-6">
           {/* Player Panel */}
           <div className="bg-white dark:bg-slate-900/80 rounded-3xl p-3 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] border border-slate-200 dark:border-slate-800/80 flex flex-col h-full">
-            <div className="relative aspect-video rounded-2xl overflow-hidden bg-slate-900 shadow-inner">
+            {/* The poster, not the embed. Pressing it opens the theatre over
+                this page; nothing third-party is fetched until then. */}
+            <button
+              type="button"
+              onClick={() => setPlaying(true)}
+              aria-label={`Play: ${activeVideo?.title ?? "video"}`}
+              className="group relative aspect-video w-full overflow-hidden rounded-2xl bg-slate-900 shadow-inner"
+            >
               <AnimatePresence mode="wait">
-                <motion.iframe
+                <motion.div
                   key={activeVideo?.videos_id}
                   initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true, margin: "-50px" }}
+                  animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                  src={`https://www.youtube.com/embed/${activeVideo?.videos_id}?rel=0&modestbranding=1`}
-                  title={activeVideo?.title || "Video"}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                  className="absolute inset-0 w-full h-full border-0"
-                />
+                  transition={{ duration: 0.25 }}
+                  className="absolute inset-0"
+                >
+                  {activeVideo?.videos_id && (
+                    <Image
+                      src={`https://img.youtube.com/vi/${activeVideo.videos_id}/maxresdefault.jpg`}
+                      alt=""
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 60vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                    />
+                  )}
+                </motion.div>
               </AnimatePresence>
-            </div>
-            
-            {/* Playwright Test Close Button Alignment */}
-            <button 
-              aria-label="Close video" 
-              className="sr-only" 
-              onClick={() => console.log("Playwright Close Video triggered")}
-            />
+
+              <span className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent transition-colors group-hover:from-slate-950/60" />
+
+              <span className="absolute inset-0 flex items-center justify-center">
+                <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white/95 shadow-2xl transition-transform duration-300 group-hover:scale-110 md:h-20 md:w-20">
+                  <Play className="ml-1 h-7 w-7 fill-cyan-600 text-cyan-600 md:h-8 md:w-8" aria-hidden="true" />
+                </span>
+              </span>
+
+              <span className="absolute bottom-3 left-4 text-[11px] font-black uppercase tracking-[0.14em] text-white/80">
+                Tap to play here
+              </span>
+            </button>
 
             <div className="pt-6 px-4 pb-2">
               <div className="flex items-start justify-between gap-4">
@@ -153,7 +173,12 @@ export default function FeaturedVideos() {
             {videos.slice(0, 4).map((video) => (
               <button
                 key={video.id}
-                onClick={() => setActiveVideo(video)}
+                onClick={() => {
+                  // Second press on the one already showing means "play it",
+                  // which is what someone expects after it is already chosen.
+                  if (activeVideo?.id === video.id) setPlaying(true);
+                  else setActiveVideo(video);
+                }}
                 className={`group flex items-start gap-4 p-3 rounded-2xl transition-all duration-300 text-left border ${
                   activeVideo?.id === video.id
                     ? "bg-cyan-50 dark:bg-cyan-950/40 border-cyan-200 dark:border-cyan-800 shadow-md shadow-cyan-100 dark:shadow-none"
@@ -210,6 +235,15 @@ export default function FeaturedVideos() {
           </div>
         </div>
       </div>
+
+      {activeVideo?.videos_id && (
+        <VideoTheatre
+          videoId={activeVideo.videos_id}
+          title={activeVideo.title ?? "AdmissionHands"}
+          open={playing}
+          onClose={() => setPlaying(false)}
+        />
+      )}
     </section>
   );
 }

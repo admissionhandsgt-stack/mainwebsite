@@ -76,13 +76,8 @@ const Index = async () => {
     subtitle: setting(s, 'home.hero.subtitle'),
     ctaPrimary: setting(s, 'home.hero.cta_primary'),
     ctaSecondary: setting(s, 'home.hero.cta_secondary'),
-    stats: [1, 2, 3]
-      .map((i) => ({
-        value: setting(s, `home.stats.${i}_value`),
-        label: setting(s, `home.stats.${i}_label`),
-      }))
-      .filter((stat) => stat.value && stat.label),
   };
+
 
   const services = serviceBlocks.map((b) => ({
     title: b.title ?? '',

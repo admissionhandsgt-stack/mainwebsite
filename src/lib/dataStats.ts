@@ -31,6 +31,8 @@ export interface DataStats {
   seatOptions: number;
   pgBranches: number;
   states: number;
+  /** Counselling authorities and quotas the ranks were published by. */
+  counsellings: number;
   pgYears: number[];
   ugYears: number[];
 }
@@ -46,6 +48,7 @@ const EMPTY: DataStats = {
   seatOptions: 0,
   pgBranches: 0,
   states: 0,
+  counsellings: 0,
   pgYears: [],
   ugYears: [],
 };
@@ -54,7 +57,7 @@ const n = (r: unknown) => (r as unknown as { n: number }[])[0]?.n ?? 0;
 
 async function load(): Promise<DataStats> {
   try {
-    const [pgC, ugC, ugM, pgR, ugR, seats, branches, states, pgY, ugY] = await Promise.all([
+    const [pgC, ugC, ugM, pgR, ugR, seats, branches, states, bodies, pgY, ugY] = await Promise.all([
       db.execute(sql`SELECT count(*)::int AS n FROM institutes WHERE level = 'pg'`),
       db.execute(sql`SELECT count(*)::int AS n FROM institutes WHERE level = 'ug'`),
       db.execute(sql`
@@ -70,6 +73,7 @@ async function load(): Promise<DataStats> {
         SELECT count(DISTINCT st.id)::int AS n
         FROM institutes i JOIN states st ON st.id = i.state_id
       `),
+      db.execute(sql`SELECT count(*)::int AS n FROM counsellings`),
       db.execute(sql`SELECT DISTINCT year FROM closing_ranks WHERE level = 'pg' ORDER BY year`),
       db.execute(sql`SELECT DISTINCT year FROM closing_ranks WHERE level = 'ug' ORDER BY year`),
     ]);
@@ -87,6 +91,7 @@ async function load(): Promise<DataStats> {
       seatOptions: n(seats),
       pgBranches: n(branches),
       states: n(states),
+      counsellings: n(bodies),
       pgYears: (pgY as unknown as { year: number }[]).map((r) => r.year),
       ugYears: (ugY as unknown as { year: number }[]).map((r) => r.year),
     };

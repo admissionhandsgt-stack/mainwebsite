@@ -35,6 +35,7 @@ const ROUTES = [
   "/nri-quota/colleges",
   "/nri-quota/documents",
   "/neet-ug-process",
+  "/neet-pg-process",
   "/services",
   "/know-us",
   "/videos",

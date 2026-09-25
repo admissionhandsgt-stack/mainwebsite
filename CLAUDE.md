@@ -558,7 +558,9 @@ Given a rank and a category, two lists:
   seats, and a freed seat goes to whoever is next, which is why a later round can reach much further
   down. This is the case for floating, counted rather than promised.
 - **Tightened** — seats within reach in round 1 whose later rounds closed at *better* ranks only.
-  508 UG and 2,795 PG seats did this. Give one of those up and you could not take it back. No
+  Counted across all ranks and categories (every later round below round 1's own close):
+  **2,595 PG** seats. The 2,795 quoted here previously did not reproduce — re-derive before
+  publishing this figure anywhere, because `/neet-pg-process` prints it. Give one of those up and you could not take it back. No
   competitor shows this, because it needs clean round-by-round data.
 
 **The aggregation trap:** `widest = MAX(closing_rank)` across all rounds can never be less than

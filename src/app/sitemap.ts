@@ -35,6 +35,7 @@ const STATIC: { path: string; priority: number; freq: MetadataRoute.Sitemap[numb
   { path: "/nri-quota/colleges", priority: 0.6, freq: "monthly" },
   { path: "/nri-quota/documents", priority: 0.6, freq: "monthly" },
   { path: "/neet-ug-process", priority: 0.7, freq: "monthly" },
+  { path: "/neet-pg-process", priority: 0.8, freq: "monthly" },
   { path: "/services", priority: 0.7, freq: "monthly" },
   { path: "/know-us", priority: 0.5, freq: "monthly" },
   { path: "/videos", priority: 0.5, freq: "weekly" },

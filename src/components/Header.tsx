@@ -12,28 +12,45 @@ import Image from 'next/image';
 
 import type { NavItem } from '@/lib/content';
 
-/** What renders if the nav_items table is empty or unreachable. */
+/**
+ * What renders if the nav_items table is empty or unreachable.
+ *
+ * Kept in step with the real menu on purpose: it used to still list
+ * `/md-ms-india/cutoffs`, a route that has redirected for weeks, so the one
+ * time this fallback mattered it would have shipped a dead link.
+ *
+ * Labels are short because the bar has to hold eight items on one line —
+ * "MBBS India" and "PG – MD/MS" wrapped it onto two and looked broken. The
+ * section a link leads to says the rest.
+ */
 const FALLBACK_NAV: NavItem[] = [
   { id: -1, label: 'Home', url: '/', newTab: false, children: [] },
+  { id: -2, label: 'NEET College Predictor', url: '/neet-college-predictor', newTab: false, children: [] },
   {
-    id: -2, label: 'MBBS India', url: '/mbbs-india', newTab: false,
+    id: -3, label: 'MBBS', url: '/mbbs-india', newTab: false,
     children: [
-      { id: -21, label: 'Deemed Universities', url: '/mbbs-india/deemed-universities', newTab: false, children: [] },
-      { id: -22, label: 'Govt & Pvt Colleges', url: '/mbbs-india/colleges', newTab: false, children: [] },
-      { id: -23, label: 'NEET UG Process', url: '/neet-ug-process', newTab: false, children: [] },
+      { id: -31, label: 'Deemed Universities', url: '/mbbs-india/deemed-universities', newTab: false, children: [] },
+      { id: -32, label: 'Govt & Pvt Colleges', url: '/mbbs-india/colleges', newTab: false, children: [] },
+      { id: -33, label: 'NEET UG Process', url: '/neet-ug-process', newTab: false, children: [] },
     ],
   },
   {
-    id: -3, label: 'PG – MD/MS', url: '/md-ms-india', newTab: false,
+    id: -4, label: 'MD/MS', url: '/md-ms-india', newTab: false,
     children: [
-      { id: -31, label: 'College Predictor', url: '/neet-college-predictor', newTab: false, children: [] },
-      { id: -32, label: 'All PG Colleges', url: '/md-ms-india/colleges', newTab: false, children: [] },
-      { id: -33, label: 'Closing Ranks', url: '/md-ms-india/cutoffs', newTab: false, children: [] },
+      { id: -41, label: 'All PG Colleges', url: '/md-ms-india/colleges', newTab: false, children: [] },
+      { id: -42, label: 'NEET PG Process', url: '/neet-pg-process', newTab: false, children: [] },
     ],
   },
-  { id: -4, label: 'Services', url: '/services', newTab: false, children: [] },
-  { id: -5, label: 'Know Us', url: '/know-us', newTab: false, children: [] },
-  { id: -6, label: 'Terms', url: '/terms', newTab: false, children: [] },
+  {
+    id: -5, label: 'NRI', url: '/nri-quota', newTab: false,
+    children: [
+      { id: -51, label: 'NRI Quota Colleges', url: '/nri-quota/colleges', newTab: false, children: [] },
+      { id: -52, label: 'Documents Required', url: '/nri-quota/documents', newTab: false, children: [] },
+    ],
+  },
+  { id: -6, label: 'Services', url: '/services', newTab: false, children: [] },
+  { id: -7, label: 'Know Us', url: '/know-us', newTab: false, children: [] },
+  { id: -8, label: 'Videos', url: '/videos', newTab: false, children: [] },
 ];
 
 export default function Header({
@@ -134,7 +151,7 @@ export default function Header({
           </Link>
 
           {/* Center: Centered Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2 mx-auto">
+          <nav className="mx-auto hidden items-center gap-0.5 lg:flex xl:gap-1.5">
             {navLinks.map((link) => {
               const isActive = pathname === link.url;
               const hasDropdown = link.children.length > 0;
@@ -144,7 +161,7 @@ export default function Header({
                     href={link.url}
                     target={link.newTab ? '_blank' : undefined}
                     rel={link.newTab ? 'noopener noreferrer' : undefined}
-                    className={`flex items-center gap-1 px-3.5 py-2 rounded-full text-xs xl:text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                    className={`flex items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-2 text-xs font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background xl:px-3.5 xl:text-sm ${
                       isActive
                         ? 'bg-primary-soft text-primary-strong dark:text-primary'
                         : 'text-muted-foreground hover:text-primary hover:bg-primary-soft/60'
