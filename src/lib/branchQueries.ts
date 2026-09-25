@@ -149,8 +149,9 @@ async function loadBranch(slug: string, category: string): Promise<BranchDetail 
                SUM(COALESCE(so.seats_latest, 1))::int AS seats,
                MIN(so.r1_latest)::int      AS r1,
                MAX(so.widest_latest)::int  AS widest,
-               MIN(so.fee_inr)::bigint     AS fee_min,
-               MAX(so.fee_inr)::bigint     AS fee_max
+               -- Zero means "not published", not free. See quotaQueries.ts.
+               MIN(NULLIF(so.fee_inr, 0))::bigint AS fee_min,
+               MAX(NULLIF(so.fee_inr, 0))::bigint AS fee_max
           FROM seat_options so
           JOIN courses c    ON c.id = so.course_id
           JOIN institutes i ON i.id = so.institute_id

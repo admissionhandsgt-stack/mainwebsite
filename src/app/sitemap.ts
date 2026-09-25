@@ -35,6 +35,10 @@ const STATIC: { path: string; priority: number; freq: MetadataRoute.Sitemap[numb
   { path: "/md-ms-india/branches", priority: 0.8, freq: "weekly" },
   { path: "/nri-quota", priority: 0.7, freq: "monthly" },
   { path: "/nri-quota/colleges", priority: 0.6, freq: "monthly" },
+  // The two highest-value quota queries in this market: what an NRI or a
+  // management seat costs, and what rank it stays open to.
+  { path: "/nri-quota/fees", priority: 0.9, freq: "weekly" },
+  { path: "/management-quota", priority: 0.9, freq: "weekly" },
   { path: "/nri-quota/documents", priority: 0.6, freq: "monthly" },
   { path: "/neet-ug-process", priority: 0.7, freq: "monthly" },
   { path: "/neet-pg-process", priority: 0.8, freq: "monthly" },
