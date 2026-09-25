@@ -1,9 +1,26 @@
 /**
- * whatsappService.ts
- * Server-side service to trigger WhatsApp alerts for new admissions leads.
- * Supports sending notifications to multiple comma-separated numbers in parallel.
+ * Telling the team a lead came in.
+ *
+ * **This was silently doing nothing.** It supported Meta Cloud API, Twilio and
+ * a generic webhook, every one of which needs an environment variable, and
+ * none of those were ever set on the server. So every enquiry since go-live
+ * logged `[WhatsApp Alert] Credentials missing` and stopped there — including
+ * a real candidate at 08:49 on 2026-09-25 whom nobody was told about. The form
+ * worked, the row was written, `/admin/leads` showed it, and the alert was a
+ * line in journalctl.
+ *
+ * Our own WAHA gateway is paired and working and costs nothing, so it is now
+ * tried first and the paid providers are the fallback rather than the only
+ * option. Nothing has to be configured for alerts to work; the gateway that
+ * already sends sign-in codes sends these too.
+ *
+ * Order: gateway, then Meta, then Twilio, then a webhook. The first one that
+ * is actually configured wins, and if none is, that is now a loud failure in
+ * the error log rather than a warning nobody reads.
  */
 import { getContactInfo } from '@/lib/content';
+import { sendText, gatewayConfigured } from '@/lib/waGateway';
+import { logError } from '@/lib/logger';
 
 interface LeadNotificationPayload {
   name: string;
@@ -52,23 +69,65 @@ export async function sendWhatsAppNotification(lead: LeadNotificationPayload): P
   // Resolve recipient numbers dynamically
   const recipients = await getRecipientNumbers();
 
-  const messageText = `🩺 *NEW PG ADVISORY LEAD*
+  // Only the lines that have something in them. A message where five fields
+  // out of eight say "Not Specified" reads as a system fault rather than as an
+  // enquiry, and it buries the phone number — the one thing a counsellor
+  // actually needs in order to act.
+  const detail = [
+    ['Rank', lead.rank],
+    ['Branch', lead.preferred_branch],
+    ['States', lead.preferred_state],
+    ['Quota', lead.quota_interest],
+    ['Internship', lead.internship_status],
+  ]
+    .filter(([, v]) => v !== undefined && v !== null && String(v).trim() !== '')
+    .map(([k, v]) => `${k}: ${v}`)
+    .join('\n');
 
-👤 *Name:* ${lead.name}
-📞 *Phone:* ${lead.phone}
-🏆 *NEET PG Rank:* ${lead.rank || 'Not Provided'}
-🧠 *Branch:* ${lead.preferred_branch || 'Not Specified'}
-📍 *States:* ${lead.preferred_state || 'Not Specified'}
-🎯 *Quota:* ${lead.quota_interest || 'Not Specified'}
-📅 *Internship:* ${lead.internship_status || 'Not Specified'}
+  const messageText =
+    `*New enquiry — ${lead.name}*\n\n` +
+    `📞 ${lead.phone}\n` +
+    (detail ? `\n${detail}\n` : '') +
+    `\n${lead.source}\n` +
+    `${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}`;
 
-Source: ${lead.source}
-Time: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}`;
+  /**
+   * Our own gateway first.
+   *
+   * It is already paired, it costs nothing per message, and the recipients are
+   * the same two staff numbers every time — which is ordinary traffic, not the
+   * stranger-blasting pattern that gets a number restricted.
+   *
+   * `WHATSAPP_PROVIDER` set explicitly skips this, so an operator who has
+   * bought Meta or Twilio access can pin it.
+   */
+  if (!process.env.WHATSAPP_PROVIDER && (await gatewayConfigured())) {
+    const results = await Promise.all(
+      recipients.map(async (to) => {
+        const r = await sendText(to, messageText);
+        if (!r.sent) {
+          logError(new Error(`Lead alert to ${to} failed: ${r.error}`), {
+            route: 'whatsappService',
+          });
+        }
+        return r.sent;
+      }),
+    );
+    if (results.some(Boolean)) return true;
+    // Fall through: a gateway that is down should not stop a configured paid
+    // provider from being tried.
+  }
 
-  // Safe logging fallback when keys are absent
   if (!token && provider !== 'webhook') {
-    console.warn(
-      `[WhatsApp Alert] Credentials missing. Targets: [${recipients.join(', ')}]. Lead: Name="${lead.name}", Rank="${lead.rank}"`
+    // Loud, because this is a lead nobody has been told about. It used to be a
+    // console.warn, which is how it went unnoticed from go-live until someone
+    // asked where the alerts were going.
+    logError(
+      new Error(
+        `Lead alert could not be delivered — no WhatsApp gateway and no provider credentials. ` +
+          `Lead: ${lead.name} / ${lead.phone} (${lead.source})`,
+      ),
+      { route: 'whatsappService' },
     );
     return false;
   }

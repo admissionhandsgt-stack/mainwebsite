@@ -51,8 +51,8 @@
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { normalisePhone } from "@/lib/leadGate";
-import { getIntegration } from "@/lib/integrations";
 import { logError } from "@/lib/logger";
+import { sendText } from "@/lib/waGateway";
 
 /** Long enough to switch apps and read it, short enough to be worth little. */
 const TTL_MINUTES = 10;
@@ -66,9 +66,6 @@ const PER_DAY = 8;
 
 /** The gateway number's own ceiling, whoever is asking. */
 const GATEWAY_PER_DAY = 300;
-
-/** The WAHA session name, as the admin screen creates it. */
-const SESSION = "default";
 
 export type OtpPurpose = "signup" | "reset";
 export type SentChannel = "whatsapp" | "inbound";
@@ -192,48 +189,6 @@ async function withinCaps(phone: string): Promise<CapResult> {
 /* ------------------------------------------------------------------ send */
 
 /**
- * Hands the message to the gateway.
- *
- * Returns false rather than throwing, on every failure including an unreachable
- * gateway: the caller's job is to fall back, not to crash.
- */
-async function sendViaGateway(phone: string, text: string): Promise<boolean> {
-  const [base, key] = await Promise.all([
-    getIntegration("whatsapp.gateway.url"),
-    getIntegration("whatsapp.gateway.api_key"),
-  ]);
-  if (!base) return false;
-
-  // WAHA addresses a person as `<digits>@c.us`, with no `+`.
-  const chatId = `${phone.replace(/\D/g, "")}@c.us`;
-
-  try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 15_000);
-    const res = await fetch(`${base.replace(/\/+$/, "")}/api/sendText`, {
-      method: "POST",
-      signal: controller.signal,
-      headers: {
-        "Content-Type": "application/json",
-        ...(key ? { "X-Api-Key": key } : {}),
-      },
-      body: JSON.stringify({ session: SESSION, chatId, text }),
-    });
-    clearTimeout(timer);
-    if (!res.ok) {
-      logError(new Error(`WAHA sendText ${res.status}: ${(await res.text()).slice(0, 200)}`), {
-        route: "otp:send",
-      });
-      return false;
-    }
-    return true;
-  } catch (error) {
-    logError(error, { route: "otp:send" });
-    return false;
-  }
-}
-
-/**
  * The message itself.
  *
  * Written as a person would write it, names the brand so it is not a bare
@@ -319,7 +274,7 @@ export async function issueCode(input: IssueInput): Promise<IssueResult> {
   // after the form submit. Cheap here, and it is one of three signals.
   await new Promise((r) => setTimeout(r, 400 + Math.floor(Math.random() * 1400)));
 
-  const sent = await sendViaGateway(phone, composeMessage(code, input.purpose));
+  const sent = (await sendText(phone, composeMessage(code, input.purpose))).sent;
 
   if (!sent) {
     // Retire it rather than leave a code nobody received looking live, and

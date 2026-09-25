@@ -471,6 +471,26 @@ export default function WhatsAppAdminPage() {
             <Pill tone="good">
               <Check className="h-3.5 w-3.5" /> Connected
             </Pill>
+
+            {/* The alerts this number also sends: a lead form, a document
+                upload. Worth being able to prove they arrive, because when
+                they stopped arriving nobody noticed for weeks. */}
+            <button
+              onClick={async () => {
+                const r = await post({ action: "test-alert" }, "test-alert");
+                if (r) {
+                  setMsg({
+                    kind: "ok",
+                    text: "Test alert sent. Check the number set under Contacts → lead notifications.",
+                  });
+                }
+              }}
+              disabled={busy === "test-alert"}
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+            >
+              Send a test lead alert
+            </button>
+
             <button
               onClick={async () => {
                 if (!confirm("Disconnect this number? Verification stops working until you pair again.")) return;

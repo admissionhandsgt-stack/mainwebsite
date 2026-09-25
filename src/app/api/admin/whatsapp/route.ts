@@ -8,6 +8,7 @@ import {
   envPinnedKeys,
   maskSecret,
 } from "@/lib/integrations";
+import { sendWhatsAppNotification } from "@/lib/whatsappService";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -326,6 +327,36 @@ export async function POST(request: Request) {
         }
         const code = (res.body as { code?: string })?.code ?? null;
         return NextResponse.json({ ok: true, code });
+      }
+
+      /**
+       * Prove the alerts actually arrive.
+       *
+       * Sends a real message down the real path — the same function a lead
+       * form calls, to the same number the alerts go to. A test that mocks
+       * anything would not have caught the bug this was written for: alerts
+       * had been failing silently since go-live because the credentials the
+       * old providers needed were never set, and nobody found out until
+       * somebody asked where the notifications were going.
+       */
+      case "test-alert": {
+        const delivered = await sendWhatsAppNotification({
+          name: "Test enquiry",
+          phone: "+910000000000",
+          rank: 12345,
+          preferred_branch: "MD Radiology",
+          source: "Test from Admin → WhatsApp",
+        });
+        return delivered
+          ? NextResponse.json({ ok: true })
+          : NextResponse.json(
+              {
+                error:
+                  "Nothing was delivered. Check the gateway is connected above, and that a lead " +
+                  "alert number is set under Contacts.",
+              },
+              { status: 502 },
+            );
       }
 
       case "logout": {
