@@ -7,10 +7,16 @@
  * impossible — nothing served publicly can — it makes it slow enough to be
  * not worth doing, and visible when someone tries.
  *
- * **This is per-isolate, in memory.** On Cloudflare Workers each isolate keeps
- * its own counter, so the real ceiling is higher than the number configured
- * here. It is a speed bump, not an enforcement boundary; a distributed limit
- * needs Redis or a Durable Object, and that is noted as a gap.
+ * **In memory, and that is now enough.** This was written for Cloudflare
+ * Workers, where every isolate kept its own counter and the real ceiling was
+ * therefore unknowable — a speed bump rather than a boundary. The app has
+ * since moved to a single Node process behind Caddy on the VPS, so one map
+ * sees every request and the configured number is the actual limit.
+ *
+ * Two things that follow: it resets on deploy, which is acceptable for a
+ * window measured in minutes; and if the app is ever run as more than one
+ * process, this silently becomes a per-process limit again. Anything that
+ * changes the process model has to revisit this file.
  */
 
 interface Bucket {

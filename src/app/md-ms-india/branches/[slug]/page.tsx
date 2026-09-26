@@ -5,6 +5,7 @@ import { AlertTriangle, ArrowRight, Building2, MapPin, Search, TrendingDown } fr
 import { getBranch, getBranches, DEFAULT_CATEGORY } from "@/lib/branchQueries";
 import StructuredData from "@/components/seo/StructuredData";
 import CtaBand from "@/components/ui/CtaBand";
+import GatedSeatTable from "@/components/seats/GatedSeatTable";
 
 export const revalidate = 86400;
 
@@ -23,6 +24,16 @@ export const revalidate = 86400;
  * and a general rank beside a reserved one is not a comparison.
  */
 const SITE = "https://www.admissionhands.com";
+
+/**
+ * How many rows ship in the HTML.
+ *
+ * Enough to be genuinely useful and to rank on — more than any competitor
+ * publishes at all — and few enough that walking 101 branches across ten
+ * categories is not a way to rebuild the seat data. The rest is behind the
+ * same gate as everything else, via `/api/seat-rows`.
+ */
+const PUBLIC_ROWS = 40;
 
 export async function generateStaticParams() {
   const branches = await getBranches();
@@ -233,74 +244,13 @@ export default async function BranchPage({
               No {b.category} seats are published for this branch. Try another category above.
             </p>
           ) : (
-            <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
-              <table className="w-full min-w-[760px] table-fixed border-collapse">
-                <thead>
-                  <tr className="bg-surface-2">
-                    {[
-                      ["College", "w-[32%] text-left"],
-                      ["Quota", "w-[20%] text-left"],
-                      ["Seats", "w-[10%] text-right"],
-                      ["R1 close", "w-[12%] text-right"],
-                      ["Widest", "w-[13%] text-right"],
-                      ["Fee / yr", "w-[13%] text-right"],
-                    ].map(([h, cls]) => (
-                      <th
-                        key={h}
-                        scope="col"
-                        className={`px-4 py-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground ${cls}`}
-                      >
-                        {h}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {b.rowsList.map((r) => (
-                    <tr key={`${r.slug}-${r.quota}`} className="border-t border-border hover:bg-surface-2">
-                      <td className="px-4 py-3 align-top">
-                        <Link
-                          href={`/md-ms-india/colleges/${r.slug}`}
-                          className="-my-1.5 block py-1.5 text-[14px] font-semibold leading-snug text-foreground hover:text-primary"
-                        >
-                          {r.college}
-                        </Link>
-                        <p className="mt-0.5 flex items-center gap-1 text-[12px] text-muted-foreground">
-                          <MapPin className="h-3 w-3" aria-hidden="true" />
-                          {r.state ?? "—"}
-                          {r.ownership !== "other" && (
-                            <>
-                              <span aria-hidden="true">·</span>
-                              <span className="capitalize">{r.ownership}</span>
-                            </>
-                          )}
-                        </p>
-                      </td>
-                      <td className="px-4 py-3 align-top text-[13px] leading-snug text-foreground">
-                        {r.quota}
-                      </td>
-                      <td className="tnum px-4 py-3 text-right align-top text-[14px] text-foreground">
-                        {r.seats}
-                      </td>
-                      <td className="tnum px-4 py-3 text-right align-top text-[14px] text-muted-foreground">
-                        {inr(r.r1)}
-                      </td>
-                      <td className="tnum px-4 py-3 text-right align-top text-[14px] font-semibold text-foreground">
-                        {inr(r.widest)}
-                      </td>
-                      <td className="tnum px-4 py-3 text-right align-top text-[14px] text-foreground">
-                        {money(r.feeInr)}
-                        {r.feeMaxInr != null && (
-                          <span className="block text-[11px] text-muted-foreground">
-                            to {money(r.feeMaxInr)}
-                          </span>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <GatedSeatTable
+              preview={b.rowsList.slice(0, PUBLIC_ROWS)}
+              total={b.rowsList.length}
+              query={`kind=branch&slug=${encodeURIComponent(b.slug)}&category=${encodeURIComponent(b.category)}`}
+              collegeBase="/md-ms-india/colleges"
+              noun="seats"
+            />
           )}
 
           {b.truncated && (

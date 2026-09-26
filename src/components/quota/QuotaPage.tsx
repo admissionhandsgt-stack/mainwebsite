@@ -3,8 +3,16 @@ import { AlertTriangle, ArrowRight, MapPin, Search, TrendingDown } from "lucide-
 import type { QuotaOverview } from "@/lib/quotaQueries";
 import StructuredData from "@/components/seo/StructuredData";
 import CtaBand from "@/components/ui/CtaBand";
+import GatedSeatTable from "@/components/seats/GatedSeatTable";
 
 const SITE = "https://www.admissionhands.com";
+
+/**
+ * How many rows ship in the HTML. See the note in the branch page — these
+ * seats carry a fee as well as a rank, which makes them the most valuable
+ * rows on the site to harvest and the ones worth gating hardest.
+ */
+const PUBLIC_ROWS = 40;
 
 const inr = (v: number | null | undefined) => (v == null ? "—" : v.toLocaleString("en-IN"));
 
@@ -141,53 +149,14 @@ export default function QuotaPage({
               {pg.year ? `, from the ${pg.year} counselling results` : ""}. Widest reach first.
             </p>
 
-            <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
-              <table className="w-full min-w-[820px] table-fixed border-collapse">
-                <thead>
-                  <tr className="bg-surface-2">
-                    {[
-                      ["College", "w-[28%] text-left"],
-                      ["Branch", "w-[20%] text-left"],
-                      ["Quota", "w-[18%] text-left"],
-                      ["R1 close", "w-[11%] text-right"],
-                      ["Widest", "w-[11%] text-right"],
-                      ["Fee / yr", "w-[12%] text-right"],
-                    ].map(([h, cls]) => (
-                      <th
-                        key={h}
-                        scope="col"
-                        className={`px-4 py-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground ${cls}`}
-                      >
-                        {h}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {pg.rowsList.map((r, i) => (
-                    <tr key={`${r.slug}-${r.course}-${r.quota}-${i}`} className="border-t border-border hover:bg-surface-2">
-                      <td className="px-4 py-3 align-top">
-                        <Link
-                          href={`/md-ms-india/colleges/${r.slug}`}
-                          className="-my-1.5 block py-1.5 text-[14px] font-semibold leading-snug text-foreground hover:text-primary"
-                        >
-                          {r.college}
-                        </Link>
-                        <p className="mt-0.5 flex items-center gap-1 text-[12px] text-muted-foreground">
-                          <MapPin className="h-3 w-3" aria-hidden="true" />
-                          {r.state ?? "—"}
-                        </p>
-                      </td>
-                      <td className="px-4 py-3 align-top text-[13.5px] leading-snug text-foreground">{r.course}</td>
-                      <td className="px-4 py-3 align-top text-[12.5px] leading-snug text-muted-foreground">{r.quota}</td>
-                      <td className="tnum px-4 py-3 text-right align-top text-[14px] text-muted-foreground">{inr(r.r1)}</td>
-                      <td className="tnum px-4 py-3 text-right align-top text-[14px] font-semibold text-foreground">{inr(r.widest)}</td>
-                      <td className="tnum px-4 py-3 text-right align-top text-[14px] font-semibold text-foreground">{money(r.feeInr)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <GatedSeatTable
+              preview={pg.rowsList.slice(0, PUBLIC_ROWS)}
+              total={pg.rowsList.length}
+              query={`kind=quota&family=${encodeURIComponent(family.id)}&level=pg`}
+              collegeBase="/md-ms-india/colleges"
+              showCourse
+              noun="seats"
+            />
 
             {pg.truncated && (
               <p className="mt-3 text-[13px] text-muted-foreground">
@@ -236,7 +205,7 @@ export default function QuotaPage({
                   </tr>
                 </thead>
                 <tbody>
-                  {ug.rowsList.slice(0, 120).map((r, i) => (
+                  {ug.rowsList.slice(0, PUBLIC_ROWS).map((r, i) => (
                     <tr key={`${r.slug}-${r.quota}-${i}`} className="border-t border-border hover:bg-surface-2">
                       <td className="px-4 py-3 align-top">
                         <Link
@@ -259,6 +228,13 @@ export default function QuotaPage({
                 </tbody>
               </table>
             </div>
+
+            {ug.rowsList.length > PUBLIC_ROWS && (
+              <p className="mt-3 text-[13px] text-muted-foreground">
+                Showing {PUBLIC_ROWS} of {inr(ug.rowsList.length)} MBBS seats. The predictor narrows
+                them to the ones your own rank reaches.
+              </p>
+            )}
           </section>
         )}
 
