@@ -6,6 +6,7 @@ import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
 import { userFromRequest } from "@/lib/userAuth";
 import { documentType } from "@/lib/documentCatalogue";
 import { MAX_BYTES, ACCEPTED_LABEL, detectFormat, safeDisplayName } from "@/lib/documents";
+import { documentEncryptionReady, sealDocument } from "@/lib/documentCrypto";
 import { notifyDocumentUpload } from "@/lib/documentNotify";
 
 export const dynamic = "force-dynamic";
@@ -110,13 +111,31 @@ export async function POST(request: Request) {
     );
   }
 
+  // Refuse rather than store an identity document in the clear. See
+  // documentCrypto.ts — a missing key must be a visible failure, not a quiet
+  // downgrade.
+  if (!documentEncryptionReady()) {
+    logError(new Error("DOCUMENT_KEY is not set; refusing to store a document"), {
+      route: "/api/documents",
+      request,
+    });
+    return NextResponse.json(
+      { error: "Uploads are temporarily unavailable. Please try again shortly." },
+      { status: 503 },
+    );
+  }
+
   try {
+    // `size_bytes` stays the size of the real file, not of the sealed blob —
+    // it is what the student is shown.
+    const sealed = sealDocument(buffer);
+
     const rows = (await db.execute(sql`
       INSERT INTO student_documents
         (user_id, doc_type, original_name, mime_type, size_bytes, content)
       VALUES (
         ${user.id}, ${docType}, ${safeDisplayName(file.name)},
-        ${format.mime}, ${buffer.length}, ${buffer}
+        ${format.mime}, ${buffer.length}, ${sealed}
       )
       ON CONFLICT (user_id, doc_type) DO UPDATE SET
         original_name = EXCLUDED.original_name,

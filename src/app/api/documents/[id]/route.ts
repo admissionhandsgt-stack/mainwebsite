@@ -4,6 +4,7 @@ import { sql } from "drizzle-orm";
 import { logError } from "@/lib/logger";
 import { userFromRequest } from "@/lib/userAuth";
 import { getSessionUser } from "@/lib/auth";
+import { openDocument } from "@/lib/documentCrypto";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -52,7 +53,9 @@ export async function GET(request: Request, { params }: { params: { id: string }
     const content = data[0]?.content;
     if (!content) return NextResponse.json({ error: "Not found." }, { status: 404 });
 
-    const bytes = Buffer.isBuffer(content) ? content : Buffer.from(content);
+    // Stored sealed (documentCrypto.ts). This is the only place it is opened,
+    // and the bytes never touch the disk on the way out.
+    const bytes = openDocument(Buffer.isBuffer(content) ? content : Buffer.from(content));
 
     // `attachment` on purpose. Rendering an uploaded file inline would run any
     // script inside an SVG or an HTML file mislabelled as something else, in
