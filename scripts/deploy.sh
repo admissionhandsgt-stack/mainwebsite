@@ -90,6 +90,18 @@ ssh_ "mkdir -p $APP_DIR/releases/$RELEASE/.next/cache && chown -R admissionhands
 # release gets a symlink to it. Student documents never go near public/ at all
 # — see DOCUMENT_STORE and src/lib/documents.ts.
 ssh_ "install -d -o admissionhands -g admissionhands -m 755 $APP_DIR/uploads/images       && install -d -o admissionhands -g admissionhands -m 700 $APP_DIR/uploads/documents       && if [ -d $APP_DIR/releases/$RELEASE/public/assets/images/uploads ] && [ ! -L $APP_DIR/releases/$RELEASE/public/assets/images/uploads ]; then            cp -an $APP_DIR/releases/$RELEASE/public/assets/images/uploads/. $APP_DIR/uploads/images/ 2>/dev/null || true;            rm -rf $APP_DIR/releases/$RELEASE/public/assets/images/uploads;          fi       && ln -sfn $APP_DIR/uploads/images $APP_DIR/releases/$RELEASE/public/assets/images/uploads       && chown -h admissionhands:admissionhands $APP_DIR/releases/$RELEASE/public/assets/images/uploads       && chown -R admissionhands:admissionhands $APP_DIR/uploads"
+# The native halves of sharp are built for the machine that ran npm install.
+#
+# This repo is developed on Windows, so the node_modules the standalone build
+# carries hold @img/sharp-win32-x64 and nothing else. Node then refuses to load
+# sharp on the box, Next falls back to no image optimisation, and every
+# /_next/image request answers 500 — 96 of them in the day this was found. The
+# page still renders, which is why it went unnoticed.
+#
+# The linux binaries are installed once into $APP_DIR/shared/native and linked
+# into each release, so a deploy from any machine lands a working sharp.
+ssh_ "set -e; S=$APP_DIR/shared/native;   if [ ! -d \$S/node_modules/@img/sharp-linux-x64 ]; then     install -d \$S && cd \$S && npm install --no-save --no-audit --no-fund --os=linux --libc=glibc --cpu=x64 sharp@\$(node -e \"process.stdout.write(require('$APP_DIR/releases/$RELEASE/node_modules/sharp/package.json').version)\") >/dev/null;   fi;   D=$APP_DIR/releases/$RELEASE/node_modules/@img;   for pkg in sharp-linux-x64 sharp-libvips-linux-x64; do     rm -rf \$D/\$pkg && ln -s \$S/node_modules/@img/\$pkg \$D/\$pkg;   done;   cd $APP_DIR/releases/$RELEASE && node -e \"require('sharp')\""
+
 rm -f .deploy.tgz
 
 # ------------------------------------------------------------------ switch
