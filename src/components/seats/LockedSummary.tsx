@@ -86,7 +86,10 @@ export default function LockedSummary({
 
   return (
     <>
-      <div className={`${GATED_CLASS} mt-5 overflow-hidden rounded-2xl border border-border bg-card`}>
+      <div
+        data-testid="locked-summary"
+        className={`${GATED_CLASS} mt-5 overflow-hidden rounded-2xl border border-border bg-card`}
+      >
         <div className="border-b border-border bg-surface-2 px-5 py-4">
           <p className="flex items-center gap-2 text-[13px] font-semibold text-foreground">
             <Lock className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />

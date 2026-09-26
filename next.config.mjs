@@ -16,7 +16,11 @@ const CSP = [
   // Tailwind and next/font inject styles at runtime.
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com data:",
-  "img-src 'self' data: blob: https://images.unsplash.com https://img.youtube.com https://www.google-analytics.com",
+  // GA4 sends some hits as an image to googletagmanager.com/a, not only to
+  // google-analytics.com. Leaving that host out of img-src blocked those
+  // beacons — the page worked, the console said so, and nobody was reading the
+  // console. Found by the Playwright gate suite on Android Chrome.
+  "img-src 'self' data: blob: https://images.unsplash.com https://img.youtube.com https://www.google-analytics.com https://www.googletagmanager.com",
   "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com",
   // GA4 posts its events to google.com/g/collect as well as
   // google-analytics.com; leaving it out silently kills analytics.

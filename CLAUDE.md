@@ -21,7 +21,9 @@ npm run dev          # next dev on :3000
 npm run build        # next build  <- run this to verify any structural change
 npm run typecheck    # tsc --noEmit
 npm run lint
-npm run test:e2e     # playwright (expects a running dev server, see playwright.config.ts)
+npm run test:e2e     # playwright, against production by default (BASE_URL overrides)
+npm run test:gate    # the gate in a real browser: anonymous, spoofed crawler, signed in
+npm run test:width   # the --page-max ladder and horizontal overflow, 11 viewport steps
 npm run smoke -- <url>                   # 57 black-box checks: routes, gate, redirects, claims
 npm run verify:gate -- <url>             # the seat gate, from outside: nothing public, crawler spoofing refused
 node scripts/audit_site.mjs <url>        # in-browser QA: a11y, tap targets, metadata, links
@@ -873,6 +875,51 @@ Three suites, all runnable against production:
 | `scripts/verify_gate.mjs` | That no seat row reaches an anonymous visitor on six page families, that a spoofed crawler user-agent and a forged `X-Forwarded-For` both stay locked, that every gated page declares `isAccessibleForFree: false`, and that a verified session does get the rows |
 | `scripts/verify_ipranges.mjs` | The other direction, which fails silently: that `inRanges()` matches **all 617** prefixes Google and Bing publish, and no ordinary address. A matcher that wrongly rejects serves Googlebot the locked page, logs nothing, and stops 3,600 pages ranking weeks later |
 
+### The Playwright suite, rebuilt 2026-09-27
+
+`playwright.config.ts` points at **production by default** and `BASE_URL` overrides it. That is
+deliberate: the crawler check reads the forwarded address, which only Caddy sets, so a gate tested
+against `next dev` is not the gate. A dev server is started only when the target *is* the dev server.
+
+```bash
+npm run test:e2e                                        # everything, against production
+BASE_URL=http://localhost:8120 npm run test:e2e         # the box, through the tunnel
+BASE_URL=http://localhost:3000 npm run test:e2e         # local dev, started for you
+npx playwright test --project=legacy                    # the May specs, deliberately
+```
+
+| Spec | What it proves that a `curl` check cannot |
+|---|---|
+| `gate.spec.ts` | That nothing appears **after hydration**. The HTML can be clean while a client component fetches rows on mount and renders them — which is exactly what `CollegeCutoffs` used to do. It also records every request the browser makes and fails if any depth endpoint answered 200 |
+| `paywall.spec.ts` | That the `cssSelector` in the JSON-LD **matches a real element**, and that the locked block is inside it. Rename the class and the markup still reads perfectly while pointing at nothing — and the site is then cloaking, silently |
+| `crawler-spoof.spec.ts` | That a Googlebot user-agent, a forged `X-Forwarded-For`, and a forged multi-hop chain all stay locked, through pages *and* the APIs |
+| `signed-in.spec.ts` | That the gate **opens** — a gate that never opens passes every other assertion here and is an outage — and that revoking the session closes it again, which a signed-token shortcut would not |
+| `responsive-width.spec.ts` | What the cascade actually resolved `--page-max` to at 11 viewport widths. Reading `layout.css` only confirms what was written |
+
+Both gated components carry a `data-testid` (`seat-table`, `locked-summary`) so the assertions name an
+element rather than a wording. But a `data-testid` is checked **alongside** a column-heading match, not
+instead of it: `expect(SEAT_TABLE).toHaveCount(0)` is *vacuously true* the moment somebody drops the
+attribute, and would pass with the whole table on the page. `signed-in.spec.ts` is the third leg — it
+asserts the hook does match when the gate opens, so the hook cannot quietly disappear either.
+
+The heading check is scoped to `table thead`. A first version searched the whole page for "Widest" and
+failed on the college pages, where the prose explains what the word means — a canary that cannot tell
+copy from a leak is one nobody keeps.
+
+**Console errors are filtered; uncaught exceptions are not.** Three browser projects at four workers
+each against a live site collect "Failed to load resource" from their own load, which fails the run and
+means nothing. `pageerror` is the signal that is always the page's fault.
+
+**What this suite found on its first full run:** the CSP's `img-src` allowed
+`www.google-analytics.com` but not `www.googletagmanager.com`, and GA4 sends some hits as an image to
+`googletagmanager.com/a`. Those beacons were blocked — the page worked, the console said so, and nobody
+reads the console. Analytics had been quietly losing data. Fixed in `next.config.mjs`; the comment there
+says why the host is needed so it is not tidied away again.
+
+`signed-in.spec.ts` writes a verified session row to the live database and removes it in `afterAll`
+even when the run is red. It needs `DATABASE_URL`, so the SSH tunnel has to be open; without it that
+file fails fast with a message saying so rather than silently skipping.
+
 **Do not run the audit across a deploy.** It reported two branch pages as broken internal links
 (HTTP 502); both answer 200, the logs are clean, and a sweep of all 101 passes. The service
 restarts when `deploy.sh` switches the symlink, and the crawl was in flight. Finish deploying, then
@@ -1163,7 +1210,11 @@ Ordered by what would hurt first.
    long tail is no longer a free full dump. What stays public by design is those 8 rows across
    ~3,500 pages — the price of the SEO, and a far smaller surface than the whole table was.
 5. JSON-LD renders only on the homepage, NRI page, PG college pages and `/mbbs-india/colleges`.
-6. **Playwright specs in `tests/` predate all of this** and have not been updated.
+6. **The May Playwright specs are in `tests/legacy/` and excluded** from the default run
+   (`testIgnore`), because they were written against a site that has since been largely rebuilt —
+   merged predictors, removed explorers, the whole gate. Several of their checks are worth
+   salvaging; run them deliberately with `--project=legacy`. What replaced them covers the gate,
+   the paywall declaration and the width ladder (see "Checking the work").
 7. **`/services` and `/neet-ug-process` are not section-controlled** — each is one client component,
    so there is nothing to order or hide yet.
 8. Global `cache: 'no-store'` fetch override means no client caching anywhere.

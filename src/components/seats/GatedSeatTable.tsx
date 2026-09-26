@@ -122,7 +122,10 @@ export default function GatedSeatTable({
   ];
 
   return (
-    <div className={`${GATED_CLASS} mt-5 overflow-x-auto rounded-2xl border border-border bg-card`}>
+    <div
+      data-testid="seat-table"
+      className={`${GATED_CLASS} mt-5 overflow-x-auto rounded-2xl border border-border bg-card`}
+    >
       <table className="w-full min-w-[760px] table-fixed border-collapse">
         <thead>
           <tr className="bg-surface-2">
