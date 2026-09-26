@@ -252,7 +252,7 @@ export default function PredictorClient({ streams, facets }: Props) {
         />
         <div className="bg-grid pointer-events-none absolute inset-0 opacity-[0.07]" aria-hidden="true" />
 
-        <div className="relative mx-auto w-full max-w-[1600px] px-4 pb-24 pt-10 sm:px-6 md:pt-12 lg:px-8">
+        <div className="relative mx-auto w-full max-w-[calc(var(--page-max)+220px)] px-4 pb-24 pt-10 sm:px-6 md:pt-12 lg:px-8">
           {/* The tool is a product of the brand, and says so. */}
           <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
             <div className="flex items-center gap-3">
@@ -302,7 +302,7 @@ export default function PredictorClient({ streams, facets }: Props) {
 
       {/* The search panel lifts off the header rather than sitting under it, so
           the first thing on the page is the thing you came to use. */}
-      <div className="relative z-10 mx-auto -mt-12 w-full max-w-[1600px] px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 mx-auto -mt-12 w-full max-w-[calc(var(--page-max)+220px)] px-4 sm:px-6 lg:px-8">
         <section aria-label="Search" className="rounded-2xl border border-border bg-card shadow-lift">
           {/* The course picker leads, because it decides what everything below
               it means — which categories exist, and whether Branch applies. */}
@@ -446,7 +446,7 @@ export default function PredictorClient({ streams, facets }: Props) {
       {/* ------------------------------ results ------------------------------ */}
       <div
         ref={resultsRef}
-        className="mx-auto w-full max-w-[1600px] scroll-mt-24 px-4 pb-14 pt-8 sm:px-6 lg:px-8"
+        className="mx-auto w-full max-w-[calc(var(--page-max)+220px)] scroll-mt-24 px-4 pb-14 pt-8 sm:px-6 lg:px-8"
       >
         {loading && (
           <div className="space-y-3">

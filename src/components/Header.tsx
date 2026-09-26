@@ -136,7 +136,7 @@ export default function Header({
             : 'bg-background/40 backdrop-blur-md border-b border-transparent'
         }`}
       >
-        <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between gap-4">
+        <div className="w-full max-w-[var(--page-max)] mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between gap-4">
           {/* Extreme Left: Logo */}
           <Link href="/" className="flex min-h-[44px] items-center justify-start shrink-0 mr-2">
             <Image 

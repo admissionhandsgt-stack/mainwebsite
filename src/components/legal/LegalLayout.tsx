@@ -96,7 +96,7 @@ export default function LegalLayout({ sections }: LegalLayoutProps) {
       <div className="min-h-screen bg-white dark:bg-slate-950 transition-colors duration-200">
         {/* Page header */}
         <header className="border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-950 print:border-b-0">
-          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-3.5 pb-6 md:pt-4 md:pb-8">
+          <div className="max-w-[var(--page-max)] mx-auto px-4 sm:px-6 lg:px-8 pt-3.5 pb-6 md:pt-4 md:pb-8">
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
@@ -125,7 +125,7 @@ export default function LegalLayout({ sections }: LegalLayoutProps) {
         />
 
         {/* Main layout */}
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[var(--page-max)] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex relative">
             {/* Sidebar — desktop only */}
             <div className="hidden md:block flex-shrink-0 w-72 border-r border-slate-100 dark:border-slate-800/60 pr-8 pt-3 pb-8 print:hidden">

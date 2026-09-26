@@ -2,55 +2,57 @@
 /* ─── Global Responsive Layout System: Mobile-First Priority ─── */
 
 /* 1. Core Container System */
+/*
+ * The page width, as one variable.
+ *
+ * The ladder used to stop at 1400px from 1536px upward, so a 2560px display
+ * showed the site in a column with 45% of the screen empty either side. It
+ * keeps going now — but it is still a ladder, not `width: 100%`, because a
+ * line of body text running the full width of an ultrawide monitor is
+ * unreadable. The extra room goes where it helps: tables, grids and the
+ * predictor. Prose blocks carry their own `max-w-[..ch]` and stay put.
+ *
+ * Header and page bodies both read `--page-max`, so the nav always lines up
+ * with the content under it — they used to be set independently and drift.
+ */
+:root {
+  --page-max: 100%;
+  --page-gutter: 1rem;
+}
+
+@media (min-width: 640px)  { :root { --page-max: 640px; } }
+@media (min-width: 768px)  { :root { --page-max: 768px;  --page-gutter: 2rem; } }
+@media (min-width: 1024px) { :root { --page-max: 1024px; } }
+@media (min-width: 1280px) { :root { --page-max: 1280px; } }
+@media (min-width: 1536px) { :root { --page-max: 1440px; } }
+/* Beyond here the old ladder simply stopped. */
+@media (min-width: 1800px) { :root { --page-max: 1640px; } }
+@media (min-width: 2100px) { :root { --page-max: 1840px; } }
+@media (min-width: 2500px) { :root { --page-max: 2040px; } }
+
 .container,
 .container-custom {
   width: 100%;
+  max-width: var(--page-max);
   margin-left: auto;
   margin-right: auto;
-  padding-left: 1rem;   /* Mobile standard: px-4 (1rem) */
-  padding-right: 1rem;
+  padding-left: var(--page-gutter);
+  padding-right: var(--page-gutter);
+}
+
+/* For tables and data grids, which earn more width than prose does. */
+.container-wide {
+  width: 100%;
+  max-width: min(calc(var(--page-max) + 220px), 100%);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--page-gutter);
+  padding-right: var(--page-gutter);
 }
 
 .px-mobile {
   padding-left: 1rem;
   padding-right: 1rem;
-}
-
-@media (min-width: 640px) {
-  .container,
-  .container-custom {
-    max-width: 640px;
-  }
-}
-
-@media (min-width: 768px) {
-  .container,
-  .container-custom {
-    max-width: 768px;
-    padding-left: 2rem; /* Desktop standard: px-8 (2rem) */
-    padding-right: 2rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .container,
-  .container-custom {
-    max-width: 1024px;
-  }
-}
-
-@media (min-width: 1280px) {
-  .container,
-  .container-custom {
-    max-width: 1280px;
-  }
-}
-
-@media (min-width: 1536px) {
-  .container,
-  .container-custom {
-    max-width: 1400px; /* Cap for professional readability */
-  }
 }
 
 /* 2. Responsive Typography Utilities */
