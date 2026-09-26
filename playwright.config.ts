@@ -18,8 +18,13 @@ import { defineConfig, devices } from "@playwright/test";
  * against a site that has since been largely rebuilt — the predictors merged
  * into one tool, the cutoff explorers removed, the whole gate added. They are
  * kept because several of their checks are still worth salvaging, and excluded
- * because a suite that mostly fails tells you nothing. Run them deliberately
- * with `--project=legacy` if you are going through them.
+ * because a suite that mostly fails tells you nothing. To go through them:
+ *
+ *   LEGACY=1 npx playwright test --project=legacy
+ *
+ * The exclusion is per project rather than a global `testIgnore`, because a
+ * global one also hid them from the project whose only purpose is to run them —
+ * an escape hatch that silently did nothing.
  */
 
 const baseURL = process.env.BASE_URL ?? "https://www.admissionhands.com";
@@ -27,7 +32,6 @@ const isLocalDev = /localhost:3000/.test(baseURL);
 
 export default defineConfig({
   testDir: "./tests",
-  testIgnore: "**/legacy/**",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
@@ -50,6 +54,9 @@ export default defineConfig({
   projects: [
     {
       name: "desktop",
+      // Per project, not globally: a global `testIgnore` would also hide these
+      // from the `legacy` project below, whose only purpose is to run them.
+      testIgnore: "**/legacy/**",
       use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 1100 } },
     },
     {
@@ -61,6 +68,7 @@ export default defineConfig({
       // identical everywhere; only layout and the dialog can differ by device,
       // so the phone projects run those specs rather than all of them twice.
       testMatch: /(gate|responsive-width)\.spec\.ts/,
+      testIgnore: "**/legacy/**",
     },
     {
       // And iOS Safari, which renders enough differently to be worth its own run.
@@ -68,12 +76,19 @@ export default defineConfig({
       name: "ios",
       use: { ...devices["iPhone 14"] },
       testMatch: /(gate|responsive-width)\.spec\.ts/,
+      testIgnore: "**/legacy/**",
     },
-    {
-      name: "legacy",
-      testDir: "./tests/legacy",
-      use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 1100 } },
-    },
+    // Only when asked for. A project listed unconditionally is part of the
+    // default run, which would put the specs this suite replaced back into it.
+    ...(process.env.LEGACY
+      ? [
+          {
+            name: "legacy" as const,
+            testDir: "./tests/legacy",
+            use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 1100 } },
+          },
+        ]
+      : []),
   ],
   webServer: isLocalDev
     ? { command: "npm run dev", url: baseURL, reuseExistingServer: true, timeout: 120_000 }

@@ -885,7 +885,7 @@ against `next dev` is not the gate. A dev server is started only when the target
 npm run test:e2e                                        # everything, against production
 BASE_URL=http://localhost:8120 npm run test:e2e         # the box, through the tunnel
 BASE_URL=http://localhost:3000 npm run test:e2e         # local dev, started for you
-npx playwright test --project=legacy                    # the May specs, deliberately
+LEGACY=1 npx playwright test --project=legacy           # the 42 May specs, deliberately
 ```
 
 | Spec | What it proves that a `curl` check cannot |
@@ -1213,8 +1213,11 @@ Ordered by what would hurt first.
 6. **The May Playwright specs are in `tests/legacy/` and excluded** from the default run
    (`testIgnore`), because they were written against a site that has since been largely rebuilt —
    merged predictors, removed explorers, the whole gate. Several of their checks are worth
-   salvaging; run them deliberately with `--project=legacy`. What replaced them covers the gate,
-   the paywall declaration and the width ladder (see "Checking the work").
+   salvaging; run the 42 of them with `LEGACY=1 npx playwright test --project=legacy`. The project
+   is **opt-in through that variable**, because a project listed unconditionally is part of the
+   default run — and a global `testIgnore` instead would have hidden them from the one project
+   meant to run them, an escape hatch that silently did nothing. What replaced them covers the
+   gate, the paywall declaration and the width ladder (see "Checking the work").
 7. **`/services` and `/neet-ug-process` are not section-controlled** — each is one client component,
    so there is nothing to order or hide yet.
 8. Global `cache: 'no-store'` fetch override means no client caching anywhere.
