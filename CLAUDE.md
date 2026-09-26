@@ -35,6 +35,7 @@ Env (`.env.local`, git-ignored):
 |---|---|
 | `DATABASE_URL` | Postgres through the SSH tunnel — see "PostgreSQL" below |
 | `UNLOCK_SECRET` | Signs the seat-gate cookie. Unset, unlocks die on restart |
+| `DOCUMENT_KEY` | 32 bytes, base64. Seals the document vault at rest. **Unset, uploads 503 rather than storing a certificate in the clear.** Lose it and stored documents cannot be read |
 | `WHATSAPP_VERIFY_NUMBER` etc. | **Optional.** The WhatsApp settings live in the admin now (`/admin/whatsapp`); setting one here pins it and the screen shows it as fixed |
 | `WHATSAPP_TOKEN` / `WHATSAPP_RECIPIENT_NUMBER` | Optional, for lead alerts |
 
@@ -209,6 +210,12 @@ at runtime would pull the whole icon set into the bundle.
 - Tailwind theme adds brand palettes `medical.*` and `teal.*`, fonts `font-heading` (Figtree, falling back
   to Plus Jakarta) / `font-body` (Inter), and the `xs: 480px` breakpoint. Colors come from CSS vars — keep
   dark mode working.
+- **Page width is one variable, `--page-max` in `src/styles/layout.css`.** Tailwind's ladder stops at
+  1536px, so the site used to sit in a 1400px column with a third of a 2560px monitor empty. The
+  variable steps past it — 1440 at 1536px, then 1640, 1840, 2040 at 1800/2100/2500 — and caps at 2040,
+  because the answer to a very wide display is a wider page, not an unbounded line of prose. Anything
+  that needs to be wider than the container reads `calc(var(--page-max) + 220px)`. **Do not add a new
+  `max-w-7xl`** — it will not grow with the rest. Verified 390 → 3440px with zero horizontal overflow.
 
 ## PostgreSQL (Phase 1 — live as of 2026-09-17)
 
@@ -579,9 +586,21 @@ a wall Google cannot see past.
 | After Round 1 | both totals | rows beyond the first 5 of each list |
 | Per-college page | headline stats, fees, net over three years, 8 cutoff rows | the remaining rows |
 | College directory | everything — rank bar, band chips, the whole list | nothing |
+| PG branch page (101) | 40 seats, with quota, rank and fee | the rest (up to 260) |
+| NRI / management quota | 40 seats per level | the rest (up to 330) |
 
 The directory is deliberately open: a band is four buckets and cannot be turned back into the cutoff
 table, and it is the hook that sends people to the predictor where the real gate is.
+
+**The branch and quota pages were the widest hole in this, and I put it there.** They shipped 300 and
+372 rows respectively, and the branch page takes a `?category=`, so 101 branches × ten categories was a
+walk of most of the PG seat data with ranks and fees attached — more than `/api/predict` has ever given
+out. `src/components/seats/GatedSeatTable.tsx` renders 40 rows into the HTML and asks
+`/api/seat-rows` for the remainder, which answers **401** without a session. Public rows across these
+pages went 31,040 → 4,200: 7% of the 58,279 PG seats instead of 53%.
+
+The lesson generalises: **the gate is only as strong as the most generous page behind it**, and a new
+page that lists seats is a new hole unless it goes through `GatedSeatTable`.
 
 **The per-college pages had to stay static.** Around 3,500 of them carry the site's search traffic,
 pre-rendered and cached for a day. Reading the unlock cookie in the page would make every one
@@ -728,7 +747,9 @@ animation that escapes that block.
 - Contact details are centralised in `src/lib/constants.ts` (`CONTACT_INFO`) and overridden at runtime by the
   `contact_info` table via `useContactInfo`.
 - `POST /api/leads` is `force-dynamic`, rate-limits 5 req/min per IP in memory, and fires a WhatsApp notification.
-  The in-memory limiter is per-isolate — it is not a real distributed limit.
+  The limiter is in memory, which is a real boundary now that the app is **one Node process** behind
+  Caddy (verified: one PID in the service's cgroup). Run it as more than one process and it silently
+  becomes per-process again.
 
 ## The candidate document vault (2026-09-25)
 
@@ -752,6 +773,15 @@ release-directory layout is a hazard somebody has to remember every time they ad
 The cost is size — a few GB per thousand candidates in the nightly dump. Deliberate: a slower backup
 is a problem you can see coming, an unbacked-up directory is one you find out about once.
 
+- **The bytes are encrypted at rest** — `src/lib/documentCrypto.ts`, AES-256-GCM, keyed from
+  `DOCUMENT_KEY` in the box's 0600 env file. Sealed in the upload route, opened in the download route,
+  nowhere else. The reason is the backup, not the database: a nightly dump is one 4 MB file that gets
+  copied to a laptop while debugging or into a bucket during a migration, and access control does not
+  travel with it. A blob carries an `AHD1` header, so a future re-key can tell sealed rows from plain
+  ones. **A missing key refuses the upload with a 503** rather than storing an Aadhaar scan in the
+  clear — the failure has to be visible, because a silently unencrypted vault is not discoverable.
+  What it does not defend: root on the box can read the env file and decrypt everything. The key must
+  live where the app runs; this protects the copy that leaves the machine.
 - **Access control is `/api/documents/[id]`** and nothing else. Exactly two parties can read a
   document: the candidate it belongs to, and signed-in staff. Anyone else gets **404, not 403** —
   a 403 confirms it exists. Ownership is checked *before* `content` is selected, so a stranger's
@@ -977,7 +1007,15 @@ npm run smoke -- http://localhost:8120   # 54 checks, through an SSH tunnel
 - **This box is shared.** mining-app, cryptoway, smartscanner, tradeos and upi-collect run here, plus
   `/opt/ah-counselor` (a separate Python app on `ah.aismartscan.in`). Ports 8080 and 8090–8110 are
   taken; this app uses 8120. Do not restart anything you did not deploy.
-- **Docker is not installed**, which WAHA needs — install it before wiring up WhatsApp verification.
+- **Docker is installed and the WAHA container is running**, `--network host`, paired and `WORKING` on
+  919220626002. It has **no volume**, so its session lives in the container's own layer: a `docker
+  restart` or a reboot keeps the pairing (`--restart unless-stopped`), but `docker rm` loses it and the
+  phone has to be paired again.
+- **`sharp` must be linked on the box.** The build runs on Windows, so the standalone output's
+  `node_modules/@img` holds `sharp-win32-x64` only and Node cannot load sharp on linux-x64 — every
+  `/_next/image` answered 500 for days without anything failing loudly. `scripts/deploy.sh` installs the
+  linux binaries once into `/opt/admissionhands/shared/native` and symlinks them into each release, and
+  the deploy aborts if `require('sharp')` throws.
 
 ### Not yet live
 
@@ -985,6 +1023,40 @@ npm run smoke -- http://localhost:8120   # 54 checks, through an SSH tunnel
 Nothing here is public: the new deployment answers only on localhost, there is no Caddy block for it,
 and no DNS points at it. Going live means adding the Caddy site blocks and moving DNS — a cutover on
 a running business, and the user's call to make.
+
+### The perimeter, measured from outside (2026-09-26)
+
+Checked from a machine on the internet, not from the box — a connection made on the box to its own
+public IP takes the loopback path and proves nothing.
+
+| Port | What | From the internet |
+|---|---|---|
+| 22, 80, 443 | ssh, Caddy | open, by design |
+| 5432 | Postgres | **blocked**, and bound to `127.0.0.1`/`::1` besides |
+| 8120 | this app | **blocked**, bound to `127.0.0.1` |
+| 2019 | Caddy's admin API | **blocked**, bound to `127.0.0.1` |
+| 3001 | WAHA | **blocked** |
+
+Nothing but sshd binds `0.0.0.0`. WAHA is the exception worth knowing about: it runs `--network host`
+and so listens on `*:3001`, meaning **ufw is the only thing standing between the internet and a
+WhatsApp API that can send as the business's number.** An explicit `ufw deny 3001/tcp` now sits ahead
+of the allow rules, so a later `ufw allow 3001` is a no-op rather than an exposure. Binding it properly
+means recreating the container with `-p 127.0.0.1:3001:3001`, which loses the pairing — worth doing at
+the next re-pair, not before.
+
+Docker publishes nothing (`iptables -t nat -L DOCKER` is empty), which matters because a published
+Docker port bypasses ufw entirely.
+
+**What is gated, and what deliberately is not.** Every API that returns seat-level depth
+(`/api/college-cutoffs`, `/api/seat-rows`, `/api/documents`, all of `/api/admin/*`) answers 401 without
+a session. `/api/college-bands` stays open on purpose: four buckets per college cannot be turned back
+into a cutoff table, and it is what makes the directory worth landing on.
+
+**Full gating is not an option and asking for it is asking to be invisible.** Google does not sign in.
+The 3,630 URLs in the sitemap rank because a crawler can read a real answer on them; put the lot behind
+a login and the pages still exist but nobody arrives at them. The rule stays the one settled on
+2026-09-22 — a real slice free, the depth gated — and the work this week was closing pages that had
+drifted past "slice", not moving the line.
 
 ## Known gaps (what is left before production)
 
@@ -1012,10 +1084,12 @@ Ordered by what would hurt first.
    where the CMS curates one and says nothing for the rest, because guessing put a PRIVATE badge on
    government colleges.
 2. **No error tracking and no deploy pipeline.** Nothing reports a 500 from production.
-3. **Rate limiting is per-isolate**, in memory — `/api/leads` (5/min), admin login (8/10min),
-   `/api/predict` (30/min), `/api/unlock` (5/hr), `/api/college-bands` (60/min). Across Workers isolates
-   that is not a real limit; it is a speed bump. A real one needs Redis or a Durable Object, and it is
-   what stands between the gate and someone cycling numbers to walk the rank space.
+3. **Rate limiting is in memory, in one process** — `/api/leads` (5/min), admin login (8/10min),
+   `/api/predict` (30/min), `/api/unlock` (5/hr), `/api/college-bands` (60/min), `/api/seat-rows`
+   (40/10min). On a single Node process that is a real limit, not the speed bump the Workers plan would
+   have made it. Two things still weaken it: a restart clears every counter, and the key is the client
+   IP, so a rotating pool walks straight through. What it does not address at all is somebody cycling
+   phone numbers through the gate.
 4. **The per-college pages now show 8 cutoff rows and gate the rest** (see the table above), so the
    long tail is no longer a free full dump. What stays public by design is those 8 rows across
    ~3,500 pages — the price of the SEO, and a far smaller surface than the whole table was.
