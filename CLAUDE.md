@@ -23,6 +23,7 @@ npm run typecheck    # tsc --noEmit
 npm run lint
 npm run test:e2e     # playwright (expects a running dev server, see playwright.config.ts)
 npm run smoke -- <url>                   # 57 black-box checks: routes, gate, redirects, claims
+npm run verify:gate -- <url>             # the seat gate, from outside: nothing public, crawler spoofing refused
 node scripts/audit_site.mjs <url>        # in-browser QA: a11y, tap targets, metadata, links
 node scripts/verify_auth_flow.mjs <url>  # 21 checks: sends a real code, redeems it, signs in
 npm run build:cf     # OpenNext build for Cloudflare
@@ -574,39 +575,92 @@ Three page families, all from `seat_options` so they cannot disagree with the pr
   expensive kind of guess to get wrong.
 - `seat_options` column is `latest_year`, not `year`. Cost a deploy.
 
-### The rule for every data surface: a real slice free, the depth gated
+### The rule for every data surface: Googlebot reads it, a visitor signs in (2026-09-26)
 
-Settled 2026-09-22. Each page that sits on the counselling data gives away something complete and
-genuinely useful, and charges a phone number for the rest. Not a teaser that proves nothing, and not
-a wall Google cannot see past.
+This replaces "a real slice free, the depth gated" (2026-09-22). That rule was a compromise forced by
+a constraint that turned out not to be real: pages needed indexable content, a cached page is the same
+for everybody, so some rows had to be public. The business objection to it is decisive and the user
+made it — *"data open bhi na rahe otherwise candidates hume kyu puchenge"*. If the page answers the
+question, nobody rings up.
+
+**Google's paywalled-content markup resolves it.** Serving a crawler more than a visitor is cloaking —
+and cloaking can remove a site from the index — *unless* the page declares the gate with
+`isAccessibleForFree: false` and a `hasPart` naming the withheld section's CSS selector. Then it is a
+paywall, which Google supports explicitly. So:
+
+| Who | What they get |
+|---|---|
+| Verified Googlebot / Bingbot | every row, so the pages still rank for "MD radiology cutoff 2025" |
+| A visitor with no session | counts, and **per-quota** rank and fee ranges. Zero seat rows |
+| Signed in | every row |
+| Anything claiming to be a crawler | nothing, unless the IP proves it |
 
 | Surface | Free | Gated |
 |---|---|---|
-| Seat predictor | all four band counts + the 3 tightest safe seats | the other ~297 |
-| After Round 1 | both totals | rows beyond the first 5 of each list |
-| Per-college page | headline stats, fees, net over three years, 8 cutoff rows | the remaining rows |
+| Seat predictor | all four band counts | every seat |
+| After Round 1 | both totals | every row |
+| Per-college page (~3,500) | headline stats, fees, net over three years, the per-quota summary | every cutoff row |
+| PG branch page (101) | seats/colleges/states/quotas + per-quota ranges | every seat row |
+| NRI / management quota | the same summary, per level | every seat row |
 | College directory | everything — rank bar, band chips, the whole list | nothing |
-| PG branch page (101) | 40 seats, with quota, rank and fee | the rest (up to 260) |
-| NRI / management quota | 40 seats per level | the rest (up to 330) |
 
-The directory is deliberately open: a band is four buckets and cannot be turned back into the cutoff
-table, and it is the hook that sends people to the predictor where the real gate is.
+The directory stays open on purpose: a band is four buckets and cannot be turned back into the cutoff
+table, and it is the hook that sends people to the predictor where the gate is.
 
-**The branch and quota pages were the widest hole in this, and I put it there.** They shipped 300 and
-372 rows respectively, and the branch page takes a `?category=`, so 101 branches × ten categories was a
-walk of most of the PG seat data with ranks and fees attached — more than `/api/predict` has ever given
-out. `src/components/seats/GatedSeatTable.tsx` renders 40 rows into the HTML and asks
-`/api/seat-rows` for the remainder, which answers **401** without a session. Public rows across these
-pages went 31,040 → 4,200: 7% of the 58,279 PG seats instead of 53%.
+**Three files, and none of them works without the others:**
 
-The lesson generalises: **the gate is only as strong as the most generous page behind it**, and a new
-page that lists seats is a new hole unless it goes through `GatedSeatTable`.
+- `src/lib/crawler.ts` — `isVerifiedCrawler()`. A user-agent is not evidence; `curl -A Googlebot` is
+  one flag. A crawler is believed only when its IP is in the ranges Google and Bing publish (fetched,
+  cached 24h) or reverse DNS resolves into their domains *and* forward DNS returns the same address.
+  Fails closed on any error.
+- `src/lib/paywall.ts` — `paywallJsonLd()` and `GATED_CLASS`. The declaration must name the selector the
+  gated block actually uses; a typo silently turns a declared paywall back into undeclared cloaking.
+  **Never ship the crawler half without this half.**
+- `src/lib/depth.ts` — `canSeeDepth(request)` / `canSeeDepthServer()`. The single answer to "may this
+  caller see rows": a session or a verified crawler. Separate from `userAuth.ts` so authentication does
+  not depend on DNS, and because the dependency only makes sense one way.
 
-**The per-college pages had to stay static.** Around 3,500 of them carry the site's search traffic,
-pre-rendered and cached for a day. Reading the unlock cookie in the page would make every one
-per-request and throw that away — so the page renders the 8-row preview into its HTML (which is what
-Google indexes) and `src/components/colleges/CollegeCutoffs.tsx` fetches the rest from
-`/api/college-cutoffs`, which answers 401 unless unlocked. Static page, indexed content, gated depth.
+**What a locked visitor sees instead** is `summariseSeats()` in `src/lib/seatSummary.ts`, rendered by
+`src/components/seats/LockedSummary.tsx`: counts, and per quota a closing-rank range and a fee range.
+Per quota rather than overall because a government seat closing at 2,130 and a management seat closing
+at 2,20,761 are not two ends of one scale — that is the bug of 2026-09-25 and it would be the same bug
+here. **The rank range and the fee range are printed in separate columns and never joined into a
+sentence**, because within a quota both are still minima and maxima over different colleges.
+
+It is a real answer — "NRI seats here run ₹18L to ₹1.2 Cr and stay open past rank 90,000" — that cannot
+be turned back into a row. Which is exactly the point: it proves we have the data and leaves *which
+college* to the conversation.
+
+**The pages are `force-dynamic` now, and that is the cost.** The college, branch and quota pages were
+`generateStaticParams` + ISR at 24h; one cached page cannot be two different answers, so the decision
+has to be per request. Every query behind them is still `unstable_cache`d, so the database is not
+re-read — what is paid per request is the render.
+
+**The X-Forwarded-For trap, found by the verification script on its first run.** Caddy's
+`reverse_proxy` *appends* the peer address, so a forged header arrives as
+`66.249.66.1, <the real address>` and reading the **left-most** hop let a spoofed Googlebot through.
+`clientIp()` takes the **right-most**. This only holds because Caddy is the only thing that can reach
+the app — it binds `127.0.0.1`. Change that binding and the whole check stops meaning anything.
+
+Verified by `node scripts/verify_gate.mjs <url>`: no seat-table markup for an anonymous visitor on six
+pages, a spoofed UA and a forged forwarded-for chain both refused, `isAccessibleForFree:false` present
+wherever the gated class is, the three depth APIs 401, the counts still served, and a verified session
+seeing the full table.
+
+The lesson generalises: **the gate is only as strong as the most generous page behind it.** A new page
+that lists seats is a new hole unless it goes through `GatedSeatTable` or `LockedSummary`.
+
+**The one cost of this, and the decision left open: bounce.** Somebody arrives from a search where
+Google indexed the table and meets a gate. That is the normal cost of a paywall and the reason
+publishers *meter* rather than hard-wall — Google's flexible-sampling guidance suggests 6–10 free
+articles per user per month, and its whole point is that a first visit which converts beats a first
+visit that leaves. A hard wall is what was asked for and is what is built. Metering would be a cookie
+counting full views before the gate closes, entirely inside `canSeeDepthServer()`; nothing else would
+change. Worth revisiting once there is enough Search Console data to see whether the gated pages hold
+their position.
+
+Google's own references: "Subscription and paywalled content" (structured data) and "Flexible sampling"
+under Search Central. Both say the same thing — a paywall is fine, an undeclared one is cloaking.
 
 **`/md-ms-india/fees` is gone**, 308 to the college list. It was a whole page for one number, and
 that number — three years of stipend against the fee — is already on every college's own page, where
@@ -816,6 +870,8 @@ Three suites, all runnable against production:
 | `scripts/verify_auth_flow.mjs` | Sends a **real** code to our own gateway number, reads it back out of the gateway, redeems it, sets a password, signs in again on the password alone — then deletes its own rows |
 | `scripts/verify_documents.mjs` | Uploads as one candidate and proves another candidate, an anonymous caller and three guessed URLs all fail to reach it; that magic bytes beat the filename; and that deleting the account takes the documents with it |
 | `scripts/verify_lead_alert.mjs` | Submits a real enquiry and reads the WhatsApp alert back off the gateway — delivery, not just acceptance |
+| `scripts/verify_gate.mjs` | That no seat row reaches an anonymous visitor on six page families, that a spoofed crawler user-agent and a forged `X-Forwarded-For` both stay locked, that every gated page declares `isAccessibleForFree: false`, and that a verified session does get the rows |
+| `scripts/verify_ipranges.mjs` | The other direction, which fails silently: that `inRanges()` matches **all 617** prefixes Google and Bing publish, and no ordinary address. A matcher that wrongly rejects serves Googlebot the locked page, logs nothing, and stops 3,600 pages ranking weeks later |
 
 **Do not run the audit across a deploy.** It reported two branch pages as broken internal links
 (HTTP 502); both answer 200, the logs are clean, and a sweep of all 101 passes. The service
@@ -1017,12 +1073,25 @@ npm run smoke -- http://localhost:8120   # 54 checks, through an SSH tunnel
   linux binaries once into `/opt/admissionhands/shared/native` and symlinks them into each release, and
   the deploy aborts if `require('sharp')` throws.
 
-### Not yet live
+### Live (cutover done — verified 2026-09-26)
 
-`admissionhands.com` still resolves to **93.127.173.119** (Hostinger) and serves the existing site.
-Nothing here is public: the new deployment answers only on localhost, there is no Caddy block for it,
-and no DNS points at it. Going live means adding the Caddy site blocks and moving DNS — a cutover on
-a running business, and the user's call to make.
+**This is a live business site.** `admissionhands.com` and `www.admissionhands.com` both resolve to
+**38.49.209.165**, Caddy serves them, the apex 301s to www. The old Hostinger address
+(93.127.173.119) is no longer in DNS. Every deploy now goes straight to production, in front of real
+candidates mid-counselling — there is no staging.
+
+Caddy's block for the site is in `/etc/caddy/Caddyfile` (`www.admissionhands.com`), proxying to
+`127.0.0.1:8120`. Two things in it matter to the app:
+
+- `header_up -X-Forwarded-Proto` — Next sets its own.
+- **`header_up X-Forwarded-For {remote_host}`** — added 2026-09-26. Caddy *appends* by default, which
+  left a client-supplied value in front of the real address; the crawler check reads that header, so a
+  forged one was enough to be handed the gated seat data. This replaces it outright. `src/lib/crawler.ts`
+  additionally reads the right-most hop, so either behaviour is safe — but do not remove this line
+  thinking the app handles it, because both halves exist on purpose.
+
+`caddy validate --config /etc/caddy/Caddyfile` before `systemctl reload caddy`; the box serves five
+other sites from the same file.
 
 ### The perimeter, measured from outside (2026-09-26)
 
