@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { logError } from "@/lib/logger";
 import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
 import { hasAccess } from "@/lib/userAuth";
+import { canSeeDepth } from "@/lib/depth";
 import { getCollegeCutoffs } from "@/lib/collegeQueries";
 
 export const dynamic = "force-dynamic";
@@ -39,7 +40,7 @@ export async function GET(request: Request) {
 
   // 401 rather than an empty list, so the UI can tell "you are locked out"
   // apart from "this college has no published rounds".
-  if (!(await hasAccess(request))) {
+  if (!(await canSeeDepth(request)).full) {
     return NextResponse.json({ error: "locked" }, { status: 401 });
   }
 

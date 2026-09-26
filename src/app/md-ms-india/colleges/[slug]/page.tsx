@@ -15,17 +15,24 @@ import {
 } from "@/lib/collegeQueries";
 import CollegeRankCheck from "@/components/colleges/CollegeRankCheck";
 import CollegeCutoffs from "@/components/colleges/CollegeCutoffs";
+import { canSeeDepthServer } from "@/lib/depth";
+import { summariseCollegeCutoffs } from "@/lib/seatSummary";
 import CtaBand from "@/components/ui/CtaBand";
 
 // The busiest pages are built at deploy time; the long tail is generated on
 // first request and then cached, so a 2,168-page build stays quick.
-export const revalidate = 86400;
-export const dynamicParams = true;
+/**
+ * Rendered per request.
+ *
+ * These pages carry the search traffic and were pre-rendered and cached for
+ * a day, which is why they only ever published a fixed eight-row preview:
+ * one cached page cannot be two different answers. Closing the table
+ * entirely to visitors while keeping it readable by a verified crawler is a
+ * per-request decision, so the page has to be one. Every query behind it is
+ * still cached, so the database is not re-read.
+ */
+export const dynamic = "force-dynamic";
 
-export async function generateStaticParams() {
-  const slugs = await getCollegeSlugs("pg", 120);
-  return slugs.map((slug) => ({ slug }));
-}
 
 const CAMPUS_IMAGES = [
   "/assets/images/colleges/aiims-delhi.avif",
@@ -85,11 +92,16 @@ export default async function CollegePage({ params }: { params: { slug: string }
   const college = await getCollege(params.slug, "pg");
   if (!college) notFound();
 
-  const [cutoffs, fees, similar] = await Promise.all([
+  const [cutoffs, fees, similar, access] = await Promise.all([
     getCollegeCutoffs(params.slug, "pg"),
     getCollegeFees(params.slug, "pg"),
     getSimilarColleges(params.slug, "pg"),
+    canSeeDepthServer(),
   ]);
+
+  // All of the rows, or none of them. A slice is what this used to do.
+  const cutoffRows = access.full ? cutoffs : [];
+  const { summary: cutoffSummary, years: cutoffYears } = summariseCollegeCutoffs(cutoffs);
 
   const where = collegePlace(college);
   const bestRank = cutoffs.reduce<number | null>(
@@ -230,7 +242,9 @@ export default async function CollegePage({ params }: { params: { slug: string }
                   level="pg"
                   collegeName={college.name}
                   total={cutoffs.length}
-                  preview={cutoffs.slice(0, 8)}
+                  rows={cutoffRows}
+                  summary={cutoffSummary}
+                  years={cutoffYears}
                 />
               )}
             </section>

@@ -29,6 +29,7 @@
  */
 
 import type { CollegeDetail, CourseCutoff, CollegeFee } from "@/lib/collegeQueries";
+import { paywallJsonLd } from "@/lib/paywall";
 
 const SITE = "https://www.admissionhands.com";
 
@@ -230,6 +231,17 @@ export function collegeJsonLd(opts: {
       })),
     });
   }
+
+  // The cutoff table is served to a verified crawler and withheld from everyone
+  // else. That is a paywall, and this is the line that says so — without it the
+  // same behaviour is cloaking. See lib/paywall.ts and lib/crawler.ts.
+  out.push(
+    paywallJsonLd({
+      url: `${SITE}${base}/${college.slug}`,
+      name: `${college.name} — closing ranks by branch, quota and category`,
+      description: `Published ${level === "pg" ? "NEET PG" : "NEET UG"} closing ranks for ${college.name}, one row per seat.`,
+    }),
+  );
 
   return out;
 }

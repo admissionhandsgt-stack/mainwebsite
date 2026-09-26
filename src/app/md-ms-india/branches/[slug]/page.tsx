@@ -6,8 +6,19 @@ import { getBranch, getBranches, DEFAULT_CATEGORY } from "@/lib/branchQueries";
 import StructuredData from "@/components/seo/StructuredData";
 import CtaBand from "@/components/ui/CtaBand";
 import GatedSeatTable from "@/components/seats/GatedSeatTable";
+import { canSeeDepthServer } from "@/lib/depth";
+import { summariseSeats } from "@/lib/seatSummary";
+import { paywallJsonLd } from "@/lib/paywall";
 
-export const revalidate = 86400;
+/**
+ * Rendered per request, deliberately.
+ *
+ * The page has to decide whether this caller may see the seat rows, and that
+ * is a question about their cookies and their IP — a cached page is the same
+ * page for everyone, so it cannot answer it. The queries behind this stay
+ * cached for a day (`getBranch`), so what is paid per request is the render.
+ */
+export const dynamic = "force-dynamic";
 
 /**
  * One PG branch: where it is offered, and what each seat closed at.
@@ -26,19 +37,15 @@ export const revalidate = 86400;
 const SITE = "https://www.admissionhands.com";
 
 /**
- * How many rows ship in the HTML.
+ * Nobody sees a seat row without signing in — except a verified search engine.
  *
- * Enough to be genuinely useful and to rank on — more than any competitor
- * publishes at all — and few enough that walking 101 branches across ten
- * categories is not a way to rebuild the seat data. The rest is behind the
- * same gate as everything else, via `/api/seat-rows`.
+ * This used to publish 40. That was a reasonable trade for search, and it is
+ * now unnecessary: `canSeeDepthServer()` hands the whole table to a crawler
+ * whose IP is in Google's published ranges, and the JSON-LD below declares the
+ * gate so doing so is a paywall rather than cloaking. A visitor who has not
+ * signed in gets `summariseSeats()` — counts, and per-quota rank and fee
+ * ranges — which is a real answer that cannot be turned back into rows.
  */
-const PUBLIC_ROWS = 40;
-
-export async function generateStaticParams() {
-  const branches = await getBranches();
-  return branches.slice(0, 24).map((b) => ({ slug: b.slug }));
-}
 
 const inr = (v: number | null | undefined) => (v == null ? "—" : v.toLocaleString("en-IN"));
 
@@ -80,8 +87,15 @@ export default async function BranchPage({
   searchParams: { category?: string };
 }) {
   const category = (searchParams.category ?? DEFAULT_CATEGORY).toUpperCase().slice(0, 24);
-  const b = await getBranch(params.slug, category);
+  const [b, access] = await Promise.all([
+    getBranch(params.slug, category),
+    canSeeDepthServer(),
+  ]);
   if (!b) notFound();
+
+  // The rows never leave the process unless the caller may have them.
+  const seatRows = access.full ? b.rowsList : [];
+  const summary = summariseSeats(b.rowsList);
 
   const faqs = [
     {
@@ -142,6 +156,13 @@ export default async function BranchPage({
               acceptedAnswer: { "@type": "Answer", text: f.a },
             })),
           },
+          // Says the seat table is gated. Without this, serving a crawler rows
+          // that a visitor does not get is cloaking. See lib/paywall.ts.
+          paywallJsonLd({
+            url: `${SITE}/md-ms-india/branches/${b.slug}`,
+            name: `${b.name} closing ranks and fees`,
+            description: `${b.name} seats by college, quota and category, with round-1 and widest closing ranks.`,
+          }),
         ]}
       />
 
@@ -245,7 +266,8 @@ export default async function BranchPage({
             </p>
           ) : (
             <GatedSeatTable
-              preview={b.rowsList.slice(0, PUBLIC_ROWS)}
+              rows={seatRows}
+              summary={summary}
               total={b.rowsList.length}
               query={`kind=branch&slug=${encodeURIComponent(b.slug)}&category=${encodeURIComponent(b.category)}`}
               collegeBase="/md-ms-india/colleges"

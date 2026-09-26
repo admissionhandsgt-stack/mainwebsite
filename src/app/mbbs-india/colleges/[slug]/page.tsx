@@ -15,10 +15,21 @@ import {
 import { getUgCollegeExtras } from "@/lib/content";
 import CollegeRankCheck from "@/components/colleges/CollegeRankCheck";
 import CollegeCutoffs from "@/components/colleges/CollegeCutoffs";
+import { canSeeDepthServer } from "@/lib/depth";
+import { summariseCollegeCutoffs } from "@/lib/seatSummary";
 import CtaBand from "@/components/ui/CtaBand";
 
-export const revalidate = 86400;
-export const dynamicParams = true;
+/**
+ * Rendered per request.
+ *
+ * These pages carry the search traffic and were pre-rendered and cached for
+ * a day, which is why they only ever published a fixed eight-row preview:
+ * one cached page cannot be two different answers. Closing the table
+ * entirely to visitors while keeping it readable by a verified crawler is a
+ * per-request decision, so the page has to be one. Every query behind it is
+ * still cached, so the database is not re-read.
+ */
+export const dynamic = "force-dynamic";
 
 /**
  * The 200 most-searched colleges are built ahead of time; the remaining ~1,500
@@ -26,10 +37,6 @@ export const dynamicParams = true;
  * at once would add minutes to every deploy for pages most of which are never
  * visited in a given week.
  */
-export async function generateStaticParams() {
-  const slugs = await getCollegeSlugs("ug", 200);
-  return slugs.map((slug) => ({ slug }));
-}
 
 const CAMPUS_IMAGES = [
   "/assets/images/colleges/aiims-delhi.avif",
@@ -86,12 +93,17 @@ export default async function UgCollegePage({ params }: { params: { slug: string
   const college = await getCollege(params.slug, "ug");
   if (!college) notFound();
 
-  const [cutoffs, fees, similar, extras] = await Promise.all([
+  const [cutoffs, fees, similar, extras, access] = await Promise.all([
     getCollegeCutoffs(params.slug, "ug"),
     getCollegeFees(params.slug, "ug"),
     getSimilarColleges(params.slug, "ug"),
     getUgCollegeExtras(params.slug),
+    canSeeDepthServer(),
   ]);
+
+  // All of the rows, or none of them. A slice is what this used to do.
+  const cutoffRows = access.full ? cutoffs : [];
+  const { summary: cutoffSummary, years: cutoffYears } = summariseCollegeCutoffs(cutoffs);
 
   const where = [extras?.city, college.state].filter(Boolean).join(", ");
 
@@ -254,7 +266,9 @@ export default async function UgCollegePage({ params }: { params: { slug: string
                 collegeName={college.name}
                 showCounselling
                 total={cutoffs.length}
-                preview={cutoffs.slice(0, 8)}
+                rows={cutoffRows}
+                summary={cutoffSummary}
+                years={cutoffYears}
               />
             </section>
           </>

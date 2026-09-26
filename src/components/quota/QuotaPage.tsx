@@ -4,15 +4,18 @@ import type { QuotaOverview } from "@/lib/quotaQueries";
 import StructuredData from "@/components/seo/StructuredData";
 import CtaBand from "@/components/ui/CtaBand";
 import GatedSeatTable from "@/components/seats/GatedSeatTable";
+import { canSeeDepthServer } from "@/lib/depth";
+import { summariseSeats } from "@/lib/seatSummary";
+import { paywallJsonLd } from "@/lib/paywall";
 
 const SITE = "https://www.admissionhands.com";
 
 /**
- * How many rows ship in the HTML. See the note in the branch page — these
- * seats carry a fee as well as a rank, which makes them the most valuable
- * rows on the site to harvest and the ones worth gating hardest.
+ * No seat rows without a session. These carry a fee as well as a rank, which
+ * makes them the most valuable rows on the site to harvest — and the fee is the
+ * thing people ring up to ask about, so publishing it was giving away the
+ * conversation. A verified crawler still gets the table; see `lib/depth.ts`.
  */
-const PUBLIC_ROWS = 40;
 
 const inr = (v: number | null | undefined) => (v == null ? "—" : v.toLocaleString("en-IN"));
 
@@ -43,7 +46,7 @@ export interface Faq {
  * unlabelled fee blocks per college and never says which quota each belongs
  * to, so UG shows a rank and an explicit blank. See `lib/quotaQueries.ts`.
  */
-export default function QuotaPage({
+export default async function QuotaPage({
   pg,
   ug,
   faqs,
@@ -54,6 +57,14 @@ export default function QuotaPage({
   faqs: Faq[];
   intro: string;
 }) {
+  const access = await canSeeDepthServer();
+  // Both tables are all-or-nothing: the rows only exist in the response when
+  // the caller may have them.
+  const pgRows = access.full && pg ? pg.rowsList : [];
+  const ugRows = access.full && ug ? ug.rowsList : [];
+  const pgSummary = pg ? summariseSeats(pg.rowsList) : null;
+  const ugSummary = ug ? summariseSeats(ug.rowsList) : null;
+
   const primary = pg ?? ug;
   if (!primary) return null;
   const family = primary.family;
@@ -84,6 +95,13 @@ export default function QuotaPage({
               acceptedAnswer: { "@type": "Answer", text: f.a },
             })),
           },
+          // Declares the seat tables as gated, which is what makes serving them
+          // to a crawler a paywall and not cloaking. See lib/paywall.ts.
+          paywallJsonLd({
+            url: `${SITE}${family.path}`,
+            name: `${family.label} seats — closing ranks and fees`,
+            description: `${family.label} seats by college and quota, with closing ranks${pg ? " and the fee each seat carries" : ""}.`,
+          }),
         ]}
       />
 
@@ -150,7 +168,8 @@ export default function QuotaPage({
             </p>
 
             <GatedSeatTable
-              preview={pg.rowsList.slice(0, PUBLIC_ROWS)}
+              rows={pgRows}
+              summary={pgSummary!}
               total={pg.rowsList.length}
               query={`kind=quota&family=${encodeURIComponent(family.id)}&level=pg`}
               collegeBase="/md-ms-india/colleges"
@@ -183,58 +202,15 @@ export default function QuotaPage({
               an {family.short} fee is the most expensive kind to get wrong.
             </p>
 
-            <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
-              <table className="w-full min-w-[680px] table-fixed border-collapse">
-                <thead>
-                  <tr className="bg-surface-2">
-                    {[
-                      ["College", "w-[38%] text-left"],
-                      ["Quota", "w-[26%] text-left"],
-                      ["Seats", "w-[10%] text-right"],
-                      ["R1 close", "w-[13%] text-right"],
-                      ["Widest", "w-[13%] text-right"],
-                    ].map(([h, cls]) => (
-                      <th
-                        key={h}
-                        scope="col"
-                        className={`px-4 py-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground ${cls}`}
-                      >
-                        {h}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {ug.rowsList.slice(0, PUBLIC_ROWS).map((r, i) => (
-                    <tr key={`${r.slug}-${r.quota}-${i}`} className="border-t border-border hover:bg-surface-2">
-                      <td className="px-4 py-3 align-top">
-                        <Link
-                          href={`/mbbs-india/colleges/${r.slug}`}
-                          className="-my-1.5 block py-1.5 text-[14px] font-semibold leading-snug text-foreground hover:text-primary"
-                        >
-                          {r.college}
-                        </Link>
-                        <p className="mt-0.5 flex items-center gap-1 text-[12px] text-muted-foreground">
-                          <MapPin className="h-3 w-3" aria-hidden="true" />
-                          {r.state ?? "—"}
-                        </p>
-                      </td>
-                      <td className="px-4 py-3 align-top text-[12.5px] leading-snug text-muted-foreground">{r.quota}</td>
-                      <td className="tnum px-4 py-3 text-right align-top text-[14px] text-foreground">{r.seats}</td>
-                      <td className="tnum px-4 py-3 text-right align-top text-[14px] text-muted-foreground">{inr(r.r1)}</td>
-                      <td className="tnum px-4 py-3 text-right align-top text-[14px] font-semibold text-foreground">{inr(r.widest)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {ug.rowsList.length > PUBLIC_ROWS && (
-              <p className="mt-3 text-[13px] text-muted-foreground">
-                Showing {PUBLIC_ROWS} of {inr(ug.rowsList.length)} MBBS seats. The predictor narrows
-                them to the ones your own rank reaches.
-              </p>
-            )}
+            <GatedSeatTable
+              rows={ugRows}
+              summary={ugSummary!}
+              total={ug.rowsList.length}
+              query={`kind=quota&family=${encodeURIComponent(family.id)}&level=ug`}
+              collegeBase="/mbbs-india/colleges"
+              showFee={false}
+              noun="seats"
+            />
           </section>
         )}
 

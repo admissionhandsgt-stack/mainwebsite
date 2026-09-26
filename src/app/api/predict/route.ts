@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { logError } from "@/lib/logger";
 import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
-import { PREVIEW_SEATS } from "@/lib/leadGate";
 import { accessState } from "@/lib/userAuth";
+import { canSeeDepth } from "@/lib/depth";
 import { streamSpec, type Stream } from "@/lib/predictorFacets";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
@@ -190,8 +190,12 @@ export async function GET(request: Request) {
     // anything. Only the seat-by-seat detail is behind the gate, and it is cut
     // here rather than hidden in the UI: an unlocked payload never leaves the
     // server, so there is nothing to read out of the network tab.
-    const access = await accessState(request);
-    const visible = access.open ? results : results.slice(0, PREVIEW_SEATS);
+    const [access, depth] = await Promise.all([accessState(request), canSeeDepth(request)]);
+    // The band counts below are free and complete. The seats themselves are
+    // not, and that now means none of them rather than the tightest three —
+    // three named colleges with a rank and a fee is the answer in miniature,
+    // and it is the part people were ringing up to ask for.
+    const visible = depth.full ? results : [];
 
     return NextResponse.json({
       query: { rank, stream, level, category, states, ownership, branches, maxFee },

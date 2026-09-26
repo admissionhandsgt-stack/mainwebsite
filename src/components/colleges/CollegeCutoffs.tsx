@@ -1,23 +1,29 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { TrendingUp, TrendingDown, Loader2, Lock, Search } from "lucide-react";
+import { useState } from "react";
+import { TrendingUp, TrendingDown } from "lucide-react";
 import Link from "next/link";
-import AuthDialog from "@/components/lead/AuthDialog";
+import LockedSummary from "@/components/seats/LockedSummary";
+import { GATED_CLASS } from "@/lib/paywall";
 import { branchSlug } from "@/lib/branchSlug";
+import type { SeatSummary } from "@/lib/seatSummary";
 
 /**
- * A college's cutoff table, with the gate on the deep end of it.
+ * A college's cutoff table, or the shape of it.
  *
- * The page that renders this is static and cached for a day — it is one of
- * around 3,500 that carry the site's search traffic — so it hands this
- * component a **preview** of the rows, which ships in the HTML and is what
- * Google indexes. Enough of a table to be genuinely useful and to rank; not
- * enough to be worth harvesting.
+ * These ~3,500 pages carry the site's search traffic, and they used to publish
+ * eight rows each into the HTML — about 28,000 rows of the product, free. They
+ * now publish none: the page decides server-side and passes every row or no row.
  *
- * The remainder is fetched from `/api/college-cutoffs`, which answers 401
- * unless the visitor has unlocked. So the page stays static, the content stays
- * indexed, and the depth still costs a phone number.
+ * The rows are still indexed, because `canSeeDepthServer()` serves them to a
+ * crawler whose IP is in Google's published ranges and the page declares the
+ * gate with `isAccessibleForFree: false`. That is Google's own paywall pattern,
+ * not a trick — and the declaration is what makes it one, so it is not optional.
+ *
+ * A visitor without a session gets the per-quota summary instead: how many
+ * branches and seats sit under each quota and what ranks they closed at. It
+ * tells them the answer exists and is about their situation, and leaves the
+ * question of *which branch* to us.
  */
 
 export interface CutoffRow {
@@ -61,72 +67,60 @@ function Movement({ row }: { row: CutoffRow }) {
 export default function CollegeCutoffs({
   slug,
   level,
-  preview,
+  rows: initialRows,
   total,
+  summary,
+  years,
   showCounselling = false,
   collegeName,
 }: {
   slug: string;
   level: "ug" | "pg";
-  preview: CutoffRow[];
+  /** Every row, or none. Never a slice. */
+  rows: CutoffRow[];
   /** How many rows exist in total, so the gate can say what is behind it. */
   total: number;
+  /** What a locked visitor sees in place of the rows. */
+  summary: SeatSummary;
+  /** Which years the rows cover, for the summary's fourth stat. */
+  years: string;
   showCounselling?: boolean;
   collegeName: string;
 }) {
-  const [rows, setRows] = useState<CutoffRow[]>(preview);
-  const [state, setState] = useState<"preview" | "loading" | "open">(
-    total > preview.length ? "loading" : "open",
-  );
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [rows, setRows] = useState<CutoffRow[]>(initialRows);
 
-  /** Fetch the full table. Used on mount and again after signing in. */
-  const loadAll = useCallback(() => {
-    setState("loading");
-    fetch(`/api/college-cutoffs?slug=${encodeURIComponent(slug)}&level=${level}`)
-      .then((r) => (r.ok ? r.json() : null))
-      .then((j) => {
-        if (j?.rows) {
-          setRows(j.rows);
-          setState("open");
-        } else {
-          setState("preview");
-        }
-      })
-      .catch(() => setState("preview"));
-  }, [slug, level]);
+  /** After signing in, fetch the rows rather than making them reload the page. */
+  const load = async () => {
+    const res = await fetch(`/api/college-cutoffs?slug=${encodeURIComponent(slug)}&level=${level}`);
+    if (!res.ok) throw new Error(`college-cutoffs ${res.status}`);
+    const json = await res.json();
+    if (!json?.rows?.length) throw new Error("no rows");
+    setRows(json.rows);
+  };
 
-  // One request, and only when something is actually hidden. The unlock cookie
-  // is HttpOnly so the browser cannot check it itself — asking the server is
-  // the check.
-  useEffect(() => {
-    if (total <= preview.length) return;
-    let cancelled = false;
-
-    fetch(`/api/college-cutoffs?slug=${encodeURIComponent(slug)}&level=${level}`)
-      .then(async (res) => {
-        if (cancelled) return;
-        if (!res.ok) {
-          setState("preview");
-          return;
-        }
-        const json = await res.json();
-        if (cancelled) return;
-        setRows(json.rows ?? preview);
-        setState("open");
-      })
-      .catch(() => !cancelled && setState("preview"));
-
-    return () => {
-      cancelled = true;
-    };
-  }, [slug, level, total, preview]);
-
-  const hidden = total - rows.length;
+  if (rows.length === 0) {
+    return (
+      <LockedSummary
+        total={total}
+        noun="cutoff rows"
+        what="branch, quota, category and the rank it closed at"
+        stats={[
+          ["Branches", summary.colleges.toLocaleString("en-IN")],
+          ["Seats", summary.seats.toLocaleString("en-IN")],
+          ["Quotas", summary.quotas.length.toLocaleString("en-IN")],
+          ["Years", years],
+        ]}
+        quotas={summary.quotas}
+        showFee={false}
+        unitLabel="branches"
+        level={level}
+        onUnlocked={load}
+      />
+    );
+  }
 
   return (
-    <>
-      <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
+    <div className={`${GATED_CLASS} mt-5 overflow-x-auto rounded-2xl border border-border bg-card`}>
         <table className="w-full min-w-[720px] border-collapse">
           <caption className="sr-only">
             Published closing ranks for {collegeName}
@@ -202,55 +196,10 @@ export default function CollegeCutoffs({
           </tbody>
         </table>
 
-        {state === "loading" && hidden > 0 && (
-          <p className="flex items-center gap-2 border-t border-border px-4 py-3 text-[13px] text-muted-foreground">
-            <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
-            Checking for the rest…
-          </p>
-        )}
-
-        {state === "open" && rows.length > preview.length && (
-          <p className="border-t border-border px-4 py-3 text-[13px] text-muted-foreground">
-            Showing all <span className="tnum font-semibold text-foreground">{rows.length}</span>{" "}
-            published seat rows.
-          </p>
-        )}
+        <p className="border-t border-border px-4 py-3 text-[13px] text-muted-foreground">
+          Showing all <span className="tnum font-semibold text-foreground">{rows.length}</span>{" "}
+          published seat rows for {collegeName}.
+        </p>
       </div>
-
-      {state === "preview" && hidden > 0 && (
-        <div className="mt-4 rounded-2xl border border-border bg-surface-2 px-6 py-8 text-center">
-          <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-primary/30 bg-primary-soft">
-            <Lock className="h-5 w-5 text-primary" aria-hidden="true" />
-          </span>
-          <h3 className="font-heading mt-3 text-lg font-bold text-foreground">
-            <span className="tnum">{hidden}</span> more seat rows for {collegeName}
-          </h3>
-          <p className="mx-auto mt-1.5 max-w-[52ch] text-[14px] leading-relaxed text-muted-foreground">
-            Every branch and quota published for this college, with the round each one closed in.
-          </p>
-          <button
-            type="button"
-            onClick={() => setDialogOpen(true)}
-            className="mt-5 inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-gradient-brand px-7 text-[15px] font-bold text-white shadow-glow transition-all hover:-translate-y-0.5 hover:shadow-glow-lg active:translate-y-0"
-          >
-            <Search className="h-4 w-4" aria-hidden="true" />
-            Show all {hidden + rows.length} rows
-          </button>
-        </div>
-      )}
-
-      <AuthDialog
-        open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-        onUnlocked={loadAll}
-        lockedCount={hidden}
-        level={level}
-        // No rank here — the visitor is reading one college, not searching.
-        rank={0}
-        category=""
-        noun="seat rows"
-        alreadyShown
-      />
-    </>
   );
 }

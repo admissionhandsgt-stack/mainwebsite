@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { logError } from "@/lib/logger";
 import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
 import { accessState } from "@/lib/userAuth";
+import { canSeeDepth } from "@/lib/depth";
 import { getRoundMoves } from "@/lib/roundQueries";
 import { streamSpec } from "@/lib/predictorFacets";
 
@@ -20,7 +21,7 @@ export const runtime = "nodejs";
  */
 
 /** Rows shown before the gate. Enough to see the shape of the answer. */
-const PREVIEW_ROWS = 3;
+
 
 export async function GET(request: Request) {
   const LIMIT = 30;
@@ -45,10 +46,11 @@ export async function GET(request: Request) {
 
   try {
     const result = await getRoundMoves({ level: spec.level, rank, category, limit: 40 });
-    const access = await accessState(request);
+    const [access, depth] = await Promise.all([accessState(request), canSeeDepth(request)]);
 
-    const opened = access.open ? result.opened : result.opened.slice(0, PREVIEW_ROWS);
-    const tightened = access.open ? result.tightened : result.tightened.slice(0, PREVIEW_ROWS);
+    // Both totals stay free; the rows are all or nothing.
+    const opened = depth.full ? result.opened : [];
+    const tightened = depth.full ? result.tightened : [];
 
     return NextResponse.json(
       {

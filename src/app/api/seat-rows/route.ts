@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { logError } from "@/lib/logger";
 import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
 import { hasAccess } from "@/lib/userAuth";
+import { canSeeDepth } from "@/lib/depth";
 import { getBranch, DEFAULT_CATEGORY } from "@/lib/branchQueries";
 import { getQuotaOverview, QUOTA_FAMILIES, type QuotaFamilyId } from "@/lib/quotaQueries";
 
@@ -41,7 +42,7 @@ export async function GET(request: Request) {
   const kind = params.get("kind");
 
   try {
-    if (!(await hasAccess(request))) {
+    if (!(await canSeeDepth(request)).full) {
       // 401 rather than a trimmed payload: the page already has the public
       // slice, so there is nothing useful to return and saying so is clearer.
       return NextResponse.json({ error: "Sign in to see the full table." }, { status: 401 });

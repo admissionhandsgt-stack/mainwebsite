@@ -6,6 +6,7 @@ import { listColleges, getCollegeFacets, type CollegeFilters } from "@/lib/colle
 import PageHero from "@/components/ui/PageHero";
 import CollegeFilterBar from "@/components/colleges/CollegeFilterBar";
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
+import { canSeeDepthServer } from "@/lib/depth";
 
 export const dynamic = "force-dynamic";
 
@@ -50,9 +51,10 @@ export default async function PGCollegesPage({ searchParams }: PageProps) {
     perPage: 24,
   };
 
-  const [{ items, total, page, perPage }, facets] = await Promise.all([
+  const [{ items, total, page, perPage }, facets, depth] = await Promise.all([
     listColleges(filters),
     getCollegeFacets("pg"),
+    canSeeDepthServer(),
   ]);
 
   const lastPage = Math.max(1, Math.ceil(total / perPage));
@@ -182,11 +184,14 @@ export default async function PGCollegesPage({ searchParams }: PageProps) {
                     </dl>
 
                     <div className="mt-4 flex items-center gap-1.5 text-[13px] font-semibold text-primary">
-                      {c.bestRank != null ? (
-                        <span className="tnum">Best cut {c.bestRank.toLocaleString("en-IN")}</span>
-                      ) : (
-                        <span>See cutoffs</span>
-                      )}
+                      {/*
+                        The precise best cut used to print here — 2,168 colleges
+                        each with a real closing rank beside its name is a
+                        dataset, and it is the dataset. The band a rank falls in
+                        comes from RankLens and stays: four buckets cannot be
+                        turned back into a cutoff.
+                      */}
+                      <span>{depth.full && c.bestRank != null ? `Best cut ${c.bestRank.toLocaleString("en-IN")}` : "See cutoffs"}</span>
                       <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                     </div>
                   </Link>
