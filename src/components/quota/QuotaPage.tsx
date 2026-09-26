@@ -169,7 +169,7 @@ export default function QuotaPage({
                       <td className="px-4 py-3 align-top">
                         <Link
                           href={`/md-ms-india/colleges/${r.slug}`}
-                          className="text-[14px] font-semibold leading-snug text-foreground hover:text-primary"
+                          className="-my-1.5 block py-1.5 text-[14px] font-semibold leading-snug text-foreground hover:text-primary"
                         >
                           {r.college}
                         </Link>
@@ -241,7 +241,7 @@ export default function QuotaPage({
                       <td className="px-4 py-3 align-top">
                         <Link
                           href={`/mbbs-india/colleges/${r.slug}`}
-                          className="text-[14px] font-semibold leading-snug text-foreground hover:text-primary"
+                          className="-my-1.5 block py-1.5 text-[14px] font-semibold leading-snug text-foreground hover:text-primary"
                         >
                           {r.college}
                         </Link>
@@ -278,6 +278,27 @@ export default function QuotaPage({
             ))}
           </dl>
         </section>
+
+        {/* Where to go next, which for this reader is almost always "and what
+            does the other quota cost?" */}
+        <nav aria-label="Related" className="mt-10 grid gap-3 sm:grid-cols-3">
+          {[
+            family.id === "nri"
+              ? { href: "/management-quota", t: "Management quota", d: "The other paid route, and usually the cheaper one" }
+              : { href: "/nri-quota/fees", t: "NRI quota", d: "Fewer seats, larger ranks, higher fees" },
+            { href: "/md-ms-india/branches", t: "Cutoffs by branch", d: "What each specialisation closed at, everywhere" },
+            { href: "/neet-college-predictor?course=pg", t: "Check your rank", d: "Which of these your own rank actually reaches" },
+          ].map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              className="rounded-2xl border border-border bg-card p-4 transition-colors hover:border-primary/40"
+            >
+              <span className="font-heading block text-[15px] font-bold text-foreground">{l.t}</span>
+              <span className="mt-1 block text-[13px] leading-relaxed text-muted-foreground">{l.d}</span>
+            </Link>
+          ))}
+        </nav>
 
         <p className="mt-8 flex gap-3 rounded-2xl border border-border bg-surface-2 px-5 py-4 text-[13.5px] leading-relaxed text-muted-foreground">
           <TrendingDown className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />

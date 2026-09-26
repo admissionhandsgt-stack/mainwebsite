@@ -261,7 +261,7 @@ export default async function BranchPage({
                       <td className="px-4 py-3 align-top">
                         <Link
                           href={`/md-ms-india/colleges/${r.slug}`}
-                          className="text-[14px] font-semibold leading-snug text-foreground hover:text-primary"
+                          className="-my-1.5 block py-1.5 text-[14px] font-semibold leading-snug text-foreground hover:text-primary"
                         >
                           {r.college}
                         </Link>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { collegeFaqs, collegeJsonLd, collegePlace } from "@/lib/collegeSeo";
 import CollegeFaq from "@/components/colleges/CollegeFaq";
+import { branchSlug } from "@/lib/branchSlug";
 import Link from "next/link";
 import Image from "next/image";
 import { BedDouble, GraduationCap, Landmark, MapPin, Banknote, TrendingUp, TrendingDown } from "lucide-react";
@@ -111,6 +112,17 @@ export default async function CollegePage({ params }: { params: { slug: string }
   // Answered from this college's own numbers, and rendered on the page as
   // well as in the markup — see the note in `lib/collegeSeo.ts` about what
   // FAQ schema does and does not buy since Google restricted it.
+  // Distinct branches, for the sidebar. Sorted by the tightest cut, so the
+  // list opens with what this college is known for.
+  const branches = Array.from(
+    cutoffs.reduce((m, c) => {
+      const best = m.get(c.course);
+      if (c.r1Latest != null && (best == null || c.r1Latest < best)) m.set(c.course, c.r1Latest);
+      else if (!m.has(c.course)) m.set(c.course, null);
+      return m;
+    }, new Map<string, number | null>()),
+  ).sort((a, b) => (a[1] ?? Infinity) - (b[1] ?? Infinity));
+
   const faqs = collegeFaqs(college, cutoffs, fees, "pg");
   const jsonLd = collegeJsonLd({ college, level: "pg", faqs });
 
@@ -281,6 +293,37 @@ export default async function CollegePage({ params }: { params: { slug: string }
                     : "The fee outweighs the stipend over the course."}{" "}
                   Hostel and one-time deposits are not included.
                 </p>
+              </div>
+            )}
+
+            {branches.length > 0 && (
+              <div className="rounded-2xl border border-border bg-card p-5">
+                <h2 className="font-heading text-[15px] font-bold text-foreground">
+                  Branches here
+                </h2>
+                <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">
+                  See what each one closed at across every college.
+                </p>
+                <ul className="mt-3 space-y-1">
+                  {branches.slice(0, 14).map(([name]) => (
+                    <li key={name}>
+                      <Link
+                        href={`/md-ms-india/branches/${branchSlug(name)}`}
+                        className="block truncate rounded-lg px-2 py-2 text-[14px] text-muted-foreground transition-colors hover:bg-primary-soft hover:text-primary-strong dark:hover:text-primary"
+                      >
+                        {name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                {branches.length > 14 && (
+                  <Link
+                    href="/md-ms-india/branches"
+                    className="mt-2 block px-2 text-[14px] font-semibold text-primary"
+                  >
+                    All {branches.length} branches
+                  </Link>
+                )}
               </div>
             )}
 

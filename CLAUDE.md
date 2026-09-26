@@ -449,6 +449,31 @@ live credentials. Keyed by `OTP_SECRET`, falling back to `UNLOCK_SECRET`, then a
 Digits come from `crypto.getRandomValues` with **rejection sampling**, not `% 10`, which would bias
 toward the low digits.
 
+### Lead alerts actually deliver now (2026-09-25)
+
+`whatsappService.ts` supported Meta Cloud API, Twilio and a generic webhook. Every one needs an
+environment variable and **none was ever set on the server**, so every enquiry since go-live took
+the `credentials missing` branch, wrote a `console.warn` and returned false. A real candidate at
+08:49 on 2026-09-25 is still unread in the database; nobody was told about any of them.
+
+The WAHA gateway is tried first now and the paid providers are the fallback, so nothing has to be
+configured for alerts to work. Messaging the same two staff numbers all day is ordinary traffic,
+not the stranger-blasting pattern that makes outbound OTP risky — the caps in `otp.ts` stay there
+and do not apply to alerts.
+
+- `src/lib/waGateway.ts` is the **single sender**. `otp.ts` had its own copy, which is how two
+  senders end up disagreeing about a timeout or a chat-id format.
+- Undeliverable is a `logError` naming the lead, not a `console.warn`. The whole failure was a
+  warning going somewhere nobody reads.
+- Recipient is `contact_info.lead_notification_phone`, currently **+919220626002**.
+- Admin → WhatsApp has **Send a test lead alert**, which sends a real message down the real path.
+- `node scripts/verify_lead_alert.mjs <url>` submits an enquiry to the public endpoint and reads
+  the alert back out of the gateway — the assertion is that a message exists on a phone. It points
+  alerts at our own number for the run and restores the real one in a `finally`.
+
+**Every other check passed the entire time this was broken**, because the form worked, the row was
+written and the admin list showed it. Only delivery failed, and nothing was looking at delivery.
+
 ### Accounts (2026-09-22)
 
 Visitors have real accounts now, separate from `admin_users` in every way that matters.
@@ -490,6 +515,57 @@ Routes: `/api/auth/lookup` · `/api/auth/otp` · `/api/auth/verify` · `/api/aut
   `^/[^/]` — `//evil.com` is an open redirect otherwise.
 - The account holds the rank and category, so the tools open where the visitor left off. That is
   what the account is *for*; a profile page for its own sake would not earn its keep.
+
+### One row must describe one seat (2026-09-25) — read this before writing any aggregate
+
+The worst bug shipped on this project, caught by the user within hours of it going live.
+
+The branch table grouped by college and took `MIN(r1_latest)`, `MAX(widest_latest)` and
+`MIN(fee_inr)` across everything that college offered. Each of the three came from a different
+seat, so the row described none of them:
+
+> **KVG Medical College** — "round 1 at rank 2,130 · reaches 2,20,761 · ₹7.83 lakh a year"
+
+Rank 2,130 is a Karnataka government-quota seat. 2,20,761 is a **management** seat. That management
+seat costs up to **₹1.6 crore**. The row invited a candidate to believe they could take a ₹7.83
+lakh seat at rank 2.2 lakh. No such seat exists. North Bengal was the same fault through category
+instead of quota — rank 74 is general, 2,26,217 is SC-PwD, shown as one range on a ₹12,000
+government college.
+
+**The rule.** A seat is identified by `(institute, course, quota, category)`. Any figure presented
+beside another figure must come from the same tuple. Aggregating across quota or category produces
+a number that is arithmetically correct and describes nothing real — which on this site is worse
+than being wrong, because the entire claim is that the figures are the authority's own.
+
+Where a range genuinely is the answer, name both ends: "from ₹1.11 lakh on a KAR Govt Quota-Open
+seat to ₹1.60 crore on a KAR Others (Inst.Q) seat" is honest; "from ₹1.11 lakh to ₹1.60 crore" is
+not, because the reader attaches the low number to the high rank.
+
+Fee is single-valued at that grain in 55,592 of 55,689 PG groups, so a row can state a fee.
+
+**A fee of `0` means "not published", not free.** 35 management seats record zero, and reporting it
+produced "Management quota seats from ₹0". Use `NULLIF(fee_inr, 0)` wherever a fee is aggregated.
+Only zero — some state management quotas inside government colleges really are cheap, and inventing
+a plausibility floor is the same guessing in a different coat.
+
+### Pages built on the quota and branch data (2026-09-25)
+
+Three page families, all from `seat_options` so they cannot disagree with the predictor:
+
+| Route | What it answers | Query layer |
+|---|---|---|
+| `/md-ms-india/branches` + `/[slug]` | "MD Radiology cutoff", per branch. 101 pages | `src/lib/branchQueries.ts` |
+| `/nri-quota/fees` | "NRI quota fees" — 2,102 PG seats, ₹3.58L–₹2.84Cr | `src/lib/quotaQueries.ts` |
+| `/management-quota` | "management quota fees" — 4,865 PG seats | same |
+
+- Branch pages take `?category=` and default to `GEN`; the category is **chosen, never averaged**.
+- The quota families are drawn **conservatively**: a seat counts only when its label says so
+  (`%NRI%`, `%management%`, exactly `MNG`). That excludes "Karnataka Private Seats - GMP Quota",
+  which is a government-merit seat inside a private college. NRI wins ties.
+- **UG carries a rank and no fee**, and the page says why: `fees.quota_id` is null for every UG row
+  because the source publishes unlabelled fee blocks per college. A guessed NRI fee is the most
+  expensive kind of guess to get wrong.
+- `seat_options` column is `latest_year`, not `year`. Cost a deploy.
 
 ### The rule for every data surface: a real slice free, the depth gated
 
@@ -537,6 +613,8 @@ router push, because the page does not read the param.
 | `/mbbs-india/colleges/[slug]` | Per-college page for all 1,727; top 200 pre-rendered, rest ISR at 24h |
 | `/md-ms-india/colleges` | All 2,168, filters in the URL |
 | `/md-ms-india/colleges/[slug]` | **Per-college SEO page** — cutoffs, movement, fees, JSON-LD. Top 120 pre-rendered, rest ISR at 24h |
+| `/md-ms-india/branches` + `/[slug]` | Per-branch cutoffs, 101 pages. Top 24 pre-rendered |
+| `/nri-quota/fees`, `/management-quota` | What those seats cost and what rank they stay open to |
 
 Queries live in `src/lib/collegeQueries.ts` (colleges, seat view) and `src/lib/cutoffQueries.ts` (row-level
 cutoffs, net cost). **All filters go through the URL**, never component state, so a filtered view is
@@ -707,6 +785,12 @@ Three suites, all runnable against production:
 | `scripts/audit_site.mjs` | Renders every route in Chromium at 390px and 1440px: headings, labels, tap targets, text sizes, metadata, broken images and links, console errors |
 | `scripts/verify_auth_flow.mjs` | Sends a **real** code to our own gateway number, reads it back out of the gateway, redeems it, sets a password, signs in again on the password alone — then deletes its own rows |
 | `scripts/verify_documents.mjs` | Uploads as one candidate and proves another candidate, an anonymous caller and three guessed URLs all fail to reach it; that magic bytes beat the filename; and that deleting the account takes the documents with it |
+| `scripts/verify_lead_alert.mjs` | Submits a real enquiry and reads the WhatsApp alert back off the gateway — delivery, not just acceptance |
+
+**Do not run the audit across a deploy.** It reported two branch pages as broken internal links
+(HTTP 502); both answer 200, the logs are clean, and a sweep of all 101 passes. The service
+restarts when `deploy.sh` switches the symlink, and the crawl was in flight. Finish deploying, then
+audit.
 
 **Two traps the audit harness fell into first, both worth remembering:**
 
@@ -717,6 +801,28 @@ Three suites, all runnable against production:
 
 A number a tool produces is worth nothing until you have checked the tool is measuring the thing you
 think it is.
+
+## SEO, and the one canonical host (2026-09-25)
+
+- **The apex and www both served 200**, making every one of 3,600+ URLs a duplicate of itself and
+  splitting the crawl budget. Canonicals and the sitemap already said www, so the apex now **301s
+  to www at Caddy**, path preserved. `npm run smoke` and `audit_site.mjs` both target
+  `https://www.admissionhands.com` — running them against the apex now measures the redirect.
+- **The per-college pages carry the site.** 3,479 of ~3,700 sitemap URLs. They now have
+  `BreadcrumbList` (Google renders it instead of the slug) and a **visible FAQ answered from each
+  college's own numbers** — including the quota beside every rank, for the reason above.
+- `FAQPage` markup is present but **buys nothing in the SERP today**: since August 2023 Google
+  shows FAQ rich results only for government and health authorities. It is there for the on-page
+  answer, and `lib/collegeSeo.ts` says so in a comment so nobody later assumes otherwise.
+- Titles dropped the `| AdmissionHands` suffix on college pages — it spent the ~60 characters
+  Google shows on the one word nobody searches.
+- **Open Graph was entirely absent** on 3,479 college pages. This audience shares links into
+  WhatsApp groups constantly and every one unfurled as a bare URL.
+- `collegePlace()` drops a place already in the name — descriptions read "SMS Medical College,
+  Jaipur, Jaipur, Rajasthan" on every such page.
+
+**Corrections to things stated during that work:** the UG state pages *are* in the sitemap, all 33
+— an earlier grep searched for capitalised slugs and they are lowercase.
 
 ## Cleanup baseline (2026-09-22)
 

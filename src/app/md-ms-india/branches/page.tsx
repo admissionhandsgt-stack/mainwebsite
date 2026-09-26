@@ -89,7 +89,7 @@ export default async function BranchesPage() {
                   <td className="px-4 py-3">
                     <Link
                       href={`/md-ms-india/branches/${b.slug}`}
-                      className="text-[14.5px] font-semibold text-foreground hover:text-primary"
+                      className="-my-2 block py-2 text-[14.5px] font-semibold text-foreground hover:text-primary"
                     >
                       {b.name}
                     </Link>

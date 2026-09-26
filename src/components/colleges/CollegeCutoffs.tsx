@@ -2,7 +2,9 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { TrendingUp, TrendingDown, Loader2, Lock, Search } from "lucide-react";
+import Link from "next/link";
 import AuthDialog from "@/components/lead/AuthDialog";
+import { branchSlug } from "@/lib/branchSlug";
 
 /**
  * A college's cutoff table, with the gate on the deep end of it.
@@ -159,7 +161,21 @@ export default function CollegeCutoffs({
                 key={`${c.course}-${c.quota}-${c.category}-${i}`}
                 className="border-t border-border transition-colors hover:bg-surface-2"
               >
-                <td className="px-4 py-3 text-[14px] font-medium text-foreground">{c.course}</td>
+                <td className="px-4 py-3 text-[14px] font-medium text-foreground">
+                  {/* PG branches have a page of their own; UG does not. The
+                      link is also the reader's next question — "where else is
+                      this branch within reach?" */}
+                  {level === "pg" ? (
+                    <Link
+                      href={`/md-ms-india/branches/${branchSlug(c.course)}`}
+                      className="hover:text-primary hover:underline"
+                    >
+                      {c.course}
+                    </Link>
+                  ) : (
+                    c.course
+                  )}
+                </td>
                 <td className="max-w-[180px] truncate px-4 py-3 text-[13px] text-muted-foreground">
                   {c.quota}
                 </td>

@@ -35,21 +35,14 @@ import { unstable_cache } from "next/cache";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { logError } from "@/lib/logger";
+import { branchSlug } from "@/lib/branchSlug";
 
 const rows = <T,>(r: unknown) => r as unknown as T[];
 
 /** What a general-category candidate sees unless they pick otherwise. */
 export const DEFAULT_CATEGORY = "GEN";
 
-/** "MD Radio Diagnosis" -> "md-radio-diagnosis". Stable, so links do not rot. */
-export function branchSlug(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/&/g, "and")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 80);
-}
+export { branchSlug };
 
 export interface BranchSummary {
   name: string;

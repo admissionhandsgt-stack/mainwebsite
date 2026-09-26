@@ -32,6 +32,8 @@ const ROUTES = [
   "/md-ms-india",
   "/md-ms-india/colleges",
   "/md-ms-india/branches",
+  "/nri-quota/fees",
+  "/management-quota",
   "/md-ms-india/branches/md-radio-diagnosis",
   "/md-ms-india/colleges/sms-medical-college-jaipur",
   "/nri-quota",
