@@ -13,7 +13,8 @@
     "build:cf": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion",
     "preview:cf": "opennextjs-cloudflare preview",
     "deploy:cf": "opennextjs-cloudflare deploy",
-    "smoke": "node scripts/smoke.mjs"
+    "smoke": "node scripts/smoke.mjs",
+    "verify:gate": "node scripts/verify_gate.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
