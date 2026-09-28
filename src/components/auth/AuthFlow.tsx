@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
+  Award,
   Check,
   Eye,
   EyeOff,
@@ -67,6 +68,16 @@ export interface AuthFlowProps {
 
 const POLL_MS = 2500;
 
+/**
+ * The categories a candidate recognises as their own.
+ *
+ * Not the 330 codes the counselling authorities publish — most of those are
+ * state-local labels for a seat, not something anybody would call themselves.
+ * A counsellor needs the reservation the candidate applies under; the exact
+ * state code is theirs to work out from it.
+ */
+const AUTH_CATEGORIES = ["GEN", "OBC", "SC", "ST", "EWS", "GEN-PwD", "NRI"];
+
 export default function AuthFlow({
   level = "pg",
   rank = 0,
@@ -83,6 +94,19 @@ export default function AuthFlow({
 
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
+
+  /**
+   * Rank and category, asked here only when the page does not already know them.
+   *
+   * The predictor passes both, because they are what the visitor just typed in.
+   * A branch or college page passes neither, and those are exactly the enquiries
+   * that reached the counsellors with no rank at all — four of the first six.
+   * Asking here costs one field on the only screen a new visitor must complete.
+   */
+  const needsRank = !(rank > 0);
+  const needsCategory = !category;
+  const [typedRank, setTypedRank] = useState("");
+  const [typedCategory, setTypedCategory] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [code, setCode] = useState("");
@@ -138,8 +162,10 @@ export default function AuthFlow({
         name: name.trim() || undefined,
         purpose,
         level,
-        rank: rank || undefined,
-        category: category || undefined,
+        // What the page knew, or what they just told us. Either way the code
+        // carries it, so it lands on the enquiry when the code is redeemed.
+        rank: rank || Number(typedRank) || undefined,
+        category: category || typedCategory || undefined,
         sourcePage: typeof window !== "undefined" ? window.location.pathname : undefined,
         honeypot: honeypot.current?.value || undefined,
       });
@@ -154,7 +180,7 @@ export default function AuthFlow({
       setCooldown(30);
       setStep("code");
     },
-    [post, digits, name, level, rank, category],
+    [post, digits, name, level, rank, category, typedRank, typedCategory],
   );
 
   /* ------------------------------------------------ inbound fallback poll */
@@ -203,6 +229,12 @@ export default function AuthFlow({
     // stranger their name — one field here is cheaper than that, every time.
     if (!known?.exists && name.trim().length < 2) {
       return setError("Please tell us your name.");
+    }
+    if (needsRank && !(Number(typedRank) > 0)) {
+      return setError("Please enter your NEET rank.");
+    }
+    if (needsCategory && !typedCategory) {
+      return setError("Please choose your category.");
     }
     setBusy(true);
     setError(null);
@@ -382,6 +414,47 @@ export default function AuthFlow({
               className="h-14 w-full rounded-xl border-2 border-border bg-background pl-11 pr-4 text-[16px] text-foreground outline-none transition-colors focus:border-primary"
             />
           </Field>
+
+          {/*
+            Only when the page has not already told us. On the predictor these
+            were typed into the tool itself, and asking twice is how a useful
+            step starts to feel like a form.
+          */}
+          {(needsRank || needsCategory) && (
+            <div className={needsRank && needsCategory ? "grid gap-3 sm:grid-cols-2" : ""}>
+              {needsRank && (
+                <Field label="Your NEET rank" htmlFor="auth-rank" icon={Award}>
+                  <input
+                    id="auth-rank"
+                    type="text"
+                    inputMode="numeric"
+                    value={typedRank}
+                    onChange={(e) => setTypedRank(e.target.value.replace(/[^\d]/g, ""))}
+                    placeholder="e.g. 38951"
+                    className="tnum h-14 w-full rounded-xl border-2 border-border bg-background pl-11 pr-4 text-[16px] text-foreground outline-none transition-colors focus:border-primary"
+                  />
+                </Field>
+              )}
+
+              {needsCategory && (
+                <Field label="Your category" htmlFor="auth-category" icon={ShieldCheck}>
+                  <select
+                    id="auth-category"
+                    value={typedCategory}
+                    onChange={(e) => setTypedCategory(e.target.value)}
+                    className="h-14 w-full appearance-none rounded-xl border-2 border-border bg-background pl-11 pr-4 text-[16px] text-foreground outline-none transition-colors focus:border-primary"
+                  >
+                    <option value="">Select</option>
+                    {AUTH_CATEGORIES.map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+              )}
+            </div>
+          )}
 
           {/* Bots fill everything; people never see this. */}
           <input

@@ -23,6 +23,7 @@ interface PredictQuery {
   category: string;
   states: string[];
   ownership: string[];
+  seatType: "all" | "nri" | "management";
   branches: string[];
   maxFee: number | null;
 }
@@ -40,6 +41,11 @@ function parse(searchParams: URLSearchParams): PredictQuery | { error: string } 
     searchParams.get("stream") ?? (searchParams.get("level") === "ug" ? "mbbs" : "pg"),
   );
   const category = (searchParams.get("category") || "").toUpperCase().slice(0, 48);
+
+  // NRI and management are quotas, not categories — see predictorFacets.ts.
+  const seatTypeRaw = searchParams.get("seatType");
+  const seatType: "all" | "nri" | "management" =
+    seatTypeRaw === "nri" || seatTypeRaw === "management" ? seatTypeRaw : "all";
 
   const list = (k: string) =>
     (searchParams.get(k) || "")
@@ -61,6 +67,7 @@ function parse(searchParams: URLSearchParams): PredictQuery | { error: string } 
     category: category || (spec.level === "ug" ? "UR" : "GEN"),
     states: list("states"),
     ownership: list("ownership"),
+    seatType,
     branches: list("branches"),
     maxFee: Number.isFinite(maxFee as number) && (maxFee as number) > 0 ? (maxFee as number) : null,
   };
@@ -84,7 +91,17 @@ export async function GET(request: Request) {
   if ("error" in parsed) {
     return NextResponse.json({ error: parsed.error }, { status: 400 });
   }
-  const { rank, stream, level, courseOnly, category, states, ownership, branches, maxFee } = parsed;
+  const { rank, stream, level, courseOnly, category, states, ownership, branches, maxFee, seatType } =
+    parsed;
+
+  // Drawn the same conservative way as /nri-quota/fees and /management-quota:
+  // a seat counts only when its own quota label says so, and NRI wins ties.
+  const seatTypeFilter =
+    seatType === "nri"
+      ? sql`AND q.label ILIKE '%NRI%'`
+      : seatType === "management"
+        ? sql`AND (q.label ILIKE '%management%' OR q.label = 'MNG') AND q.label NOT ILIKE '%NRI%'`
+        : sql``;
 
   try {
     // Pull every seat whose widest recorded cut could still contain this rank,
@@ -130,6 +147,7 @@ export async function GET(request: Request) {
         ${courseOnly ? sql`AND c.name ILIKE ${courseOnly}` : sql``}
         ${branches.length ? sql`AND c.name IN (${sql.join(branches.map((b) => sql`${b}`), sql`, `)})` : sql``}
         ${maxFee ? sql`AND (so.fee_inr IS NULL OR so.fee_inr <= ${maxFee})` : sql``}
+        ${seatTypeFilter}
       ORDER BY so.widest_latest ASC NULLS LAST
       LIMIT ${MAX_RESULTS}
     `);
@@ -190,6 +208,36 @@ export async function GET(request: Request) {
     // anything. Only the seat-by-seat detail is behind the gate, and it is cut
     // here rather than hidden in the UI: an unlocked payload never leaves the
     // server, so there is nothing to read out of the network tab.
+    /**
+     * An aggregate answer for whoever cannot see the rows.
+     *
+     * The locked panel used to show a grey skeleton of the table, which tells a
+     * candidate nothing except that something is hidden. These are counts and a
+     * range over the whole result — they cannot be turned back into a row, and
+     * they make the offer concrete: how many states, how many branches, what the
+     * seats actually cost.
+     */
+    const feeValues = results
+      .map((r) => r.feeInr)
+      .filter((v): v is number => typeof v === "number" && v > 0);
+
+    const shape = {
+      states: new Set(results.map((r) => r.state).filter(Boolean)).size,
+      colleges: new Set(results.map((r) => r.institute)).size,
+      branches: new Set(results.map((r) => r.course)).size,
+      feeMin: feeValues.length ? Math.min(...feeValues) : null,
+      feeMax: feeValues.length ? Math.max(...feeValues) : null,
+      topStates: Object.entries(
+        results.reduce<Record<string, number>>((acc, r) => {
+          if (r.state) acc[r.state] = (acc[r.state] ?? 0) + 1;
+          return acc;
+        }, {}),
+      )
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([state, seats]) => ({ state, seats })),
+    };
+
     const [access, depth] = await Promise.all([accessState(request), canSeeDepth(request)]);
     // The band counts below are free and complete. The seats themselves are
     // not, and that now means none of them rather than the tightest three —
@@ -198,7 +246,8 @@ export async function GET(request: Request) {
     const visible = depth.full ? results : [];
 
     return NextResponse.json({
-      query: { rank, stream, level, category, states, ownership, branches, maxFee },
+      shape,
+      query: { rank, stream, level, category, states, ownership, branches, maxFee, seatType },
       counts: summarise(results),
       total: results.length,
       truncated: access.open && results.length === MAX_RESULTS,

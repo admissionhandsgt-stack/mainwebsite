@@ -19,8 +19,9 @@ import MultiSelect from "@/components/predictor/MultiSelect";
 import AuthDialog from "@/components/lead/AuthDialog";
 import ProfileTuner from "@/components/lead/ProfileTuner";
 import CounsellingCTA from "@/components/lead/CounsellingCTA";
+import { categoryMeaning } from "@/lib/categoryLabels";
 import { bandLabel, type ChanceBand } from "@/lib/predictor";
-import type { Facets, Stream, StreamSpec } from "@/lib/predictorFacets";
+import type { Facets, SeatTypeFacet, SeatTypeId, Stream, StreamSpec } from "@/lib/predictorFacets";
 
 /* ------------------------------------------------------------------ types */
 
@@ -40,6 +41,16 @@ interface SeatResult {
   movement: { delta: number; direction: "easier" | "tighter" | "flat" } | null;
 }
 
+/** Aggregate over the whole result, for whoever cannot see the rows. */
+interface ResultShape {
+  states: number;
+  colleges: number;
+  branches: number;
+  feeMin: number | null;
+  feeMax: number | null;
+  topStates: { state: string; seats: number }[];
+}
+
 interface PredictResponse {
   counts: Record<ChanceBand, number>;
   total: number;
@@ -47,6 +58,7 @@ interface PredictResponse {
   locked?: boolean;
   needsVerification?: boolean;
   results: SeatResult[];
+  shape?: ResultShape;
   error?: string;
 }
 
@@ -145,9 +157,21 @@ export default function PredictorClient({ streams, facets }: Props) {
   // GEN in PG data, UR in UG data — the default comes from what the chosen
   // course actually publishes rather than a guess.
   const [category, setCategory] = useState(
-    () => facets[stream].categories.find((c) => c === "GEN" || c === "UR") ?? facets[stream].categories[0] ?? "GEN",
+    () =>
+      facets[stream].categories.find((c) => c.code === "GEN" || c.code === "UR")?.code ??
+      facets[stream].categories[0]?.code ??
+      "GEN",
   );
-  const [selectedStates, setSelectedStates] = useState<string[]>([]);
+  /**
+   * Which state's colleges — removed on purpose.
+   *
+   * "State" on a filter bar reads two ways, and both are reasonable: the state
+   * you want a seat in, or the state you have domicile in. They lead to
+   * different lists and the label could not say which without a sentence. The
+   * useful half of it moved to the profile question, where domicile is asked in
+   * words and drives the home-state quota advice a counsellor gives.
+   */
+  const [seatType, setSeatType] = useState<SeatTypeId>("all");
   const [selectedBranches, setSelectedBranches] = useState<string[]>([]);
   const [ownership, setOwnership] = useState<string[]>([]);
 
@@ -168,10 +192,10 @@ export default function PredictorClient({ streams, facets }: Props) {
     if (next === stream) return;
     setStream(next);
     const cats = facets[next].categories;
-    setCategory(cats.find((c) => c === "GEN" || c === "UR") ?? cats[0] ?? "GEN");
+    setCategory(cats.find((c) => c.code === "GEN" || c.code === "UR")?.code ?? cats[0]?.code ?? "GEN");
     setSelectedBranches([]);
-    setSelectedStates([]);
     setOwnership([]);
+    setSeatType("all");
     setData(null);
     setRounds(null);
     setError(null);
@@ -183,7 +207,7 @@ export default function PredictorClient({ streams, facets }: Props) {
     setError(null);
     try {
       const params = new URLSearchParams({ rank: String(rankNumber), stream, category });
-      if (selectedStates.length) params.set("states", selectedStates.join(","));
+      if (seatType !== "all") params.set("seatType", seatType);
       if (selectedBranches.length) params.set("branches", selectedBranches.join(","));
       if (ownership.length) params.set("ownership", ownership.join(","));
 
@@ -208,7 +232,7 @@ export default function PredictorClient({ streams, facets }: Props) {
     } finally {
       setLoading(false);
     }
-  }, [rankValid, rankNumber, stream, category, selectedStates, selectedBranches, ownership]);
+  }, [rankValid, rankNumber, stream, category, seatType, selectedBranches, ownership]);
 
   // Arriving with ?rank= from a college page: search immediately rather than
   // showing a form they already filled in.
@@ -224,7 +248,7 @@ export default function PredictorClient({ streams, facets }: Props) {
   useEffect(() => {
     if (data || error) run();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stream, category, selectedStates, selectedBranches, ownership]);
+  }, [stream, category, seatType, selectedBranches, ownership]);
 
   const grouped = useMemo(() => {
     const out: Record<ChanceBand, SeatResult[]> = { safe: [], likely: [], possible: [], stretch: [] };
@@ -232,12 +256,13 @@ export default function PredictorClient({ streams, facets }: Props) {
     return out;
   }, [data]);
 
-  const activeFilters = selectedStates.length + selectedBranches.length + ownership.length;
+  const activeFilters =
+    selectedBranches.length + ownership.length + (seatType === "all" ? 0 : 1);
 
   const clearFilters = () => {
-    setSelectedStates([]);
     setSelectedBranches([]);
     setOwnership([]);
+    setSeatType("all");
   };
 
   const locked = Boolean(data?.locked);
@@ -393,12 +418,9 @@ export default function PredictorClient({ streams, facets }: Props) {
                     onChange={setSelectedBranches}
                   />
                 )}
-                <MultiSelect
-                  label="State"
-                  options={f.states}
-                  selected={selectedStates}
-                  onChange={setSelectedStates}
-                />
+                {f.seatTypes.length > 1 && (
+                  <SeatTypePicker value={seatType} options={f.seatTypes} onChange={setSeatType} />
+                )}
                 <MultiSelect
                   label="College type"
                   options={f.ownerships}
@@ -415,21 +437,32 @@ export default function PredictorClient({ streams, facets }: Props) {
                 <span className="mr-1 text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
                   Category
                 </span>
-                {f.categories.slice(0, 8).map((c) => (
-                  <button
-                    key={c}
-                    type="button"
-                    aria-pressed={c === category}
-                    onClick={() => setCategory(c)}
-                    className={`min-h-[44px] rounded-full border px-3.5 py-2 text-[13px] font-semibold transition-colors md:min-h-0 md:py-1.5 ${
-                      category === c
-                        ? "border-primary bg-primary-soft text-primary-strong dark:text-primary"
-                        : "border-border bg-card text-muted-foreground hover:border-primary/40"
-                    }`}
-                  >
-                    {c}
-                  </button>
-                ))}
+                {f.categories.slice(0, 8).map((c) => {
+                  const meaning = categoryMeaning(c.code);
+                  const chosen = category === c.code;
+                  return (
+                    <button
+                      key={c.code}
+                      type="button"
+                      aria-pressed={chosen}
+                      onClick={() => setCategory(c.code)}
+                      // The hint is the whole point of the chip: GM is
+                      // Karnataka's general merit and MNG costs several times a
+                      // government seat, and a bare code says neither.
+                      title={`${meaning.label} — ${meaning.hint}`}
+                      className={`group relative min-h-[44px] rounded-full border px-3.5 py-2 text-[13px] font-semibold transition-colors md:min-h-0 md:py-1.5 ${
+                        chosen
+                          ? "border-primary bg-primary-soft text-primary-strong dark:text-primary"
+                          : "border-border bg-card text-muted-foreground hover:border-primary/40"
+                      }`}
+                    >
+                      {c.code}
+                      <span className="tnum ml-1.5 text-[11px] font-normal opacity-70">
+                        {c.seats.toLocaleString("en-IN")}
+                      </span>
+                    </button>
+                  );
+                })}
 
                 {activeFilters > 0 && (
                   <button
@@ -569,6 +602,7 @@ export default function PredictorClient({ streams, facets }: Props) {
                 rank={rankNumber}
                 level={spec.level}
                 category={category}
+                shape={data.shape}
                 needsVerification={Boolean(data.needsVerification)}
                 extra={rounds ? rounds.openedTotal + rounds.tightenedTotal : 0}
                 onUnlocked={() => {
@@ -650,6 +684,65 @@ export default function PredictorClient({ streams, facets }: Props) {
 
 /* ------------------------------------------------------------------ parts */
 
+/**
+ * NRI / management / everything.
+ *
+ * It sits where the State filter used to. NRI is the one people came looking
+ * for and could not find, because the chips only ever offered categories and
+ * NRI is a quota — 1,400+ seats that the tool held and never surfaced.
+ *
+ * Segmented rather than a dropdown: three options, and the count on each is
+ * the answer to "do you even have these?".
+ */
+function SeatTypePicker({
+  value,
+  options,
+  onChange,
+}: {
+  value: SeatTypeId;
+  options: SeatTypeFacet[];
+  onChange: (v: SeatTypeId) => void;
+}) {
+  return (
+    <div
+      role="group"
+      aria-label="Seat type"
+      className="inline-flex items-center gap-0.5 rounded-xl border border-border bg-card p-0.5"
+    >
+      {options.map((o) => {
+        const chosen = o.id === value;
+        return (
+          <button
+            key={o.id}
+            type="button"
+            aria-pressed={chosen}
+            onClick={() => onChange(o.id)}
+            title={
+              o.id === "nri"
+                ? "Seats reserved under an NRI quota. The widest ranks and the highest fees."
+                : o.id === "management"
+                  ? "Management-quota seats. Open to far larger ranks, at several times a government fee."
+                  : "Every seat, whatever quota it sits under."
+            }
+            className={`inline-flex min-h-[40px] items-center gap-1.5 rounded-[10px] px-3 text-[13px] font-semibold transition-colors ${
+              chosen
+                ? "bg-primary-soft text-primary-strong dark:text-primary"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {o.label}
+            {o.id !== "all" && (
+              <span className="tnum text-[11px] font-normal opacity-70">
+                {o.seats.toLocaleString("en-IN")}
+              </span>
+            )}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 function EmptyState() {
   return (
     <div className="mx-auto max-w-4xl py-6">
@@ -706,6 +799,7 @@ function LockedPanel({
   rank,
   level,
   category,
+  shape,
   needsVerification,
   extra,
   onUnlocked,
@@ -714,83 +808,137 @@ function LockedPanel({
   rank: number;
   level: "ug" | "pg";
   category: string;
+  shape?: ResultShape;
   needsVerification: boolean;
   extra: number;
   onUnlocked: () => void;
 }) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
+  const fee =
+    shape?.feeMin != null && shape.feeMax != null
+      ? shape.feeMin === shape.feeMax
+        ? money(shape.feeMin)
+        : `${money(shape.feeMin)} – ${money(shape.feeMax)}`
+      : null;
+
   return (
-    <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-surface-2">
-      <div className="relative px-6 py-10 text-center md:px-8 md:py-12">
-        <div
-          className="ambient-blob pointer-events-none absolute -right-24 -top-28 h-72 w-72 opacity-40"
-          aria-hidden="true"
-        />
-
-        <div className="relative mx-auto max-w-2xl">
-          <span className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-primary/30 bg-primary-soft">
-            <Lock className="h-5 w-5 text-primary" aria-hidden="true" />
-          </span>
-
-          <h2 className="font-heading mt-4 text-2xl font-extrabold text-foreground md:text-3xl">
-            <span className="tnum">{total}</span> seats match rank{" "}
-            <span className="tnum">{rank.toLocaleString("en-IN")}</span>
-          </h2>
-
-          <p className="mx-auto mt-2.5 max-w-[58ch] text-[15px] leading-relaxed text-muted-foreground">
-            The counts above are yours for free. Sign in to see <em>which</em> colleges — each
-            seat&rsquo;s round-1 close, the widest the cut reached, the fee, and how it moved
-            against last year
-            {extra > 0 ? (
-              <>
-                {" "}
-                — plus the <span className="tnum font-semibold text-foreground">{fmt(extra)}</span>{" "}
-                seats that opened up or tightened after round 1.
-              </>
-            ) : (
-              "."
-            )}
-          </p>
-
-          <button
-            type="button"
-            onClick={() => setDialogOpen(true)}
-            className="mt-7 inline-flex h-14 items-center justify-center gap-2.5 rounded-xl bg-gradient-brand px-8 text-[15px] font-bold text-white shadow-glow transition-all hover:-translate-y-0.5 hover:shadow-glow-lg active:translate-y-0"
-          >
-            <Search className="h-5 w-5" aria-hidden="true" />
-            Find my colleges
-          </button>
-
-          <p className="mt-3 text-[13px] text-muted-foreground">
-            {needsVerification
-              ? "One-time verification, then you are signed in."
-              : "Takes a few seconds."}
-          </p>
-
-          {/* The columns that are behind the gate, sketched — so what is being
-              asked for is concrete rather than a mystery. */}
+    <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-card">
+      <div className="grid gap-px bg-border md:grid-cols-5">
+        {/* ------------------------------------------------------- the ask */}
+        <div className="relative bg-surface-2 p-6 md:col-span-3 md:p-8">
           <div
-            className="mx-auto mt-9 max-w-xl overflow-hidden rounded-xl border border-border bg-card/50"
+            className="ambient-blob pointer-events-none absolute -right-20 -top-24 h-64 w-64 opacity-40"
             aria-hidden="true"
-          >
-            <div className="grid grid-cols-4 gap-2 border-b border-border bg-surface-3 px-4 py-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-              <span className="col-span-2 text-left">College &amp; branch</span>
-              <span className="text-right">R1 close</span>
-              <span className="text-right">Fee / yr</span>
-            </div>
-            {[0, 1, 2].map((i) => (
-              <div key={i} className="grid grid-cols-4 items-center gap-2 px-4 py-3">
-                <span
-                  className="col-span-2 h-3 rounded bg-muted/60"
-                  style={{ width: `${72 - i * 14}%` }}
-                />
-                <span className="ml-auto h-3 w-12 rounded bg-muted/60" />
-                <span className="ml-auto h-3 w-10 rounded bg-muted/60" />
+          />
+          <div className="relative">
+            <p className="inline-flex items-center gap-1.5 rounded-full border border-primary/25 bg-primary-soft px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-primary-strong dark:text-primary">
+              <Lock className="h-3 w-3" aria-hidden="true" />
+              Your result is ready
+            </p>
+
+            <h2 className="font-heading mt-3 text-[1.6rem] font-extrabold leading-[1.15] text-foreground md:text-[2rem]">
+              <span className="tnum">{fmt(total)}</span> seats match rank{" "}
+              <span className="tnum">{rank.toLocaleString("en-IN")}</span>
+            </h2>
+
+            <p className="mt-2 max-w-[52ch] text-[14.5px] leading-relaxed text-muted-foreground">
+              The counts above are yours for free. Sign in to see <em>which</em> colleges — each
+              seat&rsquo;s round-1 close, the widest the cut reached, the fee, and how it moved
+              against last year
+              {extra > 0 ? (
+                <>
+                  {" "}
+                  — plus the <span className="tnum font-semibold text-foreground">{fmt(extra)}</span>{" "}
+                  seats that opened or tightened after round 1.
+                </>
+              ) : (
+                "."
+              )}
+            </p>
+
+            <button
+              type="button"
+              onClick={() => setDialogOpen(true)}
+              className="mt-6 inline-flex h-14 w-full items-center justify-center gap-2.5 rounded-xl bg-gradient-brand px-8 text-[15px] font-bold text-white shadow-glow transition-all hover:-translate-y-0.5 hover:shadow-glow-lg active:translate-y-0 sm:w-auto"
+            >
+              <Search className="h-5 w-5" aria-hidden="true" />
+              Show me these {fmt(total)} seats
+            </button>
+
+            <p className="mt-2.5 text-[12.5px] text-muted-foreground">
+              {needsVerification
+                ? "Your phone number, verified once. No payment."
+                : "Your phone number, once. No payment."}
+            </p>
+          </div>
+        </div>
+
+        {/* --------------------------------------------------- what it is */}
+        {/*
+          This replaces a grey skeleton of the table, which told a candidate
+          nothing except that something was hidden. These are aggregates over
+          the same result — they cannot be turned back into a row, and they make
+          the offer concrete: how far it spreads, and what the seats cost.
+        */}
+        <dl className="bg-card p-6 md:col-span-2 md:p-8">
+          <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+            What is in it
+          </p>
+
+          <div className="mt-4 grid grid-cols-3 gap-4">
+            {[
+              ["Colleges", shape ? fmt(shape.colleges) : "—"],
+              [level === "pg" ? "Branches" : "Courses", shape ? fmt(shape.branches) : "—"],
+              ["States", shape ? fmt(shape.states) : "—"],
+            ].map(([label, value]) => (
+              <div key={label}>
+                <dd className="tnum font-heading text-2xl font-extrabold leading-none text-foreground">
+                  {value}
+                </dd>
+                <dt className="mt-1 text-[11px] uppercase tracking-wide text-muted-foreground">
+                  {label}
+                </dt>
               </div>
             ))}
           </div>
-        </div>
+
+          {fee && (
+            <div className="mt-5 border-t border-border pt-4">
+              <dt className="text-[11px] uppercase tracking-wide text-muted-foreground">
+                Fee a year, lowest to highest
+              </dt>
+              <dd className="tnum font-heading mt-1 text-lg font-extrabold text-foreground">{fee}</dd>
+              {/*
+                The span is real but the two ends are not the same kind of seat,
+                and a reader who attaches the low number to their own rank has
+                made exactly the mistake this site was corrected for once
+                already. So the sentence names what sits at each end.
+              */}
+              <p className="mt-1.5 text-[12px] leading-relaxed text-muted-foreground">
+                Government seats sit at the low end and management or NRI seats at the high end —
+                the same rank does not reach both.
+              </p>
+            </div>
+          )}
+
+          {shape && shape.topStates.length > 1 && (
+            <div className="mt-5 border-t border-border pt-4">
+              <dt className="text-[11px] uppercase tracking-wide text-muted-foreground">Mostly in</dt>
+              <dd className="mt-2 flex flex-wrap gap-1.5">
+                {shape.topStates.map((s) => (
+                  <span
+                    key={s.state}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-2 px-2.5 py-1 text-[12px] text-foreground"
+                  >
+                    {s.state}
+                    <span className="tnum text-muted-foreground">{s.seats}</span>
+                  </span>
+                ))}
+              </dd>
+            </div>
+          )}
+        </dl>
       </div>
 
       <AuthDialog

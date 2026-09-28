@@ -48,16 +48,51 @@ export function streamSpec(id: string | null | undefined): StreamSpec {
   return STREAMS.find((s) => s.id === id) ?? STREAMS[0];
 }
 
+export interface CategoryFacet {
+  code: string;
+  /** How many seats carry it, so a chip can say how much it covers. */
+  seats: number;
+}
+
+/**
+ * NRI and management are **quotas**, not categories.
+ *
+ * The chips only ever offered categories, so a candidate looking for an NRI
+ * seat found no NRI anywhere and concluded we did not have the data. We hold
+ * 1,400+ of them: 771 under a plain `NRI` quota plus the state variants
+ * (Telangana MQ2 C-Cat-NRI, AP S2 C-Cat-NRI, Maharashtra, Karnataka, TN).
+ *
+ * The source mixes the two dimensions — some states publish NRI as a category
+ * (`NRI-Priority II`), most as a quota — which is also why `MNG` turns up
+ * among the category chips. Rather than pretend one is the other, the tool now
+ * has a seat-type control that filters on the quota and says so.
+ */
+export type SeatTypeId = "all" | "nri" | "management";
+
+export interface SeatTypeFacet {
+  id: SeatTypeId;
+  label: string;
+  seats: number;
+}
+
 export interface Facets {
   states: string[];
-  categories: string[];
+  categories: CategoryFacet[];
   /** Course names, commonest first. Empty for the single-course streams. */
   branches: string[];
   ownerships: string[];
+  seatTypes: SeatTypeFacet[];
   years: number[];
 }
 
-const EMPTY: Facets = { states: [], categories: [], branches: [], ownerships: [], years: [] };
+const EMPTY: Facets = {
+  states: [],
+  categories: [],
+  branches: [],
+  ownerships: [],
+  seatTypes: [],
+  years: [],
+};
 
 const rows = <T,>(r: unknown) => r as unknown as T[];
 
@@ -66,7 +101,7 @@ async function load(id: Stream): Promise<Facets> {
   const courseFilter = spec.course ? sql`AND c.name ILIKE ${spec.course}` : sql``;
 
   try {
-    const [states, cats, branches, owners, years] = await Promise.all([
+    const [states, cats, branches, owners, years, seatTypes] = await Promise.all([
       db.execute(sql`
         SELECT DISTINCT st.name
         FROM seat_options so
@@ -107,13 +142,41 @@ async function load(id: Stream): Promise<Facets> {
       db.execute(sql`
         SELECT DISTINCT year FROM closing_ranks WHERE level = ${spec.level} ORDER BY year
       `),
+      // Drawn the same conservative way as the quota pages: a seat counts only
+      // when its own label says so. "Karnataka Private Seats - GMP Quota" is a
+      // government-merit seat inside a private college and is neither.
+      db.execute(sql`
+        SELECT
+          COUNT(*) FILTER (WHERE q.label ILIKE '%NRI%')::int AS nri,
+          COUNT(*) FILTER (
+            WHERE (q.label ILIKE '%management%' OR q.label = 'MNG')
+              AND q.label NOT ILIKE '%NRI%'
+          )::int AS management,
+          COUNT(*)::int AS all_seats
+        FROM seat_options so
+        JOIN quotas q ON q.id = so.quota_id
+        JOIN courses c ON c.id = so.course_id
+        WHERE so.level = ${spec.level} ${courseFilter}
+      `),
     ]);
+
+    const q = rows<{ nri: number; management: number; all_seats: number }>(seatTypes)[0];
 
     return {
       states: rows<{ name: string }>(states).map((r) => r.name),
-      categories: rows<{ code: string }>(cats).map((r) => r.code),
+      categories: rows<{ code: string; n: number }>(cats).map((r) => ({
+        code: r.code,
+        seats: r.n,
+      })),
       branches: rows<{ name: string }>(branches).map((r) => r.name),
       ownerships: rows<{ name: string }>(owners).map((r) => r.name),
+      seatTypes: [
+        { id: "all" as const, label: "All seats", seats: q?.all_seats ?? 0 },
+        { id: "nri" as const, label: "NRI quota", seats: q?.nri ?? 0 },
+        { id: "management" as const, label: "Management quota", seats: q?.management ?? 0 },
+        // A type with no seats at this level is not offered — an empty filter
+        // is how the UG predictor used to open on a category with no rows.
+      ].filter((t) => t.id === "all" || t.seats > 0),
       years: rows<{ year: number }>(years).map((r) => r.year),
     };
   } catch (error) {
