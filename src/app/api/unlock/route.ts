@@ -18,8 +18,21 @@ export const runtime = "nodejs";
  * `src/lib/leadGate.ts` for why this is a gate and not a verification.
  */
 
-/** A person unlocks once. Five an hour covers a shared connection and a retry. */
-const IP_LIMIT = 5;
+/**
+ * Generous on purpose, because the address is not the person.
+ *
+ * Five an hour was written as "covers a shared connection and a retry", and that
+ * is wrong for this audience in this season: a hostel, a coaching centre or a
+ * family connection puts dozens of NEET candidates behind one address in the same
+ * evening, and the sixth of them was being told to come back later. A blocked
+ * candidate is a lost enquiry, and nobody reports it.
+ *
+ * Raising it costs little, because the address was never the control that
+ * matters. A phone number is required for every unlock, the same number cannot
+ * open a second enquiry within 24 hours, and the OTP path caps codes **per
+ * number** in the database. Those bound a harvester; this only bounds a flood.
+ */
+const IP_LIMIT = 25;
 const IP_WINDOW_MS = 60 * 60 * 1000;
 
 export async function POST(request: Request) {

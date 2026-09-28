@@ -807,6 +807,50 @@ animation that escapes that block.
   Caddy (verified: one PID in the service's cgroup). Run it as more than one process and it silently
   becomes per-process again.
 
+## What the gate asks for (2026-09-28)
+
+The gate had been earning phone numbers and almost nothing else. Of the six enquiries before this,
+**four reached the counsellors as "Not given" with no rank**, so every call opened by asking a
+stranger questions the website could have asked while they were still reading. The team needs the
+same eight things every time: name, attempt, rank, branch, budget, domicile, category, MBBS college.
+
+**Asking all eight at the gate would cost more enquiries than it gains detail.** The split is by what
+the visitor gets back for answering, never by what we would like to know:
+
+| Asked | Where | Why there |
+|---|---|---|
+| Name, phone | the gate | One field each. The name is now **required** — it was marked `optional`, which is how it became "Not given" |
+| Rank, category, branch, domicile, budget | **`ProfileTuner`**, the moment the seats appear | Every one visibly narrows the list in front of them, so answering is the fastest route to a better answer rather than a toll on the way to it |
+| Attempt, MBBS college | **`CounsellingCTA`** | Neither changes anything on screen. They tell a counsellor who they are talking to, so they are asked where the visitor is the one asking us for something |
+
+- `src/lib/counsellingOptions.ts` — the choices and types, **no imports**. `counsellingProfile.ts` holds
+  the queries and re-exports them. That split is not tidiness: importing the constants from the query
+  module pulled the `postgres` driver into a client bundle and the build failed with
+  `Can't resolve 'net'` — the **fourth** time in this codebase after `mediaService`,
+  `documentCatalogue` and `branchSlug`.
+- `POST /api/profile` saves to `users`, copies onto the enquiry, and alerts the counsellors. Migration
+  `0016` adds the columns to both tables, and they are **deliberately two copies**: `users` is what the
+  visitor says about themselves and changes; `leads` is what was true when they asked, and must not.
+- **Saved after every answer, not at the end.** Somebody who answers three of five and closes the tab
+  has still told us three things. `notify` is sent on the last step only — five questions must not be
+  five WhatsApp messages about one person, which is how a team stops reading the alerts.
+- **Never ask what is already known.** The tuner drops any question whose answer it was given: the
+  predictor arrives with rank and category already typed, a branch page *is* a branch preference
+  (`presetProfile`), and a returning visitor has the lot on their account.
+- The alert now carries every field plus a `Still to ask:` line, because a counsellor who knows the
+  budget is missing opens with it instead of finding out halfway through that the shortlist they have
+  just read out is unaffordable.
+
+**The counselling panel is the honest version of "you still need us".** It names four things published
+closing ranks genuinely cannot answer — what order to fill, float or freeze, home-state versus All
+India, which documents your state stops you on. That is true, it is the actual product, and it is the
+opposite of the "95% accuracy" claims this site removed: it describes a limit rather than inventing a
+certainty.
+
+Verified end to end against production: four tuner answers then the counselling request took one
+enquiry from 2 filled fields to 8, each step attaching to the same lead rather than creating a second
+one, and `POST /api/profile` answers 401 without a session.
+
 ## The candidate document vault (2026-09-25)
 
 Counselling asks for fourteen documents at reporting. They used to arrive over WhatsApp, mixed into

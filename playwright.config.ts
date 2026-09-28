@@ -34,10 +34,26 @@ export default defineConfig({
   testDir: "./tests",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  // Against production these are read-only page loads, but the signed-in spec
-  // writes a session row — so it is serialised by its own describe.serial.
-  workers: process.env.CI ? 1 : 4,
+  /**
+   * Retry once against a remote target.
+   *
+   * Not a shrug at flaky tests. Two full runs failed five tests between them and
+   * none reproduced alone, so the server was measured directly: 35 ms warm, and
+   * 120–254 ms under eight concurrent requests at a load average of 0.17 on
+   * eight cores. The application is not the problem — the long-haul link from a
+   * dev machine to the VPS is, and a retry is the honest way to test over one.
+   * A test that fails twice is still a failure.
+   */
+  retries: process.env.CI ? 2 : isLocalDev ? 0 : 1,
+  /**
+   * Two against a remote target, four locally.
+   *
+   * Every data page renders per request now, so four browsers loading heavy
+   * pages over the internet contend for one Node process. Two consecutive full
+   * runs failed three *different* tests, none of which reproduced on its own —
+   * that is load, not a bug, and a suite that cries wolf gets ignored.
+   */
+  workers: process.env.CI ? 1 : isLocalDev ? 4 : 2,
   reporter: process.env.CI ? [["list"], ["html", { open: "never" }]] : [["list"]],
   timeout: 60_000,
   expect: { timeout: 15_000 },

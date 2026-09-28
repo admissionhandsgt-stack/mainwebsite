@@ -29,7 +29,15 @@ export const runtime = "nodejs";
  * to keep a WhatsApp number alive across deploys, and a per-isolate counter
  * would not. This limiter is the cheaper guard in front of them.
  */
-const LIMIT = 8;
+/**
+ * Per address, and deliberately loose — see the note in /api/unlock.
+ *
+ * Eight an hour blocked the ninth person on a shared connection from signing in
+ * at all. The control that actually protects the WhatsApp number is per-number
+ * and lives in `otp.ts`: three codes per number per hour, eight a day, counted
+ * in `otp_codes` rather than in memory. This limit is only here to stop a flood.
+ */
+const LIMIT = 25;
 const WINDOW_MS = 60 * 60 * 1000;
 
 export async function POST(request: Request) {
