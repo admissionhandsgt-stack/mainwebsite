@@ -198,6 +198,12 @@ export default function AuthFlow({
 
   const submitPhone = async () => {
     if (!phoneValid) return setError("Enter a 10-digit Indian mobile number.");
+    // Required for somebody we have not met. Four of the first six enquiries
+    // reached the counsellors as "Not given", so every call opened by asking a
+    // stranger their name — one field here is cheaper than that, every time.
+    if (!known?.exists && name.trim().length < 2) {
+      return setError("Please tell us your name.");
+    }
     setBusy(true);
     setError(null);
     try {
@@ -365,14 +371,14 @@ export default function AuthFlow({
           </Field>
 
           {/* Only asked of somebody we have never met, and never asked twice. */}
-          <Field label="Your name" htmlFor="auth-name" icon={User} optional>
+          <Field label="Your name" htmlFor="auth-name" icon={User}>
             <input
               id="auth-name"
               type="text"
               autoComplete="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="So we know who we are talking to"
+              placeholder="So a counsellor knows who they are speaking to"
               className="h-14 w-full rounded-xl border-2 border-border bg-background pl-11 pr-4 text-[16px] text-foreground outline-none transition-colors focus:border-primary"
             />
           </Field>

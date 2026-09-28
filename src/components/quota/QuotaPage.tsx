@@ -170,6 +170,9 @@ export default async function QuotaPage({
             <GatedSeatTable
               rows={pgRows}
               summary={pgSummary!}
+              level="pg"
+              states={pgSummary!.stateNames}
+              counsellingHeadline={`${family.label} seats vary by crores between colleges. A counsellor knows which are worth it.`}
               total={pg.rowsList.length}
               query={`kind=quota&family=${encodeURIComponent(family.id)}&level=pg`}
               collegeBase="/md-ms-india/colleges"
@@ -205,6 +208,8 @@ export default async function QuotaPage({
             <GatedSeatTable
               rows={ugRows}
               summary={ugSummary!}
+              level="ug"
+              states={ugSummary!.stateNames}
               total={ug.rowsList.length}
               query={`kind=quota&family=${encodeURIComponent(family.id)}&level=ug`}
               collegeBase="/mbbs-india/colleges"

@@ -268,6 +268,10 @@ export default async function BranchPage({
             <GatedSeatTable
               rows={seatRows}
               summary={summary}
+              level="pg"
+              states={summary.stateNames}
+              presetProfile={{ preferredBranch: b.name }}
+              counsellingHeadline={`You can see the ${b.name} seats. Which to fill first is the decision.`}
               total={b.rowsList.length}
               query={`kind=branch&slug=${encodeURIComponent(b.slug)}&category=${encodeURIComponent(b.category)}`}
               collegeBase="/md-ms-india/colleges"

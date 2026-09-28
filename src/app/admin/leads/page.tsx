@@ -28,6 +28,10 @@ interface Lead {
   preferred_state: string | null;
   quota_interest: string | null;
   internship_status: string | null;
+  /** The counselling profile — migration 0016. */
+  attempt: string | null;
+  budget_max: number | string | null;
+  mbbs_college: string | null;
   message: string | null;
   source_page: string | null;
   lead_status: string;
@@ -56,6 +60,16 @@ const fmtDate = (v: string | null) =>
 
 const fmtDay = (v: string | null) =>
   v ? new Date(v).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
+
+/** The budget ceiling, the way the team says it out loud. */
+function budget(v: number | string | null): string | null {
+  if (v === null || v === undefined || v === '') return null;
+  const n = Number(v);
+  if (!Number.isFinite(n) || n <= 0) return null;
+  if (n >= 10000000) return `up to ₹${(n / 10000000).toFixed(2)} Cr`;
+  if (n >= 100000) return `up to ₹${(n / 100000).toFixed(2)} L`;
+  return `up to ₹${n.toLocaleString('en-IN')}`;
+}
 
 /** A read-only field from the submission. */
 function Detail({
@@ -173,6 +187,7 @@ export default function LeadsManager() {
       if (!q) return true;
       return [
         l.name, l.phone, l.email, l.preferred_branch, l.preferred_state,
+        l.attempt, l.mbbs_college,
         l.source_page, l.assigned_to, l.admin_notes,
         l.rank != null ? String(l.rank) : null,
       ].some((v) => v?.toLowerCase().includes(q));
@@ -461,6 +476,9 @@ export default function LeadsManager() {
                     <Detail icon={MapPin} label="Preferred state" value={selected.preferred_state} />
                     <Detail icon={FileText} label="Quota interest" value={selected.quota_interest} />
                     <Detail icon={FileText} label="Internship status" value={selected.internship_status} />
+                    <Detail icon={Award} label="Attempt" value={selected.attempt} />
+                    <Detail icon={FileText} label="Budget" value={budget(selected.budget_max)} />
+                    <Detail icon={Stethoscope} label="MBBS from" value={selected.mbbs_college} />
                     <Detail icon={MessageSquare} label="Message" value={selected.message} />
                     <Detail icon={FileText} label="Came from" value={selected.source_page} />
                     <Detail icon={FileText} label="Level" value={(selected.level ?? 'ug').toUpperCase()} />

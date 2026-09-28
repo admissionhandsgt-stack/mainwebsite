@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { MapPin } from "lucide-react";
 import LockedSummary from "@/components/seats/LockedSummary";
+import ProfileTuner from "@/components/lead/ProfileTuner";
+import CounsellingCTA from "@/components/lead/CounsellingCTA";
 import { GATED_CLASS } from "@/lib/paywall";
 import type { SeatSummary } from "@/lib/seatSummary";
 
@@ -60,6 +62,11 @@ export default function GatedSeatTable({
   showCourse = false,
   showFee = true,
   noun,
+  level = "pg",
+  branches = [],
+  states = [],
+  presetProfile,
+  counsellingHeadline,
 }: {
   /** Every row, or none. Never a slice. */
   rows: SeatRow[];
@@ -73,8 +80,30 @@ export default function GatedSeatTable({
   showCourse?: boolean;
   showFee?: boolean;
   noun: string;
+  /** For the tuner: which category set and whether branches apply. */
+  level?: "ug" | "pg";
+  /** Facets from the page, so the tuner offers what the data actually holds. */
+  branches?: string[];
+  states?: string[];
+  /**
+   * What the page already knows about them from the URL they are on.
+   *
+   * A branch page *is* a branch preference. Asking "which branch?" to somebody
+   * reading the General Medicine page wastes the question and looks careless;
+   * passing it here records it and drops the step.
+   */
+  presetProfile?: { preferredBranch?: string };
+  counsellingHeadline?: string;
 }) {
   const [rows, setRows] = useState<SeatRow[]>(initialRows);
+  /**
+   * The tuner is shown to somebody who *just* unlocked, not to everybody with a
+   * session. That moment is the only one where five questions are obviously
+   * worth answering — the seats are on screen and each answer visibly narrows
+   * them. Asking a returning visitor the same questions on every page would be
+   * a form tax, and they have already been saved to the account anyway.
+   */
+  const [justUnlocked, setJustUnlocked] = useState(false);
 
   /**
    * After signing in inside the dialog, fetch the rows rather than reloading.
@@ -89,6 +118,7 @@ export default function GatedSeatTable({
     const json = await res.json();
     if (!json?.rows?.length) throw new Error("no rows");
     setRows(json.rows);
+    setJustUnlocked(true);
   };
 
   if (rows.length === 0) {
@@ -122,10 +152,25 @@ export default function GatedSeatTable({
   ];
 
   return (
-    <div
-      data-testid="seat-table"
-      className={`${GATED_CLASS} mt-5 overflow-x-auto rounded-2xl border border-border bg-card`}
-    >
+    <>
+      {justUnlocked && (
+        <div className="mt-5">
+          <ProfileTuner
+            level={level}
+            branches={branches}
+            states={states}
+            initial={presetProfile}
+            source={noun}
+            onDone={() => setJustUnlocked(false)}
+            onSkip={() => setJustUnlocked(false)}
+          />
+        </div>
+      )}
+
+      <div
+        data-testid="seat-table"
+        className={`${GATED_CLASS} mt-5 overflow-x-auto rounded-2xl border border-border bg-card`}
+      >
       <table className="w-full min-w-[760px] table-fixed border-collapse">
         <thead>
           <tr className="bg-surface-2">
@@ -193,8 +238,15 @@ export default function GatedSeatTable({
               )}
             </tr>
           ))}
-        </tbody>
-      </table>
-    </div>
+          </tbody>
+        </table>
+      </div>
+
+      <CounsellingCTA
+        className="mt-6"
+        source={noun}
+        headline={counsellingHeadline}
+      />
+    </>
   );
 }

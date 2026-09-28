@@ -17,6 +17,8 @@ import {
 } from "lucide-react";
 import MultiSelect from "@/components/predictor/MultiSelect";
 import AuthDialog from "@/components/lead/AuthDialog";
+import ProfileTuner from "@/components/lead/ProfileTuner";
+import CounsellingCTA from "@/components/lead/CounsellingCTA";
 import { bandLabel, type ChanceBand } from "@/lib/predictor";
 import type { Facets, Stream, StreamSpec } from "@/lib/predictorFacets";
 
@@ -152,6 +154,8 @@ export default function PredictorClient({ streams, facets }: Props) {
   const [view, setView] = useState<View>("seats");
   const [data, setData] = useState<PredictResponse | null>(null);
   const [rounds, setRounds] = useState<RoundsResponse | null>(null);
+  // Asked once, right after the seats appear — see ProfileTuner.
+  const [justUnlocked, setJustUnlocked] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
@@ -567,12 +571,32 @@ export default function PredictorClient({ streams, facets }: Props) {
                 category={category}
                 needsVerification={Boolean(data.needsVerification)}
                 extra={rounds ? rounds.openedTotal + rounds.tightenedTotal : 0}
-                onUnlocked={run}
+                onUnlocked={() => {
+                  setJustUnlocked(true);
+                  run();
+                }}
               />
             ) : view === "rounds" ? (
               <RoundsView rounds={rounds} rank={rankNumber} level={spec.level} />
             ) : (
               <>
+                {justUnlocked && (
+                  <div className="mt-6">
+                    <ProfileTuner
+                      level={spec.level}
+                      branches={spec.hasBranches ? f.branches : []}
+                      states={f.states}
+                      // The rank and category were typed into the tool itself,
+                      // so the tuner drops those two questions and asks the
+                      // three it does not already have.
+                      initial={{ rank: String(rankNumber), category }}
+                      source={`Seat predictor (${spec.level.toUpperCase()})`}
+                      onDone={() => setJustUnlocked(false)}
+                      onSkip={() => setJustUnlocked(false)}
+                    />
+                  </div>
+                )}
+
                 {data.truncated && (
                   <p className="mt-5 rounded-xl border border-border bg-surface-2 px-4 py-3 text-[13px] text-muted-foreground">
                     Showing the {data.total} most competitive seats you reach. Narrow by state
@@ -603,6 +627,16 @@ export default function PredictorClient({ streams, facets }: Props) {
                   landed in published rounds and place your rank against it — nothing here predicts
                   what this year&apos;s cut will do.
                 </p>
+
+                <CounsellingCTA
+                  className="mt-8"
+                  source={`Seat predictor (${spec.level.toUpperCase()})`}
+                  headline={
+                    data.counts
+                      ? `${(data.counts.safe + data.counts.likely).toLocaleString("en-IN")} seats are realistically in reach. Filling them in the right order is the decision.`
+                      : undefined
+                  }
+                />
               </>
             )}
           </>

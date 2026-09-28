@@ -4,6 +4,8 @@ import { useState } from "react";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import Link from "next/link";
 import LockedSummary from "@/components/seats/LockedSummary";
+import ProfileTuner from "@/components/lead/ProfileTuner";
+import CounsellingCTA from "@/components/lead/CounsellingCTA";
 import { GATED_CLASS } from "@/lib/paywall";
 import { branchSlug } from "@/lib/branchSlug";
 import type { SeatSummary } from "@/lib/seatSummary";
@@ -88,6 +90,8 @@ export default function CollegeCutoffs({
   collegeName: string;
 }) {
   const [rows, setRows] = useState<CutoffRow[]>(initialRows);
+  // Shown once, to somebody who just unlocked — see the note in GatedSeatTable.
+  const [justUnlocked, setJustUnlocked] = useState(false);
 
   /** After signing in, fetch the rows rather than making them reload the page. */
   const load = async () => {
@@ -96,6 +100,7 @@ export default function CollegeCutoffs({
     const json = await res.json();
     if (!json?.rows?.length) throw new Error("no rows");
     setRows(json.rows);
+    setJustUnlocked(true);
   };
 
   if (rows.length === 0) {
@@ -120,10 +125,22 @@ export default function CollegeCutoffs({
   }
 
   return (
-    <div
-      data-testid="seat-table"
-      className={`${GATED_CLASS} mt-5 overflow-x-auto rounded-2xl border border-border bg-card`}
-    >
+    <>
+      {justUnlocked && (
+        <div className="mt-5">
+          <ProfileTuner
+            level={level}
+            source={`${collegeName} cutoffs`}
+            onDone={() => setJustUnlocked(false)}
+            onSkip={() => setJustUnlocked(false)}
+          />
+        </div>
+      )}
+
+      <div
+        data-testid="seat-table"
+        className={`${GATED_CLASS} mt-5 overflow-x-auto rounded-2xl border border-border bg-card`}
+      >
         <table className="w-full min-w-[720px] border-collapse">
           <caption className="sr-only">
             Published closing ranks for {collegeName}
@@ -204,5 +221,12 @@ export default function CollegeCutoffs({
           published seat rows for {collegeName}.
         </p>
       </div>
+
+      <CounsellingCTA
+        className="mt-6"
+        source={collegeName}
+        headline={`These are ${collegeName}'s published cuts. Whether it belongs on your list is the other question.`}
+      />
+    </>
   );
 }
