@@ -34,6 +34,7 @@ interface LeadNotificationPayload {
   category?: string;
   attempt?: string;
   budget_max?: number;
+  budget_total_max?: number;
   mbbs_college?: string;
   /** What is still unknown, so a counsellor knows what to open the call with. */
   missing?: string[];
@@ -94,7 +95,8 @@ export async function sendWhatsAppNotification(lead: LeadNotificationPayload): P
     ['Attempt', lead.attempt],
     ['Branch', lead.preferred_branch],
     ['Domicile', lead.preferred_state],
-    ['Budget', money(lead.budget_max)],
+    ['Budget / yr', money(lead.budget_max)],
+    ['Budget total', money(lead.budget_total_max)],
     ['MBBS from', lead.mbbs_college],
     ['Quota', lead.quota_interest],
     ['Internship', lead.internship_status],

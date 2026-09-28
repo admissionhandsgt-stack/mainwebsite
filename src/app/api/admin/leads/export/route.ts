@@ -21,6 +21,7 @@ const COLUMNS = [
   ["internship_status", "Internship status"],
   ["attempt", "Attempt"],
   ["budget_max", "Budget (max ₹/yr)"],
+  ["budget_total_max", "Budget (max ₹ total)"],
   ["mbbs_college", "MBBS college"],
   ["message", "Message"],
   ["source_page", "Source"],
@@ -55,7 +56,7 @@ export async function GET() {
     const rows = (await db.execute(sql`
       SELECT id, created_at, level, name, phone, email, rank, category,
              preferred_branch, preferred_state, quota_interest, internship_status,
-             attempt, budget_max, mbbs_college,
+             attempt, budget_max, budget_total_max, mbbs_college,
              message, source_page, lead_status, is_read, assigned_to,
              follow_up_on, last_contacted_at, admin_notes
       FROM leads

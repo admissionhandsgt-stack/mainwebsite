@@ -31,6 +31,7 @@ interface Lead {
   /** The counselling profile — migration 0016. */
   attempt: string | null;
   budget_max: number | string | null;
+  budget_total_max: number | string | null;
   mbbs_college: string | null;
   message: string | null;
   source_page: string | null;
@@ -477,7 +478,8 @@ export default function LeadsManager() {
                     <Detail icon={FileText} label="Quota interest" value={selected.quota_interest} />
                     <Detail icon={FileText} label="Internship status" value={selected.internship_status} />
                     <Detail icon={Award} label="Attempt" value={selected.attempt} />
-                    <Detail icon={FileText} label="Budget" value={budget(selected.budget_max)} />
+                    <Detail icon={FileText} label="Budget / year" value={budget(selected.budget_max)} />
+                    <Detail icon={FileText} label="Budget total" value={budget(selected.budget_total_max)} />
                     <Detail icon={Stethoscope} label="MBBS from" value={selected.mbbs_college} />
                     <Detail icon={MessageSquare} label="Message" value={selected.message} />
                     <Detail icon={FileText} label="Came from" value={selected.source_page} />

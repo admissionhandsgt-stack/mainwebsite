@@ -823,6 +823,33 @@ the visitor gets back for answering, never by what we would like to know:
 | Rank, category, branch, domicile, budget | **`ProfileTuner`**, the moment the seats appear | Every one visibly narrows the list in front of them, so answering is the fastest route to a better answer rather than a toll on the way to it |
 | Attempt, MBBS college | **`CounsellingCTA`** | Neither changes anything on screen. They tell a counsellor who they are talking to, so they are asked where the visitor is the one asking us for something |
 
+**The mandatory step sits after the number is verified, not before it** (migration `0017`). Seven
+fields on the first screen loses people who would have answered all seven once they were in, and an
+abandoned form leaves nothing at all. So screen one is name and phone, and the questions a counsellor
+cannot work without — rank, category, **several branches**, budget a year, budget in total — are the
+last step before the seats appear. The number is recorded whatever happens next.
+
+- **Branches are plural.** Nobody aims at one: somebody at rank 38,000 is weighing Radiology against
+  Dermatology against Paediatrics, and a counsellor told only the first builds the wrong shortlist.
+  `users.preferred_branches` is a real `text[]`, capped at five; `leads.preferred_branch` keeps the
+  single column and receives the list joined with commas, because a lead is read by a person and both
+  the admin screen and the CSV already render it.
+- **Both budgets are asked, and the total is not multiplied.** Three years × the yearly figure is wrong
+  often enough to matter — a deposit, a bond, hostel and city costs, and later years priced
+  differently — and what a family can raise across three years is simply not three times what it can
+  find this year. Every label says its unit; "₹15 lakh a year" and "₹15 lakh in total" are different
+  answers and the difference is the whole decision.
+- **Checked on the server, not only in the form.** The form validates so somebody is told what is wrong
+  while looking at it; `parseProfile` decides what is stored, because a POST need not come from the
+  form. A budget arrives as a **band id that is looked up**, so a client cannot hand itself a ceiling
+  the seat query would trust; a rank outside 1–2,000,000 becomes null; branches must be strings, and
+  are deduplicated, trimmed and capped rather than coerced. Verified against production: 13 checks,
+  including `{"evil":1}` in the branch array being dropped rather than stored as `"[object Object]"`.
+- **`sql` and arrays, the trap again.** Drizzle expands a JS array in a template into `$1, $2, …`, so
+  `COALESCE(${arr}, col)` compiled to `COALESCE($1, $2, col)` — not a type error, just quietly the
+  wrong statement, and branches were silently never stored. `textArray()` builds the literal in SQL.
+  Same trap as `= ANY(${arr})` in the predictor.
+
 - `src/lib/counsellingOptions.ts` — the choices and types, **no imports**. `counsellingProfile.ts` holds
   the queries and re-exports them. That split is not tidiness: importing the constants from the query
   module pulled the `postgres` driver into a client bundle and the build failed with

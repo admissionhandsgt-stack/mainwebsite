@@ -6,6 +6,7 @@ import {
   ArrowRight,
   Award,
   Check,
+  Wallet,
   Eye,
   EyeOff,
   KeyRound,
@@ -15,6 +16,7 @@ import {
   ShieldCheck,
   User,
 } from "lucide-react";
+import { BUDGET_BANDS, TOTAL_BUDGET_BANDS } from "@/lib/counsellingOptions";
 
 /**
  * Signing in, as a real sign-in.
@@ -47,7 +49,7 @@ import {
  * says why, rather than presenting it as how this always works.
  */
 
-type Step = "phone" | "password" | "code" | "setpass" | "done";
+type Step = "phone" | "password" | "code" | "profile" | "setpass" | "done";
 
 /** The send that happened, which decides what the code screen looks like. */
 type Channel = "whatsapp" | "inbound";
@@ -107,6 +109,39 @@ export default function AuthFlow({
   const needsCategory = !category;
   const [typedRank, setTypedRank] = useState("");
   const [typedCategory, setTypedCategory] = useState("");
+  const [branches, setBranches] = useState<string[]>([]);
+  const [budget, setBudget] = useState("");
+  const [budgetTotal, setBudgetTotal] = useState("");
+  const [branchOptions, setBranchOptions] = useState<string[]>([]);
+
+  /**
+   * The branch list, fetched once and only when it is about to be shown.
+   *
+   * The curated 26 from the CMS rather than the 101 the data holds: a candidate
+   * picks from branches they would actually sit for, and a hundred-item list on
+   * a phone is a list nobody reads. Names only — no ranks, nothing gated.
+   */
+  useEffect(() => {
+    if (step !== "profile" || level !== "pg" || branchOptions.length) return;
+    let cancelled = false;
+    fetch("/api/content/pg-branches")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => {
+        if (cancelled || !j?.data) return;
+        setBranchOptions(
+          (j.data as { branchName?: string }[])
+            .map((b) => b.branchName)
+            .filter((b): b is string => Boolean(b)),
+        );
+      })
+      .catch(() => {
+        // The step still works without them — the field falls back to a text
+        // box rather than blocking somebody behind a failed fetch.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [step, level, branchOptions.length]);
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [code, setCode] = useState("");
@@ -230,12 +265,6 @@ export default function AuthFlow({
     if (!known?.exists && name.trim().length < 2) {
       return setError("Please tell us your name.");
     }
-    if (needsRank && !(Number(typedRank) > 0)) {
-      return setError("Please enter your NEET rank.");
-    }
-    if (needsCategory && !typedCategory) {
-      return setError("Please choose your category.");
-    }
     setBusy(true);
     setError(null);
     try {
@@ -259,7 +288,9 @@ export default function AuthFlow({
     setError(null);
     try {
       await post("/api/auth/login", { phone: digits, password });
-      setStep("done");
+      // A returning visitor has answered these already; `profileNeeded` checks
+      // rather than assumes, because the account may predate the questions.
+      setStep("profile");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Could not sign you in.");
     } finally {
@@ -281,14 +312,66 @@ export default function AuthFlow({
         rank: rank || undefined,
         category: category || undefined,
       });
-      // A reset always ends in a new password; a first sign-up is offered one.
-      setStep(resetting || !json.hasPassword ? "setpass" : "done");
+      // A reset is somebody who already has an account and a profile, so it
+      // goes straight on. A first sign-up answers the questions a counsellor
+      // would otherwise have to ring up and ask.
+      setStep(resetting ? "setpass" : "profile");
     } catch (e) {
       setError(e instanceof Error ? e.message : "That code is not right.");
     } finally {
       setBusy(false);
     }
   };
+
+  /**
+   * The questions a counsellor cannot work without.
+   *
+   * Mandatory, and checked here as well as on the server — the browser check is
+   * so somebody is told what is wrong while looking at it, the server check is
+   * what decides what is stored, because a POST need not come from this form.
+   *
+   * It runs *after* the number is verified on purpose. Seven fields on the first
+   * screen loses people who would have answered all seven once they were in, and
+   * an abandoned form leaves nothing at all — this way the number and the name
+   * are already recorded whatever happens next.
+   */
+  const submitProfile = async () => {
+    if (needsRank && !(Number(typedRank) > 0 && Number(typedRank) <= 2_000_000)) {
+      return setError("Enter your NEET rank — digits only.");
+    }
+    if (needsCategory && !typedCategory) {
+      return setError("Choose the category you apply under.");
+    }
+    if (level === "pg" && branches.length === 0) {
+      return setError("Pick at least one branch you are aiming for.");
+    }
+    if (!budget) return setError("Choose what you can pay each year.");
+    if (!budgetTotal) return setError("Choose what you can raise in total.");
+
+    setBusy(true);
+    setError(null);
+    try {
+      await post("/api/profile", {
+        rank: rank || typedRank || undefined,
+        category: category || typedCategory || undefined,
+        preferredBranches: branches.length ? branches : undefined,
+        budget,
+        budgetTotal,
+        notify: true,
+        source: typeof window !== "undefined" ? window.location.pathname : "Sign-in",
+      });
+      setStep("done");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Could not save that.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const toggleBranch = (b: string) =>
+    setBranches((cur) =>
+      cur.includes(b) ? cur.filter((x) => x !== b) : cur.length >= 5 ? cur : [...cur, b],
+    );
 
   const submitNewPassword = async () => {
     if (password.length < 8) return setError("Use at least 8 characters.");
@@ -338,8 +421,15 @@ export default function AuthFlow({
           are in it. Two steps look endless when you cannot see the end. */}
       {step !== "done" && (
         <ol className="mb-6 flex items-center gap-2" aria-label="Progress">
-          {(["phone", step === "password" ? "password" : "code", "setpass"] as const).map((s, i) => {
-            const order: Step[] = ["phone", step === "password" ? "password" : "code", "setpass"];
+          {(
+            ["phone", step === "password" ? "password" : "code", "profile", "setpass"] as const
+          ).map((s, i) => {
+            const order: Step[] = [
+              "phone",
+              step === "password" ? "password" : "code",
+              "profile",
+              "setpass",
+            ];
             const at = order.indexOf(step);
             const state = i < at ? "done" : i === at ? "now" : "todo";
             return (
@@ -629,7 +719,163 @@ export default function AuthFlow({
         </form>
       )}
 
-      {/* ------------------------------ step 3 ------------------------------ */}
+      {/* --------------------- step 3: who we are advising ------------------- */}
+      {step === "profile" && (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            submitProfile();
+          }}
+        >
+          <p className="text-[15px] leading-relaxed text-muted-foreground">
+            Last step. A counsellor reads these before they call, so nobody has to take you back
+            through them on the phone.
+          </p>
+
+          <div className="mt-5 space-y-4">
+            {needsRank && (
+              <Field label="Your NEET rank" htmlFor="p-rank" icon={Award}>
+                <input
+                  id="p-rank"
+                  type="text"
+                  inputMode="numeric"
+                  autoFocus
+                  value={typedRank}
+                  onChange={(e) => setTypedRank(e.target.value.replace(/[^0-9]/g, ""))}
+                  placeholder="e.g. 38951"
+                  className="tnum h-14 w-full rounded-xl border-2 border-border bg-background pl-11 pr-4 text-[16px] text-foreground outline-none transition-colors focus:border-primary"
+                />
+              </Field>
+            )}
+
+            {needsCategory && (
+              <Field label="Your category" htmlFor="p-category" icon={ShieldCheck}>
+                <select
+                  id="p-category"
+                  value={typedCategory}
+                  onChange={(e) => setTypedCategory(e.target.value)}
+                  className="h-14 w-full appearance-none rounded-xl border-2 border-border bg-background pl-11 pr-4 text-[16px] text-foreground outline-none transition-colors focus:border-primary"
+                >
+                  <option value="">Select</option>
+                  {AUTH_CATEGORIES.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
+              </Field>
+            )}
+
+            {/* Several, because nobody aims at one branch — and a counsellor
+                told only the first builds the wrong shortlist. */}
+            {level === "pg" && (
+              <div>
+                <p className="text-[13px] font-semibold text-foreground">
+                  Branches you are aiming for
+                  <span className="ml-1.5 font-normal text-muted-foreground">pick up to 5</span>
+                </p>
+                {branchOptions.length > 0 ? (
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    {branchOptions.map((b) => {
+                      const chosen = branches.includes(b);
+                      return (
+                        <button
+                          key={b}
+                          type="button"
+                          aria-pressed={chosen}
+                          onClick={() => toggleBranch(b)}
+                          disabled={!chosen && branches.length >= 5}
+                          className={`inline-flex min-h-[40px] items-center gap-1.5 rounded-full border px-3.5 text-[13px] font-semibold transition-colors disabled:opacity-40 ${
+                            chosen
+                              ? "border-primary bg-primary text-white"
+                              : "border-border bg-card text-foreground hover:border-primary/50"
+                          }`}
+                        >
+                          {chosen && <Check className="h-3.5 w-3.5" aria-hidden="true" />}
+                          {b}
+                        </button>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  // The list did not load — a text box beats a dead end.
+                  <input
+                    type="text"
+                    value={branches.join(", ")}
+                    onChange={(e) =>
+                      setBranches(
+                        e.target.value
+                          .split(",")
+                          .map((x) => x.trim())
+                          .filter(Boolean)
+                          .slice(0, 5),
+                      )
+                    }
+                    placeholder="Radiology, Dermatology"
+                    className="mt-2 h-14 w-full rounded-xl border-2 border-border bg-background px-4 text-[16px] text-foreground outline-none focus:border-primary"
+                  />
+                )}
+              </div>
+            )}
+
+            <Field label="What you can pay each year" htmlFor="p-budget" icon={Wallet}>
+              <select
+                id="p-budget"
+                value={budget}
+                onChange={(e) => setBudget(e.target.value)}
+                className="h-14 w-full appearance-none rounded-xl border-2 border-border bg-background pl-11 pr-4 text-[16px] text-foreground outline-none transition-colors focus:border-primary"
+              >
+                <option value="">Select</option>
+                {BUDGET_BANDS.map((b) => (
+                  <option key={b.id} value={b.id}>
+                    {b.label}
+                  </option>
+                ))}
+              </select>
+            </Field>
+
+            <Field
+              label="What you can raise in total, across the whole course"
+              htmlFor="p-budget-total"
+              icon={Wallet}
+            >
+              <select
+                id="p-budget-total"
+                value={budgetTotal}
+                onChange={(e) => setBudgetTotal(e.target.value)}
+                className="h-14 w-full appearance-none rounded-xl border-2 border-border bg-background pl-11 pr-4 text-[16px] text-foreground outline-none transition-colors focus:border-primary"
+              >
+                <option value="">Select</option>
+                {TOTAL_BUDGET_BANDS.map((b) => (
+                  <option key={b.id} value={b.id}>
+                    {b.label}
+                  </option>
+                ))}
+              </select>
+              <p className="mt-1.5 text-[12.5px] leading-relaxed text-muted-foreground">
+                Fees, deposit, hostel and the years after this one — not three times the yearly
+                figure.
+              </p>
+            </Field>
+          </div>
+
+          <button
+            type="submit"
+            disabled={busy}
+            className="mt-6 inline-flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-gradient-brand text-[15px] font-bold text-white shadow-glow transition-all hover:-translate-y-0.5 disabled:opacity-60"
+          >
+            {busy ? (
+              <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
+            ) : (
+              <ArrowRight className="h-5 w-5" aria-hidden="true" />
+            )}
+            Show me my colleges
+          </button>
+          <FormError message={error} />
+        </form>
+      )}
+
+      {/* ------------------------------ step 4 ------------------------------ */}
       {step === "setpass" && (
         <form
           onSubmit={(e) => {

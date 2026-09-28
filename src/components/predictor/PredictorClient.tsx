@@ -456,10 +456,14 @@ export default function PredictorClient({ streams, facets }: Props) {
                           : "border-border bg-card text-muted-foreground hover:border-primary/40"
                       }`}
                     >
+                      {/*
+                        No seat count on the chip. It moves with every import,
+                        and a number a visitor read last week and cannot
+                        reproduce this week reads as a wrong number rather than
+                        a changed one. The count that matters is the one the
+                        search returns, which is live.
+                      */}
                       {c.code}
-                      <span className="tnum ml-1.5 text-[11px] font-normal opacity-70">
-                        {c.seats.toLocaleString("en-IN")}
-                      </span>
                     </button>
                   );
                 })}
@@ -730,12 +734,8 @@ function SeatTypePicker({
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
+            {/* Same reason as the category chips — the live result is the count. */}
             {o.label}
-            {o.id !== "all" && (
-              <span className="tnum text-[11px] font-normal opacity-70">
-                {o.seats.toLocaleString("en-IN")}
-              </span>
-            )}
           </button>
         );
       })}
