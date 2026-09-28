@@ -30,7 +30,22 @@ interface LeadNotificationPayload {
   preferred_state?: string;
   quota_interest?: string;
   internship_status?: string;
+  /** The counselling profile — see lib/counsellingProfile.ts. */
+  category?: string;
+  attempt?: string;
+  budget_max?: number;
+  mbbs_college?: string;
+  /** What is still unknown, so a counsellor knows what to open the call with. */
+  missing?: string[];
   source: string;
+}
+
+/** ₹4,200,000 reads as "up to ₹42.00 L", which is how the team talks. */
+function money(v: number | undefined): string | undefined {
+  if (v == null) return undefined;
+  if (v >= 10000000) return `up to ₹${(v / 10000000).toFixed(2)} Cr`;
+  if (v >= 100000) return `up to ₹${(v / 100000).toFixed(2)} L`;
+  return `up to ₹${v.toLocaleString('en-IN')}`;
 }
 
 // Who gets alerted: the env override wins, otherwise the number the admin
@@ -75,8 +90,12 @@ export async function sendWhatsAppNotification(lead: LeadNotificationPayload): P
   // actually needs in order to act.
   const detail = [
     ['Rank', lead.rank],
+    ['Category', lead.category],
+    ['Attempt', lead.attempt],
     ['Branch', lead.preferred_branch],
-    ['States', lead.preferred_state],
+    ['Domicile', lead.preferred_state],
+    ['Budget', money(lead.budget_max)],
+    ['MBBS from', lead.mbbs_college],
     ['Quota', lead.quota_interest],
     ['Internship', lead.internship_status],
   ]
@@ -84,10 +103,16 @@ export async function sendWhatsAppNotification(lead: LeadNotificationPayload): P
     .map(([k, v]) => `${k}: ${v}`)
     .join('\n');
 
+  // Naming the gaps earns its line: a counsellor who knows the budget is missing
+  // opens with it, instead of discovering halfway through that the shortlist
+  // they have just read out is unaffordable.
+  const gaps = (lead.missing ?? []).filter(Boolean);
+
   const messageText =
     `*New enquiry — ${lead.name}*\n\n` +
     `📞 ${lead.phone}\n` +
     (detail ? `\n${detail}\n` : '') +
+    (gaps.length ? `\n_Still to ask: ${gaps.join(', ')}_\n` : '') +
     `\n${lead.source}\n` +
     `${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}`;
 

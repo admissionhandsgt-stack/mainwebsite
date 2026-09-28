@@ -54,6 +54,14 @@ export interface SeatSummary {
   rows: number;
   quotas: QuotaSlice[];
   topStates: { state: string; seats: number }[];
+  /**
+   * Every state present, alphabetically.
+   *
+   * `topStates` is the six biggest, which is right for "where the seats are" and
+   * wrong for "which state is your domicile" — a visitor from the seventh state
+   * would find their own home missing from the list.
+   */
+  stateNames: string[];
 }
 
 /** Only zero means "not published". See the fee note in CLAUDE.md. */
@@ -109,6 +117,7 @@ export function summariseSeats(rows: SummarisableSeat[]): SeatSummary {
     rows: rows.length,
     quotas,
     topStates,
+    stateNames: Array.from(byState.keys()).sort((a, b) => a.localeCompare(b)),
   };
 }
 
