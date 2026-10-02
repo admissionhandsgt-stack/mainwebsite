@@ -124,7 +124,10 @@ export default function FeaturedVideos() {
                   {activeVideo?.videos_id && (
                     <Image
                       src={`https://img.youtube.com/vi/${activeVideo.videos_id}/maxresdefault.jpg`}
-                      alt=""
+                      // The thumbnail is the video, not decoration — the small
+                      // thumbnails below already name themselves and this one
+                      // is the largest thing on the section.
+                      alt={activeVideo.title || "Video"}
                       fill
                       sizes="(max-width: 1024px) 100vw, 60vw"
                       className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"

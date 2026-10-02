@@ -1,10 +1,9 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import { MapPin, TrendingUp, Users, Sparkles, Phone } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { DEFAULT_COLLEGE_IMAGE } from '@/constants/defaultImages';
+import CollegeVisual from '@/components/ui/CollegeVisual';
 import { useCTA } from '@/hooks/useCTA';
 
 interface CollegeCardProps {
@@ -51,7 +50,6 @@ export function CollegeCard({
 }: CollegeCardProps) {
   const CTA = useCTA();
   const style = collegeType ? (TYPE_STYLES[collegeType] || TYPE_STYLES.Private) : TYPE_STYLES.Deemed;
-  const displayImage = imageUrl || DEFAULT_COLLEGE_IMAGE;
 
   return (
     <motion.div
@@ -65,14 +63,17 @@ export function CollegeCard({
 
       {/* Image — fixed 160px height, always consistent */}
       <div className="relative h-[160px] w-full overflow-hidden shrink-0">
-        <Image
-          src={displayImage}
-          alt={collegeName}
-          fill
+        {/*
+          No shared fallback photograph. One generic building standing in for a
+          thousand named colleges is the defect this replaced, not a solution to
+          it — see CollegeVisual.
+        */}
+        <CollegeVisual
+          name={collegeName}
+          state={state}
+          imageUrl={imageUrl}
           sizes="(max-width: 640px) 50vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
-          placeholder="blur"
-          blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMjAiIGhlaWdodD0iMjQwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDcwZTFlIi8+PC9zdmc+"
+          className="group-hover:scale-105 transition-transform duration-500"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
 

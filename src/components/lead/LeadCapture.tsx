@@ -20,14 +20,25 @@ export default function LeadCapture({
   body?: string;
   points?: string[];
 }) {
+  /**
+   * Blank is absent, which `??` does not believe.
+   *
+   * The homepage was rendering an **empty `<h2>`** above the enquiry form: the
+   * heading comes from `site_settings`, an unset setting arrives as `""`, and
+   * `??` only falls back on null or undefined. This is the trap `pick()` in
+   * `lib/copy.ts` exists for, applied here so the component is safe whoever
+   * calls it rather than only when the caller remembers.
+   */
+  const given = (v?: string) => (v && v.trim() ? v : undefined);
+
   const heading =
-    title ??
+    given(title) ??
     (level === "ug"
       ? "Tell us your rank. We will tell you where it actually lands."
       : "Tell us your rank. We will tell you where it actually lands.");
 
   const blurb =
-    body ??
+    given(body) ??
     (level === "ug"
       ? "Send your NEET UG rank, category and domicile. We check it against every published round we hold and come back with the colleges it genuinely reaches — not a guess."
       : "Send your NEET PG rank and category. We check it against every published round we hold and come back with the seats it genuinely reaches — not a guess.");

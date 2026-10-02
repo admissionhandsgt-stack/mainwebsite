@@ -2,9 +2,8 @@
 import React from 'react';
 import { MapPin, Building2, Users, Phone } from 'lucide-react';
 import { useCTA } from '@/hooks/useCTA';
-import Image from 'next/image';
 import type { DeemedCollege } from '@/hooks/useDeemedColleges';
-import { DEFAULT_COLLEGE_IMAGE } from '@/constants/defaultImages';
+import CollegeVisual from '@/components/ui/CollegeVisual';
 
 interface DeemedCollegeCardProps {
   college: DeemedCollege;
@@ -12,20 +11,17 @@ interface DeemedCollegeCardProps {
 
 export function DeemedCollegeCard({ college }: DeemedCollegeCardProps) {
   const CTA = useCTA();
-  const displayImage = college.image_url || DEFAULT_COLLEGE_IMAGE;
 
   return (
     <div className="group bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 hover:border-cyan-200 dark:hover:border-cyan-900 hover:shadow-xl dark:hover:shadow-black/20 transition-all duration-300 overflow-hidden flex flex-col relative">
       {/* College Image — fixed 160px height consistent with CollegeCard */}
       <div className="relative w-full h-[160px] overflow-hidden shrink-0">
-        <Image
-          src={displayImage}
-          alt={college.college_name}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
+        <CollegeVisual
+          name={college.college_name}
+          state={college.state}
+          imageUrl={college.image_url}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
-          placeholder="blur"
-          blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMjAiIGhlaWdodD0iMjQwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDcwZTFlIi8+PC9zdmc+"
+          className="group-hover:scale-105 transition-transform duration-500"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-40" />
       </div>
