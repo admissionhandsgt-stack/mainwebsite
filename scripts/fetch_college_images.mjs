@@ -209,11 +209,19 @@ async function licenceFor(fileUrl) {
   const licence = meta.LicenseShortName?.value ?? meta.License?.value ?? "";
   if (!FREE_LICENCE.test(licence.replace(/\s+/g, " ").trim())) return null;
 
+  // Commons stores the author as free HTML, and a good share of it is a pasted
+  // wiki signature: "Akshaygn (talk) 15:10, 22 November 2008 (UTC)". The credit
+  // sits on the card, so a timestamp from 2008 in the corner of a college photo
+  // is the sort of thing this whole pass is meant to remove.
   const author = String(meta.Artist?.value ?? "")
     .replace(/<[^>]*>/g, "")
+    .replace(/&[a-z]+;/gi, " ")
+    .replace(/\(talk\)/gi, "")
+    .replace(/\d{1,2}:\d{2},\s*\d{1,2}\s+\w+\s+\d{4}\s*\(UTC\)/gi, "")
     .replace(/\s+/g, " ")
+    .replace(/[,;\s]+$/, "")
     .trim()
-    .slice(0, 160);
+    .slice(0, 90);
 
   return {
     licence: licence.trim(),
