@@ -87,6 +87,22 @@ const DIR = "public/assets/images/uploads";
  */
 const HEROES = [
   {
+    key: "homepage_hero_campus",
+    file: "hero-homepage_hero_campus.avif",
+    commons: "AIIMS Bhopal Building Front (1).jpg",
+    subject: "AIIMS Bhopal",
+    credit: "Suyash Dwivedi",
+  },
+  {
+    // Read by /md-ms-india/colleges, which used to hardcode a path to an
+    // AI-generated campus signed "SWAMI VIVEKANANDA MEDICAL COLLEGE".
+    key: "pg_hero_campus",
+    file: "hero-pg_hero_campus.avif",
+    commons: "Kalyani AIIMS building, Kalyani, Basantapur, Nadia 03.jpg",
+    subject: "AIIMS Kalyani",
+    credit: "Pinakpani",
+  },
+  {
     key: "mbbs_hero_campus",
     file: "hero-mbbs_hero_campus.avif",
     commons: "Medical college Gate Thiruvananthapuram.jpg",

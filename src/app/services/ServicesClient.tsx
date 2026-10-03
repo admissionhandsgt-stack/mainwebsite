@@ -296,7 +296,13 @@ export default function ServicesClient({ heroImages, heroCredit }: ServicesClien
           <div className="absolute inset-0 bg-slate-950/20" />
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-950/40 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-slate-950/50" />
-          <PhotoCredit {...heroCredit} className="absolute bottom-1.5 right-2" />
+          {/*
+            Lifted clear of the trust-stats bar below, which is pulled up over
+            the hero by `-mt-6` and was covering all but the last few words of
+            the credit. A credit that is half-hidden behind a card is not a
+            credit — it is the licence condition, and it has to be readable.
+          */}
+          <PhotoCredit {...heroCredit} className="absolute bottom-10 right-2" />
         </div>
         
         <div className="absolute top-0 right-0 w-1/2 h-full bg-cyan-500/10 blur-[120px] pointer-events-none" />

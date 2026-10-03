@@ -47,6 +47,12 @@ export function creditOf(
  * not compete with the headline it sits under. The heroes lay a ~55% dark wash
  * over the photograph, so white at 35–45% opacity reads without glowing.
  *
+ * It is width-capped and right-aligned because "Government Medical College,
+ * Thiruvananthapuram · © Adnan Haleem · CC BY-SA 3.0" is 70 characters and at
+ * 390px it ran the full width in two lines, hard up against the hero's own
+ * call to action. Wrapped into the corner it reads as a caption; wrapped across
+ * the page it reads as something the visitor was meant to act on.
+ *
  * CC0 and public-domain files carry no condition. The credit is still shown,
  * because a reader cannot tell which is which and a page that names its sources
  * inconsistently looks like one that names them when it must.
@@ -77,7 +83,10 @@ export default function PhotoCredit({
 
   return (
     <span
-      className={`pointer-events-none select-none text-[10px] leading-none ${colour} ${className}`}
+      className={
+        "pointer-events-none select-none max-w-[min(85%,30rem)] text-right " +
+        `text-[10px] leading-[1.35] ${colour} ${className}`
+      }
     >
       {parts.join(" · ")}
     </span>
