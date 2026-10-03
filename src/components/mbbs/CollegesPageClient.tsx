@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useCTA } from "@/hooks/useCTA";
 import Image from "next/image";
 import { CollegeCard } from "@/components/ui/CollegeCard";
+import PhotoCredit from "@/components/ui/PhotoCredit";
 
 /* --- Types --- */
 
@@ -146,8 +147,23 @@ const staggerItem = {
   },
 };
 
+/**
+ * A backdrop and, where it is somebody else's photograph, its credit.
+ *
+ * Four campuses rotate here and three of the four are CC BY-SA, which requires
+ * the photographer to be named wherever the picture appears. The credit has to
+ * follow the picture rather than sit under the first one, so it is carried with
+ * each shot and swapped with it. Same shape as the deemed page's rotator.
+ */
+export interface HeroShot {
+  src: string;
+  subject?: string | null;
+  credit?: string | null;
+  license?: string | null;
+}
+
 interface HeroImageRotatorProps {
-  images: string[];
+  images: HeroShot[];
 }
 
 function HeroImageRotator({ images }: HeroImageRotatorProps) {
@@ -159,30 +175,36 @@ function HeroImageRotator({ images }: HeroImageRotatorProps) {
 
   return (
     <div className="absolute inset-0 bg-slate-900 pointer-events-none">
-      {images.map((src, i) => (
+      {images.map((shot, i) => (
         <div
           key={i}
           className="absolute inset-0 bg-cover bg-center transition-opacity duration-[2000ms]"
           style={{
-            backgroundImage: `url(${src})`,
+            backgroundImage: `url(${shot.src})`,
             opacity: i === current ? 1 : 0,
           }}
         />
       ))}
       <div className="absolute inset-0 bg-slate-900/55" />
       <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-transparent to-slate-950" />
+      <PhotoCredit
+        subject={images[current]?.subject}
+        attribution={images[current]?.credit}
+        license={images[current]?.license}
+        className="absolute bottom-1.5 right-2"
+      />
     </div>
   );
 }
 
-export default function CollegesPageClient({ states, heroImages }: { states: StateData[]; heroImages?: string[] }) {
+export default function CollegesPageClient({ states, heroImages }: { states: StateData[]; heroImages?: HeroShot[] }) {
   const CTA = useCTA();
   
   // No CMS rows, no backdrop. The fallback list shipped here was five
   // AI-generated campuses, three of them signed with a real institution's name
   // — including AIIMS New Delhi — rotating behind a page that lists 1,727
   // other colleges.
-  const finalHeroImages = heroImages ?? [];
+  const finalHeroImages: HeroShot[] = heroImages ?? [];
 
   /* --- State --- */
   const [search, setSearch] = useState("");

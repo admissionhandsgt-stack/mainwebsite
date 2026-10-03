@@ -89,7 +89,23 @@ ssh_ "mkdir -p $APP_DIR/releases/$RELEASE/.next/cache && chown -R admissionhands
 # The real store is $APP_DIR/uploads/images, outside the releases, and the
 # release gets a symlink to it. Student documents never go near public/ at all
 # — see DOCUMENT_STORE and src/lib/documents.ts.
-ssh_ "install -d -o admissionhands -g admissionhands -m 755 $APP_DIR/uploads/images       && install -d -o admissionhands -g admissionhands -m 700 $APP_DIR/uploads/documents       && if [ -d $APP_DIR/releases/$RELEASE/public/assets/images/uploads ] && [ ! -L $APP_DIR/releases/$RELEASE/public/assets/images/uploads ]; then            cp -an $APP_DIR/releases/$RELEASE/public/assets/images/uploads/. $APP_DIR/uploads/images/ 2>/dev/null || true;            rm -rf $APP_DIR/releases/$RELEASE/public/assets/images/uploads;          fi       && ln -sfn $APP_DIR/uploads/images $APP_DIR/releases/$RELEASE/public/assets/images/uploads       && chown -h admissionhands:admissionhands $APP_DIR/releases/$RELEASE/public/assets/images/uploads       && chown -R admissionhands:admissionhands $APP_DIR/uploads"
+#
+# The copy clobbers, and that is the whole point of this comment.
+#
+# It used to be `cp -an`. No-clobber seeds the shared directory with files it
+# does not have and refuses to touch the ones it does — which means a file the
+# repo *changed* can never reach the box. Every hero and college photograph
+# replaced in a commit stayed exactly as it was in production, while the
+# database rows beside them updated, so the pages rendered the old picture under
+# the new credit. It was worked around by hand with scp once and came straight
+# back the next deploy.
+#
+# Clobbering costs nothing here: a file the shared directory holds and the
+# release does not is still left alone, so an image an admin uploaded after the
+# last commit survives. And an admin upload cannot collide with a repo file in
+# the first place — /api/admin/upload generates the name and never uses the
+# browser's, so two different images never arrive under one filename.
+ssh_ "install -d -o admissionhands -g admissionhands -m 755 $APP_DIR/uploads/images       && install -d -o admissionhands -g admissionhands -m 700 $APP_DIR/uploads/documents       && if [ -d $APP_DIR/releases/$RELEASE/public/assets/images/uploads ] && [ ! -L $APP_DIR/releases/$RELEASE/public/assets/images/uploads ]; then            cp -a $APP_DIR/releases/$RELEASE/public/assets/images/uploads/. $APP_DIR/uploads/images/ 2>/dev/null || true;            rm -rf $APP_DIR/releases/$RELEASE/public/assets/images/uploads;          fi       && ln -sfn $APP_DIR/uploads/images $APP_DIR/releases/$RELEASE/public/assets/images/uploads       && chown -h admissionhands:admissionhands $APP_DIR/releases/$RELEASE/public/assets/images/uploads       && chown -R admissionhands:admissionhands $APP_DIR/uploads"
 # The native halves of sharp are built for the machine that ran npm install.
 #
 # This repo is developed on Windows, so the node_modules the standalone build
@@ -101,6 +117,30 @@ ssh_ "install -d -o admissionhands -g admissionhands -m 755 $APP_DIR/uploads/ima
 # The linux binaries are installed once into $APP_DIR/shared/native and linked
 # into each release, so a deploy from any machine lands a working sharp.
 ssh_ "set -e; S=$APP_DIR/shared/native;   if [ ! -d \$S/node_modules/@img/sharp-linux-x64 ]; then     install -d \$S && cd \$S && npm install --no-save --no-audit --no-fund --os=linux --libc=glibc --cpu=x64 sharp@\$(node -e \"process.stdout.write(require('$APP_DIR/releases/$RELEASE/node_modules/sharp/package.json').version)\") >/dev/null;   fi;   D=$APP_DIR/releases/$RELEASE/node_modules/@img;   for pkg in sharp-linux-x64 sharp-libvips-linux-x64; do     rm -rf \$D/\$pkg && ln -s \$S/node_modules/@img/\$pkg \$D/\$pkg;   done;   cd $APP_DIR/releases/$RELEASE && node -e \"require('sharp')\""
+
+# Did the images this deploy carries actually land?
+#
+# The copy above is a shell one-liner over ssh with `|| true` on it, so a
+# failure there is silent by construction — and the failure it had was silent in
+# a worse way: it succeeded, and simply declined to update anything. The symptom
+# is a page rendering last month's photograph under this month's caption, which
+# nothing else in this script would notice.
+#
+# So: take the image the working tree changed most recently, and check the bytes
+# on the box are the same bytes. One file is enough — they all travel together.
+say "Checking the images landed"
+NEWEST=$(ls -1t public/assets/images/uploads/*.avif 2>/dev/null | head -1)
+if [[ -n "$NEWEST" ]]; then
+  WANT=$(md5sum "$NEWEST" | cut -d' ' -f1)
+  GOT=$(ssh_ "md5sum $APP_DIR/uploads/images/$(basename "$NEWEST") 2>/dev/null | cut -d' ' -f1" || true)
+  if [[ "$WANT" != "$GOT" ]]; then
+    echo "  $(basename "$NEWEST") on the box does not match the one just shipped." >&2
+    echo "  local $WANT / box ${GOT:-missing}" >&2
+    echo "  The shared uploads directory did not take the update — see the cp above." >&2
+    exit 1
+  fi
+  echo "  $(basename "$NEWEST") matches"
+fi
 
 rm -f .deploy.tgz
 

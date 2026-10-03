@@ -44,10 +44,18 @@ export default async function CollegesPage() {
       getUgColleges(),
     ]);
 
-    const byKey = new Map(mediaList.map((m) => [m.media_key, m.image_url]));
+    // Carry the credit with each backdrop: three of these four are CC BY-SA,
+    // which requires the photographer to be named wherever the picture appears.
+    const byKey = new Map(mediaList.map((m) => [m.media_key, m]));
     const heroImages = heroKeys
       .map((k) => byKey.get(k))
-      .filter((u): u is string => Boolean(u) && u !== 'none');
+      .filter((m) => m?.image_url && m.image_url !== 'none')
+      .map((m) => ({
+        src: m!.image_url!,
+        subject: m!.subject,
+        credit: m!.attribution,
+        license: m!.license,
+      }));
 
     // Deemed universities have their own page, so they are excluded here.
     const colleges = collegesRaw.filter(
