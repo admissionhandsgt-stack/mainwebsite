@@ -102,6 +102,8 @@ export default function CollegeVisual({
   name,
   state,
   imageUrl,
+  attribution,
+  license,
   className = "",
   sizes = "(max-width: 768px) 100vw, 400px",
   priority = false,
@@ -110,6 +112,9 @@ export default function CollegeVisual({
   state?: string | null;
   /** A photograph somebody has verified is this college. Anything else: omit it. */
   imageUrl?: string | null;
+  /** Who took it. Required by CC BY and CC BY-SA, which is most of Wikimedia. */
+  attribution?: string | null;
+  license?: string | null;
   className?: string;
   sizes?: string;
   priority?: boolean;
@@ -118,14 +123,32 @@ export default function CollegeVisual({
 
   if (real) {
     return (
-      <Image
-        src={real}
-        alt={name}
-        fill
-        sizes={sizes}
-        priority={priority}
-        className={`object-cover ${className}`}
-      />
+      <>
+        <Image
+          src={real}
+          alt={name}
+          fill
+          sizes={sizes}
+          priority={priority}
+          className={`object-cover ${className}`}
+        />
+        {/*
+          The credit is a licence condition, not a courtesy. CC BY and CC BY-SA
+          both require the author to be named, so a photograph we cannot credit
+          is one we must not use — and a credit that only exists in the database
+          is not a credit. Small, in the corner, legible on the dark gradient
+          these cards already lay over the image.
+        */}
+        {attribution && (
+          <span
+            className="pointer-events-none absolute bottom-1 right-1.5 z-10 max-w-[90%] truncate text-[9px] leading-none text-white/55"
+            title={`${attribution}${license ? ` · ${license}` : ""}`}
+          >
+            © {attribution}
+            {license ? ` · ${license}` : ""}
+          </span>
+        )}
+      </>
     );
   }
 

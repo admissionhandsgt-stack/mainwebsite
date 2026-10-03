@@ -14,6 +14,8 @@ interface CollegeCardProps {
   specialties?: string[];
   description: string | null;
   imageUrl?: string | null;
+  imageAttribution?: string | null;
+  imageLicense?: string | null;
   yearEstablished?: number | null;
   universityBody?: string;
   offersMbbs?: boolean;
@@ -45,7 +47,7 @@ const TYPE_STYLES: Record<string, { bg: string; text: string; dot: string; borde
 };
 
 export function CollegeCard({
-  collegeName, city, state, collegeType, imageUrl,
+  collegeName, city, state, collegeType, imageUrl, imageAttribution, imageLicense,
   yearEstablished, universityBody, seats, isHighDemand, isTopChoice,
 }: CollegeCardProps) {
   const CTA = useCTA();
@@ -72,6 +74,8 @@ export function CollegeCard({
           name={collegeName}
           state={state}
           imageUrl={imageUrl}
+          attribution={imageAttribution}
+          license={imageLicense}
           sizes="(max-width: 640px) 50vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
           className="group-hover:scale-105 transition-transform duration-500"
         />

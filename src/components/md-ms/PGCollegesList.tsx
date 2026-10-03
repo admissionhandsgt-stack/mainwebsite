@@ -151,6 +151,8 @@ export const PGCollegesList = () => {
                     specialties={college.key_specialties}
                     description={college.short_description}
                     imageUrl={college.image_url}
+                    imageAttribution={college.image_attribution}
+                    imageLicense={college.image_license}
                     yearEstablished={college.year_established}
                     seats={college.total_pg_seats}
                     isHighDemand={college.college_type === 'Government'}

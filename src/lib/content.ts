@@ -403,6 +403,9 @@ export interface PgCollegeContent {
   keySpecialties: string[];
   shortDescription: string | null;
   imageUrl: string | null;
+  /** Who took the photograph. CC BY and CC BY-SA require it to be shown. */
+  imageAttribution: string | null;
+  imageLicense: string | null;
 }
 
 export async function getPgCollegesContent(): Promise<PgCollegeContent[]> {
@@ -411,7 +414,8 @@ export async function getPgCollegesContent(): Promise<PgCollegeContent[]> {
       rows<Record<string, unknown>>(
         await db.execute(sql`
           SELECT id, college_name, city, state, college_type, ownership, year_established,
-                 total_pg_seats, key_specialties, short_description, image_url
+                 total_pg_seats, key_specialties, short_description, image_url,
+                 image_attribution, image_license
           FROM pg_colleges_content WHERE is_active = true
           ORDER BY display_order ASC, college_name ASC
         `),
@@ -435,6 +439,8 @@ export async function getPgCollegesContent(): Promise<PgCollegeContent[]> {
           keySpecialties: specialties,
           shortDescription: (r.short_description as string) ?? null,
           imageUrl: (r.image_url as string) ?? null,
+          imageAttribution: (r.image_attribution as string) ?? null,
+          imageLicense: (r.image_license as string) ?? null,
         };
       }),
     [],

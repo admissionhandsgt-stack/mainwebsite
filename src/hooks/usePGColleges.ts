@@ -14,6 +14,9 @@ export interface PGCollege {
   key_specialties: string[];
   short_description: string | null;
   image_url: string | null;
+  /** Credit for the photograph — a condition of the CC licences, not a nicety. */
+  image_attribution: string | null;
+  image_license: string | null;
 }
 
 interface Filters {
