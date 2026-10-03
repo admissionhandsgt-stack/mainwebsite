@@ -3,6 +3,7 @@ export const revalidate = 0;
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import { getMediaAsset, getBlocks, getSettings, setting, getSections, resolveMetadata } from '@/lib/content';
+import { creditOf } from '@/components/ui/PhotoCredit';
 import { getPgContent } from '@/lib/pgContent';
 import { getDataStats } from '@/lib/dataStats';
 import { InlineLeadForm } from '@/components/lead/InlineLeadForm';
@@ -17,6 +18,7 @@ const PGHeroWrapper = async () => {
   return (
     <PGHeroComponent
       backgroundImageUrl={pgHeroAsset?.image_url}
+      credit={creditOf(pgHeroAsset)}
       stats={{ pgColleges: stats.pgColleges, pgRanks: stats.pgRanks, pgBranches: stats.pgBranches }}
     />
   );

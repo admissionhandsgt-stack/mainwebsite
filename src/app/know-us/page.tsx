@@ -1,6 +1,7 @@
 import React from 'react';
 import KnowUsClient from './KnowUsClient';
 import { getMediaAsset, resolveMetadata } from '@/lib/content';
+import { creditOf } from '@/components/ui/PhotoCredit';
 import { Metadata } from 'next';
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
 
@@ -28,7 +29,7 @@ export default async function KnowUsPage() {
           breadcrumb([{ name: "Home", path: "/" }, { name: "Know us", path: "/know-us" }]),
         ]}
       />
-      <KnowUsClient backgroundImageUrl={knowUsHero?.image_url} />
+      <KnowUsClient backgroundImageUrl={knowUsHero?.image_url} credit={creditOf(knowUsHero)} />
     </>
   );
 }

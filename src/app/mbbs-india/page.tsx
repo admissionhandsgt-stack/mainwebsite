@@ -7,6 +7,7 @@ import { MBBSHero } from "@/components/mbbs-india/MBBSHero";
 import { QuickOverview } from "@/components/mbbs-india/QuickOverview";
 import { StickyDecisionBar } from "@/components/mbbs-india/StickyDecisionBar";
 import { getMediaAsset, getSections, resolveMetadata } from '@/lib/content';
+import { creditOf } from '@/components/ui/PhotoCredit';
 import { getMbbsContent } from '@/lib/pageContent';
 
 // Lazy load sections for better performance
@@ -61,7 +62,7 @@ export default async function MBBSIndiaPage() {
       />
 
       {/* Hero (Critical Path) */}
-      {sections.shows('hero') && <MBBSHero backgroundImageUrl={mbbsHeroAsset?.image_url} data={data} />}
+      {sections.shows('hero') && <MBBSHero backgroundImageUrl={mbbsHeroAsset?.image_url} credit={creditOf(mbbsHeroAsset)} data={data} />}
 
       {/* Sticky Conversion Element */}
       <StickyDecisionBar />

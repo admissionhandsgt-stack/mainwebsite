@@ -1,6 +1,7 @@
 import React from 'react';
 import ServicesClient from './ServicesClient';
 import { getMediaAsset, resolveMetadata } from '@/lib/content';
+import { creditOf } from '@/components/ui/PhotoCredit';
 import { Metadata } from 'next';
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
 
@@ -37,7 +38,7 @@ export default async function ServicesPage() {
           breadcrumb([{ name: "Home", path: "/" }, { name: "Services", path: "/services" }]),
         ]}
       />
-      <ServicesClient heroImages={heroImages} />
+      <ServicesClient heroImages={heroImages} heroCredit={creditOf(serviceHero)} />
     </>
   );
 }

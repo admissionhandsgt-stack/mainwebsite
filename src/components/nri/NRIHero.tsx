@@ -3,12 +3,15 @@ import React from 'react';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import PhotoCredit, { type PhotoCreditInfo } from "@/components/ui/PhotoCredit";
 
 interface NRIHeroProps {
   backgroundImageUrl?: string;
+  /** Who photographed the campus, and which campus it is. */
+  credit?: PhotoCreditInfo;
 }
 
-const NRIHero = ({ backgroundImageUrl }: NRIHeroProps) => {
+const NRIHero = ({ backgroundImageUrl, credit }: NRIHeroProps) => {
   return (
     <section className="relative w-full h-screen min-h-[700px] flex items-center overflow-hidden mesh-gradient pt-[112px]">
       {/* Ambient brand light */}
@@ -75,6 +78,10 @@ const NRIHero = ({ backgroundImageUrl }: NRIHeroProps) => {
                 blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMjAiIGhlaWdodD0iMjQwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDcwZTFlIi8+PC9zdmc+"
               />
             )}
+            {/* Inside the rounded frame: this photograph is a panel on the
+                page rather than a wash behind the type, so the credit sits on
+                the image itself. */}
+            <PhotoCredit {...credit} className="absolute bottom-3 right-5 z-10" />
             <div className="absolute bottom-10 -left-10 glass-white p-6 rounded-3xl shadow-2xl border border-white/40 max-w-xs group-hover:translate-x-2 transition-transform">
               <div className="flex items-start gap-4">
                 <div className="shrink-0 bg-cyan-600 text-white p-3 rounded-2xl shadow-lg">

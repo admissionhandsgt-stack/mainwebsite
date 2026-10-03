@@ -29,10 +29,19 @@ export default async function DeemedUniversitiesPage() {
     getContactInfo(),
   ]);
 
-  const byKey = new Map(mediaList.map((m) => [m.media_key, m.image_url]));
+  // Carry the credit with the file. These are Wikimedia photographs under
+  // CC BY-SA, which requires the photographer to be named wherever the picture
+  // appears — a credit sitting only in `media_assets` is not a credit.
+  const byKey = new Map(mediaList.map((m) => [m.media_key, m]));
   const heroImages = heroKeys
     .map((k) => byKey.get(k))
-    .filter((u): u is string => Boolean(u) && u !== 'none');
+    .filter((m) => m?.image_url && m.image_url !== 'none')
+    .map((m) => ({
+      src: m!.image_url!,
+      subject: m!.subject,
+      credit: m!.attribution,
+      license: m!.license,
+    }));
 
   const phoneNumber = contact?.phoneNumber ?? "+919873133846";
 

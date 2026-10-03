@@ -8,6 +8,7 @@ import NRIFAQ from '@/components/nri/NRIFAQ';
 import NRICTA from '@/components/nri/NRICTA';
 import SEO from '@/components/SEO';
 import { getMediaAsset, getBlocks, getSettings, setting, getSections, resolveMetadata } from '@/lib/content';
+import { creditOf } from '@/components/ui/PhotoCredit';
 import { getNriContent } from '@/lib/nriContent';
 import type { Metadata } from 'next';
 
@@ -67,7 +68,7 @@ const NRIQuotaPage = async () => {
         {/* Order and visibility come from the admin (Page Content -> Page layout). */}
         {sections
           .sort([
-            { key: 'hero', node: <NRIHero backgroundImageUrl={nriHeroAsset?.image_url} /> },
+            { key: 'hero', node: <NRIHero backgroundImageUrl={nriHeroAsset?.image_url} credit={creditOf(nriHeroAsset)} /> },
             { key: 'eligibility', node: <NRIEligibility /> },
             { key: 'process', node: <NRIProcess steps={nri.steps} /> },
             { key: 'fees', node: <NRIFees /> },

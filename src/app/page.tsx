@@ -162,6 +162,9 @@ const Index = async () => {
       {sections.shows('hero') && (
         <Hero
           backgroundImageUrl={campusHero?.image_url}
+          backgroundSubject={campusHero?.subject}
+          backgroundCredit={campusHero?.attribution}
+          backgroundLicense={campusHero?.license}
           doctorsImageUrl={doctorsHero?.image_url}
           copy={heroCopy}
         />

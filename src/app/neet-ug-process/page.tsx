@@ -1,6 +1,7 @@
 import React from 'react';
 import NeetUgProcessClient from './NeetUgProcessClient';
 import { getMediaAsset } from '@/lib/content';
+import { creditOf } from '@/components/ui/PhotoCredit';
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
 
 export const revalidate = 0;
@@ -30,6 +31,9 @@ export default async function NeetUgProcessPage() {
       heroImageUrl={heroAsset?.image_url}
       examImageUrl={examAsset?.image_url}
       collegeImageUrl={collegeAsset?.image_url}
+      heroCredit={creditOf(heroAsset)}
+      examCredit={creditOf(examAsset)}
+      collegeCredit={creditOf(collegeAsset)}
     />
     </>
   );

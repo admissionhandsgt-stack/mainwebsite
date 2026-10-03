@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import PhotoCredit, { type PhotoCreditInfo } from "@/components/ui/PhotoCredit";
 import { motion } from 'framer-motion';
 import { useCTA } from '@/hooks/useCTA';
 import {
@@ -259,9 +260,11 @@ function ServiceCard({ service, index, mounted }: { service: typeof services[0];
 
 interface ServicesClientProps {
   heroImages?: string[];
+  /** The credit for whichever photograph `heroImages[0]` turned out to be. */
+  heroCredit?: PhotoCreditInfo;
 }
 
-export default function ServicesClient({ heroImages }: ServicesClientProps) {
+export default function ServicesClient({ heroImages, heroCredit }: ServicesClientProps) {
   const CTA = useCTA();
   const bgImage = (heroImages && heroImages[0]) || "/assets/images/hero/services_hero.avif";
   
@@ -281,7 +284,7 @@ export default function ServicesClient({ heroImages }: ServicesClientProps) {
           {bgImage && bgImage !== "none" && (
             <Image
               src={bgImage}
-              alt="Services Hero Background"
+              alt={heroCredit?.subject ?? "Medical college campus"}
               fill
               priority
               sizes="100vw"
@@ -293,6 +296,7 @@ export default function ServicesClient({ heroImages }: ServicesClientProps) {
           <div className="absolute inset-0 bg-slate-950/20" />
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-950/40 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-slate-950/50" />
+          <PhotoCredit {...heroCredit} className="absolute bottom-1.5 right-2" />
         </div>
         
         <div className="absolute top-0 right-0 w-1/2 h-full bg-cyan-500/10 blur-[120px] pointer-events-none" />

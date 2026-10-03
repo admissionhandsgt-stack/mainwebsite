@@ -5,22 +5,41 @@ import dynamic from 'next/dynamic';
 import { University, GraduationCap, Award, Phone, ArrowRight, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useCTA } from '@/hooks/useCTA';
+import PhotoCredit from '@/components/ui/PhotoCredit';
 
 const DeemedCollegesListing = dynamic(
   () => import('@/components/mbbs/DeemedCollegesListing').then(mod => ({ default: mod.DeemedCollegesListing })),
   { loading: () => <div className="py-20 text-center text-slate-400 font-bold uppercase tracking-widest animate-pulse">Loading College Data...</div>, ssr: false }
 );
 
-const fallbackHeroBgImages = [
+/**
+ * A backdrop and, where it is somebody else's photograph, its credit.
+ *
+ * The first slot is a real Wikimedia photograph of a real Indian medical
+ * college now — the AI-generated image it replaces invented
+ * "ROYAL INTERNATIONAL MEDICAL UNIVERSITY" on a European campus, under the
+ * heading "India's Finest Deemed Universities". CC BY-SA is free *and*
+ * conditional: name the photographer, so the credit rotates with the image.
+ */
+export interface HeroShot {
+  src: string;
+  /** Which college it is. Three of these four are government colleges, and the
+   *  heading above them reads "India's Finest Deemed Universities". */
+  subject?: string | null;
+  credit?: string | null;
+  license?: string | null;
+}
+
+const fallbackHeroBgImages: HeroShot[] = ([
   "/assets/images/colleges/deemed-campus-1.avif",
   "/assets/images/colleges/medical-campus-2.avif",
   "/assets/images/colleges/medical-campus-3.avif",
   "/assets/images/colleges/medical-campus-4.avif",
   "/assets/images/hero/dy-patil-mumbai.avif",
-];
+] as const).map((src) => ({ src }));
 
 interface HeroImageRotatorProps {
-  images: string[];
+  images: HeroShot[];
 }
 
 function HeroImageRotator({ images }: HeroImageRotatorProps) {
@@ -32,12 +51,12 @@ function HeroImageRotator({ images }: HeroImageRotatorProps) {
 
   return (
     <div className="absolute inset-0 -z-10 bg-slate-950">
-      {images.map((src, i) => (
+      {images.map((shot, i) => (
         <div
           key={i}
           className="absolute inset-0 bg-cover bg-center transition-opacity duration-[2000ms]"
           style={{
-            backgroundImage: `url(${src})`,
+            backgroundImage: `url(${shot.src})`,
             opacity: i === current ? 0.45 : 0,
           }}
         />
@@ -45,12 +64,19 @@ function HeroImageRotator({ images }: HeroImageRotatorProps) {
       {/* ~55% dark overlay */}
       <div className="absolute inset-0 bg-slate-900/55" />
       <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-transparent to-slate-900/80" />
+      {/* The credit follows the backdrop: four campuses rotate through here. */}
+      <PhotoCredit
+        subject={images[current]?.subject}
+        attribution={images[current]?.credit}
+        license={images[current]?.license}
+        className="absolute bottom-1.5 right-2"
+      />
     </div>
   );
 }
 
 interface DeemedUniversitiesClientProps {
-  heroImages?: string[];
+  heroImages?: HeroShot[];
   phoneNumber?: string;
 }
 

@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Phone, Sparkles, CheckCircle2 } from "lucide-react";
 import { useCTA } from "@/hooks/useCTA";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import PhotoCredit, { type PhotoCreditInfo } from "@/components/ui/PhotoCredit";
 
 interface PGHeroStats {
   pgColleges: number;
@@ -17,9 +18,11 @@ interface PGHeroProps {
   /** Real counts from `src/lib/dataStats.ts`. Absent = the badge is dropped. */
   stats?: PGHeroStats;
   backgroundImageUrl?: string;
+  /** Who photographed the campus, and which campus it is. */
+  credit?: PhotoCreditInfo;
 }
 
-export const PGHero = ({ backgroundImageUrl, stats }: PGHeroProps) => {
+export const PGHero = ({ backgroundImageUrl, credit, stats }: PGHeroProps) => {
   const CTA = useCTA();
   const bgImage = backgroundImageUrl || "/assets/images/hero/pg_hero_bg.avif";
   const [mounted, setMounted] = useState(false);
@@ -113,6 +116,7 @@ export const PGHero = ({ backgroundImageUrl, stats }: PGHeroProps) => {
           ))}
         </div>
       </motion.div>
+      <PhotoCredit {...credit} className="absolute bottom-1.5 right-2 z-10" />
     </section>
   );
 };

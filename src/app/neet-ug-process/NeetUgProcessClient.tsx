@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import PhotoCredit, { type PhotoCreditInfo } from "@/components/ui/PhotoCredit";
 import { 
   ShieldAlert, 
   Search, 
@@ -25,9 +26,20 @@ interface NeetUgProcessClientProps {
   heroImageUrl?: string;
   examImageUrl?: string;
   collegeImageUrl?: string;
+  /** One per photograph above: which college, who shot it, on what terms. */
+  heroCredit?: PhotoCreditInfo;
+  examCredit?: PhotoCreditInfo;
+  collegeCredit?: PhotoCreditInfo;
 }
 
-const NeetUgProcessClient = ({ heroImageUrl, examImageUrl, collegeImageUrl }: NeetUgProcessClientProps) => {
+const NeetUgProcessClient = ({
+  heroImageUrl,
+  examImageUrl,
+  collegeImageUrl,
+  heroCredit,
+  examCredit,
+  collegeCredit,
+}: NeetUgProcessClientProps) => {
   const scrollToSteps = () => {
     document.getElementById('steps-section')?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -48,6 +60,7 @@ const NeetUgProcessClient = ({ heroImageUrl, examImageUrl, collegeImageUrl }: Ne
           sizes="100vw"
           className="object-cover opacity-55"
         />
+        <PhotoCredit {...heroCredit} className="absolute bottom-1.5 right-2 z-20" />
         <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-slate-950/35" />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/50" />
         {/* Ambient brand light */}
@@ -129,6 +142,7 @@ const NeetUgProcessClient = ({ heroImageUrl, examImageUrl, collegeImageUrl }: Ne
                   className="object-cover"
                 />
               )}
+              <PhotoCredit {...examCredit} className="absolute bottom-2 right-3 z-10" />
             </div>
           </div>
         </div>
@@ -277,11 +291,14 @@ const NeetUgProcessClient = ({ heroImageUrl, examImageUrl, collegeImageUrl }: Ne
               {collegeImageUrl && collegeImageUrl !== "none" && (
                 <Image
                   src={collegeImageUrl}
-                  alt="Premium Medical College"
+                  // Named, not "Premium Medical College". It is a photograph of
+                  // one real college and the alt text should say which.
+                  alt={collegeCredit?.subject ?? "Medical college campus"}
                   fill
                   className="object-cover"
                 />
               )}
+              <PhotoCredit {...collegeCredit} className="absolute bottom-2 right-4 z-10" />
             </div>
           </div>
         </div>

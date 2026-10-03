@@ -130,6 +130,18 @@ export interface MediaAsset {
   mobile_image_url: string | null;
   alt_text: string | null;
   media_key: string;
+  /** Who took the photograph, where it is somebody else's and CC-licensed. */
+  attribution: string | null;
+  license: string | null;
+  /**
+   * Which college the photograph shows.
+   *
+   * Not a licence condition — a judgement the licence does not cover. The
+   * deemed-universities page rotates four campuses behind "India's Finest
+   * Deemed Universities", and three of them are government colleges; an
+   * unnamed backdrop lets the reader attach the heading to the building.
+   */
+  subject: string | null;
 }
 
 export async function getMediaAsset(mediaKey: string): Promise<MediaAsset | null> {
@@ -137,7 +149,8 @@ export async function getMediaAsset(mediaKey: string): Promise<MediaAsset | null
     async () => {
       const r = rows<Record<string, unknown>>(
         await db.execute(sql`
-          SELECT media_key, title, image_url, mobile_image_url, alt_text, is_active
+          SELECT media_key, title, image_url, mobile_image_url, alt_text, is_active,
+                 attribution, license, subject
           FROM media_assets WHERE media_key = ${mediaKey} LIMIT 1
         `),
       )[0];
@@ -160,6 +173,9 @@ export async function getMediaAsset(mediaKey: string): Promise<MediaAsset | null
         image_url: imageUrl,
         mobile_image_url: mobileImageUrl,
         alt_text: altText,
+        attribution: (r.attribution as string) ?? null,
+        license: (r.license as string) ?? null,
+        subject: (r.subject as string) ?? null,
       };
     },
     null,
@@ -172,7 +188,8 @@ export async function getMediaAssets(sectionType?: string): Promise<MediaAsset[]
     async () =>
       rows<Record<string, unknown>>(
         await db.execute(sql`
-          SELECT media_key, title, image_url, mobile_image_url, alt_text, is_active
+          SELECT media_key, title, image_url, mobile_image_url, alt_text, is_active,
+                 attribution, license, subject
           FROM media_assets
           WHERE is_active = true ${sectionType ? sql`AND section_type = ${sectionType}` : sql``}
           ORDER BY display_order ASC, id ASC
@@ -188,6 +205,9 @@ export async function getMediaAssets(sectionType?: string): Promise<MediaAsset[]
         image_url: r.image_url as string,
         mobile_image_url: (r.mobile_image_url as string) ?? null,
         alt_text: (r.alt_text as string) ?? null,
+        attribution: (r.attribution as string) ?? null,
+        license: (r.license as string) ?? null,
+        subject: (r.subject as string) ?? null,
       })),
     [],
     "mediaList",

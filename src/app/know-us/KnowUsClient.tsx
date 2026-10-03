@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import PhotoCredit, { type PhotoCreditInfo } from "@/components/ui/PhotoCredit";
 import { motion } from 'framer-motion';
 import { 
   Mail, Phone, MapPin, 
@@ -17,9 +18,11 @@ import CtaBand from '@/components/ui/CtaBand';
 
 interface KnowUsClientProps {
   backgroundImageUrl?: string;
+  /** Which college the backdrop shows, who photographed it, on what terms. */
+  credit?: PhotoCreditInfo;
 }
 
-export default function KnowUsClient({ backgroundImageUrl }: KnowUsClientProps) {
+export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClientProps) {
   const CTA = useCTA();
   const bgImage = backgroundImageUrl || "/assets/images/hero/knowus_hero.avif";
   
@@ -37,7 +40,7 @@ export default function KnowUsClient({ backgroundImageUrl }: KnowUsClientProps) 
           {bgImage && bgImage !== "none" && (
             <Image
               src={bgImage}
-              alt="Admission Hands Counselor Background"
+              alt={credit?.subject ?? "Medical college campus"}
               fill
               priority
               sizes="100vw"
@@ -49,6 +52,7 @@ export default function KnowUsClient({ backgroundImageUrl }: KnowUsClientProps) 
           <div className="absolute inset-0 bg-slate-950/20" />
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-950/40 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-slate-950/50" />
+          <PhotoCredit {...credit} className="absolute bottom-1.5 right-2" />
         </div>
         
         <div className="absolute top-0 right-0 w-1/3 h-full bg-cyan-500/10 blur-[100px] pointer-events-none" />

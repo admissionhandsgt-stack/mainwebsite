@@ -7,12 +7,15 @@ import type { MbbsContent } from '@/lib/pageContent';
 import { CTAButton } from "@/components/CTAButton";
 import { ArrowRight, ShieldCheck, Phone, Sparkles } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import PhotoCredit, { type PhotoCreditInfo } from "@/components/ui/PhotoCredit";
 
 interface MBBSHeroProps {
   backgroundImageUrl?: string;
+  /** Who photographed the campus behind this, and which campus it is. */
+  credit?: PhotoCreditInfo;
 }
 
-export const MBBSHero = ({ backgroundImageUrl, data = mbbsData }: MBBSHeroProps & { data?: MbbsContent }) => {
+export const MBBSHero = ({ backgroundImageUrl, credit, data = mbbsData }: MBBSHeroProps & { data?: MbbsContent }) => {
   const { hero } = data;
   // Falls back to the campus photograph shipped with the site when the CMS
   // has no media row for this slot.
@@ -118,6 +121,7 @@ export const MBBSHero = ({ backgroundImageUrl, data = mbbsData }: MBBSHeroProps 
 
         </div>
       </div>
+      <PhotoCredit {...credit} tone="onSurface" className="absolute bottom-1.5 right-2 z-10" />
     </section>
   );
 };

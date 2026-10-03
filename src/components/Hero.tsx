@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import PhotoCredit from "@/components/ui/PhotoCredit";
 import { motion, useReducedMotion } from "framer-motion";
 import { useCTA } from "@/hooks/useCTA";
 import { ArrowRight, Building2, Users, ShieldCheck, Landmark, Layers, Phone, Sparkles } from "lucide-react";
@@ -20,6 +21,17 @@ export interface HeroCopy {
 
 interface HeroProps {
   backgroundImageUrl?: string;
+  /**
+   * Which college the backdrop shows, who photographed it, and the terms.
+   *
+   * The hero is a Wikimedia photograph of a real Indian medical college now,
+   * replacing an AI-generated one that carried a real college's name with
+   * SCIENCES misspelt on its board. CC BY-SA is free and conditional, so the
+   * credit is rendered rather than merely stored — see `PhotoCredit`.
+   */
+  backgroundSubject?: string | null;
+  backgroundCredit?: string | null;
+  backgroundLicense?: string | null;
   doctorsImageUrl?: string;
   copy?: HeroCopy;
 }
@@ -58,7 +70,14 @@ const DEFAULTS: Required<Omit<HeroCopy, "stats">> = {
   ctaSecondary: "Browse top colleges",
 };
 
-export default function Hero({ backgroundImageUrl, doctorsImageUrl, copy }: HeroProps) {
+export default function Hero({
+  backgroundImageUrl,
+  backgroundSubject,
+  backgroundCredit,
+  backgroundLicense,
+  doctorsImageUrl,
+  copy,
+}: HeroProps) {
   const CTA = useCTA();
   const reduce = useReducedMotion();
 
@@ -231,6 +250,13 @@ export default function Hero({ backgroundImageUrl, doctorsImageUrl, copy }: Hero
           </motion.div>
         </motion.div>
       </div>
+      <PhotoCredit
+        subject={backgroundSubject}
+        attribution={backgroundCredit}
+        license={backgroundLicense}
+        tone="onSurface"
+        className="absolute bottom-1.5 right-2 z-20"
+      />
     </section>
   );
 }

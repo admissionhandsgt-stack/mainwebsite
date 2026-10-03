@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import PhotoCredit from "@/components/ui/PhotoCredit";
 import { motion, useReducedMotion } from "framer-motion";
 import { Target, ShieldCheck, Sparkles, GraduationCap, Building2, Landmark } from "lucide-react";
 import type { ReactNode } from "react";
@@ -26,6 +27,17 @@ interface PageHeroProps {
   /** Background photograph. Local AVIF under /assets/images/… */
   image: string;
   imageAlt?: string;
+  /**
+   * Which college it is, who took it, and on what terms.
+   *
+   * The heroes are Wikimedia photographs of real Indian medical colleges, which
+   * are CC BY-SA — free to use **and** conditional on crediting the
+   * photographer. A credit held only in the database is a condition nobody met,
+   * so it is rendered here, quietly, in the corner. See `PhotoCredit`.
+   */
+  imageSubject?: string | null;
+  imageCredit?: string | null;
+  imageLicense?: string | null;
   /** How much of the photograph shows through. Dense pages want less. */
   tone?: "light" | "dark";
   stats?: PageHeroStat[];
@@ -60,6 +72,9 @@ export default function PageHero({
   subtitle,
   image,
   imageAlt = "",
+  imageSubject,
+  imageCredit,
+  imageLicense,
   tone = "light",
   stats,
   children,
@@ -195,6 +210,15 @@ export default function PageHero({
           </motion.div>
         )}
       </motion.div>
+
+      {/* The photographer's credit — a licence condition, not a courtesy. */}
+      <PhotoCredit
+        subject={imageSubject}
+        attribution={imageCredit}
+        license={imageLicense}
+        tone={dark ? "onImage" : "onSurface"}
+        className="absolute bottom-1.5 right-2 z-20"
+      />
     </section>
   );
 }
