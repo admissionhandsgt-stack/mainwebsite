@@ -920,11 +920,12 @@ export async function getUgCollegeExtras(slug: string): Promise<{
           SELECT u.city, u.university_name, u.college_type, u.intake, u.image_url,
                  u.image_attribution, u.image_license
           FROM institutes i
+          LEFT JOIN states st ON st.id = i.state_id
           JOIN ug_all_colleges u
-            ON regexp_replace(lower(u.college_name), '[^a-z0-9]', '', 'g')
-             = regexp_replace(lower(i.name), '[^a-z0-9]', '', 'g')
+            ON ${nameMatchesInstitute("u.college_name", "u.state")}
           WHERE i.slug = ${slug} AND i.level = 'ug' AND u.is_active = true
-          ORDER BY u.display_order ASC, u.id ASC
+          ORDER BY length(regexp_replace(lower(u.college_name), '[^a-z0-9]', '', 'g')) DESC,
+                   u.display_order ASC, u.id ASC
           LIMIT 1
         `),
       )[0];
@@ -957,6 +958,38 @@ export async function getUgCollegeExtras(slug: string): Promise<{
  * the slug, which put "ALL INDIA INSTITUTE OF MEDICAL SCIENCES, NEW DELHI" at
  * the top of roughly 360 other colleges' pages.
  */
+/**
+ * Does this curated CMS row describe this institute?
+ *
+ * `institutes` is the spine every slug belongs to; the curated tables hold the
+ * picture, the city and the intake. The two name the same college differently,
+ * and not only in punctuation — the CMS drops the city that the source extract
+ * keeps: "ACPM Medical College" against "ACPM Medical College, Dhule".
+ *
+ * Exact equality on the stripped name therefore matched **13 of the 96** PG
+ * colleges that have a photograph, and 68 of 88 on the UG side. Every other one
+ * had a picture nobody could see.
+ *
+ * So: an exact match, or the institute's own name *begins with* the CMS name
+ * and the state is the same. The state clause is the whole safety of the rule.
+ * "Jawaharlal Nehru Medical College" is the start of six different colleges in
+ * six states — Bhagalpur, Ajmer, Aligarh, Belgaum, Wardha, Sawangi — and
+ * without it one college's photograph would appear on all six, which is the
+ * fault this codebase already fixed once for stock campus images.
+ *
+ * Callers order by the length of the CMS name, longest first, so the most
+ * specific row wins where two could match.
+ */
+const nameMatchesInstitute = (cmsName: string, cmsState: string) => sql`(
+  regexp_replace(lower(${sql.raw(cmsName)}), '[^a-z0-9]', '', 'g')
+    = regexp_replace(lower(i.name), '[^a-z0-9]', '', 'g')
+  OR (
+    ${sql.raw(cmsState)} = st.name
+    AND regexp_replace(lower(i.name), '[^a-z0-9]', '', 'g')
+        LIKE regexp_replace(lower(${sql.raw(cmsName)}), '[^a-z0-9]', '', 'g') || '%'
+  )
+)`;
+
 export async function getPgCollegePhoto(slug: string): Promise<{
   imageUrl: string;
   imageAttribution: string | null;
@@ -968,12 +1001,13 @@ export async function getPgCollegePhoto(slug: string): Promise<{
         await db.execute(sql`
           SELECT p.image_url, p.image_attribution, p.image_license
           FROM institutes i
+          LEFT JOIN states st ON st.id = i.state_id
           JOIN pg_colleges_content p
-            ON regexp_replace(lower(p.college_name), '[^a-z0-9]', '', 'g')
-             = regexp_replace(lower(i.name), '[^a-z0-9]', '', 'g')
+            ON ${nameMatchesInstitute("p.college_name", "p.state")}
           WHERE i.slug = ${slug} AND i.level = 'pg'
             AND p.is_active = true AND p.image_url IS NOT NULL
-          ORDER BY p.display_order ASC, p.id ASC
+          ORDER BY length(regexp_replace(lower(p.college_name), '[^a-z0-9]', '', 'g')) DESC,
+                   p.display_order ASC, p.id ASC
           LIMIT 1
         `),
       )[0];
