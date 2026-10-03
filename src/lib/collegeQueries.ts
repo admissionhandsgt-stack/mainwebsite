@@ -184,7 +184,15 @@ export async function getCollegeCutoffs(slug: string, level: Level): Promise<Cou
     await db.execute(sql`
       SELECT c.name AS course, q.code AS quota, cat.code AS category, cn.name AS counselling,
              so.r1_latest, so.widest_latest, so.widest_previous, so.furthest_ever,
-             so.latest_year, so.seats_latest, so.fee_inr
+             -- The ::int is not decoration. seats_latest is a bigint in the
+             -- materialized view (it comes out of a SUM), and postgres.js returns
+             -- a bigint as a STRING so that no precision is lost. The "as number"
+             -- below is a TypeScript assertion and changes nothing at runtime, so
+             -- the counts arrived as "3" and "5" and the locked summary added them
+             -- with + : 0 + "3" + "5" = "035". A college page read
+             -- SEATS 0553315105335556135553310353155553332.
+             -- branchQueries and quotaQueries already cast; this one did not.
+             so.latest_year, so.seats_latest::int AS seats_latest, so.fee_inr
       FROM seat_options so
       JOIN institutes i   ON i.id  = so.institute_id
       JOIN courses    c   ON c.id  = so.course_id

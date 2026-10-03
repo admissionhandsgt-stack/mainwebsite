@@ -77,6 +77,21 @@ const maxOf = (values: (number | null)[]): number | null => {
   return real.length ? Math.max(...real) : null;
 };
 
+/**
+ * A seat count, as a number, whatever the driver handed us.
+ *
+ * Every total in this file is built with `+`, which silently concatenates the
+ * moment one operand is a string — and a Postgres bigint arrives as a string.
+ * The query that fed this is fixed, but this function is shared by the college,
+ * branch and quota pages, and the next aggregate column to be added will be a
+ * bigint too. One coercion here is cheaper than finding the next
+ * "SEATS 0553315105335" on a live page.
+ */
+const seatCount = (v: unknown): number => {
+  const n = Number(v);
+  return Number.isFinite(n) ? n : 0;
+};
+
 export function summariseSeats(rows: SummarisableSeat[]): SeatSummary {
   const byQuota = new Map<string, SummarisableSeat[]>();
   const byState = new Map<string, number>();
@@ -89,13 +104,13 @@ export function summariseSeats(rows: SummarisableSeat[]): SeatSummary {
     if (bucket) bucket.push(row);
     else byQuota.set(quota, [row]);
 
-    if (row.state) byState.set(row.state, (byState.get(row.state) ?? 0) + row.seats);
+    if (row.state) byState.set(row.state, (byState.get(row.state) ?? 0) + seatCount(row.seats));
   }
 
   const quotas: QuotaSlice[] = Array.from(byQuota.entries())
     .map(([quota, group]) => ({
       quota,
-      seats: group.reduce((sum, r) => sum + r.seats, 0),
+      seats: group.reduce((sum, r) => sum + seatCount(r.seats), 0),
       colleges: new Set(group.map((r) => r.college)).size,
       rankFrom: minOf(group.map((r) => r.r1 ?? r.widest)),
       rankTo: maxOf(group.map((r) => r.widest ?? r.r1)),
@@ -111,7 +126,7 @@ export function summariseSeats(rows: SummarisableSeat[]): SeatSummary {
     .slice(0, 6);
 
   return {
-    seats: rows.reduce((sum, r) => sum + r.seats, 0),
+    seats: rows.reduce((sum, r) => sum + seatCount(r.seats), 0),
     colleges: colleges.size,
     states: byState.size,
     rows: rows.length,
