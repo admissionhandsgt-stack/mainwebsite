@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import Image from 'next/image';
+import CollegeVisual from '@/components/ui/CollegeVisual';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Search, MapPin, ThumbsUp, ExternalLink } from 'lucide-react';
@@ -16,7 +16,6 @@ interface College {
   fees: string;
   rating: number;
   type: 'government' | 'private' | 'deemed';
-  image: string;
   neetCutoff: string;
   seats: number;
   recognition: string[];
@@ -30,7 +29,6 @@ const collegesList: College[] = [
     fees: '₹25-30 Lakhs/year',
     rating: 4.7,
     type: 'private',
-    image: '/assets/images/colleges/medical-campus-1.avif',
     neetCutoff: '500-550',
     seats: 25,
     recognition: ['NMC', 'WHO', 'FAIMER']
@@ -42,7 +40,6 @@ const collegesList: College[] = [
     fees: '₹20-25 Lakhs/year',
     rating: 4.9,
     type: 'private',
-    image: '/assets/images/colleges/medical-college.avif',
     neetCutoff: '600+',
     seats: 15,
     recognition: ['NMC', 'WHO', 'FAIMER', 'NAAC A++']
@@ -54,7 +51,6 @@ const collegesList: College[] = [
     fees: '₹15-20 Lakhs/year',
     rating: 5.0,
     type: 'government',
-    image: '/assets/images/colleges/aiims-delhi.avif',
     neetCutoff: '650+',
     seats: 7,
     recognition: ['NMC', 'WHO', 'FAIMER', 'NAAC A++']
@@ -66,7 +62,6 @@ const collegesList: College[] = [
     fees: '₹20-25 Lakhs/year',
     rating: 4.5,
     type: 'deemed',
-    image: '/assets/images/colleges/deemed-campus-1.avif',
     neetCutoff: '500-550',
     seats: 30,
     recognition: ['NMC', 'WHO', 'FAIMER']
@@ -78,7 +73,6 @@ const collegesList: College[] = [
     fees: '₹25-30 Lakhs/year',
     rating: 4.6,
     type: 'private',
-    image: '/assets/images/colleges/medical-campus-2.avif',
     neetCutoff: '520-570',
     seats: 20,
     recognition: ['NMC', 'WHO', 'FAIMER']
@@ -90,7 +84,6 @@ const collegesList: College[] = [
     fees: '₹15-20 Lakhs/year',
     rating: 4.8,
     type: 'government',
-    image: '/assets/images/colleges/medical-campus-3.avif',
     neetCutoff: '580-630',
     seats: 10,
     recognition: ['NMC', 'WHO', 'FAIMER', 'NAAC A+']
@@ -102,7 +95,6 @@ const collegesList: College[] = [
     fees: '₹18-22 Lakhs/year',
     rating: 4.4,
     type: 'private',
-    image: '/assets/images/colleges/medical-campus-4.avif',
     neetCutoff: '500-540',
     seats: 15,
     recognition: ['NMC', 'WHO', 'FAIMER']
@@ -114,7 +106,6 @@ const collegesList: College[] = [
     fees: '₹22-28 Lakhs/year',
     rating: 4.6,
     type: 'private',
-    image: '/assets/images/colleges/medical-campus-1.avif',
     neetCutoff: '540-580',
     seats: 12,
     recognition: ['NMC', 'WHO', 'FAIMER', 'NAAC A']
@@ -239,15 +230,18 @@ const NRICollegesPage = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {filteredColleges.map(college => (
                       <div key={college.id} className="bg-white rounded-xl shadow-md hover:shadow-lg overflow-hidden transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
+                        {/*
+                          These eight carried a stock AI campus each — "ST. JUDE
+                          GRAND HOSPITAL" and an invented AIIMS among them —
+                          with the real college's name in the alt text, so a
+                          screen reader was told it was looking at Kasturba
+                          Medical College. The monogram claims nothing.
+                        */}
                         <div className="h-48 overflow-hidden relative">
-                          <Image 
-                            src={college.image} 
-                            alt={college.name} 
-                            fill
+                          <CollegeVisual
+                            name={college.name}
+                            state={college.location}
                             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                            className="object-cover"
-                            placeholder="blur"
-                            blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMjAiIGhlaWdodD0iMjQwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDcwZTFlIi8+PC9zdmc+"
                           />
                         </div>
                         <div className="p-6">

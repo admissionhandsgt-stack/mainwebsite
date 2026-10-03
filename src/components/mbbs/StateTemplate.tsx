@@ -65,6 +65,8 @@ const StateTemplate: React.FC<StateTemplateProps> = ({ stateName }) => {
               university_name: c.universityName,
               established_year: c.establishedYear,
               image_url: c.imageUrl,
+              image_attribution: c.imageAttribution,
+              image_license: c.imageLicense,
               nri_seats: c.nriSeats,
               has_nri_seats: c.hasNriSeats,
               is_women_only: c.isWomenOnly,
@@ -101,6 +103,8 @@ const StateTemplate: React.FC<StateTemplateProps> = ({ stateName }) => {
             established: c.established_year?.toString() || 'N/A',
             description: c.university_name || '',
             imageUrl: c.image_url,
+            imageAttribution: c.image_attribution,
+            imageLicense: c.image_license,
             intake: c.intake
           })));
         } else {
@@ -345,6 +349,8 @@ const StateTemplate: React.FC<StateTemplateProps> = ({ stateName }) => {
                     collegeType={college.type}
                     description={null}
                     imageUrl={college.imageUrl}
+                    imageAttribution={college.imageAttribution}
+                    imageLicense={college.imageLicense}
                     yearEstablished={college.established !== 'N/A' ? parseInt(college.established) : null}
                     universityBody={college.description}
                     seats={college.intake}

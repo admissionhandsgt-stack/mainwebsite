@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { resolveMetadata } from '@/lib/content';
+import { resolveMetadata, getMediaAsset } from '@/lib/content';
 import Link from "next/link";
 import { Building2, ArrowRight } from "lucide-react";
 import { listColleges, getCollegeFacets, type CollegeFilters } from "@/lib/collegeQueries";
@@ -51,10 +51,14 @@ export default async function PGCollegesPage({ searchParams }: PageProps) {
     perPage: 24,
   };
 
-  const [{ items, total, page, perPage }, facets, depth] = await Promise.all([
+  const [{ items, total, page, perPage }, facets, depth, hero] = await Promise.all([
     listColleges(filters),
     getCollegeFacets("pg"),
     canSeeDepthServer(),
+    // Was a hardcoded path to an AI-generated campus that read "SWAMI
+    // VIVEKANANDA MEDICAL COLLEGE AND HOSPITAL", with SCIENCES misspelt, on a
+    // page about every PG college in the country.
+    getMediaAsset("pg_hero_campus"),
   ]);
 
   const lastPage = Math.max(1, Math.ceil(total / perPage));
@@ -95,7 +99,10 @@ export default async function PGCollegesPage({ searchParams }: PageProps) {
         title="Every PG medical college,"
         titleAccent="with the numbers behind it"
         subtitle="Seat counts, fee structures, stipends and the closing rank each seat actually went to — as published by the counselling authorities, for all 2,168 colleges."
-        image="/assets/images/hero/india-medical-college-campus.avif"
+        image={hero?.imageUrl && hero.imageUrl !== "none" ? hero.imageUrl : undefined}
+        imageSubject={hero?.subject}
+        imageCredit={hero?.attribution}
+        imageLicense={hero?.license}
         tone="dark"
         stats={[
           { value: "2,168", label: "Colleges" },

@@ -20,6 +20,8 @@ export function DeemedCollegeCard({ college }: DeemedCollegeCardProps) {
           name={college.college_name}
           state={college.state}
           imageUrl={college.image_url}
+          attribution={college.image_attribution}
+          license={college.image_license}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
           className="group-hover:scale-105 transition-transform duration-500"
         />

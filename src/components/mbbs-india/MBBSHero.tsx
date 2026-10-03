@@ -17,25 +17,26 @@ interface MBBSHeroProps {
 
 export const MBBSHero = ({ backgroundImageUrl, credit, data = mbbsData }: MBBSHeroProps & { data?: MbbsContent }) => {
   const { hero } = data;
-  // Falls back to the campus photograph shipped with the site when the CMS
-  // has no media row for this slot.
-  const bg =
-    backgroundImageUrl && backgroundImageUrl !== "none"
-      ? backgroundImageUrl
-      : "/assets/images/hero/india-medical-college-campus.avif";
+  // No CMS row, no photograph. The shipped fallback was an AI-generated
+  // campus signed "SWAMI VIVEKANANDA MEDICAL COLLEGE AND HOSPITAL" — a real
+  // college, a building that is not its own — so an empty media row used to
+  // put another institution's name behind this page's headline.
+  const bg = backgroundImageUrl && backgroundImageUrl !== "none" ? backgroundImageUrl : null;
 
   return (
     <section className="relative w-full min-h-[420px] md:min-h-[min(760px,100svh)] flex items-center overflow-hidden bg-background transition-colors duration-200">
       {/* Campus photograph, held behind a gradient so type stays readable */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <Image
-          src={bg}
-          alt=""
-          fill
-          priority
-          className="object-cover object-[75%_center] md:object-center opacity-30 md:opacity-45 dark:opacity-25"
-          sizes="100vw"
-        />
+        {bg && (
+          <Image
+            src={bg}
+            alt=""
+            fill
+            priority
+            className="object-cover object-[75%_center] md:object-center opacity-30 md:opacity-45 dark:opacity-25"
+            sizes="100vw"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/70 to-background" />
         <div className="absolute inset-0 hidden md:block bg-gradient-to-r from-background via-background/75 to-transparent" />
       </div>

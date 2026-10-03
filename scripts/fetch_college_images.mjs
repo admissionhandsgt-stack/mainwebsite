@@ -263,7 +263,82 @@ async function findPhoto(name) {
       ...lic,
     };
   }
+  // Nothing on Wikipedia. Commons holds files for colleges that have no
+  // article at all, which is most private Indian medical colleges.
+  const onCommons = await findOnCommons(name);
+  if (onCommons) return onCommons;
+
   return { ok: false, why: sawTitle ? "article has no photo" : "no matching article" };
+}
+
+/**
+ * A photograph from Commons itself, for a college with no Wikipedia article.
+ *
+ * ## Why a second source
+ *
+ * The article search reached 105 of 1,076 colleges and the rest were not near
+ * misses: 703 had no matching article at all. Indian private medical colleges
+ * are mostly not on Wikipedia, and a page that only draws the famous ones has
+ * drawn the easy tenth of the problem.
+ *
+ * ## What is given up, and what replaces it
+ *
+ * The Wikidata gate goes, because a bare Commons file has no entity behind it —
+ * nothing to ask whether this is an institution in India. So the **file title**
+ * has to carry the whole weight, and it is held to the same rule as an article
+ * title: every distinctive word of the college's name present, and a medical
+ * college matching a medical title. A file called "Gouri Devi Institute of
+ * Medical Sciences and Hospital.jpg" is about as direct as evidence gets.
+ *
+ * On top of that, two refusals the article path never needed:
+ *
+ *  - **Subjects that are not the place.** A title can name the college exactly
+ *    and show something else: both files titled "Sardar Patel Medical College"
+ *    are murals of ancient surgery, and the hero pass very nearly shipped one.
+ *    Logos, seals, portraits, certificates, maps and documents are the same
+ *    kind of miss.
+ *  - **Anything small.** Under 800px wide is a crop, a scan or a logo, never a
+ *    campus photograph worth putting on a card.
+ *
+ * The cost of being wrong here is unchanged and is the reason the gates stay
+ * tight: a college with no photograph keeps its monogram, which claims nothing.
+ * A photograph of the wrong building looks like evidence.
+ */
+const NOT_A_PLACE =
+  /mural|painting|logo|seal|insignia|emblem|statue|map|plaque|portrait|poster|certificate|letter|document|signature|stamp|chart|graph|screenshot|book ?cover/i;
+
+async function findOnCommons(name) {
+  const json = await api(
+    "https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*" +
+      "&generator=search&gsrnamespace=6&gsrlimit=20&gsrsearch=" +
+      encodeURIComponent(norm(name)) +
+      "&prop=imageinfo&iiprop=url|size|extmetadata",
+  );
+
+  for (const page of Object.values(json?.query?.pages ?? {})) {
+    const title = String(page.title ?? "").replace(/^File:/, "");
+    if (!/\.(jpe?g|png)$/i.test(title)) continue;
+    if (NOT_A_PLACE.test(title)) continue;
+
+    // The extension is part of the title and would otherwise have to appear in
+    // the college's name for the token rule to pass.
+    if (!titleMatches(name, title.replace(/\.[a-z0-9]+$/i, ""))) continue;
+
+    const info = page.imageinfo?.[0];
+    if (!info?.url || (info.width ?? 0) < 800) continue;
+
+    const lic = await licenceFor(info.url);
+    if (!lic) continue;
+
+    return {
+      ok: true,
+      title,
+      image: info.url,
+      article: `https://commons.wikimedia.org/wiki/${encodeURIComponent(page.title.replace(/ /g, "_"))}`,
+      ...lic,
+    };
+  }
+  return null;
 }
 
 /* -------------------------------------------------------------------- store */

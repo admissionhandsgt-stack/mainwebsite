@@ -74,9 +74,20 @@ function titleMatches(collegeName, title) {
   return { ok: true };
 }
 
-/** The article title, read back out of the URL it was stored with. */
+/**
+ * The source title, read back out of the URL it was stored with.
+ *
+ * Two shapes now: a Wikipedia article (`/wiki/Madras_Medical_College`) and,
+ * since the Commons fallback, a file page (`/wiki/File:Diphu_Medical_College_
+ * %26_Hospital_Gate.jpg`). The `File:` prefix and the extension are not part of
+ * the name and must come off, or a tightened rule would read "jpg" as a word
+ * the college is missing and clear a photograph that is perfectly good.
+ */
 const titleFromUrl = (url) =>
-  decodeURIComponent(String(url ?? "").split("/wiki/").pop() ?? "").replace(/_/g, " ");
+  decodeURIComponent(String(url ?? "").split("/wiki/").pop() ?? "")
+    .replace(/_/g, " ")
+    .replace(/^File:/i, "")
+    .replace(/\.[a-z0-9]+$/i, "");
 
 const sql = postgres(process.env.DATABASE_URL, { max: 1 });
 

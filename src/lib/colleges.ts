@@ -12,6 +12,9 @@ export interface CollegeData {
   state: string;
   intake: number;
   image_url: string;
+  /** The credit that has to travel with the photograph. */
+  image_attribution: string | null;
+  image_license: string | null;
   college_type: string;
 }
 
@@ -31,6 +34,8 @@ export async function getRecommendedColleges(): Promise<GroupedColleges> {
       state: c.state ?? "",
       intake: c.intake ?? 0,
       image_url: c.imageUrl ?? "",
+      image_attribution: c.imageAttribution,
+      image_license: c.imageLicense,
       college_type: c.collegeType ?? "",
     };
     const type = (c.collegeType ?? "").toLowerCase();

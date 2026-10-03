@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { getMediaAsset } from "@/lib/content";
 import { ShieldCheck, Phone, Target, LogOut, Search, TrendingDown, FileText } from "lucide-react";
 import { currentUser } from "@/lib/userAuth";
 import PageHero from "@/components/ui/PageHero";
@@ -24,7 +25,7 @@ const num = (n: number | null | undefined) => (n == null ? null : n.toLocaleStri
  * back to the tools, so the second visit is faster than the first.
  */
 export default async function AccountPage() {
-  const user = await currentUser();
+  const [user, hero] = await Promise.all([currentUser(), getMediaAsset("neet_hero")]);
   if (!user) redirect("/login?next=/account");
 
   const level = user.level ?? "pg";
@@ -44,7 +45,10 @@ export default async function AccountPage() {
         title={user.name ? `Welcome back, ${user.name.split(" ")[0]}.` : "Welcome back."}
         titleAccent={user.rank ? `Rank ${num(user.rank)} is saved.` : "Save a rank to pick up faster."}
         subtitle="Your rank and category are kept here so the tools open where you left off, and so we are not asking you the same thing every visit."
-        image="/assets/images/hero/neet-hero.avif"
+        image={hero?.imageUrl && hero.imageUrl !== "none" ? hero.imageUrl : undefined}
+        imageSubject={hero?.subject}
+        imageCredit={hero?.attribution}
+        imageLicense={hero?.license}
         tone="dark"
       />
 

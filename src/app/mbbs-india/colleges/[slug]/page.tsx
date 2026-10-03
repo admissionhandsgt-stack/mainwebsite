@@ -4,6 +4,7 @@ import { collegeFaqs, collegeJsonLd, collegePlace } from "@/lib/collegeSeo";
 import CollegeFaq from "@/components/colleges/CollegeFaq";
 import Link from "next/link";
 import Image from "next/image";
+import PhotoCredit from "@/components/ui/PhotoCredit";
 import { GraduationCap, Landmark, MapPin, Banknote, Users } from "lucide-react";
 import {
   getCollege,
@@ -38,21 +39,21 @@ export const dynamic = "force-dynamic";
  * visited in a given week.
  */
 
-const CAMPUS_IMAGES = [
-  "/assets/images/colleges/aiims-delhi.avif",
-  "/assets/images/colleges/medical-campus-1.avif",
-  "/assets/images/colleges/medical-campus-2.avif",
-  "/assets/images/colleges/medical-campus-3.avif",
-  "/assets/images/colleges/medical-campus-4.avif",
-  "/assets/images/hero/india-medical-college-campus.avif",
-];
-
-/** Stable per college, so the same page always shows the same photograph. */
-function campusFor(slug: string) {
-  let h = 0;
-  for (let i = 0; i < slug.length; i++) h = (h * 31 + slug.charCodeAt(i)) >>> 0;
-  return CAMPUS_IMAGES[h % CAMPUS_IMAGES.length];
-}
+/**
+ * The header photograph, or none.
+ *
+ * There used to be a six-image rotation hashed from the slug here. All six were
+ * AI-generated and three of them carried an institution's name on the building:
+ * "ALL INDIA INSTITUTE OF MEDICAL SCIENCES, NEW DELHI", "ST. JUDE GRAND
+ * HOSPITAL", "SWAMI VIVEKANANDA MEDICAL COLLEGE AND HOSPITAL". Hashed across
+ * 1,727 colleges, that put AIIMS Delhi's name at the top of roughly 290 other
+ * colleges' pages — and these are the pages that carry the site's search
+ * traffic, 3,479 of ~3,700 sitemap URLs.
+ *
+ * So the rule is `CollegeVisual`'s: a photograph somebody has verified is this
+ * college, or nothing. The gradient below was always doing most of the work,
+ * and a dark header claims nothing.
+ */
 
 const money = (n: number | null) => {
   if (n == null) return "—";
@@ -149,16 +150,27 @@ export default async function UgCollegePage({ params }: { params: { slug: string
 
       {/* ---------------- header ---------------- */}
       <header className="relative overflow-hidden border-b border-border">
-        <div className="absolute inset-0" aria-hidden="true">
-          <Image
-            src={extras?.imageUrl || campusFor(college.slug)}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
+        <div className="absolute inset-0 bg-slate-950">
+          {extras?.imageUrl && (
+            <Image
+              src={extras.imageUrl}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+          )}
+          <div
+            className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/85 to-slate-950/60"
+            aria-hidden="true"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/85 to-slate-950/60" />
+          <PhotoCredit
+            subject={extras?.imageUrl ? college.name : null}
+            attribution={extras?.imageAttribution}
+            license={extras?.imageLicense}
+            className="absolute bottom-1.5 right-2"
+          />
         </div>
 
         <div className="container-custom relative z-10 py-12 md:py-16">

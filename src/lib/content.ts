@@ -317,6 +317,16 @@ export interface CuratedCollege {
   hasNriSeats: boolean;
   isWomenOnly: boolean;
   imageUrl: string | null;
+  /**
+   * Who took the photograph, and under what terms.
+   *
+   * Carried on the curated row because the homepage and the deemed listing both
+   * render `imageUrl` — and both were rendering a CC BY-SA photograph with no
+   * credit anywhere on the page, which is the licence breach the credit column
+   * was added to prevent.
+   */
+  imageAttribution: string | null;
+  imageLicense: string | null;
   displayOrder: number;
 }
 
@@ -335,7 +345,7 @@ export async function getCuratedColleges(
         await db.execute(sql`
           SELECT id, slug, college_name, college_type, state, city, university_name,
                  established_year, intake, nri_seats, has_nri_seats, is_women_only,
-                 image_url, display_order
+                 image_url, image_attribution, image_license, display_order
           FROM ${CURATED_TABLES[which]}
           WHERE is_active = true
           ORDER BY display_order ASC, college_name ASC
@@ -354,6 +364,8 @@ export async function getCuratedColleges(
         hasNriSeats: Boolean(r.has_nri_seats),
         isWomenOnly: Boolean(r.is_women_only),
         imageUrl: (r.image_url as string) ?? null,
+        imageAttribution: (r.image_attribution as string) ?? null,
+        imageLicense: (r.image_license as string) ?? null,
         displayOrder: (r.display_order as number) ?? 0,
       })),
     [],
@@ -757,6 +769,9 @@ export interface UgCollege {
   establishedYear: number | null;
   intake: number | null;
   imageUrl: string | null;
+  /** The credit, carried with the photograph. CC BY-SA requires it on the page. */
+  imageAttribution: string | null;
+  imageLicense: string | null;
   displayOrder: number;
   /** How many published closing ranks this college has, 0 if none. */
   rankRows: number;
@@ -795,7 +810,8 @@ const loadUgColleges = unstable_cache(
           WITH cms AS (
             SELECT DISTINCT ON (regexp_replace(lower(college_name), '[^a-z0-9]', '', 'g'))
                    regexp_replace(lower(college_name), '[^a-z0-9]', '', 'g') AS key,
-                   city, university_name, college_type, intake, image_url, display_order
+                   city, university_name, college_type, intake, image_url,
+                   image_attribution, image_license, display_order
             FROM ug_all_colleges
             WHERE is_active = true
             ORDER BY regexp_replace(lower(college_name), '[^a-z0-9]', '', 'g'),
@@ -814,7 +830,8 @@ const loadUgColleges = unstable_cache(
           SELECT i.slug, i.name, st.name AS state, i.established_year,
                  i.ownership::text AS ownership,
                  cms.city, cms.university_name, cms.college_type, cms.intake,
-                 cms.image_url, COALESCE(cms.display_order, 0) AS display_order,
+                 cms.image_url, cms.image_attribution, cms.image_license,
+                 COALESCE(cms.display_order, 0) AS display_order,
                  COALESCE(r.n, 0) AS rank_rows
           FROM institutes i
           LEFT JOIN states st ON st.id = i.state_id
@@ -854,6 +871,8 @@ const loadUgColleges = unstable_cache(
         establishedYear: (r.established_year as number) ?? null,
         intake: (r.intake as number) ?? null,
         imageUrl: (r.image_url as string) ?? null,
+        imageAttribution: (r.image_attribution as string) ?? null,
+        imageLicense: (r.image_license as string) ?? null,
         displayOrder: (r.display_order as number) ?? 0,
         rankRows: (r.rank_rows as number) ?? 0,
       })),
@@ -891,12 +910,15 @@ export async function getUgCollegeExtras(slug: string): Promise<{
   collegeType: string | null;
   intake: number | null;
   imageUrl: string | null;
+  imageAttribution: string | null;
+  imageLicense: string | null;
 } | null> {
   return safe(
     async () => {
       const r = rows<Record<string, unknown>>(
         await db.execute(sql`
-          SELECT u.city, u.university_name, u.college_type, u.intake, u.image_url
+          SELECT u.city, u.university_name, u.college_type, u.intake, u.image_url,
+                 u.image_attribution, u.image_license
           FROM institutes i
           JOIN ug_all_colleges u
             ON regexp_replace(lower(u.college_name), '[^a-z0-9]', '', 'g')
@@ -913,9 +935,56 @@ export async function getUgCollegeExtras(slug: string): Promise<{
         collegeType: (r.college_type as string) ?? null,
         intake: (r.intake as number) ?? null,
         imageUrl: (r.image_url as string) ?? null,
+        imageAttribution: (r.image_attribution as string) ?? null,
+        imageLicense: (r.image_license as string) ?? null,
       };
     },
     null,
     `ugCollegeExtras:${slug}`,
+  );
+}
+
+/**
+ * The photograph of one PG college, if anybody has verified there is one.
+ *
+ * Joined on the normalised name for the same reason `loadUgColleges` is:
+ * `institutes` is the spine the slug belongs to, `pg_colleges_content` is the
+ * curated table that holds the picture, and the two punctuate the same college
+ * differently.
+ *
+ * Returns null far more often than not — 56 of 252 — and that is the answer the
+ * page wants. The alternative it replaces was a six-image rotation hashed from
+ * the slug, which put "ALL INDIA INSTITUTE OF MEDICAL SCIENCES, NEW DELHI" at
+ * the top of roughly 360 other colleges' pages.
+ */
+export async function getPgCollegePhoto(slug: string): Promise<{
+  imageUrl: string;
+  imageAttribution: string | null;
+  imageLicense: string | null;
+} | null> {
+  return safe(
+    async () => {
+      const r = rows<Record<string, unknown>>(
+        await db.execute(sql`
+          SELECT p.image_url, p.image_attribution, p.image_license
+          FROM institutes i
+          JOIN pg_colleges_content p
+            ON regexp_replace(lower(p.college_name), '[^a-z0-9]', '', 'g')
+             = regexp_replace(lower(i.name), '[^a-z0-9]', '', 'g')
+          WHERE i.slug = ${slug} AND i.level = 'pg'
+            AND p.is_active = true AND p.image_url IS NOT NULL
+          ORDER BY p.display_order ASC, p.id ASC
+          LIMIT 1
+        `),
+      )[0];
+      if (!r) return null;
+      return {
+        imageUrl: r.image_url as string,
+        imageAttribution: (r.image_attribution as string) ?? null,
+        imageLicense: (r.image_license as string) ?? null,
+      };
+    },
+    null,
+    `pgCollegePhoto:${slug}`,
   );
 }

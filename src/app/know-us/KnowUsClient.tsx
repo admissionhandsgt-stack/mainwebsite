@@ -24,7 +24,10 @@ interface KnowUsClientProps {
 
 export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClientProps) {
   const CTA = useCTA();
-  const bgImage = backgroundImageUrl || "/assets/images/hero/knowus_hero.avif";
+  // No CMS row, no photograph. The file this used to fall back to is the
+  // AI-generated office with a nameplate reading "Priya Sharma — Senior
+  // Admission Counselor", a person who does not work here.
+  const bgImage = backgroundImageUrl && backgroundImageUrl !== "none" ? backgroundImageUrl : null;
   
   const [mounted, setMounted] = useState(false);
   useEffect(() => {

@@ -18,6 +18,8 @@ import CollegeCutoffs from "@/components/colleges/CollegeCutoffs";
 import { canSeeDepthServer } from "@/lib/depth";
 import { summariseCollegeCutoffs } from "@/lib/seatSummary";
 import CtaBand from "@/components/ui/CtaBand";
+import PhotoCredit from "@/components/ui/PhotoCredit";
+import { getPgCollegePhoto } from "@/lib/content";
 
 // The busiest pages are built at deploy time; the long tail is generated on
 // first request and then cached, so a 2,168-page build stays quick.
@@ -34,23 +36,19 @@ import CtaBand from "@/components/ui/CtaBand";
 export const dynamic = "force-dynamic";
 
 
-const CAMPUS_IMAGES = [
-  "/assets/images/colleges/aiims-delhi.avif",
-  "/assets/images/colleges/medical-campus-1.avif",
-  "/assets/images/colleges/medical-campus-2.avif",
-  "/assets/images/colleges/medical-campus-3.avif",
-  "/assets/images/colleges/medical-campus-4.avif",
-  "/assets/images/hero/neet-hero.avif",
-  "/assets/images/hero/india-medical-college-campus.avif",
-];
-
-/** Stable per college, so the same page always shows the same photograph. */
-function campusFor(slug: string) {
-  let h = 0;
-  for (let i = 0; i < slug.length; i++) h = (h * 31 + slug.charCodeAt(i)) >>> 0;
-  return CAMPUS_IMAGES[h % CAMPUS_IMAGES.length];
-}
-
+/**
+ * The hero photograph, or none.
+ *
+ * There used to be a seven-image rotation hashed from the slug here, and it did
+ * not even consult the college's own picture — the curated table holds one for
+ * 56 of these and the page showed a stock image anyway. All seven were
+ * AI-generated and three carried an institution's name on the building, so
+ * "ALL INDIA INSTITUTE OF MEDICAL SCIENCES, NEW DELHI" headed roughly 310 other
+ * colleges' pages.
+ *
+ * The rule is `CollegeVisual`'s: a photograph somebody has verified is this
+ * college, or nothing. The gradients below were always doing most of the work.
+ */
 const money = (n: number | null) => {
   if (n == null) return "—";
   if (n >= 10000000) return `₹${(n / 10000000).toFixed(2)} Cr`;
@@ -92,11 +90,12 @@ export default async function CollegePage({ params }: { params: { slug: string }
   const college = await getCollege(params.slug, "pg");
   if (!college) notFound();
 
-  const [cutoffs, fees, similar, access] = await Promise.all([
+  const [cutoffs, fees, similar, access, photo] = await Promise.all([
     getCollegeCutoffs(params.slug, "pg"),
     getCollegeFees(params.slug, "pg"),
     getSimilarColleges(params.slug, "pg"),
     canSeeDepthServer(),
+    getPgCollegePhoto(params.slug),
   ]);
 
   // All of the rows, or none of them. A slice is what this used to do.
@@ -150,19 +149,27 @@ export default async function CollegePage({ params }: { params: { slug: string }
 
       {/* ---------------- Hero ---------------- */}
       <section className="relative overflow-hidden bg-slate-950">
-        <Image
-          src={campusFor(college.slug)}
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center opacity-45"
-        />
+        {photo && (
+          <Image
+            src={photo.imageUrl}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center opacity-45"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 to-slate-950/40" />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/50" />
         <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
           <div className="ambient-blob animate-drift -left-24 -top-32 h-[24rem] w-[24rem] bg-primary/25" />
         </div>
+        <PhotoCredit
+          subject={photo ? college.name : null}
+          attribution={photo?.imageAttribution}
+          license={photo?.imageLicense}
+          className="absolute bottom-1.5 right-2 z-10"
+        />
 
         <div className="container-custom relative z-10 py-12 md:py-16">
           <nav className="mb-5 text-[13px] text-slate-400" aria-label="Breadcrumb">

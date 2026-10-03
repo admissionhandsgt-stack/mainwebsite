@@ -18,6 +18,9 @@ export interface DeemedCollege {
   is_active: boolean;
   source_type: string;
   image_url: string | null;
+  /** CC BY-SA requires the photographer to be named wherever the photo appears. */
+  image_attribution: string | null;
+  image_license: string | null;
 }
 
 export interface DeemedCollegeFilters {

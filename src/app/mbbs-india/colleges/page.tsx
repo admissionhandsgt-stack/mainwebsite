@@ -88,9 +88,14 @@ export default async function CollegesPage() {
           privateColleges: stateColleges.filter(
             (c) => c.collegeType != null && !isGovernment(c.collegeType),
           ).length,
-          // Only what the cards render. `imageUrl` is null for all 1,727 —
-          // the CMS table has no images — and the order is already applied
-          // above, so neither is worth sending 1,727 times.
+          // Only what the cards render; the order is already applied above.
+          //
+          // The photograph used to be left out entirely because the CMS table
+          // held none. It holds 45 now, so it is sent — but only on the rows
+          // that have one, which is a few hundred bytes rather than three
+          // nulls on each of 1,727 colleges. This page already ships the whole
+          // country at once (see "Known gaps" in CLAUDE.md) and should not be
+          // made heavier for fields nobody has filled in.
           colleges: stateColleges.map((c) => ({
             slug: c.slug,
             name: c.name,
@@ -103,6 +108,13 @@ export default async function CollegesPage() {
             intake: c.intake,
             establishedYear: c.establishedYear,
             universityName: c.universityName ?? '',
+            ...(c.imageUrl
+              ? {
+                  imageUrl: c.imageUrl,
+                  imageAttribution: c.imageAttribution,
+                  imageLicense: c.imageLicense,
+                }
+              : {}),
           })),
         };
       })

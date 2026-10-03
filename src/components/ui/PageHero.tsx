@@ -24,8 +24,15 @@ interface PageHeroProps {
   /** The part of the title that carries the brand gradient. */
   titleAccent?: string;
   subtitle?: string;
-  /** Background photograph. Local AVIF under /assets/images/… */
-  image: string;
+  /**
+   * Background photograph, or none.
+   *
+   * Optional on purpose: the alternative to a real picture of the subject is
+   * nothing, not a stock campus. Several heroes used to hardcode an
+   * AI-generated building signed with a real college's name, which on a page
+   * about every other college is a claim rather than decoration.
+   */
+  image?: string;
   imageAlt?: string;
   /**
    * Which college it is, who took it, and on what terms.
@@ -99,18 +106,20 @@ export default function PageHero({
     >
       {/* Photograph */}
       <div className="absolute inset-0 z-0" aria-hidden={imageAlt ? undefined : true}>
-        <Image
-          src={image}
-          alt={imageAlt}
-          fill
-          priority
-          sizes="100vw"
-          className={
-            dark
-              ? "object-cover object-center opacity-60"
-              : "object-cover object-center opacity-[0.05] sm:opacity-[0.09] dark:opacity-[0.10]"
-          }
-        />
+        {image && (
+          <Image
+            src={image}
+            alt={imageAlt}
+            fill
+            priority
+            sizes="100vw"
+            className={
+              dark
+                ? "object-cover object-center opacity-60"
+                : "object-cover object-center opacity-[0.05] sm:opacity-[0.09] dark:opacity-[0.10]"
+            }
+          />
+        )}
         {dark ? (
           <>
             <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-slate-950/35" />

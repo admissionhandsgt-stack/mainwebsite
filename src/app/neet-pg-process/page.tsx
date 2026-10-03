@@ -11,7 +11,7 @@ import {
   Search,
   TrendingDown,
 } from "lucide-react";
-import { resolveMetadata } from "@/lib/content";
+import { resolveMetadata, getMediaAsset } from "@/lib/content";
 import { getDataStats, inr } from "@/lib/dataStats";
 import PageHero from "@/components/ui/PageHero";
 import Reveal from "@/components/ui/Reveal";
@@ -141,7 +141,7 @@ const MISTAKES = [
 /* ------------------------------------------------------------------ page */
 
 export default async function NeetPgProcessPage() {
-  const stats = await getDataStats();
+  const [stats, hero] = await Promise.all([getDataStats(), getMediaAsset("neet_hero")]);
 
   return (
     <main className="min-h-screen bg-background">
@@ -181,7 +181,10 @@ export default async function NeetPgProcessPage() {
         title="NEET PG counselling,"
         titleAccent="explained in the order it happens."
         subtitle="Two authorities run at once, the rounds go further than most people expect, and one decision in round 2 can cost the seat you already hold. Here is the whole process, with the numbers from the published results rather than from advice."
-        image="/assets/images/hero/neet-hero.avif"
+        image={hero?.imageUrl && hero.imageUrl !== "none" ? hero.imageUrl : undefined}
+        imageSubject={hero?.subject}
+        imageCredit={hero?.attribution}
+        imageLicense={hero?.license}
         tone="dark"
         stats={[
           { value: inr(stats.pgColleges), label: "PG colleges" },

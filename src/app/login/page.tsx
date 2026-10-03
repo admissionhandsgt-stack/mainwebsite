@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { getMediaAsset } from "@/lib/content";
 import { KeyRound, ShieldCheck, Smartphone } from "lucide-react";
 import { currentUser } from "@/lib/userAuth";
 import PageHero from "@/components/ui/PageHero";
@@ -55,6 +56,8 @@ export default async function LoginPage({
     redirect(next && /^\/[^/]/.test(next) ? next : "/account");
   }
 
+  const hero = await getMediaAsset("neet_hero");
+
   return (
     <main className="min-h-screen bg-background">
       <PageHero
@@ -63,7 +66,10 @@ export default async function LoginPage({
         title="Your number is your account."
         titleAccent="Verified once, then you are in."
         subtitle="Enter your mobile number and we will send a code to it on WhatsApp. Set a password after that and next time it is just two fields — from a laptop or a phone, either way."
-        image="/assets/images/hero/neet-hero.avif"
+        image={hero?.imageUrl && hero.imageUrl !== "none" ? hero.imageUrl : undefined}
+        imageSubject={hero?.subject}
+        imageCredit={hero?.attribution}
+        imageLicense={hero?.license}
         tone="dark"
       />
 

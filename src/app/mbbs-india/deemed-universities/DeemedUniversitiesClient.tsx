@@ -30,13 +30,11 @@ export interface HeroShot {
   license?: string | null;
 }
 
-const fallbackHeroBgImages: HeroShot[] = ([
-  "/assets/images/colleges/deemed-campus-1.avif",
-  "/assets/images/colleges/medical-campus-2.avif",
-  "/assets/images/colleges/medical-campus-3.avif",
-  "/assets/images/colleges/medical-campus-4.avif",
-  "/assets/images/hero/dy-patil-mumbai.avif",
-] as const).map((src) => ({ src }));
+// No CMS rows, no backdrop. The list that used to sit here was five
+// AI-generated campuses — "ST. JUDE GRAND HOSPITAL", "UNIVERSITY OF HEALTH
+// SCIENCES", "MEDICAL ACADEMY" and a D.Y. Patil building that is not theirs —
+// rotating under the heading "India's Finest Deemed Universities".
+const fallbackHeroBgImages: HeroShot[] = [];
 
 interface HeroImageRotatorProps {
   images: HeroShot[];

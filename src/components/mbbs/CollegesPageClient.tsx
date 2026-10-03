@@ -37,6 +37,16 @@ interface CollegeItem {
   establishedYear?: number | null;
   universityName: string;
   imageUrl?: string | null;
+  /**
+   * The credit, which has to reach the card.
+   *
+   * `slug` was declared here once and never copied in the memo below, so every
+   * college name rendered as plain text and all 1,727 per-college pages were
+   * unreachable from the listing that exists to reach them. A field declared
+   * and not copied is the shape of that bug, so these are copied too.
+   */
+  imageAttribution?: string | null;
+  imageLicense?: string | null;
   displayOrder?: number | null;
 }
 
@@ -54,6 +64,8 @@ interface StateData {
     establishedYear?: number | null;
     universityName?: string;
     imageUrl?: string | null;
+    imageAttribution?: string | null;
+    imageLicense?: string | null;
     displayOrder?: number | null;
   }>;
 }
@@ -166,13 +178,11 @@ function HeroImageRotator({ images }: HeroImageRotatorProps) {
 export default function CollegesPageClient({ states, heroImages }: { states: StateData[]; heroImages?: string[] }) {
   const CTA = useCTA();
   
-  const finalHeroImages = heroImages && heroImages.length > 0 ? heroImages : [
-    "/assets/images/colleges/aiims-delhi.avif",
-    "/assets/images/colleges/medical-campus-1.avif",
-    "/assets/images/colleges/medical-campus-2.avif",
-    "/assets/images/colleges/medical-campus-3.avif",
-    "/assets/images/hero/neet-hero.avif",
-  ];
+  // No CMS rows, no backdrop. The fallback list shipped here was five
+  // AI-generated campuses, three of them signed with a real institution's name
+  // — including AIIMS New Delhi — rotating behind a page that lists 1,727
+  // other colleges.
+  const finalHeroImages = heroImages ?? [];
 
   /* --- State --- */
   const [search, setSearch] = useState("");
@@ -208,6 +218,8 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
           establishedYear: c.establishedYear,
           universityName: c.universityName || "",
           imageUrl: c.imageUrl,
+          imageAttribution: c.imageAttribution,
+          imageLicense: c.imageLicense,
           displayOrder: c.displayOrder,
         });
       });
@@ -709,6 +721,8 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
                           collegeType={college.type === "govt" ? "Government" : "Private"}
                           description={null}
                           imageUrl={college.imageUrl}
+                          imageAttribution={college.imageAttribution}
+                          imageLicense={college.imageLicense}
                           yearEstablished={college.establishedYear}
                           universityBody={getFullUniversityName(college.universityName)}
                           seats={college.intake}

@@ -106,6 +106,8 @@ export default function TopMedicalInstitutes({ initialColleges }: TopMedicalInst
                     name={college.college_name}
                     state={college.state}
                     imageUrl={college.image_url}
+                    attribution={college.image_attribution}
+                    license={college.image_license}
                     sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     className="transition-transform duration-700 group-hover:scale-110"
                   />

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import CollegeVisual from '@/components/ui/CollegeVisual';
 import { listRows, createRow, updateRow, deleteRow, uploadImage } from '@/lib/adminApi';
 import { toast } from 'sonner';
 import { Pencil, Trash2, Loader2, ImagePlus, Plus, Building2, MapPin, Users, Calendar, ShieldCheck, Search, Filter } from 'lucide-react';
@@ -397,15 +398,18 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ resource,
                 }`}
               >
                 <div className="flex gap-4">
-                  <div className="w-14 h-14 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img 
-                      src={college.image_url || '/assets/images/colleges/medical-college.avif'} 
-                      alt={college.college_name} 
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = '/assets/images/colleges/medical-college.avif';
-                      }}
+                  {/*
+                    The placeholder here was an AI-generated building signed
+                    "ALL INDIA INSTITUTE OF MEDICAL SCIENCES, NEW DELHI", shown
+                    against every college that has no picture — so the list said
+                    AIIMS beside hundreds of rows and read as though a photo had
+                    been set. The monogram says plainly that none has.
+                  */}
+                  <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
+                    <CollegeVisual
+                      name={college.college_name}
+                      imageUrl={college.image_url}
+                      sizes="56px"
                     />
                   </div>
                   <div className="flex-1 min-w-0">
