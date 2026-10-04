@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { db } from '@/db/client';
 import { sql } from 'drizzle-orm';
 import { sendWhatsAppNotification } from '@/lib/whatsappService';
+import { clientIp } from "@/lib/clientIp";
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -39,7 +40,7 @@ const trimOrNull = (v: unknown): string | null => {
 
 export async function POST(req: Request) {
   try {
-    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+    const ip = clientIp(req) ?? 'unknown';
     if (rateLimited(ip)) {
       return NextResponse.json(
         { error: 'Too many requests. Please try again later.' },

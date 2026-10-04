@@ -118,11 +118,16 @@ const nextConfig = {
   },
 
   images: {
-    // AVIF first. Next negotiates on the Accept header, so a browser without
-    // AVIF still gets WebP. The ACPM photograph at 1200px was 336 KB as WebP;
-    // the server is in Montreal, 300-480 ms from India, and on a link that long
-    // every byte saved is round trips saved.
-    formats: ['image/avif', 'image/webp'],
+    // WebP only, and that is a decision about the CDN, not about compression.
+    //
+    // Next picks the format from the Accept header and serves both from the
+    // same URL. Cloudflare's edge (free plan) caches one copy per URL and does
+    // not key on Accept, so with AVIF enabled the first Chrome visitor's AVIF
+    // would be cached in Mumbai and handed to an iPhone on iOS 15, which cannot
+    // draw it — a broken image with nothing in any log. Every browser this
+    // audience carries draws WebP. AVIF was about 20% smaller; an image served
+    // from an Indian edge instead of Montreal is worth far more than that.
+    formats: ['image/webp'],
     // How long a browser may keep an optimised image. Next's default is 60
     // seconds, so a visitor moving between two pages that share a college
     // photograph downloaded it twice — across the world each time. A day is

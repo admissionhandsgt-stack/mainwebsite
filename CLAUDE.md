@@ -41,6 +41,8 @@ Env (`.env.local`, git-ignored):
 | `DOCUMENT_KEY` | 32 bytes, base64. Seals the document vault at rest. **Unset, uploads 503 rather than storing a certificate in the clear.** Lose it and stored documents cannot be read |
 | `WHATSAPP_VERIFY_NUMBER` etc. | **Optional.** The WhatsApp settings live in the admin now (`/admin/whatsapp`); setting one here pins it and the screen shows it as fixed |
 | `WHATSAPP_TOKEN` / `WHATSAPP_RECIPIENT_NUMBER` | Optional, for lead alerts |
+| `CLOUDFLARE_API_TOKEN` | Scoped to the `admissionhands.com` zone only (Zone read, DNS, Zone Settings, Cache Rules, Cache Purge, SSL). Used by `scripts/cf_purge.mjs`. Expires 2026-11-30 |
+| `PSI_KEY` | Optional. Google PageSpeed Insights key for `scripts/perf_field.mjs` |
 
 The Supabase keys still sitting in `.env.local` are dead — nothing in `src/` reads them.
 
@@ -1248,8 +1250,8 @@ every deploy threw away what had been encoded (32 MB after a day). `deploy.sh` n
 **What this does not fix: the first visit from India.** The box is in **Montréal**, 280–480 ms round
 trip from India; `robots.txt` takes ~0.87 s to its first byte, all of it TCP + TLS + request crossing the
 world, none of it the server. Caching makes every *repeat* view of an image free; only an edge near India
-(a CDN in front of the site) makes the *first* view faster. There is no Cloudflare in front today — DNS
-is at Hostinger and no R2 bucket exists.
+(a CDN in front of the site) makes the *first* view faster. That is Cloudflare now — see "Cloudflare in
+front" below.
 
 **Measured 2026-10-04, from India, against Shiksha, Collegedunia, Careers360 and CollegeDekho.**
 On Lighthouse's standard simulated phone we were 2nd on the homepage (85) and 1st on the predictor (85),
@@ -1272,6 +1274,71 @@ two rows in the fallback font and three in Inter, and the hero grew 54 px a roun
 
 **The uploads directory is in no backup.** Images in git are safe; an image uploaded through the admin
 exists only on the VPS disk until somebody commits it (the nightly job dumps Postgres only).
+
+### Cloudflare in front (2026-10-04)
+
+**DNS.** The domain is registered at **BigRock** (not Hostinger — Hostinger only hosted the DNS, which is
+why hPanel had no nameserver button). BigRock now points at `apollo.ns.cloudflare.com` /
+`ariella.ns.cloudflare.com`. **Rollback:** put `ns1.dns-parking.com` / `ns2.dns-parking.com` back at
+BigRock — the Hostinger zone was left intact for exactly that. Twelve records, copied and checked row by
+row against hPanel: `@`, `www`, `admin` A; MX ×2, SPF, DMARC, DKIM `hostingermail-a/b/c._domainkey`,
+`autodiscover`, `autoconfig`. `uat` was deliberately dropped (an old copy on Hostinger's CDN with rotating
+IPs). DNSSEC is off; turning it on later means adding Cloudflare's DS record at BigRock.
+
+**Proxied (orange): `www` and the apex only.** Every email record must stay **DNS-only** — a proxied DKIM
+CNAME stops answering TXT lookups and mail starts landing in spam. `admin` stays DNS-only too: its Caddy
+block appends `X-Forwarded-For` and has no Cloudflare handling, so proxying it would make every admin look
+like a Cloudflare edge to the login rate limit. Add the `@via_cloudflare` block there first.
+
+**Who the visitor is — the part that would break silently.** Behind Cloudflare the TCP peer is a
+Cloudflare edge. Caddy's `www` block matches Cloudflare's published ranges (`@via_cloudflare remote_ip
+…`, from `api.cloudflare.com/client/v4/ips`, etag `38f79d05…`) and sets `X-Forwarded-For` to
+`CF-Connecting-IP`; anything else gets `{remote_host}`; `CF-Connecting-IP`, `X-Real-IP` and
+`True-Client-IP` are stripped toward the app in both. The app reads **only the right-most
+`X-Forwarded-For` hop**, through `src/lib/clientIp.ts`. Get this wrong and every student shares one
+rate-limit bucket (one OTP abuser locks out the country) and Googlebot fails its IP check. Verified by
+tracing a request with forged headers: Caddy received `X-Forwarded-For: 7.7.7.7, <real ip>` and the app
+got the real IP. Cloudflare itself answers a client-sent `CF-Connecting-IP` with **403, error 1000**.
+If Cloudflare adds ranges, visitors through them fall back to the second block and look like Cloudflare
+until the list is refreshed.
+
+**`clientIp.ts` closed a hole that predates Cloudflare.** The rate limiter and logger believed
+`CF-Connecting-IP` / `X-Real-IP` from anyone, and the admin login and lead form read the *left-most*
+forwarded hop — on the admin host, whatever the client sent. A forged header bought a fresh bucket per
+request. Proven fixed: ten wrong admin logins, each forging a different IP — eight 401s, then 429.
+
+**Settings:** SSL **Full (strict)** (origin certs are Caddy's Let's Encrypt, valid to 2026-12-22);
+**Always Use HTTPS off** — Caddy redirects, and leaving it off keeps Caddy's ACME HTTP-01 renewals
+working through the proxy; email obfuscation, automatic HTTPS rewrites and server-side excludes **off**
+(all three rewrite our HTML; obfuscation injects a script the CSP blocks); browser cache TTL **respect
+origin**; security level **essentially off** (Indian mobile carriers put thousands of students behind one
+CGNAT address — "medium" shows them challenges); browser integrity check off; minimum TLS 1.2.
+
+**One cache rule:** `/_next/static/*`, `/_next/image*`, `/assets/*` → cache at the edge, lifetime from
+the origin's own `Cache-Control`. **HTML and `/api` are never cached** — the seat gate decides per
+visitor, and a cached page would hand one person's rows to the next. `next/image` serves **WebP only**:
+Next varies the format by `Accept` on one URL and Cloudflare's free plan does not key on `Accept`, so an
+AVIF cached for Chrome would reach an iPhone that cannot draw it.
+
+**Purging:** almost never needed — built files are content-hashed and uploads get fresh names. After a
+script overwrites a file in place, `node scripts/cf_purge.mjs /assets/images/uploads/<file>` (from
+PowerShell, or `MSYS_NO_PATHCONV=1` in Git Bash, which otherwise rewrites the path). It also clears all of
+`/_next/image`, because Cloudflare will not purge a prefix containing a query string; the edge refills
+from the server's own image cache.
+
+**Measured from India (this ISP routes to Cloudflare's Marseille colo, not Mumbai — free-plan routing
+varies by ISP):** homepage HTML first byte 0.57–0.74 s through Cloudflare against 0.89–1.21 s direct, the
+whole page 0.60–0.80 s against 1.31–2.76 s; cached CSS and images ~0.44–0.56 s from the edge. But
+**Lighthouse's real-network LCP through Cloudflare (2.2–4.0 s) overlaps the direct runs (2.2–4.8 s)** —
+within run-to-run noise. The HTML is still fetched from Montréal on every visit (it cannot be cached
+while the gate decides per visitor), and from this ISP it now goes India → Marseille → Montréal. Edge
+caching made the *assets* fast; it has not made the *page* fast. What would: caching the anonymous HTML
+at the edge with a bypass for sessions and crawlers, Argo Smart Routing, or a server in India.
+
+**Testing through Cloudflare before local DNS has caught up:** a `.com` delegation can sit in an ISP's
+resolver for up to 48 h, and while it does, scripts on this machine silently test the *direct* route —
+the first smoke and gate runs after the switch did exactly that. Check `cf-ray` in a response before
+believing a result is from the new route.
 
 ### The perimeter, measured from outside (2026-09-26)
 

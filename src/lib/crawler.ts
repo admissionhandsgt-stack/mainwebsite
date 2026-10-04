@@ -27,6 +27,7 @@
 import { promises as dns } from "node:dns";
 import { logError } from "@/lib/logger";
 import { parseCidr, inRanges, type Range } from "@/lib/ipRange";
+import { clientIp } from "@/lib/clientIp";
 
 /**
  * Where each engine publishes the addresses it crawls from.
@@ -129,18 +130,10 @@ async function crawlerRanges(): Promise<Range[]> {
  * reach this app because it binds `127.0.0.1`. If that binding ever changes,
  * this check stops meaning anything.
  */
-function clientIp(request: Request): string | null {
-  const forwarded = request.headers.get("x-forwarded-for");
-  if (forwarded) {
-    const hops = forwarded
-      .split(",")
-      .map((h) => h.trim())
-      .filter(Boolean);
-    const last = hops[hops.length - 1];
-    if (last) return last;
-  }
-  return request.headers.get("x-real-ip")?.trim() || null;
-}
+// The rule itself lives in src/lib/clientIp.ts now, shared with the rate
+// limiter, the admin login, the lead form and the logger. The X-Real-IP
+// fallback this file used to have is gone: with no forwarded header the request
+// came from the box itself, and a client-written header is no substitute.
 
 async function byPublishedRange(ip: string): Promise<boolean> {
   return inRanges(ip, await crawlerRanges());

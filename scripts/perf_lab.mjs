@@ -56,7 +56,10 @@ function runOnce(url, file) {
     "-y", "lighthouse@12", url,
     "--quiet", "--output=json", `--output-path=${file}`,
     "--only-categories=performance",
-    "--chrome-flags=--headless=new --no-sandbox --disable-gpu",
+    // CHROME_EXTRA adds flags — e.g. --host-resolver-rules="MAP host ip" to
+    // measure a route before the visitor's DNS has caught up with it (used the
+    // day Cloudflare went in front: the ISP resolver held the old address).
+    `--chrome-flags=--headless=new --no-sandbox --disable-gpu${process.env.CHROME_EXTRA ? " " + process.env.CHROME_EXTRA : ""}`,
     "--max-wait-for-load=60000",
   ];
   if (MODE === "observed") args.push("--throttling-method=provided");

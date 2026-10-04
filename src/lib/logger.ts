@@ -21,6 +21,7 @@
 
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
+import { clientIp } from "@/lib/clientIp";
 
 export type LogLevel = "error" | "warn";
 
@@ -65,16 +66,10 @@ async function hashIp(ip: string | null): Promise<string | null> {
   ).join("");
 }
 
-function clientIp(request?: Request): string | null {
-  if (!request) return null;
-  const h = request.headers;
-  return (
-    h.get("cf-connecting-ip") ||
-    h.get("x-real-ip") ||
-    h.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    null
-  );
-}
+// The address on a log line follows the same rule as every other one in the
+// app — a log that names whoever the caller claimed to be is worse than one
+// that names nobody.
+const requestIp = (request?: Request): string | null => (request ? clientIp(request) : null);
 
 async function write(level: LogLevel, error: unknown, context: LogContext) {
   const err = error instanceof Error ? error : null;
@@ -88,7 +83,7 @@ async function write(level: LogLevel, error: unknown, context: LogContext) {
   try {
     const [fp, ip] = await Promise.all([
       fingerprint(message, context.route),
-      hashIp(clientIp(context.request)),
+      hashIp(requestIp(context.request)),
     ]);
 
     await db.execute(sql`

@@ -19,6 +19,7 @@
  * changes the process model has to revisit this file.
  */
 
+import { clientIp } from "@/lib/clientIp";
 interface Bucket {
   count: number;
   resetAt: number;
@@ -77,13 +78,10 @@ export function rateLimit(key: string, limit: number, windowMs: number): RateLim
  * spoofed by the client.
  */
 export function clientKey(request: Request): string {
-  const headers = request.headers;
-  return (
-    headers.get("cf-connecting-ip") ||
-    headers.get("x-real-ip") ||
-    headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    "unknown"
-  );
+  // Not CF-Connecting-IP, not X-Real-IP, not the left-most forwarded hop: each
+  // of those is written by the client, and believing them handed every caller
+  // a fresh bucket per request. See src/lib/clientIp.ts.
+  return clientIp(request) ?? "unknown";
 }
 
 /** The headers a well-behaved client needs to back off on its own. */

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { logError } from "@/lib/logger";
 import { authenticate, createSession, destroySession, getSessionUser } from "@/lib/auth";
+import { clientIp } from "@/lib/clientIp";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -33,7 +34,10 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  // The left-most forwarded hop is the client's to choose, and on the admin
+  // host Caddy appends rather than replaces — so reading it from the left made
+  // the brute-force limit a header away from useless. See src/lib/clientIp.ts.
+  const ip = clientIp(request) ?? "unknown";
 
   if (rateLimited(ip)) {
     return NextResponse.json(
