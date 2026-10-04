@@ -1341,11 +1341,16 @@ the first smoke and gate runs after the switch did exactly that. Check `cf-ray` 
 believing a result is from the new route. `--import ./scripts/lib/via_cloudflare.mjs` resolves every
 `*.admissionhands.com` host through 1.1.1.1 for the run, so a check always takes the edge path.
 
-### Oracle Cloud Mumbai — staged, cutover rehearsed (2026-10-05)
+### Oracle Cloud Mumbai — LIVE since 2026-10-05 (cut over 00:33 IST)
 
-The site is built and running on `137.23.39.214` (ARM64, Docker Compose project `admissionhands`) at
-`mumbai.admissionhands.com` (noindex), on a copy of the data. www still points at the old VPS until
-`scripts/cutover_oracle.sh --go` is run — that needs an explicit yes from the user.
+**Production runs here now:** `137.23.39.214` (ARM64, Docker Compose project `admissionhands`), behind
+Cloudflare for the apex, www and admin (all proxied). The old VPS's `admissionhands` service is stopped
+and disabled; its port 8120 is the SSH forward to Oracle (keep 7 days, then `systemctl disable --now
+ah-forward` there). Cutover took 72 s of holding page; all 41 tables matched; smoke 59/59, gate 31/31,
+documents 19/19, lead alert delivered through Oracle's WAHA. Oracle's WAHA is a second linked device of
+**917023081792** (the old box's WAHA is the other). The pre-cutover staging database is kept on Oracle as
+`admissionhands_before_20261004_190307`. **The "Deployment (2026-09-23)" section below describes the old
+box** — `deploy.sh` now refuses; `.env.local`'s `DATABASE_URL` points at the Oracle tunnel (port 55443).
 Files: `deploy/oracle/` (compose, Caddy site, backup), `deploy/oldbox/` (forward unit, holding page).
 
 | | |
