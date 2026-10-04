@@ -76,6 +76,16 @@ say "Assembling release $STAMP"
 ssh_ "set -e; R=$APP/releases/$STAMP; mkdir -p \$R
   cp -a $APP/src/.next/standalone/. \$R/
   mkdir -p \$R/.next && cp -a $APP/src/.next/static \$R/.next/static
+  # The previous build's chunks too. Cloudflare holds logged-out HTML for five
+  # minutes and a visitor may have a tab open for longer; either way a page from
+  # the old build asks for the old build's hashed JS, and without these it gets
+  # a 404 and a page that never hydrates. Names are content hashes, so
+  # no-clobber is exact. Carried files keep their own build time, so anything
+  # over a week old is dropped and the directory does not grow forever.
+  if [ -d $APP/current/.next/static ]; then
+    cp -a --update=none $APP/current/.next/static/. \$R/.next/static/
+    find \$R/.next/static -type f -mtime +7 -delete
+  fi
   cp -a $APP/src/public \$R/public
   mkdir -p \$R/.next/cache/images \$R/public/assets/images/uploads
   # Repo images into the shared upload directory. Clobbering, deliberately: a
@@ -105,6 +115,14 @@ ssh_ "set -e; ln -sfn $APP/releases/$STAMP $APP/current
   echo \"  app health: \$s\"
   [ \"\$s\" = healthy ] || { docker logs --tail 40 admissionhands-app-1; exit 1; }
   cd $APP/releases && ls -1t | tail -n +6 | xargs -r rm -rf"
+
+# ------------------------------------------------------------------ edge
+# Logged-out HTML is cached at Cloudflare for five minutes (cf_html_cache.mjs).
+# Purge it, or the release is invisible for that long and the admin's "I just
+# changed that" looks like a bug. A failed purge does not undo a good deploy —
+# the cache simply expires — so it warns rather than fails.
+say "Purging Cloudflare"
+node scripts/cf_purge.mjs --everything   || echo "  purge failed — logged-out visitors see the previous HTML for up to 5 minutes" >&2
 
 # ------------------------------------------------------------------ verify
 say "Checking"

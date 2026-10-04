@@ -1338,7 +1338,57 @@ at the edge with a bypass for sessions and crawlers, Argo Smart Routing, or a se
 **Testing through Cloudflare before local DNS has caught up:** a `.com` delegation can sit in an ISP's
 resolver for up to 48 h, and while it does, scripts on this machine silently test the *direct* route —
 the first smoke and gate runs after the switch did exactly that. Check `cf-ray` in a response before
-believing a result is from the new route.
+believing a result is from the new route. `--import ./scripts/lib/via_cloudflare.mjs` resolves every
+`*.admissionhands.com` host through 1.1.1.1 for the run, so a check always takes the edge path.
+
+### Oracle Cloud Mumbai — staged, cutover rehearsed (2026-10-05)
+
+The site is built and running on `137.23.39.214` (ARM64, Docker Compose project `admissionhands`) at
+`mumbai.admissionhands.com` (noindex), on a copy of the data. www still points at the old VPS until
+`scripts/cutover_oracle.sh --go` is run — that needs an explicit yes from the user.
+Files: `deploy/oracle/` (compose, Caddy site, backup), `deploy/oldbox/` (forward unit, holding page).
+
+| | |
+|---|---|
+| Deploy | `./scripts/deploy_oracle.sh` — builds **on the server** (ARM64), purges Cloudflare after the switch |
+| Move / undo | `./scripts/cutover_oracle.sh [--go]`, `./scripts/rollback_oracle.sh [--go]`. Without `--go` both only preflight and **rehearse a real restore into a scratch database** |
+| Edge HTML cache | `node scripts/cf_html_cache.mjs <hosts…>` / `--off` |
+| Origin switch | `node scripts/cf_dns_origin.mjs --show \| <ip>` — apex, www, admin; nothing else in the zone |
+| DB from a dev machine | `ssh -i …/admissionhands_oracle -N -L 55443:127.0.0.1:5442 admissionhands@137.23.39.214` |
+
+**The move does not wait on DNS.** At cutover the old box's app port 8120 is taken over by an SSH
+forward to Oracle (`ah-forward.service`, `Conflicts=admissionhands.service`). Caddy there proxies to
+8120 and the old WAHA posts its webhook to 8120, so every request still reaching the old IP — a stale
+resolver, Cloudflare, an inbound WhatsApp — lands on Oracle's app and database. Nothing on that shared
+box's Caddyfile or WAHA container is edited. The forward key is authorised on Oracle as
+`restrict,port-forwarding,permitopen="127.0.0.1:8150"`: no shell, no other port. Leave it running 7 days.
+
+**After the cutover `scripts/deploy.sh` refuses** (it would restart the old app, which stops the forward
+and serves a stale database to anyone still reaching that box). Deploy with `deploy_oracle.sh`.
+
+**Copies are proven before they are used.** Both directions restore into a new database beside the live
+one, compare every table's row count (`scripts/sql/table_counts.sql`) with writes stopped, and only then
+swap by `ALTER DATABASE … RENAME`; the replaced copy is kept. Any failure before traffic moves puts the
+previous server back automatically. Rehearsed: 41/41 tables identical each way; about 40 s end to end.
+
+**Edge HTML cache — what keeps it from leaking seat rows.** Logged-out HTML is cached for 5 minutes on
+the hosts named. Any session cookie, `/api`, `/admin`, `/account`, `/login`, RSC requests and **every
+crawler user-agent the origin is willing to verify** bypass it, because a verified crawler is served the
+rows. That list is read out of `CRAWLER_UA` in `src/lib/crawler.ts` — change the regex, re-run the
+script. Verified through the cached host: smoke 59/59, gate 31/31, documents 19/19, and every cache HIT
+after a signed-in run was the locked page. Each release carries the previous build's hashed
+`_next/static` files for a week, so a page cached a moment before a deploy can still load its scripts.
+
+**Backups leave the machine encrypted.** `deploy/oracle/backup.sh` (cron 21:15 UTC) keeps plain copies
+locally for 14 days and uploads `*.enc` — AES-256, PBKDF2 — to the private bucket for 30. The passphrase
+is `/opt/admissionhands/.backup-pass` on the server and `BACKUP_PASSPHRASE` in `.env.local`; **without
+it the bucket is unreadable**, so it must also be kept somewhere off both machines. No passphrase file →
+the upload is refused, never sent plain. Proved by decrypting each bucket object with the dev-machine
+copy alone: byte-identical, `pg_restore --list` reads 41 tables.
+
+**WhatsApp on Oracle needs pairing** (session `default`, STOPPED until then) as a linked device of the
+same number. The cutover refuses while it is unpaired unless `--allow-unpaired`, because Oracle's
+gateway becomes the only sender of OTPs and lead alerts.
 
 ### The perimeter, measured from outside (2026-09-26)
 

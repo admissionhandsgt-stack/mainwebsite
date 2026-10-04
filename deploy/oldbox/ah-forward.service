@@ -1,0 +1,38 @@
+# /etc/systemd/system/ah-forward.service on the old VPS (38.49.209.165).
+#
+# After the move to Oracle Mumbai this takes the old app's place on
+# 127.0.0.1:8120 and carries whatever still arrives there to the Oracle app:
+#
+#   - visitors whose resolver still holds the pre-Cloudflare DNS answer and
+#     reach this box directly — Caddy here proxies to 8120 exactly as before;
+#   - the old WhatsApp gateway, whose webhook is http://127.0.0.1:8120/api/whatsapp/inbound.
+#
+# So nothing on this box is edited at cutover — not the Caddyfile, which five
+# other sites share, and not the WAHA container, whose pairing would not survive
+# being recreated. Everything that reaches this box reaches the same database.
+#
+# Caddy here already sets X-Forwarded-For to the real visitor, and the app reads
+# the right-most hop, so rate limits and the crawler check still see the visitor.
+#
+# Conflicts= makes the switch one command each way: starting this stops the old
+# app, starting the old app stops this.
+#
+# The key is authorised on Oracle for one thing only: a forward to
+# 127.0.0.1:8150 (restrict,port-forwarding,permitopen, no shell, no pty).
+[Unit]
+Description=Forward admissionhands traffic from this box to Oracle Mumbai
+After=network-online.target
+Wants=network-online.target
+Conflicts=admissionhands.service
+
+[Service]
+ExecStart=/usr/bin/ssh -i /root/.ssh/ah_forward \
+  -o BatchMode=yes -o ExitOnForwardFailure=yes \
+  -o ServerAliveInterval=15 -o ServerAliveCountMax=3 \
+  -o StrictHostKeyChecking=yes -o UserKnownHostsFile=/root/.ssh/ah_forward_known_hosts \
+  -N -L 127.0.0.1:8120:127.0.0.1:8150 admissionhands@137.23.39.214
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

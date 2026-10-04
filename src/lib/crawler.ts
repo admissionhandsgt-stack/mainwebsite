@@ -57,6 +57,12 @@ const CRAWLER_DOMAINS = [".googlebot.com", ".google.com", ".search.msn.com"];
  * and a request that matches but fails verification is treated as an ordinary
  * visitor. Kept narrow so a spoofed UA cannot make us do DNS work on every
  * request to the site.
+ *
+ * Cloudflare's HTML cache bypasses exactly these user-agents, because a
+ * verified crawler is served the seat rows and a cached copy of that page would
+ * reach everybody. scripts/cf_html_cache.mjs reads this regex to build the
+ * rule — keep it a plain `(a|b|c)` list, and re-run that script after changing
+ * it, or the edge will start caching a crawler's view.
  */
 const CRAWLER_UA = /(googlebot|google-inspectiontool|storebot-google|bingbot|adidxbot)/i;
 

@@ -28,6 +28,15 @@ SERVICE="admissionhands"
 say() { printf '\n\033[1m%s\033[0m\n' "$*"; }
 ssh_() { ssh -i "$KEY" -o BatchMode=yes "$HOST" "$@"; }
 
+# After the move to Oracle (scripts/cutover_oracle.sh) this box only forwards
+# to Oracle, and `systemctl restart admissionhands` below would stop that
+# forward (Conflicts=) and serve a stale database to anyone still reaching it.
+# Deploy with scripts/deploy_oracle.sh; to come back here, rollback_oracle.sh.
+if [[ "$(ssh_ 'systemctl is-active ah-forward' 2>/dev/null || true)" == active ]]; then
+  echo "This box forwards to Oracle now — deploy with ./scripts/deploy_oracle.sh." >&2
+  exit 1
+fi
+
 # ------------------------------------------------------------------ build
 if [[ "${1:-}" != "--no-build" ]]; then
   say "Building"

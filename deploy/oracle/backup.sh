@@ -12,6 +12,7 @@
 #   db/YYYY-MM-DD.dump        pg_dump -Fc, run inside the Postgres container
 #   uploads/YYYY-MM-DD.tar.gz /opt/admissionhands/uploads, documents included
 #   env/YYYY-MM-DD.env        the app's .env (UNLOCK_SECRET, OTP_SECRET, DOCUMENT_KEY)
+#   (each with .enc appended in the bucket — see below)
 #
 # 14 days locally in /opt/admissionhands/backups, 30 days in the private Oracle
 # Object Storage bucket `admissionhands-backups`. The script prunes both itself.
@@ -19,6 +20,25 @@
 # Authentication is the instance principal — the server is allowed to write to
 # the bucket and holds no keys. The bucket is private (NoPublicAccess); it is
 # the only place documents or the env may ever leave this machine to.
+#
+# ## Everything that leaves the machine is encrypted first
+#
+# The bucket gets `<name>.enc`: AES-256 under a passphrase in
+# /opt/admissionhands/.backup-pass (0600), key stretched with PBKDF2. A private
+# bucket is access control, and access control does not travel with a copy —
+# the env holds DOCUMENT_KEY, and the dump holds every candidate's phone number.
+# Whoever reads the bucket now reads ciphertext.
+#
+# The passphrase is also in .env.local on the dev machine (BACKUP_PASSPHRASE)
+# and must be kept somewhere off this server too: if the server is lost, the
+# bucket is only useful to someone who has it. With no passphrase file the
+# upload is refused, never sent in the clear.
+#
+# Restore:
+#   oci os object get --auth instance_principal -ns bmwd2yuhddn0 \
+#     -bn admissionhands-backups --name db/2026-10-05.dump.enc --file x.enc
+#   openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 -md sha256 \
+#     -pass file:/opt/admissionhands/.backup-pass -in x.enc -out x.dump
 #
 # The Always Free tier gives 20 GB of Object Storage, shared with AutoLoom
 # Analytics. One night is ~35 MB today, so 30 nights is ~1 GB; the script
@@ -34,6 +54,7 @@ DB_CONTAINER=admissionhands-db-1
 LOCAL_DAYS=14
 BUCKET_DAYS=30
 WARN_BYTES=$((8 * 1024 * 1024 * 1024))
+PASS_FILE=$APP/.backup-pass
 
 D=$(date -u +%F)
 log() { printf '%s  %s\n' "$(date -u +%FT%TZ)" "$*"; }
@@ -66,11 +87,34 @@ cp "$APP/.env" "$DIR/env/$D.env"
 chmod 600 "$DIR/env/$D.env"
 log "env      copied"
 
-# ---- 4. to the bucket ----------------------------------------------------------
+# ---- 4. to the bucket, encrypted ---------------------------------------------
+# Refuse rather than upload in the clear. The local copies above are already
+# made, so a missing passphrase costs the off-site copy, not the backup.
+if [[ ! -s "$PASS_FILE" ]]; then
+  log "ERROR: $PASS_FILE is missing — nothing uploaded. The local backup is in $DIR."
+  exit 1
+fi
+seal() {
+  openssl enc -aes-256-cbc -pbkdf2 -iter 200000 -md sha256 -salt \
+    -pass "file:$PASS_FILE" -in "$1" -out "$2"
+}
+unseal() {
+  openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 -md sha256 \
+    -pass "file:$PASS_FILE" -in "$1"
+}
 for f in "db/$D.dump" "uploads/$D.tar.gz" "env/$D.env"; do
+  enc="$DIR/.$(basename "$f").enc"
+  seal "$DIR/$f" "$enc"
+  # Prove it opens before it becomes the only off-site copy.
+  if ! cmp -s <(unseal "$enc") "$DIR/$f"; then
+    log "ERROR: $f did not decrypt back to itself — not uploaded"
+    rm -f "$enc"
+    exit 1
+  fi
   oci_ os object put --namespace "$NS" --bucket-name "$BUCKET" \
-    --name "$f" --file "$DIR/$f" --force >/dev/null
-  log "uploaded $f"
+    --name "$f.enc" --file "$enc" --force >/dev/null
+  rm -f "$enc"
+  log "uploaded $f.enc"
 done
 
 # ---- 5. prune locally (14 days) ----------------------------------------------
