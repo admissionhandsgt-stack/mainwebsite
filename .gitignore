@@ -1,5 +1,7 @@
 # Logs
-logs
+# Root-level log output only. A bare `logs` also matched src/app/admin/logs/,
+# and the admin Logs page went uncommitted for weeks without anyone noticing.
+/logs/
 *.log
 npm-debug.log*
 yarn-debug.log*

@@ -218,6 +218,21 @@ async function checkRealNumbers() {
   else bad("PG college count is the real one", "2,168 not found on the PG page");
 }
 
+async function checkSectionsRender() {
+  section("Data-driven sections actually render");
+  // A section whose query fails does not fail the page. safe() turns the error
+  // into an empty list, the component returns null, and the response is still
+  // a 200. That is how the homepage's Top Medical Institutes vanished for a day
+  // in October 2026 — 1,084 "Failed query" log lines, every status code green.
+  // So look for the section itself, and for a college inside it.
+  const html = await (await get("/")).text();
+  if (/id="top-medical-institutes"/.test(html)) ok("homepage: Top Medical Institutes renders");
+  else bad("homepage: Top Medical Institutes renders", "section missing — check the app log for 'Failed query'");
+  const colleges = (html.match(/Medical College|Institute of Medical Sciences|AIIMS/g) || []).length;
+  if (colleges >= 3) ok("homepage: lists colleges", `${colleges} college names in the HTML`);
+  else bad("homepage: lists colleges", `only ${colleges} college names found`);
+}
+
 /* ------------------------------------------------------------------ */
 
 async function main() {
@@ -239,6 +254,7 @@ async function main() {
     checkClaims,
     checkSitemap,
     checkRealNumbers,
+    checkSectionsRender,
   ]) {
     try {
       await check();

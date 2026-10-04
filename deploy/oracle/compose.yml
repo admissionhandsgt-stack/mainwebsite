@@ -1,0 +1,66 @@
+# Admission Hands on the Oracle Cloud Mumbai server (137.23.39.214, ARM64).
+#
+# Always run as:   docker compose -p admissionhands -f /opt/admissionhands/compose.yml <cmd>
+# The box also runs AutoLoom Analytics and KOSMAE. Never prune, never touch a
+# container outside this project.
+#
+# Path of a request: visitor -> Cloudflare -> Caddy (/etc/caddy/sites/admissionhands.caddy)
+#                    -> app on 127.0.0.1:8150. Every port here is bound to 127.0.0.1.
+name: admissionhands
+
+services:
+  db:
+    image: postgres:18
+    restart: unless-stopped
+    env_file: ./db.env
+    # Postgres 18 images keep data under /var/lib/postgresql/18/docker and
+    # want the parent mounted, not /var/lib/postgresql/data as before 18.
+    volumes:
+      - /opt/admissionhands/pgdata:/var/lib/postgresql
+    # Localhost only: for an SSH tunnel from a dev machine and for backups.
+    # The app reaches it as db:5432 on the compose network.
+    ports:
+      - "127.0.0.1:5442:5432"
+    mem_limit: 1g
+    shm_size: 256m
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  app:
+    # The release is built on this server (ARM64) by scripts/deploy_oracle.sh
+    # into /opt/admissionhands/releases/<stamp>; `current` points at it. The
+    # bind mount follows the symlink when the container is created, so a deploy
+    # recreates this container.
+    image: node:22-bookworm-slim
+    restart: unless-stopped
+    # The admissionhands user on the host, so files the app writes — uploaded
+    # images — are owned by the same uid Caddy and the backup job expect.
+    user: "1003:1003"
+    working_dir: /app
+    command: ["node", "server.js"]
+    env_file: ./.env
+    environment:
+      NODE_ENV: production
+    volumes:
+      - /opt/admissionhands/current:/app
+      # Uploaded images live outside the release so they survive deploys, and
+      # Caddy serves them straight from this directory.
+      - /opt/admissionhands/uploads/images:/app/public/assets/images/uploads
+      # Next's optimised-image cache, kept across deploys. Only images/ —
+      # the data cache beside it must not outlive the code that wrote it.
+      - /opt/admissionhands/next-cache:/app/.next/cache/images
+    ports:
+      - "127.0.0.1:8150:8150"
+    depends_on:
+      db:
+        condition: service_healthy
+    mem_limit: 1536m
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8150/robots.txt').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s

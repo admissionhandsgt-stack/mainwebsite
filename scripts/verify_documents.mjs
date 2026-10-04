@@ -114,16 +114,30 @@ async function main() {
   else bad("a bare zip is refused", `got ${zip.status}`);
 
   /* ------------------------------------------------ the bytes are in the row */
+  // The row holds the file *sealed*: AHD1 + 12-byte nonce + 16-byte GCM tag +
+  // ciphertext (src/lib/documentCrypto.ts). This check used to compare the
+  // stored length with the file's own, which stopped being true the day the
+  // vault was encrypted — so it failed on every run and proved nothing. It now
+  // checks the thing that matters: sealed, the right size, no plaintext.
+  const SEAL = 4 + 12 + 16;
   const stored = (
     await sql`
-      SELECT length(content) AS len, size_bytes, mime_type
+      SELECT length(content) AS len, size_bytes, mime_type,
+             encode(substring(content from 1 for 4), 'escape') AS magic,
+             position(${PNG.subarray(1, 8)}::bytea in content) AS plain_at
         FROM student_documents WHERE user_id = ${owner.id} AND doc_type = 'photo-id'
     `
   )[0];
-  if (stored && Number(stored.len) === PNG.length && stored.size_bytes === PNG.length) {
-    ok("the file itself is stored in Postgres", `${stored.len} bytes in the row`);
+  if (
+    stored &&
+    stored.magic === "AHD1" &&
+    Number(stored.len) === PNG.length + SEAL &&
+    stored.size_bytes === PNG.length &&
+    Number(stored.plain_at) === 0
+  ) {
+    ok("the file is stored in Postgres, sealed", `${stored.len} bytes: AHD1 + ${SEAL - 4} of nonce/tag + ciphertext, no plaintext`);
   } else {
-    bad("the file itself is stored in Postgres", JSON.stringify(stored));
+    bad("the file is stored in Postgres, sealed", JSON.stringify(stored));
   }
 
   /* ------------------------------------------------------- who may read it */
@@ -187,7 +201,7 @@ async function main() {
   } else {
     bad("re-uploading replaces in place", JSON.stringify({ before, after }));
   }
-  if (after && Number(after.len) === PDF.length && after.mime_type === "application/pdf") {
+  if (after && Number(after.len) === PDF.length + SEAL && after.mime_type === "application/pdf") {
     ok("the old bytes are gone", `${after.len} bytes, ${after.mime_type}`);
   } else {
     bad("the old bytes are gone", JSON.stringify(after));

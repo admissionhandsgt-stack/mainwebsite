@@ -1,0 +1,125 @@
+# Admission Hands on the Oracle Cloud Mumbai server: /etc/caddy/sites/admissionhands.caddy (the only Admission
+# Hands file in /etc/caddy; the main Caddyfile imports /etc/caddy/sites/*.caddy and belongs to AutoLoom
+# Analytics - never edit it). Apply:
+#   sudo caddy validate --config /etc/caddy/Caddyfile && sudo systemctl reload caddy
+# Path: visitor -> Cloudflare (proxied, SSL "Full (strict)") -> Caddy -> app on 127.0.0.1:8150.
+# Every Admission Hands hostname needs its own block here: the main Caddyfile ends with an on-demand https://
+# catch-all for the analytics app, which would otherwise answer.
+# Log file: /var/log/caddy/admissionhands.log (already exists, owned by caddy).
+
+
+# ---------------------------------------------------------------------------
+# One definition, imported by every hostname that serves the app, so www,
+# admin and the mumbai test host cannot drift apart. Copied from the
+# www.admissionhands.com block on the old VPS (38.49.209.165) with only the
+# paths, the upstream (127.0.0.1:8150) and the certificate changed.
+# ---------------------------------------------------------------------------
+(admissionhands_site) {
+	encode gzip zstd
+
+	# Cloudflare Origin CA certificate, valid to 2041, for admissionhands.com
+	# and *.admissionhands.com. Cloudflare's SSL mode is Full (strict), so this
+	# is what it verifies; nothing has to be fetched from Let's Encrypt at the
+	# moment DNS moves.
+	tls /opt/admissionhands/tls/origin.pem /opt/admissionhands/tls/origin.key
+
+	# Uploaded images are served from disk by Caddy, not by Next. Next lists
+	# public/ once at boot, so a file uploaded after that was a 404 until the
+	# next deploy; the app has a route for that gap (next/image fetches through
+	# Next itself) and this block serves everything a browser asks for directly.
+	# Only the formats the upload route accepts; no segment may start with a
+	# dot; no SVG. Anything else under this path falls through to the app.
+	#
+	# Cache lifetime by name: /api/admin/upload names files
+	# <folder>-<13-digit ms>-<8 hex>.<ext> and never reuses one, so those are
+	# immutable for a year; anything else here is written by a script under a
+	# fixed name and gets a day. The same rule is in the app route.
+	#
+	# /opt/admissionhands/uploads/documents is never served: it is not under
+	# this root, and documents live in the database (bytea) anyway.
+	@upload_immutable path_regexp ^/assets/images/uploads/(?:[^/.][^/]*/)*[^/.][^/]*-\d{13}-[0-9a-f]{8}\.(?i:avif|webp|png|jpe?g|gif)$
+	@upload path_regexp ^/assets/images/uploads/(?:[^/.][^/]*/)*[^/.][^/]*\.(?i:avif|webp|png|jpe?g|gif)$
+
+	handle @upload_immutable {
+		header Cache-Control "public, max-age=31536000, immutable"
+		header X-Content-Type-Options nosniff
+		uri strip_prefix /assets/images/uploads
+		root * /opt/admissionhands/uploads/images
+		file_server
+	}
+	handle @upload {
+		header Cache-Control "public, max-age=86400, stale-while-revalidate=2592000"
+		header X-Content-Type-Options nosniff
+		uri strip_prefix /assets/images/uploads
+		root * /opt/admissionhands/uploads/images
+		file_server
+	}
+
+	# The visitor's address. The app decides who someone is from one value
+	# only - the right-most X-Forwarded-For hop (src/lib/clientIp.ts) - and
+	# verifies Googlebot and rate-limits OTPs, unlocks, leads and admin logins
+	# by it. From Cloudflare's published ranges it is CF-Connecting-IP; from
+	# anywhere else it is the TCP peer and the header is ignored. Client-written
+	# identity headers are stripped toward the app in both.
+	#
+	# Ranges from https://api.cloudflare.com/client/v4/ips (etag
+	# 38f79d050aa027e3be3865e495dcc9bc, 2026-10-04).
+	@via_cloudflare remote_ip 173.245.48.0/20 103.21.244.0/22 103.22.200.0/22 103.31.4.0/22 141.101.64.0/18 108.162.192.0/18 190.93.240.0/20 188.114.96.0/20 197.234.240.0/22 198.41.128.0/17 162.158.0.0/15 104.16.0.0/13 104.24.0.0/14 172.64.0.0/13 131.0.72.0/22 2400:cb00::/32 2606:4700::/32 2803:f800::/32 2405:b500::/32 2405:8100::/32 2a06:98c0::/29 2c0f:f248::/32
+
+	handle @via_cloudflare {
+		reverse_proxy 127.0.0.1:8150 {
+			header_up -X-Forwarded-Proto
+			header_up X-Forwarded-For {http.request.header.CF-Connecting-IP}
+			header_up -CF-Connecting-IP
+			header_up -X-Real-IP
+			header_up -True-Client-IP
+		}
+	}
+
+	handle {
+		reverse_proxy 127.0.0.1:8150 {
+			header_up -X-Forwarded-Proto
+			header_up X-Forwarded-For {remote_host}
+			header_up -CF-Connecting-IP
+			header_up -X-Real-IP
+			header_up -True-Client-IP
+		}
+	}
+
+	# Next.js sets its own security headers. Only the ones Caddy is better
+	# placed to know about are added here.
+	header {
+		-Server
+	}
+
+	log {
+		output file /var/log/caddy/admissionhands.log
+		format json
+	}
+}
+
+# The bare domain only redirects. Path and query are kept.
+admissionhands.com {
+	tls /opt/admissionhands/tls/origin.pem /opt/admissionhands/tls/origin.key
+	redir https://www.admissionhands.com{uri} permanent
+}
+
+www.admissionhands.com {
+	import admissionhands_site
+}
+
+# The admin CMS is the same app on its own hostname (the app rewrites it to
+# /admin/*). It has to move with the site: on this box only Cloudflare can
+# reach port 443, so it is proxied too, and gets the same visitor-address rule
+# - which also fixes the old box, where the admin block appended
+# X-Forwarded-For and so let a forged header reach the login rate limit.
+admin.admissionhands.com {
+	import admissionhands_site
+}
+
+# Test host for the move. Same app, same data; never indexed. Delete this
+# block and its DNS record once the move is done.
+mumbai.admissionhands.com {
+	import admissionhands_site
+	header X-Robots-Tag "noindex, nofollow"
+}
