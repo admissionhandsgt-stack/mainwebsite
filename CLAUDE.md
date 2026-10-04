@@ -123,7 +123,9 @@ Counselling data as of 2026-09-22: `closing_ranks` 274,483 (PG 230,484 + UG 43,9
   **`resource`** prop (`colleges-ug`, `colleges-recommended`, `colleges-deemed`, `colleges-pg-recommended`,
   `colleges-pg-deemed`); `PGCollegeManager` handles `colleges-pg`.
 - **Images:** `POST /api/admin/upload` writes to `public/assets/images/uploads/`. The browser filename is
-  never used — the name is generated and the extension comes from the file's magic bytes.
+  never used — the name is generated and the extension comes from the file's magic bytes. PNG and JPEG
+  are re-encoded to WebP (≤2400 px, EXIF-rotated) unless that comes out bigger. An upload is live the
+  moment it is written — see "Images: served by Caddy" below for why that was not always true.
   `BackendImage` resolves a `media_key` through `/api/content/media/[key]` with a local `/assets/...` fallback.
 - **Leads are half read-only on purpose.** `RESOURCE_SPECS.leads` allows only `lead_status`, `is_read`,
   `admin_notes`, `assigned_to`, `follow_up_on`, `last_contacted_at`. Everything the student submitted is
@@ -1209,7 +1211,45 @@ Caddy's block for the site is in `/etc/caddy/Caddyfile` (`www.admissionhands.com
   thinking the app handles it, because both halves exist on purpose.
 
 `caddy validate --config /etc/caddy/Caddyfile` before `systemctl reload caddy`; the box serves five
-other sites from the same file.
+other sites from the same file (16 addresses). Record every site's status before a change and compare
+after — that is how the 2026-10-04 change was checked.
+
+### Images: served by Caddy, encoded once (2026-10-04)
+
+**Next lists `public/` once, at boot** (`publicFolderItems` in
+`next/dist/server/lib/router-utils/filesystem.js`, Next 14.2) and serves only that list. The release
+symlinks `public/assets/images/uploads` at the shared upload directory, so every image the admin uploaded
+after a deploy was a **404 until the next deploy**. Found when an ACPM Medical College photograph was
+uploaded and never appeared. Two fixes, and both are needed:
+
+- **Caddy serves `/assets/images/uploads/*` from `/opt/admissionhands/uploads/images`** for anything a
+  browser asks for directly (`handle @upload…` in the site block). Node is out of the path. Only
+  avif/webp/png/jpg/gif; no segment may start with a dot; no SVG.
+- **`src/app/assets/images/uploads/[...path]/route.ts`** serves the files Next did not list. Caddy alone
+  is not enough: `next/image`'s optimiser fetches its source *through Next, in-process*, never through
+  Caddy — so a new upload would load raw and fail optimised, which is how almost every image is drawn.
+
+**Cache lifetime is decided by the filename, in both places.** `/api/admin/upload` names files
+`<folder>-<13-digit ms>-<8 hex>.<ext>` and never reuses a name, so those are `immutable` for a year.
+Everything else under uploads/ is written by a script under a fixed name and may be overwritten in place
+(`replace_hero_images.mjs`, the slug-named `colleges/*.avif`), so it gets a day plus
+stale-while-revalidate. **If you overwrite an upload in place, browsers keep the old one for up to a day**
+— give a replaced image a new name if it must show at once. `/_next/image` uses
+`images.minimumCacheTTL: 86400` (Next's default was 60 seconds) and negotiates AVIF.
+
+**Next's optimised-image cache survives deploys.** It lived in the release's `.next/cache/images`, so
+every deploy threw away what had been encoded (32 MB after a day). `deploy.sh` now symlinks it to
+`/opt/admissionhands/shared/next-image-cache`, seeded from the outgoing release. Only `images/` —
+`fetch-cache` beside it holds `unstable_cache` database answers and must not outlive its code.
+
+**What this does not fix: the first visit from India.** The box is in **Montréal**, 280–480 ms round
+trip from India; `robots.txt` takes ~0.87 s to its first byte, all of it TCP + TLS + request crossing the
+world, none of it the server. Caching makes every *repeat* view of an image free; only an edge near India
+(a CDN in front of the site) makes the *first* view faster. There is no Cloudflare in front today — DNS
+is at Hostinger and no R2 bucket exists.
+
+**The uploads directory is in no backup.** Images in git are safe; an image uploaded through the admin
+exists only on the VPS disk until somebody commits it (the nightly job dumps Postgres only).
 
 ### The perimeter, measured from outside (2026-09-26)
 
