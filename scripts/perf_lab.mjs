@@ -40,6 +40,13 @@ const PAGES = [
   ["CollegeDekho", "predictor", "https://www.collegedekho.com/exam/neet-ug/college-predictor"],
 ];
 
+// AH_BASE points our own pages somewhere else — e.g. an SSH tunnel straight to
+// the app, to separate what the code costs from what the visitor's route to
+// Cloudflare costs (this ISP reaches Cloudflare in Marseille, not Mumbai).
+if (process.env.AH_BASE) {
+  for (const p of PAGES) if (p[0] === "AdmissionHands") p[2] = p[2].replace("https://www.admissionhands.com", process.env.AH_BASE.replace(/\/+$/, ""));
+}
+
 const only = process.env.ONLY ? new RegExp(process.env.ONLY, "i") : null;
 const pages = only ? PAGES.filter(([site, kind]) => only.test(`${site} ${kind}`)) : PAGES;
 
