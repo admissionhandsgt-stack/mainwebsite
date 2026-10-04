@@ -106,6 +106,20 @@ ssh_ "mkdir -p $APP_DIR/releases/$RELEASE/.next/cache && chown -R admissionhands
 # the first place — /api/admin/upload generates the name and never uses the
 # browser's, so two different images never arrive under one filename.
 ssh_ "install -d -o admissionhands -g admissionhands -m 755 $APP_DIR/uploads/images       && install -d -o admissionhands -g admissionhands -m 700 $APP_DIR/uploads/documents       && if [ -d $APP_DIR/releases/$RELEASE/public/assets/images/uploads ] && [ ! -L $APP_DIR/releases/$RELEASE/public/assets/images/uploads ]; then            cp -a $APP_DIR/releases/$RELEASE/public/assets/images/uploads/. $APP_DIR/uploads/images/ 2>/dev/null || true;            rm -rf $APP_DIR/releases/$RELEASE/public/assets/images/uploads;          fi       && ln -sfn $APP_DIR/uploads/images $APP_DIR/releases/$RELEASE/public/assets/images/uploads       && chown -h admissionhands:admissionhands $APP_DIR/releases/$RELEASE/public/assets/images/uploads       && chown -R admissionhands:admissionhands $APP_DIR/uploads"
+# Next's optimised-image cache outlives the release, like the uploads do.
+#
+# Every /_next/image response is encoded once and kept in .next/cache/images -
+# inside the release directory, so each deploy threw it away and the first
+# visitor after a release paid for re-encoding every image they looked at. The
+# live release had built 32 MB of it in a day. Kept in one shared place, an
+# image is encoded once, ever, per size and format.
+#
+# Only images/, never the whole of .next/cache: fetch-cache beside it holds
+# unstable_cache results - database answers - and carrying those across a
+# deploy would serve the old code's data under the new code.
+#
+# Seeded from the outgoing release on first use, so the switch starts warm.
+ssh_ "C=$APP_DIR/shared/next-image-cache; R=$APP_DIR/releases/$RELEASE/.next/cache;       install -d -o admissionhands -g admissionhands -m 755 \$C       && if [ -z \"\$(ls -A \$C 2>/dev/null)\" ] && [ -d $APP_DIR/current/.next/cache/images ] && [ ! -L $APP_DIR/current/.next/cache/images ]; then            cp -a $APP_DIR/current/.next/cache/images/. \$C/ 2>/dev/null || true;          fi       && install -d -o admissionhands -g admissionhands -m 755 \$R       && rm -rf \$R/images && ln -sfn \$C \$R/images       && chown -h admissionhands:admissionhands \$R/images && chown -R admissionhands:admissionhands \$C"
 # The native halves of sharp are built for the machine that ran npm install.
 #
 # This repo is developed on Windows, so the node_modules the standalone build

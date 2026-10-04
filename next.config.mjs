@@ -118,6 +118,17 @@ const nextConfig = {
   },
 
   images: {
+    // AVIF first. Next negotiates on the Accept header, so a browser without
+    // AVIF still gets WebP. The ACPM photograph at 1200px was 336 KB as WebP;
+    // the server is in Montreal, 300-480 ms from India, and on a link that long
+    // every byte saved is round trips saved.
+    formats: ['image/avif', 'image/webp'],
+    // How long a browser may keep an optimised image. Next's default is 60
+    // seconds, so a visitor moving between two pages that share a college
+    // photograph downloaded it twice — across the world each time. A day is
+    // the trade: in-place overwrites (the hero script writes fixed filenames)
+    // reach everyone within a day, and inside that day the image is free.
+    minimumCacheTTL: 86400,
     remotePatterns: [
       {
         protocol: 'https',
