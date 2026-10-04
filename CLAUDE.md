@@ -946,6 +946,9 @@ Three suites, all runnable against production:
 | `scripts/verify_documents.mjs` | Uploads as one candidate and proves another candidate, an anonymous caller and three guessed URLs all fail to reach it; that magic bytes beat the filename; and that deleting the account takes the documents with it |
 | `scripts/verify_lead_alert.mjs` | Submits a real enquiry and reads the WhatsApp alert back off the gateway — delivery, not just acceptance |
 | `scripts/verify_gate.mjs` | That no seat row reaches an anonymous visitor on six page families, that a spoofed crawler user-agent and a forged `X-Forwarded-For` both stay locked, that every gated page declares `isAccessibleForFree: false`, and that a verified session does get the rows |
+| `scripts/perf_lab.mjs` | Lighthouse from this machine for us and four competitors, median of `RUNS`. `MODE=observed` turns the simulation off — run from India, that is the real experience including the distance to each server |
+| `scripts/perf_field.mjs` | Google's real-user Core Web Vitals (CrUX) for the same five sites. Needs `PSI_KEY` — the keyless quota is shared worldwide and runs out |
+| `scripts/load_test.mjs` | Run **on the box** against 127.0.0.1:8120. Ramps 5→100 concurrent and stops itself on errors, p95 > 3 s, load > 75% of cores, or a neighbouring site failing. It never hunts for the breaking point — there is no staging |
 | `scripts/verify_ipranges.mjs` | The other direction, which fails silently: that `inRanges()` matches **all 617** prefixes Google and Bing publish, and no ordinary address. A matcher that wrongly rejects serves Googlebot the locked page, logs nothing, and stops 3,600 pages ranking weeks later |
 
 ### The Playwright suite, rebuilt 2026-09-27
@@ -1247,6 +1250,25 @@ trip from India; `robots.txt` takes ~0.87 s to its first byte, all of it TCP + T
 world, none of it the server. Caching makes every *repeat* view of an image free; only an edge near India
 (a CDN in front of the site) makes the *first* view faster. There is no Cloudflare in front today — DNS
 is at Hostinger and no R2 bucket exists.
+
+**Measured 2026-10-04, from India, against Shiksha, Collegedunia, Careers360 and CollegeDekho.**
+On Lighthouse's standard simulated phone we were 2nd on the homepage (85) and 1st on the predictor (85),
+at a quarter of their page weight and a fifth of their third-party scripts. On a real Indian connection
+we were last or near last (predictor LCP 2.2 s against their 0.3–1.3 s): every competitor answers from an
+Indian edge (TCP ~15 ms, first byte 0.05–0.28 s); we answer from Montréal (TCP 285 ms, first byte 0.9 s).
+
+**Capacity: ~35 pages a second, flat, whatever the concurrency** — p95 202 ms at 5 concurrent, 2.5 s at 50,
+5.2 s at 100, while the box's load never passed 2.4 of 8. One Node process renders every page on one
+core. More processes would multiply it, but the in-memory rate limiters would then become per-process
+(see the note on `POST /api/leads`) — move them to Postgres first.
+
+**Two hero mistakes that cost Core Web Vitals, fixed the same day.** The headline and subtitle were
+framer-motion children starting at `opacity: 0`, which framer writes into the server HTML — the text
+arrived and stayed invisible until hydration (1.0 s of LCP render delay on the predictor). And the
+alerts bar was client-only, so every page dropped 40 px when it mounted (CLS 0.105). **Do not fade in
+the LCP element, and do not let anything above the fold change height after first paint** — including
+a `flex-wrap` row whose line count depends on which font has loaded: the homepage trust chips wrapped to
+two rows in the fallback font and three in Inter, and the hero grew 54 px a round trip after paint.
 
 **The uploads directory is in no backup.** Images in git are safe; an image uploaded through the admin
 exists only on the VPS disk until somebody commits it (the nightly job dumps Postgres only).

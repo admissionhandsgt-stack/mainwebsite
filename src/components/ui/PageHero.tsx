@@ -99,6 +99,14 @@ export default function PageHero({
     hidden: reduce ? { opacity: 1 } : { opacity: 0, y: 16 },
     show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.2, 0, 0, 1] as const } },
   };
+  // The headline and the line under it are not animated in, and that is the
+  // point. Framer Motion writes `initial` into the server HTML, so a fade from
+  // opacity 0 meant the text arrived in the first response and stayed
+  // invisible until the JavaScript had crossed from Montreal and hydrated.
+  // On /neet-college-predictor the subtitle is the Largest Contentful Paint,
+  // and Lighthouse measured 1.0 s of render delay after the text had already
+  // arrived. Everything else here keeps its staggered entrance; the words a
+  // visitor came to read are painted with the page.
 
   return (
     <section
@@ -157,8 +165,7 @@ export default function PageHero({
           </motion.div>
         )}
 
-        <motion.h1
-          variants={item}
+        <h1
           className={`font-heading max-w-[22ch] text-[clamp(1.75rem,3.6vw,2.9rem)] font-extrabold leading-[1.08] tracking-[-0.03em] ${
             dark ? "text-white" : "text-foreground"
           }`}
@@ -172,17 +179,16 @@ export default function PageHero({
               </span>
             </>
           )}
-        </motion.h1>
+        </h1>
 
         {subtitle && (
-          <motion.p
-            variants={item}
+          <p
             className={`mt-4 max-w-[62ch] text-[15px] md:text-base leading-relaxed ${
               dark ? "text-slate-300" : "text-muted-foreground"
             }`}
           >
             {subtitle}
-          </motion.p>
+          </p>
         )}
 
         {children && (

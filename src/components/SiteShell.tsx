@@ -3,14 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Header from './Header';
-import dynamic from 'next/dynamic';
 import Footer from './Footer';
 import { isAdminSubdomain as checkIsAdminSubdomain } from '@/utils/envHelper';
 import type { NavItem } from '@/lib/content';
 
-const LiveAlerts = dynamic(() => import('@/components/LiveAlerts'), {
-  ssr: false,
-});
+// Rendered with the page, not loaded after it. See the note in app/layout.tsx:
+// a client-only bar arrived late and pushed every page down by its height.
+import LiveAlerts, { type BarAlert } from '@/components/LiveAlerts';
 
 export interface SocialLinks {
   facebook?: string;
@@ -31,6 +30,8 @@ interface SiteShellProps {
   showThemeToggle?: boolean;
   social?: SocialLinks;
   alertsEnabled?: boolean;
+  /** The active notices, read on the server. Empty means no bar and no gap for one. */
+  alerts?: BarAlert[];
 }
 
 export default function SiteShell({
@@ -44,6 +45,7 @@ export default function SiteShell({
   showThemeToggle = true,
   social,
   alertsEnabled = true,
+  alerts = [],
 }: SiteShellProps) {
   const pathname = usePathname();
   const [isAdminSubdomain, setIsAdminSubdomain] = useState(false);
@@ -55,6 +57,7 @@ export default function SiteShell({
   }, []);
 
   const isAdminRoute = pathname?.startsWith('/admin') || isAdminSubdomain;
+  const showBar = alertsEnabled && alerts.length > 0;
 
   if (isAdminRoute) {
     return <main className="w-full">{children}</main>;
@@ -63,12 +66,14 @@ export default function SiteShell({
   return (
     <>
       <Header nav={headerNav} ctaLabel={headerCtaLabel} showThemeToggle={showThemeToggle} accountName={accountName} />
-      {alertsEnabled && (
+      {showBar && (
         <div className="fixed top-[72px] left-0 right-0 z-[35]">
-          <LiveAlerts />
+          <LiveAlerts alerts={alerts} />
         </div>
       )}
-      <main className="w-full" style={{ paddingTop: 'calc(72px + var(--alerts-height, 0px))' }}>
+      {/* 72px header, plus the 40px bar only when there is one to show. Known on
+          the server, so the first paint already has the right gap. */}
+      <main className="w-full" style={{ paddingTop: showBar ? '112px' : '72px' }}>
         {children}
       </main>
       <Footer

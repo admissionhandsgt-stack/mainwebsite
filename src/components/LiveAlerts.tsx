@@ -1,50 +1,28 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { useLiveAlerts } from "@/hooks/useLiveAlerts";
 
-export default function LiveAlerts() {
+/** One notice, as the root layout reads it on the server. */
+export interface BarAlert {
+  id: number;
+  title: string;
+  link: string | null;
+}
+
+/**
+ * The scrolling notice bar.
+ *
+ * It used to fetch its own alerts after hydration and set `--alerts-height`
+ * from an effect, so on every page the content arrived at 72px, dropped to 112px
+ * when the bar mounted, and went back up if nothing was active — a layout shift
+ * on every visit, and a second round trip to Montreal for a few lines of text.
+ * The layout now reads the alerts with the menus and passes them in; this
+ * component only draws them, and SiteShell reserves the space from the same
+ * data. The admin screen still uses useLiveAlerts for editing.
+ */
+export default function LiveAlerts({ alerts }: { alerts: BarAlert[] }) {
   const [isPaused, setIsPaused] = useState(false);
-  const { alerts, isLoading, error, fetchAlerts } = useLiveAlerts();
-
-  useEffect(() => {
-    fetchAlerts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const activeAlerts = alerts.filter(alert => alert.is_active);
-
-  useEffect(() => {
-    const hasAlerts = activeAlerts.length > 0;
-    const shouldShow = hasAlerts || isLoading || error;
-    if (shouldShow) {
-      document.documentElement.style.setProperty('--alerts-height', '40px');
-    } else {
-      document.documentElement.style.setProperty('--alerts-height', '0px');
-    }
-    return () => {
-      document.documentElement.style.setProperty('--alerts-height', '0px');
-    };
-  }, [activeAlerts.length, isLoading, error]);
-
-  if (error) {
-    return null;
-  }
-
-  if (isLoading) {
-    return (
-      <div 
-        className="live-alerts-container bg-gradient-brand text-white flex items-center shadow-md overflow-hidden py-2"
-        style={{ zIndex: "var(--z-alerts, 35)" }}
-      >
-        <div className="container-custom flex items-center h-full w-full max-w-full relative gap-4">
-          <div className="h-6 w-20 bg-white/25 rounded animate-pulse shrink-0"></div>
-          <div className="h-4 w-64 bg-white/20 rounded animate-pulse"></div>
-          <div className="h-4 w-48 bg-white/15 rounded animate-pulse hidden md:block"></div>
-        </div>
-      </div>
-    );
-  }
+  const activeAlerts = alerts;
 
   if (activeAlerts.length === 0) {
     return null;

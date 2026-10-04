@@ -138,21 +138,27 @@ export default function Hero({
             </span>
           </motion.div>
 
-          <motion.h1
-            variants={item}
+          {/*
+            The headline and subtitle are painted with the server HTML rather
+            than faded in. Framer Motion writes `initial` into the HTML, so an
+            opacity-0 start kept the words invisible until the JavaScript had
+            crossed from Montreal and hydrated — the visitor saw an empty hero
+            for most of a second with the text already delivered. The badges,
+            buttons and trust row keep the staggered entrance.
+          */}
+          <h1
             className="font-heading text-[clamp(2.25rem,5.2vw,4.25rem)] font-extrabold leading-[1.04] tracking-[-0.035em] text-foreground mb-5"
           >
             {text.headline}
             <br className="hidden sm:block" />{" "}
             <span className="text-gradient-brand">{text.headlineAccent}</span>
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            variants={item}
+          <p
             className="max-w-[54ch] mx-auto lg:mx-0 text-base md:text-[17px] leading-relaxed text-muted-foreground mb-8"
           >
             {text.subtitle}
-          </motion.p>
+          </p>
 
           <motion.div variants={item} className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-10">
             <button
@@ -176,10 +182,21 @@ export default function Hero({
           </motion.div>
 
           {/* ---------------------- how this is made ---------------------- */}
+          {/*
+            One chip per row on a phone, always. With flex-wrap the row count
+            depended on text width: in the fallback font the three chips fit in
+            two rows, in Inter they need three, so the hero grew 54px a round
+            trip after first paint and everything anchored to its bottom moved
+            with it — measured at 412px, the whole of the homepage's layout
+            shift once the alerts bar stopped causing one. Stacked is exactly
+            what a phone shows once the font has loaded, so nothing looks
+            different; it just no longer jumps. From 480px up there is room for
+            the row in either font.
+          */}
           <motion.ul
             variants={item}
             aria-label="How every answer here is made"
-            className="mt-8 flex flex-wrap justify-center gap-x-2 gap-y-2 lg:justify-start"
+            className="mt-8 flex flex-col items-center gap-2 xs:flex-row xs:flex-wrap xs:justify-center lg:justify-start"
           >
             {ASSURANCES.map(({ icon: Icon, label }) => (
               <li

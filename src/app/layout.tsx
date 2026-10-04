@@ -9,7 +9,7 @@ import { ThemeProvider } from '@/components/theme-provider'
 
 import { headers } from 'next/headers'
 import { isAdminSubdomain } from '@/utils/envHelper'
-import { getNav, getSettings, setting } from '@/lib/content'
+import { getNav, getSettings, getLiveAlerts, setting } from '@/lib/content'
 import { currentUser } from '@/lib/userAuth'
 
 const jakarta = Plus_Jakarta_Sans({
@@ -62,13 +62,21 @@ export default async function RootLayout({
 
   // The shell is a client component, so its menus are fetched here and passed
   // down as plain data. An admin host skips the fetch entirely.
-  const [headerNav, footerExplore, footerQuick, settings] = isAdmin
-    ? [[], [], [], {} as Record<string, string>]
+  //
+  // The notice bar's alerts come with them. They used to be fetched by the
+  // browser after hydration, which cost a second round trip to Montreal and
+  // moved the whole page: the bar appeared, the content dropped 40px, and if
+  // nothing was active it went back up — Lighthouse's CLS on the homepage was
+  // 0.105, over Google's 0.1, from exactly that. Read here, the bar and the
+  // space for it are both in the first HTML.
+  const [headerNav, footerExplore, footerQuick, settings, liveAlerts] = isAdmin
+    ? [[], [], [], {} as Record<string, string>, []]
     : await Promise.all([
         getNav('header'),
         getNav('footer_explore'),
         getNav('footer_quick'),
         getSettings(),
+        getLiveAlerts(),
       ])
 
   // Who, if anyone, is signed in. The layout already reads headers() so it is
@@ -109,6 +117,7 @@ export default async function RootLayout({
                 youtube: setting(settings, 'social.youtube'),
               }}
               alertsEnabled={setting(settings, 'site.alert_bar_enabled', 'true') !== 'false'}
+              alerts={liveAlerts.map((a) => ({ id: a.id, title: a.title, link: a.link }))}
             >
               {children}
             </SiteShell>
