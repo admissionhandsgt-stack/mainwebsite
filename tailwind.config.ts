@@ -164,6 +164,11 @@ export default {
 					'0%': { opacity: '0', transform: 'translateY(14px)' },
 					'100%': { opacity: '1', transform: 'translateY(0)' }
 				},
+				// The homepage hero's photograph and contact card settling in.
+				'settle': {
+					'0%': { opacity: '0', transform: 'scale(0.97)' },
+					'100%': { opacity: '1', transform: 'scale(1)' }
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
@@ -178,6 +183,7 @@ export default {
 				'pulse-ring': 'pulse-ring 2.2s ease-out infinite',
 				'marquee': 'marquee 32s linear infinite',
 				'rise': 'rise 0.5s cubic-bezier(.2,0,0,1) backwards',
+				'settle': 'settle 0.7s cubic-bezier(.2,0,0,1) 0.15s backwards',
 			},
 			boxShadow: {
 				'glow': '0 10px 30px -8px hsl(var(--glow) / 0.42)',

@@ -114,6 +114,20 @@ const nextConfig = {
           { key: 'Cache-Control', value: 'no-store' },
         ],
       },
+      // Files Next serves out of public/. Its default is `public, max-age=0`,
+      // so Cloudflare went back to the server for the header logo on every
+      // page view. These names are not content-hashed and can be replaced in
+      // place, so a day rather than immutable, with a week of
+      // stale-while-revalidate. uploads/ is not listed: Caddy serves it with
+      // its own rule (immutable for upload-generated names, see CLAUDE.md).
+      {
+        source: '/assets/images/:dir(logos|hero|colleges|exam|misc)/:file*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' }],
+      },
+      {
+        source: '/:file(favicon\\.ico|logo\\.png)',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' }],
+      },
     ];
   },
 

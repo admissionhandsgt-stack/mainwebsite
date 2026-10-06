@@ -12,17 +12,32 @@ import { isAdminSubdomain } from '@/utils/envHelper'
 import { getNav, getSettings, getLiveAlerts, setting } from '@/lib/content'
 import { currentUser } from '@/lib/userAuth'
 
+/*
+  Fonts: all three are `swap`, so no text ever waits for one — it paints in the
+  size-matched fallback next/font generates and changes face when the file
+  lands. What a preload buys is only *when* the file lands, and it buys it by
+  competing with the CSS for the first round trips: next/font preloads through
+  a `Link` header, so all three (98 KB) started at the same instant as the
+  stylesheets, before the page could paint.
+
+  So exactly one is preloaded: Figtree, 21 KB, the face of the hero headline
+  on both the homepage and the predictor — the most visible swap there is.
+  Inter (body, 49 KB) and Plus Jakarta (h1–h6 without font-heading, 28 KB)
+  are fetched when the CSS asks for them.
+*/
 const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
   variable: '--font-jakarta',
   display: 'swap',
   weight: ['400', '500', '600', '700', '800'],
+  preload: false,
 })
 
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
   display: 'swap',
+  preload: false,
 })
 
 // Display face — carries every heading and every large number.
@@ -86,11 +101,19 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${jakarta.variable} ${inter.variable} ${figtree.variable}`} suppressHydrationWarning>
       <body className="antialiased font-body overflow-x-hidden bg-background text-foreground transition-colors duration-200">
+        {/*
+          Analytics after the page has loaded, not before. `afterInteractive`
+          made Next emit a preload for gtag.js — 176 KB at high priority,
+          fetched in the same instant as the CSS and ahead of everything the
+          visitor can see. `lazyOnload` waits for the load event. The page view
+          is still recorded; what can be lost is a visitor who leaves before
+          the page has finished loading.
+        */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-SCQ3V4NFLS"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
+        <Script id="google-analytics" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}

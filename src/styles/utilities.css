@@ -145,6 +145,7 @@
   .animate-pulse-ring,
   .animate-marquee,
   .animate-rise,
+  .animate-settle,
   .animate-float,
   .animate-shimmer {
     animation: none !important;

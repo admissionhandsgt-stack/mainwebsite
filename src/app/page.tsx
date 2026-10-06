@@ -11,6 +11,7 @@ import type { Metadata } from "next";
 import { resolveMetadata } from "@/lib/content";
 import { getRecommendedColleges } from "@/lib/colleges";
 import { getMediaAsset, getSettings, setting, getBlocks, getSections } from "@/lib/content";
+import { backdropPlaceholder } from "@/lib/backdrop";
 
 const ServicesList = dynamic(() => import('@/components/ServicesList'), { loading: () => <SectionLoader /> });
 const HowItWorks = dynamic(() => import('@/components/home/HowItWorks'), { loading: () => <SectionLoader /> });
@@ -65,6 +66,9 @@ const Index = async () => {
       getBlocks('testimonials'),
       getSections('home'),
     ]);
+
+  // The campus backdrop's first frame, inline — see lib/backdrop.ts.
+  const campusPlaceholder = campusHero?.image_url ? await backdropPlaceholder(campusHero.image_url) : null;
 
   // Everything below reads from the CMS with the shipped copy as the fallback,
   // so an empty table renders the site exactly as it did before.
@@ -162,6 +166,7 @@ const Index = async () => {
       {sections.shows('hero') && (
         <Hero
           backgroundImageUrl={campusHero?.image_url}
+          backgroundPlaceholder={campusPlaceholder}
           backgroundSubject={campusHero?.subject}
           backgroundCredit={campusHero?.attribution}
           backgroundLicense={campusHero?.license}
