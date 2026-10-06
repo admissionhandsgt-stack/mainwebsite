@@ -8,9 +8,11 @@ const SHIPPED_BENEFITS: NriBenefit[] = [
                 { title: "Direct College Connections", desc: "We have established relationships with top medical colleges across India." }
 ];
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Phone, ArrowRight } from 'lucide-react';
+import { Phone, ArrowRight, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
+import { checkPhone } from '@/lib/phone';
+import { checkName, checkEmail } from '@/lib/formRules';
 import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon';
 import { useCTA } from '@/hooks/useCTA';
 
@@ -18,6 +20,55 @@ const NRICTA = ({ benefits: fromCms }: { benefits?: NriBenefit[] | null } = {}) 
   const benefits = fromCms?.length ? fromCms : SHIPPED_BENEFITS;
 
   const CTA = useCTA();
+
+  /*
+    This form used to go nowhere. It had no submit handler and its inputs no
+    names, so "Submit Query" reloaded the page and the enquiry vanished — the
+    leads table has no NRI-page lead at all before 2026-10-06. It now posts to
+    /api/leads like every other form, with the same checks. A foreign number
+    is accepted with its +country code: most NRI families are abroad.
+  */
+  const [form, setForm] = useState({ name: '', phone: '', email: '', nriType: '', message: '', honeypot: '' });
+  const [state, setState] = useState<'idle' | 'sending' | 'sent'>('idle');
+  const [error, setError] = useState<string | null>(null);
+  const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
+    setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (state === 'sending') return;
+    const n = checkName(form.name);
+    if (!n.ok) return setError(n.error);
+    const ph = checkPhone(form.phone, { allowInternational: true });
+    if (!ph.ok) return setError(ph.error);
+    const em = checkEmail(form.email);
+    if (!em.ok) return setError(em.error);
+    if (form.message.length > 2000) return setError('Please keep the query under 2,000 characters.');
+    setError(null);
+    setState('sending');
+    try {
+      const res = await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: n.value,
+          phone: ph.e164,
+          email: em.value || undefined,
+          quota_interest: form.nriType ? `NRI quota (${form.nriType})` : 'NRI quota',
+          message: form.message || undefined,
+          level: 'ug',
+          source: 'NRI quota page',
+          honeypot: form.honeypot || undefined,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Could not send that. Please try again.');
+      setState('sent');
+    } catch (err) {
+      setState('idle');
+      setError(err instanceof Error ? err.message : 'Could not send that. Please try again.');
+    }
+  };
   
   return (
     <section id="contact" className="py-24 relative overflow-hidden">
@@ -68,13 +119,28 @@ const NRICTA = ({ benefits: fromCms }: { benefits?: NriBenefit[] | null } = {}) 
           
           <div className="glass-dark rounded-[3.5rem] p-10 md:p-14 border border-white/10 shadow-[0_0_50px_rgba(37,99,235,0.15)]">
             <h3 className="text-3xl font-black text-white mb-10 tracking-tight">Get Free Counseling</h3>
-            <form className="space-y-6">
+            {state === 'sent' ? (
+              <div role="status" className="flex flex-col items-center gap-4 py-10 text-center">
+                <CheckCircle2 className="h-12 w-12 text-emerald-400" aria-hidden="true" />
+                <p className="text-xl font-black text-white">Thank you — we have your query.</p>
+                <p className="max-w-sm text-cyan-100/70">
+                  An NRI quota counsellor will call you shortly. For a faster reply, message us on WhatsApp.
+                </p>
+              </div>
+            ) : (
+            <form className="space-y-6" onSubmit={submit} noValidate>
+              <input type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" value={form.honeypot} onChange={set('honeypot')} style={{ display: 'none' }} />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label htmlFor="name" className="text-sm font-black text-cyan-100/50 uppercase tracking-widest ml-1">Full Name</label>
                   <input
                     type="text"
                     id="name"
+                    name="name"
+                    autoComplete="name"
+                    required
+                    value={form.name}
+                    onChange={set('name')}
                     placeholder="Your name"
                     className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-medium"
                   />
@@ -85,7 +151,13 @@ const NRICTA = ({ benefits: fromCms }: { benefits?: NriBenefit[] | null } = {}) 
                   <input
                     type="tel"
                     id="phone"
-                    placeholder="Your phone number"
+                    name="phone"
+                    inputMode="tel"
+                    autoComplete="tel"
+                    required
+                    value={form.phone}
+                    onChange={set('phone')}
+                    placeholder="98765 12345 or +971 50 123 4567"
                     className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-medium"
                   />
                 </div>
@@ -96,6 +168,10 @@ const NRICTA = ({ benefits: fromCms }: { benefits?: NriBenefit[] | null } = {}) 
                 <input
                   type="email"
                   id="email"
+                  name="email"
+                  autoComplete="email"
+                  value={form.email}
+                  onChange={set('email')}
                   placeholder="Your email address"
                   className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-medium"
                 />
@@ -105,13 +181,16 @@ const NRICTA = ({ benefits: fromCms }: { benefits?: NriBenefit[] | null } = {}) 
                 <label htmlFor="category" className="text-sm font-medium opacity-90">Candidate Category</label>
                 <select
                   id="category"
+                  name="nriType"
+                  value={form.nriType}
+                  onChange={set('nriType')}
                   className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-white/20"
                 >
                   <option value="" className="bg-medical-800">Select your category</option>
-                  <option value="nri" className="bg-medical-800">NRI</option>
-                  <option value="nri-sponsored" className="bg-medical-800">NRI Sponsored</option>
-                  <option value="oci" className="bg-medical-800">OCI/PIO</option>
-                  <option value="foreign" className="bg-medical-800">Foreign National</option>
+                  <option value="NRI" className="bg-medical-800">NRI</option>
+                  <option value="NRI Sponsored" className="bg-medical-800">NRI Sponsored</option>
+                  <option value="OCI/PIO" className="bg-medical-800">OCI/PIO</option>
+                  <option value="Foreign National" className="bg-medical-800">Foreign National</option>
                 </select>
               </div>
               
@@ -119,16 +198,36 @@ const NRICTA = ({ benefits: fromCms }: { benefits?: NriBenefit[] | null } = {}) 
                 <label htmlFor="message" className="text-sm font-medium opacity-90">Your Query</label>
                 <textarea
                   id="message"
+                  name="message"
                   rows={4}
+                  maxLength={2000}
+                  value={form.message}
+                  onChange={set('message')}
                   placeholder="Tell us about your requirements"
                   className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/20"
                 ></textarea>
               </div>
               
-              <Button className="w-full bg-white text-medical-800 hover:bg-gray-100" size="lg">
-                Submit Query <ArrowRight className="ml-2 h-4 w-4" />
+              {error && (
+                <p role="alert" className="flex items-start gap-2 rounded-xl border border-red-400/30 bg-red-950/40 px-4 py-3 text-sm font-medium text-red-300">
+                  <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+                  {error}
+                </p>
+              )}
+
+              <Button type="submit" disabled={state === 'sending'} className="w-full bg-white text-medical-800 hover:bg-gray-100" size="lg">
+                {state === 'sending' ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" /> Sending…
+                  </>
+                ) : (
+                  <>
+                    Submit Query <ArrowRight className="ml-2 h-4 w-4" />
+                  </>
+                )}
               </Button>
             </form>
+            )}
           </div>
         </div>
       </div>

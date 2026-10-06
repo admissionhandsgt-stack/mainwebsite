@@ -6,6 +6,9 @@ import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
 import { mintUnlock, unlockCookie, normalisePhone } from "@/lib/leadGate";
 import { upsertUser, startSession, sessionCookie } from "@/lib/userAuth";
 import { sendWhatsAppNotification } from "@/lib/whatsappService";
+import { rankOrNull } from "@/lib/neetLimits";
+import { checkIndianMobile } from "@/lib/phone";
+import { checkName } from "@/lib/formRules";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -58,22 +61,23 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   }
 
-  const name = String(body.name ?? "").trim().slice(0, 120);
-  if (name.length < 2) {
-    return NextResponse.json({ error: "Please enter your name." }, { status: 400 });
+  const checkedName = checkName(body.name);
+  if (!checkedName.ok) {
+    return NextResponse.json({ error: checkedName.error }, { status: 400 });
   }
+  const name = checkedName.value;
 
   const phone = normalisePhone(body.phone);
   if (!phone) {
+    const why = checkIndianMobile(body.phone);
     return NextResponse.json(
-      { error: "Enter a 10-digit Indian mobile number." },
+      { error: why.ok ? "Enter a 10-digit Indian mobile number." : why.error },
       { status: 400 },
     );
   }
 
   const level = body.level === "ug" ? "ug" : "pg";
-  const rankRaw = Number(String(body.rank ?? "").replace(/[^\d]/g, ""));
-  const rank = Number.isFinite(rankRaw) && rankRaw > 0 && rankRaw <= 2_000_000 ? rankRaw : null;
+  const rank = rankOrNull(body.rank, level);
   const category = String(body.category ?? "").trim().slice(0, 48) || null;
 
   try {

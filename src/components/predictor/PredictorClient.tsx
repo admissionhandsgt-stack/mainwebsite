@@ -22,6 +22,7 @@ import CounsellingCTA from "@/components/lead/CounsellingCTA";
 import { categoryMeaning } from "@/lib/categoryLabels";
 import { bandLabel, type ChanceBand } from "@/lib/predictor";
 import type { Facets, SeatTypeFacet, SeatTypeId, Stream, StreamSpec } from "@/lib/predictorFacets";
+import { checkRank } from "@/lib/neetLimits";
 
 /* ------------------------------------------------------------------ types */
 
@@ -184,8 +185,10 @@ export default function PredictorClient({ streams, facets }: Props) {
   const [error, setError] = useState<string | null>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
 
-  const rankNumber = Number(rank.replace(/[,\s]/g, ""));
-  const rankValid = Number.isFinite(rankNumber) && rankNumber >= 1 && rankNumber <= 2000000;
+  // Within the number who sat this stream's exam — lib/neetLimits.ts.
+  const rankCheck = checkRank(rank, spec.level);
+  const rankNumber = rankCheck.ok ? rankCheck.value : NaN;
+  const rankValid = rankCheck.ok;
 
   /** Changing course changes which categories and branches even exist. */
   const switchStream = (next: Stream) => {
@@ -402,7 +405,7 @@ export default function PredictorClient({ streams, facets }: Props) {
                 </div>
                 {rank && !rankValid && (
                   <p id="rank-error" className="mt-2 text-[13px] text-signal-stretch">
-                    Rank must be a number between 1 and 20,00,000.
+                    {rankCheck.ok ? "" : rankCheck.error}
                   </p>
                 )}
               </div>

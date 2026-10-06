@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ArrowRight, Check, Loader2, Sparkles } from "lucide-react";
 import { ATTEMPTS, BUDGET_BANDS } from "@/lib/counsellingOptions";
+import { checkRank } from "@/lib/neetLimits";
 
 /**
  * Five questions, asked the moment the seats appear.
@@ -127,6 +128,7 @@ export default function ProfileTuner({
   const [value, setValue] = useState<TunerValue>(initial);
   const [typed, setTyped] = useState(initial.rank ?? "");
   const [saving, setSaving] = useState(false);
+  const [rankError, setRankError] = useState<string | null>(null);
 
   const q = questions[index];
   const last = index === questions.length - 1;
@@ -204,10 +206,19 @@ export default function ProfileTuner({
 
       <div className="mt-5">
         {q.kind === "number" ? (
+          <>
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              if (typed.trim()) void advance(typed.trim());
+              if (!typed.trim()) return;
+              // Within the number who sat the exam (lib/neetLimits), said
+              // before it is saved rather than silently dropped afterwards.
+              if (q.key === "rank") {
+                const r = checkRank(typed, level);
+                if (!r.ok) return setRankError(r.error);
+              }
+              setRankError(null);
+              void advance(typed.trim());
             }}
             className="flex flex-col gap-2.5 sm:flex-row"
           >
@@ -216,7 +227,10 @@ export default function ProfileTuner({
               inputMode="numeric"
               autoFocus
               value={typed}
-              onChange={(e) => setTyped(e.target.value.replace(/[^\d]/g, ""))}
+              onChange={(e) => {
+                setTyped(e.target.value.replace(/[^\d]/g, ""));
+                setRankError(null);
+              }}
               placeholder={q.placeholder}
               aria-label={q.ask}
               className="tnum h-12 flex-1 rounded-xl border border-border bg-card px-4 text-[15px] text-foreground outline-none transition-colors focus:border-primary"
@@ -234,6 +248,8 @@ export default function ProfileTuner({
               Next
             </button>
           </form>
+          {rankError && <p role="alert" className="mt-2 text-[13px] text-signal-stretch">{rankError}</p>}
+          </>
         ) : (
           <div className="flex flex-wrap gap-2">
             {q.options!.map((o) => {

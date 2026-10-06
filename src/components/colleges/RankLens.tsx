@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Search, X, Loader2 } from "lucide-react";
+import { checkRank } from "@/lib/neetLimits";
 
 /**
  * The rank lens over a college directory.
@@ -154,8 +155,9 @@ export function RankLensBar({
   onBandFilter: (b: Band | null) => void;
 }) {
   const [value, setValue] = useState(lens.rank ? String(lens.rank) : "");
-  const parsed = Number(value.replace(/[,\s]/g, ""));
-  const valid = Number.isFinite(parsed) && parsed >= 1 && parsed <= 2_000_000;
+  const checked = checkRank(value, level);
+  const parsed = checked.ok ? checked.value : NaN;
+  const valid = checked.ok;
 
   return (
     <div className="rounded-2xl border border-primary/25 bg-surface-2 p-4 md:p-5">
@@ -180,6 +182,9 @@ export function RankLensBar({
               value && !valid ? "border-signal-stretch" : "border-border focus:border-primary"
             }`}
           />
+          {value && !checked.ok && (
+            <p className="mt-1.5 text-[12px] text-signal-stretch">{checked.error}</p>
+          )}
         </div>
         <button
           type="submit"

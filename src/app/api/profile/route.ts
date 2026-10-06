@@ -83,7 +83,7 @@ export async function POST(request: Request) {
 
   try {
     const body = (await request.json()) as Record<string, unknown>;
-    const profile = parseProfile(body);
+    const profile = parseProfile(body, user.level);
 
     await saveProfile(user.id, profile);
 

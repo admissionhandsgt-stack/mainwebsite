@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
+import { checkRank } from "@/lib/neetLimits";
 
 /**
  * The inline rank box on every college page.
@@ -24,8 +25,9 @@ export default function CollegeRankCheck({
   const router = useRouter();
   const [rank, setRank] = useState("");
 
-  const n = Number(rank.replace(/[,\s]/g, ""));
-  const valid = Number.isFinite(n) && n >= 1 && n <= 2000000;
+  const checked = checkRank(rank, level);
+  const n = checked.ok ? checked.value : NaN;
+  const valid = checked.ok;
 
   return (
     <div className="rounded-2xl border border-primary/40 bg-card p-5 shadow-lift">
@@ -55,7 +57,7 @@ export default function CollegeRankCheck({
           }`}
         />
         {rank && !valid && (
-          <p className="mt-1.5 text-[12px] text-signal-stretch">Enter a rank between 1 and 20,00,000.</p>
+          <p className="mt-1.5 text-[12px] text-signal-stretch">{checked.ok ? "" : checked.error}</p>
         )}
         <button
           type="submit"

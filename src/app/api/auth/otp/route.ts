@@ -4,6 +4,9 @@ import { issueCode } from "@/lib/otp";
 import { startAttempt } from "@/lib/waVerify";
 import { normalisePhone } from "@/lib/leadGate";
 import { logError } from "@/lib/logger";
+import { checkName } from "@/lib/formRules";
+import { rankOrNull } from "@/lib/neetLimits";
+import { checkIndianMobile } from "@/lib/phone";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -64,14 +67,21 @@ export async function POST(request: Request) {
 
   const phone = normalisePhone(body.phone);
   if (!phone) {
-    return NextResponse.json({ error: "Enter a 10-digit Indian mobile number." }, { status: 400 });
+    const why = checkIndianMobile(body.phone);
+    return NextResponse.json({ error: why.ok ? "Enter a 10-digit Indian mobile number." : why.error }, { status: 400 });
   }
 
   const purpose = body.purpose === "reset" ? "reset" : "signup";
-  const name = String(body.name ?? "").trim().slice(0, 120) || null;
+  // A name, if one was typed, must be a name — it is what the counsellor
+  // reads first. Ranks within the number who sat that exam (lib/neetLimits).
+  let name: string | null = null;
+  if (String(body.name ?? "").trim()) {
+    const n = checkName(body.name);
+    if (!n.ok) return NextResponse.json({ error: n.error }, { status: 400 });
+    name = n.value;
+  }
   const level = body.level === "ug" ? "ug" : body.level === "pg" ? "pg" : null;
-  const rankRaw = Number(String(body.rank ?? "").replace(/\D/g, ""));
-  const rank = Number.isFinite(rankRaw) && rankRaw > 0 && rankRaw <= 2_000_000 ? rankRaw : null;
+  const rank = rankOrNull(body.rank, level);
   const category = String(body.category ?? "").trim().slice(0, 48) || null;
   const sourcePage = String(body.sourcePage ?? "").trim().slice(0, 200) || null;
 

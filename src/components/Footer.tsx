@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils";
 import MobileFooter from './MobileFooter';
 import { CONTACT_INFO } from '@/lib/constants';
 import { useContactInfo } from '@/hooks/useContactInfo';
+import { useCTA } from '@/hooks/useCTA';
+import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon';
 import type { NavItem } from '@/lib/content';
 import type { SocialLinks } from './SiteShell';
 
@@ -39,6 +41,7 @@ interface FooterProps {
 const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social }) => {
   const currentYear = new Date().getFullYear();
   const { contactInfo } = useContactInfo();
+  const cta = useCTA();
   const phoneNumber = contactInfo?.phone_number || CONTACT_INFO.phone;
   const emailAddress = contactInfo?.email || CONTACT_INFO.email;
 
@@ -216,17 +219,22 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
               <p className="text-gray-400 text-[13px] md:text-xs font-medium leading-relaxed mt-2 lg:mt-0">
                 Stay updated with the latest admission notifications.
               </p>
-              <div className="flex gap-2">
-                <input 
-                  type="email" 
-                  aria-label="Your email address"
-                  placeholder="Your email" 
-                  className="bg-white/5 border border-white/10 rounded-lg md:rounded-xl px-3 py-3 md:px-4 md:py-3 text-[13px] md:text-xs w-full focus:ring-2 focus:ring-cyan-600 outline-none transition-all placeholder:text-gray-600 min-h-[44px]"
-                />
-                <button className="bg-cyan-600 hover:bg-cyan-500 p-3 md:p-3 rounded-lg md:rounded-xl transition-all shrink-0 active:scale-95 shadow-lg shadow-cyan-900/20 flex items-center justify-center min-w-[44px] min-h-[44px]" aria-label="Subscribe">
-                  <ArrowRight className="h-4 w-4 md:h-4 md:w-4" />
-                </button>
-              </div>
+              {/*
+                This was an email box and a Subscribe button wired to nothing:
+                whatever was typed was lost, on every page. There is no mail
+                system behind the site, and the team works on WhatsApp — so
+                the visitor asks there, which reaches a person, and costs the
+                number nothing because they are messaging us.
+              */}
+              <button
+                type="button"
+                onClick={() => cta.whatsapp("Hi, please send me NEET counselling updates and admission notifications.")}
+                className="flex w-full items-center justify-center gap-2 rounded-lg md:rounded-xl bg-cyan-600 hover:bg-cyan-500 px-4 py-3 text-[13px] md:text-xs font-bold text-white transition-all active:scale-95 shadow-lg shadow-cyan-900/20 min-h-[44px]"
+              >
+                <WhatsAppIcon size={16} />
+                Get updates on WhatsApp
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </button>
             </div>
           </div>
           

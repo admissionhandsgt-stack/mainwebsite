@@ -17,6 +17,9 @@ import {
   User,
 } from "lucide-react";
 import { BUDGET_BANDS, TOTAL_BUDGET_BANDS } from "@/lib/counsellingOptions";
+import { checkIndianMobile } from "@/lib/phone";
+import { checkName } from "@/lib/formRules";
+import { checkRank } from "@/lib/neetLimits";
 
 /**
  * Signing in, as a real sign-in.
@@ -160,8 +163,15 @@ export default function AuthFlow({
   const firstField = useRef<HTMLInputElement>(null);
   const honeypot = useRef<HTMLInputElement>(null);
 
-  const digits = phone.replace(/\D/g, "").slice(-10);
-  const phoneValid = /^[6-9]\d{9}$/.test(digits);
+  /*
+    Not `digits.slice(-10)`. That took the last ten digits of whatever was
+    typed, so a number with one digit too many sent the code to a stranger —
+    which fails the visitor and is also the "messaging strangers" pattern that
+    gets the WhatsApp number locked. lib/phone.ts refuses a wrong length.
+  */
+  const phoneCheck = checkIndianMobile(phone);
+  const digits = phoneCheck.ok ? phoneCheck.national ?? "" : "";
+  const phoneValid = phoneCheck.ok;
 
   // Move focus to whatever the new step is asking for. Without this a keyboard
   // or screen-reader user is left on the button they just pressed while the
@@ -199,7 +209,7 @@ export default function AuthFlow({
         level,
         // What the page knew, or what they just told us. Either way the code
         // carries it, so it lands on the enquiry when the code is redeemed.
-        rank: rank || Number(typedRank) || undefined,
+        rank: rank || (typedRank && checkRank(typedRank, level).ok ? Number(typedRank) : undefined),
         category: category || typedCategory || undefined,
         sourcePage: typeof window !== "undefined" ? window.location.pathname : undefined,
         honeypot: honeypot.current?.value || undefined,
@@ -258,12 +268,18 @@ export default function AuthFlow({
   /* ---------------------------------------------------------- submissions */
 
   const submitPhone = async () => {
-    if (!phoneValid) return setError("Enter a 10-digit Indian mobile number.");
+    if (!phoneCheck.ok) return setError(phoneCheck.error);
     // Required for somebody we have not met. Four of the first six enquiries
     // reached the counsellors as "Not given", so every call opened by asking a
     // stranger their name — one field here is cheaper than that, every time.
-    if (!known?.exists && name.trim().length < 2) {
-      return setError("Please tell us your name.");
+    if (!known?.exists) {
+      const n = checkName(name);
+      if (!n.ok) return setError(n.error);
+    }
+    // Optional on this step, but if typed it has to be a rank somebody holds.
+    if (needsRank && typedRank) {
+      const r = checkRank(typedRank, level);
+      if (!r.ok) return setError(r.error);
     }
     setBusy(true);
     setError(null);
@@ -336,8 +352,9 @@ export default function AuthFlow({
    * are already recorded whatever happens next.
    */
   const submitProfile = async () => {
-    if (needsRank && !(Number(typedRank) > 0 && Number(typedRank) <= 2_000_000)) {
-      return setError("Enter your NEET rank — digits only.");
+    if (needsRank) {
+      const r = checkRank(typedRank, level);
+      if (!r.ok) return setError(r.error);
     }
     if (needsCategory && !typedCategory) {
       return setError("Choose the category you apply under.");

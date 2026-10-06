@@ -52,7 +52,7 @@ import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { normalisePhone } from "@/lib/leadGate";
 import { logError } from "@/lib/logger";
-import { sendText } from "@/lib/waGateway";
+import { sendText, reachoutLock } from "@/lib/waGateway";
 
 /** Long enough to switch apps and read it, short enough to be worth little. */
 const TTL_MINUTES = 10;
@@ -244,6 +244,19 @@ export async function issueCode(input: IssueInput): Promise<IssueResult> {
   const cap = await withinCaps(phone);
   if (!cap.allowed) {
     return { ok: false, message: cap.message, retryAfter: cap.retryAfter, fallback: true };
+  }
+
+  // WhatsApp is refusing new chats from our number (see reachoutLock). Do not
+  // send into it: no row against the visitor's allowance, no wait for a refusal,
+  // and no 463 to prolong the lock — straight to the path where they message us,
+  // which a lock does not touch.
+  const lock = await reachoutLock();
+  if (lock.active) {
+    return {
+      ok: false,
+      fallback: true,
+      message: "Our WhatsApp can't start new chats for a few hours, so this one works the other way round.",
+    };
   }
 
   const code = randomDigits();

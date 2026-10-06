@@ -21,6 +21,9 @@ import {
 import { useCTA } from '@/hooks/useCTA';
 import { useContactInfo } from '@/hooks/useContactInfo';
 import { toast } from 'sonner';
+import { checkPhone } from '@/lib/phone';
+import { checkName } from '@/lib/formRules';
+import { checkRank } from '@/lib/neetLimits';
 
 // Top medical states in India for selection chips
 const AVAILABLE_STATES = [
@@ -42,46 +45,44 @@ const BRANCH_SUGGESTIONS = [
   'Ophthalmology', 'Pathology'
 ];
 
-interface RankAnalysis {
-  specialties: string[];
-  zones: string;
-  strategy: string;
-}
+/*
+  There used to be a "rank opportunity analyser" here: five hard-coded bands
+  ("rank 3,000 or better -> MD Radiology, MD Dermatology"). It was invented, it
+  was PG-only - the homepage shows this form to NEET UG students, who were
+  told about MD specialities - and it contradicted the one promise the site
+  makes, that nothing is estimated. In its place is a link to the predictor
+  with the rank already filled in, which answers from published closing ranks.
+*/
 
-// Frontend rule-based rank analysis engine
-const getRankAnalysis = (rankNum: number): RankAnalysis => {
-  if (rankNum <= 3000) {
-    return {
-      specialties: ['MD Radiology', 'MD Dermatology', 'MD Gen Medicine'],
-      zones: 'AIQ Govt (Top Tier) & State Quota',
-      strategy: 'Excellent rank. Target top-tier government medical colleges.'
-    };
-  } else if (rankNum <= 10000) {
-    return {
-      specialties: ['MD Pediatrics', 'MS Orthopedics', 'MS Gen Surgery'],
-      zones: 'AIQ Gov (Mid-Tier), State Quota Gov (Top)',
-      strategy: 'Core clinical branch in state and national government institutions.'
-    };
-  } else if (rankNum <= 25000) {
-    return {
-      specialties: ['MD Anaesthesia', 'MS Ophthalmology', 'MD Pathology'],
-      zones: 'State Gov (Lower), DNB Programs, Top Private',
-      strategy: 'Parallel strategy: DNB programs and state quota private seats.'
-    };
-  } else if (rankNum <= 50000) {
-    return {
-      specialties: ['MD Pathology', 'MD Anaesthesia', 'Core Clinical (Deemed)'],
-      zones: 'Deemed Universities, State Quota Private',
-      strategy: 'Best clinical choices lie under Deemed University channels.'
-    };
-  } else {
-    return {
-      specialties: ['MD Pathology', 'Non-Clinical (Govt)', 'Clinical (Deemed)'],
-      zones: 'Deemed Universities & Management Quotas',
-      strategy: 'Focus on Deemed clinical choices and management quota options.'
-    };
-  }
-};
+/** Everything on this form that differs between a UG and a PG enquiry. */
+const COPY = {
+  ug: {
+    desk: 'Admission Desk Active',
+    guided: '👥 2100+ Students Guided',
+    title: 'Get Your Personalised MBBS Admission Plan',
+    intro: 'Tell us your NEET UG rank and preferences, and a counsellor will call you back with a plan.',
+    rankLabel: 'Your NEET UG Rank',
+    rankShort: 'NEET UG Rank',
+    rankHint: 'From your NEET UG scorecard. Not your marks.',
+    rankMissing: 'Enter your NEET UG rank to continue.',
+    namePlaceholder: 'Rahul Sharma',
+    course: 'mbbs',
+    intake: 'my MBBS enquiry form',
+  },
+  pg: {
+    desk: 'PG Advisory Desk Active',
+    guided: '👥 2100+ Doctors Guided',
+    title: 'Get Your Personalised PG Admission Strategy',
+    intro: 'Tell us your NEET PG rank and preferences, and a counsellor will call you back with a plan.',
+    rankLabel: 'Your NEET PG Rank',
+    rankShort: 'NEET PG Rank',
+    rankHint: 'From your NEET PG scorecard. Not your marks.',
+    rankMissing: 'Enter your NEET PG rank to continue.',
+    namePlaceholder: 'Dr. Rahul Sharma',
+    course: 'pg',
+    intake: 'my PG intake form',
+  },
+} as const;
 
 export const InlineLeadForm = ({
   source = 'PG Page',
@@ -93,6 +94,7 @@ export const InlineLeadForm = ({
   level?: 'ug' | 'pg';
 }) => {
   const { contactInfo } = useContactInfo();
+  const copy = COPY[level];
   // Form steps: 1 = Clinical Profile, 2 = Contact Information
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -118,13 +120,15 @@ export const InlineLeadForm = ({
           const recipientNumber = (contactInfo?.lead_notification_phone || contactInfo?.whatsapp_number || '919310301949')
             .replace(/[+\s-]/g, '');
 
-          const baseText = `Hi, I submitted my PG Intake Form.
-Name: ${formData.name}
-NEET PG Rank: ${formData.rank}
-Branch: ${formData.preferred_branch || 'Not Specified'}
-State Prefs: ${formData.preferred_state.join(', ') || 'Not Specified'}
-Quota: ${formData.quota_interest}
-Internship: ${formData.internship_status}`;
+          const baseText = [
+            `Hi, I submitted ${copy.intake}.`,
+            `Name: ${formData.name}`,
+            `${copy.rankShort}: ${formData.rank}`,
+            `${level === 'ug' ? 'Course' : 'Branch'}: ${formData.preferred_branch || 'Not Specified'}`,
+            `State Prefs: ${formData.preferred_state.join(', ') || 'Not Specified'}`,
+            `Quota: ${formData.quota_interest}`,
+            ...(level === 'pg' ? [`Internship: ${formData.internship_status}`] : []),
+          ].join('\n');
 
           const waUrl = `https://wa.me/${recipientNumber}?text=${encodeURIComponent(baseText)}`;
           window.location.href = waUrl;
@@ -135,12 +139,10 @@ Internship: ${formData.internship_status}`;
 
       return () => clearTimeout(timer);
     }
-  }, [status, contactInfo, formData]);
+  }, [status, contactInfo, formData, copy, level]);
 
-  // Dynamic Opportunity Analyzer state
-  const rankVal = parseInt(formData.rank.replace(/,/g, ''), 10);
-  const showAnalysis = !isNaN(rankVal) && rankVal > 0;
-  const analysisData = showAnalysis ? getRankAnalysis(rankVal) : null;
+  // A real answer for the rank they typed: the predictor, pre-filled.
+  const rankCheck = formData.rank ? checkRank(formData.rank, level) : null;
 
   const handleStateToggle = (stateName: string) => {
     setFormData(prev => {
@@ -154,7 +156,12 @@ Internship: ${formData.internship_status}`;
   const handleNextStep = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.rank) {
-      setErrorMsg('Please enter your expected/current NEET PG rank to continue.');
+      setErrorMsg(copy.rankMissing);
+      return;
+    }
+    const r = checkRank(formData.rank, level);
+    if (!r.ok) {
+      setErrorMsg(r.error);
       return;
     }
     setErrorMsg('');
@@ -165,12 +172,17 @@ Internship: ${formData.internship_status}`;
     e.preventDefault();
     if (status === 'loading') return;
 
-    if (!formData.name.trim()) {
-      setErrorMsg('Full Name is required');
+    // The same rules the server applies (lib/formRules, lib/phone), said here
+    // while the visitor can still fix them. International numbers are fine
+    // with their +country code - NRI families enquire from abroad.
+    const n = checkName(formData.name);
+    if (!n.ok) {
+      setErrorMsg(n.error);
       return;
     }
-    if (!formData.phone.trim()) {
-      setErrorMsg('Phone Number is required');
+    const ph = checkPhone(formData.phone, { allowInternational: true });
+    if (!ph.ok) {
+      setErrorMsg(ph.error);
       return;
     }
 
@@ -184,7 +196,7 @@ Internship: ${formData.internship_status}`;
       preferred_branch: formData.preferred_branch,
       preferred_state: formData.preferred_state.join(', '),
       quota_interest: formData.quota_interest,
-      internship_status: formData.internship_status,
+      internship_status: level === 'pg' ? formData.internship_status : undefined,
       source,
       level,
       honeypot: formData.honeypot
@@ -247,7 +259,7 @@ Internship: ${formData.internship_status}`;
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
             <span className="text-[10px] font-black uppercase tracking-wider text-emerald-400">
-              PG Advisory Desk Active
+              {copy.desk}
             </span>
           </div>
           <div className="flex items-center gap-1 text-slate-400 text-[10px] font-bold">
@@ -256,17 +268,17 @@ Internship: ${formData.internship_status}`;
           </div>
         </div>
         <div className="flex items-center justify-between text-[9px] text-slate-400 font-bold uppercase tracking-wider">
-          <span>👥 2100+ Doctors Guided</span>
+          <span>{copy.guided}</span>
           <span>🎯 AIQ • STATE • DEEMED • NRI</span>
         </div>
       </div>
 
       <div className="mb-5">
         <h3 className="text-base font-black text-white tracking-tight mb-1">
-          Get Your Personalized PG Admission Strategy
+          {copy.title}
         </h3>
         <p className="text-[11px] text-slate-400 font-bold leading-normal">
-          Provide your NEET PG details below to generate a pathway analysis and schedule a counseling callback.
+          {copy.intro}
         </p>
       </div>
 
@@ -276,7 +288,7 @@ Internship: ${formData.internship_status}`;
           {/* Rank Field */}
           <div>
             <label className="block text-[10px] font-black text-slate-300 uppercase tracking-wider mb-1.5 ml-0.5">
-              Expected / Current NEET PG Rank
+              {copy.rankLabel}
             </label>
             <div className="relative">
               <Award className="absolute left-3 top-2.5 w-4 h-4 text-slate-500" />
@@ -284,38 +296,30 @@ Internship: ${formData.internship_status}`;
                 type="text"
                 required
                 className="w-full pl-9 pr-3 py-3 md:py-2 bg-slate-950/40 border border-white/10 focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-base md:text-xs text-white placeholder-slate-600 outline-none"
-                aria-label="Your NEET rank"
+                inputMode="numeric"
+                aria-label={copy.rankLabel}
                 placeholder="e.g. 4500"
                 value={formData.rank}
                 onChange={e => setFormData({ ...formData, rank: e.target.value.replace(/\D/g, '') })}
               />
             </div>
-            <p className="text-[9px] text-slate-500 font-bold mt-1 ml-0.5">
-              Used to estimate realistic counseling opportunities.
+            <p className="text-[10px] text-slate-500 font-bold mt-1 ml-0.5">
+              {rankCheck && !rankCheck.ok ? rankCheck.error : copy.rankHint}
             </p>
           </div>
 
-          {/* Dynamic Rank Opportunity Analyzer */}
-          {showAnalysis && analysisData && (
-            <div className="bg-cyan-500/5 border border-cyan-500/10 rounded-xl p-3.5 space-y-2 animate-fadeIn">
-              <div className="flex items-center gap-1.5 text-[10.5px] font-black text-cyan-400">
-                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Estimated Opportunity Zones (AIR {formData.rank})</span>
-              </div>
-              <div className="text-[10px] text-slate-300 leading-relaxed font-bold">
-                <span className="text-slate-400 font-normal">Pathway:</span> {analysisData.zones}
-              </div>
-              <div className="flex flex-wrap gap-1 mt-1">
-                {analysisData.specialties.map((spec, i) => (
-                  <span key={i} className="text-[9px] bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 font-black px-2 py-0.5 rounded-md">
-                    {spec}
-                  </span>
-                ))}
-              </div>
-              <p className="text-[9px] text-slate-400 leading-normal font-bold">
-                💡 <span className="text-slate-300">{analysisData.strategy}</span>
-              </p>
-            </div>
+          {/* What the rank actually reached - from published closing ranks. */}
+          {rankCheck?.ok && (
+            <a
+              href={`/neet-college-predictor?course=${copy.course}&rank=${rankCheck.value}`}
+              className="flex items-center justify-between gap-2 rounded-xl border border-cyan-500/20 bg-cyan-500/5 px-3.5 py-3 text-[11px] font-bold text-cyan-300 transition-colors hover:bg-cyan-500/10"
+            >
+              <span className="flex items-center gap-1.5">
+                <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+                See every seat rank {rankCheck.value.toLocaleString('en-IN')} reached last year
+              </span>
+              <ChevronRight className="h-4 w-4 shrink-0" aria-hidden="true" />
+            </a>
           )}
 
           {/* Preferred branch (PG) or course (UG) */}
@@ -367,7 +371,7 @@ Internship: ${formData.internship_status}`;
           </div>
 
           {/* Quota Pills & Internship Toggle */}
-          <div className="grid grid-cols-2 gap-3.5">
+          <div className={`grid gap-3.5 ${level === 'pg' ? 'grid-cols-2' : 'grid-cols-1'}`}>
             {/* Quota Selector */}
             <div>
               <label className="block text-[10px] font-black text-slate-355 uppercase tracking-wider mb-1.5 ml-0.5">
@@ -394,7 +398,8 @@ Internship: ${formData.internship_status}`;
               </div>
             </div>
 
-            {/* Internship Completion */}
+            {/* Internship Completion - PG only; a NEET UG candidate has none */}
+            {level === 'pg' && (
             <div>
               <label className="block text-[10px] font-black text-slate-355 uppercase tracking-wider mb-1.5 ml-0.5">
                 Internship Status
@@ -419,6 +424,7 @@ Internship: ${formData.internship_status}`;
                 })}
               </div>
             </div>
+            )}
           </div>
 
           {errorMsg && (
@@ -461,7 +467,7 @@ Internship: ${formData.internship_status}`;
                 required
                 className="w-full pl-9 pr-3 py-3 md:py-2 bg-slate-950/40 border border-white/10 focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-base md:text-xs text-white placeholder-slate-600 outline-none"
                 aria-label="Your name"
-                placeholder="Dr. Rahul Sharma"
+                placeholder={copy.namePlaceholder}
                 value={formData.name}
                 onChange={e => setFormData({...formData, name: e.target.value})}
               />
@@ -480,7 +486,9 @@ Internship: ${formData.internship_status}`;
                 required
                 className="w-full pl-9 pr-3 py-3 md:py-2 bg-slate-950/40 border border-white/10 focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-base md:text-xs text-white placeholder-slate-600 outline-none"
                 aria-label="Your mobile number"
-                placeholder="+91 98765 43210"
+                inputMode="tel"
+                autoComplete="tel"
+                placeholder="98765 12345"
                 value={formData.phone}
                 onChange={e => setFormData({...formData, phone: e.target.value})}
               />
@@ -493,12 +501,12 @@ Internship: ${formData.internship_status}`;
               Intake Summary:
             </span>
             <div className="flex justify-between">
-              <span className="text-slate-500">NEET PG Rank:</span>
+              <span className="text-slate-500">{copy.rankShort}:</span>
               <span className="text-white font-bold">AIR {formData.rank}</span>
             </div>
             {formData.preferred_branch && (
               <div className="flex justify-between">
-                <span className="text-slate-500">Specialty:</span>
+                <span className="text-slate-500">{level === 'ug' ? 'Course' : 'Specialty'}:</span>
                 <span className="text-white font-bold">{formData.preferred_branch}</span>
               </div>
             )}

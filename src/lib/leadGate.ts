@@ -21,6 +21,8 @@
  * verified callback would.
  */
 
+import { checkIndianMobile } from "@/lib/phone";
+
 const ENCODER = new TextEncoder();
 
 export const UNLOCK_COOKIE = "ah_unlock";
@@ -178,8 +180,9 @@ export function unlockCookie(token: string) {
  * prove it exists.
  */
 export function normalisePhone(input: unknown): string | null {
-  const digits = String(input ?? "").replace(/\D/g, "");
-  const local = digits.length === 12 && digits.startsWith("91") ? digits.slice(2) : digits;
-  if (!/^[6-9]\d{9}$/.test(local)) return null;
-  return `+91${local}`;
+  // The rule itself is lib/phone.ts, shared with the forms: a leading 0 is
+  // accepted, a wrong length is refused rather than trimmed to fit, and
+  // invented numbers (9999999999, 9876543210) are refused.
+  const r = checkIndianMobile(input);
+  return r.ok ? r.e164 : null;
 }

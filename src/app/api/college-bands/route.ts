@@ -3,6 +3,7 @@ import { logError } from "@/lib/logger";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
+import { checkRank } from "@/lib/neetLimits";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -36,11 +37,10 @@ export async function GET(request: Request) {
   }
 
   const params = new URL(request.url).searchParams;
-  const rank = Number(String(params.get("rank") ?? "").replace(/[,\s]/g, ""));
-  if (!Number.isFinite(rank) || rank < 1 || rank > 2_000_000) {
-    return NextResponse.json({ error: "Invalid rank." }, { status: 400 });
-  }
   const level = params.get("level") === "ug" ? "ug" : "pg";
+  const checked = checkRank(params.get("rank"), level);
+  if (!checked.ok) return NextResponse.json({ error: checked.error }, { status: 400 });
+  const rank = checked.value;
   const category = (params.get("category") || (level === "ug" ? "UR" : "GEN"))
     .toUpperCase()
     .slice(0, 48);

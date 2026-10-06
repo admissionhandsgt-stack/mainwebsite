@@ -7,6 +7,7 @@ import { streamSpec, type Stream } from "@/lib/predictorFacets";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { chanceFor, summarise, BAND_ORDER, type ChanceBand, type SeatOptionRow } from "@/lib/predictor";
+import { checkRank } from "@/lib/neetLimits";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -29,17 +30,16 @@ interface PredictQuery {
 }
 
 function parse(searchParams: URLSearchParams): PredictQuery | { error: string } {
-  const rankRaw = searchParams.get("rank");
-  const rank = Number(String(rankRaw ?? "").replace(/[,\s]/g, ""));
-  if (!rankRaw || !Number.isFinite(rank) || rank < 1 || rank > 2_000_000) {
-    return { error: "Rank must be a number between 1 and 20,00,000." };
-  }
-
   // `level` is still accepted so existing links keep working, but the stream
   // is what the tool sends and it decides both the level and the course.
   const spec = streamSpec(
     searchParams.get("stream") ?? (searchParams.get("level") === "ug" ? "mbbs" : "pg"),
   );
+
+  // Within the number who sat that exam — lib/neetLimits.ts.
+  const checked = checkRank(searchParams.get("rank"), spec.level);
+  if (!checked.ok) return { error: checked.error };
+  const rank = checked.value;
   const category = (searchParams.get("category") || "").toUpperCase().slice(0, 48);
 
   // NRI and management are quotas, not categories — see predictorFacets.ts.

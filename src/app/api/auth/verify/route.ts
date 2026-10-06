@@ -5,6 +5,8 @@ import { normalisePhone, mintUnlock, unlockCookie } from "@/lib/leadGate";
 import { upsertUser, startSession, sessionCookie } from "@/lib/userAuth";
 import { recordLead } from "@/lib/leadCapture";
 import { logError } from "@/lib/logger";
+import { nameOrNull } from "@/lib/formRules";
+import { rankOrNull } from "@/lib/neetLimits";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -64,11 +66,9 @@ export async function POST(request: Request) {
     // What they typed on this screen wins over what was carried through the
     // code, because it is newer — but neither ever blanks a stored value.
     const carried = checked.carried;
-    const name = String(body.name ?? "").trim().slice(0, 120) || carried?.name || null;
+    const name = nameOrNull(body.name) || carried?.name || null;
     const level = body.level === "ug" ? "ug" : body.level === "pg" ? "pg" : carried?.level ?? null;
-    const rankRaw = Number(String(body.rank ?? "").replace(/\D/g, ""));
-    const rank =
-      Number.isFinite(rankRaw) && rankRaw > 0 && rankRaw <= 2_000_000 ? rankRaw : carried?.rank ?? null;
+    const rank = rankOrNull(body.rank, level) ?? carried?.rank ?? null;
     const category = String(body.category ?? "").trim().slice(0, 48) || carried?.category || null;
 
     const user = await upsertUser({ phone, name, level, rank, category, verified: true });

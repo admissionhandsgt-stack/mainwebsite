@@ -40,7 +40,12 @@ interface Gateway {
   configured: boolean;
   reachable?: boolean;
   status?: string;
-  me?: { id?: string; pushName?: string } | null;
+  me?: {
+    id?: string;
+    pushName?: string;
+    /** WhatsApp's "reach-out lock": no new chats from this number until it lifts. */
+    reachoutTimelock?: { isActive?: boolean; timeEnforcementEnds?: number; enforcementType?: string };
+  } | null;
   error?: string;
 }
 
@@ -280,6 +285,34 @@ export default function WhatsAppAdminPage() {
           </span>
         )}
       </div>
+
+      {(() => {
+        // A 463 from WhatsApp: the number may not start new chats. Every
+        // sign-in code goes to somebody new, so codes cannot be sent — and a
+        // restart does not lift it, which is worth saying before somebody
+        // tries (somebody did, on 2026-10-06).
+        const lock = gateway?.me?.reachoutTimelock;
+        const ends = lock?.timeEnforcementEnds ? new Date(lock.timeEnforcementEnds * 1000) : null;
+        if (!lock?.isActive || (ends && ends.getTime() < Date.now())) return null;
+        return (
+          <div role="status" className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            <p className="font-semibold">
+              WhatsApp has stopped this number starting new chats
+              {ends
+                ? ` until ${ends.toLocaleString("en-IN", { timeZone: "Asia/Kolkata", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })} IST`
+                : " for now"}
+              .
+            </p>
+            <p className="mt-1">
+              Sign-in codes cannot be sent until then, so visitors are automatically shown the
+              &ldquo;send us this code on WhatsApp&rdquo; screen instead, which still works. Lead
+              alerts to the team and existing chats are unaffected. Restarting or re-pairing the
+              session does not lift it — waiting does. It is WhatsApp&rsquo;s response to messaging
+              many new numbers; fewer codes per day is what keeps it away.
+            </p>
+          </div>
+        );
+      })()}
 
       {msg && (
         <div

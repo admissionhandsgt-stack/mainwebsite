@@ -3,6 +3,9 @@ import { db } from '@/db/client';
 import { sql } from 'drizzle-orm';
 import { sendWhatsAppNotification } from '@/lib/whatsappService';
 import { clientIp } from "@/lib/clientIp";
+import { checkPhone } from "@/lib/phone";
+import { checkName, checkEmail, tidy } from "@/lib/formRules";
+import { checkRank } from "@/lib/neetLimits";
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -33,10 +36,9 @@ function rateLimited(ip: string): boolean {
   return entry.count > RATE_LIMIT_MAX;
 }
 
-const trimOrNull = (v: unknown): string | null => {
-  const s = typeof v === 'string' ? v.trim() : '';
-  return s === '' ? null : s;
-};
+// Free text from the form, tidied and capped: every value here is read by a
+// counsellor, and nothing had a length limit before 2026-10-06.
+const textOrNull = (v: unknown, max = 120): string | null => tidy(v, max) || null;
 
 export async function POST(req: Request) {
   try {
@@ -71,30 +73,33 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: true, message: 'Lead captured successfully' });
     }
 
-    if (!name || typeof name !== 'string' || name.trim().length === 0) {
-      return NextResponse.json({ error: 'Name is required' }, { status: 400 });
-    }
-    if (!phone || typeof phone !== 'string') {
-      return NextResponse.json({ error: 'Phone number is required' }, { status: 400 });
-    }
+    // The same rules the forms show as you type (lib/phone, formRules,
+    // neetLimits). Each refusal says what to fix, because the form shows it.
+    const checkedName = checkName(name);
+    if (!checkedName.ok) return NextResponse.json({ error: checkedName.error }, { status: 400 });
 
-    const normalizedPhone = phone.replace(/\D/g, '');
-    if (normalizedPhone.length < 10) {
-      return NextResponse.json(
-        { error: 'Invalid phone number. Minimum 10 digits required.' },
-        { status: 400 },
-      );
-    }
-    const finalPhone =
-      normalizedPhone.length === 10 ? `+91${normalizedPhone}` : `+${normalizedPhone}`;
+    // Indian mobile — or, written with its own +country code, a foreign one:
+    // NRI families enquire from abroad. Before this, any 10+ digits passed and
+    // `1234567890` reached the counsellors as +911234567890.
+    const checkedPhone = checkPhone(phone, { allowInternational: true });
+    if (!checkedPhone.ok) return NextResponse.json({ error: checkedPhone.error }, { status: 400 });
+    const finalPhone = checkedPhone.e164;
 
-    const sourcePage = String(source).trim();
+    const checkedEmail = checkEmail(email);
+    if (!checkedEmail.ok) return NextResponse.json({ error: checkedEmail.error }, { status: 400 });
+
+    const sourcePage = tidy(source, 200) || 'PG Page';
     // A PG enquiry unless the form says otherwise: every current form that
     // posts here without a level is on the PG side of the site.
     const leadLevel = level === 'ug' || level === 'pg' ? level : 'pg';
 
-    const parsedRank = rank ? parseInt(String(rank).replace(/[^\d]/g, ''), 10) : NaN;
-    const finalRank = Number.isFinite(parsedRank) ? parsedRank : null;
+    // Optional, but if it is given it has to be a rank somebody could hold.
+    let finalRank: number | null = null;
+    if (rank !== undefined && rank !== null && String(rank).trim() !== '') {
+      const checkedRank = checkRank(rank, leadLevel);
+      if (!checkedRank.ok) return NextResponse.json({ error: checkedRank.error }, { status: 400 });
+      finalRank = checkedRank.value;
+    }
 
     // A double-submitted form is the common case here, not a second genuine
     // enquiry, so the same number inside five minutes is rejected.
@@ -116,22 +121,22 @@ export async function POST(req: Request) {
         (level, name, phone, email, rank, preferred_branch, preferred_state,
          quota_interest, internship_status, category, message, source_page, lead_status)
       VALUES
-        (${leadLevel}::level, ${name.trim()}, ${finalPhone}, ${trimOrNull(email)}, ${finalRank},
-         ${trimOrNull(preferred_branch)}, ${trimOrNull(preferred_state)},
-         ${trimOrNull(quota_interest)}, ${trimOrNull(internship_status)},
-         ${trimOrNull(category)}, ${trimOrNull(message)}, ${sourcePage}, 'New')
+        (${leadLevel}::level, ${checkedName.value}, ${finalPhone}, ${checkedEmail.value || null}, ${finalRank},
+         ${textOrNull(preferred_branch)}, ${textOrNull(preferred_state)},
+         ${textOrNull(quota_interest)}, ${textOrNull(internship_status)},
+         ${textOrNull(category, 48)}, ${textOrNull(message, 2000)}, ${sourcePage}, 'New')
     `);
 
     // Fire and forget: a WhatsApp outage must not cost us the lead.
     sendWhatsAppNotification({
-      name: name.trim(),
+      name: checkedName.value,
       phone: finalPhone,
       rank: finalRank != null ? String(finalRank) : undefined,
-      preferred_branch,
-      preferred_state,
-      quota_interest,
-      internship_status,
-      source,
+      preferred_branch: textOrNull(preferred_branch) ?? undefined,
+      preferred_state: textOrNull(preferred_state) ?? undefined,
+      quota_interest: textOrNull(quota_interest) ?? undefined,
+      internship_status: textOrNull(internship_status) ?? undefined,
+      source: sourcePage,
     }).catch((err) =>
       console.error('[WhatsApp Notification Engine] Error sending alert:', err),
     );

@@ -25,6 +25,8 @@
  */
 
 import { db } from "@/db/client";
+import { rankOrNull } from "@/lib/neetLimits";
+import { nameOrNull } from "@/lib/formRules";
 import { sql } from "drizzle-orm";
 import {
   ATTEMPTS,
@@ -84,9 +86,10 @@ const text = (v: unknown, max = 120): string | null => {
  * rather than a number, and anything that is not a string in a string field is
  * dropped instead of being coerced into `"[object Object]"`.
  */
-export function parseProfile(body: Record<string, unknown>): CounsellingProfile {
-  const rankRaw = Number(String(body.rank ?? "").replace(/[^\d]/g, ""));
-  const rank = Number.isFinite(rankRaw) && rankRaw > 0 && rankRaw <= 2_000_000 ? rankRaw : null;
+export function parseProfile(body: Record<string, unknown>, level?: "ug" | "pg" | null): CounsellingProfile {
+  // Within the number who sat that exam — a PG rank of 15 lakh is not a rank.
+  // The form says why as the visitor types; here an impossible one is dropped.
+  const rank = rankOrNull(body.rank, level);
 
   // The band id is what the UI sends; the number is ours, so a client cannot
   // invent a ceiling that the seat query would then trust.
@@ -124,7 +127,7 @@ export function parseProfile(body: Record<string, unknown>): CounsellingProfile 
     : null;
 
   return {
-    name: text(body.name),
+    name: nameOrNull(body.name),
     rank,
     category: text(body.category, 48),
     preferredBranches: preferredBranches.length ? preferredBranches : null,

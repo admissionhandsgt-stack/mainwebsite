@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { logError } from "@/lib/logger";
 import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
 import { startAttempt, verifyEnabled } from "@/lib/waVerify";
+import { nameOrNull } from "@/lib/formRules";
+import { rankOrNull } from "@/lib/neetLimits";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -46,14 +48,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Could not start verification." }, { status: 400 });
   }
 
-  const rankRaw = Number(String(body.rank ?? "").replace(/[^\d]/g, ""));
+  const level = body.level === "ug" ? "ug" : "pg";
 
   try {
     const started = await startAttempt({
-      name: String(body.name ?? "").trim().slice(0, 120) || null,
+      name: nameOrNull(body.name),
       phone: (body.phone as string) ?? null,
-      level: body.level === "ug" ? "ug" : "pg",
-      rank: Number.isFinite(rankRaw) && rankRaw > 0 && rankRaw <= 2_000_000 ? rankRaw : null,
+      level,
+      rank: rankOrNull(body.rank, level),
       category: String(body.category ?? "").trim().slice(0, 48) || null,
       sourcePage: String(body.source ?? "").trim().slice(0, 160) || null,
     });
