@@ -75,7 +75,7 @@ export default function NumbersPanel({
   const [form, setForm] = useState({ label: "", gatewayUrl: "http://waha2:3000", apiKey: "", dailyCap: "40" });
   const [pairFor, setPairFor] = useState<number | null>(null);
   const [pairNumber, setPairNumber] = useState("");
-  const [pairCode, setPairCode] = useState<{ id: number; code: string } | null>(null);
+  const [pairCode, setPairCode] = useState<{ id: number; code: string; number: string } | null>(null);
 
   const ready = senders.filter((s) => state(s).tone === "good").length;
 
@@ -190,14 +190,14 @@ export default function NumbersPanel({
               {pairFor === s.id && (
                 <div className="rounded-xl bg-gray-50 p-3">
                   <p className="text-sm text-gray-600">
-                    The phone number this backup will send from, with the country code. Then on that phone: WhatsApp
+                    The phone number this backup will send from (a 10-digit Indian number is fine — 91 is added). Then on that phone: WhatsApp
                     &rarr; Linked devices &rarr; Link a device &rarr; <em>Link with phone number instead</em>.
                   </p>
                   <div className="mt-2 flex flex-wrap gap-2">
                     <input
                       value={pairNumber}
                       onChange={(e) => setPairNumber(e.target.value)}
-                      placeholder="919876512345"
+                      placeholder="9876512345"
                       inputMode="tel"
                       className="w-48 rounded-lg border border-gray-200 px-3 py-1.5 text-sm"
                     />
@@ -206,7 +206,7 @@ export default function NumbersPanel({
                         const started = await post({ action: "sender-connect", id: s.id }, `pair-${s.id}`);
                         if (!started) return;
                         const r = await post({ action: "sender-pair-code", id: s.id, number: pairNumber }, `pair-${s.id}`);
-                        if (r?.code) setPairCode({ id: s.id, code: String(r.code) });
+                        if (r?.code) setPairCode({ id: s.id, code: String(r.code), number: String(r.number ?? pairNumber) });
                       }}
                       disabled={busy === `pair-${s.id}` || pairNumber.replace(/\D/g, "").length < 10}
                       className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-sm font-bold text-white hover:bg-emerald-700 disabled:opacity-50"
@@ -217,7 +217,7 @@ export default function NumbersPanel({
                   </div>
                   {pairCode?.id === s.id && (
                     <p className="mt-3">
-                      <span className="block text-xs uppercase tracking-wide text-gray-500">Type this on that phone</span>
+                      <span className="block text-xs uppercase tracking-wide text-gray-500">Type this on the +{pairCode.number} phone, within a couple of minutes</span>
                       <span className="font-mono text-2xl font-bold tracking-[0.2em] text-gray-900">{pairCode.code}</span>
                     </p>
                   )}

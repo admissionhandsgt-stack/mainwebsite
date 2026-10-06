@@ -230,6 +230,24 @@ function checkGatewayUrl(raw: unknown): string | null {
   return /^https?:\/\/[^\s]+$/i.test(url) ? url : null;
 }
 
+
+/**
+ * The number to pair, as WhatsApp wants it: country code and digits only.
+ *
+ * A 10-digit Indian mobile typed without its 91 (or with a leading 0) gets the
+ * 91 added. On 2026-10-06 a backup was paired as "9220626002": WhatsApp issued
+ * a code for a number that does not exist and the phone said "couldn't link
+ * device". Anything else must already carry its country code.
+ */
+function pairingDigits(raw: unknown): string | null {
+  const d = String(raw ?? "").replace(/\D/g, "");
+  if (/^[6-9]\d{9}$/.test(d)) return `91${d}`;
+  if (/^0[6-9]\d{9}$/.test(d)) return `91${d.slice(1)}`;
+  if (/^91[6-9]\d{9}$/.test(d)) return d;
+  if (d.length >= 11 && d.length <= 15 && !d.startsWith("0")) return d;
+  return null;
+}
+
 const BAD_URL = "The gateway address must start with http:// or https://";
 const NO_SUCH = "No such backup number.";
 
@@ -372,9 +390,9 @@ export async function POST(request: Request) {
       }
 
       case "pair-code": {
-        const digits = String(body.number ?? "").replace(/\D/g, "");
-        if (digits.length < 10) {
-          return NextResponse.json({ error: "Enter the number to pair." }, { status: 400 });
+        const digits = pairingDigits(body.number);
+        if (!digits) {
+          return NextResponse.json({ error: "Enter the number to pair, e.g. 9876512345 or 919876512345." }, { status: 400 });
         }
         const res = await waha(`/api/${SESSION}/auth/request-code`, {
           method: "POST",
@@ -485,9 +503,9 @@ export async function POST(request: Request) {
       case "sender-pair-code": {
         const s = await backup(body.id);
         if (!s) return NextResponse.json({ error: NO_SUCH }, { status: 404 });
-        const digits = String(body.number ?? "").replace(/\D/g, "");
-        if (digits.length < 10) {
-          return NextResponse.json({ error: "Enter the number to pair, with the country code." }, { status: 400 });
+        const digits = pairingDigits(body.number);
+        if (!digits) {
+          return NextResponse.json({ error: "Enter the number to pair, e.g. 9876512345 or 919876512345." }, { status: 400 });
         }
         const res = await waha(
           `/api/${s.session}/auth/request-code`,
@@ -496,7 +514,7 @@ export async function POST(request: Request) {
           { url: s.url, apiKey: s.apiKey },
         );
         if (!res.ok) return NextResponse.json({ error: res.error ?? `The gateway answered ${res.status}.` }, { status: 502 });
-        return NextResponse.json({ ok: true, code: (res.body as { code?: string })?.code ?? null });
+        return NextResponse.json({ ok: true, code: (res.body as { code?: string })?.code ?? null, number: digits });
       }
 
       case "sender-logout": {
