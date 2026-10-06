@@ -107,7 +107,11 @@ async function sendVia(s: Sender, chatId: string, text: string): Promise<{ ok: b
 export async function sendText(
   phone: string,
   text: string,
-  opts: { purpose?: Purpose } = {},
+  /**
+   * `via`: send from this number only — a reply belongs in the chat the
+   * person is already in, not in a new one from a different number.
+   */
+  opts: { purpose?: Purpose; via?: number } = {},
 ): Promise<GatewayResult> {
   // WAHA addresses a person as `<digits>@c.us`, with no `+` and with the
   // country code. A ten-digit Indian number needs the 91 putting back.
@@ -116,7 +120,7 @@ export async function sendText(
   if (full.length < 10) return { sent: false, error: `Not a usable number: ${phone}` };
 
   const purpose = opts.purpose ?? "alert";
-  const senders = await pickSenders(purpose);
+  const senders = (await pickSenders(purpose)).filter((s) => opts.via === undefined || s.id === opts.via);
   if (!senders.length) return { sent: false, error: "No WhatsApp number can send right now." };
 
   const errors: string[] = [];

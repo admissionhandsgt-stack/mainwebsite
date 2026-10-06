@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { logError } from "@/lib/logger";
 import { resolveInbound, verifyWebhookSignature } from "@/lib/waVerify";
 import { resolveLid } from "@/lib/waGateway";
+import { handleMenuReply } from "@/lib/waReplies";
+import { normalisePhone } from "@/lib/leadGate";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -62,6 +64,12 @@ export async function POST(request: Request) {
 
   try {
     const result = await resolveInbound(from, body);
+    // Not a verification code: maybe an answer to the menu at the end of a
+    // sign-in code ("reply 1, 2 or 3") — waReplies answers those in the chat.
+    if (!result.matched) {
+      const phone = normalisePhone(from.split("@")[0]);
+      if (phone) await handleMenuReply(phone, body).catch((e) => logError(e, { route: "/api/whatsapp/inbound:menu", request }));
+    }
     // Always 200: a message with no code in it is not an error, and a gateway
     // that retries on non-2xx would hammer us for every unrelated chat.
     return NextResponse.json({ ok: true, matched: result.matched });

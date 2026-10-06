@@ -183,36 +183,74 @@ async function withinCaps(phone: string): Promise<CapResult> {
 
 /* ------------------------------------------------------------------ send */
 
+interface MessageContext {
+  name?: string | null;
+  rank?: number | null;
+}
+
 /**
- * The message itself.
+ * The code, then a reason to reply.
  *
- * Written as a person would write it, names the brand so it is not a bare
- * number from an unknown sender, and ends by inviting a reply — which is the
- * one ban signal we can improve rather than merely ration.
+ * WhatsApp judges a sender by whether its chats are two-way. A code nobody
+ * answers is a stranger being messaged — the pattern that got the number
+ * locked on 2026-10-06 — and "Reply here if you need help" earned almost no
+ * replies. So every message ends with a short menu whose answers get the
+ * student something real at once (lib/waReplies.ts answers them):
+ *
+ *   1 — a counsellor call (and an alert to the team)
+ *   2 — the colleges their rank reached last year (the predictor, pre-filled)
+ *   3 — the document checklist for reporting
+ *
+ * Several wordings, English and Hinglish, with their name and rank where we
+ * have them — so the text is never byte-identical, and reads as written for
+ * them. No promises: nothing here claims a seat, an accuracy or a timeline.
  */
-function composeMessage(code: string, purpose: OtpPurpose): string {
-  const lead =
-    purpose === "reset"
-      ? "Here is your code to reset your AdmissionHands password"
-      : "Here is your AdmissionHands verification code";
-  // The reply is the point of the last line. WhatsApp judges a sender by
-  // whether its chats are two-way: a code nobody answers is a stranger being
-  // messaged, which is what got the number locked on 2026-10-06. "Reply here if
-  // you need help" got almost no replies; a one-tap answer that gets the
-  // student something they want does — and every "1" is a warm lead in the
-  // counsellors' WhatsApp. Three wordings, so the text is not byte-identical
-  // every time.
-  const asks = [
-    `Reply *1* and a counsellor will call you about your seat options.`,
-    `Want help choosing colleges? Reply *1* and a counsellor will call you.`,
-    `Reply *1* if you'd like a free call from a counsellor about your rank.`,
+function composeMessage(code: string, purpose: OtpPurpose, ctx: MessageContext = {}): string {
+  const first = (ctx.name ?? "").trim().split(/\s+/)[0]?.replace(/[^\p{L}\p{M}'-]/gu, "") ?? "";
+  const hi = first ? `Hi ${first} 👋` : "Hi 👋";
+  const namaste = first ? `Namaste ${first}!` : "Namaste!";
+  const rank = ctx.rank ? ctx.rank.toLocaleString("en-IN") : null;
+  const ignore = "If you did not ask for this code, you can ignore this message.";
+
+  if (purpose === "reset") {
+    const reset = [
+      `Your AdmissionHands password reset code is *${code}* — valid for ${TTL_MINUTES} minutes. Please don't share it.\n\n` +
+        `Stuck on choosing colleges? Reply *1* and a counsellor will call you, free.\n\n${ignore}`,
+      `${namaste} Password reset ke liye aapka code hai *${code}* (${TTL_MINUTES} minute valid, kisi ko share na karein).\n\n` +
+        `Counsellor se baat karni ho to *1* reply karein.\n\n${ignore}`,
+    ];
+    return reset[Math.floor(Math.random() * reset.length)];
+  }
+
+  const variants = [
+    `${hi} Your AdmissionHands code is *${code}* — valid for ${TTL_MINUTES} minutes. Please don't share it.\n\n` +
+      `While you're here, what would help most? Just reply with the number:\n` +
+      `*1* — a free call from a counsellor\n*2* — colleges your rank reached last year\n*3* — documents you'll need at reporting\n\n${ignore}`,
+
+    `${namaste} Aapka AdmissionHands code hai *${code}* — ${TTL_MINUTES} minute tak valid hai, kisi ke saath share na karein.\n\n` +
+      `Kuch aur chahiye? Bas number reply karein:\n` +
+      `*1* — counsellor ka free call\n*2* — aapki rank par last year kaunse college mile\n*3* — counselling ke documents ki list\n\n${ignore}`,
+
+    `AdmissionHands code: *${code}* (${TTL_MINUTES} min, don't share it).\n\n` +
+      `Reply *1* for a free counsellor call, *2* for the colleges your rank reached last year, or *3* for the document checklist.\n\n${ignore}`,
+
+    `*${code}* is your AdmissionHands verification code. It works for ${TTL_MINUTES} minutes.\n\n` +
+      `${first ? `${first}, the` : "The"} part most students get wrong is the choice-filling order. Reply *1* and a counsellor will call you to go through it — free.\n` +
+      `Or reply *3* for the list of documents to keep ready.\n\n${ignore}`,
   ];
-  const ask = asks[Math.floor(Math.random() * asks.length)];
-  return (
-    `${lead}:\n\n*${code}*\n\n` +
-    `It works for the next ${TTL_MINUTES} minutes. Do not share it with anyone.\n\n` +
-    `${ask}\n\nIf you did not ask for this code, you can ignore it.`
-  );
+  if (rank) {
+    variants.push(
+      `${hi} Your AdmissionHands code is *${code}* (valid ${TTL_MINUTES} minutes, don't share it).\n\n` +
+        `Curious which colleges rank ${rank} actually reached last year? Reply *2* and we'll send you the list.\n` +
+        `Reply *1* if you'd like a counsellor to call you — it's free.\n\n${ignore}`,
+      `${code} — yeh aapka AdmissionHands verification code hai (${TTL_MINUTES} minute valid).\n\n` +
+        `Rank ${rank} par pichhle saal kaunse college mile the? *2* reply karein, hum list bhej denge.\n` +
+        `Counsellor se baat karni ho to *1* bhejein.\n\n${ignore}`,
+      `*${code}* is your AdmissionHands code (${TTL_MINUTES} min).\n\n` +
+        `With rank ${rank}, round 1 is rarely the whole story — seats open up in later rounds. Reply *2* to see what your rank reached last year, round by round, or *1* to talk it through with a counsellor.\n\n${ignore}`,
+    );
+  }
+  return variants[Math.floor(Math.random() * variants.length)];
 }
 
 export interface IssueInput {
@@ -295,7 +333,7 @@ export async function issueCode(input: IssueInput): Promise<IssueResult> {
   // after the form submit. Cheap here, and it is one of three signals.
   await new Promise((r) => setTimeout(r, 400 + Math.floor(Math.random() * 1400)));
 
-  const result = await sendText(phone, composeMessage(code, input.purpose), { purpose: "otp" });
+  const result = await sendText(phone, composeMessage(code, input.purpose, { name: input.name, rank: input.rank }), { purpose: "otp" });
   const sent = result.sent;
 
   if (!sent) {
