@@ -452,6 +452,16 @@ people — so the three signals are paid down deliberately rather than ignored:
   the form submit.
 - **Reply-ratio.** The message invites a reply, into the inbox the counsellors already use.
 
+**WhatsApp's reach-out lock (error 463) — what actually broke OTP on 2026-10-06.** WhatsApp answers a
+linked device that messages strangers with `reachoutTimelock` (`RESTRICT_ALL_COMPANIONS`): existing chats
+and lead alerts to staff still work, but every message to somebody *new* is refused — and a sign-in code
+always goes to somebody new. It lasted ~9 hours. `waGateway.reachoutLock()` reads `me.reachoutTimelock`
+from the WAHA session (cached 60 s; any 463 sets it at once) and `issueCode` goes straight to the inbound
+path while it is active: no doomed send, no spent allowance, and no 463 to prolong the lock. `/admin/whatsapp`
+shows the lock and its end time. **Restarting or re-pairing does not lift it** — somebody restarted the
+session at 11:22 that day. Fewer outbound codes is the only thing that keeps it away; one way to get there
+is never sending to a mistyped number, which is what `lib/phone.ts` now guarantees.
+
 **The receive-only path from migration 0008 is still there and is the fallback.** When a send fails
 or the gateway is unpaired, `/api/auth/otp` returns `channel: "inbound"` with a `wa.me` link and the
 screen says why. It is the thing that works when nothing of ours is working.
@@ -881,6 +891,23 @@ certainty.
 Verified end to end against production: four tuner answers then the counselling request took one
 enquiry from 2 filled fields to 8, each step attaching to the same lead rather than creating a second
 one, and `POST /api/profile` answers 401 without a session.
+
+## Validation — one rule per field, shared by forms and routes (2026-10-06)
+
+Three import-free modules, so a client form shows the same rule the server enforces (and the server
+enforces it regardless — a POST need not come from the form):
+
+| Module | Rule |
+|---|---|
+| `lib/phone.ts` | Indian mobile: 10 digits starting 6–9; `+91`, `91`, a leading `0`, spaces and dashes accepted. A wrong length is **refused, never trimmed** (the sign-in screen used `slice(-10)` and sent codes to strangers). Invented numbers (one digit ×8+, runs like 9876543210) refused. International only where a form opts in (`checkPhone(…, { allowInternational })` — NRI families), and only written with its `+code` |
+| `lib/neetLimits.ts` | A rank is at most the number who **appeared**: NEET UG 2026 19,99,895, NEET PG 2026 2,65,960 — per level, not a flat 20 lakh. Score −180…720 (NEET PG went to 180 questions in 2026). `1.5 lakh`, decimals and minus signs refused with a reason. **Update the figures each cycle** — sources are in the file |
+| `lib/formRules.ts` | Names in any script, no digits / links / emails, 2–60 chars; emails checked; free text tidied and capped |
+
+Two forms had never sent anything: the NRI page's "Get Free Counselling" (no submit handler — the leads
+table holds no NRI-page lead before this date) and the footer's newsletter box (now "Get updates on
+WhatsApp"). The homepage's `InlineLeadForm` showed NEET UG students the PG form and an invented
+"opportunity analysis" of MD specialities; its copy now follows `level` and the analysis is a link to the
+predictor with the rank filled in. **A form is not finished until a test submission reaches the leads table.**
 
 ## The candidate document vault (2026-09-25)
 
