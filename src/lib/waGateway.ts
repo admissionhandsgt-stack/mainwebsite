@@ -45,6 +45,37 @@ export async function gatewayConfigured(): Promise<boolean> {
   return Boolean(await getIntegration("whatsapp.gateway.url")) || (await listSenders()).length > 0;
 }
 
+/**
+ * The phone number behind a WhatsApp LID, digits only — or null.
+ *
+ * WhatsApp now identifies many senders by a "linked ID" (`250706065916148@lid`)
+ * instead of their number. The inbound handler took those digits for a phone
+ * number, so a visitor who sent us their code was "verified" as +250706065916148
+ * — which no account, session or counsellor can use. From 2026-09-29 to 10-06
+ * four leads reached the team with LIDs for phone numbers, and every visitor
+ * whose message arrived as a LID was verified and then never signed in.
+ * WAHA keeps the LID → number mapping (`/api/{session}/lids/{lid}`); any of our
+ * gateways can answer, since the mapping belongs to the WhatsApp account.
+ */
+export async function resolveLid(jid: string): Promise<string | null> {
+  const lid = jid.includes("@") ? jid : `${jid}@lid`;
+  for (const s of await listSenders()) {
+    try {
+      const res = await fetch(
+        `${s.url.replace(/\/+$/, "")}/api/${encodeURIComponent(s.session)}/lids/${encodeURIComponent(lid)}`,
+        { headers: s.apiKey ? { "X-Api-Key": s.apiKey } : {}, signal: AbortSignal.timeout(5_000) },
+      );
+      if (!res.ok) continue;
+      const j = (await res.json()) as { pn?: string | null };
+      const pn = String(j?.pn ?? "");
+      if (pn.endsWith("@c.us")) return pn.split("@")[0].replace(/\D/g, "");
+    } catch {
+      /* try the next gateway */
+    }
+  }
+  return null;
+}
+
 /** Whether some number can send a sign-in code right now (connected, unlocked, under its cap). */
 export async function canSendCodes(): Promise<boolean> {
   return (await pickSenders("otp")).length > 0;

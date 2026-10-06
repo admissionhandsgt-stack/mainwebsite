@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { logError } from "@/lib/logger";
 import { resolveInbound, verifyWebhookSignature } from "@/lib/waVerify";
+import { resolveLid } from "@/lib/waGateway";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -40,8 +41,24 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true, ignored: true });
   }
 
-  const from = event.payload?.from ?? "";
+  let from = event.payload?.from ?? "";
   const body = event.payload?.body ?? "";
+
+  // A sender WhatsApp identifies by LID (`…@lid`) is not a phone number, though
+  // its digits look like one (+250… even passes as an international number).
+  // Ask the gateway for the real number; if it cannot say, verify nothing — the
+  // number recorded must be the one that sent the message, never a guess.
+  if (/@lid$/i.test(from)) {
+    const pn = await resolveLid(from).catch(() => null);
+    if (!pn) {
+      logError(new Error(`[whatsapp/inbound] could not resolve ${from} to a phone number`), {
+        route: "/api/whatsapp/inbound",
+        request,
+      });
+      return NextResponse.json({ ok: true, matched: false, unresolved: true });
+    }
+    from = `${pn}@c.us`;
+  }
 
   try {
     const result = await resolveInbound(from, body);

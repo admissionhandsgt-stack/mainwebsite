@@ -188,7 +188,10 @@ export interface InboundResult {
  * sometimes appends to it.
  */
 export async function resolveInbound(from: string, body: string): Promise<InboundResult> {
-  // WAHA reports the sender as `<digits>@c.us`.
+  // WAHA reports the sender as `<digits>@c.us` — or, increasingly, as a LID
+  // (`<digits>@lid`), whose digits are not a phone number. The inbound route
+  // resolves LIDs first; one that reaches here unresolved verifies nothing.
+  if (/@lid$/i.test(String(from ?? ""))) return { matched: false };
   const digits = String(from ?? "").split("@")[0].replace(/\D/g, "");
   const phone = normalisePhone(digits) ?? (digits.length >= 10 ? `+${digits}` : null);
   if (!phone) return { matched: false };
