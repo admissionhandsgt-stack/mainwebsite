@@ -475,6 +475,19 @@ Caps: primary 300/day, backups 40 by default. A backup number should be one the 
 reply to codes. To add a third: copy the `waha2` service as `waha3` on port 3003, start it, add it in the
 admin with `http://waha3:3000`.
 
+**The code message asks for a reply, and replies are answered (2026-10-06).** Every code ends with a
+menu — *1* counsellor call, *2* the colleges their rank reached, *3* the document checklist — in seven
+English/Hinglish wordings using name and rank (`otp.ts`). `lib/waReplies.ts` answers in the same chat from
+the same number: *1* flags the lead unread with a note (or creates one) and alerts the team; *2* sends the
+predictor pre-filled; *3* the UG or PG checklist. Only a bare 1/2/3, only from someone sent a code in the
+last 7 days, each option once a day (`wa_replies`, migration 0025 — also the reply-rate metric). Two-way
+chats are the signal WhatsApp rewards; never add separate "please reply" sends.
+
+**The `+91 90000 001xx` numbers the test scripts use are real WhatsApp users** (checked with WAHA's
+`check-exists`). Fine for rows a script inserts and deletes; **never send a WhatsApp message to one.** A
+test that sends must target our own gateway number, as `verify_lead_alert.mjs` does. A menu-reply test on
+2026-10-06 messaged +91 90000 00193 twice; both were deleted for everyone within minutes.
+
 **The receive-only path from migration 0008 is still there and is the fallback.** When a send fails
 or the gateway is unpaired, `/api/auth/otp` returns `channel: "inbound"` with a `wa.me` link and the
 screen says why. It is the thing that works when nothing of ours is working.
