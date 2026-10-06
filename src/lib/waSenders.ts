@@ -48,6 +48,8 @@ export interface Sender {
   priority: number;
   dailyCap: number;
   primary: boolean;
+  /** When this number was first seen connected — its warm-up runs from here. */
+  pairedAt: Date | null;
 }
 
 export interface SenderHealth {
@@ -93,16 +95,17 @@ export async function listSenders(): Promise<Sender[]> {
       priority: 0,
       dailyCap: PRIMARY_DAILY_CAP,
       primary: true,
+      pairedAt: null,
     });
   }
 
   try {
     const rows = (await db.execute(sql`
-      SELECT id, label, phone, gateway_url, api_key, session, enabled, priority, daily_cap
+      SELECT id, label, phone, gateway_url, api_key, session, enabled, priority, daily_cap, paired_at
         FROM wa_senders ORDER BY priority, id
     `)) as unknown as {
       id: number; label: string; phone: string | null; gateway_url: string; api_key: string | null;
-      session: string; enabled: boolean; priority: number; daily_cap: number;
+      session: string; enabled: boolean; priority: number; daily_cap: number; paired_at: string | Date | null;
     }[];
     for (const r of rows) {
       senders.push({
@@ -116,6 +119,7 @@ export async function listSenders(): Promise<Sender[]> {
         priority: r.priority,
         dailyCap: r.daily_cap,
         primary: false,
+        pairedAt: r.paired_at ? new Date(r.paired_at) : null,
       });
     }
   } catch {
@@ -194,6 +198,16 @@ export async function senderHealth(s: Sender, fresh = false): Promise<SenderHeal
     };
   }
   health.set(s.id, { at: Date.now(), h });
+  if (!s.primary && h.status === "WORKING" && h.me) {
+    // First seen connected, or a different phone than before: the warm-up
+    // (effectiveCap) starts now.
+    if (!s.pairedAt || (s.phone && s.phone !== h.me)) {
+      await db
+        .execute(sql`UPDATE wa_senders SET paired_at = now(), phone = ${h.me}, updated_at = now() WHERE id = ${s.id}`)
+        .catch(() => {});
+      invalidateSenders();
+    }
+  }
   return h;
 }
 
@@ -209,6 +223,27 @@ export async function sentToday(): Promise<Map<number, number>> {
      GROUP BY 1
   `).catch(() => [])) as unknown as { id: number; n: number }[];
   return new Map(rows.map((r) => [Number(r.id), Number(r.n)]));
+}
+
+/* --------------------------------------------------------------- warm-up */
+
+/**
+ * A new number does not start at its full cap.
+ *
+ * What got the primary locked was a newly linked device messaging strangers
+ * within two days of pairing. A backup that is paired today and sends 40 codes
+ * tomorrow repeats that exactly. So for its first week a backup's cap is held
+ * down — 10 a day for three days, 20 for the next four — counted from when it
+ * was first seen connected (paired_at; reset if a different phone is paired).
+ * The primary is long-established and keeps its cap.
+ */
+export function effectiveCap(s: Sender): number {
+  if (s.primary) return s.dailyCap;
+  // Not yet seen connected counts as paired just now.
+  const days = s.pairedAt ? (Date.now() - s.pairedAt.getTime()) / 86_400_000 : 0;
+  if (days < 3) return Math.min(s.dailyCap, 10);
+  if (days < 7) return Math.min(s.dailyCap, 20);
+  return s.dailyCap;
 }
 
 /* ---------------------------------------------------------------- choose */
@@ -229,7 +264,7 @@ export async function pickSenders(purpose: Purpose): Promise<Sender[]> {
   const usable = senders
     .map((s, i) => ({ s, h: healths[i], n: counts.get(s.id) ?? 0 }))
     .filter(({ h }) => h.reachable && h.status === "WORKING")
-    .filter(({ s, h, n }) => purpose === "alert" || (!h.locked && n < s.dailyCap));
+    .filter(({ s, h, n }) => purpose === "alert" || (!h.locked && n < effectiveCap(s)));
 
   if (purpose === "alert") {
     // The primary first: it is the chat the team reads.

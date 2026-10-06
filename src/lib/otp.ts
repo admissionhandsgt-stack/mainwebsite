@@ -195,10 +195,23 @@ function composeMessage(code: string, purpose: OtpPurpose): string {
     purpose === "reset"
       ? "Here is your code to reset your AdmissionHands password"
       : "Here is your AdmissionHands verification code";
+  // The reply is the point of the last line. WhatsApp judges a sender by
+  // whether its chats are two-way: a code nobody answers is a stranger being
+  // messaged, which is what got the number locked on 2026-10-06. "Reply here if
+  // you need help" got almost no replies; a one-tap answer that gets the
+  // student something they want does — and every "1" is a warm lead in the
+  // counsellors' WhatsApp. Three wordings, so the text is not byte-identical
+  // every time.
+  const asks = [
+    `Reply *1* and a counsellor will call you about your seat options.`,
+    `Want help choosing colleges? Reply *1* and a counsellor will call you.`,
+    `Reply *1* if you'd like a free call from a counsellor about your rank.`,
+  ];
+  const ask = asks[Math.floor(Math.random() * asks.length)];
   return (
     `${lead}:\n\n*${code}*\n\n` +
     `It works for the next ${TTL_MINUTES} minutes. Do not share it with anyone.\n\n` +
-    `If you did not ask for this, you can ignore it. Reply here if you need help with counselling.`
+    `${ask}\n\nIf you did not ask for this code, you can ignore it.`
   );
 }
 

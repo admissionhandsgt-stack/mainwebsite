@@ -11,7 +11,7 @@ import {
 import { sendWhatsAppNotification } from "@/lib/whatsappService";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
-import { listSenders, senderHealth, sentToday, invalidateSenders, type Sender } from "@/lib/waSenders";
+import { listSenders, senderHealth, sentToday, invalidateSenders, effectiveCap, type Sender } from "@/lib/waSenders";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -203,6 +203,8 @@ async function describeSenders() {
         enabled: s.enabled,
         priority: s.priority,
         dailyCap: s.dailyCap,
+        // Lower than dailyCap during a new number's first week (warm-up).
+        capToday: effectiveCap(s),
         sentToday: counts.get(s.id) ?? 0,
         health: {
           reachable: h.reachable,

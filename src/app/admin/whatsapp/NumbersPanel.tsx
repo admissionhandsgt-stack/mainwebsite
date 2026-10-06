@@ -23,6 +23,8 @@ export interface SenderRow {
   enabled: boolean;
   priority: number;
   dailyCap: number;
+  /** Today's cap — lower than dailyCap during a new number's first week. */
+  capToday: number;
   sentToday: number;
   health: {
     reachable: boolean;
@@ -48,7 +50,7 @@ function state(s: SenderRow): { text: string; tone: "good" | "warn" | "bad" } {
   if (s.health.locked) {
     return { text: `Locked by WhatsApp${s.health.lockedUntil ? ` until ${ist(s.health.lockedUntil)} IST` : ""}`, tone: "bad" };
   }
-  if (s.sentToday >= s.dailyCap) return { text: "Daily cap reached", tone: "warn" };
+  if (s.sentToday >= s.capToday) return { text: "Daily cap reached", tone: "warn" };
   return { text: "Sending codes", tone: "good" };
 }
 
@@ -109,7 +111,8 @@ export default function NumbersPanel({
                     {s.primary && <span className="ml-2 text-xs font-medium text-gray-400">set up in the steps below</span>}
                   </p>
                   <p className="text-sm text-gray-500">
-                    {s.phone ? `+${s.phone}` : "No number paired yet"} · {s.sentToday} of {s.dailyCap} codes today
+                    {s.phone ? `+${s.phone}` : "No number paired yet"} · {s.sentToday} of {s.capToday} codes today
+                    {s.capToday < s.dailyCap && " (warming up — full cap after its first week)"}
                   </p>
                   {s.health.error && st.tone !== "good" && <p className="text-xs text-rose-600">{s.health.error}</p>}
                 </div>
