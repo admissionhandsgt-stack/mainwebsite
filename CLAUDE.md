@@ -1384,6 +1384,23 @@ and serves a stale database to anyone still reaching that box). Deploy with `dep
 the logo, and checks both answer 200 after the switch, and `smoke.mjs` has a "Static files answer"
 section. Every page check had passed throughout, because pages render without their images.
 
+**sharp is pinned to 0.33.5 — do not let it float to 0.34 on this box.** sharp 0.34.x on linux-arm64
+(libaom 3.12+) decodes AVIF with bright-green blocks through the picture; the identical version on x86
+is clean, and 0.33.5 (libaom 3.9.1) is clean on both. On Oracle it hit 39 of the 42 AVIF uploads, so
+every hero, college and branch photograph optimised by `/_next/image` went out green-blotched from the
+2026-10-04 move until 10-06 — a corrupt image is still a 200 with the right content type, so nothing
+noticed. sharp was only ever arriving through `wrangler`/`miniflare` (0.34.5, hoisted); it is now a
+direct, exact dependency. `deploy_oracle.sh` decodes three real AVIF uploads with the release's own sharp
+on the server's CPU (`scripts/check_sharp_decode.cjs`) and refuses the release if they come out green.
+After any sharp change, empty `/opt/admissionhands/next-cache` (the optimised-image cache survives
+deploys by design) and purge Cloudflare, or the corrupt encodes keep being served.
+
+**The header has a layout budget.** At full size the row needs ~1,400px (logo, eight links, four
+controls), and the page container gives it 1,216px below 1536px. Everything in it is `shrink-0` and the
+body clips horizontal overflow, so a header that is too wide does not wrap or scroll — its right-hand
+button silently disappears (it did, on every laptop, until 2026-10-06). The drawer serves below 1280px
+and the links are compact until 1800px. Adding a top-level menu item means re-measuring at 1280 and 1536.
+
 **Copies are proven before they are used.** Both directions restore into a new database beside the live
 one, compare every table's row count (`scripts/sql/table_counts.sql`) with writes stopped, and only then
 swap by `ALTER DATABASE … RENAME`; the replaced copy is kept. Any failure before traffic moves puts the
