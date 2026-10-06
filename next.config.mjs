@@ -108,11 +108,20 @@ const nextConfig = {
         headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive' }],
       },
       {
-        source: '/api/:path*',
+        // Every API is no-store — except /api/content/*, the read-only public
+        // CMS (contact numbers, videos, college lists), whose route sets its
+        // own `public, s-maxage=60, stale-while-revalidate=300`. With both, the
+        // response carried two contradictory Cache-Control headers and nothing
+        // could cache it, so every page view asked Mumbai for the phone number.
+        source: '/api/:path((?!content/).*)',
         headers: [
           { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
           { key: 'Cache-Control', value: 'no-store' },
         ],
+      },
+      {
+        source: '/api/content/:path*',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
       },
       // Files Next serves out of public/. Its default is `public, max-age=0`,
       // so Cloudflare went back to the server for the header logo on every

@@ -112,6 +112,9 @@ async function psi(out, runs) {
   mkdirSync(out, { recursive: true });
   for (const [name, url] of Object.entries(PAGES)) {
     for (let i = 1; i <= runs; i++) {
+      // PSI hands back its cached result for the same URL within a short
+      // window — three identical runs are one run. PSI_GAP (ms) waits between.
+      if (i > 1 && process.env.PSI_GAP) await new Promise((r) => setTimeout(r, Number(process.env.PSI_GAP)));
       const api = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?strategy=${process.env.STRATEGY || "mobile"}&category=performance&key=${key}&url=${encodeURIComponent(url)}`;
       const j = await (await fetch(api)).json();
       if (j.error) {

@@ -1314,9 +1314,15 @@ working through the proxy; email obfuscation, automatic HTTPS rewrites and serve
 origin**; security level **essentially off** (Indian mobile carriers put thousands of students behind one
 CGNAT address — "medium" shows them challenges); browser integrity check off; minimum TLS 1.2.
 
-**One cache rule:** `/_next/static/*`, `/_next/image*`, `/assets/*` → cache at the edge, lifetime from
-the origin's own `Cache-Control`. **HTML and `/api` are never cached** — the seat gate decides per
-visitor, and a cached page would hand one person's rows to the next. `next/image` serves **WebP only**:
+**Cache rules (three, since 2026-10-06), plus Smart Tiered Cache on:**
+1. `/_next/static/*`, `/_next/image*`, `/assets/*` → edge, lifetime from the origin's `Cache-Control`.
+2. Logged-out HTML on www and mumbai, 5 minutes (`scripts/cf_html_cache.mjs`) — bypassed by any session
+   cookie, crawler UA, RSC request, `/api`, `/admin`, `/account`, `/login`. See the Oracle section.
+3. `GET /api/content/*` except `college-list`, for the route's own `s-maxage` (`scripts/cf_content_cache.mjs`).
+
+Everything else under `/api` is `no-store` and never cached — the gate, accounts, documents and admin are
+per visitor. (The 2026-10-04 wording here, "HTML and `/api` are never cached", is superseded by rules 2
+and 3.) `next/image` serves **WebP only**:
 Next varies the format by `Accept` on one URL and Cloudflare's free plan does not key on `Accept`, so an
 AVIF cached for Chrome would reach an iPhone that cannot draw it.
 
@@ -1371,6 +1377,13 @@ box's Caddyfile or WAHA container is edited. The forward key is authorised on Or
 **After the cutover `scripts/deploy.sh` refuses** (it would restart the old app, which stops the forward
 and serves a stale database to anyone still reaching that box). Deploy with `deploy_oracle.sh`.
 
+**`public/` was 404 on Oracle from 2026-10-04 to 10-06** — logo, favicon, share image, every hero under
+`/assets/images/hero`. The standalone build already contains a `public/` (the uploads route traces
+`public/assets/images/uploads` into it), so `cp -a src/public $R/public` nested the real one at
+`public/public`. Fixed by copying *into* it; the deploy now refuses a release without `favicon.ico` and
+the logo, and checks both answer 200 after the switch, and `smoke.mjs` has a "Static files answer"
+section. Every page check had passed throughout, because pages render without their images.
+
 **Copies are proven before they are used.** Both directions restore into a new database beside the live
 one, compare every table's row count (`scripts/sql/table_counts.sql`) with writes stopped, and only then
 swap by `ALTER DATABASE … RENAME`; the replaced copy is kept. Any failure before traffic moves puts the
@@ -1394,6 +1407,50 @@ copy alone: byte-identical, `pg_restore --list` reads 41 tables.
 **WhatsApp on Oracle needs pairing** (session `default`, STOPPED until then) as a linked device of the
 same number. The cutover refuses while it is unpaired unless `--allow-unpaired`, because Oracle's
 gateway becomes the only sender of OTPs and lead alerts.
+
+### The critical path, measured (2026-10-06)
+
+`node scripts/perf_bench.mjs psi <dir> [runs]` runs Google's PageSpeed lab (needs `PSI_KEY`; `PSI_GAP=90000`
+between runs, because PSI returns its cached result for a repeated URL — three identical runs are one run;
+`STRATEGY=desktop`), and `perf_bench.mjs read <dir>` summarises any Lighthouse 12/13 reports: LCP element
+and phases, render-blocking files, high-priority fetches, the critical chain. `perf_lab.mjs` takes
+`AH_BASE` to point our pages at another route (an SSH tunnel straight to the app separates code from the
+ISP's route to Cloudflare).
+
+**Compare versions interleaved, never sequentially.** PSI's own machine stalls first paint by ~2 s in
+some runs on *both* builds, and a single run swings 15 points. The previous release was run beside
+production on `127.0.0.1:8151` and the `mumbai` host pointed at it, then PSI alternated www/mumbai.
+
+What was wrong: ~330 KB of non-critical bytes started in the same instant as the 37 KB of render-blocking
+CSS — gtag.js 176 KB (preloaded by `next/script` `afterInteractive`), all three fonts 98 KB (next/font
+preloads through a `Link` **response header**, so they never appear in the HTML), and the homepage's
+campus backdrop 27 KB at high priority — which, at 3.5% opacity, was the page's LCP element.
+
+| Change | Where |
+|---|---|
+| Preload only Figtree (hero headline face); Inter and Jakarta `preload: false`, all `swap` | `app/layout.tsx` |
+| Analytics `lazyOnload` — no preload, after the load event | `app/layout.tsx` |
+| Phone backdrop is a 96px inline WebP (~1 KB, no request); `<picture>` source loads the photo from 640px | `lib/backdrop.ts`, `Hero.tsx` |
+| Doctors photo not preloaded (display:none on phones) | `Hero.tsx` |
+| Hero entrance in CSS (`animate-rise`/`animate-settle`), not framer — buttons were opacity 0 until hydration | `Hero.tsx`, `tailwind.config.ts` |
+| One shared contact request (was 8 per homepage load) | `hooks/useContactInfo.ts` |
+| `public/` files a day + swr instead of `max-age=0`; `/api/content/*` no longer double-headered `no-store` | `next.config.mjs` |
+
+Measured, Google PSI mobile, interleaved, median of 5 — previous release → this one:
+predictor **73 → 88**, FCP 3.1 → 1.95 s, LCP 5.3 → 3.3 s, TBT 110 → 47 ms; home **66 → 70**, FCP 4.0 →
+3.2 s, LCP 6.0 → 5.8 s (now the headline, painted with the first frame), 40 → 32 requests. Desktop
+unchanged within noise (home 98 → 94, predictor 98 → 99). Visual diff of the hero at 390/1440, light/dark:
+identical below the rotating alerts bar.
+
+**Not possible here: inlining critical CSS.** Next 14.2's App Router has no CSS inlining — `optimizeCss`
+(critters) runs only in the Pages Router render path, and `experimental.inlineCss` is Next 15. The three
+stylesheets stay render-blocking; what changed is that nothing competes with them any more.
+
+Known cost: with Inter and Jakarta no longer preloaded the page lays out again when each swaps in —
+Style & Layout up ~190 ms of real CPU on a mid phone, after first paint; TBT unchanged.
+
+Next levers, not taken: the homepage HTML is 200 KB raw (33 KB gzip) — 58 KB of it inline SVG icons and
+39 KB RSC payload; and the ₹ sign pulls Inter's 85 KB latin-ext file onto every page.
 
 ### The perimeter, measured from outside (2026-09-26)
 
