@@ -1,148 +1,112 @@
 /**
- * Sending a WhatsApp message through our own gateway.
+ * Sending a WhatsApp message through our own gateways.
  *
  * One implementation, used by everything that sends: the sign-in code
  * (`otp.ts`) and the alerts the team gets when a lead or a document arrives
  * (`whatsappService.ts`). They had separate copies of this, which is how two
  * senders end up disagreeing about a timeout or a chat-id format.
  *
- * The gateway is WAHA on the VPS, configured from `/admin/whatsapp` and paired
- * to a number that is not the business line. It is reached over localhost, so
- * nothing here crosses the internet except the message itself.
+ * **More than one number, rolling over** (since 2026-10-06). Which numbers
+ * exist, which are healthy and which goes first is `waSenders.ts`. This walks
+ * that list: a number that answers 463 (WhatsApp's reach-out lock) is marked
+ * locked and the next one sends; one that cannot be reached is skipped for a
+ * minute. The visitor never waits on a number that is out.
  *
  * **Alerts to the team are a different risk from codes to strangers.** The ban
  * models that make outbound OTP dangerous — every recipient a stranger, nobody
- * ever replies — do not apply to messaging the same two staff numbers all day.
- * That traffic looks like an ordinary conversation, which is why the caps in
- * `otp.ts` live there and not here.
+ * ever replies — do not apply to messaging the same staff numbers all day.
+ * That traffic looks like an ordinary conversation, which is why the caps live
+ * on sign-in codes only.
  */
 
 import { getIntegration } from "@/lib/integrations";
 import { logError } from "@/lib/logger";
-
-/** The WAHA session name, as the admin screen creates it. */
-const SESSION = "default";
+import { pickSenders, listSenders, senderHealth, markLocked, markDown, type Purpose, type Sender } from "@/lib/waSenders";
 
 const TIMEOUT_MS = 15_000;
 
+/**
+ * Errors that are about the person we are writing to, not the number writing.
+ * "no LID for user" is WhatsApp saying the number has no WhatsApp account — seen
+ * in the logs on 2026-10-02 and 10-04.
+ */
+const RECIPIENT_PROBLEM = /no LID|not (on|registered|a) WhatsApp|does not exist|invalid (jid|chat)|not.*exist/i;
+
 export interface GatewayResult {
   sent: boolean;
+  /** Which number sent it: 0 is the primary, otherwise wa_senders.id. */
+  senderId?: number;
   /** Why not, for an admin screen to show. Never shown to a visitor. */
   error?: string;
 }
 
-/** Whether a gateway address is configured at all. */
+/** Whether any gateway is configured at all. */
 export async function gatewayConfigured(): Promise<boolean> {
-  return Boolean(await getIntegration("whatsapp.gateway.url"));
+  return Boolean(await getIntegration("whatsapp.gateway.url")) || (await listSenders()).length > 0;
 }
 
-export interface ReachoutLock {
-  active: boolean;
-  /** When WhatsApp says it lifts, if it said. */
-  until: Date | null;
-  /** WhatsApp's own name for it, e.g. RESTRICT_ALL_COMPANIONS. */
-  type: string | null;
+/** Whether some number can send a sign-in code right now (connected, unlocked, under its cap). */
+export async function canSendCodes(): Promise<boolean> {
+  return (await pickSenders("otp")).length > 0;
 }
 
-/**
- * Is WhatsApp refusing to let this number start new chats?
- *
- * WhatsApp answers a linked device that messages strangers too often with a
- * "reach-out timelock": existing chats keep working, but any message to
- * somebody new is refused with error 463 until the lock lifts. A sign-in code
- * always goes to somebody new, so during a lock every code fails — that is
- * what happened on 2026-10-06 (`RESTRICT_ALL_COMPANIONS`, about nine hours).
- *
- * Asked *before* sending, because sending into a lock is worse than useless:
- * the visitor waits for a refusal, their hourly allowance is spent on a code
- * that never arrives, and WAHA notes that each 463 refreshes the lock. WAHA
- * reports it on the session as `me.reachoutTimelock`.
- *
- * Cached for a minute (one process — see CLAUDE.md on the rate limiters), and
- * a 463 from `sendText` sets it at once. A gateway that cannot be asked counts
- * as unlocked: the send itself is then the test, and it falls back on failure.
- */
-const LOCK_TTL_MS = 60_000;
-let lockCache: { at: number; lock: ReachoutLock } | null = null;
-const UNLOCKED: ReachoutLock = { active: false, until: null, type: null };
-
-export async function reachoutLock(): Promise<ReachoutLock> {
-  if (lockCache && Date.now() - lockCache.at < LOCK_TTL_MS) return lockCache.lock;
-  const [base, key] = await Promise.all([
-    getIntegration("whatsapp.gateway.url"),
-    getIntegration("whatsapp.gateway.api_key"),
-  ]);
-  if (!base) return UNLOCKED;
+async function sendVia(s: Sender, chatId: string, text: string): Promise<{ ok: boolean; locked?: boolean; detail?: string }> {
   try {
-    const res = await fetch(`${base.replace(/\/+$/, "")}/api/sessions/${SESSION}`, {
-      headers: key ? { "X-Api-Key": key } : {},
-      signal: AbortSignal.timeout(5_000),
+    const res = await fetch(`${s.url.replace(/\/+$/, "")}/api/sendText`, {
+      method: "POST",
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+      headers: { "Content-Type": "application/json", ...(s.apiKey ? { "X-Api-Key": s.apiKey } : {}) },
+      body: JSON.stringify({ session: s.session, chatId, text }),
     });
-    if (!res.ok) return UNLOCKED;
-    const s = (await res.json()) as {
-      me?: { reachoutTimelock?: { isActive?: boolean; timeEnforcementEnds?: number; enforcementType?: string } };
-    };
-    const t = s.me?.reachoutTimelock;
-    const until = t?.timeEnforcementEnds ? new Date(t.timeEnforcementEnds * 1000) : null;
-    const active = Boolean(t?.isActive) && (!until || until.getTime() > Date.now());
-    const lock: ReachoutLock = { active, until: active ? until : null, type: active ? t?.enforcementType ?? null : null };
-    lockCache = { at: Date.now(), lock };
-    return lock;
-  } catch {
-    return UNLOCKED;
+    if (res.ok) return { ok: true };
+    const detail = (await res.text()).slice(0, 200);
+    return { ok: false, locked: /error 463/.test(detail), detail: `${res.status}: ${detail}` };
+  } catch (error) {
+    return { ok: false, detail: error instanceof Error ? error.message.slice(0, 200) : "Could not reach the gateway." };
   }
 }
 
 /**
- * Sends one text message.
+ * Sends one text message from the first number that can.
  *
  * Returns rather than throws: every caller is doing this alongside something
  * that already succeeded, and a failed notification must never fail the thing
  * it was notifying about.
  */
-export async function sendText(phone: string, text: string): Promise<GatewayResult> {
-  const [base, key] = await Promise.all([
-    getIntegration("whatsapp.gateway.url"),
-    getIntegration("whatsapp.gateway.api_key"),
-  ]);
-  if (!base) return { sent: false, error: "No gateway address is configured." };
-
+export async function sendText(
+  phone: string,
+  text: string,
+  opts: { purpose?: Purpose } = {},
+): Promise<GatewayResult> {
   // WAHA addresses a person as `<digits>@c.us`, with no `+` and with the
   // country code. A ten-digit Indian number needs the 91 putting back.
   const digits = String(phone ?? "").replace(/\D/g, "");
   const full = digits.length === 10 ? `91${digits}` : digits;
   if (full.length < 10) return { sent: false, error: `Not a usable number: ${phone}` };
 
-  try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
-    const res = await fetch(`${base.replace(/\/+$/, "")}/api/sendText`, {
-      method: "POST",
-      signal: controller.signal,
-      headers: {
-        "Content-Type": "application/json",
-        ...(key ? { "X-Api-Key": key } : {}),
-      },
-      body: JSON.stringify({ session: SESSION, chatId: `${full}@c.us`, text }),
-    });
-    clearTimeout(timer);
+  const purpose = opts.purpose ?? "alert";
+  const senders = await pickSenders(purpose);
+  if (!senders.length) return { sent: false, error: "No WhatsApp number can send right now." };
 
-    if (!res.ok) {
-      const detail = (await res.text()).slice(0, 200);
-      // 463 is WhatsApp's reach-out lock. Remember it now, so the next visitor
-      // goes straight to the inbound path instead of into the same refusal.
-      if (/error 463/.test(detail)) {
-        lockCache = { at: Date.now(), lock: { active: true, until: null, type: "463" } };
-      }
-      logError(new Error(`WAHA sendText ${res.status}: ${detail}`), { route: "waGateway" });
-      return { sent: false, error: `Gateway returned ${res.status}. ${detail}` };
+  const errors: string[] = [];
+  for (const s of senders) {
+    const r = await sendVia(s, `${full}@c.us`, text);
+    if (r.ok) return { sent: true, senderId: s.id };
+    errors.push(`${s.label}: ${r.detail}`);
+    logError(new Error(`WAHA sendText via ${s.label} ${r.detail}`), { route: "waGateway" });
+    if (r.locked) {
+      // WhatsApp's reach-out lock: remember it now so the next visitor does not
+      // land on this number, then try the next one.
+      markLocked(s.id);
+      void senderHealth(s, true);
+    } else if (RECIPIENT_PROBLEM.test(r.detail ?? "")) {
+      // The *recipient* is the problem — not on WhatsApp, or not a valid chat.
+      // Every other number would fail the same way, and marking this one down
+      // would push the next visitor off a perfectly good sender.
+      break;
+    } else {
+      markDown(s.id, r.detail ?? "send failed");
     }
-    return { sent: true };
-  } catch (error) {
-    logError(error, { route: "waGateway" });
-    return {
-      sent: false,
-      error: error instanceof Error ? error.message.slice(0, 200) : "Could not reach the gateway.",
-    };
   }
+  return { sent: false, error: errors.join(" | ").slice(0, 400) };
 }

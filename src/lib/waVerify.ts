@@ -27,6 +27,7 @@ import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { normalisePhone } from "@/lib/leadGate";
 import { getIntegration, getIntegrationFlag } from "@/lib/integrations";
+import { inboundNumber } from "@/lib/waSenders";
 
 /** Long enough to tap through and send, short enough to free the code again. */
 const TTL_MINUTES = 15;
@@ -98,35 +99,11 @@ const READY_TTL_MS = 60_000;
 
 export async function gatewayReady(): Promise<boolean> {
   if (readyCache && Date.now() - readyCache.at < READY_TTL_MS) return readyCache.ready;
-
-  const [base, key] = await Promise.all([
-    getIntegration("whatsapp.gateway.url"),
-    getIntegration("whatsapp.gateway.api_key"),
-  ]);
-  if (!base) {
-    readyCache = { at: Date.now(), ready: false };
-    return false;
-  }
-
-  try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 4000);
-    const res = await fetch(`${base.replace(/\/+$/, "")}/api/sessions/default`, {
-      signal: controller.signal,
-      headers: key ? { "X-Api-Key": key } : {},
-    });
-    clearTimeout(timer);
-
-    const body = (await res.json().catch(() => null)) as { status?: string } | null;
-    const ready = res.ok && body?.status === "WORKING";
-    readyCache = { at: Date.now(), ready };
-    return ready;
-  } catch {
-    // Unreachable gateway reads as not ready, which keeps the typed-number
-    // path open rather than closing the site.
-    readyCache = { at: Date.now(), ready: false };
-    return false;
-  }
+  // Any connected number will do since 2026-10-06 (waSenders.ts): each one's
+  // gateway posts what it receives to our webhook.
+  const ready = Boolean(await inboundNumber().catch(() => null));
+  readyCache = { at: Date.now(), ready };
+  return ready;
 }
 
 export interface StartedAttempt {
@@ -153,7 +130,10 @@ export interface AttemptInput {
  * unique index is the real guard, and a check-then-insert would race.
  */
 export async function startAttempt(input: AttemptInput): Promise<StartedAttempt | null> {
-  const number = await verifyNumber();
+  // A number that is connected right now, so the message reaches a gateway and
+  // the webhook — the primary first, then any paired backup (waSenders.ts).
+  // The configured number is the last resort: the phone still gets it.
+  const number = (await inboundNumber().catch(() => null)) ?? (await verifyNumber());
   if (!number) return null;
 
   const token = randomToken();

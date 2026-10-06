@@ -52,7 +52,7 @@ import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { normalisePhone } from "@/lib/leadGate";
 import { logError } from "@/lib/logger";
-import { sendText, reachoutLock } from "@/lib/waGateway";
+import { sendText, canSendCodes } from "@/lib/waGateway";
 
 /** Long enough to switch apps and read it, short enough to be worth little. */
 const TTL_MINUTES = 10;
@@ -64,8 +64,9 @@ const MAX_ATTEMPTS = 5;
 const PER_HOUR = 3;
 const PER_DAY = 8;
 
-/** The gateway number's own ceiling, whoever is asking. */
-const GATEWAY_PER_DAY = 300;
+// The per-number daily ceiling now lives on each sender (wa_senders.daily_cap;
+// the primary's in waSenders.ts) and is enforced when one is chosen, so a full
+// number hands over to the next instead of stopping codes for everyone.
 
 export type OtpPurpose = "signup" | "reset";
 export type SentChannel = "whatsapp" | "inbound";
@@ -156,13 +157,12 @@ async function withinCaps(phone: string): Promise<CapResult> {
   const rows = (await db.execute(sql`
     SELECT
       COUNT(*) FILTER (WHERE phone = ${phone} AND created_at > now() - interval '1 hour')::int AS hour,
-      COUNT(*) FILTER (WHERE phone = ${phone} AND created_at > now() - interval '1 day')::int  AS day,
-      COUNT(*) FILTER (WHERE created_at > now() - interval '1 day')::int                        AS global
+      COUNT(*) FILTER (WHERE phone = ${phone} AND created_at > now() - interval '1 day')::int  AS day
     FROM otp_codes
     WHERE sent_channel IS NOT NULL
-  `)) as unknown as { hour: number; day: number; global: number }[];
+  `)) as unknown as { hour: number; day: number }[];
 
-  const c = rows[0] ?? { hour: 0, day: 0, global: 0 };
+  const c = rows[0] ?? { hour: 0, day: 0 };
 
   if (c.hour >= PER_HOUR) {
     return {
@@ -177,11 +177,6 @@ async function withinCaps(phone: string): Promise<CapResult> {
       message: "That number has had its codes for today. Try again tomorrow, or message us on WhatsApp.",
       retryAfter: 86400,
     };
-  }
-  if (c.global >= GATEWAY_PER_DAY) {
-    // Not the visitor's fault and not their problem to solve, so this reads as
-    // a temporary fault and the caller falls back to the inbound path.
-    return { allowed: false, message: "Codes are briefly unavailable. Use the WhatsApp option below." };
   }
   return { allowed: true };
 }
@@ -246,12 +241,12 @@ export async function issueCode(input: IssueInput): Promise<IssueResult> {
     return { ok: false, message: cap.message, retryAfter: cap.retryAfter, fallback: true };
   }
 
-  // WhatsApp is refusing new chats from our number (see reachoutLock). Do not
-  // send into it: no row against the visitor's allowance, no wait for a refusal,
-  // and no 463 to prolong the lock — straight to the path where they message us,
-  // which a lock does not touch.
-  const lock = await reachoutLock();
-  if (lock.active) {
+  // No number can send a code right now: every one is locked (WhatsApp's
+  // reach-out lock, error 463), logged out, unreachable or at its daily cap —
+  // see waSenders.ts. Do not send into that: no row against the visitor's
+  // allowance, no wait for a refusal, and no 463 to prolong a lock — straight
+  // to the path where they message us, which a lock does not touch.
+  if (!(await canSendCodes())) {
     return {
       ok: false,
       fallback: true,
@@ -287,7 +282,8 @@ export async function issueCode(input: IssueInput): Promise<IssueResult> {
   // after the form submit. Cheap here, and it is one of three signals.
   await new Promise((r) => setTimeout(r, 400 + Math.floor(Math.random() * 1400)));
 
-  const sent = (await sendText(phone, composeMessage(code, input.purpose))).sent;
+  const result = await sendText(phone, composeMessage(code, input.purpose), { purpose: "otp" });
+  const sent = result.sent;
 
   if (!sent) {
     // Retire it rather than leave a code nobody received looking live, and
@@ -301,7 +297,9 @@ export async function issueCode(input: IssueInput): Promise<IssueResult> {
   }
 
   if (id) {
-    await db.execute(sql`UPDATE otp_codes SET sent_channel = 'whatsapp' WHERE id = ${id}`);
+    await db.execute(
+      sql`UPDATE otp_codes SET sent_channel = 'whatsapp', sent_via = ${result.senderId ?? 0} WHERE id = ${id}`,
+    );
   }
 
   return {

@@ -54,6 +54,22 @@ services:
       - "127.0.0.1:3001:3000"
     mem_limit: 512m
 
+  # A second number, so sign-in codes keep going when WhatsApp locks or logs
+  # out the first (it did, on 2026-10-06: six hours, every code failed).
+  # WAHA Core runs one session — one number — per container, so each backup is
+  # its own service. Registered in the admin under WhatsApp → Numbers as
+  # http://waha2:3000; paired from there. Same keys and webhook as `waha`, so
+  # whatever it receives reaches the app the same way. Add waha3 the same way.
+  waha2:
+    image: devlikeapro/waha:gows-arm
+    restart: unless-stopped
+    env_file: ./waha.env
+    volumes:
+      - /opt/admissionhands/waha2-sessions:/app/.sessions
+    ports:
+      - "127.0.0.1:3002:3000"
+    mem_limit: 512m
+
   app:
     # The release is built on this server (ARM64) by scripts/deploy_oracle.sh
     # into /opt/admissionhands/releases/<stamp>; `current` points at it. The

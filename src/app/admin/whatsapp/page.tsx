@@ -13,6 +13,7 @@ import {
   Power,
   QrCode,
 } from "lucide-react";
+import NumbersPanel, { type SenderRow } from "./NumbersPanel";
 
 /**
  * WhatsApp verification, set up without a terminal.
@@ -105,6 +106,7 @@ export default function WhatsAppAdminPage() {
   const [config, setConfig] = useState<Config | null>(null);
   const [gateway, setGateway] = useState<Gateway | null>(null);
   const [webhook, setWebhook] = useState("");
+  const [senders, setSenders] = useState<SenderRow[]>([]);
 
   const [number, setNumber] = useState("");
   const [gatewayUrl, setGatewayUrl] = useState("");
@@ -128,6 +130,7 @@ export default function WhatsAppAdminPage() {
       setConfig(json.config);
       setGateway(json.gateway);
       setWebhook(json.webhookUrl);
+      setSenders(json.senders ?? []);
       setNumber((v) => (v ? v : json.config.number));
       setGatewayUrl((v) => (v ? v : json.config.gatewayUrl));
       setEnabled(json.config.enabled);
@@ -313,6 +316,10 @@ export default function WhatsAppAdminPage() {
           </div>
         );
       })()}
+
+      {senders.length > 0 && (
+        <NumbersPanel senders={senders} post={post} busy={busy} reload={() => load(true)} />
+      )}
 
       {msg && (
         <div

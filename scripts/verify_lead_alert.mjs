@@ -76,13 +76,16 @@ async function main() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        name: `Alert Test ${marker}`,
+        // The marker rides in `source`, which the alert prints. It used to be
+        // in the name, and since 2026-10-06 a name with digits in it is refused
+        // (lib/formRules.ts) — rightly, and the test failed on its own data.
+        name: "Alert Tester",
         phone,
         level: "pg",
         rank: 41912,
         preferred_branch: "MD Radiodiagnosis",
         message: "Automated delivery check.",
-        source_page: "verify_lead_alert.mjs",
+        source: `verify_lead_alert ${marker}`,
       }),
     });
 

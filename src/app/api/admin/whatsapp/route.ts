@@ -9,6 +9,9 @@ import {
   maskSecret,
 } from "@/lib/integrations";
 import { sendWhatsAppNotification } from "@/lib/whatsappService";
+import { db } from "@/db/client";
+import { sql } from "drizzle-orm";
+import { listSenders, senderHealth, sentToday, invalidateSenders, type Sender } from "@/lib/waSenders";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -75,11 +78,14 @@ async function waha(
   path: string,
   init: RequestInit = {},
   timeoutMs = 8000,
+  via?: { url: string; apiKey: string | null },
 ): Promise<{ ok: boolean; status: number; body: unknown; error?: string }> {
-  const [base, key] = await Promise.all([
-    getIntegration("whatsapp.gateway.url"),
-    getIntegration("whatsapp.gateway.api_key"),
-  ]);
+  const [base, key] = via
+    ? [via.url, via.apiKey]
+    : await Promise.all([
+        getIntegration("whatsapp.gateway.url"),
+        getIntegration("whatsapp.gateway.api_key"),
+      ]);
   if (!base) return { ok: false, status: 0, body: null, error: "No gateway address saved yet." };
 
   const url = `${base.replace(/\/+$/, "")}${path}`;
@@ -169,8 +175,61 @@ export async function GET(request: Request) {
     config: publicConfig(values, enabled, pinned),
     gateway,
     webhookUrl: webhookUrl(request),
+    senders: await describeSenders(),
   });
 }
+
+/**
+ * Every number, its live state and today's use, for the "Numbers" panel.
+ * Keys are masked; the full key never leaves the server.
+ */
+async function describeSenders() {
+  const [senders, counts] = await Promise.all([listSenders(), sentToday()]);
+  return Promise.all(
+    senders.map(async (s) => {
+      const h = await senderHealth(s, true);
+      // Learn a backup's number from its session once it is paired.
+      if (!s.primary && h.me && h.me !== s.phone) {
+        await db.execute(sql`UPDATE wa_senders SET phone = ${h.me}, updated_at = now() WHERE id = ${s.id}`);
+        invalidateSenders();
+      }
+      return {
+        id: s.id,
+        label: s.label,
+        primary: s.primary,
+        phone: h.me || s.phone,
+        gatewayUrl: s.url,
+        apiKeyMasked: maskSecret(s.apiKey),
+        enabled: s.enabled,
+        priority: s.priority,
+        dailyCap: s.dailyCap,
+        sentToday: counts.get(s.id) ?? 0,
+        health: {
+          reachable: h.reachable,
+          status: h.status,
+          locked: h.locked,
+          lockedUntil: h.lockedUntil ? h.lockedUntil.toISOString() : null,
+          lockType: h.lockType,
+          error: h.error ?? null,
+        },
+      };
+    }),
+  );
+}
+
+async function backup(id: unknown): Promise<Sender | null> {
+  const n = Number(id);
+  if (!Number.isInteger(n) || n <= 0) return null;
+  return (await listSenders()).find((s) => s.id === n && !s.primary) ?? null;
+}
+
+function checkGatewayUrl(raw: unknown): string | null {
+  const url = String(raw ?? "").trim().replace(/\/+$/, "");
+  return /^https?:\/\/[^\s]+$/i.test(url) ? url : null;
+}
+
+const BAD_URL = "The gateway address must start with http:// or https://";
+const NO_SUCH = "No such backup number.";
 
 export async function POST(request: Request) {
   const auth = await requireAdmin();
@@ -357,6 +416,94 @@ export async function POST(request: Request) {
               },
               { status: 502 },
             );
+      }
+
+      /* ---------------- backup numbers ---------------- */
+      case "sender-add": {
+        const label = String(body.label ?? "").trim().slice(0, 60) || "Backup";
+        const url = checkGatewayUrl(body.gatewayUrl);
+        if (!url) return NextResponse.json({ error: BAD_URL }, { status: 400 });
+        const apiKey = String(body.apiKey ?? "").trim() || null;
+        const cap = Math.min(500, Math.max(0, Math.round(Number(body.dailyCap ?? 40)) || 40));
+        const priority = Math.round(Number(body.priority ?? 100)) || 100;
+        await db.execute(sql`
+          INSERT INTO wa_senders (label, gateway_url, api_key, daily_cap, priority)
+          VALUES (${label}, ${url}, ${apiKey}, ${cap}, ${priority})
+        `);
+        invalidateSenders();
+        return NextResponse.json({ ok: true });
+      }
+
+      case "sender-update": {
+        const s = await backup(body.id);
+        if (!s) return NextResponse.json({ error: NO_SUCH }, { status: 404 });
+        const url = body.gatewayUrl !== undefined ? checkGatewayUrl(body.gatewayUrl) : s.url;
+        if (!url) return NextResponse.json({ error: BAD_URL }, { status: 400 });
+        const label = body.label !== undefined ? String(body.label).trim().slice(0, 60) || s.label : s.label;
+        // Blank means "leave the key alone": the form shows a mask.
+        const apiKey = String(body.apiKey ?? "").trim() || s.apiKey;
+        const enabled = body.enabled !== undefined ? Boolean(body.enabled) : s.enabled;
+        const cap = body.dailyCap !== undefined ? Math.min(500, Math.max(0, Math.round(Number(body.dailyCap)) || 0)) : s.dailyCap;
+        const priority = body.priority !== undefined ? Math.round(Number(body.priority)) || 100 : s.priority;
+        await db.execute(sql`
+          UPDATE wa_senders SET label = ${label}, gateway_url = ${url}, api_key = ${apiKey},
+                 enabled = ${enabled}, daily_cap = ${cap}, priority = ${priority}, updated_at = now()
+           WHERE id = ${s.id}
+        `);
+        invalidateSenders();
+        return NextResponse.json({ ok: true });
+      }
+
+      case "sender-remove": {
+        const s = await backup(body.id);
+        if (!s) return NextResponse.json({ error: NO_SUCH }, { status: 404 });
+        await db.execute(sql`DELETE FROM wa_senders WHERE id = ${s.id}`);
+        invalidateSenders();
+        return NextResponse.json({ ok: true });
+      }
+
+      case "sender-connect": {
+        const s = await backup(body.id);
+        if (!s) return NextResponse.json({ error: NO_SUCH }, { status: 404 });
+        const via = { url: s.url, apiKey: s.apiKey };
+        const created = await waha("/api/sessions", { method: "POST", body: JSON.stringify({ name: s.session, start: true }) }, 20000, via);
+        if (!created.ok) {
+          const restarted = await waha(`/api/sessions/${s.session}/restart`, { method: "POST" }, 20000, via);
+          if (!restarted.ok) {
+            return NextResponse.json(
+              { error: restarted.error ?? `That gateway could not start the session (${restarted.status}).` },
+              { status: 502 },
+            );
+          }
+        }
+        await new Promise((r) => setTimeout(r, 3500));
+        return NextResponse.json({ ok: true });
+      }
+
+      case "sender-pair-code": {
+        const s = await backup(body.id);
+        if (!s) return NextResponse.json({ error: NO_SUCH }, { status: 404 });
+        const digits = String(body.number ?? "").replace(/\D/g, "");
+        if (digits.length < 10) {
+          return NextResponse.json({ error: "Enter the number to pair, with the country code." }, { status: 400 });
+        }
+        const res = await waha(
+          `/api/${s.session}/auth/request-code`,
+          { method: "POST", body: JSON.stringify({ phoneNumber: digits }) },
+          15000,
+          { url: s.url, apiKey: s.apiKey },
+        );
+        if (!res.ok) return NextResponse.json({ error: res.error ?? `The gateway answered ${res.status}.` }, { status: 502 });
+        return NextResponse.json({ ok: true, code: (res.body as { code?: string })?.code ?? null });
+      }
+
+      case "sender-logout": {
+        const s = await backup(body.id);
+        if (!s) return NextResponse.json({ error: NO_SUCH }, { status: 404 });
+        const res = await waha(`/api/sessions/${s.session}/logout`, { method: "POST" }, 8000, { url: s.url, apiKey: s.apiKey });
+        if (!res.ok) return NextResponse.json({ error: res.error ?? `The gateway answered ${res.status}.` }, { status: 502 });
+        invalidateSenders();
+        return NextResponse.json({ ok: true });
       }
 
       case "logout": {
