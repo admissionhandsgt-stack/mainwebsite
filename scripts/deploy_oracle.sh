@@ -52,16 +52,30 @@ say "Building on the server (ARM64)"
 # first version piped the build through `tail`, which made the pipeline's
 # status tail's — a failed `npm ci` reported success and the script went on to
 # assemble a release out of nothing.
+#
+# Retried — up to three tries — only when the failure is next/font's, never for
+# anything else. Next 14's Google-font loader assumes every font URL ends in
+# .woff2 and throws "Cannot read properties of null (reading '1')" when Google
+# occasionally answers with one that does not; two of four builds failed that
+# way on 2026-10-06 while the same request moments later was fine. It is
+# Google's response, not our code, so a retry is the honest fix. (Self-hosting
+# the font files with next/font/local would remove the dependency entirely.)
 ssh_ "set -e; docker rm -f admissionhands-build >/dev/null 2>&1 || true
-  if ! docker run --rm --name admissionhands-build \
-      --network admissionhands_default \
-      --user 1003:1003 --memory 4g \
-      --env-file $APP/.env -e HOME=/tmp -e NEXT_TELEMETRY_DISABLED=1 \
-      -v $APP/src:/src -w /src node:22-bookworm \
-      sh -c 'NODE_ENV=development npm ci --no-audit --no-fund --loglevel=error \
-             && NODE_ENV=production npm run build' > $APP/src/build.log 2>&1; then
+  for try in 1 2 3; do
+    if docker run --rm --name admissionhands-build \
+        --network admissionhands_default \
+        --user 1003:1003 --memory 4g \
+        --env-file $APP/.env -e HOME=/tmp -e NEXT_TELEMETRY_DISABLED=1 \
+        -v $APP/src:/src -w /src node:22-bookworm \
+        sh -c 'NODE_ENV=development npm ci --no-audit --no-fund --loglevel=error \
+               && NODE_ENV=production npm run build' > $APP/src/build.log 2>&1; then
+      break
+    fi
+    if [ \$try -lt 3 ] && grep -q 'An error occurred in .next/font' $APP/src/build.log; then
+      echo \"  next/font could not read Google's response (try \$try) — building again\"; sleep 10; continue
+    fi
     echo '  BUILD FAILED — last lines:'; tail -30 $APP/src/build.log; exit 1
-  fi
+  done
   grep -E 'Compiled|Generating static pages \(|Failed query' $APP/src/build.log | tail -6"
 
 # A build that could not reach the database still exits 0 — the failures are
