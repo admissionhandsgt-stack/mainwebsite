@@ -233,6 +233,22 @@ async function checkSectionsRender() {
   else bad("homepage: lists colleges", `only ${colleges} college names found`);
 }
 
+async function checkStaticFiles() {
+  section("Static files answer");
+  // Every page check passed for two days while the logo, the favicon and every
+  // hero image under public/ answered 404 — pages render, images do not, and
+  // nothing here looked at an image. So look at them, and at the CSS and JS the
+  // homepage actually links to.
+  const html = await (await get("/")).text();
+  const linked = [...new Set(html.match(/\/_next\/static\/(?:css|chunks)\/[^"']+?\.(?:css|js)/g) || [])].slice(0, 4);
+  for (const path of ["/favicon.ico", "/logo.png", "/assets/images/logos/logo.avif", ...linked]) {
+    const res = await get(path);
+    const type = res.headers.get("content-type") || "";
+    if (res.status === 200 && !/text\/html/.test(type)) ok(path, type);
+    else bad(path, `expected 200 and not HTML, got ${res.status} ${type}`);
+  }
+}
+
 /* ------------------------------------------------------------------ */
 
 async function main() {
@@ -255,6 +271,7 @@ async function main() {
     checkSitemap,
     checkRealNumbers,
     checkSectionsRender,
+    checkStaticFiles,
   ]) {
     try {
       await check();

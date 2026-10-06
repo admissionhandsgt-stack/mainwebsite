@@ -86,7 +86,13 @@ ssh_ "set -e; R=$APP/releases/$STAMP; mkdir -p \$R
     cp -a --update=none $APP/current/.next/static/. \$R/.next/static/
     find \$R/.next/static -type f -mtime +7 -delete
   fi
-  cp -a $APP/src/public \$R/public
+  # Into, not onto. The standalone output already has a public/ (the uploads
+  # route makes Next trace public/assets/images/uploads into it), so
+  # 'cp -a src/public \$R/public' nested the real one at public/public, and
+  # every logo, favicon and hero image answered 404 from 2026-10-04 to 10-06.
+  mkdir -p \$R/public && cp -a $APP/src/public/. \$R/public/
+  test -f \$R/public/favicon.ico && test -f \$R/public/assets/images/logos/logo.avif \
+    || { echo '  public/ did not land in the release' >&2; exit 1; }
   mkdir -p \$R/.next/cache/images \$R/public/assets/images/uploads
   # Repo images into the shared upload directory. Clobbering, deliberately: a
   # file the repo changed must reach the server (no-clobber once kept old
@@ -114,6 +120,12 @@ ssh_ "set -e; ln -sfn $APP/releases/$STAMP $APP/current
   done
   echo \"  app health: \$s\"
   [ \"\$s\" = healthy ] || { docker logs --tail 40 admissionhands-app-1; exit 1; }
+  # Files Next serves out of public/ — the break no page check notices.
+  for u in /favicon.ico /logo.png /assets/images/logos/logo.avif; do
+    c=\$(curl -s -o /dev/null -w '%{http_code}' -H 'Host: www.admissionhands.com' http://127.0.0.1:8150\$u)
+    [ \"\$c\" = 200 ] || { echo \"  \$u answers \$c\" >&2; exit 1; }
+  done
+  echo '  public/ files answer 200'
   cd $APP/releases && ls -1t | tail -n +6 | xargs -r rm -rf"
 
 # ------------------------------------------------------------------ edge
