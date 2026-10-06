@@ -462,6 +462,19 @@ shows the lock and its end time. **Restarting or re-pairing does not lift it** �
 session at 11:22 that day. Fewer outbound codes is the only thing that keeps it away; one way to get there
 is never sending to a mistyped number, which is what `lib/phone.ts` now guarantees.
 
+**Several numbers, rolling over (2026-10-06, migration 0023).** One number was a single point of failure,
+so `lib/waSenders.ts` knows every number: the primary (the `integrations` config, unchanged) plus backups
+in `wa_senders` (server-only — `api_key` is a secret; never expose it through `/api/content`). Each backup
+is its own WAHA container (Core runs one session per container): `waha2` in `deploy/oracle/compose.yml`,
+registered as "Backup 1", **waiting for a phone to be paired** from Admin → WhatsApp → Numbers. Codes go
+from the connected, unlocked, under-cap number with the fewest sends today (`otp_codes.sent_via`); a 463
+marks that number locked and the next sends; a recipient error ("no LID" — not on WhatsApp) stops without
+blaming a healthy number; with nobody able to send, the inbound path, linked to a *connected* number.
+Lead alerts go from the primary first (the staff chat is there; a lock does not stop existing chats).
+Caps: primary 300/day, backups 40 by default. A backup number should be one the team can see — people
+reply to codes. To add a third: copy the `waha2` service as `waha3` on port 3003, start it, add it in the
+admin with `http://waha3:3000`.
+
 **The receive-only path from migration 0008 is still there and is the fallback.** When a send fails
 or the gateway is unpaired, `/api/auth/otp` returns `channel: "inbound"` with a `wa.me` link and the
 screen says why. It is the thing that works when nothing of ours is working.
