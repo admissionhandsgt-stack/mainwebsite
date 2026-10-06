@@ -27,7 +27,7 @@ export const FeesStructure = ({ data = mbbsData }: { data?: MbbsContent } = {}) 
               <div className="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-cyan-50 dark:bg-cyan-950/20 text-cyan-600 dark:text-cyan-400 flex items-center justify-center mb-2 md:mb-4 group-hover:bg-cyan-600 group-hover:text-white transition-all shrink-0">
                 <IndianRupee className="w-4 h-4 md:w-6 md:h-6" />
               </div>
-              <p className="text-[8px] md:text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-0.5 md:mb-1 leading-none">
+              <p className="text-[10px] md:text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-0.5 md:mb-1 leading-none">
                 {item.category}
               </p>
               <p className="text-sm md:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">

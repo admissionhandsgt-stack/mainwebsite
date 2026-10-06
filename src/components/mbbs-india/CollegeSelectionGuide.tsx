@@ -79,7 +79,7 @@ export const CollegeSelectionGuide = ({ data = mbbsData }: { data?: MbbsContent 
 
                   {/* Content */}
                   <div className="flex-1 min-w-0 w-full break-words">
-                    <div className={`inline-block px-1.5 py-0.5 rounded-full ${color.light} dark:bg-slate-800 ${color.text} dark:text-slate-300 text-[8px] md:text-[9px] font-black uppercase tracking-widest mb-1 md:mb-2`}>
+                    <div className={`inline-block px-1.5 py-0.5 rounded-full ${color.light} dark:bg-slate-800 ${color.text} dark:text-slate-300 text-[10px] font-black uppercase tracking-widest mb-1 md:mb-2`}>
                       Phase {idx + 1}
                     </div>
                     <h3 className="text-xs md:text-base font-black text-slate-900 dark:text-white leading-snug mb-1 break-words">

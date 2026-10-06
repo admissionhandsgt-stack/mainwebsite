@@ -55,7 +55,7 @@ export const CounsellingSystem = ({ data = mbbsData }: { data?: MbbsContent } = 
                   </div>
                   <button 
                     onClick={() => toggleExpand(idx)}
-                    className={`flex items-center gap-1 md:gap-2 px-2.5 md:px-4 py-1.5 md:py-2 rounded-full text-[8px] md:text-[10px] font-black uppercase tracking-widest transition-all shrink-0 ${
+                    className={`flex items-center gap-1 md:gap-2 px-2.5 md:px-4 py-1.5 md:py-2 rounded-full text-[10px] md:text-[10px] font-black uppercase tracking-widest transition-all shrink-0 ${
                       isOpen ? 'bg-cyan-600 text-white' : 'bg-white/10 text-cyan-400 hover:bg-white/20'
                     }`}
                   >

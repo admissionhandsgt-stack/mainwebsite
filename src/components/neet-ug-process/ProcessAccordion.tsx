@@ -274,7 +274,7 @@ const ProcessAccordion = () => {
                               <Info className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />
                             </div>
                             <div>
-                              <p className="text-[8px] md:text-[9px] font-black text-cyan-600 dark:text-cyan-400 uppercase tracking-widest mb-0.5">Admission Hands Support</p>
+                              <p className="text-[10px] font-black text-cyan-600 dark:text-cyan-400 uppercase tracking-widest mb-0.5">Admission Hands Support</p>
                               <p className="text-[13px] md:text-xs text-slate-700 dark:text-slate-300 font-medium leading-tight">{step.support}</p>
                             </div>
                           </div>

@@ -144,14 +144,26 @@ export default function Header({
               alt="Admission Hands Logo" 
               width={220}
               height={55}
-              className="object-contain w-[160px] h-[40px] sm:w-[180px] sm:h-[45px] md:w-[200px] md:h-[50px] transition-all dark:brightness-110 dark:hue-rotate-15"
+              className="object-contain w-[160px] h-[40px] sm:w-[180px] sm:h-[45px] md:w-[200px] md:h-[50px] xl:w-[180px] xl:h-[45px] min-[1800px]:w-[200px] min-[1800px]:h-[50px] transition-all dark:brightness-110 dark:hue-rotate-15"
               priority
               unoptimized
             />
           </Link>
 
-          {/* Center: Centered Navigation Links */}
-          <nav className="mx-auto hidden items-center gap-0.5 lg:flex xl:gap-1.5">
+          {/*
+            Center: the navigation. From 1280px, and compact until 1800px.
+
+            The row needs ~1,400px at full size (logo, eight links, four
+            controls) and the page container gives it 1,216px at 1280–1535px
+            and 1,376px at 1536–1799px. Everything is shrink-0 and nowrap, and
+            body has overflow-x: hidden, so it did not wrap or scroll — the
+            "Talk to a counsellor" button was silently cut off the right edge on
+            every laptop: 252px off-screen at 1024, 77px at 1440 (measured
+            2026-10-06). Below 1280 the drawer takes over, as on a tablet; up
+            to 1800 the links are 13px with tighter padding, Sign in is an icon
+            and the logo is 180px. From 1800px it is exactly as designed.
+          */}
+          <nav className="mx-auto hidden items-center gap-0.5 xl:flex min-[1800px]:gap-1.5">
             {navLinks.map((link) => {
               const isActive = pathname === link.url;
               const hasDropdown = link.children.length > 0;
@@ -161,7 +173,7 @@ export default function Header({
                     href={link.url}
                     target={link.newTab ? '_blank' : undefined}
                     rel={link.newTab ? 'noopener noreferrer' : undefined}
-                    className={`flex items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-2 text-xs font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background xl:px-3.5 xl:text-sm ${
+                    className={`flex items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-2 text-[13px] font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background min-[1800px]:px-3.5 min-[1800px]:text-sm ${
                       isActive
                         ? 'bg-primary-soft text-primary-strong dark:text-primary'
                         : 'text-muted-foreground hover:text-primary hover:bg-primary-soft/60'
@@ -194,7 +206,7 @@ export default function Header({
           </nav>
 
           {/* Extreme Right: WhatsApp, Call, Theme Toggle */}
-          <div className="hidden lg:flex items-center gap-1.5 shrink-0">
+          <div className="hidden xl:flex items-center gap-1.5 shrink-0">
             <button
               onClick={() => CTA.whatsapp()}
               className="w-11 h-11 rounded-full flex items-center justify-center text-accent hover:bg-accent-soft transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -207,10 +219,12 @@ export default function Header({
                 does not reflow when somebody signs in. */}
             <Link
               href={accountName ? '/account' : '/login'}
-              className="ml-1 inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-2 text-xs font-bold text-foreground transition-colors hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              aria-label={accountName ? `Your account (${accountName})` : 'Sign in'}
+              title={accountName || 'Sign in'}
+              className="ml-1 inline-flex h-11 w-11 items-center justify-center gap-1.5 rounded-full border border-border text-xs font-bold text-foreground transition-colors hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring min-[1800px]:h-auto min-[1800px]:w-auto min-[1800px]:px-3 min-[1800px]:py-2"
             >
               <UserRound className="h-3.5 w-3.5" aria-hidden="true" />
-              {accountName || 'Sign in'}
+              <span className="hidden min-[1800px]:inline">{accountName || 'Sign in'}</span>
             </Link>
             <button
               onClick={CTA.call}
@@ -222,7 +236,7 @@ export default function Header({
           </div>
 
           {/* Mobile menu trigger + theme toggle row */}
-          <div className="flex lg:hidden items-center gap-1 shrink-0">
+          <div className="flex xl:hidden items-center gap-1 shrink-0">
             {renderThemeToggle()}
             <button
               className="p-2 -mr-2 text-slate-600 dark:text-slate-400 min-w-[44px] min-h-[44px] flex items-center justify-center transition-transform active:scale-90"
@@ -244,7 +258,7 @@ export default function Header({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="lg:hidden fixed inset-0 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-sm"
+              className="xl:hidden fixed inset-0 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-sm"
               style={{ zIndex: 110 }}
             />
             <motion.div
@@ -252,7 +266,7 @@ export default function Header({
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="lg:hidden fixed top-0 right-0 bottom-0 w-[78%] max-w-[320px] bg-white dark:bg-slate-950 shadow-2xl flex flex-col border-l border-slate-100 dark:border-slate-800"
+              className="xl:hidden fixed top-0 right-0 bottom-0 w-[78%] max-w-[320px] bg-white dark:bg-slate-950 shadow-2xl flex flex-col border-l border-slate-100 dark:border-slate-800"
               style={{ zIndex: 120 }}
             >
               <div className="p-4 pt-16 flex-1 overflow-y-auto">

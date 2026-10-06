@@ -60,7 +60,7 @@ export function DeemedCollegeCard({ college }: DeemedCollegeCardProps) {
               <Users className="w-3 h-3 shrink-0 text-emerald-500" />
               <span className="text-[9px] font-bold">{college.intake} Seats</span>
               {college.nri_seats != null && (
-                <span className="text-[8px] text-amber-600 dark:text-amber-400 font-bold ml-0.5">({college.nri_seats} NRI)</span>
+                <span className="text-[10px] text-amber-600 dark:text-amber-400 font-bold ml-0.5">({college.nri_seats} NRI)</span>
               )}
             </div>
           )}

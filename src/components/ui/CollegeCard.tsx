@@ -98,7 +98,7 @@ export function CollegeCard({
         {/* Type Badge */}
         {collegeType && (
           <div className="absolute top-1.5 right-1.5">
-            <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[8px] font-black backdrop-blur-md bg-white/90 dark:bg-slate-900/90 ${style.text} shadow-sm border ${style.border}`}>
+            <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-black backdrop-blur-md bg-white/90 dark:bg-slate-900/90 ${style.text} shadow-sm border ${style.border}`}>
               <span className={`w-1 h-1 rounded-full ${style.dot}`} />
               {collegeType}
             </span>

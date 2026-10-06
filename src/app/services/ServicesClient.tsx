@@ -213,7 +213,7 @@ function ServiceCard({ service, index, mounted }: { service: typeof services[0];
           {/* Stat badge */}
           <div className="hidden sm:flex flex-col items-center px-2.5 py-1 bg-slate-50 rounded-lg border border-slate-100 shrink-0">
             <span className="text-xs md:text-sm font-black text-slate-900">{service.stat.value}</span>
-            <span className="text-[8px] font-bold text-slate-400 uppercase tracking-wider">{service.stat.label}</span>
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{service.stat.label}</span>
           </div>
         </div>
 
@@ -250,7 +250,7 @@ function ServiceCard({ service, index, mounted }: { service: typeof services[0];
         <div className="flex sm:hidden items-center gap-2 mb-2">
           <div className="px-2.5 py-1 bg-slate-50 rounded-md border border-slate-100">
             <span className="text-xs font-black text-slate-900">{service.stat.value}</span>
-            <span className="text-[8px] font-bold text-slate-400 uppercase tracking-wider ml-1">{service.stat.label}</span>
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">{service.stat.label}</span>
           </div>
         </div>
       </div>
@@ -396,7 +396,7 @@ export default function ServicesClient({ heroImages, heroCredit }: ServicesClien
                   </div>
                   <div>
                     <p className="text-base md:text-xl font-black text-slate-900 leading-none">{s.value}</p>
-                    <p className="text-[8px] md:text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">{s.label}</p>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">{s.label}</p>
                   </div>
                 </div>
               ))}

@@ -103,6 +103,12 @@ ssh_ "set -e; R=$APP/releases/$STAMP; mkdir -p \$R
   # sharp must load on this architecture, in the image the app runs in.
   docker run --rm --user 1003:1003 -v \$R:/app -w /app node:22-bookworm-slim \
     node -e \"require('sharp'); console.log('  sharp loads on', process.arch)\"
+  # ...and decodes AVIF correctly on this CPU. sharp 0.34 on ARM64 draws green
+  # blocks through every AVIF (scripts/check_sharp_decode.cjs); loading is not
+  # the same as working.
+  docker run --rm --user 1003:1003 -v \$R:/app -v $APP/src/scripts:/chk:ro \
+    -v $APP/uploads/images:/up:ro -w /app node:22-bookworm-slim \
+    node /chk/check_sharp_decode.cjs /up/hero-homepage_hero_doctors.avif /up/hero-nri_hero.avif /up/branches-general-medicine.avif
   echo '  release ready:' \$R"
 
 if [[ $SWITCH -eq 0 ]]; then

@@ -163,7 +163,7 @@ export const PGSpecializations = () => {
                     </div>
                     <div className="w-full min-w-0">
                       <p className="font-black text-[13px] sm:text-xs md:text-sm text-slate-900 dark:text-white leading-tight break-words">{item.name}</p>
-                      <p className="text-[8px] md:text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider mt-0.5">
+                      <p className="text-[10px] md:text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider mt-0.5">
                         {item.duration}
                       </p>
                     </div>

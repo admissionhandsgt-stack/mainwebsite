@@ -642,14 +642,14 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
                           <div className="col-span-4 flex items-center justify-end gap-2.5">
                             {lens.bandOf(college.slug) && (
                               <span
-                                className={`shrink-0 rounded border px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider ${BAND_CHIP[lens.bandOf(college.slug)!].className}`}
+                                className={`shrink-0 rounded border px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${BAND_CHIP[lens.bandOf(college.slug)!].className}`}
                               >
                                 {BAND_CHIP[lens.bandOf(college.slug)!].label}
                               </span>
                             )}
                             {college.type !== "unknown" && (
                               <span
-                                className={`shrink-0 text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${
+                                className={`shrink-0 text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${
                                   college.type === "govt"
                                     ? "bg-emerald-50 dark:bg-emerald-400 text-emerald-600 dark:text-black border-emerald-200 dark:border-emerald-400"
                                     : "bg-teal-50 dark:bg-teal-400 text-teal-600 dark:text-black border-teal-200 dark:border-teal-400"
@@ -691,14 +691,14 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
                           <div className="flex items-center gap-1.5 shrink-0">
                             {lens.bandOf(college.slug) && (
                               <span
-                                className={`shrink-0 rounded border px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider ${BAND_CHIP[lens.bandOf(college.slug)!].className}`}
+                                className={`shrink-0 rounded border px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${BAND_CHIP[lens.bandOf(college.slug)!].className}`}
                               >
                                 {BAND_CHIP[lens.bandOf(college.slug)!].label}
                               </span>
                             )}
                             {college.type !== "unknown" && (
                               <span
-                                className={`shrink-0 text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${
+                                className={`shrink-0 text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${
                                   college.type === "govt"
                                     ? "bg-emerald-50 dark:bg-emerald-400 text-emerald-600 dark:text-black border-emerald-200 dark:border-emerald-400"
                                     : "bg-teal-50 dark:bg-teal-400 text-teal-600 dark:text-black border-teal-200 dark:border-teal-400"

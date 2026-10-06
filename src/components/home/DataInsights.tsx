@@ -95,7 +95,7 @@ const DataInsights = () => {
                 <item.icon className="w-4.5 h-4.5 md:w-6 md:h-6" />
               </div>
               <div className="min-w-0 flex-1">
-                <h3 className="text-[8px] md:text-xs font-black text-slate-400 uppercase tracking-widest mb-0.5 md:mb-1">{item.title}</h3>
+                <h3 className="text-[10px] md:text-xs font-black text-slate-400 uppercase tracking-widest mb-0.5 md:mb-1">{item.title}</h3>
                 <div className="text-lg sm:text-3xl font-black text-white mb-0.5 md:mb-1 tracking-tight leading-none">{item.value}</div>
                 <p className="text-slate-400 text-[13px] md:text-sm font-medium leading-normal md:leading-relaxed">{item.description}</p>
               </div>
