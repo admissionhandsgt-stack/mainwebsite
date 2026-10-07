@@ -26,7 +26,6 @@ import { logError } from "@/lib/logger";
  */
 const EXTRACT_NAME: Record<string, string> = {
   "andaman-and-nicobar-islands": "Andaman Nicobar Island",
-  chattisgarh: "Chhattisgarh",
   "dadra-and-nagar-haveli": "Dadra Nagar Havelli",
   "jammu-and-kashmir": "Jammu and Kashmir",
   pondicherry: "Puducherry",

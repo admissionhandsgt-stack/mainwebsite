@@ -53,6 +53,11 @@ UPDATE page_seo SET title = $$NEET Counselling Services for MBBS & MD/MS | Admis
 -- The two state slugs with "&" in them. The page redirects the old address.
 UPDATE mbbs_states SET slug = replace(slug, '&', 'and'), updated_at = now() WHERE slug LIKE '%&%';
 
+-- "Chattisgarh" is a misspelling; the state, the extract and what people
+-- search is "Chhattisgarh". The page redirects the old slug.
+UPDATE mbbs_states SET name = 'Chhattisgarh', slug = 'chhattisgarh', updated_at = now()
+ WHERE slug = 'chattisgarh';
+
 COMMIT;
 
 SELECT route, title FROM page_seo WHERE updated_at > now() - interval '1 minute' ORDER BY route;

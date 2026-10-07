@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
-import { ArrowRight, Building2, Landmark, MapPin, Search } from "lucide-react";
+import { Landmark, Search } from "lucide-react";
 import { getStatePage, type StatePage } from "@/lib/stateQueries";
 import { resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
@@ -19,6 +19,9 @@ import LeadCapture from "@/components/lead/LeadCapture";
 const SITE = "https://www.admissionhands.com";
 
 type Props = { params: { stateName: string } };
+
+/** Old slug -> current slug, for states whose address changed. */
+const RENAMED: Record<string, string> = { chattisgarh: "chhattisgarh" };
 
 function slugOf(raw: string): string {
   let s = raw;
@@ -41,13 +44,18 @@ function describe(p: StatePage) {
   );
 }
 
+/** The search snippet: under ~155 characters, where Google cuts. */
+function snippet(p: StatePage) {
+  return `${p.colleges.length} MBBS colleges in ${p.state.name} with NEET UG closing ranks by quota and category, and which counselling fills each seat.`;
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const slug = slugOf(params.stateName);
   const p = await getStatePage(slug);
   if (!p) return { title: "State not found", robots: { index: false } };
   return resolveMetadata(`/mbbs-india/${slug}`, {
     title: `MBBS in ${p.state.name} 2026: ${p.colleges.length} Colleges, Counselling & Cutoffs`,
-    description: describe(p),
+    description: snippet(p),
     keywords: `MBBS in ${p.state.name}, MBBS colleges in ${p.state.name}, ${p.state.name} NEET counselling, ${p.state.name} MBBS cutoff, government medical colleges ${p.state.name}`,
   });
 }
@@ -68,6 +76,8 @@ export default async function MBBSStatePage({ params }: Props) {
   // Two states used to carry "&" in their slug, which also made the sitemap
   // invalid XML. They are "-and-" now; the old address redirects.
   if (raw.includes("&")) permanentRedirect(`/mbbs-india/${raw.replace(/&/g, "and")}`);
+  // The CMS spelled it "Chattisgarh"; the state, and what people search, is "Chhattisgarh".
+  if (raw in RENAMED) permanentRedirect(`/mbbs-india/${RENAMED[raw]}`);
 
   const p = await getStatePage(raw);
   if (!p) notFound();
@@ -225,24 +235,17 @@ export default async function MBBSStatePage({ params }: Props) {
                     href={`/mbbs-india/colleges/${c.slug}`}
                     className="group flex h-full flex-col rounded-2xl border border-border bg-card p-4 transition-colors hover:border-primary"
                   >
-                    <span className="flex items-start gap-2 font-semibold leading-snug text-foreground group-hover:text-primary">
-                      <Building2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                      {c.name}
-                    </span>
+                    {/* No icons on these cards: three inline SVGs a card, repeated in
+                        the RSC payload, made Uttar Pradesh's page 555 KB. */}
+                    <span className="font-semibold leading-snug text-foreground group-hover:text-primary">{c.name}</span>
                     <span className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[13px] text-muted-foreground">
-                      {c.city && (
-                        <span className="inline-flex items-center gap-1">
-                          <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
-                          {c.city}
-                        </span>
-                      )}
+                      {c.city && <span>{c.city}</span>}
                       {c.collegeType && <span>{c.collegeType}</span>}
                       {c.establishedYear && <span>Est. {c.establishedYear}</span>}
                       {c.intake ? <span className="tnum">{c.intake} seats</span> : null}
                     </span>
-                    <span className="mt-auto inline-flex items-center gap-1 pt-3 text-[13px] font-semibold text-primary">
-                      {c.rankRows > 0 ? "Closing ranks" : "College details"}
-                      <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                    <span className="mt-auto pt-3 text-[13px] font-semibold text-primary">
+                      {c.rankRows > 0 ? "Closing ranks" : "College details"} <span aria-hidden="true">→</span>
                     </span>
                   </Link>
                 </li>
