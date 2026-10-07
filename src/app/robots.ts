@@ -18,7 +18,11 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: "/",
+        // /api/content/ is the public, edge-cached CMS read that client
+        // components draw images and copy from. Google renders with
+        // JavaScript, and a blocked fetch is content it never sees; the longer
+        // (more specific) rule wins over the /api/ disallow.
+        allow: ["/", "/api/content/"],
         disallow: ["/admin", "/admin/", "/api/", "/account", "/account/"],
       },
     ],

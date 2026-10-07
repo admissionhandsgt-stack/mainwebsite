@@ -68,13 +68,30 @@ export function webPage(opts: { name: string; description: string; path: string 
   };
 }
 
-/** The organisation behind the site, for the knowledge panel. */
-export function organization(contact?: { phone?: string | null; email?: string | null }) {
+/**
+ * The organisation behind the site, for the knowledge panel.
+ *
+ * `logo` is the square shield. The homepage used to ship a hand-written copy of
+ * this object whose logo was `lovable.dev/opengraph-image-p98pqg.png` — the
+ * template's own image, on someone else's domain — and whose `sameAs` named a
+ * LinkedIn page that is not ours to vouch for. `sameAs` is the admin's social
+ * links now, and nothing else.
+ */
+export function organization(
+  contact?: { phone?: string | null; email?: string | null },
+  sameAs: string[] = [],
+) {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": `${SITE}/#organization`,
     name: "AdmissionHands",
+    alternateName: "Admission Hands",
     url: SITE,
+    logo: { "@type": "ImageObject", url: `${SITE}/icon-512.png`, width: 512, height: 512 },
+    image: `${SITE}/assets/images/og/admissionhands-1200x630.jpg`,
+    areaServed: { "@type": "Country", name: "India" },
+    ...(sameAs.length ? { sameAs } : {}),
     description:
       "Medical admission counselling for NEET UG and NEET PG in India, built on published counselling data.",
     ...(contact?.phone || contact?.email
@@ -89,5 +106,26 @@ export function organization(contact?: { phone?: string | null; email?: string |
           },
         }
       : {}),
+  };
+}
+
+/**
+ * The site itself — this is where Google takes the **site name** it prints above
+ * every result ("AdmissionHands" rather than "admissionhands.com"). It reads it
+ * from the homepage only, and `url` must be the homepage's canonical.
+ *
+ * No `potentialAction` SearchAction: Google retired the sitelinks search box in
+ * November 2024, and the site has no search results page for it to point at.
+ */
+export function website() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${SITE}/#website`,
+    name: "AdmissionHands",
+    alternateName: ["Admission Hands", "admissionhands.com"],
+    url: SITE,
+    inLanguage: "en-IN",
+    publisher: { "@id": `${SITE}/#organization` },
   };
 }

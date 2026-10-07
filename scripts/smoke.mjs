@@ -241,7 +241,7 @@ async function checkStaticFiles() {
   // homepage actually links to.
   const html = await (await get("/")).text();
   const linked = [...new Set(html.match(/\/_next\/static\/(?:css|chunks)\/[^"']+?\.(?:css|js)/g) || [])].slice(0, 4);
-  for (const path of ["/favicon.ico", "/logo.png", "/assets/images/logos/logo.avif", ...linked]) {
+  for (const path of ["/favicon.ico", "/logo.png", "/icon-192.png", "/apple-touch-icon.png", "/assets/images/og/admissionhands-1200x630.jpg", "/assets/images/logos/logo.avif", ...linked]) {
     const res = await get(path);
     const type = res.headers.get("content-type") || "";
     if (res.status === 200 && !/text\/html/.test(type)) ok(path, type);

@@ -1,3 +1,4 @@
+import { OG_IMAGE } from "@/lib/ogImage";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -74,7 +75,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       description,
       url: `/md-ms-india/branches/${b.slug}`,
       type: "article",
-      images: ["/assets/images/logos/logo-4k.avif"],
+      images: [OG_IMAGE],
     },
   };
 }

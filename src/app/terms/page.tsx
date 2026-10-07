@@ -5,6 +5,7 @@ import { getLegalDocuments } from '@/lib/legalService';
 import { extractHeadings } from '@/lib/legalService';
 import { LEGAL_DOCUMENTS_FALLBACK } from '@/lib/legalFallback';
 import LegalLayout from '@/components/legal/LegalLayout';
+import StructuredData, { breadcrumb } from "@/components/seo/StructuredData";
 
 /**
  * Metadata the admin can override per route (Admin -> Search & sharing).
@@ -54,6 +55,7 @@ export default async function TermsPage() {
   return (
     <>
       <LegalLayout sections={sections} />
+      <StructuredData data={breadcrumb([{ name: "Home", path: "/" }, { name: "Legal information", path: "/terms" }])} />
 
       {/* Structured data for SEO */}
       <script

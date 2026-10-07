@@ -1,3 +1,4 @@
+import { OG_IMAGE } from "@/lib/ogImage";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getMediaAsset } from "@/lib/content";
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
     description: "Your number is your account. Verified once, then you are in.",
     url: "/login",
     type: "website",
-    images: ["/assets/images/logos/logo-4k.avif"],
+    images: [OG_IMAGE],
   },
   robots: { index: false, follow: false },
 };

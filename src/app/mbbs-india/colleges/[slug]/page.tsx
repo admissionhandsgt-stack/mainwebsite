@@ -1,3 +1,4 @@
+import { OG_IMAGE } from "@/lib/ogImage";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { collegeFaqs, collegeJsonLd, collegePlace } from "@/lib/collegeSeo";
@@ -85,7 +86,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       description: `NEET UG closing ranks and fees for ${college.name}, from published counselling data.`,
       url: `/mbbs-india/colleges/${college.slug}`,
       type: "article",
-      images: ["/assets/images/logos/logo-4k.avif"],
+      images: [OG_IMAGE],
     },
   };
 }

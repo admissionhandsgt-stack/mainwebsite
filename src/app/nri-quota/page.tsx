@@ -11,6 +11,7 @@ import { getMediaAsset, getBlocks, getSettings, setting, getSections, resolveMet
 import { creditOf } from '@/components/ui/PhotoCredit';
 import { getNriContent } from '@/lib/nriContent';
 import type { Metadata } from 'next';
+import StructuredData, { breadcrumb } from "@/components/seo/StructuredData";
 
 /**
  * Metadata the admin can override per route (Admin -> Search & sharing).
@@ -63,6 +64,7 @@ const NRIQuotaPage = async () => {
   return (
     <div className="flex flex-col flex-grow">
 <SEO structuredData={faqSchema} />
+      <StructuredData data={breadcrumb([{ name: "Home", path: "/" }, { name: "NRI quota", path: "/nri-quota" }])} />
       
       <div className="flex-grow">
         {/* Order and visibility come from the admin (Page Content -> Page layout). */}

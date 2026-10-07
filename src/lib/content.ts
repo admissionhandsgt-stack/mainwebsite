@@ -7,6 +7,7 @@
  * whole page — the behaviour the Supabase code had, kept deliberately.
  */
 
+import { OG_IMAGE } from "@/lib/ogImage";
 import { unstable_cache } from "next/cache";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
@@ -699,13 +700,13 @@ export async function resolveMetadata(
       siteName: "AdmissionHands",
       type: "website",
       locale: "en_IN",
-      images: [seo?.ogImageUrl || "/assets/images/logos/logo-4k.avif"],
+      images: [seo?.ogImageUrl || OG_IMAGE],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [seo?.ogImageUrl || "/assets/images/logos/logo-4k.avif"],
+      images: [seo?.ogImageUrl || OG_IMAGE],
     },
   };
 }

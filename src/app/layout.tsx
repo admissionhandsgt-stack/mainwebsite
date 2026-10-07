@@ -1,3 +1,4 @@
+import { OG_IMAGE } from "@/lib/ogImage"
 import '../index.css'
 import { Toaster } from '@/components/ui/toaster'
 import { Toaster as SonnerToaster } from '@/components/ui/sonner'
@@ -56,15 +57,27 @@ export const metadata: Metadata = {
   ),
   title: 'AdmissionHands - Expert Medical College Admission Guidance',
   description: 'Get expert guidance for MBBS, MD/MS admissions in top medical colleges. Personalised counselling built on published closing ranks.',
+  applicationName: 'AdmissionHands',
+  // Square icons cut from the shield (scripts/make_icons.cjs). These used to
+  // point at the 1088x367 wordmark labelled as 32x32 and 180x180; Google needs
+  // a square favicon, a multiple of 48px, to show one beside a search result.
   icons: {
     icon: [
-      { url: '/favicon.ico' },
-      { url: '/logo.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon.ico', sizes: '16x16 32x32 48x48' },
+      { url: '/icon-48.png', sizes: '48x48', type: 'image/png' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
     ],
-    apple: [
-      { url: '/logo.png', sizes: '180x180', type: 'image/png' },
-    ],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
   },
+  // The fallback for any page that sets no Open Graph of its own.
+  openGraph: {
+    siteName: 'AdmissionHands',
+    type: 'website',
+    locale: 'en_IN',
+    images: [OG_IMAGE],
+  },
+  twitter: { card: 'summary_large_image', images: [OG_IMAGE] },
 }
 
 export default async function RootLayout({

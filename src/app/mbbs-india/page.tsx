@@ -6,7 +6,9 @@ import { mbbsData } from "@/data/mbbs-india";
 import { MBBSHero } from "@/components/mbbs-india/MBBSHero";
 import { QuickOverview } from "@/components/mbbs-india/QuickOverview";
 import { StickyDecisionBar } from "@/components/mbbs-india/StickyDecisionBar";
-import { getMediaAsset, getSections, resolveMetadata } from '@/lib/content';
+import { getMediaAsset, getMbbsStates, getSections, resolveMetadata } from '@/lib/content';
+import StructuredData, { breadcrumb } from '@/components/seo/StructuredData';
+import { StatesIndex } from '@/components/mbbs-india/StatesIndex';
 import { creditOf } from '@/components/ui/PhotoCredit';
 import { getMbbsContent } from '@/lib/pageContent';
 
@@ -33,11 +35,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function MBBSIndiaPage() {
-  const [mbbsHeroAsset, sections, data] = await Promise.all([
+  const [mbbsHeroAsset, sections, data, states] = await Promise.all([
     getMediaAsset('mbbs_hero_campus'),
     getSections('mbbs'),
     // The CMS layered over the shipped copy — see src/lib/pageContent.ts.
     getMbbsContent(),
+    getMbbsStates(),
   ]);
   // JSON-LD FAQ Schema
   const faqSchema = {
@@ -56,6 +59,7 @@ export default async function MBBSIndiaPage() {
   return (
     <main className="min-h-screen bg-white">
       {/* JSON-LD Schema */}
+      <StructuredData data={breadcrumb([{ name: "Home", path: "/" }, { name: "MBBS in India", path: "/mbbs-india" }])} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
@@ -78,6 +82,7 @@ export default async function MBBSIndiaPage() {
             { key: 'seats', node: <SeatDistribution data={data} /> },
             { key: 'fees', node: <FeesStructure data={data} /> },
             { key: 'selection_guide', node: <CollegeSelectionGuide data={data} /> },
+            { key: 'states', node: <StatesIndex states={states} /> },
             { key: 'why_us', node: <MBBSWhyUs data={data} /> },
             { key: 'disclaimer', node: <GlobalDisclaimer data={data} /> },
           ])

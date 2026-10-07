@@ -64,7 +64,7 @@ const loadSitemapData = unstable_cache(
       // colleges with published rounds are listed — a page with no cutoff
       // data is thin content and asking Google to index it does not help.
       db.execute(sql`
-        SELECT i.level::text AS level, i.slug
+        SELECT i.level::text AS level, i.slug, i.updated_at::date::text AS updated
         FROM institutes i
         WHERE i.is_active = true
           AND EXISTS (SELECT 1 FROM seat_options so WHERE so.institute_id = i.id)
@@ -75,7 +75,7 @@ const loadSitemapData = unstable_cache(
 
     const result = {
       noIndex: rows<{ route: string }>(hidden).map((r) => r.route),
-      colleges: rows<{ level: string; slug: string }>(pg),
+      colleges: rows<{ level: string; slug: string; updated: string }>(pg),
       states: rows<{ slug: string }>(st).map((r) => r.slug),
     };
 
@@ -86,7 +86,7 @@ const loadSitemapData = unstable_cache(
     }
     return result;
   },
-  ["sitemap-routes"],
+  ["sitemap-routes-v2"],
   { revalidate: 86400, tags: ["sitemap"] },
 );
 
@@ -99,11 +99,22 @@ const loadSitemapData = unstable_cache(
  * here too — a sitemap should not ask Google to index a page that tells it to
  * stay away.
  */
+/**
+ * `lastmod` is only worth sending when it is true. Every URL used to carry the
+ * moment the sitemap was generated, so all 3,630 claimed to have changed that
+ * second — and Google stops trusting a lastmod that is always "now". A college
+ * page changes when its row is imported; a state or branch page when its
+ * level's data is. Static pages carry none rather than a made-up one.
+ */
+const newest = (dates: string[]) => dates.reduce((a, b) => (b > a ? b : a), "");
+
+/** A slug as a URL path segment. A raw "&" in two state slugs made the whole file invalid XML. */
+const seg = (slug: string) => encodeURIComponent(slug);
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const now = new Date();
 
   let noIndex = new Set<string>();
-  let colleges: { level: string; slug: string }[] = [];
+  let colleges: { level: string; slug: string; updated: string }[] = [];
   let states: string[] = [];
 
   try {
@@ -118,12 +129,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   const entries: MetadataRoute.Sitemap = [];
+  const ugDate = newest(colleges.filter((c) => c.level === "ug").map((c) => c.updated)) || undefined;
+  const pgDate = newest(colleges.filter((c) => c.level === "pg").map((c) => c.updated)) || undefined;
 
   for (const s of STATIC) {
     if (noIndex.has(s.path)) continue;
     entries.push({
       url: BASE + s.path,
-      lastModified: now,
       changeFrequency: s.freq,
       priority: s.priority,
     });
@@ -131,8 +143,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   for (const slug of states) {
     entries.push({
-      url: `${BASE}/mbbs-india/${slug}`,
-      lastModified: now,
+      url: `${BASE}/mbbs-india/${seg(slug)}`,
+      lastModified: ugDate,
       changeFrequency: "monthly",
       priority: 0.6,
     });
@@ -144,8 +156,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     for (const b of await getBranches()) {
       entries.push({
-        url: `${BASE}/md-ms-india/branches/${b.slug}`,
-        lastModified: now,
+        url: `${BASE}/md-ms-india/branches/${seg(b.slug)}`,
+        lastModified: pgDate,
         changeFrequency: "monthly",
         priority: 0.7,
       });
@@ -157,8 +169,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   for (const c of colleges) {
     const base = c.level === "ug" ? "/mbbs-india/colleges" : "/md-ms-india/colleges";
     entries.push({
-      url: `${BASE}${base}/${c.slug}`,
-      lastModified: now,
+      url: `${BASE}${base}/${seg(c.slug)}`,
+      lastModified: c.updated || undefined,
       changeFrequency: "monthly",
       priority: 0.6,
     });

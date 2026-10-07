@@ -3,6 +3,7 @@ import DeemedUniversitiesClient from './DeemedUniversitiesClient';
 import { resolveMetadata, getMediaAssets } from '@/lib/content';
 import { getContactInfo } from '@/lib/content';
 import { Metadata } from 'next';
+import StructuredData, { breadcrumb } from "@/components/seo/StructuredData";
 
 export const revalidate = 0;
 
@@ -46,9 +47,12 @@ export default async function DeemedUniversitiesPage() {
   const phoneNumber = contact?.phoneNumber ?? "+919873133846";
 
   return (
-    <DeemedUniversitiesClient 
-      heroImages={heroImages}
-      phoneNumber={phoneNumber}
-    />
+    <>
+      <StructuredData data={breadcrumb([{ name: "Home", path: "/" }, { name: "MBBS in India", path: "/mbbs-india" }, { name: "Deemed universities", path: "/mbbs-india/deemed-universities" }])} />
+      <DeemedUniversitiesClient
+        heroImages={heroImages}
+        phoneNumber={phoneNumber}
+      />
+    </>
   );
 }

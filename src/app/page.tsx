@@ -6,11 +6,11 @@ import Hero from "@/components/Hero";
 import Reveal from "@/components/ui/Reveal";
 import CtaBand from "@/components/ui/CtaBand";
 import LeadCapture from "@/components/lead/LeadCapture";
-import SEO from "@/components/SEO";
+import StructuredData, { organization, website } from "@/components/seo/StructuredData";
 import type { Metadata } from "next";
 import { resolveMetadata } from "@/lib/content";
 import { getRecommendedColleges } from "@/lib/colleges";
-import { getMediaAsset, getSettings, setting, getBlocks, getSections } from "@/lib/content";
+import { getMediaAsset, getSettings, setting, getBlocks, getSections, getContactInfo } from "@/lib/content";
 import { backdropPlaceholder } from "@/lib/backdrop";
 
 const ServicesList = dynamic(() => import('@/components/ServicesList'), { loading: () => <SectionLoader /> });
@@ -140,28 +140,22 @@ const Index = async () => {
     rating: Number(b.data?.rating ?? 5),
   }));
 
-  // Organization structured data for SEO
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "AdmissionHands",
-    "url": "https://www.admissionhands.com",
-    "logo": "https://lovable.dev/opengraph-image-p98pqg.png",
-    "description": "Expert guidance for medical college admissions in India. Get personalized counseling for MBBS, PG (MD/MS), and SS programs.",
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "telephone": "+919310301949",
-      "contactType": "customer service"
-    },
-    "sameAs": [
-      "https://www.facebook.com/admissionhands",
-      "https://www.linkedin.com/company/admissionhands"
-    ]
-  };
+  // The site name Google prints above a result, and the brand panel, come
+  // from these two — read from the homepage only. See StructuredData.tsx.
+  const contact = await getContactInfo();
+  const social = ['social.facebook', 'social.instagram', 'social.youtube', 'social.linkedin', 'social.twitter']
+    .map((k) => setting(s, k))
+    .filter((u) => u.startsWith('https://'))
+    // Share-tracking parameters ("?igsh=…") are not part of a profile's address.
+    .map((u) => u.split('?')[0]);
+  const siteSchema = [
+    organization({ phone: contact?.phoneNumber, email: contact?.email }, social),
+    website(),
+  ];
 
   return (
     <div className="relative">
-<SEO structuredData={organizationSchema} />
+<StructuredData data={siteSchema} />
 
       {sections.shows('hero') && (
         <Hero
