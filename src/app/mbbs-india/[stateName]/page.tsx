@@ -86,6 +86,8 @@ export default async function MBBSStatePage({ params }: Props) {
   const path = `/mbbs-india/${p.state.slug}`;
   const withRanks = p.colleges.filter((c) => c.rankRows > 0).length;
   const years = p.years.length ? p.years.join(" and ") : null;
+  const yearSpan =
+    p.years.length > 1 ? `${p.years[0]}–${String(p.years[p.years.length - 1]).slice(2)}` : p.years[0] ? String(p.years[0]) : null;
 
   const faqs = [
     {
@@ -169,7 +171,7 @@ export default async function MBBSStatePage({ params }: Props) {
               { k: "MBBS colleges", v: inr(p.colleges.length) },
               { k: "With closing ranks", v: inr(withRanks) },
               { k: "Counsellings", v: inr(p.counsellings.length) },
-              { k: "Data years", v: years ?? "—" },
+              { k: "Data years", v: yearSpan ?? "—" },
             ].map(({ k, v }) => (
               <div key={k}>
                 <dt className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{k}</dt>
@@ -201,7 +203,7 @@ export default async function MBBSStatePage({ params }: Props) {
             {p.counsellings.map((c) => (
               <li key={c.name} className="rounded-2xl border border-border bg-card p-5">
                 <div className="flex items-start justify-between gap-3">
-                  <h3 className="flex items-center gap-2 font-semibold text-foreground">
+                  <h3 className="flex items-center gap-2 text-base font-semibold text-foreground md:text-lg">
                     <Landmark className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
                     {c.name}
                   </h3>
