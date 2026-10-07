@@ -66,8 +66,39 @@ async function upload(cookie, docType, bytes, filename, type) {
   return { status: res.status, json: await res.json().catch(() => ({})) };
 }
 
+/*
+ * An upload sends the counsellors a real WhatsApp alert ("New enquiry — Vault
+ * Owner — Counselling documents"), so every run of this test used to message
+ * the team about a candidate who does not exist: five times between 2026-10-04
+ * and 10-06. For the length of the run the alerts go to our own gateway
+ * number instead, and the real one is restored in a `finally`, even on a
+ * failure — the same arrangement as verify_lead_alert.mjs.
+ */
+let contactId = null;
+let originalAlertPhone = null;
+
+async function redirectAlerts() {
+  const [num] = await sql`SELECT value FROM integrations WHERE key = 'whatsapp.verify.number'`;
+  const [contact] = await sql`SELECT id, lead_notification_phone FROM contact_info LIMIT 1`;
+  const ours = String(num?.value ?? "").replace(/\D/g, "");
+  if (!contact || ours.length < 10) {
+    throw new Error("Cannot redirect alerts (no contact_info row or no gateway number) — not running, so the team is not messaged.");
+  }
+  contactId = contact.id;
+  originalAlertPhone = contact.lead_notification_phone;
+  await sql`UPDATE contact_info SET lead_notification_phone = ${"+" + ours} WHERE id = ${contactId}`;
+  console.log(`  (alerts pointed at our own number for this run, not the team's)`);
+}
+
+async function restoreAlerts() {
+  if (contactId === null) return;
+  await sql`UPDATE contact_info SET lead_notification_phone = ${originalAlertPhone} WHERE id = ${contactId}`;
+  console.log(`  (alerts restored to ${originalAlertPhone})`);
+}
+
 async function main() {
   console.log(`\nDocument vault against ${BASE}\n`);
+  await redirectAlerts();
 
   const owner = await makeUser("+919000000101", "Vault Owner");
   const stranger = await makeUser("+919000000102", "Vault Stranger");
@@ -223,12 +254,14 @@ async function main() {
   else bad("deleting the account takes the documents with it", `${stray} left`);
 
   console.log(`\n${pass} passed, ${fail} failed\n`);
+  await restoreAlerts();
   await sql.end();
   process.exit(fail ? 1 : 0);
 }
 
 main().catch(async (e) => {
   console.error(e);
+  await restoreAlerts().catch((err) => console.error("COULD NOT RESTORE THE ALERT NUMBER:", err));
   await sql.end();
   process.exit(1);
 });

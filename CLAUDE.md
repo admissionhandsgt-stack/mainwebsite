@@ -485,7 +485,9 @@ chats are the signal WhatsApp rewards; never add separate "please reply" sends.
 
 **The `+91 90000 001xx` numbers the test scripts use are real WhatsApp users** (checked with WAHA's
 `check-exists`). Fine for rows a script inserts and deletes; **never send a WhatsApp message to one.** A
-test that sends must target our own gateway number, as `verify_lead_alert.mjs` does. A menu-reply test on
+test that sends must target our own gateway number, as `verify_lead_alert.mjs` does. `verify_documents.mjs`
+redirects alerts the same way since 2026-10-07 — before that every run sent the team a fake "New enquiry —
+Vault Owner" alert (five of them, 4–6 Oct). A menu-reply test on
 2026-10-06 messaged +91 90000 00193 twice; both were deleted for everyone within minutes.
 
 **The receive-only path from migration 0008 is still there and is the fallback.** When a send fails
