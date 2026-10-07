@@ -1090,6 +1090,43 @@ think it is.
 **Corrections to things stated during that work:** the UG state pages *are* in the sitemap, all 33
 — an earlier grep searched for capitalised slugs and they are lowercase.
 
+### The SEO pass of 2026-10-07 — what was wrong, and the rules it left
+
+- **The sitemap was invalid XML.** Two state slugs carried a raw `&` (`jammu-&-kashmir`), and one
+  unescaped ampersand is enough for a parser to reject all 3,630 URLs. Slugs are now
+  `encodeURIComponent`ed in `sitemap.ts`, and the CMS slugs are `-and-` (the page 308s the old ones).
+- **`lastmod` is the date the data changed**, never "now". It used to be the second the sitemap was
+  generated on every URL, which teaches Google to ignore it. College pages use `institutes.updated_at`;
+  state and branch pages their level's newest; static pages send none.
+- **The 33 state pages were invisible.** `/mbbs-india/[state]` was a client component fetching from
+  `/api/content/*`, which robots.txt blocked — Google saw "Study MBBS in" and nothing else. They were
+  also linked from nowhere and any slug rendered 200. Now server-rendered from `lib/stateQueries.ts`
+  (counsellings per state, every MBBS college linked to its page), 404 for unknown slugs, and linked
+  from `/mbbs-india` (`StatesIndex`, an orderable section) and from each other.
+  **No state-wide cutoff and no state fee range on purpose**: category codes differ per counselling
+  (UR, OPEN, OPEN-GEN, GM, BCA-GEN …) and the UG fee rows include ₹5-a-year junk.
+  `mbbs_states` and `states` spell five states differently — `EXTRACT_NAME` maps them.
+- **Share card:** `og:image` was the logo as **AVIF, which WhatsApp and Facebook do not render** — on
+  the channel this audience shares through, every page unfurled bare. `OG_IMAGE` in `lib/ogImage.ts`
+  is a 1200×630 JPEG (`scripts/make_og_image.cjs`), the default in the root layout and in
+  `resolveMetadata`. Never point og:image at an AVIF.
+- **Favicon:** the only icon was the 1088×367 wordmark labelled 32×32, and `favicon.ico` was that PNG
+  renamed. Google needs a square icon (a multiple of 48px) to show one beside a result.
+  `scripts/make_icons.cjs` cuts the shield into `icon-48/192/512.png`, `apple-touch-icon.png` and a
+  real multi-size `favicon.ico`.
+- **Homepage JSON-LD** had `logo: lovable.dev/opengraph-image-p98pqg.png` (the template's image on
+  someone else's domain) and a LinkedIn `sameAs` that is not ours. It now uses `organization()` +
+  `website()` from `StructuredData.tsx`; `sameAs` is the admin's `social.*` settings only.
+  `WebSite` is what Google takes the **site name** from — homepage only, `url` = the canonical.
+  No SearchAction: the sitelinks search box was retired in Nov 2024.
+- **robots.txt allows `/api/content/`** (more specific than the `/api/` disallow), because Google
+  renders with JavaScript and a blocked fetch is content it never sees. `/login` is deliberately
+  *not* disallowed — a blocked page cannot show Google its `noindex`.
+- Titles and descriptions changed through `scripts/sql/seo_copy_2026_10.sql`, **guarded on the old
+  value** so an admin edit is never overwritten. `page_seo` wins over code — change copy there.
+- **Cloudflare Crawler Hints** (free IndexNow pings to Bing/Yandex) cannot be switched by API token
+  (10405); it is a dashboard toggle under Caching → Configuration.
+
 ## Cleanup baseline (2026-09-22)
 
 The repo is Supabase-free on disk as well as in code. Deleted: `.cleanup-quarantine/` (114 MB of
