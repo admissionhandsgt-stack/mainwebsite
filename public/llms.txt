@@ -40,6 +40,10 @@ How to read the numbers on this site:
 - [MD/MS admission in India](https://www.admissionhands.com/md-ms-india)
 - [NRI quota admission](https://www.admissionhands.com/nri-quota)
 
+## Open data
+- [NEET counselling open data — CSV downloads and embeddable tables](https://www.admissionhands.com/data)
+- [NEET PG Stipend Report 2026](https://www.admissionhands.com/reports/neet-pg-stipend-2026)
+
 ## About
 - [About AdmissionHands](https://www.admissionhands.com/know-us)
 - [Counselling services](https://www.admissionhands.com/services)

@@ -1,3 +1,4 @@
+import CiteThis from "@/components/seo/CiteThis";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { getStipends } from "@/lib/cutoffHubQueries";
@@ -186,6 +187,10 @@ export default async function StipendPage() {
           Also: <Link href="/neet-pg-cutoff" className="font-semibold text-primary hover:underline">NEET PG cutoff, branch wise</Link> ·{" "}
           <Link href="/management-quota" className="font-semibold text-primary hover:underline">management quota fees</Link>
         </p>
+      </section>
+
+      <section className="container-custom pb-10">
+        <CiteThis title={"NEET PG stipend by state"} path="/md-ms-india/stipend" source={"colleges' published PG stipends"} />
       </section>
 
       <LeadCapture

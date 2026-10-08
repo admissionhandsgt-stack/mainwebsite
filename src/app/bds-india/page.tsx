@@ -1,3 +1,4 @@
+import CiteThis from "@/components/seo/CiteThis";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { Search } from "lucide-react";
@@ -179,6 +180,10 @@ export default async function BdsPage() {
             </details>
           ))}
         </div>
+      </section>
+
+      <section className="container-custom pb-10">
+        <CiteThis title={"BDS colleges and cutoff in India"} path="/bds-india" source={"MCC's All India Quota results"} />
       </section>
 
       <LeadCapture

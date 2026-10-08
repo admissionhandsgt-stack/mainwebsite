@@ -193,7 +193,14 @@ const LATEST_STIPEND = sql`
 `;
 
 export const getStipends = unstable_cache(
-  async (): Promise<{ states: StateStipend[]; top: CollegeStipend[]; colleges: number; median: number }> => {
+  async (): Promise<{
+    states: StateStipend[];
+    top: CollegeStipend[];
+    colleges: number;
+    median: number;
+    govtMedian: number | null;
+    privateMedian: number | null;
+  }> => {
     try {
       const [st, top, all] = await Promise.all([
         db.execute(sql`
@@ -221,12 +228,17 @@ export const getStipends = unstable_cache(
         `),
         db.execute(sql`
           WITH s AS (${LATEST_STIPEND})
-          SELECT COUNT(*)::int AS n, percentile_cont(0.5) WITHIN GROUP (ORDER BY s.y1) AS median FROM s
+          SELECT COUNT(*)::int AS n, percentile_cont(0.5) WITHIN GROUP (ORDER BY s.y1) AS median,
+                 percentile_cont(0.5) WITHIN GROUP (ORDER BY s.y1) FILTER (WHERE i.ownership = 'government') AS govt,
+                 percentile_cont(0.5) WITHIN GROUP (ORDER BY s.y1) FILTER (WHERE i.ownership IN ('private', 'deemed')) AS private
+            FROM s JOIN institutes i ON i.id = s.institute_id
         `),
       ]);
       const a = rows<Record<string, unknown>>(all)[0] ?? {};
       return {
         colleges: Number(a.n ?? 0),
+        govtMedian: a.govt == null ? null : Math.round(Number(a.govt)),
+        privateMedian: a.private == null ? null : Math.round(Number(a.private)),
         median: Math.round(Number(a.median ?? 0)),
         states: rows<Record<string, unknown>>(st).map((x) => ({
           state: String(x.state),
@@ -252,7 +264,7 @@ export const getStipends = unstable_cache(
       throw error;
     }
   },
-  ["hub-stipend-v1"],
+  ["hub-stipend-v2"],
   { revalidate: 86400, tags: ["seat-data"] },
 );
 

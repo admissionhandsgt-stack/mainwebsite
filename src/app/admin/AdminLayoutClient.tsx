@@ -3,7 +3,7 @@
 import React, { ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ArrowLeft, Users, Bell, Video, School, LogOut, ChevronRight, ImageIcon, GitBranch, Inbox, LayoutDashboard, SlidersHorizontal, MapPin, Menu, Search, MessageCircle, AlertTriangle, FileText } from 'lucide-react';
+import { ArrowLeft, Users, Bell, Video, School, LogOut, ChevronRight, ImageIcon, GitBranch, Inbox, LayoutDashboard, SlidersHorizontal, MapPin, Menu, Search, MessageCircle, AlertTriangle, FileText, Megaphone } from 'lucide-react';
 import { AuthProvider, useAuth } from '@/hooks/useAuth';
 import { ProtectedRoute } from '@/components/admin/ProtectedRoute';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -33,6 +33,7 @@ const navGroups = [
       { name: 'Page Content', href: '/admin/content', icon: SlidersHorizontal },
       { name: 'Navigation', href: '/admin/navigation', icon: Menu },
       { name: 'Search & Sharing', href: '/admin/seo', icon: Search },
+      { name: 'Outreach Kit', href: '/admin/outreach', icon: Megaphone },
       { name: 'Live Alerts', href: '/admin/live-alerts', icon: Bell },
       { name: 'Videos', href: '/admin/videos', icon: Video },
       { name: 'Media', href: '/admin/media', icon: ImageIcon },

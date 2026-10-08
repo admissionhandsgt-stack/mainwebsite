@@ -1,3 +1,4 @@
+import CiteThis from "@/components/seo/CiteThis";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { Search } from "lucide-react";
@@ -197,6 +198,10 @@ export default async function NeetUgCutoffPage() {
             ))}
           </div>
         </div>
+      </section>
+
+      <section className="container-custom pb-10">
+        <CiteThis title={`NEET UG cutoff ${mbbs?.year ?? ""} — MBBS and BDS by category`} path="/neet-ug-cutoff" source={"MCC's All India Quota results"} />
       </section>
 
       <LeadCapture

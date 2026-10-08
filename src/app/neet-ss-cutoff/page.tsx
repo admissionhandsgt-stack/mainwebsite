@@ -1,3 +1,4 @@
+import CiteThis from "@/components/seo/CiteThis";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { getSsCourses, type SsCourseSummary } from "@/lib/ssQueries";
@@ -156,6 +157,10 @@ export default async function NeetSsCutoffPage() {
             ))}
           </div>
         </div>
+      </section>
+
+      <section className="container-custom pb-10">
+        <CiteThis title={`NEET SS cutoff ${s.year ?? ""} — DM, MCh and DrNB`} path="/neet-ss-cutoff" source={"MCC's NEET SS results"} />
       </section>
 
       <LeadCapture

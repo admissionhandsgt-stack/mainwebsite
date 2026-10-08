@@ -1,3 +1,4 @@
+import CiteThis from "@/components/seo/CiteThis";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { getPrivatePgFees } from "@/lib/pgFeeQueries";
@@ -141,6 +142,10 @@ export default async function PrivateFeesPage() {
           <Link href="/md-ms-india/stipend" className="font-semibold text-primary hover:underline">stipend by state</Link> ·{" "}
           <Link href="/management-quota" className="font-semibold text-primary hover:underline">management quota ranks</Link>
         </p>
+      </section>
+
+      <section className="container-custom pb-10">
+        <CiteThis title={`MD/MS fees in private medical colleges ${f.year ?? ""}`} path="/md-ms-india/private-college-fees" source={"fees published with the PG counselling"} />
       </section>
 
       <LeadCapture

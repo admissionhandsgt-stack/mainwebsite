@@ -1,3 +1,4 @@
+import CiteThis from "@/components/seo/CiteThis";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { getMdsOverview } from "@/lib/mdsQueries";
@@ -171,6 +172,10 @@ export default async function NeetMdsCutoffPage() {
         <p className="mt-6 text-sm text-muted-foreground">
           Also: <Link href="/bds-india" className="font-semibold text-primary hover:underline">BDS colleges and cutoff</Link>
         </p>
+      </section>
+
+      <section className="container-custom pb-10">
+        <CiteThis title={`NEET MDS cutoff ${o.year ?? ""} by speciality`} path="/neet-mds-cutoff" source={"MCC's NEET MDS results"} />
       </section>
 
       <LeadCapture

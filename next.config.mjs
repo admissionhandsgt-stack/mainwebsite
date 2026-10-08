@@ -39,6 +39,21 @@ const CSP = [
   "upgrade-insecure-requests",
 ].join('; ');
 
+/**
+ * /embed/* is the one place other sites may frame (src/app/embed — the open
+ * data widgets). It gets its own policy: any ancestor may frame it, and since
+ * the widget is plain HTML, no script may run in it at all.
+ */
+const EMBED_HEADERS = [
+  {
+    key: 'Content-Security-Policy',
+    value: "default-src 'none'; style-src 'unsafe-inline'; img-src 'self' data:; frame-ancestors *; base-uri 'none'; form-action 'none'",
+  },
+  { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains; preload' },
+  { key: 'X-Content-Type-Options', value: 'nosniff' },
+  { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+];
+
 const SECURITY_HEADERS = [
   { key: 'Content-Security-Policy', value: CSP },
   // A year of HSTS with preload; the site is HTTPS-only behind Cloudflare.
@@ -111,7 +126,9 @@ const nextConfig = {
 
   async headers() {
     return [
-      { source: '/:path*', headers: SECURITY_HEADERS },
+      // Every path but /embed/*, which may be framed (EMBED_HEADERS).
+      { source: '/:path((?!embed/).*)', headers: SECURITY_HEADERS },
+      { source: '/embed/:path*', headers: EMBED_HEADERS },
       {
         // The admin is never cached and never indexed.
         source: '/admin/:path*',

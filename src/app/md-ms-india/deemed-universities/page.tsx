@@ -1,3 +1,4 @@
+import CiteThis from "@/components/seo/CiteThis";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { getDeemedPg } from "@/lib/pgFeeQueries";
@@ -165,6 +166,10 @@ export default async function DeemedPgPage() {
           <Link href="/nri-quota/fees" className="font-semibold text-primary hover:underline">NRI quota fees</Link> ·{" "}
           <Link href="/mbbs-india/deemed-universities" className="font-semibold text-primary hover:underline">deemed universities for MBBS</Link>
         </p>
+      </section>
+
+      <section className="container-custom pb-10">
+        <CiteThis title={`Deemed university MD/MS fees ${d.year ?? ""}`} path="/md-ms-india/deemed-universities" source={"fees published with MCC's deemed counselling"} />
       </section>
 
       <LeadCapture

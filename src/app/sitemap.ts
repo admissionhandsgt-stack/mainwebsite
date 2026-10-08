@@ -45,6 +45,9 @@ const STATIC: { path: string; priority: number; freq: MetadataRoute.Sitemap[numb
   { path: "/md-ms-india/states", priority: 0.8, freq: "monthly" },
   { path: "/neet-ss-cutoff", priority: 0.8, freq: "monthly" },
   { path: "/neet-mds-cutoff", priority: 0.8, freq: "monthly" },
+  // Open data and the press report — the pages other sites are asked to cite.
+  { path: "/data", priority: 0.7, freq: "monthly" },
+  { path: "/reports/neet-pg-stipend-2026", priority: 0.7, freq: "yearly" },
   { path: "/md-ms-india/private-college-fees", priority: 0.8, freq: "monthly" },
   { path: "/md-ms-india/deemed-universities", priority: 0.8, freq: "monthly" },
   { path: "/nri-quota", priority: 0.7, freq: "monthly" },

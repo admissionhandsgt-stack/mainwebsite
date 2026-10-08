@@ -1,3 +1,4 @@
+import CiteThis from "@/components/seo/CiteThis";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { Search } from "lucide-react";
@@ -218,6 +219,10 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
           <Link href="/management-quota" className="font-semibold text-primary hover:underline">management quota fees</Link> ·{" "}
           <Link href="/nri-quota/fees" className="font-semibold text-primary hover:underline">NRI quota fees</Link>
         </p>
+      </section>
+
+      <section className="container-custom pb-10">
+        <CiteThis title={`NEET PG cutoff ${year?.year ?? ""} — branch wise, by category`} path="/neet-pg-cutoff" source={"MCC's All India Quota results"} />
       </section>
 
       <LeadCapture
