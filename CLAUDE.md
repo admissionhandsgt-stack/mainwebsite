@@ -1161,6 +1161,31 @@ linked from the header dropdowns and footer (`scripts/sql/nav_search_pages_2026_
 - **Not built, and why:** marks-vs-rank and NEET SS need data we do not hold (NTA/NBEMS score–rank
   tables; MCC SS allotment lists). Counselling news needs someone to write it — the biggest cluster.
 
+### Live alerts update themselves (2026-10-08) — `lib/alertFeed.ts`
+
+The bar used to be typed by hand and went stale (a UGC-NET notice; nothing newer than two weeks while MCC
+posted round results every few days). Now the server's crontab calls `POST /api/cron/alerts` every two
+hours (`7 */2 * * *`, secret in `/opt/admissionhands/.cron-secret` and `CRON_SECRET` in the app env —
+unset, the route 404s everything). Last run's JSON: `/opt/admissionhands/backups/alerts-last.json`.
+
+- **Sources:** MCC UG/PG/SS pages, NBEMS `deptnotice` (its homepage has a Turnstile human check — do not
+  try to pass it; the notice list is not gated), NTA NEET, and 14 state boards. UP, Rajasthan, Telangana,
+  Haryana, J&K and Odisha failed from the server (certificate faults, timeouts) and are not in the list.
+  MCC and NTA answer **403 to a non-browser user-agent**, so the fetcher sends a browser one.
+- **Relevance:** MBBS / BDS / NEET PG / MDS / SS counselling only. `NEVER` refuses AYUSH, non-NEET,
+  university exam results and date-sheets outright; `EXCLUDE` (nursing, pharmacy, recruitment, tenders…)
+  yields to a title that also names MBBS/BDS/NEET. Both were tuned on real notices — check the dry run
+  before loosening either.
+- **Dates:** the date the board prints beside the link, else one in the title, else the upload month in
+  the file's path (`uploads/2026/09/`). An upload month is not a publication date: those alerts are
+  dated first-seen.
+- **Expiry:** 30 days after publication, or the day after the latest date the title names. Hand-written
+  alerts got `created_at + 30 days` in migration 0026; an admin can change `expires_at`.
+- **Never floods:** a board's first read publishes nothing older than a week (and of upload-month-only
+  items, only the top five) and records the rest in `alert_feed_seen`; ≤5 new per board per run;
+  ≤4 live per board; the bar shows ≤3 per board, 12 in all, hand-written first.
+- An admin switching an alert off is final — the feed only inserts notices it has never seen.
+
 ## Cleanup baseline (2026-09-22)
 
 The repo is Supabase-free on disk as well as in code. Deleted: `.cleanup-quarantine/` (114 MB of

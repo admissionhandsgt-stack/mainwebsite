@@ -136,7 +136,7 @@ export interface FeedItem {
 
 /** Never medical-counselling news, whatever else the title mentions. */
 const NEVER =
-  /(ayurved|homoeo|homeopath|unani|siddha|naturopathy|\byoga\b|date[\s-]*sheet|semester|supplementary|re-?appear|practical exam|professional exam|held in the month|university exam|annual exam|(exam|examination)s? held|final year exam|\bbatch\b)/i;
+  /(non[\s-]*neet|ayurved|homoeo|homeopath|unani|siddha|naturopathy|\byoga\b|date[\s-]*sheet|semester|supplementary|re-?appear|practical exam|professional exam|held in the month|university exam|annual exam|(exam|examination)s? held|final year exam|\bbatch\b)/i;
 
 /** Notices on one page, deduplicated, with whatever dates the page gives them. */
 export function extractItems(html: string, base: string, source: AlertSource): FeedItem[] {
@@ -209,7 +209,10 @@ function tidy(title: string): string {
     t = t.toLowerCase().replace(ACRONYMS, (a) => a.toUpperCase());
     t = t.charAt(0).toUpperCase() + t.slice(1);
   }
-  t = t.replace(/\bScehdule\b/gi, "Schedule").replace(/\bCounelling\b/gi, "Counselling");
+  t = t
+    .replace(/\bScehdule\b/gi, "Schedule")
+    .replace(/\bCounelling\b/gi, "Counselling")
+    .replace(/\bb\.\s?sc\b/gi, "B.Sc");
   return t.length > 150 ? t.slice(0, 147).replace(/\s+\S*$/, "") + "…" : t;
 }
 
