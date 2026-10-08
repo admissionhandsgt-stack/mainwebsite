@@ -20,14 +20,19 @@ export default function CategoryCutTable({
   unit?: string;
 }) {
   return (
+    <>
+    <p className="mb-2 text-[13px] text-muted-foreground">
+      Ranks are {rankLabel}. <strong className="font-semibold text-foreground">Round 1 close</strong>: the tightest seat in
+      round 1. <strong className="font-semibold text-foreground">Last admitted</strong>: the furthest any round reached.
+    </p>
     <div className="overflow-x-auto rounded-2xl border border-border bg-card">
       <table className="w-full min-w-[520px] text-left text-sm">
         <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
           <tr>
             <th scope="col" className="px-4 py-3 font-semibold">Category</th>
             <th scope="col" className="px-4 py-3 text-right font-semibold">{unit === "colleges" ? "Colleges" : "Seats"}</th>
-            <th scope="col" className="px-4 py-3 text-right font-semibold">Round 1, tightest close ({rankLabel})</th>
-            <th scope="col" className="px-4 py-3 text-right font-semibold">Last rank admitted, any round ({rankLabel})</th>
+            <th scope="col" className="px-4 py-3 text-right font-semibold">Round 1 close</th>
+            <th scope="col" className="px-4 py-3 text-right font-semibold">Last admitted</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-border">
@@ -42,5 +47,6 @@ export default function CategoryCutTable({
         </tbody>
       </table>
     </div>
+    </>
   );
 }

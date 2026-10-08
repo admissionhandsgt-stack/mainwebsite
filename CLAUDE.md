@@ -1136,6 +1136,31 @@ think it is.
   or with paths. The key file `public/<32 hex>.txt` is public by design. All 3,630 URLs submitted
   2026-10-08. Cloudflare's Crawler Hints would automate this but cannot be enabled by API token (10405).
 
+### Search pages from the keyword research (2026-10-08)
+
+14,100 Google + Bing autocomplete phrases for ~80 NEET UG / PG / super-speciality seeds, clustered by
+intent. Biggest by weight: counselling intent (AIQ vs state quota), **fees** (private/deemed/management/
+NRI/stipend), rounds and schedules, **branch-wise cutoffs**, predictor, national cutoffs, BDS/AYUSH, NEET SS.
+Four pages answer the clusters our data covers and nothing did — all in `lib/cutoffHubQueries.ts`,
+linked from the header dropdowns and footer (`scripts/sql/nav_search_pages_2026_10.sql`):
+
+| Route | Answers |
+|---|---|
+| `/neet-ug-cutoff` | AIQ MBBS + BDS closing ranks by category; the year in progress shown apart |
+| `/neet-pg-cutoff` | AIQ PG by category, then branch-wise for `?category=` (own canonical per category) |
+| `/md-ms-india/stipend` | Monthly first-year stipend by state, govt vs private, top 25 colleges |
+| `/bds-india` | All 326 BDS colleges by state + AIQ BDS cutoff |
+
+- **Ranges over a named group, never a seat row** — category / branch / state, both ends labelled
+  ("round 1 close", "last admitted"). No gate needed; per-college rows stay behind it.
+- **A year's cutoff comes from `closing_ranks` for that year**, never `seat_options` — the view keeps a
+  seat's *latest* year, so seats with 2026 rounds vanish from a 2025 summary. "Complete" year = has R3.
+- The AIQ filter is the quota label (`All India%` / `AIQ%`): the same counselling also allots ESI, DU,
+  NRI and management seats that close at entirely different ranks.
+- Stipend: `per_month` rows only, latest year per college. No bond data exists (`fees.bond_years` empty).
+- **Not built, and why:** marks-vs-rank and NEET SS need data we do not hold (NTA/NBEMS score–rank
+  tables; MCC SS allotment lists). Counselling news needs someone to write it — the biggest cluster.
+
 ## Cleanup baseline (2026-09-22)
 
 The repo is Supabase-free on disk as well as in code. Deleted: `.cleanup-quarantine/` (114 MB of

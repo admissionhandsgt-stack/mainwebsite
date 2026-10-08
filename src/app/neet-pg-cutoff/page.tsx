@@ -180,8 +180,8 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
                 <tr>
                   <th scope="col" className="px-4 py-3 font-semibold">Branch</th>
                   <th scope="col" className="px-4 py-3 text-right font-semibold">Colleges</th>
-                  <th scope="col" className="px-4 py-3 text-right font-semibold">Round 1, tightest (AIR)</th>
-                  <th scope="col" className="px-4 py-3 text-right font-semibold">Last rank admitted (AIR)</th>
+                  <th scope="col" className="px-4 py-3 text-right font-semibold">Round 1 close</th>
+                  <th scope="col" className="px-4 py-3 text-right font-semibold">Last admitted</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
