@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { unstable_cache } from "next/cache";
 import { getBranches } from "@/lib/branchQueries";
+import { getPgStates } from "@/lib/pgStateQueries";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 
@@ -39,6 +40,9 @@ const STATIC: { path: string; priority: number; freq: MetadataRoute.Sitemap[numb
   { path: "/neet-pg-cutoff", priority: 0.9, freq: "weekly" },
   { path: "/md-ms-india/stipend", priority: 0.8, freq: "monthly" },
   { path: "/bds-india", priority: 0.8, freq: "weekly" },
+  { path: "/md-ms-india/states", priority: 0.8, freq: "monthly" },
+  { path: "/md-ms-india/private-college-fees", priority: 0.8, freq: "monthly" },
+  { path: "/md-ms-india/deemed-universities", priority: 0.8, freq: "monthly" },
   { path: "/nri-quota", priority: 0.7, freq: "monthly" },
   { path: "/nri-quota/colleges", priority: 0.6, freq: "monthly" },
   // The two highest-value quota queries in this market: what an NRI or a
@@ -170,6 +174,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   } catch (error) {
     console.error("[sitemap] branches could not be listed", error);
+  }
+
+  // One page per state with PG colleges: "PG seats in Karnataka", "NEET PG cutoff Tamil Nadu".
+  try {
+    for (const s of await getPgStates()) {
+      entries.push({
+        url: `${BASE}/md-ms-india/states/${seg(s.slug)}`,
+        lastModified: pgDate,
+        changeFrequency: "monthly",
+        priority: 0.7,
+      });
+    }
+  } catch (error) {
+    console.error("[sitemap] PG states could not be listed", error);
   }
 
   for (const c of colleges) {
