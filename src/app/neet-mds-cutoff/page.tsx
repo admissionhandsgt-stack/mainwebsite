@@ -13,8 +13,8 @@ const n = (v: unknown) => (v == null ? "—" : Number(v).toLocaleString("en-IN")
 export async function generateMetadata(): Promise<Metadata> {
   const o = await getMdsOverview();
   return resolveMetadata(PATH, {
-    title: `NEET MDS Cutoff ${o.year ?? ""}: Speciality-wise Closing Rank (AIQ & Deemed)`,
-    description: `NEET MDS ${o.year ?? ""} closing ranks for all ${o.courses.length} MDS specialities — All India Quota by category and deemed university seats, round 1 and the last rank admitted. MCC's published results.`,
+    title: `NEET MDS Cutoff ${o.year ?? ""}: Speciality-wise Closing Rank`,
+    description: `NEET MDS ${o.year ?? ""} closing ranks for all ${o.courses.length} specialities — All India Quota by category and deemed seats, round 1 and the last rank admitted.`,
     keywords:
       "NEET MDS cutoff, NEET MDS cutoff 2025, MDS orthodontics cutoff, MDS cutoff rank, NEET MDS deemed university cutoff, MDS seats in India, NEET MDS closing rank",
   });

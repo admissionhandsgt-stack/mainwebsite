@@ -43,8 +43,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!c) return { title: "Speciality not found", robots: { index: false } };
   const aiq = c.cuts.find((x) => x.quota === "All India" && x.category === "Open");
   return resolveMetadata(`/neet-mds/${c.slug}`, {
-    title: `MDS ${c.course} Cutoff ${c.year ?? ""}: NEET MDS Rank & Colleges`,
-    description: `MDS ${c.course}: NEET MDS ${c.year ?? ""} All India Quota (Open) round 1 closed at ${n(aiq?.r1)}, last admitted ${n(aiq?.last)}. Every quota and category, and the ${c.institutes.length} colleges.`,
+    title:
+      `MDS ${c.course} Cutoff ${c.year ?? ""}`.length > 40
+        ? `MDS ${c.course} Cutoff ${c.year ?? ""}`
+        : `MDS ${c.course} Cutoff ${c.year ?? ""}: NEET MDS Rank & Colleges`,
+    description: `NEET MDS ${c.year ?? ""}, ${c.course}: AIQ Open closed at ${n(aiq?.r1)} in round 1, last admitted ${n(aiq?.last)}. Every quota, category and college.`,
     keywords: `MDS ${c.course} cutoff, NEET MDS ${c.course}, MDS ${c.course} colleges, ${c.course} MDS rank, MDS ${c.course} deemed cutoff`,
   });
 }
