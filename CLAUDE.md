@@ -1250,6 +1250,22 @@ anonymous HTML at the edge. PSI after: home mobile **94** (from 81), predictor 9
 Audit tools flag Next's 16 inline RSC scripts and "render-blocking" chunks; those are framework mechanics
 (chunks are async). Remaining tap-target findings are on inner pages (branches 69, md-ms-india 41).
 
+### Earning backlinks (2026-10-08) — tools, not link spam
+
+The user asked for something that "auto-spreads backlinks across the internet". **Not built, deliberately:**
+auto-posting links to forums, comments, profiles or link networks is a *link scheme* under Google's spam
+policies, detected and penalised site-wide — it would undo the SEO work above. What was built instead makes the
+site the thing worth citing:
+
+| Piece | Where | Note |
+|---|---|---|
+| Open data | `/data`, `lib/openData.ts` | 9 summary datasets (never seat rows), each with CSV, embed code, schema.org `Dataset` (Google Dataset Search). "Free to use with a link" — no formal licence claimed; that is the owner's call |
+| CSV | `/data/<id>.csv` | noindex, `Link: rel=canonical` to the page; formula-safe cells |
+| Widget | `/embed/<id>` | Script-free HTML table. **The only framable path**: `EMBED_HEADERS` in next.config (`frame-ancestors *`, `default-src 'none'`); every other path keeps `frame-ancestors 'none'` + DENY. The embed code pairs the iframe with a plain source link outside it — that link is the one that counts |
+| Cite box | `components/seo/CiteThis.tsx` | One-click HTML link + citation on the 8 data pages |
+| Press report | `/reports/neet-pg-stipend-2026` | Every finding computed at render — nothing typed in, so it cannot drift |
+| Outreach kit | `/admin/outreach` (server page, own session check) | Pitch email, share posts, YouTube/Quora drafts from live numbers — sent by a person, one at a time |
+
 ### NEET MDS (2026-10-08)
 
 `mds_allotments` (migration 0028), from MCC's archive: MDS 2025 R1/R2/R3/Stray, 2026 R1/R2 — 5,072 allotments,
