@@ -1212,7 +1212,7 @@ KÓSMAE's pattern (`/opt/kosmae/deploy/edge/_worker.js`, read-only to us).
 
 | Piece | Where | State |
 |---|---|---|
-| Worker | `deploy/edge/_worker.js` | Written. Caches **only images** (`/_next/image`, uploads); every page is `private, no-store` (the gate) so HTML always goes to the origin. Never: /api, /admin, /account, /login, documents, non-GET, session cookies (`ah_user`, `ah_unlock`, `ah_admin_session`), crawler UAs. Adds `x-robots-tag: noindex` on any host but www (the pages.dev address) |
+| Worker | `deploy/edge/_worker.js` | Caches images (`/_next/image`, uploads) and, **since the audit pass of 2026-10-08, anonymous HTML**: fresh 60 s, revalidated in the background for up to 10 min — the rule the zone's HTML cache rule applied to www before the edge. The origin's `private, no-store` still goes to the browser. Verified through the cache: gate 31/31, browser gate 40/40 (signed-in rows, revocation), smoke 69/69. A deploy reaches cached pages within ~10 min; Pages keeps the previous build's static for a week, so they still load. Never: /api, /admin, /account, /login, documents, non-GET, session cookies (`ah_user`, `ah_unlock`, `ah_admin_session`), crawler UAs. Adds `x-robots-tag: noindex` on any host but www (the pages.dev address) |
 | Origin host | `origin.admissionhands.com`, proxied A → 137.23.39.214; Caddy block in `deploy/oracle/admissionhands.caddy` | **Live.** No `X-Ah-Edge-Key` header → 301 to www (never a second indexed copy). The app is told Host www |
 | Visitor IP | `src/lib/clientIp.ts` | **Live.** `x-ah-client-ip` believed only when `x-ah-edge-key` == `EDGE_SHARED_SECRET` (app `.env`, `/opt/admissionhands/.edge-secret`; Pages secret). Proven: buckets follow the signed IP with the key, ignore it without |
 | Static files | `scripts/edge/deploy_edge.sh` + `routes.mjs` | Pages serves `_next/static` and public files itself (`_routes.json` excludes them) — free, where worker calls count against **Workers Free 100k/day**. Uploads always go to the origin |
@@ -1237,6 +1237,18 @@ run 0.47 s); full page 0.9–1.2 s → 0.12–0.50 s. The switch itself: ~40 s o
 wrong password, and the app's rate limit keyed on the visitor's real IP (edge and direct route share one bucket).
 **Two verify scripts read back from the primary's self-chat only** (`verify_auth_flow`, `verify_lead_alert`): a
 code sent by Backup 1 lands in the primary's chat with the backup — check there before calling it undelivered.
+
+### The audit pass of 2026-10-08 (Seobility 81, Sitechecker 87, Semrush 53, DotPlus 84, Social Trafic 90)
+
+Fixed: H1 "admissionin" (space before the `<br>` — parsers drop whitespace-only text), image alt/size,
+the alerts bar's three looping copies were 36 external links for 12 notices (only the first copy is links
+now), 15 star SVGs → one text node, button-inside-link and sub-44px tap targets on the homepage, WebSite
+description/sameAs, hreflang en-IN + x-default, `X-XSS-Protection: 0`, dns-prefetch for analytics, and
+anonymous HTML at the edge. PSI after: home mobile **94** (from 81), predictor 97, desktop 99, SEO 100, BP 100.
+**Not code:** Semrush's off-page 0% (backlinks) and missing X/LinkedIn (add them under Admin → content
+`social.twitter` / `social.linkedin` and they flow into the Organization/WebSite `sameAs` automatically).
+Audit tools flag Next's 16 inline RSC scripts and "render-blocking" chunks; those are framework mechanics
+(chunks are async). Remaining tap-target findings are on inner pages (branches 69, md-ms-india 41).
 
 ### NEET MDS (2026-10-08)
 
