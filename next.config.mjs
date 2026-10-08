@@ -44,6 +44,10 @@ const SECURITY_HEADERS = [
   // A year of HSTS with preload; the site is HTTPS-only behind Cloudflare.
   { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains; preload' },
   { key: 'X-Frame-Options', value: 'DENY' },
+  // "0", not "1; mode=block": the old XSS auditor this switches is itself a
+  // known leak vector and is gone from every current browser; CSP is the real
+  // protection. Set explicitly because audits flag its absence.
+  { key: 'X-XSS-Protection', value: '0' },
   { key: 'X-Content-Type-Options', value: 'nosniff' },
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
   { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), payment=(), usb=()' },

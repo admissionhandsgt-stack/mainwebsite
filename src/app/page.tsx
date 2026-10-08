@@ -150,7 +150,7 @@ const Index = async () => {
     .map((u) => u.split('?')[0]);
   const siteSchema = [
     organization({ phone: contact?.phoneNumber, email: contact?.email }, social),
-    website(),
+    website(social),
   ];
 
   return (

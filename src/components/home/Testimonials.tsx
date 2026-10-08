@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Star, Quote } from 'lucide-react';
+import { Quote } from 'lucide-react';
 import { pick } from '@/lib/copy';
 
 export interface Testimonial {
@@ -110,11 +110,15 @@ const Testimonials = ({
               <div>
                 {/* Quote icon */}
                 <div className="mb-4 md:mb-6 flex justify-between items-center">
-                  <div className="flex gap-1">
-                    {Array.from({ length: Math.min(5, Math.max(0, t.rating || 5)) }).map((_, i) => (
-                      <Star key={i} size={14} className="text-amber-400 fill-amber-400 md:w-4 md:h-4" />
-                    ))}
-                  </div>
+                  {/* One text node, not five SVGs per card: 15 star icons were 9.6 KB of
+                      the homepage HTML. */}
+                  <span
+                    role="img"
+                    aria-label={`${Math.min(5, Math.max(0, t.rating || 5))} out of 5`}
+                    className="text-amber-400 text-sm md:text-base leading-none tracking-[0.15em]"
+                  >
+                    {"★".repeat(Math.min(5, Math.max(0, t.rating || 5)))}
+                  </span>
                   <Quote className="w-6 h-6 md:w-8 md:h-8 text-cyan-100/50 dark:text-cyan-900/10 group-hover:text-cyan-200 dark:group-hover:text-cyan-800 transition-colors" />
                 </div>
 

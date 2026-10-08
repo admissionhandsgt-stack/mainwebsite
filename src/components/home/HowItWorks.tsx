@@ -132,12 +132,14 @@ const HowItWorks = ({ steps: fromCms, copy }: { steps?: Step[]; copy?: StepsCopy
         </div>
 
         <div className="mt-8 md:mt-12 text-center">
-          <Link href="/neet-ug-process">
-            <Button size="lg" className="rounded-xl px-6 py-4 md:px-8 md:py-6 text-xs md:text-sm font-bold bg-gradient-brand text-white shadow-glow hover:shadow-glow-lg hover:-translate-y-0.5 transition-all active:translate-y-0 group border-0">
+          {/* The button renders as the link (asChild): a <button> inside an <a> is
+              invalid HTML, and the <a> around it measured 20px tall to a tap. */}
+          <Button asChild size="lg" className="rounded-xl px-6 py-4 md:px-8 md:py-6 text-xs md:text-sm font-bold bg-gradient-brand text-white shadow-glow hover:shadow-glow-lg hover:-translate-y-0.5 transition-all active:translate-y-0 group border-0">
+            <Link href="/neet-ug-process">
               {text.button}
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
       </div>
     </section>

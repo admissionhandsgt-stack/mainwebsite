@@ -13,6 +13,8 @@ interface CtaBandProps {
   /** Label on the primary button. Says exactly what happens. */
   primaryLabel?: string;
   className?: string;
+  /** What the background photograph shows. */
+  imageAlt?: string;
 }
 
 /**
@@ -27,6 +29,7 @@ export default function CtaBand({
   image,
   primaryLabel = "Talk to a counsellor",
   className = "",
+  imageAlt = "An admission counsellor with a student and parent",
 }: CtaBandProps) {
   const CTA = useCTA();
 
@@ -35,7 +38,7 @@ export default function CtaBand({
       <div className="relative overflow-hidden rounded-3xl border border-border bg-slate-950">
         <Image
           src={image}
-          alt=""
+          alt={imageAlt}
           fill
           sizes="(max-width: 1024px) 100vw, 1200px"
           className="object-cover object-center opacity-45"

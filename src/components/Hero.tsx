@@ -128,7 +128,14 @@ export default function Hero({
             <picture>
               <source media="(min-width: 640px)" srcSet={backdrop.srcSet} sizes={backdrop.sizes} />
               {/* eslint-disable-next-line @next/next/no-img-element -- art direction needs a raw <picture> */}
-              <img src={backgroundPlaceholder} alt="" decoding="async" className={backdropClass} />
+              <img
+                src={backgroundPlaceholder}
+                alt="Medical college campus"
+                width={96}
+                height={54}
+                decoding="async"
+                className={backdropClass}
+              />
             </picture>
           ) : (
             // No inline copy (an external URL or an unreadable file): the
@@ -164,8 +171,10 @@ export default function Hero({
           <h1
             className="font-heading text-[clamp(2.25rem,5.2vw,4.25rem)] font-extrabold leading-[1.04] tracking-[-0.035em] text-foreground mb-5"
           >
-            {text.headline}
-            <br className="hidden sm:block" />{" "}
+            {/* The space sits before the break: parsers that drop whitespace-only
+                text read "admission<br>in" as "admissionin" (two SEO audits did). */}
+            {text.headline}{" "}
+            <br className="hidden sm:block" />
             <span className="text-gradient-brand">{text.headlineAccent}</span>
           </h1>
 

@@ -357,7 +357,7 @@ export const InlineLeadForm = ({
                     type="button"
                     key={i}
                     onClick={() => handleStateToggle(state)}
-                    className={`text-xs md:text-[9.5px] px-3 md:px-2 py-2.5 md:py-1 rounded-lg border font-bold transition-all cursor-pointer ${
+                    className={`text-xs md:text-[9.5px] px-3 md:px-2 py-2.5 md:py-1 min-h-11 md:min-h-0 rounded-lg border font-bold transition-all cursor-pointer ${
                       isSelected 
                         ? 'bg-cyan-600/25 border-cyan-500 text-cyan-300' 
                         : 'bg-slate-950/20 border-white/10 text-slate-400 hover:border-white/20'
@@ -385,7 +385,7 @@ export const InlineLeadForm = ({
                       type="button"
                       key={quota}
                       onClick={() => setFormData({ ...formData, quota_interest: quota })}
-                      className={`flex-1 text-xs md:text-[9.5px] py-2.5 md:py-1 rounded-lg font-black transition-all cursor-pointer ${
+                      className={`flex-1 text-xs md:text-[9.5px] py-2.5 md:py-1 min-h-11 md:min-h-0 rounded-lg font-black transition-all cursor-pointer ${
                         isActive 
                           ? 'bg-cyan-600/30 text-cyan-300 border border-cyan-500/20' 
                           : 'text-slate-400 hover:text-white border border-transparent'
@@ -412,7 +412,7 @@ export const InlineLeadForm = ({
                       type="button"
                       key={statusOption}
                       onClick={() => setFormData({ ...formData, internship_status: statusOption })}
-                      className={`flex-1 text-xs md:text-[9.5px] py-2.5 md:py-1 rounded-lg font-black transition-all cursor-pointer ${
+                      className={`flex-1 text-xs md:text-[9.5px] py-2.5 md:py-1 min-h-11 md:min-h-0 rounded-lg font-black transition-all cursor-pointer ${
                         isActive 
                           ? 'bg-cyan-600/30 text-cyan-300 border border-cyan-500/20' 
                           : 'text-slate-400 hover:text-white border border-transparent'

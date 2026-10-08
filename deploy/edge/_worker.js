@@ -12,12 +12,12 @@
  * worker (_routes.json) — they are free and unlimited, worker requests are not
  * (Workers Free: 100,000 a day).
  *
- * What is cached: nothing personal, ever. Every page answers `private,
- * no-store` (the seat gate decides per visitor), so pages always go to the
- * origin. Only responses that say `public` with a max-age, carry no Set-Cookie
- * and are images (/_next/image, uploaded images) are kept in the local
- * Cloudflare cache. Never cached: /api, /admin, /account, /login, documents,
- * any non-GET, anything sent with a session cookie, any crawler.
+ * What is cached: nothing personal, ever. Images (/_next/image, uploads) that
+ * say `public` with a max-age; and pages for ANONYMOUS visitors only — the
+ * locked page every logged-out visitor gets anyway (see cacheKind). Never
+ * cached: /api, /admin, /account, /login, documents, RSC, any non-GET,
+ * anything sent with a session cookie, any crawler, any response that sets a
+ * cookie.
  *
  * The visitor's address: through this hop the origin would see the worker's.
  * The worker sends it as x-ah-client-ip with x-ah-edge-key (EDGE_SHARED_SECRET);
@@ -42,16 +42,37 @@ function isImage(p) {
   return p === "/_next/image" || p.startsWith("/assets/images/uploads/");
 }
 
-function cacheable(request, url) {
-  if (request.method !== "GET") return false;
+/**
+ * "image" | "html" | null. HTML is cached only for an anonymous document
+ * request — the same rule the zone's "HTML for logged-out visitors" cache rule
+ * applied to www before the edge (scripts/cf_html_cache.mjs): an anonymous
+ * visitor always gets the same, locked page, so one copy serves all of them for
+ * a minute. Signed in, unlocked or admin (any session cookie), a crawler (a
+ * verified one is served the gated rows), an RSC request, /api and the private
+ * paths all go to the origin every time.
+ */
+function cacheKind(request, url) {
+  if (request.method !== "GET") return null;
   const p = url.pathname;
-  if (NEVER_PREFIX.some((x) => p === x || p.startsWith(x + "/"))) return false;
-  if (p.includes("/documents")) return false;
-  if (!isImage(p)) return false;
+  if (NEVER_PREFIX.some((x) => p === x || p.startsWith(x + "/"))) return null;
+  if (p.includes("/documents")) return null;
   const cookie = request.headers.get("cookie") || "";
-  if (SESSION_COOKIES.some((c) => cookie.includes(c))) return false;
-  if (CRAWLER_UA.test(request.headers.get("user-agent") || "")) return false;
-  return true;
+  if (SESSION_COOKIES.some((c) => cookie.includes(c))) return null;
+  if (CRAWLER_UA.test(request.headers.get("user-agent") || "")) return null;
+  if (isImage(p)) return "image";
+  const rsc = request.headers.get("rsc") === "1" || url.searchParams.has("_rsc") || request.headers.has("next-router-prefetch");
+  if (rsc) return null;
+  if (!(request.headers.get("accept") || "").includes("text/html")) return null;
+  return "html";
+}
+
+/** A page is kept when it is a plain, cookie-free 200 of HTML. Its no-store is per-visitor intent the cookie test above already honours. */
+function storableHtml(res) {
+  return (
+    res.status === 200 &&
+    (res.headers.get("content-type") || "").includes("text/html") &&
+    !res.headers.has("set-cookie")
+  );
 }
 
 function storable(res) {
@@ -99,44 +120,57 @@ function toVisitor(res, state) {
   return new Response(res.body, { status: res.status, headers: h });
 }
 
-async function revalidate(cache, key, cached, request, url, env) {
+const keep = (kind, res) => (kind === "html" ? storableHtml(res) : storable(res));
+// Pages: fresh a minute, then served while the origin is asked again, for at
+// most ten. Images: fresh a minute, kept a week (their names never change).
+const STALE = { html: 10 * 60 * 1000, image: STALE_MS };
+
+async function revalidate(kind, cache, key, cached, request, url, env) {
   const req = originRequest(request, url, env);
   const etag = cached.headers.get("etag");
   if (etag) req.headers.set("if-none-match", etag);
   const res = await fetch(req);
   if (res.status === 304) return store(cache, key, cached.clone());
-  if (storable(res)) return store(cache, key, res);
-  if (res.status === 404 || res.status === 410) return cache.delete(key);
+  if (keep(kind, res)) return store(cache, key, res);
+  // Gone, moved or now personal: drop the copy so the next visitor gets the real answer.
+  return cache.delete(key);
+}
+
+/** The project's own *.pages.dev address must never be indexed beside www. */
+function finish(res, url) {
+  if (url.hostname !== CANONICAL) res.headers.set("x-robots-tag", "noindex");
+  return res;
 }
 
 function passThrough(res, url) {
   const out = new Response(res.body, res);
   out.headers.set("x-edge", "PASS");
-  // The project's own *.pages.dev address must never be indexed beside www.
-  if (url.hostname !== CANONICAL) out.headers.set("x-robots-tag", "noindex");
-  return out;
+  return finish(out, url);
 }
 
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
-    if (!cacheable(request, url)) return passThrough(await fetch(originRequest(request, url, env)), url);
+    const kind = cacheKind(request, url);
+    if (!kind) return passThrough(await fetch(originRequest(request, url, env)), url);
 
     const cache = caches.default;
-    const key = new Request(`https://${CANONICAL}${url.pathname}${url.search}`, { method: "GET" });
+    // One key space per kind, on the canonical host, so the pages.dev address
+    // and www never share a copy.
+    const key = new Request(`https://${url.hostname}/__${kind}${url.pathname}${url.search}`, { method: "GET" });
     const cached = await cache.match(key);
     if (cached) {
       const age = Date.now() - Number(cached.headers.get("x-edge-stored") || 0);
-      if (age < FRESH_MS) return toVisitor(cached, "HIT");
-      if (age < STALE_MS) {
-        ctx.waitUntil(revalidate(cache, key, cached.clone(), request, url, env).catch(() => {}));
-        return toVisitor(cached, "STALE");
+      if (age < FRESH_MS) return finish(toVisitor(cached, "HIT"), url);
+      if (age < STALE[kind]) {
+        ctx.waitUntil(revalidate(kind, cache, key, cached.clone(), request, url, env).catch(() => {}));
+        return finish(toVisitor(cached, "STALE"), url);
       }
     }
     const res = await fetch(originRequest(request, url, env));
-    if (storable(res)) ctx.waitUntil(store(cache, key, res.clone()));
+    if (keep(kind, res)) ctx.waitUntil(store(cache, key, res.clone()));
     const out = new Response(res.body, res);
     out.headers.set("x-edge", "MISS");
-    return out;
+    return finish(out, url);
   },
 };

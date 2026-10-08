@@ -113,6 +113,13 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={`${jakarta.variable} ${inter.variable} ${figtree.variable}`} suppressHydrationWarning>
+      <head>
+        {/* Analytics loads after the page (lazyOnload); resolving its hosts early
+            costs nothing and saves the lookup when it does. Not a preconnect: that
+            would open sockets competing with the critical path. */}
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+      </head>
       <body className="antialiased font-body overflow-x-hidden bg-background text-foreground transition-colors duration-200">
         {/*
           Analytics after the page has loaded, not before. `afterInteractive`

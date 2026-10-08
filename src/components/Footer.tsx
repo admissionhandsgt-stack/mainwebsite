@@ -109,7 +109,7 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
                   href={link.url}
                   target={link.newTab ? '_blank' : undefined}
                   rel={link.newTab ? 'noopener noreferrer' : undefined}
-                  className="bg-white/5 border border-white/10 px-4 py-2.5 rounded-full text-[10px] font-bold text-gray-300 hover:text-white hover:bg-white/10 transition-colors flex items-center justify-center min-h-[44px]"
+                  className="bg-white/5 border border-white/10 px-4 py-2.5 rounded-full text-xs font-bold text-gray-300 hover:text-white hover:bg-white/10 transition-colors flex items-center justify-center min-h-[44px]"
                 >
                   {link.label}
                 </Link>
@@ -150,7 +150,7 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
                           href={item.url}
                           target={item.newTab ? '_blank' : undefined}
                           rel={item.newTab ? 'noopener noreferrer' : undefined}
-                          className="text-gray-400 text-[11px] font-bold block py-3.5"
+                          className="text-gray-400 text-xs font-bold block py-3.5"
                         >
                           {item.label}
                         </Link>
@@ -202,11 +202,11 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
                   <ul className="space-y-2.5">
                     <li className="flex items-center gap-2">
                       <Phone className="h-3 w-3 text-cyan-400" />
-                      <a href={`tel:${phoneNumber}`} className="text-gray-400 text-[11px] font-bold block py-3.5">{phoneNumber}</a>
+                      <a href={`tel:${phoneNumber}`} className="text-gray-400 text-xs font-bold block py-3.5">{phoneNumber}</a>
                     </li>
                     <li className="flex items-center gap-2">
                       <Mail className="h-3 w-3 text-cyan-400" />
-                      <a href={`mailto:${emailAddress}`} className="text-gray-400 text-[11px] font-bold block py-3.5">{emailAddress}</a>
+                      <a href={`mailto:${emailAddress}`} className="text-gray-400 text-xs font-bold block py-3.5">{emailAddress}</a>
                     </li>
                   </ul>
                 </div>

@@ -20,6 +20,9 @@ export interface BarAlert {
  * component only draws them, and SiteShell reserves the space from the same
  * data. The admin screen still uses useLiveAlerts for editing.
  */
+const TITLE_CLASS =
+  "inline-flex min-h-[44px] items-center text-xs md:text-sm font-medium hover:underline text-white/90 group-hover:text-white transition-colors";
+
 export default function LiveAlerts({ alerts }: { alerts: BarAlert[] }) {
   const [isPaused, setIsPaused] = useState(false);
   const activeAlerts = alerts;
@@ -51,15 +54,35 @@ export default function LiveAlerts({ alerts }: { alerts: BarAlert[] }) {
             className={`flex whitespace-nowrap ${isPaused ? "pause-animation" : "animate-ticker"}`}
             style={{ animationDuration: `${Math.max(35, activeAlerts.length * 15)}s` }}
           >
-            {[...activeAlerts, ...activeAlerts, ...activeAlerts].map((alert, idx) => (
-              <div key={`${alert.id}-${idx}`} className="flex items-center mx-3 md:mx-4 group">
-                <span className="text-white/60 mr-1.5 md:mr-2">⚲</span>
-                <Link href={alert.link || "#"} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center text-xs md:text-sm font-medium hover:underline text-white/90 group-hover:text-white transition-colors">
-                  {alert.title}
-                </Link>
-                <span className="ml-3 md:ml-4 text-white/30">|</span>
-              </div>
-            ))}
+            {/* Three copies make the loop seamless. Only the first is links: the
+                other two are hidden from assistive tech and open on click, so a
+                crawler counts each notice once (every SEO audit flagged 36
+                external links for 12 notices) while a visitor can still tap
+                whichever copy is in view. */}
+            {[0, 1, 2].flatMap((copy) =>
+              activeAlerts.map((alert) => (
+                <div
+                  key={`${alert.id}-${copy}`}
+                  className="flex items-center mx-3 md:mx-4 group"
+                  aria-hidden={copy > 0 ? true : undefined}
+                >
+                  <span className="text-white/60 mr-1.5 md:mr-2">⚲</span>
+                  {copy === 0 ? (
+                    <Link href={alert.link || "#"} target="_blank" rel="noopener noreferrer" className={TITLE_CLASS}>
+                      {alert.title}
+                    </Link>
+                  ) : (
+                    <span
+                      className={`${TITLE_CLASS} cursor-pointer`}
+                      onClick={() => alert.link && window.open(alert.link, "_blank", "noopener,noreferrer")}
+                    >
+                      {alert.title}
+                    </span>
+                  )}
+                  <span className="ml-3 md:ml-4 text-white/30">|</span>
+                </div>
+              )),
+            )}
           </div>
         </div>
       </div>

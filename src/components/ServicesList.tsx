@@ -139,7 +139,7 @@ const ServicesList = ({
                       {service.href ? (
                         <Link
                           href={service.href}
-                          className="inline-flex items-center text-[13px] md:text-sm font-black text-slate-900 hover:text-cyan-600 group/btn transition-colors"
+                          className="inline-flex min-h-11 items-center text-[13px] md:text-sm font-black text-slate-900 hover:text-cyan-600 group/btn transition-colors"
                         >
                           {cta}
                           <ArrowRight className="ml-1 w-1.5 h-1.5 md:ml-1.5 md:w-4 md:h-4 group-hover/btn:translate-x-1 transition-transform" />
@@ -147,7 +147,7 @@ const ServicesList = ({
                       ) : (
                         <button
                           onClick={() => setIsModalOpen(true)}
-                          className="inline-flex items-center text-[13px] md:text-sm font-black text-slate-900 hover:text-cyan-600 group/btn transition-colors"
+                          className="inline-flex min-h-11 items-center text-[13px] md:text-sm font-black text-slate-900 hover:text-cyan-600 group/btn transition-colors"
                         >
                           {cta}
                           <ArrowRight className="ml-1 w-1.5 h-1.5 md:ml-1.5 md:w-4 md:h-4 group-hover/btn:translate-x-1 transition-transform" />

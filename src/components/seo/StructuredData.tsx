@@ -117,7 +117,7 @@ export function organization(
  * No `potentialAction` SearchAction: Google retired the sitelinks search box in
  * November 2024, and the site has no search results page for it to point at.
  */
-export function website() {
+export function website(sameAs: string[] = []) {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -125,6 +125,9 @@ export function website() {
     name: "AdmissionHands",
     alternateName: ["Admission Hands", "admissionhands.com"],
     url: SITE,
+    description:
+      "NEET UG and NEET PG counselling for MBBS, BDS, MD/MS and super-speciality admission in India, built on published closing ranks.",
+    ...(sameAs.length ? { sameAs } : {}),
     inLanguage: "en-IN",
     publisher: { "@id": `${SITE}/#organization` },
   };
