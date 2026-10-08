@@ -1186,6 +1186,24 @@ unset, the route 404s everything). Last run's JSON: `/opt/admissionhands/backups
   ≤4 live per board; the bar shows ≤3 per board, 12 in all, hand-written first.
 - An admin switching an alert off is final — the feed only inserts notices it has never seen.
 
+### PG state, PG fee and NEET SS pages (2026-10-08)
+
+| Route | From | Rule worth knowing |
+|---|---|---|
+| `/md-ms-india/states` + `/[slug]` (35) | `lib/pgStateQueries.ts` | Each counselling's **own open-category code** — GEN almost everywhere, but Karnataka GM, J&K OM, Tamil Nadu "OC Open", Kerala SM, Gujarat GQ-OP/UQ-OP/IQ-OP, Goa "Group 1 - GEN" (`OPEN_CATEGORY_CODES`). A state with an empty quota table has an unmapped code. Grouped by quota alone: Karnataka files its private seats under both KEA and "Open States" |
+| `/md-ms-india/private-college-fees`, `/md-ms-india/deemed-universities` | `lib/pgFeeQueries.ts` | **Median and 10th–90th percentile**, labelled so. The extremes of published PG fees hold slips (a ₹1,000 private PG fee) — a percentile reports without inventing a floor. Quota families as in quotaQueries, plus DNB/NBEMS apart (₹1.25 L flat) |
+| `/neet-ss-cutoff` + `/neet-ss/[slug]` (74) | `lib/ssQueries.ts`, table `ss_allotments` (migration 0027) | **Group ranks** — each NEET SS group has its own merit list. No quota or category exists in SS results |
+
+**NEET SS data** comes from MCC's result PDFs (SS archive: `mcc.nic.in/archive-super-spl/`): SS 2024 R1/R2/Stray,
+SS 2023 R1/R2/Mop-up — 16,456 allotments. `python scripts/ss/extract_ss_pdf.py <pdf> <year> <round> <csv>`
+then `PYTHONIOENCODING=utf-8 python scripts/ss/build_ss_sql.py <dir> > load.sql` and `ora_psql < load.sql`
+(the env var matters: Windows Python otherwise writes cp1252 and Postgres rejects it). Later-round PDFs
+repeat earlier rounds' columns; **the last block is that round's allotment**. Wrapped cells split words
+("Endocrinolog y"), so names with the same letters take their most common spelling. SS 2025's R1/R2 results
+are no longer public — only its special stray round, which alone would mislead. Raw PDFs/CSVs:
+`D:/Admisson Hands/ss_data` (outside the repo). NEET **MDS** results (R1–R3, stray) are in MCC's main
+archive too — not loaded yet.
+
 ## Cleanup baseline (2026-09-22)
 
 The repo is Supabase-free on disk as well as in code. Deleted: `.cleanup-quarantine/` (114 MB of
