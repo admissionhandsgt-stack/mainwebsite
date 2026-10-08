@@ -40,8 +40,10 @@ const COLLEGE_COLUMNS = [
 export const RESOURCE_SPECS: Record<string, ResourceSpec> = {
   alerts: {
     table: "live_alerts",
-    columns: ["title", "link", "image_url", "is_active", "order_index"],
-    orderBy: sql`order_index ASC, id ASC`,
+    // expires_at: an admin can keep an alert up longer, or take it down sooner.
+    // The feed's own columns (source, source_key, auto) are not editable.
+    columns: ["title", "link", "image_url", "is_active", "order_index", "expires_at"],
+    orderBy: sql`is_active DESC, auto ASC, order_index ASC, published_at DESC NULLS LAST, id DESC`,
     hasUpdatedAt: false,
   },
   videos: {

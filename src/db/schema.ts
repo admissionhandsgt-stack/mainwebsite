@@ -21,6 +21,7 @@ import {
   boolean,
   real,
   timestamp,
+  date,
   index,
   uniqueIndex,
   pgEnum,
@@ -467,9 +468,25 @@ export const liveAlerts = pgTable(
     isActive: boolean("is_active").notNull().default(true),
     orderIndex: integer("order_index").notNull().default(0),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    // Migration 0026: alerts the feed adds itself, and when every alert expires.
+    source: text("source"),
+    sourceKey: text("source_key"),
+    auto: boolean("auto").notNull().default(false),
+    publishedAt: timestamp("published_at", { withTimezone: true }),
+    expiresAt: timestamp("expires_at", { withTimezone: true }),
   },
   (t) => [index("alerts_order_idx").on(t.isActive, t.orderIndex)],
 );
+
+/** Every notice the alert feed has read (migration 0026) — the "is this new?" check. */
+export const alertFeedSeen = pgTable("alert_feed_seen", {
+  key: text("key").primaryKey(),
+  source: text("source").notNull(),
+  title: text("title").notNull(),
+  url: text("url").notNull(),
+  publishedOn: date("published_on"),
+  firstSeen: timestamp("first_seen", { withTimezone: true }).defaultNow().notNull(),
+});
 
 export const mediaAssets = pgTable(
   "media_assets",

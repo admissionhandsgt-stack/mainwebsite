@@ -68,8 +68,20 @@ export async function getLiveAlerts(): Promise<LiveAlert[]> {
     async () =>
       rows<Record<string, unknown>>(
         await db.execute(sql`
-          SELECT id, title, link, image_url FROM live_alerts
-          WHERE is_active = true ORDER BY order_index ASC, id ASC
+          -- Expired alerts never show, even before the feed's next run switches
+          -- them off. Hand-written ones lead (an admin placed them); then the
+          -- newest notices, at most three from any one board so a busy state
+          -- cannot fill the bar. See lib/alertFeed.ts.
+          SELECT id, title, link, image_url FROM (
+            SELECT a.*, row_number() OVER (
+                     PARTITION BY coalesce(a.source, 'manual-' || a.id)
+                     ORDER BY a.published_at DESC NULLS LAST, a.id DESC) AS nth
+              FROM live_alerts a
+             WHERE a.is_active = true AND (a.expires_at IS NULL OR a.expires_at > now())
+          ) x
+          WHERE x.nth <= 3
+          ORDER BY x.auto ASC, x.order_index ASC, x.published_at DESC NULLS LAST, x.id DESC
+          LIMIT 12
         `),
       ).map((r) => ({
         id: r.id as number,

@@ -10,7 +10,14 @@ interface Alert {
   image_url?: string;
   is_active: boolean;
   order_index: number;
+  /** Migration 0026: set when the feed added it from an official board. */
+  auto?: boolean;
+  source?: string | null;
+  expires_at?: string | null;
 }
+
+const day = (v?: string | null) =>
+  v ? new Date(v).toLocaleDateString("en-IN", { day: "numeric", month: "short", timeZone: "Asia/Kolkata" }) : null;
 
 interface AlertListProps {
   alerts: Alert[];
@@ -61,6 +68,13 @@ const AlertList = ({ alerts, onToggleActive, onEdit, onDelete }: AlertListProps)
               <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 leading-tight">
                 {alert.title}
               </h3>
+              <p className="text-xs text-gray-500">
+                {alert.auto ? "Added automatically from an official notice board" : "Added by the team"}
+                {alert.expires_at &&
+                  (new Date(alert.expires_at) < new Date()
+                    ? ` · expired ${day(alert.expires_at)}`
+                    : ` · leaves the site ${day(alert.expires_at)}`)}
+              </p>
 
               <div className="space-y-3 mt-auto pt-4">
                 <div className="flex items-center gap-2 text-sm text-gray-500 bg-gray-50/50 p-2 rounded-lg">
