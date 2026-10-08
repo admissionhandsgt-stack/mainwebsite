@@ -33,6 +33,12 @@ const STATIC: { path: string; priority: number; freq: MetadataRoute.Sitemap[numb
   { path: "/md-ms-india", priority: 0.9, freq: "weekly" },
   { path: "/md-ms-india/colleges", priority: 0.8, freq: "weekly" },
   { path: "/md-ms-india/branches", priority: 0.8, freq: "weekly" },
+  // National cutoff, stipend and BDS pages (2026-10-08): the most-typed
+  // admission searches, answered from the same data as the predictor.
+  { path: "/neet-ug-cutoff", priority: 0.9, freq: "weekly" },
+  { path: "/neet-pg-cutoff", priority: 0.9, freq: "weekly" },
+  { path: "/md-ms-india/stipend", priority: 0.8, freq: "monthly" },
+  { path: "/bds-india", priority: 0.8, freq: "weekly" },
   { path: "/nri-quota", priority: 0.7, freq: "monthly" },
   { path: "/nri-quota/colleges", priority: 0.6, freq: "monthly" },
   // The two highest-value quota queries in this market: what an NRI or a
