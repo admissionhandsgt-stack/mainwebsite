@@ -1,3 +1,4 @@
+import { fitTitle, count } from "@/lib/seoTitle";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { notFound } from "next/navigation";
@@ -27,7 +28,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const p = await getPgStatePage(params.slug);
   if (!p) return { title: "State not found", robots: { index: false } };
   return resolveMetadata(`/md-ms-india/states/${p.slug}`, {
-    title: `MD/MS in ${p.name}: ${p.colleges.length} PG Colleges, NEET PG Cutoff & Fees`,
+    title: fitTitle(
+      `MD/MS in ${p.name}: ${count(p.colleges.length, "PG College", "PG Colleges")}, NEET PG Cutoff & Fees`,
+      `MD/MS in ${p.name}: NEET PG Cutoff & Fees`,
+      `PG Seats in ${p.name}: NEET PG Cutoff`,
+      `PG Seats in ${p.name}`,
+    ),
     description: `${p.colleges.length} PG medical colleges in ${p.name} — NEET PG closing ranks and fees by quota${p.year ? ` (${p.year})` : ""}, the counselling that fills each seat, branches and stipend.`,
     keywords: `PG seats in ${p.name}, NEET PG cutoff ${p.name}, MD MS colleges in ${p.name}, ${p.name} PG counselling, ${p.name} NEET PG fees`,
   });

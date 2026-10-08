@@ -158,20 +158,8 @@ export default async function NeetPgProcessPage() {
             { name: "MD/MS", path: "/md-ms-india" },
             { name: "NEET PG process", path: "/neet-pg-process" },
           ]),
-          // A process page is a HowTo; search engines can show the steps.
-          {
-            "@context": "https://schema.org",
-            "@type": "HowTo",
-            name: "NEET PG counselling, round by round",
-            description:
-              "The order of NEET PG counselling: registration, choice filling, allotment, reporting, upgrades, mop-up and stray vacancy.",
-            step: ROUNDS.map((r, i) => ({
-              "@type": "HowToStep",
-              position: i + 1,
-              name: r.title,
-              text: r.summary,
-            })),
-          },
+          // No HowTo: Google retired HowTo rich results in 2023 and audit tools
+          // now count the markup invalid. The steps are in the page itself.
         ]}
       />
 

@@ -1,0 +1,46 @@
+# AdmissionHands
+
+> Medical admission counselling for India — NEET UG (MBBS, BDS), NEET PG (MD/MS, diploma, DNB), NEET SS (DM/MCh/DrNB) and NEET MDS — built on the counselling authorities' own published closing ranks, not estimates.
+
+AdmissionHands publishes closing-rank data from MCC (All India Quota, deemed universities, central institutions) and the state counselling authorities, and offers one-to-one counselling: choice-list ordering, float-or-freeze decisions between rounds, state versus All India quota, and documents for reporting.
+
+How to read the numbers on this site:
+- Every figure comes from a published counselling result; nothing is predicted. "Round 1 close" is the last rank allotted in round 1; "last admitted" is the furthest any round reached.
+- A seat is one (institute, course, quota, category). Ranges are always stated within one quota and one category, never across them.
+- NEET UG ranks are All India Ranks for the All India Quota and state merit ranks for state quotas. NEET SS ranks are group ranks (each group has its own merit list).
+- Fees: a fee of 0 in a published list means "not published", not free. Fee ranges are shown as median and 10th–90th percentile.
+
+## Tools
+- [NEET College Predictor](https://www.admissionhands.com/neet-college-predictor): enter a NEET UG or PG rank and category; see every MBBS, BDS or MD/MS seat it reached, by round.
+
+## Cutoffs
+- [NEET UG cutoff — MBBS and BDS by category](https://www.admissionhands.com/neet-ug-cutoff)
+- [NEET PG cutoff — branch wise, by category](https://www.admissionhands.com/neet-pg-cutoff)
+- [NEET SS cutoff — every DM, MCh and DrNB course](https://www.admissionhands.com/neet-ss-cutoff)
+- [NEET MDS cutoff — every MDS speciality](https://www.admissionhands.com/neet-mds-cutoff)
+- [MD/MS branches — closing ranks per specialisation](https://www.admissionhands.com/md-ms-india/branches)
+
+## Colleges
+- [MBBS colleges in India, state by state](https://www.admissionhands.com/mbbs-india/colleges)
+- [BDS colleges in India](https://www.admissionhands.com/bds-india)
+- [PG medical colleges (MD/MS)](https://www.admissionhands.com/md-ms-india/colleges)
+- [PG seats by state](https://www.admissionhands.com/md-ms-india/states)
+
+## Fees and stipend
+- [NEET PG stipend, state wise](https://www.admissionhands.com/md-ms-india/stipend)
+- [MD/MS fees in private medical colleges](https://www.admissionhands.com/md-ms-india/private-college-fees)
+- [Deemed university MD/MS fees and cutoff](https://www.admissionhands.com/md-ms-india/deemed-universities)
+- [NRI quota fees and closing ranks](https://www.admissionhands.com/nri-quota/fees)
+- [Management quota fees and closing ranks](https://www.admissionhands.com/management-quota)
+
+## Counselling process
+- [NEET UG counselling process](https://www.admissionhands.com/neet-ug-process)
+- [NEET PG counselling process, round by round](https://www.admissionhands.com/neet-pg-process)
+- [MBBS admission in India](https://www.admissionhands.com/mbbs-india)
+- [MD/MS admission in India](https://www.admissionhands.com/md-ms-india)
+- [NRI quota admission](https://www.admissionhands.com/nri-quota)
+
+## About
+- [About AdmissionHands](https://www.admissionhands.com/know-us)
+- [Counselling services](https://www.admissionhands.com/services)
+- [Sitemap](https://www.admissionhands.com/sitemap.xml)

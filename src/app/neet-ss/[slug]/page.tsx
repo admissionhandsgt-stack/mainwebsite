@@ -1,7 +1,8 @@
+import { fitTitle, count } from "@/lib/seoTitle";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { notFound } from "next/navigation";
-import { getSsCourse } from "@/lib/ssQueries";
+import { getSsCourse, getSsCourses } from "@/lib/ssQueries";
 import { resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
@@ -16,7 +17,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!c) return { title: "Course not found", robots: { index: false } };
   const y = c.years[0];
   return resolveMetadata(`/neet-ss/${c.slug}`, {
-    title: `${c.course} Cutoff ${y?.year ?? ""}: NEET SS Rank, Seats & Colleges`,
+    title: fitTitle(
+      `${c.course} Cutoff ${y?.year ?? ""}: NEET SS Rank, Seats & Colleges`,
+      `${c.course} Cutoff ${y?.year ?? ""}: NEET SS Rank & Seats`,
+      `${c.course} Cutoff ${y?.year ?? ""}`,
+      `${c.course} NEET SS Cutoff`,
+    ),
     description: `${c.course}: NEET SS ${y?.year ?? ""} round 1 closed at group rank ${n(y?.r1Close)}, last admitted ${n(y?.widest)}. ${y?.seats ?? ""} seats at ${c.institutes.length} institutes, state by state.`,
     keywords: `${c.course} cutoff, ${c.course} seats in India, ${c.course} colleges, NEET SS ${c.course}, ${c.course} rank`,
   });
@@ -25,6 +31,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function SsCoursePage({ params }: Props) {
   const c = await getSsCourse(params.slug);
   if (!c) notFound();
+  // Every course page links its group's other courses: a page linked only
+  // from the hub was one of the 33 "single incoming link" pages in the audit.
+  const siblings = (await getSsCourses()).courses
+    .filter((o) => o.grp === c.grp && o.slug !== c.slug)
+    .map((o) => ({ slug: o.slug, name: o.course }));
   const path = `/neet-ss/${c.slug}`;
   const [y, prev] = c.years;
 
@@ -162,6 +173,23 @@ export default async function SsCoursePage({ params }: Props) {
         title={`Aiming for ${c.course}?`}
         body="A counsellor builds your SS choice list institute by institute against two years of MCC results, and stays with you through every round."
       />
+      {siblings.length > 0 && (
+        <section className="container-custom border-t border-border py-10">
+          <h2 className="font-heading text-xl font-bold text-foreground">Other courses in {c.grp}</h2>
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {siblings.map((o) => (
+              <li key={o.slug}>
+                <Link
+                  href={`/neet-ss/${o.slug}`}
+                  className="inline-flex min-h-10 items-center rounded-full border border-border px-4 text-sm text-foreground transition-colors hover:border-primary hover:text-primary"
+                >
+                  {o.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </main>
   );
 }

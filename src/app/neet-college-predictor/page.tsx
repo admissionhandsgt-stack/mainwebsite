@@ -54,18 +54,9 @@ export default async function NeetCollegePredictorPage() {
             { name: "Home", path: "/" },
             { name: "NEET College Predictor", path: "/neet-college-predictor" },
           ]),
-          // A tool, not an article — so search engines can show it as one.
-          {
-            "@context": "https://schema.org",
-            "@type": "WebApplication",
-            name: "NEET College Predictor",
-            applicationCategory: "EducationalApplication",
-            operatingSystem: "Any",
-            url: "https://admissionhands.com/neet-college-predictor",
-            offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
-            description:
-              "Check which MBBS, BDS or MD/MS seats a NEET rank reaches, from published counselling closing ranks.",
-          },
+          // No WebApplication: Google reads it as a software listing, which
+          // requires a rating or reviews we do not have (and must not invent) —
+          // Semrush's Site Audit counted it invalid. WebPage says what this is.
         ]}
       />
 

@@ -1,7 +1,8 @@
+import { fitTitle } from "@/lib/seoTitle";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { notFound } from "next/navigation";
-import { getMdsCourse, type MdsCut } from "@/lib/mdsQueries";
+import { getMdsCourse, getMdsOverview, type MdsCut } from "@/lib/mdsQueries";
 import { resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
@@ -43,10 +44,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!c) return { title: "Speciality not found", robots: { index: false } };
   const aiq = c.cuts.find((x) => x.quota === "All India" && x.category === "Open");
   return resolveMetadata(`/neet-mds/${c.slug}`, {
-    title:
-      `MDS ${c.course} Cutoff ${c.year ?? ""}`.length > 40
-        ? `MDS ${c.course} Cutoff ${c.year ?? ""}`
-        : `MDS ${c.course} Cutoff ${c.year ?? ""}: NEET MDS Rank & Colleges`,
+    title: fitTitle(
+      `MDS ${c.course} Cutoff ${c.year ?? ""}: NEET MDS Rank & Colleges`,
+      `MDS ${c.course} Cutoff ${c.year ?? ""}`,
+      `${c.course} MDS Cutoff`,
+    ),
     description: `NEET MDS ${c.year ?? ""}, ${c.course}: AIQ Open closed at ${n(aiq?.r1)} in round 1, last admitted ${n(aiq?.last)}. Every quota, category and college.`,
     keywords: `MDS ${c.course} cutoff, NEET MDS ${c.course}, MDS ${c.course} colleges, ${c.course} MDS rank, MDS ${c.course} deemed cutoff`,
   });
@@ -55,6 +57,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function MdsCoursePage({ params }: Props) {
   const c = await getMdsCourse(params.slug);
   if (!c) notFound();
+  const siblings = (await getMdsOverview()).courses
+    .filter((o) => o.slug !== c.slug)
+    .map((o) => ({ slug: o.slug, name: `MDS ${o.course}` }));
   const path = `/neet-mds/${c.slug}`;
   const aiq = c.cuts.find((x) => x.quota === "All India" && x.category === "Open");
 
@@ -177,6 +182,23 @@ export default async function MdsCoursePage({ params }: Props) {
         title={`Aiming for MDS ${c.course}?`}
         body="A counsellor builds your MDS choice list college by college against MCC's results — AIQ, deemed and your state quota."
       />
+      {siblings.length > 0 && (
+        <section className="container-custom border-t border-border py-10">
+          <h2 className="font-heading text-xl font-bold text-foreground">Other MDS specialities</h2>
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {siblings.map((o) => (
+              <li key={o.slug}>
+                <Link
+                  href={`/neet-mds/${o.slug}`}
+                  className="inline-flex min-h-10 items-center rounded-full border border-border px-4 text-sm text-foreground transition-colors hover:border-primary hover:text-primary"
+                >
+                  {o.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </main>
   );
 }

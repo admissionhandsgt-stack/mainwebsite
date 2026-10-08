@@ -191,7 +191,9 @@ export default function LegalContent({ sections }: LegalContentProps) {
       children?: ReactNode;
     }) => (
       <a
-        href={href}
+        // GFM autolinks a bare "www.admissionhands.com" as http://. Our own
+        // address is always https — an http link here was an audit error.
+        href={href?.replace(/^http:\/\/((www\.)?admissionhands\.com)/i, "https://$1")}
         className="text-cyan-600 dark:text-cyan-400 underline"
         target="_blank"
         rel="noopener noreferrer"

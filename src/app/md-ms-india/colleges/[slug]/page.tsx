@@ -1,3 +1,5 @@
+import { getPgStates } from "@/lib/pgStateQueries";
+import { fitTitle, count } from "@/lib/seoTitle";
 import { OG_IMAGE } from "@/lib/ogImage";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -66,7 +68,12 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const where = collegePlace(college);
   // No brand suffix: the college's own name is what is being searched, and
   // "| AdmissionHands" was pushing these past the ~60 characters Google shows.
-  const title = `${college.name} — MD/MS Cutoff & Fees 2026`;
+  const title = fitTitle(
+    `${college.name} — MD/MS Cutoff & Fees 2026`,
+    `${college.name} — MD/MS Cutoff 2026`,
+    `${college.name} MD/MS Cutoff`,
+    college.name,
+  );
   const description = `Closing ranks, fee structure, stipend and seat matrix for ${college.name}${
     where ? `, ${where}` : ""
   }. ${college.seatsTotal ?? ""} PG seats across ${college.branchCount ?? ""} branches, from published counselling data.`;
@@ -90,6 +97,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 export default async function CollegePage({ params }: { params: { slug: string } }) {
   const college = await getCollege(params.slug, "pg");
   if (!college) notFound();
+  // The state page, linked from the breadcrumb: every college pointing at its
+  // state is what makes the 35 state pages more than an index entry.
+  const stateSlug = (await getPgStates()).find((s) => s.name === college.state)?.slug ?? null;
 
   const [cutoffs, fees, similar, access, photo] = await Promise.all([
     getCollegeCutoffs(params.slug, "pg"),
@@ -178,6 +188,14 @@ export default async function CollegePage({ params }: { params: { slug: string }
             <span className="mx-2">›</span>
             <Link href="/md-ms-india" className="hover:text-cyan-300">MD/MS</Link>
             <span className="mx-2">›</span>
+            {stateSlug && college.state ? (
+              <>
+                <Link href={`/md-ms-india/states/${stateSlug}`} className="hover:text-cyan-300">
+                  {college.state}
+                </Link>
+                <span className="mx-2">›</span>
+              </>
+            ) : null}
             <Link href="/md-ms-india/colleges" className="hover:text-cyan-300">Colleges</Link>
             <span className="mx-2">›</span>
             <span className="text-slate-200">{college.name}</span>

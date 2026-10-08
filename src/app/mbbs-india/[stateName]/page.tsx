@@ -1,3 +1,4 @@
+import { fitTitle, count } from "@/lib/seoTitle";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { notFound, permanentRedirect } from "next/navigation";
@@ -54,7 +55,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const p = await getStatePage(slug);
   if (!p) return { title: "State not found", robots: { index: false } };
   return resolveMetadata(`/mbbs-india/${slug}`, {
-    title: `MBBS in ${p.state.name} 2026: ${p.colleges.length} Colleges, Counselling & Cutoffs`,
+    title: fitTitle(
+      `MBBS in ${p.state.name} 2026: ${count(p.colleges.length, "College", "Colleges")}, Counselling & Cutoffs`,
+      `MBBS in ${p.state.name} 2026: ${count(p.colleges.length, "College", "Colleges")} & Cutoffs`,
+      `MBBS in ${p.state.name} 2026: Colleges & Cutoffs`,
+      `MBBS in ${p.state.name} 2026`,
+    ),
     description: snippet(p),
     keywords: `MBBS in ${p.state.name}, MBBS colleges in ${p.state.name}, ${p.state.name} NEET counselling, ${p.state.name} MBBS cutoff, government medical colleges ${p.state.name}`,
   });

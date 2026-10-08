@@ -704,9 +704,9 @@ export async function resolveMetadata(
     ...(seo?.noIndex ? { robots: { index: false, follow: false } } : {}),
     // Without a canonical, the filter query strings on the college and cutoff
     // pages read as hundreds of near-duplicate URLs.
-    // en-IN is the only version; declaring it (and x-default) says so, rather
-    // than leaving search engines to guess the audience.
-    alternates: { canonical: route, languages: { "en-IN": route, "x-default": route } },
+    // No hreflang: one language, one version. Google does not need it, and
+    // Semrush counted the self-reference on query-string URLs as a conflict.
+    alternates: { canonical: route },
     openGraph: {
       title,
       description,

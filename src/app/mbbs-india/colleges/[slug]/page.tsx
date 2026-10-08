@@ -1,3 +1,4 @@
+import { fitTitle, count } from "@/lib/seoTitle";
 import { OG_IMAGE } from "@/lib/ogImage";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -14,7 +15,8 @@ import {
   getSimilarColleges,
   getCollegeSlugs,
 } from "@/lib/collegeQueries";
-import { getUgCollegeExtras } from "@/lib/content";
+import { getMbbsStates, getUgCollegeExtras } from "@/lib/content";
+import { extractStateName } from "@/lib/stateQueries";
 import CollegeRankCheck from "@/components/colleges/CollegeRankCheck";
 import CollegeCutoffs from "@/components/colleges/CollegeCutoffs";
 import { canSeeDepthServer } from "@/lib/depth";
@@ -76,7 +78,12 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   return {
     // No brand suffix: the college's own name is what is searched, and the
     // suffix pushed these past the ~60 characters Google shows.
-    title: `${college.name} — MBBS Cutoff & Fees 2026`,
+    title: fitTitle(
+      `${college.name} — MBBS Cutoff & Fees 2026`,
+      `${college.name} — MBBS Cutoff 2026`,
+      `${college.name} MBBS Cutoff`,
+      college.name,
+    ),
     description:
       `NEET UG closing ranks, fees and seat details for ${college.name}` +
       `${where ? `, ${where}` : ""}. Published counselling data, round by round.`,
@@ -94,6 +101,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 export default async function UgCollegePage({ params }: { params: { slug: string } }) {
   const college = await getCollege(params.slug, "ug");
   if (!college) notFound();
+  // The state page, linked from the breadcrumb (see the PG college page).
+  const stateSlug = (await getMbbsStates()).find((s) => extractStateName(s) === college.state)?.slug ?? null;
 
   const [cutoffs, fees, similar, extras, access] = await Promise.all([
     getCollegeCutoffs(params.slug, "ug"),
@@ -178,6 +187,14 @@ export default async function UgCollegePage({ params }: { params: { slug: string
           <nav aria-label="Breadcrumb" className="mb-4 text-[13px] text-white/60">
             <Link href="/mbbs-india" className="hover:text-white">MBBS India</Link>
             <span className="mx-2">/</span>
+            {stateSlug && college.state ? (
+              <>
+                <Link href={`/mbbs-india/${stateSlug}`} className="hover:text-white">
+                  MBBS in {college.state}
+                </Link>
+                <span className="mx-2">/</span>
+              </>
+            ) : null}
             <Link href="/mbbs-india/colleges" className="hover:text-white">Colleges</Link>
           </nav>
 

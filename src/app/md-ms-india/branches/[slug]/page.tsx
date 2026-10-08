@@ -1,3 +1,4 @@
+import { fitTitle, count } from "@/lib/seoTitle";
 import { OG_IMAGE } from "@/lib/ogImage";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
@@ -61,7 +62,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const b = await getBranch(params.slug);
   if (!b) return { title: "Branch not found | AdmissionHands" };
 
-  const title = `${b.name} Cutoff ${b.year ?? 2026} — Colleges, Ranks & Fees`;
+  const title = fitTitle(
+    `${b.name} Cutoff ${b.year ?? 2026} — Colleges, Ranks & Fees`,
+    `${b.name} Cutoff ${b.year ?? 2026}: Colleges & Ranks`,
+    `${b.name} Cutoff ${b.year ?? 2026}`,
+  );
   const description =
     `${b.name} closing ranks across ${inr(b.colleges)} colleges and ${b.states} states, ` +
     `by quota and category. ${inr(b.seats)} seats — published counselling results, not estimates.`;

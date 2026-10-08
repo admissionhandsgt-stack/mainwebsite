@@ -114,6 +114,10 @@
 # The bare domain only redirects. Path and query are kept.
 admissionhands.com {
 	tls /opt/admissionhands/tls/origin.pem /opt/admissionhands/tls/origin.key
+	# HSTS on the redirect too (an audit flagged the apex). Without
+	# includeSubDomains here: on the apex it would bind every subdomain,
+	# including the mail auto-configuration names, to HTTPS.
+	header Strict-Transport-Security "max-age=31536000"
 	redir https://www.admissionhands.com{uri} permanent
 }
 
@@ -144,6 +148,9 @@ origin.admissionhands.com {
 	encode gzip zstd
 
 	@not_edge not header X-Ah-Edge-Key *
+	# On the redirect only: pages carry the app's own HSTS (with
+	# includeSubDomains; preload), and a second header in front would win.
+	header @not_edge Strict-Transport-Security "max-age=31536000"
 	redir @not_edge https://www.admissionhands.com{uri} permanent
 
 	import admissionhands_uploads
