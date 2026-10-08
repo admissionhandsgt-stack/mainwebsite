@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { unstable_cache } from "next/cache";
 import { getBranches } from "@/lib/branchQueries";
 import { getPgStates } from "@/lib/pgStateQueries";
+import { getSsCourses } from "@/lib/ssQueries";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 
@@ -41,6 +42,7 @@ const STATIC: { path: string; priority: number; freq: MetadataRoute.Sitemap[numb
   { path: "/md-ms-india/stipend", priority: 0.8, freq: "monthly" },
   { path: "/bds-india", priority: 0.8, freq: "weekly" },
   { path: "/md-ms-india/states", priority: 0.8, freq: "monthly" },
+  { path: "/neet-ss-cutoff", priority: 0.8, freq: "monthly" },
   { path: "/md-ms-india/private-college-fees", priority: 0.8, freq: "monthly" },
   { path: "/md-ms-india/deemed-universities", priority: 0.8, freq: "monthly" },
   { path: "/nri-quota", priority: 0.7, freq: "monthly" },
@@ -188,6 +190,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   } catch (error) {
     console.error("[sitemap] PG states could not be listed", error);
+  }
+
+  // One page per DM / MCh / DrNB course, from MCC's SS results (ss_allotments).
+  try {
+    for (const c of (await getSsCourses()).courses) {
+      entries.push({ url: `${BASE}/neet-ss/${seg(c.slug)}`, changeFrequency: "yearly", priority: 0.6 });
+    }
+  } catch (error) {
+    console.error("[sitemap] SS courses could not be listed", error);
   }
 
   for (const c of colleges) {
