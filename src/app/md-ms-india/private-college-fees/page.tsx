@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 import { getPrivatePgFees } from "@/lib/pgFeeQueries";
 import { resolveMetadata } from "@/lib/content";
 import FeeBandTable, { lakh } from "@/components/cutoffs/FeeBandTable";

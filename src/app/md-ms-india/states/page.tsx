@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 import { getPgStates } from "@/lib/pgStateQueries";
 import { getStipends } from "@/lib/cutoffHubQueries";
 import { resolveMetadata } from "@/lib/content";

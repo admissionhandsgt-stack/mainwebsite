@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 
 /** One notice, as the root layout reads it on the server. */
 export interface BarAlert {

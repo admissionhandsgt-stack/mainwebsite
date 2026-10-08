@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 import React, { useState, useEffect, useMemo } from "react";
 import {
   Search, Building2, Landmark, GraduationCap, MapPin, ChevronDown,

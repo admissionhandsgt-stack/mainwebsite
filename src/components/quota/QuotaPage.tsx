@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 import { AlertTriangle, ArrowRight, MapPin, Search, TrendingDown } from "lucide-react";
 import type { QuotaOverview } from "@/lib/quotaQueries";
 import StructuredData from "@/components/seo/StructuredData";

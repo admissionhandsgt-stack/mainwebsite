@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import { Mail, Phone, MapPin, ArrowRight, Instagram, Facebook, Youtube, ChevronDown } from 'lucide-react';
-import Link from 'next/link';
+import Link from "@/components/ui/Link";
 import Image from 'next/image';
 import { cn } from "@/lib/utils";
 import MobileFooter from './MobileFooter';

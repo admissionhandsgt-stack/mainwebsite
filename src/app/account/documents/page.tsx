@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 import { ArrowLeft, FileText } from "lucide-react";
 import { currentUser } from "@/lib/userAuth";
 import { ACCEPTED_LABEL, MAX_BYTES } from "@/lib/documents";

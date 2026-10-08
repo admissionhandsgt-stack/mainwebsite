@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 import { getBranches } from "@/lib/branchQueries";
 import { resolveMetadata } from "@/lib/content";
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";

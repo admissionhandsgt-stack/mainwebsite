@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
+import Link from "@/components/ui/Link";
 import { usePathname } from 'next/navigation';
 import { Menu, X, Phone, ChevronDown, ChevronRight, Sun, Moon, UserRound } from 'lucide-react';
 import { useTheme } from 'next-themes';

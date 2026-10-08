@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 import { getSsCourses, type SsCourseSummary } from "@/lib/ssQueries";
 import { resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";

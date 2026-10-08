@@ -2,7 +2,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
-import Link from 'next/link';
+import Link from "@/components/ui/Link";
 import PhotoCredit, { type PhotoCreditInfo } from "@/components/ui/PhotoCredit";
 
 interface NRIHeroProps {

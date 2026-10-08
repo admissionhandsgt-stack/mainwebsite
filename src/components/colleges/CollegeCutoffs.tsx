@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { TrendingUp, TrendingDown } from "lucide-react";
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 import LockedSummary from "@/components/seats/LockedSummary";
 import ProfileTuner from "@/components/lead/ProfileTuner";
 import CounsellingCTA from "@/components/lead/CounsellingCTA";

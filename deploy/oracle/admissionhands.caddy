@@ -23,6 +23,13 @@
 	# moment DNS moves.
 	tls /opt/admissionhands/tls/origin.pem /opt/admissionhands/tls/origin.key
 
+	import admissionhands_uploads
+	import admissionhands_app {http.request.host}
+}
+
+# Uploaded images, shared by every host that serves the site (including the
+# edge origin below).
+(admissionhands_uploads) {
 	# Uploaded images are served from disk by Caddy, not by Next. Next lists
 	# public/ once at boot, so a file uploaded after that was a 404 until the
 	# next deploy; the app has a route for that gap (next/image fetches through
@@ -54,7 +61,11 @@
 		root * /opt/admissionhands/uploads/images
 		file_server
 	}
+}
 
+# The app itself. {args[0]} is the Host the app is told: the request's own
+# host everywhere except the edge origin, which tells it www.
+(admissionhands_app) {
 	# The visitor's address. The app decides who someone is from one value
 	# only - the right-most X-Forwarded-For hop (src/lib/clientIp.ts) - and
 	# verifies Googlebot and rate-limits OTPs, unlocks, leads and admin logins
@@ -68,6 +79,7 @@
 
 	handle @via_cloudflare {
 		reverse_proxy 127.0.0.1:8150 {
+			header_up Host {args[0]}
 			header_up -X-Forwarded-Proto
 			header_up X-Forwarded-For {http.request.header.CF-Connecting-IP}
 			header_up -CF-Connecting-IP
@@ -78,6 +90,7 @@
 
 	handle {
 		reverse_proxy 127.0.0.1:8150 {
+			header_up Host {args[0]}
 			header_up -X-Forwarded-Proto
 			header_up X-Forwarded-For {remote_host}
 			header_up -CF-Connecting-IP
@@ -115,6 +128,26 @@ www.admissionhands.com {
 # X-Forwarded-For and so let a forged header reach the login rate limit.
 admin.admissionhands.com {
 	import admissionhands_site
+}
+
+# The edge origin (2026-10-08). www.admissionhands.com is served by a Cloudflare
+# Pages worker in India (deploy/edge/_worker.js), which reaches the app here,
+# through Cloudflare (this record is proxied). The app is told the host is www,
+# so everything it builds — canonicals, redirects, cookies — stays on www.
+#
+# Anything that is not the worker — no x-ah-edge-key header — is sent to www, so
+# this name never becomes a second copy of the site in a search index. The
+# header's *value* is the secret and is checked by the app (src/lib/clientIp.ts),
+# not here: this file is world-readable on a shared box.
+origin.admissionhands.com {
+	tls /opt/admissionhands/tls/origin.pem /opt/admissionhands/tls/origin.key
+	encode gzip zstd
+
+	@not_edge not header X-Ah-Edge-Key *
+	redir @not_edge https://www.admissionhands.com{uri} permanent
+
+	import admissionhands_uploads
+	import admissionhands_app www.admissionhands.com
 }
 
 # Test host for the move. Same app, same data; never indexed. Delete this

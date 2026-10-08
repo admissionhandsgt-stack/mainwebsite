@@ -34,7 +34,42 @@
  * directly on the box (the deploy's health check, the load test). Callers treat
  * that as one anonymous client, never as a reason to skip a check.
  */
+/**
+ * ## Behind the in-country edge (2026-10-08)
+ *
+ * www.admissionhands.com is served by a Cloudflare Pages worker
+ * (deploy/edge/_worker.js) that reaches this app through
+ * origin.admissionhands.com. Through that hop the forwarded address is the
+ * worker's, not the visitor's — every student would share one rate-limit
+ * bucket and Googlebot's reverse-DNS check would test a Cloudflare address.
+ * So the worker sends the visitor's address as `x-ah-client-ip` together with
+ * `x-ah-edge-key`, the shared secret (EDGE_SHARED_SECRET, in the app's env and
+ * the Pages project's secrets, nowhere else). The header is believed **only**
+ * when the key matches; the worker deletes any x-ah-* a visitor sent before
+ * adding its own, and without the key the old rule below applies unchanged.
+ */
+const EDGE_SECRET = process.env.EDGE_SHARED_SECRET ?? "";
+
+/** Constant-time string comparison that runs in any runtime. */
+function sameSecret(given: string): boolean {
+  if (EDGE_SECRET.length < 32 || given.length !== EDGE_SECRET.length) return false;
+  let diff = 0;
+  for (let i = 0; i < given.length; i++) diff |= given.charCodeAt(i) ^ EDGE_SECRET.charCodeAt(i);
+  return diff === 0;
+}
+
+const IP = /^[0-9a-f:.]{2,45}$/i;
+
+/** True when this request came through our edge worker (the secret matched). */
+export function viaEdge(request: Request): boolean {
+  return sameSecret(request.headers.get("x-ah-edge-key") ?? "");
+}
+
 export function clientIp(request: Request): string | null {
+  if (viaEdge(request)) {
+    const edge = (request.headers.get("x-ah-client-ip") ?? "").trim();
+    if (IP.test(edge)) return edge;
+  }
   const forwarded = request.headers.get("x-forwarded-for");
   if (!forwarded) return null;
   const hops = forwarded

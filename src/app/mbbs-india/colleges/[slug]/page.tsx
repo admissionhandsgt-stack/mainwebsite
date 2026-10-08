@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { collegeFaqs, collegeJsonLd, collegePlace } from "@/lib/collegeSeo";
 import CollegeFaq from "@/components/colleges/CollegeFaq";
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 import Image from "next/image";
 import PhotoCredit from "@/components/ui/PhotoCredit";
 import { GraduationCap, Landmark, MapPin, Banknote, Users } from "lucide-react";

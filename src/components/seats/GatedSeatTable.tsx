@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 import { MapPin } from "lucide-react";
 import LockedSummary from "@/components/seats/LockedSummary";
 import ProfileTuner from "@/components/lead/ProfileTuner";

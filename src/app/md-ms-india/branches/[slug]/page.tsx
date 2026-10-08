@@ -1,6 +1,6 @@
 import { OG_IMAGE } from "@/lib/ogImage";
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 import { notFound } from "next/navigation";
 import { AlertTriangle, ArrowRight, Building2, MapPin, Search, TrendingDown } from "lucide-react";
 import { getBranch, getBranches, DEFAULT_CATEGORY } from "@/lib/branchQueries";

@@ -3,7 +3,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import Link from "@/components/ui/Link";
 import BlockIcon from '@/components/ui/BlockIcon';
 import { pick } from '@/lib/copy';
 

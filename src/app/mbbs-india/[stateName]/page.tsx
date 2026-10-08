@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 import { notFound, permanentRedirect } from "next/navigation";
 import { Landmark, Search } from "lucide-react";
 import { getStatePage, type StatePage } from "@/lib/stateQueries";

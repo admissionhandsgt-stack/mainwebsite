@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { resolveMetadata, getMediaAsset } from '@/lib/content';
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 import { Building2, ArrowRight } from "lucide-react";
 import { listColleges, getCollegeFacets, type CollegeFilters } from "@/lib/collegeQueries";
 import PageHero from "@/components/ui/PageHero";

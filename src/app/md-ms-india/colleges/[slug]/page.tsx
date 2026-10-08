@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { collegeFaqs, collegeJsonLd, collegePlace } from "@/lib/collegeSeo";
 import CollegeFaq from "@/components/colleges/CollegeFaq";
 import { branchSlug } from "@/lib/branchSlug";
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 import Image from "next/image";
 import { BedDouble, GraduationCap, Landmark, MapPin, Banknote, TrendingUp, TrendingDown } from "lucide-react";
 import {

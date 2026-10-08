@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 import { redirect } from "next/navigation";
 import { getMediaAsset } from "@/lib/content";
 import { ShieldCheck, Phone, Target, LogOut, Search, TrendingDown, FileText } from "lucide-react";

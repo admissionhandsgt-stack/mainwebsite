@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Users, ArrowRight, X, Phone } from 'lucide-react';
-import Link from 'next/link';
+import Link from "@/components/ui/Link";
 import { useCTA } from '@/hooks/useCTA';
 import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon';
 import BlockIcon from '@/components/ui/BlockIcon';

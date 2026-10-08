@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 import { Search } from "lucide-react";
 import { getBdsColleges, getUgAiqCuts, type YearCuts } from "@/lib/cutoffHubQueries";
 import { resolveMetadata } from "@/lib/content";
