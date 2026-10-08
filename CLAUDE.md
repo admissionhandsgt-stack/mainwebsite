@@ -1204,7 +1204,7 @@ are no longer public — only its special stray round, which alone would mislead
 `D:/Admisson Hands/ss_data` (outside the repo). NEET **MDS** results (R1–R3, stray) are in MCC's main
 archive too — not loaded yet.
 
-### In-country edge (2026-10-08) — prepared, waiting on a Pages token
+### In-country edge — LIVE since 2026-10-08 20:04 IST
 
 Free-plan zones are routed abroad by Indian ISPs (this PC: Airtel → **MRS**, 0.70 s first byte for a page the
 app renders in 54 ms). A Cloudflare **Pages** project with a DNS-only custom domain is answered in-country —
@@ -1222,11 +1222,21 @@ KÓSMAE's pattern (`/opt/kosmae/deploy/edge/_worker.js`, read-only to us).
 **Budget, measured:** 6–13 worker requests per page view (≈7 typical, 11–13 home) → 100k/day ≈ 14,000 page
 views; the 70k line ≈ 10,000. Past ~70k/day the user decides on Workers Paid ($5/mo) — never enable it ourselves.
 
-**Remaining (needs `CLOUDFLARE_PAGES_TOKEN` = Account · Cloudflare Pages · Edit, and `CLOUDFLARE_ACCOUNT_ID`):**
-create project `admissionhands-edge`; secrets ORIGIN_URL + EDGE_SHARED_SECRET (piped from the server); deploy;
-test on `*.pages.dev`; add custom domain www; www → CNAME `admissionhands-edge.pages.dev` proxied, then DNS-only.
-**Rollback:** www back to A 137.23.39.214 proxied (`node scripts/cf_dns_origin.mjs 137.23.39.214`). The apex
-(301 → www) and admin stay on the proxied A record.
+**Live:** Pages project `admissionhands-edge` (account Admissionhands.gt@gmail.com; secrets ORIGIN_URL,
+EDGE_SHARED_SECRET), custom domain www, www = CNAME `admissionhands-edge.pages.dev` **DNS-only**. The zone token
+(`CLOUDFLARE_API_TOKEN`) was given Pages: Edit and is also stored as `CLOUDFLARE_PAGES_TOKEN`; `CLOUDFLARE_ACCOUNT_ID`
+is in .env.local. Every `deploy_oracle.sh` now updates the edge before switching.
+**Rollback:** `node --env-file=.env.local scripts/edge/switch_www.mjs --rollback` (www → A 137.23.39.214 proxied).
+The apex (301 → www), admin and origin stay on proxied A records. The zone's "HTML for logged-out visitors" cache
+rule no longer applies to www (Pages serves it); it would only matter again after a rollback.
+
+**Measured from this PC (Airtel), 2026-10-08:** colo MRS → **DEL**; first byte 0.70 s → **0.10–0.13 s** (one cold
+run 0.47 s); full page 0.9–1.2 s → 0.12–0.50 s. The switch itself: ~40 s of 522 while Pages validated the domain
+(validation is HTTP-only, so it cannot be done ahead). Verified through the edge: smoke 69/69, gate 31/31, documents
+19/19, OTP delivered, lead alert delivered, an image upload through the worker (MISS→HIT), admin login 401 on a
+wrong password, and the app's rate limit keyed on the visitor's real IP (edge and direct route share one bucket).
+**Two verify scripts read back from the primary's self-chat only** (`verify_auth_flow`, `verify_lead_alert`): a
+code sent by Backup 1 lands in the primary's chat with the backup — check there before calling it undelivered.
 
 ### NEET MDS (2026-10-08)
 
