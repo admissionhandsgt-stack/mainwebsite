@@ -1204,6 +1204,38 @@ are no longer public — only its special stray round, which alone would mislead
 `D:/Admisson Hands/ss_data` (outside the repo). NEET **MDS** results (R1–R3, stray) are in MCC's main
 archive too — not loaded yet.
 
+### In-country edge (2026-10-08) — prepared, waiting on a Pages token
+
+Free-plan zones are routed abroad by Indian ISPs (this PC: Airtel → **MRS**, 0.70 s first byte for a page the
+app renders in 54 ms). A Cloudflare **Pages** project with a DNS-only custom domain is answered in-country —
+KÓSMAE's pattern (`/opt/kosmae/deploy/edge/_worker.js`, read-only to us).
+
+| Piece | Where | State |
+|---|---|---|
+| Worker | `deploy/edge/_worker.js` | Written. Caches **only images** (`/_next/image`, uploads); every page is `private, no-store` (the gate) so HTML always goes to the origin. Never: /api, /admin, /account, /login, documents, non-GET, session cookies (`ah_user`, `ah_unlock`, `ah_admin_session`), crawler UAs. Adds `x-robots-tag: noindex` on any host but www (the pages.dev address) |
+| Origin host | `origin.admissionhands.com`, proxied A → 137.23.39.214; Caddy block in `deploy/oracle/admissionhands.caddy` | **Live.** No `X-Ah-Edge-Key` header → 301 to www (never a second indexed copy). The app is told Host www |
+| Visitor IP | `src/lib/clientIp.ts` | **Live.** `x-ah-client-ip` believed only when `x-ah-edge-key` == `EDGE_SHARED_SECRET` (app `.env`, `/opt/admissionhands/.edge-secret`; Pages secret). Proven: buckets follow the signed IP with the key, ignore it without |
+| Static files | `scripts/edge/deploy_edge.sh` + `routes.mjs` | Pages serves `_next/static` and public files itself (`_routes.json` excludes them) — free, where worker calls count against **Workers Free 100k/day**. Uploads always go to the origin |
+| Deploy order | `deploy_oracle.sh` | Edge first (if `CLOUDFLARE_PAGES_TOKEN` is in .env.local), then the switch — a failed edge upload stops the deploy |
+| Link prefetch | `src/components/ui/Link.tsx` | **Live.** Off by default: it was 8–80 RSC requests per page view |
+
+**Budget, measured:** 6–13 worker requests per page view (≈7 typical, 11–13 home) → 100k/day ≈ 14,000 page
+views; the 70k line ≈ 10,000. Past ~70k/day the user decides on Workers Paid ($5/mo) — never enable it ourselves.
+
+**Remaining (needs `CLOUDFLARE_PAGES_TOKEN` = Account · Cloudflare Pages · Edit, and `CLOUDFLARE_ACCOUNT_ID`):**
+create project `admissionhands-edge`; secrets ORIGIN_URL + EDGE_SHARED_SECRET (piped from the server); deploy;
+test on `*.pages.dev`; add custom domain www; www → CNAME `admissionhands-edge.pages.dev` proxied, then DNS-only.
+**Rollback:** www back to A 137.23.39.214 proxied (`node scripts/cf_dns_origin.mjs 137.23.39.214`). The apex
+(301 → www) and admin stay on the proxied A record.
+
+### NEET MDS (2026-10-08)
+
+`mds_allotments` (migration 0028), from MCC's archive: MDS 2025 R1/R2/R3/Stray, 2026 R1/R2 — 5,072 allotments,
+9 specialities, 68 institutes. `scripts/mds/extract_mds_pdf.py` (rank is cell 2; the last block is the round's
+allotment) and `build_mds_sql.py` (`PYTHONIOENCODING=utf-8`). Unlike SS it has quota and allotted category, so
+ranges are per (quota, category). Pages: `/neet-mds-cutoff`, `/neet-mds/[slug]`. Raw files:
+`D:/Admisson Hands/mds_data`.
+
 ## Cleanup baseline (2026-09-22)
 
 The repo is Supabase-free on disk as well as in code. Deleted: `.cleanup-quarantine/` (114 MB of
