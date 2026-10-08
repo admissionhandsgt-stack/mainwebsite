@@ -130,6 +130,15 @@ if [[ $SWITCH -eq 0 ]]; then
   exit 0
 fi
 
+# ------------------------------------------------------------------ edge
+# www.admissionhands.com is served by the in-country Pages edge, which serves
+# _next/static itself. The new build's files must be there before the origin
+# starts linking to them, so the edge goes first; if it fails, nothing switches.
+if grep -q "^CLOUDFLARE_PAGES_TOKEN=." .env.local 2>/dev/null; then
+  say "Updating the edge (Cloudflare Pages)"
+  ./scripts/edge/deploy_edge.sh "$APP/releases/$STAMP"
+fi
+
 # ------------------------------------------------------------------ switch
 say "Switching"
 ssh_ "set -e; ln -sfn $APP/releases/$STAMP $APP/current
