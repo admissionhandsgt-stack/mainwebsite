@@ -1124,8 +1124,17 @@ think it is.
   *not* disallowed — a blocked page cannot show Google its `noindex`.
 - Titles and descriptions changed through `scripts/sql/seo_copy_2026_10.sql`, **guarded on the old
   value** so an admin edit is never overwritten. `page_seo` wins over code — change copy there.
-- **Cloudflare Crawler Hints** (free IndexNow pings to Bing/Yandex) cannot be switched by API token
-  (10405); it is a dashboard toggle under Caching → Configuration.
+- **Search Console, set up 2026-10-08 — the site had never been verified with Google.** Domain property
+  `sc-domain:admissionhands.com`, verified by a DNS TXT record in Cloudflare (**do not delete the
+  `google-site-verification` TXT at the apex** — Google re-checks it and drops the property). Owners: the
+  service account `search-console@admissionhands-seo-1008` and gulshantomar.1493@gmail.com. On the first
+  look, the homepage was indexed but `/neet-college-predictor` was "unknown to Google".
+  `node --env-file=.env.local scripts/gsc.mjs status` shows sitemap processing and key URLs;
+  `inspect <url>` any one. Key file: `GSC_SA_KEY` (outside the repo). No "request indexing" — Google's
+  Indexing API is for job postings only.
+- **IndexNow** (Bing, Yandex, Naver, Seznam): `node scripts/indexnow.mjs --since <date>` after a change,
+  or with paths. The key file `public/<32 hex>.txt` is public by design. All 3,630 URLs submitted
+  2026-10-08. Cloudflare's Crawler Hints would automate this but cannot be enabled by API token (10405).
 
 ## Cleanup baseline (2026-09-22)
 
