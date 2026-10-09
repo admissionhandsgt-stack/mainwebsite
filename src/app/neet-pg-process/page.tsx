@@ -11,6 +11,7 @@ import {
   Search,
   TrendingDown,
 } from "lucide-react";
+import { NEET_PG_SCHEDULE } from "@/lib/neetPgSchedule";
 import { resolveMetadata, getMediaAsset } from "@/lib/content";
 import { getDataStats, inr } from "@/lib/dataStats";
 import PageHero from "@/components/ui/PageHero";
@@ -249,14 +250,58 @@ export default async function NeetPgProcessPage() {
               ))}
             </div>
 
-            <p className="mt-5 flex gap-3 rounded-2xl border border-border bg-surface-2 px-5 py-4 text-[14.5px] leading-relaxed text-muted-foreground">
-              <CalendarClock className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
-              <span>
-                <span className="font-semibold text-foreground">We do not publish dates here.</span>{" "}
-                MCC and each state release their own schedule every cycle and it shifts. Anything on
-                this site with a date on it comes from the authority&rsquo;s own notice.
-              </span>
-            </p>
+            <div id="schedule" className="mt-6 rounded-2xl border border-border bg-surface-2 p-5">
+              <h3 className="flex items-center gap-2.5 font-heading text-lg font-bold text-foreground">
+                <CalendarClock className="h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
+                NEET PG {NEET_PG_SCHEDULE.year} counselling schedule
+              </h3>
+              <p className="mt-1 text-[13.5px] leading-relaxed text-muted-foreground">
+                MCC&rsquo;s tentative schedule, notified {NEET_PG_SCHEDULE.notified}. It is usually revised during the
+                cycle — the notice is the authority, not this table. Academic session begins{" "}
+                {NEET_PG_SCHEDULE.sessionStarts}.
+              </p>
+              <p className="mt-3 text-[12px] text-muted-foreground sm:hidden" aria-hidden="true">
+                Swipe the table sideways for every column →
+              </p>
+              <div className="mt-2 overflow-x-auto">
+                <table className="w-full min-w-[560px] text-left text-sm">
+                  <thead className="text-[12px] uppercase tracking-wide text-muted-foreground">
+                    <tr>
+                      <th scope="col" className="py-2 pr-3 font-semibold">Round</th>
+                      <th scope="col" className="py-2 pr-3 font-semibold">AIQ / deemed (MCC)</th>
+                      <th scope="col" className="py-2 pr-3 font-semibold">Join by</th>
+                      <th scope="col" className="py-2 pr-3 font-semibold">State quota</th>
+                      <th scope="col" className="py-2 font-semibold">Join by</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {NEET_PG_SCHEDULE.rounds.map((r) => (
+                      <tr key={r.round} className="border-t border-border text-foreground">
+                        <th scope="row" className="py-2.5 pr-3 font-semibold">{r.round}</th>
+                        <td className="tnum py-2.5 pr-3">{r.aiq}</td>
+                        <td className="tnum py-2.5 pr-3">{r.aiqJoinBy}</td>
+                        <td className="tnum py-2.5 pr-3">{r.state}</td>
+                        <td className="tnum py-2.5">{r.stateJoinBy}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <ul className="mt-3 space-y-1 text-[13px]">
+                {NEET_PG_SCHEDULE.sources.map((s) => (
+                  <li key={s.url}>
+                    <a
+                      href={s.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-semibold text-primary-strong underline-offset-2 hover:underline"
+                    >
+                      {s.label} (PDF)
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </section>
         </Reveal>
 

@@ -1,4 +1,5 @@
 import CiteThis from "@/components/seo/CiteThis";
+import { NEET_PG_QUALIFYING } from "@/lib/neetPgQualifying";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { Search } from "lucide-react";
@@ -32,8 +33,8 @@ async function chosen(searchParams: Props["searchParams"]) {
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
   const { year, category } = await chosen(searchParams);
   const base = await resolveMetadata(PATH, {
-    title: `NEET PG Cutoff ${year?.year ?? ""} Branch Wise: AIQ Closing Ranks by Category`,
-    description: `NEET PG ${year?.year ?? ""} All India Quota closing ranks for every MD, MS and diploma branch, by category — round 1 and the last rank admitted, from MCC's published results.`,
+    title: `NEET PG Cutoff ${NEET_PG_QUALIFYING[0].year}: Qualifying Score & ${year?.year ?? ""} AIQ Closing Ranks`,
+    description: `NEET PG ${NEET_PG_QUALIFYING[0].year} qualifying cutoff (${NEET_PG_QUALIFYING[0].rows.map((r) => r.score).join(" / ")}) from NBEMS, and ${year?.year ?? ""} All India Quota closing ranks for every MD/MS branch by category.`,
     keywords:
       "NEET PG cutoff, NEET PG cutoff branch wise, NEET PG cutoff 2025, MD radiology cutoff, NEET PG cutoff OBC, NEET PG cutoff SC, AIQ PG cutoff, NEET PG closing rank",
   });
@@ -53,6 +54,8 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
   const radiology = branches.find((b) => /radio ?diagnosis/i.test(b.branch) && b.branch.startsWith("MD"));
   const medicine = branches.find((b) => b.branch === "MD General Medicine");
 
+  const latestQ = NEET_PG_QUALIFYING[0];
+  const lowered2025 = NEET_PG_QUALIFYING.find((n) => n.year === 2025 && n.label.includes("lowered"))!;
   const faqs = [
     ...(gen && year
       ? [
@@ -78,6 +81,13 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
           },
         ]
       : []),
+    {
+      question: `What is the NEET PG ${latestQ.year} qualifying cutoff score?`,
+      answer:
+        `NBEMS set it at the ${latestQ.rows.map((r) => `${r.percentile} percentile for ${r.category} (${r.score} out of ${latestQ.outOf})`).join(", ")}, ` +
+        `notified on ${latestQ.date}. In 2025 the percentile was later lowered for round 3 — to ` +
+        `${lowered2025.rows.map((r) => `${r.percentile} (${r.score})`).join(", ")} — so it can change after the result.`,
+    },
     {
       question: "Is the NEET PG qualifying percentile the same as the cutoff rank?",
       answer:
@@ -135,6 +145,52 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
           >
             <Search className="h-4 w-4" aria-hidden="true" /> Enter your PG rank — see every seat it reaches
           </Link>
+        </div>
+      </section>
+
+      <section className="container-custom pt-10 md:pt-14" id="qualifying">
+        <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+          NEET PG qualifying cutoff — the score you need to be eligible
+        </h2>
+        <p className="mt-2 max-w-[70ch] text-muted-foreground">
+          Set by NBEMS as a percentile and published as a score. Clearing it makes you eligible for counselling; the
+          rank a seat closed at, below, decides whether you get one.
+        </p>
+        <div className="mt-5 grid gap-5 lg:grid-cols-3">
+          {NEET_PG_QUALIFYING.map((n) => (
+            <div key={n.label} className="rounded-2xl border border-border bg-card p-5">
+              <h3 className="font-semibold text-foreground">{n.label}</h3>
+              <p className="text-[12px] text-muted-foreground">
+                Notified {n.date} · score out of {n.outOf}
+              </p>
+              <table className="mt-3 w-full text-left text-sm">
+                <thead className="text-[12px] uppercase tracking-wide text-muted-foreground">
+                  <tr>
+                    <th scope="col" className="pb-1.5 font-semibold">Category</th>
+                    <th scope="col" className="pb-1.5 text-right font-semibold">Percentile</th>
+                    <th scope="col" className="pb-1.5 text-right font-semibold">Score</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {n.rows.map((r) => (
+                    <tr key={r.category} className="border-t border-border">
+                      <td className="py-2 pr-2 text-foreground">{r.category}</td>
+                      <td className="tnum py-2 text-right text-foreground">{r.percentile}</td>
+                      <td className="tnum py-2 text-right font-semibold text-foreground">{r.score}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <a
+                href={n.source}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex min-h-10 items-center text-sm font-semibold text-primary-strong underline-offset-2 hover:underline"
+              >
+                NBEMS notice (PDF)
+              </a>
+            </div>
+          ))}
         </div>
       </section>
 

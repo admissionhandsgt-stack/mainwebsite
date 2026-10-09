@@ -111,6 +111,12 @@ const nextConfig = {
    * have earned is the whole reason to redirect rather than delete. The
    * `?course=` lands the visitor on the stream they asked for.
    */
+  // Counsellors' digital cards are static files (public/card/*.html). The edge
+  // serves them as /card/<name>; this is the same address on the origin.
+  async rewrites() {
+    return [{ source: '/card/:name([a-z0-9-]+)', destination: '/card/:name.html' }];
+  },
+
   async redirects() {
     const tool = "/neet-college-predictor";
     return [
