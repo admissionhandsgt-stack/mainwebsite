@@ -1640,6 +1640,12 @@ replay of all 3,760 sitemap pages, and smoke + the signed-in gate suite together
 the cause was never reproduced; `compose.yml` now sets `NODE_OPTIONS=--max-old-space-size=1792` and
 `mem_limit: 2560m` (the box has 24 GB). If it dies again, `docker logs` shows the `Mark-Compact` line —
 a heap that climbs past ~1.8 GB is a leak to find, not a limit to raise again.
+It happened a second time the same morning — 2.5 GB resident, 700 MB swapped, every request timing out
+for minutes — so `memswap_limit` now equals `mem_limit` (a runaway is killed and restarts in a second
+instead of hanging) and `src/lib/serverWatch.ts`, started from `src/instrumentation.ts`, logs the heap
+against off-heap split and the oldest in-flight requests whenever resident memory passes 700 MB, plus any
+request slower than 8 s: `docker logs admissionhands-app-1 2>&1 | grep '\[watch\]'`. A heap snapshot is
+written to the release's `.next/cache` if the heap is what fills. **Read those lines before guessing again.**
 
 **The header has a layout budget.** At full size the row needs ~1,400px (logo, eight links, four
 controls), and the page container gives it 1,216px below 1536px. Everything in it is `shrink-0` and the
