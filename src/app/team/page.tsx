@@ -17,7 +17,7 @@ import counsellors from "@/data/counsellors.json";
 const PATH = "/team";
 const SITE = "https://www.admissionhands.com";
 
-type Counsellor = { slug: string; name: string; title: string; phone: string; email: string };
+type Counsellor = { slug: string; name: string; title: string; org?: string; photo?: string; phone: string; email: string };
 const TEAM = counsellors as Counsellor[];
 const pretty = (p: string) => `+91 ${p.slice(2, 7)} ${p.slice(7)}`;
 const initials = (n: string) => n.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
@@ -41,6 +41,7 @@ export default function TeamPage() {
             "@id": `${SITE}${PATH}#${c.slug}`,
             name: c.name,
             jobTitle: c.title,
+            ...(c.photo ? { image: `${SITE}/card/${c.photo}` } : {}),
             telephone: `+${c.phone}`,
             email: c.email,
             url: `${SITE}/${c.slug}`,
@@ -81,15 +82,27 @@ export default function TeamPage() {
           {TEAM.map((c) => (
             <li key={c.slug} id={c.slug} className="rounded-2xl border border-border bg-card p-6">
               <div className="flex items-center gap-4">
-                <div
-                  aria-hidden="true"
-                  className="font-heading grid h-16 w-16 shrink-0 place-items-center rounded-full bg-primary-soft text-xl font-extrabold text-primary-strong ring-2 ring-primary/30"
-                >
-                  {initials(c.name)}
-                </div>
+                {c.photo ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- a static file in public/card, already sized
+                  <img
+                    src={`/card/${c.photo}`}
+                    alt={c.name}
+                    width={64}
+                    height={64}
+                    className="h-16 w-16 shrink-0 rounded-full object-cover ring-2 ring-primary/30"
+                  />
+                ) : (
+                  <div
+                    aria-hidden="true"
+                    className="font-heading grid h-16 w-16 shrink-0 place-items-center rounded-full bg-primary-soft text-xl font-extrabold text-primary-strong ring-2 ring-primary/30"
+                  >
+                    {initials(c.name)}
+                  </div>
+                )}
                 <div>
                   <h2 className="font-heading text-xl font-bold text-foreground">{c.name}</h2>
-                  <p className="text-sm text-muted-foreground">{c.title}</p>
+                  <p className="text-sm font-medium text-foreground">{c.title}</p>
+                  {c.org && <p className="text-sm text-muted-foreground">{c.org}</p>}
                 </div>
               </div>
               <ul className="mt-5 space-y-2 text-sm">

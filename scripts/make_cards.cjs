@@ -27,6 +27,10 @@ for (const c of COUNSELLORS) {
     NAME: esc(c.name), FIRST: encodeURIComponent(first), INITIALS: initials, TITLE: esc(c.title),
     PHONE: c.phone, PHONE_PRETTY: pretty(c.phone), EMAIL: c.email, SLUG: c.slug,
     FILE: c.name.replace(/\s+/g, "-"),
+    ORG: esc(c.org || "AdmissionHands"),
+    AVATAR: c.photo
+      ? `<div class="avatar"><img src="/card/${c.photo}" alt="${esc(c.name)}" width="76" height="76"></div>`
+      : `<div class="avatar" aria-hidden="true">${initials}</div>`,
   };
   const html = template.replace(/\{\{([A-Z_]+)\}\}/g, (_, k) => {
     if (!(k in values)) throw new Error(`template token ${k} has no value`);
@@ -53,7 +57,21 @@ for (const c of COUNSELLORS) {
   const W = 1200, H = 630;
   const logo = await sharp("public/assets/images/logos/logo-4k.avif").resize({ width: 300 }).png().toBuffer();
   const mark = await sharp("public/icon-512.png").resize({ width: 210 }).png().toBuffer();
+  // A photo, where there is one, replaces the shield: a round crop with a mint ring.
+  const portrait = async (file) => {
+    const D = 250;
+    const ring = Buffer.from(`<svg width="${D + 16}" height="${D + 16}"><circle cx="${D / 2 + 8}" cy="${D / 2 + 8}" r="${D / 2 + 6}" fill="#14E6A8"/></svg>`);
+    const mask = Buffer.from(`<svg width="${D}" height="${D}"><circle cx="${D / 2}" cy="${D / 2}" r="${D / 2}" fill="#fff"/></svg>`);
+    const round = await sharp(`public/card/${file}`).resize(D, D).composite([{ input: mask, blend: "dest-in" }]).png().toBuffer();
+    return sharp(ring).composite([{ input: round, left: 8, top: 8 }]).png().toBuffer();
+  };
   for (const c of COUNSELLORS) {
+    const side = c.photo ? { input: await portrait(c.photo), left: W - 330, top: 170 } : { input: mark, left: W - 290, top: 190 };
+    const org = c.org || "";
+    const titleLine = org
+      ? `<text x="72" y="400" font-size="32" font-weight="600" fill="#FFFFFF">${esc(c.title)}</text>
+    <text x="72" y="442" font-size="26" font-weight="500" fill="#CFE0EE">${esc(org)}</text>`
+      : `<text x="72" y="408" font-size="34" font-weight="500" fill="#CFE0EE">${esc(c.title)} · AdmissionHands</text>`;
     const svg = `
 <svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
   <defs>
@@ -72,7 +90,7 @@ for (const c of COUNSELLORS) {
   <g font-family="Segoe UI, Inter, Helvetica, Arial, sans-serif">
     <text x="72" y="262" font-size="26" font-weight="700" fill="#14E6A8" letter-spacing="5">YOUR COUNSELLOR</text>
     <text x="68" y="350" font-size="88" font-weight="800" fill="#FFFFFF" letter-spacing="-2">${esc(c.name)}</text>
-    <text x="72" y="408" font-size="34" font-weight="500" fill="#CFE0EE">${esc(c.title)} · AdmissionHands</text>
+    ${titleLine}
     <g font-size="25" font-weight="700" fill="#E8F2FA">
       <rect x="72" y="460" width="196" height="54" rx="27" fill="#FFFFFF" fill-opacity="0.1" stroke="#FFFFFF" stroke-opacity="0.25"/>
       <text x="170" y="495" text-anchor="middle">MBBS &amp; BDS</text>
@@ -85,7 +103,7 @@ for (const c of COUNSELLORS) {
   </g>
 </svg>`;
     await sharp(Buffer.from(svg))
-      .composite([{ input: logo, left: 84, top: 66 }, { input: mark, left: W - 290, top: 190 }])
+      .composite([{ input: logo, left: 84, top: 66 }, side])
       .jpeg({ quality: 86, mozjpeg: true })
       .toFile(`public/card/${c.slug}-og.jpg`);
     console.log(`${SITE}/${c.slug}`);
