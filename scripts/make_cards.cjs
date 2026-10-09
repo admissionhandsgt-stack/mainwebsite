@@ -6,16 +6,13 @@
 // Writes public/card/<slug>.html, <slug>.vcf and <slug>-og.jpg. The card is
 // shared as https://www.admissionhands.com/<slug> — next.config.mjs rewrites
 // every slug it finds in public/card/ — and /card/<slug> keeps working for
-// links already sent. To add a counsellor: add a line, run this, deploy.
+// links already sent. To add a counsellor: add them to src/data/counsellors.json,
+// run this, deploy — the /team page picks them up from the same file.
 const fs = require("fs");
 const sharp = require("sharp");
 
-const COUNSELLORS = [
-  { slug: "nitin-tomar", name: "Nitin Tomar", title: "Senior Counsellor", phone: "919310301949", email: "nitintomar@admissionhands.com" },
-  { slug: "akhtar-khan", name: "Akhtar Khan", title: "Senior Counsellor", phone: "919999098638", email: "akhtarkhan@admissionhands.com" },
-  { slug: "gulshan-tomar", name: "Gulshan Tomar", title: "Admission Counsellor", phone: "919220626002", email: "gulshan.tomar@admissionhands.com" },
-  { slug: "dev-kumar", name: "Dev Kumar", title: "Admission Counsellor", phone: "917678670846", email: "devkumar@admissionhands.com" },
-];
+// One list for the cards and the /team page.
+const COUNSELLORS = JSON.parse(fs.readFileSync("src/data/counsellors.json", "utf8"));
 
 const SITE = "https://www.admissionhands.com";
 const template = fs.readFileSync("scripts/cards/template.html", "utf8");
