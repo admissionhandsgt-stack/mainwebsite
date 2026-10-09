@@ -76,7 +76,7 @@ export function middleware(req: NextRequest) {
      * pass; a response header would not be visible.
      */
     if (req.headers.get('x-ah-admin-rewritten') === '1') {
-      return NextResponse.next();
+      return noindex(NextResponse.next());
     }
 
     // A hand-typed admin.admissionhands.com/admin/contacts becomes /contacts,
@@ -105,7 +105,7 @@ export function middleware(req: NextRequest) {
     const headers = new Headers(req.headers);
     headers.set('x-ah-admin-rewritten', '1');
     url.pathname = `/admin${url.pathname}`;
-    return NextResponse.rewrite(url, { request: { headers } });
+    return noindex(NextResponse.rewrite(url, { request: { headers } }));
   }
 
   // 2. Handle /admin path requests on main domains (production)
@@ -123,6 +123,18 @@ export function middleware(req: NextRequest) {
   }
 
   return NextResponse.next();
+}
+
+/**
+ * The admin host is a login screen and a CMS, never a search result. Its
+ * robots.txt is the main site's, whose `Disallow: /admin` does not cover this
+ * host's root, and the 2026-10-09 audit found admin.admissionhands.com
+ * answering 200 with nothing to say it should not be indexed. A header rather
+ * than a robots block, so a crawler can still fetch the page and see it.
+ */
+function noindex(res: NextResponse): NextResponse {
+  res.headers.set('X-Robots-Tag', 'noindex, nofollow');
+  return res;
 }
 
 export const config = {

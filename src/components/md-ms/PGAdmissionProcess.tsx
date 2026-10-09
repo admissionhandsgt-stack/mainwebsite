@@ -23,7 +23,7 @@ const SHIPPED_STEPS = [
     desc: "Conducted by NBE. Eligibility requires MBBS degree, completed internship, and NMC registration.", 
     bullets: [
       "Qualifying cutoff: 50th percentile for General/EWS", 
-      "Computer-based exam with 200 MCQs", 
+      "Computer-based exam, 180 MCQs (2026)", 
       "Results typically within 2-3 weeks", 
       "Score valid for one counselling cycle"
     ],

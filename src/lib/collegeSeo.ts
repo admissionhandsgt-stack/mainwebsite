@@ -93,15 +93,20 @@ export function collegeFaqs(
     // quota invites the reader to assume a government seat and a government
     // fee; at most colleges the widest rank is a management or NRI seat
     // costing several times more.
+    // The year is the seat's own. Taking it from the first row printed "In 2025
+    // … 48" under a hero that said "2026: 48" (AIIMS New Delhi, 2026-10-09).
+    const headYear = tightest.latestYear ?? year;
     const seat = (c: CourseCutoff) =>
-      `${c.course} (${c.quota}, ${c.category})`;
+      `${c.course} (${c.quota}, ${c.category}${
+        c.latestYear && c.latestYear !== headYear ? `, ${c.latestYear}` : ""
+      })`;
 
     faqs.push({
       q: `What is the closing rank for ${college.name}?`,
       a:
         tightest.course === widest.course && tightest.quota === widest.quota
-          ? `In ${year ?? "the latest round"}, ${seat(tightest)} closed at rank ${inr(tightest.r1Latest!)} in round 1.`
-          : `In ${year ?? "the latest round"}, the hardest seat here was ${seat(tightest)}, ` +
+          ? `In ${headYear ?? "the latest round"}, ${seat(tightest)} closed at rank ${inr(tightest.r1Latest!)} in round 1.`
+          : `In ${headYear ?? "the latest round"}, the hardest seat here was ${seat(tightest)}, ` +
             `closing at rank ${inr(tightest.r1Latest!)} in round 1. The most accessible was ` +
             `${seat(widest)} at ${inr(widest.r1Latest!)} — a different quota, usually at a very ` +
             `different fee, so the two are not interchangeable. The table above keeps each seat's ` +
@@ -120,7 +125,9 @@ export function collegeFaqs(
       faqs.push({
         q: `Does the cutoff at ${college.name} go up in later rounds?`,
         a:
-          `Yes, for ${moved.length} of its ${ranked.length} seats. The largest move was ${most.course}, ` +
+          // Quota and category named, as above: "MBBS … 31,622 … 9,99,525" with
+          // neither read as one seat moving across the whole country's ranks.
+          `Yes, for ${moved.length} of its ${ranked.length} seats. The largest move was ${seat(most)}, ` +
           `which closed at ${inr(most.r1Latest!)} in round 1 and reached ${inr(most.widestLatest!)} ` +
           `by the widest round — a difference of ${inr(most.widestLatest! - most.r1Latest!)} ranks. ` +
           `Judging this college by round 1 alone understates what it actually reached.`,
@@ -133,11 +140,25 @@ export function collegeFaqs(
   if (priced.length) {
     const cheapest = priced.reduce((a, b) => (b.feeInr! < a.feeInr! ? b : a));
     const dearest = priced.reduce((a, b) => (b.feeInr! > a.feeInr! ? b : a));
+    // UG fees carry no quota (the source publishes unlabelled fee blocks), and
+    // the row's quota then reads "—": "on a — seat" was printed on every UG page
+    // with two fees until 2026-10-09. Without a quota, give the range and say so.
+    const known = (q: string | null | undefined) => !!q && q !== "—";
     faqs.push({
       q: `What are the fees at ${college.name}?`,
       a:
         cheapest.feeInr === dearest.feeInr
           ? `${money(cheapest.feeInr!)} a year, as published in the counselling fee schedule.`
+          : !known(cheapest.quota) || !known(dearest.quota)
+          ? `The published fee schedule ranges from ${money(cheapest.feeInr!)} to ${money(dearest.feeInr!)} ` +
+            `a year. The source does not say which quota each fee belongs to, so the lower figure may not ` +
+            `apply to every seat — check the fee for your quota at counselling.`
+          : cheapest.quota === dearest.quota
+          ? // Same quota at both ends (Madras Medical College: AIQ ₹20,000 and AIQ
+            // ₹50,000) — the difference is the course, not the quota.
+            `From ${money(cheapest.feeInr!)} a year (${cheapest.course}) to ${money(dearest.feeInr!)} ` +
+            `(${dearest.course}), both on ${cheapest.quota} seats. The difference is the course, not ` +
+            `the quota. Both are from the published counselling fee schedule.`
           : `From ${money(cheapest.feeInr!)} a year on a ${cheapest.quota} seat to ` +
             `${money(dearest.feeInr!)} on a ${dearest.quota} seat. The difference is the quota, not ` +
             `the college — the cheapest figure here does not apply to the seats open at the largest ` +

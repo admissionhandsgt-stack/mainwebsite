@@ -121,6 +121,7 @@ export default function LockedSummary({
               By quota
             </p>
             <div className="overflow-x-auto px-5 pb-4 pt-2.5">
+              <p className="mb-1.5 sticky left-0 text-[12px] text-muted-foreground sm:hidden" aria-hidden="true">Swipe the table sideways for every column →</p>
               <table className="w-full min-w-[500px] border-collapse">
                 <thead>
                   <tr>
@@ -151,7 +152,7 @@ export default function LockedSummary({
                         )}
                       </td>
                       <td className="tnum py-2.5 text-right align-top text-[13.5px] text-foreground">
-                        {inr(q.seats)}
+                        {q.seats > 0 ? inr(q.seats) : "—"}
                       </td>
                       <td className="tnum py-2.5 pl-3 text-right align-top text-[13.5px] text-foreground">
                         {span(q.rankFrom, q.rankTo, inr)}
@@ -167,8 +168,9 @@ export default function LockedSummary({
               </table>
             </div>
             <p className="border-t border-border px-5 py-3 text-[12px] leading-relaxed text-muted-foreground">
-              Each column is a range in its own right — the cheapest fee is not the widest rank, and
-              they are often different colleges. Which is which is in the full table.
+              Each column is a range in its own right — the cheapest fee is not the widest rank
+              {quotas.some((q) => q.colleges > 1) ? ", and they are often different colleges" : ""}.
+              Which is which is in the full table.
             </p>
           </div>
         )}

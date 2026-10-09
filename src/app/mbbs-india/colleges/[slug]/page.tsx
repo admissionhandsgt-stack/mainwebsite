@@ -1,4 +1,4 @@
-import { fitTitle, fitDescription, nameWith, ugCourseOf } from "@/lib/seoTitle";
+import { fitTitle, fitDescription, nameWith, ugCourseLabel } from "@/lib/seoTitle";
 import { OG_IMAGE } from "@/lib/ogImage";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -74,8 +74,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   // `collegePlace` drops a place already in the name, so these stop reading
   // "Government Medical College, Kottayam, Kottayam, Kerala".
   const where = collegePlace({ ...college, city: extras?.city ?? college.city });
-  // A dental or AYUSH college's page is not about MBBS (seoTitle.ugCourseOf).
-  const course = ugCourseOf(college.name);
+  // A dental or AYUSH college's page is not about MBBS (seoTitle.ugCourseLabel).
+  const course = ugCourseLabel(college.name, (await getCollegeCutoffs(params.slug, "ug")).map((c) => c.course));
 
   return {
     // No brand suffix: the college's own name is what is searched, and the

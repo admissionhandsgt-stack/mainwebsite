@@ -156,12 +156,12 @@ const services = [
     description: "Knowing when to hold a seat, when to upgrade, and when to exit requires deep understanding of round-wise vacancy patterns. One wrong decision can cost you your dream college or lakhs in fees.",
     features: [
       "Hold vs Upgrade vs Exit decision framework",
-      "Vacancy prediction for subsequent rounds",
+      "How far later rounds reached, from the published results",
       "Dual-allotment management (AIQ + State simultaneously)",
       "Fee refund timeline optimization",
       "Emergency seat surrender and re-allotment support"
     ],
-    stat: { value: "85%", label: "Upgrade Success" }
+    stat: { value: "Every", label: "Round tracked" }
   },
   {
     icon: GraduationCap,
@@ -177,7 +177,7 @@ const services = [
       "Anti-ragging undertaking and affidavit preparation",
       "Hostel allotment and initial settling-in guidance"
     ],
-    stat: { value: "100%", label: "Reporting Success" }
+    stat: { value: "Day 1", label: "To reporting day" }
   }
 ];
 
@@ -440,7 +440,7 @@ export default function ServicesClient({ heroImages, heroCredit }: ServicesClien
             {[
               { icon: BookOpen, title: "Data, Not Opinions", desc: "Our recommendations are backed by 2.7 lakh published closing ranks across every college in the counselling, and real allotment outcomes — not surface-level guesswork.", color: "from-cyan-600 to-cyan-700" },
               { icon: HeartHandshake, title: "Dedicated Counsellor", desc: "You get a single, named expert assigned to your case from Day 1 to final admission. No rotating agents, no repeated explanations.", color: "from-emerald-600 to-teal-600" },
-              { icon: ShieldCheck, title: "Zero Document Rejections", desc: "We pre-verify every document against state-specific norms weeks before deadlines. Our students have a 0% rejection rate on documentation.", color: "from-teal-600 to-teal-600" },
+              { icon: ShieldCheck, title: "Documents Checked Early", desc: "We check every document against your state's requirements weeks before the deadline, so a missing certificate is found while there is still time to get it.", color: "from-teal-600 to-teal-600" },
             ].map((item, idx) => (
               <div 
                 key={idx}

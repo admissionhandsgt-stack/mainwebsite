@@ -111,7 +111,11 @@ for (const path of PAGES) {
   const { status, body } = await get(path);
   if (status !== 200) continue;
   const gated = GATED.test(body);
-  const declared = /"isAccessibleForFree":\s*false/.test(body);
+  // Both levels false, on the block that names the gated part: a `false`
+  // anywhere on the page passed this while the page itself said `true`.
+  const blocks = [...body.matchAll(/<script[^>]*application\/ld\+json[^>]*>([\s\S]*?)<\/script>/g)]
+    .flatMap((m) => { try { const j = JSON.parse(m[1]); return Array.isArray(j) ? j : [j]; } catch { return []; } });
+  const declared = blocks.some((b) => b && b.isAccessibleForFree === false && b.hasPart?.isAccessibleForFree === false);
   // A page with no gate needs no declaration; a gate with no declaration is
   // the dangerous combination, so that is what is asserted.
   ok(!gated || declared, `${path} declares isAccessibleForFree:false`, gated ? "" : "(no gate here)");

@@ -37,7 +37,7 @@ export const mbbsData = {
     points: [
       {
         title: "Rank-Based College Prediction",
-        desc: "Our data models analyze 5+ years of cutoff trends to predict the best colleges you can target with your NEET rank.",
+        desc: "We set your NEET rank against the counselling authorities' own published closing ranks to show which colleges it has reached.",
       },
       {
         title: "Counselling Strategy & Registration",
@@ -138,8 +138,8 @@ export const mbbsData = {
   whyUs: {
     points: [
       {
-        title: "Data-Driven Predictions",
-        desc: "Powered by 5+ years of cutoff data and real-time analytics",
+        title: "Published Ranks, Not Estimates",
+        desc: "Built on the published closing ranks of every round, not estimates",
       },
 
       {

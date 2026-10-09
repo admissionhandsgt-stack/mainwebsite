@@ -7,7 +7,7 @@ import { GraduationCap, BookOpen, Clock, Building2, ShieldCheck, RotateCcw } fro
 
 const SHIPPED_OVERVIEWITEMS = [
   { icon: GraduationCap, gradient: "from-cyan-600 to-cyan-700", title: "Eligibility", desc: "MBBS degree from a recognized institution with completed 1-year internship and NMC/State Medical Council registration." },
-  { icon: BookOpen, gradient: "from-teal-600 to-teal-700", title: "NEET PG Exam", desc: "National-level entrance by NBE. Computer-based, 200 MCQs. Qualifying cutoff at 50th percentile for General/EWS." },
+  { icon: BookOpen, gradient: "from-teal-600 to-teal-700", title: "NEET PG Exam", desc: "National-level entrance by NBEMS. Computer-based, 180 MCQs in 2026. The qualifying percentile is notified each yearle for General/EWS." },
   { icon: Clock, gradient: "from-teal-600 to-teal-700", title: "Internship", desc: "1-year compulsory rotating internship must be completed before counselling. Completion certificate mandatory." },
   { icon: Building2, gradient: "from-emerald-600 to-emerald-700", title: "Counselling Bodies", desc: "MCC handles AIQ, Deemed & Central seats. State authorities manage State Quota. Both run in parallel." },
   { icon: ShieldCheck, gradient: "from-amber-500 to-amber-600", title: "Reservation", desc: "SC, ST, OBC-NCL, EWS, PwD — each category has specific cutoffs, seat pools, and documentation requirements." },

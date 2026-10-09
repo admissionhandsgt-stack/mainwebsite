@@ -10,6 +10,8 @@ export const lakh = (v: number | null | undefined) => {
 /** Fee bands by quota family: median, and where most seats sit (10th–90th percentile). */
 export default function FeeBandTable({ bands }: { bands: FeeBand[] }) {
   return (
+    <>
+    <p className="mb-1.5 text-[12px] text-muted-foreground sm:hidden" aria-hidden="true">Swipe the table sideways for every column →</p>
     <div className="overflow-x-auto rounded-2xl border border-border bg-card">
       <table className="w-full min-w-[520px] text-left text-sm">
         <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
@@ -34,5 +36,6 @@ export default function FeeBandTable({ bands }: { bands: FeeBand[] }) {
         </tbody>
       </table>
     </div>
+    </>
   );
 }

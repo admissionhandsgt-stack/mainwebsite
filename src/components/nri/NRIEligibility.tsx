@@ -37,7 +37,7 @@ const NRIEligibility = () => {
                   {[
                     "Must hold an Indian passport",
                     "Should be ordinarily residing outside India",
-                    "NEET qualification (for most colleges)",
+                    "NEET-UG qualification (mandatory, NRI seats included)",
                     "Must have completed 10+2 with PCB"
                   ].map((text, idx) => (
                     <div key={idx} className="flex items-center gap-3 p-4 bg-white/40 rounded-2xl border border-white/40 group hover:border-cyan-500/30 transition-colors">
@@ -118,7 +118,7 @@ const NRIEligibility = () => {
               {[
                 "Min 50% marks in PCB in 10+2",
                 "Qualified NEET-UG score",
-                "Age between 17-25 years",
+                "At least 17 years old by 31 December of the admission year",
                 "English language proficiency"
               ].map((item, idx) => (
                 <li key={idx} className="flex items-center gap-4 group">

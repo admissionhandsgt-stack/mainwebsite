@@ -30,7 +30,7 @@ const SHIPPED_CARDS = [
   {
     icon: FileCheck,
     gradient: "from-amber-500 to-orange-600",
-    title: "Zero Document Failures",
+    title: "Documents Checked Early",
     desc: "Internship completion certificates, NMC registration, domicile proofs, category certificates — PG documentation is more complex than UG. Our audit team pre-verifies every paper weeks before deadlines.",
     highlight: "documentation handled end to end for 2100+ students",
   },

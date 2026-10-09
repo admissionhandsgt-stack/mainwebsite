@@ -47,8 +47,12 @@ export function paywallJsonLd(input: {
     url: input.url,
     name: input.name,
     description: input.description,
-    // The page as a whole is free to read; part of it is not.
-    isAccessibleForFree: true,
+    // false on the page as well as the part. Google's reference says so in as
+    // many words: when only part of a page is paywalled, the top level is
+    // false and hasPart names the section. This read `true` ("most of the page
+    // is free") until the 2026-10-09 audit, against the very document cited at
+    // the top of this file.
+    isAccessibleForFree: false,
     hasPart: {
       "@type": "WebPageElement",
       isAccessibleForFree: false,

@@ -68,7 +68,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
             className="space-y-4 sm:space-y-5"
           >
             <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-cyan-300 text-[10px] font-black tracking-widest uppercase mb-4 backdrop-blur-md">
-              <Sparkles className="w-3 h-3 text-cyan-400" /> India&apos;s Most Trusted Medical Admission Advisory
+              <Sparkles className="w-3 h-3 text-cyan-400" /> NEET UG &amp; PG Admission Counselling
             </div>
             
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.4rem] font-black text-white leading-[1.1] tracking-tight mb-4">
@@ -79,7 +79,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
             </h1>
             
             <p className="text-cyan-100/90 text-sm md:text-base font-medium leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              For over 12 years, Admission Hands has been the secret weapon behind 2100+ successful MBBS and PG admissions. We combine proprietary cutoff analytics, real-time counselling intelligence, and relentless 1-on-1 mentorship to turn every NEET rank into its highest-value seat.
+              For over 12 years, Admission Hands has guided 2,100+ students into MBBS and PG seats. We work from the counselling authorities' own published closing ranks, round by round, with one counsellor beside you from your NEET result to the day you report.
             </p>
 
             <div className="flex flex-col xs:flex-row gap-3 justify-center lg:justify-start mt-6">
@@ -130,7 +130,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
                 Over the past 12+ years, we&apos;ve evolved from a small counselling desk into India&apos;s most analytically rigorous medical admission advisory. Our team reverse-engineers the NEET counselling system every single year — tracking round-wise seat movements, cutoff drift patterns, category-specific vacancy flows, and institutional fee changes across <strong className="text-slate-900 dark:text-white">every college in the counselling data in 36 states.</strong>
               </p>
               <p className="text-slate-700 dark:text-slate-300 text-sm md:text-base font-medium leading-relaxed">
-                While most families navigate the medical admission labyrinth with hearsay and hope, our students enter each counselling round armed with <strong className="text-slate-900 dark:text-white">proprietary cutoff intelligence, pre-verified documentation, and a named expert counsellor</strong> who stays with them from Day 1 until they physically report to their college.
+                While most families navigate the medical admission labyrinth with hearsay and hope, our students enter each counselling round armed with <strong className="text-slate-900 dark:text-white">the authorities' published closing ranks, documents checked before reporting, and a named expert counsellor</strong> who stays with them from Day 1 until they physically report to their college.
               </p>
               <p className="text-slate-700 dark:text-slate-300 text-sm md:text-base font-medium leading-relaxed">
                 This isn&apos;t generic advice. This is <strong className="text-slate-900 dark:text-white">precision admission engineering</strong> — and it rests on published closing ranks rather than on anyone&apos;s opinion of your chances.
@@ -149,7 +149,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
                 { icon: Brain, text: "Every seat scored against the round it actually closed in — never an estimate", color: "text-cyan-600 bg-cyan-50 dark:text-cyan-400 dark:bg-cyan-950/40" },
                 { icon: Target, text: "Named, dedicated counsellor from NEET score release to college reporting", color: "text-emerald-600 bg-emerald-50 dark:text-emerald-400 dark:bg-emerald-950/20" },
                 { icon: BarChart3, text: "2.7 lakh published closing ranks, across every college in the counselling", color: "text-teal-600 bg-teal-50 dark:text-teal-400 dark:bg-teal-950/20" },
-                { icon: FileCheck, text: "Zero document rejection track record — every paper pre-audited", color: "text-amber-600 bg-amber-50 dark:text-amber-400 dark:bg-amber-950/20" },
+                { icon: FileCheck, text: "Every document checked against your state's list before you report", color: "text-amber-600 bg-amber-50 dark:text-amber-400 dark:bg-amber-950/20" },
                 { icon: Shield, text: "Round-by-round seat upgrade strategy with real-time decision support", color: "text-rose-600 bg-rose-50 dark:text-rose-400 dark:bg-rose-950/20" },
                 { icon: Zap, text: "Parallel AIQ + State Quota management to maximize allotment probability", color: "text-cyan-600 bg-cyan-50 dark:text-cyan-400 dark:bg-cyan-950/20" },
               ].map((item, idx) => (

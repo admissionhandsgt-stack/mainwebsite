@@ -21,7 +21,7 @@ const insightCards = [
   {
     title: "PG Branch Competition",
     value: "High Intensity",
-    description: "Trend analysis of expected cutoff shifts.",
+    description: "Round-by-round movement of published closing ranks.",
     icon: TrendingUp,
     color: "from-teal-600 to-rose-700"
   }
@@ -41,7 +41,7 @@ const admissionInsights = [
   "Deemed university seats are filled through separate MCC counselling rounds",
   "NRI quota seats available in private & deemed colleges (15% of total)",
   "Multiple counselling rounds ensure maximum seat utilization",
-  "Budget planning is critical — private college fees range ₹10L to ₹25L/year",
+  "Budget planning is critical — private and deemed fees vary several-fold by quota, so check the published fee for yours",
 ];
 
 const DataInsights = () => {

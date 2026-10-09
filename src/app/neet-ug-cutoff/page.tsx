@@ -23,9 +23,14 @@ const complete = (years: YearCuts[]) => years.find((y) => y.rounds.includes("R3"
 const open = (y: YearCuts | undefined) => y?.categories.find((c) => c.category === "UR") ?? y?.categories[0];
 
 export async function generateMetadata(): Promise<Metadata> {
-  const mbbs = complete(await getUgAiqCuts("MBBS"));
+  const years = await getUgAiqCuts("MBBS");
+  const mbbs = complete(years);
+  // The year in progress leads the title once it has rounds: people search the
+  // current year, and the page already carries its round 1 and 2.
+  const later = years.find((y) => mbbs && y.year > mbbs.year);
+  const span = later ? `${later.year} & ${mbbs?.year}` : `${mbbs?.year ?? ""}`;
   return resolveMetadata(PATH, {
-    title: `NEET UG Cutoff ${mbbs?.year ?? ""}: MBBS & BDS Closing Rank by Category`,
+    title: `NEET UG Cutoff ${span}: MBBS & BDS Closing Rank by Category`,
     description: `NEET UG ${mbbs?.year ?? ""} All India Quota closing ranks for MBBS and BDS, by category — the round-1 close and the last rank admitted, from MCC's published results.`,
     keywords:
       "NEET UG cutoff, NEET cutoff for MBBS, MBBS cutoff for government college, NEET cutoff for OBC, NEET cutoff for SC, BDS cutoff, AIQ cutoff, NEET closing rank",

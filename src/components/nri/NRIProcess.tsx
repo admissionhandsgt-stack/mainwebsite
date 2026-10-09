@@ -2,7 +2,7 @@
 import type { NriStep } from '@/lib/nriContent';
 
 const SHIPPED_STEPS = [
-              { step: "01", title: "NEET Examination", date: "May - June", desc: "Appear for NEET-UG exam which is mandatory for most medical institutions. Some deemed universities accept international qualifications.", side: "left" },
+              { step: "01", title: "NEET Examination", date: "May - June", desc: "Appear for NEET-UG. It is mandatory for every MBBS and BDS seat in India, NRI quota included.", side: "left" },
               { step: "02", title: "College Research", date: "June - July", desc: "Research and shortlist medical colleges that offer NRI quota seats. Check their eligibility criteria, fee structure, and admission process.", side: "right" },
               { step: "03", title: "Document Preparation", date: "July - August", desc: "Collect and prepare all required documents including NRI status proof, academic certificates, NEET scorecard, and financial documents.", side: "left" },
               { step: "04", title: "Application Submission", date: "August - September", desc: "Apply to multiple institutions to increase your chances. Submit applications along with required documents and application fees.", side: "right" },

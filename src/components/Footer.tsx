@@ -23,7 +23,7 @@ const FALLBACK_EXPLORE: NavItem[] = [
 const FALLBACK_QUICK: NavItem[] = FALLBACK_EXPLORE.slice(0, 4);
 
 const DEFAULT_TAGLINE =
-  'India\u2019s most trusted partner for MBBS & PG medical admissions. Expert guidance and transparent processes for your career.';
+  'Admission counselling for MBBS & PG medical seats in India. Expert guidance and transparent processes for your career.';
 
 const DEFAULT_SOCIAL: Required<SocialLinks> = {
   facebook: 'https://facebook.com/admissionhands',

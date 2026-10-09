@@ -82,16 +82,16 @@ test.describe("Paywalled-content markup", () => {
     await expect(summaryInsideDeclared).toHaveCount(1);
   });
 
-  test("the page itself is not marked paid", async ({ page }) => {
+  test("the page is marked not free at the top level as well", async ({ page }) => {
     await page.goto(GATED_SURFACES[0].path);
     await page.waitForLoadState("load");
 
     const declaration = (await structuredData(page)).find(
       (b) => b.hasPart?.isAccessibleForFree === false,
     )!;
-    // Only the part is withheld. Saying the whole page is paid would be wrong —
-    // most of it is free, and it is what ranks.
-    expect(declaration.isAccessibleForFree).toBe(true);
+    // Google's paywalled-content reference: with only part of the page gated,
+    // the top-level isAccessibleForFree is still false; hasPart says which part.
+    expect(declaration.isAccessibleForFree).toBe(false);
   });
 });
 

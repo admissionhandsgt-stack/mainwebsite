@@ -25,6 +25,7 @@ export default function CategoryCutTable({
       Ranks are {rankLabel}. <strong className="font-semibold text-foreground">Round 1 close</strong>: the tightest seat in
       round 1. <strong className="font-semibold text-foreground">Last admitted</strong>: the furthest any round reached.
     </p>
+    <p className="mb-1.5 text-[12px] text-muted-foreground sm:hidden" aria-hidden="true">Swipe the table sideways for every column →</p>
     <div className="overflow-x-auto rounded-2xl border border-border bg-card">
       <table className="w-full min-w-[520px] text-left text-sm">
         <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">

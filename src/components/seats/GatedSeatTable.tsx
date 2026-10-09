@@ -126,7 +126,7 @@ export default function GatedSeatTable({
       <LockedSummary
         total={total}
         noun={noun}
-        what="college, quota, rank and fee on every row"
+        what={showFee ? "college, quota, rank and fee on every row" : "college, quota and rank on every row"}
         stats={[
           ["Seats", inr(summary.seats)],
           ["Colleges", inr(summary.colleges)],

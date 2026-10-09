@@ -71,8 +71,33 @@ export function ugCourseOf(name: string): string {
   if (/ayurved/i.test(name)) return "BAMS";
   if (/homoeo|homeopath/i.test(name)) return "BHMS";
   if (/unani|tibbi/i.test(name)) return "BUMS";
-  if (/siddha/i.test(name)) return "BSMS";
+  if (/siddha/i.test(name)) return "BSMS"; // not "Siddhartha"
   if (/nursing/i.test(name)) return "B.Sc Nursing";
   if (/veterinar/i.test(name)) return "BVSc";
   return "MBBS";
+}
+
+const COURSE_LABELS = ["MBBS", "BDS", "BAMS", "BHMS", "BUMS", "BSMS"];
+function courseLabel(course: string): string {
+  const k = course.toUpperCase().replace(/[.\s]/g, "");
+  if (k.startsWith("BSCNURS")) return "B.Sc Nursing";
+  if (k.startsWith("BVSC")) return "BVSc";
+  return COURSE_LABELS.find((x) => k.startsWith(x)) ?? course;
+}
+
+/**
+ * The course a UG college's page is about, from the courses its own cutoff rows
+ * carry, with the name as the tie-breaker. The name alone missed 16 of 1,309 on
+ * 2026-10-09 — "College of Dentistry", "Govt. Ay. Mahavidyalaya", "Vaidyak",
+ * "Takmil-ut-Tib" — while the rows say BDS, BAMS, BUMS outright. The one case
+ * the name wins: rows saying MBBS under a college named for another stream are
+ * the source's known misfiling (MES Dental College), not an MBBS college.
+ */
+export function ugCourseLabel(name: string, courses: string[]): string {
+  const byName = ugCourseOf(name);
+  const labels = Array.from(new Set(courses.map(courseLabel)));
+  if (labels.length === 1) return labels[0] === "MBBS" && byName !== "MBBS" ? byName : labels[0];
+  if (labels.includes(byName)) return byName;
+  if (labels.includes("MBBS")) return "MBBS";
+  return byName;
 }
