@@ -90,7 +90,9 @@ services:
       # died. A replay of every sitemap page cold, and the smoke and signed-in
       # gate suites, never passed 250 MB, so this is headroom for a burst
       # nothing has reproduced, not a leak being fed. The box has 24 GB.
-      NODE_OPTIONS: --max-old-space-size=1792
+      # The heap snapshot is the evidence if the heap is what fills: it lands in
+      # the release's .next/cache, which the next deploy replaces.
+      NODE_OPTIONS: --max-old-space-size=1792 --heapsnapshot-near-heap-limit=1 --diagnostic-dir=/app/.next/cache
     volumes:
       - /opt/admissionhands/current:/app
       # Uploaded images live outside the release so they survive deploys, and
@@ -105,6 +107,10 @@ services:
       db:
         condition: service_healthy
     mem_limit: 2560m
+    # No swap. At 07:28 on 2026-10-09 the process sat at its limit with 700 MB
+    # swapped out, alive and answering nothing for minutes. Killed, it restarts
+    # in a second.
+    memswap_limit: 2560m
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8150/robots.txt').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
       interval: 30s

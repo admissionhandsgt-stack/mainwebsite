@@ -86,6 +86,9 @@ const nextConfig = {
    */
   output: 'standalone',
 
+  // src/instrumentation.ts — starts lib/serverWatch.ts, the memory and slow-request log.
+  experimental: { instrumentationHook: true },
+
   // Announcing the framework and its version only helps someone choosing an
   // exploit to try.
   poweredByHeader: false,
