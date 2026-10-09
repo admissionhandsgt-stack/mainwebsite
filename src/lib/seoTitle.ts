@@ -26,8 +26,25 @@ function fit(max: number, candidates: string[]): string {
 export const fitTitle = (...candidates: string[]) => fit(TITLE_MAX, candidates);
 export const fitDescription = (...candidates: string[]) => fit(DESCRIPTION_MAX, candidates);
 
-/** "<name><suffix>" within the title limit, the name clipped if it must be — the suffix always survives. */
-export const nameWith = (name: string, suffix: string) => `${clip(name, TITLE_MAX - suffix.length)}${suffix}`;
+/**
+ * Shorten a name from the middle, keeping its end — the city that tells two
+ * colleges apart. "Employees State Insurance Corporation Medical College,
+ * Bangalore" and "…, Faridabad" clipped from the end were the same title
+ * (34 such pairs in the second crawl).
+ */
+export function clipMiddle(text: string, max: number): string {
+  const t = text.replace(/\s+/g, " ").trim();
+  if (t.length <= max) return t;
+  const comma = t.lastIndexOf(",");
+  const words = t.split(" ");
+  const tail = comma > 0 && t.length - comma < max / 2 ? t.slice(comma + 1).trim() : words.slice(-1)[0];
+  const head = t.slice(0, t.length - tail.length).replace(/[\s,]+$/, "");
+  const room = max - tail.length - 2;
+  return room > 8 ? `${clip(head, room)} ${tail}` : clip(t, max);
+}
+
+/** "<name><suffix>" within the title limit, the name shortened if it must be — the suffix always survives. */
+export const nameWith = (name: string, suffix: string) => `${clipMiddle(name, TITLE_MAX - suffix.length)}${suffix}`;
 
 /** "1 College", "73 Colleges". */
 export const count = (n: number, one: string, many: string) => `${n.toLocaleString("en-IN")} ${n === 1 ? one : many}`;
