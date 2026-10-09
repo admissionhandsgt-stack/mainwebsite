@@ -33,12 +33,14 @@ export const fitDescription = (...candidates: string[]) => fit(DESCRIPTION_MAX, 
  * (34 such pairs in the second crawl).
  */
 export function clipMiddle(text: string, max: number): string {
-  const t = text.replace(/\s+/g, " ").trim();
+  // A trailing PIN code is not a place anyone searches: "…, Meghalaya, 793018".
+  const t = text.replace(/\s+/g, " ").trim().replace(/[\s,-]*\b\d{6}$/, "");
   if (t.length <= max) return t;
-  const comma = t.lastIndexOf(",");
-  const words = t.split(" ");
-  const tail = comma > 0 && t.length - comma < max / 2 ? t.slice(comma + 1).trim() : words.slice(-1)[0];
-  const head = t.slice(0, t.length - tail.length).replace(/[\s,]+$/, "");
+  // The last segment after a comma or a dash: "…, Bangalore", "… – North Kolkata (NEW CAMPUS)".
+  const cut = Math.max(t.lastIndexOf(","), t.lastIndexOf(" – "), t.lastIndexOf(" - "));
+  const segment = cut > 0 ? t.slice(cut + 1).replace(/^[\s–-]+/, "").trim() : "";
+  const tail = segment && segment.length < max / 2 ? segment : t.split(" ").slice(-1)[0];
+  const head = t.slice(0, t.length - tail.length).replace(/[\s,–-]+$/, "");
   const room = max - tail.length - 2;
   return room > 8 ? `${clip(head, room)} ${tail}` : clip(t, max);
 }

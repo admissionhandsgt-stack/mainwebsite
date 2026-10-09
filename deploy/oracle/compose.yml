@@ -85,6 +85,12 @@ services:
     env_file: ./.env
     environment:
       NODE_ENV: production
+      # V8 sizes its heap from the container limit: ~790 MB at 1536m, and on
+      # 2026-10-09 the heap hit it 60 s after a deploy restart and the process
+      # died. A replay of every sitemap page cold, and the smoke and signed-in
+      # gate suites, never passed 250 MB, so this is headroom for a burst
+      # nothing has reproduced, not a leak being fed. The box has 24 GB.
+      NODE_OPTIONS: --max-old-space-size=1792
     volumes:
       - /opt/admissionhands/current:/app
       # Uploaded images live outside the release so they survive deploys, and
@@ -98,7 +104,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    mem_limit: 1536m
+    mem_limit: 2560m
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8150/robots.txt').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
       interval: 30s
