@@ -90,9 +90,15 @@ services:
       # died. A replay of every sitemap page cold, and the smoke and signed-in
       # gate suites, never passed 250 MB, so this is headroom for a burst
       # nothing has reproduced, not a leak being fed. The box has 24 GB.
-      # The heap snapshot is the evidence if the heap is what fills: it lands in
-      # the release's .next/cache, which the next deploy replaces.
-      NODE_OPTIONS: --max-old-space-size=1792 --heapsnapshot-near-heap-limit=1 --diagnostic-dir=/app/.next/cache
+      # The heap snapshot is the evidence if the heap is what fills; it lands in
+      # /opt/admissionhands/diagnostics, which deploys do not touch.
+      NODE_OPTIONS: --max-old-space-size=1792 --heapsnapshot-near-heap-limit=1 --diagnostic-dir=/diagnostics
+      # What actually filled memory. The image optimiser (sharp/libvips)
+      # allocates natively from many threads; glibc gives each its own arena and
+      # does not hand the memory back. Measured 2026-10-09, 50 parallel cold
+      # requests: images alone 796 MB, still 742 MB idle 20 s later; with two
+      # arenas 346 MB. Pages and images mixed: 974 -> 482 MB, 336 MB at rest.
+      MALLOC_ARENA_MAX: "2"
     volumes:
       - /opt/admissionhands/current:/app
       # Uploaded images live outside the release so they survive deploys, and
@@ -101,6 +107,13 @@ services:
       # Next's optimised-image cache, kept across deploys. Only images/ —
       # the data cache beside it must not outlive the code that wrote it.
       - /opt/admissionhands/next-cache:/app/.next/cache/images
+      # The data cache too. Next keys an unstable_cache entry on the function's
+      # own compiled source, so changed code misses rather than reading an old
+      # shape — 68 of 78 entries carried over between two releases that day.
+      # A change that text does not show (a helper the function calls) needs
+      # `deploy_oracle.sh --fresh-cache`.
+      - /opt/admissionhands/fetch-cache:/app/.next/cache/fetch-cache
+      - /opt/admissionhands/diagnostics:/diagnostics
     ports:
       - "127.0.0.1:8150:8150"
     depends_on:

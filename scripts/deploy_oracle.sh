@@ -3,6 +3,7 @@
 #
 #   ./scripts/deploy_oracle.sh            # ship the working tree, build there, switch
 #   ./scripts/deploy_oracle.sh --no-switch  # build and stage a release, leave the live one running
+#   ./scripts/deploy_oracle.sh --fresh-cache  # also empty the persisted data cache (fetch-cache)
 #
 # ## Why the build happens on the server
 #
@@ -29,7 +30,21 @@ KEY="${ORACLE_KEY:-C:/Users/91971/.ssh/admissionhands_oracle}"
 APP=/opt/admissionhands
 STAMP="$(date -u +%Y%m%d-%H%M%S)"
 SWITCH=1
-[[ "${1:-}" == "--no-switch" ]] && SWITCH=0
+FRESH_CACHE=0
+for arg in "$@"; do
+  case "$arg" in
+    --no-switch) SWITCH=0 ;;
+    --fresh-cache) FRESH_CACHE=1 ;;
+    *) echo "unknown option: $arg" >&2; exit 2 ;;
+  esac
+done
+# The build runs on the box that serves the site, and two of the five deploys on
+# the morning of 2026-10-09 were followed by the app running out of memory. A
+# daytime deploy is said out loud, not refused — a fix cannot always wait.
+h=$(TZ=Asia/Kolkata date +%H)
+if (( 10#$h >= 9 && 10#$h < 23 )); then
+  echo "  Note: daytime in India (${h}h IST), candidates are on the site. Batch changes into one deploy."
+fi
 
 ssh_() { ssh -i "$KEY" -o BatchMode=yes -o ServerAliveInterval=20 "$HOST" "$@"; }
 say() { printf '\n\033[1m%s\033[0m\n' "$*"; }
@@ -64,7 +79,7 @@ ssh_ "set -e; docker rm -f admissionhands-build >/dev/null 2>&1 || true
   for try in 1 2 3; do
     if docker run --rm --name admissionhands-build \
         --network admissionhands_default \
-        --user 1003:1003 --memory 4g \
+        --user 1003:1003 --memory 4g --cpus 2 --cpu-shares 256 \
         --env-file $APP/.env -e HOME=/tmp -e NEXT_TELEMETRY_DISABLED=1 \
         -v $APP/src:/src -w /src node:22-bookworm \
         sh -c 'NODE_ENV=development npm ci --no-audit --no-fund --loglevel=error \
@@ -141,6 +156,12 @@ fi
 
 # ------------------------------------------------------------------ switch
 say "Switching"
+# The data cache (unstable_cache) lives outside the release and survives the
+# switch — see compose.yml. --fresh-cache empties it, for a change to what a
+# cached query returns that its own function text does not show.
+if [[ $FRESH_CACHE -eq 1 ]]; then
+  ssh_ "find $APP/fetch-cache -mindepth 1 -delete" && echo "  data cache emptied"
+fi
 ssh_ "set -e; ln -sfn $APP/releases/$STAMP $APP/current
   docker compose -p admissionhands -f $APP/compose.yml up -d --force-recreate --no-deps app 2>&1 | tail -2
   for i in \$(seq 1 60); do

@@ -1483,8 +1483,11 @@ stale-while-revalidate. **If you overwrite an upload in place, browsers keep the
 
 **Next's optimised-image cache survives deploys.** It lived in the release's `.next/cache/images`, so
 every deploy threw away what had been encoded (32 MB after a day). `deploy.sh` now symlinks it to
-`/opt/admissionhands/shared/next-image-cache`, seeded from the outgoing release. Only `images/` —
-`fetch-cache` beside it holds `unstable_cache` database answers and must not outlive its code.
+`/opt/admissionhands/shared/next-image-cache`, seeded from the outgoing release. Since 2026-10-09
+`fetch-cache` persists too (`/opt/admissionhands/fetch-cache`): Next keys an `unstable_cache` entry on the
+function's own compiled source, so changed code misses instead of reading an old shape (68 of 78 entries
+carried over between two releases). A change that text does not show — a helper the cached function
+calls — needs `deploy_oracle.sh --fresh-cache`.
 
 **What this does not fix: the first visit from India.** The box is in **Montréal**, 280–480 ms round
 trip from India; `robots.txt` takes ~0.87 s to its first byte, all of it TCP + TLS + request crossing the
@@ -1645,7 +1648,18 @@ for minutes — so `memswap_limit` now equals `mem_limit` (a runaway is killed a
 instead of hanging) and `src/lib/serverWatch.ts`, started from `src/instrumentation.ts`, logs the heap
 against off-heap split and the oldest in-flight requests whenever resident memory passes 700 MB, plus any
 request slower than 8 s: `docker logs admissionhands-app-1 2>&1 | grep '\[watch\]'`. A heap snapshot is
-written to the release's `.next/cache` if the heap is what fills. **Read those lines before guessing again.**
+written to `/opt/admissionhands/diagnostics` if the heap is what fills.
+
+**Found the same day — it was native memory, not the heap.** A burst of 50 parallel cold requests on a
+throwaway copy (`--cpus 2`, production latency watched) reproduced it; a sequential replay never could.
+The watch lines showed heap ~100 MB with RSS near 1 GB. Pages alone peaked at 284 MB; `/_next/image` alone
+at 809 MB with a 25 MB heap — sharp/libvips allocating from many threads, glibc giving each an arena and
+keeping the memory (742 MB still held 20 s after the burst), so every burst ratcheted the process up.
+`MALLOC_ARENA_MAX=2` in compose: images 796 → 346 MB, mixed 974 → 482 MB and back to 336 MB at rest.
+Other pieces of that morning: five deploys in an hour, each building on the same box (the build container
+is now `--cpus 2 --cpu-shares 256`, and the script says so when it is daytime in India), and the data
+cache emptied by every switch. The Caddy access log (`/var/log/caddy/admissionhands.log`, JSON) is
+root-only — ask for it after an incident rather than guessing.
 
 **The header has a layout budget.** At full size the row needs ~1,400px (logo, eight links, four
 controls), and the page container gives it 1,216px below 1536px. Everything in it is `shrink-0` and the
