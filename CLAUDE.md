@@ -1634,6 +1634,13 @@ on the server's CPU (`scripts/check_sharp_decode.cjs`) and refuses the release i
 After any sharp change, empty `/opt/admissionhands/next-cache` (the optimised-image cache survives
 deploys by design) and purge Cloudflare, or the corrupt encodes keep being served.
 
+**The app's heap is set explicitly (2026-10-09).** V8 sizes its heap from the container limit, ~790 MB
+at the old `mem_limit: 1536m`, and the app died once at that ceiling 60 s after a deploy restart. A cold
+replay of all 3,760 sitemap pages, and smoke + the signed-in gate suite together, never passed 250 MB, so
+the cause was never reproduced; `compose.yml` now sets `NODE_OPTIONS=--max-old-space-size=1792` and
+`mem_limit: 2560m` (the box has 24 GB). If it dies again, `docker logs` shows the `Mark-Compact` line —
+a heap that climbs past ~1.8 GB is a leak to find, not a limit to raise again.
+
 **The header has a layout budget.** At full size the row needs ~1,400px (logo, eight links, four
 controls), and the page container gives it 1,216px below 1536px. Everything in it is `shrink-0` and the
 body clips horizontal overflow, so a header that is too wide does not wrap or scroll — its right-hand

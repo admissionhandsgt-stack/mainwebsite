@@ -32,9 +32,19 @@ export const fitDescription = (...candidates: string[]) => fit(DESCRIPTION_MAX, 
  * Bangalore" and "…, Faridabad" clipped from the end were the same title
  * (34 such pairs in the second crawl).
  */
+const STATE_TAIL =
+  /[\s,(-]+(andhra pradesh|arunachal pradesh|assam|bihar|chhattisgarh|goa|gujarat|haryana|himachal pradesh|jharkhand|karn?a?taka|karantaka|kerala|madhya pradesh|maharashtra|manipur|meghalaya|mizoram|nagaland|odisha|orissa|punjab|rajasthan|sikkim|tamil ?nadu|telangana|tripura|uttar pradesh|uttarakhand|west bengal|delhi|new delhi|jammu (and|&) kashmir|ladakh|puducherry|pondicherry|chandigarh|india)\.?$/i;
+
 export function clipMiddle(text: string, max: number): string {
   // A trailing PIN code is not a place anyone searches: "…, Meghalaya, 793018".
-  const t = text.replace(/\s+/g, " ").trim().replace(/[\s,-]*\b\d{6}$/, "");
+  let t = text.replace(/\s+/g, " ").trim().replace(/[\s,-]*\b\d{6}$/, "");
+  if (t.length <= max) return t;
+  // Nor, once the name has to be shortened, is the state: three colleges ending
+  // "…, Maharashtra" shared one title. The city before it is what tells them apart.
+  for (let prev = ""; prev !== t; ) {
+    prev = t;
+    t = t.replace(/[\s,-]*\b\d{6}$/, "").replace(STATE_TAIL, "").trim();
+  }
   if (t.length <= max) return t;
   // The last segment after a comma or a dash: "…, Bangalore", "… – North Kolkata (NEW CAMPUS)".
   const cut = Math.max(t.lastIndexOf(","), t.lastIndexOf(" – "), t.lastIndexOf(" - "));
