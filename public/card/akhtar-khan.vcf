@@ -1,12 +1,12 @@
 BEGIN:VCARD
 VERSION:3.0
-N:Tomar;Gulshan;;;
-FN:Gulshan Tomar
+N:Khan;Akhtar;;;
+FN:Akhtar Khan
 ORG:AdmissionHands
-TITLE:Admission Counsellor
-TEL;TYPE=CELL,VOICE:+919220626002
-EMAIL;TYPE=INTERNET,WORK:gulshan.tomar@admissionhands.com
+TITLE:Senior Counsellor
+TEL;TYPE=CELL,VOICE:+919999098638
+EMAIL;TYPE=INTERNET,WORK:akhtarkhan@admissionhands.com
 ADR;TYPE=WORK:;;915, Bhutani City Center, Sector 32;Noida;Uttar Pradesh;201301;India
-URL:https://www.admissionhands.com/gulshan-tomar
+URL:https://www.admissionhands.com/akhtar-khan
 NOTE:NEET UG & PG counselling for MBBS, BDS and MD/MS. Office Mon-Sat 10 AM-7 PM.
 END:VCARD

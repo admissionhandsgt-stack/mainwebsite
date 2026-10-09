@@ -1,3 +1,4 @@
+import { readdirSync } from 'node:fs';
 import withBundleAnalyzer from '@next/bundle-analyzer';
 
 /**
@@ -111,10 +112,19 @@ const nextConfig = {
    * have earned is the whole reason to redirect rather than delete. The
    * `?course=` lands the visitor on the stream they asked for.
    */
-  // Counsellors' digital cards are static files (public/card/*.html). The edge
-  // serves them as /card/<name>; this is the same address on the origin.
+  // Counsellors' digital cards are static files (public/card/*.html, built by
+  // scripts/make_cards.cjs). They are shared as www.admissionhands.com/<slug>;
+  // /card/<slug> is the address the first one went out with and keeps working.
+  // The slug list is read from the folder, so a new card needs no change here.
   async rewrites() {
-    return [{ source: '/card/:name([a-z0-9-]+)', destination: '/card/:name.html' }];
+    const slugs = readdirSync(new URL('./public/card/', import.meta.url))
+      .filter((f) => f.endsWith('.html'))
+      .map((f) => f.slice(0, -5))
+      .filter((s) => /^[a-z0-9-]+$/.test(s));
+    return [
+      ...(slugs.length ? [{ source: `/:slug(${slugs.join('|')})`, destination: '/card/:slug.html' }] : []),
+      { source: '/card/:name([a-z0-9-]+)', destination: '/card/:name.html' },
+    ];
   },
 
   async redirects() {
