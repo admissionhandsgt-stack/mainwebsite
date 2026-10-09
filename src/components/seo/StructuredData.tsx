@@ -1,3 +1,4 @@
+import { OFFICE } from "@/lib/constants";
 const SITE = "https://www.admissionhands.com";
 
 /**
@@ -83,7 +84,10 @@ export function organization(
 ) {
   return {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    // ProfessionalService (a LocalBusiness) as well, because there is a real
+    // walk-in office: the address and hours below are what a local result and a
+    // Google Business Profile are matched against. Same @id everywhere.
+    "@type": ["Organization", "ProfessionalService"],
     "@id": `${SITE}/#organization`,
     name: "AdmissionHands",
     alternateName: "Admission Hands",
@@ -91,6 +95,22 @@ export function organization(
     logo: { "@type": "ImageObject", url: `${SITE}/icon-512.png`, width: 512, height: 512 },
     image: `${SITE}/assets/images/og/admissionhands-1200x630.jpg`,
     areaServed: { "@type": "Country", name: "India" },
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: OFFICE.street,
+      addressLocality: OFFICE.locality,
+      addressRegion: OFFICE.region,
+      postalCode: OFFICE.postalCode,
+      addressCountry: OFFICE.country,
+    },
+    openingHoursSpecification: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: OFFICE.days,
+      opens: OFFICE.opens,
+      closes: OFFICE.closes,
+    },
+    ...(contact?.phone ? { telephone: contact.phone } : {}),
+    ...(contact?.email ? { email: contact.email } : {}),
     ...(sameAs.length ? { sameAs } : {}),
     description:
       "Medical admission counselling for NEET UG and NEET PG in India, built on published counselling data.",
