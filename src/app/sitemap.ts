@@ -42,6 +42,7 @@ const STATIC: { path: string; priority: number; freq: MetadataRoute.Sitemap[numb
   { path: "/neet-pg-cutoff", priority: 0.9, freq: "weekly" },
   { path: "/md-ms-india/stipend", priority: 0.8, freq: "monthly" },
   { path: "/bds-india", priority: 0.8, freq: "weekly" },
+  { path: "/ayush-colleges", priority: 0.6, freq: "monthly" },
   { path: "/md-ms-india/states", priority: 0.8, freq: "monthly" },
   { path: "/neet-ss-cutoff", priority: 0.8, freq: "monthly" },
   { path: "/neet-mds-cutoff", priority: 0.8, freq: "monthly" },

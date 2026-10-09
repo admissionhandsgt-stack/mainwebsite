@@ -142,7 +142,7 @@ export default async function StipendReportPage() {
           </div>
           <p className="mt-3 text-sm text-muted-foreground">
             College by college, with fees and seats:{" "}
-            <Link href="/md-ms-india/stipend" className="font-semibold text-primary hover:underline">NEET PG stipend by state →</Link>
+            <Link href="/md-ms-india/stipend" className="font-semibold text-primary-strong hover:underline">NEET PG stipend by state →</Link>
           </p>
         </div>
       </section>
@@ -172,7 +172,7 @@ export default async function StipendReportPage() {
             {contact?.email && (
               <p className="mt-4 text-sm text-muted-foreground">
                 Press and data questions:{" "}
-                <a href={`mailto:${contact.email}`} className="font-semibold text-primary hover:underline">{contact.email}</a>
+                <a href={`mailto:${contact.email}`} className="font-semibold text-primary-strong hover:underline">{contact.email}</a>
               </p>
             )}
           </div>

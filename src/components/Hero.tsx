@@ -140,7 +140,7 @@ export default function Hero({
           ) : (
             // No inline copy (an external URL or an unreadable file): the
             // photograph loads normally, still without a preload.
-            <Image src={backgroundImageUrl!} alt="" fill sizes="100vw" className={backdropClass} />
+            <Image src={backgroundImageUrl!} alt="Medical college campus" fill sizes="100vw" className={backdropClass} />
           )}
           <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/20 to-background sm:from-background/40 sm:via-transparent" />
         </div>

@@ -1,4 +1,4 @@
-import { fitTitle, count } from "@/lib/seoTitle";
+import { fitTitle, fitDescription, nameWith, ugCourseOf } from "@/lib/seoTitle";
 import { OG_IMAGE } from "@/lib/ogImage";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -74,23 +74,26 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   // `collegePlace` drops a place already in the name, so these stop reading
   // "Government Medical College, Kottayam, Kottayam, Kerala".
   const where = collegePlace({ ...college, city: extras?.city ?? college.city });
+  // A dental or AYUSH college's page is not about MBBS (seoTitle.ugCourseOf).
+  const course = ugCourseOf(college.name);
 
   return {
     // No brand suffix: the college's own name is what is searched, and the
     // suffix pushed these past the ~60 characters Google shows.
     title: fitTitle(
-      `${college.name} — MBBS Cutoff & Fees 2026`,
-      `${college.name} — MBBS Cutoff 2026`,
-      `${college.name} MBBS Cutoff`,
-      college.name,
+      `${college.name} — ${course} Cutoff & Fees 2026`,
+      `${college.name} — ${course} Cutoff 2026`,
+      nameWith(college.name, ` ${course} Cutoff`),
     ),
-    description:
-      `NEET UG closing ranks, fees and seat details for ${college.name}` +
-      `${where ? `, ${where}` : ""}. Published counselling data, round by round.`,
+    description: fitDescription(
+      `NEET UG ${course} closing ranks, fees and seat details for ${college.name}${where ? `, ${where}` : ""}. Published counselling data, round by round.`,
+      `NEET UG ${course} closing ranks, fees and seat details for ${college.name}${where ? `, ${where}` : ""}.`,
+      `NEET UG ${course} closing ranks, fees and seat details for ${college.name}.`,
+    ),
     alternates: { canonical: `/mbbs-india/colleges/${college.slug}` },
     openGraph: {
-      title: `${college.name} — MBBS Cutoff & Fees`,
-      description: `NEET UG closing ranks and fees for ${college.name}, from published counselling data.`,
+      title: nameWith(college.name, ` — ${course} Cutoff & Fees`),
+      description: fitDescription(`NEET UG ${course} closing ranks and fees for ${college.name}, from published counselling data.`),
       url: `/mbbs-india/colleges/${college.slug}`,
       type: "article",
       images: [OG_IMAGE],
@@ -164,7 +167,7 @@ export default async function UgCollegePage({ params }: { params: { slug: string
           {extras?.imageUrl && (
             <Image
               src={extras.imageUrl}
-              alt=""
+              alt={`${college.name} campus`}
               fill
               priority
               sizes="100vw"

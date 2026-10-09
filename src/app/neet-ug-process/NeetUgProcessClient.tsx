@@ -54,7 +54,7 @@ const NeetUgProcessClient = ({
               ? heroImageUrl
               : "/assets/images/exam/neet-exam.avif"
           }
-          alt=""
+          alt="Students at a NEET examination centre"
           fill
           priority
           sizes="100vw"

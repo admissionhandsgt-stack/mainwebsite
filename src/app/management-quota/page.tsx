@@ -1,3 +1,4 @@
+import { fitDescription } from "@/lib/seoTitle";
 import type { Metadata } from "next";
 import { getQuotaOverview } from "@/lib/quotaQueries";
 import { resolveMetadata } from "@/lib/content";
@@ -26,7 +27,12 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const title = "Management Quota Medical Fees & Closing Ranks 2026";
   const description = pg
-    ? `Management quota seats at ${inr(pg.colleges)} medical colleges — ${money(pg.minFee)} to ${money(pg.maxFee)} a year, with the closing rank beside each fee. Published counselling results, not estimates.`
+    // The median, not the minimum: the cheapest published management fee is a
+    // ₹1,000 slip, and a headline built on it would mislead.
+    ? fitDescription(
+        `Management quota seats at ${inr(pg.colleges)} medical colleges — median ${money(pg.medianFee)} a year, with the closing rank beside each fee. Published counselling results.`,
+        `Management quota seats at ${inr(pg.colleges)} medical colleges — median ${money(pg.medianFee)} a year, with closing ranks.`,
+      )
     : "Management quota medical seats with published fees and closing ranks.";
 
   return resolveMetadata("/management-quota", {

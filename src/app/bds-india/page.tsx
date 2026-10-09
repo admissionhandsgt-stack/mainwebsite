@@ -133,7 +133,7 @@ export default async function BdsPage() {
           </h2>
           <p className="mt-2 max-w-[70ch] text-muted-foreground">
             15% of government dental college seats, filled by MCC on All India Rank. Every round of {year.year}.{" "}
-            <Link href="/neet-ug-cutoff" className="font-semibold text-primary hover:underline">MBBS cutoff →</Link>
+            <Link href="/neet-ug-cutoff" className="font-semibold text-primary-strong hover:underline">MBBS cutoff →</Link>
           </p>
           <div className="mt-5">
             <CategoryCutTable cuts={year.categories} />

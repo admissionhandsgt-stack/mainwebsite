@@ -215,9 +215,9 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
           ))}
         </div>
         <p className="mt-6 text-sm text-muted-foreground">
-          Also: <Link href="/md-ms-india/stipend" className="font-semibold text-primary hover:underline">NEET PG stipend, state by state</Link> ·{" "}
-          <Link href="/management-quota" className="font-semibold text-primary hover:underline">management quota fees</Link> ·{" "}
-          <Link href="/nri-quota/fees" className="font-semibold text-primary hover:underline">NRI quota fees</Link>
+          Also: <Link href="/md-ms-india/stipend" className="font-semibold text-primary-strong hover:underline">NEET PG stipend, state by state</Link> ·{" "}
+          <Link href="/management-quota" className="font-semibold text-primary-strong hover:underline">management quota fees</Link> ·{" "}
+          <Link href="/nri-quota/fees" className="font-semibold text-primary-strong hover:underline">NRI quota fees</Link>
         </p>
       </section>
 

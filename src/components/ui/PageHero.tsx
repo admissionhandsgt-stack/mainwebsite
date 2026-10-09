@@ -78,7 +78,9 @@ export default function PageHero({
   titleAccent,
   subtitle,
   image,
-  imageAlt = "",
+  // Never empty: SEO crawls count an empty alt as missing (the 2026-10-09
+  // crawl found it on every page built on this hero).
+  imageAlt = "Medical college campus",
   imageSubject,
   imageCredit,
   imageLicense,

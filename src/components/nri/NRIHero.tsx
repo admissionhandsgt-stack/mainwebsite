@@ -29,7 +29,7 @@ const NRIHero = ({ backgroundImageUrl, credit }: NRIHeroProps) => {
                 ? backgroundImageUrl
                 : "/assets/images/hero/dy-patil-mumbai.avif"
             }
-            alt=""
+            alt="Medical college campus"
             fill
             priority
             sizes="100vw"

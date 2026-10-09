@@ -170,7 +170,7 @@ export default async function NeetMdsCutoffPage() {
           ))}
         </div>
         <p className="mt-6 text-sm text-muted-foreground">
-          Also: <Link href="/bds-india" className="font-semibold text-primary hover:underline">BDS colleges and cutoff</Link>
+          Also: <Link href="/bds-india" className="font-semibold text-primary-strong hover:underline">BDS colleges and cutoff</Link>
         </p>
       </section>
 

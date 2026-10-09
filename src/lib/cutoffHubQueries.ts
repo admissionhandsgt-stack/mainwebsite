@@ -315,3 +315,35 @@ export const getBdsColleges = unstable_cache(
   ["hub-bds-v1"],
   { revalidate: 86400, tags: ["seat-data"] },
 );
+
+/* ------------------------- AYUSH and other UG ------------------------- */
+
+export interface OtherUgCollege {
+  course: string;
+  name: string;
+  slug: string;
+  state: string | null;
+}
+
+/**
+ * Colleges whose NEET UG seats are not MBBS or BDS — BAMS, BHMS, BUMS, BSMS,
+ * B.Sc Nursing, BVSc. Each already had a page; none was linked from anywhere
+ * (162 orphans in the 2026-10-09 crawl), because the MBBS directory rightly
+ * leaves them out. /ayush-colleges lists them.
+ */
+export const getOtherUgColleges = unstable_cache(
+  async (): Promise<OtherUgCollege[]> =>
+    rows<Record<string, unknown>>(
+      await db.execute(sql`
+        SELECT DISTINCT co.name AS course, i.name, i.slug, st.name AS state
+          FROM seat_options so
+          JOIN courses co ON co.id = so.course_id
+          JOIN institutes i ON i.id = so.institute_id
+          LEFT JOIN states st ON st.id = i.state_id
+         WHERE so.level = 'ug' AND co.name NOT ILIKE 'MBBS' AND co.name NOT ILIKE 'BDS' AND i.is_active = true
+         ORDER BY co.name, st.name NULLS LAST, i.name
+      `),
+    ).map((x) => ({ course: String(x.course), name: String(x.name), slug: String(x.slug), state: (x.state as string) ?? null })),
+  ["hub-other-ug-v1"],
+  { revalidate: 86400, tags: ["seat-data"] },
+);

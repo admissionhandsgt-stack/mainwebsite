@@ -1,5 +1,5 @@
 import { getPgStates } from "@/lib/pgStateQueries";
-import { fitTitle, count } from "@/lib/seoTitle";
+import { fitTitle, fitDescription, nameWith } from "@/lib/seoTitle";
 import { OG_IMAGE } from "@/lib/ogImage";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -71,12 +71,15 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const title = fitTitle(
     `${college.name} — MD/MS Cutoff & Fees 2026`,
     `${college.name} — MD/MS Cutoff 2026`,
-    `${college.name} MD/MS Cutoff`,
-    college.name,
+    nameWith(college.name, " MD/MS Cutoff"),
   );
-  const description = `Closing ranks, fee structure, stipend and seat matrix for ${college.name}${
-    where ? `, ${where}` : ""
-  }. ${college.seatsTotal ?? ""} PG seats across ${college.branchCount ?? ""} branches, from published counselling data.`;
+  const seats = college.seatsTotal ? ` ${college.seatsTotal} PG seats across ${college.branchCount ?? ""} branches.` : "";
+  const description = fitDescription(
+    `Closing ranks, fee structure, stipend and seat matrix for ${college.name}${where ? `, ${where}` : ""}.${seats} From published counselling data.`,
+    `Closing ranks, fee structure, stipend and seat matrix for ${college.name}${where ? `, ${where}` : ""}.${seats}`,
+    `MD/MS closing ranks, fees, stipend and seats for ${college.name}.${seats}`,
+    `MD/MS closing ranks, fees, stipend and seats for ${college.name}.`,
+  );
 
   return {
     title,
@@ -163,7 +166,7 @@ export default async function CollegePage({ params }: { params: { slug: string }
         {photo && (
           <Image
             src={photo.imageUrl}
-            alt=""
+            alt={`${college.name} campus`}
             fill
             priority
             sizes="100vw"

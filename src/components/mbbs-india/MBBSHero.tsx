@@ -30,7 +30,7 @@ export const MBBSHero = ({ backgroundImageUrl, credit, data = mbbsData }: MBBSHe
         {bg && (
           <Image
             src={bg}
-            alt=""
+            alt="Medical college campus in India"
             fill
             priority
             className="object-cover object-[75%_center] md:object-center opacity-30 md:opacity-45 dark:opacity-25"

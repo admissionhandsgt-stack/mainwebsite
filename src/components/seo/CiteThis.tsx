@@ -28,11 +28,11 @@ export default function CiteThis({ title, path, source }: { title: string; path:
   return (
     <aside className="rounded-2xl border border-border bg-card p-5" aria-label="Cite this data">
       <h2 className="flex items-center gap-2 font-heading text-lg font-bold text-foreground">
-        <Quote className="h-4 w-4 text-primary" aria-hidden="true" /> Using these numbers? Cite the source
+        <Quote className="h-4 w-4 text-primary-strong" aria-hidden="true" /> Using these numbers? Cite the source
       </h2>
       <p className="mt-1 text-sm text-muted-foreground">
         Free to quote with a link back. Download the table or embed it on your site from the{" "}
-        <Link href="/data" className="font-semibold text-primary hover:underline">open data page</Link>.
+        <Link href="/data" className="font-semibold text-primary-strong hover:underline">open data page</Link>.
       </p>
       {[
         { key: "html", label: "Link (HTML)", value: html },

@@ -1,3 +1,4 @@
+import { fitDescription } from "@/lib/seoTitle";
 import CiteThis from "@/components/seo/CiteThis";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
@@ -22,7 +23,10 @@ export async function generateMetadata(): Promise<Metadata> {
   const s = await getStipends();
   return resolveMetadata(PATH, {
     title: "NEET PG Stipend State Wise 2026: MD/MS Stipend in Every State",
-    description: `Monthly first-year MD/MS stipend in ${s.states.length} states and ${s.colleges.toLocaleString("en-IN")} colleges — government against private, state by state, and the highest-paying colleges. Published figures.`,
+    description: fitDescription(
+      `Monthly first-year MD/MS stipend in ${s.states.length} states and ${s.colleges.toLocaleString("en-IN")} colleges — government against private, state by state, and the highest-paying colleges. Published figures.`,
+      `Monthly first-year MD/MS stipend in ${s.states.length} states and ${s.colleges.toLocaleString("en-IN")} colleges — government against private, and the highest-paying colleges.`,
+    ),
     keywords:
       "NEET PG stipend, PG stipend state wise, MD stipend, MS stipend, resident doctor stipend, PG stipend in private medical colleges, stipend in government medical colleges",
   });
@@ -184,8 +188,8 @@ export default async function StipendPage() {
           ))}
         </div>
         <p className="mt-6 text-sm text-muted-foreground">
-          Also: <Link href="/neet-pg-cutoff" className="font-semibold text-primary hover:underline">NEET PG cutoff, branch wise</Link> ·{" "}
-          <Link href="/management-quota" className="font-semibold text-primary hover:underline">management quota fees</Link>
+          Also: <Link href="/neet-pg-cutoff" className="font-semibold text-primary-strong hover:underline">NEET PG cutoff, branch wise</Link> ·{" "}
+          <Link href="/management-quota" className="font-semibold text-primary-strong hover:underline">management quota fees</Link>
         </p>
       </section>
 

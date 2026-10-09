@@ -159,7 +159,7 @@ export default async function NeetUgCutoffPage() {
             <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">BDS cutoff — All India Quota</h2>
             <p className="mt-2 max-w-[70ch] text-muted-foreground">
               Government dental colleges&apos; All India Quota seats, same counselling, same rank list.{" "}
-              <Link href="/bds-india" className="font-semibold text-primary hover:underline">Every BDS college, by state →</Link>
+              <Link href="/bds-india" className="font-semibold text-primary-strong hover:underline">Every BDS college, by state →</Link>
             </p>
             <YearBlock title={`${bds.year}, all rounds`} y={bds} />
           </div>

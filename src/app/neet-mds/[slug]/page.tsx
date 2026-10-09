@@ -172,7 +172,7 @@ export default async function MdsCoursePage({ params }: Props) {
           ))}
         </div>
         <p className="mt-6 text-sm text-muted-foreground">
-          <Link href="/neet-mds-cutoff" className="font-semibold text-primary hover:underline">Every MDS speciality →</Link>
+          <Link href="/neet-mds-cutoff" className="font-semibold text-primary-strong hover:underline">Every MDS speciality →</Link>
         </p>
       </section>
 

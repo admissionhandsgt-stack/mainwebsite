@@ -1,4 +1,4 @@
-import { fitTitle, count } from "@/lib/seoTitle";
+import { fitTitle, fitDescription, count } from "@/lib/seoTitle";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { notFound } from "next/navigation";
@@ -34,7 +34,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       `PG Seats in ${p.name}: NEET PG Cutoff`,
       `PG Seats in ${p.name}`,
     ),
-    description: `${p.colleges.length} PG medical colleges in ${p.name} — NEET PG closing ranks and fees by quota${p.year ? ` (${p.year})` : ""}, the counselling that fills each seat, branches and stipend.`,
+    description: fitDescription(
+      `${p.colleges.length} PG medical colleges in ${p.name} — NEET PG closing ranks and fees by quota${p.year ? ` (${p.year})` : ""}, the counselling that fills each seat, branches and stipend.`,
+      `${p.colleges.length} PG medical colleges in ${p.name} — NEET PG closing ranks and fees by quota, counsellings, branches and stipend.`,
+    ),
     keywords: `PG seats in ${p.name}, NEET PG cutoff ${p.name}, MD MS colleges in ${p.name}, ${p.name} PG counselling, ${p.name} NEET PG fees`,
   });
 }
@@ -177,7 +180,7 @@ export default async function PgStatePage({ params }: Props) {
           </div>
           <p className="mt-3 text-[13px] text-muted-foreground">
             Which college closed where is on each college&apos;s own page.{" "}
-            <Link href="/neet-pg-cutoff" className="font-semibold text-primary hover:underline">All-India cutoff, branch wise →</Link>
+            <Link href="/neet-pg-cutoff" className="font-semibold text-primary-strong hover:underline">All-India cutoff, branch wise →</Link>
           </p>
         </section>
       )}

@@ -138,9 +138,9 @@ export default async function PrivateFeesPage() {
           ))}
         </div>
         <p className="mt-6 text-sm text-muted-foreground">
-          Also: <Link href="/md-ms-india/deemed-universities" className="font-semibold text-primary hover:underline">deemed university PG fees</Link> ·{" "}
-          <Link href="/md-ms-india/stipend" className="font-semibold text-primary hover:underline">stipend by state</Link> ·{" "}
-          <Link href="/management-quota" className="font-semibold text-primary hover:underline">management quota ranks</Link>
+          Also: <Link href="/md-ms-india/deemed-universities" className="font-semibold text-primary-strong hover:underline">deemed university PG fees</Link> ·{" "}
+          <Link href="/md-ms-india/stipend" className="font-semibold text-primary-strong hover:underline">stipend by state</Link> ·{" "}
+          <Link href="/management-quota" className="font-semibold text-primary-strong hover:underline">management quota ranks</Link>
         </p>
       </section>
 

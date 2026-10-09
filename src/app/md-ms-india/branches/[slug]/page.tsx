@@ -1,4 +1,4 @@
-import { fitTitle, count } from "@/lib/seoTitle";
+import { fitTitle, fitDescription } from "@/lib/seoTitle";
 import { OG_IMAGE } from "@/lib/ogImage";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
@@ -67,9 +67,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     `${b.name} Cutoff ${b.year ?? 2026}: Colleges & Ranks`,
     `${b.name} Cutoff ${b.year ?? 2026}`,
   );
-  const description =
-    `${b.name} closing ranks across ${inr(b.colleges)} colleges and ${b.states} states, ` +
-    `by quota and category. ${inr(b.seats)} seats — published counselling results, not estimates.`;
+  const description = fitDescription(
+    `${b.name} closing ranks across ${inr(b.colleges)} colleges and ${b.states} states, by quota and category. ${inr(b.seats)} seats — published counselling results, not estimates.`,
+    `${b.name} closing ranks across ${inr(b.colleges)} colleges and ${b.states} states, by quota and category. ${inr(b.seats)} seats, published results.`,
+    `${b.name} closing ranks across ${inr(b.colleges)} colleges, by quota and category. ${inr(b.seats)} seats.`,
+  );
 
   return {
     title,

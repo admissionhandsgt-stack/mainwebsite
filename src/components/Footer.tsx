@@ -229,7 +229,7 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
               <button
                 type="button"
                 onClick={() => cta.whatsapp("Hi, please send me NEET counselling updates and admission notifications.")}
-                className="flex w-full items-center justify-center gap-2 rounded-lg md:rounded-xl bg-cyan-600 hover:bg-cyan-500 px-4 py-3 text-[13px] md:text-xs font-bold text-white transition-all active:scale-95 shadow-lg shadow-cyan-900/20 min-h-[44px]"
+                className="flex w-full items-center justify-center gap-2 rounded-lg md:rounded-xl bg-cyan-700 hover:bg-cyan-600 px-4 py-3 text-[13px] md:text-xs font-bold text-white transition-all active:scale-95 shadow-lg shadow-cyan-900/20 min-h-[44px]"
               >
                 <WhatsAppIcon size={16} />
                 Get updates on WhatsApp
@@ -240,13 +240,13 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
           
           {/* Bottom Bar */}
           <div className="mt-6 md:mt-8 pt-4 md:pt-6 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-3">
-            <p className="text-[12px] md:text-[10px] font-bold text-gray-500">
+            <p className="text-[12px] md:text-[10px] font-bold text-gray-400">
               &copy; {currentYear} AdmissionHands. All rights reserved.
             </p>
             <div className="flex gap-4 md:gap-6">
-              <Link href="/terms#privacy" className="text-[12px] md:text-[10px] font-bold text-gray-500 hover:text-white transition-colors block py-2.5 min-h-[44px] min-w-[44px] text-center">Privacy</Link>
-              <Link href="/terms#terms" className="text-[12px] md:text-[10px] font-bold text-gray-500 hover:text-white transition-colors block py-2.5 min-h-[44px] min-w-[44px] text-center">Terms</Link>
-              <Link href="/terms#dpdp" className="text-[12px] md:text-[10px] font-bold text-gray-500 hover:text-white transition-colors block py-2.5 min-h-[44px] min-w-[44px] text-center">Data &amp; DPDP</Link>
+              <Link href="/terms#privacy" className="text-[12px] md:text-[10px] font-bold text-gray-400 hover:text-white transition-colors block py-2.5 min-h-[44px] min-w-[44px] text-center">Privacy</Link>
+              <Link href="/terms#terms" className="text-[12px] md:text-[10px] font-bold text-gray-400 hover:text-white transition-colors block py-2.5 min-h-[44px] min-w-[44px] text-center">Terms</Link>
+              <Link href="/terms#dpdp" className="text-[12px] md:text-[10px] font-bold text-gray-400 hover:text-white transition-colors block py-2.5 min-h-[44px] min-w-[44px] text-center">Data &amp; DPDP</Link>
             </div>
           </div>
         </div>

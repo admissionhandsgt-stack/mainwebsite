@@ -210,7 +210,7 @@ export default async function MBBSStatePage({ params }: Props) {
               <li key={c.name} className="rounded-2xl border border-border bg-card p-5">
                 <div className="flex items-start justify-between gap-3">
                   <h3 className="flex items-center gap-2 text-base font-semibold text-foreground md:text-lg">
-                    <Landmark className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                    <Landmark className="h-4 w-4 shrink-0 text-primary-strong" aria-hidden="true" />
                     {c.name}
                   </h3>
                   <span className="tnum shrink-0 text-sm text-muted-foreground">
@@ -252,7 +252,7 @@ export default async function MBBSStatePage({ params }: Props) {
                       {c.establishedYear && <span>Est. {c.establishedYear}</span>}
                       {c.intake ? <span className="tnum">{c.intake} seats</span> : null}
                     </span>
-                    <span className="mt-auto pt-3 text-[13px] font-semibold text-primary">
+                    <span className="mt-auto pt-3 text-[13px] font-semibold text-primary-strong">
                       {c.rankRows > 0 ? "Closing ranks" : "College details"} <span aria-hidden="true">→</span>
                     </span>
                   </Link>

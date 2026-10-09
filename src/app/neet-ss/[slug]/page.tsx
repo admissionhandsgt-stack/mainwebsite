@@ -163,7 +163,7 @@ export default async function SsCoursePage({ params }: Props) {
           ))}
         </div>
         <p className="mt-6 text-sm text-muted-foreground">
-          <Link href="/neet-ss-cutoff" className="font-semibold text-primary hover:underline">Every DM, MCh and DrNB course →</Link>
+          <Link href="/neet-ss-cutoff" className="font-semibold text-primary-strong hover:underline">Every DM, MCh and DrNB course →</Link>
         </p>
       </section>
 
