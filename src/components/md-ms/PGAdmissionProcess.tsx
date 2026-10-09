@@ -22,7 +22,7 @@ const SHIPPED_STEPS = [
     title: "NEET PG Examination", 
     desc: "Conducted by NBE. Eligibility requires MBBS degree, completed internship, and NMC registration.", 
     bullets: [
-      "Qualifying cutoff: 50th percentile for General/EWS", 
+      "Qualifying percentile notified by NBEMS each year", 
       "Computer-based exam, 180 MCQs (2026)", 
       "Results typically within 2-3 weeks", 
       "Score valid for one counselling cycle"

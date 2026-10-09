@@ -19,3 +19,16 @@ UPDATE site_settings SET value = $t$Every document checked before you report$t$,
 UPDATE site_settings SET value = $t$Admission counselling for MBBS & PG medical seats in India. Expert guidance and transparent processes for your career.$t$, updated_at = now()
  WHERE key = 'footer.tagline' AND value = $t$India’s most trusted partner for MBBS & PG medical admissions. Expert guidance and transparent processes for your career.$t$;
 COMMIT;
+
+-- pg_steps#130 keeps its bullets in data (a JSON string inside jsonb): the
+-- 200-MCQ and fixed-50th-percentile lines live there, not in body.
+BEGIN;
+UPDATE content_blocks
+   SET data = to_jsonb(replace(replace(data #>> '{}',
+         'Qualifying cutoff: 50th percentile for General/EWS', 'Qualifying percentile notified by NBEMS each year'),
+         'Computer-based exam with 200 MCQs', 'Computer-based exam, 180 MCQs (2026)')),
+       updated_at = now()
+ WHERE id = 130
+   AND position('Computer-based exam with 200 MCQs' in data #>> '{}') > 0
+   AND position('Qualifying cutoff: 50th percentile for General/EWS' in data #>> '{}') > 0;
+COMMIT;
