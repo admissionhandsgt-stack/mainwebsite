@@ -4,15 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{{NAME}} · {{TITLE}} · AdmissionHands</title>
-<meta name="description" content="{{NAME}}, {{TITLE}} at AdmissionHands — NEET UG and NEET PG counselling for MBBS, BDS and MD/MS. WhatsApp, call or visit the Noida office.">
+<meta name="description" content="{{NAME}}, {{TITLE}} at AdmissionHands — MBBS, BDS and MD/MS admission counselling, NRI and management quota. WhatsApp, call or visit the Noida office.">
 <meta name="robots" content="noindex, follow">
-<meta name="theme-color" content="#10304f">
+<meta name="theme-color" content="#ffffff">
 <link rel="canonical" href="https://www.admissionhands.com/{{SLUG}}">
 <meta property="og:type" content="profile">
 <meta property="og:site_name" content="AdmissionHands">
 <meta property="og:title" content="{{NAME}} — {{TITLE}}">
-<meta property="og:description" content="NEET UG &amp; PG counselling for MBBS, BDS and MD/MS. Tap to WhatsApp, call, save the contact or get directions to the Noida office.">
 <meta property="og:url" content="https://www.admissionhands.com/{{SLUG}}">
+<meta property="og:description" content="MBBS, BDS and MD/MS admission counselling. WhatsApp, call, save the contact or visit the Noida office.">
 <meta property="og:image" content="https://www.admissionhands.com/card/{{SLUG}}-og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -22,189 +22,260 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+/* Website tokens: primary cyan #0891b2, teal depth, the logo's mint and navy. */
+@property --spin{syntax:"<angle>";inherits:false;initial-value:0deg}
 :root{
-  --navy:#10304f;--navy-2:#1a4268;--mint:#14e6a8;--mint-ink:#047a5c;--mint-soft:#e3fbf3;
-  --cyan:#0891b2;--wa:#16a34a;
-  --ink:#0f1f33;--muted:#5a6b7e;--line:#e3e9ef;--bg:#eef3f7;--card:#ffffff;--surface:#f6f9fb;
+  --navy:#0f2b4a;--teal:#0f766e;--cyan:#0891b2;--cyan-2:#22d3ee;--mint:#14e6a8;--mint-ink:#047857;
+  --ink:#0f1d2e;--muted:#5b6b7d;--faint:#8494a5;--line:#e3eaf0;--soft:#f4f8fa;--bg:#f2f6f9;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font:400 15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;padding:20px 16px 32px}
-.wrap{max-width:440px;margin:0 auto}
-.card{background:var(--card);border-radius:24px;overflow:hidden;box-shadow:0 1px 2px rgba(16,48,79,.06),0 18px 48px -12px rgba(16,48,79,.22)}
-a{color:inherit}
-svg{width:20px;height:20px;flex:0 0 auto;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+body{margin:0;min-height:100vh;color:var(--ink);font:400 14.5px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased;
+  background:
+    radial-gradient(70% 38% at 0% 0%,rgba(20,230,168,.18) 0%,rgba(20,230,168,0) 70%),
+    radial-gradient(60% 34% at 100% 6%,rgba(8,145,178,.16) 0%,rgba(8,145,178,0) 70%),
+    radial-gradient(80% 40% at 50% 100%,rgba(34,211,238,.10) 0%,rgba(34,211,238,0) 70%),var(--bg);
+  padding:18px 16px 112px}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:400px;margin:0 auto}
+svg.i{width:20px;height:20px;flex:0 0 auto;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+svg.f{fill:currentColor;stroke:none}
+:focus-visible{outline:2.5px solid var(--cyan);outline-offset:3px;border-radius:12px}
 
-.brandbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line)}
-.brandbar img{height:34px;width:auto;display:block}
-.brandbar span{font:600 11px/1.3 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:right}
+/* brand header */
+.brandhead{display:flex;flex-direction:column;align-items:center;gap:6px;margin:4px 0 16px}
+.brandhead a{display:inline-flex;padding:10px 18px;border-radius:18px;background:#fff;border:1px solid var(--line);
+  box-shadow:0 1px 2px rgba(15,43,74,.05),0 12px 28px -16px rgba(15,43,74,.35)}
+.brandhead img{height:40px;width:auto;display:block}
+.brandhead span{font:600 11px/1 Inter,sans-serif;letter-spacing:.16em;text-transform:uppercase;
+  background:linear-gradient(90deg,var(--teal),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
 
-.hero{position:relative;padding:26px 22px 24px;color:#fff;background:
-  radial-gradient(120% 90% at 100% 0%,rgba(20,230,168,.28) 0%,rgba(20,230,168,0) 55%),
-  linear-gradient(150deg,var(--navy) 0%,var(--navy-2) 60%,#0d5a73 100%)}
-.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:linear-gradient(90deg,var(--mint),#22d3ee 60%,var(--cyan))}
-.person{display:flex;align-items:center;gap:16px}
-.avatar{flex:0 0 76px;width:76px;height:76px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#ffffff,#d9fbef);color:var(--navy);font:800 26px/1 Figtree,Inter,sans-serif;letter-spacing:-.5px;box-shadow:0 0 0 3px rgba(20,230,168,.9),0 10px 24px rgba(0,0,0,.25)}
-.eyebrow{font:600 11px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--mint)}
-h1{margin:6px 0 4px;font:800 28px/1.1 Figtree,Inter,sans-serif;letter-spacing:-.02em}
-.role{margin:0;color:#cfe0ee;font-size:13.5px;line-height:1.45}
-.role .title{display:block;color:#fff;font-weight:600;font-size:14.5px}
-.avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 0;padding:0;list-style:none}
-.chips li{font:600 12px/1 Inter,sans-serif;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#e8f2fa}
+/* the pass: an animated foil edge around a 3D-flipping card */
+.pass{position:relative;perspective:1400px;cursor:pointer;border-radius:26px;padding:2px;
+  background:conic-gradient(from var(--spin),#14e6a8,#22d3ee,#0891b2,#ffffff,#14e6a8,#0f766e,#14e6a8);
+  animation:spin 6s linear infinite;box-shadow:0 26px 50px -24px rgba(8,74,110,.55),0 6px 16px -10px rgba(8,74,110,.35)}
+@keyframes spin{to{--spin:360deg}}
+.tilt{transform-style:preserve-3d;transition:transform .25s ease-out;border-radius:24px}
+.pass-in{position:relative;aspect-ratio:1.6/1;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.pass.flip .pass-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:24px;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.front{padding:16px 18px 15px;display:flex;flex-direction:column;color:#fff;
+  background:
+    radial-gradient(75% 85% at 100% 0%,rgba(20,230,168,.42) 0%,rgba(20,230,168,0) 58%),
+    radial-gradient(65% 75% at 0% 100%,rgba(34,211,238,.30) 0%,rgba(34,211,238,0) 62%),
+    linear-gradient(135deg,#0f2b4a 0%,#0b4d6b 52%,#0e7490 100%)}
+.front::before{content:"";position:absolute;inset:0;opacity:.16;mix-blend-mode:overlay;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.front::after{content:"";position:absolute;inset:-40% -60%;pointer-events:none;
+  background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.22) 48%,rgba(255,255,255,0) 56%);transform:translateX(-60%);animation:sheen 3s .5s ease-out 1 both}
+@keyframes sheen{to{transform:translateX(60%)}}
+.front .mark{position:absolute;right:-22px;bottom:-26px;width:170px;height:170px;opacity:.11;filter:grayscale(1) brightness(2.4);transform:rotate(-10deg);pointer-events:none}
+.front .row1{position:relative;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.mono{width:68px;height:68px;flex:0 0 68px;border-radius:50%;display:grid;place-items:center;
+  background:linear-gradient(145deg,#ffffff,#d6faec);color:var(--navy);font:800 24px/1 Figtree,Inter,sans-serif;letter-spacing:-.4px;
+  box-shadow:0 0 0 2.5px rgba(20,230,168,.95),0 0 0 6px rgba(255,255,255,.12),0 12px 24px -10px rgba(0,0,0,.55)}
+.mono img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.front .brand{display:flex;flex-direction:column;align-items:flex-end;gap:5px;text-align:right}
+.front .brand b{display:flex;align-items:center;gap:7px;font:800 15px/1 Figtree,Inter,sans-serif;letter-spacing:.01em}
+.front .brand b img{width:24px;height:24px}
+.front .brand span{font:600 9.5px/1 Inter,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#9ff5d8}
+.front .who{position:relative;margin-top:auto}
+.front h1{margin:0;font:800 24px/1.08 Figtree,Inter,sans-serif;letter-spacing:-.02em}
+.front .role{margin:4px 0 0;font-size:12.5px;color:#d4ebf5}
+.front .row3{position:relative;display:flex;justify-content:space-between;align-items:center;margin-top:11px;padding-top:10px;border-top:1px solid rgba(255,255,255,.18);
+  font:500 12px/1.2 Inter,sans-serif;color:#e3f1f8;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.front .row3 span:last-child{color:#b5d6e4}
+.back{transform:rotateY(180deg);display:flex;align-items:center;gap:16px;padding:18px;color:var(--ink);
+  background:radial-gradient(80% 90% at 0% 0%,rgba(20,230,168,.16) 0%,rgba(20,230,168,0) 60%),linear-gradient(140deg,#ffffff 0%,#eef7fa 100%)}
+.qr{width:44%;max-width:150px;aspect-ratio:1;border-radius:16px;background:#fff;padding:8px;flex:0 0 auto;border:1px solid var(--line);box-shadow:0 10px 26px -14px rgba(15,43,74,.5)}
+.back b{display:block;font:700 16px/1.25 Figtree,Inter,sans-serif}
+.back span{display:block;margin-top:5px;font-size:12.5px;line-height:1.5;color:var(--muted)}
+.back em{display:block;margin-top:9px;font:600 11.5px/1.3 Inter,sans-serif;font-style:normal;color:var(--cyan);overflow-wrap:anywhere}
+.flipper{display:flex;justify-content:center;margin:12px 0 16px}
+.flipper button{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:0 15px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--muted);font:600 12.5px/1 Inter,sans-serif;cursor:pointer;box-shadow:0 4px 12px -8px rgba(15,43,74,.35)}
+.flipper button:hover{color:var(--ink)}
+.flipper svg{width:16px;height:16px;color:var(--cyan)}
 
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:20px}
-.btn{display:flex;align-items:center;justify-content:center;gap:9px;min-height:50px;padding:12px 14px;border-radius:14px;font:600 14.5px/1.2 Inter,sans-serif;text-decoration:none;border:1px solid transparent;cursor:pointer;transition:transform .12s ease,background-color .12s ease}
-.btn:active{transform:scale(.98)}
-.btn:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
-.wa{background:var(--wa);color:#fff;box-shadow:0 8px 18px -8px rgba(22,163,74,.7)}
-.brand-ic{fill:currentColor;stroke:none;width:21px;height:21px}
-.call{background:var(--navy);color:#fff;box-shadow:0 8px 18px -8px rgba(16,48,79,.7)}
-.ghost{background:var(--surface);color:var(--navy);border-color:var(--line)}
-.ghost:hover{background:#eef4f8}
-.wide{grid-column:1/-1}
-.save{background:var(--mint-soft);color:var(--mint-ink);border-color:#bdf3e0}
+/* actions */
+.dock{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.dock a{display:flex;flex-direction:column;align-items:center;gap:7px;font:600 11.5px/1 Inter,sans-serif;color:var(--muted)}
+.dock .ic{width:58px;height:58px;border-radius:20px;display:grid;place-items:center;color:var(--navy);background:#fff;border:1px solid var(--line);
+  box-shadow:0 1px 2px rgba(15,43,74,.05),0 10px 22px -14px rgba(15,43,74,.45);transition:transform .15s ease}
+.dock a:active .ic{transform:scale(.95)}
+.dock .wa .ic{color:#fff;border-color:transparent;background:linear-gradient(180deg,#2fd877,#16a34a);box-shadow:0 10px 22px -10px rgba(22,163,74,.75)}
+.dock .ic svg{width:22px;height:22px}
 
-.section{padding:4px 20px 20px}
-.section h2{margin:6px 0 12px;font:700 12px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.office{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--surface)}
-.office .row{display:flex;gap:12px;padding:14px 16px;align-items:flex-start}
-.office .row + .row{border-top:1px solid var(--line)}
-.office .row svg{color:var(--cyan);margin-top:2px}
-.office address{font-style:normal}
-.office strong{display:block;font:600 14.5px/1.4 Inter,sans-serif;color:var(--ink)}
-.office small{display:block;color:var(--muted);font-size:13px;line-height:1.45}
-.map{display:block;width:100%;height:190px;border:0;border-top:1px solid var(--line);background:#dfe8ee}
-.office .btn{margin:12px 16px 16px}
-.help{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.help div{border:1px solid var(--line);border-radius:16px;padding:14px;background:#fff}
-.help svg{color:var(--mint-ink);background:var(--mint-soft);border-radius:10px;padding:7px;width:34px;height:34px;margin-bottom:9px}
-.help b{display:block;font:700 14px/1.3 Figtree,Inter,sans-serif;color:var(--ink)}
-.help span{display:block;margin-top:3px;color:var(--muted);font-size:12.5px;line-height:1.45}
-.links{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:16px;overflow:hidden}
-.links li + li{border-top:1px solid var(--line)}
-.links a{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;padding:12px 16px;text-decoration:none;background:#fff}
-.links a:hover{background:var(--surface)}
-.links b{display:block;font:600 14.5px/1.3 Inter,sans-serif;color:var(--ink)}
-.links span{display:block;color:var(--muted);font-size:12.5px}
-.links svg{color:var(--cyan)}
-.contact{display:grid;gap:8px;font-size:14px}
-.contact a{display:flex;align-items:center;gap:10px;min-height:28px;text-decoration:none;color:var(--ink);overflow-wrap:anywhere}
-.contact svg{width:18px;height:18px;color:var(--muted)}
-footer{background:var(--navy);color:#bcd0e2;text-align:center;padding:18px 20px;font-size:12.5px;line-height:1.6}
-footer .plate{display:inline-flex;align-items:center;background:#fff;border-radius:12px;padding:8px 14px;margin:0 auto 10px;box-shadow:0 6px 16px -8px rgba(0,0,0,.45)}
-footer img{height:32px;width:auto;display:block}
-.fine{margin:14px 8px 0;text-align:center;color:#6f8091;font-size:11.5px;line-height:1.55}
-.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);opacity:0;background:var(--ink);color:#fff;padding:10px 16px;border-radius:999px;font-size:13.5px;transition:opacity .2s ease,transform .2s ease;pointer-events:none}
+/* details */
+.panel{border-radius:20px;background:#fff;border:1px solid var(--line);overflow:hidden;margin-bottom:12px;box-shadow:0 1px 2px rgba(15,43,74,.04),0 14px 30px -22px rgba(15,43,74,.4)}
+.item{display:flex;align-items:center;gap:13px;min-height:58px;padding:11px 14px}
+.item + .item,.panel > details{border-top:1px solid var(--line)}
+.item .ic{width:36px;height:36px;flex:0 0 36px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(145deg,#e6fbf4,#e4f6fb);color:var(--cyan)}
+.item .ic svg{width:18px;height:18px}
+.item .tx{flex:1;min-width:0}
+.item small{display:block;font:600 10.5px/1.2 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.item b{display:block;margin-top:2px;font:500 14px/1.35 Inter,sans-serif;color:var(--ink);overflow-wrap:break-word}
+.item .go{width:16px;height:16px;color:#b3c0cc}
+details.map summary{list-style:none;cursor:pointer}
+details.map summary::-webkit-details-marker{display:none}
+details.map summary .go{transition:transform .2s}
+details.map[open] summary .go{transform:rotate(90deg)}
+details.map iframe{display:block;width:100%;height:170px;border:0;border-top:1px solid var(--line)}
+details.map .dir{display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;border-top:1px solid var(--line);font:600 13.5px/1 Inter,sans-serif;color:var(--cyan)}
+
+.label{margin:16px 4px 9px;font:600 10.5px/1 Inter,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+.chips{display:flex;flex-wrap:nowrap;gap:5px;margin:0;padding:0;list-style:none}
+.chips li{flex:1 1 auto;text-align:center;padding:8px 6px;border-radius:999px;background:#fff;border:1px solid var(--line);font:600 11.5px/1 Inter,sans-serif;white-space:nowrap;color:var(--navy);box-shadow:0 4px 10px -8px rgba(15,43,74,.4)}
+.chips li:first-child{color:#fff;border-color:transparent;background:linear-gradient(90deg,var(--teal),var(--cyan))}
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tools a{display:block;padding:13px;border-radius:16px;border:1px solid var(--line);background:#fff;transition:border-color .15s,box-shadow .15s}
+.tools a:hover{border-color:rgba(8,145,178,.4);box-shadow:0 10px 22px -16px rgba(8,145,178,.6)}
+.tools b{display:block;font:700 13.5px/1.25 Figtree,Inter,sans-serif;color:var(--ink)}
+.tools span{display:block;margin-top:3px;font-size:12px;line-height:1.35;color:var(--muted)}
+.fine{margin:18px 6px 0;text-align:center;color:var(--faint);font-size:11px;line-height:1.5}
+
+/* bottom bar */
+.bar{position:fixed;left:50%;bottom:max(14px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(400px,calc(100% - 32px));
+  display:grid;grid-template-columns:1fr auto;gap:8px;padding:7px;border-radius:22px;background:rgba(255,255,255,.82);
+  -webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%);border:1px solid rgba(227,234,240,.95);box-shadow:0 18px 40px -16px rgba(15,43,74,.45)}
+.bar a,.bar button{display:flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 18px;border-radius:16px;border:0;cursor:pointer;font:600 14.5px/1 Inter,sans-serif}
+.bar .save{color:#fff;background:linear-gradient(90deg,var(--teal),var(--cyan));box-shadow:0 10px 22px -10px rgba(8,145,178,.85)}
+.bar .share{color:var(--navy);background:var(--soft);border:1px solid var(--line)}
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(10px);opacity:0;background:var(--ink);color:#fff;padding:9px 15px;border-radius:999px;font:600 13px/1 Inter,sans-serif;transition:opacity .2s,transform .2s;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-@media (max-width:360px){body{padding:10px 8px 24px}.hero{padding:22px 16px}.actions,.section{padding-left:14px;padding-right:14px}h1{font-size:25px}.avatar{width:66px;height:66px;flex-basis:66px;font-size:22px}.help{grid-template-columns:1fr}}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:350px){body{padding:12px 10px 108px}.front{padding:13px 14px}.front h1{font-size:21px}.mono{width:56px;height:56px;flex-basis:56px;font-size:20px}.dock .ic{width:52px;height:52px}.tools{grid-template-columns:1fr}.brandhead img{height:34px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <main class="card">
-    <div class="brandbar">
-      <a href="https://www.admissionhands.com/" aria-label="AdmissionHands home"><img src="/logo.png" alt="AdmissionHands" width="101" height="34"></a>
-      <span>NEET UG &amp; PG<br>Counselling</span>
+  <header class="brandhead">
+    <a href="https://www.admissionhands.com/" aria-label="AdmissionHands home"><img src="/logo.png" alt="AdmissionHands" width="119" height="40"></a>
+    <span>Medical Admission Counselling</span>
+  </header>
+
+  <div class="pass" id="pass" role="button" tabindex="0" aria-pressed="false" aria-label="Business card — activate to show the QR code">
+    <div class="tilt" id="tilt">
+      <div class="pass-in">
+        <div class="face front">
+          <img class="mark" src="/icon-512.png" alt="" width="170" height="170">
+          <div class="row1">
+            {{AVATAR}}
+            <div class="brand"><b><img src="/icon-512.png" alt="" width="24" height="24">AdmissionHands</b><span>Counsellor</span></div>
+          </div>
+          <div class="who">
+            <h1>{{NAME}}</h1>
+            <p class="role">{{ROLE}}</p>
+          </div>
+          <div class="row3"><span>{{PHONE_PRETTY}}</span><span>Noida, India</span></div>
+        </div>
+        <div class="face back" aria-hidden="true">
+          {{QR}}
+          <div><b>Scan to open this card</b><span>Point a phone camera here — it opens the card, ready to save.</span><em>admissionhands.com/<wbr>{{SLUG}}</em></div>
+        </div>
+      </div>
     </div>
+  </div>
+  <div class="flipper"><button type="button" id="flip"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M8 16H3v5"/></svg><span id="flip-label">Show QR code</span></button></div>
 
-    <section class="hero" aria-label="Counsellor">
-      <div class="person">
-        {{AVATAR}}
-        <div>
-          <div class="eyebrow">Your counsellor</div>
-          <h1>{{NAME}}</h1>
-          <p class="role"><span class="title">{{TITLE}}</span>{{ORG}}</p>
-        </div>
-      </div>
-      <ul class="chips" aria-label="Areas">
-        <li>MBBS &amp; BDS</li><li>MD / MS · NEET PG</li><li>AIQ &amp; State quota</li><li>NRI quota</li>
-      </ul>
-    </section>
+  <nav class="dock" aria-label="Contact">
+    <a class="wa" href="https://wa.me/{{PHONE}}?text=Hello%20{{FIRST}}%2C%20I%20need%20guidance%20for%20NEET%20counselling." target="_blank" rel="noopener">
+      <span class="ic"><svg class="i f" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg></span>WhatsApp
+    </a>
+    <a href="tel:+{{PHONE}}">
+      <span class="ic"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>Call
+    </a>
+    <a href="mailto:{{EMAIL}}">
+      <span class="ic"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span>Email
+    </a>
+    <a href="https://www.google.com/maps/dir/?api=1&amp;destination=Bhutani+City+Centre%2C+Sector+32%2C+Noida" target="_blank" rel="noopener">
+      <span class="ic"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg></span>Directions
+    </a>
+  </nav>
 
-    <section class="actions" aria-label="Contact">
-      <a class="btn wa" href="https://wa.me/{{PHONE}}?text=Hello%20{{FIRST}}%2C%20I%20need%20guidance%20for%20NEET%20counselling." target="_blank" rel="noopener">
-        <svg class="brand-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>WhatsApp
+  <div class="panel">
+    <a class="item" href="tel:+{{PHONE}}">
+      <span class="ic"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+      <span class="tx"><small>Mobile &amp; WhatsApp</small><b>{{PHONE_PRETTY}}</b></span>
+      <svg class="i go" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+    </a>
+    <a class="item" href="mailto:{{EMAIL}}">
+      <span class="ic"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span>
+      <span class="tx"><small>Email</small><b>{{EMAIL_HTML}}</b></span>
+      <svg class="i go" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+    </a>
+    <details class="map">
+      <summary class="item">
+        <span class="ic"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
+        <span class="tx"><small>Office · Mon–Sat, 10 AM – 7 PM</small><b>915, Bhutani City Center, Sector 32, Noida 201301</b></span>
+        <svg class="i go" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      </summary>
+      <iframe title="Map: Bhutani City Centre, Sector 32, Noida" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps?q=Bhutani+City+Centre,+Sector+32,+Noida&amp;output=embed"></iframe>
+      <a class="dir" href="https://www.google.com/maps/dir/?api=1&amp;destination=Bhutani+City+Centre%2C+Sector+32%2C+Noida" target="_blank" rel="noopener">
+        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>Get directions
       </a>
-      <a class="btn call" href="tel:+{{PHONE}}">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Call now
-      </a>
-      <a class="btn save wide" href="/card/{{SLUG}}.vcf" download="{{FILE}}-AdmissionHands.vcf">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>Save contact to phone
-      </a>
-      <a class="btn ghost" href="mailto:{{EMAIL}}">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>Email
-      </a>
-      <button class="btn ghost" type="button" id="share">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>Share card
-      </button>
-    </section>
+    </details>
+  </div>
 
-    <section class="section" aria-labelledby="office-h">
-      <h2 id="office-h">Visit the office</h2>
-      <div class="office">
-        <div class="row">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-          <address><strong>AdmissionHands</strong><small>915, Bhutani City Center, Sector 32<br>Noida, Uttar Pradesh 201301</small></address>
-        </div>
-        <div class="row">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          <div><strong>Monday – Saturday, 10 AM – 7 PM</strong><small>Sunday closed · please call before you visit</small></div>
-        </div>
-        <iframe class="map" title="Map: AdmissionHands, Bhutani City Center, Sector 32, Noida" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-          src="https://www.google.com/maps?q=Bhutani+City+Centre,+Sector+32,+Noida&amp;output=embed"></iframe>
-        <a class="btn call" href="https://www.google.com/maps/dir/?api=1&amp;destination=Bhutani+City+Centre%2C+Sector+32%2C+Noida" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>Get directions
-        </a>
-      </div>
-    </section>
+  <div class="label">Expertise</div>
+  <ul class="chips">
+    <li>MD / MS</li><li>MBBS</li><li>BDS</li><li>NRI Quota</li><li>Management</li>
+  </ul>
 
-    <section class="section" aria-labelledby="help-h">
-      <h2 id="help-h">How I can help</h2>
-      <div class="help">
-        <div><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><b>College shortlist</b><span>Against the published closing ranks for your rank, category and budget.</span></div>
-        <div><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></svg><b>Every round</b><span>Choice filling, and whether to upgrade or freeze after each result.</span></div>
-        <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/></svg><b>Documents</b><span>Your state&rsquo;s checklist, checked well before reporting day.</span></div>
-        <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12"/><path d="M6 8h12"/><path d="m6 13 8.5 8"/><path d="M6 13h3"/><path d="M9 13c6.667 0 6.667-10 0-10"/></svg><b>Fees, quota-wise</b><span>What a seat costs on each quota — government, management, NRI.</span></div>
-      </div>
-    </section>
+  <div class="label">Free tools</div>
+  <div class="tools">
+    <a href="https://www.admissionhands.com/neet-college-predictor"><b>College predictor</b><span>Colleges your rank reached</span></a>
+    <a href="https://www.admissionhands.com/neet-pg-cutoff"><b>NEET PG cutoff</b><span>Qualifying score &amp; ranks</span></a>
+    <a href="https://www.admissionhands.com/nri-quota/fees"><b>NRI quota fees</b><span>What NRI seats cost</span></a>
+    <a href="https://www.admissionhands.com/management-quota"><b>Management quota</b><span>Fees and closing ranks</span></a>
+  </div>
 
-    <section class="section" aria-labelledby="tools-h">
-      <h2 id="tools-h">Free tools</h2>
-      <ul class="links">
-        <li><a href="https://www.admissionhands.com/neet-college-predictor"><div><b>NEET college predictor</b><span>Enter your rank — see the colleges it reached</span></div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
-        <li><a href="https://www.admissionhands.com/neet-pg-cutoff"><div><b>NEET PG cutoff</b><span>Qualifying score and branch-wise closing ranks</span></div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
-        <li><a href="https://www.admissionhands.com/neet-ug-cutoff"><div><b>NEET UG cutoff</b><span>MBBS and BDS closing ranks by category</span></div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
-        <li><a href="https://www.admissionhands.com/neet-pg-process#schedule"><div><b>PG counselling schedule</b><span>MCC and state round dates, from the notices</span></div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
-      </ul>
-    </section>
+  <p class="fine">Dates, seats and fees change every cycle — confirm against the latest MCC or state notice.</p>
+</div>
 
-    <section class="section" aria-label="Contact details">
-      <div class="contact">
-        <a href="tel:+{{PHONE}}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>{{PHONE_PRETTY}}</a>
-        <a href="mailto:{{EMAIL}}"><svg viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>{{EMAIL}}</a>
-        <a href="https://www.admissionhands.com/"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>www.admissionhands.com</a>
-      </div>
-    </section>
-
-    <footer>
-      <a class="plate" href="https://www.admissionhands.com/" aria-label="AdmissionHands home"><img src="/logo.png" alt="AdmissionHands" width="95" height="32"></a><br>
-      Built on published closing ranks · Every round, until you report
-    </footer>
-  </main>
-  <p class="fine">Counselling dates, seats and fees change every cycle — confirm them against the latest notice of the counselling authority (MCC or your state).</p>
+<div class="bar" role="group" aria-label="Save or share">
+  <a class="save" href="/card/{{SLUG}}.vcf" download="{{FILE}}-AdmissionHands.vcf">
+    <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>Save contact
+  </a>
+  <button class="share" type="button" id="share" aria-label="Share this card">
+    <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>Share
+  </button>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 (function () {
+  var pass = document.getElementById("pass"), tilt = document.getElementById("tilt");
+  var flip = document.getElementById("flip"), label = document.getElementById("flip-label");
+  var back = pass.querySelector(".back"), front = pass.querySelector(".front");
+  function toggle() {
+    var on = !pass.classList.contains("flip");
+    pass.classList.toggle("flip", on);
+    pass.setAttribute("aria-pressed", on ? "true" : "false");
+    back.setAttribute("aria-hidden", on ? "false" : "true");
+    front.setAttribute("aria-hidden", on ? "true" : "false");
+    label.textContent = on ? "Show card" : "Show QR code";
+  }
+  pass.addEventListener("click", toggle);
+  pass.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } });
+  flip.addEventListener("click", toggle);
+
+  // A gentle 3D tilt that follows the pointer — mouse and trackpad only.
+  var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!calm && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    pass.addEventListener("pointermove", function (e) {
+      var r = pass.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+      tilt.style.transform = "rotateX(" + (-y * 8).toFixed(2) + "deg) rotateY(" + (x * 10).toFixed(2) + "deg)";
+    });
+    pass.addEventListener("pointerleave", function () { tilt.style.transform = ""; });
+  }
+
   var btn = document.getElementById("share"), toast = document.getElementById("toast");
   var url = "https://www.admissionhands.com/{{SLUG}}";
   function say(t) { toast.textContent = t; toast.classList.add("show"); setTimeout(function () { toast.classList.remove("show"); }, 2200); }
   btn.addEventListener("click", function () {
-    var data = { title: "{{NAME}} — AdmissionHands", text: "NEET counselling — {{NAME}}, AdmissionHands", url: url };
+    var data = { title: "{{NAME_JS}} — AdmissionHands", text: "Medical admission counselling — {{NAME_JS}}, AdmissionHands", url: url };
     if (navigator.share) { navigator.share(data).catch(function () {}); return; }
     if (navigator.clipboard) { navigator.clipboard.writeText(url).then(function () { say("Link copied"); }, function () { say(url); }); return; }
     say(url);

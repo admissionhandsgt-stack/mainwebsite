@@ -19,6 +19,27 @@ const template = fs.readFileSync("scripts/cards/template.html", "utf8");
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const pretty = (p) => `+91 ${p.slice(2, 7)} ${p.slice(7)}`;
 
+// Each card's QR opens that card. Drawn once with the qrcode CLI (MIT, run
+// through npx so it is not a project dependency) and kept in scripts/cards/qr/,
+// so a rebuild needs no network unless a counsellor is new.
+const { execFileSync } = require("child_process");
+function qrSvg(slug) {
+  const file = `scripts/cards/qr/${slug}.svg`;
+  if (!fs.existsSync(file)) {
+    fs.mkdirSync("scripts/cards/qr", { recursive: true });
+    execFileSync("npx", ["-y", "qrcode@1.5.4", "-t", "svg", "-e", "M", "-q", "1", "-d", "#0c2742", "-l", "#ffffff", "-o", file, `${SITE}/${slug}`], {
+      stdio: "ignore",
+      shell: process.platform === "win32",
+    });
+  }
+  return fs
+    .readFileSync(file, "utf8")
+    .replace(/<\?xml[^>]*>/, "")
+    .replace(/<!DOCTYPE[^>]*>/, "")
+    .replace("<svg ", `<svg class="qr" role="img" aria-label="QR code that opens this card" `)
+    .trim();
+}
+
 for (const c of COUNSELLORS) {
   if (!/^91[6-9]\d{9}$/.test(c.phone)) throw new Error(`${c.slug}: phone must be 91 + 10 digits`);
   const first = c.name.split(" ")[0];
@@ -29,8 +50,14 @@ for (const c of COUNSELLORS) {
     FILE: c.name.replace(/\s+/g, "-"),
     ORG: esc(c.org || "AdmissionHands"),
     AVATAR: c.photo
-      ? `<div class="avatar"><img src="/card/${c.photo}" alt="${esc(c.name)}" width="76" height="76"></div>`
-      : `<div class="avatar" aria-hidden="true">${initials}</div>`,
+      ? `<div class="mono"><img src="/card/${c.photo}" alt="${esc(c.name)}" width="68" height="68"></div>`
+      : `<div class="mono" aria-hidden="true">${initials}</div>`,
+    // With an organisation line (the founder) the title takes the line above
+    // it; otherwise the courses follow the title.
+    ROLE: c.org ? `${esc(c.title)}<br>${esc(c.org)}` : `${esc(c.title)} · MBBS · BDS · MD/MS`,
+    EMAIL_HTML: esc(c.email).replace("@", "@<wbr>"),
+    NAME_JS: c.name.replace(/["\<>]/g, ""),
+    QR: qrSvg(c.slug),
   };
   const html = template.replace(/\{\{([A-Z_]+)\}\}/g, (_, k) => {
     if (!(k in values)) throw new Error(`template token ${k} has no value`);
