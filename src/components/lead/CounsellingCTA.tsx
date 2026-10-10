@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Loader2, MessageCircle, Phone } from "lucide-react";
+import { Check, Loader2, Phone } from "lucide-react";
 import { useContactInfo } from "@/hooks/useContactInfo";
 import { ATTEMPTS } from "@/lib/counsellingOptions";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 /**
  * What the seat list cannot tell you, and the two questions we still need.
@@ -160,7 +161,7 @@ export default function CounsellingCTA({
           {state === "saving" ? (
             <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
           ) : (
-            <MessageCircle className="h-4 w-4" aria-hidden="true" />
+            <WhatsAppIcon className="h-4 w-4" />
           )}
           Talk on WhatsApp
         </button>

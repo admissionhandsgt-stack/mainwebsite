@@ -3,11 +3,12 @@
 import React, { ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ArrowLeft, Users, Bell, Video, School, LogOut, ChevronRight, ImageIcon, GitBranch, Inbox, LayoutDashboard, SlidersHorizontal, MapPin, Menu, Search, MessageCircle, AlertTriangle, FileText, Megaphone } from 'lucide-react';
+import { ArrowLeft, Users, Bell, Video, School, LogOut, ChevronRight, ImageIcon, GitBranch, Inbox, LayoutDashboard, SlidersHorizontal, MapPin, Menu, Search, AlertTriangle, FileText, Megaphone } from 'lucide-react';
 import { AuthProvider, useAuth } from '@/hooks/useAuth';
 import { ProtectedRoute } from '@/components/admin/ProtectedRoute';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getBaseWebsiteUrl } from '@/utils/envHelper';
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 interface AdminLayoutClientProps {
   children: ReactNode;
@@ -38,7 +39,7 @@ const navGroups = [
       { name: 'Videos', href: '/admin/videos', icon: Video },
       { name: 'Media', href: '/admin/media', icon: ImageIcon },
       { name: 'Contacts', href: '/admin/contacts', icon: Users },
-      { name: 'WhatsApp Verify', href: '/admin/whatsapp', icon: MessageCircle },
+      { name: 'WhatsApp Verify', href: '/admin/whatsapp', icon: WhatsAppIcon },
       { name: 'Errors', href: '/admin/logs', icon: AlertTriangle },
     ],
   },

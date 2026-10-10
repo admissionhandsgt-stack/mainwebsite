@@ -1,7 +1,8 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Phone, MessageSquare, Calendar } from 'lucide-react';
+import { Phone, Calendar } from 'lucide-react';
 import { useCTA } from '@/hooks/useCTA';
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 export const PGStickyMobileBar = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -47,7 +48,7 @@ export const PGStickyMobileBar = () => {
         onClick={() => cta.whatsapp("Hi, I want to discuss MD/MS admission options for NEET PG 2026.")}
         className="flex-1 flex items-center justify-center gap-1.5 bg-slate-900 border border-white/10 text-white rounded-xl py-2.5 text-xs font-black active:scale-[0.97] transition-all cursor-pointer"
       >
-        <MessageSquare className="w-3.5 h-3.5 text-emerald-400" />
+        <WhatsAppIcon className="w-3.5 h-3.5 text-emerald-400" />
         <span>WhatsApp</span>
       </button>
 

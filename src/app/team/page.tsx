@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Mail, MessageCircle, Phone, ArrowUpRight } from "lucide-react";
+import { Mail, Phone, ArrowUpRight } from "lucide-react";
 import Link from "@/components/ui/Link";
 import { resolveMetadata } from "@/lib/content";
 import { OFFICE } from "@/lib/constants";
 import StructuredData, { breadcrumb } from "@/components/seo/StructuredData";
 import counsellors from "@/data/counsellors.json";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 /**
  * The people behind the advice. Named counsellors with their own contact
@@ -72,7 +73,7 @@ export default function TeamPage() {
           </h1>
           <p className="mt-3 max-w-[62ch] text-[15px] leading-relaxed text-slate-300 md:text-base">
             The people you speak to at AdmissionHands. Call or WhatsApp any of them directly — or visit the office in{" "}
-            {OFFICE.locality}, {OFFICE.hoursLabel.toLowerCase()}.
+            {OFFICE.locality}, open {OFFICE.hoursShort}.
           </p>
         </div>
       </section>
@@ -119,7 +120,7 @@ export default function TeamPage() {
                     rel="noopener noreferrer"
                     className="flex min-h-11 items-center gap-3 rounded-xl border border-border px-4 hover:border-primary"
                   >
-                    <MessageCircle className="h-4 w-4 text-accent" aria-hidden="true" />
+                    <WhatsAppIcon className="h-4 w-4 text-accent" />
                     <span className="font-semibold text-foreground">WhatsApp</span>
                   </a>
                 </li>

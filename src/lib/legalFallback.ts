@@ -209,9 +209,9 @@ For any questions regarding these legal documents, our services, or your data, p
 
 **Email:** info@admissionhands.com
 
-**Phone:** +91 93-9213-9213
+**Phone:** +91 93103 01949
 
-**Office Hours:** Monday to Saturday, 10:00 AM – 7:00 PM IST
+**Office Hours:** Monday to Sunday, 10:00 AM – 10:00 PM IST
 
 ## Grievance Officer
 

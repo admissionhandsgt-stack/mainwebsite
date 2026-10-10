@@ -5,8 +5,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import {
   Search, Building2, Landmark, GraduationCap, MapPin, ChevronDown,
   Calendar, Users, ChevronRight, Phone, ArrowRight,
-  BookOpen, ClipboardCheck, Sparkles, X, MessageCircle,
-  ShieldCheck, Award, TrendingUp, LayoutGrid, List
+  BookOpen, ClipboardCheck, Sparkles, X, ShieldCheck, Award, TrendingUp, LayoutGrid, List
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCTA } from "@/hooks/useCTA";
@@ -27,6 +26,7 @@ import {
   BAND_ORDER as LENS_BAND_ORDER,
   type Band,
 } from "@/components/colleges/RankLens";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 interface CollegeItem {
   slug?: string;
@@ -1220,7 +1220,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
                   }
                   className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-[#25D366] hover:bg-[#20ba56] text-white font-bold text-xs rounded-xl shadow-lg shadow-emerald-950/20 active:scale-95 transition-all"
                 >
-                  <MessageCircle className="w-4 h-4" /> WhatsApp
+                  <WhatsAppIcon className="w-4 h-4" /> WhatsApp
                 </button>
               </div>
             </div>

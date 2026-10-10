@@ -16,9 +16,11 @@ export const OFFICE = {
   region: "Uttar Pradesh",
   postalCode: "201301",
   country: "IN",
-  /** As /know-us has always said. Sunday closed. */
-  days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+  /** Open every day since 2026-10-10 (was Monday–Saturday, 10–7). */
+  days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
   opens: "10:00",
-  closes: "19:00",
-  hoursLabel: "Monday to Saturday, 10:00 AM – 7:00 PM",
+  closes: "22:00",
+  hoursLabel: "Monday to Sunday, 10:00 AM – 10:00 PM",
+  /** For running text: "open every day, 10 AM – 10 PM". */
+  hoursShort: "every day, 10 AM – 10 PM",
 };

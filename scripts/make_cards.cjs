@@ -56,7 +56,7 @@ for (const c of COUNSELLORS) {
     // it; otherwise the courses follow the title.
     ROLE: c.org ? `${esc(c.title)}<br>${esc(c.org)}` : `${esc(c.title)} · MBBS · BDS · MD/MS`,
     EMAIL_HTML: esc(c.email).replace("@", "@<wbr>"),
-    NAME_JS: c.name.replace(/["\<>]/g, ""),
+    NAME_JS: c.name.replace(/["\\<>]/g, ""),
     QR: qrSvg(c.slug),
   };
   const html = template.replace(/\{\{([A-Z_]+)\}\}/g, (_, k) => {
@@ -71,9 +71,9 @@ for (const c of COUNSELLORS) {
     "BEGIN:VCARD", "VERSION:3.0",
     `N:${rest.join(" ")};${given};;;`, `FN:${c.name}`, "ORG:AdmissionHands", `TITLE:${c.title}`,
     `TEL;TYPE=CELL,VOICE:+${c.phone}`, `EMAIL;TYPE=INTERNET,WORK:${c.email}`,
-    "ADR;TYPE=WORK:;;915\, Bhutani City Center\, Sector 32;Noida;Uttar Pradesh;201301;India",
+    "ADR;TYPE=WORK:;;915\\, Bhutani City Center\\, Sector 32;Noida;Uttar Pradesh;201301;India",
     `URL:${SITE}/${c.slug}`,
-    "NOTE:NEET UG & PG counselling for MBBS\, BDS and MD/MS. Office Mon-Sat 10 AM-7 PM.",
+    "NOTE:NEET UG & PG counselling for MBBS\\, BDS and MD/MS. Office open daily 10 AM-10 PM.",
     "END:VCARD", "",
   ].join("\r\n");
   fs.writeFileSync(`public/card/${c.slug}.vcf`, vcf);

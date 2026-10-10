@@ -32,7 +32,7 @@ reason verification fails. Approval usually takes 1–5 working days.
 
 ## 3. After verification — fill these in
 
-**Hours:** Monday–Saturday 10:00 AM – 7:00 PM, Sunday closed.
+**Hours:** Monday–Sunday 10:00 AM – 10:00 PM (open all seven days).
 
 **Description** (paste as is, 750 characters max — no links or offers allowed here):
 

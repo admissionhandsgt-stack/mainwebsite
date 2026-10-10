@@ -9,6 +9,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 import { listRows, updateRow, deleteRow } from '@/lib/adminApi';
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 /**
  * UG and PG enquiries live in one table, separated by `level`. Everything the
@@ -569,7 +570,7 @@ export default function LeadsManager() {
                   rel="noopener noreferrer"
                   className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-bold text-emerald-700"
                 >
-                  <MessageSquare className="h-4 w-4" />
+                  <WhatsAppIcon className="h-4 w-4" />
                   WhatsApp
                 </a>
                 <button

@@ -11,7 +11,6 @@ import {
   EyeOff,
   KeyRound,
   Loader2,
-  MessageCircle,
   Phone,
   ShieldCheck,
   User,
@@ -20,6 +19,7 @@ import { BUDGET_BANDS, TOTAL_BUDGET_BANDS } from "@/lib/counsellingOptions";
 import { checkIndianMobile } from "@/lib/phone";
 import { checkName } from "@/lib/formRules";
 import { checkRank } from "@/lib/neetLimits";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 /**
  * Signing in, as a real sign-in.
@@ -722,7 +722,7 @@ export default function AuthFlow({
                 rel="noopener noreferrer"
                 className="mt-5 flex h-14 items-center justify-center gap-2.5 rounded-xl bg-accent px-6 text-[15px] font-bold text-white transition-transform hover:-translate-y-0.5"
               >
-                <MessageCircle className="h-5 w-5" aria-hidden="true" />
+                <WhatsAppIcon className="h-5 w-5" />
                 Open WhatsApp and send it
               </a>
 

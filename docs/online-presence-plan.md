@@ -17,7 +17,7 @@ Legend: 🧑 = owner/team (needs your login) · 🤖 = done or doable in the web
 | WhatsApp | +91 93103 01949 |
 | Email | info@admissionhands.com |
 | Website | https://www.admissionhands.com |
-| Hours | Monday–Saturday 10:00 AM – 7:00 PM, Sunday closed |
+| Hours | Monday–Sunday 10:00 AM – 10:00 PM |
 | Founded | **[YEAR — to confirm]** |
 | Category | Educational consultant (secondary: Career guidance service) |
 

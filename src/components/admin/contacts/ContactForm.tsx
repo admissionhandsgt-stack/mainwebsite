@@ -2,7 +2,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { motion } from 'framer-motion';
-import { Save, Mail, Phone, MessageCircle } from 'lucide-react';
+import { Save, Mail, Phone } from 'lucide-react';
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 interface ContactFormData {
   id?: number;
@@ -65,7 +66,7 @@ const ContactForm = ({ contact, onSubmit, onChange }: ContactFormProps) => {
               WhatsApp Support Line
             </Label>
             <div className="relative">
-              <MessageCircle className="absolute left-4 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-teal-500 transition-colors" />
+              <WhatsAppIcon className="absolute left-4 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-teal-500 transition-colors" />
               <Input
                 id="whatsapp_number"
                 value={contact.whatsapp_number}
@@ -83,7 +84,7 @@ const ContactForm = ({ contact, onSubmit, onChange }: ContactFormProps) => {
               Callback Leads Alert Number (WhatsApp)
             </Label>
             <div className="relative">
-              <MessageCircle className="absolute left-4 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-teal-500 transition-colors" />
+              <WhatsAppIcon className="absolute left-4 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-teal-500 transition-colors" />
               <Input
                 id="lead_notification_phone"
                 value={contact.lead_notification_phone || ''}

@@ -11,7 +11,6 @@ import {
   FileCheck, 
   UserCheck, 
   Phone, 
-  MessageCircle, 
   AlertTriangle,
   ChevronRight,
   GraduationCap,
@@ -21,6 +20,7 @@ import {
 } from 'lucide-react';
 import ProcessAccordion from '@/components/neet-ug-process/ProcessAccordion';
 import { CONTACT_INFO } from '@/lib/constants';
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 interface NeetUgProcessClientProps {
   heroImageUrl?: string;
@@ -178,7 +178,7 @@ const NeetUgProcessClient = ({
                   target="_blank"
                   className="inline-flex items-center justify-center rounded-full border-white/30 bg-white/10 hover:bg-white/20 text-white px-5 py-2.5 text-xs md:px-8 md:py-3.5 md:text-base font-extrabold transition-all"
                 >
-                  <MessageCircle className="mr-1.5 h-4 w-4 md:mr-2 md:h-5 md:w-5" /> WhatsApp Now
+                  <WhatsAppIcon className="mr-1.5 h-4 w-4 md:mr-2 md:h-5 md:w-5" /> WhatsApp Now
                 </a>
               </div>
             </div>
@@ -283,7 +283,7 @@ const NeetUgProcessClient = ({
                   target="_blank"
                   className="inline-flex items-center justify-center rounded-full bg-emerald-600 hover:bg-emerald-700 text-white px-10 h-14 text-base font-bold transition-all"
                 >
-                  <MessageCircle className="mr-2 h-5 w-5" /> WhatsApp Now
+                  <WhatsAppIcon className="mr-2 h-5 w-5" /> WhatsApp Now
                 </a>
               </div>
             </div>

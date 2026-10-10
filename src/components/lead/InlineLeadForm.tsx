@@ -15,8 +15,7 @@ import {
   ChevronRight, 
   ArrowLeft, 
   Clock,
-  Heart,
-  MessageSquare
+  Heart
 } from 'lucide-react';
 import { useCTA } from '@/hooks/useCTA';
 import { useContactInfo } from '@/hooks/useContactInfo';
@@ -24,6 +23,7 @@ import { toast } from 'sonner';
 import { checkPhone } from '@/lib/phone';
 import { checkName } from '@/lib/formRules';
 import { checkRank } from '@/lib/neetLimits';
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 // Top medical states in India for selection chips
 const AVAILABLE_STATES = [
@@ -549,7 +549,7 @@ export const InlineLeadForm = ({
               ) : (
                 <>
                   <span className="text-xs uppercase tracking-wider">Submit / Connect</span>
-                  <MessageSquare className="w-3.5 h-3.5" />
+                  <WhatsAppIcon className="w-3.5 h-3.5" />
                 </>
               )}
             </button>

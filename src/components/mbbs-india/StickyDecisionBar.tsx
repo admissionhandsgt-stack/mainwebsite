@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { CTAButton } from "@/components/CTAButton";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
-import { Phone, MessageCircle, X } from "lucide-react";
+import { Phone, X } from "lucide-react";
 
 export const StickyDecisionBar = () => {
   const [isVisible, setIsVisible] = useState(false);

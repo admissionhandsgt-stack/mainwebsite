@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Clock, Mail, MapPin, MessageCircle, Navigation, Phone } from "lucide-react";
+import { Clock, Mail, MapPin, Navigation, Phone } from "lucide-react";
 import { getContactInfo, resolveMetadata } from "@/lib/content";
 import { CONTACT_INFO, OFFICE } from "@/lib/constants";
 import StructuredData, { breadcrumb, organization } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 /**
  * The page a Google Business Profile points at, and the one place the office's
@@ -39,7 +40,7 @@ export default async function ContactPage() {
 
   const rows = [
     { icon: Phone, label: "Phone", value: pretty(phone), href: `tel:${phone}` },
-    { icon: MessageCircle, label: "WhatsApp", value: pretty(`+${whatsapp}`), href: `https://wa.me/${whatsapp}` },
+    { icon: WhatsAppIcon, label: "WhatsApp", value: pretty(`+${whatsapp}`), href: `https://wa.me/${whatsapp}` },
     { icon: Mail, label: "Email", value: email, href: `mailto:${email}` },
   ];
 
@@ -91,7 +92,7 @@ export default async function ContactPage() {
             <Clock className="mt-0.5 h-5 w-5 shrink-0 text-primary-strong" aria-hidden="true" />
             <span>
               {OFFICE.hoursLabel}
-              <span className="block text-sm text-muted-foreground">Sunday closed. Please call before you visit.</span>
+              <span className="block text-sm text-muted-foreground">Open all seven days. Please call before you visit.</span>
             </span>
           </p>
           <a

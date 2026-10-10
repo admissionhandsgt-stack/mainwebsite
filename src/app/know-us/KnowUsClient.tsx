@@ -506,7 +506,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
               <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row gap-2 justify-between">
                 <div>
                   <h4 className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Office Hours</h4>
-                  <p className="text-xs text-slate-700 dark:text-slate-300 font-semibold mt-0.5">Mon - Sat: 10:00 AM - 7:00 PM</p>
+                  <p className="text-xs text-slate-700 dark:text-slate-300 font-semibold mt-0.5">Mon - Sun: 10:00 AM - 10:00 PM</p>
                 </div>
                 <div className="flex items-end gap-2 mt-2 sm:mt-0">
                   <button 
