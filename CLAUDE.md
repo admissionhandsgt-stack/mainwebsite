@@ -438,6 +438,19 @@ business runs on WhatsApp. And it costs nothing on any tier, because nothing is 
 - Unset `WHATSAPP_VERIFY_NUMBER` and the inbound path disappears cleanly: `/api/verify/start`
   answers `503`. Since 2026-09-23 this is the *fallback* — see "Sending the code" below.
 
+### WhatsApp OTP paused (2026-10-11) — read before turning sends back on
+
+WhatsApp **blocked the primary sender, 917023081792** (WAHA session `FAILED`). Codes had already
+rolled over to Backup 1, **919220626002 — Gulshan Tomar's own number, printed on his card** — and
+were going out from it to strangers, the pattern that got the primary blocked. So Backup 1's
+`wa_senders.daily_cap` is **0** (was 50): no outbound code is sent from any number, sign-in takes the
+inbound path (the visitor messages that number with the code), and lead alerts are unaffected — caps
+apply to OTP only. The plan is the official route: **WhatsApp Cloud API authentication templates**
+(~₹0.145 a message in India, Meta Business verification and a fresh number), with DLT SMS as the
+fallback. Do not raise the cap again on a personal number. Meanwhile the predictor names colleges
+for visitors without a session (`collegePreview` in `/api/predict`, `ConnectCounsellor` under it),
+because a gate nobody can pass is a dead end.
+
 ### Sending the code (2026-09-23) — `src/lib/otp.ts`
 
 The section above argues, correctly, that outbound OTP is the worst thing you can do to a WhatsApp
@@ -641,7 +654,7 @@ paywall, which Google supports explicitly. So:
 
 | Surface | Free | Gated |
 |---|---|---|
-| Seat predictor | all four band counts | every seat |
+| Seat predictor | all four band counts; since 2026-10-11 the top 30 colleges reached (name, state, best band, seat-option count, PG branches) — never a closing rank or fee | every seat row |
 | After Round 1 | both totals | every row |
 | Per-college page (~3,500) | headline stats, fees, net over three years, the per-quota summary | every cutoff row |
 | PG branch page (101) | seats/colleges/states/quotas + per-quota ranges | every seat row |

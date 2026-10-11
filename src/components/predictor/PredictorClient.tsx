@@ -1018,20 +1018,18 @@ function LockedPanel({
  */
 function CollegePreview({ preview, level }: { preview: CollegePreviewData; level: "ug" | "pg" }) {
   const base = level === "pg" ? "/md-ms-india/colleges" : "/mbbs-india/colleges";
+  // Eight first, so the call-back form below is a short scroll away on a phone.
+  const [all, setAll] = useState(false);
+  const shown = all ? preview.colleges : preview.colleges.slice(0, 8);
   return (
     <section className="mt-8" aria-labelledby="preview-h">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h2 id="preview-h" className="font-heading text-xl font-extrabold text-foreground md:text-2xl">
-            Colleges your rank reaches
-          </h2>
-          <p className="mt-1 text-[14px] text-muted-foreground">
-            Top <span className="tnum">{preview.colleges.length}</span> of{" "}
-            <span className="tnum">{fmt(preview.totalColleges)}</span> colleges, strongest chance first. Closing ranks and
-            fees come with your counsellor call.
-          </p>
-        </div>
-      </div>
+      <h2 id="preview-h" className="font-heading text-xl font-extrabold text-foreground md:text-2xl">
+        Colleges your rank reaches
+      </h2>
+      <p className="mt-1 text-[14px] text-muted-foreground">
+        <span className="tnum">{fmt(preview.totalColleges)}</span> colleges, strongest chance first. Closing ranks and fees
+        come with your counsellor call.
+      </p>
 
       {preview.states.length > 1 && (
         <div className="mt-4 flex flex-wrap gap-1.5" aria-label="States">
@@ -1041,51 +1039,56 @@ function CollegePreview({ preview, level }: { preview: CollegePreviewData; level
               className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-2 px-3 py-1.5 text-[12.5px] text-foreground"
             >
               {st.state}
-              <span className="tnum text-muted-foreground">
-                {st.colleges} {st.colleges === 1 ? "college" : "colleges"}
-              </span>
+              <span className="tnum text-muted-foreground">{st.colleges}</span>
             </span>
           ))}
         </div>
       )}
 
-      <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {preview.colleges.map((c) => {
+      <ul className="mt-4 divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
+        {shown.map((c) => {
           const style = BAND_STYLE[c.best];
+          const allSafe = c.bands.safe === c.options;
           return (
-            <li key={c.slug} className={`rounded-2xl border bg-card p-4 ${style.ring}`}>
-              <div className="flex items-start justify-between gap-3">
+            <li key={c.slug} className="flex items-start gap-3 px-4 py-3">
+              <span className={`mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${style.dot}`} aria-hidden="true" />
+              <div className="min-w-0 flex-1">
                 <Link
                   href={`${base}/${c.slug}`}
-                  className="font-semibold leading-snug text-foreground underline-offset-2 hover:text-primary-strong hover:underline"
+                  className="text-[14.5px] font-semibold leading-snug text-foreground underline-offset-2 hover:text-primary-strong hover:underline"
                 >
                   {c.name}
                 </Link>
-                <span className={`inline-flex shrink-0 items-center gap-1.5 text-[12px] font-bold ${style.text}`}>
-                  <span className={`h-2 w-2 rounded-full ${style.dot}`} aria-hidden="true" />
-                  {bandLabel(c.best)}
-                </span>
-              </div>
-              <p className="mt-1 text-[13px] text-muted-foreground">
-                {c.state ?? "India"}
-                {c.ownership ? ` · ${c.ownership.charAt(0).toUpperCase()}${c.ownership.slice(1)}` : ""}
-              </p>
-              <p className="mt-3 text-[13px] text-foreground">
-                <span className="tnum font-bold">{c.options}</span> seat option{c.options === 1 ? "" : "s"} within reach
-                {c.bands.safe > 0 && (
-                  <span className="text-muted-foreground">
-                    {" "}
-                    · <span className="tnum">{c.bands.safe}</span> safe
-                  </span>
+                <p className="mt-0.5 text-[12.5px] text-muted-foreground">
+                  {c.state ?? "India"}
+                  {c.ownership ? ` · ${c.ownership.charAt(0).toUpperCase()}${c.ownership.slice(1)}` : ""}
+                  {" · "}
+                  <span className="tnum">{c.options}</span> seat option{c.options === 1 ? "" : "s"}
+                  {!allSafe && c.bands.safe > 0 ? (
+                    <>
+                      {" "}
+                      (<span className="tnum">{c.bands.safe}</span> safe)
+                    </>
+                  ) : null}
+                </p>
+                {c.courses.length > 0 && (
+                  <p className="mt-0.5 truncate text-[12px] text-muted-foreground">{c.courses.join(" · ")}</p>
                 )}
-              </p>
-              {c.courses.length > 0 && (
-                <p className="mt-1 truncate text-[12.5px] text-muted-foreground">{c.courses.join(" · ")}</p>
-              )}
+              </div>
+              <span className={`shrink-0 text-[12px] font-bold ${style.text}`}>{bandLabel(c.best)}</span>
             </li>
           );
         })}
       </ul>
+      {preview.colleges.length > shown.length && (
+        <button
+          type="button"
+          onClick={() => setAll(true)}
+          className="mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-border bg-surface-2 px-5 text-[14px] font-semibold text-foreground hover:border-primary sm:w-auto"
+        >
+          Show all {preview.colleges.length}
+        </button>
+      )}
     </section>
   );
 }
