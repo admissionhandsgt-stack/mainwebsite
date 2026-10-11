@@ -73,6 +73,69 @@ function parse(searchParams: URLSearchParams): PredictQuery | { error: string } 
   };
 }
 
+type PreviewCollege = {
+  name: string;
+  slug: string;
+  state: string | null;
+  ownership: string | null;
+  best: ChanceBand;
+  options: number;
+  bands: Record<ChanceBand, number>;
+  courses: string[];
+};
+
+/**
+ * College by college, from rows already sorted best band first and tightest
+ * seat first — so the first college met is the strongest the rank reaches.
+ * Carries no rank and no fee by construction: nothing here is copied off a row
+ * except the college's own name, state and ownership, and the course names.
+ */
+function collegePreview(
+  results: { institute: string; instituteSlug: string; state: string | null; ownership: string; course: string; band: string }[],
+  level: "ug" | "pg",
+) {
+  const byCollege = new Map<string, PreviewCollege & { courseSet: Set<string> }>();
+  const byState = new Map<string, { colleges: Set<string>; options: number }>();
+  for (const r of results) {
+    const band = r.band as ChanceBand;
+    let c = byCollege.get(r.instituteSlug);
+    if (!c) {
+      c = {
+        name: r.institute,
+        slug: r.instituteSlug,
+        state: r.state,
+        // UG ownership is "other" for every college in the source extract —
+        // saying nothing beats a wrong badge.
+        ownership: r.ownership && r.ownership !== "other" ? r.ownership : null,
+        best: band,
+        options: 0,
+        bands: { safe: 0, likely: 0, possible: 0, stretch: 0 },
+        courses: [],
+        courseSet: new Set<string>(),
+      };
+      byCollege.set(r.instituteSlug, c);
+    }
+    c.options += 1;
+    c.bands[band] += 1;
+    if (level === "pg") c.courseSet.add(r.course);
+    if (r.state) {
+      const st = byState.get(r.state) ?? { colleges: new Set<string>(), options: 0 };
+      st.colleges.add(r.instituteSlug);
+      st.options += 1;
+      byState.set(r.state, st);
+    }
+  }
+  const colleges = [...byCollege.values()].slice(0, 30).map(({ courseSet, ...c }) => ({
+    ...c,
+    courses: [...courseSet].slice(0, 3),
+  }));
+  const states = [...byState.entries()]
+    .map(([state, v]) => ({ state, colleges: v.colleges.size, options: v.options }))
+    .sort((a, b) => b.colleges - a.colleges || b.options - a.options)
+    .slice(0, 8);
+  return { colleges, totalColleges: byCollege.size, states };
+}
+
 export async function GET(request: Request) {
   // The closing-rank data is the product, and this endpoint hands out 300
   // fully detailed seats per call. Unlimited, a few thousand requests rebuild
@@ -245,6 +308,14 @@ export async function GET(request: Request) {
     // and it is the part people were ringing up to ask for.
     const visible = depth.full ? results : [];
 
+    // While sign-in codes are paused (2026-10-11), a visitor without a session
+    // is shown which colleges their rank reaches — name, state, the best band
+    // and how many seat options — but no closing rank and no fee. A band is
+    // four buckets per college (the directory's rank lens publishes the same),
+    // so it cannot be turned back into a seat row; the ranks and fees are the
+    // counsellor's call. Only built for whoever cannot see the rows anyway.
+    const preview = depth.full ? null : collegePreview(results, level);
+
     return NextResponse.json({
       shape,
       query: { rank, stream, level, category, states, ownership, branches, maxFee, seatType },
@@ -257,6 +328,7 @@ export async function GET(request: Request) {
       needsVerification: access.needsVerification,
       signedIn: access.signedIn,
       results: visible,
+      preview,
     });
   } catch (error) {
     logError(error, { route: "/api/predict", request });

@@ -19,6 +19,7 @@ import MultiSelect from "@/components/predictor/MultiSelect";
 import AuthDialog from "@/components/lead/AuthDialog";
 import ProfileTuner from "@/components/lead/ProfileTuner";
 import CounsellingCTA from "@/components/lead/CounsellingCTA";
+import ConnectCounsellor from "@/components/predictor/ConnectCounsellor";
 import { categoryMeaning } from "@/lib/categoryLabels";
 import { bandLabel, type ChanceBand } from "@/lib/predictor";
 import type { Facets, SeatTypeFacet, SeatTypeId, Stream, StreamSpec } from "@/lib/predictorFacets";
@@ -52,8 +53,26 @@ interface ResultShape {
   topStates: { state: string; seats: number }[];
 }
 
+interface PreviewCollege {
+  name: string;
+  slug: string;
+  state: string | null;
+  ownership: string | null;
+  best: ChanceBand;
+  options: number;
+  bands: Record<ChanceBand, number>;
+  courses: string[];
+}
+
+interface CollegePreviewData {
+  colleges: PreviewCollege[];
+  totalColleges: number;
+  states: { state: string; colleges: number; options: number }[];
+}
+
 interface PredictResponse {
   counts: Record<ChanceBand, number>;
+  preview?: CollegePreviewData | null;
   total: number;
   truncated: boolean;
   locked?: boolean;
@@ -610,6 +629,11 @@ export default function PredictorClient({ streams, facets }: Props) {
                 level={spec.level}
                 category={category}
                 shape={data.shape}
+                preview={data.preview ?? null}
+                counts={data.counts}
+                courseLabel={spec.label}
+                seatTypeLabel={f.seatTypes.find((t) => t.id === seatType)?.label ?? "all"}
+                branches={selectedBranches}
                 needsVerification={Boolean(data.needsVerification)}
                 extra={rounds ? rounds.openedTotal + rounds.tightenedTotal : 0}
                 onUnlocked={() => {
@@ -803,6 +827,11 @@ function LockedPanel({
   level,
   category,
   shape,
+  preview,
+  counts,
+  courseLabel,
+  seatTypeLabel,
+  branches,
   needsVerification,
   extra,
   onUnlocked,
@@ -812,6 +841,11 @@ function LockedPanel({
   level: "ug" | "pg";
   category: string;
   shape?: ResultShape;
+  preview: CollegePreviewData | null;
+  counts: Record<ChanceBand, number>;
+  courseLabel: string;
+  seatTypeLabel: string;
+  branches: string[];
   needsVerification: boolean;
   extra: number;
   onUnlocked: () => void;
@@ -826,6 +860,7 @@ function LockedPanel({
       : null;
 
   return (
+    <>
     <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-card">
       <div className="grid gap-px bg-border md:grid-cols-5">
         {/* ------------------------------------------------------- the ask */}
@@ -846,9 +881,10 @@ function LockedPanel({
             </h2>
 
             <p className="mt-2 max-w-[52ch] text-[14.5px] leading-relaxed text-muted-foreground">
-              The counts above are yours for free. Sign in to see <em>which</em> colleges — each
-              seat&rsquo;s round-1 close, the widest the cut reached, the fee, and how it moved
-              against last year
+              {preview && preview.colleges.length > 0
+                ? "The colleges your rank reaches are listed below, free. Sign in for each seat’s"
+                : "The counts above are yours for free. Sign in to see which colleges — each seat’s"}{" "}
+              round-1 close, the widest the cut reached, the fee, and how it moved against last year
               {extra > 0 ? (
                 <>
                   {" "}
@@ -955,6 +991,102 @@ function LockedPanel({
         noun="seats"
       />
     </div>
+
+    {preview && preview.colleges.length > 0 && <CollegePreview preview={preview} level={level} />}
+
+    <ConnectCounsellor
+      level={level}
+      courseLabel={courseLabel}
+      rank={rank}
+      category={category}
+      counts={counts}
+      states={(preview?.states ?? []).map((st) => st.state)}
+      branches={branches}
+      seatType={seatTypeLabel}
+    />
+    </>
+  );
+}
+
+/**
+ * The colleges a rank reaches, without the numbers behind them.
+ *
+ * Shown to visitors without a session while sign-in codes are paused: the
+ * college, its state, the best chance band and how many seat options reach the
+ * rank. No closing rank and no fee — those are on the counsellor's call. The
+ * order is the server's: best band first, then the most competitive seat.
+ */
+function CollegePreview({ preview, level }: { preview: CollegePreviewData; level: "ug" | "pg" }) {
+  const base = level === "pg" ? "/md-ms-india/colleges" : "/mbbs-india/colleges";
+  return (
+    <section className="mt-8" aria-labelledby="preview-h">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h2 id="preview-h" className="font-heading text-xl font-extrabold text-foreground md:text-2xl">
+            Colleges your rank reaches
+          </h2>
+          <p className="mt-1 text-[14px] text-muted-foreground">
+            Top <span className="tnum">{preview.colleges.length}</span> of{" "}
+            <span className="tnum">{fmt(preview.totalColleges)}</span> colleges, strongest chance first. Closing ranks and
+            fees come with your counsellor call.
+          </p>
+        </div>
+      </div>
+
+      {preview.states.length > 1 && (
+        <div className="mt-4 flex flex-wrap gap-1.5" aria-label="States">
+          {preview.states.map((st) => (
+            <span
+              key={st.state}
+              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-2 px-3 py-1.5 text-[12.5px] text-foreground"
+            >
+              {st.state}
+              <span className="tnum text-muted-foreground">
+                {st.colleges} {st.colleges === 1 ? "college" : "colleges"}
+              </span>
+            </span>
+          ))}
+        </div>
+      )}
+
+      <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {preview.colleges.map((c) => {
+          const style = BAND_STYLE[c.best];
+          return (
+            <li key={c.slug} className={`rounded-2xl border bg-card p-4 ${style.ring}`}>
+              <div className="flex items-start justify-between gap-3">
+                <Link
+                  href={`${base}/${c.slug}`}
+                  className="font-semibold leading-snug text-foreground underline-offset-2 hover:text-primary-strong hover:underline"
+                >
+                  {c.name}
+                </Link>
+                <span className={`inline-flex shrink-0 items-center gap-1.5 text-[12px] font-bold ${style.text}`}>
+                  <span className={`h-2 w-2 rounded-full ${style.dot}`} aria-hidden="true" />
+                  {bandLabel(c.best)}
+                </span>
+              </div>
+              <p className="mt-1 text-[13px] text-muted-foreground">
+                {c.state ?? "India"}
+                {c.ownership ? ` · ${c.ownership.charAt(0).toUpperCase()}${c.ownership.slice(1)}` : ""}
+              </p>
+              <p className="mt-3 text-[13px] text-foreground">
+                <span className="tnum font-bold">{c.options}</span> seat option{c.options === 1 ? "" : "s"} within reach
+                {c.bands.safe > 0 && (
+                  <span className="text-muted-foreground">
+                    {" "}
+                    · <span className="tnum">{c.bands.safe}</span> safe
+                  </span>
+                )}
+              </p>
+              {c.courses.length > 0 && (
+                <p className="mt-1 truncate text-[12.5px] text-muted-foreground">{c.courses.join(" · ")}</p>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </section>
   );
 }
 

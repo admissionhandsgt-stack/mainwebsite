@@ -301,7 +301,7 @@ export async function issueCode(input: IssueInput): Promise<IssueResult> {
     return {
       ok: false,
       fallback: true,
-      message: "Our WhatsApp can't start new chats for a few hours, so this one works the other way round.",
+      message: "Verify by sending us this code on WhatsApp — one tap opens the chat with it written in.",
     };
   }
 
