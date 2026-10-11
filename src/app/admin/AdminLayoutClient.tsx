@@ -40,6 +40,7 @@ const navGroups = [
       { name: 'Media', href: '/admin/media', icon: ImageIcon },
       { name: 'Contacts', href: '/admin/contacts', icon: Users },
       { name: 'WhatsApp Verify', href: '/admin/whatsapp', icon: WhatsAppIcon },
+      { name: 'WhatsApp Official API', href: '/admin/whatsapp-official', icon: WhatsAppIcon },
       { name: 'Errors', href: '/admin/logs', icon: AlertTriangle },
     ],
   },

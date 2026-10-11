@@ -451,6 +451,15 @@ fallback. Do not raise the cap again on a personal number. Meanwhile the predict
 for visitors without a session (`collegePreview` in `/api/predict`, `ConnectCounsellor` under it),
 because a gate nobody can pass is a dead end.
 
+**The official sender is built and off** (`src/lib/waCloud.ts`, Admin → WhatsApp Official API,
+`/api/admin/whatsapp-cloud`). Five steps on that page: token + WABA ID (a system-user token with
+`whatsapp_business_management` and `whatsapp_business_messaging` — pasted there, never in chat), add and
+verify the number (Meta sends the SIM a code), create the `ah_login_code` authentication template,
+send a test, switch on. Switched on, `issueCode` sends through it first (`sent_channel = 'cloud'`,
+per-number caps still apply) and the WAHA gateway is only the fallback. The Meta Ads MCP connector
+has no WhatsApp tools, so it cannot do any of this. Portfolios seen: "Admission Hands"
+1936125673392959, "Admission Hands - India" 283172768222867.
+
 ### Sending the code (2026-09-23) — `src/lib/otp.ts`
 
 The section above argues, correctly, that outbound OTP is the worst thing you can do to a WhatsApp

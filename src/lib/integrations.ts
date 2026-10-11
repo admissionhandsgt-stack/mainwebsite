@@ -23,7 +23,13 @@ export type IntegrationKey =
   | "whatsapp.verify.number"
   | "whatsapp.gateway.url"
   | "whatsapp.gateway.api_key"
-  | "whatsapp.webhook.secret";
+  | "whatsapp.webhook.secret"
+  // The official sender, Meta's Cloud API (lib/waCloud.ts).
+  | "whatsapp.cloud.enabled"
+  | "whatsapp.cloud.token"
+  | "whatsapp.cloud.waba_id"
+  | "whatsapp.cloud.phone_number_id"
+  | "whatsapp.cloud.template";
 
 /**
  * The environment variable that overrides each key, where one exists.
