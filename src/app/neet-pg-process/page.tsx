@@ -14,6 +14,7 @@ import {
 import { NEET_PG_SCHEDULE } from "@/lib/neetPgSchedule";
 import { resolveMetadata, getMediaAsset } from "@/lib/content";
 import { getDataStats, inr } from "@/lib/dataStats";
+import { getTightenedTotal } from "@/lib/roundQueries";
 import PageHero from "@/components/ui/PageHero";
 import Reveal from "@/components/ui/Reveal";
 import LeadCapture from "@/components/lead/LeadCapture";
@@ -143,7 +144,7 @@ const MISTAKES = [
 /* ------------------------------------------------------------------ page */
 
 export default async function NeetPgProcessPage() {
-  const [stats, hero] = await Promise.all([getDataStats(), getMediaAsset("neet_hero")]);
+  const [stats, hero, tightened] = await Promise.all([getDataStats(), getMediaAsset("neet_hero"), getTightenedTotal("pg")]);
 
   return (
     <main className="min-h-screen bg-background">
@@ -372,11 +373,11 @@ export default async function NeetPgProcessPage() {
                       note: "Counselling does not stop after round 2, and the numbers show it.",
                     },
                     {
-                      // Counted, not quoted: seats whose every later round
-                      // closed at a *better* rank than round 1 did, across
-                      // 2024-25. CLAUDE.md carried 2,795 for this; the query
-                      // says 2,595, and the query is the thing that is true.
-                      value: "2,595",
+                      // Counted live (getTightenedTotal): seats whose every later
+                      // round closed at a *better* rank than round 1 did, per year,
+                      // grouped as the after-round-1 tab groups them. Typed as 2,595
+                      // until 2026-10-18, which counted KEA's mock rounds as "later".
+                      value: tightened != null ? inr(tightened) : "—",
                       label: "PG seats that tightened after round 1",
                       note: "Every later round closed at a better rank than round 1 did. Give one of those up and it is gone.",
                     },

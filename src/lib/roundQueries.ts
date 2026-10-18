@@ -64,6 +64,17 @@ export interface RoundSummary {
  * went further down the list. Round 1 is singled out because it is the only
  * round whose meaning is unambiguous — see the note on `seat_options`.
  */
+/**
+ * A round that comes after round 1. Not simply "not R1": the 2024 Karnataka PG data
+ * carries KEA's mock allotments as R0, R0.1 and R0.2, which come *before* round 1 and
+ * admitted nobody (migration 0036). UG names its late rounds MOPUP, MOPUP2, STRAY and
+ * FINAL, which do come after it.
+ */
+const AFTER_R1 = sql`(CASE
+    WHEN cr.round_label ~ '^R[0-9]+([.][0-9]+)?$' THEN substring(cr.round_label from 2)::numeric > 1
+    ELSE cr.round_label IN ('MOPUP', 'MOPUP2', 'STRAY', 'FINAL')
+  END)`;
+
 const perSeat = (level: Level) => sql`
   SELECT
     cr.institute_id, cr.course_id, cr.quota_id, cr.category_id,
@@ -72,9 +83,9 @@ const perSeat = (level: Level) => sql`
     -- Later rounds only. Including round 1 in this would make it impossible
     -- for a seat to read as "tightened", because the maximum would always be
     -- at least round 1's own number.
-    MAX(cr.closing_rank) FILTER (WHERE cr.round_label <> 'R1') AS later,
+    MAX(cr.closing_rank) FILTER (WHERE ${AFTER_R1}) AS later,
     (array_agg(cr.round_label ORDER BY cr.closing_rank DESC)
-       FILTER (WHERE cr.round_label <> 'R1'))[1] AS later_round,
+       FILTER (WHERE ${AFTER_R1}))[1] AS later_round,
     COUNT(DISTINCT cr.round_label)::int AS rounds
   FROM closing_ranks cr
   WHERE cr.level = ${level} AND cr.closing_rank IS NOT NULL
@@ -118,8 +129,29 @@ const toMove = (r: Record<string, unknown>): RoundMove => ({
  */
 const loadRoundMoves = unstable_cache(
   _getRoundMoves,
-  ["round-moves"],
+  // v2: "later" stopped counting the mock rounds (AFTER_R1, 2026-10-18).
+  ["round-moves-v2"],
   { revalidate: 3600, tags: ["closing-ranks"] },
+);
+
+/**
+ * How many seats, year by year, closed tighter in every later round than in round 1 —
+ * the number /neet-pg-process quotes. Counted here, on the same per-seat grouping as the
+ * after-round-1 tab, so the page cannot drift from the data — it was typed as 2,595, a
+ * figure that also counted KEA's mock rounds as "later".
+ */
+export const getTightenedTotal = unstable_cache(
+  async (level: Level): Promise<number | null> => {
+    const r = rows<{ n: number }>(
+      await db.execute(sql`
+        SELECT COUNT(*)::int AS n FROM (${perSeat(level)}) p
+         WHERE p.r1 IS NOT NULL AND p.later IS NOT NULL AND p.later < p.r1
+      `),
+    );
+    return r[0]?.n ?? null;
+  },
+  ["round-tightened-v1"],
+  { revalidate: 86400, tags: ["closing-ranks"] },
 );
 
 /**

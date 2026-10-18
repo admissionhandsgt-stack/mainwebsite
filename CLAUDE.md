@@ -95,7 +95,7 @@ Volumes as of 2026-09-18: `ug_all_colleges` 765, `pg_colleges_content` 252, `dee
 `pg_branches` 26, `content_blocks` 31, `site_settings` 25, `media_assets` 23, `ug_recommended_colleges` 12,
 `legal_documents` 8, `content_collections` 7, `videos` 4, `live_alerts` 2, `leads` 2.
 Counselling data as of 2026-09-22: `closing_ranks` 274,483 (PG 230,484 + UG 43,999),
-`seat_options` 76,372 (PG 58,279 + UG 18,093), `institutes` 3,895 (PG 2,168 + UG 1,727).
+`seat_options` 76,297 (PG 58,204 + UG 18,093) since migration 0036 dropped KEA's mock rounds, `institutes` 3,895 (PG 2,168 + UG 1,727).
 **Empty by design:** `pg_recommended_colleges`, `pg_deemed_colleges` (created by migration `0005`, curated by hand).
 
 ## Admin CMS
@@ -414,7 +414,12 @@ PG counts moved.
 ### `seat_options` — the view the predictor reads
 
 `closing_ranks` has one row per round, so answering "can I get this seat?" from it means aggregating on every
-request. `seat_options` (migration `0002`) collapses it to one row per seat: 230k rank rows → **58,279 seats**.
+request. `seat_options` (migration `0002`, redefined by `0036`) collapses it to one row per seat: 230k rank rows → **58,204 seats**.
+
+**Mock allotments are not rounds (0036).** The 2024 Karnataka PG data carries KEA's mock allotments as
+`R0`, `R0.1`, `R0.2` (8,060 rows, before round 1, nobody admitted). They stay in `closing_ranks`; the view
+excludes them and "after round 1" means `AFTER_R1` in `roundQueries.ts` (a numeric label above 1, or UG's
+`MOPUP`/`MOPUP2`/`STRAY`/`FINAL`) — never `round_label <> 'R1'`, which counted the mocks as later rounds.
 Rebuild it after every import:
 
 ```sql
@@ -1014,8 +1019,9 @@ Given a rank and a category, two lists:
   down. This is the case for floating, counted rather than promised.
 - **Tightened** — seats within reach in round 1 whose later rounds closed at *better* ranks only.
   Counted across all ranks and categories (every later round below round 1's own close):
-  **2,595 PG** seats. The 2,795 quoted here previously did not reproduce — re-derive before
-  publishing this figure anywhere, because `/neet-pg-process` prints it. Give one of those up and you could not take it back. No
+  `getTightenedTotal("pg")` counts it live — 2,686 PG seat-years on 2026-10-18, on the tab's own grouping.
+  It was typed as 2,795, then 2,595 (which counted KEA's mock rounds as "later"); `/neet-pg-process` now
+  prints the live count, so do not type it anywhere. Give one of those up and you could not take it back. No
   competitor shows this, because it needs clean round-by-round data.
 
 **The aggregation trap:** `widest = MAX(closing_rank)` across all rounds can never be less than
