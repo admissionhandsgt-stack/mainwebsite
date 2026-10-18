@@ -21,6 +21,12 @@ import {
 import ProcessAccordion from '@/components/neet-ug-process/ProcessAccordion';
 import { CONTACT_INFO } from '@/lib/constants';
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import type { CopyFields } from "@/lib/pageCopyDefaults";
+import type { UgPhase } from "@/lib/ugProcessSteps";
+
+/** Every word on the page, from Admin → Content ("Page: NEET UG process"). */
+export type UgProcessCopy = CopyFields<"page.neet_ug_process">;
+const lines = (v: string) => v.split("\n").map((x) => x.trim()).filter(Boolean);
 
 interface NeetUgProcessClientProps {
   heroImageUrl?: string;
@@ -30,6 +36,8 @@ interface NeetUgProcessClientProps {
   heroCredit?: PhotoCreditInfo;
   examCredit?: PhotoCreditInfo;
   collegeCredit?: PhotoCreditInfo;
+  copy: UgProcessCopy;
+  phases: UgPhase[];
 }
 
 const NeetUgProcessClient = ({
@@ -39,7 +47,10 @@ const NeetUgProcessClient = ({
   heroCredit,
   examCredit,
   collegeCredit,
+  copy,
+  phases,
 }: NeetUgProcessClientProps) => {
+  const stepCount = phases.reduce((a, p) => a + p.steps.length, 0);
   const scrollToSteps = () => {
     document.getElementById('steps-section')?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -72,10 +83,10 @@ const NeetUgProcessClient = ({
           <div className="max-w-3xl flex-1 flex flex-col">
             <div className="space-y-3 flex-1 flex flex-col justify-center">
               <h1 className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight">
-                NEET UG Admission Process – <span className="text-primary">Complete Step-by-Step Guide</span>
+                {copy.hero_title} <span className="text-primary">{copy.hero_accent}</span>
               </h1>
               <p className="text-base md:text-lg lg:text-xl text-slate-200 max-w-2xl">
-                Understand the full MBBS admission journey from exam to college joining with expert guidance.
+                {copy.hero_subtitle}
               </p>
             </div>
             <div className="grid grid-cols-2 gap-3 w-full max-w-[340px] md:max-w-md mt-8 md:mt-6 pb-2 md:pb-0">
@@ -83,13 +94,13 @@ const NeetUgProcessClient = ({
                 href={`tel:${CONTACT_INFO.phone}`}
                 className="flex items-center justify-center rounded-full bg-primary hover:bg-primary/90 text-white px-2 py-2.5 md:py-3 text-xs sm:text-sm font-bold transition-all shadow-lg hover:shadow-primary/20 whitespace-nowrap"
               >
-                Start Consultation
+                {copy.hero_cta_call}
               </a>
               <button 
                 onClick={scrollToSteps}
                 className="flex items-center justify-center rounded-full border border-white/60 bg-white/10 text-white hover:bg-white hover:text-slate-900 px-2 py-2.5 md:py-3 text-xs sm:text-sm font-bold transition-all backdrop-blur-sm whitespace-nowrap"
               >
-                Explore Steps
+                {copy.hero_cta_steps}
               </button>
             </div>
           </div>
@@ -102,18 +113,18 @@ const NeetUgProcessClient = ({
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
             <div className="space-y-4">
               <div>
-                <h2 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-2">Overview of Admission Lifecycle</h2>
+                <h2 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-2">{copy.overview_title}</h2>
                 <p className="text-slate-600 dark:text-slate-400 text-base leading-relaxed">
-                  NEET UG is the single national-level entrance examination for MBBS admissions in India. The process is managed by multiple authorities depending on the quota and college type.
+                  {copy.overview_body}
                 </p>
               </div>
 
               <div className="grid grid-cols-1 gap-3">
                 {[
-                  { title: "NTA", desc: "Conducts NEET UG exam & declares results", icon: ClipboardCheck },
-                  { title: "MCC", desc: "Handles AIQ, Deemed & Central counselling", icon: Building2 },
-                  { title: "State Authorities", desc: "Manage state quota (85%) and private admissions", icon: Users }
-                ].map((item, idx) => (
+                  { title: copy.body_1_title, desc: copy.body_1_desc, icon: ClipboardCheck },
+                  { title: copy.body_2_title, desc: copy.body_2_desc, icon: Building2 },
+                  { title: copy.body_3_title, desc: copy.body_3_desc, icon: Users }
+                ].filter((item) => item.title).map((item, idx) => (
                   <div key={idx} className="flex items-start gap-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 transition-hover hover:shadow-sm">
                     <div className="bg-white dark:bg-slate-950 p-2.5 rounded-lg shadow-sm text-primary">
                       <item.icon className="h-5 w-5" />
@@ -129,7 +140,7 @@ const NeetUgProcessClient = ({
               <div className="p-5 bg-amber-50 dark:bg-amber-950/20 rounded-xl border border-amber-100 dark:border-amber-900/30 flex gap-4">
                 <ShieldAlert className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
                 <p className="text-amber-900 dark:text-amber-200 text-sm font-medium italic mb-0">
-                  Navigating this process correctly is crucial, as small mistakes can cost valuable seats.
+                  {copy.overview_warning}
                 </p>
               </div>
             </div>
@@ -152,11 +163,11 @@ const NeetUgProcessClient = ({
       <section id="steps-section" className="py-5 md:py-8 bg-slate-50 dark:bg-slate-950/40">
         <div className="container-custom">
           <div className="text-center mb-4 md:mb-6">
-            <h2 className="text-xl md:text-3xl font-black text-slate-900 dark:text-white mb-1 md:mb-2">Step-by-Step Journey</h2>
-            <p className="text-slate-500 dark:text-slate-400 text-xs md:text-sm">We break down the 15 critical milestones of your admission process.</p>
+            <h2 className="text-xl md:text-3xl font-black text-slate-900 dark:text-white mb-1 md:mb-2">{copy.steps_title}</h2>
+            <p className="text-slate-500 dark:text-slate-400 text-xs md:text-sm">{copy.steps_intro.replace("{count}", String(stepCount))}</p>
           </div>
           
-          <ProcessAccordion />
+          <ProcessAccordion phases={phases} />
 
           {/* MID CTA */}
           <div className="mt-6 md:mt-10 p-4 md:p-8 rounded-2xl md:rounded-3xl bg-gradient-to-br from-primary to-cyan-700 text-white text-center relative overflow-hidden">
@@ -164,21 +175,21 @@ const NeetUgProcessClient = ({
               <GraduationCap size={100} />
             </div>
             <div className="relative z-10">
-              <h3 className="text-base md:text-3xl font-black mb-1.5 md:mb-3">Not sure which counselling route is right for you?</h3>
-              <p className="text-cyan-100/90 mb-4 md:mb-8 max-w-xl mx-auto text-xs md:text-sm font-medium">Get a personalized roadmap based on your predicted rank and budget.</p>
+              <h3 className="text-base md:text-3xl font-black mb-1.5 md:mb-3">{copy.mid_title}</h3>
+              <p className="text-cyan-100/90 mb-4 md:mb-8 max-w-xl mx-auto text-xs md:text-sm font-medium">{copy.mid_body}</p>
               <div className="flex flex-wrap justify-center gap-2 md:gap-4">
                 <a 
                   href={`tel:${CONTACT_INFO.phone}`}
                   className="inline-flex items-center justify-center rounded-full bg-white text-primary hover:bg-slate-100 px-5 py-2.5 text-xs md:px-8 md:py-3.5 md:text-base font-extrabold transition-all"
                 >
-                  Talk to Expert
+                  {copy.mid_call}
                 </a>
                 <a 
                   href={`https://api.whatsapp.com/send?phone=${CONTACT_INFO.whatsapp}`}
                   target="_blank"
                   className="inline-flex items-center justify-center rounded-full border-white/30 bg-white/10 hover:bg-white/20 text-white px-5 py-2.5 text-xs md:px-8 md:py-3.5 md:text-base font-extrabold transition-all"
                 >
-                  <WhatsAppIcon className="mr-1.5 h-4 w-4 md:mr-2 md:h-5 md:w-5" /> WhatsApp Now
+                  <WhatsAppIcon className="mr-1.5 h-4 w-4 md:mr-2 md:h-5 md:w-5" /> {copy.mid_whatsapp}
                 </a>
               </div>
             </div>
@@ -190,17 +201,11 @@ const NeetUgProcessClient = ({
       <section className="py-5 md:py-8 bg-white dark:bg-slate-950">
         <div className="container-custom">
           <div className="text-center mb-4 md:mb-6">
-            <h2 className="text-xl md:text-3xl font-black text-slate-900 dark:text-white mb-1 md:mb-2">Common Mistakes to Avoid</h2>
-            <p className="text-slate-500 dark:text-slate-400 text-xs md:text-sm">Every year, thousands of students lose their seats due to these avoidable errors.</p>
+            <h2 className="text-xl md:text-3xl font-black text-slate-900 dark:text-white mb-1 md:mb-2">{copy.mistakes_title}</h2>
+            <p className="text-slate-500 dark:text-slate-400 text-xs md:text-sm">{copy.mistakes_intro}</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-3">
-            {[
-              "Filling limited choices",
-              "Ignoring state counselling",
-              "Not understanding quota benefits",
-              "Missing deadlines",
-              "Wrong category selection"
-            ].map((mistake, idx) => (
+            {lines(copy.mistakes_list).map((mistake, idx) => (
               <div key={idx} className="p-3 md:p-5 rounded-lg md:rounded-xl bg-rose-50 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/30 group transition-all hover:bg-rose-100 dark:hover:bg-rose-950/40 hover:-translate-y-1">
                 <div className="mb-1.5 md:mb-3 text-rose-500 dark:text-rose-400 group-hover:scale-110 transition-transform">
                   <AlertTriangle className="h-4 w-4 md:h-6 md:w-6" />
@@ -211,8 +216,8 @@ const NeetUgProcessClient = ({
           </div>
           <div className="mt-5 md:mt-8 p-3 md:p-4 bg-slate-900 dark:bg-slate-900/60 border border-slate-800/80 rounded-xl text-center">
             <p className="text-slate-300 text-xs md:text-sm font-medium">
-              <span className="text-rose-400 font-black uppercase tracking-widest mr-2 text-[13px] md:text-xs">Critical:</span> 
-              These mistakes often result in losing better colleges.
+              <span className="text-rose-400 font-black uppercase tracking-widest mr-2 text-[13px] md:text-xs">{copy.mistakes_critical_label}</span> 
+              {copy.mistakes_critical}
             </p>
           </div>
         </div>
@@ -222,18 +227,18 @@ const NeetUgProcessClient = ({
       <section className="py-6 bg-slate-50 dark:bg-slate-950">
         <div className="container-custom">
           <div className="text-center mb-6">
-            <h2 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-2">How Admission Hands Helps</h2>
-            <p className="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto text-sm">We provide the data, strategy, and peace of mind you need for a successful admission.</p>
+            <h2 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-2">{copy.helps_title}</h2>
+            <p className="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto text-sm">{copy.helps_intro}</p>
                     </div>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
             {[
-              { title: "Rank-based Shortlisting", icon: Search, desc: "Get a strategic list of target MBBS colleges matching your rank, category, and budget." },
-              { title: "Multi-counselling Strategy", icon: Map, desc: "Manage AIQ, State, and Deemed university counsellings in parallel to maximize allotment." },
-              { title: "Smart Choice Filling", icon: Settings2, desc: "Optimize your choices to ensure you secure the highest value seat without losing safety options." },
-              { title: "Budget Optimization", icon: FileCheck, desc: "Align college fees, security deposits, and bond rules with your financial choices." },
-              { title: "Documentation Support", icon: UserCheck, desc: "Pre-audit all certificates, affidavits, and NRI papers to prevent seat rejections." },
-              { title: "End-to-End Guidance", icon: ShieldAlert, desc: "Continuous support from registration through choices to final college joining." }
-            ].map((feature, idx) => (
+              { title: copy.help_1_title, icon: Search, desc: copy.help_1_desc },
+              { title: copy.help_2_title, icon: Map, desc: copy.help_2_desc },
+              { title: copy.help_3_title, icon: Settings2, desc: copy.help_3_desc },
+              { title: copy.help_4_title, icon: FileCheck, desc: copy.help_4_desc },
+              { title: copy.help_5_title, icon: UserCheck, desc: copy.help_5_desc },
+              { title: copy.help_6_title, icon: ShieldAlert, desc: copy.help_6_desc }
+            ].filter((f) => f.title).map((feature, idx) => (
               <div key={idx} className="p-2.5 md:p-6 rounded-xl md:rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 shadow-sm transition-all hover:shadow-lg hover:border-primary/20 dark:hover:border-teal-500/40 group text-center md:text-left relative overflow-hidden before:absolute before:top-0 before:left-0 before:right-0 before:h-[3px] before:bg-gradient-to-r before:from-cyan-500 before:to-teal-400 before:opacity-0 group-hover:before:opacity-100 before:transition-opacity">
                 <div className="absolute top-1 right-2 text-xl md:text-5xl font-black text-slate-100/70 dark:text-slate-800/30 group-hover:text-cyan-500/10 dark:group-hover:text-teal-400/10 select-none font-sans tracking-tighter transition-colors">
                   {String(idx + 1).padStart(2, '0')}
@@ -255,14 +260,10 @@ const NeetUgProcessClient = ({
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div className="order-2 lg:order-1 text-center lg:text-left">
               <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-6 leading-tight">
-                Secure Your MBBS Seat with <span className="text-primary">Expert Guidance</span>
+                {copy.final_title} <span className="text-primary">{copy.final_accent}</span>
               </h2>
               <ul className="space-y-3 mb-8 inline-block text-left">
-                {[
-                  "Personalized counselling strategy",
-                  "Strategic admission planning",
-                  "Full support till college joining"
-                ].map((point, idx) => (
+                {lines(copy.final_points).map((point, idx) => (
                   <li key={idx} className="flex items-center gap-3 text-base text-slate-700 dark:text-slate-300 font-medium">
                     <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-600">
                       <ChevronRight size={14} />
@@ -276,14 +277,14 @@ const NeetUgProcessClient = ({
                   href={`tel:${CONTACT_INFO.phone}`}
                   className="inline-flex items-center justify-center rounded-full bg-slate-900 hover:bg-slate-800 text-white px-10 h-14 text-base font-bold transition-all"
                 >
-                  <Phone className="mr-2 h-5 w-5" /> Call Now
+                  <Phone className="mr-2 h-5 w-5" /> {copy.final_call}
                 </a>
                 <a 
                   href={`https://api.whatsapp.com/send?phone=${CONTACT_INFO.whatsapp}`}
                   target="_blank"
                   className="inline-flex items-center justify-center rounded-full bg-emerald-600 hover:bg-emerald-700 text-white px-10 h-14 text-base font-bold transition-all"
                 >
-                  <WhatsAppIcon className="mr-2 h-5 w-5" /> WhatsApp Now
+                  <WhatsAppIcon className="mr-2 h-5 w-5" /> {copy.final_whatsapp}
                 </a>
               </div>
             </div>
@@ -309,7 +310,7 @@ const NeetUgProcessClient = ({
         <div className="container-custom text-center">
           <h5 className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-3">Disclaimer</h5>
           <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed italic max-w-4xl mx-auto">
-            All information is for guidance purposes only. Admission processes, seat matrix, eligibility, and counselling rules are subject to updates by NTA, MCC, and respective State Authorities. We strongly advise students to verify details from official portals regularly.
+            {copy.disclaimer}
           </p>
         </div>
       </section>
