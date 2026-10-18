@@ -7,6 +7,12 @@ import { resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
+import DataHero from "@/components/hero/DataHero";
+import SectionHead from "@/components/ui/SectionHead";
+import InsightCards from "@/components/ui/InsightCards";
+import HeroBars from "@/components/hero/HeroBars";
+import { getPgStates } from "@/lib/pgStateQueries";
+import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
 /**
  * "NEET PG stipend state wise" — one of the most-searched PG money questions,
@@ -45,9 +51,15 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function StipendPage() {
-  const s = await getStipends();
+  const [s, pgStates] = await Promise.all([getStipends(), getPgStates()]);
+  const stateSlug = new Map(pgStates.map((p) => [p.name, p.slug]));
   const top = s.states[0];
   const low = s.states[s.states.length - 1];
+  // Words from Admin → Content → Text & numbers ("Page: PG stipend"); photo from Admin → Media.
+  const [copy, heroImage] = await Promise.all([
+    pageCopy("page.pg_stipend.hero"),
+    pageHeroImage("page.pg_stipend.hero"),
+  ]);
 
   const faqs = [
     {
@@ -83,46 +95,61 @@ export default async function StipendPage() {
         ]}
       />
 
-      <section className="relative overflow-hidden bg-slate-950">
-        <div className="ambient-blob pointer-events-none absolute -left-32 -top-40 h-[28rem] w-[28rem] opacity-50" aria-hidden="true" />
-        <div className="container-custom relative py-12 md:py-16">
-          <nav aria-label="Breadcrumb" className="mb-5 text-[13px] text-slate-400">
-            <Link href="/" className="hover:text-white">Home</Link>
-            <span className="mx-2" aria-hidden="true">/</span>
-            <Link href="/md-ms-india" className="hover:text-white">MD/MS in India</Link>
-            <span className="mx-2" aria-hidden="true">/</span>
-            <span className="text-slate-200">Stipend</span>
-          </nav>
-          <h1 className="font-heading max-w-[26ch] text-[clamp(2rem,4.2vw,3.1rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-white">
-            NEET PG stipend, <span className="text-cyan-300">state by state</span>
-          </h1>
-          <p className="mt-3 max-w-[66ch] text-[15px] leading-relaxed text-slate-300 md:text-base">
-            The monthly first-year stipend MD/MS residents are paid, as each college publishes it — government against private,
-            in every state.
-          </p>
-          <dl className="mt-8 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-3">
-            {[
-              { k: "Median, first year / month", v: inr(s.median) },
-              { k: "Colleges with a stipend", v: s.colleges.toLocaleString("en-IN") },
-              { k: "States", v: String(s.states.length) },
-            ].map(({ k, v }) => (
-              <div key={k}>
-                <dt className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{k}</dt>
-                <dd className="tnum mt-1 text-xl font-bold text-white md:text-2xl">{v}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
+      <DataHero
+        crumbs={[{ label: "Home", href: "/" }, { label: "MD/MS in India", href: "/md-ms-india" }, { label: "Stipend" }]}
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        accent={copy.accent}
+        subtitle={copy.subtitle}
+        image={heroImage}
+        topic="money"
+        stats={[
+          { label: "Median / month", value: inr(s.median), note: "first year, all India" },
+          { label: "Colleges", value: s.colleges.toLocaleString("en-IN"), note: "that publish a stipend" },
+          { label: "States", value: String(s.states.length) },
+          ...(top ? [{ label: "Highest state", value: inr(top.median), note: top.state }] : []),
+        ]}
+        cta={{ label: copy.cta, href: "/neet-college-predictor?course=pg" }}
+        telegram="hero_pg_stipend"
+        source={copy.source}
+        visual={
+          <HeroBars
+            title={copy.visual_title}
+            caption="Median first-year stipend a month"
+            rows={s.states.slice(0, 7).map((r) => ({
+              label: r.state,
+              value: r.median,
+              display: inr(r.median),
+              href: stateSlug.get(r.state) ? `/md-ms-india/states/${stateSlug.get(r.state)}` : undefined,
+              note: `${r.colleges} colleges${r.govtMedian ? ` · govt ${inr(r.govtMedian)}` : ""}`,
+            }))}
+            footnote={low ? `Lowest: ${low.state}, ${inr(low.median)} a month. Every state is in the table below.` : undefined}
+          />
+        }
+      />
+
+      {/* The headline findings, each also in the tables below. */}
+      <section className="container-custom relative z-10 -mt-8">
+        <InsightCards
+          items={[
+            ...(top ? [{ icon: "up" as const, label: "Highest median", value: inr(top.median), note: `${top.state} · ${top.colleges} colleges` }] : []),
+            ...(s.govtMedian && s.privateMedian
+              ? [{ icon: "compare" as const, label: "Govt vs private", value: `${inr(s.govtMedian)} vs ${inr(s.privateMedian)}`, note: "All-India medians, first year, a month" }]
+              : []),
+            ...(low ? [{ icon: "down" as const, label: "Lowest median", value: inr(low.median), note: `${low.state} · ${low.colleges} colleges` }] : []),
+          ]}
+        />
       </section>
 
       <section className="container-custom py-10 md:py-14">
-        <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">PG stipend by state</h2>
-        <p className="mt-2 max-w-[70ch] text-muted-foreground">
-          First-year stipend per month, median across the state&apos;s colleges that publish one, highest first. States with
-          fewer than three such colleges are left out.
-        </p>
-        <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
-          <table className="w-full min-w-[640px] text-left text-sm">
+        <SectionHead
+          icon="money"
+          eyebrow="State by state"
+          title="PG stipend by state"
+          intro="First-year stipend per month, median across the state's colleges that publish one, highest first. States with fewer than three such colleges are left out."
+        />
+        <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
+          <table className="dt w-full min-w-[640px] text-left text-sm">
             <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
               <tr>
                 <th scope="col" className="px-4 py-3 font-semibold">State</th>
@@ -153,12 +180,12 @@ export default async function StipendPage() {
 
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">
         <div className="container-custom">
-          <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">Highest PG stipends</h2>
+          <SectionHead icon="trend" eyebrow="Top 25" title="Highest PG stipends" />
           <p className="mt-2 max-w-[70ch] text-muted-foreground">
             The 25 colleges paying the most in the first year, per month. Open one for its fee, seats and closing ranks.
           </p>
           <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
-            <table className="w-full min-w-[640px] text-left text-sm">
+            <table className="dt w-full min-w-[640px] text-left text-sm">
               <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
                 <tr>
                   <th scope="col" className="px-4 py-3 font-semibold">College</th>
@@ -190,7 +217,7 @@ export default async function StipendPage() {
       </section>
 
       <section className="container-custom py-10 md:py-14">
-        <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">PG stipend: common questions</h2>
+        <SectionHead icon="help" eyebrow="FAQ" title="PG stipend: common questions" />
         <div className="mt-6 space-y-3">
           {faqs.map((f) => (
             <details key={f.question} className="rounded-2xl border border-border bg-card p-5">

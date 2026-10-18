@@ -2,13 +2,15 @@ import { fitTitle, fitDescription, count } from "@/lib/seoTitle";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { notFound } from "next/navigation";
-import { Search } from "lucide-react";
 import { getPgStatePage, getPgStates } from "@/lib/pgStateQueries";
 import { getStipends } from "@/lib/cutoffHubQueries";
 import { resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
+import DataHero from "@/components/hero/DataHero";
+import HeroFacts from "@/components/hero/HeroFacts";
+import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
 /** One state's PG picture. See lib/pgStateQueries.ts for what it will and will not state. */
 
@@ -24,6 +26,7 @@ const money = (v: number | null) => {
 const span = (a: number | null, b: number | null, f: (v: number | null) => string) =>
   a == null && b == null ? "—" : a === b || b == null ? f(a) : a == null ? f(b) : `${f(a)} – ${f(b)}`;
 const OWN: Record<string, string> = { government: "Government", private: "Private", deemed: "Deemed", other: "Other" };
+const OWN_SHORT: Record<string, string> = { government: "Govt", private: "Private", deemed: "Deemed", other: "Other" };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const [p, stipends] = await Promise.all([getPgStatePage(params.slug), getStipends()]);
@@ -58,7 +61,22 @@ export default async function PgStatePage({ params }: Props) {
   const path = `/md-ms-india/states/${p.slug}`;
   const stipend = stipends.states.find((s) => s.state === p.name);
   const own = Object.entries(p.ownership).sort((a, b) => b[1] - a[1]);
-  const stateQuota = p.quotas.find((q) => !/^(AIQ|DNB|NBE|MNG|MM|AFMS|NRI)/i.test(q.quota) && !/all india/i.test(q.counselling));
+  // The state's own government quota — the one most of its candidates are in. Not in-service,
+  // sponsored, DNB, management, NRI or institutional seats, which close at different ranks
+  // (Rajasthan's first match used to be "Rajasthan DNB Inservice Seat").
+  const stateQuota = p.quotas
+    .filter(
+      (q) =>
+        !/all india/i.test(q.counselling) &&
+        !/^(AIQ|DNB|NBE|MNG|MM|AFMS|NRI)/i.test(q.quota) &&
+        !/dnb|in-?service|sponsor|management|mgmt|mgt\b|nri|institut|private|paid|minority|esi/i.test(q.quota),
+    )
+    .sort((a, b) => Number(/state|govt|government|open|general/i.test(b.quota)) - Number(/state|govt|government|open|general/i.test(a.quota)) || b.colleges - a.colleges)[0];
+  // Words from Admin → Content → Text & numbers ("Page: PG state pages"); photo from Admin → Media.
+  const [copy, heroImage] = await Promise.all([
+    pageCopy("page.pg_state.hero", { state: p.name, year: p.year ?? "the latest" }),
+    pageHeroImage(`page.pg_state.${p.slug}.hero`, "page.pg_state.hero"),
+  ]);
 
   const faqs = [
     {
@@ -114,43 +132,43 @@ export default async function PgStatePage({ params }: Props) {
         ]}
       />
 
-      <section className="relative overflow-hidden bg-slate-950">
-        <div className="ambient-blob pointer-events-none absolute -left-32 -top-40 h-[28rem] w-[28rem] opacity-50" aria-hidden="true" />
-        <div className="container-custom relative py-12 md:py-16">
-          <nav aria-label="Breadcrumb" className="mb-5 text-[13px] text-slate-400">
-            <Link href="/" className="hover:text-white">Home</Link>
-            <span className="mx-2" aria-hidden="true">/</span>
-            <Link href="/md-ms-india/states" className="hover:text-white">PG by state</Link>
-            <span className="mx-2" aria-hidden="true">/</span>
-            <span className="text-slate-200">{p.name}</span>
-          </nav>
-          <h1 className="font-heading max-w-[26ch] text-[clamp(2rem,4.2vw,3.1rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-white">
-            MD/MS in {p.name}: <span className="text-cyan-300">seats, cutoff and fees</span>
-          </h1>
-          <p className="mt-3 max-w-[66ch] text-[15px] leading-relaxed text-slate-300 md:text-base">
-            Every PG medical college in {p.name} with published NEET PG closing ranks, the counselling that fills its seats,
-            and where each quota closed{p.year ? ` in ${p.year}` : ""}.
-          </p>
-          <dl className="mt-8 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-4">
-            {[
-              { k: "PG colleges", v: n(p.colleges.length) },
-              ...own.slice(0, 2).map(([k, v]) => ({ k: OWN[k] ?? k, v: n(v) })),
-              { k: "Stipend, median / month", v: stipend ? `₹${stipend.median.toLocaleString("en-IN")}` : "—" },
-            ].map(({ k, v }) => (
-              <div key={k}>
-                <dt className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{k}</dt>
-                <dd className="tnum mt-1 text-xl font-bold text-white md:text-2xl">{v}</dd>
-              </div>
-            ))}
-          </dl>
-          <Link
-            href="/neet-college-predictor?course=pg"
-            className="mt-8 inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground shadow-glow transition-colors hover:bg-primary/90"
-          >
-            <Search className="h-4 w-4" aria-hidden="true" /> Enter your PG rank — see every seat it reaches
-          </Link>
-        </div>
-      </section>
+      <DataHero
+        crumbs={[{ label: "Home", href: "/" }, { label: "PG by state", href: "/md-ms-india/states" }, { label: p.name }]}
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        accent={copy.accent}
+        subtitle={copy.subtitle}
+        stats={[
+          { label: "PG colleges", value: n(p.colleges.length) },
+          ...own.slice(0, 2).map(([k, v]) => ({ label: OWN[k] ?? k, value: n(v) })),
+          { label: "Stipend / month", value: stipend ? `₹${stipend.median.toLocaleString("en-IN")}` : "—", note: stipend ? "median, first year" : undefined },
+        ]}
+        cta={{ label: copy.cta, href: "/neet-college-predictor?course=pg" }}
+        telegram="hero_pg_state"
+        source={copy.source}
+        image={heroImage}
+        topic="map"
+        visual={
+          <HeroFacts
+            title={`${p.name} at a glance`}
+            facts={[
+              ...own.map(([k, v]) => ({ label: `${OWN_SHORT[k] ?? k} colleges`, value: n(v) })),
+              ...(stipend?.govtMedian ? [{ label: "Govt stipend", value: `₹${stipend.govtMedian.toLocaleString("en-IN")}`, sub: "median a month, year 1" }] : []),
+              ...(stipend?.privateMedian ? [{ label: "Private stipend", value: `₹${stipend.privateMedian.toLocaleString("en-IN")}`, sub: "median a month, year 1" }] : []),
+              ...(stateQuota && p.year
+                ? [{ label: `${stateQuota.quota.slice(0, 28)}, ${p.year}`, value: `${n(stateQuota.bestR1)} – ${n(stateQuota.widest)}`, sub: "open merit, round 1 close to furthest", wide: true }]
+                : []),
+              {
+                label: "Counsellings",
+                value: p.counsellings.slice(0, 2).map((c) => c.name.replace(/\s*\(.*\)\s*$/, "")).join(" · ") || "—",
+                sub: `${p.counsellings.length > 2 ? `+${p.counsellings.length - 2} more · ` : ""}${p.branches.length} branches offered`,
+                wide: true,
+              },
+            ]}
+            footnote={`From ${p.year ?? "the latest"} published counselling results and each college's published stipend.`}
+          />
+        }
+      />
 
       {p.quotas.length > 0 && (
         <section className="container-custom py-10 md:py-14">

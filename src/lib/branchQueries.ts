@@ -220,3 +220,33 @@ export const getBranch = (slug: string, category = DEFAULT_CATEGORY) =>
     revalidate: 86400,
     tags: ["closing-ranks"],
   })();
+
+/**
+ * Where a branch is taught: colleges offering it, per state, most first — for
+ * the hero's "where the colleges are" bars. Counts of colleges, never a rank.
+ */
+async function loadBranchStates(name: string): Promise<{ state: string; slug: string; colleges: number }[]> {
+  try {
+    return rows<Record<string, unknown>>(
+      await db.execute(sql`
+        SELECT st.name AS state, st.slug, COUNT(DISTINCT so.institute_id)::int AS colleges
+          FROM seat_options so
+          JOIN courses c ON c.id = so.course_id
+          JOIN institutes i ON i.id = so.institute_id
+          JOIN states st ON st.id = i.state_id
+         WHERE so.level = 'pg' AND c.name = ${name}
+         GROUP BY st.name, st.slug
+         ORDER BY colleges DESC, st.name
+      `),
+    ).map((x) => ({ state: String(x.state), slug: String(x.slug), colleges: Number(x.colleges) }));
+  } catch (error) {
+    logError(error, { route: `branchQueries:states:${name}` });
+    return [];
+  }
+}
+
+export const getBranchStates = (name: string) =>
+  unstable_cache(() => loadBranchStates(name), ["pg-branch-states-v1", name], {
+    revalidate: 86400,
+    tags: ["closing-ranks"],
+  })();

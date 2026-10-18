@@ -195,6 +195,12 @@ export default async function RootLayout({
                 instagram: setting(settings, 'social.instagram'),
                 youtube: setting(settings, 'social.youtube'),
               }}
+              telegram={{
+                url: setting(settings, 'social.telegram'),
+                heading: setting(settings, 'telegram.card.heading'),
+                body: setting(settings, 'telegram.card.body'),
+                nudge: setting(settings, 'telegram.nudge.text'),
+              }}
               alertsEnabled={setting(settings, 'site.alert_bar_enabled', 'true') !== 'false'}
               alerts={liveAlerts.map((a) => ({ id: a.id, title: a.title, link: a.link }))}
             >

@@ -6,6 +6,9 @@ import { getMdsCourse, getMdsOverview, type MdsCut } from "@/lib/mdsQueries";
 import { resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
+import DataHero from "@/components/hero/DataHero";
+import HeroFacts from "@/components/hero/HeroFacts";
+import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
 /** One MDS speciality: its cutoff by quota and category, and where it is taught. */
 
@@ -62,6 +65,11 @@ export default async function MdsCoursePage({ params }: Props) {
     .map((o) => ({ slug: o.slug, name: `MDS ${o.course}` }));
   const path = `/neet-mds/${c.slug}`;
   const aiq = c.cuts.find((x) => x.quota === "All India" && x.category === "Open");
+  // Words from Admin → Content → Text & numbers ("Page: NEET MDS course pages"); photo from Admin → Media.
+  const [copy, heroImage] = await Promise.all([
+    pageCopy("page.neet_mds_course.hero", { course: c.course, year: c.year ?? "" }),
+    pageHeroImage(`page.neet_mds_course.${c.slug}.hero`, "page.neet_mds_course.hero"),
+  ]);
 
   const faqs = [
     ...(aiq && c.year
@@ -91,39 +99,38 @@ export default async function MdsCoursePage({ params }: Props) {
           faqPage(faqs),
         ]}
       />
-      <section className="relative overflow-hidden bg-slate-950">
-        <div className="ambient-blob pointer-events-none absolute -left-32 -top-40 h-[28rem] w-[28rem] opacity-50" aria-hidden="true" />
-        <div className="container-custom relative py-12 md:py-16">
-          <nav aria-label="Breadcrumb" className="mb-5 text-[13px] text-slate-400">
-            <Link href="/" className="hover:text-white">Home</Link>
-            <span className="mx-2" aria-hidden="true">/</span>
-            <Link href="/neet-mds-cutoff" className="hover:text-white">NEET MDS cutoff</Link>
-            <span className="mx-2" aria-hidden="true">/</span>
-            <span className="text-slate-200">{c.course}</span>
-          </nav>
-          <h1 className="font-heading max-w-[26ch] text-[clamp(2rem,4.2vw,3.1rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-white">
-            MDS {c.course}: <span className="text-cyan-300">cutoff and colleges</span>
-          </h1>
-          <p className="mt-3 max-w-[66ch] text-[15px] leading-relaxed text-slate-300 md:text-base">
-            Every quota and category MCC filled for this speciality in {c.year}, round 1 and the last rank admitted. NEET MDS All
-            India Ranks.
-          </p>
-          {aiq && (
-            <dl className="mt-8 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-3">
-              {[
-                { k: "AIQ Open, round 1 close", v: n(aiq.r1) },
-                { k: "AIQ Open, last admitted", v: n(aiq.last) },
-                { k: "Colleges", v: n(c.institutes.length) },
-              ].map(({ k, v }) => (
-                <div key={k}>
-                  <dt className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{k}</dt>
-                  <dd className="tnum mt-1 text-xl font-bold text-white md:text-2xl">{v}</dd>
-                </div>
-              ))}
-            </dl>
-          )}
-        </div>
-      </section>
+      <DataHero
+        crumbs={[{ label: "Home", href: "/" }, { label: "NEET MDS cutoff", href: "/neet-mds-cutoff" }, { label: c.course }]}
+        eyebrow={copy.eyebrow}
+        title={`MDS ${c.course}:`}
+        accent={copy.accent}
+        subtitle={copy.subtitle}
+        stats={
+          aiq
+            ? [
+                { label: "AIQ Open, round 1", value: n(aiq.r1), note: "close" },
+                { label: "AIQ Open, last", value: n(aiq.last), note: "admitted" },
+                { label: "Colleges", value: n(c.institutes.length) },
+              ]
+            : [{ label: "Colleges", value: n(c.institutes.length) }]
+        }
+        cta={{ label: copy.cta, href: "/contact" }}
+        telegram="hero_neet_mds_course"
+        source={copy.source}
+        image={heroImage}
+        topic="course"
+        visual={
+          <HeroFacts
+            title={copy.visual_title}
+            facts={[
+              { label: "Quota × category rows", value: n(c.cuts.length), sub: `filled by MCC in ${c.year}` },
+              { label: "Colleges", value: n(c.institutes.length), sub: "that allotted it" },
+              ...(aiq ? [{ label: "AIQ Open range", value: `${n(aiq.r1)} – ${n(aiq.last)}`, sub: "round 1 close to last admitted", wide: true }] : []),
+            ]}
+            footnote="NEET MDS All India Ranks from MCC's published results; a range over every college that offers it."
+          />
+        }
+      />
 
       <section className="container-custom py-10 md:py-14">
         <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">

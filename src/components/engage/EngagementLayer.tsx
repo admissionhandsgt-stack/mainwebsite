@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { ArrowRight, BellRing, CheckCircle2, Loader2, Sparkles, X } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { TelegramIcon } from "@/components/icons/TelegramIcon";
+import { useTelegram } from "@/components/engage/TelegramLink";
 import { CONTACT_INFO } from "@/lib/constants";
 import { checkRank } from "@/lib/neetLimits";
 import { checkName } from "@/lib/formRules";
@@ -140,6 +141,7 @@ export default function EngagementLayer({
   const [big, setBig] = useState<Big>(null);
   const bigRef = useRef<Big>(null);
   const [online, setOnline] = useState(true);
+  const telegram = useTelegram();
 
   // One nudge a visit: whichever claims the visit first is the only one.
   const show = useCallback((b: Exclude<Big, null>) => {
@@ -318,7 +320,7 @@ export default function EngagementLayer({
               </a>
             )}
             <a
-              href={CONTACT_INFO.telegram}
+              href={telegram.url}
               target="_blank"
               rel="noopener noreferrer"
               data-placement="alert_toast"
@@ -353,10 +355,10 @@ export default function EngagementLayer({
             <TelegramIcon className="h-3.5 w-3.5 text-[#229ED9]" /> Free counselling updates
           </p>
           <p className="mt-1.5 text-[14px] leading-snug text-foreground">
-            Round dates, results, cutoffs and choice-filling tips on the Admission Hands Telegram channel.
+            {telegram.nudge}
           </p>
           <a
-            href={CONTACT_INFO.telegram}
+            href={telegram.url}
             target="_blank"
             rel="noopener noreferrer"
             data-placement="nudge"

@@ -5,6 +5,9 @@ import { embedCode, getAllDatasets } from "@/lib/openData";
 import { getContactInfo, resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, webPage } from "@/components/seo/StructuredData";
 import CopyCode from "@/components/seo/CopyCode";
+import DataHero from "@/components/hero/DataHero";
+import HeroFacts from "@/components/hero/HeroFacts";
+import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
 /**
  * Open data — for journalists, teachers, coaching institutes and bloggers.
@@ -27,6 +30,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function OpenDataPage() {
   const [datasets, contact] = await Promise.all([getAllDatasets(), getContactInfo()]);
+  // Words from Admin → Content → Text & numbers ("Page: Open data"); photo from Admin → Media.
+  const [copy, heroImage] = await Promise.all([pageCopy("page.open_data.hero"), pageHeroImage("page.open_data.hero")]);
 
   return (
     <main className="min-h-screen bg-background">
@@ -52,32 +57,37 @@ export default async function OpenDataPage() {
         ]}
       />
 
-      <section className="relative overflow-hidden bg-slate-950">
-        <div className="ambient-blob pointer-events-none absolute -left-32 -top-40 h-[28rem] w-[28rem] opacity-50" aria-hidden="true" />
-        <div className="container-custom relative py-12 md:py-16">
-          <nav aria-label="Breadcrumb" className="mb-5 text-[13px] text-slate-400">
-            <Link href="/" className="hover:text-white">Home</Link>
-            <span className="mx-2" aria-hidden="true">/</span>
-            <span className="text-slate-200">Open data</span>
-          </nav>
-          <h1 className="font-heading max-w-[26ch] text-[clamp(2rem,4.2vw,3.1rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-white">
-            NEET counselling data, <span className="text-cyan-300">free to use</span>
-          </h1>
-          <p className="mt-3 max-w-[66ch] text-[15px] leading-relaxed text-slate-300 md:text-base">
-            Cutoffs, stipends and fees compiled from the counselling authorities&apos; published results. Download any table as
-            CSV, embed it on your site, or quote it — with a link back to the source.
-          </p>
-          <p className="mt-3 text-[13px] text-slate-400">
-            Free to use, with a link to AdmissionHands as the source.
-            {contact?.email ? (
-              <>
-                {" "}Journalists:{" "}
-                <a href={`mailto:${contact.email}`} className="font-semibold text-cyan-300 hover:underline">{contact.email}</a>
-              </>
-            ) : null}
-          </p>
-        </div>
-      </section>
+      <DataHero
+        crumbs={[{ label: "Home", href: "/" }, { label: "Open data" }]}
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        accent={copy.accent}
+        subtitle={copy.subtitle}
+        stats={[
+          { label: "Datasets", value: String(datasets.length) },
+          { label: "Formats", value: "CSV · embed", note: "and a citation" },
+          { label: "Licence", value: "Free", note: "with a link back" },
+        ]}
+        telegram="hero_open_data"
+        source={
+          contact?.email ? (
+            <>
+              {copy.source} Journalists: <a href={`mailto:${contact.email}`} className="font-semibold text-cyan-300 hover:underline">{contact.email}</a>
+            </>
+          ) : (
+            copy.source
+          )
+        }
+        image={heroImage}
+        topic="document"
+        visual={
+          <HeroFacts
+            title={copy.visual_title}
+            facts={datasets.slice(0, 6).map((d) => ({ label: d.title.replace(/\s*\(.*\)$/, ""), value: `${d.rows.length} rows`, wide: true }))}
+            footnote="Every dataset is below, with a CSV download, an embed code and a citation."
+          />
+        }
+      />
 
       <section className="container-custom py-10 md:py-14">
         <ul className="space-y-6">

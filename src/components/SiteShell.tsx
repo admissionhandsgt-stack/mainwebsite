@@ -12,6 +12,7 @@ import type { NavItem } from '@/lib/content';
 import LiveAlerts, { type BarAlert } from '@/components/LiveAlerts';
 import EngagementLayer from '@/components/engage/EngagementLayer';
 import ClickTracker from '@/components/analytics/ClickTracker';
+import { TelegramProvider, type TelegramCopy } from '@/components/engage/TelegramLink';
 
 export interface SocialLinks {
   facebook?: string;
@@ -36,6 +37,8 @@ interface SiteShellProps {
   alertsEnabled?: boolean;
   /** The active notices, read on the server. Empty means no bar and no gap for one. */
   alerts?: BarAlert[];
+  /** The Telegram channel's address and invite copy, from the admin's settings. */
+  telegram?: Partial<TelegramCopy>;
 }
 
 export default function SiteShell({
@@ -51,6 +54,7 @@ export default function SiteShell({
   social,
   alertsEnabled = true,
   alerts = [],
+  telegram,
 }: SiteShellProps) {
   const pathname = usePathname();
   const [isAdminSubdomain, setIsAdminSubdomain] = useState(false);
@@ -69,7 +73,7 @@ export default function SiteShell({
   }
 
   return (
-    <>
+    <TelegramProvider copy={telegram}>
       <Header nav={headerNav} ctaLabel={headerCtaLabel} showThemeToggle={showThemeToggle} accountName={accountName} />
       {showBar && (
         <div className="fixed top-[72px] left-0 right-0 z-[35]">
@@ -94,6 +98,6 @@ export default function SiteShell({
         resumeProfile={resumeProfile}
         alerts={showBar ? alerts : []}
       />
-    </>
+    </TelegramProvider>
   );
 }

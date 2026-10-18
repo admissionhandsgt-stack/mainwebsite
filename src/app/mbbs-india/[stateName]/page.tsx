@@ -2,12 +2,15 @@ import { fitTitle, count } from "@/lib/seoTitle";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { notFound, permanentRedirect } from "next/navigation";
-import { Landmark, Search } from "lucide-react";
+import { Landmark } from "lucide-react";
 import { getStatePage, type StatePage } from "@/lib/stateQueries";
 import { resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
+import DataHero from "@/components/hero/DataHero";
+import HeroBars from "@/components/hero/HeroBars";
+import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
 /**
  * One page per state, read on the server.
@@ -37,18 +40,17 @@ function slugOf(raw: string): string {
 
 const inr = (n: number) => n.toLocaleString("en-IN");
 
-function describe(p: StatePage) {
+/** "Kerala, All India Quota and Deemed" — who fills the seats, for the hero line's {counsellings}. */
+function bodiesOf(p: StatePage) {
   const bodies = p.counsellings.map((c) => c.name.replace(/ UG$/, "")).slice(0, 3);
-  return (
-    `${p.colleges.length} MBBS colleges in ${p.state.name}, each with its own page of NEET UG closing ranks` +
-    (bodies.length ? `. Seats are filled through ${bodies.join(", ")} counselling` : "") +
-    `. Published counselling data, not estimates.`
-  );
+  if (bodies.length <= 1) return bodies[0] ?? "the state's own";
+  return `${bodies.slice(0, -1).join(", ")} and ${bodies[bodies.length - 1]}`;
 }
 
 /** The search snippet: under ~155 characters, where Google cuts. */
 function snippet(p: StatePage) {
-  return `${p.colleges.length} MBBS colleges in ${p.state.name} with NEET UG closing ranks by quota and category, and which counselling fills each seat.`;
+  // College pages show a cutoff band, fees and seats since 2026-10-12 — never "closing ranks by quota".
+  return `${p.colleges.length} MBBS colleges in ${p.state.name}: fees, seats and the NEET UG cutoff band for each, and which counselling fills each seat.`;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -91,6 +93,11 @@ export default async function MBBSStatePage({ params }: Props) {
 
   const name = p.state.name;
   const path = `/mbbs-india/${p.state.slug}`;
+  // Words from Admin → Content → Text & numbers ("Page: MBBS state pages"); photo from Admin → Media.
+  const [copy, heroImage] = await Promise.all([
+    pageCopy("page.ug_state.hero", { state: name, count: inr(p.colleges.length), counsellings: bodiesOf(p) }),
+    pageHeroImage(`page.ug_state.${p.state.slug}.hero`, "page.ug_state.hero"),
+  ]);
   const withRanks = p.colleges.filter((c) => c.rankRows > 0).length;
   const years = p.years.length ? p.years.join(" and ") : null;
   const yearSpan =
@@ -132,7 +139,7 @@ export default async function MBBSStatePage({ params }: Props) {
             { name: "MBBS in India", path: "/mbbs-india" },
             { name: `MBBS in ${name}`, path },
           ]),
-          webPage({ name: `MBBS in ${name}`, description: describe(p), path }),
+          webPage({ name: `MBBS in ${name}`, description: snippet(p), path }),
           {
             "@context": "https://schema.org",
             "@type": "ItemList",
@@ -150,51 +157,38 @@ export default async function MBBSStatePage({ params }: Props) {
       />
 
       {/* ------------------------------- hero ------------------------------- */}
-      <section className="relative overflow-hidden bg-slate-950">
-        <div className="ambient-blob pointer-events-none absolute -left-32 -top-40 h-[28rem] w-[28rem] opacity-50" aria-hidden="true" />
-        <div className="container-custom relative py-12 md:py-16">
-          <nav aria-label="Breadcrumb" className="mb-5 text-[13px] text-slate-400">
-            <Link href="/" className="hover:text-white">
-              Home
-            </Link>
-            <span className="mx-2" aria-hidden="true">
-              /
-            </span>
-            <Link href="/mbbs-india" className="hover:text-white">
-              MBBS in India
-            </Link>
-            <span className="mx-2" aria-hidden="true">
-              /
-            </span>
-            <span className="text-slate-200">{name}</span>
-          </nav>
-          <h1 className="font-heading max-w-[24ch] text-[clamp(2rem,4.2vw,3.1rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-white">
-            MBBS in {name}: <span className="text-cyan-300">colleges and counselling</span>
-          </h1>
-          <p className="mt-3 max-w-[66ch] text-[15px] leading-relaxed text-slate-300 md:text-base">{describe(p)}</p>
-
-          <dl className="mt-8 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-4">
-            {[
-              { k: "MBBS colleges", v: inr(p.colleges.length) },
-              { k: "With closing ranks", v: inr(withRanks) },
-              { k: "Counsellings", v: inr(p.counsellings.length) },
-              { k: "Data years", v: yearSpan ?? "—" },
-            ].map(({ k, v }) => (
-              <div key={k}>
-                <dt className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{k}</dt>
-                <dd className="tnum mt-1 text-xl font-bold text-white md:text-2xl">{v}</dd>
-              </div>
-            ))}
-          </dl>
-
-          <Link
-            href="/neet-college-predictor?course=mbbs"
-            className="mt-8 inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground shadow-glow transition-colors hover:bg-primary/90"
-          >
-            <Search className="h-4 w-4" aria-hidden="true" /> Check which seats your rank reaches
-          </Link>
-        </div>
-      </section>
+      <DataHero
+        crumbs={[{ label: "Home", href: "/" }, { label: "MBBS in India", href: "/mbbs-india" }, { label: name }]}
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        accent={copy.accent}
+        subtitle={copy.subtitle}
+        stats={[
+          { label: "MBBS colleges", value: inr(p.colleges.length) },
+          { label: "With cutoff data", value: inr(withRanks) },
+          { label: "Counsellings", value: inr(p.counsellings.length) },
+          { label: "Data years", value: yearSpan ?? "—" },
+        ]}
+        cta={{ label: copy.cta, href: "/neet-college-predictor?course=mbbs" }}
+        telegram="hero_ug_state"
+        source={copy.source}
+        image={heroImage}
+        topic="map"
+        visual={
+          p.counsellings.length > 0 ? (
+            <HeroBars
+              title={copy.visual_title}
+              caption={`Colleges in ${name} each counselling allotted seats in`}
+              rows={p.counsellings.slice(0, 7).map((c) => ({
+                label: c.name,
+                value: c.colleges,
+                display: `${c.colleges} ${c.colleges === 1 ? "college" : "colleges"}`,
+                note: c.authority ?? undefined,
+              }))}
+            />
+          ) : undefined
+        }
+      />
 
       {/* --------------------------- counsellings --------------------------- */}
       {p.counsellings.length > 0 && (
@@ -232,7 +226,7 @@ export default async function MBBSStatePage({ params }: Props) {
             MBBS colleges in {name}
           </h2>
           <p className="mt-2 max-w-[66ch] text-muted-foreground">
-            Open a college for its closing ranks by quota and category, round by round.
+            Open a college for its courses, fees, seat options and its general-category cutoff band.
           </p>
           {p.colleges.length === 0 ? (
             <p className="mt-6 text-muted-foreground">No MBBS college in {name} has published closing ranks in our data yet.</p>

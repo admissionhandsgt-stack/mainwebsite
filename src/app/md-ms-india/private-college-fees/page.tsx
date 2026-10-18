@@ -6,6 +6,9 @@ import { resolveMetadata } from "@/lib/content";
 import FeeBandTable, { lakh } from "@/components/cutoffs/FeeBandTable";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
+import DataHero from "@/components/hero/DataHero";
+import HeroBars from "@/components/hero/HeroBars";
+import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
 /** "MD fees in private colleges" — by quota family, nationally and per state. See lib/pgFeeQueries.ts. */
 
@@ -27,6 +30,11 @@ export default async function PrivateFeesPage() {
   const mng = f.national.find((b) => b.family === "Management");
   const sq = f.national.find((b) => b.family === "State / government quota");
   const nri = f.national.find((b) => b.family === "NRI");
+  // Words from Admin → Content → Text & numbers ("Page: Private college PG fees"); photo from Admin → Media.
+  const [copy, heroImage] = await Promise.all([
+    pageCopy("page.private_pg_fees.hero", { year: f.year ?? "" }),
+    pageHeroImage("page.private_pg_fees.hero"),
+  ]);
 
   const faqs = [
     ...(mng
@@ -65,39 +73,38 @@ export default async function PrivateFeesPage() {
           faqPage(faqs),
         ]}
       />
-      <section className="relative overflow-hidden bg-slate-950">
-        <div className="ambient-blob pointer-events-none absolute -left-32 -top-40 h-[28rem] w-[28rem] opacity-50" aria-hidden="true" />
-        <div className="container-custom relative py-12 md:py-16">
-          <nav aria-label="Breadcrumb" className="mb-5 text-[13px] text-slate-400">
-            <Link href="/" className="hover:text-white">Home</Link>
-            <span className="mx-2" aria-hidden="true">/</span>
-            <Link href="/md-ms-india" className="hover:text-white">MD/MS in India</Link>
-            <span className="mx-2" aria-hidden="true">/</span>
-            <span className="text-slate-200">Private college fees</span>
-          </nav>
-          <h1 className="font-heading max-w-[26ch] text-[clamp(2rem,4.2vw,3.1rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-white">
-            MD/MS fees in private colleges, <span className="text-cyan-300">quota by quota</span>
-          </h1>
-          <p className="mt-3 max-w-[66ch] text-[15px] leading-relaxed text-slate-300 md:text-base">
-            The same college charges very different fees on a state-quota, management or NRI seat. Here is what each costs,
-            nationally and in every state, from the fees published with the {f.year} counselling.
-          </p>
-          {mng && (
-            <dl className="mt-8 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-3">
-              {[
-                ...(sq ? [{ k: "State quota, median / yr", v: lakh(sq.median) }] : []),
-                { k: "Management, median / yr", v: lakh(mng.median) },
-                ...(nri ? [{ k: "NRI, median / yr", v: lakh(nri.median) }] : []),
-              ].map(({ k, v }) => (
-                <div key={k}>
-                  <dt className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{k}</dt>
-                  <dd className="tnum mt-1 text-xl font-bold text-white md:text-2xl">{v}</dd>
-                </div>
-              ))}
-            </dl>
-          )}
-        </div>
-      </section>
+      <DataHero
+        crumbs={[{ label: "Home", href: "/" }, { label: "MD/MS in India", href: "/md-ms-india" }, { label: "Private college fees" }]}
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        accent={copy.accent}
+        subtitle={copy.subtitle}
+        stats={[
+          ...(sq ? [{ label: "State quota, median", value: lakh(sq.median), note: "a year" }] : []),
+          ...(mng ? [{ label: "Management, median", value: lakh(mng.median), note: "a year" }] : []),
+          ...(nri ? [{ label: "NRI, median", value: lakh(nri.median), note: "a year" }] : []),
+        ]}
+        cta={{ label: copy.cta, href: "/neet-college-predictor?course=pg" }}
+        telegram="hero_private_pg_fees"
+        source={copy.source}
+        image={heroImage}
+        topic="money"
+        visual={
+          <HeroBars
+            title={copy.visual_title}
+            caption="Median published fee a year, by quota"
+            rows={f.national
+              .filter((b) => b.median != null)
+              .map((b) => ({
+                label: b.family,
+                value: b.median ?? 0,
+                display: lakh(b.median),
+                note: `${b.colleges} colleges · most ${lakh(b.p10)} – ${lakh(b.p90)}`,
+              }))}
+            footnote="Most seats: the middle 80% of published fees, the 10th to the 90th percentile."
+          />
+        }
+      />
 
       <section className="container-custom py-10 md:py-14">
         <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">All India, private colleges</h2>

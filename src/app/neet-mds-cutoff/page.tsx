@@ -6,6 +6,9 @@ import { resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
+import DataHero from "@/components/hero/DataHero";
+import HeroBars from "@/components/hero/HeroBars";
+import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
 /** NEET MDS cutoff, speciality by speciality — for BDS graduates. See lib/mdsQueries.ts. */
 
@@ -26,6 +29,8 @@ export default async function NeetMdsCutoffPage() {
   const o = await getMdsOverview();
   const hardest = o.courses[0];
   const open = o.categories.find((c) => c.category === "Open");
+  // Words from Admin → Content → Text & numbers ("Page: NEET MDS cutoff"); photo from Admin → Media.
+  const [copy, heroImage] = await Promise.all([pageCopy("page.neet_mds.hero", { year: o.year ?? "" }), pageHeroImage("page.neet_mds.hero")]);
 
   const faqs = [
     ...(hardest && o.year
@@ -63,35 +68,33 @@ export default async function NeetMdsCutoffPage() {
           faqPage(faqs),
         ]}
       />
-      <section className="relative overflow-hidden bg-slate-950">
-        <div className="ambient-blob pointer-events-none absolute -left-32 -top-40 h-[28rem] w-[28rem] opacity-50" aria-hidden="true" />
-        <div className="container-custom relative py-12 md:py-16">
-          <nav aria-label="Breadcrumb" className="mb-5 text-[13px] text-slate-400">
-            <Link href="/" className="hover:text-white">Home</Link>
-            <span className="mx-2" aria-hidden="true">/</span>
-            <span className="text-slate-200">NEET MDS cutoff</span>
-          </nav>
-          <h1 className="font-heading max-w-[26ch] text-[clamp(2rem,4.2vw,3.1rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-white">
-            NEET MDS cutoff {o.year}: <span className="text-cyan-300">every speciality</span>
-          </h1>
-          <p className="mt-3 max-w-[66ch] text-[15px] leading-relaxed text-slate-300 md:text-base">
-            Where All India Quota and deemed-university MDS seats ran out in MCC&apos;s {o.year} counselling
-            {o.current ? `, with ${o.current.year} so far (${o.current.rounds.join(", ")})` : ""}. Ranks are NEET MDS All India Ranks.
-          </p>
-          <dl className="mt-8 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-3">
-            {[
-              { k: "Specialities", v: n(o.courses.length) },
-              { k: `Round 1 seats, ${o.year}`, v: n(o.courses.reduce((a, c) => a + c.seats, 0)) },
-              ...(open ? [{ k: "AIQ Open, last admitted", v: n(open.last) }] : []),
-            ].map(({ k, v }) => (
-              <div key={k}>
-                <dt className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{k}</dt>
-                <dd className="tnum mt-1 text-xl font-bold text-white md:text-2xl">{v}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </section>
+      <DataHero
+        crumbs={[{ label: "Home", href: "/" }, { label: "NEET MDS cutoff" }]}
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        accent={copy.accent}
+        subtitle={copy.subtitle}
+        stats={[
+          { label: "Specialities", value: n(o.courses.length) },
+          { label: `Round 1 seats, ${o.year}`, value: n(o.courses.reduce((a, c) => a + c.seats, 0)) },
+          ...(open ? [{ label: "AIQ Open, last admitted", value: n(open.last) }] : []),
+        ]}
+        cta={{ label: copy.cta, href: "/contact" }}
+        telegram="hero_neet_mds"
+        source={copy.source}
+        image={heroImage}
+        topic="course"
+        visual={
+          <HeroBars
+            title={copy.visual_title}
+            caption={`Seats allotted in round 1, ${o.year}`}
+            rows={[...o.courses]
+              .sort((a, b) => b.seats - a.seats)
+              .slice(0, 7)
+              .map((c) => ({ label: c.course, value: c.seats, display: `${c.seats} seats`, href: `/neet-mds/${c.slug}` }))}
+          />
+        }
+      />
 
       <section className="container-custom py-10 md:py-14">
         <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">MDS cutoff by speciality</h2>

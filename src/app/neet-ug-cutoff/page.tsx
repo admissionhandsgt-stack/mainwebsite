@@ -1,7 +1,10 @@
 import CiteThis from "@/components/seo/CiteThis";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
-import { Search } from "lucide-react";
+import DataHero from "@/components/hero/DataHero";
+import HeroBars from "@/components/hero/HeroBars";
+import SectionHead from "@/components/ui/SectionHead";
+import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import { getUgAiqCuts, type YearCuts } from "@/lib/cutoffHubQueries";
 import { getMbbsStates, resolveMetadata } from "@/lib/content";
 import CategoryCutTable from "@/components/cutoffs/CategoryCutTable";
@@ -59,6 +62,11 @@ export default async function NeetUgCutoffPage() {
   const bdsUr = open(bds);
   const obc = mbbs?.categories.find((c) => c.category === "OBC");
   const sc = mbbs?.categories.find((c) => c.category === "SC");
+  // Words from Admin → Content → Text & numbers ("Page: NEET UG cutoff"); photo from Admin → Media.
+  const [copy, heroImage] = await Promise.all([
+    pageCopy("page.neet_ug_cutoff.hero", { year: mbbs?.year ?? "" }),
+    pageHeroImage("page.neet_ug_cutoff.hero"),
+  ]);
 
   const faqs = [
     ...(ur && mbbs
@@ -105,50 +113,54 @@ export default async function NeetUgCutoffPage() {
         ]}
       />
 
-      <section className="relative overflow-hidden bg-slate-950">
-        <div className="ambient-blob pointer-events-none absolute -left-32 -top-40 h-[28rem] w-[28rem] opacity-50" aria-hidden="true" />
-        <div className="container-custom relative py-12 md:py-16">
-          <nav aria-label="Breadcrumb" className="mb-5 text-[13px] text-slate-400">
-            <Link href="/" className="hover:text-white">Home</Link>
-            <span className="mx-2" aria-hidden="true">/</span>
-            <span className="text-slate-200">NEET UG cutoff</span>
-          </nav>
-          <h1 className="font-heading max-w-[26ch] text-[clamp(2rem,4.2vw,3.1rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-white">
-            NEET UG cutoff {mbbs?.year}: <span className="text-cyan-300">MBBS and BDS, by category</span>
-          </h1>
-          <p className="mt-3 max-w-[66ch] text-[15px] leading-relaxed text-slate-300 md:text-base">
-            Where All India Quota seats actually ran out — the tightest round-1 close and the last rank admitted — from
-            MCC&apos;s published results. Not a prediction and not the qualifying percentile.
-          </p>
-          {ur && (
-            <dl className="mt-8 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-3">
-              {[
-                { k: `MBBS, general, last AIR ${mbbs?.year}`, v: n(ur.widest) },
-                { k: "MBBS colleges (AIQ)", v: n(ur.colleges) },
-                ...(bdsUr ? [{ k: `BDS, general, last AIR ${bds?.year}`, v: n(bdsUr.widest) }] : []),
-              ].map(({ k, v }) => (
-                <div key={k}>
-                  <dt className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{k}</dt>
-                  <dd className="tnum mt-1 text-xl font-bold text-white md:text-2xl">{v}</dd>
-                </div>
-              ))}
-            </dl>
-          )}
-          <Link
-            href="/neet-college-predictor?course=mbbs"
-            className="mt-8 inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground shadow-glow transition-colors hover:bg-primary/90"
-          >
-            <Search className="h-4 w-4" aria-hidden="true" /> Enter your rank — see every seat it reaches
-          </Link>
-        </div>
-      </section>
+      <DataHero
+        crumbs={[{ label: "Home", href: "/" }, { label: "NEET UG cutoff" }]}
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        accent={copy.accent}
+        subtitle={copy.subtitle}
+        stats={
+          ur
+            ? [
+                { label: "MBBS, general", value: `AIR ${n(ur.widest)}`, note: `last admitted, ${mbbs?.year}` },
+                { label: "MBBS colleges", value: n(ur.colleges), note: "All India Quota" },
+                ...(bdsUr ? [{ label: "BDS, general", value: `AIR ${n(bdsUr.widest)}`, note: `last admitted, ${bds?.year}` }] : []),
+              ]
+            : []
+        }
+        cta={{ label: copy.cta, href: "/neet-college-predictor?course=mbbs" }}
+        telegram="hero_neet_ug_cutoff"
+        source={copy.source}
+        image={heroImage}
+        topic="chart"
+        visual={
+          mbbs && mbbs.categories.length > 0 ? (
+            <HeroBars
+              title={copy.visual_title}
+              caption="MBBS, All India Quota, last rank admitted in any round"
+              rows={[...mbbs.categories]
+                .filter((c) => c.widest != null)
+                .sort((a, b) => (a.widest ?? 0) - (b.widest ?? 0))
+                .slice(0, 7)
+                .map((c) => ({
+                  label: c.category,
+                  value: c.widest ?? 0,
+                  display: `AIR ${n(c.widest)}`,
+                  note: `${n(c.colleges)} colleges · round 1 from AIR ${n(c.bestR1)}`,
+                }))}
+              footnote="A range over every college in the All India Quota. BDS and each state are below."
+            />
+          ) : undefined
+        }
+      />
 
       <section className="container-custom py-10 md:py-14">
-        <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">MBBS cutoff — All India Quota</h2>
-        <p className="mt-2 max-w-[70ch] text-muted-foreground">
-          The All India Quota is 15% of the seats in every state government medical college, filled by MCC on All India Rank
-          and open to candidates from any state. Ranks below are AIR.
-        </p>
+        <SectionHead
+          icon="college"
+          eyebrow="MBBS · All India Quota"
+          title="MBBS cutoff — All India Quota"
+          intro="The All India Quota is 15% of the seats in every state government medical college, filled by MCC on All India Rank and open to candidates from any state. Ranks below are AIR."
+        />
         {mbbs && <YearBlock title={`${mbbs.year}, all rounds`} y={mbbs} />}
         {mbbsLater && (
           <YearBlock
@@ -162,7 +174,7 @@ export default async function NeetUgCutoffPage() {
       {bds && (
         <section className="border-t border-border bg-surface-1 py-10 md:py-14">
           <div className="container-custom">
-            <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">BDS cutoff — All India Quota</h2>
+            <SectionHead icon="course" eyebrow="BDS · All India Quota" title="BDS cutoff — All India Quota" />
             <p className="mt-2 max-w-[70ch] text-muted-foreground">
               Government dental colleges&apos; All India Quota seats, same counselling, same rank list.{" "}
               <Link href="/bds-india" className="font-semibold text-primary-strong hover:underline">Every BDS college, by state →</Link>
@@ -173,7 +185,7 @@ export default async function NeetUgCutoffPage() {
       )}
 
       <section className="container-custom py-10 md:py-14">
-        <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">State quota cutoffs</h2>
+        <SectionHead icon="map" eyebrow="85% state quota" title="State quota cutoffs" />
         <p className="mt-2 max-w-[70ch] text-muted-foreground">
           The other 85% of government seats, and private college seats, are filled by each state on its own merit list — a
           state rank, not AIR. Open your state for its colleges and the counselling that fills them.
@@ -194,7 +206,7 @@ export default async function NeetUgCutoffPage() {
 
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">
         <div className="container-custom">
-          <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">NEET UG cutoff: common questions</h2>
+          <SectionHead icon="help" eyebrow="FAQ" title="NEET UG cutoff: common questions" />
           <div className="mt-6 space-y-3">
             {faqs.map((f) => (
               <details key={f.question} className="rounded-2xl border border-border bg-card p-5">

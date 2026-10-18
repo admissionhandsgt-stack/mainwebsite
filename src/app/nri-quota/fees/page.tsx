@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { fitTitle, fitDescription } from "@/lib/seoTitle";
 import { getQuotaOverview } from "@/lib/quotaQueries";
+import { getNriColleges } from "@/lib/nriColleges";
 import { resolveMetadata } from "@/lib/content";
 import QuotaPage from "@/components/quota/QuotaPage";
 
@@ -8,8 +9,8 @@ export const revalidate = 86400;
 
 const money = (v: number | null) => {
   if (v == null) return "—";
-  if (v >= 10000000) return `₹${(v / 10000000).toFixed(2)} crore`;
-  if (v >= 100000) return `₹${(v / 100000).toFixed(2)} lakh`;
+  if (v >= 10000000) return `₹${+(v / 10000000).toFixed(2)} crore`;
+  if (v >= 100000) return `₹${+(v / 100000).toFixed(2)} lakh`;
   return `₹${v.toLocaleString("en-IN")}`;
 };
 
@@ -40,9 +41,11 @@ export async function generateMetadata(): Promise<Metadata> {
     : "NRI Quota Medical Fees & Closing Ranks";
   const description = pg
     ? fitDescription(
-        `NRI quota MD/MS seats at ${inr(pg.colleges)} medical colleges cost ${money(pg.minFee)} to ${money(pg.maxFee)} a year (median ${money(pg.medianFee)}), with closing ranks by quota. See your chance free.`,
-        `NRI quota MD/MS seats at ${inr(pg.colleges)} medical colleges — ${money(pg.minFee)} to ${money(pg.maxFee)} a year, median ${money(pg.medianFee)}.`,
-        `NRI quota seats at ${inr(pg.colleges)} medical colleges — ${money(pg.minFee)} to ${money(pg.maxFee)} a year.`,
+        // The middle 80% of published fees, never min–max: the top is a whole-course dollar
+        // figure converted to rupees, and "₹2.84 Cr a year" described no seat (2026-10-18).
+        `NRI quota MD/MS fees at ${inr(pg.colleges)} medical colleges: most published fees run ${money(pg.p10Fee)} to ${money(pg.p90Fee)}, median ${money(pg.medianFee)}, with closing-rank ranges by quota. See your chance free.`,
+        `NRI quota MD/MS fees at ${inr(pg.colleges)} medical colleges: most run ${money(pg.p10Fee)} to ${money(pg.p90Fee)}, median ${money(pg.medianFee)}.`,
+        `NRI quota MD/MS fees at ${inr(pg.colleges)} medical colleges: median ${money(pg.medianFee)}.`,
       )
     : "NRI quota medical seats with published fees and closing ranks.";
 
@@ -63,32 +66,38 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function NriFeesPage() {
-  const [pg, ug] = await Promise.all([
+  const [pg, ug, nri] = await Promise.all([
     getQuotaOverview("nri", "pg"),
     getQuotaOverview("nri", "ug"),
+    getNriColleges(),
   ]);
+  const pgNri = nri?.streams.pg;
 
   const faqs = [
     {
       q: "How much does an NRI quota medical seat cost?",
       a: pg
-        ? `For MD/MS, published fees run from ${money(pg.minFee)} to ${money(pg.maxFee)} a year, with ${money(pg.medianFee)} in the middle. The spread is enormous because it covers state NRI quotas in government colleges at one end and deemed universities at the other — which is why the table on this page puts each college's own fee beside its own rank instead of quoting an average.`
-        : "Published fees vary by college and state; the table on this page lists each one.",
+        ? `For MD/MS, most published NRI fees run from ${money(pg.p10Fee)} to ${money(pg.p90Fee)}, and the middle seat costs about ${money(pg.medianFee)}. The extremes go further, from ${money(pg.minFee)} to ${money(pg.maxFee)}, because a state NRI quota at a private college and a deemed university's NRI seat are priced very differently. Most fee schedules quote a year's tuition, but some deemed universities quote the whole course or a dollar figure — check which one you are reading. Which colleges your rank reaches, and roughly what each costs, is shown after a free sign-in.`
+        : "Published fees vary by college and state; a counsellor can give you the current figure for the colleges you are considering.",
     },
     {
       q: "What rank do you need for an NRI quota seat?",
       a: pg
-        ? `Far less than for a government seat, which is the point of the quota. In the latest MD/MS rounds, NRI seats closed anywhere from rank ${inr(pg.bestRank)} down to ${inr(pg.widestRank)}. A large rank being enough does not make the seat cheap — the same row shows what it costs.`
+        ? `Far less than for a government seat, which is the point of the quota. In the latest MD/MS rounds, NRI seats closed anywhere from rank ${inr(pg.bestRank)} down to ${inr(pg.widestRank)}. A large rank being enough does not make the seat cheap — the NRI seats that stay open to the largest ranks are, on the whole, the dearest, so check the fee before you count one as an option.`
         : "NRI seats stay open to considerably larger ranks than the government quota.",
     },
     {
       q: "Is NRI quota available in government medical colleges?",
-      a: `Yes, in several states — an NRI quota exists inside government colleges as well as in deemed and private ones, and the fee differs sharply between them. The quota column in the table names the exact quota each seat belongs to, because "NRI" in one state is not the same seat as "NRI" in another.`,
+      // Counted, not asserted: until 2026-10-18 this said "yes, in several states" for PG,
+      // where the results we hold carry no government NRI seat at all.
+      a: pgNri
+        ? `For MD/MS, not in the results we hold: every NRI seat is at a private college (${inr(pgNri.privateCount)}) or a deemed university (${inr(pgNri.deemedCount)}). For MBBS, a state can keep NRI seats in its government colleges${nri && nri.govtNriColleges > 0 ? ` — ${nri.govtNriCounselling ? `${nri.govtNriCounselling}'s counselling` : "one state's counselling"} lists "Govt. NRI" seats at ${inr(nri.govtNriColleges)} colleges` : ""}. "NRI" in one state is not the same seat as "NRI" in another, so the quota name each authority uses is on our list of colleges with NRI seats.`
+        : `Some states keep NRI seats in government colleges; most NRI seats are at private colleges and deemed universities. "NRI" in one state is not the same seat as "NRI" in another.`,
     },
     {
       q: "Do you publish NRI fees for MBBS?",
       a: ug
-        ? `No, and deliberately. We hold ${inr(ug.seats)} MBBS seats under an NRI quota and their closing ranks, but the UG counselling source lists unlabelled fee blocks per college without saying which quota each belongs to. Any MBBS NRI fee we printed would be a guess, and a guess about a fee of this size is the most expensive kind to get wrong. The ranks are below; ask a counsellor for a fee and we will point you at the college's own notification.`
+        ? `No, and deliberately. We hold ${inr(ug.seats)} MBBS NRI seat options and their closing ranks, but the UG counselling source lists unlabelled fee blocks per college without saying which quota each belongs to. Any MBBS NRI fee we printed would be a guess, and a guess about a fee of this size is the most expensive kind to get wrong. The rank ranges by quota are below; ask a counsellor for a fee and we will point you at the college's own notification.`
         : "Not yet — the UG source does not publish a fee per quota.",
     },
     {
@@ -102,7 +111,7 @@ export default async function NriFeesPage() {
       pg={pg}
       ug={ug}
       faqs={faqs}
-      intro="Every NRI seat we hold, with the rank it closed at and the fee it carries — on the same row, because reading one without the other is how people plan around a seat they cannot afford or pay for one they did not need."
+      intro="What NRI seats cost, quota by quota and state by state, and how far down the rank list they stayed open — which of them your own rank reaches is shown after a free sign-in."
     />
   );
 }

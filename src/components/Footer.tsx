@@ -10,6 +10,7 @@ import { useContactInfo } from '@/hooks/useContactInfo';
 import { useCTA } from '@/hooks/useCTA';
 import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon';
 import { TelegramIcon } from '@/components/icons/TelegramIcon';
+import { useTelegram } from '@/components/engage/TelegramLink';
 import type { NavItem } from '@/lib/content';
 import type { SocialLinks } from './SiteShell';
 
@@ -43,6 +44,7 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
   const currentYear = new Date().getFullYear();
   const { contactInfo } = useContactInfo();
   const cta = useCTA();
+  const telegram = useTelegram();
   const phoneNumber = contactInfo?.phone_number || CONTACT_INFO.phone;
   const emailAddress = contactInfo?.email || CONTACT_INFO.email;
 
@@ -54,7 +56,7 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
     { key: 'facebook', label: 'Facebook', icon: Facebook, href: social?.facebook ?? DEFAULT_SOCIAL.facebook, color: 'hover:bg-cyan-600' },
     { key: 'instagram', label: 'Instagram', icon: Instagram, href: social?.instagram ?? DEFAULT_SOCIAL.instagram, color: 'hover:bg-emerald-600' },
     { key: 'youtube', label: 'YouTube', icon: Youtube, href: social?.youtube ?? DEFAULT_SOCIAL.youtube, color: 'hover:bg-red-600' },
-    { key: 'telegram', label: 'Telegram', icon: TelegramIcon, href: CONTACT_INFO.telegram, color: 'hover:bg-cyan-600' },
+    { key: 'telegram', label: 'Telegram', icon: TelegramIcon, href: telegram.url, color: 'hover:bg-cyan-600' },
   ].filter((s) => s.href);
   
   return (
@@ -104,7 +106,7 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
               </div>
 
               <a
-                href={CONTACT_INFO.telegram}
+                href={telegram.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-placement="footer"

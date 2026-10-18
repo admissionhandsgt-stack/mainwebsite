@@ -103,6 +103,13 @@ export interface QuotaOverview {
   minFee: number | null;
   maxFee: number | null;
   medianFee: number | null;
+  /**
+   * The middle 80% of published fees. The extremes hold slips and one-offs — a
+   * ₹1,000 management fee, a deemed university's whole-course dollar figure
+   * converted to rupees — so the range a page prints is this one, not min–max.
+   */
+  p10Fee: number | null;
+  p90Fee: number | null;
   bestRank: number | null;
   widestRank: number | null;
   year: number | null;
@@ -125,6 +132,8 @@ async function load(id: QuotaFamilyId, level: "ug" | "pg"): Promise<QuotaOvervie
                MIN(NULLIF(so.fee_inr, 0))::bigint   AS min_fee,
                MAX(NULLIF(so.fee_inr, 0))::bigint   AS max_fee,
                PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY NULLIF(so.fee_inr, 0))::bigint AS median_fee,
+               PERCENTILE_CONT(0.1) WITHIN GROUP (ORDER BY NULLIF(so.fee_inr, 0))::bigint AS p10_fee,
+               PERCENTILE_CONT(0.9) WITHIN GROUP (ORDER BY NULLIF(so.fee_inr, 0))::bigint AS p90_fee,
                MIN(so.r1_latest)::int               AS best_rank,
                MAX(so.widest_latest)::int           AS widest_rank,
                MAX(so.latest_year)::int             AS year
@@ -170,6 +179,8 @@ async function load(id: QuotaFamilyId, level: "ug" | "pg"): Promise<QuotaOvervie
       minFee: num(s.min_fee),
       maxFee: num(s.max_fee),
       medianFee: num(s.median_fee),
+      p10Fee: num(s.p10_fee),
+      p90Fee: num(s.p90_fee),
       bestRank: (s.best_rank as number) ?? null,
       widestRank: (s.widest_rank as number) ?? null,
       year: (s.year as number) ?? null,
@@ -195,7 +206,52 @@ async function load(id: QuotaFamilyId, level: "ug" | "pg"): Promise<QuotaOvervie
 }
 
 export const getQuotaOverview = (id: QuotaFamilyId, level: "ug" | "pg") =>
-  unstable_cache(() => load(id, level), ["quota-overview", id, level], {
+  unstable_cache(() => load(id, level), ["quota-overview-v2", id, level], {
+    revalidate: 86400,
+    tags: ["closing-ranks"],
+  })();
+
+/**
+ * Where one quota family's seats are, state by state: colleges, and the median
+ * published fee across that state's seats of the family. For the hero's bars —
+ * counts and a median over many seats, never a college's rank.
+ */
+export interface QuotaState {
+  state: string;
+  slug: string;
+  colleges: number;
+  medianFee: number | null;
+}
+
+async function loadStates(id: QuotaFamilyId, level: "ug" | "pg"): Promise<QuotaState[]> {
+  try {
+    return rows<Record<string, unknown>>(
+      await db.execute(sql`
+        SELECT st.name AS state, st.slug,
+               COUNT(DISTINCT so.institute_id)::int AS colleges,
+               PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY NULLIF(so.fee_inr, 0))::bigint AS median_fee
+          FROM seat_options so
+          JOIN quotas q ON q.id = so.quota_id
+          JOIN institutes i ON i.id = so.institute_id
+          JOIN states st ON st.id = i.state_id
+         WHERE so.level = ${level} AND ${familyClause(id)}
+         GROUP BY st.name, st.slug
+         ORDER BY colleges DESC, st.name
+      `),
+    ).map((x) => ({
+      state: String(x.state),
+      slug: String(x.slug),
+      colleges: Number(x.colleges),
+      medianFee: x.median_fee == null ? null : Number(x.median_fee),
+    }));
+  } catch (error) {
+    logError(error, { route: `quotaQueries:states:${id}:${level}` });
+    return [];
+  }
+}
+
+export const getQuotaStates = (id: QuotaFamilyId, level: "ug" | "pg") =>
+  unstable_cache(() => loadStates(id, level), ["quota-states-v1", id, level], {
     revalidate: 86400,
     tags: ["closing-ranks"],
   })();

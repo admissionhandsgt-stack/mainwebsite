@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
-import { Search } from "lucide-react";
 import { getOtherUgColleges, type OtherUgCollege } from "@/lib/cutoffHubQueries";
 import { resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
+import DataHero from "@/components/hero/DataHero";
+import HeroBars from "@/components/hero/HeroBars";
+import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
 /**
  * BAMS, BHMS, BUMS, BSMS — and B.Sc Nursing and BVSc — colleges with published
@@ -48,11 +50,13 @@ export default async function AyushCollegesPage() {
     byCourse.set(c.course, states);
   }
   const count = (c: string) => [...(byCourse.get(c)?.values() ?? [])].reduce((a, l) => a + l.length, 0);
+  // Words from Admin → Content → Text & numbers ("Page: AYUSH colleges"); photo from Admin → Media.
+  const [copy, heroImage] = await Promise.all([pageCopy("page.ayush.hero"), pageHeroImage("page.ayush.hero")]);
 
   const faqs = [
     {
       question: "How many BAMS and BHMS colleges are there in India?",
-      answer: `We list ${count("BAMS")} BAMS and ${count("BHMS")} BHMS colleges with published NEET UG closing ranks, each with its own page of ranks.`,
+      answer: `We list ${count("BAMS")} BAMS and ${count("BHMS")} BHMS colleges with published NEET UG closing ranks, each with its own page of courses, fees and seats.`,
     },
     {
       question: "Is admission to BAMS and BHMS through NEET?",
@@ -85,37 +89,26 @@ export default async function AyushCollegesPage() {
           faqPage(faqs),
         ]}
       />
-      <section className="relative overflow-hidden bg-slate-950">
-        <div className="ambient-blob pointer-events-none absolute -left-32 -top-40 h-[28rem] w-[28rem] opacity-50" aria-hidden="true" />
-        <div className="container-custom relative py-12 md:py-16">
-          <nav aria-label="Breadcrumb" className="mb-5 text-[13px] text-slate-400">
-            <Link href="/" className="hover:text-white">Home</Link>
-            <span className="mx-2" aria-hidden="true">/</span>
-            <span className="text-slate-200">AYUSH colleges</span>
-          </nav>
-          <h1 className="font-heading max-w-[26ch] text-[clamp(2rem,4.2vw,3.1rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-white">
-            BAMS, BHMS and <span className="text-cyan-300">AYUSH colleges in India</span>
-          </h1>
-          <p className="mt-3 max-w-[66ch] text-[15px] leading-relaxed text-slate-300 md:text-base">
-            Every Ayurveda, Homoeopathy, Unani and Siddha college — and nursing and veterinary colleges — with published NEET UG
-            closing ranks. Open a college for its ranks, quota by quota.
-          </p>
-          <dl className="mt-8 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-4">
-            {courses.slice(0, 4).map((c) => (
-              <div key={c}>
-                <dt className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{LABEL[c] ?? c}</dt>
-                <dd className="tnum mt-1 text-xl font-bold text-white md:text-2xl">{count(c)}</dd>
-              </div>
-            ))}
-          </dl>
-          <Link
-            href="/neet-college-predictor?course=mbbs"
-            className="mt-8 inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground shadow-glow transition-colors hover:bg-primary/90"
-          >
-            <Search className="h-4 w-4" aria-hidden="true" /> Check MBBS and BDS seats for your rank
-          </Link>
-        </div>
-      </section>
+      <DataHero
+        crumbs={[{ label: "Home", href: "/" }, { label: "AYUSH colleges" }]}
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        accent={copy.accent}
+        subtitle={copy.subtitle}
+        stats={courses.slice(0, 4).map((c) => ({ label: c.replace(/\s*\(.*\)$/, ""), value: String(count(c)), note: "colleges" }))}
+        cta={{ label: copy.cta, href: "/neet-college-predictor?course=mbbs" }}
+        telegram="hero_ayush"
+        source={copy.source}
+        image={heroImage}
+        topic="course"
+        visual={
+          <HeroBars
+            title={copy.visual_title}
+            caption="Colleges with published NEET UG closing ranks"
+            rows={courses.map((c) => ({ label: c, value: count(c), display: `${count(c)} colleges` }))}
+          />
+        }
+      />
 
       <section className="container-custom py-10 md:py-14">
         <ul className="mb-8 flex flex-wrap gap-2" aria-label="Courses">

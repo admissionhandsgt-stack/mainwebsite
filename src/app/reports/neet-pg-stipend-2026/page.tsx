@@ -7,6 +7,9 @@ import { getContactInfo, resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb } from "@/components/seo/StructuredData";
 import CiteThis from "@/components/seo/CiteThis";
 import CopyCode from "@/components/seo/CopyCode";
+import DataHero from "@/components/hero/DataHero";
+import HeroBars from "@/components/hero/HeroBars";
+import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
 /**
  * A press-ready report: the stipend data as a story an education desk can run.
@@ -36,6 +39,11 @@ export default async function StipendReportPage() {
   const gap = s.govtMedian && s.privateMedian ? Math.round(((s.govtMedian - s.privateMedian) / s.privateMedian) * 100) : null;
   const best = s.top[0];
   const below50k = s.states.filter((x) => x.median < 50_000).length;
+  // Words from Admin → Content → Text & numbers ("Page: Stipend report"); photo from Admin → Media.
+  const [copy, heroImage] = await Promise.all([
+    pageCopy("page.stipend_report.hero", { colleges: s.colleges.toLocaleString("en-IN"), states: s.states.length }),
+    pageHeroImage("page.stipend_report.hero"),
+  ]);
 
   const findings = [
     `The median first-year MD/MS stipend in India is ${inr(s.median)} a month, across ${s.colleges.toLocaleString("en-IN")} colleges that publish one.`,
@@ -70,39 +78,32 @@ export default async function StipendReportPage() {
           },
         ]}
       />
-      <section className="relative overflow-hidden bg-slate-950">
-        <div className="ambient-blob pointer-events-none absolute -left-32 -top-40 h-[28rem] w-[28rem] opacity-50" aria-hidden="true" />
-        <div className="container-custom relative py-12 md:py-16">
-          <nav aria-label="Breadcrumb" className="mb-5 text-[13px] text-slate-400">
-            <Link href="/" className="hover:text-white">Home</Link>
-            <span className="mx-2" aria-hidden="true">/</span>
-            <Link href="/data" className="hover:text-white">Open data</Link>
-            <span className="mx-2" aria-hidden="true">/</span>
-            <span className="text-slate-200">Stipend report</span>
-          </nav>
-          <p className="text-[12px] font-semibold uppercase tracking-wide text-cyan-300">Report · October 2026</p>
-          <h1 className="font-heading mt-2 max-w-[24ch] text-[clamp(2rem,4.2vw,3.1rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-white">
-            What a PG resident earns, <span className="text-cyan-300">state by state</span>
-          </h1>
-          <p className="mt-3 max-w-[66ch] text-[15px] leading-relaxed text-slate-300 md:text-base">
-            First-year MD/MS stipends published by {s.colleges.toLocaleString("en-IN")} medical colleges, compiled across{" "}
-            {s.states.length} states.
-          </p>
-          <dl className="mt-8 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-4">
-            {[
-              { k: "National median / month", v: inr(s.median) },
-              { k: "Government median", v: inr(s.govtMedian) },
-              { k: "Private / deemed median", v: inr(s.privateMedian) },
-              { k: "Highest state median", v: top ? inr(top.median) : "—" },
-            ].map(({ k, v }) => (
-              <div key={k}>
-                <dt className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{k}</dt>
-                <dd className="tnum mt-1 text-xl font-bold text-white md:text-2xl">{v}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </section>
+      <DataHero
+        crumbs={[{ label: "Home", href: "/" }, { label: "Open data", href: "/data" }, { label: "Stipend report" }]}
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        accent={copy.accent}
+        subtitle={copy.subtitle}
+        stats={[
+          { label: "National median", value: inr(s.median), note: "a month, first year" },
+          { label: "Government", value: inr(s.govtMedian), note: "median" },
+          { label: "Private / deemed", value: inr(s.privateMedian), note: "median" },
+          { label: "Highest state", value: top ? inr(top.median) : "—", note: top?.state },
+        ]}
+        cta={{ label: copy.cta, href: "/md-ms-india/stipend" }}
+        telegram="hero_stipend_report"
+        source={copy.source}
+        image={heroImage}
+        topic="money"
+        visual={
+          <HeroBars
+            title={copy.visual_title}
+            caption="Median first-year stipend a month"
+            rows={s.states.slice(0, 7).map((r) => ({ label: r.state, value: r.median, display: inr(r.median), note: `${r.colleges} colleges` }))}
+            footnote={low ? `Lowest: ${low.state}, ${inr(low.median)} a month.` : undefined}
+          />
+        }
+      />
 
       <section className="container-custom py-10 md:py-14">
         <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">Key findings</h2>

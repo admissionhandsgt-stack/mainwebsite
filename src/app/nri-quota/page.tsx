@@ -6,12 +6,11 @@ import NRIFees from '@/components/nri/NRIFees';
 import NRIProcess from '@/components/nri/NRIProcess';
 import NRIFAQ from '@/components/nri/NRIFAQ';
 import NRICTA from '@/components/nri/NRICTA';
-import SEO from '@/components/SEO';
 import { getMediaAsset, getBlocks, getSettings, setting, getSections, resolveMetadata } from '@/lib/content';
 import { creditOf } from '@/components/ui/PhotoCredit';
 import { getNriContent } from '@/lib/nriContent';
 import type { Metadata } from 'next';
-import StructuredData, { breadcrumb } from "@/components/seo/StructuredData";
+import StructuredData, { breadcrumb, faqPage } from "@/components/seo/StructuredData";
 
 /**
  * Metadata the admin can override per route (Admin -> Search & sharing).
@@ -28,30 +27,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const NRIQuotaPage = async () => {
-  // FAQ structured data for better SEO
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What is NRI Quota in medical admissions?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "NRI Quota is a special reservation in medical colleges for Non-Resident Indians, Persons of Indian Origin (PIOs), Overseas Citizens of India (OCIs), and their dependents. It typically offers 15% of seats across private and deemed universities."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Who is eligible for NRI Quota?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "NRIs, OCIs, PIOs, and candidates sponsored by NRIs (typically close relatives) are eligible. The candidate must have completed 10+2 with Physics, Chemistry, and Biology, and must have qualified NEET-UG."
-        }
-      }
-    ]
-  };
-
   const [nriHeroAsset, faqBlocks, s, sections, nri] = await Promise.all([
     getMediaAsset('nri_hero'),
     getBlocks('faq_nri'),
@@ -60,11 +35,13 @@ const NRIQuotaPage = async () => {
     getNriContent(),
   ]);
   const faqItems = faqBlocks.map((b) => ({ q: b.title ?? '', a: b.body ?? '' }));
+  // FAQ markup from the questions the page shows — it carried two hand-written ones that were
+  // not on the page, which structured-data guidelines do not allow (2026-10-18).
+  const faqSchema = faqPage(faqItems.filter((f) => f.q && f.a).map((f) => ({ question: f.q, answer: f.a })));
 
   return (
     <div className="flex flex-col flex-grow">
-<SEO structuredData={faqSchema} />
-      <StructuredData data={breadcrumb([{ name: "Home", path: "/" }, { name: "NRI quota", path: "/nri-quota" }])} />
+      <StructuredData data={[breadcrumb([{ name: "Home", path: "/" }, { name: "NRI quota", path: "/nri-quota" }]), ...(faqItems.length ? [faqSchema] : [])]} />
       
       <div className="flex-grow">
         {/* Order and visibility come from the admin (Page Content -> Page layout). */}

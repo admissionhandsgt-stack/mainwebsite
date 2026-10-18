@@ -1,6 +1,11 @@
 import Link from "@/components/ui/Link";
-import { AlertTriangle, ArrowRight, MapPin, Search, TrendingDown } from "lucide-react";
-import type { QuotaOverview } from "@/lib/quotaQueries";
+import { AlertTriangle, TrendingDown } from "lucide-react";
+import { getQuotaStates, type QuotaOverview } from "@/lib/quotaQueries";
+import DataHero from "@/components/hero/DataHero";
+import HeroBars from "@/components/hero/HeroBars";
+import SectionHead from "@/components/ui/SectionHead";
+import TelegramJoin from "@/components/engage/TelegramJoin";
+import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import StructuredData from "@/components/seo/StructuredData";
 import CtaBand from "@/components/ui/CtaBand";
 import SeatOverview from "@/components/seats/SeatOverview";
@@ -19,8 +24,8 @@ const inr = (v: number | null | undefined) => (v == null ? "—" : v.toLocaleStr
 
 const money = (v: number | null | undefined) => {
   if (v == null) return "—";
-  if (v >= 10000000) return `₹${(v / 10000000).toFixed(2)} Cr`;
-  if (v >= 100000) return `₹${(v / 100000).toFixed(2)} L`;
+  if (v >= 10000000) return `₹${+(v / 10000000).toFixed(2)} Cr`;
+  if (v >= 100000) return `₹${+(v / 100000).toFixed(2)} L`;
   return `₹${v.toLocaleString("en-IN")}`;
 };
 
@@ -62,6 +67,13 @@ export default async function QuotaPage({
   const primary = pg ?? ug;
   if (!primary) return null;
   const family = primary.family;
+  // Words from Admin → Content → Text & numbers ("Page: Management quota" / "Page: NRI quota fees").
+  const key = family.id === "nri" ? "page.quota_nri.hero" : "page.quota_management.hero";
+  const [copy, heroImage, states] = await Promise.all([
+    pageCopy(key, { year: pg?.year ?? ug?.year ?? "", colleges: inr(pg?.colleges ?? ug?.colleges) }),
+    pageHeroImage(key),
+    getQuotaStates(family.id, "pg"),
+  ]);
 
   return (
     <main className="min-h-screen bg-background">
@@ -93,44 +105,49 @@ export default async function QuotaPage({
       />
 
       {/* ------------------------------- hero ------------------------------- */}
-      <section className="relative overflow-hidden bg-slate-950">
-        <div className="ambient-blob pointer-events-none absolute -left-32 -top-40 h-[28rem] w-[28rem] opacity-50" aria-hidden="true" />
-        <div className="bg-grid pointer-events-none absolute inset-0 opacity-[0.07]" aria-hidden="true" />
-
-        <div className="container-custom relative py-12 md:py-16">
-          <h1 className="font-heading max-w-[24ch] text-[clamp(2rem,4.2vw,3.1rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-white">
-            {family.label} seats: the rank <em className="not-italic text-cyan-300">and</em> the fee
-          </h1>
-          <p className="mt-3 max-w-[66ch] text-[15px] leading-relaxed text-slate-300 md:text-base">
-            {intro}
-          </p>
-
-          {pg && (
-            <dl className="mt-8 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-4">
-              {[
-                { k: "PG colleges", v: inr(pg.colleges) },
-                { k: "PG seats", v: inr(pg.seats) },
-                { k: "Typical fee / yr", v: money(pg.medianFee) },
-                { k: "Fee range", v: `${money(pg.minFee)} – ${money(pg.maxFee)}` },
-              ].map(({ k, v }) => (
-                <div key={k}>
-                  <dt className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{k}</dt>
-                  <dd className="tnum font-heading mt-1 text-xl font-extrabold text-white md:text-2xl">{v}</dd>
-                </div>
-              ))}
-            </dl>
-          )}
-
-          <Link
-            href="/neet-college-predictor?course=pg"
-            className="mt-8 inline-flex items-center gap-2.5 rounded-xl bg-gradient-brand px-6 py-3.5 text-[15px] font-bold text-white shadow-glow transition-all hover:-translate-y-0.5"
-          >
-            <Search className="h-5 w-5" aria-hidden="true" />
-            Check your own rank against these
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
-          </Link>
-        </div>
-      </section>
+      <DataHero
+        crumbs={[{ label: "Home", href: "/" }, { label: family.label }]}
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        accent={copy.accent}
+        subtitle={copy.subtitle || intro}
+        stats={
+          pg
+            ? [
+                { label: "PG colleges", value: inr(pg.colleges) },
+                // COUNT(*) of seat_options: one per college, course, quota and category — not seats.
+                { label: "Seat options", value: inr(pg.seats), note: "college × course × category, not seats" },
+                { label: "Typical fee", value: money(pg.medianFee), note: "median published fee" },
+                // The middle 80%, not min–max: the extremes are a ₹1,000 slip and a whole-course
+                // dollar figure, and a range built on them describes no seat anybody is offered.
+                ...(pg.p10Fee && pg.p90Fee
+                  ? [{ label: "Most seats", value: `${money(pg.p10Fee)} – ${money(pg.p90Fee)}`, note: "middle 80% of published fees" }]
+                  : []),
+              ]
+            : []
+        }
+        cta={{ label: copy.cta, href: "/neet-college-predictor?course=pg" }}
+        telegram={`hero_quota_${family.id}`}
+        source={copy.source}
+        image={heroImage}
+        topic="money"
+        visual={
+          states.length > 0 ? (
+            <HeroBars
+              title={copy.visual_title}
+              caption={`MD/MS ${family.short} seats, colleges by state`}
+              rows={states.slice(0, 7).map((s) => ({
+                label: s.state,
+                value: s.colleges,
+                display: `${s.colleges} ${s.colleges === 1 ? "college" : "colleges"}`,
+                href: `/md-ms-india/states/${s.slug}`,
+                note: s.medianFee ? `median published fee ${money(s.medianFee)}` : undefined,
+              }))}
+              footnote={states.length > 7 ? `And ${states.length - 7} more states.` : undefined}
+            />
+          ) : undefined
+        }
+      />
 
       <div className="container-custom py-10 md:py-14">
         <p className="flex gap-3 rounded-2xl border border-signal-borderline/30 bg-signal-borderline/[0.07] px-5 py-4 text-[14px] leading-relaxed text-foreground">
@@ -146,13 +163,12 @@ export default async function QuotaPage({
         {/* ------------------------------ PG table ------------------------------ */}
         {pg && (
           <section className="mt-9">
-            <h2 className="font-heading text-xl font-bold text-foreground md:text-2xl">
-              MD/MS {family.short} seats
-            </h2>
-            <p className="mt-1.5 max-w-[72ch] text-[14px] leading-relaxed text-muted-foreground">
-              {inr(pg.seats)} seats across {inr(pg.colleges)} colleges in {pg.states} states
-              {pg.year ? `, from the ${pg.year} counselling results` : ""}.
-            </p>
+            <SectionHead
+              icon="college"
+              eyebrow={`MD/MS · ${family.short}`}
+              title={`MD/MS ${family.short} seats`}
+              intro={`${inr(pg.seats)} seat options across ${inr(pg.colleges)} colleges in ${pg.states} states${pg.year ? `, from the ${pg.year} counselling results` : ""}. A seat option is one college, course, quota and category.`}
+            />
 
             <SeatOverview
               summary={pgSummary!}
@@ -165,11 +181,9 @@ export default async function QuotaPage({
         {/* ------------------------------ UG table ------------------------------ */}
         {ug && (
           <section className="mt-12">
-            <h2 className="font-heading text-xl font-bold text-foreground md:text-2xl">
-              MBBS {family.short} seats
-            </h2>
-            <p className="mt-1.5 max-w-[74ch] text-[14px] leading-relaxed text-muted-foreground">
-              {inr(ug.seats)} seats across {inr(ug.colleges)} colleges.{" "}
+            <SectionHead icon="course" eyebrow={`MBBS · ${family.short}`} title={`MBBS ${family.short} seats`} />
+            <p className="mt-3 max-w-[74ch] text-[14px] leading-relaxed text-muted-foreground">
+              {inr(ug.seats)} seat options across {inr(ug.colleges)} colleges.{" "}
               <span className="font-semibold text-foreground">
                 We do not publish a fee for these, because the source does not.
               </span>{" "}
@@ -189,9 +203,7 @@ export default async function QuotaPage({
 
         {/* -------------------------------- faq -------------------------------- */}
         <section className="mt-12">
-          <h2 className="font-heading text-xl font-bold text-foreground md:text-2xl">
-            Common questions about {family.label.toLowerCase()} seats
-          </h2>
+          <SectionHead icon="help" eyebrow="FAQ" title={`Common questions about ${family.label.toLowerCase()} seats`} />
           <dl className="mt-5 divide-y divide-border rounded-2xl border border-border bg-card">
             {faqs.map((f) => (
               <div key={f.q} className="p-5">
@@ -211,7 +223,9 @@ export default async function QuotaPage({
             family.id === "nri"
               ? { href: "/management-quota", t: "Management quota", d: "The other paid route, and usually the cheaper one" }
               : { href: "/nri-quota/fees", t: "NRI quota", d: "Fewer seats, larger ranks, higher fees" },
-            { href: "/md-ms-india/branches", t: "Cutoffs by branch", d: "What each specialisation closed at, everywhere" },
+            family.id === "nri"
+              ? { href: "/nri-quota/colleges", t: "Colleges with NRI seats", d: "Every college that filled one, state by state" }
+              : { href: "/md-ms-india/branches", t: "Cutoffs by branch", d: "What each specialisation closed at, everywhere" },
             { href: "/neet-college-predictor?course=pg", t: "Check your rank", d: "Which of these your own rank actually reaches" },
           ].map((l) => (
             <Link
@@ -241,6 +255,7 @@ export default async function QuotaPage({
         image="/assets/images/hero/medical-admission-counselling-session.avif"
         primaryLabel="Ask a counsellor"
       />
+      <TelegramJoin placement={`quota_${family.id}`} />
     </main>
   );
 }

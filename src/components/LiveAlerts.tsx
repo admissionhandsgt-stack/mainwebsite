@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Link from "@/components/ui/Link";
 import { TelegramIcon } from "@/components/icons/TelegramIcon";
-import { CONTACT_INFO } from "@/lib/constants";
+import { useTelegram } from "@/components/engage/TelegramLink";
 
 /** One notice, as the root layout reads it on the server. */
 export interface BarAlert {
@@ -27,6 +27,7 @@ const TITLE_CLASS =
 
 export default function LiveAlerts({ alerts }: { alerts: BarAlert[] }) {
   const [isPaused, setIsPaused] = useState(false);
+  const telegram = useTelegram();
   const activeAlerts = alerts;
 
   if (activeAlerts.length === 0) {
@@ -91,7 +92,7 @@ export default function LiveAlerts({ alerts }: { alerts: BarAlert[] }) {
         {/* The channel these notices also go to — fixed width, so the bar keeps
             its 40px whatever the screen (see the layout-shift note above). */}
         <a
-          href={CONTACT_INFO.telegram}
+          href={telegram.url}
           target="_blank"
           rel="noopener noreferrer"
           data-placement="alerts_bar"

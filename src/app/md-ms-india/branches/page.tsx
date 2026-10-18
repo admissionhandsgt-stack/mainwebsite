@@ -4,6 +4,9 @@ import { getBranches } from "@/lib/branchQueries";
 import { resolveMetadata } from "@/lib/content";
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
 import CtaBand from "@/components/ui/CtaBand";
+import DataHero from "@/components/hero/DataHero";
+import HeroBars from "@/components/hero/HeroBars";
+import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
 export const revalidate = 86400;
 
@@ -29,6 +32,11 @@ const inr = (v: number | null) => (v == null ? "—" : v.toLocaleString("en-IN")
 
 export default async function BranchesPage() {
   const branches = await getBranches();
+  // Words from Admin → Content → Text & numbers ("Page: PG branches"); photo from Admin → Media.
+  const [copy, heroImage] = await Promise.all([
+    pageCopy("page.pg_branches.hero", { count: branches.length }),
+    pageHeroImage("page.pg_branches.hero"),
+  ]);
 
   return (
     <main className="min-h-screen bg-background">
@@ -47,19 +55,34 @@ export default async function BranchesPage() {
         ]}
       />
 
-      <section className="relative overflow-hidden bg-slate-950">
-        <div className="ambient-blob pointer-events-none absolute -left-32 -top-40 h-[28rem] w-[28rem] opacity-50" aria-hidden="true" />
-        <div className="bg-grid pointer-events-none absolute inset-0 opacity-[0.07]" aria-hidden="true" />
-        <div className="container-custom relative py-12 md:py-16">
-          <h1 className="font-heading max-w-[20ch] text-[clamp(2rem,4.2vw,3.1rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-white">
-            Every MD/MS branch, and what it closed at
-          </h1>
-          <p className="mt-3 max-w-[62ch] text-[15px] leading-relaxed text-slate-300 md:text-base">
-            {branches.length} branches, with the colleges offering each one and the ranks they
-            actually reached. Pick a branch to see where it is within reach.
-          </p>
-        </div>
-      </section>
+      <DataHero
+        crumbs={[{ label: "Home", href: "/" }, { label: "MD/MS in India", href: "/md-ms-india" }, { label: "Branches" }]}
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        accent={copy.accent}
+        subtitle={copy.subtitle}
+        stats={[
+          { label: "Branches", value: branches.length.toLocaleString("en-IN") },
+          { label: "Seat options", value: branches.reduce((a, b) => a + b.seats, 0).toLocaleString("en-IN"), note: "college × quota × category" },
+          { label: "Most offered", value: branches[0]?.name ?? "—", note: branches[0] ? `${branches[0].colleges} colleges` : undefined },
+        ]}
+        cta={{ label: copy.cta, href: "/neet-college-predictor?course=pg" }}
+        telegram="hero_pg_branches"
+        source={copy.source}
+        image={heroImage}
+        topic="branch"
+        visual={
+          <HeroBars
+            title={copy.visual_title}
+            caption="Colleges offering each branch"
+            rows={[...branches]
+              .sort((a, b) => b.colleges - a.colleges)
+              .slice(0, 7)
+              .map((b) => ({ label: b.name, value: b.colleges, display: `${b.colleges} colleges`, href: `/md-ms-india/branches/${b.slug}` }))}
+            footnote="Every branch is in the table below, most competitive first."
+          />
+        }
+      />
 
       <div className="container-custom py-10 md:py-14">
         <div className="overflow-x-auto rounded-2xl border border-border bg-card">
@@ -69,7 +92,7 @@ export default async function BranchesPage() {
                 {[
                   ["Branch", "w-[40%] text-left"],
                   ["Colleges", "w-[15%] text-right"],
-                  ["Seats", "w-[15%] text-right"],
+                  ["Seat options", "w-[15%] text-right"],
                   ["Best R1 (GEN)", "w-[15%] text-right"],
                   ["Widest (GEN)", "w-[15%] text-right"],
                 ].map(([h, cls]) => (

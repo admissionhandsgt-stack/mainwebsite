@@ -152,8 +152,8 @@ const Index = async () => {
     .filter((u) => u.startsWith('https://'))
     // Share-tracking parameters ("?igsh=…") are not part of a profile's address.
     .map((u) => u.split('?')[0])
-    // The Telegram channel is ours and has no admin setting (lib/constants.ts).
-    .concat(CONTACT_INFO.telegram);
+    // The Telegram channel: the admin's setting, or the shipped address.
+    .concat(/^https:\/\/(t\.me|telegram\.me)\//.test(setting(s, 'social.telegram')) ? setting(s, 'social.telegram') : CONTACT_INFO.telegram);
   const siteSchema = [
     organization({ phone: contact?.phoneNumber, email: contact?.email }, social),
     website(social),

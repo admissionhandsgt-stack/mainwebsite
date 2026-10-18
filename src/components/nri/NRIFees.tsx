@@ -1,128 +1,178 @@
-import React from 'react';
-import { Info } from 'lucide-react';
+import Link from "@/components/ui/Link";
+import { ArrowRight, Building2, Coins, FileText, Info, Landmark, RefreshCw, ShieldAlert } from "lucide-react";
+import { getNriColleges, type NriFeeSpread } from "@/lib/nriColleges";
+import { getQuotaStates } from "@/lib/quotaQueries";
+import { pageCopy } from "@/lib/pageCopy";
 
-const NRIFees = () => {
+/**
+ * The NRI page's fee section (rebuilt 2026-10-18).
+ *
+ * It was three cards of typed figures — MBBS NRI "annual tuition ₹15–25 lakh",
+ * "development fee ₹50K–1 lakh", "total ₹85 L–1.35 Cr" — for which no source
+ * existed: the UG counselling results publish no fee per quota at all. Now it
+ * shows only what was published, for MD/MS, where every NRI seat carries the
+ * college's own fee; and says plainly that MBBS is not covered, and why.
+ *
+ * Middle-80% ranges and medians, never min–max: the extremes are a whole-course
+ * dollar figure and a few non-clinical branches, and a range built on them
+ * describes no seat anybody is offered.
+ */
+
+const money = (v: number | null | undefined) => {
+  if (v == null) return "—";
+  if (v >= 10_000_000) return `₹${+(v / 10_000_000).toFixed(2)} Cr`;
+  if (v >= 100_000) return `₹${+(v / 100_000).toFixed(1)} L`;
+  return `₹${v.toLocaleString("en-IN")}`;
+};
+
+function SpreadCard({ icon: Icon, title, sub, spread }: { icon: typeof Building2; title: string; sub: string; spread?: NriFeeSpread }) {
+  if (!spread) return null;
   return (
-    <section className="py-24 relative overflow-hidden">
-      <div className="absolute inset-0 bg-slate-50/50 -z-10" />
-      <div className="container-custom">
-        <div className="text-center max-w-3xl mx-auto mb-20">
-          <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight">
-            NRI Quota <span className="gradient-text">Fee</span> Structure
-          </h2>
-          <p className="text-slate-600 text-lg font-medium leading-relaxed">
-            Understanding the investment required for securing an MBBS seat through NRI quota.
-          </p>
+    <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-6 shadow-[0_1px_2px_rgb(0_0_0/0.04),0_18px_40px_-22px_rgb(8_145_178/0.45)]">
+      <span className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-gradient-to-br from-cyan-400/25 to-teal-400/10 blur-2xl" aria-hidden="true" />
+      <div className="flex items-center gap-3">
+        <span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 to-teal-500 text-white shadow-glow" aria-hidden="true">
+          <Icon className="h-5 w-5" />
+        </span>
+        <div>
+          <h3 className="font-heading text-lg font-bold text-foreground">{title}</h3>
+          <p className="text-[13px] text-muted-foreground">{sub}</p>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-20">
-          {[
-            { 
-              title: "Government Colleges", 
-              type: "NRI Quota Seats", 
-              tuition: "₹15-25 Lakhs", 
-              hostel: "₹1-2 Lakhs", 
-              dev: "₹50K-1 Lakh", 
-              total: "₹85-1.35 Cr.", 
-              color: "bg-cyan-600",
-              note: "Regulated by respective state authorities."
-            },
-            { 
-              title: "Private Colleges", 
-              type: "NRI Quota Seats", 
-              tuition: "₹20-30 Lakhs", 
-              hostel: "₹1.5-3 Lakhs", 
-              dev: "₹1-2 Lakhs", 
-              total: "₹1.1-1.7 Cr.", 
-              color: "bg-teal-600",
-              note: "Fees vary based on location and reputation."
-            },
-            { 
-              title: "Deemed Universities", 
-              type: "NRI/Management", 
-              tuition: "₹25-40 Lakhs", 
-              hostel: "₹2-3.5 Lakhs", 
-              dev: "₹2-5 Lakhs", 
-              total: "₹1.5-2.3 Cr.", 
-              color: "bg-teal-600",
-              note: "May have additional one-time admission fees."
-            }
-          ].map((card, idx) => (
-            <div key={idx} className="glass-white rounded-[2.5rem] overflow-hidden border border-white/60 shadow-xl hover:shadow-2xl transition-all group hover:-translate-y-2">
-              <div className={`${card.color} p-8 text-white`}>
-                <h3 className="text-2xl font-black tracking-tight">{card.title}</h3>
-                <p className="text-white/70 font-bold uppercase tracking-widest text-xs mt-1">{card.type}</p>
-              </div>
-              
-              <div className="p-8 space-y-6">
-                {[
-                  { label: "Annual Tuition Fee", value: card.tuition, bold: true },
-                  { label: "Hostel & Mess", value: `${card.hostel} / yr`, bold: false },
-                  { label: "Development Fee", value: card.dev, bold: false }
-                ].map((row, rIdx) => (
-                  <div key={rIdx} className="flex justify-between items-center pb-4 border-b border-slate-100 last:border-0 last:pb-0">
-                    <span className="text-slate-500 font-medium">{row.label}</span>
-                    <span className={`text-slate-900 ${row.bold ? 'text-xl font-black' : 'font-bold'}`}>{row.value}</span>
-                  </div>
-                ))}
-                
-                <div className="pt-4 mt-2">
-                  <div className="flex justify-between items-center mb-6">
-                    <span className="text-slate-900 font-bold">Total (Approx.)</span>
-                    <span className={`text-2xl font-black ${card.color.replace('bg-', 'text-')}`}>{card.total}</span>
-                  </div>
-                  
-                  <div className="bg-slate-50 p-4 rounded-2xl flex gap-3 border border-slate-100">
-                    <Info className="h-5 w-5 text-slate-400 shrink-0 mt-0.5" />
-                    <p className="text-xs text-slate-600 font-medium leading-relaxed">
-                      {card.note}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
+      </div>
+      <dl className="mt-6 grid grid-cols-2 gap-4">
+        <div>
+          <dt className="text-[11.5px] font-bold uppercase tracking-[0.1em] text-muted-foreground">Middle NRI seat</dt>
+          <dd className="tnum font-heading mt-1 text-[1.65rem] font-extrabold leading-tight text-foreground">{money(spread.medianFee)}</dd>
+          <dd className="text-[12.5px] text-muted-foreground">median published fee</dd>
+        </div>
+        <div>
+          <dt className="text-[11.5px] font-bold uppercase tracking-[0.1em] text-muted-foreground">Most seats</dt>
+          <dd className="tnum font-heading mt-1 text-[1.15rem] font-extrabold leading-snug text-foreground">
+            {money(spread.p10Fee)} – {money(spread.p90Fee)}
+          </dd>
+          <dd className="text-[12.5px] text-muted-foreground">the middle 80% of fees</dd>
+        </div>
+      </dl>
+      <p className="tnum mt-5 border-t border-border pt-4 text-[13px] text-muted-foreground">
+        Across {spread.colleges.toLocaleString("en-IN")} colleges with NRI MD/MS seats.
+      </p>
+    </div>
+  );
+}
+
+export default async function NRIFees() {
+  const [nri, states] = await Promise.all([getNriColleges(), getQuotaStates("nri", "pg")]);
+  const pg = nri?.streams.pg;
+  const copy = await pageCopy("page.nri.fees", { pg: (pg?.colleges ?? 0).toLocaleString("en-IN"), year: nri?.year ?? "" });
+  const top = states.filter((s) => s.medianFee != null && s.colleges >= 3).slice(0, 8);
+  const max = Math.max(1, ...top.map((s) => s.medianFee ?? 0));
+
+  const points = [
+    { icon: FileText, t: copy.c1_t, d: copy.c1_d },
+    { icon: Coins, t: copy.c2_t, d: copy.c2_d },
+    { icon: RefreshCw, t: copy.c3_t, d: copy.c3_d },
+    { icon: ShieldAlert, t: copy.c4_t, d: copy.c4_d },
+  ].filter((p) => p.t);
+
+  return (
+    <section className="relative overflow-hidden py-20 md:py-24">
+      <div className="absolute inset-0 -z-10 bg-surface-1" />
+      <div className="container-custom">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-primary-strong">{copy.eyebrow}</p>
+          <h2 className="font-heading mt-2 text-3xl font-black tracking-tight text-foreground [text-wrap:balance] md:text-5xl">{copy.title}</h2>
+          <p className="mt-5 text-lg leading-relaxed text-muted-foreground">{copy.intro}</p>
         </div>
 
-        <div className="glass-white p-10 md:p-16 rounded-[3rem] border border-white/60 shadow-xl">
-          <h3 className="text-3xl font-black mb-12 text-slate-900 tracking-tight text-center">Important Fee Considerations</h3>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
-            {[
-              { 
-                title: "Currency Fluctuations", 
-                desc: "Many Institutions charge NRI quota fees in USD or other currencies. Exchange rate fluctuations can significantly impact the final amount." 
-              },
-              { 
-                title: "Payment Schedule", 
-                desc: "Most institutions require a significant portion of the fees, or even the entire annual fee, upfront at the time of admission." 
-              },
-              { 
-                title: "Additional Costs", 
-                desc: "Beyond tuition and hostel, budget for books, equipment, uniform, and exam fees, which can add up to ₹1-2 Lakhs per year." 
-              },
-              { 
-                title: "Fee Increments", 
-                desc: "Most institutions increase their fees by 5-10% annually. Factor this into your long-term financial planning." 
-              }
-            ].map((item, idx) => (
-              <div key={idx} className="flex items-start gap-5 group">
-                <div className="shrink-0 w-12 h-12 rounded-xl bg-cyan-100 flex items-center justify-center border border-cyan-200 group-hover:bg-cyan-600 group-hover:border-cyan-600 transition-all">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-cyan-600 group-hover:text-white transition-colors">
-                    <path d="M12 9V13M12 17H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-                <div>
-                  <h4 className="text-xl font-black text-slate-900 mb-2">{item.title}</h4>
-                  <p className="text-slate-600 font-medium leading-relaxed">{item.desc}</p>
-                </div>
-              </div>
-            ))}
+        {pg && (
+          <div className="mt-12 grid gap-6 md:grid-cols-2">
+            <SpreadCard icon={Building2} title="Private colleges" sub="NRI seats filled by the state counselling" spread={pg.byOwnership.private} />
+            <SpreadCard icon={Landmark} title="Deemed universities" sub="NRI seats in deemed universities" spread={pg.byOwnership.deemed} />
+          </div>
+        )}
+
+        <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+          {top.length > 0 && (
+            <div className="rounded-3xl border border-border bg-card p-6">
+              <h3 className="font-heading text-lg font-bold text-foreground">{copy.states_title}</h3>
+              <ul className="mt-5 space-y-3.5">
+                {top.map((s) => (
+                  <li key={s.slug}>
+                    <div className="flex items-baseline justify-between gap-3 text-[14px]">
+                      <Link href={`/md-ms-india/states/${s.slug}`} className="font-semibold text-foreground hover:text-primary-strong hover:underline">
+                        {s.state}
+                      </Link>
+                      <span className="tnum shrink-0 font-semibold text-foreground">
+                        {money(s.medianFee)} <span className="font-normal text-muted-foreground">· {s.colleges} colleges</span>
+                      </span>
+                    </div>
+                    <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-surface-2" aria-hidden="true">
+                      <div
+                        className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-teal-400"
+                        style={{ width: `${Math.max(4, ((s.medianFee ?? 0) / max) * 100)}%` }}
+                      />
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-5 text-[12.5px] leading-relaxed text-muted-foreground">
+                States with at least three such colleges. Median of the NRI fees published there, every MD/MS branch.
+              </p>
+            </div>
+          )}
+
+          <div className="flex flex-col gap-6">
+            <div className="rounded-3xl border border-primary/25 bg-primary-soft/60 p-6">
+              <h3 className="flex items-center gap-2 font-heading text-lg font-bold text-foreground">
+                <Info className="h-5 w-5 text-primary-strong" aria-hidden="true" />
+                {copy.mbbs_title}
+              </h3>
+              <p className="mt-3 text-[14.5px] leading-relaxed text-foreground/85">{copy.mbbs_note}</p>
+            </div>
+            <div className="grid gap-3">
+              <Link
+                href="/nri-quota/fees"
+                className="group flex items-center justify-between gap-3 rounded-2xl border border-border bg-card px-5 py-4 transition-colors hover:border-primary/50"
+              >
+                <span>
+                  <span className="font-heading block font-bold text-foreground">NRI fees, quota by quota</span>
+                  <span className="text-[13px] text-muted-foreground">Every state and counselling, with closing-rank ranges</span>
+                </span>
+                <ArrowRight className="h-5 w-5 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+              </Link>
+              <Link
+                href="/nri-quota/colleges"
+                className="group flex items-center justify-between gap-3 rounded-2xl border border-border bg-card px-5 py-4 transition-colors hover:border-primary/50"
+              >
+                <span>
+                  <span className="font-heading block font-bold text-foreground">Colleges with NRI seats</span>
+                  <span className="text-[13px] text-muted-foreground">MBBS, BDS and MD/MS, state by state</span>
+                </span>
+                <ArrowRight className="h-5 w-5 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+              </Link>
+            </div>
           </div>
         </div>
+
+        {points.length > 0 && (
+          <div className="mt-12 rounded-[2rem] border border-border bg-card p-6 md:p-10">
+            <h3 className="font-heading text-center text-2xl font-black tracking-tight text-foreground md:text-3xl">{copy.considerations_title}</h3>
+            <div className="mt-8 grid gap-6 md:grid-cols-2">
+              {points.map(({ icon: Icon, t, d }) => (
+                <div key={t} className="flex items-start gap-4">
+                  <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary-soft text-primary-strong" aria-hidden="true">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <h4 className="font-heading text-[17px] font-bold text-foreground">{t}</h4>
+                    <p className="mt-1 text-[14.5px] leading-relaxed text-muted-foreground">{d}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
-};
-
-export default NRIFees;
+}

@@ -176,6 +176,50 @@ A nested list editor was not worth building for four bullet points.
 the NRI page the eligibility tabs and the fee tables, whose markup is interleaved rather than a clean
 array.
 
+## Data pages: the hero, the copy registry, the photos (2026-10-18)
+
+Every data page (stipend, PG/UG states, branches, NEET UG/PG/SS/MDS cutoffs, BDS, AYUSH, deemed and
+private PG fees, NRI and management quota, NRI colleges, open data, the stipend report) opens with
+**`components/hero/DataHero.tsx`**: words left, a photo or a composed graphic right (topic mark, the
+`PulseLine` ECG, glows, grid), glass stat tiles, a predictor CTA and a Telegram link. The right-hand panel
+is `HeroBars` (ranked bars) or `HeroFacts` (a fact grid), built from the page's own data. Below the hero,
+`ui/SectionHead` (gradient icon + eyebrow + H2), `ui/InsightCards` and `table.dt` give the body one look.
+
+- **`.glass-hero` is the hero glass, `.glass-dark` is not.** `.glass-dark` (base.css) is a solid slate card
+  the NRI timeline, FAQ and CTA sit on light sections with. A hero version once took that name, overrode
+  it, and turned those cards into white text on near-white. Never redefine an existing utility.
+- **Words come from one registry, `lib/pageCopyDefaults.ts`** (`PAGE_COPY`: one group per page in
+  Admin → Content → Text & numbers, rows `<key>.<field>` in `site_settings`). Pages read them with
+  `pageCopy(key, tokens)` from `lib/pageCopy.ts`; `{tokens}` are the page's live figures. A blank admin value
+  falls back to the code default. **A seeded row holds the default as text and wins over the code**, so
+  changing a default does nothing until it reaches the row: put the old text in the field's `was: [...]` and
+  re-run `node --env-file=.env.local scripts/seed_page_copy.mjs` — it replaces only a row that still holds an
+  old default word for word, never an admin's edit. Run the seed after every deploy that adds groups.
+- **Photos come from Admin → Media**: `pageHeroImage("page.<x>.<slug>.hero", "page.<x>.hero")` takes the first
+  active row. The seed copies licensed photographs we already hold into those keys (a state page gets a
+  college *in that state*, credited). No stock or AI picture is ever presented as a named college.
+- **Telegram** is one setting, `social.telegram` (+ `telegram.*` copy), threaded layout → SiteShell →
+  `TelegramProvider`; `TelegramLink` / `TelegramJoin` read it. Never hard-code the channel URL.
+
+### What the 2026-10-18 pass corrected (and the rules it left)
+
+- **`/nri-quota/colleges` was invented** — eight typed cards, "AIIMS Delhi, NRI ₹15–20 L, 7 seats" among them
+  (AIIMS has no NRI quota). Now `lib/nriColleges.ts`: every college whose NRI seat a counselling actually
+  allotted (quota label says NRI), `?course=mbbs|bds|pg` with its own canonical, grouped by state in
+  `<details>` (`ui/OpenOnHash` opens the one a link points at), with the counselling that allots the seats.
+  MBBS rows under a dental-named college are dropped (`ugCourseOf`, the known misfiling).
+- **The NRI page's fee cards were invented too** (MBBS "tuition ₹15–25 L, total ₹85 L–1.35 Cr"). `NRIFees`
+  now shows MD/MS NRI fees only — private vs deemed, by state — and says MBBS publishes no fee per quota.
+- **The NRI timeline said NEET was "mandatory for most institutions"** and described applying to colleges
+  and interviews. Corrected in code and in `content_blocks` (`scripts/sql/nri_steps_2026_10_18.sql`).
+- **Fee periodicity is unknown for NRI/management fees** (`fees.fee_periodicity` is empty on every row; the
+  top NRI figure is a deemed university's whole-course dollar fee converted to rupees). Print the **middle
+  80% (p10–p90) and the median**, never min–max (the minimum is a ₹1,000 slip), and do not call a fee
+  "a year" unless the source says so. `quotaQueries` and `nriColleges` return `p10Fee`/`p90Fee`.
+- **No copy may promise a college's closing ranks.** College pages show courses, fees, seat options and a
+  general-category band (2026-10-12). "Open a college for its closing ranks", "with the rank it closed at… on
+  the same row" were on six pages and are gone. Grep for them before writing new copy.
+
 ## Site structure the admin owns
 
 Three more tables cover the parts of the site that are structure rather than prose. Each was hardcoded in

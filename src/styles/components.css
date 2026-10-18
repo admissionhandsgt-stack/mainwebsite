@@ -151,3 +151,26 @@ html {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }
+
+/* Data tables on the data pages (2026-10-18): a shaded, sticky header, quiet zebra rows and a
+   row highlight, inside the rounded card the pages already draw (`overflow-x-auto rounded-2xl
+   border`). Put `dt` on the <table>. Numbers keep `tnum`. */
+table.dt thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, hsl(var(--surface-2)), hsl(var(--surface-3)));
+  color: hsl(var(--muted-foreground));
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+table.dt tbody tr:nth-child(even) {
+  background: hsl(var(--surface-2) / 0.55);
+}
+table.dt tbody tr {
+  transition: background-color 120ms ease;
+}
+table.dt tbody tr:hover {
+  background: hsl(var(--primary-soft) / 0.7);
+}

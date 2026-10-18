@@ -6,6 +6,9 @@ import { resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
+import DataHero from "@/components/hero/DataHero";
+import HeroBars from "@/components/hero/HeroBars";
+import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
 /**
  * NEET SS cutoff, course by course — for doctors already holding an MD/MS.
@@ -33,6 +36,11 @@ export default async function NeetSsCutoffPage() {
   const cardio = s.courses.find((c) => c.course === "DM Cardiology");
   const neuroSx = s.courses.find((c) => c.course === "MCh Neuro Surgery");
   const dmCount = s.courses.filter((c) => c.course.startsWith("DM ")).reduce((a, c) => a + c.seats, 0);
+  // Words from Admin → Content → Text & numbers ("Page: NEET SS cutoff"); photo from Admin → Media.
+  const [copy, heroImage] = await Promise.all([
+    pageCopy("page.neet_ss.hero", { year: s.year ?? "", prev: s.prevYear ?? "" }),
+    pageHeroImage("page.neet_ss.hero"),
+  ]);
 
   const faqs = [
     ...(cardio
@@ -74,35 +82,34 @@ export default async function NeetSsCutoffPage() {
           faqPage(faqs),
         ]}
       />
-      <section className="relative overflow-hidden bg-slate-950">
-        <div className="ambient-blob pointer-events-none absolute -left-32 -top-40 h-[28rem] w-[28rem] opacity-50" aria-hidden="true" />
-        <div className="container-custom relative py-12 md:py-16">
-          <nav aria-label="Breadcrumb" className="mb-5 text-[13px] text-slate-400">
-            <Link href="/" className="hover:text-white">Home</Link>
-            <span className="mx-2" aria-hidden="true">/</span>
-            <span className="text-slate-200">NEET SS cutoff</span>
-          </nav>
-          <h1 className="font-heading max-w-[26ch] text-[clamp(2rem,4.2vw,3.1rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-white">
-            NEET SS cutoff {s.year}: <span className="text-cyan-300">DM, MCh and DrNB</span>
-          </h1>
-          <p className="mt-3 max-w-[66ch] text-[15px] leading-relaxed text-slate-300 md:text-base">
-            Where every super-speciality course closed in MCC&apos;s {s.year} counselling — round 1 and the last rank admitted,
-            with {s.prevYear} beside it. Ranks are group ranks.
-          </p>
-          <dl className="mt-8 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-3">
-            {[
-              { k: "Courses", v: n(s.courses.length) },
-              { k: "Seats, round 1", v: n(totalSeats) },
-              { k: "Groups", v: n(groups.size) },
-            ].map(({ k, v }) => (
-              <div key={k}>
-                <dt className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{k}</dt>
-                <dd className="tnum mt-1 text-xl font-bold text-white md:text-2xl">{v}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </section>
+      <DataHero
+        crumbs={[{ label: "Home", href: "/" }, { label: "NEET SS cutoff" }]}
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        accent={copy.accent}
+        subtitle={copy.subtitle}
+        stats={[
+          { label: "Courses", value: n(s.courses.length) },
+          { label: "Seats, round 1", value: n(totalSeats), note: `allotted, ${s.year}` },
+          { label: "Groups", value: n(groups.size) },
+        ]}
+        cta={{ label: copy.cta, href: "/contact" }}
+        telegram="hero_neet_ss"
+        source={copy.source}
+        image={heroImage}
+        topic="branch"
+        visual={
+          <HeroBars
+            title={copy.visual_title}
+            caption={`Seats allotted in round 1, ${s.year}`}
+            rows={[...s.courses]
+              .sort((a, b) => b.seats - a.seats)
+              .slice(0, 7)
+              .map((c) => ({ label: c.course, value: c.seats, display: `${c.seats} seats`, href: `/neet-ss/${c.slug}`, note: `${c.colleges} institutes` }))}
+            footnote="Every course is in the tables below, group by group."
+          />
+        }
+      />
 
       <section className="container-custom py-10 md:py-14">
         <p className="mb-6 max-w-[72ch] text-[13px] text-muted-foreground">

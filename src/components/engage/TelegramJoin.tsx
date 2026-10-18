@@ -1,12 +1,16 @@
+"use client";
+
 import React from "react";
 import { TelegramIcon } from "@/components/icons/TelegramIcon";
-import { CONTACT_INFO } from "@/lib/constants";
+import TelegramLink, { useTelegram } from "@/components/engage/TelegramLink";
 import { cn } from "@/lib/utils";
 
 /**
  * "Counselling updates on Telegram" — the invite to the public channel
  * (2026-10-17, owner's request). One component for every page that carries it,
- * so the words and the link cannot drift apart.
+ * so the words and the link cannot drift apart. Its heading and line come from
+ * the admin (`telegram.card.heading`, `telegram.card.body` — see TelegramLink);
+ * a page may still pass its own.
  *
  * It is the page's secondary action, never its first: it sits after the lead
  * form or the counsellor block, and its button is quieter than theirs. Clicks
@@ -15,15 +19,13 @@ import { cn } from "@/lib/utils";
  *
  *   <TelegramJoin placement="neet_pg_cutoff" />          a band in its own container
  *   <TelegramJoin placement="college_pg" bare />         inside a column that already has one
- *
- * No hooks, so server pages and client components can both render it.
  */
 export default function TelegramJoin({
   placement,
   bare = false,
   stacked = false,
-  heading = "Counselling updates on Telegram",
-  body = "Round dates, allotment results, cutoffs and choice-filling tips, as they come out.",
+  heading,
+  body,
   className,
 }: {
   /** Which copy of the invite this is, for the click event. */
@@ -36,6 +38,7 @@ export default function TelegramJoin({
   body?: string;
   className?: string;
 }) {
+  const copy = useTelegram();
   const box = (
     <div
       className={cn(
@@ -52,22 +55,19 @@ export default function TelegramJoin({
       <div className="min-w-0 flex-1">
         <p className="text-[11.5px] font-bold uppercase tracking-wide text-primary-strong">Telegram channel · free to join</p>
         <h2 className="font-heading mt-1 text-lg font-bold leading-snug text-foreground [text-wrap:balance] md:text-xl">
-          {heading}
+          {heading ?? copy.heading}
         </h2>
-        <p className="mt-1 max-w-[68ch] text-[14px] leading-relaxed text-muted-foreground">{body}</p>
+        <p className="mt-1 max-w-[68ch] text-[14px] leading-relaxed text-muted-foreground">{body ?? copy.body}</p>
       </div>
-      <a
-        href={CONTACT_INFO.telegram}
-        target="_blank"
-        rel="noopener noreferrer"
-        data-placement={placement}
+      <TelegramLink
+        placement={placement}
         className={cn(
           "inline-flex min-h-12 shrink-0 items-center justify-center gap-2 self-start rounded-xl bg-primary-strong px-5 text-[15px] font-bold text-white transition-colors hover:bg-primary-strong/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 dark:bg-primary dark:text-primary-foreground",
           !stacked && "sm:self-center",
         )}
       >
-        <TelegramIcon size={18} /> Join on Telegram
-      </a>
+        Join on Telegram
+      </TelegramLink>
     </div>
   );
 

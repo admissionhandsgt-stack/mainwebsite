@@ -4,6 +4,13 @@ import { getPgStates } from "@/lib/pgStateQueries";
 import { getStipends } from "@/lib/cutoffHubQueries";
 import { resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, webPage } from "@/components/seo/StructuredData";
+import DataHero from "@/components/hero/DataHero";
+import HeroBars from "@/components/hero/HeroBars";
+import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
+import { ArrowRight, Building2, Landmark, MapPinned } from "lucide-react";
+import SectionHead from "@/components/ui/SectionHead";
+import LeadCapture from "@/components/lead/LeadCapture";
+import TelegramJoin from "@/components/engage/TelegramJoin";
 
 /** Index of the PG state pages — and the link that makes them reachable. */
 
@@ -22,6 +29,12 @@ export default async function PgStatesIndex() {
   const [states, stipends] = await Promise.all([getPgStates(), getStipends()]);
   const stipendOf = new Map(stipends.states.map((s) => [s.state, s.median]));
   const total = states.reduce((a, s) => a + s.colleges, 0);
+  const topStipend = stipends.states[0];
+  // Words from Admin → Content → Text & numbers ("Page: PG states"); photo from Admin → Media.
+  const [copy, heroImage] = await Promise.all([
+    pageCopy("page.pg_states.hero", { colleges: total.toLocaleString("en-IN"), states: states.length }),
+    pageHeroImage("page.pg_states.hero"),
+  ]);
 
   return (
     <main className="min-h-screen bg-background">
@@ -35,36 +48,107 @@ export default async function PgStatesIndex() {
           webPage({ name: "PG medical seats by state", description: "MD/MS colleges, cutoffs and fees in every state.", path: PATH }),
         ]}
       />
-      <section className="relative overflow-hidden bg-slate-950">
-        <div className="ambient-blob pointer-events-none absolute -left-32 -top-40 h-[28rem] w-[28rem] opacity-50" aria-hidden="true" />
-        <div className="container-custom relative py-12 md:py-16">
-          <h1 className="font-heading max-w-[26ch] text-[clamp(2rem,4.2vw,3.1rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-white">
-            PG medical seats, <span className="text-cyan-300">state by state</span>
-          </h1>
-          <p className="mt-3 max-w-[66ch] text-[15px] leading-relaxed text-slate-300 md:text-base">
-            {total.toLocaleString("en-IN")} PG colleges across {states.length} states and union territories. Open one for its
-            quotas, cutoffs, fees, branches and stipend.
-          </p>
+      <DataHero
+        crumbs={[{ label: "Home", href: "/" }, { label: "MD/MS in India", href: "/md-ms-india" }, { label: "PG by state" }]}
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        accent={copy.accent}
+        subtitle={copy.subtitle}
+        stats={[
+          { label: "PG colleges", value: total.toLocaleString("en-IN") },
+          { label: "States & UTs", value: String(states.length) },
+          ...(topStipend ? [{ label: "Highest stipend", value: `₹${topStipend.median.toLocaleString("en-IN")}`, note: `${topStipend.state}, median / month` }] : []),
+        ]}
+        cta={{ label: copy.cta, href: "/neet-college-predictor?course=pg" }}
+        telegram="hero_pg_states"
+        source={copy.source}
+        image={heroImage}
+        topic="map"
+        visual={
+          <HeroBars
+            title={copy.visual_title}
+            caption="PG colleges with published NEET PG closing ranks"
+            rows={[...states]
+              .sort((a, b) => b.colleges - a.colleges)
+              .slice(0, 7)
+              .map((s) => ({
+                label: s.name,
+                value: s.colleges,
+                display: `${s.colleges} colleges`,
+                href: `${PATH}/${s.slug}`,
+                note: stipendOf.get(s.name) ? `stipend ₹${stipendOf.get(s.name)!.toLocaleString("en-IN")}/month` : undefined,
+              }))}
+          />
+        }
+      />
+      {/* How the seats are filled — words from the admin, so a counsellor can correct them. */}
+      <section className="container-custom relative z-10 -mt-8">
+        <div className="rounded-3xl border border-border bg-card p-6 shadow-[0_1px_2px_rgb(0_0_0/0.04),0_16px_40px_-20px_rgb(8_145_178/0.35)] md:p-8">
+          <SectionHead icon="route" eyebrow="Before you pick a state" title={copy.how_title} />
+          <ul className="mt-6 grid gap-4 md:grid-cols-3">
+            {[
+              { Icon: Landmark, t: "All India Quota · MCC", d: copy.how_aiq },
+              { Icon: MapPinned, t: "State quota · the state", d: copy.how_state },
+              { Icon: Building2, t: "Deemed & central · MCC", d: copy.how_deemed },
+            ].map(({ Icon, t, d }) => (
+              <li key={t} className="rounded-2xl border border-border bg-surface-2 p-5">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-soft text-primary-strong" aria-hidden="true">
+                  <Icon className="h-5 w-5" />
+                </span>
+                <p className="font-heading mt-3 text-[15px] font-bold text-foreground">{t}</p>
+                <p className="mt-1.5 text-[14px] leading-relaxed text-muted-foreground">{d}</p>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
+
       <section className="container-custom py-10 md:py-14">
-        <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-          {states.map((s) => (
-            <li key={s.slug}>
-              <Link
-                href={`${PATH}/${s.slug}`}
-                className="flex items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3 transition-colors hover:border-primary"
-              >
-                <span className="font-semibold text-foreground">PG in {s.name}</span>
-                <span className="tnum shrink-0 text-right text-[12px] text-muted-foreground">
-                  {s.colleges} colleges
-                  {stipendOf.get(s.name) ? <span className="block">₹{stipendOf.get(s.name)!.toLocaleString("en-IN")}/mo stipend</span> : null}
-                </span>
-              </Link>
-            </li>
-          ))}
+        <SectionHead icon="map" eyebrow={`${states.length} states and UTs`} title="Pick a state" intro="Most PG colleges first. Each page has the state's quotas and where they closed, its fees, branches and stipend." />
+        <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {[...states]
+            .sort((a, b) => b.colleges - a.colleges)
+            .map((s) => (
+              <li key={s.slug}>
+                <Link
+                  href={`${PATH}/${s.slug}`}
+                  className="group flex items-center gap-4 rounded-2xl border border-border bg-card p-4 transition-all hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-[0_12px_28px_-16px_rgb(8_145_178/0.55)]"
+                >
+                  <span
+                    className="font-heading inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-teal-500 text-[13px] font-extrabold text-white"
+                    aria-hidden="true"
+                  >
+                    {s.name
+                      .split(/\s+/)
+                      .filter((w) => !/^(and|of)$/i.test(w))
+                      .map((w) => w[0])
+                      .join("")
+                      .slice(0, 2)
+                      .toUpperCase()}
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate font-heading text-[15px] font-bold text-foreground group-hover:text-primary-strong">
+                      PG in {s.name}
+                    </span>
+                    <span className="tnum mt-0.5 block text-[12.5px] text-muted-foreground">
+                      {s.colleges} colleges
+                      {stipendOf.get(s.name) ? ` · ₹${stipendOf.get(s.name)!.toLocaleString("en-IN")}/month stipend` : ""}
+                    </span>
+                  </span>
+                  <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary" aria-hidden="true" />
+                </Link>
+              </li>
+            ))}
         </ul>
       </section>
+
+      <LeadCapture
+        level="pg"
+        source="PG states index"
+        title="Not sure which state's counselling to bet on?"
+        body="A counsellor weighs your domicile, the All India Quota and each state's own round against your rank and budget — and tells you where to put your effort."
+      />
+      <TelegramJoin placement="pg_states" />
     </main>
   );
 }

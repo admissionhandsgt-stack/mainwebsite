@@ -8,8 +8,8 @@ export const revalidate = 86400;
 
 const money = (v: number | null) => {
   if (v == null) return "—";
-  if (v >= 10000000) return `₹${(v / 10000000).toFixed(2)} crore`;
-  if (v >= 100000) return `₹${(v / 100000).toFixed(2)} lakh`;
+  if (v >= 10000000) return `₹${+(v / 10000000).toFixed(2)} crore`;
+  if (v >= 100000) return `₹${+(v / 100000).toFixed(2)} lakh`;
   return `₹${v.toLocaleString("en-IN")}`;
 };
 
@@ -39,8 +39,8 @@ export async function generateMetadata(): Promise<Metadata> {
     // The median, not the minimum: the cheapest published management fee is a
     // ₹1,000 slip, and a headline built on it would mislead.
     ? fitDescription(
-        `MD/MS management quota fees at ${inr(pg.colleges)} medical colleges in ${pg.states} states: median ${money(pg.medianFee)} a year, with how far each quota's closing ranks reach. See your chance free.`,
-        `Management quota MD/MS seats at ${inr(pg.colleges)} medical colleges — median ${money(pg.medianFee)} a year, with closing ranks.`,
+        `MD/MS management quota fees at ${inr(pg.colleges)} medical colleges in ${pg.states} states: median published fee ${money(pg.medianFee)}, most ${money(pg.p10Fee)} to ${money(pg.p90Fee)}, with how far each quota's closing ranks reach. See your chance free.`,
+        `Management quota MD/MS seats at ${inr(pg.colleges)} medical colleges: median published fee ${money(pg.medianFee)}, with closing-rank ranges.`,
       )
     : "Management quota medical seats with published fees and closing ranks.";
 
@@ -70,23 +70,23 @@ export default async function ManagementQuotaPage() {
     {
       q: "How much does a management quota medical seat cost?",
       a: pg
-        ? `For MD/MS, published fees run from ${money(pg.minFee)} to ${money(pg.maxFee)} a year, with ${money(pg.medianFee)} in the middle. A single average would be meaningless across that range, so the table lists each college's own published fee against its own closing rank.`
-        : "Published fees vary widely by college and state; the table on this page lists each one.",
+        ? `For MD/MS, most published management fees run from ${money(pg.p10Fee)} to ${money(pg.p90Fee)}, and the middle seat costs about ${money(pg.medianFee)}. Most fee schedules quote a year's tuition, but some quote the whole course — check which one you are reading. Which colleges your rank reaches, and roughly what each costs, is shown after a free sign-in.`
+        : "Published fees vary widely by college and state; a counsellor can give you the current figure for the colleges you are considering.",
     },
     {
       q: "What rank is needed for a management quota seat?",
       a: pg
-        ? `Management seats closed anywhere from rank ${inr(pg.bestRank)} to ${inr(pg.widestRank)} in the latest MD/MS rounds — they stay open long after the government quota at the same college has closed. That is exactly why the fee belongs on the same row: the seats still open at the largest ranks are the most expensive ones.`
+        ? `Management seats closed anywhere from rank ${inr(pg.bestRank)} to ${inr(pg.widestRank)} in the latest MD/MS rounds — they stay open long after the government quota at the same college has closed. Seats that stay open to larger ranks tend to cost more (the median fee in the widest-reaching quarter of management seats is well above the tightest quarter's), so check the fee before counting one as an option.`
         : "Management seats stay open to considerably larger ranks than the government quota.",
     },
     {
       q: "Is management quota the same as a private college seat?",
-      a: "No. A private college usually has several kinds of seat — a government or state quota at a controlled fee, a management quota at the college's own fee, and sometimes an NRI quota above that. The same college can therefore appear at three very different prices, and the quota column is what tells them apart.",
+      a: "No. A private college usually has several kinds of seat — a government or state quota at a controlled fee, a management quota at the college's own fee, and sometimes an NRI quota above that. The same college can therefore appear at three very different prices, and the quota name in the counselling's seat matrix is what tells them apart.",
     },
     {
       q: "Do you publish management quota fees for MBBS?",
       a: ug
-        ? `No. We hold ${inr(ug.seats)} MBBS seats under a management quota and their closing ranks, but the UG counselling source publishes unlabelled fee blocks per college without saying which quota each belongs to. Printing one as a management fee would be a guess. The ranks are below.`
+        ? `No. We hold ${inr(ug.seats)} MBBS management seat options and their closing ranks, but the UG counselling source publishes unlabelled fee blocks per college without saying which quota each belongs to. Printing one as a management fee would be a guess. The rank ranges by quota are below.`
         : "Not yet — the UG source does not publish a fee per quota.",
     },
     {
@@ -100,7 +100,7 @@ export default async function ManagementQuotaPage() {
       pg={pg}
       ug={ug}
       faqs={faqs}
-      intro="Every management seat we hold, with the rank it closed at and the fee it carries — on the same row, because the seats that stay open at the largest ranks are the ones that cost the most, and reading those two facts apart is how people commit to a fee they did not need to pay."
+      intro="What management seats cost, quota by quota and state by state, and how far down the rank list they stayed open — which of them your own rank reaches is shown after a free sign-in."
     />
   );
 }

@@ -2,13 +2,15 @@ import CiteThis from "@/components/seo/CiteThis";
 import type { Metadata } from "next";
 import { fitTitle, fitDescription } from "@/lib/seoTitle";
 import Link from "@/components/ui/Link";
-import { Search } from "lucide-react";
 import { getBdsColleges, getUgAiqCuts, type YearCuts } from "@/lib/cutoffHubQueries";
 import { resolveMetadata } from "@/lib/content";
 import CategoryCutTable from "@/components/cutoffs/CategoryCutTable";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
+import DataHero from "@/components/hero/DataHero";
+import HeroBars from "@/components/hero/HeroBars";
+import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
 /**
  * BDS had 326 colleges and 3,244 seat options in the data, and no page — the
@@ -58,6 +60,8 @@ export default async function BdsPage() {
     byState.set(k, [...(byState.get(k) ?? []), c]);
   }
   const states = [...byState.entries()].sort((a, b) => b[1].length - a[1].length);
+  // Words from Admin → Content → Text & numbers ("Page: BDS colleges"); photo from Admin → Media.
+  const [copy, heroImage] = await Promise.all([pageCopy("page.bds.hero", { year: year?.year ?? "" }), pageHeroImage("page.bds.hero")]);
 
   const faqs = [
     {
@@ -109,41 +113,35 @@ export default async function BdsPage() {
         ]}
       />
 
-      <section className="relative overflow-hidden bg-slate-950">
-        <div className="ambient-blob pointer-events-none absolute -left-32 -top-40 h-[28rem] w-[28rem] opacity-50" aria-hidden="true" />
-        <div className="container-custom relative py-12 md:py-16">
-          <nav aria-label="Breadcrumb" className="mb-5 text-[13px] text-slate-400">
-            <Link href="/" className="hover:text-white">Home</Link>
-            <span className="mx-2" aria-hidden="true">/</span>
-            <span className="text-slate-200">BDS in India</span>
-          </nav>
-          <h1 className="font-heading max-w-[26ch] text-[clamp(2rem,4.2vw,3.1rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-white">
-            BDS colleges in India: <span className="text-cyan-300">cutoff and counselling</span>
-          </h1>
-          <p className="mt-3 max-w-[66ch] text-[15px] leading-relaxed text-slate-300 md:text-base">
-            Every dental college with published NEET closing ranks, state by state — and where All India Quota BDS seats ran out
-            in each category.
-          </p>
-          <dl className="mt-8 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-3">
-            {[
-              { k: "BDS colleges", v: n(colleges.length) },
-              { k: "States", v: n(states.length) },
-              ...(ur ? [{ k: `General, last AIR ${year?.year}`, v: n(ur.widest) }] : []),
-            ].map(({ k, v }) => (
-              <div key={k}>
-                <dt className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{k}</dt>
-                <dd className="tnum mt-1 text-xl font-bold text-white md:text-2xl">{v}</dd>
-              </div>
-            ))}
-          </dl>
-          <Link
-            href="/neet-college-predictor?course=bds"
-            className="mt-8 inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground shadow-glow transition-colors hover:bg-primary/90"
-          >
-            <Search className="h-4 w-4" aria-hidden="true" /> Check which BDS seats your rank reaches
-          </Link>
-        </div>
-      </section>
+      <DataHero
+        crumbs={[{ label: "Home", href: "/" }, { label: "BDS in India" }]}
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        accent={copy.accent}
+        subtitle={copy.subtitle}
+        stats={[
+          { label: "BDS colleges", value: n(colleges.length) },
+          { label: "States", value: n(states.length) },
+          ...(ur ? [{ label: "General, last AIR", value: n(ur.widest), note: `All India Quota, ${year?.year}` }] : []),
+        ]}
+        cta={{ label: copy.cta, href: "/neet-college-predictor?course=bds" }}
+        telegram="hero_bds"
+        source={copy.source}
+        image={heroImage}
+        topic="course"
+        visual={
+          <HeroBars
+            title={copy.visual_title}
+            caption="Dental colleges with published NEET closing ranks"
+            rows={states.slice(0, 7).map(([state, list]) => ({
+              label: state,
+              value: list.length,
+              display: `${list.length} ${list.length === 1 ? "college" : "colleges"}`,
+            }))}
+            footnote={states.length > 7 ? `And ${states.length - 7} more states — every college is listed below.` : undefined}
+          />
+        }
+      />
 
       {year && (
         <section className="container-custom py-10 md:py-14">
@@ -163,7 +161,7 @@ export default async function BdsPage() {
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">
         <div className="container-custom">
           <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">BDS colleges, state by state</h2>
-          <p className="mt-2 max-w-[70ch] text-muted-foreground">Open a college for its closing ranks by quota and category.</p>
+          <p className="mt-2 max-w-[70ch] text-muted-foreground">Open a college for its fees, seat options and its general-category cutoff band.</p>
           <div className="mt-6 space-y-8">
             {states.map(([state, list]) => (
               <div key={state}>

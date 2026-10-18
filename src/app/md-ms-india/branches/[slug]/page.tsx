@@ -3,8 +3,13 @@ import { OG_IMAGE } from "@/lib/ogImage";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { notFound } from "next/navigation";
-import { AlertTriangle, ArrowRight, Building2, MapPin, Search, TrendingDown } from "lucide-react";
-import { getBranch, getBranches, DEFAULT_CATEGORY } from "@/lib/branchQueries";
+import { AlertTriangle, Building2, TrendingDown } from "lucide-react";
+import { getBranch, getBranches, getBranchStates, DEFAULT_CATEGORY } from "@/lib/branchQueries";
+import DataHero from "@/components/hero/DataHero";
+import HeroBars from "@/components/hero/HeroBars";
+import TelegramJoin from "@/components/engage/TelegramJoin";
+import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
+import { branchImage } from "@/lib/branchImage";
 import StructuredData from "@/components/seo/StructuredData";
 import CtaBand from "@/components/ui/CtaBand";
 import SeatOverview from "@/components/seats/SeatOverview";
@@ -70,9 +75,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     `${b.name} Cutoff${y}`,
   );
   const description = fitDescription(
-    `${b.name} closing rank${y}: ${inr(b.seats)} seats in ${inr(b.colleges)} colleges across ${b.states} states — quota by quota and category by category, with fees and stipend. Published counselling results.`,
-    `${b.name} closing rank${y}: ${inr(b.seats)} seats in ${inr(b.colleges)} colleges across ${b.states} states, by quota and category, with fees.`,
-    `${b.name} closing ranks across ${inr(b.colleges)} colleges, by quota and category. ${inr(b.seats)} seats.`,
+    // "Seats" here used to print the number of seat options (college × quota × category),
+    // which is not a count of seats. Colleges and states are.
+    `${b.name} closing rank${y}: ${inr(b.colleges)} colleges across ${b.states} states — quota by quota and category by category, with fees and stipend. Published counselling results.`,
+    `${b.name} closing rank${y}: ${inr(b.colleges)} colleges across ${b.states} states, by quota and category, with fees.`,
+    `${b.name} closing ranks across ${inr(b.colleges)} colleges, by quota and category.`,
   );
 
   return {
@@ -102,6 +109,13 @@ export default async function BranchPage({
 
   // Aggregates only — the per-college rows stay on the server (lib/depth.ts).
   const summary = summariseSeats(b.rowsList);
+  // Words from Admin → Content → Text & numbers ("Page: PG branch pages"); photo from Admin → Media.
+  const [where, copy, heroImage] = await Promise.all([
+    getBranchStates(b.name),
+    pageCopy("page.pg_branch.hero", { branch: b.name, year: b.year ?? "the latest" }),
+    // The admin's photo for this branch, else the specialty's picture from Admin → PG branches.
+    pageHeroImage(`page.pg_branch.${b.slug}.hero`).then((img) => img ?? branchImage(b.name)),
+  ]);
 
   const faqs = [
     {
@@ -114,8 +128,8 @@ export default async function BranchPage({
         `your counsellor takes you through the seat-by-seat detail.`,
     },
     {
-      q: `How many ${b.name} seats are there?`,
-      a: `${inr(b.seats)} seats across ${inr(b.colleges)} colleges in ${b.states} states, counted from the published seat matrix${b.year ? ` for ${b.year}` : ""}.`,
+      q: `How many colleges offer ${b.name}?`,
+      a: `${inr(b.colleges)} colleges in ${b.states} states, in the published counselling results${b.year ? ` for ${b.year}` : ""} — ${inr(b.seats)} seat options in all, where a seat option is one college, quota and category.`,
     },
     ...(b.movedCount > 0
       ? [
@@ -166,53 +180,39 @@ export default async function BranchPage({
       />
 
       {/* ------------------------------- hero ------------------------------- */}
-      <section className="relative overflow-hidden bg-slate-950">
-        <div className="ambient-blob pointer-events-none absolute -left-32 -top-40 h-[28rem] w-[28rem] opacity-50" aria-hidden="true" />
-        <div className="bg-grid pointer-events-none absolute inset-0 opacity-[0.07]" aria-hidden="true" />
-
-        <div className="container-custom relative py-12 md:py-16">
-          <nav aria-label="Breadcrumb" className="text-[13px] text-slate-400">
-            <Link href="/md-ms-india/branches" className="hover:text-white">
-              MD/MS branches
-            </Link>
-            <span className="mx-2" aria-hidden="true">
-              /
-            </span>
-            <span className="text-slate-300">{b.name}</span>
-          </nav>
-
-          <h1 className="font-heading mt-4 max-w-[22ch] text-[clamp(2rem,4.2vw,3.1rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-white">
-            {b.name}
-          </h1>
-          <p className="mt-3 max-w-[66ch] text-[15px] leading-relaxed text-slate-300 md:text-base">
-            Every seat, with its own quota, its own closing rank and its own fee — read from the
-            counselling authorities&rsquo; published results{b.year ? ` for ${b.year}` : ""}.
-          </p>
-
-          <dl className="mt-8 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-4">
-            {[
-              { k: "Colleges", v: inr(b.colleges) },
-              { k: "Seats", v: inr(b.seats) },
-              { k: `Best R1 (${DEFAULT_CATEGORY})`, v: inr(b.bestRank) },
-              { k: "States", v: inr(b.states) },
-            ].map(({ k, v }) => (
-              <div key={k}>
-                <dt className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{k}</dt>
-                <dd className="tnum font-heading mt-1 text-2xl font-extrabold text-white">{v}</dd>
-              </div>
-            ))}
-          </dl>
-
-          <Link
-            href={`/neet-college-predictor?course=pg&branch=${encodeURIComponent(b.name)}`}
-            className="mt-8 inline-flex items-center gap-2.5 rounded-xl bg-gradient-brand px-6 py-3.5 text-[15px] font-bold text-white shadow-glow transition-all hover:-translate-y-0.5"
-          >
-            <Search className="h-5 w-5" aria-hidden="true" />
-            Check {b.name} against your rank
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
-          </Link>
-        </div>
-      </section>
+      <DataHero
+        crumbs={[{ label: "Home", href: "/" }, { label: "MD/MS branches", href: "/md-ms-india/branches" }, { label: b.name }]}
+        eyebrow={copy.eyebrow}
+        title={b.name}
+        subtitle={copy.subtitle}
+        stats={[
+          { label: "Colleges", value: inr(b.colleges) },
+          // A seat option is one college + quota + category in the published results — not a count of seats.
+          { label: "Seat options", value: inr(b.seats), note: "college × quota × category" },
+          { label: "States", value: inr(b.states) },
+          { label: "Categories", value: inr(b.categories.length) },
+        ]}
+        cta={{ label: copy.cta, href: `/neet-college-predictor?course=pg&branch=${encodeURIComponent(b.name)}` }}
+        telegram="hero_pg_branch"
+        source={copy.source}
+        image={heroImage}
+        topic="branch"
+        visual={
+          where.length > 0 ? (
+            <HeroBars
+              title={copy.visual_title}
+              caption="Colleges offering this branch, by state"
+              rows={where.slice(0, 7).map((w) => ({
+                label: w.state,
+                value: w.colleges,
+                display: `${w.colleges} ${w.colleges === 1 ? "college" : "colleges"}`,
+                href: `/md-ms-india/states/${w.slug}`,
+              }))}
+              footnote={where.length > 7 ? `And ${where.length - 7} more states. Every college is listed below.` : undefined}
+            />
+          ) : undefined
+        }
+      />
 
       <div className="container-custom py-10 md:py-14">
         {/* --------------------------- the warning --------------------------- */}
@@ -321,6 +321,7 @@ export default async function BranchPage({
         image="/assets/images/hero/medical-admission-counselling-session.avif"
         primaryLabel="Ask a counsellor"
       />
+      <TelegramJoin placement="pg_branch" />
     </main>
   );
 }

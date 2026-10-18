@@ -3,13 +3,16 @@ import { NEET_PG_QUALIFYING } from "@/lib/neetPgQualifying";
 import type { Metadata } from "next";
 import { fitTitle, fitDescription } from "@/lib/seoTitle";
 import Link from "@/components/ui/Link";
-import { Search } from "lucide-react";
 import { getPgAiqBranches, getPgAiqCuts, type YearCuts } from "@/lib/cutoffHubQueries";
 import { resolveMetadata } from "@/lib/content";
 import CategoryCutTable from "@/components/cutoffs/CategoryCutTable";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
+import DataHero from "@/components/hero/DataHero";
+import HeroBars from "@/components/hero/HeroBars";
+import SectionHead from "@/components/ui/SectionHead";
+import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
 /**
  * "NEET PG cutoff branch wise", "NEET PG cutoff 2025 OBC", "MD radiology
@@ -78,6 +81,11 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
   const medicine = branches.find((b) => b.branch === "MD General Medicine");
 
   const latestQ = NEET_PG_QUALIFYING[0];
+  // Words from Admin → Content → Text & numbers ("Page: NEET PG cutoff"); photo from Admin → Media.
+  const [copy, heroImage] = await Promise.all([
+    pageCopy("page.neet_pg_cutoff.hero", { year: year?.year ?? "" }),
+    pageHeroImage("page.neet_pg_cutoff.hero"),
+  ]);
   const lowered2025 = NEET_PG_QUALIFYING.find((n) => n.year === 2025 && n.label.includes("lowered"))!;
   const faqs = [
     ...(gen && year
@@ -132,53 +140,55 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
         ]}
       />
 
-      <section className="relative overflow-hidden bg-slate-950">
-        <div className="ambient-blob pointer-events-none absolute -left-32 -top-40 h-[28rem] w-[28rem] opacity-50" aria-hidden="true" />
-        <div className="container-custom relative py-12 md:py-16">
-          <nav aria-label="Breadcrumb" className="mb-5 text-[13px] text-slate-400">
-            <Link href="/" className="hover:text-white">Home</Link>
-            <span className="mx-2" aria-hidden="true">/</span>
-            <Link href="/md-ms-india" className="hover:text-white">MD/MS in India</Link>
-            <span className="mx-2" aria-hidden="true">/</span>
-            <span className="text-slate-200">NEET PG cutoff</span>
-          </nav>
-          <h1 className="font-heading max-w-[26ch] text-[clamp(2rem,4.2vw,3.1rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-white">
-            NEET PG cutoff {year?.year}: <span className="text-cyan-300">branch wise, by category</span>
-          </h1>
-          <p className="mt-3 max-w-[66ch] text-[15px] leading-relaxed text-slate-300 md:text-base">
-            Where All India Quota MD, MS and diploma seats actually ran out, from MCC&apos;s published round results. Ranks are AIR.
-          </p>
-          {gen && (
-            <dl className="mt-8 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-3">
-              {[
-                { k: "General, last AIR admitted", v: n(gen.widest) },
-                { k: "Colleges (AIQ)", v: n(gen.colleges) },
-                { k: "Branches", v: n(branches.length) },
-              ].map(({ k, v }) => (
-                <div key={k}>
-                  <dt className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{k}</dt>
-                  <dd className="tnum mt-1 text-xl font-bold text-white md:text-2xl">{v}</dd>
-                </div>
-              ))}
-            </dl>
-          )}
-          <Link
-            href="/neet-college-predictor?course=pg"
-            className="mt-8 inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground shadow-glow transition-colors hover:bg-primary/90"
-          >
-            <Search className="h-4 w-4" aria-hidden="true" /> Enter your PG rank — see every seat it reaches
-          </Link>
-        </div>
-      </section>
+      <DataHero
+        crumbs={[{ label: "Home", href: "/" }, { label: "MD/MS in India", href: "/md-ms-india" }, { label: "NEET PG cutoff" }]}
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        accent={copy.accent}
+        subtitle={copy.subtitle}
+        stats={
+          gen
+            ? [
+                { label: "General, last AIR", value: n(gen.widest), note: "admitted, any round" },
+                { label: "Colleges (AIQ)", value: n(gen.colleges) },
+                { label: "Branches", value: n(branches.length) },
+                { label: "Qualifying, general", value: `${latestQ.rows[0]?.score ?? "—"}/${latestQ.outOf}`, note: `NEET PG ${latestQ.year}` },
+              ]
+            : []
+        }
+        cta={{ label: copy.cta, href: "/neet-college-predictor?course=pg" }}
+        telegram="hero_neet_pg_cutoff"
+        source={copy.source}
+        image={heroImage}
+        topic="chart"
+        visual={
+          year && year.categories.length > 0 ? (
+            <HeroBars
+              title={copy.visual_title}
+              caption="All India Quota, last rank admitted in any round"
+              rows={[...year.categories]
+                .filter((c) => c.widest != null)
+                .sort((a, b) => (a.widest ?? 0) - (b.widest ?? 0))
+                .slice(0, 7)
+                .map((c) => ({
+                  label: c.category,
+                  value: c.widest ?? 0,
+                  display: `AIR ${n(c.widest)}`,
+                  note: `${n(c.colleges)} colleges · round 1 from AIR ${n(c.bestR1)}`,
+                }))}
+              footnote="A range over hundreds of colleges and every branch. Each branch is in the table below."
+            />
+          ) : undefined
+        }
+      />
 
       <section className="container-custom pt-10 md:pt-14" id="qualifying">
-        <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-          NEET PG qualifying cutoff — the score you need to be eligible
-        </h2>
-        <p className="mt-2 max-w-[70ch] text-muted-foreground">
-          Set by NBEMS as a percentile and published as a score. Clearing it makes you eligible for counselling; the
-          rank a seat closed at, below, decides whether you get one.
-        </p>
+        <SectionHead
+          icon="document"
+          eyebrow="Eligibility · NBEMS"
+          title="NEET PG qualifying cutoff — the score you need to be eligible"
+          intro="Set by NBEMS as a percentile and published as a score. Clearing it makes you eligible for counselling; the rank a seat closed at, below, decides whether you get one."
+        />
         <div className="mt-5 grid gap-5 lg:grid-cols-3">
           {NEET_PG_QUALIFYING.map((n) => (
             <div key={n.label} className="rounded-2xl border border-border bg-card p-5">
@@ -219,10 +229,12 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
 
       {year && (
         <section className="container-custom py-10 md:py-14">
-          <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-            NEET PG {year.year} cutoff by category — All India Quota
-          </h2>
-          <p className="mt-2 max-w-[70ch] text-muted-foreground">All branches together, every round of {year.year}.</p>
+          <SectionHead
+            icon="people"
+            eyebrow="By category"
+            title={`NEET PG ${year.year} cutoff by category — All India Quota`}
+            intro={`All branches together, every round of ${year.year}.`}
+          />
           <div className="mt-5">
             <CategoryCutTable cuts={year.categories} />
           </div>
@@ -231,12 +243,12 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
 
       <section className="border-t border-border bg-surface-1 py-10 md:py-14" id="branches">
         <div className="container-custom">
-          <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-            Branch-wise cutoff, {category} — {year?.year}
-          </h2>
-          <p className="mt-2 max-w-[70ch] text-muted-foreground">
-            Most competitive first. Pick a category; open a branch for its colleges, quota by quota.
-          </p>
+          <SectionHead
+            icon="branch"
+            eyebrow="Branch wise"
+            title={`Branch-wise cutoff, ${category} — ${year?.year ?? ""}`}
+            intro="Most competitive first. Pick a category; open a branch for its colleges, quota by quota."
+          />
           <ul className="mt-4 flex flex-wrap gap-2" aria-label="Category">
             {codes.map((c) => (
               <li key={c}>
@@ -254,8 +266,8 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
               </li>
             ))}
           </ul>
-          <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
-            <table className="w-full min-w-[560px] text-left text-sm">
+          <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
+            <table className="dt w-full min-w-[560px] text-left text-sm">
               <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
                 <tr>
                   <th scope="col" className="px-4 py-3 font-semibold">Branch</th>
@@ -284,7 +296,7 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
       </section>
 
       <section className="container-custom py-10 md:py-14">
-        <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">NEET PG cutoff: common questions</h2>
+        <SectionHead icon="help" eyebrow="FAQ" title="NEET PG cutoff: common questions" />
         <div className="mt-6 space-y-3">
           {faqs.map((f) => (
             <details key={f.question} className="rounded-2xl border border-border bg-card p-5">
