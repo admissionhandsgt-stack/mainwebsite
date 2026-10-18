@@ -197,7 +197,24 @@ function HeroImageRotator({ images }: HeroImageRotatorProps) {
   );
 }
 
-export default function CollegesPageClient({ states, heroImages }: { states: StateData[]; heroImages?: HeroShot[] }) {
+/** Live fee figures from the server (lib/liveFigures.ts) — the page used to type its own. */
+export interface DirectoryFigures {
+  govtFee: string;
+  privateFee: string;
+  privateFeeMedian: string;
+}
+
+export default function CollegesPageClient({
+  states,
+  heroImages,
+  figures,
+}: {
+  states: StateData[];
+  heroImages?: HeroShot[];
+  figures?: DirectoryFigures;
+}) {
+  const govtFee = figures?.govtFee ?? "a few thousand rupees to about ₹1 lakh";
+  const privateFee = figures?.privateFee ?? "several lakh";
   const CTA = useCTA();
   
   // No CMS rows, no backdrop. The fallback list shipped here was five
@@ -457,7 +474,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
               <div className="p-3 bg-slate-50/50 dark:bg-slate-900/50 rounded-xl border border-slate-100/80 dark:border-slate-800/40">
                 <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Fee Structure</span>
                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-                  Govt fees range from ₹10k–₹1.5L/year. Private colleges range from ₹8L–₹25L/year based on category & state quotas.
+                  Government colleges mostly charge {govtFee} a year. A private college publishes several fees, one per quota — most {privateFee} a year.
                 </p>
               </div>
               <div className="p-3 bg-slate-50/50 dark:bg-slate-900/50 rounded-xl border border-slate-100/80 dark:border-slate-800/40">
@@ -1001,7 +1018,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
                         </h4>
                       </div>
                       <ul className="space-y-1 text-[11px] text-slate-500 dark:text-slate-400 list-disc pl-3">
-                        <li>Subsidized fees (₹10,000 to ₹1,50,005 per year)</li>
+                        <li>Subsidised fees — most {govtFee} a year</li>
                         <li>Extremely high clinical patient inflow</li>
                         <li>Requires top percentile NEET UG ranking</li>
                         <li>NMC recognized legacy teaching hospitals</li>
@@ -1016,7 +1033,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
                       </div>
                       <ul className="space-y-1 text-[11px] text-slate-500 dark:text-slate-400 list-disc pl-3">
                         <li>Premium infrastructure and research labs</li>
-                        <li>Fees range from ₹6 Lakhs to ₹22 Lakhs per year</li>
+                        <li>Most published fees {privateFee} a year, by quota</li>
                         <li>Accessible at moderate NEET percentile</li>
                         <li>No rural service bond in several states</li>
                       </ul>
@@ -1123,11 +1140,11 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
                 },
                 {
                   q: "Can students from other states apply for Private colleges in Karnataka?",
-                  a: "Yes, several states like Karnataka, Uttar Pradesh, and Kerala are 'Open States' where students from any state can apply for private/trust medical college seats under the Management Quota through the state authority's online portal.",
+                  a: "Yes. Several states — Karnataka and Uttar Pradesh among them — let candidates from any state compete for seats in their private colleges through the state's own counselling. The rules are re-issued every year, so check the current information bulletin before you register.",
                 },
                 {
                   q: "What is the fee structure for Private Medical Colleges?",
-                  a: "Private medical college fees vary widely by state. Subsidized private seats cost around ₹1.4 Lakhs to ₹3.5 Lakhs per year. Management quota seats usually range between ₹8 Lakhs to ₹22 Lakhs per year depending on location and facilities.",
+                  a: `A private medical college publishes several fees, one per quota, and most of them fall between ${privateFee} a year${figures?.privateFeeMedian ? ` (median ${figures.privateFeeMedian})` : ""}. State-quota seats sit at the low end and management and NRI seats at the high end — the exact figure for each quota is in the college's own fee notice.`,
                 },
                 {
                   q: "How important is strategic choice filling?",

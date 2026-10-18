@@ -272,6 +272,121 @@ export const PAGE_COPY = {
       },
     },
   },
+  "page.nri_documents.hero": {
+    group: "Page: NRI documents",
+    fields: hero({
+      eyebrow: { label: "Hero eyebrow", value: "NRI quota · documents" },
+      title: { label: "Hero title", value: "NRI quota documents:" },
+      accent: { label: "Hero title, coloured part", value: "what MCC asks for" },
+      subtitle: {
+        label: "Hero line — {count}",
+        value: "The {count} documents MCC asked NRI-quota candidates for in the 2025 MBBS, BDS and MD/MS counselling, what each one has to prove, and who may sponsor you.",
+        long: true,
+      },
+      cta: { label: "Hero button", value: "Get your documents checked" },
+      source: {
+        label: "Source line",
+        value: "From MCC's 2025 NEET UG notices (July and September 2025) and its NEET PG 2025 information bulletin. The rules are re-issued every year — read the current notice on mcc.nic.in before you apply.",
+        long: true,
+      },
+      visual_title: { label: "Panel title", value: "The rules in brief" },
+    }),
+  },
+  "page.nri_documents.body": {
+    group: "Page: NRI documents — body",
+    fields: {
+      rule_nri: {
+        label: "Panel: who counts as an NRI",
+        value: "An Indian citizen with an Indian passport who has lived abroad for more than 182 days. OCI and PIO cardholders are covered too.",
+        long: true,
+      },
+      rule_ward: {
+        label: "Panel: ward (MBBS/BDS)",
+        value: "A minor under an NRI's bonafide guardianship, proved to the Indian mission with evidence and an affidavit.",
+        long: true,
+      },
+      rule_pg: {
+        label: "Panel: MD/MS priority",
+        value: "NRIs and their children first; then candidates sponsored by NRI uncles, aunts, grandparents or first cousins.",
+        long: true,
+      },
+      rule_sponsor: {
+        label: "Panel: sponsorship",
+        value: "A notarised affidavit to pay the whole course fee and living costs, backed by the sponsor's NRE passbook.",
+        long: true,
+      },
+      list_title: { label: "Checklist heading", value: "The checklist" },
+      list_intro: {
+        label: "Checklist intro",
+        value: "Scanned copies go to MCC for every round, and the originals are checked when you report to the college. Keep one clean set, named and in the order below.",
+        long: true,
+      },
+      eligibility_title: { label: "Eligibility heading", value: "Who can claim an NRI seat" },
+      ug_title: { label: "MBBS/BDS card heading", value: "MBBS and BDS" },
+      ug_body: {
+        label: "MBBS/BDS card text",
+        value: "An NRI, the child of an NRI, or a ward of an NRI — a minor under an NRI's bonafide guardianship, shown to the Indian mission with evidence and an affidavit. Having looked after a student does not, by itself, make a relative their guardian.",
+        long: true,
+      },
+      pg_title: { label: "MD/MS card heading", value: "MD/MS" },
+      pg_body: {
+        label: "MD/MS card text",
+        value: "MCC allots NRI seats in two priority groups: NRIs and the children of NRIs first; then candidates sponsored by close relatives who are NRIs — uncles and aunts on either side, grandparents on either side, and first cousins.",
+        long: true,
+      },
+      process_title: { label: "Process heading", value: "How the documents are checked" },
+      process_1: {
+        label: "Process point 1",
+        value: "By email, every round: one mail, in MCC's format, inside the window the notice gives. Documents sent for an earlier round are not carried forward.",
+        long: true,
+      },
+      process_2: {
+        label: "Process point 2",
+        value: "Originals at reporting: the college you are allotted checks every original against the scans.",
+        long: true,
+      },
+      process_3: {
+        label: "Process point 3",
+        value: "At the source: MCC sends NRI proofs to the Indian mission for verification. A fake or incomplete document gets the candidature rejected.",
+        long: true,
+      },
+      states_note: {
+        label: "State counsellings note",
+        value: "This is MCC's list, for deemed universities and the central NRI seats it allots. A state's NRI seat follows that state's own information bulletin, which can ask for more papers or different ones.",
+        long: true,
+      },
+      faq1_q: { label: "Question 1", value: "What documents are needed for NRI quota MBBS admission?" },
+      faq1_a: {
+        label: "Answer 1",
+        value: "For MCC's counselling in 2025: the NEET admit card and scorecard, proof of the parent's or relative's NRI status (passport with visa or residence permit, and an NRI certificate from the Indian embassy or consulate), an OCI or PIO card if you hold one, Class 10 and 12 certificates, a birth certificate and a self-attested declaration — plus, if a relative sponsors you, a relationship certificate with a family tree and a notarised sponsorship affidavit backed by an NRE passbook.",
+        long: true,
+      },
+      faq2_q: { label: "Question 2", value: "Can a relative sponsor me for an NRI seat?" },
+      faq2_a: {
+        label: "Answer 2",
+        value: "For MD/MS, yes — after NRIs and their children, MCC allots NRI seats to candidates sponsored by NRI uncles, aunts, grandparents or first cousins. For MBBS and BDS the 2025 notices speak of the child or ward of an NRI, a ward being a minor under the NRI's bonafide guardianship. Read the current notice: the rule has changed between years.",
+        long: true,
+      },
+      faq3_q: { label: "Question 3", value: "Where are NRI documents submitted?" },
+      faq3_a: {
+        label: "Answer 3",
+        value: "To MCC by email, once for every round, in the format and window its notice gives — documents from an earlier round are not reused. The originals are then checked by the college at reporting.",
+        long: true,
+      },
+      faq4_q: { label: "Question 4", value: "Do state counsellings ask for the same documents?" },
+      faq4_a: {
+        label: "Answer 4",
+        value: "Not necessarily. Each state that keeps an NRI quota sets its own list in its information bulletin, and it can differ from MCC's. Check the bulletin of every counselling you register for.",
+        long: true,
+      },
+      faq5_q: { label: "Question 5", value: "What happens if an NRI document is wrong or missing?" },
+      faq5_a: {
+        label: "Answer 5",
+        value: "MCC verifies NRI proofs with the Indian mission, and a fake or incomplete document gets the candidature rejected. A missing paper at reporting can cost the seat, which is why we check the whole set before the first round.",
+        long: true,
+      },
+    },
+  },
   "page.bds.hero": {
     group: "Page: BDS colleges",
     fields: hero({

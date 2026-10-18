@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import CollegesPageClient from "@/components/mbbs/CollegesPageClient";
 import { getMbbsStates, getUgColleges, getMediaAssets, resolveMetadata } from '@/lib/content';
 import { getNmcUgIndex } from '@/lib/nmcData';
+import { getLiveFigures } from '@/lib/liveFigures';
 import StructuredData, { breadcrumb } from "@/components/seo/StructuredData";
 
 /**
@@ -40,12 +41,16 @@ export default async function CollegesPage() {
     // One round trip for the images and one each for the lists, all in
     // parallel. Fetching the four hero images one at a time in a loop was
     // costing four sequential trips through the tunnel on every request.
-    const [mediaList, statesRaw, collegesRaw, nmc] = await Promise.all([
+    const [mediaList, statesRaw, collegesRaw, nmc, live] = await Promise.all([
       getMediaAssets(),
       getMbbsStates(),
       getUgColleges(),
       getNmcUgIndex(),
+      getLiveFigures(),
     ]);
+    const figures = live.govt_mbbs_fee && live.private_mbbs_fee
+      ? { govtFee: live.govt_mbbs_fee, privateFee: live.private_mbbs_fee, privateFeeMedian: live.private_mbbs_fee_median ?? '' }
+      : undefined;
 
     // Carry the credit with each backdrop: three of these four are CC BY-SA,
     // which requires the photographer to be named wherever the picture appears.
@@ -164,7 +169,7 @@ export default async function CollegesPage() {
             No colleges available at the moment. Please check back later.
           </div>
         ) : (
-          <CollegesPageClient states={statesData} heroImages={heroImages} />
+          <CollegesPageClient states={statesData} heroImages={heroImages} figures={figures} />
         )}
       </main>
     );
