@@ -2,6 +2,7 @@ import React from 'react';
 import ServicesClient from './ServicesClient';
 import { getMediaAsset, resolveMetadata } from '@/lib/content';
 import { creditOf } from '@/components/ui/PhotoCredit';
+import { getServicesPage } from '@/lib/servicesContent';
 import { Metadata } from 'next';
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
 
@@ -21,9 +22,11 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function ServicesPage() {
   // Parallel: two sequential awaits meant two round trips through the tunnel.
-  const [serviceHero, aboutHero] = await Promise.all([
+  // Copy, services and counts: lib/servicesContent.ts (Admin → Content, "Page: Services").
+  const [serviceHero, aboutHero, data] = await Promise.all([
     getMediaAsset('services_hero'),
     getMediaAsset('about_hero'),
+    getServicesPage(),
   ]);
   
   const heroImages: string[] = [];
@@ -38,7 +41,7 @@ export default async function ServicesPage() {
           breadcrumb([{ name: "Home", path: "/" }, { name: "Services", path: "/services" }]),
         ]}
       />
-      <ServicesClient heroImages={heroImages} heroCredit={creditOf(serviceHero)} />
+      <ServicesClient heroImages={heroImages} heroCredit={creditOf(serviceHero)} data={data} />
     </>
   );
 }

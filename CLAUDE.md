@@ -172,8 +172,13 @@ Each of those also takes its section heading, eyebrow and subheading from `site_
 `data`, which the admin renders as a textarea. `lines()` and `pairs()` in `pgContent.ts` parse them.
 A nested list editor was not worth building for four bullet points.
 
-**Still hardcoded:** `/services` and `/neet-ug-process` (each is a single client component), and on
-the NRI page the eligibility tabs and the fee tables, whose markup is interleaved rather than a clean
+**Admin-driven since 2026-10-18:** `/services` (copy group "Page: Services", the team's own figures in
+"Page: Services — the team's own figures", cards in `services_page`, live counts — `lib/servicesContent.ts`),
+`/neet-ug-process` ("Page: NEET UG process" + `ug_process_steps`) and `/neet-pg-process` ("Page: NEET PG
+process" + `pg_process_rounds`, `pg_process_mistakes` and `pg_schedule`, so MCC's revised dates go live without
+a deploy). Each keeps an import-free shipped fallback (`servicesDefaults.ts`, `ugProcessSteps.ts`,
+`pgProcessDefaults.ts`, `neetPgSchedule.ts`) and a `scripts/seed_*.mjs` that fills an empty collection.
+**Still hardcoded:** on the NRI page the eligibility tabs, whose markup is interleaved rather than a clean
 array.
 
 ## Data pages: the hero, the copy registry, the photos (2026-10-18)
@@ -2231,8 +2236,8 @@ Ordered by what would hurt first.
    default run — and a global `testIgnore` instead would have hidden them from the one project
    meant to run them, an escape hatch that silently did nothing. What replaced them covers the
    gate, the paywall declaration and the width ladder (see "Checking the work").
-7. **`/services` and `/neet-ug-process` are not section-controlled** — each is one client component,
-   so there is nothing to order or hide yet.
+7. **`/services` and `/neet-ug-process` are not section-controlled** — their words and lists are admin-driven
+   (2026-10-18) but the order of their sections is still fixed in code.
 8. Global `cache: 'no-store'` fetch override means no client caching anywhere.
 9. ESLint config is still the Vite-era flat config (`react-refresh` plugin, `dist` ignore) and does not
     cover Next.js rules.

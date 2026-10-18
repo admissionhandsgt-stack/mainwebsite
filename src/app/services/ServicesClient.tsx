@@ -13,182 +13,58 @@ import {
 } from 'lucide-react';
 import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon';
 import CtaBand from '@/components/ui/CtaBand';
+import type { ServicesPageData } from '@/lib/servicesContent';
 
 interface HeroImageRotatorProps {
   images: string[];
 }
 
-const services = [
-  {
-    icon: Target,
-    title: "Personalized NEET Counselling",
-    tagline: "Your rank. Your strategy. Your seat.",
-    color: "from-cyan-600 to-teal-600",
-    accent: "blue",
-    description: "Every NEET rank has a unique set of possibilities. Our experts analyze your exact rank, category, domicile, and budget to build a customized admission roadmap — not generic advice.",
-    features: [
-      "1-on-1 sessions with senior NEET counsellors (15+ yrs experience)",
-      "Category-specific strategy: General, OBC, SC/ST, EWS, PwD",
-      "Domicile advantage mapping for state quota seats",
-      "Budget-aligned college recommendations (₹5L to ₹2Cr range)",
-      "Multiple scenario planning: best-case, realistic, safety options"
-    ],
-    stat: { value: "2100+", label: "Students Guided" }
-  },
-  {
-    icon: Search,
-    title: "Smart College Shortlisting",
-    tagline: "Data-backed picks, not guesswork.",
-    color: "from-teal-600 to-teal-600",
-    accent: "indigo",
-    description: "We cross-reference published closing ranks, seat matrices, bond clauses and fee structures to build a shortlist ordered by what the record actually supports, not by admission at the best possible college.",
-    features: [
-      "Published closing ranks for every college in the counselling",
-      "Bond clause and service obligation transparency",
-      "NRI/Management quota seat availability tracking",
-      "Location & infrastructure quality scoring",
-      "College comparison reports delivered within 24 hours"
-    ],
-    stat: { value: "3,895", label: "Colleges Covered" }
-  },
-  {
-    icon: BarChart3,
-    title: "Advanced Cutoff Analytics",
-    tagline: "Predict. Plan. Secure.",
-    color: "from-teal-600 to-emerald-600",
-    accent: "teal",
-    description: "Your counsellor places your rank against every published round — round one, the widest the cut reached, and how far it has ever gone — and turns it into your list. Historical, never a forecast.",
-    features: [
-      "State-wise and AIQ cutoff trend visualization",
-      "Round-by-round movement, R1 through mop-up and stray",
-      "Category and quota-specific closing ranks",
-      "Real-time updates during live counselling rounds",
-      "Which band each seat falls in for your rank"
-    ],
-    stat: { value: "2.7 lakh", label: "Closing ranks checked" }
-  },
-  {
-    icon: Map,
-    title: "AIQ & State Quota Mastery",
-    tagline: "Navigate the 15%/85% maze with confidence.",
-    color: "from-emerald-600 to-green-600",
-    accent: "emerald",
-    description: "The dual counselling system (All India Quota + State Quota) creates both opportunities and confusion. We help you strategically apply to both, maximizing your chances without missing critical deadlines.",
-    features: [
-      "Parallel AIQ + State quota application management",
-      "State-specific eligibility verification (domicile rules vary)",
-      "Optimal choice-filling sequence for maximum allotment",
-      "Inter-state migration strategy for better college options",
-      "MCC vs State counselling timeline synchronization"
-    ],
-    stat: { value: "36", label: "States Covered" }
-  },
-  {
-    icon: Landmark,
-    title: "Deemed & Private University Strategy",
-    tagline: "Premium seats need premium strategy.",
-    color: "from-amber-500 to-orange-600",
-    accent: "amber",
-    description: "Deemed and private medical colleges have their own counselling calendars, fee structures, and seat matrices. We provide dedicated guidance for students targeting these institutions.",
-    features: [
-      "Complete deemed university counselling (MCC Deemed track)",
-      "Private college direct admission negotiation support",
-      "Fee structure comparison with hidden cost analysis",
-      "Management/NRI quota seat procurement guidance",
-      "Scholarship and fee waiver identification"
-    ],
-    stat: { value: "1-1 Guidance", label: "Support" }
-  },
-  {
-    icon: FileCheck,
-    title: "Documentation & Verification",
-    tagline: "Zero rejection. Zero surprises.",
-    color: "from-teal-600 to-teal-600",
-    accent: "violet",
-    description: "Document rejection is the #1 reason students lose confirmed seats. We pre-verify every certificate, affidavit, and proof weeks before deadlines to ensure bulletproof applications.",
-    features: [
-      "Complete document checklist (30+ documents per student)",
-      "Domicile certificate validity verification",
-      "Gap year affidavit preparation and notarization guidance",
-      "NRI sponsorship documentation and embassy attestation",
-      "Category certificate cross-verification with state norms"
-    ],
-    stat: { value: "State-wise", label: "Document norms checked" }
-  },
-  {
-    icon: ShieldCheck,
-    title: "MCC Counselling Management",
-    tagline: "End-to-end. Every round. Every click.",
-    color: "from-cyan-700 to-teal-700",
-    accent: "blue",
-    description: "From MCC registration to final allotment, we manage every step — choice filling, choice locking, seat acceptance, and upgrade decisions across all rounds including Mop-Up and Stray Vacancy.",
-    features: [
-      "MCC portal registration and payment assistance",
-      "Strategic choice list preparation (order matters enormously)",
-      "Real-time choice locking supervision",
-      "Round 1 → Round 2 → Mop-Up → Stray tracking",
-      "Seat acceptance vs float vs slide decision guidance"
-    ],
-    stat: { value: "4", label: "Rounds Managed" }
-  },
-  {
-    icon: Banknote,
-    title: "Fee & Budget Planning",
-    tagline: "Know every rupee before you commit.",
-    color: "from-green-600 to-teal-600",
-    accent: "green",
-    description: "Medical education costs extend far beyond tuition. We provide transparent, complete fee analysis including hostel, mess, security deposits, bank guarantees, and year-on-year escalation clauses.",
-    features: [
-      "Complete 5-year cost projection for each target college",
-      "Hidden fee identification (development fund, caution deposits)",
-      "Education loan guidance with bank partner recommendations",
-      "Bond clause financial implications analysis",
-      "Refund policy and seat surrender cost transparency"
-    ],
-    stat: { value: "₹5L-2Cr", label: "Budget Range" }
-  },
-  {
-    icon: ArrowUpRight,
-    title: "Seat Upgrade Strategy",
-    tagline: "Good seat today. Better seat tomorrow.",
-    color: "from-rose-500 to-emerald-600",
-    accent: "rose",
-    description: "Knowing when to hold a seat, when to upgrade, and when to exit requires deep understanding of round-wise vacancy patterns. One wrong decision can cost you your dream college or lakhs in fees.",
-    features: [
-      "Hold vs Upgrade vs Exit decision framework",
-      "How far later rounds reached, from the published results",
-      "Dual-allotment management (AIQ + State simultaneously)",
-      "Fee refund timeline optimization",
-      "Emergency seat surrender and re-allotment support"
-    ],
-    stat: { value: "Every", label: "Round tracked" }
-  },
-  {
-    icon: GraduationCap,
-    title: "Post-Allotment & Reporting",
-    tagline: "From allotment letter to classroom.",
-    color: "from-cyan-600 to-cyan-600",
-    accent: "cyan",
-    description: "Getting a seat is half the battle. Physical reporting, document verification at the college, fee payment, hostel allotment, and anti-ragging compliance — we ensure nothing is missed.",
-    features: [
-      "Physical reporting checklist and timeline management",
-      "College-specific document requirement verification",
-      "Medical fitness certificate coordination",
-      "Anti-ragging undertaking and affidavit preparation",
-      "Hostel allotment and initial settling-in guidance"
-    ],
-    stat: { value: "Day 1", label: "To reporting day" }
-  }
+// Every word and figure arrives from the server (lib/servicesContent.ts): the copy from Admin →
+// Content ("Page: Services"), the services from the services_page collection, the counts live.
+// Icons are named in the admin and resolved here; card colours stay positional.
+const ICONS: Record<string, React.ElementType> = {
+  target: Target,
+  search: Search,
+  chart: BarChart3,
+  map: Map,
+  landmark: Landmark,
+  filecheck: FileCheck,
+  shield: ShieldCheck,
+  banknote: Banknote,
+  upgrade: ArrowUpRight,
+  graduation: GraduationCap,
+};
+const COLORS = [
+  "from-cyan-600 to-teal-600",
+  "from-teal-600 to-teal-600",
+  "from-teal-600 to-emerald-600",
+  "from-emerald-600 to-green-600",
+  "from-amber-500 to-orange-600",
+  "from-teal-600 to-teal-600",
+  "from-cyan-700 to-teal-700",
+  "from-green-600 to-teal-600",
+  "from-rose-500 to-emerald-600",
+  "from-cyan-600 to-cyan-600",
 ];
+const STAT_ICONS: Record<string, { icon: React.ElementType; color: string }> = {
+  students: { icon: Users, color: "text-cyan-600" },
+  ranks: { icon: TrendingUp, color: "text-emerald-600" },
+  years: { icon: Clock, color: "text-teal-600" },
+  states: { icon: Award, color: "text-amber-600" },
+};
+const lines = (v: string) => v.split("\n").map((x) => x.trim()).filter(Boolean);
 
-const trustStats = [
-  { icon: Users, value: "2100+", label: "Students Placed", color: "text-cyan-600" },
-  { icon: TrendingUp, value: "2.7 lakh", label: "Closing Ranks", color: "text-emerald-600" },
-  { icon: Clock, value: "15+", label: "Years Experience", color: "text-teal-600" },
-  { icon: Award, value: "38", label: "States Covered", color: "text-amber-600" },
-];
+interface Card {
+  icon: React.ElementType;
+  title: string;
+  tagline: string;
+  color: string;
+  description: string;
+  features: string[];
+  stat: { value: string; label: string };
+}
 
-function ServiceCard({ service, index, mounted }: { service: typeof services[0]; index: number; mounted: boolean }) {
+function ServiceCard({ service, show, hide }: { service: Card; show: string; hide: string }) {
   const [expanded, setExpanded] = useState(false);
   const Icon = service.icon;
 
@@ -227,7 +103,7 @@ function ServiceCard({ service, index, mounted }: { service: typeof services[0];
           onClick={() => setExpanded(!expanded)}
           className="flex items-center gap-1 text-[10px] font-black text-cyan-600 uppercase tracking-widest hover:text-cyan-800 transition-colors mb-2"
         >
-          {expanded ? 'Hide' : 'View'} Details
+          {expanded ? hide : show} Details
           {expanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
         </button>
 
@@ -262,12 +138,23 @@ interface ServicesClientProps {
   heroImages?: string[];
   /** The credit for whichever photograph `heroImages[0]` turned out to be. */
   heroCredit?: PhotoCreditInfo;
+  data: ServicesPageData;
 }
 
-export default function ServicesClient({ heroImages, heroCredit }: ServicesClientProps) {
+export default function ServicesClient({ heroImages, heroCredit, data }: ServicesClientProps) {
+  const { copy } = data;
+  const cards: Card[] = data.services.map((sv, i) => ({
+    icon: ICONS[sv.icon] ?? Target,
+    title: sv.title,
+    tagline: sv.tagline,
+    color: COLORS[i % COLORS.length],
+    description: sv.description,
+    features: sv.features,
+    stat: { value: sv.statValue, label: sv.statLabel },
+  }));
   const CTA = useCTA();
   const bgImage = (heroImages && heroImages[0]) || "/assets/images/hero/services_hero.avif";
-  
+
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
@@ -278,7 +165,7 @@ export default function ServicesClient({ heroImages, heroCredit }: ServicesClien
 
       {/* Hero Section - Reduced padding by 50% and made compact */}
       <section className="relative min-h-[56vh] md:min-h-[62vh] flex items-center overflow-hidden py-14 md:py-20 bg-slate-950 text-white">
-        
+
         {/* Background Image behind the text */}
         <div className="absolute inset-0 z-0">
           {bgImage && bgImage !== "none" && (
@@ -304,49 +191,45 @@ export default function ServicesClient({ heroImages, heroCredit }: ServicesClien
           */}
           <PhotoCredit {...heroCredit} className="absolute bottom-10 right-2" />
         </div>
-        
+
         <div className="absolute top-0 right-0 w-1/2 h-full bg-cyan-500/10 blur-[120px] pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-1/3 h-1/2 bg-teal-500/5 blur-[100px] pointer-events-none" />
 
         <div className="container-custom relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             {/* Left side Content */}
-            <motion.div 
-              initial={mounted ? { opacity: 0, y: 15 } : false} 
+            <motion.div
+              initial={mounted ? { opacity: 0, y: 15 } : false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               className="lg:col-span-9 xl:col-span-8 text-center lg:text-left space-y-4 md:space-y-5"
             >
-              <div 
+              <div
                 className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-cyan-300 text-xs font-black tracking-widest uppercase mb-1 backdrop-blur-md"
               >
-                <Sparkles className="w-3.5 h-3.5 text-cyan-400" /> Expert NEET Counselling
+                <Sparkles className="w-3.5 h-3.5 text-cyan-400" /> {copy.hero_badge}
               </div>
 
-              <h1 
+              <h1
                 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white leading-[1.1] tracking-tight drop-shadow-md"
               >
-                Your Unfair Advantage in{' '}
+                {copy.hero_title}{' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-teal-300 drop-shadow-sm">
-                  MBBS Admissions
+                  {copy.hero_accent}
                 </span>
               </h1>
 
-              <p 
+              <p
                 className="text-cyan-100/90 text-xs md:text-sm font-medium leading-relaxed max-w-2xl mx-auto lg:mx-0 drop-shadow-sm"
               >
-                While others guess, our students get data-driven strategy, two years of published closing ranks, and dedicated counsellors who&apos;ve guided 2100+ students to their dream medical colleges. Every rank has a best-fit seat — we find yours.
+                {copy.hero_subtitle}
               </p>
 
               {/* Highlights */}
-              <ul 
+              <ul
                 className="space-y-2 hidden sm:inline-block text-left text-cyan-100/80 text-xs font-semibold max-w-md"
               >
-                {[
-                  "1-on-1 Personalized counseling with senior experts",
-                  "Every shortlist backed by the published closing rank it came from",
-                  "Every document pre-checked weeks before your reporting date",
-                ].map((point, idx) => (
+                {lines(copy.hero_points).map((point, idx) => (
                   <li key={idx} className="flex items-center gap-2.5">
                     <div className="h-4.5 w-4.5 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400">
                       <ShieldCheck size={12} />
@@ -356,18 +239,18 @@ export default function ServicesClient({ heroImages, heroCredit }: ServicesClien
                 ))}
               </ul>
 
-              <div 
+              <div
                 className="flex flex-col sm:flex-row gap-2.5 justify-center lg:justify-start"
               >
                 <button onClick={() => CTA.call()}
                   className="inline-flex items-center justify-center gap-2 bg-white dark:!bg-cyan-600 text-slate-900 dark:!text-white px-5 py-3 rounded-xl font-black text-xs hover:bg-cyan-50 dark:!hover:bg-cyan-500 transition-all shadow-lg active:scale-95"
                 >
-                  <Phone className="w-3.5 h-3.5" /> Talk to an Expert
+                  <Phone className="w-3.5 h-3.5" /> {copy.hero_call}
                 </button>
-                <button onClick={() => CTA.whatsapp("Hi, I want to know about your NEET counselling services")}
+                <button onClick={() => CTA.whatsapp(copy.hero_whatsapp_message)}
                   className="inline-flex items-center justify-center gap-2 border-2 border-white/60 backdrop-blur-sm text-white px-5 py-3 rounded-xl font-black text-xs hover:bg-white/10 transition-all active:scale-95"
                 >
-                  <WhatsAppIcon size={14} /> WhatsApp Us
+                  <WhatsAppIcon size={14} /> {copy.hero_whatsapp}
                 </button>
               </div>
             </motion.div>
@@ -379,27 +262,30 @@ export default function ServicesClient({ heroImages, heroCredit }: ServicesClien
       <section className="relative z-20 -mt-6">
         <div className="container-custom">
           <div className="bg-white rounded-xl border border-slate-100 shadow-lg p-3.5 md:p-5">
-            <motion.div 
-              initial={mounted ? { opacity: 0, y: 10 } : false} 
-              whileInView={{ opacity: 1, y: 0 }} 
+            <motion.div
+              initial={mounted ? { opacity: 0, y: 10 } : false}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4 }}
               className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5"
             >
-              {trustStats.map((s, i) => (
-                <div 
-                  key={i} 
+              {data.stats.map((s) => {
+                const { icon: StatIcon, color } = STAT_ICONS[s.key] ?? STAT_ICONS.students;
+                return (
+                <div
+                  key={s.key}
                   className="flex items-center gap-2.5 justify-center md:justify-start"
                 >
-                  <div className={`w-9 h-9 md:w-11 md:h-11 rounded-lg bg-slate-50 flex items-center justify-center ${s.color}`}>
-                    <s.icon className="w-4 h-4 md:w-5 md:h-5" />
+                  <div className={`w-9 h-9 md:w-11 md:h-11 rounded-lg bg-slate-50 flex items-center justify-center ${color}`}>
+                    <StatIcon className="w-4 h-4 md:w-5 md:h-5" />
                   </div>
                   <div>
                     <p className="text-base md:text-xl font-black text-slate-900 leading-none">{s.value}</p>
                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">{s.label}</p>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </motion.div>
           </div>
         </div>
@@ -409,40 +295,40 @@ export default function ServicesClient({ heroImages, heroCredit }: ServicesClien
       <section className="py-6 md:py-8">
         <div className="container-custom">
           <div className="text-center mb-4 md:mb-5">
-            <motion.div 
-              initial={mounted ? { opacity: 0 } : false} 
-              whileInView={{ opacity: 1 }} 
+            <motion.div
+              initial={mounted ? { opacity: 0 } : false}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               className="inline-block px-3 py-1 mb-2 text-[9px] font-black tracking-widest text-cyan-600 uppercase bg-cyan-600/10 rounded-full"
             >
-              Why Admission Hands
+              {copy.why_badge}
             </motion.div>
-            <motion.h2 
-              initial={mounted ? { opacity: 0, y: 10 } : false} 
-              whileInView={{ opacity: 1, y: 0 }} 
+            <motion.h2
+              initial={mounted ? { opacity: 0, y: 10 } : false}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="text-xl md:text-3xl font-black text-slate-900 tracking-tight mb-2"
             >
-              The <span className="text-cyan-600">Competitive Edge</span> You Deserve
+              {copy.why_title} <span className="text-cyan-600">{copy.why_accent}</span> {copy.why_title_end}
             </motion.h2>
             <p className="text-xs md:text-sm text-slate-600 font-semibold max-w-2xl mx-auto">
-              NEET counselling is a high-stakes, zero-margin-for-error process. Here&apos;s why 2100+ families trusted us with their child&apos;s medical career.
+              {copy.why_intro}
             </p>
           </div>
 
-          <motion.div 
-            initial={mounted ? { opacity: 0, y: 15 } : false} 
-            whileInView={{ opacity: 1, y: 0 }} 
+          <motion.div
+            initial={mounted ? { opacity: 0, y: 15 } : false}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
             className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4"
           >
             {[
-              { icon: BookOpen, title: "Data, Not Opinions", desc: "Our recommendations are backed by 2.7 lakh published closing ranks across every college in the counselling, and real allotment outcomes — not surface-level guesswork.", color: "from-cyan-600 to-cyan-700" },
-              { icon: HeartHandshake, title: "Dedicated Counsellor", desc: "You get a single, named expert assigned to your case from Day 1 to final admission. No rotating call-centre staff, no repeated explanations.", color: "from-emerald-600 to-teal-600" },
-              { icon: ShieldCheck, title: "Documents Checked Early", desc: "We check every document against your state's requirements weeks before the deadline, so a missing certificate is found while there is still time to get it.", color: "from-teal-600 to-teal-600" },
-            ].map((item, idx) => (
-              <div 
+              { icon: BookOpen, title: copy.why_1_title, desc: copy.why_1_desc, color: "from-cyan-600 to-cyan-700" },
+              { icon: HeartHandshake, title: copy.why_2_title, desc: copy.why_2_desc, color: "from-emerald-600 to-teal-600" },
+              { icon: ShieldCheck, title: copy.why_3_title, desc: copy.why_3_desc, color: "from-teal-600 to-teal-600" },
+            ].filter((item) => item.title).map((item, idx) => (
+              <div
                 key={idx}
                 className="bg-white p-4 md:p-5 rounded-xl border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group"
               >
@@ -461,36 +347,36 @@ export default function ServicesClient({ heroImages, heroCredit }: ServicesClien
       <section className="py-6 md:py-8 bg-white">
         <div className="container-custom">
           <div className="text-center mb-4 md:mb-5">
-            <motion.div 
-              initial={mounted ? { opacity: 0 } : false} 
-              whileInView={{ opacity: 1 }} 
+            <motion.div
+              initial={mounted ? { opacity: 0 } : false}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               className="inline-block px-3 py-1 mb-2 text-[9px] font-black tracking-widest text-teal-600 uppercase bg-teal-600/10 rounded-full"
             >
-              Our Services
+              {copy.services_badge}
             </motion.div>
-            <motion.h2 
-              initial={mounted ? { opacity: 0, y: 10 } : false} 
-              whileInView={{ opacity: 1, y: 0 }} 
+            <motion.h2
+              initial={mounted ? { opacity: 0, y: 10 } : false}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="text-xl md:text-3xl font-black text-slate-900 tracking-tight mb-2"
             >
-              Complete <span className="text-cyan-600">Admission Support</span> System
+              {copy.services_title} <span className="text-cyan-600">{copy.services_accent}</span> {copy.services_title_end}
             </motion.h2>
             <p className="text-xs md:text-sm text-slate-600 font-semibold max-w-2xl mx-auto">
-              10 specialized services covering every phase of NEET counselling — from score analysis to college reporting.
+              {copy.services_intro}
             </p>
           </div>
 
-          <motion.div 
-            initial={mounted ? { opacity: 0, y: 15 } : false} 
-            whileInView={{ opacity: 1, y: 0 }} 
+          <motion.div
+            initial={mounted ? { opacity: 0, y: 15 } : false}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
             className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4"
           >
-            {services.map((service, index) => (
-              <ServiceCard key={index} service={service} index={index} mounted={mounted} />
+            {cards.map((service, index) => (
+              <ServiceCard key={index} service={service} show={copy.details_show} hide={copy.details_hide} />
             ))}
           </motion.div>
         </div>
@@ -500,33 +386,33 @@ export default function ServicesClient({ heroImages, heroCredit }: ServicesClien
       <section className="py-6 md:py-8 bg-slate-50">
         <div className="container-custom">
           <div className="text-center mb-4 md:mb-5">
-            <motion.h2 
-              initial={mounted ? { opacity: 0, y: 10 } : false} 
-              whileInView={{ opacity: 1, y: 0 }} 
+            <motion.h2
+              initial={mounted ? { opacity: 0, y: 10 } : false}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="text-xl md:text-3xl font-black text-slate-900 tracking-tight mb-2"
             >
-              How It <span className="text-cyan-600">Works</span>
+              {copy.how_title} <span className="text-cyan-600">{copy.how_accent}</span>
             </motion.h2>
             <p className="text-xs md:text-sm text-slate-600 font-semibold max-w-xl mx-auto">
-              From first call to final admission — a streamlined, expert-guided process.
+              {copy.how_intro}
             </p>
           </div>
 
-          <motion.div 
-            initial={mounted ? { opacity: 0, y: 15 } : false} 
-            whileInView={{ opacity: 1, y: 0 }} 
+          <motion.div
+            initial={mounted ? { opacity: 0, y: 15 } : false}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3"
           >
             {[
-              { step: "01", title: "Free Consultation", desc: "Share your NEET score, category, and preferences. We assess your options in a free 15-min call." },
-              { step: "02", title: "Strategy Blueprint", desc: "Receive a personalized admission strategy with target colleges, timelines, and budget breakdown." },
-              { step: "03", title: "Active Counselling", desc: "We manage your MCC/State registrations, choice filling, and real-time decision-making across all rounds." },
-              { step: "04", title: "Seat Secured", desc: "From allotment letter to physical reporting — we ensure every formality is completed flawlessly." },
-            ].map((item, idx) => (
-              <div 
+              { step: "01", title: copy.step_1_title, desc: copy.step_1_desc },
+              { step: "02", title: copy.step_2_title, desc: copy.step_2_desc },
+              { step: "03", title: copy.step_3_title, desc: copy.step_3_desc },
+              { step: "04", title: copy.step_4_title, desc: copy.step_4_desc },
+            ].filter((item) => item.title).map((item, idx) => (
+              <div
                 key={idx}
                 className="relative bg-white p-4 md:p-5 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300"
               >
@@ -542,10 +428,10 @@ export default function ServicesClient({ heroImages, heroCredit }: ServicesClien
       </section>
 
       <CtaBand
-        title="Start with the free call"
-        body="Twenty minutes, your actual rank and budget, and a straight read on what is reachable. No obligation after it."
+        title={copy.cta_title}
+        body={copy.cta_body}
         image="/assets/images/hero/services_hero_counselor.avif"
-        primaryLabel="Book my free call"
+        primaryLabel={copy.cta_button}
       />
 
     </main>
