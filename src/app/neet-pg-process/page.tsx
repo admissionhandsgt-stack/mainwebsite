@@ -11,16 +11,17 @@ import {
   Search,
   TrendingDown,
 } from "lucide-react";
-import { NEET_PG_SCHEDULE } from "@/lib/neetPgSchedule";
+import { pageCopy } from "@/lib/pageCopy";
+import { getPgProcessContent } from "@/lib/pgProcessContent";
 import { resolveMetadata, getMediaAsset } from "@/lib/content";
 import { getDataStats, inr } from "@/lib/dataStats";
-import { getTightenedTotal } from "@/lib/roundQueries";
+import { getRoundSpan, getTightenedTotal } from "@/lib/roundQueries";
 import PageHero from "@/components/ui/PageHero";
 import Reveal from "@/components/ui/Reveal";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
-import RoundTimeline, { type RoundStep } from "@/components/neet-pg-process/RoundTimeline";
+import RoundTimeline from "@/components/neet-pg-process/RoundTimeline";
 
 export const dynamic = "force-dynamic";
 
@@ -57,94 +58,27 @@ export async function generateMetadata(): Promise<Metadata> {
 
 /* ------------------------------------------------------------------ data */
 
-const ROUNDS: RoundStep[] = [
-  {
-    tag: "R1",
-    title: "Round 1 — register, fill choices, lock",
-    summary: "The only round where every seat is still on the table.",
-    detail: [
-      "Register separately for AIQ on mcc.nic.in and for your state on its own portal. They are different accounts, different fees and different deadlines — being registered for one does not register you for the other.",
-      "Fill every college and branch you would genuinely accept, in true order of preference. Allotment walks your list from the top and stops at the first seat your rank reaches.",
-      "Lock your choices before the deadline. An unlocked list is auto-locked as it stands, which is how people end up allotted to a choice they meant to delete.",
-      "If allotted, report to the college within the reporting window with your originals. Miss it and the seat is gone — there is no extension.",
-    ],
-    watch:
-      "Filling a short list. A list of ten choices means ten chances to be allotted; the candidates who go unallotted in round 1 are almost always the ones who filled only the colleges they wanted rather than every college they would accept.",
-  },
-  {
-    tag: "R2",
-    title: "Round 2 — upgrade, or hold what you have",
-    summary: "The first point where a decision can cost you the seat in your hand.",
-    detail: [
-      "Candidates unallotted in round 1 get a fresh shot at everything still vacant.",
-      "If you hold a round-1 seat you choose between keeping it and entering round 2 for something better. Entering means the round-1 seat goes back into the pool.",
-      "Upgrades free seats further down, which is why a later round can reach much deeper than round 1 did.",
-      "Fresh registration is normally open, so the competition is not only the people who were there in round 1.",
-    ],
-    watch:
-      "Floating on the assumption that the cut always loosens. It usually does — but not everywhere, and a seat you give up is not held for you.",
-  },
-  {
-    tag: "R3",
-    title: "Round 3 / mop-up — the pool changes shape",
-    summary: "Vacancies from every earlier round, opened up again.",
-    detail: [
-      "Seats surrendered, never reported to, or left vacant come back here.",
-      "Deemed university seats in particular move a lot in this round, because candidates who were holding them for safety release them once they upgrade elsewhere.",
-      "Rules on who may participate tighten as the rounds go on — read the current information bulletin rather than last year's advice.",
-    ],
-    watch:
-      "Assuming mop-up is a formality for leftovers. Our data has round-3 cuts reaching far better ranks than round 2 in a meaningful slice of seats — for those, the best time to take the seat was earlier.",
-  },
-  {
-    tag: "R4+",
-    title: "Stray vacancy — the last call",
-    summary: "Institute-level, fast, and effectively final.",
-    detail: [
-      "Whatever is still unfilled is allotted here, often by the institutes themselves under the authority's supervision.",
-      "It moves quickly and the window is short. Decisions are made in days, not weeks.",
-      "A seat accepted in a stray round is normally binding — the exits available earlier are not available now.",
-    ],
-    watch:
-      "Treating this as a safety net for a whole strategy. By the time you reach it the choice is whatever nobody else took.",
-  },
-];
-
-const DOCUMENTS = [
-  "NEET PG scorecard and rank letter",
-  "MBBS degree certificate and all mark sheets",
-  "Internship completion certificate",
-  "Permanent or provisional medical registration",
-  "Class 10 certificate, for date of birth",
-  "Category certificate (SC / ST / OBC-NCL / EWS), in the prescribed format",
-  "PwBD certificate from a designated centre, if applicable",
-  "Domicile or state-eligibility proof, for state counselling",
-  "Photo ID, passport photographs, and the allotment letter",
-];
-
-const MISTAKES = [
-  {
-    title: "Registering for only one counselling",
-    body: "AIQ and state quota run in parallel on separate portals. Registering for both is allowed and costs you nothing but the fee — skipping one halves your chances for no reason.",
-  },
-  {
-    title: "Filling a short choice list",
-    body: "Allotment can only give you a seat you asked for. Every college you would accept belongs on the list, in honest order.",
-  },
-  {
-    title: "Reading the last round as the widest cut",
-    body: "A final round can close far tighter than round 2, because upgrades free seats to much better ranks. Judging a college by its last round understates what it actually reached.",
-  },
-  {
-    title: "Missing the reporting window",
-    body: "The allotment is not the seat. Reporting with originals inside the window is the seat, and the deadline does not move.",
-  },
-];
+// Every word below is Admin → Content ("Page: NEET PG process"); the rounds, mistakes and
+// MCC's schedule are the pg_process_rounds / pg_process_mistakes / pg_schedule collections
+// (lib/pgProcessContent.ts), falling back to lib/pgProcessDefaults.ts and lib/neetPgSchedule.ts.
+const lines = (v: string) => v.split("\n").map((x) => x.trim()).filter(Boolean);
+const WORDS = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
 
 /* ------------------------------------------------------------------ page */
 
 export default async function NeetPgProcessPage() {
-  const [stats, hero, tightened] = await Promise.all([getDataStats(), getMediaAsset("neet_hero"), getTightenedTotal("pg")]);
+  const [stats, hero, tightened, span, copy, content] = await Promise.all([
+    getDataStats(),
+    getMediaAsset("neet_hero"),
+    getTightenedTotal("pg"),
+    getRoundSpan("pg"),
+    pageCopy("page.neet_pg_process"),
+    getPgProcessContent(),
+  ]);
+  const sources = [
+    { label: copy.schedule_source_1_label, url: copy.schedule_source_1_url },
+    { label: copy.schedule_source_2_label, url: copy.schedule_source_2_url },
+  ].filter((x) => x.label && /^https?:\/\//i.test(x.url));
 
   return (
     <main className="min-h-screen bg-background">
@@ -167,11 +101,11 @@ export default async function NeetPgProcessPage() {
       />
 
       <PageHero
-        eyebrow="NEET PG counselling"
+        eyebrow={copy.hero_eyebrow}
         eyebrowIcon="shield"
-        title="NEET PG counselling,"
-        titleAccent="explained in the order it happens."
-        subtitle="Two authorities run at once, the rounds go further than most people expect, and one decision in round 2 can cost the seat you already hold. Here is the whole process, with the numbers from the published results rather than from advice."
+        title={copy.hero_title}
+        titleAccent={copy.hero_accent}
+        subtitle={copy.hero_subtitle}
         image={hero?.imageUrl && hero.imageUrl !== "none" ? hero.imageUrl : undefined}
         imageSubject={hero?.subject}
         imageCredit={hero?.attribution}
@@ -189,38 +123,27 @@ export default async function NeetPgProcessPage() {
         <Reveal>
           <section>
             <h2 className="font-heading text-2xl font-extrabold tracking-tight text-foreground md:text-3xl">
-              Two counsellings, running at the same time
+              {copy.who_title}
             </h2>
             <p className="mt-2.5 max-w-[68ch] text-[15px] leading-relaxed text-muted-foreground md:text-base">
-              This is the part that catches people out. There is no single queue for PG seats — your
-              rank is being used by two different authorities, on two different portals, with two
-              different deadlines. You may take part in both.
+              {copy.who_intro}
             </p>
 
             <div className="mt-7 grid gap-5 lg:grid-cols-2">
               {[
                 {
                   icon: Landmark,
-                  who: "MCC — mcc.nic.in",
+                  who: copy.mcc_name,
                   tone: "primary" as const,
-                  runs: [
-                    "50% All India Quota in state government colleges",
-                    "All seats in central universities and central institutes",
-                    "All deemed university seats",
-                    "ESIC and armed forces seats",
-                  ],
-                  note: "No domicile requirement. Any qualified candidate from any state can take part.",
+                  runs: lines(copy.mcc_runs),
+                  note: copy.mcc_note,
                 },
                 {
                   icon: Building2,
-                  who: "Your state authority",
+                  who: copy.state_name,
                   tone: "accent" as const,
-                  runs: [
-                    "The other 50% of government seats in that state",
-                    "Most private medical college seats in that state",
-                    "State-specific quotas and reservations",
-                  ],
-                  note: "Domicile or state-eligibility rules apply, and they differ from state to state.",
+                  runs: lines(copy.state_runs),
+                  note: copy.state_note,
                 },
               ].map(({ icon: Icon, who, tone, runs, note }) => (
                 <div key={who} className="rounded-2xl border border-border bg-card p-6">
@@ -255,12 +178,12 @@ export default async function NeetPgProcessPage() {
             <div id="schedule" className="mt-6 rounded-2xl border border-border bg-surface-2 p-5">
               <h3 className="flex items-center gap-2.5 font-heading text-lg font-bold text-foreground">
                 <CalendarClock className="h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
-                NEET PG {NEET_PG_SCHEDULE.year} counselling schedule
+                NEET PG {copy.schedule_year} counselling schedule
               </h3>
               <p className="mt-1 text-[13.5px] leading-relaxed text-muted-foreground">
-                MCC&rsquo;s tentative schedule, notified {NEET_PG_SCHEDULE.notified}. It is usually revised during the
+                MCC&rsquo;s tentative schedule, notified {copy.schedule_notified}. It is usually revised during the
                 cycle — the notice is the authority, not this table. Academic session begins{" "}
-                {NEET_PG_SCHEDULE.sessionStarts}.
+                {copy.schedule_session}.
               </p>
               <p className="mt-3 text-[12px] text-muted-foreground sm:hidden" aria-hidden="true">
                 Swipe the table sideways for every column →
@@ -277,7 +200,7 @@ export default async function NeetPgProcessPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {NEET_PG_SCHEDULE.rounds.map((r) => (
+                    {content.schedule.map((r) => (
                       <tr key={r.round} className="border-t border-border text-foreground">
                         <th scope="row" className="py-2.5 pr-3 font-semibold">{r.round}</th>
                         <td className="tnum py-2.5 pr-3">{r.aiq}</td>
@@ -290,7 +213,7 @@ export default async function NeetPgProcessPage() {
                 </table>
               </div>
               <ul className="mt-3 space-y-1 text-[13px]">
-                {NEET_PG_SCHEDULE.sources.map((s) => (
+                {sources.map((s) => (
                   <li key={s.url}>
                     <a
                       href={s.url}
@@ -311,14 +234,13 @@ export default async function NeetPgProcessPage() {
         <Reveal>
           <section>
             <h2 className="font-heading text-2xl font-extrabold tracking-tight text-foreground md:text-3xl">
-              The rounds, in the order they happen
+              {copy.rounds_title}
             </h2>
             <p className="mt-2.5 max-w-[68ch] text-[15px] leading-relaxed text-muted-foreground md:text-base">
-              Each round changes what the next one can offer you, so the order matters more than any
-              single round does.
+              {copy.rounds_intro}
             </p>
             <div className="mt-7">
-              <RoundTimeline steps={ROUNDS} />
+              <RoundTimeline steps={content.rounds} />
             </div>
           </section>
         </Reveal>
@@ -330,20 +252,16 @@ export default async function NeetPgProcessPage() {
               <div className="p-6 md:p-9">
                 <span className="inline-flex items-center gap-2 rounded-full border border-signal-borderline/30 bg-signal-borderline/[0.08] px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-signal-borderline">
                   <TrendingDown className="h-3.5 w-3.5" aria-hidden="true" />
-                  The decision that costs a year
+                  {copy.float_badge}
                 </span>
                 <h2 className="font-heading mt-4 text-2xl font-extrabold tracking-tight text-foreground md:text-3xl">
-                  Float or freeze
+                  {copy.float_title}
                 </h2>
                 <p className="mt-3 max-w-[60ch] text-[15px] leading-relaxed text-muted-foreground md:text-base">
-                  You hold a seat from round 1 and have to decide whether to chase something better.
-                  Everyone will tell you the cut always loosens. Usually it does — and for a real
-                  slice of seats it does the opposite, closing at <em>better</em> ranks in later
-                  rounds than it did in round 1. Give one of those up and you cannot take it back.
+                  {copy.float_p1}
                 </p>
                 <p className="mt-4 max-w-[60ch] text-[15px] leading-relaxed text-muted-foreground md:text-base">
-                  There is no honest way to answer this with an opinion. The only answer is what
-                  actually happened, at your rank, in your category — which is what we publish.
+                  {copy.float_p2}
                 </p>
 
                 <Link
@@ -351,26 +269,27 @@ export default async function NeetPgProcessPage() {
                   className="mt-7 inline-flex h-14 items-center justify-center gap-2.5 rounded-xl bg-gradient-brand px-7 text-[15px] font-bold text-white shadow-glow transition-all hover:-translate-y-0.5 hover:shadow-glow-lg"
                 >
                   <Search className="h-5 w-5" aria-hidden="true" />
-                  See what moved at your rank
+                  {copy.float_cta}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Link>
               </div>
 
               <div className="border-t border-border bg-card p-6 md:p-9 lg:border-l lg:border-t-0">
                 <h3 className="font-heading text-[15px] font-bold uppercase tracking-wide text-muted-foreground">
-                  What the published results hold
+                  {copy.held_title}
                 </h3>
                 <dl className="mt-5 space-y-5">
                   {[
                     {
                       value: inr(stats.pgRanks),
-                      label: "PG closing ranks, round by round",
-                      note: `Across ${inr(stats.pgColleges)} colleges and ${inr(stats.pgBranches)} branches.`,
+                      label: copy.held_ranks_label,
+                      note: copy.held_ranks_note.replace("{colleges}", inr(stats.pgColleges)).replace("{branches}", inr(stats.pgBranches)),
                     },
                     {
-                      value: "R1 – R5",
-                      label: "Rounds our PG data covers",
-                      note: "Counselling does not stop after round 2, and the numbers show it.",
+                      // Counted: the furthest round the PG data reaches, mock rounds aside.
+                      value: span ?? "—",
+                      label: copy.held_rounds_label,
+                      note: copy.held_rounds_note,
                     },
                     {
                       // Counted live (getTightenedTotal): seats whose every later
@@ -378,8 +297,8 @@ export default async function NeetPgProcessPage() {
                       // grouped as the after-round-1 tab groups them. Typed as 2,595
                       // until 2026-10-18, which counted KEA's mock rounds as "later".
                       value: tightened != null ? inr(tightened) : "—",
-                      label: "PG seats that tightened after round 1",
-                      note: "Every later round closed at a better rank than round 1 did. Give one of those up and it is gone.",
+                      label: copy.held_tight_label,
+                      note: copy.held_tight_note,
                     },
                   ].map(({ value, label, note }) => (
                     <div key={label}>
@@ -408,21 +327,19 @@ export default async function NeetPgProcessPage() {
           <section className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
             <div>
               <h2 className="font-heading text-2xl font-extrabold tracking-tight text-foreground md:text-3xl">
-                What to have ready
+                {copy.docs_title}
               </h2>
               <p className="mt-2.5 text-[15px] leading-relaxed text-muted-foreground md:text-base">
-                Originals, at reporting. A missing certificate on the day is the most avoidable way
-                to lose an allotted seat, and the reporting window is too short to arrange one.
+                {copy.docs_intro}
               </p>
               <p className="mt-4 flex gap-3 rounded-2xl border border-border bg-surface-2 px-4 py-3.5 text-[14px] leading-relaxed text-muted-foreground">
                 <FileText className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                Category and PwBD certificates must be in the format the authority prescribes. The
-                right document in the wrong format is treated as a missing document.
+                {copy.docs_note}
               </p>
             </div>
 
             <ul className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-              {DOCUMENTS.map((d) => (
+              {lines(copy.docs_list).map((d) => (
                 <li
                   key={d}
                   className="flex gap-3 rounded-xl border border-border bg-card px-4 py-3 text-[14px] leading-relaxed text-foreground"
@@ -439,10 +356,10 @@ export default async function NeetPgProcessPage() {
         <Reveal>
           <section>
             <h2 className="font-heading text-2xl font-extrabold tracking-tight text-foreground md:text-3xl">
-              Four mistakes that cost people a seat
+              {copy.mistakes_title.replace("{count}", WORDS[content.mistakes.length] ?? String(content.mistakes.length))}
             </h2>
             <div className="mt-7 grid gap-4 md:grid-cols-2">
-              {MISTAKES.map(({ title, body }) => (
+              {content.mistakes.map(({ title, body }) => (
                 <div
                   key={title}
                   className="rounded-2xl border border-border bg-card p-5 md:p-6"

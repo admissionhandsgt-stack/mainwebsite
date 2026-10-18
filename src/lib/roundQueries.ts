@@ -280,3 +280,20 @@ export async function getRoundFacets(level: Level) {
     return { categories: level === "ug" ? ["UR"] : ["GEN"], states: [] };
   }
 }
+
+/** "R1 – R7": the rounds a level's data runs to, mock rounds aside — /neet-pg-process quotes it. */
+export const getRoundSpan = unstable_cache(
+  async (level: Level): Promise<string | null> => {
+    const r = rows<{ hi: string | null }>(
+      await db.execute(sql`
+        SELECT MAX(CASE WHEN round_label ~ '^R[0-9]+([.][0-9]+)?$' THEN substring(round_label from 2)::numeric END) AS hi
+          FROM closing_ranks
+         WHERE level = ${level} AND round_label NOT LIKE 'R0%'
+      `),
+    );
+    const hi = r[0]?.hi;
+    return hi != null ? `R1 – R${Math.floor(Number(hi))}` : null;
+  },
+  ["round-span-v1"],
+  { revalidate: 86400, tags: ["closing-ranks"] },
+);
