@@ -1,4 +1,5 @@
 import React from 'react';
+import { fillLive, getLiveFigures } from '@/lib/liveFigures';
 export const revalidate = 0;
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
@@ -53,12 +54,13 @@ export async function generateMetadata(): Promise<Metadata> {
 
 // The FAQ is edited in the admin under "Page Content", so it reads its own data.
 const PGFAQSection = async () => {
-  const [blocks, s] = await Promise.all([getBlocks('faq_pg'), getSettings()]);
+  const [blocks, s, live] = await Promise.all([getBlocks('faq_pg'), getSettings(), getLiveFigures()]);
   return (
     <PGFAQ
+      // {tokens} in the admin's answers are live figures (lib/liveFigures.ts).
       items={blocks.map((b) => ({
-        question: b.title ?? '',
-        answer: b.body ?? '',
+        question: fillLive(b.title ?? '', live),
+        answer: fillLive(b.body ?? '', live),
         category: b.subtitle ?? '',
       }))}
       copy={{

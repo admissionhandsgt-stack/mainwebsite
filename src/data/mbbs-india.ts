@@ -1,10 +1,13 @@
+// Seat, college and fee figures are {tokens}, filled from NMC's register and the fee
+// tables when the page renders (lib/liveFigures.ts, via getMbbsContent). Typed numbers
+// had drifted — "1 lakh+ seats" and "750+ colleges" against NMC's 1.4 lakh and 834.
 export const mbbsData = {
   hero: {
     promisingInfo: [
-      { label: "Total MBBS Seats", value: "1 lakh+" },
-      { label: "Govt Colleges", value: "380+" },
-      { label: "Private Colleges", value: "300+" },
-      { label: "Closing Ranks", value: "2.7L" },
+      { label: "Total MBBS Seats", value: "{mbbs_seats}" },
+      { label: "Govt Colleges", value: "{govt_mbbs_colleges}" },
+      { label: "Private Colleges", value: "{private_mbbs_colleges}" },
+      { label: "Closing Ranks", value: "{closing_ranks_lakh}" },
     ],
   },
 
@@ -13,7 +16,7 @@ export const mbbsData = {
       { label: "Course Duration", value: "5.5 Yrs", detail: "Including Internship" },
       { label: "Entrance Exam", value: "NEET-UG", detail: "Mandatory for All" },
       { label: "Degree Awarded", value: "MBBS", detail: "NMC Recognized" },
-      { label: "Total Colleges", value: "750+", detail: "Approx., across India" },
+      { label: "Total Colleges", value: "{mbbs_colleges}", detail: "NMC register, {nmc_date}" },
       { label: "Counselling", value: "AIQ + State", detail: "Dual Pathway" },
     ],
   },
@@ -126,13 +129,13 @@ export const mbbsData = {
 
   fees: {
     ranges: [
-      { category: "Govt Colleges", range: "₹10K – ₹50K/yr" },
-      { category: "Private Colleges", range: "₹5L – ₹25L/yr" },
-      { category: "Deemed Universities", range: "₹10L – ₹30L/yr" },
-      { category: "Management Quota", range: "₹15L – ₹40L/yr" },
+      { category: "Government colleges", range: "{govt_mbbs_fee} a year" },
+      { category: "Private colleges", range: "{private_mbbs_fee} a year" },
+      { category: "Deemed universities", range: "{deemed_mbbs_fee} a year" },
+      { category: "Management & NRI quota", range: "Set by each college" },
     ],
     disclaimer:
-      "Fee ranges are approximate and vary across states and institutions. Government college fees are significantly subsidized. NRI/Management quota fees are typically higher. Always confirm the exact fee structure from the official college website or counselling authority before making any financial decisions.",
+      "The middle 80% of the yearly fees colleges published for the latest session: a government college's lowest published fee, and every fee a private college or deemed university publishes, because which one applies depends on your quota. Hostel, deposits and university charges are extra. Confirm the exact fee with the college or counselling authority before you plan around it.",
   },
 
   whyUs: {
@@ -161,19 +164,14 @@ export const mbbsData = {
 
   seats: {
     distribution: [
-      { count: "1 lakh+", label: "Total MBBS Seats" },
-      { count: "55,000+", label: "Government Seats" },
-      { count: "53,000+", label: "Private Seats" },
+      { count: "{mbbs_seats}", label: "Total MBBS Seats" },
+      { count: "{govt_mbbs_seats}", label: "Government Seats" },
+      { count: "{private_mbbs_seats}", label: "Private Seats" },
     ],
-    topStates: [
-      "Tamil Nadu",
-      "Karnataka",
-      "Maharashtra",
-      "Uttar Pradesh",
-      "Rajasthan",
-    ],
+    // The five states with the most MBBS seats, from NMC's register.
+    topStates: ["{top_state_1}", "{top_state_2}", "{top_state_3}", "{top_state_4}", "{top_state_5}"],
     disclaimer:
-      "Seat numbers are updated as per the latest NMC data. New colleges are added every year. Actual available seats depend on NMC approval and counselling authority notifications.",
+      "Approved MBBS seats from the National Medical Commission's college register, as of {nmc_date}. New colleges and seats are added every year; the seats a counselling round offers come from that year's seat matrix.",
   },
 
   faqs: [
@@ -183,11 +181,11 @@ export const mbbsData = {
     },
     {
       question: "How many MBBS seats are available in India?",
-      answer: "India has well over 1 lakh MBBS seats across 750+ medical colleges — government, private and deemed — recognised by the National Medical Commission (NMC). The exact count changes every year as NMC approves new colleges and seats, so your counsellor works from the current year's seat matrix.",
+      answer: "NMC's register lists {mbbs_seats} MBBS seats across {mbbs_colleges} medical colleges — {govt_mbbs_seats} in {govt_mbbs_colleges} government colleges and {private_mbbs_seats} in {private_mbbs_colleges} private ones (as of {nmc_date}). The count changes every year as NMC approves new colleges and seats, so your counsellor works from the current year's seat matrix.",
     },
     {
       question: "What is the fee structure for MBBS in government and private colleges?",
-      answer: "Government college fees range from ₹10,000 to ₹50,000 per year. Private college fees range from ₹5 Lakh to ₹25 Lakh per year. Deemed universities can charge ₹10–30 Lakh per year. Management quota fees are typically ₹15–40 Lakh per year.",
+      answer: "From the fees colleges published for the latest session: a government college usually charges {govt_mbbs_fee} a year (median {govt_mbbs_fee_median}). A private college publishes several fees, one per quota, most of them {private_mbbs_fee} a year (median {private_mbbs_fee_median}). Deemed universities mostly charge {deemed_mbbs_fee} a year (median {deemed_mbbs_fee_median}). Hostel, deposits and university charges are extra.",
     },
     {
       question: "What is the difference between AIQ and State Quota counselling?",

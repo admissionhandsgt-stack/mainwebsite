@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   ArrowUpRight, Users, Bell, Video, School, LogOut, ImageIcon, GitBranch, Inbox, LayoutDashboard,
-  SlidersHorizontal, MapPin, Menu, Search, AlertTriangle, FileText, Megaphone, X, Settings2, MessageCircle,
+  SlidersHorizontal, MapPin, Menu, Search, AlertTriangle, FileText, Megaphone, X, Settings2, MessageCircle, Database,
 } from 'lucide-react';
 import { AuthProvider, useAuth } from '@/hooks/useAuth';
 import { ProtectedRoute } from '@/components/admin/ProtectedRoute';
@@ -63,6 +63,7 @@ const NAV: { label: string; items: NavItem[] }[] = [
       { name: 'PG colleges', href: '/admin/pg-colleges', icon: School },
       { name: 'MBBS states', href: '/admin/mbbs-states', icon: MapPin },
       { name: 'PG branches', href: '/admin/pg-branches', icon: GitBranch },
+      { name: 'Data sync (NMC)', href: '/admin/data-sync', icon: Database },
     ],
   },
   {

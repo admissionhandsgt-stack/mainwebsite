@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import CollegesPageClient from "@/components/mbbs/CollegesPageClient";
 import { getMbbsStates, getUgColleges, getMediaAssets, resolveMetadata } from '@/lib/content';
+import { getNmcUgIndex } from '@/lib/nmcData';
 import StructuredData, { breadcrumb } from "@/components/seo/StructuredData";
 
 /**
@@ -39,10 +40,11 @@ export default async function CollegesPage() {
     // One round trip for the images and one each for the lists, all in
     // parallel. Fetching the four hero images one at a time in a loop was
     // costing four sequential trips through the tunnel on every request.
-    const [mediaList, statesRaw, collegesRaw] = await Promise.all([
+    const [mediaList, statesRaw, collegesRaw, nmc] = await Promise.all([
       getMediaAssets(),
       getMbbsStates(),
       getUgColleges(),
+      getNmcUgIndex(),
     ]);
 
     // Carry the credit with each backdrop: three of these four are CC BY-SA,
@@ -59,9 +61,15 @@ export default async function CollegesPage() {
       }));
 
     // Deemed universities have their own page, so they are excluded here.
-    const colleges = collegesRaw.filter(
-      (c) => !(c.collegeType ?? '').toLowerCase().includes('deemed'),
-    );
+    // NMC's register fills what the CMS never curated (2026-10-18): ownership for every
+    // matched college, and the approved intake, which is current where the CMS figure is
+    // not. A curated type still wins — it can say "Deemed", which NMC files as Private.
+    const colleges = collegesRaw
+      .filter((c) => !(c.collegeType ?? '').toLowerCase().includes('deemed'))
+      .map((c) => {
+        const x = nmc[c.slug];
+        return x ? { ...c, collegeType: c.collegeType ?? x.management, intake: x.seats ?? c.intake } : c;
+      });
 
     const byState = new Map<string, typeof colleges>();
     for (const c of colleges) {

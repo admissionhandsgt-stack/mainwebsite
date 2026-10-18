@@ -20,7 +20,11 @@ export default function CollegeGlance({ s }: { s: CollegeSummary }) {
     tiles.push({
       label: s.kind === "ug" ? `${s.course} seats` : s.kind === "dnb" ? "DNB seats" : "PG seats",
       value: n(s.seats),
-      sub: s.branches ? `${s.branches} ${s.kind === "dnb" ? (s.branches === 1 ? "speciality" : "specialities") : "branches"}` : undefined,
+      sub: s.branches
+        ? `${s.branches} ${s.kind === "dnb" ? (s.branches === 1 ? "speciality" : "specialities") : "branches"}${s.fromNmc ? " · NMC" : ""}`
+        : s.fromNmc
+          ? "Approved by NMC"
+          : undefined,
     });
   if (s.stipend) tiles.push({ label: "Stipend / month", value: money(s.stipend), sub: "First year, as published" });
   if (s.type) tiles.push({ label: "Type", value: s.type, sub: s.established ? `Est. ${s.established}` : undefined });

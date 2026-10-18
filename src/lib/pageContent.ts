@@ -13,6 +13,7 @@
 
 import { mbbsData } from "@/data/mbbs-india";
 import { getBlocks, getSettings, setting, type ContentBlock } from "@/lib/content";
+import { fillLive, getLiveFigures, type LiveFigures } from "@/lib/liveFigures";
 
 export type MbbsContent = typeof mbbsData;
 
@@ -23,7 +24,24 @@ function listOr<T>(blocks: ContentBlock[], map: (b: ContentBlock) => T, fallback
 
 const str = (v: string | null | undefined) => (v ?? "").trim();
 
+/** Every string in the content, with its {tokens} filled from the live figures. */
+function deepFill<T>(value: T, live: LiveFigures): T {
+  if (typeof value === "string") return fillLive(value, live) as T;
+  if (Array.isArray(value)) return value.map((v) => deepFill(v, live)) as T;
+  if (value && typeof value === "object") {
+    return Object.fromEntries(Object.entries(value as Record<string, unknown>).map(([k, v]) => [k, deepFill(v, live)])) as T;
+  }
+  return value;
+}
+
 export async function getMbbsContent(): Promise<MbbsContent> {
+  // Seat and fee figures in the copy are {tokens}, filled from NMC's register and the
+  // fee tables (lib/liveFigures.ts) — typed numbers drifted out of date (2026-10-18).
+  const [content, live] = await Promise.all([loadMbbsContent(), getLiveFigures()]);
+  return deepFill(content, live);
+}
+
+async function loadMbbsContent(): Promise<MbbsContent> {
   const [
     s, heroStats, overview, steps, whatWeDo, counselling, criteria,
     usefulInfo, documents, fees, whyUs, seats, topStates, faqs,

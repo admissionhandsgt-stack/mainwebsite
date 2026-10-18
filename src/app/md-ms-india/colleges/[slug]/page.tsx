@@ -11,6 +11,7 @@ import { MapPin } from "lucide-react";
 import { getSimilarColleges } from "@/lib/collegeQueries";
 import { loadCollegePage, collegeTitle, collegeDescription } from "@/lib/collegeSnippet";
 import CollegeGlance from "@/components/colleges/CollegeGlance";
+import NmcRecord from "@/components/colleges/NmcRecord";
 import CollegeRankCheck from "@/components/colleges/CollegeRankCheck";
 import { approxFee, FEE_FOOTNOTE } from "@/lib/chance";
 import { generalBands } from "@/lib/cutoffBands";
@@ -86,7 +87,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 export default async function CollegePage({ params }: { params: { slug: string } }) {
   const data = await loadCollegePage(params.slug, "pg");
   if (!data) notFound();
-  const { college, cutoffs, fees, summary: s } = data;
+  const { college, cutoffs, fees, nmc, summary: s } = data;
 
   const [pgStates, similar, photo] = await Promise.all([
     getPgStates(),
@@ -207,6 +208,13 @@ export default async function CollegePage({ params }: { params: { slug: string }
         <div className="mb-10">
           <CollegeRankCheck collegeName={s.short} course="pg" slug={college.slug} wide />
         </div>
+
+        {/* -------- NMC's own record: approved seats course by course -------- */}
+        {nmc && (
+          <div className="-mt-2 mb-10">
+            <NmcRecord nmc={nmc} level="pg" />
+          </div>
+        )}
 
         <div className="grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
           <div className="min-w-0">

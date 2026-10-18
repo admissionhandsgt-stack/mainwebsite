@@ -10,6 +10,7 @@ import { getSimilarColleges } from "@/lib/collegeQueries";
 import { getMbbsStates } from "@/lib/content";
 import { loadCollegePage, collegeTitle, collegeDescription } from "@/lib/collegeSnippet";
 import CollegeGlance from "@/components/colleges/CollegeGlance";
+import NmcRecord from "@/components/colleges/NmcRecord";
 import { extractStateName } from "@/lib/stateQueries";
 import CollegeRankCheck from "@/components/colleges/CollegeRankCheck";
 import { generalBands } from "@/lib/cutoffBands";
@@ -77,7 +78,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 export default async function UgCollegePage({ params }: { params: { slug: string } }) {
   const data = await loadCollegePage(params.slug, "ug");
   if (!data) notFound();
-  const { college, cutoffs, fees, extras, summary: s } = data;
+  const { college, cutoffs, fees, extras, nmc, summary: s } = data;
   // The state page, linked from the breadcrumb (see the PG college page).
   const [states, similar] = await Promise.all([getMbbsStates(), getSimilarColleges(params.slug, "ug", 5)]);
   const stateSlug = states.find((st) => extractStateName(st) === college.state)?.slug ?? null;
@@ -194,6 +195,9 @@ export default async function UgCollegePage({ params }: { params: { slug: string
             </p>
           </div>
         </section>
+
+        {/* ---------------- NMC's own record ---------------- */}
+        <NmcRecord nmc={nmc} level="ug" />
 
         {bands.length > 0 && (
           <div className="mt-8">

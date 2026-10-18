@@ -28,6 +28,7 @@ import {
   type Level,
 } from "@/lib/collegeQueries";
 import { getUgCollegeExtras } from "@/lib/content";
+import { getNmcFacts, type NmcFacts } from "@/lib/nmcData";
 
 /** Google shows about 60 characters of a title. */
 const TITLE = 62;
@@ -39,13 +40,14 @@ const DESCRIPTION = 158;
 export const loadCollegePage = cache(async (slug: string, level: Level) => {
   const college = await getCollege(slug, level);
   if (!college) return null;
-  const [cutoffs, fees, extras, index] = await Promise.all([
+  const [cutoffs, fees, extras, index, nmc] = await Promise.all([
     getCollegeCutoffs(slug, level),
     getCollegeFees(slug, level),
     level === "ug" ? getUgCollegeExtras(slug) : Promise.resolve(null),
     nameIndex(level),
+    getNmcFacts(slug, level),
   ]);
-  return { college, cutoffs, fees, extras, summary: summarise(level, college, cutoffs, fees, extras, index) };
+  return { college, cutoffs, fees, extras, nmc, summary: summarise(level, college, cutoffs, fees, extras, index, nmc) };
 });
 
 /**
@@ -92,6 +94,8 @@ export interface CollegeSummary {
   branches: number | null;
   /** "Government", "Private" or "Deemed" — only when the data says so. */
   type: string | null;
+  /** Seats, type and founding year are NMC's own (its register, lib/nmcData.ts). */
+  fromNmc: boolean;
   /** Highest published first-year stipend, a month (PG). */
   stipend: number | null;
   established: number | null;
@@ -99,6 +103,7 @@ export interface CollegeSummary {
 }
 
 const TYPE: Record<string, string> = { government: "Government", private: "Private", deemed: "Deemed" };
+const NMC_TYPE: Record<string, string> = { government: "Government", private: "Private", trust: "Private (trust)" };
 const plain = (s: string | null | undefined) => (s ? s.replace(/\*$/, "").replace(/\s*\/yr\*?$/, "").trim() : null);
 
 function summarise(
@@ -108,6 +113,7 @@ function summarise(
   fees: CollegeFee[],
   extras: Extras,
   index: Record<string, number>,
+  nmc: NmcFacts | null,
 ): CollegeSummary {
   const n = collegeName(college.name);
   let place = n.place;
@@ -128,12 +134,18 @@ function summarise(
   const feeValues = fees.map((f) => f.feeInr).filter((v): v is number => v != null && v > 0);
   const stipend = fees.reduce<number | null>((m, f) => (f.stipendY1Inr != null && f.stipendY1Inr > 0 && (m == null || f.stipendY1Inr > m) ? f.stipendY1Inr : m), null);
 
-  const type =
+  const curated =
     level === "ug"
       ? extras?.collegeType && /^(government|private|deemed)$/i.test(extras.collegeType)
         ? TYPE[extras.collegeType.toLowerCase()]
         : null
       : TYPE[college.ownership] ?? null;
+  // NMC's register is the regulator's word on ownership, but it files a deemed university
+  // under "Private" — a curated "Deemed" is the more exact of the two and is kept.
+  const nmcType = nmc?.management ? NMC_TYPE[nmc.management.toLowerCase()] ?? null : null;
+  const type = curated === "Deemed" ? curated : nmcType ?? curated;
+  // Approved intake from NMC beats a count derived from counselling rows.
+  const nmcSeats = level === "ug" ? nmc?.mbbsSeats ?? null : kind === "pg" && nmc?.pgSeats ? nmc.pgSeats : null;
 
   return {
     short: n.short,
@@ -144,11 +156,12 @@ function summarise(
     year,
     band: first ? { text: plain(first.band)!, quota: first.quota, course: first.course, year: first.year } : null,
     fee: feeValues.length ? plain(approxFee(Math.min(...feeValues), Math.max(...feeValues))) : null,
-    seats: level === "ug" ? extras?.intake ?? null : college.seatsTotal ?? null,
-    branches: level === "pg" ? college.branchCount ?? null : null,
+    seats: nmcSeats ?? (level === "ug" ? extras?.intake ?? null : college.seatsTotal ?? null),
+    branches: level === "pg" ? (nmcSeats && nmc ? nmc.pg.length : college.branchCount ?? null) : null,
     type,
+    fromNmc: Boolean(nmc && (nmcSeats || nmcType)),
     stipend: level === "pg" ? stipend : null,
-    established: college.establishedYear,
+    established: nmc?.inceptionYear ?? college.establishedYear,
     beds: college.beds,
   };
 }
