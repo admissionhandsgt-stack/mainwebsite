@@ -76,7 +76,9 @@ git fetch --quiet origin "$BRANCH" || refuse "could not reach GitHub to check th
 if [[ "$(git rev-parse HEAD)" != "$(git rev-parse "origin/$BRANCH" 2>/dev/null)" ]]; then
   refuse "$(git rev-parse --short HEAD) on $BRANCH is not what origin/$BRANCH has. git push first."
 fi
-COMMIT="$(git rev-parse --short HEAD)$( [[ -n "$(git status --porcelain)" ]] && echo '+dirty' )"
+# `|| true`: on a clean tree the test is false, and under `set -e` a substitution that ends
+# false fails the whole assignment — the script then exited silently, status 1 (2026-10-18).
+COMMIT="$(git rev-parse --short HEAD)$( [[ -n "$(git status --porcelain)" ]] && echo '+dirty' || true )"
 echo "  commit $COMMIT on $BRANCH: $(git log -1 --format=%s)"
 
 # ------------------------------------------------------------------ source
