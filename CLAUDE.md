@@ -220,6 +220,46 @@ is `HeroBars` (ranked bars) or `HeroFacts` (a fact grid), built from the page's 
   general-category band (2026-10-12). "Open a college for its closing ranks", "with the rank it closed at… on
   the same row" were on six pages and are gone. Grep for them before writing new copy.
 
+## The NMC register and live figures (2026-10-18)
+
+**`nmc_courses` mirrors the National Medical Commission's college-and-course register** (migration 0035):
+11,578 rows — every MBBS, MD, MS, Diploma, DM and M.Ch. course at 906 colleges, with approved seats,
+ownership ("Government" 442 / "Private" 391 / "Trust" 1 for MBBS — NMC files deemed universities as
+Private), university, founding year and recognition status. Source: NMC's public search,
+`nmc.org.in/information-desk-college-and-course-search/search?page=&per_page=500` (robots allows it;
+`course_type` is exactly `M.B.B.S.`, `MD`, `MS`, `Diploma`, `DM`, `M.Ch.`).
+
+- **Sync:** `lib/nmcSync.ts` — weekly from the server crontab (`POST /api/cron/nmc`, Mondays 03:41 UTC,
+  ~1.5 min), from **Admin → Data sync (NMC)**, or `npx tsx --env-file=.env.local scripts/sync_nmc.ts`.
+  It replaces the register in one transaction **only after sanity checks** (≥600 MBBS colleges, ≥90% of
+  the last row count), and every run is a row in `nmc_sync_runs`.
+- **Matching (`nmc_institutes`):** our UG and PG institutes are separate rows, so one NMC college maps to
+  up to two. Automatic pairs use a rarity-weighted name score within the state (`makeScorer`), accept at
+  ≥0.70 with a 0.15 margin, and two guards found on the real data: a candidate with no
+  college/institute word is never an NMC college (a district hospital holding DNB seats), and when the only
+  shared words are place names both must agree on "Government" ("GMC Kadapa" ≠ "Fathima Institute,
+  Kadapa"). 664/834 MBBS and 504/639 MD/MS matched automatically, 30/30 sampled correct. The rest are
+  matched by a person in the admin; `admin` / `admin-none` rows are never touched by a sync.
+- **Read side:** `lib/nmcData.ts` (`getNmcFacts(slug, level)`, `getNmcUgIndex()`, tag `nmc`).
+  `components/colleges/NmcRecord.tsx` is the "Official record" card on both college templates, and
+  `collegeSnippet.ts` takes seats, type and founding year from NMC (`summary.fromNmc`), so the summary
+  box, the title and the meta description quote the regulator's numbers. A curated "Deemed" beats NMC's
+  "Private". The MBBS directory badges every matched college Govt/Private.
+
+**Live `{tokens}` in CMS copy — `lib/liveFigures.ts`.** Typed figures drift ("1 lakh+ seats", "750+
+colleges", "₹10K–₹50K a year", "most private colleges pay no stipend" — all wrong by 2026-10). CMS text may
+carry `{mbbs_seats}`, `{govt_mbbs_fee}`, `{govt_stipend_median}`, `{top_state_1}` … (the full list is in the
+file's header), filled at render by `fillLive()`: the MBBS page through `getMbbsContent()` (every string),
+the MD/MS FAQ in `md-ms-india/page.tsx`. Fees are the middle 80%; a government college's MBBS fee is its
+lowest published fee, a private or deemed college's is every block it publishes. An unknown token is left
+as written so it shows in review.
+
+- **Apply token SQL only after the code that fills tokens is live.** The CMS rows are read by the running
+  release; `scripts/sql/live_figures_2026_10_18.sql` went in first and `/mbbs-india` showed raw
+  `{mbbs_seats}` for ~8 minutes until the deploy finished.
+- A new page that wants live figures calls `getLiveFigures()` + `fillLive()` on its own blocks — the
+  filling is per resolver, not global.
+
 ## Site structure the admin owns
 
 Three more tables cover the parts of the site that are structure rather than prose. Each was hardcoded in
@@ -1966,6 +2006,10 @@ forward to Oracle (`ah-forward.service`, `Conflicts=admissionhands.service`). Ca
 resolver, Cloudflare, an inbound WhatsApp — lands on Oracle's app and database. Nothing on that shared
 box's Caddyfile or WAHA container is edited. The forward key is authorised on Oracle as
 `restrict,port-forwarding,permitopen="127.0.0.1:8150"`: no shell, no other port. Leave it running 7 days.
+
+**`deploy_oracle.sh` deploys only a committed, pushed tree** (`--allow-dirty` is the emergency exit). Run it as
+`bash scripts/deploy_oracle.sh > log 2>&1; echo $?` — piped through `tail`, a failure reports tail's 0; that is how
+a silent `set -e` exit in its own guard went unseen on 2026-10-18.
 
 **After the cutover `scripts/deploy.sh` refuses** (it would restart the old app, which stops the forward
 and serves a stale database to anyone still reaching that box). Deploy with `deploy_oracle.sh`.
