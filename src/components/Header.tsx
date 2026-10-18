@@ -19,12 +19,16 @@ import type { NavItem } from '@/lib/content';
  * `/md-ms-india/cutoffs`, a route that has redirected for weeks, so the one
  * time this fallback mattered it would have shipped a dead link.
  *
- * Labels are short because the bar has to hold eight items on one line —
+ * Labels are short because the bar has to hold every item on one line —
  * "MBBS India" and "PG – MD/MS" wrapped it onto two and looked broken. The
  * section a link leads to says the rest.
+ *
+ * Since 2026-10-17 (owner's request) MBBS holds only MBBS, MD/MS only PG, and
+ * BDS, MDS, AYUSH and NEET SS sit under "Other Courses". To make room on a
+ * 1280–1535px laptop, Home left the bar (the logo is home) and Services and
+ * Videos went under Know Us — see the budget note on the <nav> below.
  */
 const FALLBACK_NAV: NavItem[] = [
-  { id: -1, label: 'Home', url: '/', newTab: false, children: [] },
   { id: -2, label: 'NEET College Predictor', url: '/neet-college-predictor', newTab: false, children: [] },
   {
     id: -3, label: 'MBBS', url: '/mbbs-india', newTab: false,
@@ -32,6 +36,7 @@ const FALLBACK_NAV: NavItem[] = [
       { id: -31, label: 'Deemed Universities', url: '/mbbs-india/deemed-universities', newTab: false, children: [] },
       { id: -32, label: 'Govt & Pvt Colleges', url: '/mbbs-india/colleges', newTab: false, children: [] },
       { id: -33, label: 'NEET UG Process', url: '/neet-ug-process', newTab: false, children: [] },
+      { id: -34, label: 'NEET UG Cutoff', url: '/neet-ug-cutoff', newTab: false, children: [] },
     ],
   },
   {
@@ -39,6 +44,16 @@ const FALLBACK_NAV: NavItem[] = [
     children: [
       { id: -41, label: 'All PG Colleges', url: '/md-ms-india/colleges', newTab: false, children: [] },
       { id: -42, label: 'NEET PG Process', url: '/neet-pg-process', newTab: false, children: [] },
+      { id: -43, label: 'NEET PG Cutoff', url: '/neet-pg-cutoff', newTab: false, children: [] },
+    ],
+  },
+  {
+    id: -9, label: 'Other Courses', url: '#', newTab: false,
+    children: [
+      { id: -91, label: 'BDS Colleges', url: '/bds-india', newTab: false, children: [] },
+      { id: -92, label: 'NEET MDS Cutoff', url: '/neet-mds-cutoff', newTab: false, children: [] },
+      { id: -93, label: 'BAMS & AYUSH Colleges', url: '/ayush-colleges', newTab: false, children: [] },
+      { id: -94, label: 'NEET SS (DM/MCh) Cutoff', url: '/neet-ss-cutoff', newTab: false, children: [] },
     ],
   },
   {
@@ -48,10 +63,17 @@ const FALLBACK_NAV: NavItem[] = [
       { id: -52, label: 'Documents Required', url: '/nri-quota/documents', newTab: false, children: [] },
     ],
   },
-  { id: -6, label: 'Services', url: '/services', newTab: false, children: [] },
-  { id: -7, label: 'Know Us', url: '/know-us', newTab: false, children: [] },
-  { id: -8, label: 'Videos', url: '/videos', newTab: false, children: [] },
+  {
+    id: -7, label: 'Know Us', url: '/know-us', newTab: false,
+    children: [
+      { id: -71, label: 'Services', url: '/services', newTab: false, children: [] },
+      { id: -72, label: 'Videos', url: '/videos', newTab: false, children: [] },
+    ],
+  },
 ];
+
+/** A menu with no page of its own — its url is "#" — only opens its list. */
+const isMenuOnly = (link: NavItem) => !link.url || link.url === '#';
 
 export default function Header({
   nav,
@@ -162,26 +184,44 @@ export default function Header({
             2026-10-06). Below 1280 the drawer takes over, as on a tablet; up
             to 1800 the links are 13px with tighter padding, Sign in is an icon
             and the logo is 180px. From 1800px it is exactly as designed.
+
+            2026-10-17: adding "Other Courses" to the old eight cut the controls
+            off by 132px at 1280–1535. With Home out (the logo is home) and
+            Services and Videos under Know Us, seven items leave 19px spare
+            there. Measure before adding anything:
+            node scripts/tmp/header_budget.mjs <base> "<label>" --real
           */}
           <nav className="mx-auto hidden items-center gap-0.5 xl:flex min-[1800px]:gap-1.5">
             {navLinks.map((link) => {
-              const isActive = pathname === link.url;
               const hasDropdown = link.children.length > 0;
+              const menuOnly = hasDropdown && isMenuOnly(link);
+              const isActive =
+                pathname === link.url || (menuOnly && link.children.some((c) => c.url === pathname));
+              const itemClass = `flex items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-2 text-[13px] font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background min-[1800px]:px-3.5 min-[1800px]:text-sm ${
+                isActive
+                  ? 'bg-primary-soft text-primary-strong dark:text-primary'
+                  : 'text-muted-foreground hover:text-primary hover:bg-primary-soft/60'
+              }`;
               return (
                 <div key={link.id} className="relative group">
-                  <Link
-                    href={link.url}
-                    target={link.newTab ? '_blank' : undefined}
-                    rel={link.newTab ? 'noopener noreferrer' : undefined}
-                    className={`flex items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-2 text-[13px] font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background min-[1800px]:px-3.5 min-[1800px]:text-sm ${
-                      isActive
-                        ? 'bg-primary-soft text-primary-strong dark:text-primary'
-                        : 'text-muted-foreground hover:text-primary hover:bg-primary-soft/60'
-                    }`}
-                  >
-                    {link.label}
-                    {hasDropdown && <ChevronDown className="w-3.5 h-3.5" />}
-                  </Link>
+                  {/* A menu with no page of its own ("Other Courses", url "#") is a
+                      button: focusing it opens the list, as hovering does. */}
+                  {menuOnly ? (
+                    <button type="button" aria-haspopup="true" className={itemClass}>
+                      {link.label}
+                      <ChevronDown className="w-3.5 h-3.5" aria-hidden="true" />
+                    </button>
+                  ) : (
+                    <Link
+                      href={link.url}
+                      target={link.newTab ? '_blank' : undefined}
+                      rel={link.newTab ? 'noopener noreferrer' : undefined}
+                      className={itemClass}
+                    >
+                      {link.label}
+                      {hasDropdown && <ChevronDown className="w-3.5 h-3.5" />}
+                    </Link>
+                  )}
                   {hasDropdown && (
                     <div className="absolute top-full left-0 pt-2 opacity-0 invisible translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 transition-all duration-200 z-50">
                       <div className="rounded-xl border border-border bg-card p-1.5 shadow-lift min-w-[230px]">
@@ -219,6 +259,8 @@ export default function Header({
                 does not reflow when somebody signs in. */}
             <Link
               href={accountName ? '/account' : '/login'}
+              // The student's first name is on this button: AutoLoom must not record its text.
+              data-aa-mask
               aria-label={accountName ? `Your account (${accountName})` : 'Sign in'}
               title={accountName || 'Sign in'}
               className="ml-1 inline-flex h-11 w-11 items-center justify-center gap-1.5 rounded-full border border-border text-xs font-bold text-foreground transition-colors hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring min-[1800px]:h-auto min-[1800px]:w-auto min-[1800px]:px-3 min-[1800px]:py-2"
@@ -273,27 +315,48 @@ export default function Header({
                 <nav className="flex flex-col gap-0.5" role="navigation">
                   {navLinks.map((link) => {
                     const hasDropdown = link.children.length > 0;
+                    const menuOnly = hasDropdown && isMenuOnly(link);
                     const isActive =
                       pathname === link.url ||
-                      (hasDropdown && link.url !== '/' && pathname?.startsWith(link.url));
+                      (menuOnly
+                        ? link.children.some((c) => c.url === pathname)
+                        : hasDropdown && link.url !== '/' && pathname?.startsWith(link.url));
                     const isOpen = expanded === link.id;
+                    const rowClass = `flex-1 flex items-center gap-2 p-2 rounded-xl text-left transition-all active:scale-[0.97] ${
+                      isActive ? 'bg-cyan-50/80 dark:bg-cyan-950/20 text-cyan-750 dark:text-cyan-400' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-900/40'
+                    }`;
+                    const rowInner = (
+                      <>
+                        <div className={`w-1 h-3 rounded-full bg-emerald-500 ${isActive ? 'opacity-100' : 'opacity-20'}`} />
+                        <span className="text-[12px] font-bold tracking-tight">{link.label}</span>
+                      </>
+                    );
 
                     if (hasDropdown) {
                       return (
                         <div key={link.id}>
                           <div className="flex items-center gap-0">
-                            <Link
-                              href={link.url}
-                              target={link.newTab ? '_blank' : undefined}
-                              rel={link.newTab ? 'noopener noreferrer' : undefined}
-                              onClick={() => setIsMobileMenuOpen(false)}
-                              className={`flex-1 flex items-center gap-2 p-2 rounded-xl transition-all active:scale-[0.97] ${
-                                isActive ? 'bg-cyan-50/80 dark:bg-cyan-950/20 text-cyan-750 dark:text-cyan-400' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-900/40'
-                              }`}
-                            >
-                              <div className={`w-1 h-3 rounded-full bg-emerald-500 ${isActive ? 'opacity-100' : 'opacity-20'}`} />
-                              <span className="text-[12px] font-bold tracking-tight">{link.label}</span>
-                            </Link>
+                            {/* No page of its own: the label opens the list too. */}
+                            {menuOnly ? (
+                              <button
+                                type="button"
+                                onClick={() => setExpanded(isOpen ? null : link.id)}
+                                aria-expanded={isOpen}
+                                className={rowClass}
+                              >
+                                {rowInner}
+                              </button>
+                            ) : (
+                              <Link
+                                href={link.url}
+                                target={link.newTab ? '_blank' : undefined}
+                                rel={link.newTab ? 'noopener noreferrer' : undefined}
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className={rowClass}
+                              >
+                                {rowInner}
+                              </Link>
+                            )}
                             <button
                               onClick={() => setExpanded(isOpen ? null : link.id)}
                               className="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900/40 transition-colors min-w-[40px] min-h-[40px] flex items-center justify-center"

@@ -4,6 +4,7 @@ import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
 import { checkRank } from "@/lib/neetLimits";
+import { optionsUser, allowQuery, logQuery, DISTINCT_PER_DAY } from "@/lib/chanceView";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -17,11 +18,12 @@ export const runtime = "nodejs";
  * the visitor's own rank is the thing they came for, and it is derivable from
  * data already loaded.
  *
- * **This deliberately returns no closing ranks.** Four buckets per college is
- * coarse — it cannot be turned back into the cutoff table, which is why it can
- * stay outside the gate on `/api/predict` without giving the dataset away. It
- * is also the hook that sends people to the predictor, where the real numbers
- * and the gate are.
+ * **No closing ranks, and since 2026-10-12 no college names without a
+ * verified account.** A band per named college for *any* rank is enough to walk
+ * a rank up and down and read each college's cut back out, so a visitor
+ * without an account gets the four counts only ("38 colleges at high chance")
+ * and a verified account gets the colleges — for its own few ranks a day, the
+ * same allowance as /api/predict.
  */
 
 type Band = "safe" | "likely" | "possible" | "stretch";
@@ -44,6 +46,17 @@ export async function GET(request: Request) {
   const category = (params.get("category") || (level === "ug" ? "UR" : "GEN"))
     .toUpperCase()
     .slice(0, 48);
+
+  const user = await optionsUser(request);
+  if (user) {
+    const allowed = await allowQuery(user.id, { level, stream: level === "ug" ? "mbbs" : "pg", rank, category });
+    if (!allowed.ok) {
+      return NextResponse.json(
+        { error: `You have checked ${DISTINCT_PER_DAY} different ranks today. Try again tomorrow, or ask your counsellor.`, code: "rank_limit" },
+        { status: 429 },
+      );
+    }
+  }
 
   try {
     // A college is scored by its most reachable seat, not its average one —
@@ -83,8 +96,21 @@ export async function GET(request: Request) {
       else out.stretch.push(slug);
     }
 
+    const counts = {
+      safe: out.safe.length,
+      likely: out.likely.length,
+      possible: out.possible.length,
+      stretch: out.stretch.length,
+    };
+    if (!user) {
+      return NextResponse.json(
+        { rank, level, category, counts, bands: null, locked: true },
+        { headers: rateLimitHeaders(limit, LIMIT) },
+      );
+    }
+    await logQuery(user.id, { level, stream: level === "ug" ? "mbbs" : "pg", rank, category, options: counts.safe + counts.likely + counts.possible }).catch(() => {});
     return NextResponse.json(
-      { rank, level, category, bands: out },
+      { rank, level, category, counts, bands: out, locked: false },
       { headers: rateLimitHeaders(limit, LIMIT) },
     );
   } catch (error) {

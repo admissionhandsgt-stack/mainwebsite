@@ -1,17 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Switch } from '@/components/ui/switch';
 import { listRows, createRow, updateRow, deleteRow } from '@/lib/adminApi';
 import { toast } from 'sonner';
-import { Map, Plus, Pencil, Trash2, Loader2, RefreshCw, CheckCircle2, XCircle } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Map, Plus, Pencil, Trash2, Loader2, RefreshCw, Search } from 'lucide-react';
+import {
+  PageHeader, Card, Toolbar, Button, INPUT, INPUT_H, TEXTAREA, Field, Toggle, Notice, EmptyState, TABLE, Drawer,
+} from '@/components/admin/ui';
 
 interface MBBSState {
   id: number;
@@ -32,6 +27,8 @@ const emptyState = {
   is_active: true
 };
 
+const FORM_ID = 'mbbs-state-form';
+
 const MBBSStateManager = () => {
   const [states, setStates] = useState<MBBSState[]>([]);
   const [formData, setFormData] = useState<typeof emptyState>(emptyState);
@@ -39,6 +36,7 @@ const MBBSStateManager = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [query, setQuery] = useState('');
 
   useEffect(() => {
     fetchStates();
@@ -129,213 +127,277 @@ const MBBSStateManager = () => {
     setEditingId(null);
   };
 
+  const closeDrawer = () => {
+    setDialogOpen(false);
+    resetForm();
+  };
+
+  // The drawer closes on Escape, like the leads panel.
+  useEffect(() => {
+    if (!dialogOpen) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && closeDrawer();
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dialogOpen]);
+
   const activeCount = states.filter(s => s.is_active).length;
 
-  return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">MBBS States</h1>
-          <p className="text-sm text-gray-500 mt-1">Manage Indian states shown on the MBBS India page</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <Button variant="outline" size="sm" onClick={fetchStates} disabled={isLoading} className="rounded-xl border-gray-200">
-            <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-            Refresh
-          </Button>
-          <Dialog open={dialogOpen} onOpenChange={(open) => { setDialogOpen(open); if (!open) resetForm(); }}>
-            <DialogTrigger asChild>
-              <Button className="rounded-xl bg-gradient-to-r from-medical-600 to-medical-500 hover:from-medical-700 hover:to-medical-600 border-0 shadow-md shadow-medical-500/20">
-                <Plus className="h-4 w-4 mr-2" />
-                Add State
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-lg rounded-2xl max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle className="text-xl font-bold">{editingId ? 'Edit State' : 'Add New State'}</DialogTitle>
-              </DialogHeader>
-              <form onSubmit={handleSubmit} className="space-y-4 pt-2">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-1.5">
-                    <Label htmlFor="name">State Name *</Label>
-                    <Input
-                      id="name"
-                      value={formData.name || ''}
-                      onChange={(e) => setFormData({
-                        ...formData,
-                        name: e.target.value,
-                        slug: editingId ? formData.slug : e.target.value.toLowerCase().replace(/\s+/g, '-')
-                      })}
-                      placeholder="e.g. Maharashtra"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="slug">Slug *</Label>
-                    <Input
-                      id="slug"
-                      value={formData.slug || ''}
-                      onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                      placeholder="e.g. maharashtra"
-                    />
-                  </div>
-                </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="image_url">Image URL</Label>
-                  <Input
-                    id="image_url"
-                    value={formData.image_url || ''}
-                    onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                    placeholder="https://..."
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="colleges_count">Number of Colleges</Label>
-                  <Input
-                    id="colleges_count"
-                    type="number"
-                    value={formData.colleges_count || 0}
-                    onChange={(e) => setFormData({ ...formData, colleges_count: parseInt(e.target.value) || 0 })}
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="content">Content / Description</Label>
-                  <Textarea
-                    id="content"
-                    value={formData.content || ''}
-                    onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                    rows={4}
-                    placeholder="Brief description of MBBS opportunities in this state..."
-                  />
-                </div>
-                <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
-                  <Switch
-                    id="is_active"
-                    checked={!!formData.is_active}
-                    onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
-                  />
-                  <Label htmlFor="is_active" className="cursor-pointer">Active (visible on website)</Label>
-                </div>
-                <div className="flex gap-3 pt-2">
-                  <Button type="submit" disabled={isLoading} className="flex-1 rounded-xl bg-gradient-to-r from-medical-600 to-medical-500 border-0">
-                    {isLoading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                    {editingId ? 'Save Changes' : 'Create State'}
-                  </Button>
-                  <Button type="button" variant="outline" onClick={() => { setDialogOpen(false); resetForm(); }} className="rounded-xl">
-                    Cancel
-                  </Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
-        </div>
-      </div>
+  const q = query.trim().toLowerCase();
+  const visible = q
+    ? states.filter((s) => s.name.toLowerCase().includes(q) || s.slug.toLowerCase().includes(q))
+    : states;
 
-      {/* Stats */}
-      <div className="grid grid-cols-3 gap-4">
-        {[
-          { label: 'Total States', value: states.length, icon: Map, color: 'text-medical-600 bg-medical-50' },
-          { label: 'Active', value: activeCount, icon: CheckCircle2, color: 'text-emerald-600 bg-emerald-50' },
-          { label: 'Inactive', value: states.length - activeCount, icon: XCircle, color: 'text-gray-500 bg-gray-50' },
-        ].map((stat) => (
-          <motion.div
-            key={stat.label}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-white/60 backdrop-blur-sm border border-white/40 rounded-2xl p-4 shadow-sm"
-          >
-            <div className="flex items-center gap-3">
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${stat.color}`}>
-                <stat.icon className="h-5 w-5" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-                <p className="text-xs text-gray-500">{stat.label}</p>
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
+  return (
+    <div>
+      <PageHeader
+        title="MBBS states"
+        description="The Indian states shown on the MBBS India page. A hidden state stays here but is not shown on the site."
+        actions={
+          <>
+            <Button onClick={fetchStates} disabled={isLoading}>
+              <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} /> Refresh
+            </Button>
+            <Button variant="primary" onClick={() => setDialogOpen(true)}>
+              <Plus className="h-4 w-4" /> Add state
+            </Button>
+          </>
+        }
+      />
 
       {error && (
-        <Alert variant="destructive" className="rounded-xl">
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
+        <Notice
+          tone="danger"
+          title="Could not load the states"
+          className="mb-4"
+          action={
+            <Button size="sm" onClick={fetchStates} disabled={isLoading}>
+              Retry
+            </Button>
+          }
+        >
+          {error}
+        </Notice>
       )}
 
-      {/* States Grid */}
-      {isLoading && states.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 gap-3">
-          <Loader2 className="h-10 w-10 animate-spin text-medical-400" />
-          <p className="text-gray-500 text-sm">Loading states...</p>
-        </div>
-      ) : states.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-white/40 rounded-2xl border border-dashed border-gray-200">
-          <Map className="h-12 w-12 text-gray-300 mb-3" />
-          <p className="text-gray-500 font-medium">No states added yet</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <AnimatePresence>
-            {states.map((state, i) => (
-              <motion.div
-                key={state.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ delay: i * 0.04 }}
-                className="group bg-white/60 backdrop-blur-sm border border-white/40 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
-              >
-                {state.image_url && (
-                  <div className="h-32 overflow-hidden">
-                    <img src={state.image_url} alt={state.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                  </div>
-                )}
-                <div className={`h-1 ${state.is_active ? 'bg-emerald-400' : 'bg-gray-200'}`} />
-                <div className="p-4">
-                  <div className="flex items-start justify-between mb-2">
-                    <div>
-                      <h3 className="font-bold text-gray-900">{state.name}</h3>
-                      <p className="text-xs text-gray-400 font-mono">{state.slug}</p>
-                    </div>
-                    <button
-                      onClick={() => toggleStatus(state.id, !!state.is_active)}
-                      className={`text-xs px-2 py-1 rounded-full font-semibold transition-colors ${
-                        state.is_active ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
-                      }`}
-                    >
-                      {state.is_active ? 'Active' : 'Inactive'}
-                    </button>
-                  </div>
-                  {state.colleges_count !== null && (
-                    <p className="text-sm text-gray-600 mb-3">{state.colleges_count} colleges</p>
-                  )}
-                  <div className="flex gap-2 pt-2 border-t border-gray-100">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleEdit(state)}
-                      className="flex-1 rounded-lg text-xs border-gray-200 hover:border-medical-300 hover:text-medical-600"
-                    >
-                      <Pencil className="h-3 w-3 mr-1" /> Edit
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleDelete(state.id, state.name)}
-                      disabled={isLoading}
-                      className="rounded-lg text-xs border-gray-200 text-red-500 hover:bg-red-50 hover:border-red-200"
-                    >
-                      <Trash2 className="h-3 w-3" />
-                    </Button>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
-      )}
+      <Card
+        flush
+        title="States"
+        description={
+          states.length > 0
+            ? `${states.length} states · ${activeCount} active · ${states.length - activeCount} hidden`
+            : undefined
+        }
+      >
+        {states.length > 0 && (
+          <Toolbar className="border-b border-slate-100 px-4 py-3">
+            <div className="relative min-w-[12rem] flex-1">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search by name or slug…"
+                aria-label="Search states"
+                className={`${INPUT} ${INPUT_H} pl-9`}
+              />
+            </div>
+            <span className="text-xs tabular-nums text-slate-500">
+              {visible.length} of {states.length}
+            </span>
+          </Toolbar>
+        )}
+
+        {isLoading && states.length === 0 ? (
+          <div className="flex items-center justify-center gap-2 py-16 text-sm text-slate-500">
+            <Loader2 className="h-5 w-5 animate-spin text-slate-400" /> Loading states…
+          </div>
+        ) : states.length === 0 ? (
+          error ? null : (
+            <EmptyState
+              icon={Map}
+              title="No states added yet"
+              hint="Add a state and it appears on the MBBS India page."
+              action={
+                <Button variant="primary" onClick={() => setDialogOpen(true)}>
+                  <Plus className="h-4 w-4" /> Add state
+                </Button>
+              }
+            />
+          )
+        ) : visible.length === 0 ? (
+          <EmptyState
+            icon={Search}
+            title="No state matches"
+            action={<Button onClick={() => setQuery('')}>Clear search</Button>}
+          />
+        ) : (
+          <div className={TABLE.wrap}>
+            <table className={`${TABLE.table} min-w-[640px]`}>
+              <thead className={TABLE.head}>
+                <tr>
+                  <th className={TABLE.th}>State</th>
+                  <th className={`${TABLE.th} text-right`}>Colleges</th>
+                  <th className={TABLE.th}>Description</th>
+                  <th className={TABLE.th}>Status</th>
+                  <th className={`${TABLE.th} text-right`}><span className="sr-only">Actions</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                {visible.map((state) => (
+                  <tr key={state.id} className={TABLE.row}>
+                    <td className={TABLE.td}>
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-9 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-slate-200 bg-slate-100 text-slate-400">
+                          {state.image_url ? (
+                            <img src={state.image_url} alt="" className="h-full w-full object-cover" />
+                          ) : (
+                            <Map className="h-4 w-4" />
+                          )}
+                        </div>
+                        <div className="min-w-0">
+                          <div className="truncate font-medium text-slate-900">{state.name}</div>
+                          <div className="truncate font-mono text-xs text-slate-400">{state.slug}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className={`${TABLE.td} text-right tabular-nums`}>
+                      {state.colleges_count !== null ? state.colleges_count : <span className="text-slate-400">—</span>}
+                    </td>
+                    <td className={TABLE.td}>
+                      {state.content ? (
+                        <div className="max-w-[20rem] truncate text-slate-500" title={state.content}>
+                          {state.content}
+                        </div>
+                      ) : (
+                        <span className="text-slate-400">—</span>
+                      )}
+                    </td>
+                    <td className={TABLE.td}>
+                      <Toggle
+                        checked={!!state.is_active}
+                        onChange={() => toggleStatus(state.id, !!state.is_active)}
+                        label={state.is_active ? 'Active' : 'Hidden'}
+                      />
+                    </td>
+                    <td className={TABLE.td}>
+                      <div className="flex justify-end gap-1">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          aria-label={`Edit ${state.name}`}
+                          title="Edit"
+                          onClick={() => handleEdit(state)}
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          aria-label={`Delete ${state.name}`}
+                          title="Delete"
+                          className="hover:bg-red-50 hover:text-red-600"
+                          onClick={() => handleDelete(state.id, state.name)}
+                          disabled={isLoading}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </Card>
+
+      <Drawer
+        open={dialogOpen}
+        title={editingId ? 'Edit state' : 'Add state'}
+        onClose={closeDrawer}
+        footer={
+          <>
+            <Button onClick={closeDrawer}>Cancel</Button>
+            <Button variant="primary" type="submit" form={FORM_ID} disabled={isLoading}>
+              {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+              {editingId ? 'Save changes' : 'Create state'}
+            </Button>
+          </>
+        }
+      >
+        <form id={FORM_ID} onSubmit={handleSubmit} className="space-y-6">
+          <section className="space-y-4">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">State</h3>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field label="State name *" htmlFor="name">
+                <input
+                  id="name"
+                  value={formData.name || ''}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    name: e.target.value,
+                    slug: editingId ? formData.slug : e.target.value.toLowerCase().replace(/\s+/g, '-')
+                  })}
+                  placeholder="e.g. Maharashtra"
+                  required
+                  className={`${INPUT} ${INPUT_H}`}
+                />
+              </Field>
+              <Field label="Slug *" htmlFor="slug" hint="The page address. Filled in from the name when you add a state.">
+                <input
+                  id="slug"
+                  value={formData.slug || ''}
+                  onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                  placeholder="e.g. maharashtra"
+                  className={`${INPUT} ${INPUT_H} font-mono`}
+                />
+              </Field>
+            </div>
+            <Field label="Number of colleges" htmlFor="colleges_count">
+              <input
+                id="colleges_count"
+                type="number"
+                inputMode="numeric"
+                value={formData.colleges_count || 0}
+                onChange={(e) => setFormData({ ...formData, colleges_count: parseInt(e.target.value) || 0 })}
+                className={`${INPUT} ${INPUT_H} sm:max-w-[12rem]`}
+              />
+            </Field>
+          </section>
+
+          <section className="space-y-4">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">Page content</h3>
+            <Field label="Image URL" htmlFor="image_url">
+              <input
+                id="image_url"
+                value={formData.image_url || ''}
+                onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
+                placeholder="https://..."
+                className={`${INPUT} ${INPUT_H}`}
+              />
+            </Field>
+            <Field label="Content / description" htmlFor="content">
+              <textarea
+                id="content"
+                value={formData.content || ''}
+                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                rows={4}
+                placeholder="Brief description of MBBS opportunities in this state..."
+                className={TEXTAREA}
+              />
+            </Field>
+          </section>
+
+          <section className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+            <Toggle
+              checked={!!formData.is_active}
+              onChange={(checked) => setFormData({ ...formData, is_active: checked })}
+              label="Active (visible on the site)"
+            />
+          </section>
+        </form>
+      </Drawer>
     </div>
   );
 };

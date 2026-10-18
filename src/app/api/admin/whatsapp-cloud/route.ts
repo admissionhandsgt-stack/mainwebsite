@@ -4,6 +4,7 @@ import { getIntegration, getIntegrationFlag, maskSecret, setIntegration } from "
 import {
   DEFAULT_TEMPLATE,
   addPhoneNumber,
+  cloudCaps,
   cloudConfig,
   cloudStatus,
   createAuthTemplate,
@@ -37,6 +38,7 @@ export async function GET() {
     wabaId: (await getIntegration("whatsapp.cloud.waba_id")) ?? "",
     phoneNumberId: (await getIntegration("whatsapp.cloud.phone_number_id")) ?? "",
     template: (await getIntegration("whatsapp.cloud.template")) ?? DEFAULT_TEMPLATE,
+    caps: await cloudCaps(),
   };
   const status = c ? await cloudStatus(c) : null;
   return NextResponse.json({ config, status });
@@ -65,6 +67,18 @@ export async function POST(request: Request) {
       await setIntegration("whatsapp.cloud.phone_number_id", phoneId);
       const template = String(body.template ?? "").trim().toLowerCase().replace(/[^a-z0-9_]/g, "_") || DEFAULT_TEMPLATE;
       await setIntegration("whatsapp.cloud.template", template);
+      // Site-wide send ceilings — the bound on the bill if someone floods sign-in.
+      for (const [field, key] of [
+        ["hourlyCap", "whatsapp.cloud.hourly_cap"],
+        ["dailyCap", "whatsapp.cloud.daily_cap"],
+      ] as const) {
+        if (body[field] === undefined || body[field] === "") continue;
+        const n = Number.parseInt(digitsOnly(body[field]), 10);
+        if (!Number.isFinite(n) || n > 100_000) {
+          return NextResponse.json({ error: "Caps must be whole numbers up to 1,00,000." }, { status: 400 });
+        }
+        await setIntegration(key, String(n));
+      }
       return NextResponse.json({ ok: true });
     }
 

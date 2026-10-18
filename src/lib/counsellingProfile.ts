@@ -33,8 +33,16 @@ import {
   BUDGET_BANDS,
   TOTAL_BUDGET_BANDS,
   MAX_BRANCHES,
+  MAX_STATES,
+  GENDERS,
+  COLLEGE_TYPES,
+  SEAT_INTERESTS,
+  INTERNSHIP,
+  BOND_OPTIONS,
   type CounsellingProfile,
 } from "@/lib/counsellingOptions";
+import { checkScore } from "@/lib/neetLimits";
+import { checkPhone } from "@/lib/phone";
 
 // Re-exported so server callers have one import. The definitions live in
 // counsellingOptions.ts, which has no imports, because the client components
@@ -126,6 +134,30 @@ export function parseProfile(body: Record<string, unknown>, level?: "ug" | "pg" 
     ? String(body.attempt)
     : null;
 
+  // Every list is a set of strings from an allow-list, or free text capped in
+  // length and count — never whatever the client sent.
+  const strings = (v: unknown, max: number, len = 80) =>
+    Array.from(
+      new Set(
+        (Array.isArray(v) ? v : [])
+          .filter((x): x is string => typeof x === "string")
+          .map((x) => x.trim().slice(0, len))
+          .filter(Boolean),
+      ),
+    ).slice(0, max);
+  const allowed = <T extends string>(v: unknown, list: readonly T[]): T | null =>
+    list.includes(String(v ?? "") as T) ? (String(v) as T) : null;
+  const ids = <T extends string>(v: unknown, list: readonly { id: T }[]): T[] =>
+    strings(v, list.length).filter((x): x is T => list.some((o) => o.id === x));
+  const bool = (v: unknown): boolean | null => (v === true || v === "yes" ? true : v === false || v === "no" ? false : null);
+
+  const score = body.neetScore == null || body.neetScore === "" ? null : checkScore(body.neetScore, level);
+  const guardian = body.guardianPhone ? checkPhone(body.guardianPhone) : null;
+  const preferredStates = strings(body.preferredStates, MAX_STATES, 60);
+  const collegeTypes = ids(body.collegeTypes, COLLEGE_TYPES);
+  const seatTypes = ids(body.seatTypes, SEAT_INTERESTS);
+  const stream = allowed(body.stream, ["mbbs", "bds", "pg"] as const);
+
   return {
     name: nameOrNull(body.name),
     rank,
@@ -136,6 +168,20 @@ export function parseProfile(body: Record<string, unknown>, level?: "ug" | "pg" 
     budgetTotalMax,
     attempt,
     mbbsCollege: text(body.mbbsCollege, 180),
+    stream,
+    neetScore: score && score.ok ? score.value : null,
+    pwd: bool(body.pwd),
+    gender: allowed(body.gender, GENDERS),
+    domicileState: text(body.domicileState, 60),
+    preferredStates: preferredStates.length ? preferredStates : null,
+    collegeTypes: collegeTypes.length ? collegeTypes : null,
+    seatTypes: seatTypes.length ? seatTypes : null,
+    mbbsState: text(body.mbbsState, 60),
+    internshipStatus: allowed(body.internshipStatus, INTERNSHIP),
+    serviceQuota: bool(body.serviceQuota),
+    bondOk: allowed(body.bondOk, BOND_OPTIONS),
+    city: text(body.city, 60),
+    guardianPhone: guardian && guardian.ok ? guardian.e164 : null,
   };
 }
 
@@ -162,6 +208,20 @@ export async function saveProfile(userId: number, p: CounsellingProfile): Promis
       budget_total_max     = COALESCE(${p.budgetTotalMax}, budget_total_max),
       attempt              = COALESCE(${p.attempt}, attempt),
       mbbs_college         = COALESCE(${p.mbbsCollege}, mbbs_college),
+      stream               = COALESCE(${p.stream ?? null}, stream),
+      neet_score           = COALESCE(${p.neetScore ?? null}, neet_score),
+      pwd                  = COALESCE(${p.pwd ?? null}, pwd),
+      gender               = COALESCE(${p.gender ?? null}, gender),
+      domicile_state       = COALESCE(${p.domicileState ?? null}, domicile_state),
+      preferred_states     = COALESCE(${textArray(p.preferredStates)}, preferred_states),
+      college_types        = COALESCE(${textArray(p.collegeTypes)}, college_types),
+      seat_types           = COALESCE(${textArray(p.seatTypes)}, seat_types),
+      mbbs_state           = COALESCE(${p.mbbsState ?? null}, mbbs_state),
+      internship_status    = COALESCE(${p.internshipStatus ?? null}, internship_status),
+      service_quota        = COALESCE(${p.serviceQuota ?? null}, service_quota),
+      bond_ok              = COALESCE(${p.bondOk ?? null}, bond_ok),
+      city                 = COALESCE(${p.city ?? null}, city),
+      guardian_phone       = COALESCE(${p.guardianPhone ?? null}, guardian_phone),
       profile_completed_at = now()
     WHERE id = ${userId}
   `);
@@ -171,7 +231,9 @@ export async function saveProfile(userId: number, p: CounsellingProfile): Promis
 export async function getProfile(userId: number): Promise<CounsellingProfile | null> {
   const rows = (await db.execute(sql`
     SELECT name, rank, category, preferred_branches, preferred_branch, preferred_state,
-           budget_max, budget_total_max, attempt, mbbs_college
+           budget_max, budget_total_max, attempt, mbbs_college,
+           stream, neet_score, pwd, gender, domicile_state, preferred_states, college_types,
+           seat_types, mbbs_state, internship_status, service_quota, bond_ok, city, guardian_phone
       FROM users WHERE id = ${userId} LIMIT 1
   `)) as unknown as Record<string, unknown>[];
 
@@ -191,6 +253,20 @@ export async function getProfile(userId: number): Promise<CounsellingProfile | n
     budgetTotalMax: r.budget_total_max == null ? null : Number(r.budget_total_max),
     attempt: (r.attempt as string) ?? null,
     mbbsCollege: (r.mbbs_college as string) ?? null,
+    stream: (r.stream as CounsellingProfile["stream"]) ?? null,
+    neetScore: r.neet_score == null ? null : Number(r.neet_score),
+    pwd: r.pwd == null ? null : Boolean(r.pwd),
+    gender: (r.gender as CounsellingProfile["gender"]) ?? null,
+    domicileState: (r.domicile_state as string) ?? null,
+    preferredStates: (r.preferred_states as string[] | null) ?? null,
+    collegeTypes: (r.college_types as CounsellingProfile["collegeTypes"]) ?? null,
+    seatTypes: (r.seat_types as CounsellingProfile["seatTypes"]) ?? null,
+    mbbsState: (r.mbbs_state as string) ?? null,
+    internshipStatus: (r.internship_status as CounsellingProfile["internshipStatus"]) ?? null,
+    serviceQuota: r.service_quota == null ? null : Boolean(r.service_quota),
+    bondOk: (r.bond_ok as CounsellingProfile["bondOk"]) ?? null,
+    city: (r.city as string) ?? null,
+    guardianPhone: (r.guardian_phone as string) ?? null,
   };
 }
 
@@ -220,6 +296,20 @@ export async function enrichLead(phone: string, p: CounsellingProfile): Promise<
       budget_total_max = COALESCE(budget_total_max, ${p.budgetTotalMax}),
       attempt          = COALESCE(attempt, ${p.attempt}),
       mbbs_college     = COALESCE(mbbs_college, ${p.mbbsCollege}),
+      stream           = COALESCE(stream, ${p.stream ?? null}),
+      neet_score       = COALESCE(neet_score, ${p.neetScore ?? null}),
+      pwd              = COALESCE(pwd, ${p.pwd ?? null}),
+      gender           = COALESCE(gender, ${p.gender ?? null}),
+      domicile_state   = COALESCE(domicile_state, ${p.domicileState ?? null}),
+      preferred_states = COALESCE(preferred_states, ${p.preferredStates?.join(", ") ?? null}),
+      college_types    = COALESCE(college_types, ${p.collegeTypes?.join(", ") ?? null}),
+      seat_types       = COALESCE(seat_types, ${p.seatTypes?.join(", ") ?? null}),
+      mbbs_state       = COALESCE(mbbs_state, ${p.mbbsState ?? null}),
+      internship_status = COALESCE(internship_status, ${p.internshipStatus ?? null}),
+      service_quota    = COALESCE(service_quota, ${p.serviceQuota ?? null}),
+      bond_ok          = COALESCE(bond_ok, ${p.bondOk ?? null}),
+      city             = COALESCE(city, ${p.city ?? null}),
+      guardian_phone   = COALESCE(guardian_phone, ${p.guardianPhone ?? null}),
       updated_at       = now()
     WHERE id = (
       SELECT id FROM leads
@@ -230,4 +320,22 @@ export async function enrichLead(phone: string, p: CounsellingProfile): Promise<
   `)) as unknown as { id: number }[];
 
   return rows.length > 0;
+}
+
+/**
+ * Whether a signed-in student stopped before the questions that decide their
+ * list (the same test as the follow-up WhatsApp, lib/followups.ts). Read on every
+ * page by the root layout for the resume pop-up, so it is one indexed lookup and
+ * a database blip reads as "no".
+ */
+export async function profileIncomplete(userId: number): Promise<boolean> {
+  try {
+    const rows = (await db.execute(sql`
+      SELECT (stream IS NULL OR gender IS NULL OR domicile_state IS NULL OR budget_max IS NULL) AS gap
+        FROM users WHERE id = ${userId} LIMIT 1
+    `)) as unknown as { gap: boolean }[];
+    return Boolean(rows[0]?.gap);
+  } catch {
+    return false;
+  }
 }

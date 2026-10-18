@@ -3,6 +3,12 @@ export const CONTACT_INFO = {
   phone: "+919310301949",
   whatsapp: "919310301949",
   email: "info@admissionhands.com",
+  /**
+   * The public Telegram channel (counselling notices, rounds, cutoffs). Linked
+   * straight, never through the AutoLoom /go/ah-tg link: that one is for the
+   * channel's own description and lands on our homepage, tagged as Telegram traffic.
+   */
+  telegram: "https://t.me/AdmissionHandsIndia",
 };
 
 /**

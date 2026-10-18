@@ -1,5 +1,6 @@
 "use client";
 
+import BranchPicker from "@/components/predictor/BranchPicker";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ArrowLeft,
@@ -20,6 +21,7 @@ import { checkIndianMobile } from "@/lib/phone";
 import { checkName } from "@/lib/formRules";
 import { checkRank } from "@/lib/neetLimits";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { trackLead, trackSignUp } from "@/lib/analytics";
 
 /**
  * Signing in, as a real sign-in.
@@ -69,6 +71,11 @@ export interface AuthFlowProps {
   onDone?: () => void;
   /** Inside a dialog the card supplies no border of its own. */
   bare?: boolean;
+  /**
+   * Skip the built-in profile questions: the caller asks its own, fuller set
+   * (the Admission Chance flow does, course by course).
+   */
+  skipProfile?: boolean;
 }
 
 const POLL_MS = 2500;
@@ -91,6 +98,7 @@ export default function AuthFlow({
   lockedCount = 0,
   onDone,
   bare = false,
+  skipProfile = false,
 }: AuthFlowProps) {
   const [step, setStep] = useState<Step>("phone");
   const [busy, setBusy] = useState(false);
@@ -115,36 +123,7 @@ export default function AuthFlow({
   const [branches, setBranches] = useState<string[]>([]);
   const [budget, setBudget] = useState("");
   const [budgetTotal, setBudgetTotal] = useState("");
-  const [branchOptions, setBranchOptions] = useState<string[]>([]);
 
-  /**
-   * The branch list, fetched once and only when it is about to be shown.
-   *
-   * The curated 26 from the CMS rather than the 101 the data holds: a candidate
-   * picks from branches they would actually sit for, and a hundred-item list on
-   * a phone is a list nobody reads. Names only — no ranks, nothing gated.
-   */
-  useEffect(() => {
-    if (step !== "profile" || level !== "pg" || branchOptions.length) return;
-    let cancelled = false;
-    fetch("/api/content/pg-branches")
-      .then((r) => (r.ok ? r.json() : null))
-      .then((j) => {
-        if (cancelled || !j?.data) return;
-        setBranchOptions(
-          (j.data as { branchName?: string }[])
-            .map((b) => b.branchName)
-            .filter((b): b is string => Boolean(b)),
-        );
-      })
-      .catch(() => {
-        // The step still works without them — the field falls back to a text
-        // box rather than blocking somebody behind a failed fetch.
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [step, level, branchOptions.length]);
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [code, setCode] = useState("");
@@ -189,11 +168,29 @@ export default function AuthFlow({
   }, [cooldown]);
 
   const post = useCallback(async (url: string, body: unknown) => {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
+    // A dropped connection (a phone between towers, or the few seconds a
+    // deploy restarts the server) surfaces as a bare "Failed to fetch". Try
+    // once more after a beat, and if that fails too, say so in plain words.
+    const send = () =>
+      fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+    let res: Response;
+    try {
+      res = await send();
+    } catch {
+      await new Promise((r) => setTimeout(r, 1500));
+      try {
+        res = await send();
+      } catch {
+        throw new Error("We could not reach the server. Check your internet connection and try again.");
+      }
+    }
+    if (res.status >= 502 && res.status <= 504) {
+      throw new Error("We are updating the site — please try again in a few seconds.");
+    }
     const json = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(json.error || "Something went wrong. Please try again.");
     return json as Record<string, unknown>;
@@ -306,7 +303,7 @@ export default function AuthFlow({
       await post("/api/auth/login", { phone: digits, password });
       // A returning visitor has answered these already; `profileNeeded` checks
       // rather than assumes, because the account may predate the questions.
-      setStep("profile");
+      setStep(skipProfile ? "done" : "profile");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Could not sign you in.");
     } finally {
@@ -328,10 +325,13 @@ export default function AuthFlow({
         rank: rank || undefined,
         category: category || undefined,
       });
+      if (!resetting) {
+        trackSignUp({ course: level, rank: rank || typedRank });
+      }
       // A reset is somebody who already has an account and a profile, so it
       // goes straight on. A first sign-up answers the questions a counsellor
       // would otherwise have to ring up and ask.
-      setStep(resetting ? "setpass" : "profile");
+      setStep(resetting ? "setpass" : skipProfile ? "done" : "profile");
     } catch (e) {
       setError(e instanceof Error ? e.message : "That code is not right.");
     } finally {
@@ -377,6 +377,7 @@ export default function AuthFlow({
         notify: true,
         source: typeof window !== "undefined" ? window.location.pathname : "Sign-in",
       });
+      trackLead({ form: "profile", course: level, rank: rank || typedRank });
       setStep("done");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Could not save that.");
@@ -384,11 +385,6 @@ export default function AuthFlow({
       setBusy(false);
     }
   };
-
-  const toggleBranch = (b: string) =>
-    setBranches((cur) =>
-      cur.includes(b) ? cur.filter((x) => x !== b) : cur.length >= 5 ? cur : [...cur, b],
-    );
 
   const submitNewPassword = async () => {
     if (password.length < 8) return setError("Use at least 8 characters.");
@@ -784,55 +780,11 @@ export default function AuthFlow({
             )}
 
             {/* Several, because nobody aims at one branch — and a counsellor
-                told only the first builds the wrong shortlist. */}
+                told only the first builds the wrong shortlist. The complete
+                course names (lib/branchCatalogue.ts), so the sheet and the
+                AH Counselor app get exactly what was chosen. */}
             {level === "pg" && (
-              <div>
-                <p className="text-[13px] font-semibold text-foreground">
-                  Branches you are aiming for
-                  <span className="ml-1.5 font-normal text-muted-foreground">pick up to 5</span>
-                </p>
-                {branchOptions.length > 0 ? (
-                  <div className="mt-2 flex flex-wrap gap-1.5">
-                    {branchOptions.map((b) => {
-                      const chosen = branches.includes(b);
-                      return (
-                        <button
-                          key={b}
-                          type="button"
-                          aria-pressed={chosen}
-                          onClick={() => toggleBranch(b)}
-                          disabled={!chosen && branches.length >= 5}
-                          className={`inline-flex min-h-[40px] items-center gap-1.5 rounded-full border px-3.5 text-[13px] font-semibold transition-colors disabled:opacity-40 ${
-                            chosen
-                              ? "border-primary bg-primary text-white"
-                              : "border-border bg-card text-foreground hover:border-primary/50"
-                          }`}
-                        >
-                          {chosen && <Check className="h-3.5 w-3.5" aria-hidden="true" />}
-                          {b}
-                        </button>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  // The list did not load — a text box beats a dead end.
-                  <input
-                    type="text"
-                    value={branches.join(", ")}
-                    onChange={(e) =>
-                      setBranches(
-                        e.target.value
-                          .split(",")
-                          .map((x) => x.trim())
-                          .filter(Boolean)
-                          .slice(0, 5),
-                      )
-                    }
-                    placeholder="Radiology, Dermatology"
-                    className="mt-2 h-14 w-full rounded-xl border-2 border-border bg-background px-4 text-[16px] text-foreground outline-none focus:border-primary"
-                  />
-                )}
-              </div>
+              <BranchPicker value={branches} onChange={setBranches} max={5} label="Branches you are aiming for" />
             )}
 
             <Field label="What you can pay each year" htmlFor="p-budget" icon={Wallet}>

@@ -17,7 +17,7 @@ const CSP = [
   // into every page it proxies. Blocked, it was 48 console errors per audit and
   // no data; allowed, it is the only real-user LCP/INP from Indian visitors
   // we have. Turn it off in the Cloudflare dashboard, not here.
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://static.cloudflareinsights.com",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://static.cloudflareinsights.com https://analytics.theautoloom.in",
   // Tailwind and next/font inject styles at runtime.
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com data:",
@@ -31,7 +31,7 @@ const CSP = [
   "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://www.google.com",
   // GA4 posts its events to google.com/g/collect as well as
   // google-analytics.com; leaving it out silently kills analytics.
-  "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com https://region1.google-analytics.com https://cloudflareinsights.com",
+  "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com https://region1.google-analytics.com https://cloudflareinsights.com https://analytics.theautoloom.in",
   // Nothing here should ever be framed, embed a plugin, or post a form away.
   "frame-ancestors 'none'",
   "object-src 'none'",

@@ -29,7 +29,8 @@
  */
 
 import type { CollegeDetail, CourseCutoff, CollegeFee } from "@/lib/collegeQueries";
-import { paywallJsonLd } from "@/lib/paywall";
+import { approxFee } from "@/lib/chance";
+import { generalBands } from "@/lib/cutoffBands";
 
 const SITE = "https://www.admissionhands.com";
 
@@ -70,8 +71,8 @@ export function collegePlace(college: CollegeDetail): string {
 /**
  * The questions these pages are actually found by, answered from the data.
  *
- * Ordered by how often they are the reason somebody arrives: the cutoff first,
- * then the money, then the shape of the place.
+ * Ordered by how often they are the reason somebody arrives: the rank question
+ * first, then the money, then the shape of the place.
  */
 export function collegeFaqs(
   college: CollegeDetail,
@@ -83,87 +84,68 @@ export function collegeFaqs(
   const course = level === "pg" ? "MD/MS" : "MBBS";
   const year = cutoffs.find((c) => c.latestYear)?.latestYear;
 
-  /* ---- the cutoff, which is what most of these queries are ---- */
-  const ranked = cutoffs.filter((c) => c.r1Latest != null);
-  if (ranked.length) {
-    const tightest = ranked.reduce((a, b) => (b.r1Latest! < a.r1Latest! ? b : a));
-    const widest = ranked.reduce((a, b) => (b.r1Latest! > a.r1Latest! ? b : a));
+  /* ---- the rank question, answered without a college's rank ----
+   *
+   * Since 2026-10-12 no page states a named college's closing rank (see
+   * lib/depth.ts). The question is still what people search, so it is answered
+   * with what genuinely decides it — which counselling, which quotas — and
+   * where the student's own chance is shown. */
+  if (cutoffs.length) {
+    const counsellings = [...new Set(cutoffs.map((c) => c.counselling).filter(Boolean))] as string[];
+    const quotas = [...new Set(cutoffs.map((c) => c.quota).filter(Boolean))];
+    const categories = new Set(cutoffs.map((c) => c.category)).size;
+    const list = (xs: string[], n: number) =>
+      xs.length <= n ? xs.join(", ") : `${xs.slice(0, n).join(", ")} and ${xs.length - n} more`;
 
-    // The quota is named alongside the rank on purpose. A rank without its
-    // quota invites the reader to assume a government seat and a government
-    // fee; at most colleges the widest rank is a management or NRI seat
-    // costing several times more.
-    // The year is the seat's own. Taking it from the first row printed "In 2025
-    // … 48" under a hero that said "2026: 48" (AIIMS New Delhi, 2026-10-09).
-    const headYear = tightest.latestYear ?? year;
-    const seat = (c: CourseCutoff) =>
-      `${c.course} (${c.quota}, ${c.category}${
-        c.latestYear && c.latestYear !== headYear ? `, ${c.latestYear}` : ""
-      })`;
-
-    faqs.push({
-      q: `What is the closing rank for ${college.name}?`,
-      a:
-        tightest.course === widest.course && tightest.quota === widest.quota
-          ? `In ${headYear ?? "the latest round"}, ${seat(tightest)} closed at rank ${inr(tightest.r1Latest!)} in round 1.`
-          : `In ${headYear ?? "the latest round"}, the hardest seat here was ${seat(tightest)}, ` +
-            `closing at rank ${inr(tightest.r1Latest!)} in round 1. The most accessible was ` +
-            `${seat(widest)} at ${inr(widest.r1Latest!)} — a different quota, usually at a very ` +
-            `different fee, so the two are not interchangeable. The table above keeps each seat's ` +
-            `rank, quota and fee on one row. These are the authority's own published closing ranks, ` +
-            `not estimates.`,
-    });
-
-    // The thing that costs people a seat, and nobody else publishes it.
-    const moved = ranked.filter(
-      (c) => c.widestLatest != null && c.r1Latest != null && c.widestLatest > c.r1Latest,
-    );
-    if (moved.length) {
-      const most = moved.reduce((a, b) =>
-        b.widestLatest! - b.r1Latest! > a.widestLatest! - a.r1Latest! ? b : a,
-      );
+    // The search answer is a band for the general category on merit quotas
+    // (lib/cutoffBands.ts) — the rank itself stays with the counsellor.
+    const bands = generalBands(cutoffs, 3);
+    if (bands.length) {
+      const said = bands
+        .map((b) => `${b.band.replace(/\*$/, "")} on the ${b.quota} ${level === "pg" ? b.course + " " : ""}seat`)
+        .join(", ");
       faqs.push({
-        q: `Does the cutoff at ${college.name} go up in later rounds?`,
+        q: `What is the ${level === "pg" ? "NEET PG" : "NEET UG"} cutoff for ${college.name}?`,
         a:
-          // Quota and category named, as above: "MBBS … 31,622 … 9,99,525" with
-          // neither read as one seat moving across the whole country's ranks.
-          `Yes, for ${moved.length} of its ${ranked.length} seats. The largest move was ${seat(most)}, ` +
-          `which closed at ${inr(most.r1Latest!)} in round 1 and reached ${inr(most.widestLatest!)} ` +
-          `by the widest round — a difference of ${inr(most.widestLatest! - most.r1Latest!)} ranks. ` +
-          `Judging this college by round 1 alone understates what it actually reached.`,
+          `For the general category${bands[0].year ? ` in ${bands[0].year}` : ""}, the last seat was taken in the ` +
+          `${said} — these are rank bands across all rounds, not exact ranks. OBC, SC, ST, EWS and PwD seats, ` +
+          `NRI and management close at very different ranks; sign in free on AdmissionHands to see your own ` +
+          `chance at this college, and your counsellor takes you through the round-by-round detail.`,
       });
     }
+
+    faqs.push({
+      q: `What NEET rank do I need for ${college.name}?`,
+      a:
+        `It depends on the course, your quota and category, and the round — the same college closes at very ` +
+        `different ranks for different seats. Seats here are filled through ${list(counsellings, 2) || "counselling"}` +
+        (quotas.length ? `, under ${list(quotas, 3)}` : "") +
+        `. Sign in free on AdmissionHands to see your own chance at this college in plain words — high chance, ` +
+        `good chance, possible or reach — and your counsellor takes you through the round-by-round detail.`,
+    });
+
+    faqs.push({
+      q: `How many seat options does ${college.name} offer in counselling?`,
+      a:
+        `${inr(cutoffs.length)} published seat options${year ? ` in ${year}` : ""} — each a course, quota and ` +
+        `category combination — across ${categories} ${categories === 1 ? "category" : "categories"}.`,
+    });
   }
 
-  /* ---- the money ---- */
-  const priced = fees.filter((f) => f.feeInr != null);
+  /* ---- the money, as a bracket ---- */
+  const priced = fees.filter((f) => f.feeInr != null && f.feeInr > 0);
   if (priced.length) {
-    const cheapest = priced.reduce((a, b) => (b.feeInr! < a.feeInr! ? b : a));
-    const dearest = priced.reduce((a, b) => (b.feeInr! > a.feeInr! ? b : a));
-    // UG fees carry no quota (the source publishes unlabelled fee blocks), and
-    // the row's quota then reads "—": "on a — seat" was printed on every UG page
-    // with two fees until 2026-10-09. Without a quota, give the range and say so.
-    const known = (q: string | null | undefined) => !!q && q !== "—";
-    faqs.push({
-      q: `What are the fees at ${college.name}?`,
-      a:
-        cheapest.feeInr === dearest.feeInr
-          ? `${money(cheapest.feeInr!)} a year, as published in the counselling fee schedule.`
-          : !known(cheapest.quota) || !known(dearest.quota)
-          ? `The published fee schedule ranges from ${money(cheapest.feeInr!)} to ${money(dearest.feeInr!)} ` +
-            `a year. The source does not say which quota each fee belongs to, so the lower figure may not ` +
-            `apply to every seat — check the fee for your quota at counselling.`
-          : cheapest.quota === dearest.quota
-          ? // Same quota at both ends (Madras Medical College: AIQ ₹20,000 and AIQ
-            // ₹50,000) — the difference is the course, not the quota.
-            `From ${money(cheapest.feeInr!)} a year (${cheapest.course}) to ${money(dearest.feeInr!)} ` +
-            `(${dearest.course}), both on ${cheapest.quota} seats. The difference is the course, not ` +
-            `the quota. Both are from the published counselling fee schedule.`
-          : `From ${money(cheapest.feeInr!)} a year on a ${cheapest.quota} seat to ` +
-            `${money(dearest.feeInr!)} on a ${dearest.quota} seat. The difference is the quota, not ` +
-            `the college — the cheapest figure here does not apply to the seats open at the largest ` +
-            `ranks. Both are from the published counselling fee schedule.`,
-    });
+    const values = priced.map((f) => f.feeInr!);
+    const bracket = approxFee(Math.min(...values), Math.max(...values));
+    if (bracket) {
+      faqs.push({
+        q: `What are the fees at ${college.name}?`,
+        a:
+          `Approximately ${bracket.replace(/^≈ /, "").replace(/\*$/, "")} in tuition, depending on the course ` +
+          `and quota. This is a bracket from the published fee schedule, not a quote — hostel, deposit, bond and ` +
+          `later-year changes vary by seat, and your counsellor confirms the exact figure for your quota.`,
+      });
+    }
   }
 
   const stipends = fees.filter((f) => f.stipendY1Inr != null && f.stipendY1Inr > 0);
@@ -205,16 +187,28 @@ export function collegeJsonLd(opts: {
   college: CollegeDetail;
   level: "ug" | "pg";
   faqs: Faq[];
+  /** The name it is searched by, when shorter than the official one. */
+  shortName?: string;
+  /** The state page, as the visible breadcrumb links it. */
+  state?: { name: string; path: string } | null;
 }): Record<string, unknown>[] {
-  const { college, level, faqs } = opts;
+  const { college, level, faqs, shortName, state } = opts;
   const base = level === "pg" ? "/md-ms-india/colleges" : "/mbbs-india/colleges";
-  const listName = level === "pg" ? "MD/MS colleges" : "MBBS colleges";
+  // The same trail the page shows: section, then the state, then the college.
+  const section = level === "pg" ? { name: "MD/MS in India", path: "/md-ms-india" } : { name: "MBBS in India", path: "/mbbs-india" };
+  const trail = [
+    { name: "Home", item: SITE },
+    { name: section.name, item: `${SITE}${section.path}` },
+    ...(state ? [{ name: state.name, item: `${SITE}${state.path}` }] : [{ name: level === "pg" ? "MD/MS colleges" : "MBBS colleges", item: `${SITE}${base}` }]),
+    { name: shortName ?? college.name, item: `${SITE}${base}/${college.slug}` },
+  ];
 
   const out: Record<string, unknown>[] = [
     {
       "@context": "https://schema.org",
       "@type": "CollegeOrUniversity",
       name: college.name,
+      ...(shortName && shortName !== college.name ? { alternateName: shortName } : {}),
       address: {
         "@type": "PostalAddress",
         addressLocality: college.district ?? college.city ?? undefined,
@@ -228,16 +222,7 @@ export function collegeJsonLd(opts: {
     {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: SITE },
-        { "@type": "ListItem", position: 2, name: listName, item: `${SITE}${base}` },
-        {
-          "@type": "ListItem",
-          position: 3,
-          name: college.name,
-          item: `${SITE}${base}/${college.slug}`,
-        },
-      ],
+      itemListElement: trail.map((t, i) => ({ "@type": "ListItem", position: i + 1, name: t.name, item: t.item })),
     },
   ];
 
@@ -252,17 +237,6 @@ export function collegeJsonLd(opts: {
       })),
     });
   }
-
-  // The cutoff table is served to a verified crawler and withheld from everyone
-  // else. That is a paywall, and this is the line that says so — without it the
-  // same behaviour is cloaking. See lib/paywall.ts and lib/crawler.ts.
-  out.push(
-    paywallJsonLd({
-      url: `${SITE}${base}/${college.slug}`,
-      name: `${college.name} — closing ranks by branch, quota and category`,
-      description: `Published ${level === "pg" ? "NEET PG" : "NEET UG"} closing ranks for ${college.name}, one row per seat.`,
-    }),
-  );
 
   return out;
 }

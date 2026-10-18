@@ -13,6 +13,7 @@
  * Run: node scripts/audit_site.mjs [baseUrl] [--json out.json]
  */
 
+import { blockAnalytics } from "./lib/noAnalytics.mjs";
 import { chromium } from "playwright";
 import { writeFileSync } from "node:fs";
 
@@ -223,6 +224,7 @@ const COLLECT = () => {
 
 async function auditRoute(browser, route, width, height, label) {
   const ctx = await browser.newContext({ viewport: { width, height } });
+  await blockAnalytics(ctx);
   const page = await ctx.newPage();
   const consoleErrors = [];
   page.on("console", (m) => {

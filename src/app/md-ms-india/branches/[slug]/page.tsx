@@ -7,10 +7,9 @@ import { AlertTriangle, ArrowRight, Building2, MapPin, Search, TrendingDown } fr
 import { getBranch, getBranches, DEFAULT_CATEGORY } from "@/lib/branchQueries";
 import StructuredData from "@/components/seo/StructuredData";
 import CtaBand from "@/components/ui/CtaBand";
-import GatedSeatTable from "@/components/seats/GatedSeatTable";
-import { canSeeDepthServer } from "@/lib/depth";
+import SeatOverview from "@/components/seats/SeatOverview";
+import BranchBands from "@/components/seats/BranchBands";
 import { summariseSeats } from "@/lib/seatSummary";
-import { paywallJsonLd } from "@/lib/paywall";
 
 /**
  * Rendered per request, deliberately.
@@ -62,14 +61,17 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const b = await getBranch(params.slug);
   if (!b) return { title: "Branch not found | AdmissionHands" };
 
+  // Searched as "dnb obstetrics and gynaecology closing rank", "dnb ent",
+  // "md radiology cutoff 2025". The year is the data's own, never a default.
+  const y = b.year ? ` ${b.year}` : "";
   const title = fitTitle(
-    `${b.name} Cutoff ${b.year ?? 2026} — Colleges, Ranks & Fees`,
-    `${b.name} Cutoff ${b.year ?? 2026}: Colleges & Ranks`,
-    `${b.name} Cutoff ${b.year ?? 2026}`,
+    `${b.name} Cutoff${y}: Closing Rank, Seats & Colleges`,
+    `${b.name} Cutoff${y}: Closing Rank & Seats`,
+    `${b.name} Cutoff${y}`,
   );
   const description = fitDescription(
-    `${b.name} closing ranks across ${inr(b.colleges)} colleges and ${b.states} states, by quota and category. ${inr(b.seats)} seats — published counselling results, not estimates.`,
-    `${b.name} closing ranks across ${inr(b.colleges)} colleges and ${b.states} states, by quota and category. ${inr(b.seats)} seats, published results.`,
+    `${b.name} closing rank${y}: ${inr(b.seats)} seats in ${inr(b.colleges)} colleges across ${b.states} states — quota by quota and category by category, with fees and stipend. Published counselling results.`,
+    `${b.name} closing rank${y}: ${inr(b.seats)} seats in ${inr(b.colleges)} colleges across ${b.states} states, by quota and category, with fees.`,
     `${b.name} closing ranks across ${inr(b.colleges)} colleges, by quota and category. ${inr(b.seats)} seats.`,
   );
 
@@ -95,14 +97,10 @@ export default async function BranchPage({
   searchParams: { category?: string };
 }) {
   const category = (searchParams.category ?? DEFAULT_CATEGORY).toUpperCase().slice(0, 24);
-  const [b, access] = await Promise.all([
-    getBranch(params.slug, category),
-    canSeeDepthServer(),
-  ]);
+  const b = await getBranch(params.slug, category);
   if (!b) notFound();
 
-  // The rows never leave the process unless the caller may have them.
-  const seatRows = access.full ? b.rowsList : [];
+  // Aggregates only — the per-college rows stay on the server (lib/depth.ts).
   const summary = summariseSeats(b.rowsList);
 
   const faqs = [
@@ -112,8 +110,8 @@ export default async function BranchPage({
         `It depends on the quota as much as on the rank. In the ${b.category} category, round 1 closed ` +
         `from rank ${inr(b.bestRank)} at the most competitive college. Management and NRI seats at the ` +
         `same colleges stay open to far larger ranks, but cost several times more — so a large rank ` +
-        `does not mean a cheap seat. The table on this page keeps each seat's rank and its own fee ` +
-        `on the same row for exactly that reason.`,
+        `does not mean a cheap seat. Sign in to see your own chance at each college in plain words; ` +
+        `your counsellor takes you through the seat-by-seat detail.`,
     },
     {
       q: `How many ${b.name} seats are there?`,
@@ -164,13 +162,6 @@ export default async function BranchPage({
               acceptedAnswer: { "@type": "Answer", text: f.a },
             })),
           },
-          // Says the seat table is gated. Without this, serving a crawler rows
-          // that a visitor does not get is cloaking. See lib/paywall.ts.
-          paywallJsonLd({
-            url: `${SITE}/md-ms-india/branches/${b.slug}`,
-            name: `${b.name} closing ranks and fees`,
-            description: `${b.name} seats by college, quota and category, with round-1 and widest closing ranks.`,
-          }),
         ]}
       />
 
@@ -264,8 +255,8 @@ export default async function BranchPage({
             {b.name} seats in the {b.category} category
           </h2>
           <p className="mt-1.5 max-w-[72ch] text-[14px] leading-relaxed text-muted-foreground">
-            One row per college and quota, widest reach first — the seats most ranks can actually
-            get to. Everything on a row describes that one seat.
+            How this branch fills, quota by quota, across every college that offers it. Which colleges your
+            own rank reaches — and how likely each one is — is shown after a free sign-in.
           </p>
 
           {b.rowsList.length === 0 ? (
@@ -273,26 +264,21 @@ export default async function BranchPage({
               No {b.category} seats are published for this branch. Try another category above.
             </p>
           ) : (
-            <GatedSeatTable
-              rows={seatRows}
+            <SeatOverview
               summary={summary}
-              level="pg"
-              states={summary.stateNames}
-              presetProfile={{ preferredBranch: b.name }}
-              counsellingHeadline={`You can see the ${b.name} seats. Which to fill first is the decision.`}
-              total={b.rowsList.length}
-              query={`kind=branch&slug=${encodeURIComponent(b.slug)}&category=${encodeURIComponent(b.category)}`}
-              collegeBase="/md-ms-india/colleges"
-              noun="seats"
+              ctaHref={`/neet-college-predictor?course=pg&category=${encodeURIComponent(b.category)}&branch=${encodeURIComponent(b.name)}`}
+              ctaLabel={`See my chance in ${b.name}`}
+            />
+          )}
+          {b.rowsList.length > 0 && (
+            <BranchBands
+              rows={b.rowsList}
+              branch={b.name}
+              category={b.category}
+              ctaHref={`/neet-college-predictor?course=pg&category=${encodeURIComponent(b.category)}&branch=${encodeURIComponent(b.name)}`}
             />
           )}
 
-          {b.truncated && (
-            <p className="mt-3 text-[13px] text-muted-foreground">
-              Showing the 300 seats whose cut reached furthest. The predictor narrows all of them to
-              the ones your own rank reaches.
-            </p>
-          )}
         </section>
 
         {/* ------------------------------- faq ------------------------------- */}

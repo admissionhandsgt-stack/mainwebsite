@@ -4,6 +4,14 @@
 #   ./scripts/deploy_oracle.sh            # ship the working tree, build there, switch
 #   ./scripts/deploy_oracle.sh --no-switch  # build and stage a release, leave the live one running
 #   ./scripts/deploy_oracle.sh --fresh-cache  # also empty the persisted data cache (fetch-cache)
+#   ./scripts/deploy_oracle.sh --allow-dirty  # emergency only: ship changes that are not committed and pushed
+#
+# ## Only what is on GitHub goes live (owner's rule, 2026-10-18)
+#
+# The deploy refuses unless the working tree is clean and HEAD is on origin: commit,
+# push, then deploy. Until then production ran a working tree days ahead of the last
+# commit, and nothing on GitHub said what was live. Each deploy is recorded in
+# /opt/admissionhands/deploys.log as "<release> <commit>".
 #
 # ## Why the build happens on the server
 #
@@ -31,10 +39,12 @@ APP=/opt/admissionhands
 STAMP="$(date -u +%Y%m%d-%H%M%S)"
 SWITCH=1
 FRESH_CACHE=0
+ALLOW_DIRTY=0
 for arg in "$@"; do
   case "$arg" in
     --no-switch) SWITCH=0 ;;
     --fresh-cache) FRESH_CACHE=1 ;;
+    --allow-dirty) ALLOW_DIRTY=1 ;;
     *) echo "unknown option: $arg" >&2; exit 2 ;;
   esac
 done
@@ -50,6 +60,24 @@ ssh_() { ssh -i "$KEY" -o BatchMode=yes -o ServerAliveInterval=20 "$HOST" "$@"; 
 say() { printf '\n\033[1m%s\033[0m\n' "$*"; }
 
 cd "$(dirname "$0")/.."
+
+# ------------------------------------------------------------------ git
+# Only a commit that is on GitHub goes live (see the header). --allow-dirty is for
+# an emergency fix and is said out loud — commit and push it straight after.
+refuse() {
+  if (( ALLOW_DIRTY )); then echo "  WARNING (--allow-dirty): $*" >&2; else echo "Refusing to deploy: $*" >&2; exit 3; fi
+}
+if [[ -n "$(git status --porcelain)" ]]; then
+  git status --short | head -15 >&2
+  refuse "uncommitted changes. Commit and push them first."
+fi
+BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+git fetch --quiet origin "$BRANCH" || refuse "could not reach GitHub to check that $BRANCH is pushed."
+if [[ "$(git rev-parse HEAD)" != "$(git rev-parse "origin/$BRANCH" 2>/dev/null)" ]]; then
+  refuse "$(git rev-parse --short HEAD) on $BRANCH is not what origin/$BRANCH has. git push first."
+fi
+COMMIT="$(git rev-parse --short HEAD)$( [[ -n "$(git status --porcelain)" ]] && echo '+dirty' )"
+echo "  commit $COMMIT on $BRANCH: $(git log -1 --format=%s)"
 
 # ------------------------------------------------------------------ source
 say "Sending source"
@@ -197,5 +225,6 @@ if [[ -n "$NEWEST" ]]; then
     || { echo "  $(basename "$NEWEST") differs on the server (local $WANT, server ${GOT:-missing})" >&2; exit 1; }
 fi
 
-say "Deployed $STAMP"
+ssh_ "echo '$STAMP $COMMIT $(date -u +%FT%TZ)' >> $APP/deploys.log" || echo "  could not append to deploys.log" >&2
+say "Deployed $STAMP (commit $COMMIT)"
 echo "  Roll back:  ssh admissionhands@137.23.39.214 'ln -sfn $APP/releases/<older> $APP/current && docker compose -p admissionhands -f $APP/compose.yml up -d --force-recreate --no-deps app'"

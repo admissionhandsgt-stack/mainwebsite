@@ -11,6 +11,7 @@
 import { unstable_cache } from "next/cache";
 import { sql } from "drizzle-orm";
 import { db } from "@/db/client";
+import { groupRank } from "@/lib/chance";
 
 const rows = <T,>(r: unknown) => r as unknown as T[];
 const num = (v: unknown) => (v == null ? null : Number(v));
@@ -97,6 +98,7 @@ export const getMdsCourse = unstable_cache(
       rows<Record<string, unknown>>(
         await db.execute(sql`
           SELECT quota, allotted_category AS category, COUNT(*)::int AS allotments,
+                 COUNT(DISTINCT institute)::int AS colleges,
                  MAX(rank) FILTER (WHERE round = 'R1')::int AS r1, MAX(rank)::int AS last
             FROM mds_allotments WHERE course_slug = ${slug} AND year = ${year}
            GROUP BY quota, allotted_category
@@ -108,8 +110,8 @@ export const getMdsCourse = unstable_cache(
         quota: String(x.quota),
         category: String(x.category),
         allotments: Number(x.allotments),
-        r1: num(x.r1),
-        last: num(x.last),
+        r1: groupRank(num(x.r1), Number(x.colleges)),
+        last: groupRank(num(x.last), Number(x.colleges)),
       }));
     const [cuts, currentCuts, inst] = await Promise.all([
       complete ? cut(complete.year) : Promise.resolve([] as MdsCut[]),
@@ -134,7 +136,7 @@ export const getMdsCourse = unstable_cache(
       })),
     };
   },
-  ["mds-course-v1"],
+  ["mds-course-v2"],
   { revalidate: 86400, tags: ["mds-data"] },
 );
 

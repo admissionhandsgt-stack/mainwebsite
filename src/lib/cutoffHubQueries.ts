@@ -21,6 +21,7 @@ import { sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { branchSlug } from "@/lib/branchSlug";
 import { logError } from "@/lib/logger";
+import { groupRank } from "@/lib/chance";
 
 const rows = <T,>(r: unknown) => r as unknown as T[];
 const num = (v: unknown) => (v == null ? null : Number(v));
@@ -149,11 +150,11 @@ export const getPgAiqBranches = unstable_cache(
       slug: branchSlug(String(x.branch)),
       colleges: Number(x.colleges),
       seats: Number(x.seats),
-      bestR1: num(x.best_r1),
-      widest: num(x.widest),
+      bestR1: groupRank(num(x.best_r1), Number(x.colleges)),
+      widest: groupRank(num(x.widest), Number(x.colleges)),
     }));
   },
-  ["hub-pg-aiq-branches-v1"],
+  ["hub-pg-aiq-branches-v2"],
   { revalidate: 86400, tags: ["seat-data"] },
 );
 

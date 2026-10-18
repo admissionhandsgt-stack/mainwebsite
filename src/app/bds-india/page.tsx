@@ -1,5 +1,6 @@
 import CiteThis from "@/components/seo/CiteThis";
 import type { Metadata } from "next";
+import { fitTitle, fitDescription } from "@/lib/seoTitle";
 import Link from "@/components/ui/Link";
 import { Search } from "lucide-react";
 import { getBdsColleges, getUgAiqCuts, type YearCuts } from "@/lib/cutoffHubQueries";
@@ -7,6 +8,7 @@ import { resolveMetadata } from "@/lib/content";
 import CategoryCutTable from "@/components/cutoffs/CategoryCutTable";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
+import TelegramJoin from "@/components/engage/TelegramJoin";
 
 /**
  * BDS had 326 colleges and 3,244 seat options in the data, and no page — the
@@ -20,10 +22,27 @@ const n = (v: number | null | undefined) => (v == null ? "—" : v.toLocaleStrin
 const complete = (years: YearCuts[]) => years.find((y) => y.rounds.includes("R3")) ?? years[0];
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { colleges } = await getBdsColleges();
+  const [{ colleges }, years] = await Promise.all([getBdsColleges(), getUgAiqCuts("BDS")]);
+  const year = complete(years);
+  const ur = year?.categories.find((c) => c.category === "UR");
+  const y = year?.year ? ` ${year.year}` : "";
+  // Searched as "bds cut off 2026 for government colleges", "bds seats in
+  // india", "bds cutoff": the AIQ figure is the page's own FAQ answer.
   return resolveMetadata(PATH, {
-    title: `BDS Colleges in India 2026: ${colleges.length} Colleges, Cutoff & Counselling`,
-    description: `All ${colleges.length} BDS colleges with published NEET closing ranks, state by state, and the All India Quota BDS cutoff by category. Published counselling data.`,
+    title: fitTitle(
+      `BDS Cutoff${y}: AIQ Closing Ranks & All ${colleges.length} BDS Colleges`,
+      `BDS Cutoff${y} & ${colleges.length} BDS Colleges in India`,
+      `BDS Colleges in India: Cutoff${y} & Counselling`,
+    ),
+    description: fitDescription(
+      ...(ur && ur.bestR1 && ur.widest
+        ? [
+            `NEET BDS cutoff${y}: All India Quota general seats closed from AIR ${ur.bestR1.toLocaleString("en-IN")} (round 1) to ${ur.widest.toLocaleString("en-IN")} (last admitted). All ${colleges.length} BDS colleges in India, state by state.`,
+            `NEET BDS cutoff${y}: AIQ general seats closed from AIR ${ur.bestR1.toLocaleString("en-IN")} (round 1) to ${ur.widest.toLocaleString("en-IN")} (last admitted). ${colleges.length} BDS colleges.`,
+          ]
+        : []),
+      `All ${colleges.length} BDS colleges with published NEET closing ranks, state by state, and the All India Quota BDS cutoff by category.`,
+    ),
     keywords: "BDS colleges in India, BDS cutoff, BDS cutoff 2025, NEET cutoff for BDS, government dental colleges, BDS admission, dental colleges in India",
   });
 }
@@ -192,6 +211,7 @@ export default async function BdsPage() {
         title="Deciding between BDS seats?"
         body="A counsellor orders your BDS and MBBS choices against the published closing ranks and your budget, through every round."
       />
+      <TelegramJoin placement="bds_india" />
     </main>
   );
 }

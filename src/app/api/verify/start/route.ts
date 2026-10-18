@@ -4,6 +4,7 @@ import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
 import { startAttempt, verifyEnabled } from "@/lib/waVerify";
 import { nameOrNull } from "@/lib/formRules";
 import { rankOrNull } from "@/lib/neetLimits";
+import { getIntegrationFlag } from "@/lib/integrations";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -27,6 +28,12 @@ export async function POST(request: Request) {
 
   // A code costs a row and a deep link. Generous enough for someone retrying
   // on a flaky connection, tight enough that nobody farms live codes.
+  // Closed while the official sender is on: sign-in codes go through Meta only
+  // (2026-10-13), never to a counsellor's personal WhatsApp.
+  if (await getIntegrationFlag("whatsapp.cloud.enabled")) {
+    return NextResponse.json({ error: "Sign in with the code we send you on WhatsApp." }, { status: 410 });
+  }
+
   const LIMIT = 10;
   const limit = rateLimit(`verify-start:${clientKey(request)}`, LIMIT, 10 * 60_000);
   if (!limit.ok) {

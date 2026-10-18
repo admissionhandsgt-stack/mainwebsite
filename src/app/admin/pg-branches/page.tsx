@@ -1,19 +1,17 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { listRows, createRow, updateRow, deleteRow, uploadImage } from '@/lib/adminApi';
 import { toast } from 'sonner';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import {
   Plus, RefreshCw, Loader2, Search, Pencil, Trash2,
-  ImagePlus, Eye, EyeOff, Stethoscope, Scissors, Activity,
-  GraduationCap, Hash
+  ImagePlus, Stethoscope, Scissors, Activity, GraduationCap,
 } from 'lucide-react';
+import {
+  PageHeader, Card, Toolbar, Tabs, Button, BUTTON, SIZE, INPUT, INPUT_H, TEXTAREA, Field, Toggle, Badge, Notice,
+  EmptyState, TABLE, Drawer,
+} from '@/components/admin/ui';
 
 interface PgBranch {
   id: number;
@@ -27,10 +25,10 @@ interface PgBranch {
   updated_at?: string;
 }
 
-const categoryConfig: Record<string, { label: string; badge: string; icon: typeof Stethoscope }> = {
-  clinical: { label: 'Clinical', badge: 'bg-cyan-100 text-cyan-700', icon: Stethoscope },
-  surgical: { label: 'Surgical', badge: 'bg-rose-100 text-rose-700', icon: Scissors },
-  non_clinical: { label: 'Non-Clinical', badge: 'bg-emerald-100 text-emerald-700', icon: Activity },
+const categoryConfig: Record<string, { label: string; icon: typeof Stethoscope }> = {
+  clinical: { label: 'Clinical', icon: Stethoscope },
+  surgical: { label: 'Surgical', icon: Scissors },
+  non_clinical: { label: 'Non-Clinical', icon: Activity },
 };
 
 const defaultFormState = {
@@ -41,11 +39,14 @@ const defaultFormState = {
   is_active: true,
 };
 
+type CategoryTab = 'all' | 'clinical' | 'surgical' | 'non_clinical';
+
 const PgBranchesManager = () => {
   const [branches, setBranches] = useState<PgBranch[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [categoryTab, setCategoryTab] = useState<CategoryTab>('all');
 
   // Dialog states
   const [addDialogOpen, setAddDialogOpen] = useState(false);
@@ -208,353 +209,364 @@ const PgBranchesManager = () => {
     setEditDialogOpen(true);
   };
 
+  // A drawer closed by Escape, the backdrop or its X resets the form, as the
+  // old dialogs did, and so does Cancel.
+  const dismissAdd = () => { setAddDialogOpen(false); resetForm(); };
+  const dismissEdit = () => { setEditDialogOpen(false); resetForm(); };
+
+  useEffect(() => {
+    if (!addDialogOpen && !editDialogOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      if (addDialogOpen) dismissAdd();
+      if (editDialogOpen) dismissEdit();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addDialogOpen, editDialogOpen]);
+
   // Filtered branches
   const filteredBranches = branches.filter((b) =>
     b.branch_name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  const visible = filteredBranches.filter((b) => categoryTab === 'all' || b.category === categoryTab);
 
   // Stats
   const activeCount = branches.filter((b) => b.is_active).length;
-  const clinicalCount = branches.filter((b) => b.category === 'clinical').length;
-  const surgicalCount = branches.filter((b) => b.category === 'surgical').length;
+  const categoryTabs = useMemo(
+    () => [
+      { id: 'all' as CategoryTab, label: 'All', count: branches.length },
+      ...(['clinical', 'surgical', 'non_clinical'] as const).map((c) => ({
+        id: c as CategoryTab,
+        label: categoryConfig[c].label,
+        count: branches.filter((b) => b.category === c).length,
+      })),
+    ],
+    [branches],
+  );
 
   const renderForm = (isEdit: boolean) => (
-    <div className="p-6 space-y-5">
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Branch Name *</Label>
-          <Input
+    <div className="space-y-6">
+      <section className="space-y-4">
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">Branch</h3>
+        <Field label="Branch name *" htmlFor={`branch-name-${isEdit ? 'edit' : 'add'}`}>
+          <input
+            id={`branch-name-${isEdit ? 'edit' : 'add'}`}
             placeholder="e.g. General Medicine"
             value={formData.branch_name}
             onChange={(e) => setFormData({ ...formData, branch_name: e.target.value })}
-            className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-colors"
+            className={`${INPUT} ${INPUT_H}`}
           />
-        </div>
+        </Field>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Category</Label>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label="Category" htmlFor={`branch-category-${isEdit ? 'edit' : 'add'}`}>
             <select
+              id={`branch-category-${isEdit ? 'edit' : 'add'}`}
               value={formData.category}
               onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-              className="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 py-2 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-medical-500 transition-colors"
+              className={`${INPUT} ${INPUT_H}`}
             >
               <option value="clinical">Clinical</option>
               <option value="surgical">Surgical</option>
               <option value="non_clinical">Non-Clinical</option>
             </select>
-          </div>
-          <div className="space-y-2">
-            <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Display Order</Label>
-            <Input
+          </Field>
+          <Field label="Display order" htmlFor={`branch-order-${isEdit ? 'edit' : 'add'}`} hint="Lower numbers show first.">
+            <input
+              id={`branch-order-${isEdit ? 'edit' : 'add'}`}
               type="number"
+              inputMode="numeric"
               placeholder="0"
               value={formData.display_order}
               onChange={(e) => setFormData({ ...formData, display_order: parseInt(e.target.value) || 0 })}
-              className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-colors"
+              className={`${INPUT} ${INPUT_H}`}
             />
-          </div>
+          </Field>
         </div>
 
-        <div className="space-y-2">
-          <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Short Description</Label>
+        <Field label="Short description" htmlFor={`branch-desc-${isEdit ? 'edit' : 'add'}`}>
           <textarea
+            id={`branch-desc-${isEdit ? 'edit' : 'add'}`}
             placeholder="Brief description of this branch..."
             value={formData.short_description}
             onChange={(e) => setFormData({ ...formData, short_description: e.target.value })}
             rows={3}
-            className="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 py-2 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-medical-500 transition-colors resize-none"
+            className={`${TEXTAREA} resize-none`}
           />
-        </div>
+        </Field>
+      </section>
 
-        {/* Icon Upload */}
-        <div className="space-y-2 pt-2">
-          <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 block">Branch Icon</Label>
-          <div className="flex items-center gap-4">
-            {iconPreview ? (
-              <div className="relative w-20 h-20 rounded-xl overflow-hidden border border-slate-200 group">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={iconPreview} alt="Icon preview" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Trash2 className="w-4 h-4 text-white cursor-pointer" onClick={() => { setIconFile(null); setIconPreview(null); }} />
-                </div>
-              </div>
-            ) : (
-              <div className="w-20 h-20 rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 flex items-center justify-center text-slate-400">
-                <ImagePlus className="w-6 h-6" />
-              </div>
-            )}
-            <div className="flex-1">
-              <Label htmlFor={`icon-upload-${isEdit ? 'edit' : 'add'}`} className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-cyan-600 transition-colors">
-                <ImagePlus className="w-4 h-4" />
-                {isEdit ? 'Change Icon' : 'Choose Icon'}
-              </Label>
-              <Input
-                id={`icon-upload-${isEdit ? 'edit' : 'add'}`}
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleIconChange}
-              />
-              <p className="text-[10px] text-slate-500 mt-2">Recommended: 128x128px. SVG or PNG.</p>
+      {/* Icon Upload */}
+      <section className="space-y-4">
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">Icon</h3>
+        <div className="flex flex-wrap items-center gap-4">
+          {iconPreview ? (
+            <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={iconPreview} alt="Icon preview" className="h-full w-full object-cover" />
             </div>
+          ) : (
+            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 text-slate-400">
+              <ImagePlus className="h-6 w-6" />
+            </div>
+          )}
+          <div className="min-w-0 flex-1 space-y-2">
+            <div className="flex flex-wrap gap-2">
+              <label
+                htmlFor={`icon-upload-${isEdit ? 'edit' : 'add'}`}
+                className={`${BUTTON.secondary} ${SIZE.sm} cursor-pointer`}
+              >
+                <ImagePlus className="h-4 w-4" />
+                {isEdit ? 'Change icon' : 'Choose icon'}
+              </label>
+              {iconPreview && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => { setIconFile(null); setIconPreview(null); }}
+                  className="text-red-600 hover:bg-red-50"
+                >
+                  <Trash2 className="h-4 w-4" /> Remove
+                </Button>
+              )}
+            </div>
+            <input
+              id={`icon-upload-${isEdit ? 'edit' : 'add'}`}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleIconChange}
+            />
+            <p className="text-xs text-slate-500">Square, about 128 × 128 px. PNG, JPG or WebP.</p>
           </div>
         </div>
+      </section>
 
-        {/* Active Toggle */}
-        <div className="flex items-center gap-3 pt-2">
-          <input
-            type="checkbox"
-            id={`active-toggle-${isEdit ? 'edit' : 'add'}`}
-            checked={formData.is_active}
-            onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-            className="w-4 h-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500"
-          />
-          <Label htmlFor={`active-toggle-${isEdit ? 'edit' : 'add'}`} className="text-sm font-medium text-slate-700 cursor-pointer">
-            Active (visible on website)
-          </Label>
-        </div>
-      </div>
+      {/* Active Toggle */}
+      <section className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+        <Toggle
+          checked={formData.is_active}
+          onChange={(checked) => setFormData({ ...formData, is_active: checked })}
+          label="Active (visible on the site)"
+        />
+      </section>
     </div>
   );
 
   return (
-    <div className="space-y-6">
+    <div>
       {/* Page Header */}
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">PG Branches</h1>
-          <p className="text-sm text-gray-500 mt-1">Manage postgraduate medical branches and specializations</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => fetchBranches()}
-            disabled={isLoading}
-            className="rounded-xl border-gray-200"
-          >
-            <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-            Refresh
-          </Button>
-          <Dialog open={addDialogOpen} onOpenChange={(open) => { setAddDialogOpen(open); if (!open) resetForm(); }}>
-            <DialogTrigger asChild>
-              <Button className="rounded-xl bg-gradient-to-r from-medical-600 to-medical-500 hover:from-medical-700 hover:to-medical-600 border-0 shadow-md shadow-medical-500/20">
-                <Plus className="h-4 w-4 mr-2" />
-                Add Branch
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[550px] bg-white border-slate-200 rounded-2xl shadow-2xl overflow-hidden p-0 max-h-[90vh] overflow-y-auto">
-              <div className="px-6 py-5 bg-slate-50 border-b border-slate-100 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-medical-100 flex items-center justify-center">
-                  <GraduationCap className="w-5 h-5 text-medical-600" />
-                </div>
-                <div>
-                  <DialogTitle className="text-xl font-bold text-slate-900">Add New Branch</DialogTitle>
-                  <p className="text-xs text-slate-500 font-medium">Add a new PG medical specialization</p>
-                </div>
-              </div>
-              {renderForm(false)}
-              <DialogFooter className="p-4 bg-slate-50 border-t border-slate-100">
-                <Button variant="outline" onClick={() => setAddDialogOpen(false)} className="rounded-xl">Cancel</Button>
-                <Button onClick={handleAdd} disabled={isSaving} className="rounded-xl bg-gradient-to-r from-medical-600 to-medical-500 hover:from-medical-700 hover:to-medical-600 text-white">
-                  {isSaving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : 'Add Branch'}
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </div>
-      </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        {[
-          { label: 'Total Branches', value: branches.length, icon: GraduationCap, color: 'text-medical-600 bg-medical-50' },
-          { label: 'Active', value: activeCount, icon: Eye, color: 'text-emerald-600 bg-emerald-50' },
-          { label: 'Clinical', value: clinicalCount, icon: Stethoscope, color: 'text-cyan-600 bg-cyan-50' },
-          { label: 'Surgical', value: surgicalCount, icon: Scissors, color: 'text-rose-600 bg-rose-50' },
-        ].map((stat) => (
-          <motion.div
-            key={stat.label}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-white/60 backdrop-blur-sm border border-white/40 rounded-2xl p-4 shadow-sm"
-          >
-            <div className="flex items-center gap-3">
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${stat.color}`}>
-                <stat.icon className="h-5 w-5" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-                <p className="text-xs text-gray-500">{stat.label}</p>
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Search Bar */}
-      <div className="bg-white/60 backdrop-blur-sm border border-white/40 rounded-2xl p-4 shadow-sm">
-        <div className="relative w-full sm:max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-          <Input
-            placeholder="Search branches..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9 bg-white border-slate-200 rounded-xl focus-visible:ring-medical-500"
-          />
-        </div>
-      </div>
+      <PageHeader
+        title="PG branches"
+        description="The MD/MS branches listed on the site, grouped as clinical, surgical or non-clinical. A hidden branch is not shown on the site."
+        actions={
+          <>
+            <Button onClick={() => fetchBranches()} disabled={isLoading}>
+              <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} /> Refresh
+            </Button>
+            <Button variant="primary" onClick={() => setAddDialogOpen(true)}>
+              <Plus className="h-4 w-4" /> Add branch
+            </Button>
+          </>
+        }
+      />
 
       {/* Error */}
       {error && (
-        <Alert variant="destructive" className="rounded-xl">
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
-
-      {/* Content */}
-      {isLoading && branches.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 gap-3">
-          <Loader2 className="h-10 w-10 animate-spin text-medical-400" />
-          <p className="text-gray-500 text-sm">Loading branches...</p>
-        </div>
-      ) : filteredBranches.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-white/40 rounded-2xl border border-dashed border-gray-200">
-          <GraduationCap className="h-12 w-12 text-gray-300 mb-3" />
-          <p className="text-gray-500 font-medium">No branches found</p>
-          <p className="text-sm text-gray-400 mt-1">
-            {branches.length > 0 ? 'Try adjusting your search' : 'Add your first PG branch to get started'}
-          </p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <AnimatePresence>
-            {filteredBranches.map((branch, idx) => {
-              const config = categoryConfig[branch.category] || categoryConfig.clinical;
-              const CategoryIcon = config.icon;
-              return (
-                <motion.div
-                  key={branch.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.04 }}
-                  className="bg-white/60 backdrop-blur-sm border border-white/40 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all group relative"
-                >
-                  <div className="flex gap-4">
-                    {/* Icon */}
-                    <div className="w-14 h-14 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0 flex items-center justify-center">
-                      {branch.icon_url ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={branch.icon_url}
-                          alt={branch.branch_name}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).style.display = 'none';
-                            (e.target as HTMLImageElement).parentElement!.innerHTML = '<span class="text-slate-300"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span>';
-                          }}
-                        />
-                      ) : (
-                        <CategoryIcon className="w-6 h-6 text-slate-400" />
-                      )}
-                    </div>
-
-                    {/* Info */}
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-bold text-slate-900 truncate mb-1">{branch.branch_name}</h3>
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wide ${config.badge}`}>
-                          {config.label}
-                        </span>
-                        <div className="flex items-center gap-1">
-                          <div className={`w-2 h-2 rounded-full ${branch.is_active ? 'bg-emerald-500' : 'bg-gray-300'}`} />
-                          <span className="text-[10px] text-slate-400">{branch.is_active ? 'Active' : 'Inactive'}</span>
-                        </div>
-                      </div>
-                      {branch.short_description && (
-                        <p className="text-xs text-slate-500 line-clamp-2">{branch.short_description}</p>
-                      )}
-                      <div className="flex items-center gap-1.5 mt-2 text-[10px] text-slate-400">
-                        <Hash className="w-3 h-3" />
-                        <span>Order: {branch.display_order}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Actions (hover) */}
-                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1.5">
-                    <Button
-                      variant="secondary"
-                      size="icon"
-                      className="h-8 w-8 rounded-lg shadow-sm border border-slate-200 bg-white hover:bg-slate-50 hover:text-cyan-600"
-                      onClick={() => openEditDialog(branch)}
-                    >
-                      <Pencil className="h-3.5 w-3.5" />
-                    </Button>
-                    <Button
-                      variant="secondary"
-                      size="icon"
-                      className="h-8 w-8 rounded-lg shadow-sm border border-slate-200 bg-white hover:bg-slate-50"
-                      onClick={() => toggleActive(branch)}
-                      title={branch.is_active ? 'Deactivate' : 'Activate'}
-                    >
-                      {branch.is_active ? <EyeOff className="h-3.5 w-3.5 text-slate-400" /> : <Eye className="h-3.5 w-3.5 text-emerald-500" />}
-                    </Button>
-                    <Button
-                      variant="secondary"
-                      size="icon"
-                      className="h-8 w-8 rounded-lg shadow-sm border border-slate-200 bg-white hover:bg-red-50 hover:text-red-600"
-                      onClick={() => { setDeleteTarget(branch); setDeleteDialogOpen(true); }}
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </Button>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </AnimatePresence>
-        </div>
-      )}
-
-      {/* Edit Dialog */}
-      <Dialog open={editDialogOpen} onOpenChange={(open) => { setEditDialogOpen(open); if (!open) resetForm(); }}>
-        <DialogContent className="sm:max-w-[550px] bg-white border-slate-200 rounded-2xl shadow-2xl overflow-hidden p-0 max-h-[90vh] overflow-y-auto">
-          <div className="px-6 py-5 bg-slate-50 border-b border-slate-100 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-cyan-100 flex items-center justify-center">
-              <Pencil className="w-5 h-5 text-cyan-600" />
-            </div>
-            <div>
-              <DialogTitle className="text-xl font-bold text-slate-900">Edit Branch</DialogTitle>
-              <p className="text-xs text-slate-500 font-medium">Update {editingBranch?.branch_name}</p>
-            </div>
-          </div>
-          {renderForm(true)}
-          <DialogFooter className="p-4 bg-slate-50 border-t border-slate-100">
-            <Button variant="outline" onClick={() => setEditDialogOpen(false)} className="rounded-xl">Cancel</Button>
-            <Button onClick={handleEdit} disabled={isSaving} className="rounded-xl bg-gradient-to-r from-medical-600 to-medical-500 hover:from-medical-700 hover:to-medical-600 text-white">
-              {isSaving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : 'Save Changes'}
+        <Notice
+          tone="danger"
+          title="Could not load the branches"
+          className="mb-4"
+          action={
+            <Button size="sm" onClick={() => fetchBranches()} disabled={isLoading}>
+              Retry
             </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+          }
+        >
+          {error}
+        </Notice>
+      )}
+
+      <Card
+        flush
+        title="Branches"
+        description={branches.length > 0 ? `${branches.length} branches · ${activeCount} active` : undefined}
+      >
+        {branches.length > 0 && (
+          <>
+            <div className="px-3 pt-1">
+              <Tabs<CategoryTab> items={categoryTabs} value={categoryTab} onChange={setCategoryTab} />
+            </div>
+            <Toolbar className="border-b border-slate-100 px-4 py-3">
+              <div className="relative min-w-[12rem] flex-1">
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="search"
+                  placeholder="Search branches…"
+                  aria-label="Search branches"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className={`${INPUT} ${INPUT_H} pl-9`}
+                />
+              </div>
+              <span className="text-xs tabular-nums text-slate-500">
+                {visible.length} of {branches.length}
+              </span>
+            </Toolbar>
+          </>
+        )}
+
+        {/* Content */}
+        {isLoading && branches.length === 0 ? (
+          <div className="flex items-center justify-center gap-2 py-16 text-sm text-slate-500">
+            <Loader2 className="h-5 w-5 animate-spin text-slate-400" /> Loading branches…
+          </div>
+        ) : branches.length === 0 ? (
+          error ? null : (
+            <EmptyState
+              icon={GraduationCap}
+              title="No branches yet"
+              hint="Add your first PG branch to get started."
+              action={
+                <Button variant="primary" onClick={() => setAddDialogOpen(true)}>
+                  <Plus className="h-4 w-4" /> Add branch
+                </Button>
+              }
+            />
+          )
+        ) : visible.length === 0 ? (
+          <EmptyState
+            icon={Search}
+            title="No branch matches"
+            hint="Try another name or category."
+            action={<Button onClick={() => { setSearchQuery(''); setCategoryTab('all'); }}>Clear filters</Button>}
+          />
+        ) : (
+          <div className={TABLE.wrap}>
+            <table className={`${TABLE.table} min-w-[680px]`}>
+              <thead className={TABLE.head}>
+                <tr>
+                  <th className={TABLE.th}>Branch</th>
+                  <th className={TABLE.th}>Category</th>
+                  <th className={`${TABLE.th} text-right`}>Order</th>
+                  <th className={TABLE.th}>Status</th>
+                  <th className={`${TABLE.th} text-right`}><span className="sr-only">Actions</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                {visible.map((branch) => {
+                  const config = categoryConfig[branch.category] || categoryConfig.clinical;
+                  const CategoryIcon = config.icon;
+                  return (
+                    <tr key={branch.id} className={TABLE.row}>
+                      <td className={TABLE.td}>
+                        <div className="flex items-center gap-3">
+                          <BranchIcon src={branch.icon_url} fallback={CategoryIcon} />
+                          <div className="min-w-0">
+                            <div className="max-w-[22rem] truncate font-medium text-slate-900">{branch.branch_name}</div>
+                            {branch.short_description && (
+                              <div className="max-w-[22rem] truncate text-xs text-slate-500" title={branch.short_description}>
+                                {branch.short_description}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </td>
+                      <td className={TABLE.td}>
+                        <Badge>
+                          <CategoryIcon className="h-3 w-3" /> {config.label}
+                        </Badge>
+                      </td>
+                      <td className={`${TABLE.td} text-right tabular-nums text-slate-500`}>{branch.display_order}</td>
+                      <td className={TABLE.td}>
+                        <Toggle
+                          checked={branch.is_active}
+                          onChange={() => toggleActive(branch)}
+                          label={branch.is_active ? 'Active' : 'Hidden'}
+                        />
+                      </td>
+                      <td className={TABLE.td}>
+                        <div className="flex justify-end gap-1">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            aria-label={`Edit ${branch.branch_name}`}
+                            title="Edit"
+                            onClick={() => openEditDialog(branch)}
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            aria-label={`Delete ${branch.branch_name}`}
+                            title="Delete"
+                            className="hover:bg-red-50 hover:text-red-600"
+                            onClick={() => { setDeleteTarget(branch); setDeleteDialogOpen(true); }}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </Card>
+
+      {/* Add */}
+      <Drawer
+        open={addDialogOpen}
+        title="Add branch"
+        onClose={dismissAdd}
+        footer={
+          <>
+            <Button onClick={dismissAdd}>Cancel</Button>
+            <Button variant="primary" onClick={handleAdd} disabled={isSaving}>
+              {isSaving ? <><Loader2 className="h-4 w-4 animate-spin" /> Saving…</> : 'Add branch'}
+            </Button>
+          </>
+        }
+      >
+        {renderForm(false)}
+      </Drawer>
+
+      {/* Edit */}
+      <Drawer
+        open={editDialogOpen}
+        title={editingBranch ? `Edit ${editingBranch.branch_name}` : 'Edit branch'}
+        onClose={dismissEdit}
+        footer={
+          <>
+            <Button onClick={dismissEdit}>Cancel</Button>
+            <Button variant="primary" onClick={handleEdit} disabled={isSaving}>
+              {isSaving ? <><Loader2 className="h-4 w-4 animate-spin" /> Saving…</> : 'Save changes'}
+            </Button>
+          </>
+        }
+      >
+        {renderForm(true)}
+      </Drawer>
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <DialogContent className="sm:max-w-[400px] p-0 overflow-hidden rounded-2xl border-slate-200">
-          <div className="p-6 text-center space-y-4">
-            <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-2">
-              <Trash2 className="w-8 h-8" />
-            </div>
-            <h3 className="text-xl font-bold text-slate-900">Delete Branch?</h3>
-            <p className="text-sm text-slate-500">
-              Are you sure you want to delete <span className="font-bold text-slate-900">{deleteTarget?.branch_name}</span>? This action cannot be undone.
-            </p>
+        <DialogContent className="w-[calc(100%-2rem)] max-w-md gap-0 overflow-hidden rounded-2xl border-slate-200 bg-white p-0 sm:rounded-2xl">
+          <div className="space-y-2 p-5 pr-12">
+            <DialogTitle className="text-base font-semibold text-slate-900">Delete this branch?</DialogTitle>
+            <DialogDescription className="text-sm leading-relaxed text-slate-500">
+              <span className="font-semibold text-slate-800">{deleteTarget?.branch_name}</span> will be removed. This cannot
+              be undone.
+            </DialogDescription>
           </div>
-          <div className="p-4 bg-slate-50 flex gap-3 border-t border-slate-100">
-            <Button variant="outline" className="flex-1 rounded-xl" onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
-            <Button variant="destructive" className="flex-1 rounded-xl bg-red-600 hover:bg-red-700" onClick={handleDelete} disabled={isDeleting}>
-              {isDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Yes, Delete'}
+          <div className="flex flex-wrap justify-end gap-2 border-t border-slate-100 bg-slate-50 px-5 py-3.5">
+            <Button onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
+            <Button variant="danger" onClick={handleDelete} disabled={isDeleting}>
+              {isDeleting ? <><Loader2 className="h-4 w-4 animate-spin" /> Deleting…</> : 'Delete'}
             </Button>
           </div>
         </DialogContent>
@@ -562,5 +574,23 @@ const PgBranchesManager = () => {
     </div>
   );
 };
+
+/**
+ * The branch's uploaded icon, or its category's icon when there is none or it
+ * fails to load. Held in state rather than by rewriting the DOM on error.
+ */
+function BranchIcon({ src, fallback: Fallback }: { src: string | null; fallback: typeof Stethoscope }) {
+  const [failed, setFailed] = useState(false);
+  return (
+    <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-slate-200 bg-slate-100 text-slate-400">
+      {src && !failed ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={src} alt="" className="h-full w-full object-cover" onError={() => setFailed(true)} />
+      ) : (
+        <Fallback className="h-4 w-4" />
+      )}
+    </div>
+  );
+}
 
 export default PgBranchesManager;

@@ -3,8 +3,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import {
-  ArrowDown, ArrowUp, Eye, EyeOff, Loader2, Pencil, Plus, Trash2, X,
+  ArrowDown, ArrowUp, Eye, EyeOff, Layers, Loader2, Pencil, Plus, RefreshCw, Trash2,
 } from "lucide-react";
+import {
+  Badge, BUTTON, Button, Card, Drawer, EmptyState, Field, INPUT, INPUT_H, Notice, SIZE, TEXTAREA,
+} from "@/components/admin/ui";
 
 interface Collection {
   id: number;
@@ -51,6 +54,12 @@ const isExtra = (f: string) => f.startsWith("data.");
 const extraKey = (f: string) => f.slice(5);
 const humanise = (k: string) => k.replace(/[_-]/g, " ").replace(/^\w/, (c) => c.toUpperCase());
 
+// Nested lists (a step's bullets, a quota's facts) are stored one item per line
+// and parsed by lines()/pairs() in pgContent.ts. A single-line <input> strips
+// line breaks from whatever is typed into it, so those keys — and any extra
+// whose value already holds a line break — are edited in a textarea.
+const LIST_KEYS = new Set(["bullets", "facts"]);
+
 /** Every field a block can carry, with how it should be edited. */
 const FIELD_META: Record<string, { label: string; kind: "text" | "textarea"; help?: string }> = {
   title: { label: "Title", kind: "text" },
@@ -66,6 +75,13 @@ const EMPTY: Partial<Block> = {
   title: "", subtitle: "", body: "", icon: "", image_url: "", link_url: "", link_label: "",
 };
 
+// Small square controls in a row. The delete one turns red on hover; swapped into
+// the kit's ghost class rather than appended, so the two hovers cannot fight.
+const ICON_BTN = `${BUTTON.ghost} ${SIZE.icon}`;
+const ICON_BTN_DANGER = `${BUTTON.ghost.replace("text-slate-600 hover:bg-slate-100", "text-slate-500 hover:bg-red-50 hover:text-red-600")} ${SIZE.icon}`;
+const ORDER_BTN =
+  "flex h-6 w-6 items-center justify-center rounded text-slate-400 hover:bg-slate-100 hover:text-slate-700 disabled:opacity-30 disabled:hover:bg-transparent";
+
 export default function BlocksEditor() {
   const [collections, setCollections] = useState<Collection[]>([]);
   const [blocks, setBlocks] = useState<Block[]>([]);
@@ -76,6 +92,7 @@ export default function BlocksEditor() {
   // from the named columns and merged back on save.
   const [draftExtras, setDraftExtras] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   const openEditor = (block: Partial<Block> | null) => {
     setEditing(block);
@@ -84,6 +101,7 @@ export default function BlocksEditor() {
 
   const load = async () => {
     setLoading(true);
+    setLoadError(null);
     try {
       const [cRes, bRes] = await Promise.all([
         fetch("/api/admin/collections", { cache: "no-store" }),
@@ -95,7 +113,9 @@ export default function BlocksEditor() {
       setBlocks((await bRes.json()).data);
       setActive((a) => a ?? cols[0]?.slug ?? null);
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Could not load the content");
+      const message = e instanceof Error ? e.message : "Could not load the content";
+      toast.error(message);
+      setLoadError(message);
     } finally {
       setLoading(false);
     }
@@ -216,212 +236,257 @@ export default function BlocksEditor() {
     load();
   };
 
-  if (loading) {
+  const pickCollection = (slug: string) => {
+    setActive(slug);
+    openEditor(null);
+  };
+
+  if (loading && collections.length === 0) {
     return (
-      <div className="flex items-center justify-center py-20 text-gray-400">
+      <div className="flex items-center justify-center py-20 text-slate-400">
         <Loader2 className="h-6 w-6 animate-spin" />
       </div>
     );
   }
 
+  const countFor = (slug: string) => blocks.filter((b) => b.collection === slug).length;
+
   return (
-    <div className="grid gap-5 lg:grid-cols-[16rem_1fr]">
-      {/* Which section of the site */}
-      <aside className="space-y-1 rounded-2xl border border-gray-200 bg-white p-3">
-        {collections.map((c) => {
-          const count = blocks.filter((b) => b.collection === c.slug).length;
-          return (
-            <button
-              key={c.slug}
-              onClick={() => {
-                setActive(c.slug);
-                openEditor(null);
-              }}
-              className={`flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-left text-sm transition-colors ${
-                active === c.slug
-                  ? "bg-medical-50 font-semibold text-medical-900"
-                  : "text-gray-600 hover:bg-gray-50"
-              }`}
-            >
-              <span className="truncate">{c.label}</span>
-              <span className="ml-2 shrink-0 rounded-full bg-gray-100 px-2 py-0.5 text-[11px] text-gray-500">
-                {count}
-              </span>
-            </button>
-          );
-        })}
-      </aside>
+    <div className="space-y-5">
+      {loadError && (
+        <Notice
+          tone="danger"
+          title="The content did not load"
+          action={
+            <Button size="sm" onClick={load}>
+              <RefreshCw className="h-4 w-4" /> Retry
+            </Button>
+          }
+        >
+          {loadError}
+        </Notice>
+      )}
 
-      <div className="space-y-4">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <h2 className="text-lg font-bold text-gray-900">{collection?.label ?? "Content"}</h2>
-            {collection?.description && (
-              <p className="mt-0.5 text-sm text-gray-500">{collection.description}</p>
-            )}
+      {collections.length === 0 ? (
+        !loadError && (
+          <Card>
+            <EmptyState
+              icon={Layers}
+              title="No sections to edit yet"
+              hint="Collections are registered by the seed script. Until then every section shows its built-in copy."
+            />
+          </Card>
+        )
+      ) : (
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-[16rem_minmax(0,1fr)]">
+          {/* Which section of the site — a dropdown on phones, a list beside the items on wide screens. */}
+          <div className="lg:hidden">
+            <Field label="Section of the site" htmlFor="blocks-collection">
+              <select
+                id="blocks-collection"
+                value={active ?? ""}
+                onChange={(e) => pickCollection(e.target.value)}
+                className={`${INPUT} ${INPUT_H}`}
+              >
+                {collections.map((c) => (
+                  <option key={c.slug} value={c.slug}>
+                    {c.label} ({countFor(c.slug)})
+                  </option>
+                ))}
+              </select>
+            </Field>
           </div>
-          <button
-            onClick={() => openEditor({ ...EMPTY })}
-            className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-medical-600 to-medical-500 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-medical-500/20"
+
+          <aside className="hidden lg:sticky lg:top-20 lg:block lg:self-start">
+            <Card flush>
+              <nav className="space-y-0.5 p-2" aria-label="Sections of the site">
+                {collections.map((c) => {
+                  const on = active === c.slug;
+                  return (
+                    <button
+                      key={c.slug}
+                      type="button"
+                      onClick={() => pickCollection(c.slug)}
+                      aria-current={on ? "true" : undefined}
+                      className={`flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-left text-sm transition-colors ${
+                        on ? "bg-cyan-50 font-semibold text-cyan-800" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                      }`}
+                    >
+                      <span className="truncate">{c.label}</span>
+                      <span
+                        className={`shrink-0 rounded-full px-1.5 py-0.5 text-[11px] font-semibold tabular-nums ${
+                          on ? "bg-cyan-100 text-cyan-800" : "bg-slate-100 text-slate-500"
+                        }`}
+                      >
+                        {countFor(c.slug)}
+                      </span>
+                    </button>
+                  );
+                })}
+              </nav>
+            </Card>
+          </aside>
+
+          <Card
+            flush
+            title={collection?.label ?? "Content"}
+            description={collection?.description ?? undefined}
+            actions={
+              <Button variant="primary" size="sm" onClick={() => openEditor({ ...EMPTY })}>
+                <Plus className="h-4 w-4" />
+                Add item
+              </Button>
+            }
           >
-            <Plus className="h-4 w-4" />
-            Add item
-          </button>
-        </div>
+            {items.length === 0 ? (
+              <EmptyState
+                icon={Layers}
+                title="Nothing in this section yet"
+                hint="Until you add an item, the site shows the copy it shipped with. Anything you add here appears straight away."
+              />
+            ) : (
+              <ul className="divide-y divide-slate-100">
+                {items.map((b, i) => (
+                  <li
+                    key={b.id}
+                    className={`flex items-start gap-3 px-4 py-3.5 sm:px-5 ${b.is_active ? "" : "bg-slate-50"}`}
+                  >
+                    <div className="flex flex-col pt-0.5">
+                      <button
+                        type="button"
+                        onClick={() => move(i, -1)}
+                        disabled={i === 0}
+                        aria-label="Move up"
+                        className={ORDER_BTN}
+                      >
+                        <ArrowUp className="h-3.5 w-3.5" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => move(i, 1)}
+                        disabled={i === items.length - 1}
+                        aria-label="Move down"
+                        className={ORDER_BTN}
+                      >
+                        <ArrowDown className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
 
-        {editing && (
-          <div className="rounded-2xl border border-medical-200 bg-medical-50/40 p-5">
-            <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-sm font-bold text-gray-900">
-                {editing.id ? "Edit item" : "New item"}
-              </h3>
-              <button onClick={() => openEditor(null)} aria-label="Close the editor">
-                <X className="h-4 w-4 text-gray-400 hover:text-gray-700" />
-              </button>
-            </div>
-
-            <div className="space-y-4">
-              {fields.map((f) => {
-                const extra = isExtra(f);
-                const meta = extra
-                  ? { label: humanise(extraKey(f)), kind: "text" as const, help: undefined }
-                  : FIELD_META[f];
-                const value = extra
-                  ? draftExtras[extraKey(f)] ?? ""
-                  : ((editing as Record<string, unknown>)[f] as string) ?? "";
-                const onChange = (v: string) =>
-                  extra
-                    ? setDraftExtras((d) => ({ ...d, [extraKey(f)]: v }))
-                    : setEditing((e) => ({ ...e, [f]: v }));
-                return (
-                  <div key={f}>
-                    <label htmlFor={`f-${f}`} className="mb-1 block text-xs font-semibold text-gray-700">
-                      {meta.label}
-                    </label>
-                    {meta.kind === "textarea" ? (
-                      <textarea
-                        id={`f-${f}`}
-                        rows={4}
-                        value={value}
-                        onChange={(e) => onChange(e.target.value)}
-                        className="w-full rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm outline-none focus:border-medical-500 focus:ring-2 focus:ring-medical-500/20"
-                      />
-                    ) : (
-                      <input
-                        id={`f-${f}`}
-                        value={value}
-                        onChange={(e) => onChange(e.target.value)}
-                        className="w-full rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm outline-none focus:border-medical-500 focus:ring-2 focus:ring-medical-500/20"
-                      />
-                    )}
-                    {meta.help && <p className="mt-1 text-xs text-gray-500">{meta.help}</p>}
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="mt-5 flex items-center gap-2">
-              <button
-                onClick={save}
-                disabled={saving}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-medical-600 px-4 py-2 text-sm font-semibold text-white disabled:opacity-50"
-              >
-                {saving && <Loader2 className="h-4 w-4 animate-spin" />}
-                {editing.id ? "Save changes" : "Add to the site"}
-              </button>
-              <button
-                onClick={() => openEditor(null)}
-                className="rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-600"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        )}
-
-        {items.length === 0 ? (
-          <p className="rounded-2xl border border-dashed border-gray-300 bg-white px-5 py-12 text-center text-sm text-gray-500">
-            Nothing in this section yet. Anything you add here appears on the site immediately.
-          </p>
-        ) : (
-          <ul className="space-y-2">
-            {items.map((b, i) => (
-              <li
-                key={b.id}
-                className={`rounded-2xl border bg-white p-4 ${
-                  b.is_active ? "border-gray-200" : "border-gray-200 bg-gray-50 opacity-70"
-                }`}
-              >
-                <div className="flex items-start gap-3">
-                  <div className="flex flex-col gap-0.5 pt-0.5">
-                    <button
-                      onClick={() => move(i, -1)}
-                      disabled={i === 0}
-                      aria-label="Move up"
-                      className="rounded p-0.5 text-gray-300 hover:bg-gray-100 hover:text-gray-600 disabled:opacity-30 disabled:hover:bg-transparent"
-                    >
-                      <ArrowUp className="h-3.5 w-3.5" />
-                    </button>
-                    <button
-                      onClick={() => move(i, 1)}
-                      disabled={i === items.length - 1}
-                      aria-label="Move down"
-                      className="rounded p-0.5 text-gray-300 hover:bg-gray-100 hover:text-gray-600 disabled:opacity-30 disabled:hover:bg-transparent"
-                    >
-                      <ArrowDown className="h-3.5 w-3.5" />
-                    </button>
-                  </div>
-
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-semibold text-gray-900">{b.title || "Untitled"}</span>
-                      {b.icon && (
-                        <span className="rounded bg-gray-100 px-1.5 py-0.5 text-[10px] text-gray-500">
-                          {b.icon}
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className={`font-semibold ${b.is_active ? "text-slate-900" : "text-slate-500"}`}>
+                          {b.title || "Untitled"}
                         </span>
-                      )}
-                      {!b.is_active && (
-                        <span className="rounded bg-gray-200 px-1.5 py-0.5 text-[10px] font-semibold text-gray-600">
-                          Hidden
-                        </span>
+                        {b.icon && (
+                          <code className="rounded bg-slate-100 px-1.5 py-0.5 text-[11px] text-slate-500">{b.icon}</code>
+                        )}
+                        {!b.is_active && <Badge>Hidden</Badge>}
+                      </div>
+                      {b.subtitle && <p className="mt-0.5 text-sm text-slate-600">{b.subtitle}</p>}
+                      {b.body && (
+                        <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-slate-500">{b.body}</p>
                       )}
                     </div>
-                    {b.subtitle && <p className="mt-0.5 text-sm text-gray-600">{b.subtitle}</p>}
-                    {b.body && (
-                      <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-gray-500">{b.body}</p>
-                    )}
-                  </div>
 
-                  <div className="flex shrink-0 items-center gap-1">
-                    <button
-                      onClick={() => patch(b, { is_active: !b.is_active })}
-                      aria-label={b.is_active ? "Hide from the site" : "Show on the site"}
-                      title={b.is_active ? "Hide from the site" : "Show on the site"}
-                      className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-700"
-                    >
-                      {b.is_active ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
-                    </button>
-                    <button
-                      onClick={() => openEditor(b)}
-                      aria-label="Edit"
-                      className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-medical-700"
-                    >
-                      <Pencil className="h-4 w-4" />
-                    </button>
-                    <button
-                      onClick={() => remove(b)}
-                      aria-label="Delete"
-                      className="rounded-lg p-2 text-gray-400 hover:bg-red-50 hover:text-red-600"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
+                    <div className="flex shrink-0 items-center">
+                      <button
+                        type="button"
+                        onClick={() => patch(b, { is_active: !b.is_active })}
+                        aria-label={b.is_active ? "Hide from the site" : "Show on the site"}
+                        title={b.is_active ? "Hide from the site" : "Show on the site"}
+                        className={ICON_BTN}
+                      >
+                        {b.is_active ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => openEditor(b)}
+                        aria-label="Edit"
+                        title="Edit"
+                        className={ICON_BTN}
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => remove(b)}
+                        aria-label="Delete"
+                        title="Delete"
+                        className={ICON_BTN_DANGER}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Card>
+        </div>
+      )}
+
+      <Drawer
+        open={!!editing}
+        title={
+          editing?.id
+            ? `Edit item${collection ? ` · ${collection.label}` : ""}`
+            : `New item${collection ? ` · ${collection.label}` : ""}`
+        }
+        onClose={() => openEditor(null)}
+        footer={
+          <>
+            <Button onClick={() => openEditor(null)}>Cancel</Button>
+            <Button variant="primary" onClick={save} disabled={saving}>
+              {saving && <Loader2 className="h-4 w-4 animate-spin" />}
+              {editing?.id ? "Save changes" : "Add to the site"}
+            </Button>
+          </>
+        }
+      >
+        {editing && (
+          <div className="space-y-4">
+            {fields.map((f) => {
+              const extra = isExtra(f);
+              const meta = extra
+                ? { label: humanise(extraKey(f)), kind: "text" as const, help: undefined }
+                : FIELD_META[f];
+              const value = extra
+                ? draftExtras[extraKey(f)] ?? ""
+                : ((editing as Record<string, unknown>)[f] as string) ?? "";
+              const onChange = (v: string) =>
+                extra
+                  ? setDraftExtras((d) => ({ ...d, [extraKey(f)]: v }))
+                  : setEditing((e) => ({ ...e, [f]: v }));
+              const list = extra && (LIST_KEYS.has(extraKey(f)) || value.includes("\n"));
+              return (
+                <Field
+                  key={f}
+                  label={meta.label}
+                  htmlFor={`f-${f}`}
+                  hint={meta.help ?? (list ? "One item per line." : undefined)}
+                >
+                  {meta.kind === "textarea" || list ? (
+                    <textarea
+                      id={`f-${f}`}
+                      rows={4}
+                      value={value}
+                      onChange={(e) => onChange(e.target.value)}
+                      className={TEXTAREA}
+                    />
+                  ) : (
+                    <input
+                      id={`f-${f}`}
+                      value={value}
+                      onChange={(e) => onChange(e.target.value)}
+                      className={`${INPUT} ${INPUT_H}`}
+                    />
+                  )}
+                </Field>
+              );
+            })}
+          </div>
         )}
-      </div>
+      </Drawer>
     </div>
   );
 }

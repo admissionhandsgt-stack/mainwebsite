@@ -1,70 +1,86 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { GraduationCap, Shield, MapPin } from 'lucide-react';
+import { Plus } from 'lucide-react';
+import { PageHeader, Tabs, Button } from '@/components/admin/ui';
+
+function ListSkeleton() {
+  return (
+    <div className="animate-pulse overflow-hidden rounded-2xl border border-slate-200 bg-white">
+      <div className="space-y-2 border-b border-slate-100 px-5 py-4">
+        <div className="h-4 w-40 rounded bg-slate-100" />
+        <div className="h-3 w-72 max-w-full rounded bg-slate-100" />
+      </div>
+      <div className="space-y-3 p-5">
+        <div className="h-10 rounded-lg bg-slate-100" />
+        <div className="h-10 rounded-lg bg-slate-100" />
+        <div className="h-10 rounded-lg bg-slate-100" />
+      </div>
+    </div>
+  );
+}
 
 const GenericCollegeManager = dynamic(
   () => import('@/components/admin/colleges/GenericCollegeManager'),
-  {
-    loading: () => (
-      <div className="space-y-4 animate-pulse p-6 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800">
-        <div className="h-8 bg-slate-200 dark:bg-slate-800 rounded w-1/4"></div>
-        <div className="h-4 bg-slate-200 dark:bg-slate-800 rounded w-1/2"></div>
-        <div className="h-40 bg-slate-200 dark:bg-slate-800 rounded"></div>
-      </div>
-    ),
-  }
+  { loading: () => <ListSkeleton /> }
 );
 
+type TabId = 'recommended' | 'universities' | 'all';
+
+/** Each tab is its own table; the manager is the same component pointed at a different resource. */
+const LISTS: Record<TabId, { resource: string; title: string; description: string }> = {
+  recommended: {
+    resource: 'colleges-recommended',
+    title: 'Recommended colleges',
+    description: 'The MBBS colleges the site recommends.',
+  },
+  universities: {
+    resource: 'colleges-deemed',
+    title: 'Deemed universities',
+    description: 'Deemed universities for MBBS admission.',
+  },
+  all: {
+    resource: 'colleges-ug',
+    title: 'All UG colleges',
+    description: 'The full list of UG MBBS colleges.',
+  },
+};
+
+const TABS: { id: TabId; label: string }[] = [
+  { id: 'recommended', label: 'Recommended' },
+  { id: 'universities', label: 'Deemed' },
+  { id: 'all', label: 'All colleges' },
+];
+
 const CollegesManager: React.FC = () => {
+  const [tab, setTab] = useState<TabId>('recommended');
+  // Bumped by "Add college"; the open tab's list opens its add form.
+  const [addSignal, setAddSignal] = useState(0);
+  const list = LISTS[tab];
+
   return (
-    <div className="container mx-auto py-6 px-4">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold">UG Colleges Management</h1>
-      </div>
+    <div>
+      <PageHeader
+        title="UG colleges"
+        description="The MBBS college lists shown on the site. Each tab is a separate list with its own order."
+        actions={
+          <Button variant="primary" onClick={() => setAddSignal((n) => n + 1)}>
+            <Plus className="h-4 w-4" /> Add college
+          </Button>
+        }
+      >
+        <Tabs<TabId> items={TABS} value={tab} onChange={setTab} />
+      </PageHeader>
 
-      <Tabs defaultValue="recommended">
-        <TabsList className="grid w-full lg:w-[600px] grid-cols-3 mb-8">
-          <TabsTrigger value="recommended" className="flex items-center gap-2">
-            <GraduationCap className="h-4 w-4" />
-            <span className="hidden sm:inline">Recommended</span>
-          </TabsTrigger>
-          <TabsTrigger value="universities" className="flex items-center gap-2">
-            <Shield className="h-4 w-4" />
-            <span className="hidden sm:inline">Deemed</span>
-          </TabsTrigger>
-          <TabsTrigger value="all" className="flex items-center gap-2">
-            <MapPin className="h-4 w-4" />
-            <span className="hidden sm:inline">All Colleges</span>
-          </TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="recommended">
-          <GenericCollegeManager 
-            resource="colleges-recommended" 
-            title="UG Recommended Colleges" 
-            description="Manage the list of highly recommended MBBS colleges shown on the frontend." 
-          />
-        </TabsContent>
-
-        <TabsContent value="universities">
-          <GenericCollegeManager 
-            resource="colleges-deemed" 
-            title="UG Deemed Colleges" 
-            description="Manage deemed universities for MBBS admissions." 
-          />
-        </TabsContent>
-        
-        <TabsContent value="all">
-          <GenericCollegeManager 
-            resource="colleges-ug" 
-            title="UG All Colleges" 
-            description="Manage the comprehensive database of all UG MBBS colleges." 
-          />
-        </TabsContent>
-      </Tabs>
+      {/* key: a tab switch mounts a fresh list, as the old tab panels did. */}
+      <GenericCollegeManager
+        key={tab}
+        resource={list.resource}
+        title={list.title}
+        description={list.description}
+        addSignal={addSignal}
+      />
     </div>
   );
 };

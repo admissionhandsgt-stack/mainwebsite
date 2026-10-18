@@ -16,6 +16,7 @@
  */
 
 import { getIntegration, getIntegrationFlag } from "@/lib/integrations";
+import { recordOutbound, type MessageKind } from "@/lib/waLog";
 
 /** Meta's current Graph API version in its WhatsApp examples (2026-10). */
 export const GRAPH = "https://graph.facebook.com/v25.0";
@@ -38,6 +39,26 @@ export async function cloudConfig(): Promise<CloudConfig | null> {
     wabaId: await getIntegration("whatsapp.cloud.waba_id"),
     phoneNumberId: await getIntegration("whatsapp.cloud.phone_number_id"),
     template: (await getIntegration("whatsapp.cloud.template")) || DEFAULT_TEMPLATE,
+  };
+}
+
+/**
+ * Site-wide ceilings on official sends. Every one is billed, and the per-number
+ * caps in otp.ts do nothing against somebody cycling through many numbers from
+ * many addresses — this is what bounds the bill. Admin-editable in
+ * `integrations`; a blank or nonsense value falls back to the default.
+ */
+export const DEFAULT_HOURLY_CAP = 60;
+export const DEFAULT_DAILY_CAP = 400;
+
+export async function cloudCaps(): Promise<{ hour: number; day: number }> {
+  const read = async (key: "whatsapp.cloud.hourly_cap" | "whatsapp.cloud.daily_cap", fallback: number) => {
+    const n = Number.parseInt((await getIntegration(key)) ?? "", 10);
+    return Number.isFinite(n) && n >= 0 ? n : fallback;
+  };
+  return {
+    hour: await read("whatsapp.cloud.hourly_cap", DEFAULT_HOURLY_CAP),
+    day: await read("whatsapp.cloud.daily_cap", DEFAULT_DAILY_CAP),
   };
 }
 
@@ -80,7 +101,11 @@ export function graphError(r: GraphResult): string {
  * Sends a sign-in code through the approved authentication template.
  * `phone` is +91XXXXXXXXXX; Meta wants the digits alone.
  */
-export async function sendCloudCode(phone: string, code: string): Promise<{ ok: true; id: string | null } | { ok: false; error: string }> {
+export async function sendCloudCode(
+  phone: string,
+  code: string,
+  otpId?: number | null,
+): Promise<{ ok: true; id: string | null } | { ok: false; error: string }> {
   const c = await cloudConfig();
   if (!c?.phoneNumberId) return { ok: false, error: "The official sender is not set up." };
   const r = await graph(c.token, `/${c.phoneNumberId}/messages`, {
@@ -100,8 +125,10 @@ export async function sendCloudCode(phone: string, code: string): Promise<{ ok: 
       },
     },
   });
+  const id = r.ok ? ((r.body.messages as { id?: string }[] | undefined) ?? [])[0]?.id ?? null : null;
+  // The digits never go in the log: staff reading it must not be able to sign in as the student.
+  await recordOutbound({ wamid: id, phone, kind: "otp", template: c.template, body: "Sign-in code", otpId, error: r.ok ? null : graphError(r) });
   if (!r.ok) return { ok: false, error: graphError(r) };
-  const id = ((r.body.messages as { id?: string }[] | undefined) ?? [])[0]?.id ?? null;
   return { ok: true, id };
 }
 
@@ -174,4 +201,44 @@ export async function verifyPhoneCode(c: CloudConfig, phoneId: string, code: str
 /** Step 4: register for the Cloud API, with a six-digit two-step PIN chosen here. */
 export async function registerPhone(c: CloudConfig, phoneId: string, pin: string): Promise<GraphResult> {
   return graph(c.token, `/${phoneId}/register`, { method: "POST", body: { messaging_product: "whatsapp", pin } });
+}
+
+/**
+ * Sends an approved template with positional body parameters — the follow-ups
+ * (lib/followups.ts). `phone` is +91XXXXXXXXXX; Meta wants the digits alone.
+ */
+export async function sendTemplate(
+  phone: string,
+  template: string,
+  bodyParams: string[],
+  kind: MessageKind = "other",
+): Promise<{ ok: true; id: string | null } | { ok: false; error: string }> {
+  const c = await cloudConfig();
+  if (!c?.phoneNumberId) return { ok: false, error: "The official sender is not set up." };
+  const r = await graph(c.token, `/${c.phoneNumberId}/messages`, {
+    method: "POST",
+    body: {
+      messaging_product: "whatsapp",
+      to: phone.replace(/\D/g, ""),
+      type: "template",
+      template: {
+        name: template,
+        language: { code: "en" },
+        components: bodyParams.length
+          ? [{ type: "body", parameters: bodyParams.map((text) => ({ type: "text", text })) }]
+          : [],
+      },
+    },
+  });
+  const id = r.ok ? ((r.body.messages as { id?: string }[] | undefined) ?? [])[0]?.id ?? null : null;
+  await recordOutbound({
+    wamid: id,
+    phone,
+    kind,
+    template,
+    body: bodyParams.length ? `${template} · ${bodyParams.join(" · ")}` : template,
+    error: r.ok ? null : graphError(r),
+  });
+  if (!r.ok) return { ok: false, error: graphError(r) };
+  return { ok: true, id };
 }

@@ -18,6 +18,8 @@
  * is actually configured wins, and if none is, that is now a loud failure in
  * the error log rather than a warning nobody reads.
  */
+import { staffList } from '@/lib/staffList';
+import { getIntegration } from '@/lib/integrations';
 import { getContactInfo } from '@/lib/content';
 import { sendText, gatewayConfigured } from '@/lib/waGateway';
 import { logError } from '@/lib/logger';
@@ -36,6 +38,21 @@ interface LeadNotificationPayload {
   budget_max?: number;
   budget_total_max?: number;
   mbbs_college?: string;
+  /** The full profile from the Admission Chance flow (migration 0029). */
+  course?: string;
+  score?: number;
+  gender?: string;
+  pwd?: boolean;
+  states?: string;
+  college_types?: string;
+  seat_types?: string;
+  mbbs_state?: string;
+  service_quota?: boolean;
+  bond?: string;
+  city?: string;
+  guardian_phone?: string;
+  /** How many seat options their chance view showed. */
+  options_seen?: number;
   /** What is still unknown, so a counsellor knows what to open the call with. */
   missing?: string[];
   source: string;
@@ -70,11 +87,20 @@ async function getRecipientNumbers(): Promise<string[]> {
     return ['919310301949'];
   }
 
-  // Split by comma and normalize each number
-  return recipientString
+  // Split by comma and normalize each number, then add the staff list (Gulshan
+  // and Dev by default) — every alert goes to the whole team, once each.
+  const fromContact = recipientString
     .split(',')
     .map(num => num.trim().replace(/[+\s-]/g, ''))
     .filter(num => num.length >= 10);
+  const team = (await staffList()).map((s) => s.phone.replace(/\D/g, ''));
+  const seen = new Set<string>();
+  return [...fromContact, ...team].filter((n) => {
+    const k = n.slice(-10);
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
 }
 
 export async function sendWhatsAppNotification(lead: LeadNotificationPayload): Promise<boolean> {
@@ -84,14 +110,21 @@ export async function sendWhatsAppNotification(lead: LeadNotificationPayload): P
   
   // Resolve recipient numbers dynamically
   const recipients = await getRecipientNumbers();
+  // The counsellors work leads in the Google Sheet; the alert takes them there.
+  const sheetId = await getIntegration('google.sheets.leads_id').catch(() => null);
 
   // Only the lines that have something in them. A message where five fields
   // out of eight say "Not Specified" reads as a system fault rather than as an
   // enquiry, and it buries the phone number — the one thing a counsellor
   // actually needs in order to act.
+  const yesNo = (v: boolean | undefined) => (v === undefined ? undefined : v ? 'Yes' : 'No');
   const detail = [
+    ['Course', lead.course],
     ['Rank', lead.rank],
+    ['Score', lead.score],
     ['Category', lead.category],
+    ['PwD', yesNo(lead.pwd)],
+    ['Gender', lead.gender],
     ['Attempt', lead.attempt],
     ['Branch', lead.preferred_branch],
     ['Domicile', lead.preferred_state],
@@ -100,6 +133,15 @@ export async function sendWhatsAppNotification(lead: LeadNotificationPayload): P
     ['MBBS from', lead.mbbs_college],
     ['Quota', lead.quota_interest],
     ['Internship', lead.internship_status],
+    ['MBBS state', lead.mbbs_state],
+    ['Service quota', yesNo(lead.service_quota)],
+    ['Wants states', lead.states],
+    ['College types', lead.college_types],
+    ['Seat types', lead.seat_types],
+    ['Bond', lead.bond],
+    ['City', lead.city],
+    ['Guardian', lead.guardian_phone],
+    ['Options seen', lead.options_seen],
   ]
     .filter(([, v]) => v !== undefined && v !== null && String(v).trim() !== '')
     .map(([k, v]) => `${k}: ${v}`)
@@ -116,7 +158,8 @@ export async function sendWhatsAppNotification(lead: LeadNotificationPayload): P
     (detail ? `\n${detail}\n` : '') +
     (gaps.length ? `\n_Still to ask: ${gaps.join(', ')}_\n` : '') +
     `\n${lead.source}\n` +
-    `${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}`;
+    `${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}` +
+    (sheetId ? `\n\nSheet: https://docs.google.com/spreadsheets/d/${sheetId}/edit` : '');
 
   /**
    * Our own gateway first.

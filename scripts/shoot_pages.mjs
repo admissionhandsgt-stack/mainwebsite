@@ -16,6 +16,7 @@
  * overlapping credit shows on a phone.
  */
 
+import { blockAnalytics } from "./lib/noAnalytics.mjs";
 import { chromium } from "playwright";
 import sharp from "sharp";
 import { mkdirSync } from "node:fs";
@@ -57,6 +58,7 @@ const shots = [];
 try {
   for (const route of ROUTES) {
     const page = await browser.newPage({ viewport: { width: WIDTH, height: HEIGHT } });
+    await blockAnalytics(page);
     try {
       // `networkidle` never settles on a page with a marquee and an analytics
       // beacon — it timed out and reported 22 working pages as broken when the

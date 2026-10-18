@@ -1,4 +1,4 @@
-import { fitDescription } from "@/lib/seoTitle";
+import { fitDescription, fitTitle } from "@/lib/seoTitle";
 import CiteThis from "@/components/seo/CiteThis";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
@@ -6,6 +6,7 @@ import { getStipends } from "@/lib/cutoffHubQueries";
 import { resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
+import TelegramJoin from "@/components/engage/TelegramJoin";
 
 /**
  * "NEET PG stipend state wise" — one of the most-searched PG money questions,
@@ -22,9 +23,20 @@ const OWN: Record<string, string> = { government: "Govt", private: "Private", de
 export async function generateMetadata(): Promise<Metadata> {
   const s = await getStipends();
   return resolveMetadata(PATH, {
-    title: "NEET PG Stipend State Wise 2026: MD/MS Stipend in Every State",
+    // Searched as "rajasthan pg stipend", "highest pg stipend in india", "stipend
+    // for pg medical students state wise". No year: the figures are each
+    // college's latest published stipend, not one year's.
+    title: fitTitle(
+      "NEET PG Stipend State Wise: Highest MD/MS Stipend in India",
+      "PG Stipend State Wise: Highest MD/MS Stipend",
+    ),
     description: fitDescription(
-      `Monthly first-year MD/MS stipend in ${s.states.length} states and ${s.colleges.toLocaleString("en-IN")} colleges — government against private, state by state, and the highest-paying colleges. Published figures.`,
+      ...(s.states[0]
+        ? [
+            `Highest PG stipend: ${s.states[0].state}, median ${inr(s.states[0].median)} a month. First-year MD/MS stipend state wise for ${s.states.length} states and ${s.colleges.toLocaleString("en-IN")} colleges, government vs private.`,
+            `Highest PG stipend: ${s.states[0].state}, median ${inr(s.states[0].median)} a month. MD/MS stipend state wise for ${s.states.length} states, government vs private.`,
+          ]
+        : []),
       `Monthly first-year MD/MS stipend in ${s.states.length} states and ${s.colleges.toLocaleString("en-IN")} colleges — government against private, and the highest-paying colleges.`,
     ),
     keywords:
@@ -203,6 +215,7 @@ export default async function StipendPage() {
         title="Weighing fee against stipend?"
         body="A counsellor sets each seat's fee, stipend and bond against your rank and budget, so the shortlist is one you can afford for three years."
       />
+      <TelegramJoin placement="pg_stipend" />
     </main>
   );
 }

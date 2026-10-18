@@ -1,4 +1,4 @@
-import { fitDescription } from "@/lib/seoTitle";
+import { fitDescription, fitTitle } from "@/lib/seoTitle";
 import type { Metadata } from "next";
 import { getQuotaOverview } from "@/lib/quotaQueries";
 import { resolveMetadata } from "@/lib/content";
@@ -25,13 +25,22 @@ const inr = (v: number | null) => (v == null ? "—" : v.toLocaleString("en-IN")
 export async function generateMetadata(): Promise<Metadata> {
   const pg = await getQuotaOverview("management", "pg");
 
-  const title = "Management Quota Medical Fees & Closing Ranks 2026";
+  // Searched as "md management quota fees", "<college> management quota fees",
+  // "mng quota". Fees are PG only — UG publishes no per-quota fee.
+  const y = pg?.year ? ` ${pg.year}` : "";
+  const title = pg
+    ? fitTitle(
+        `Management Quota Fees${y}: MD/MS Seats at ${inr(pg.colleges)} Medical Colleges`,
+        `Management Quota Fees${y}: MD/MS at ${inr(pg.colleges)} Colleges`,
+        `Management Quota Medical Fees & Closing Ranks${y}`,
+      )
+    : "Management Quota Medical Fees & Closing Ranks";
   const description = pg
     // The median, not the minimum: the cheapest published management fee is a
     // ₹1,000 slip, and a headline built on it would mislead.
     ? fitDescription(
-        `Management quota seats at ${inr(pg.colleges)} medical colleges — median ${money(pg.medianFee)} a year, with the closing rank beside each fee. Published counselling results.`,
-        `Management quota seats at ${inr(pg.colleges)} medical colleges — median ${money(pg.medianFee)} a year, with closing ranks.`,
+        `MD/MS management quota fees at ${inr(pg.colleges)} medical colleges in ${pg.states} states: median ${money(pg.medianFee)} a year, with how far each quota's closing ranks reach. See your chance free.`,
+        `Management quota MD/MS seats at ${inr(pg.colleges)} medical colleges — median ${money(pg.medianFee)} a year, with closing ranks.`,
       )
     : "Management quota medical seats with published fees and closing ranks.";
 

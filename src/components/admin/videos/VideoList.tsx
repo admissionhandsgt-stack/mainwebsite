@@ -1,8 +1,8 @@
 import React from 'react';
 import RecordActions from '../shared/RecordActions';
-import { motion, AnimatePresence } from 'framer-motion';
-import { PlayCircle, Star, Calendar, FileText } from 'lucide-react';
+import { PlayCircle, Star } from 'lucide-react';
 import { youtubeId } from "@/lib/youtube";
+import { Badge, EmptyState } from '@/components/admin/ui';
 
 interface Video {
   id: number;
@@ -20,80 +20,75 @@ interface VideoListProps {
   isDeleting?: boolean;
 }
 
+const added = (v: string) =>
+  new Date(v).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' });
+
+/** One row per video: thumbnail (opens it on YouTube), title, note, actions. */
 const VideoList = ({ videos, onEdit, onDelete, isDeleting }: VideoListProps) => {
+  if (videos.length === 0) {
+    return <EmptyState icon={PlayCircle} title="No videos found" hint="Add your first video to start the library." />;
+  }
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <AnimatePresence>
-        {videos.length === 0 ? (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="col-span-full py-16 text-center text-gray-500 bg-white/50 backdrop-blur-md rounded-2xl border border-dashed border-gray-200"
-          >
-            <PlayCircle className="w-12 h-12 mx-auto text-gray-300 mb-4" />
-            <p>No videos found. Add your first video to start building your library!</p>
-          </motion.div>
-        ) : (
-          videos.map((video, index) => (
-            <motion.div
-              key={video.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
-              className="group relative bg-white/60 backdrop-blur-md border border-white/40 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] rounded-2xl overflow-hidden transition-all duration-300 flex flex-col"
+    <ul className="divide-y divide-slate-100">
+      {videos.map((video) => {
+        const id = youtubeId(video.videos_id);
+        return (
+          <li key={video.id} className="flex gap-4 px-4 py-4 sm:px-5">
+            <a
+              href={`https://www.youtube.com/watch?v=${id}`}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`Watch ${video.title} on YouTube`}
+              className="group relative block aspect-video w-28 shrink-0 self-start overflow-hidden rounded-lg bg-slate-100 sm:w-40"
             >
-              {/* Top Status Bar */}
-              <div className={`h-1 w-full transition-colors duration-300 ${video.featured ? 'bg-amber-400' : 'bg-gray-200'}`} />
+              <img
+                src={`https://img.youtube.com/vi/${id}/hqdefault.jpg`}
+                alt=""
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              <span className="absolute inset-0 flex items-center justify-center bg-slate-900/0 transition-colors group-hover:bg-slate-900/30">
+                <PlayCircle className="h-7 w-7 text-white opacity-0 transition-opacity group-hover:opacity-100" />
+              </span>
+            </a>
 
-              <div className="relative aspect-video overflow-hidden">
-                <img 
-                  src={`https://img.youtube.com/vi/${youtubeId(video.videos_id)}/hqdefault.jpg`}
-                  alt={video.title}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors flex items-center justify-center">
-                  <div className="w-12 h-12 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:scale-110">
-                    <PlayCircle className="w-6 h-6 text-white" />
-                  </div>
+            <div className="flex min-w-0 flex-1 flex-col gap-3 lg:flex-row lg:items-start lg:gap-6">
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="line-clamp-2 text-[15px] font-semibold leading-snug text-slate-900">{video.title}</h3>
+                  {video.featured && (
+                    <Badge tone="info">
+                      <Star className="h-3 w-3 fill-current" />
+                      Featured
+                    </Badge>
+                  )}
                 </div>
-                {video.featured && (
-                  <div className="absolute top-3 left-3 bg-amber-500 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-md flex items-center gap-1">
-                    <Star className="w-3 h-3 fill-current" />
-                    Featured
-                  </div>
-                )}
-              </div>
-
-              <div className="p-5 flex flex-col flex-1">
-                <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 leading-tight">
-                  {video.title}
-                </h3>
-                
                 {video.description && (
-                  <div className="flex items-start gap-2 text-sm text-gray-500 bg-gray-50/50 p-2.5 rounded-lg mb-4">
-                    <FileText className="w-4 h-4 text-medical-500 shrink-0 mt-0.5" />
-                    <p className="line-clamp-3 text-xs leading-relaxed">{video.description}</p>
-                  </div>
+                  <p className="mt-1 line-clamp-2 text-[13px] leading-relaxed text-slate-500">{video.description}</p>
                 )}
-
-                <div className="mt-auto pt-4 border-t border-gray-100/50 flex justify-between items-center">
-                  <div className="flex items-center gap-1.5 text-xs font-medium text-gray-400">
-                    <Calendar className="w-3.5 h-3.5" />
-                    {new Date(video.created_at).toLocaleDateString()}
-                  </div>
-                  <RecordActions
-                    onEdit={() => onEdit(video)}
-                    onDelete={() => onDelete(video.id)}
-                    isDeleting={isDeleting}
-                  />
-                </div>
+                <p className="mt-1.5 text-xs text-slate-400">
+                  Added {added(video.created_at)}
+                  {id && (
+                    <>
+                      {' · '}
+                      <span className="font-mono">{id}</span>
+                    </>
+                  )}
+                </p>
               </div>
-            </motion.div>
-          ))
-        )}
-      </AnimatePresence>
-    </div>
+              <div className="lg:shrink-0">
+                <RecordActions
+                  onEdit={() => onEdit(video)}
+                  onDelete={() => onDelete(video.id)}
+                  isDeleting={isDeleting}
+                />
+              </div>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
   );
 };
 

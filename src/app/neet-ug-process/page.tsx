@@ -1,5 +1,6 @@
 import React from 'react';
 import NeetUgProcessClient from './NeetUgProcessClient';
+import TelegramJoin from "@/components/engage/TelegramJoin";
 import { getMediaAsset } from '@/lib/content';
 import { creditOf } from '@/components/ui/PhotoCredit';
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
@@ -35,6 +36,7 @@ export default async function NeetUgProcessPage() {
       examCredit={creditOf(examAsset)}
       collegeCredit={creditOf(collegeAsset)}
     />
+    <TelegramJoin placement="neet_ug_process" />
     </>
   );
 }

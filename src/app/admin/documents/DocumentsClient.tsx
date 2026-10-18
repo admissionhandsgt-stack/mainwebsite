@@ -7,10 +7,12 @@ import {
   Download,
   FileText,
   Loader2,
+  RefreshCw,
   Search,
   X,
 } from "lucide-react";
 import { DOCUMENT_TYPES, REQUIRED_COUNT, documentType } from "@/lib/documentCatalogue";
+import { Badge, BUTTON, Button, Card, EmptyState, INPUT, INPUT_H, Notice, Toolbar } from "@/components/admin/ui";
 
 interface Doc {
   id: number;
@@ -33,6 +35,17 @@ interface Candidate {
   documents: Doc[];
 }
 
+/** The per-file buttons: one height, one shape; the colour says what state the file is in. */
+const ACT =
+  "inline-flex h-9 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border px-3 text-[13px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/40";
+
+const fmtDate = (iso: string) => {
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime())
+    ? ""
+    : d.toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata", day: "numeric", month: "short" });
+};
+
 /**
  * The team's review screen.
  *
@@ -46,12 +59,14 @@ interface Candidate {
 export default function DocumentsClient() {
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [loading, setLoading] = useState(true);
+  const [failed, setFailed] = useState(false);
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState<number | null>(null);
   const [saving, setSaving] = useState<number | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
+    setFailed(false);
     try {
       const res = await fetch("/api/admin/documents");
       if (!res.ok) throw new Error("load");
@@ -59,6 +74,7 @@ export default function DocumentsClient() {
       setCandidates(candidates ?? []);
     } catch {
       setCandidates([]);
+      setFailed(true);
     } finally {
       setLoading(false);
     }
@@ -102,165 +118,217 @@ export default function DocumentsClient() {
     );
   }, [candidates, query]);
 
+  const toCheck = useMemo(
+    () => candidates.reduce((n, c) => n + c.documents.filter((d) => d.status === "uploaded").length, 0),
+    [candidates],
+  );
+
   if (loading) {
     return (
-      <div className="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white p-10 text-gray-500">
-        <Loader2 className="h-5 w-5 animate-spin" />
-        Loading…
-      </div>
+      <Card flush>
+        <div aria-busy="true" aria-label="Loading documents" className="divide-y divide-slate-100">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="flex items-center gap-4 px-5 py-4">
+              <div className="min-w-0 flex-1 space-y-2">
+                <div className="h-4 w-48 max-w-full animate-pulse rounded bg-slate-100" />
+                <div className="h-3 w-32 animate-pulse rounded bg-slate-100" />
+              </div>
+              <div className="h-6 w-20 animate-pulse rounded-full bg-slate-100" />
+            </div>
+          ))}
+        </div>
+      </Card>
     );
   }
 
   return (
     <div className="space-y-4">
-      <div className="relative">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search by name or phone"
-          aria-label="Search candidates"
-          className="h-11 w-full rounded-xl border border-gray-200 bg-white pl-9 pr-3 text-sm outline-none focus:border-cyan-500"
-        />
-      </div>
+      <Toolbar>
+        <div className="relative min-w-0 flex-1 basis-56">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search by name or phone"
+            aria-label="Search candidates"
+            className={`${INPUT} ${INPUT_H} pl-9`}
+          />
+        </div>
+        <Button size="md" onClick={() => load()}>
+          <RefreshCw className="h-4 w-4" /> Refresh
+        </Button>
+        {candidates.length > 0 && (
+          <span className="flex w-full flex-wrap items-center gap-2 text-xs tabular-nums text-slate-500 sm:w-auto">
+            {candidates.length} {candidates.length === 1 ? "candidate" : "candidates"}
+            {toCheck > 0 && <Badge tone="warning">{toCheck} to check</Badge>}
+          </span>
+        )}
+      </Toolbar>
+
+      {failed && (
+        <Notice
+          tone="danger"
+          title="Could not load the documents"
+          action={<Button size="sm" onClick={() => load()}>Retry</Button>}
+        >
+          The list below may be empty because it did not load, not because nothing was uploaded.
+        </Notice>
+      )}
 
       {filtered.length === 0 ? (
-        <div className="rounded-2xl border border-gray-200 bg-white p-10 text-center">
-          <FileText className="mx-auto h-8 w-8 text-gray-300" />
-          <h2 className="mt-3 text-base font-bold text-gray-900">
-            {candidates.length === 0 ? "No documents yet" : "Nobody matches that"}
-          </h2>
-          <p className="mx-auto mt-1 max-w-[48ch] text-sm text-gray-500">
-            {candidates.length === 0
-              ? "Candidates upload from their account. Nothing has come in so far."
-              : "Try a different name or number."}
-          </p>
-        </div>
+        failed ? null : (
+          <Card flush>
+            <EmptyState
+              icon={FileText}
+              title={candidates.length === 0 ? "No documents yet" : "Nobody matches that"}
+              hint={
+                candidates.length === 0
+                  ? "Candidates upload from their account. Nothing has come in so far."
+                  : "Try a different name or number."
+              }
+            />
+          </Card>
+        )
       ) : (
-        filtered.map((c) => {
-          const have = new Map(c.documents.map((d) => [d.docType, d]));
-          const requiredDone = DOCUMENT_TYPES.filter((t) => !t.optional && have.has(t.slug)).length;
-          const pending = c.documents.filter((d) => d.status === "uploaded").length;
-          const isOpen = open === c.userId;
+        <Card flush>
+          <ul className="divide-y divide-slate-100">
+            {filtered.map((c) => {
+              const have = new Map(c.documents.map((d) => [d.docType, d]));
+              const requiredDone = DOCUMENT_TYPES.filter((t) => !t.optional && have.has(t.slug)).length;
+              const pending = c.documents.filter((d) => d.status === "uploaded").length;
+              const isOpen = open === c.userId;
+              const complete = requiredDone === REQUIRED_COUNT;
+              const pct = REQUIRED_COUNT ? Math.round((requiredDone / REQUIRED_COUNT) * 100) : 0;
+              const last = fmtDate(c.lastUpload);
 
-          return (
-            <div key={c.userId} className="overflow-hidden rounded-2xl border border-gray-200 bg-white">
-              <button
-                onClick={() => setOpen(isOpen ? null : c.userId)}
-                aria-expanded={isOpen}
-                className="flex w-full items-center gap-4 p-4 text-left hover:bg-gray-50"
-              >
-                <span className="min-w-0 flex-grow">
-                  <span className="block truncate text-[15px] font-bold text-gray-900">
-                    {c.name || "Name not given"}
-                    <span className="ml-2 font-mono text-[13px] font-normal text-gray-500">
-                      {c.phone}
+              return (
+                <li key={c.userId}>
+                  <button
+                    onClick={() => setOpen(isOpen ? null : c.userId)}
+                    aria-expanded={isOpen}
+                    className={`flex w-full flex-col gap-3 px-4 py-3.5 text-left transition-colors hover:bg-slate-50 sm:flex-row sm:items-center sm:gap-4 sm:px-5 ${
+                      isOpen ? "bg-slate-50" : ""
+                    }`}
+                  >
+                    <span className="min-w-0 flex-1">
+                      <span className="flex flex-wrap items-baseline gap-x-2">
+                        <span className="min-w-0 max-w-full truncate text-[15px] font-semibold text-slate-900">
+                          {c.name || "Name not given"}
+                        </span>
+                        <span className="font-mono text-[13px] text-slate-500">{c.phone}</span>
+                      </span>
+                      <span className="mt-0.5 block text-[13px] text-slate-500">
+                        {c.level ? c.level.toUpperCase() : "Level not given"}
+                        {c.rank ? ` · rank ${c.rank.toLocaleString("en-IN")}` : ""}
+                        {last ? ` · last upload ${last}` : ""}
+                      </span>
                     </span>
-                  </span>
-                  <span className="mt-0.5 block text-[13px] text-gray-500">
-                    {requiredDone} of {REQUIRED_COUNT} required
-                    {c.rank ? ` · rank ${c.rank.toLocaleString("en-IN")}` : ""}
-                    {c.level ? ` · ${c.level.toUpperCase()}` : ""}
-                  </span>
-                </span>
 
-                {pending > 0 && (
-                  <span className="shrink-0 rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-amber-800">
-                    {pending} to check
-                  </span>
-                )}
-                <span
-                  className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide ${
-                    requiredDone === REQUIRED_COUNT
-                      ? "bg-emerald-100 text-emerald-800"
-                      : "bg-gray-100 text-gray-600"
-                  }`}
-                >
-                  {requiredDone === REQUIRED_COUNT ? "Complete" : "Incomplete"}
-                </span>
-                <ChevronDown
-                  className={`h-5 w-5 shrink-0 text-gray-400 transition-transform ${isOpen ? "rotate-180" : ""}`}
-                />
-              </button>
+                    <span className="flex flex-wrap items-center gap-2 sm:shrink-0 sm:justify-end">
+                      <span className="flex items-center gap-2" title={`${requiredDone} of ${REQUIRED_COUNT} required documents`}>
+                        <span className="h-1.5 w-20 overflow-hidden rounded-full bg-slate-100" aria-hidden="true">
+                          <span
+                            className={`block h-full rounded-full ${complete ? "bg-emerald-500" : "bg-cyan-600"}`}
+                            style={{ width: `${pct}%` }}
+                          />
+                        </span>
+                        <span className="text-xs tabular-nums text-slate-500">
+                          {requiredDone} of {REQUIRED_COUNT} required
+                        </span>
+                      </span>
+                      {pending > 0 && <Badge tone="warning">{pending} to check</Badge>}
+                      <Badge tone={complete ? "success" : "neutral"}>{complete ? "Complete" : "Incomplete"}</Badge>
+                      <ChevronDown
+                        className={`ml-auto h-5 w-5 shrink-0 text-slate-400 transition-transform sm:ml-0 ${isOpen ? "rotate-180" : ""}`}
+                      />
+                    </span>
+                  </button>
 
-              {isOpen && (
-                <ul className="divide-y divide-gray-100 border-t border-gray-100">
-                  {DOCUMENT_TYPES.map((type) => {
-                    const doc = have.get(type.slug);
-                    return (
-                      <li key={type.slug} className="flex flex-wrap items-center gap-3 px-4 py-3">
-                        <span className="min-w-0 flex-grow">
-                          <span className="block text-[14px] font-semibold text-gray-900">
-                            {type.label}
-                            {type.optional && (
-                              <span className="ml-2 text-[11px] font-normal uppercase tracking-wide text-gray-400">
-                                optional
+                  {isOpen && (
+                    <ul className="divide-y divide-slate-100 border-t border-slate-100 bg-slate-50/60">
+                      {DOCUMENT_TYPES.map((type) => {
+                        const doc = have.get(type.slug);
+                        const busy = doc ? saving === doc.id : false;
+                        return (
+                          <li key={type.slug} className="flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3 sm:px-5">
+                            <span className="min-w-0 flex-1 basis-60">
+                              <span className="flex flex-wrap items-center gap-2">
+                                <span className="text-sm font-semibold text-slate-900">{type.label}</span>
+                                {type.optional && (
+                                  <span className="text-[11px] font-medium uppercase tracking-wide text-slate-400">
+                                    optional
+                                  </span>
+                                )}
+                                {doc?.status === "verified" && <Badge tone="success">Checked</Badge>}
+                                {doc?.status === "rejected" && <Badge tone="danger">Asked again</Badge>}
+                                {doc?.status === "uploaded" && <Badge tone="warning">To check</Badge>}
+                                {!doc && !type.optional && <Badge tone="neutral">Missing</Badge>}
+                              </span>
+                              {doc ? (
+                                <span className="mt-0.5 block truncate text-[12.5px] text-slate-500">
+                                  {doc.name} · {Math.max(1, Math.round(doc.size / 1024))} KB
+                                  {doc.note ? ` · “${doc.note}”` : ""}
+                                </span>
+                              ) : (
+                                <span className="mt-0.5 block text-[12.5px] text-slate-400">
+                                  Not uploaded
+                                </span>
+                              )}
+                            </span>
+
+                            {doc && (
+                              <span className="flex shrink-0 flex-wrap items-center gap-1.5">
+                                <a
+                                  href={`/api/documents/${doc.id}`}
+                                  className={`${BUTTON.secondary} h-9 px-3 text-[13px]`}
+                                >
+                                  <Download className="h-3.5 w-3.5" />
+                                  Open
+                                </a>
+                                <button
+                                  onClick={() => review(doc, "verified")}
+                                  disabled={busy || doc.status === "verified"}
+                                  className={`${ACT} ${
+                                    doc.status === "verified"
+                                      ? "cursor-default border-emerald-200 bg-emerald-50 text-emerald-700"
+                                      : "border-slate-200 bg-white text-slate-600 hover:border-emerald-300 hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
+                                  }`}
+                                  aria-label={`Mark ${type.label} checked`}
+                                >
+                                  {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
+                                  {doc.status === "verified" ? "Checked" : "Mark checked"}
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    const note = window.prompt(
+                                      `What is wrong with "${type.label}"? The candidate sees this.`,
+                                      doc.note ?? "",
+                                    );
+                                    if (note && note.trim()) review(doc, "rejected", note.trim());
+                                  }}
+                                  disabled={busy}
+                                  className={`${ACT} disabled:cursor-not-allowed disabled:opacity-50 ${
+                                    doc.status === "rejected"
+                                      ? "border-red-200 bg-red-50 text-red-700"
+                                      : "border-slate-200 bg-white text-slate-600 hover:border-red-300 hover:text-red-700"
+                                  }`}
+                                  aria-label={`Ask for ${type.label} again`}
+                                >
+                                  <X className="h-4 w-4" />
+                                  Ask again
+                                </button>
                               </span>
                             )}
-                          </span>
-                          {doc ? (
-                            <span className="mt-0.5 block truncate text-[12.5px] text-gray-500">
-                              {doc.name} · {Math.max(1, Math.round(doc.size / 1024))} KB
-                              {doc.note ? ` · “${doc.note}”` : ""}
-                            </span>
-                          ) : (
-                            <span className="mt-0.5 block text-[12.5px] text-gray-400">
-                              Not uploaded
-                            </span>
-                          )}
-                        </span>
-
-                        {doc ? (
-                          <span className="flex shrink-0 items-center gap-1.5">
-                            <a
-                              href={`/api/documents/${doc.id}`}
-                              className="inline-flex h-10 items-center gap-1.5 rounded-lg border border-gray-200 px-3 text-[13px] font-semibold text-gray-700 hover:bg-gray-50"
-                            >
-                              <Download className="h-3.5 w-3.5" />
-                              Open
-                            </a>
-                            <button
-                              onClick={() => review(doc, "verified")}
-                              disabled={saving === doc.id || doc.status === "verified"}
-                              className={`inline-flex h-10 w-10 items-center justify-center rounded-lg border transition-colors disabled:opacity-40 ${
-                                doc.status === "verified"
-                                  ? "border-emerald-300 bg-emerald-50 text-emerald-700"
-                                  : "border-gray-200 text-gray-500 hover:border-emerald-300 hover:text-emerald-700"
-                              }`}
-                              aria-label={`Mark ${type.label} checked`}
-                            >
-                              <Check className="h-4 w-4" />
-                            </button>
-                            <button
-                              onClick={() => {
-                                const note = window.prompt(
-                                  `What is wrong with "${type.label}"? The candidate sees this.`,
-                                  doc.note ?? "",
-                                );
-                                if (note && note.trim()) review(doc, "rejected", note.trim());
-                              }}
-                              disabled={saving === doc.id}
-                              className={`inline-flex h-10 w-10 items-center justify-center rounded-lg border transition-colors disabled:opacity-40 ${
-                                doc.status === "rejected"
-                                  ? "border-rose-300 bg-rose-50 text-rose-700"
-                                  : "border-gray-200 text-gray-500 hover:border-rose-300 hover:text-rose-700"
-                              }`}
-                              aria-label={`Ask for ${type.label} again`}
-                            >
-                              <X className="h-4 w-4" />
-                            </button>
-                          </span>
-                        ) : (
-                          <span className="shrink-0 text-[12.5px] text-gray-300">—</span>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
-              )}
-            </div>
-          );
-        })
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </Card>
       )}
     </div>
   );

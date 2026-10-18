@@ -1,16 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import CollegeVisual from '@/components/ui/CollegeVisual';
 import { listRows, createRow, updateRow, deleteRow, uploadImage } from '@/lib/adminApi';
 import { toast } from 'sonner';
-import { Pencil, Trash2, Loader2, ImagePlus, Plus, Building2, MapPin, Users, Calendar, ShieldCheck, Search, Filter } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Pencil, Trash2, Loader2, ImagePlus, Plus, Building2, Search, RefreshCw, ChevronDown } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
+import {
+  Card, Toolbar, Button, BUTTON, SIZE, INPUT, INPUT_H, Field, Badge, Notice, EmptyState, TABLE, Drawer,
+} from '@/components/admin/ui';
 
 export interface GenericCollege {
   id: number;
@@ -22,6 +20,10 @@ export interface GenericCollege {
   image_url: string | null;
   is_active: boolean;
   display_order: number;
+  /** Read-only here: shown in the list, never written by this screen. */
+  college_type?: string | null;
+  university_name?: string | null;
+  established_year?: number | null;
   created_at?: string;
   updated_at?: string;
 }
@@ -31,18 +33,30 @@ interface GenericCollegeManagerProps {
   resource: string;
   title: string;
   description: string;
+  /**
+   * Bumped by the page header's "Add college" button. Each change opens the
+   * add form. Left undefined, the list shows its own add button instead.
+   */
+  addSignal?: number;
 }
 
-const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ resource, title, description }) => {
+/** Rows drawn at once. 765 colleges in one table is a slow page for nothing. */
+const PAGE = 100;
+
+const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ resource, title, description, addSignal }) => {
   const [colleges, setColleges] = useState<GenericCollege[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  
+  const [stateFilter, setStateFilter] = useState('all');
+  const [typeFilter, setTypeFilter] = useState('all');
+  const [shown, setShown] = useState(PAGE);
+
   const [selectedCollege, setSelectedCollege] = useState<GenericCollege | null>(null);
   const [newCollege, setNewCollege] = useState<Partial<GenericCollege>>({
     college_name: '',
@@ -52,7 +66,7 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ resource,
     image_url: '',
     display_order: 100
   });
-  
+
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -63,10 +77,12 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ resource,
   const fetchColleges = async () => {
     try {
       setLoading(true);
+      setLoadError(null);
       setColleges(await listRows<GenericCollege>(resource));
     } catch (err) {
       console.error(`Error fetching ${resource}:`, err);
       toast.error(`Failed to load data for ${title}`);
+      setLoadError(err instanceof Error ? err.message : `Failed to load data for ${title}`);
     } finally {
       setLoading(false);
     }
@@ -109,7 +125,7 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ resource,
     try {
       setIsSaving(true);
       let imageUrl = newCollege.image_url || null;
-      
+
       if (imageFile) {
         imageUrl = await uploadImage(imageFile, 'colleges');
       }
@@ -126,7 +142,7 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ resource,
         is_active: true,
         display_order: newCollege.display_order ?? ((colleges.length + 1) * 100)
       });
-      
+
       toast.success("College added successfully");
       setIsAddDialogOpen(false);
       resetForm();
@@ -148,7 +164,7 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ resource,
     try {
       setIsSaving(true);
       let imageUrl = selectedCollege.image_url;
-      
+
       if (imageFile) {
         imageUrl = await uploadImage(imageFile, 'colleges');
       } else if (previewUrl === null) {
@@ -167,7 +183,7 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ resource,
         display_order: selectedCollege.display_order
       });
 
-      
+
       toast.success("College updated successfully");
       setIsEditDialogOpen(false);
       setSelectedCollege(null);
@@ -205,394 +221,457 @@ const GenericCollegeManager: React.FC<GenericCollegeManagerProps> = ({ resource,
     setPreviewUrl(null);
   };
 
-  const filteredColleges = colleges.filter(u => 
+  const openAdd = () => {
+    resetForm();
+    setIsAddDialogOpen(true);
+  };
+
+  const openEdit = (college: GenericCollege) => {
+    setSelectedCollege(college);
+    // A photo picked for another college and then cancelled must not ride along.
+    setImageFile(null);
+    setPreviewUrl(college.image_url);
+    setIsEditDialogOpen(true);
+  };
+
+  // The page header owns the "Add college" button; it bumps addSignal.
+  // The first value is the one this list mounted with, so a tab switch
+  // never opens the form by itself.
+  const lastAddSignal = useRef(addSignal);
+  useEffect(() => {
+    if (addSignal === undefined || addSignal === lastAddSignal.current) return;
+    lastAddSignal.current = addSignal;
+    openAdd();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addSignal]);
+
+  // The drawers close on Escape, like the leads panel.
+  useEffect(() => {
+    if (!isAddDialogOpen && !isEditDialogOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      setIsAddDialogOpen(false);
+      setIsEditDialogOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isAddDialogOpen, isEditDialogOpen]);
+
+  const filteredColleges = colleges.filter(u =>
     u.college_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    u.state.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (u.state ?? '').toLowerCase().includes(searchQuery.toLowerCase()) ||
     (u.city && u.city.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  return (
-    <div className="space-y-8 p-1">
-      <div className="relative overflow-hidden bg-slate-900 rounded-[2rem] border border-slate-800 p-8 shadow-2xl">
-        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-transparent to-emerald-500/10 opacity-60 pointer-events-none" />
-        <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2">
-            <Badge className="bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 px-3 py-1 text-xs font-black uppercase tracking-wider">
-              Management Portal
-            </Badge>
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight leading-none">
-              {title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Database</span>
-            </h2>
-            <p className="text-slate-400 text-sm font-medium">
-              {description}
-            </p>
-          </div>
+  const stateOptions = useMemo(
+    () => Array.from(new Set(colleges.map((c) => c.state).filter(Boolean))).sort(),
+    [colleges],
+  );
+  const typeOptions = useMemo(
+    () => Array.from(new Set(colleges.map((c) => c.college_type).filter((t): t is string => !!t))).sort(),
+    [colleges],
+  );
 
-          <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-            <DialogTrigger asChild>
-              <Button onClick={resetForm} className="flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white rounded-full px-6 py-5 shadow-lg shadow-cyan-500/20 text-sm font-black transition-all border border-cyan-400/20">
-                <Plus className="h-4 w-4" />
-                <span>Add College</span>
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[550px] bg-white border-slate-200 rounded-3xl shadow-2xl overflow-hidden p-0 max-h-[90vh] overflow-y-auto">
-              <div className="px-6 py-5 bg-slate-50 border-b border-slate-100 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-cyan-100 flex items-center justify-center">
-                  <Building2 className="w-5 h-5 text-cyan-600" />
-                </div>
-                <div>
-                  <DialogTitle className="text-xl font-black text-slate-900">Add New College</DialogTitle>
-                  <p className="text-xs text-slate-500 font-medium">Enter details for the new institution</p>
-                </div>
-              </div>
-              
-              <div className="p-6 space-y-5">
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">College Name *</Label>
-                    <Input 
-                      placeholder="e.g. AIIMS Delhi" 
-                      value={newCollege.college_name || ''}
-                      onChange={(e) => setNewCollege({...newCollege, college_name: e.target.value})}
-                      className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-colors"
-                    />
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">State *</Label>
-                      <Input 
-                        placeholder="e.g. Delhi" 
-                        value={newCollege.state || ''}
-                        onChange={(e) => setNewCollege({...newCollege, state: e.target.value})}
-                        className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-colors"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">City</Label>
-                      <Input 
-                        placeholder="e.g. New Delhi" 
-                        value={newCollege.city || ''}
-                        onChange={(e) => setNewCollege({...newCollege, city: e.target.value})}
-                        className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-colors"
-                      />
-                    </div>
-                  </div>
+  const visible = filteredColleges.filter(
+    (u) =>
+      (stateFilter === 'all' || u.state === stateFilter) &&
+      (typeFilter === 'all' || u.college_type === typeFilter),
+  );
 
-                  <div className="space-y-2">
-                    <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Total Seats</Label>
-                    <Input 
-                      type="number" 
-                      placeholder="e.g. 150" 
-                      value={newCollege.intake || ''}
-                      onChange={(e) => setNewCollege({...newCollege, intake: parseInt(e.target.value) || 0})}
-                      className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-colors"
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Display Order</Label>
-                    <Input 
-                      type="number" 
-                      placeholder="e.g. 100" 
-                      value={newCollege.display_order === undefined ? '' : newCollege.display_order}
-                      onChange={(e) => setNewCollege({...newCollege, display_order: parseInt(e.target.value) || 0})}
-                      className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-colors"
-                    />
-                  </div>
+  useEffect(() => setShown(PAGE), [searchQuery, stateFilter, typeFilter, resource]);
 
-                  <div className="space-y-2 pt-2">
-                    <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 block">College Image</Label>
-                    
-                    <div className="flex items-center gap-4">
-                      {previewUrl ? (
-                        <div className="relative w-20 h-20 rounded-xl overflow-hidden border border-slate-200 group">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
-                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                            <Trash2 className="w-4 h-4 text-white cursor-pointer" onClick={() => {setImageFile(null); setPreviewUrl(null);}} />
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="w-20 h-20 rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 flex items-center justify-center text-slate-400">
-                          <ImagePlus className="w-6 h-6" />
-                        </div>
-                      )}
-                      
-                      <div className="flex-1">
-                        <Label htmlFor="image-upload" className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-cyan-600 transition-colors">
-                          <ImagePlus className="w-4 h-4" />
-                          Choose Image
-                        </Label>
-                        <Input 
-                          id="image-upload" 
-                          type="file" 
-                          accept="image/*" 
-                          className="hidden" 
-                          onChange={handleImageChange}
-                        />
-                        <p className="text-[10px] text-slate-500 mt-2">Recommended: 800x600px or larger. Max 2MB.</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <DialogFooter className="p-4 bg-slate-50 border-t border-slate-100">
-                <Button variant="outline" onClick={() => setIsAddDialogOpen(false)} className="rounded-xl">Cancel</Button>
-                <Button onClick={handleAddCollege} disabled={isSaving} className="rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white">
-                  {isSaving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : 'Add College'}
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </div>
-      </div>
+  const filtering = searchQuery !== '' || stateFilter !== 'all' || typeFilter !== 'all';
+  const clearFilters = () => {
+    setSearchQuery('');
+    setStateFilter('all');
+    setTypeFilter('all');
+  };
 
-      <div className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm">
-        <div className="p-5 border-b border-slate-100 flex flex-col sm:flex-row gap-4 items-center justify-between bg-slate-50/50">
-          <div className="relative w-full sm:max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-            <Input 
-              placeholder="Search by name or location..." 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 bg-white border-slate-200 rounded-xl focus-visible:ring-cyan-500"
+  const activeCount = colleges.filter((c) => c.is_active).length;
+
+  /** One form for add and edit; only the values and the setter differ. */
+  const renderFields = (
+    values: Partial<GenericCollege>,
+    set: (patch: Partial<GenericCollege>) => void,
+    idPrefix: string,
+  ) => (
+    <div className="space-y-6">
+      <FormSection title="College">
+        <Field label="College name *" htmlFor={`${idPrefix}-name`}>
+          <input
+            id={`${idPrefix}-name`}
+            placeholder="e.g. AIIMS Delhi"
+            value={values.college_name || ''}
+            onChange={(e) => set({ college_name: e.target.value })}
+            className={`${INPUT} ${INPUT_H}`}
+          />
+        </Field>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label="State *" htmlFor={`${idPrefix}-state`}>
+            <input
+              id={`${idPrefix}-state`}
+              placeholder="e.g. Delhi"
+              value={values.state || ''}
+              onChange={(e) => set({ state: e.target.value })}
+              className={`${INPUT} ${INPUT_H}`}
             />
-          </div>
-          <Button variant="outline" size="sm" className="w-full sm:w-auto rounded-xl gap-2 border-slate-200">
-            <Filter className="h-4 w-4 text-slate-500" />
-            <span className="text-slate-600">Filters</span>
-          </Button>
+          </Field>
+          <Field label="City" htmlFor={`${idPrefix}-city`}>
+            <input
+              id={`${idPrefix}-city`}
+              placeholder="e.g. New Delhi"
+              value={values.city || ''}
+              onChange={(e) => set({ city: e.target.value })}
+              className={`${INPUT} ${INPUT_H}`}
+            />
+          </Field>
         </div>
+      </FormSection>
 
-        {loading ? (
-          <div className="flex flex-col items-center justify-center p-12 text-slate-400">
-            <Loader2 className="w-8 h-8 animate-spin mb-4 text-cyan-500" />
-            <p className="font-medium">Loading colleges...</p>
-          </div>
-        ) : filteredColleges.length === 0 ? (
-          <div className="flex flex-col items-center justify-center p-12 text-slate-400">
-            <Building2 className="w-12 h-12 mb-4 opacity-20" />
-            <p className="font-medium">No colleges found matching your search.</p>
-            <Button variant="link" onClick={() => setSearchQuery('')} className="text-cyan-500 mt-2">Clear search</Button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-t border-slate-100 bg-slate-50/30">
-            {filteredColleges.map((college, idx) => (
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.05 }}
-                key={college.id} 
-                className={`p-5 group hover:bg-white transition-all duration-300 relative ${
-                  idx !== filteredColleges.length - 1 ? 'border-b md:border-b-0 border-slate-100' : ''
-                } ${
-                  idx % 3 !== 2 ? 'lg:border-r lg:border-slate-100' : ''
-                } ${
-                  idx % 2 !== 1 ? 'md:border-r md:border-slate-100 lg:border-r-0' : ''
-                } ${
-                  idx < filteredColleges.length - (filteredColleges.length % 3 || 3) ? 'lg:border-b lg:border-slate-100' : ''
-                } ${
-                  idx < filteredColleges.length - (filteredColleges.length % 2 || 2) ? 'md:border-b md:border-slate-100' : ''
-                }`}
-              >
-                <div className="flex gap-4">
-                  {/*
-                    The placeholder here was an AI-generated building signed
-                    "ALL INDIA INSTITUTE OF MEDICAL SCIENCES, NEW DELHI", shown
-                    against every college that has no picture — so the list said
-                    AIIMS beside hundreds of rows and read as though a photo had
-                    been set. The monogram says plainly that none has.
-                  */}
-                  <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
-                    <CollegeVisual
-                      name={college.college_name}
-                      imageUrl={college.image_url}
-                      sizes="56px"
-                    />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-sm font-black text-slate-900 truncate mb-1" title={college.college_name}>{college.college_name}</h3>
-                    <div className="flex gap-2 items-center mb-2">
-                      <Badge variant="outline" className="text-[8px] px-1 py-0 border-cyan-200 text-cyan-600 bg-cyan-50 shrink-0">
-                        Order: {college.display_order}
-                      </Badge>
-                    </div>
-                    <div className="flex items-center gap-1.5 text-xs text-slate-500 mb-2">
-                      <MapPin className="w-3.5 h-3.5 text-slate-400" />
-                      <span className="truncate">{college.city ? `${college.city}, ` : ''}{college.state}</span>
-                    </div>
-                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-cyan-50 text-cyan-700 text-[10px] font-black tracking-wide">
-                      <Users className="w-3 h-3" />
-                      {college.intake} Seats
-                    </div>
-                  </div>
-                </div>
-
-                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
-                  <Button 
-                    variant="secondary" 
-                    size="icon" 
-                    className="h-8 w-8 rounded-lg shadow-sm border border-slate-200 bg-white hover:bg-slate-50 hover:text-cyan-600"
-                    onClick={() => {
-                      setSelectedCollege(college);
-                      setPreviewUrl(college.image_url);
-                      setIsEditDialogOpen(true);
-                    }}
-                  >
-                    <Pencil className="h-3.5 w-3.5" />
-                  </Button>
-                  <Button 
-                    variant="secondary" 
-                    size="icon" 
-                    className="h-8 w-8 rounded-lg shadow-sm border border-slate-200 bg-white hover:bg-red-50 hover:text-red-600"
-                    onClick={() => {
-                      setSelectedCollege(college);
-                      setIsDeleteDialogOpen(true);
-                    }}
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </Button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="sm:max-w-[550px] bg-white border-slate-200 rounded-3xl shadow-2xl overflow-hidden p-0 max-h-[90vh] overflow-y-auto">
-          <div className="px-6 py-5 bg-slate-50 border-b border-slate-100 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-cyan-100 flex items-center justify-center">
-              <Pencil className="w-5 h-5 text-cyan-600" />
-            </div>
-            <div>
-              <DialogTitle className="text-xl font-black text-slate-900">Edit College</DialogTitle>
-              <p className="text-xs text-slate-500 font-medium">Update details for {selectedCollege?.college_name}</p>
-            </div>
-          </div>
-          
-          <div className="p-6 space-y-5">
-            {selectedCollege && (
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">College Name *</Label>
-                  <Input 
-                    value={selectedCollege.college_name}
-                    onChange={(e) => setSelectedCollege({...selectedCollege, college_name: e.target.value})}
-                    className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white"
-                  />
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">State *</Label>
-                    <Input 
-                      value={selectedCollege.state}
-                      onChange={(e) => setSelectedCollege({...selectedCollege, state: e.target.value})}
-                      className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">City</Label>
-                    <Input 
-                      value={selectedCollege.city || ''}
-                      onChange={(e) => setSelectedCollege({...selectedCollege, city: e.target.value})}
-                      className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Total Seats</Label>
-                  <Input 
-                    type="number" 
-                    value={selectedCollege.intake || ''}
-                    onChange={(e) => setSelectedCollege({...selectedCollege, intake: parseInt(e.target.value) || 0})}
-                    className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Display Order</Label>
-                  <Input 
-                    type="number" 
-                    value={selectedCollege.display_order === undefined ? '' : selectedCollege.display_order}
-                    onChange={(e) => setSelectedCollege({...selectedCollege, display_order: parseInt(e.target.value) || 0})}
-                    className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white"
-                  />
-                </div>
-                
-                <div className="space-y-2 pt-2">
-                  <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 block">College Image</Label>
-                  <div className="flex items-center gap-4">
-                    {previewUrl ? (
-                      <div className="relative w-20 h-20 rounded-xl overflow-hidden border border-slate-200 group">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
-                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Trash2 className="w-4 h-4 text-white cursor-pointer" onClick={() => {
-                            setImageFile(null);
-                            setPreviewUrl(null);
-                            setSelectedCollege(prev => prev ? { ...prev, image_url: null } : null);
-                          }} />
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="w-20 h-20 rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 flex items-center justify-center text-slate-400">
-                        <ImagePlus className="w-6 h-6" />
-                      </div>
-                    )}
-                    <div className="flex-1">
-                      <Label htmlFor="edit-image-upload" className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-cyan-600 transition-colors">
-                        <ImagePlus className="w-4 h-4" />
-                        Change Image
-                      </Label>
-                      <Input 
-                        id="edit-image-upload" 
-                        type="file" 
-                        accept="image/*" 
-                        className="hidden" 
-                        onChange={handleImageChange}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-          
-          <DialogFooter className="p-4 bg-slate-50 border-t border-slate-100">
-            <Button variant="outline" onClick={() => setIsEditDialogOpen(false)} className="rounded-xl">Cancel</Button>
-            <Button onClick={handleEditCollege} disabled={isSaving} className="rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white">
-              {isSaving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : 'Save Changes'}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <DialogContent className="sm:max-w-[400px] p-0 overflow-hidden rounded-3xl border-slate-200">
-          <div className="p-6 text-center space-y-4">
-            <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-2">
-              <Trash2 className="w-8 h-8" />
-            </div>
-            <h3 className="text-xl font-black text-slate-900">Delete College?</h3>
-            <p className="text-sm text-slate-500 font-medium">
-              Are you sure you want to delete <span className="font-bold text-slate-900">{selectedCollege?.college_name}</span>? This action cannot be undone.
-            </p>
-          </div>
-          <div className="p-4 bg-slate-50 flex gap-3 border-t border-slate-100">
-            <Button variant="outline" className="flex-1 rounded-xl" onClick={() => setIsDeleteDialogOpen(false)}>Cancel</Button>
-            <Button variant="destructive" className="flex-1 rounded-xl bg-red-600 hover:bg-red-700" onClick={handleDeleteCollege} disabled={isDeleting}>
-              {isDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Yes, Delete'}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <FormSection title="Listing">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label="Total seats" htmlFor={`${idPrefix}-intake`}>
+            <input
+              id={`${idPrefix}-intake`}
+              type="number"
+              inputMode="numeric"
+              placeholder="e.g. 150"
+              value={values.intake || ''}
+              onChange={(e) => set({ intake: parseInt(e.target.value) || 0 })}
+              className={`${INPUT} ${INPUT_H}`}
+            />
+          </Field>
+          <Field label="Display order" htmlFor={`${idPrefix}-order`} hint="Lower numbers show first.">
+            <input
+              id={`${idPrefix}-order`}
+              type="number"
+              inputMode="numeric"
+              placeholder="e.g. 100"
+              value={values.display_order === undefined ? '' : values.display_order}
+              onChange={(e) => set({ display_order: parseInt(e.target.value) || 0 })}
+              className={`${INPUT} ${INPUT_H}`}
+            />
+          </Field>
+        </div>
+      </FormSection>
     </div>
   );
+
+  const renderImage = (inputId: string, chooseLabel: string, onRemove: () => void) => (
+    <FormSection title="Photo">
+      <div className="flex flex-wrap items-center gap-4">
+        {previewUrl ? (
+          <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={previewUrl} alt="Preview" className="h-full w-full object-cover" />
+          </div>
+        ) : (
+          <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 text-slate-400">
+            <ImagePlus className="h-6 w-6" />
+          </div>
+        )}
+        <div className="min-w-0 flex-1 space-y-2">
+          <div className="flex flex-wrap gap-2">
+            <label htmlFor={inputId} className={`${BUTTON.secondary} ${SIZE.sm} cursor-pointer`}>
+              <ImagePlus className="h-4 w-4" />
+              {chooseLabel}
+            </label>
+            {previewUrl && (
+              <Button variant="ghost" size="sm" onClick={onRemove} className="text-red-600 hover:bg-red-50">
+                <Trash2 className="h-4 w-4" /> Remove
+              </Button>
+            )}
+          </div>
+          <input id={inputId} type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+          <p className="text-xs text-slate-500">JPG, PNG, WebP or AVIF, up to 5 MB. 800 × 600 px or larger looks best.</p>
+        </div>
+      </div>
+    </FormSection>
+  );
+
+  return (
+    <>
+      <Card
+        flush
+        title={title}
+        description={
+          <>
+            {description}
+            {!loading && colleges.length > 0 && (
+              <span className="text-slate-400"> · {colleges.length} colleges, {activeCount} active</span>
+            )}
+          </>
+        }
+        actions={
+          addSignal === undefined ? (
+            <Button variant="primary" size="sm" onClick={openAdd}>
+              <Plus className="h-4 w-4" /> Add college
+            </Button>
+          ) : undefined
+        }
+      >
+        <Toolbar className="border-b border-slate-100 px-4 py-3">
+          <div className="relative min-w-[12rem] flex-1">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <input
+              type="search"
+              placeholder="Search name, city or state…"
+              aria-label="Search colleges"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={`${INPUT} ${INPUT_H} pl-9`}
+            />
+          </div>
+          {stateOptions.length > 1 && (
+            <div className="w-full sm:w-44">
+              <select
+                aria-label="Filter by state"
+                value={stateFilter}
+                onChange={(e) => setStateFilter(e.target.value)}
+                className={`${INPUT} ${INPUT_H}`}
+              >
+                <option value="all">All states</option>
+                {stateOptions.map((s) => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
+            </div>
+          )}
+          {typeOptions.length > 1 && (
+            <div className="w-full sm:w-40">
+              <select
+                aria-label="Filter by type"
+                value={typeFilter}
+                onChange={(e) => setTypeFilter(e.target.value)}
+                className={`${INPUT} ${INPUT_H}`}
+              >
+                <option value="all">All types</option>
+                {typeOptions.map((t) => (
+                  <option key={t} value={t}>{t}</option>
+                ))}
+              </select>
+            </div>
+          )}
+          <span className="text-xs tabular-nums text-slate-500">
+            {visible.length} of {colleges.length}
+          </span>
+          <Button size="sm" onClick={fetchColleges} disabled={loading} className="ml-auto">
+            <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} /> Refresh
+          </Button>
+        </Toolbar>
+
+        {loadError && (
+          <div className="p-4">
+            <Notice
+              tone="danger"
+              title="Could not load this list"
+              action={
+                <Button size="sm" onClick={fetchColleges} disabled={loading}>
+                  Retry
+                </Button>
+              }
+            >
+              {loadError}
+            </Notice>
+          </div>
+        )}
+
+        {loading && colleges.length === 0 ? (
+          <div className="flex items-center justify-center gap-2 py-16 text-sm text-slate-500">
+            <Loader2 className="h-5 w-5 animate-spin text-slate-400" /> Loading colleges…
+          </div>
+        ) : loadError && colleges.length === 0 ? null : colleges.length === 0 ? (
+          <EmptyState
+            icon={Building2}
+            title="No colleges in this list yet"
+            hint="Add the first one and it appears on the site in display order."
+            action={
+              <Button variant="primary" onClick={openAdd}>
+                <Plus className="h-4 w-4" /> Add college
+              </Button>
+            }
+          />
+        ) : visible.length === 0 ? (
+          <EmptyState
+            icon={Search}
+            title="No college matches"
+            hint={filtering ? 'Try another name, or clear the filters.' : undefined}
+            action={<Button onClick={clearFilters}>Clear filters</Button>}
+          />
+        ) : (
+          <>
+            <div className={TABLE.wrap}>
+              <table className={`${TABLE.table} min-w-[760px]`}>
+                <thead className={TABLE.head}>
+                  <tr>
+                    <th className={TABLE.th}>College</th>
+                    <th className={TABLE.th}>Location</th>
+                    <th className={TABLE.th}>Type</th>
+                    <th className={`${TABLE.th} text-right`}>Seats</th>
+                    <th className={`${TABLE.th} text-right`}>Order</th>
+                    <th className={TABLE.th}>Status</th>
+                    <th className={`${TABLE.th} text-right`}><span className="sr-only">Actions</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {visible.slice(0, shown).map((college) => (
+                    <tr key={college.id} className={TABLE.row}>
+                      <td className={TABLE.td}>
+                        <div className="flex items-center gap-3">
+                          {/*
+                            The placeholder here was an AI-generated building signed
+                            "ALL INDIA INSTITUTE OF MEDICAL SCIENCES, NEW DELHI", shown
+                            against every college that has no picture — so the list said
+                            AIIMS beside hundreds of rows and read as though a photo had
+                            been set. The monogram says plainly that none has.
+                          */}
+                          <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-slate-100 [&_span]:!text-[11px] [&_span]:!tracking-normal">
+                            <CollegeVisual name={college.college_name} imageUrl={college.image_url} sizes="36px" />
+                          </div>
+                          <div className="min-w-0">
+                            <div className="max-w-[18rem] truncate font-medium text-slate-900" title={college.college_name}>
+                              {college.college_name}
+                            </div>
+                            {(college.university_name || college.established_year) && (
+                              <div className="max-w-[18rem] truncate text-xs text-slate-500">
+                                {[college.university_name, college.established_year ? `Est. ${college.established_year}` : null]
+                                  .filter(Boolean)
+                                  .join(' · ')}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </td>
+                      <td className={TABLE.td}>
+                        <div className="max-w-[12rem] truncate" title={`${college.city ? `${college.city}, ` : ''}${college.state}`}>
+                          {college.city ? `${college.city}, ` : ''}{college.state}
+                        </div>
+                      </td>
+                      <td className={TABLE.td}>{college.college_type || <span className="text-slate-400">—</span>}</td>
+                      <td className={`${TABLE.td} text-right tabular-nums`}>{college.intake ?? '—'}</td>
+                      <td className={`${TABLE.td} text-right tabular-nums text-slate-500`}>{college.display_order}</td>
+                      <td className={TABLE.td}>
+                        {college.is_active ? <Badge tone="success">Active</Badge> : <Badge>Hidden</Badge>}
+                      </td>
+                      <td className={TABLE.td}>
+                        <div className="flex justify-end gap-1">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            aria-label={`Edit ${college.college_name}`}
+                            title="Edit"
+                            onClick={() => openEdit(college)}
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            aria-label={`Delete ${college.college_name}`}
+                            title="Delete"
+                            className="hover:bg-red-50 hover:text-red-600"
+                            onClick={() => {
+                              setSelectedCollege(college);
+                              setIsDeleteDialogOpen(true);
+                            }}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {visible.length > shown && (
+              <div className="border-t border-slate-100 p-3 text-center">
+                <Button size="sm" onClick={() => setShown((s) => s + PAGE)}>
+                  <ChevronDown className="h-4 w-4" /> Show {Math.min(PAGE, visible.length - shown)} more
+                </Button>
+              </div>
+            )}
+          </>
+        )}
+      </Card>
+
+      {/* Add */}
+      <Drawer
+        open={isAddDialogOpen}
+        title="Add college"
+        onClose={() => setIsAddDialogOpen(false)}
+        footer={
+          <>
+            <Button onClick={() => setIsAddDialogOpen(false)}>Cancel</Button>
+            <Button variant="primary" onClick={handleAddCollege} disabled={isSaving}>
+              {isSaving ? <><Loader2 className="h-4 w-4 animate-spin" /> Saving…</> : 'Add college'}
+            </Button>
+          </>
+        }
+      >
+        <p className="mb-5 text-sm text-slate-500">Adds to <span className="font-medium text-slate-700">{title}</span>. Fields marked * are required.</p>
+        <div className="space-y-6">
+          {renderFields(newCollege, (patch) => setNewCollege({ ...newCollege, ...patch }), 'add')}
+          {renderImage('image-upload', 'Choose image', () => { setImageFile(null); setPreviewUrl(null); })}
+        </div>
+      </Drawer>
+
+      {/* Edit */}
+      <Drawer
+        open={isEditDialogOpen}
+        title={selectedCollege ? `Edit ${selectedCollege.college_name}` : 'Edit college'}
+        onClose={() => setIsEditDialogOpen(false)}
+        footer={
+          <>
+            <Button onClick={() => setIsEditDialogOpen(false)}>Cancel</Button>
+            <Button variant="primary" onClick={handleEditCollege} disabled={isSaving}>
+              {isSaving ? <><Loader2 className="h-4 w-4 animate-spin" /> Saving…</> : 'Save changes'}
+            </Button>
+          </>
+        }
+      >
+        {selectedCollege && (
+          <div className="space-y-6">
+            {renderFields(selectedCollege, (patch) => setSelectedCollege({ ...selectedCollege, ...patch }), 'edit')}
+            {renderImage('edit-image-upload', 'Change image', () => {
+              setImageFile(null);
+              setPreviewUrl(null);
+              setSelectedCollege(prev => prev ? { ...prev, image_url: null } : null);
+            })}
+          </div>
+        )}
+      </Drawer>
+
+      {/* Delete */}
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent className="w-[calc(100%-2rem)] max-w-md gap-0 overflow-hidden rounded-2xl border-slate-200 bg-white p-0 sm:rounded-2xl">
+          <div className="space-y-2 p-5 pr-12">
+            <DialogTitle className="text-base font-semibold text-slate-900">Delete this college?</DialogTitle>
+            <DialogDescription className="text-sm leading-relaxed text-slate-500">
+              <span className="font-semibold text-slate-800">{selectedCollege?.college_name}</span> will be removed from{' '}
+              {title}. This cannot be undone.
+            </DialogDescription>
+          </div>
+          <div className="flex flex-wrap justify-end gap-2 border-t border-slate-100 bg-slate-50 px-5 py-3.5">
+            <Button onClick={() => setIsDeleteDialogOpen(false)}>Cancel</Button>
+            <Button variant="danger" onClick={handleDeleteCollege} disabled={isDeleting}>
+              {isDeleting ? <><Loader2 className="h-4 w-4 animate-spin" /> Deleting…</> : 'Delete'}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
 };
+
+/** A titled group of fields inside a form. */
+function FormSection({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="space-y-4">
+      <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">{title}</h3>
+      {children}
+    </section>
+  );
+}
 
 export default GenericCollegeManager;

@@ -11,6 +11,8 @@ import {
   missingFields,
 } from "@/lib/counsellingProfile";
 import { sendWhatsAppNotification } from "@/lib/whatsappService";
+import { sendCallbackConfirmation } from "@/lib/followups";
+import { getBranchCatalogue } from "@/lib/branchCatalogue";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -84,6 +86,12 @@ export async function POST(request: Request) {
   try {
     const body = (await request.json()) as Record<string, unknown>;
     const profile = parseProfile(body, user.level);
+    // Only the catalogue's complete names (lib/branchCatalogue.ts) are stored, so
+    // the sheet and the AH Counselor app never receive a half-name.
+    if (profile.preferredBranches?.length) {
+      const known = new Set((await getBranchCatalogue()).flatMap((g) => g.variants));
+      if (known.size) profile.preferredBranches = profile.preferredBranches.filter((b) => known.has(b));
+    }
 
     await saveProfile(user.id, profile);
 
@@ -117,9 +125,28 @@ export async function POST(request: Request) {
         budget_max: merged.budgetMax ?? undefined,
         budget_total_max: merged.budgetTotalMax ?? undefined,
         mbbs_college: merged.mbbsCollege ?? undefined,
+        course: merged.stream ? { mbbs: "MBBS", bds: "BDS", pg: "MD/MS (NEET PG)" }[merged.stream] : undefined,
+        score: merged.neetScore ?? undefined,
+        gender: merged.gender ?? undefined,
+        pwd: merged.pwd ?? undefined,
+        states: merged.preferredStates?.join(", ") ?? undefined,
+        college_types: merged.collegeTypes?.join(", ") ?? undefined,
+        seat_types: merged.seatTypes?.join(", ") ?? undefined,
+        mbbs_state: merged.mbbsState ?? undefined,
+        internship_status: merged.internshipStatus ?? undefined,
+        service_quota: merged.serviceQuota ?? undefined,
+        bond: merged.bondOk ?? undefined,
+        city: merged.city ?? undefined,
+        guardian_phone: merged.guardianPhone ?? undefined,
+        options_seen: typeof body.optionsSeen === "number" ? body.optionsSeen : undefined,
         missing: missingFields(merged),
         source: String(body.source ?? "Profile completed"),
       }).catch((error) => logError(error, { route: "/api/profile:notify" }));
+
+      // They asked for a counsellor: tell them it arrived, on the number they proved.
+      if (String(body.source ?? "").startsWith("Counselling request")) {
+        void sendCallbackConfirmation(user).catch((error) => logError(error, { route: "/api/profile:callback" }));
+      }
     }
 
     const saved = (await getProfile(user.id)) ?? profile;

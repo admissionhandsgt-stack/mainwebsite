@@ -6,6 +6,10 @@ import Hero from "@/components/Hero";
 import Reveal from "@/components/ui/Reveal";
 import CtaBand from "@/components/ui/CtaBand";
 import LeadCapture from "@/components/lead/LeadCapture";
+import TrustShield from "@/components/home/TrustShield";
+import CounsellorEdge from "@/components/home/CounsellorEdge";
+import TelegramJoin from "@/components/engage/TelegramJoin";
+import { CONTACT_INFO } from "@/lib/constants";
 import StructuredData, { organization, website } from "@/components/seo/StructuredData";
 import type { Metadata } from "next";
 import { resolveMetadata } from "@/lib/content";
@@ -147,7 +151,9 @@ const Index = async () => {
     .map((k) => setting(s, k))
     .filter((u) => u.startsWith('https://'))
     // Share-tracking parameters ("?igsh=…") are not part of a profile's address.
-    .map((u) => u.split('?')[0]);
+    .map((u) => u.split('?')[0])
+    // The Telegram channel is ours and has no admin setting (lib/constants.ts).
+    .concat(CONTACT_INFO.telegram);
   const siteSchema = [
     organization({ phone: contact?.phoneNumber, email: contact?.email }, social),
     website(social),
@@ -206,6 +212,22 @@ const Index = async () => {
             ),
           },
           {
+            key: 'counsellor_edge',
+            node: (
+              <div className="content-visibility-auto border-y border-border bg-surface-2">
+                <CounsellorEdge />
+              </div>
+            ),
+          },
+          {
+            key: 'trust',
+            node: (
+              <div className="content-visibility-auto">
+                <TrustShield />
+              </div>
+            ),
+          },
+          {
             key: 'testimonials',
             node: (
               <div className="content-visibility-auto">
@@ -224,6 +246,10 @@ const Index = async () => {
                 points={[1, 2, 3, 4].map((i) => setting(s, `home.enquiry.point_${i}`))}
               />
             ),
+          },
+          {
+            key: 'telegram',
+            node: <TelegramJoin placement="home" />,
           },
           {
             key: 'videos',

@@ -53,7 +53,7 @@ import { sql } from "drizzle-orm";
 import { normalisePhone } from "@/lib/leadGate";
 import { logError } from "@/lib/logger";
 import { sendText, canSendCodes } from "@/lib/waGateway";
-import { cloudReady, sendCloudCode } from "@/lib/waCloud";
+import { cloudCaps, cloudReady, sendCloudCode } from "@/lib/waCloud";
 
 /** Long enough to switch apps and read it, short enough to be worth little. */
 const TTL_MINUTES = 10;
@@ -182,6 +182,29 @@ async function withinCaps(phone: string): Promise<CapResult> {
   return { allowed: true };
 }
 
+/**
+ * The official sender's site-wide budget (waCloud.cloudCaps), counted in
+ * `otp_codes` like the per-number caps. Over it, codes take the inbound path —
+ * the visitor messages us, which costs nothing — rather than stopping sign-in.
+ */
+async function cloudWithinBudget(): Promise<boolean> {
+  const caps = await cloudCaps();
+  const rows = (await db.execute(sql`
+    SELECT
+      COUNT(*) FILTER (WHERE created_at > now() - interval '1 hour')::int AS hour,
+      COUNT(*)::int AS day
+    FROM otp_codes
+    WHERE sent_channel = 'cloud' AND created_at > now() - interval '1 day'
+  `)) as unknown as { hour: number; day: number }[];
+  const c = rows[0] ?? { hour: 0, day: 0 };
+  if (c.hour < caps.hour && c.day < caps.day) return true;
+  logError(new Error("Official WhatsApp sender at its site-wide cap"), {
+    route: "otp.cloudWithinBudget",
+    meta: { sentLastHour: c.hour, sentLastDay: c.day, caps },
+  });
+  return false;
+}
+
 /* ------------------------------------------------------------------ send */
 
 interface MessageContext {
@@ -301,7 +324,7 @@ export async function issueCode(input: IssueInput): Promise<IssueResult> {
   // The official sender first (Meta's Cloud API, an approved authentication
   // template) — it is the one that cannot get the number blocked for sending
   // codes. The linked-device gateway only when it is not set up.
-  const official = await cloudReady();
+  const official = (await cloudReady()) && (await cloudWithinBudget());
   if (!official && !(await canSendCodes())) {
     return {
       ok: false,
@@ -335,16 +358,16 @@ export async function issueCode(input: IssueInput): Promise<IssueResult> {
   const id = rows[0]?.id;
 
   if (official) {
-    const sent = await sendCloudCode(phone, code);
+    const sent = await sendCloudCode(phone, code, id);
     if (sent.ok) {
       if (id) await db.execute(sql`UPDATE otp_codes SET sent_channel = 'cloud', sent_via = NULL WHERE id = ${id}`);
       return { ok: true, channel: "whatsapp", masked: maskPhone(phone), expiresInSeconds: TTL_MINUTES * 60 };
     }
-    console.error("[otp] official WhatsApp send failed:", sent.error);
-    if (!(await canSendCodes())) {
-      if (id) await db.execute(sql`UPDATE otp_codes SET consumed_at = now() WHERE id = ${id}`);
-      return { ok: false, fallback: true, message: "We could not send a WhatsApp code just now." };
-    }
+    // No falling back to a linked-device number: that is how a counsellor's
+    // personal WhatsApp ended up sending codes to strangers (2026-10-11).
+    logError(new Error(`Official WhatsApp send failed: ${sent.error}`), { route: "otp.issueCode" });
+    if (id) await db.execute(sql`UPDATE otp_codes SET consumed_at = now() WHERE id = ${id}`);
+    return { ok: false, fallback: true, message: "We could not send a WhatsApp code just now." };
   }
 
   // A beat of jitter, so the send does not land at a machine-exact interval

@@ -1,6 +1,7 @@
 import CiteThis from "@/components/seo/CiteThis";
 import { NEET_PG_QUALIFYING } from "@/lib/neetPgQualifying";
 import type { Metadata } from "next";
+import { fitTitle, fitDescription } from "@/lib/seoTitle";
 import Link from "@/components/ui/Link";
 import { Search } from "lucide-react";
 import { getPgAiqBranches, getPgAiqCuts, type YearCuts } from "@/lib/cutoffHubQueries";
@@ -8,6 +9,7 @@ import { resolveMetadata } from "@/lib/content";
 import CategoryCutTable from "@/components/cutoffs/CategoryCutTable";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
+import TelegramJoin from "@/components/engage/TelegramJoin";
 
 /**
  * "NEET PG cutoff branch wise", "NEET PG cutoff 2025 OBC", "MD radiology
@@ -32,9 +34,22 @@ async function chosen(searchParams: Props["searchParams"]) {
 
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
   const { year, category } = await chosen(searchParams);
+  // How it is searched (Search Console, Oct 2026): "neet pg cut off rank branch
+  // wise", "neet pg 2025 cut off branch wise", "neet pg closing rank 2025".
+  const y = year?.year ? ` ${year.year}` : "";
+  const q = NEET_PG_QUALIFYING[0];
+  const scores = q.rows.map((r) => r.score).join("/");
   const base = await resolveMetadata(PATH, {
-    title: `NEET PG Cutoff ${NEET_PG_QUALIFYING[0].year}: Qualifying Score & ${year?.year ?? ""} AIQ Closing Ranks`,
-    description: `NEET PG ${NEET_PG_QUALIFYING[0].year} qualifying cutoff (${NEET_PG_QUALIFYING[0].rows.map((r) => r.score).join(" / ")}) from NBEMS, and ${year?.year ?? ""} All India Quota closing ranks for every MD/MS branch by category.`,
+    title: fitTitle(
+      `NEET PG Cutoff${y} Branch Wise: AIQ Closing Ranks by Category`,
+      `NEET PG Cutoff${y} Branch Wise & Category Wise (AIQ)`,
+      `NEET PG Cutoff${y} Branch Wise`,
+    ),
+    description: fitDescription(
+      `NEET PG${y} cutoff branch wise: All India Quota closing ranks for every MD/MS branch by category, round 1 and the last round. NEET PG ${q.year} qualifying score: ${scores}.`,
+      `NEET PG${y} cutoff branch wise: AIQ closing ranks for every MD/MS branch by category, round 1 and the last round. ${q.year} qualifying: ${scores}.`,
+      `NEET PG${y} cutoff branch wise: AIQ closing ranks for every MD/MS branch by category, round 1 and the last round.`,
+    ),
     keywords:
       "NEET PG cutoff, NEET PG cutoff branch wise, NEET PG cutoff 2025, MD radiology cutoff, NEET PG cutoff OBC, NEET PG cutoff SC, AIQ PG cutoff, NEET PG closing rank",
   });
@@ -42,7 +57,15 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   // A category view is its own page for the searches that name the category.
   return {
     ...base,
-    title: `NEET PG Cutoff ${year?.year ?? ""} for ${category}: Branch-wise AIQ Ranks`,
+    title: fitTitle(
+      `NEET PG Cutoff${y} ${category}: Branch Wise AIQ Closing Ranks`,
+      `NEET PG Cutoff${y} ${category}: Branch Wise AIQ Ranks`,
+      `NEET PG ${category} Cutoff${y} Branch Wise`,
+    ),
+    description: fitDescription(
+      `NEET PG${y} ${category} cutoff branch wise: All India Quota closing ranks for every MD/MS branch in the ${category} category, round 1 and the last round. Published MCC results.`,
+      `NEET PG${y} ${category} cutoff branch wise: AIQ closing ranks for every MD/MS branch, round 1 and the last round.`,
+    ),
     alternates: { canonical: `${PATH}?category=${encodeURIComponent(category)}` },
   };
 }
@@ -287,6 +310,7 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
         title="Have your PG rank? Get a choice list built on these numbers"
         body="A counsellor orders your branches and colleges against the published closing ranks — AIQ, state and deemed — and stays with you through every round."
       />
+      <TelegramJoin placement="neet_pg_cutoff" />
     </main>
   );
 }

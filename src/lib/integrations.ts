@@ -29,7 +29,26 @@ export type IntegrationKey =
   | "whatsapp.cloud.token"
   | "whatsapp.cloud.waba_id"
   | "whatsapp.cloud.phone_number_id"
-  | "whatsapp.cloud.template";
+  | "whatsapp.cloud.template"
+  | "whatsapp.cloud.hourly_cap"
+  | "whatsapp.cloud.daily_cap"
+  // The app secret that signs each delivery-webhook POST (/api/whatsapp/cloud),
+  // once somebody pastes it; until then the route's own checks stand alone.
+  | "whatsapp.cloud.app_secret"
+  | "whatsapp.followups.enabled"
+  // The counsellors' lead sheet (lib/leadSheet.ts): the service account's key
+  // (a secret), the spreadsheet's id, and the last enquiry copied to its log.
+  | "google.service_account"
+  | "google.sheets.leads_id"
+  | "google.sheets.last_lead_id"
+  // The AH Counselor app's website-sync endpoint and its key (a secret).
+  | "counselor.sync_url"
+  | "counselor.sync_key"
+  // Its branch guide (JSON), and when it was last fetched (ms).
+  | "counselor.branches"
+  | "counselor.branches_at"
+  // Who gets reminders and the morning digest: JSON [{ "name", "phone" }].
+  | "alerts.staff";
 
 /**
  * The environment variable that overrides each key, where one exists.

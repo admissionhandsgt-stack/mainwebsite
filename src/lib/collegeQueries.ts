@@ -71,9 +71,9 @@ export async function listColleges(f: CollegeFilters) {
         ? sql`max_stipend DESC NULLS LAST`
         : f.sort === "name"
           ? sql`i.name ASC`
-          : f.sort === "rank"
-            ? sql`best_rank ASC NULLS LAST`
-            : sql`i.seats_total DESC NULLS LAST`;
+          : // No "rank" sort: ordering colleges by their tightest cut publishes
+            // the order of the cuts (2026-10-12, lib/depth.ts).
+            sql`i.seats_total DESC NULLS LAST`;
 
   const [items, total] = await Promise.all([
     db.execute(sql`
@@ -256,16 +256,26 @@ export async function getCollegeFees(slug: string, level: Level): Promise<Colleg
 }
 
 /** Colleges a visitor is likely to weigh against this one: same state, similar size. */
+/** Names that mark a non-MBBS UG college (the MBBS directory uses the same test). */
+const STREAM_NAME = "(dental|ayurved|homoeopath|homeopath|nursing|physiothe|veterinar|unani|siddha)";
+
 export async function getSimilarColleges(slug: string, level: Level, limit = 6) {
   return rows<Record<string, unknown>>(
     await db.execute(sql`
-      WITH me AS (SELECT id, state_id, seats_total FROM institutes WHERE slug = ${slug} AND level = ${level})
+      WITH me AS (
+        SELECT id, state_id, seats_total,
+               -- UG lists every NEET stream: a dental or AYUSH college is "similar"
+               -- only to its own kind, never to an MBBS college.
+               (name ~* ${STREAM_NAME}) AS other_stream
+          FROM institutes WHERE slug = ${slug} AND level = ${level}
+      )
       SELECT i.slug, i.name, i.ownership::text AS ownership, st.name AS state, i.seats_total
       FROM institutes i
       LEFT JOIN states st ON st.id = i.state_id
       WHERE i.level = ${level}
         AND i.id <> (SELECT id FROM me)
         AND i.state_id = (SELECT state_id FROM me)
+        AND (${level} <> 'ug' OR (i.name ~* ${STREAM_NAME}) = (SELECT other_stream FROM me))
       ORDER BY ABS(COALESCE(i.seats_total, 0) - COALESCE((SELECT seats_total FROM me), 0)) ASC
       LIMIT ${limit}
     `),

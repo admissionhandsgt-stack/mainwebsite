@@ -1,4 +1,5 @@
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect } from "./helpers/noAnalytics";
+import type { Page } from "@playwright/test";
 import {
   GATED_SURFACES,
   OPEN_SURFACES,
@@ -83,11 +84,12 @@ test.describe("Anonymous visitor", () => {
 
       // And the page is not simply empty where the table was.
       await expect(page.locator(LOCKED_SUMMARY)).toHaveCount(surface.blocks);
-      await expect(page.locator(LOCKED_SUMMARY).first()).toContainText("By quota");
-
-      // The summary has to be worth reading, or the gate converts nobody.
-      const quotaRows = page.locator(`${LOCKED_SUMMARY} tbody tr`);
-      expect(await quotaRows.count()).toBeGreaterThan(0);
+      if (surface.blocks > 0) {
+        await expect(page.locator(LOCKED_SUMMARY).first()).toContainText("By quota");
+        // The overview has to be worth reading, or it converts nobody.
+        const quotaRows = page.locator(`${LOCKED_SUMMARY} tbody tr`);
+        expect(await quotaRows.count()).toBeGreaterThan(0);
+      }
 
       expect(pageErrors, `uncaught exception on ${surface.path}`).toEqual([]);
       expect(consoleErrors, `console errors on ${surface.path}`).toEqual([]);
@@ -100,7 +102,7 @@ test.describe("Anonymous visitor", () => {
     const depthCalls: { url: string; status: number }[] = [];
     page.on("response", async (res) => {
       const url = res.url();
-      if (/\/api\/(seat-rows|college-cutoffs|predict|rounds)/.test(url)) {
+      if (/\/api\/(seat-rows|college-cutoffs)/.test(url)) {
         depthCalls.push({ url, status: res.status() });
       }
     });
@@ -118,32 +120,13 @@ test.describe("Anonymous visitor", () => {
   });
 });
 
-test.describe("The locked panel offers a way in", () => {
-  test("the call to action opens the sign-in dialog", async ({ page }) => {
+test.describe("The overview offers a way in", () => {
+  test("its call to action goes to the chance finder", async ({ page }) => {
     await page.goto(GATED_SURFACES[0].path);
     await settle(page);
-
-    const cta = page.locator(LOCKED_SUMMARY).getByRole("button", { name: /show me all/i });
+    const cta = page.locator(LOCKED_SUMMARY).getByRole("link", { name: /see my chance/i });
     await expect(cta).toBeVisible();
-
-    await cta.click();
-
-    // A dialog, and one that asks for the phone number rather than a password —
-    // the first visit has no password to ask for.
-    const dialog = page.getByRole("dialog");
-    await expect(dialog).toBeVisible();
-    await expect(dialog.locator('input[type="tel"], input[name*="phone" i]').first()).toBeVisible();
-  });
-
-  test("the offer names a real number of rows", async ({ page }) => {
-    await page.goto(GATED_SURFACES[0].path);
-    await settle(page);
-
-    const heading = await page.locator(LOCKED_SUMMARY).innerText();
-    // "1,234 seats — college, quota, rank and fee on every row"
-    const match = heading.match(/([\d,]+)\s+seats/);
-    expect(match, "the panel should say how many rows are behind it").not.toBeNull();
-    expect(Number(match![1].replace(/,/g, ""))).toBeGreaterThan(0);
+    await expect(cta).toHaveAttribute("href", /\/neet-college-predictor\?/);
   });
 });
 

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Search, X, Loader2 } from "lucide-react";
 import { checkRank } from "@/lib/neetLimits";
+import { aaTrack, aaCourse } from "@/lib/analytics";
 
 /**
  * The rank lens over a college directory.
@@ -13,20 +14,21 @@ import { checkRank } from "@/lib/neetLimits";
  * one number. Once it is entered, every card carries a band and the list can
  * be cut down to the ones actually in reach.
  *
- * The bands come from `/api/college-bands`, which returns the band and
- * nothing else — no closing ranks, so this stays useful without handing over
- * the dataset. The real numbers live behind the gate on the predictor.
+ * The bands come from `/api/college-bands`, which never returns a closing
+ * rank. Without a verified account it returns the four counts only — which
+ * colleges sit in which band is shown after sign-in (2026-10-12), because a
+ * band per named college for any rank lets the cuts be read back out.
  */
 
 export type Band = "safe" | "likely" | "possible" | "stretch";
 
 export const BAND_CHIP: Record<Band, { label: string; className: string }> = {
   safe: {
-    label: "Safe",
+    label: "High chance",
     className: "bg-signal-safe/10 text-signal-safe border-signal-safe/30",
   },
   likely: {
-    label: "Likely",
+    label: "Good chance",
     className: "bg-signal-borderline/10 text-signal-borderline border-signal-borderline/30",
   },
   possible: {
@@ -34,7 +36,7 @@ export const BAND_CHIP: Record<Band, { label: string; className: string }> = {
     className: "bg-primary/10 text-primary border-primary/30",
   },
   stretch: {
-    label: "Out of reach",
+    label: "Reach",
     className: "bg-signal-stretch/10 text-signal-stretch border-signal-stretch/30",
   },
 };
@@ -47,6 +49,8 @@ interface LensState {
   loading: boolean;
   error: string | null;
   counts: Record<Band, number> | null;
+  /** Counts only — which college is in which band needs a verified account. */
+  locked: boolean;
   bandOf: (slug: string | null | undefined) => Band | null;
   apply: (rank: number | null, category?: string) => void;
 }
@@ -62,6 +66,7 @@ export function useRankLens(level: "ug" | "pg", defaultCategory?: string): LensS
   const [category, setCategory] = useState(searchParams.get("category") || fallbackCategory);
   const [lookup, setLookup] = useState<Map<string, Band> | null>(null);
   const [counts, setCounts] = useState<Record<Band, number> | null>(null);
+  const [locked, setLocked] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -85,15 +90,12 @@ export function useRankLens(level: "ug" | "pg", defaultCategory?: string): LensS
         if (ticket !== latest.current) return;
         if (json.error) throw new Error(json.error);
         const map = new Map<string, Band>();
-        const tally: Record<Band, number> = { safe: 0, likely: 0, possible: 0, stretch: 0 };
         for (const band of BAND_ORDER) {
-          for (const slug of (json.bands?.[band] ?? []) as string[]) {
-            map.set(slug, band);
-            tally[band]++;
-          }
+          for (const slug of (json.bands?.[band] ?? []) as string[]) map.set(slug, band);
         }
-        setLookup(map);
-        setCounts(tally);
+        setLookup(json.locked ? null : map);
+        setLocked(Boolean(json.locked));
+        setCounts(json.counts ?? null);
       })
       .catch((e) => {
         if (ticket !== latest.current) return;
@@ -135,8 +137,8 @@ export function useRankLens(level: "ug" | "pg", defaultCategory?: string): LensS
   );
 
   return useMemo(
-    () => ({ rank, category, loading, error, counts, bandOf, apply }),
-    [rank, category, loading, error, counts, bandOf, apply],
+    () => ({ rank, category, loading, error, counts, locked, bandOf, apply }),
+    [rank, category, loading, error, counts, locked, bandOf, apply],
   );
 }
 
@@ -165,7 +167,10 @@ export function RankLensBar({
         className="flex flex-col gap-2 sm:flex-row sm:items-end"
         onSubmit={(e) => {
           e.preventDefault();
-          if (valid) lens.apply(parsed);
+          if (valid) {
+            aaTrack("cutoff_search", { course: aaCourse(level), category: lens.category });
+            lens.apply(parsed);
+          }
         }}
       >
         <div className="flex-grow">
@@ -243,7 +248,36 @@ export function RankLensBar({
         </p>
       )}
 
-      {lens.counts && (
+      {lens.counts && lens.locked && (
+        <div className="mt-4 rounded-xl border border-primary/25 bg-card p-4">
+          <div className="flex flex-wrap gap-2">
+            {BAND_ORDER.slice(0, 3).map((b) => (
+              <span
+                key={b}
+                className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[13px] font-bold ${BAND_CHIP[b].className}`}
+              >
+                {BAND_CHIP[b].label}
+                <span className="tnum">{lens.counts![b].toLocaleString("en-IN")} colleges</span>
+              </span>
+            ))}
+          </div>
+          <p className="mt-3 text-[13.5px] leading-relaxed text-foreground">
+            Your rank reaches{" "}
+            <b className="tnum">
+              {(lens.counts.safe + lens.counts.likely + lens.counts.possible).toLocaleString("en-IN")} colleges
+            </b>
+            . Sign in free to see which ones, with your chance at each.
+          </p>
+          <a
+            href={`/neet-college-predictor?course=${level === "ug" ? "mbbs" : "pg"}&rank=${lens.rank ?? ""}&category=${encodeURIComponent(lens.category)}`}
+            className="mt-3 inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-brand px-5 text-sm font-bold text-white shadow-glow"
+          >
+            See my colleges
+          </a>
+        </div>
+      )}
+
+      {lens.counts && !lens.locked && (
         <div className="mt-4 flex flex-wrap gap-2">
           {BAND_ORDER.map((b) => (
             <button
@@ -273,8 +307,8 @@ export function RankLensBar({
       )}
 
       <p className="mt-3 text-[12px] leading-relaxed text-muted-foreground">
-        Bands come from published closing ranks — where the cut actually landed, not a forecast. For
-        the round-by-round numbers behind each one, use the seat predictor.
+        Chances come from where the published cuts actually landed in past rounds — history, not a
+        forecast. Your counsellor takes you through the details for each college.
       </p>
     </div>
   );

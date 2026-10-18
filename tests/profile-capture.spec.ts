@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./helpers/noAnalytics";
 import { GATED_SURFACES, SEAT_TABLE } from "./helpers/surfaces";
 import { createVerifiedSession, destroySession, type TestSession } from "./helpers/session";
 

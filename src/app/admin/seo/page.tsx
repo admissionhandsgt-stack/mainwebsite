@@ -2,8 +2,11 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { Loader2, RefreshCw, Save, Search, Undo2 } from "lucide-react";
+import { Globe, Loader2, RefreshCw, Save, Search, Undo2 } from "lucide-react";
 import { listRows, updateRow } from "@/lib/adminApi";
+import {
+  Badge, Button, Card, EmptyState, INPUT, INPUT_H, Notice, PageHeader, TEXTAREA, Toggle,
+} from "@/components/admin/ui";
 
 interface SeoRow {
   id: number;
@@ -22,6 +25,10 @@ type Draft = Partial<Omit<SeoRow, "id" | "route">>;
 // a long title is a judgement call, not an error.
 const TITLE_LIMIT = 60;
 const DESC_LIMIT = 160;
+
+// The search box needs room on the left for its icon. Swapped into the kit's
+// class rather than appended, so the two left paddings cannot fight.
+const SEARCH_INPUT = `${INPUT.replace("px-3", "pl-9 pr-3")} ${INPUT_H}`;
 
 function CountedField({
   id,
@@ -42,13 +49,13 @@ function CountedField({
 }) {
   const over = limit != null && value.length > limit;
   return (
-    <div>
-      <div className="mb-1 flex items-baseline justify-between">
-        <label htmlFor={id} className="text-xs font-semibold text-gray-700">
+    <div className="min-w-0">
+      <div className="mb-1.5 flex items-baseline justify-between gap-3">
+        <label htmlFor={id} className="text-[13px] font-medium text-slate-700">
           {label}
         </label>
         {limit != null && (
-          <span className={`text-[11px] ${over ? "font-semibold text-amber-600" : "text-gray-400"}`}>
+          <span className={`text-[11px] tabular-nums ${over ? "font-semibold text-amber-700" : "text-slate-400"}`}>
             {value.length}/{limit}
             {over && " — Google will trim this"}
           </span>
@@ -61,7 +68,7 @@ function CountedField({
           value={value}
           placeholder={placeholder}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm outline-none focus:border-medical-500 focus:ring-2 focus:ring-medical-500/20"
+          className={TEXTAREA}
         />
       ) : (
         <input
@@ -69,7 +76,7 @@ function CountedField({
           value={value}
           placeholder={placeholder}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm outline-none focus:border-medical-500 focus:ring-2 focus:ring-medical-500/20"
+          className={`${INPUT} ${INPUT_H}`}
         />
       )}
     </div>
@@ -83,16 +90,20 @@ export default function SeoPage() {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   const load = async () => {
     setLoading(true);
+    setLoadError(null);
     try {
       const rows = await listRows<SeoRow>("seo");
       setPages(rows);
       setActiveId((id) => id ?? rows[0]?.id ?? null);
       setDraft({});
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Could not load the pages");
+      const message = e instanceof Error ? e.message : "Could not load the pages";
+      toast.error(message);
+      setLoadError(message);
     } finally {
       setLoading(false);
     }
@@ -142,10 +153,26 @@ export default function SeoPage() {
     }
   };
 
-  if (loading) {
+  const header = (
+    <PageHeader
+      title="Search & sharing"
+      description="The title and description each page shows in Google and when it is shared. Leave a field blank to keep what the page ships with."
+      actions={
+        <Button onClick={load} disabled={loading}>
+          <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
+          Refresh
+        </Button>
+      }
+    />
+  );
+
+  if (loading && pages.length === 0) {
     return (
-      <div className="flex items-center justify-center py-20 text-gray-400">
-        <Loader2 className="h-6 w-6 animate-spin" />
+      <div>
+        {header}
+        <div className="flex items-center justify-center py-20 text-slate-400">
+          <Loader2 className="h-6 w-6 animate-spin" />
+        </div>
       </div>
     );
   }
@@ -153,156 +180,183 @@ export default function SeoPage() {
   const noIndex = draft.no_index ?? active?.no_index ?? false;
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Search & sharing</h1>
-          <p className="mt-1 text-sm text-gray-500">
-            The title and description each page shows in Google and when it is shared.
-            Leave a field blank to keep what the page ships with.
-          </p>
-        </div>
-        <button
-          onClick={load}
-          className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 px-3.5 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"
-        >
-          <RefreshCw className="h-4 w-4" />
-          Refresh
-        </button>
-      </div>
+    <div>
+      {header}
 
-      <div className="grid gap-5 lg:grid-cols-[17rem_1fr]">
-        <aside className="space-y-2">
-          <div className="relative">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Find a page"
-              aria-label="Find a page"
-              className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-9 pr-3 text-sm outline-none focus:border-medical-500"
-            />
-          </div>
-          <div className="space-y-1 rounded-2xl border border-gray-200 bg-white p-2">
-            {filtered.map((p) => (
-              <button
-                key={p.id}
-                onClick={() => {
-                  setActiveId(p.id);
-                  setDraft({});
-                }}
-                className={`w-full rounded-xl px-3.5 py-2.5 text-left transition-colors ${
-                  activeId === p.id
-                    ? "bg-medical-50 text-medical-900"
-                    : "text-gray-600 hover:bg-gray-50"
-                }`}
-              >
-                <div className="flex items-center gap-2 text-sm font-semibold">
-                  <span className="truncate">{p.page_label}</span>
-                  {p.no_index && (
-                    <span className="shrink-0 rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold text-amber-700">
-                      Hidden
-                    </span>
+      <div className="space-y-5">
+        {loadError && (
+          <Notice
+            tone="danger"
+            title="The pages did not load"
+            action={
+              <Button size="sm" onClick={load}>
+                <RefreshCw className="h-4 w-4" /> Retry
+              </Button>
+            }
+          >
+            {loadError}
+          </Notice>
+        )}
+
+        {pages.length === 0 ? (
+          !loadError && (
+            <Card>
+              <EmptyState
+                icon={Globe}
+                title="No pages registered"
+                hint="Pages are added by the seed script. Until then each page uses its built-in title and description."
+              />
+            </Card>
+          )
+        ) : (
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-[17rem_minmax(0,1fr)]">
+            <aside className="lg:sticky lg:top-20 lg:self-start">
+              <Card flush>
+                <div className="border-b border-slate-100 p-2.5">
+                  <div className="relative">
+                    <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                    <input
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value)}
+                      placeholder="Find a page"
+                      aria-label="Find a page"
+                      className={SEARCH_INPUT}
+                    />
+                  </div>
+                  <p className="mt-2 px-1 text-[11px] text-slate-400">
+                    {filtered.length === pages.length
+                      ? `${pages.length} pages`
+                      : `${filtered.length} of ${pages.length} pages`}
+                  </p>
+                </div>
+                {/* Scrolls inside itself, so on a phone the editor is not pushed below every page. */}
+                <nav className="max-h-72 space-y-0.5 overflow-y-auto p-2 lg:max-h-[calc(100vh-14rem)]" aria-label="Pages">
+                  {filtered.map((p) => {
+                    const on = activeId === p.id;
+                    return (
+                      <button
+                        key={p.id}
+                        type="button"
+                        onClick={() => {
+                          setActiveId(p.id);
+                          setDraft({});
+                        }}
+                        aria-current={on ? "true" : undefined}
+                        className={`w-full rounded-lg px-3 py-2 text-left transition-colors ${
+                          on ? "bg-cyan-50 text-cyan-900" : "text-slate-700 hover:bg-slate-50"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2 text-sm font-medium">
+                          <span className="truncate">{p.page_label}</span>
+                          {p.no_index && (
+                            <span className="shrink-0">
+                              <Badge tone="warning">Hidden</Badge>
+                            </span>
+                          )}
+                        </div>
+                        <code className="block truncate text-[11px] text-slate-400">{p.route}</code>
+                      </button>
+                    );
+                  })}
+                  {filtered.length === 0 && (
+                    <p className="px-3 py-6 text-center text-sm text-slate-500">No page matches that.</p>
                   )}
-                </div>
-                <code className="text-[11px] text-gray-400">{p.route}</code>
-              </button>
-            ))}
-            {filtered.length === 0 && (
-              <p className="px-3 py-6 text-center text-sm text-gray-500">No page matches that.</p>
+                </nav>
+              </Card>
+            </aside>
+
+            {active && (
+              <Card
+                title={active.page_label}
+                description={<code className="text-xs text-slate-500">{active.route}</code>}
+                actions={
+                  <>
+                    {noIndex && <Badge tone="warning">Hidden from Google</Badge>}
+                    {dirty && <Badge tone="warning">Unsaved</Badge>}
+                  </>
+                }
+              >
+                {/* Locked while a reload is in flight: the reload clears the draft, so
+                    anything typed during it would be thrown away. */}
+                <fieldset disabled={loading} className="min-w-0 space-y-5">
+                  {/* What the result actually looks like beats any field label. */}
+                  <div>
+                    <p className="mb-1.5 text-[13px] font-medium text-slate-700">Google preview</p>
+                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                      <div className="truncate text-xs text-slate-600">
+                        admissionhands.com{active.route === "/" ? "" : active.route}
+                      </div>
+                      {/* Google's own link colour, so the preview reads like a real result. */}
+                      <div className="mt-0.5 truncate text-lg text-[#1a0dab]">
+                        {field("title") || "(the page's own title)"}
+                      </div>
+                      <p className="mt-0.5 line-clamp-2 text-sm text-slate-600">
+                        {field("description") || "(the page's own description)"}
+                      </p>
+                    </div>
+                  </div>
+
+                  <CountedField
+                    id="seo-title"
+                    label="Page title"
+                    value={field("title")}
+                    limit={TITLE_LIMIT}
+                    placeholder="Leave blank to keep the built-in title"
+                    onChange={(v) => setDraft({ ...draft, title: v })}
+                  />
+                  <CountedField
+                    id="seo-desc"
+                    label="Description"
+                    value={field("description")}
+                    limit={DESC_LIMIT}
+                    rows={3}
+                    placeholder="Leave blank to keep the built-in description"
+                    onChange={(v) => setDraft({ ...draft, description: v })}
+                  />
+                  <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                    <CountedField
+                      id="seo-keywords"
+                      label="Keywords"
+                      value={field("keywords")}
+                      placeholder="Comma-separated"
+                      onChange={(v) => setDraft({ ...draft, keywords: v })}
+                    />
+                    <CountedField
+                      id="seo-og"
+                      label="Share image URL"
+                      value={field("og_image_url")}
+                      placeholder="/assets/images/… — used when the page is shared"
+                      onChange={(v) => setDraft({ ...draft, og_image_url: v })}
+                    />
+                  </div>
+
+                  <div className="flex items-start justify-between gap-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-slate-800">Keep this page out of Google</p>
+                      <p className="mt-0.5 text-xs leading-relaxed text-slate-500">
+                        The page stays reachable by link — search engines are asked not to list it.
+                      </p>
+                    </div>
+                    <Toggle
+                      checked={noIndex}
+                      onChange={(v) => setDraft({ ...draft, no_index: v })}
+                      label={<span className="sr-only">Keep this page out of Google</span>}
+                    />
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-2 border-t border-slate-100 pt-4">
+                    <Button variant="primary" onClick={save} disabled={!dirty || saving}>
+                      {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+                      Save
+                    </Button>
+                    <Button variant="ghost" onClick={() => setDraft({})} disabled={!dirty}>
+                      <Undo2 className="h-4 w-4" />
+                      Discard
+                    </Button>
+                  </div>
+                </fieldset>
+              </Card>
             )}
-          </div>
-        </aside>
-
-        {active && (
-          <div className="space-y-5">
-            {/* What the result actually looks like beats any field label. */}
-            <div className="rounded-2xl border border-gray-200 bg-white p-5">
-              <h2 className="mb-3 text-xs font-bold uppercase tracking-wide text-gray-500">
-                Google preview
-              </h2>
-              <div className="rounded-xl bg-gray-50 p-4">
-                <div className="text-xs text-gray-600">
-                  admissionhands.com{active.route === "/" ? "" : active.route}
-                </div>
-                <div className="mt-0.5 truncate text-lg text-[#1a0dab]">
-                  {field("title") || "(the page's own title)"}
-                </div>
-                <p className="mt-0.5 line-clamp-2 text-sm text-gray-600">
-                  {field("description") || "(the page's own description)"}
-                </p>
-              </div>
-            </div>
-
-            <div className="space-y-4 rounded-2xl border border-gray-200 bg-white p-5">
-              <CountedField
-                id="seo-title"
-                label="Page title"
-                value={field("title")}
-                limit={TITLE_LIMIT}
-                placeholder="Leave blank to keep the built-in title"
-                onChange={(v) => setDraft({ ...draft, title: v })}
-              />
-              <CountedField
-                id="seo-desc"
-                label="Description"
-                value={field("description")}
-                limit={DESC_LIMIT}
-                rows={3}
-                placeholder="Leave blank to keep the built-in description"
-                onChange={(v) => setDraft({ ...draft, description: v })}
-              />
-              <CountedField
-                id="seo-keywords"
-                label="Keywords"
-                value={field("keywords")}
-                placeholder="Comma-separated"
-                onChange={(v) => setDraft({ ...draft, keywords: v })}
-              />
-              <CountedField
-                id="seo-og"
-                label="Share image URL"
-                value={field("og_image_url")}
-                placeholder="/assets/images/… — used when the page is shared"
-                onChange={(v) => setDraft({ ...draft, og_image_url: v })}
-              />
-
-              <label className="flex items-start gap-3 rounded-xl border border-gray-200 bg-gray-50/60 p-3.5">
-                <input
-                  type="checkbox"
-                  checked={noIndex}
-                  onChange={(e) => setDraft({ ...draft, no_index: e.target.checked })}
-                  className="mt-0.5 h-4 w-4 rounded border-gray-300 text-medical-600"
-                />
-                <span>
-                  <span className="block text-sm font-semibold text-gray-800">
-                    Keep this page out of Google
-                  </span>
-                  <span className="block text-xs text-gray-500">
-                    The page stays reachable by link — search engines are asked not to list it.
-                  </span>
-                </span>
-              </label>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                onClick={save}
-                disabled={!dirty || saving}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-medical-600 to-medical-500 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-medical-500/20 disabled:opacity-40"
-              >
-                {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-                Save
-              </button>
-              <button
-                onClick={() => setDraft({})}
-                disabled={!dirty}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50 disabled:opacity-40"
-              >
-                <Undo2 className="h-4 w-4" />
-                Discard
-              </button>
-            </div>
           </div>
         )}
       </div>

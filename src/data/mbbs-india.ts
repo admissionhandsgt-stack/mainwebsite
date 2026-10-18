@@ -1,7 +1,7 @@
 export const mbbsData = {
   hero: {
     promisingInfo: [
-      { label: "Total MBBS Seats", value: "1,08,940+" },
+      { label: "Total MBBS Seats", value: "1 lakh+" },
       { label: "Govt Colleges", value: "380+" },
       { label: "Private Colleges", value: "300+" },
       { label: "Closing Ranks", value: "2.7L" },
@@ -13,7 +13,7 @@ export const mbbsData = {
       { label: "Course Duration", value: "5.5 Yrs", detail: "Including Internship" },
       { label: "Entrance Exam", value: "NEET-UG", detail: "Mandatory for All" },
       { label: "Degree Awarded", value: "MBBS", detail: "NMC Recognized" },
-      { label: "Total Colleges", value: "706+", detail: "Across India" },
+      { label: "Total Colleges", value: "750+", detail: "Approx., across India" },
       { label: "Counselling", value: "AIQ + State", detail: "Dual Pathway" },
     ],
   },
@@ -151,7 +151,7 @@ export const mbbsData = {
         desc: "One-on-one guidance from NEET score analysis to college reporting",
       },
       {
-        title: "12+ Years Experience",
+        title: "15+ Years Experience",
         desc: "Trusted by 2100+ families for MBBS admissions across India",
       },
     ],
@@ -161,7 +161,7 @@ export const mbbsData = {
 
   seats: {
     distribution: [
-      { count: "1,08,940+", label: "Total MBBS Seats" },
+      { count: "1 lakh+", label: "Total MBBS Seats" },
       { count: "55,000+", label: "Government Seats" },
       { count: "53,000+", label: "Private Seats" },
     ],
@@ -183,7 +183,7 @@ export const mbbsData = {
     },
     {
       question: "How many MBBS seats are available in India?",
-      answer: "India currently has over 1,08,940 MBBS seats across 706+ medical colleges, including 380+ government and 300+ private institutions recognized by the National Medical Commission (NMC).",
+      answer: "India has well over 1 lakh MBBS seats across 750+ medical colleges — government, private and deemed — recognised by the National Medical Commission (NMC). The exact count changes every year as NMC approves new colleges and seats, so your counsellor works from the current year's seat matrix.",
     },
     {
       question: "What is the fee structure for MBBS in government and private colleges?",
@@ -195,7 +195,7 @@ export const mbbsData = {
     },
     {
       question: "How can Admission Hands help with MBBS admissions?",
-      answer: "Admission Hands provides end-to-end MBBS admission guidance including NEET score analysis, college prediction, counselling registration, strategic choice filling, and final reporting support — backed by 12+ years of experience and 2100+ successful admissions.",
+      answer: "Admission Hands provides end-to-end MBBS admission guidance including NEET score analysis, college prediction, counselling registration, strategic choice filling, and final reporting support — backed by 15+ years of experience and 2100+ successful admissions.",
     },
   ],
 

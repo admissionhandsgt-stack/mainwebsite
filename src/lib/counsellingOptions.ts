@@ -70,7 +70,59 @@ export interface CounsellingProfile {
   budgetTotalMax?: number | null;
   attempt?: string | null;
   mbbsCollege?: string | null;
+
+  /* ---- the full profile, asked course by course (migration 0029) ---- */
+  stream?: Stream | null;
+  neetScore?: number | null;
+  pwd?: boolean | null;
+  gender?: Gender | null;
+  domicileState?: string | null;
+  /** Where they would study — several. */
+  preferredStates?: string[] | null;
+  collegeTypes?: CollegeType[] | null;
+  seatTypes?: SeatInterest[] | null;
+  /** PG: the state the MBBS was done in — decides state-quota eligibility. */
+  mbbsState?: string | null;
+  internshipStatus?: Internship | null;
+  serviceQuota?: boolean | null;
+  bondOk?: BondOk | null;
+  city?: string | null;
+  guardianPhone?: string | null;
 }
+
+export type Stream = "mbbs" | "bds" | "pg";
+
+export const GENDERS = ["Female", "Male", "Other"] as const;
+export type Gender = (typeof GENDERS)[number];
+
+/** Ownership values the seat data uses, with the words a family uses. */
+export const COLLEGE_TYPES = [
+  { id: "government", label: "Government" },
+  { id: "private", label: "Private" },
+  { id: "deemed", label: "Deemed university" },
+  { id: "central", label: "Central (AIIMS, JIPMER…)" },
+] as const;
+export type CollegeType = (typeof COLLEGE_TYPES)[number]["id"];
+
+export const SEAT_INTERESTS = [
+  { id: "merit", label: "Government / merit quota" },
+  { id: "management", label: "Management quota" },
+  { id: "nri", label: "NRI quota" },
+] as const;
+export type SeatInterest = (typeof SEAT_INTERESTS)[number]["id"];
+
+export const INTERNSHIP = [
+  "Completed",
+  "Will complete before counselling",
+  "Will complete later",
+] as const;
+export type Internship = (typeof INTERNSHIP)[number];
+
+export const BOND_OPTIONS = ["Yes, any bond", "Only a short bond", "No bond"] as const;
+export type BondOk = (typeof BOND_OPTIONS)[number];
+
+/** How many states one person may name. More than this is "anywhere". */
+export const MAX_STATES = 8;
 
 /** How many branches one person may name. More than this is not a preference. */
 export const MAX_BRANCHES = 5;

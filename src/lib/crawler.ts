@@ -1,4 +1,9 @@
 /**
+ * **Unused by the site since 2026-10-12.** No page serves a crawler anything a
+ * visitor does not get any more (lib/depth.ts), so nothing calls
+ * isVerifiedCrawler. Kept because scripts/cf_html_cache.mjs and
+ * scripts/verify_ipranges.mjs read CRAWLER_UA and the range matcher from here.
+ *
  * Is this request a search engine, and can we prove it?
  *
  * The whole gated-depth design rests on this one function, so it is written to

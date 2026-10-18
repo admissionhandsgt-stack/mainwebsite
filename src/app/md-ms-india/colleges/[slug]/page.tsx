@@ -1,5 +1,4 @@
 import { getPgStates } from "@/lib/pgStateQueries";
-import { fitTitle, fitDescription, nameWith } from "@/lib/seoTitle";
 import { OG_IMAGE } from "@/lib/ogImage";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -8,21 +7,20 @@ import CollegeFaq from "@/components/colleges/CollegeFaq";
 import { branchSlug } from "@/lib/branchSlug";
 import Link from "@/components/ui/Link";
 import Image from "next/image";
-import { BedDouble, GraduationCap, Landmark, MapPin, Banknote, TrendingUp, TrendingDown } from "lucide-react";
-import {
-  getCollege,
-  getCollegeCutoffs,
-  getCollegeFees,
-  getSimilarColleges,
-  getCollegeSlugs,
-} from "@/lib/collegeQueries";
+import { MapPin } from "lucide-react";
+import { getSimilarColleges } from "@/lib/collegeQueries";
+import { loadCollegePage, collegeTitle, collegeDescription } from "@/lib/collegeSnippet";
+import CollegeGlance from "@/components/colleges/CollegeGlance";
 import CollegeRankCheck from "@/components/colleges/CollegeRankCheck";
-import CollegeCutoffs from "@/components/colleges/CollegeCutoffs";
-import { canSeeDepthServer } from "@/lib/depth";
-import { summariseCollegeCutoffs } from "@/lib/seatSummary";
+import { approxFee, FEE_FOOTNOTE } from "@/lib/chance";
+import { generalBands } from "@/lib/cutoffBands";
+import CutoffBands from "@/components/colleges/CutoffBands";
+import CounsellorEdge from "@/components/home/CounsellorEdge";
+import TelegramJoin from "@/components/engage/TelegramJoin";
 import CtaBand from "@/components/ui/CtaBand";
 import PhotoCredit from "@/components/ui/PhotoCredit";
 import { getPgCollegePhoto } from "@/lib/content";
+import TrackView from "@/components/analytics/TrackView";
 
 // The busiest pages are built at deploy time; the long tail is generated on
 // first request and then cached, so a 2,168-page build stays quick.
@@ -58,39 +56,27 @@ const money = (n: number | null) => {
   if (n >= 100000) return `₹${(n / 100000).toFixed(2)} L`;
   return `₹${n.toLocaleString("en-IN")}`;
 };
-const num = (n: number | null) => (n == null ? "—" : n.toLocaleString("en-IN"));
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const college = await getCollege(params.slug, "pg");
-  if (!college) return { title: "College not found | AdmissionHands" };
-  // `collegePlace` drops a place already in the name, which was producing
-  // "SMS Medical College, Jaipur, Jaipur, Rajasthan" on every such page.
-  const where = collegePlace(college);
-  // No brand suffix: the college's own name is what is being searched, and
-  // "| AdmissionHands" was pushing these past the ~60 characters Google shows.
-  const title = fitTitle(
-    `${college.name} — MD/MS Cutoff & Fees 2026`,
-    `${college.name} — MD/MS Cutoff 2026`,
-    nameWith(college.name, " MD/MS Cutoff"),
-  );
-  const seats = college.seatsTotal ? ` ${college.seatsTotal} PG seats across ${college.branchCount ?? ""} branches.` : "";
-  const description = fitDescription(
-    `Closing ranks, fee structure, stipend and seat matrix for ${college.name}${where ? `, ${where}` : ""}.${seats} From published counselling data.`,
-    `Closing ranks, fee structure, stipend and seat matrix for ${college.name}${where ? `, ${where}` : ""}.${seats}`,
-    `MD/MS closing ranks, fees, stipend and seats for ${college.name}.${seats}`,
-    `MD/MS closing ranks, fees, stipend and seats for ${college.name}.`,
-  );
+  const data = await loadCollegePage(params.slug, "pg");
+  if (!data) return { title: "College not found | AdmissionHands" };
+  // Short name + city + "MD/MS Cutoff <year>, Fees & Seats" — or, for a
+  // hospital that only runs National Board courses, "DNB Seats, Stipend &
+  // Cutoff <year>", so the result speaks to doctors rather than patients
+  // (lib/collegeSnippet.ts). No brand suffix: the name is what is searched.
+  const title = collegeTitle(data.summary);
+  const description = collegeDescription(data.summary);
 
   return {
     title,
     description,
-    alternates: { canonical: `/md-ms-india/colleges/${college.slug}` },
+    alternates: { canonical: `/md-ms-india/colleges/${data.college.slug}` },
     // These links get shared into WhatsApp groups constantly, and without
     // these tags they unfurl as a bare URL.
     openGraph: {
       title,
       description,
-      url: `/md-ms-india/colleges/${college.slug}`,
+      url: `/md-ms-india/colleges/${data.college.slug}`,
       type: "article",
       images: [OG_IMAGE],
     },
@@ -98,61 +84,45 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export default async function CollegePage({ params }: { params: { slug: string } }) {
-  const college = await getCollege(params.slug, "pg");
-  if (!college) notFound();
-  // The state page, linked from the breadcrumb: every college pointing at its
-  // state is what makes the 35 state pages more than an index entry.
-  const stateSlug = (await getPgStates()).find((s) => s.name === college.state)?.slug ?? null;
+  const data = await loadCollegePage(params.slug, "pg");
+  if (!data) notFound();
+  const { college, cutoffs, fees, summary: s } = data;
 
-  const [cutoffs, fees, similar, access, photo] = await Promise.all([
-    getCollegeCutoffs(params.slug, "pg"),
-    getCollegeFees(params.slug, "pg"),
-    getSimilarColleges(params.slug, "pg"),
-    canSeeDepthServer(),
+  const [pgStates, similar, photo] = await Promise.all([
+    getPgStates(),
+    getSimilarColleges(params.slug, "pg", 5),
     getPgCollegePhoto(params.slug),
   ]);
-
-  // All of the rows, or none of them. A slice is what this used to do.
-  const cutoffRows = access.full ? cutoffs : [];
-  const { summary: cutoffSummary, years: cutoffYears } = summariseCollegeCutoffs(cutoffs);
+  // The state page, linked from the breadcrumb: every college pointing at its
+  // state is what makes the 35 state pages more than an index entry.
+  const stateSlug = pgStates.find((st) => st.name === college.state)?.slug ?? null;
 
   const where = collegePlace(college);
-  const bestRank = cutoffs.reduce<number | null>(
-    (m, c) => (c.r1Latest != null && (m == null || c.r1Latest < m) ? c.r1Latest : m),
-    null,
-  );
-  const minFee = fees.reduce<number | null>(
-    (m, f) => (f.feeInr != null && (m == null || f.feeInr < m) ? f.feeInr : m),
-    null,
-  );
-  const maxStipend = fees.reduce<number | null>(
-    (m, f) => (f.stipendY1Inr != null && (m == null || f.stipendY1Inr > m) ? f.stipendY1Inr : m),
-    null,
-  );
-
-  // Three years of stipend against fees, the number families actually care about.
-  const threeYearNet =
-    minFee != null && maxStipend != null ? maxStipend * 36 - minFee * 3 : null;
 
   // Answered from this college's own numbers, and rendered on the page as
   // well as in the markup — see the note in `lib/collegeSeo.ts` about what
   // FAQ schema does and does not buy since Google restricted it.
-  // Distinct branches, for the sidebar. Sorted by the tightest cut, so the
-  // list opens with what this college is known for.
+  // Distinct branches with how many quota seat options each publishes.
+  // Alphabetical: ordering by the tightest cut would publish the cut's order.
   const branches = Array.from(
-    cutoffs.reduce((m, c) => {
-      const best = m.get(c.course);
-      if (c.r1Latest != null && (best == null || c.r1Latest < best)) m.set(c.course, c.r1Latest);
-      else if (!m.has(c.course)) m.set(c.course, null);
-      return m;
-    }, new Map<string, number | null>()),
-  ).sort((a, b) => (a[1] ?? Infinity) - (b[1] ?? Infinity));
+    cutoffs.reduce((m, c) => m.set(c.course, (m.get(c.course) ?? 0) + 1), new Map<string, number>()),
+  ).sort((a, b) => a[0].localeCompare(b[0]));
+  const quotas = Array.from(new Set(cutoffs.map((c) => c.quota).filter(Boolean)));
+  const counsellings = Array.from(new Set(cutoffs.map((c) => c.counselling).filter(Boolean))) as string[];
+  const bands = generalBands(cutoffs, 20);
 
   const faqs = collegeFaqs(college, cutoffs, fees, "pg");
-  const jsonLd = collegeJsonLd({ college, level: "pg", faqs });
+  const jsonLd = collegeJsonLd({
+    college,
+    level: "pg",
+    faqs,
+    shortName: s.short,
+    state: stateSlug && college.state ? { name: college.state, path: `/md-ms-india/states/${stateSlug}` } : null,
+  });
 
   return (
     <main className="min-h-screen bg-background">
+      <TrackView event="college_viewed" props={{ college_slug: params.slug, course: "md-ms", state: college.state }} />
       {jsonLd.map((schema, i) => (
         <script
           key={i}
@@ -201,23 +171,21 @@ export default async function CollegePage({ params }: { params: { slug: string }
             ) : null}
             <Link href="/md-ms-india/colleges" className="hover:text-cyan-300">Colleges</Link>
             <span className="mx-2">›</span>
-            <span className="text-slate-200">{college.name}</span>
+            <span className="text-slate-200">{s.short}</span>
           </nav>
 
-          <div className="mb-4 flex flex-wrap gap-2">
-            <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-cyan-200 backdrop-blur-sm">
-              {college.ownership}
-            </span>
-            {college.establishedYear && (
-              <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-slate-200 backdrop-blur-sm">
-                Est. {college.establishedYear}
+          {s.kind === "dnb" && (
+            <div className="mb-4 flex flex-wrap gap-2">
+              <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-cyan-200 backdrop-blur-sm">
+                DNB / National Board seats
               </span>
-            )}
-          </div>
+            </div>
+          )}
 
           <h1 className="font-heading max-w-[20ch] text-[clamp(1.9rem,4.4vw,3.2rem)] font-extrabold leading-[1.06] tracking-[-0.032em] text-white">
-            {college.name}
+            {s.short}
           </h1>
+          {s.official !== s.short && <p className="mt-3 max-w-[70ch] text-[14px] text-slate-400">{s.official}</p>}
           {(where || college.university) && (
             <p className="mt-4 max-w-[68ch] text-[15px] leading-relaxed text-slate-300">
               {where && (
@@ -230,61 +198,81 @@ export default async function CollegePage({ params }: { params: { slug: string }
             </p>
           )}
 
-          <div className="mt-9 grid grid-cols-2 gap-5 border-t border-white/15 pt-7 sm:gap-8 md:max-w-4xl md:grid-cols-5">
-            {[
-              { icon: GraduationCap, v: num(college.seatsTotal), l: "PG seats" },
-              { icon: Landmark, v: num(college.branchCount), l: "Branches" },
-              { icon: Banknote, v: money(minFee), l: "Fee from / yr" },
-              { icon: Banknote, v: money(maxStipend), l: "Stipend / month" },
-              { icon: BedDouble, v: num(college.beds), l: "Hospital beds" },
-            ].map((s) => (
-              <div key={s.l}>
-                <div className="tnum font-heading text-2xl font-extrabold leading-none text-white md:text-[28px]">{s.v}</div>
-                <div className="mt-1.5 text-[11px] font-medium uppercase tracking-wide text-slate-400">{s.l}</div>
-              </div>
-            ))}
-          </div>
+          <CollegeGlance s={s} />
         </div>
       </section>
 
       <div className="container-custom py-10 md:py-14">
+        {/* -------- your chance, straight under the summary -------- */}
+        <div className="mb-10">
+          <CollegeRankCheck collegeName={s.short} course="pg" slug={college.slug} wide />
+        </div>
+
         <div className="grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
           <div className="min-w-0">
-            {/* -------- Cutoffs -------- */}
+            {/* -------- How admission works -------- */}
             <section>
-              <h2 className="font-heading text-xl font-bold text-foreground md:text-2xl">Closing ranks by branch</h2>
-              <p className="mt-1.5 text-[15px] text-muted-foreground">
-                As published by the counselling authority. &ldquo;Widest&rdquo; is the furthest the cut reached in
-                any round that year — not the last round, which can close far tighter.
-              </p>
-
+              <h2 className="font-heading text-xl font-bold text-foreground md:text-2xl">
+                Branches and how admission works
+              </h2>
               {cutoffs.length === 0 ? (
-                <div className="mt-5 rounded-2xl border border-border bg-card p-8 text-center">
-                  <p className="text-[15px] text-muted-foreground">
-                    No closing rank has been published for this college in the years we hold. Its seat and fee data
-                    is below.
-                  </p>
-                </div>
+                <p className="mt-1.5 text-[15px] text-muted-foreground">
+                  No counselling round has been published for this college in the years we hold. Its seat and fee
+                  data is below.
+                </p>
               ) : (
-                <CollegeCutoffs
-                  slug={params.slug}
-                  level="pg"
-                  collegeName={college.name}
-                  total={cutoffs.length}
-                  rows={cutoffRows}
-                  summary={cutoffSummary}
-                  years={cutoffYears}
-                />
+                <>
+                  <ul className="mt-3 list-disc space-y-2 pl-5 text-[15px] leading-relaxed text-muted-foreground">
+                    {counsellings.length > 0 && (
+                      <li>
+                        Seats are allotted through{" "}
+                        <b className="text-foreground">{counsellings.slice(0, 3).join(", ")}</b>
+                        {counsellings.length > 3 ? ` and ${counsellings.length - 3} more` : ""}.
+                      </li>
+                    )}
+                    {quotas.length > 0 && (
+                      <li>
+                        Quotas published: <b className="text-foreground">{quotas.slice(0, 6).join(", ")}</b>
+                        {quotas.length > 6 ? ` and ${quotas.length - 6} more` : ""} — the same branch closes at very
+                        different ranks and fees under each.
+                      </li>
+                    )}
+                    <li>
+                      Later rounds often reach far beyond round 1. Whether to float or freeze a seat here is the
+                      decision that costs people a year — talk it through before you lock it.
+                    </li>
+                  </ul>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {branches.map(([name, n]) => (
+                      <Link
+                        key={name}
+                        href={`/md-ms-india/branches/${branchSlug(name)}`}
+                        className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-[13px] font-medium text-foreground transition-colors hover:border-primary/40"
+                      >
+                        {name}
+                        <span className="tnum text-[11.5px] text-muted-foreground">
+                          {n} option{n === 1 ? "" : "s"}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                </>
               )}
             </section>
+
+            {bands.length > 0 && (
+              <div className="mt-12">
+                <CutoffBands rows={bands} collegeName={college.name} level="pg" ctaHref="/neet-college-predictor?course=pg" />
+              </div>
+            )}
 
             {/* -------- Fees -------- */}
             {fees.length > 0 && (
               <section className="mt-12">
                 <h2 className="font-heading text-xl font-bold text-foreground md:text-2xl">Fees, hostel and stipend</h2>
                 <p className="mt-1.5 text-[15px] text-muted-foreground">
-                  Published per seat. Where a figure is missing the authority did not publish it — we do not
-                  estimate one.
+                  Approximate brackets from the published fee schedule; stipend as published. Where a figure is
+                  missing the authority did not publish it.
                 </p>
                 <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
                   <table className="w-full min-w-[640px] border-collapse">
@@ -303,49 +291,35 @@ export default async function CollegePage({ params }: { params: { slug: string }
                           <td className="px-4 py-3 text-[14px] font-medium text-foreground">{f.course}</td>
                           <td className="px-4 py-3 text-[13px] text-muted-foreground">{f.quota}</td>
                           <td className="tnum px-4 py-3 text-right text-[14px] text-foreground">
-                            {f.feeInr != null ? money(f.feeInr) : <span className="text-muted-foreground">{f.feeNullReason ?? "Not published"}</span>}
+                            {f.feeInr != null && f.feeInr > 0 ? (
+                              approxFee(f.feeInr)
+                            ) : (
+                              <span className="text-muted-foreground">{f.feeNullReason ?? "Not published"}</span>
+                            )}
                           </td>
-                          <td className="tnum px-4 py-3 text-right text-[14px] text-muted-foreground">{money(f.hostelMinInr)}</td>
+                          <td className="tnum px-4 py-3 text-right text-[14px] text-muted-foreground">
+                            {approxFee(f.hostelMinInr) ?? "—"}
+                          </td>
                           <td className="tnum px-4 py-3 text-right text-[14px] font-semibold text-signal-safe">{money(f.stipendY1Inr)}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
+                <p className="mt-2 text-[11.5px] text-muted-foreground">{FEE_FOOTNOTE}</p>
               </section>
             )}
           </div>
 
           {/* ---------------- Sidebar ---------------- */}
           <aside className="space-y-5">
-            <CollegeRankCheck collegeName={college.name} />
-
-            {threeYearNet != null && (
-              <div className="rounded-2xl border border-signal-safe/30 bg-signal-safe/[0.06] p-5">
-                <h2 className="font-heading text-[15px] font-bold text-foreground">Three years, net</h2>
-                <p className="mt-1 text-[13px] text-muted-foreground">
-                  Best stipend here against the lowest published fee.
-                </p>
-                <div className="tnum font-heading mt-3 text-3xl font-extrabold text-signal-safe">
-                  {threeYearNet >= 0 ? "+" : "−"}
-                  {money(Math.abs(threeYearNet))}
-                </div>
-                <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">
-                  {threeYearNet >= 0
-                    ? "The stipend outweighs the fee over the course."
-                    : "The fee outweighs the stipend over the course."}{" "}
-                  Hostel and one-time deposits are not included.
-                </p>
-              </div>
-            )}
-
             {branches.length > 0 && (
               <div className="rounded-2xl border border-border bg-card p-5">
                 <h2 className="font-heading text-[15px] font-bold text-foreground">
                   Branches here
                 </h2>
                 <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">
-                  See what each one closed at across every college.
+                  How each branch fills across India, and where it sits for your rank.
                 </p>
                 <ul className="mt-3 space-y-1">
                   {branches.slice(0, 14).map(([name]) => (
@@ -396,12 +370,18 @@ export default async function CollegePage({ params }: { params: { slug: string }
           </aside>
         </div>
 
+        <div className="mt-12">
+          <CounsellorEdge compact />
+        </div>
+
+        <TelegramJoin placement="college_pg" bare className="mt-6" />
+
         <CollegeFaq faqs={faqs} />
       </div>
 
       <CtaBand
-        title={`Is ${college.name.split(",")[0]} the right pick for your rank?`}
-        body="The numbers above are the same ones our counsellors work from. Bring your rank and we will tell you where this college should sit in your preference order — or whether it should be on the list at all."
+        title={`Is ${s.short} the right pick for your rank?`}
+        body="Our counsellors work from every published round for this college. Bring your rank and we will tell you where it should sit in your preference order — or whether it should be on the list at all."
         image="/assets/images/hero/medical-admission-counselling-session.avif"
         primaryLabel="Ask a counsellor"
       />

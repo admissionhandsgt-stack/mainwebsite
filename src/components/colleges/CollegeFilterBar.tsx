@@ -28,7 +28,6 @@ const SORTS = [
   { value: "seats", label: "Most seats" },
   { value: "fee", label: "Lowest fee" },
   { value: "stipend", label: "Highest stipend" },
-  { value: "rank", label: "Toughest cutoff" },
   { value: "name", label: "Name" },
 ];
 

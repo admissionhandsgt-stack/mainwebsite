@@ -2,8 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { ArrowDown, ArrowUp, Eye, EyeOff, Loader2 } from "lucide-react";
+import { ArrowDown, ArrowUp, LayoutList, Loader2, RefreshCw } from "lucide-react";
 import { listRows, updateRow } from "@/lib/adminApi";
+import { Badge, Button, Card, EmptyState, Notice, Toggle } from "@/components/admin/ui";
 
 interface SectionRow {
   id: number;
@@ -19,17 +20,24 @@ const PAGE_LABELS: Record<string, string> = {
   home: "Homepage",
 };
 
+const ORDER_BTN =
+  "flex h-6 w-6 items-center justify-center rounded text-slate-400 hover:bg-slate-100 hover:text-slate-700 disabled:opacity-30 disabled:hover:bg-transparent";
+
 export default function SectionsEditor() {
   const [sections, setSections] = useState<SectionRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState<number | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   const load = async () => {
     setLoading(true);
+    setLoadError(null);
     try {
       setSections(await listRows<SectionRow>("sections"));
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Could not load the sections");
+      const message = e instanceof Error ? e.message : "Could not load the sections";
+      toast.error(message);
+      setLoadError(message);
     } finally {
       setLoading(false);
     }
@@ -82,9 +90,9 @@ export default function SectionsEditor() {
     }
   };
 
-  if (loading) {
+  if (loading && sections.length === 0) {
     return (
-      <div className="flex items-center justify-center py-20 text-gray-400">
+      <div className="flex items-center justify-center py-20 text-slate-400">
         <Loader2 className="h-6 w-6 animate-spin" />
       </div>
     );
@@ -92,86 +100,114 @@ export default function SectionsEditor() {
 
   return (
     <div className="space-y-5">
-      <p className="rounded-2xl border border-gray-200 bg-white/70 px-5 py-3.5 text-sm text-gray-600 backdrop-blur">
-        Turn a block of the page on or off, or change the order it appears in. The content
-        of each block is edited in the other two tabs.
-      </p>
+      {loadError && (
+        <Notice
+          tone="danger"
+          title="The page layout did not load"
+          action={
+            <Button size="sm" onClick={load}>
+              <RefreshCw className="h-4 w-4" /> Retry
+            </Button>
+          }
+        >
+          {loadError}
+        </Notice>
+      )}
 
-      {byPage.map(([page, list]) => (
-        <section key={page} className="rounded-2xl border border-gray-200 bg-white p-5">
-          <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-gray-500">
-            {PAGE_LABELS[page] ?? page}
-          </h2>
-          <ul className="space-y-2">
-            {list.map((s, i) => (
-              <li
-                key={s.id}
-                className={`flex items-center gap-3 rounded-xl border px-4 py-3 ${
-                  s.is_visible ? "border-gray-200" : "border-gray-200 bg-gray-50 opacity-70"
-                } ${busy === s.id ? "opacity-50" : ""}`}
+      <Notice tone="neutral">
+        Turn a block of a page on or off, or change the order it appears in. The words inside each
+        block are edited in the other two tabs.
+      </Notice>
+
+      {byPage.length === 0
+        ? !loadError && (
+            <Card>
+              <EmptyState
+                icon={LayoutList}
+                title="No page sections registered"
+                hint="A section without a row here is always shown, in its built-in order."
+              />
+            </Card>
+          )
+        : byPage.map(([page, list]) => {
+            const hidden = list.filter((s) => !s.is_visible).length;
+            return (
+              <Card
+                key={page}
+                flush
+                title={PAGE_LABELS[page] ?? page}
+                actions={
+                  <>
+                    {hidden > 0 && <Badge>{hidden} hidden</Badge>}
+                    <span className="text-xs text-slate-400">
+                      {list.length} {list.length === 1 ? "section" : "sections"}
+                    </span>
+                  </>
+                }
               >
-                <span className="w-6 shrink-0 text-center text-xs font-bold text-gray-300">
-                  {i + 1}
-                </span>
-
-                <div className="flex flex-col gap-0.5">
-                  <button
-                    onClick={() => move(list, i, -1)}
-                    disabled={i === 0 || busy !== null}
-                    aria-label="Move up"
-                    className="rounded p-0.5 text-gray-300 hover:bg-gray-100 hover:text-gray-600 disabled:opacity-30 disabled:hover:bg-transparent"
-                  >
-                    <ArrowUp className="h-3.5 w-3.5" />
-                  </button>
-                  <button
-                    onClick={() => move(list, i, 1)}
-                    disabled={i === list.length - 1 || busy !== null}
-                    aria-label="Move down"
-                    className="rounded p-0.5 text-gray-300 hover:bg-gray-100 hover:text-gray-600 disabled:opacity-30 disabled:hover:bg-transparent"
-                  >
-                    <ArrowDown className="h-3.5 w-3.5" />
-                  </button>
-                </div>
-
-                <div className="min-w-0 flex-1">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="font-semibold text-gray-900">{s.label}</span>
-                    {!s.is_visible && (
-                      <span className="rounded bg-gray-200 px-1.5 py-0.5 text-[10px] font-semibold text-gray-600">
-                        Hidden
+                <ol className="divide-y divide-slate-100">
+                  {list.map((s, i) => (
+                    <li
+                      key={s.id}
+                      className={`flex items-center gap-3 px-4 py-3 sm:px-5 ${s.is_visible ? "" : "bg-slate-50"} ${
+                        busy === s.id ? "opacity-50" : ""
+                      }`}
+                    >
+                      <span className="w-5 shrink-0 text-center text-xs font-semibold tabular-nums text-slate-400">
+                        {i + 1}
                       </span>
-                    )}
-                  </div>
-                  {s.description && (
-                    <p className="mt-0.5 text-xs text-gray-500">{s.description}</p>
-                  )}
-                </div>
 
-                <button
-                  onClick={() => toggle(s)}
-                  disabled={busy !== null}
-                  title={s.is_visible ? "Hide this block" : "Show this block"}
-                  className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold transition-colors ${
-                    s.is_visible
-                      ? "text-gray-500 hover:bg-gray-100"
-                      : "bg-medical-50 text-medical-700 hover:bg-medical-100"
-                  }`}
-                >
-                  {s.is_visible ? (
-                    <>
-                      <Eye className="h-3.5 w-3.5" /> Visible
-                    </>
-                  ) : (
-                    <>
-                      <EyeOff className="h-3.5 w-3.5" /> Hidden
-                    </>
-                  )}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ))}
+                      <div className="flex flex-col">
+                        <button
+                          type="button"
+                          onClick={() => move(list, i, -1)}
+                          disabled={i === 0 || busy !== null}
+                          aria-label="Move up"
+                          className={ORDER_BTN}
+                        >
+                          <ArrowUp className="h-3.5 w-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => move(list, i, 1)}
+                          disabled={i === list.length - 1 || busy !== null}
+                          aria-label="Move down"
+                          className={ORDER_BTN}
+                        >
+                          <ArrowDown className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className={`font-semibold ${s.is_visible ? "text-slate-900" : "text-slate-500"}`}>
+                            {s.label}
+                          </span>
+                          {!s.is_visible && <Badge>Hidden</Badge>}
+                        </div>
+                        {s.description && <p className="mt-0.5 text-xs leading-relaxed text-slate-500">{s.description}</p>}
+                      </div>
+
+                      <div className="shrink-0" title={s.is_visible ? "Hide this block" : "Show this block"}>
+                        <Toggle
+                          checked={s.is_visible}
+                          onChange={() => toggle(s)}
+                          disabled={busy !== null}
+                          label={
+                            <>
+                              <span className="sr-only">{s.label}: </span>
+                              <span className="hidden sm:inline">{s.is_visible ? "Shown" : "Hidden"}</span>
+                              <span className="sr-only sm:hidden">{s.is_visible ? "shown" : "hidden"}</span>
+                            </>
+                          }
+                        />
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </Card>
+            );
+          })}
     </div>
   );
 }

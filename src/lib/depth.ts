@@ -1,59 +1,47 @@
 /**
- * May this request see seat-level detail?
+ * May this request see seat-level detail — a closing rank or an exact fee tied
+ * to a named college?
  *
- * `hasAccess` in `userAuth.ts` answers "is this visitor through the gate". This
- * asks the wider question the data surfaces actually need, which is that *or*
- * "is this a search engine we have verified" — and it is deliberately the only
- * place those two are combined, so there is one answer to audit rather than one
- * per page.
+ * **Since 2026-10-12 the answer is: only signed-in staff.** The business
+ * decision was that no competitor hands out a college's closing ranks without
+ * payment, and neither will we — not to a visitor, not to a signed-in student,
+ * and therefore not to a search engine either. Serving a crawler rows that no
+ * visitor can ever reach is cloaking, and Google's paywall markup only covers
+ * content a subscriber *can* get. So the verified-crawler path that used to
+ * live here is gone, and so is the paywall declaration on the pages.
  *
- * It lives here rather than in `userAuth.ts` to keep the authentication layer
- * free of DNS and outbound HTTP, and because the dependency only makes sense in
- * one direction: depth needs access, access must not need depth.
+ * What a signed-in, verified student gets instead is the chance view — colleges
+ * placed in "High chance / Good chance / Possible / Reach" with an approximate
+ * fee range — from `canSeeOptions` in `lib/chanceView.ts`. The ranks behind
+ * those words stay on the server.
  *
- * **What counts as detail.** A row naming an institute, course, quota and
- * category together with a closing rank or a fee. Counts, ranges, band buckets
- * and coverage statements are not detail — they cannot be turned back into rows,
- * and they are what a page shows a visitor who has not signed in.
+ * Staff keep the rows: counsellors work from them on the call. An admin session
+ * lives on the admin host only, so in practice this is the admin screens.
  */
 
-import { headers } from "next/headers";
-import { hasAccess, hasAccessServer } from "@/lib/userAuth";
-import { isVerifiedCrawler } from "@/lib/crawler";
+import { getSessionUser } from "@/lib/auth";
 
 export interface DepthAccess {
   /** Whether the full rows may be served. */
   full: boolean;
-  /** True when the reason is a verified crawler rather than a session. */
-  crawler: boolean;
+  /** Kept for callers that branch on it; always false now. */
+  crawler: false;
 }
 
-/** For route handlers, which hold the Request. */
-export async function canSeeDepth(request: Request): Promise<DepthAccess> {
-  // The session first: it is local and cheap, and a signed-in visitor is the
-  // common case. Crawler verification can touch the network, so it only runs
-  // when the answer would otherwise be no.
-  if (await hasAccess(request)) return { full: true, crawler: false };
-  const crawler = await isVerifiedCrawler(request);
-  return { full: crawler, crawler };
+async function staff(): Promise<boolean> {
+  try {
+    return Boolean(await getSessionUser());
+  } catch {
+    return false;
+  }
 }
 
-/**
- * For server components.
- *
- * **Calling this makes a page dynamic**, because it reads cookies and headers.
- * That is the trade these pages accept: a static page is the same for everyone,
- * so the only way to render the rows for a crawler and withhold them from a
- * visitor is to decide per request. The queries behind them stay cached, so what
- * is paid per request is the render, not the database.
- */
+/** For route handlers. */
+export async function canSeeDepth(_request: Request): Promise<DepthAccess> {
+  return { full: await staff(), crawler: false };
+}
+
+/** For server components. Reads cookies, so it makes the page dynamic. */
 export async function canSeeDepthServer(): Promise<DepthAccess> {
-  if (await hasAccessServer()) return { full: true, crawler: false };
-
-  // isVerifiedCrawler only reads headers; a Request is just the shape it takes.
-  const request = new Request("https://www.admissionhands.com/", {
-    headers: new Headers(headers()),
-  });
-  const crawler = await isVerifiedCrawler(request);
-  return { full: crawler, crawler };
+  return { full: await staff(), crawler: false };
 }

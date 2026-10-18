@@ -15,6 +15,7 @@ import { checkPhone } from '@/lib/phone';
 import { checkName, checkEmail } from '@/lib/formRules';
 import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon';
 import { useCTA } from '@/hooks/useCTA';
+import { trackLead } from '@/lib/analytics';
 
 const NRICTA = ({ benefits: fromCms }: { benefits?: NriBenefit[] | null } = {}) => {
   const benefits = fromCms?.length ? fromCms : SHIPPED_BENEFITS;
@@ -63,6 +64,7 @@ const NRICTA = ({ benefits: fromCms }: { benefits?: NriBenefit[] | null } = {}) 
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || 'Could not send that. Please try again.');
+      trackLead({ form: 'nri_quota', course: 'mbbs' });
       setState('sent');
     } catch (err) {
       setState('idle');

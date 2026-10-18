@@ -24,6 +24,7 @@ import { checkPhone } from '@/lib/phone';
 import { checkName } from '@/lib/formRules';
 import { checkRank } from '@/lib/neetLimits';
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { trackLead, rankBand } from '@/lib/analytics';
 
 // Top medical states in India for selection chips
 const AVAILABLE_STATES = [
@@ -39,11 +40,10 @@ const UG_COURSE_SUGGESTIONS = [
   'MBBS', 'BDS', 'BAMS', 'BHMS', 'B.Sc. Nursing', 'BVSc',
 ];
 
-const BRANCH_SUGGESTIONS = [
-  'Radiology', 'Dermatology', 'General Medicine', 'Pediatrics',
-  'Orthopedics', 'General Surgery', 'Ob-Gyn', 'Anaesthesia',
-  'Ophthalmology', 'Pathology'
-];
+// PG branches are the complete course names from /api/content/branches
+// (lib/branchCatalogue.ts), grouped by specialty — the same names the predictor
+// offers, so what is chosen here is what the sheet and the AH Counselor app get.
+type BranchGroup = { key: string; variants: string[] };
 
 /*
   There used to be a "rank opportunity analyser" here: five hard-coded bands
@@ -97,6 +97,19 @@ export const InlineLeadForm = ({
   const copy = COPY[level];
   // Form steps: 1 = Clinical Profile, 2 = Contact Information
   const [step, setStep] = useState(1);
+  const [branchGroups, setBranchGroups] = useState<BranchGroup[]>([]);
+  useEffect(() => {
+    if (level === 'ug' || branchGroups.length) return;
+    let live = true;
+    fetch('/api/content/branches')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => live && j?.groups && setBranchGroups(j.groups))
+      .catch(() => {});
+    return () => {
+      live = false;
+    };
+  }, [level, branchGroups.length]);
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -217,7 +230,13 @@ export const InlineLeadForm = ({
 
       setStatus('success');
       toast.success('Query Submitted Successfully! 🩺');
-      trackEvent('lead_submit', { source, level, rank: formData.rank });
+      trackEvent('lead_submit', { source, level, rank_band: rankBand(formData.rank) });
+      trackLead({
+        form: 'inline_lead_form',
+        course: level === 'ug' ? (formData.preferred_branch?.toLowerCase().includes('bds') ? 'bds' : 'mbbs') : 'pg',
+        state: formData.preferred_state.join(', '),
+        rank: formData.rank,
+      });
     } catch (err: any) {
       setStatus('error');
       setErrorMsg(err.message || 'Something went wrong. Please check your network and try again.');
@@ -264,7 +283,7 @@ export const InlineLeadForm = ({
           </div>
           <div className="flex items-center gap-1 text-slate-400 text-[10px] font-bold">
             <Clock className="w-3 h-3 text-slate-400" />
-            <span>Response ~15 mins</span>
+            <span>Open daily 10 AM – 10 PM</span>
           </div>
         </div>
         <div className="flex items-center justify-between text-[9px] text-slate-400 font-bold uppercase tracking-wider">
@@ -311,6 +330,7 @@ export const InlineLeadForm = ({
           {/* What the rank actually reached - from published closing ranks. */}
           {rankCheck?.ok && (
             <a
+              data-aa-mask
               href={`/neet-college-predictor?course=${copy.course}&rank=${rankCheck.value}`}
               className="flex items-center justify-between gap-2 rounded-xl border border-cyan-500/20 bg-cyan-500/5 px-3.5 py-3 text-[11px] font-bold text-cyan-300 transition-colors hover:bg-cyan-500/10"
             >
@@ -336,11 +356,21 @@ export const InlineLeadForm = ({
               <option className="bg-slate-950" value="">
                 {level === 'ug' ? '-- Select Preferred Course --' : '-- Select Preferred Specialty --'}
               </option>
-              {(level === 'ug' ? UG_COURSE_SUGGESTIONS : BRANCH_SUGGESTIONS).map((branch, i) => (
-                <option key={i} className="bg-slate-950" value={branch}>
-                  {branch}
-                </option>
-              ))}
+              {level === 'ug'
+                ? UG_COURSE_SUGGESTIONS.map((course) => (
+                    <option key={course} className="bg-slate-950" value={course}>
+                      {course}
+                    </option>
+                  ))
+                : branchGroups.map((g) => (
+                    <optgroup key={g.key} label={g.key} className="bg-slate-950">
+                      {g.variants.map((v) => (
+                        <option key={v} className="bg-slate-950" value={v}>
+                          {v}
+                        </option>
+                      ))}
+                    </optgroup>
+                  ))}
             </select>
           </div>
 
@@ -500,7 +530,7 @@ export const InlineLeadForm = ({
             <span className="text-slate-400 font-bold block uppercase tracking-wider text-[9px] mb-1">
               Intake Summary:
             </span>
-            <div className="flex justify-between">
+            <div data-aa-mask className="flex justify-between">
               <span className="text-slate-500">{copy.rankShort}:</span>
               <span className="text-white font-bold">AIR {formData.rank}</span>
             </div>
@@ -560,7 +590,7 @@ export const InlineLeadForm = ({
       {/* Trust Reminder */}
       <p className="text-[9px] text-center text-slate-500 mt-4 font-bold flex items-center justify-center gap-1.5">
         <Heart className="w-3 h-3 text-red-500/80" />
-        <span>🔒 100% confidential doctor intake. No spam.</span>
+        <span>🔒 Your details go only to your counsellor.</span>
       </p>
     </div>
   );

@@ -1,18 +1,22 @@
 import { NextResponse } from "next/server";
 import { logError } from "@/lib/logger";
 import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
-import { accessState } from "@/lib/userAuth";
 import { canSeeDepth } from "@/lib/depth";
 import { streamSpec, type Stream } from "@/lib/predictorFacets";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
-import { chanceFor, summarise, BAND_ORDER, type ChanceBand, type SeatOptionRow } from "@/lib/predictor";
-import { checkRank } from "@/lib/neetLimits";
+import { chanceFor, BAND_ORDER, type ChanceBand, type SeatOptionRow } from "@/lib/predictor";
+import { checkRank, NEET_LIMITS } from "@/lib/neetLimits";
+import { approxFee } from "@/lib/chance";
+import { optionsUser, allowQuery, logQuery, toOptions, DISTINCT_PER_DAY } from "@/lib/chanceView";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
+/** Rows staff are shown. */
 const MAX_RESULTS = 300;
+/** Rows read to build the chance view — server-side only, never returned. */
+const MAX_SCAN = 2500;
 
 interface PredictQuery {
   rank: number;
@@ -73,74 +77,22 @@ function parse(searchParams: URLSearchParams): PredictQuery | { error: string } 
   };
 }
 
-type PreviewCollege = {
-  name: string;
-  slug: string;
-  state: string | null;
-  ownership: string | null;
-  best: ChanceBand;
-  options: number;
-  bands: Record<ChanceBand, number>;
-  courses: string[];
-};
-
 /**
- * College by college, from rows already sorted best band first and tightest
- * seat first — so the first college met is the strongest the rank reaches.
- * Carries no rank and no fee by construction: nothing here is copied off a row
- * except the college's own name, state and ownership, and the course names.
+ * One answer, three audiences (2026-10-12):
+ *
+ * - **Anybody:** counts only — how many seat options, colleges and states the
+ *   rank reached, by chance — plus where the rank stands among everyone who sat
+ *   the paper. Filters are ignored here: a count narrowed to one state, one
+ *   ownership and one branch can be a count of one college, and walking a rank
+ *   up and down against it would read that college's cut back out.
+ * - **A verified account:** its colleges in chance words with an approximate
+ *   fee bracket (lib/chanceView.ts), for a few distinct ranks a day.
+ * - **Staff:** the rows, as before.
+ *
+ * No closing rank for a named college reaches anyone but staff. See
+ * lib/depth.ts for why that includes search engines.
  */
-function collegePreview(
-  results: { institute: string; instituteSlug: string; state: string | null; ownership: string; course: string; band: string }[],
-  level: "ug" | "pg",
-) {
-  const byCollege = new Map<string, PreviewCollege & { courseSet: Set<string> }>();
-  const byState = new Map<string, { colleges: Set<string>; options: number }>();
-  for (const r of results) {
-    const band = r.band as ChanceBand;
-    let c = byCollege.get(r.instituteSlug);
-    if (!c) {
-      c = {
-        name: r.institute,
-        slug: r.instituteSlug,
-        state: r.state,
-        // UG ownership is "other" for every college in the source extract —
-        // saying nothing beats a wrong badge.
-        ownership: r.ownership && r.ownership !== "other" ? r.ownership : null,
-        best: band,
-        options: 0,
-        bands: { safe: 0, likely: 0, possible: 0, stretch: 0 },
-        courses: [],
-        courseSet: new Set<string>(),
-      };
-      byCollege.set(r.instituteSlug, c);
-    }
-    c.options += 1;
-    c.bands[band] += 1;
-    if (level === "pg") c.courseSet.add(r.course);
-    if (r.state) {
-      const st = byState.get(r.state) ?? { colleges: new Set<string>(), options: 0 };
-      st.colleges.add(r.instituteSlug);
-      st.options += 1;
-      byState.set(r.state, st);
-    }
-  }
-  const colleges = [...byCollege.values()].slice(0, 30).map(({ courseSet, ...c }) => ({
-    ...c,
-    courses: [...courseSet].slice(0, 3),
-  }));
-  const states = [...byState.entries()]
-    .map(([state, v]) => ({ state, colleges: v.colleges.size, options: v.options }))
-    .sort((a, b) => b.colleges - a.colleges || b.options - a.options)
-    .slice(0, 8);
-  return { colleges, totalColleges: byCollege.size, states };
-}
-
 export async function GET(request: Request) {
-  // The closing-rank data is the product, and this endpoint hands out 300
-  // fully detailed seats per call. Unlimited, a few thousand requests rebuild
-  // the dataset. 30 a minute is well above what a person clicking through
-  // filters needs and well below what a scraper wants.
   const LIMIT = 30;
   const limit = rateLimit(`predict:${clientKey(request)}`, LIMIT, 60_000);
   if (!limit.ok) {
@@ -154,8 +106,37 @@ export async function GET(request: Request) {
   if ("error" in parsed) {
     return NextResponse.json({ error: parsed.error }, { status: 400 });
   }
-  const { rank, stream, level, courseOnly, category, states, ownership, branches, maxFee, seatType } =
-    parsed;
+
+  const [user, depth] = await Promise.all([optionsUser(request), canSeeDepth(request)]);
+  const staff = depth.full;
+  const open = staff || Boolean(user);
+
+  const { rank, stream, level, courseOnly, category } = parsed;
+  const { states, ownership, branches, maxFee, seatType } = open
+    ? parsed
+    : {
+        states: [] as string[],
+        ownership: [] as string[],
+        branches: [] as string[],
+        maxFee: null as number | null,
+        seatType: "all" as const,
+      };
+
+  if (user && !staff) {
+    const allowed = await allowQuery(user.id, { level, stream, rank, category });
+    if (!allowed.ok) {
+      return NextResponse.json(
+        {
+          error:
+            `You have checked ${DISTINCT_PER_DAY} different ranks today. ` +
+            "Your counsellor can run more for you — or try again tomorrow.",
+          code: "rank_limit",
+          used: allowed.used,
+        },
+        { status: 429 },
+      );
+    }
+  }
 
   // Drawn the same conservative way as /nri-quota/fees and /management-quota:
   // a seat counts only when its own quota label says so, and NRI wins ties.
@@ -167,34 +148,10 @@ export async function GET(request: Request) {
         : sql``;
 
   try {
-    // Pull every seat whose widest recorded cut could still contain this rank,
-    // plus the ones it clears outright. Scoring happens in JS so the band
-    // definitions live in one place (src/lib/predictor.ts) rather than in SQL.
-    const rows = await db.execute(sql`
-      SELECT
-        so.institute_id           AS institute_id,
-        i.name                    AS institute,
-        i.slug                    AS institute_slug,
-        i.ownership               AS ownership,
-        i.district                AS district,
-        i.beds                    AS beds,
-        st.name                   AS state,
-        c.name                    AS course,
-        c.degree_type             AS degree_type,
-        q.code                    AS quota,
-        q.master_quota            AS master_quota,
-        cat.code                  AS category,
-        cn.name                   AS counselling,
-        so.r1_latest              AS r1_latest,
-        so.widest_latest          AS widest_latest,
-        so.widest_previous        AS widest_previous,
-        so.furthest_ever          AS furthest_ever,
-        so.latest_year            AS latest_year,
-        so.seats_latest           AS seats_latest,
-        so.years_of_data          AS years_of_data,
-        so.low_confidence         AS low_confidence,
-        so.fee_inr                AS fee_inr,
-        so.bond_years             AS bond_years
+    // Every seat whose widest recorded cut could still contain this rank —
+    // those it clears in round 1 first and, inside that, the tightest first, so
+    // the strongest seats the rank reaches are the ones read.
+    const fromWhere = sql`
       FROM seat_options so
       JOIN institutes  i   ON i.id  = so.institute_id
       JOIN courses     c   ON c.id  = so.course_id
@@ -208,11 +165,75 @@ export async function GET(request: Request) {
         ${states.length ? sql`AND st.name IN (${sql.join(states.map((s) => sql`${s}`), sql`, `)})` : sql``}
         ${ownership.length ? sql`AND i.ownership::text IN (${sql.join(ownership.map((o) => sql`${o}`), sql`, `)})` : sql``}
         ${courseOnly ? sql`AND c.name ILIKE ${courseOnly}` : sql``}
+        ${
+          // The UG source files some MBBS rows under dental and homoeopathy
+          // colleges (CLAUDE.md, Known gaps 1); the MBBS directory drops them by
+          // name, and so does this — a name is better evidence of the stream.
+          courseOnly === "MBBS"
+            ? sql`AND i.name !~* '(dental|ayurved|homoeopath|homeopath|nursing|physiothe|veterinar)'`
+            : sql``
+        }
         ${branches.length ? sql`AND c.name IN (${sql.join(branches.map((b) => sql`${b}`), sql`, `)})` : sql``}
         ${maxFee ? sql`AND (so.fee_inr IS NULL OR so.fee_inr <= ${maxFee})` : sql``}
         ${seatTypeFilter}
-      ORDER BY so.widest_latest ASC NULLS LAST
-      LIMIT ${MAX_RESULTS}
+    `;
+
+    // The counts and the spread are counted over every matching seat, not
+    // only the MAX_SCAN read below — ordered by chance, the first 2,500 seats
+    // of a mid rank are all "high chance", which reported 2,500 of 2,500 safe.
+    const [tally, stateTally] = await Promise.all([
+      db.execute(sql`
+        SELECT
+          COUNT(*)::int AS total,
+          COUNT(*) FILTER (WHERE so.r1_latest >= ${rank})::int AS safe,
+          COUNT(*) FILTER (WHERE COALESCE(so.r1_latest >= ${rank}, false) = false
+                             AND so.widest_latest >= ${rank})::int AS likely,
+          COUNT(*) FILTER (WHERE COALESCE(so.r1_latest >= ${rank}, false) = false
+                             AND COALESCE(so.widest_latest >= ${rank}, false) = false
+                             AND so.furthest_ever >= ${rank})::int AS possible,
+          COUNT(DISTINCT i.id)::int AS colleges,
+          COUNT(DISTINCT st.id)::int AS states,
+          COUNT(DISTINCT c.id)::int AS branches,
+          COUNT(NULLIF(so.fee_inr, 0))::int AS priced,
+          MIN(NULLIF(so.fee_inr, 0)) AS fee_min,
+          MAX(NULLIF(so.fee_inr, 0)) AS fee_max
+        ${fromWhere}
+      `),
+      db.execute(sql`
+        SELECT st.name AS state, COUNT(DISTINCT i.id)::int AS colleges
+        ${fromWhere}
+        AND st.name IS NOT NULL
+        GROUP BY st.name ORDER BY colleges DESC LIMIT 5
+      `),
+    ]);
+    const t = (tally as unknown as Record<string, number | string | null>[])[0] ?? {};
+    const tn = (k: string) => Number(t[k] ?? 0);
+
+    const rows = await db.execute(sql`
+      SELECT
+        i.name                    AS institute,
+        i.slug                    AS institute_slug,
+        i.ownership               AS ownership,
+        st.name                   AS state,
+        c.name                    AS course,
+        q.code                    AS quota,
+        cat.code                  AS category,
+        cn.name                   AS counselling,
+        so.r1_latest              AS r1_latest,
+        so.widest_latest          AS widest_latest,
+        so.widest_previous        AS widest_previous,
+        so.furthest_ever          AS furthest_ever,
+        so.latest_year            AS latest_year,
+        so.seats_latest           AS seats_latest,
+        so.years_of_data          AS years_of_data,
+        so.low_confidence         AS low_confidence,
+        so.fee_inr                AS fee_inr,
+        so.bond_years             AS bond_years
+      ${fromWhere}
+      ORDER BY
+        CASE WHEN so.r1_latest >= ${rank} THEN 0 WHEN so.widest_latest >= ${rank} THEN 1 ELSE 2 END,
+        COALESCE(so.r1_latest, so.widest_latest) ASC NULLS LAST
+      LIMIT ${MAX_SCAN}
     `);
 
     const results = (rows as unknown as Record<string, unknown>[]).map((r) => {
@@ -231,11 +252,8 @@ export async function GET(request: Request) {
         institute: r.institute as string,
         instituteSlug: r.institute_slug as string,
         state: (r.state as string) ?? null,
-        district: (r.district as string) ?? null,
         ownership: r.ownership as string,
-        beds: r.beds as number | null,
         course: r.course as string,
-        degreeType: (r.degree_type as string) ?? null,
         quota: r.quota as string,
         counselling: (r.counselling as string) ?? null,
         category: r.category as string,
@@ -252,12 +270,8 @@ export async function GET(request: Request) {
       };
     });
 
-    // Safest band first; inside a band, the most competitive seat first.
-    //
-    // Sorting by comfort would put the weakest seat at the top of "safe" — the
-    // one the candidate clears by the widest margin. A counsellor does the
-    // opposite: of everything you are safe for, look at the best seats first.
-    // A tighter closing rank is the proxy for a better seat.
+    // Best chance first; inside a chance, the tightest seat first — of
+    // everything you reach, a counsellor looks at the best seats first.
     results.sort((a, b) => {
       const d = BAND_ORDER.indexOf(a.band as ChanceBand) - BAND_ORDER.indexOf(b.band as ChanceBand);
       if (d !== 0) return d;
@@ -266,69 +280,69 @@ export async function GET(request: Request) {
       return ar - br;
     });
 
-    // The counts are free and always complete — a visitor should be able to
-    // see that the answer exists, and how big it is, before being asked for
-    // anything. Only the seat-by-seat detail is behind the gate, and it is cut
-    // here rather than hidden in the UI: an unlocked payload never leaves the
-    // server, so there is nothing to read out of the network tab.
-    /**
-     * An aggregate answer for whoever cannot see the rows.
-     *
-     * The locked panel used to show a grey skeleton of the table, which tells a
-     * candidate nothing except that something is hidden. These are counts and a
-     * range over the whole result — they cannot be turned back into a row, and
-     * they make the offer concrete: how many states, how many branches, what the
-     * seats actually cost.
-     */
-    const feeValues = results
-      .map((r) => r.feeInr)
-      .filter((v): v is number => typeof v === "number" && v > 0);
-
-    const shape = {
-      states: new Set(results.map((r) => r.state).filter(Boolean)).size,
-      colleges: new Set(results.map((r) => r.institute)).size,
-      branches: new Set(results.map((r) => r.course)).size,
-      feeMin: feeValues.length ? Math.min(...feeValues) : null,
-      feeMax: feeValues.length ? Math.max(...feeValues) : null,
-      topStates: Object.entries(
-        results.reduce<Record<string, number>>((acc, r) => {
-          if (r.state) acc[r.state] = (acc[r.state] ?? 0) + 1;
-          return acc;
-        }, {}),
-      )
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 5)
-        .map(([state, seats]) => ({ state, seats })),
+    const exam = NEET_LIMITS[level];
+    const insight = {
+      exam: exam.exam,
+      appeared: exam.appeared,
+      // Share of everyone who sat the paper that this rank is ahead of.
+      aheadOf: Math.max(0, Math.min(99.99, Math.round((1 - rank / exam.appeared) * 10000) / 100)),
+      topStates: (stateTally as unknown as { state: string; colleges: number }[]).map((x) => ({
+        state: x.state,
+        colleges: Number(x.colleges),
+      })),
     };
 
-    const [access, depth] = await Promise.all([accessState(request), canSeeDepth(request)]);
-    // The band counts below are free and complete. The seats themselves are
-    // not, and that now means none of them rather than the tightest three —
-    // three named colleges with a rank and a fee is the answer in miniature,
-    // and it is the part people were ringing up to ask for.
-    const visible = depth.full ? results : [];
+    const shape = {
+      states: tn("states"),
+      colleges: tn("colleges"),
+      branches: tn("branches"),
+      // Only when enough of the seats publish a fee for the spread to mean
+      // something: UG publishes per-seat fees for one year only.
+      fee:
+        tn("priced") >= Math.max(5, tn("total") * 0.3)
+          ? approxFee(Number(t.fee_min), Number(t.fee_max))
+          : null,
+      // The college list is built from the strongest MAX_SCAN seats.
+      capped: results.length === MAX_SCAN,
+    };
+    const counts = {
+      safe: tn("safe"),
+      likely: tn("likely"),
+      possible: tn("possible"),
+      stretch: Math.max(0, tn("total") - tn("safe") - tn("likely") - tn("possible")),
+    };
 
-    // While sign-in codes are paused (2026-10-11), a visitor without a session
-    // is shown which colleges their rank reaches — name, state, the best band
-    // and how many seat options — but no closing rank and no fee. A band is
-    // four buckets per college (the directory's rank lens publishes the same),
-    // so it cannot be turned back into a seat row; the ranks and fees are the
-    // counsellor's call. Only built for whoever cannot see the rows anyway.
-    const preview = depth.full ? null : collegePreview(results, level);
+    const options = open
+      ? toOptions(
+          results.map((r) => ({
+            institute: r.institute,
+            instituteSlug: r.instituteSlug,
+            state: r.state,
+            ownership: r.ownership,
+            course: r.course,
+            band: r.band as ChanceBand,
+            feeInr: r.feeInr,
+          })),
+          level,
+        )
+      : null;
+
+    if (user && !staff) {
+      await logQuery(user.id, { level, stream, rank, category, options: tn("total") }).catch((e) =>
+        logError(e, { route: "/api/predict:log", request }),
+      );
+    }
 
     return NextResponse.json({
-      shape,
       query: { rank, stream, level, category, states, ownership, branches, maxFee, seatType },
-      counts: summarise(results),
-      total: results.length,
-      truncated: access.open && results.length === MAX_RESULTS,
-      locked: !access.open,
-      lockedCount: access.open ? 0 : Math.max(0, results.length - visible.length),
-      // What the UI should ask for: a number, or a number it can prove.
-      needsVerification: access.needsVerification,
-      signedIn: access.signedIn,
-      results: visible,
-      preview,
+      counts,
+      total: tn("total"),
+      shape,
+      insight,
+      access: { signedIn: Boolean(user) || staff, verified: Boolean(user), staff },
+      options,
+      // Staff only — the rows with their ranks, for the counsellor's own use.
+      results: staff ? results.slice(0, MAX_RESULTS) : [],
     });
   } catch (error) {
     logError(error, { route: "/api/predict", request });

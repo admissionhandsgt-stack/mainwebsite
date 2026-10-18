@@ -451,7 +451,14 @@ fallback. Do not raise the cap again on a personal number. Meanwhile the predict
 for visitors without a session (`collegePreview` in `/api/predict`, `ConnectCounsellor` under it),
 because a gate nobody can pass is a dead end.
 
-**The official sender is built and off** (`src/lib/waCloud.ts`, Admin → WhatsApp Official API,
+**Live since 2026-10-13 (20:36 IST):** template `ah_login_code` APPROVED, `whatsapp.cloud.enabled = true`,
+sending from +91 70230 81792 (WABA 1113390791694030, phone number ID 1427206823789858, TIER_250). Site-wide
+caps 60/hour and 400/day (`whatsapp.cloud.hourly_cap` / `daily_cap`); past them, and on any Cloud failure,
+sign-in falls back to the inbound path on Backup 1 (919220626002, `whatsapp.verify.number` since 10-12). The
+primary WAHA session (917023081792) is STOPPED — that number now belongs to the Cloud API and can never be a
+linked device again. No webhook is subscribed, so replies to 7023081792 reach nobody.
+
+**The official sender** (`src/lib/waCloud.ts`, Admin → WhatsApp Official API,
 `/api/admin/whatsapp-cloud`). Five steps on that page: token + WABA ID (a system-user token with
 `whatsapp_business_management` and `whatsapp_business_messaging` — pasted there, never in chat), add and
 verify the number (Meta sends the SIM a code), create the `ah_login_code` authentication template,
@@ -459,6 +466,83 @@ send a test, switch on. Switched on, `issueCode` sends through it first (`sent_c
 per-number caps still apply) and the WAHA gateway is only the fallback. The Meta Ads MCP connector
 has no WhatsApp tools, so it cannot do any of this. Portfolios seen: "Admission Hands"
 1936125673392959, "Admission Hands - India" 283172768222867.
+
+**Templates beyond the code (2026-10-13), all in `lib/followups.ts`, each once per student ever (`wa_followups`):**
+`ah_finish_profile` (Meta made it MARKETING — incomplete-signup reminders are marketing by Meta's own rule,
+"even if requested by users"; do not reword it to dodge that) and `ah_meet_counsellor` (MARKETING) go from the
+hourly cron (`/api/cron/followups`, minute 23, 10 AM–9 PM IST, users created after 2026-10-13 17:06 UTC only).
+`ah_callback_request` (UTILITY) is sent by `/api/profile` the moment a verified student presses the
+`CounsellingCTA` ("Counselling request — …" source). Nothing sends until Meta approves the template; approval is
+checked live. `scripts/tmp/wa_send_all_templates.mjs` sends every approved `ah_*` template to Gulshan and Dev
+for a look.
+
+**The outage of 13–16 October, and the delivery log it left (migration 0031).** From go-live (13 Oct 20:36
+IST) to 16 Oct 17:20 IST Meta answered every code "accepted" and **delivered none**: 53 codes, 0 sign-ins,
+0 wrong-code attempts, 23 resends, leads 11–19/day → 1–3/day. Nothing noticed, because "accepted" is all the
+send call returns. Two things were wrong on Meta's side and both are fixed: the WABA had **no payment method**
+(an Indian debit card failed Meta's ₹3 check three times; a credit card, Visa ••4799, is now default) and the
+app **"AdmissionHands OTP" (970532035476869) was unpublished** — published 16 Oct. The first code afterwards
+was delivered in one second. Now:
+- `wa_messages` logs every official send (`waLog.recordOutbound`, called from `sendCloudCode` / `sendTemplate`)
+  and every reply; **Admin → WhatsApp Messages** (`/admin/whatsapp-log`) shows number, message, status, Meta's
+  error, and for a code whether the student signed in. The digits of a code are never stored.
+- `/api/whatsapp/cloud` is the app-level webhook (App Dashboard → WhatsApp → Configuration, field `messages`).
+  Its URL and verify token (`VERIFY_TOKEN` in `waLog.ts`) are **not secrets** by design: a status only updates a
+  message id we logged, a reply only counts with our `phone_number_id`, and `whatsapp.cloud.app_secret`, once
+  pasted, adds Meta's signature check. Never make a status insert a row for an unknown id.
+- **A message "accepted" with no receipt is the alarm.** If the "No receipt yet" count climbs, look there first.
+- **The chat history is permanent (migration 0034, owner's instruction 2026-10-16).** Triggers refuse any
+  DELETE or TRUNCATE on `wa_messages` and any change to what a message said (direction, phone, kind, template,
+  body, sent_by, created_at, wamid); receipts, errors and `seen_at` still update. The only door is
+  `SET LOCAL ah.allow_wa_erase = 'on'` in the same transaction — for a lawful erasure request, nothing else.
+  Inbound photos/files keep caption, file name and Meta's media id (the file itself is not downloaded).
+  Nightly encrypted backups carry the table.
+- **Admin → WhatsApp Inbox is a chat, WhatsApp-style** (`components/admin/WhatsAppInbox.tsx`, `/api/admin/wa-inbox`,
+  `lib/waInbox.ts`, migration 0032 adds `sent_by` and `seen_at`). Staff can type a reply **only inside the 24-hour
+  window** after the student's last message — checked on the server in `sendReply`, not just by the greyed box.
+  Templates show the words the student saw (`TEMPLATE_TEXT` — update it when a template's copy changes).
+
+**The admin shell (rebuilt 2026-10-16).** `AdminLayoutClient.tsx`: groups Today / Website / Colleges & data /
+Settings, a phone drawer below `lg`, a top bar with the page title, and counts beside Leads, WhatsApp Inbox,
+Documents and Errors from `GET /api/admin/badges` (polled every minute). No page-change animation. The dashboard
+answers "what is waiting" first (`/api/admin/dashboard`: unread, follow-ups due, unread chats, documents, WhatsApp
+failures, errors), then KPIs against the previous period, all days in **IST**. Leads take `?view=unread|followup`
+and `?id=`, render as cards below `md` and a table above, and the drawer shows every profile field from 0029.
+Chart colours are a validated pair (dataviz validator): leads `#0891b2`, sign-ups `#eb6834`.
+**Every admin screen is built from `components/admin/ui.tsx`** (PageHeader, Card, Stats, Toolbar, Tabs, Button,
+INPUT/Field/Toggle, Badge, Notice, EmptyState, TABLE, Drawer) — all 16 inner screens were moved onto it the same
+day. Slate + cyan + emerald/amber/red only; no blue/violet, no `medical-*`, no gradient banners, no framer
+page animations. A new screen uses the kit, not its own styles. Fixed on the way: the live-alerts switch saved
+the value it already had and the list read the public API (hidden alerts vanished); a photo picked for one
+college could upload to the next one edited; a college with no state crashed the search.
+
+### The counsellors' Google Sheet, reminders and the AH Counselor app (2026-10-16) — `lib/leadSheet.ts`
+
+Sheet `1uED7BH1VUlQvCeOLI5ZoMf24KzHFdQXYPF6m30zegc0`, owned by Admissionhands.gt@gmail.com, edited by the
+service account `search-console@admissionhands-seo-1008` (key in `integrations.google.service_account`; Sheets API
+enabled on that project, Drive API is not). `POST /api/cron/sheets` every 2 min (server crontab) runs, in order:
+`syncSheet` (both ways), `syncCounselor` (PG students → ah.aismartscan.in), `sendDueReminders`. `POST /api/cron/digest`
+at 04:30 UTC = 10:00 IST. Tabs: Today · How to use · MBBS · PG (MD-MS) · BDS · All enquiries. One row per student
+(phone) per course; ✎ columns are the team's, the rest warn on edit and are overwritten. Recipients of every
+staff WhatsApp (lead alerts too) come from `lib/staffList.ts` — Gulshan and Dev by default.
+- **Two bugs that wrote every student several times on the first day, both fixed:** a phone written with
+  USER_ENTERED becomes a *number* (`+9193…` → `9193…`), so the row was never found again — the ID column is
+  written `'+91…` and read through `normPhone`; and `pg_advisory_lock` is per connection and re-entrant, so two
+  runs on the pooled connection both held it — the sync now takes a lease row (`integrations.lease.sheet-sync`,
+  4-minute expiry). Never write a phone-like value to the sheet without the apostrophe; never lock with an advisory
+  lock through the pool.
+- The AH Counselor app (`zyn-4a`'s project, Oracle 130.210.53.166): `POST /api/integrations/website/upsert`, header
+  `X-AH-Sync-Key` (`integrations.counselor.sync_key`). Sparse upsert by phone; status mapped on their side
+  (new → new, contacted/interested/follow-up → in-progress, converted → admitted, closed); new students are owned
+  by their `AdmissionHands` admin login, so the sheet's "Find seats" link opens only for that login or the owner.
+- Sending a template from a script bypasses `wa_messages`, so it has no delivery receipt — log it if you need one.
+- **One branch list everywhere (`lib/branchCatalogue.ts`, `GET /api/content/branches`, `components/predictor/BranchPicker.tsx`).**
+  The predictor profile, the sign-in profile step and the homepage lead form all offer the complete course names
+  grouped by specialty; `/api/profile` drops any name not in the list. Our 101 seat-data names match the AH
+  Counselor app's `branch_stats.branch` exactly (checked by zyn-4a, 2026-10-16). Groups come from their
+  `GET /api/integrations/website/branches` (cached in `integrations.counselor.branches`, retried hourly until it
+  answers, then daily) and fall back to our own grouping. Never hard-code their grouping — they were moving
+  "MD Lab Medicine" out of Radio Diagnosis. The CMS's 26 short names (`pg_branches`) are display copy only now.
 
 ### Sending the code (2026-09-23) — `src/lib/otp.ts`
 
@@ -641,7 +725,67 @@ Three page families, all from `seat_options` so they cannot disagree with the pr
   expensive kind of guess to get wrong.
 - `seat_options` column is `latest_year`, not `year`. Cost a deploy.
 
+### No college's closing rank, for anybody — the chance view (2026-10-12) — READ FIRST
+
+**This supersedes the two rules below it** (the 2026-09-26 crawler/paywall rule and "a real slice free").
+The owner's decision: *no competitor gives complete closing ranks without payment or membership — without
+login show only generic information, take the candidate's complete details, then show college options in
+words like "possibility", never closing ranks.* So:
+
+| Who | What they get |
+|---|---|
+| Anybody, any crawler | counts and shares only: seat options, colleges and states a rank reached, by chance; where the rank stands among everyone who sat the paper; how many seats moved after round 1. **Filters are ignored** — a count narrowed to one state/ownership/branch can be a count of one college |
+| A **verified** account (proved by a code — `users.verified_at`; a typed number via `/api/unlock` is not enough) | its colleges in chance words — **High chance / Good chance / Possible / Reach** (`lib/chance.ts`) — and an approximate fee **bracket** "≈ ₹5–10 L /yr\*" with the footnote. For **3 distinct (rank, category) a day** per level (`chance_queries`, migration 0029); more is refused with 429 `rank_limit`, so nobody walks the boundaries and reads cuts back out |
+| Signed-in staff (admin session) | the rows, as before (`canSeeDepth*` in `lib/depth.ts`) |
+
+- **Search engines see exactly what a visitor sees.** Serving a crawler rows no visitor can ever reach is
+  cloaking, and paywall markup only covers content a subscriber *can* get — so the verified-crawler path,
+  `lib/paywall.ts`, `GatedSeatTable`, `LockedSummary`, `CollegeCutoffs`, `/api/seat-rows` and
+  `/api/college-cutoffs` are **gone** (404). `lib/crawler.ts` stays only because two scripts read its
+  `CRAWLER_UA`. Never re-add an `isAccessibleForFree: false` block: there is nothing gated to declare.
+- **Aggregates that stay public:** national AIQ category ranges (`/neet-ug-cutoff`, `/neet-pg-cutoff`),
+  branch/quota/state/SS/MDS ranges — **only over ≥3 colleges** (`groupRank` / `MIN_GROUP` in
+  `lib/chance.ts`, applied in pgStateQueries, cutoffHubQueries, ssQueries, mdsQueries and `SeatOverview`).
+  A "range" over one college is that college's cut under another name.
+- **College pages** show courses, seat-option and quota counts, counsellings, the fee bracket and a
+  "your chance" box — no rank stat, no table, no rank FAQ (`collegeFaqs` answers "what rank do I need"
+  with the counselling and quotas instead). Titles say "Admission … Fees, Seats & Chances", not "Cutoff".
+  The PG directory has no "Best cut" and no rank sort (ordering colleges by their cut publishes the order).
+- **The flow is `/neet-college-predictor` → `ChanceFinder`:** start (course, rank, category) → `ChanceInsight`
+  (free report + blurred list) → `AuthFlow skipProfile` (OTP) → `ProfileWizard` (course-specific steps,
+  saved per step, live "N options match") → `ChanceResults` + `CounsellingCTA`. MBBS/BDS ask gender, PwD,
+  domicile, city, score, attempt, states, college types, budgets, seat types, guardian phone; PG adds MBBS
+  college + state, internship, service quota, branches (≤5), bond. All in `users` and copied onto `leads`
+  (migration 0029, `parseProfile` allow-lists every field), and the counsellor alert carries every one.
+- `/api/predict` reads up to 2,500 seats server-side (`MAX_SCAN`) ordered by chance then tightest seat,
+  drops misfiled dental/AYUSH names from MBBS, and only reports a fee spread when ≥30% of options publish one.
+- Verified by `node scripts/verify_gate.mjs <url>` (33 checks) and `tests/gate|signed-in|crawler-spoof.spec.ts`.
+- **The SEO middle path (same day, owner's choice): rank bands.** A college page answers "what is the
+  cutoff" with a band — "≈ 15K–20K\*" (`rankBand` in `lib/chance.ts`, widening with the rank) — for the
+  **general category on merit quotas only** (`GENERAL_CODES`, `isMeritQuota`; AIQ first), plus a trend in
+  words. `lib/cutoffBands.ts` builds the rows, `CutoffBands` (college pages) and `BranchBands` (branch pages,
+  general category only — any other category gets the sign-in prompt) render them, and `collegeFaqs` answers
+  "What is the NEET UG/PG cutoff for X?" with the bands. Titles say "Cutoff 2026, Fees & Seats" again. OBC/
+  SC/ST/EWS/PwD, NRI and management stay behind sign-in as chance words. Never print the rank behind a band.
+- **The case for a counsellor:** `components/home/CounsellorEdge.tsx` (homepage, predictor, compact on
+  college pages) — five facts counted live by `lib/counsellingFacts.ts` (share of seats that moved after
+  round 1, number of counsellings, last-round-tighter seats, category and quota codes, 5×-fee colleges),
+  "how students lose golden seats", and what the counsellors bring (all-India network, direct college
+  contact — the team's own account of its work). Never replace a counted fact with a typed number.
+- **Nudges — `components/engage/EngagementLayer.tsx`, mounted in SiteShell:** WhatsApp greeting (8 s,
+  hours-aware 10 AM–10 PM IST, plus a desktop floating button), newest-alert toast (15 s, once per alert id),
+  rank nudge (25 s, not on the predictor or for signed-in visitors) and an exit offer (desktop pointer
+  leaving; phone after 60 s and half the page) that posts to `/api/leads` as "Exit offer (<path>)". One big
+  nudge at a time, the rest queue 15 s behind; dismissals remembered in localStorage `ah_nudges_v1`; none on
+  /login, /account, /admin. Events go to GA as `nudge_shown` / `nudge_click` / `nudge_dismissed`.
+- **Trust/USP:** "15+ years of excellence" is the owner's figure (code and CMS updated from 12+ via
+  `scripts/sql/years_15_2026_10_12.sql`); `components/home/TrustShield.tsx` (homepage + predictor) pairs it
+  with things a parent can verify and six general signs of a fraud agent — facts about counselling, not
+  promises about us.
+
 ### The rule for every data surface: Googlebot reads it, a visitor signs in (2026-09-26)
+
+> **Superseded on 2026-10-12** by the section above — kept for the reasoning and history.
 
 This replaces "a real slice free, the depth gated" (2026-09-22). That rule was a compromise forced by
 a constraint that turned out not to be real: pages needed indexable content, a cached page is the same
@@ -1089,6 +1233,147 @@ audit.
 
 A number a tool produces is worth nothing until you have checked the tool is measuring the thing you
 think it is.
+
+## AutoLoom Analytics, beside GA4 (2026-10-17)
+
+The SDK tag is in the root layout `<head>` on the public site only (not the admin host), with the public
+browser key; `analytics.theautoloom.in` is in CSP script-src and connect-src. Page views, sessions,
+referrers, UTM, clicks and form submits are automatic. Session replay is off (`replay: false`) on purpose —
+it records the page, forms included, where students type name, phone and rank; turn it on only if the owner asks.
+
+**The SDK is initialised from the queue, not by `data-write-key` on the tag** — an inline
+`aa.push(["init", {…}])` before it — because only `init()` takes `redactQueryParams`, and the predictor and
+rank lens keep the rank in the URL (`?rank=23456`). The SDK drops those params from the page URL, referrer and
+clicked links' hrefs. Do not put `data-write-key` back: it would start a second, unredacted init path.
+Our events go through `aaTrack()` in `lib/analytics.ts`, which strips any name/phone/email/rank/roll key or
+phone/email-looking value: `lead_form_submitted` (after a successful submit only, 7 forms), `whatsapp_click`,
+`call_click`, `counsellor_chat_opened`, `pdf_download` (one capture listener, `components/analytics/ClickTracker`),
+`college_viewed` (`TrackView` on both college pages), `cutoff_search` (predictor run and the directory rank lens).
+The SDK's own click capture records the clicked element's text — put `data-aa-mask` on anything that shows a
+student's details (the header account button does, and every line that prints their rank),
+`data-aa-ignore` to drop clicks in an area altogether.
+
+### The exact NEET rank never goes to analytics — only `rank_band` (owner's rule, 2026-10-17)
+
+`rank_band` is `"1-10k" | "10k-25k" | "25k-50k" | "50k-1L" | "1L+"`, from `rankBand()` in `lib/analytics.ts`.
+GA4's `lead_submit` and every AutoLoom `lead_form_submitted` that knows a rank send it; `trackEvent` drops
+any `rank`/`*_rank`/`air` key, and `aaTrack` lets `rank_band` through its personal-key filter and nothing else.
+
+**The URL was the bigger leak, not the events.** GA4's enhanced measurement sends its own `page_view` on
+every `pushState`/`replaceState` with the raw `location` as `dl` and the previous URL as `dr` — it ignores
+`gtag('set', {page_location})` and `send_page_view: false` (tested against the real gtag.js). So GA4 is
+fixed in **GA4 Admin → Data streams → Admission Hands → Redact data → URL query parameters: `rank`, `air`**
+(set 2026-10-17, with the owner's approval). gtag.js applies it in the browser to page_location,
+page_referrer, page_path, link_url, video_url and form_destination: hits read `rank=(redacted)`. If the stream
+is ever recreated, that setting goes with it — redo it. A new URL param that carries a person goes in both
+lists: GA4's redaction keys and `redactQueryParams` in `app/layout.tsx`.
+
+Check: `node scripts/tmp/check_rank_leak.mjs <url> [--form-page=/md-ms-india] [--live]` — loads `?rank=`
+pages, runs the rank lens, submits the inline lead form (`/api/leads` always mocked) and clicks its rank
+link; prints every GA4/AutoLoom hit and fails if `23456` appears in any. `--live` sends the analytics hits
+for real, GA4 flagged for DebugView. `node scripts/tmp/check_lead_submit.mjs <url> [/md-ms-india] [--live]`
+proves the `lead_submit` call and hit themselves. Two traps it handles: the inline form leaves for `wa.me`
+3 s after success, so GA4 sends `lead_submit` as an unload beacon that Playwright never routes (the script
+answers wa.me with 204 so the page stays); and GA4 drops `HeadlessChrome` as a bot, so a live run uses an
+ordinary Chrome user agent. Each run is a new DebugView device — **Realtime → Event count by Event name →
+lead_submit** shows every run's parameters in one place (verified 2026-10-17: 11 keys, `rank_band`
+`10k-25k`, no `rank`).
+
+### GA4 lead events, and tests that never count as visitors (2026-10-17)
+
+- **`generate_lead` and `sign_up` go to GA4 from the same calls that send AutoLoom's `lead_form_submitted`:**
+  `trackLead({ form, course, state, rank })` and `trackSignUp({ course, rank })` in `lib/analytics.ts`, used by
+  all seven forms (inline lead form, NRI, exit offer, sign-in profile, predictor profile, counselling request,
+  and sign-up when the code is redeemed). One sanitizer for both services: no name, phone, email, exact rank or
+  roll number by key or by the look of the value; `rank_band` only. `trackEvent` queues for up to 20 s when
+  `gtag` has not loaded yet (it is `lazyOnload`) instead of dropping the event. `lead_submit` from the inline
+  form is kept for continuity. GA4 had **zero key events** until then — mark `generate_lead` and `sign_up` as key
+  events in GA4 Admin (the service account has no GA4 access and the Admin API is not enabled on its project).
+- **Tests and verify scripts never send analytics.** Specs import `test`/`expect` from `tests/helpers/noAnalytics.ts`
+  (an auto fixture that aborts every request to google-analytics.com, googletagmanager.com and
+  analytics.theautoloom.in); a spec that opens its own context calls `blockAnalytics(context)`. Scripts use
+  `scripts/lib/noAnalytics.mjs` (`audit_site`, `shoot_pages`); `perf_lab` blocks only our GA4 `collect` hits and
+  AutoLoom's `/v1/` (Lighthouse still loads the scripts, so the page is measured as visitors get it). Before this,
+  our own runs were ~253 two-second "visitors" a month on `/md-ms-india/branches/md-general-medicine` and most of
+  the "Direct" channel. PSI (`perf_bench`) runs on Google's machines and cannot be blocked.
+
+## College snippets, the summary box and the chance box (2026-10-17)
+
+Search Console, 7–15 Oct: MBBS college pages 68k impressions at 0.5% CTR, PG college pages 91k at 1.4%, average
+position 7–8. The titles were the whole source name clipped in the middle ("Madha Medical College and Hospital…
+Chennai MBBS Cutoff") and the descriptions said "cutoff band, fees and seats" without one number.
+
+- **`lib/collegeName.ts`** — `collegeName(raw)` → `{ short, place, places, official }`. Drops bracketed notes
+  ("(Prev. …)", "(Joint Programme …)", "(DNB)"), addresses, PIN codes, a trailing "and Hospital" / "& Research
+  Centre", and everything from a mid-name "and Research Centre and …"; title-cases ALL-CAPS names keeping short
+  acronyms. The place is the last town named before the state or an address. Tested on all 3,895 names.
+  `isDnbOnly(courses)`: 1,536 of the 2,168 PG pages are National Board-only hospitals.
+- **`lib/collegeSnippet.ts`** — `loadCollegePage(slug, level)` (React `cache`, shared by `generateMetadata` and the
+  page) returns the summary; `collegeTitle()` = short name + place + "<MBBS|BDS|MD/MS> Cutoff <year>, Fees & Seats"
+  (≤62, falls back shorter), or "DNB Seats, Stipend & Cutoff <year>" for a DNB-only hospital; "Cutoff" only when
+  the page shows a band, else "Admission <year>, Fees & Seats". `<year>` is the latest year in that page's own
+  cutoffs. `collegeDescription()` states only what the summary box shows: the general-category merit band (the
+  first `generalBands` row), the fee bracket, seats (UG: curated intake; PG: `seats_total`), stipend, type.
+  When two colleges share a short name and place ("Manipal Hospital, Bangalore" ×3) the locality is added from
+  the name (`nameIndex`, cached).
+- **Page top:** H1 = short name, the official name under it, then `CollegeGlance` (the same numbers as tiles),
+  then `CollegeRankCheck` wide with the course prefilled (`mbbs` | `bds` | `pg`) and a visible link to the
+  predictor whose words vary by slug (five phrasings per course — never one anchor on 3,500 pages). College
+  JSON-LD carries `alternateName` and a BreadcrumbList with the state, as the visible breadcrumb shows.
+  Same-state colleges: 5 (`getSimilarColleges(…, 5)`).
+- **`isMeritQuota` let "Mgmt"/"Mgt", minority and sponsored quotas through until this change** (TN Mgmt Quota,
+  MAHA Priv-Mgmt, APMgmt-CatB1, DNB Sponsored…), so a college's public "general cutoff" band could be a
+  management seat's. Fixed in `lib/chance.ts`; it moves bands on college and branch pages. "Private", "Pvt Govt
+  Quota", "KER Self Fin. Seats" are state-merit allotments and stay merit.
+- Hubs got titles that match how they are searched — `/neet-pg-cutoff` "Branch Wise", stipend "State Wise /
+  Highest" (no year: each college's latest published stipend), BDS with the AIQ figure its FAQ prints,
+  management/NRI with the quota overview's own year and fees, PG states "NEET PG Cutoff <state> <year>: Branch
+  Wise…", branches "<branch> Cutoff <year>: Closing Rank, Seats & Colleges" (the year is the data's, never a
+  default). The predictor's title takes its year from `getDataStats()`; its `page_seo` row was blanked
+  (`scripts/sql/predictor_seo_2026_10_17.sql`) so the code wins. It now explains how it works and what it reads,
+  with a visible FAQ + FAQPage.
+- Before/after for any template: `node scripts/tmp/snippet_compare.mjs <gsc.json> <dnb_slugs.json> <base>`;
+  structure: `node scripts/tmp/page_checks.mjs <base> [shotsDir]` (JSON-LD parses, BreadcrumbList, every FAQ
+  question visible, one H1, chance box right after the summary, no overflow).
+
+**The sitemap is an index since 2026-10-17:** `/sitemap.xml` lists `/sitemaps/{hubs,states,branches,ug-colleges,
+pg-colleges}.xml` (`lib/sitemapData.ts`, routes in `app/sitemap.xml` and `app/sitemaps/[file]`), same 3,762 URLs and
+lastmods, so Search Console shows coverage per page type. Scripts read it through `scripts/lib/sitemap.mjs`.
+
+**Nudges since 2026-10-17** (`EngagementLayer`; GA4 19 Sep–16 Oct: 2,047 shown, 1,278 dismissed, 39 clicked): never
+on the first page of a visit; at most one per visit (sessionStorage `ah_visit_v1`) — finish-your-profile, else the
+rank nudge, else a new notice, else the WhatsApp greeting, and the exit offer only if none has shown; seven days of
+quiet (`quiet` in `ah_nudges_v1`) after any nudge is closed or used. The desktop WhatsApp button is not a nudge.
+
+**The Telegram channel (2026-10-17, owner's request)** — `CONTACT_INFO.telegram` = `https://t.me/AdmissionHandsIndia`,
+linked **directly**. Never put `analytics.theautoloom.in/go/ah-tg` on the site: that AutoLoom link is for the
+channel's own description and lands on our homepage tagged `utm_source=telegram`. Where it shows: a "Join on
+Telegram" pill at the right of the alerts bar (fixed width, the bar stays 40px), `components/engage/TelegramJoin.tsx`
+(homepage section `telegram` after the enquiry form — `scripts/sql/home_telegram_section_2026_10_17.sql`; after the
+lead form on the cutoff hubs, both process pages, stipend, BDS, UG and PG state pages; `bare` on both college pages;
+the predictor), the footer (icon + a line), a button in the new-notice toast, and its own nudge — after the toast and
+before the WhatsApp greeting, at most once in 30 days, never for 30 days after any channel link is clicked
+(`rememberNudge`). It is always the secondary action: quieter than the lead form or predictor beside it. Clicks:
+`telegram_click` to GA4 **and** AutoLoom with `placement` from the link's `data-placement` (`ClickTracker`). The logo
+disc is `bg-[#fff]`, not `bg-white` — base.css repaints `.bg-white` in dark mode and the plane is a cut-out.
+`node --env-file=.env.local scripts/tmp/telegram_check.mjs <base> <dir>` screenshots every copy and checks the bar
+height, overflow, the click event, the nudge and the toast.
+**The WhatsApp sign-in code cannot carry the channel** — `ah_login_code` is an AUTHENTICATION template, whose text
+Meta fixes ("<code> is your verification code…"); no line, link or emoji can be added, and moving the code to another
+category would get it rejected or billed as marketing. Instead: the invite sits under `CounsellingCTA` on the
+predictor's results (`stacked`, the first screen after the code) and on `/account`; and `ah_meet_counsellor_v2`
+(MARKETING, submitted 2026-10-17, id 1413813454246957) is `ah_meet_counsellor` word for word plus "For the latest
+counselling updates and info, join our Telegram channel: https://t.me/AdmissionHandsIndia". `lib/followups.ts`
+sends v2 in that slot once Meta approves it and v1 until then; `wa_followups` keeps recording the slot as
+`ah_meet_counsellor`, so nobody gets both. Status: `node --env-file=.env.local scripts/tmp/wa_make_counsellor_v2.mjs --status`.
+
+**747live.bet as Google's canonical (found 2026-10-17).** URL Inspection reported "Duplicate without user-selected
+canonical", Google canonical `https://www.747live.bet/`, for some state and NEET SS pages crawled on 8–9 Oct (no
+`userCanonical` seen at that crawl). Nothing of it exists here: not in code, the database (315 text columns), the
+fetch/image caches or the built HTML; that site serves "Page Not Found" with noindex on our paths. Every page
+sampled (130 URLs × browser and Googlebot) carries an absolute self-canonical; origin.* 301s to www without the
+edge key, mumbai.* and *.pages.dev send `noindex`. The cause could not be pinned without the Caddy access logs
+for 8–9 Oct (root-only). Remedy: Request indexing for the affected URLs.
 
 ## SEO, and the one canonical host (2026-09-25)
 
@@ -1625,7 +1910,7 @@ Files: `deploy/oracle/` (compose, Caddy site, backup), `deploy/oldbox/` (forward
 
 | | |
 |---|---|
-| Deploy | `./scripts/deploy_oracle.sh` — builds **on the server** (ARM64), purges Cloudflare after the switch |
+| Deploy | `./scripts/deploy_oracle.sh` — builds **on the server** (ARM64), purges Cloudflare after the switch. **Commit and push first** (owner's rule, 2026-10-18): it refuses a dirty tree or a HEAD that is not on origin, and logs `<release> <commit>` to `/opt/admissionhands/deploys.log`. `--allow-dirty` is for emergencies only |
 | Move / undo | `./scripts/cutover_oracle.sh [--go]`, `./scripts/rollback_oracle.sh [--go]`. Without `--go` both only preflight and **rehearse a real restore into a scratch database** |
 | Edge HTML cache | `node scripts/cf_html_cache.mjs <hosts…>` / `--off` |
 | Origin switch | `node scripts/cf_dns_origin.mjs --show \| <ip>` — apex, www, admin; nothing else in the zone |
@@ -1688,6 +1973,13 @@ controls), and the page container gives it 1,216px below 1536px. Everything in i
 body clips horizontal overflow, so a header that is too wide does not wrap or scroll — its right-hand
 button silently disappears (it did, on every laptop, until 2026-10-06). The drawer serves below 1280px
 and the links are compact until 1800px. Adding a top-level menu item means re-measuring at 1280 and 1536.
+**Menus by course since 2026-10-17 (owner's request):** MBBS holds only MBBS pages, MD/MS only PG pages, and BDS,
+NEET MDS, BAMS & AYUSH and NEET SS sit under **Other Courses** — a header item with url `#`, which `Header.tsx` renders
+as a button that opens its list (desktop: hover or focus; drawer: tap). Adding it to the old eight cut the controls off
+by 132px at 1280–1535, so Home left the bar (the logo is home; the row is switched off, not deleted) and Services and
+Videos went under Know Us: six items, 60px spare at 1280–1535 (`scripts/sql/nav_other_courses_2026_10_17.sql`).
+Measure before adding anything: `node scripts/tmp/header_budget.mjs <base> "<label>"` simulates one more item in the
+browser; `--real` measures the bar as served.
 
 **Copies are proven before they are used.** Both directions restore into a new database beside the live
 one, compare every table's row count (`scripts/sql/table_counts.sql`) with writes stopped, and only then

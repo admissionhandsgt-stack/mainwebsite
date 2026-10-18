@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
 import { issueCode } from "@/lib/otp";
 import { startAttempt } from "@/lib/waVerify";
+import { getIntegrationFlag } from "@/lib/integrations";
 import { normalisePhone } from "@/lib/leadGate";
 import { logError } from "@/lib/logger";
 import { checkName } from "@/lib/formRules";
@@ -102,6 +103,23 @@ export async function POST(request: Request) {
 
     if (!sent.fallback) {
       return NextResponse.json({ error: sent.message ?? "Could not send a code." }, { status: 400 });
+    }
+
+    // With the official sender switched on, codes go through Meta and nowhere
+    // else (owner's call, 2026-10-13): the inbound handshake sent students to a
+    // counsellor's personal WhatsApp to type a code in. If Meta could not take
+    // this one — a per-number limit, the site-wide cap, or a failed send — say so
+    // and let them try again, rather than routing them to a personal number.
+    if (await getIntegrationFlag("whatsapp.cloud.enabled")) {
+      const limited = sent.retryAfter != null;
+      return NextResponse.json(
+        {
+          error: limited
+            ? sent.message ?? "You have asked for a few codes already. Please try again a little later."
+            : "We could not send your code just now. Check the number is on WhatsApp and try again in a minute.",
+        },
+        { status: limited ? 429 : 503, headers: rateLimitHeaders(limit, LIMIT) },
+      );
     }
 
     // Fall back to the handshake that needs nothing of ours to be up.

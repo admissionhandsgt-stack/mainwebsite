@@ -5,6 +5,7 @@ import { getSsCourses, type SsCourseSummary } from "@/lib/ssQueries";
 import { resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
+import TelegramJoin from "@/components/engage/TelegramJoin";
 
 /**
  * NEET SS cutoff, course by course — for doctors already holding an MD/MS.
@@ -169,6 +170,7 @@ export default async function NeetSsCutoffPage() {
         title="Planning your super-speciality choices?"
         body="A counsellor orders your DM / MCh / DrNB choices against two years of MCC results — institute, course and the round each one actually closes in."
       />
+      <TelegramJoin placement="neet_ss_cutoff" />
     </main>
   );
 }

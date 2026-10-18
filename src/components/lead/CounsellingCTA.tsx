@@ -5,6 +5,7 @@ import { Check, Loader2, Phone } from "lucide-react";
 import { useContactInfo } from "@/hooks/useContactInfo";
 import { ATTEMPTS } from "@/lib/counsellingOptions";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { aaTrack, trackLead } from "@/lib/analytics";
 
 /**
  * What the seat list cannot tell you, and the two questions we still need.
@@ -77,6 +78,9 @@ export default function CounsellingCTA({
       // Still let them through. A failed save must not block somebody asking
       // for help; the enquiry and the phone number are already recorded.
     }
+    trackLead({ form: "counselling_request" });
+    if (then === "whatsapp") aaTrack("whatsapp_click", { source_page: window.location.pathname });
+    else aaTrack("call_click", { source_page: window.location.pathname });
     setState("sent");
 
     if (then === "whatsapp" && wa) {

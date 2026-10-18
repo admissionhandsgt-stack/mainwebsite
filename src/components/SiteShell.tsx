@@ -10,6 +10,8 @@ import type { NavItem } from '@/lib/content';
 // Rendered with the page, not loaded after it. See the note in app/layout.tsx:
 // a client-only bar arrived late and pushed every page down by its height.
 import LiveAlerts, { type BarAlert } from '@/components/LiveAlerts';
+import EngagementLayer from '@/components/engage/EngagementLayer';
+import ClickTracker from '@/components/analytics/ClickTracker';
 
 export interface SocialLinks {
   facebook?: string;
@@ -20,6 +22,8 @@ export interface SocialLinks {
 interface SiteShellProps {
   /** First name of the signed-in visitor, or null when nobody is. */
   accountName?: string | null;
+  /** Signed in, but the profile is missing an essential — show the resume pop-up. */
+  resumeProfile?: boolean;
   children: React.ReactNode;
   /** Menus come from the root layout as plain data — this is a client tree. */
   headerNav?: NavItem[];
@@ -37,6 +41,7 @@ interface SiteShellProps {
 export default function SiteShell({
   children,
   accountName,
+  resumeProfile = false,
   headerNav,
   footerExplore,
   footerQuick,
@@ -81,6 +86,13 @@ export default function SiteShell({
         quickLinks={footerQuick}
         tagline={footerTagline}
         social={social}
+      />
+      <ClickTracker />
+      <EngagementLayer
+        signedIn={Boolean(accountName)}
+        firstName={accountName && accountName !== 'Account' ? accountName : null}
+        resumeProfile={resumeProfile}
+        alerts={showBar ? alerts : []}
       />
     </>
   );

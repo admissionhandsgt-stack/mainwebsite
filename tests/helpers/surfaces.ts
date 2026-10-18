@@ -28,12 +28,12 @@ export const GATED_SURFACES: Surface[] = [
   { path: "/md-ms-india/branches/md-radio-diagnosis", label: "PG branch (Radiodiagnosis)", hasFee: true, blocks: 1 },
   { path: "/nri-quota/fees", label: "NRI quota", hasFee: true, blocks: 2 },
   { path: "/management-quota", label: "Management quota", hasFee: true, blocks: 2 },
-  { path: "/md-ms-india/colleges/sms-medical-college-jaipur", label: "PG college page", hasFee: false, blocks: 1 },
+  { path: "/md-ms-india/colleges/sms-medical-college-jaipur", label: "PG college page", hasFee: false, blocks: 0 },
   {
     path: "/mbbs-india/colleges/a-j-institute-of-medical-sciences-research-centre-mangalore-ug",
     label: "UG college page",
     hasFee: false,
-    blocks: 1,
+    blocks: 0,
   },
 ];
 
@@ -47,8 +47,11 @@ export const OPEN_SURFACES: Surface[] = [
 /** The real seat table. Present only when the caller may see rows. */
 export const SEAT_TABLE = '[data-testid="seat-table"]';
 
-/** What stands in its place otherwise. */
-export const LOCKED_SUMMARY = '[data-testid="locked-summary"]';
+/**
+ * What a branch or quota page shows instead (SeatOverview) since 2026-10-12.
+ * There is no seat table behind it for anybody (lib/depth.ts).
+ */
+export const LOCKED_SUMMARY = '[data-testid="seat-overview"]';
 
 /**
  * A column heading only the seat table's own `<thead>` carries.

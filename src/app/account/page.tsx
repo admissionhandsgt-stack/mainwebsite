@@ -6,6 +6,7 @@ import { ShieldCheck, Phone, Target, LogOut, Search, TrendingDown, FileText } fr
 import { currentUser } from "@/lib/userAuth";
 import PageHero from "@/components/ui/PageHero";
 import SignOutButton from "@/components/account/SignOutButton";
+import TelegramJoin from "@/components/engage/TelegramJoin";
 
 export const dynamic = "force-dynamic";
 
@@ -166,6 +167,10 @@ export default async function AccountPage() {
               </Link>
             </div>
           </section>
+        </div>
+
+        <div className="mx-auto mt-5 max-w-4xl">
+          <TelegramJoin placement="account" bare />
         </div>
 
         <p className="mx-auto mt-8 max-w-[64ch] text-center text-[13px] leading-relaxed text-muted-foreground">

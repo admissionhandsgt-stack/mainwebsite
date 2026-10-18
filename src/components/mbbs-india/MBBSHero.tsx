@@ -24,7 +24,7 @@ export const MBBSHero = ({ backgroundImageUrl, credit, data = mbbsData }: MBBSHe
   const bg = backgroundImageUrl && backgroundImageUrl !== "none" ? backgroundImageUrl : null;
 
   return (
-    <section className="relative w-full min-h-[420px] md:min-h-[min(760px,100svh)] flex items-center overflow-hidden bg-background transition-colors duration-200">
+    <section className="relative w-full min-h-[420px] md:min-h-[min(640px,calc(100svh-112px))] flex items-center overflow-hidden bg-background transition-colors duration-200">
       {/* Campus photograph, held behind a gradient so type stays readable */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         {bg && (

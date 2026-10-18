@@ -1,5 +1,6 @@
-import { AlertTriangle, CheckCircle2, Clock } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { recentErrors } from "@/lib/logger";
+import { Badge, Card, EmptyState, PageHeader, Stats, TABLE } from "@/components/admin/ui";
 
 export const dynamic = "force-dynamic";
 
@@ -23,90 +24,89 @@ export default async function LogsPage() {
     if (hrs < 24) return `${hrs}h ago`;
     return `${Math.round(hrs / 24)}d ago`;
   };
+  const stamp = (iso: string) =>
+    new Date(iso).toLocaleString("en-IN", { timeZone: "Asia/Kolkata", dateStyle: "medium", timeStyle: "short" });
+  // Long messages wrap, so cells sit at the top of the row rather than the
+  // middle. Colour is set per column, so it is left out of the base class.
+  const td = TABLE.td.replace("align-middle", "align-top").replace("text-slate-700", "");
 
   return (
-    <div className="max-w-4xl space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Errors</h1>
-        <p className="mt-1 text-sm text-gray-500">
-          Failures recorded on the live site in the last 30 days, grouped so each distinct problem
-          is one row.
-        </p>
-      </div>
+    <div>
+      <PageHeader
+        title="Errors"
+        description="Failures recorded on the live site in the last 30 days, grouped so each distinct problem is one row."
+      />
 
       {groups.length === 0 ? (
-        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-8 text-center">
-          <CheckCircle2 className="mx-auto h-8 w-8 text-emerald-600" />
-          <h2 className="mt-3 text-base font-bold text-emerald-900">Nothing has failed</h2>
-          <p className="mx-auto mt-1 max-w-[46ch] text-sm text-emerald-800">
-            No errors in the last 30 days. If the site is live and busy, this staying empty is the
-            good outcome — not a sign that logging is broken.
-          </p>
-        </div>
+        <Card>
+          <EmptyState
+            icon={CheckCircle2}
+            title="Nothing has failed"
+            hint="No errors in the last 30 days. If the site is live and busy, this staying empty is the good outcome — not a sign that logging is broken."
+          />
+        </Card>
       ) : (
-        <>
-          <div className="flex flex-wrap items-center gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-            <AlertTriangle className="h-4 w-4 shrink-0" />
-            <span>
-              <strong>{groups.length}</strong> distinct problem{groups.length === 1 ? "" : "s"},{" "}
-              <strong>{total.toLocaleString("en-IN")}</strong> occurrence
-              {total === 1 ? "" : "s"} in total.
-            </span>
-          </div>
+        <div className="space-y-4">
+          <Stats
+            items={[
+              { label: "Distinct problems", value: groups.length.toLocaleString("en-IN"), tone: "warning" },
+              { label: "Occurrences", value: total.toLocaleString("en-IN") },
+              { label: "Most recent", value: when(groups[0].lastSeen) },
+            ]}
+          />
 
-          <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="bg-gray-50">
-                  {["Problem", "Where", "Seen", "Last"].map((h, i) => (
-                    <th
-                      key={h}
-                      scope="col"
-                      className={`px-4 py-3 text-[11px] font-semibold uppercase tracking-wide text-gray-500 ${
-                        i >= 2 ? "text-right" : "text-left"
-                      }`}
-                    >
-                      {h}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {groups.map((g) => (
-                  <tr key={g.fingerprint} className="border-t border-gray-100 align-top">
-                    <td className="max-w-[420px] px-4 py-3">
-                      <span
-                        className={`mr-2 inline-block rounded px-1.5 py-0.5 text-[10px] font-bold uppercase ${
-                          g.level === "warn"
-                            ? "bg-amber-100 text-amber-700"
-                            : "bg-rose-100 text-rose-700"
-                        }`}
-                      >
-                        {g.level}
-                      </span>
-                      <span className="break-words font-mono text-[13px] text-gray-900">
-                        {g.message}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 font-mono text-[12px] text-gray-500">
-                      {g.route ?? "—"}
-                    </td>
-                    <td className="px-4 py-3 text-right text-[13px] font-semibold text-gray-900">
-                      {g.occurrences.toLocaleString("en-IN")}×
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-3 text-right text-[12px] text-gray-500">
-                      <Clock className="mr-1 inline h-3 w-3" />
-                      {when(g.lastSeen)}
-                    </td>
+          <Card flush>
+            <div className={TABLE.wrap}>
+              <table className={`${TABLE.table} min-w-[640px]`}>
+                <thead className={TABLE.head}>
+                  <tr>
+                    <th scope="col" className={TABLE.th}>Problem</th>
+                    <th scope="col" className={TABLE.th}>Where</th>
+                    <th scope="col" className={`${TABLE.th} text-right`}>Seen</th>
+                    <th scope="col" className={`${TABLE.th} text-right`}>Last</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </>
+                </thead>
+                <tbody>
+                  {groups.map((g) => (
+                    <tr key={g.fingerprint} className={TABLE.row}>
+                      <td className={`${td} max-w-[520px]`}>
+                        <div className="flex items-start gap-2">
+                          <Badge tone={g.level === "warn" ? "warning" : "danger"} className="mt-0.5 shrink-0 uppercase">
+                            {g.level}
+                          </Badge>
+                          {g.message.length > 220 ? (
+                            // A failed query carries its whole SQL; three lines are enough to recognise it.
+                            <details className="min-w-0 group">
+                              <summary className="cursor-pointer list-none break-words font-mono text-[13px] text-slate-900">
+                                <span className="line-clamp-3 group-open:line-clamp-none">{g.message}</span>
+                                <span className="mt-1 inline-block text-xs font-sans font-semibold text-cyan-700 group-open:hidden">Show all</span>
+                              </summary>
+                            </details>
+                          ) : (
+                            <span className="min-w-0 break-words font-mono text-[13px] text-slate-900">{g.message}</span>
+                          )}
+                        </div>
+                      </td>
+                      <td className={`${td} font-mono text-xs text-slate-500`}>{g.route ?? "—"}</td>
+                      <td className={`${td} text-right font-semibold tabular-nums text-slate-900`}>
+                        {g.occurrences.toLocaleString("en-IN")}×
+                      </td>
+                      <td
+                        className={`${td} whitespace-nowrap text-right text-xs text-slate-500`}
+                        title={`First seen ${stamp(g.firstSeen)} · last seen ${stamp(g.lastSeen)}`}
+                      >
+                        {when(g.lastSeen)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        </div>
       )}
 
-      <p className="text-xs leading-relaxed text-gray-500">
+      <p className="mt-6 max-w-3xl text-xs leading-relaxed text-slate-500">
         Errors are written to your own database, not to an outside service — there is no per-event
         bill and nobody else holds the data. IP addresses are stored only as a one-way hash, which
         is enough to tell whether two failures came from the same visitor and not enough to identify

@@ -14,6 +14,7 @@
 import { unstable_cache } from "next/cache";
 import { sql } from "drizzle-orm";
 import { db } from "@/db/client";
+import { groupRank } from "@/lib/chance";
 
 const rows = <T,>(r: unknown) => r as unknown as T[];
 const num = (v: unknown) => (v == null ? null : Number(v));
@@ -64,13 +65,13 @@ export const getSsCourses = unstable_cache(
         year,
         colleges: Number(x.colleges),
         seats: Number(x.seats),
-        r1Close: num(x.r1_close),
-        widest: num(x.widest),
-        prevWidest: num(x.prev_widest),
+        r1Close: groupRank(num(x.r1_close), Number(x.colleges)),
+        widest: groupRank(num(x.widest), Number(x.colleges)),
+        prevWidest: groupRank(num(x.prev_widest), Number(x.colleges)),
       })),
     };
   },
-  ["ss-courses-v1"],
+  ["ss-courses-v2"],
   { revalidate: 86400, tags: ["ss-data"] },
 );
 
@@ -121,14 +122,14 @@ export const getSsCourse = unstable_cache(
         year: Number(x.year),
         colleges: Number(x.colleges),
         seats: Number(x.seats),
-        r1Close: num(x.r1_close),
-        widest: num(x.widest),
+        r1Close: groupRank(num(x.r1_close), Number(x.colleges)),
+        widest: groupRank(num(x.widest), Number(x.colleges)),
         rounds: String(x.rounds ?? "").split(",").filter(Boolean),
       })),
       institutes: inst,
       states: [...byState.entries()].map(([state, colleges]) => ({ state, colleges })).sort((a, b) => b.colleges - a.colleges),
     };
   },
-  ["ss-course-v1"],
+  ["ss-course-v2"],
   { revalidate: 86400, tags: ["ss-data"] },
 );

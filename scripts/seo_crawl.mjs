@@ -11,6 +11,7 @@
 // Gentle by design: 6 at a time. Every request goes through the edge worker
 // and counts against the Workers free 100k/day — a full run is ~4–8k.
 import { writeFileSync } from "node:fs";
+import { readSitemap } from "./lib/sitemap.mjs";
 
 const args = process.argv.slice(2);
 const BASE = (args.find((a) => a.startsWith("http")) || "https://www.admissionhands.com").replace(/\/$/, "");
@@ -103,8 +104,8 @@ function audit(url, res) {
   return { url, status: res.status, title, desc, canonical, h1: h1s[0], ldTypes, bytes: h.length, issues, internal };
 }
 
-const sitemap = await (await fetch(`${BASE}/sitemap.xml`)).text();
-const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((x) => decode(x[1])).slice(0, LIMIT);
+// The sitemap is an index of per-type files since 2026-10-17.
+const urls = (await readSitemap(BASE)).entries.map((e) => decode(e.loc)).slice(0, LIMIT);
 console.error(`Crawling ${urls.length} sitemap URLs…`);
 const pages = await pool(urls, async (u) => audit(u, await get(u)));
 

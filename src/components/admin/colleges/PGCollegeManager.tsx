@@ -1,18 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import CollegeVisual from '@/components/ui/CollegeVisual';
 import { listRows, createRow, updateRow, deleteRow, uploadImage } from '@/lib/adminApi';
 import { toast } from 'sonner';
-import { Pencil, Trash2, Loader2, ImagePlus, Plus, Building2, MapPin, Users, Calendar, ShieldCheck, Search, Filter, BookOpen } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
-import { Textarea } from '@/components/ui/textarea';
-import { Switch } from '@/components/ui/switch';
-import { motion } from 'framer-motion';
+import { Pencil, Trash2, Loader2, ImagePlus, Plus, Building2, Search, RefreshCw, ChevronDown } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
+import {
+  Card, Toolbar, Button, BUTTON, SIZE, INPUT, INPUT_H, TEXTAREA, Field, Toggle, Badge, Notice, EmptyState, TABLE, Drawer,
+} from '@/components/admin/ui';
 
 /** key_specialties is a JSON array kept in a text column. */
 function parseSpecialties(v: unknown): string[] {
@@ -45,9 +41,19 @@ export interface PGCollege {
   updated_at?: string;
 }
 
-const PGCollegeManager: React.FC = () => {
+/** Rows drawn at once. */
+const PAGE = 100;
+
+const PGCollegeManager: React.FC<{
+  /**
+   * Bumped by the page header's "Add college" button. Each change opens the
+   * add form. Left undefined, the list shows its own add button instead.
+   */
+  addSignal?: number;
+}> = ({ addSignal }) => {
   const [colleges, setColleges] = useState<PGCollege[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -55,10 +61,11 @@ const PGCollegeManager: React.FC = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
-  
+  const [shown, setShown] = useState(PAGE);
+
   const [selectedCollege, setSelectedCollege] = useState<PGCollege | null>(null);
   const [specialtiesText, setSpecialtiesText] = useState('');
-  
+
   const [newCollege, setNewCollege] = useState<Partial<PGCollege>>({
     college_name: '',
     city: '',
@@ -73,7 +80,7 @@ const PGCollegeManager: React.FC = () => {
     is_active: true,
     display_order: 100
   });
-  
+
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -84,6 +91,7 @@ const PGCollegeManager: React.FC = () => {
   const fetchColleges = async () => {
     try {
       setLoading(true);
+      setLoadError(null);
       const rows = await listRows<Omit<PGCollege, 'key_specialties'> & { key_specialties: unknown }>(
         'colleges-pg',
       );
@@ -91,6 +99,7 @@ const PGCollegeManager: React.FC = () => {
     } catch (err) {
       console.error('Error fetching pg_colleges:', err);
       toast.error('Failed to load PG colleges');
+      setLoadError(err instanceof Error ? err.message : 'Failed to load PG colleges');
     } finally {
       setLoading(false);
     }
@@ -133,7 +142,7 @@ const PGCollegeManager: React.FC = () => {
     try {
       setIsSaving(true);
       let imageUrl = newCollege.image_url || null;
-      
+
       if (imageFile) {
         imageUrl = await uploadImage(imageFile, 'colleges');
       }
@@ -179,7 +188,7 @@ const PGCollegeManager: React.FC = () => {
     try {
       setIsSaving(true);
       let imageUrl = selectedCollege.image_url;
-      
+
       if (imageFile) {
         imageUrl = await uploadImage(imageFile, 'colleges');
       } else if (previewUrl === null) {
@@ -257,562 +266,502 @@ const PGCollegeManager: React.FC = () => {
     setPreviewUrl(null);
   };
 
+  const openAdd = () => {
+    setIsAddDialogOpen(true);
+    resetForm();
+  };
+
+  const openEdit = (college: PGCollege) => {
+    setSelectedCollege(college);
+    // A photo picked for another college and then cancelled must not ride along.
+    setImageFile(null);
+    setSpecialtiesText(college.key_specialties.join(', '));
+    setPreviewUrl(college.image_url);
+    setIsEditDialogOpen(true);
+  };
+
+  // The page header owns the "Add college" button; it bumps addSignal.
+  // The first value is the one this list mounted with, so a tab switch
+  // never opens the form by itself.
+  const lastAddSignal = useRef(addSignal);
+  useEffect(() => {
+    if (addSignal === undefined || addSignal === lastAddSignal.current) return;
+    lastAddSignal.current = addSignal;
+    openAdd();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addSignal]);
+
+  // The drawers close on Escape, like the leads panel.
+  useEffect(() => {
+    if (!isAddDialogOpen && !isEditDialogOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      setIsAddDialogOpen(false);
+      setIsEditDialogOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isAddDialogOpen, isEditDialogOpen]);
+
   const filteredColleges = colleges.filter(u => {
     const matchesSearch = u.college_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      u.state.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (u.state ?? '').toLowerCase().includes(searchQuery.toLowerCase()) ||
       (u.city && u.city.toLowerCase().includes(searchQuery.toLowerCase()));
-      
-    const matchesType = typeFilter === 'all' || u.college_type.toLowerCase() === typeFilter.toLowerCase();
-    
+
+    const matchesType = typeFilter === 'all' || (u.college_type ?? '').toLowerCase() === typeFilter.toLowerCase();
+
     return matchesSearch && matchesType;
   });
 
-  return (
-    <div className="space-y-8 p-1">
-      <div className="relative overflow-hidden bg-slate-900 rounded-[2rem] border border-slate-800 p-8 shadow-2xl">
-        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-transparent to-emerald-500/10 opacity-60 pointer-events-none" />
-        <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2">
-            <Badge className="bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 px-3 py-1 text-xs font-black uppercase tracking-wider">
-              Management Portal
-            </Badge>
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight leading-none">
-              PG Colleges <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Database</span>
-            </h2>
-            <p className="text-slate-400 text-sm font-medium">
-              Manage the list of PG medical colleges offering MD/MS seats in India.
-            </p>
+  useEffect(() => setShown(PAGE), [searchQuery, typeFilter]);
+
+  const activeCount = colleges.filter((c) => c.is_active).length;
+
+  /**
+   * One form for add and edit. `isEdit` only decides the few places where the
+   * two forms showed a value differently, so neither changes behaviour.
+   */
+  const renderFields = (
+    values: Partial<PGCollege>,
+    set: (patch: Partial<PGCollege>) => void,
+    isEdit: boolean,
+  ) => {
+    const p = isEdit ? 'edit' : 'new';
+    return (
+      <div className="space-y-6">
+        <FormSection title="College">
+          <Field label="College name *" htmlFor={`${p}-name`}>
+            <input
+              id={`${p}-name`}
+              placeholder="e.g. Kasturba Medical College"
+              value={values.college_name || ''}
+              onChange={(e) => set({ college_name: e.target.value })}
+              className={`${INPUT} ${INPUT_H}`}
+            />
+          </Field>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="State *" htmlFor={`${p}-state`}>
+              <input
+                id={`${p}-state`}
+                placeholder="e.g. Karnataka"
+                value={values.state || ''}
+                onChange={(e) => set({ state: e.target.value })}
+                className={`${INPUT} ${INPUT_H}`}
+              />
+            </Field>
+            <Field label="City *" htmlFor={`${p}-city`}>
+              <input
+                id={`${p}-city`}
+                placeholder="e.g. Mangalore"
+                value={values.city || ''}
+                onChange={(e) => set({ city: e.target.value })}
+                className={`${INPUT} ${INPUT_H}`}
+              />
+            </Field>
           </div>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <Field label="College type" htmlFor={`${p}-type`}>
+              <select
+                id={`${p}-type`}
+                value={isEdit ? values.college_type : values.college_type || 'Government'}
+                onChange={(e) => set({ college_type: e.target.value })}
+                className={`${INPUT} ${INPUT_H}`}
+              >
+                <option value="Government">Government</option>
+                <option value="Private">Private</option>
+                <option value="Deemed">Deemed</option>
+              </select>
+            </Field>
+            <Field label="Ownership" htmlFor={`${p}-ownership`}>
+              <input
+                id={`${p}-ownership`}
+                placeholder="e.g. Trust, Government"
+                value={values.ownership || ''}
+                onChange={(e) => set({ ownership: e.target.value })}
+                className={`${INPUT} ${INPUT_H}`}
+              />
+            </Field>
+            <Field label="Year established" htmlFor={`${p}-year`}>
+              <input
+                id={`${p}-year`}
+                type="number"
+                inputMode="numeric"
+                placeholder="e.g. 1953"
+                value={values.year_established || ''}
+                onChange={(e) => set({ year_established: parseInt(e.target.value) || null })}
+                className={`${INPUT} ${INPUT_H}`}
+              />
+            </Field>
+          </div>
+        </FormSection>
 
-          <Dialog open={isAddDialogOpen} onOpenChange={(open) => { setIsAddDialogOpen(open); if(open) resetForm(); }}>
-            <DialogTrigger asChild>
-              <Button className="flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white rounded-full px-6 py-5 shadow-lg shadow-cyan-500/20 text-sm font-black transition-all border border-cyan-400/20">
-                <Plus className="h-4 w-4" />
-                <span>Add PG College</span>
+        <FormSection title="Seats and courses">
+          <Field label="Total PG seats" htmlFor={`${p}-seats`}>
+            <input
+              id={`${p}-seats`}
+              type="number"
+              inputMode="numeric"
+              placeholder="e.g. 120"
+              value={isEdit ? values.total_pg_seats : values.total_pg_seats || ''}
+              onChange={(e) => set({ total_pg_seats: parseInt(e.target.value) || 0 })}
+              className={`${INPUT} ${INPUT_H} sm:max-w-[12rem]`}
+            />
+          </Field>
+          <Field label="Specialties" htmlFor={`${p}-specialties`} hint="Separate with commas.">
+            <input
+              id={`${p}-specialties`}
+              placeholder="e.g. MD General Medicine, MS General Surgery, MD Paediatrics"
+              value={specialtiesText}
+              onChange={(e) => setSpecialtiesText(e.target.value)}
+              className={`${INPUT} ${INPUT_H}`}
+            />
+          </Field>
+          <Field label="Short description" htmlFor={`${p}-description`}>
+            <textarea
+              id={`${p}-description`}
+              rows={3}
+              placeholder="Brief description about the college campus or specialties..."
+              value={values.short_description || ''}
+              onChange={(e) => set({ short_description: e.target.value })}
+              className={TEXTAREA}
+            />
+          </Field>
+        </FormSection>
+
+        <FormSection title="On the site">
+          <div className="grid items-end gap-4 sm:grid-cols-2">
+            <Field label="Display order" htmlFor={`${p}-order`} hint="Lower numbers show first.">
+              <input
+                id={`${p}-order`}
+                type="number"
+                inputMode="numeric"
+                placeholder="e.g. 100"
+                value={values.display_order === undefined ? '' : values.display_order}
+                onChange={(e) => set({ display_order: parseInt(e.target.value) || 0 })}
+                className={`${INPUT} ${INPUT_H}`}
+              />
+            </Field>
+            <div className="pb-6">
+              <Toggle
+                checked={isEdit ? !!values.is_active : values.is_active ?? true}
+                onChange={(checked) => set({ is_active: checked })}
+                label="Active (visible on the site)"
+              />
+            </div>
+          </div>
+        </FormSection>
+      </div>
+    );
+  };
+
+  const renderImage = (inputId: string, chooseLabel: string, onRemove: () => void) => (
+    <FormSection title="Photo">
+      <div className="flex flex-wrap items-center gap-4">
+        {previewUrl ? (
+          <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={previewUrl} alt="Preview" className="h-full w-full object-cover" />
+          </div>
+        ) : (
+          <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 text-slate-400">
+            <ImagePlus className="h-6 w-6" />
+          </div>
+        )}
+        <div className="min-w-0 flex-1 space-y-2">
+          <div className="flex flex-wrap gap-2">
+            <label htmlFor={inputId} className={`${BUTTON.secondary} ${SIZE.sm} cursor-pointer`}>
+              <ImagePlus className="h-4 w-4" />
+              {chooseLabel}
+            </label>
+            {previewUrl && (
+              <Button variant="ghost" size="sm" onClick={onRemove} className="text-red-600 hover:bg-red-50">
+                <Trash2 className="h-4 w-4" /> Remove
               </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[600px] bg-white border-slate-200 rounded-3xl shadow-2xl overflow-hidden p-0 max-h-[90vh] overflow-y-auto">
-              <div className="px-6 py-5 bg-slate-50 border-b border-slate-100 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-cyan-100 flex items-center justify-center">
-                  <Building2 className="w-5 h-5 text-cyan-600" />
-                </div>
-                <div>
-                  <DialogTitle className="text-xl font-black text-slate-900">Add New PG College</DialogTitle>
-                  <p className="text-xs text-slate-500 font-medium">Enter details for the new MD/MS institution</p>
-                </div>
-              </div>
-              
-              <div className="p-6 space-y-4">
-                <div className="space-y-2">
-                  <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">College Name *</Label>
-                  <Input 
-                    placeholder="e.g. Kasturba Medical College" 
-                    value={newCollege.college_name || ''}
-                    onChange={(e) => setNewCollege({...newCollege, college_name: e.target.value})}
-                    className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-colors"
-                  />
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">State *</Label>
-                    <Input 
-                      placeholder="e.g. Karnataka" 
-                      value={newCollege.state || ''}
-                      onChange={(e) => setNewCollege({...newCollege, state: e.target.value})}
-                      className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-colors"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">City *</Label>
-                    <Input 
-                      placeholder="e.g. Mangalore" 
-                      value={newCollege.city || ''}
-                      onChange={(e) => setNewCollege({...newCollege, city: e.target.value})}
-                      className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-colors"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">College Type</Label>
-                    <select 
-                      value={newCollege.college_type || 'Government'}
-                      onChange={(e) => setNewCollege({...newCollege, college_type: e.target.value})}
-                      className="w-full rounded-xl border border-slate-200 bg-slate-50/50 p-2.5 text-sm font-medium focus:bg-white outline-none"
-                    >
-                      <option value="Government">Government</option>
-                      <option value="Private">Private</option>
-                      <option value="Deemed">Deemed</option>
-                    </select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Ownership</Label>
-                    <Input 
-                      placeholder="e.g. Trust, Government" 
-                      value={newCollege.ownership || ''}
-                      onChange={(e) => setNewCollege({...newCollege, ownership: e.target.value})}
-                      className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-colors"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Year Est.</Label>
-                    <Input 
-                      type="number"
-                      placeholder="e.g. 1953" 
-                      value={newCollege.year_established || ''}
-                      onChange={(e) => setNewCollege({...newCollege, year_established: parseInt(e.target.value) || null})}
-                      className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-colors"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Total PG Seats</Label>
-                    <Input 
-                      type="number" 
-                      placeholder="e.g. 120" 
-                      value={newCollege.total_pg_seats || ''}
-                      onChange={(e) => setNewCollege({...newCollege, total_pg_seats: parseInt(e.target.value) || 0})}
-                      className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-colors"
-                    />
-                  </div>
-                  <div className="flex items-center gap-2 pt-8">
-                    <Switch 
-                      id="new-active"
-                      checked={newCollege.is_active ?? true}
-                      onCheckedChange={(checked) => setNewCollege({...newCollege, is_active: checked})}
-                    />
-                    <Label htmlFor="new-active" className="text-xs font-bold text-slate-700 uppercase tracking-wider cursor-pointer">Is Active / Visible</Label>
-                  </div>
-                  <div className="space-y-2 pt-8">
-                    <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Display Order</Label>
-                    <Input 
-                      type="number"
-                      placeholder="e.g. 100" 
-                      value={newCollege.display_order === undefined ? '' : newCollege.display_order}
-                      onChange={(e) => setNewCollege({...newCollege, display_order: parseInt(e.target.value) || 0})}
-                      className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-colors w-24"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Specialties (Comma Separated)</Label>
-                  <Input 
-                    placeholder="e.g. MD General Medicine, MS General Surgery, MD Paediatrics" 
-                    value={specialtiesText}
-                    onChange={(e) => setSpecialtiesText(e.target.value)}
-                    className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-colors"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Short Description</Label>
-                  <Textarea 
-                    placeholder="Brief description about the college campus or specialties..." 
-                    value={newCollege.short_description || ''}
-                    onChange={(e) => setNewCollege({...newCollege, short_description: e.target.value})}
-                    className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-colors min-h-[60px]"
-                  />
-                </div>
-                
-                <div className="space-y-2 pt-2">
-                  <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 block">College Image</Label>
-                  <div className="flex items-center gap-4">
-                    {previewUrl ? (
-                      <div className="relative w-20 h-20 rounded-xl overflow-hidden border border-slate-200 group shrink-0">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
-                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Trash2 className="w-4 h-4 text-white cursor-pointer" onClick={() => {setImageFile(null); setPreviewUrl(null);}} />
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="w-20 h-20 rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 flex items-center justify-center text-slate-400 shrink-0">
-                        <ImagePlus className="w-6 h-6" />
-                      </div>
-                    )}
-                    
-                    <div className="flex-1">
-                      <Label htmlFor="image-upload-pg" className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-cyan-600 transition-colors">
-                        <ImagePlus className="w-4 h-4" />
-                        Choose Image
-                      </Label>
-                      <Input 
-                        id="image-upload-pg" 
-                        type="file" 
-                        accept="image/*" 
-                        className="hidden" 
-                        onChange={handleImageChange}
-                      />
-                      <p className="text-[10px] text-slate-500 mt-2">Recommended: 800x600px. Max 2MB.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <DialogFooter className="p-4 bg-slate-50 border-t border-slate-100">
-                <Button variant="outline" onClick={() => setIsAddDialogOpen(false)} className="rounded-xl">Cancel</Button>
-                <Button onClick={handleAddCollege} disabled={isSaving} className="rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white">
-                  {isSaving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : 'Add College'}
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+            )}
+          </div>
+          <input id={inputId} type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+          <p className="text-xs text-slate-500">JPG, PNG, WebP or AVIF, up to 5 MB. 800 × 600 px looks best.</p>
         </div>
       </div>
+    </FormSection>
+  );
 
-      <div className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm">
-        <div className="p-5 border-b border-slate-100 flex flex-col sm:flex-row gap-4 items-center justify-between bg-slate-50/50">
-          <div className="relative w-full sm:max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-            <Input 
-              placeholder="Search by PG college name or state..." 
+  return (
+    <>
+      <Card
+        flush
+        title="All PG colleges"
+        description={
+          <>
+            PG medical colleges offering MD/MS seats in India.
+            {!loading && colleges.length > 0 && (
+              <span className="text-slate-400"> · {colleges.length} colleges, {activeCount} active</span>
+            )}
+          </>
+        }
+        actions={
+          addSignal === undefined ? (
+            <Button variant="primary" size="sm" onClick={openAdd}>
+              <Plus className="h-4 w-4" /> Add college
+            </Button>
+          ) : undefined
+        }
+      >
+        <Toolbar className="border-b border-slate-100 px-4 py-3">
+          <div className="relative min-w-[12rem] flex-1">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <input
+              type="search"
+              placeholder="Search name, city or state…"
+              aria-label="Search PG colleges"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 bg-white border-slate-200 rounded-xl focus-visible:ring-cyan-500"
+              className={`${INPUT} ${INPUT_H} pl-9`}
             />
           </div>
-          
-          <div className="flex gap-2 w-full sm:w-auto">
+          <div className="w-full sm:w-40">
             <select
+              aria-label="Filter by type"
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
-              className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold outline-none text-slate-700"
+              className={`${INPUT} ${INPUT_H}`}
             >
-              <option value="all">All Types</option>
+              <option value="all">All types</option>
               <option value="Government">Government</option>
               <option value="Private">Private</option>
               <option value="Deemed">Deemed</option>
             </select>
           </div>
-        </div>
+          <span className="text-xs tabular-nums text-slate-500">
+            {filteredColleges.length} of {colleges.length}
+          </span>
+          <Button size="sm" onClick={fetchColleges} disabled={loading} className="ml-auto">
+            <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} /> Refresh
+          </Button>
+        </Toolbar>
 
-        {loading ? (
-          <div className="flex flex-col items-center justify-center p-12 text-slate-400">
-            <Loader2 className="w-8 h-8 animate-spin mb-4 text-cyan-500" />
-            <p className="font-medium">Loading PG colleges...</p>
-          </div>
-        ) : filteredColleges.length === 0 ? (
-          <div className="flex flex-col items-center justify-center p-12 text-slate-400">
-            <Building2 className="w-12 h-12 mb-4 opacity-20" />
-            <p className="font-medium">No PG colleges found matching search criteria.</p>
-            <Button variant="link" onClick={() => { setSearchQuery(''); setTypeFilter('all'); }} className="text-cyan-500 mt-2">Clear filters</Button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-t border-slate-100 bg-slate-50/30">
-            {filteredColleges.map((college, idx) => (
-              <div 
-                key={college.id} 
-                className="p-5 bg-white border-b border-r border-slate-100 hover:bg-slate-50/60 transition-all duration-300 relative group flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex gap-4">
-                    {/* See GenericCollegeManager: the fallback was a fake AIIMS. */}
-                    <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
-                      <CollegeVisual
-                        name={college.college_name}
-                        imageUrl={college.image_url}
-                        sizes="56px"
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-1.5 mb-0.5">
-                        <h3 className="text-sm font-black text-slate-900 truncate" title={college.college_name}>
-                          {college.college_name}
-                        </h3>
-                        {!college.is_active && (
-                          <Badge variant="outline" className="text-[8px] px-1 py-0 border-red-200 text-red-500 bg-red-50 shrink-0">Inactive</Badge>
-                        )}
-                        <Badge variant="outline" className="text-[8px] px-1 py-0 border-cyan-200 text-cyan-600 bg-cyan-50 shrink-0">
-                          Order: {college.display_order}
-                        </Badge>
-                      </div>
-                      
-                      <div className="flex items-center gap-1 text-xs text-slate-500 mb-1">
-                        <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
-                        <span className="truncate">{college.city}, {college.state}</span>
-                      </div>
-                      
-                      <div className="flex flex-wrap gap-1 mb-2">
-                        <Badge className="bg-cyan-50 text-cyan-700 border-0 hover:bg-cyan-100 text-[9px] py-0 px-1.5 font-bold">
-                          {college.college_type}
-                        </Badge>
-                        {college.ownership && (
-                          <Badge className="bg-slate-100 text-slate-600 border-0 hover:bg-slate-200 text-[9px] py-0 px-1.5 font-bold">
-                            {college.ownership}
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {college.short_description && (
-                    <p className="text-[11px] text-slate-500 line-clamp-2 mt-3 mb-2 font-medium">
-                      {college.short_description}
-                    </p>
-                  )}
-                  
-                  {college.key_specialties && college.key_specialties.length > 0 && (
-                    <div className="mt-3 space-y-1">
-                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-wider flex items-center gap-1">
-                        <BookOpen className="w-3 h-3" /> Specialties ({college.key_specialties.length})
-                      </p>
-                      <div className="flex flex-wrap gap-1">
-                        {college.key_specialties.slice(0, 3).map((spec, i) => (
-                          <span key={i} className="text-[9px] bg-slate-50 border border-slate-200 rounded px-1 text-slate-600 font-bold max-w-[120px] truncate" title={spec}>
-                            {spec}
-                          </span>
-                        ))}
-                        {college.key_specialties.length > 3 && (
-                          <span className="text-[9px] text-slate-400 font-bold pl-1">
-                            +{college.key_specialties.length - 3} more
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-                  <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[10px] font-black tracking-wide">
-                    <Users className="w-3 h-3 text-emerald-600" />
-                    {college.total_pg_seats} PG Seats
-                  </div>
-                  
-                  {college.year_established && (
-                    <div className="text-[10px] text-slate-400 font-bold flex items-center gap-1">
-                      <Calendar className="w-3 h-3" /> Est. {college.year_established}
-                    </div>
-                  )}
-                </div>
-
-                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1 bg-white/90 p-1 rounded-lg shadow-sm border border-slate-200">
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    className="h-7 w-7 rounded-md text-slate-600 hover:text-cyan-600 hover:bg-slate-50"
-                    onClick={() => {
-                      setSelectedCollege(college);
-                      setSpecialtiesText(college.key_specialties.join(', '));
-                      setPreviewUrl(college.image_url);
-                      setIsEditDialogOpen(true);
-                    }}
-                  >
-                    <Pencil className="h-3.5 w-3.5" />
-                  </Button>
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    className="h-7 w-7 rounded-md text-slate-600 hover:text-red-600 hover:bg-red-50"
-                    onClick={() => {
-                      setSelectedCollege(college);
-                      setIsDeleteDialogOpen(true);
-                    }}
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </Button>
-                </div>
-              </div>
-            ))}
+        {loadError && (
+          <div className="p-4">
+            <Notice
+              tone="danger"
+              title="Could not load PG colleges"
+              action={
+                <Button size="sm" onClick={fetchColleges} disabled={loading}>
+                  Retry
+                </Button>
+              }
+            >
+              {loadError}
+            </Notice>
           </div>
         )}
-      </div>
 
-      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="sm:max-w-[600px] bg-white border-slate-200 rounded-3xl shadow-2xl overflow-hidden p-0 max-h-[90vh] overflow-y-auto">
-          <div className="px-6 py-5 bg-slate-50 border-b border-slate-100 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-cyan-100 flex items-center justify-center">
-              <Pencil className="w-5 h-5 text-cyan-600" />
-            </div>
-            <div>
-              <DialogTitle className="text-xl font-black text-slate-900">Edit PG College</DialogTitle>
-              <p className="text-xs text-slate-500 font-medium">Update details for {selectedCollege?.college_name}</p>
-            </div>
+        {loading && colleges.length === 0 ? (
+          <div className="flex items-center justify-center gap-2 py-16 text-sm text-slate-500">
+            <Loader2 className="h-5 w-5 animate-spin text-slate-400" /> Loading PG colleges…
           </div>
-          
-          <div className="p-6 space-y-4">
-            {selectedCollege && (
-              <>
-                <div className="space-y-2">
-                  <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">College Name *</Label>
-                  <Input 
-                    value={selectedCollege.college_name}
-                    onChange={(e) => setSelectedCollege({...selectedCollege, college_name: e.target.value})}
-                    className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white"
-                  />
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">State *</Label>
-                    <Input 
-                      value={selectedCollege.state}
-                      onChange={(e) => setSelectedCollege({...selectedCollege, state: e.target.value})}
-                      className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">City *</Label>
-                    <Input 
-                      value={selectedCollege.city}
-                      onChange={(e) => setSelectedCollege({...selectedCollege, city: e.target.value})}
-                      className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">College Type</Label>
-                    <select 
-                      value={selectedCollege.college_type}
-                      onChange={(e) => setSelectedCollege({...selectedCollege, college_type: e.target.value})}
-                      className="w-full rounded-xl border border-slate-200 bg-slate-50/50 p-2.5 text-sm font-medium focus:bg-white outline-none"
-                    >
-                      <option value="Government">Government</option>
-                      <option value="Private">Private</option>
-                      <option value="Deemed">Deemed</option>
-                    </select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Ownership</Label>
-                    <Input 
-                      value={selectedCollege.ownership || ''}
-                      onChange={(e) => setSelectedCollege({...selectedCollege, ownership: e.target.value})}
-                      className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Year Est.</Label>
-                    <Input 
-                      type="number"
-                      value={selectedCollege.year_established || ''}
-                      onChange={(e) => setSelectedCollege({...selectedCollege, year_established: parseInt(e.target.value) || null})}
-                      className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Total PG Seats</Label>
-                    <Input 
-                      type="number" 
-                      value={selectedCollege.total_pg_seats}
-                      onChange={(e) => setSelectedCollege({...selectedCollege, total_pg_seats: parseInt(e.target.value) || 0})}
-                      className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white"
-                    />
-                  </div>
-                  <div className="flex items-center gap-2 pt-8">
-                    <Switch 
-                      id="edit-active"
-                      checked={selectedCollege.is_active}
-                      onCheckedChange={(checked) => setSelectedCollege({...selectedCollege, is_active: checked})}
-                    />
-                    <Label htmlFor="edit-active" className="text-xs font-bold text-slate-700 uppercase tracking-wider cursor-pointer">Is Active / Visible</Label>
-                  </div>
-                  <div className="space-y-2 pt-8">
-                    <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Display Order</Label>
-                    <Input 
-                      type="number"
-                      value={selectedCollege.display_order === undefined ? '' : selectedCollege.display_order}
-                      onChange={(e) => setSelectedCollege({...selectedCollege, display_order: parseInt(e.target.value) || 0})}
-                      className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white w-24"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Specialties (Comma Separated)</Label>
-                  <Input 
-                    value={specialtiesText}
-                    onChange={(e) => setSpecialtiesText(e.target.value)}
-                    className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Short Description</Label>
-                  <Textarea 
-                    value={selectedCollege.short_description || ''}
-                    onChange={(e) => setSelectedCollege({...selectedCollege, short_description: e.target.value})}
-                    className="rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white min-h-[60px]"
-                  />
-                </div>
-                
-                <div className="space-y-2 pt-2">
-                  <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 block">College Image</Label>
-                  <div className="flex items-center gap-4">
-                    {previewUrl ? (
-                      <div className="relative w-20 h-20 rounded-xl overflow-hidden border border-slate-200 group shrink-0">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
-                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Trash2 className="w-4 h-4 text-white cursor-pointer" onClick={() => {
-                            setImageFile(null);
-                            setPreviewUrl(null);
-                            setSelectedCollege(prev => prev ? { ...prev, image_url: null } : null);
-                          }} />
+        ) : loadError && colleges.length === 0 ? null : colleges.length === 0 ? (
+          <EmptyState
+            icon={Building2}
+            title="No PG colleges yet"
+            hint="Add the first one and it appears on the MD/MS pages in display order."
+            action={
+              <Button variant="primary" onClick={openAdd}>
+                <Plus className="h-4 w-4" /> Add college
+              </Button>
+            }
+          />
+        ) : filteredColleges.length === 0 ? (
+          <EmptyState
+            icon={Search}
+            title="No college matches"
+            hint="Try another name, or clear the filters."
+            action={<Button onClick={() => { setSearchQuery(''); setTypeFilter('all'); }}>Clear filters</Button>}
+          />
+        ) : (
+          <>
+            <div className={TABLE.wrap}>
+              <table className={`${TABLE.table} min-w-[920px]`}>
+                <thead className={TABLE.head}>
+                  <tr>
+                    <th className={TABLE.th}>College</th>
+                    <th className={TABLE.th}>Location</th>
+                    <th className={TABLE.th}>Type</th>
+                    <th className={`${TABLE.th} text-right`}>PG seats</th>
+                    <th className={TABLE.th}>Specialties</th>
+                    <th className={`${TABLE.th} text-right`}>Order</th>
+                    <th className={TABLE.th}>Status</th>
+                    <th className={`${TABLE.th} text-right`}><span className="sr-only">Actions</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredColleges.slice(0, shown).map((college) => (
+                    <tr key={college.id} className={TABLE.row}>
+                      <td className={TABLE.td}>
+                        <div className="flex items-center gap-3">
+                          {/* See GenericCollegeManager: the fallback was a fake AIIMS. */}
+                          <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-slate-100 [&_span]:!text-[11px] [&_span]:!tracking-normal">
+                            <CollegeVisual name={college.college_name} imageUrl={college.image_url} sizes="36px" />
+                          </div>
+                          <div className="min-w-0">
+                            <div className="max-w-[17rem] truncate font-medium text-slate-900" title={college.college_name}>
+                              {college.college_name}
+                            </div>
+                            {(college.ownership || college.year_established) && (
+                              <div className="max-w-[17rem] truncate text-xs text-slate-500">
+                                {[college.ownership, college.year_established ? `Est. ${college.year_established}` : null]
+                                  .filter(Boolean)
+                                  .join(' · ')}
+                              </div>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="w-20 h-20 rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 flex items-center justify-center text-slate-400 shrink-0">
-                        <ImagePlus className="w-6 h-6" />
-                      </div>
-                    )}
-                    <div className="flex-1">
-                      <Label htmlFor="edit-image-upload-pg" className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-cyan-600 transition-colors">
-                        <ImagePlus className="w-4 h-4" />
-                        Change Image
-                      </Label>
-                      <Input 
-                        id="edit-image-upload-pg" 
-                        type="file" 
-                        accept="image/*" 
-                        className="hidden" 
-                        onChange={handleImageChange}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-          
-          <DialogFooter className="p-4 bg-slate-50 border-t border-slate-100">
-            <Button variant="outline" onClick={() => setIsEditDialogOpen(false)} className="rounded-xl">Cancel</Button>
-            <Button onClick={handleEditCollege} disabled={isSaving} className="rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white">
-              {isSaving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : 'Save Changes'}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <DialogContent className="sm:max-w-[400px] p-0 overflow-hidden rounded-3xl border-slate-200">
-          <div className="p-6 text-center space-y-4">
-            <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-2">
-              <Trash2 className="w-8 h-8" />
+                      </td>
+                      <td className={TABLE.td}>
+                        <div className="max-w-[11rem] truncate" title={`${college.city}, ${college.state}`}>
+                          {college.city}, {college.state}
+                        </div>
+                      </td>
+                      <td className={TABLE.td}>
+                        <Badge tone={college.college_type === 'Government' ? 'info' : 'neutral'}>{college.college_type}</Badge>
+                      </td>
+                      <td className={`${TABLE.td} text-right tabular-nums`}>{college.total_pg_seats}</td>
+                      <td className={TABLE.td}>
+                        {college.key_specialties.length > 0 ? (
+                          <div className="max-w-[14rem] truncate text-xs text-slate-600" title={college.key_specialties.join(', ')}>
+                            <span className="font-semibold tabular-nums text-slate-700">{college.key_specialties.length}</span>
+                            {' · '}
+                            {college.key_specialties.slice(0, 2).join(', ')}
+                          </div>
+                        ) : (
+                          <span className="text-slate-400">—</span>
+                        )}
+                      </td>
+                      <td className={`${TABLE.td} text-right tabular-nums text-slate-500`}>{college.display_order}</td>
+                      <td className={TABLE.td}>
+                        {college.is_active ? <Badge tone="success">Active</Badge> : <Badge>Hidden</Badge>}
+                      </td>
+                      <td className={TABLE.td}>
+                        <div className="flex justify-end gap-1">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            aria-label={`Edit ${college.college_name}`}
+                            title="Edit"
+                            onClick={() => openEdit(college)}
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            aria-label={`Delete ${college.college_name}`}
+                            title="Delete"
+                            className="hover:bg-red-50 hover:text-red-600"
+                            onClick={() => {
+                              setSelectedCollege(college);
+                              setIsDeleteDialogOpen(true);
+                            }}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-            <h3 className="text-xl font-black text-slate-900">Delete PG College?</h3>
-            <p className="text-sm text-slate-500 font-medium">
-              Are you sure you want to delete <span className="font-bold text-slate-900">{selectedCollege?.college_name}</span>? This action cannot be undone.
-            </p>
+            {filteredColleges.length > shown && (
+              <div className="border-t border-slate-100 p-3 text-center">
+                <Button size="sm" onClick={() => setShown((s) => s + PAGE)}>
+                  <ChevronDown className="h-4 w-4" /> Show {Math.min(PAGE, filteredColleges.length - shown)} more
+                </Button>
+              </div>
+            )}
+          </>
+        )}
+      </Card>
+
+      {/* Add */}
+      <Drawer
+        open={isAddDialogOpen}
+        title="Add PG college"
+        width="max-w-2xl"
+        onClose={() => setIsAddDialogOpen(false)}
+        footer={
+          <>
+            <Button onClick={() => setIsAddDialogOpen(false)}>Cancel</Button>
+            <Button variant="primary" onClick={handleAddCollege} disabled={isSaving}>
+              {isSaving ? <><Loader2 className="h-4 w-4 animate-spin" /> Saving…</> : 'Add college'}
+            </Button>
+          </>
+        }
+      >
+        <p className="mb-5 text-sm text-slate-500">Fields marked * are required.</p>
+        <div className="space-y-6">
+          {renderFields(newCollege, (patch) => setNewCollege({ ...newCollege, ...patch }), false)}
+          {renderImage('image-upload-pg', 'Choose image', () => { setImageFile(null); setPreviewUrl(null); })}
+        </div>
+      </Drawer>
+
+      {/* Edit */}
+      <Drawer
+        open={isEditDialogOpen}
+        title={selectedCollege ? `Edit ${selectedCollege.college_name}` : 'Edit PG college'}
+        width="max-w-2xl"
+        onClose={() => setIsEditDialogOpen(false)}
+        footer={
+          <>
+            <Button onClick={() => setIsEditDialogOpen(false)}>Cancel</Button>
+            <Button variant="primary" onClick={handleEditCollege} disabled={isSaving}>
+              {isSaving ? <><Loader2 className="h-4 w-4 animate-spin" /> Saving…</> : 'Save changes'}
+            </Button>
+          </>
+        }
+      >
+        {selectedCollege && (
+          <div className="space-y-6">
+            {renderFields(selectedCollege, (patch) => setSelectedCollege({ ...selectedCollege, ...patch }), true)}
+            {renderImage('edit-image-upload-pg', 'Change image', () => {
+              setImageFile(null);
+              setPreviewUrl(null);
+              setSelectedCollege(prev => prev ? { ...prev, image_url: null } : null);
+            })}
           </div>
-          <div className="p-4 bg-slate-50 flex gap-3 border-t border-slate-100">
-            <Button variant="outline" className="flex-1 rounded-xl" onClick={() => setIsDeleteDialogOpen(false)}>Cancel</Button>
-            <Button variant="destructive" className="flex-1 rounded-xl bg-red-600 hover:bg-red-700" onClick={handleDeleteCollege} disabled={isDeleting}>
-              {isDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Yes, Delete'}
+        )}
+      </Drawer>
+
+      {/* Delete */}
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent className="w-[calc(100%-2rem)] max-w-md gap-0 overflow-hidden rounded-2xl border-slate-200 bg-white p-0 sm:rounded-2xl">
+          <div className="space-y-2 p-5 pr-12">
+            <DialogTitle className="text-base font-semibold text-slate-900">Delete this PG college?</DialogTitle>
+            <DialogDescription className="text-sm leading-relaxed text-slate-500">
+              <span className="font-semibold text-slate-800">{selectedCollege?.college_name}</span> will be removed.
+              This cannot be undone.
+            </DialogDescription>
+          </div>
+          <div className="flex flex-wrap justify-end gap-2 border-t border-slate-100 bg-slate-50 px-5 py-3.5">
+            <Button onClick={() => setIsDeleteDialogOpen(false)}>Cancel</Button>
+            <Button variant="danger" onClick={handleDeleteCollege} disabled={isDeleting}>
+              {isDeleting ? <><Loader2 className="h-4 w-4 animate-spin" /> Deleting…</> : 'Delete'}
             </Button>
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 };
+
+/** A titled group of fields inside a form. */
+function FormSection({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="space-y-4">
+      <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">{title}</h3>
+      {children}
+    </section>
+  );
+}
 
 export default PGCollegeManager;

@@ -60,6 +60,25 @@ const SERVICES_DEFAULTS: Required<ServicesCopy> = {
     'From your first NEET score to the day you wear your white coat \u2014 we guide you every step of the way.',
 };
 
+/** What each card covers, by position — the CMS rows carry title and blurb only. */
+const POINTS: string[][] = [
+  [
+    "Government, private and deemed — every route mapped",
+    "All India and state counselling handled together",
+    "Choice filling, upgrades and reporting, round by round",
+  ],
+  [
+    "Branch strategy across All India and state quotas",
+    "Stipend, bond and fees confirmed with colleges",
+    "A float-or-freeze call before every round",
+  ],
+  [
+    "One named expert counsellor from start to seat",
+    "Built on your rank, budget and domicile — not a template",
+    "Open daily, 10 AM – 10 PM",
+  ],
+];
+
 const ServicesList = ({
   services: fromCms,
   copy,
@@ -119,7 +138,7 @@ const ServicesList = ({
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ delay: 0.3 + index * 0.1 }}
-                  className="group relative rounded-2xl md:rounded-[2rem] bg-white border border-slate-100/60 p-4 md:p-8 flex flex-col justify-between h-auto min-h-[170px] md:h-[340px] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+                  className="group relative rounded-2xl md:rounded-[2rem] bg-white border border-slate-100/60 p-4 md:p-8 flex flex-col h-full shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
                 >
                   <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${tone.gradient} opacity-[0.03] rounded-full blur-2xl group-hover:opacity-10 transition-opacity duration-500`} />
 
@@ -131,9 +150,19 @@ const ServicesList = ({
                     <h3 className="text-sm md:text-xl font-black text-slate-900 mb-1 md:mb-2 leading-tight group-hover:text-cyan-600 transition-colors">
                       {service.title}
                     </h3>
-                    <p className="text-slate-500 text-[13px] md:text-sm font-medium leading-relaxed mb-3 md:mb-6 flex-1">
+                    <p className="text-slate-500 text-[13px] md:text-sm font-medium leading-relaxed mb-4">
                       {service.description}
                     </p>
+                    {POINTS[index] && (
+                      <ul className="mb-5 space-y-2 border-t border-slate-100 pt-4 md:mb-6">
+                        {POINTS[index].map((pt) => (
+                          <li key={pt} className="flex gap-2 text-[13px] md:text-[14px] font-medium leading-snug text-slate-700">
+                            <span aria-hidden="true" className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-500" />
+                            {pt}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
 
                     <div className="mt-auto">
                       {service.href ? (

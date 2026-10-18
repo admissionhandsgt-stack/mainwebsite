@@ -425,7 +425,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
 
       {/* College List Explorer Header & Filter Menu (Unified Box) */}
       <section id="explorer" className="pt-8 pb-4 bg-slate-50 dark:bg-slate-950 transition-colors duration-200">
-        <div className="container-custom px-4 max-w-6xl mx-auto">
+        <div className="container-custom">
           <div className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl p-5 shadow-sm space-y-6">
             
             {/* Header info inside the card */}
@@ -603,7 +603,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
 
       {/* College Explorer Section */}
       <section className="py-6 bg-slate-50 dark:bg-slate-950 transition-colors duration-200">
-        <div className="container-custom px-4 max-w-6xl mx-auto">
+        <div className="container-custom">
           {filteredColleges.length > 0 ? (
             <>
               {layoutView === "list" ? (
@@ -833,7 +833,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
 
       {/* Insights Section */}
       <section className="py-8 bg-slate-100/40 dark:bg-slate-900/20 border-y border-slate-200/60 dark:border-slate-900/60 transition-colors duration-200">
-        <div className="container-custom px-4 max-w-5xl mx-auto">
+        <div className="container-custom">
           <motion.div
             variants={fadeUp()}
             initial="hidden"
@@ -1031,7 +1031,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
 
       {/* Why Choose Us Section */}
       <section className="py-8 bg-slate-50 dark:bg-slate-950 transition-colors duration-200">
-        <div className="container-custom px-4 max-w-5xl mx-auto">
+        <div className="container-custom">
           <motion.div
             variants={fadeUp()}
             initial="hidden"
@@ -1066,7 +1066,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
               },
               {
                 title: "Smart College Predictor",
-                desc: "Your rank placed against the rounds that have actually been published — government, private and deemed, with the closing rank behind each one.",
+                desc: "Your rank placed against the rounds that have actually been published — government, private and deemed, with your chance at each one in plain words.",
                 icon: TrendingUp,
               },
               {
@@ -1095,7 +1095,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
 
       {/* FAQ Section */}
       <section className="py-12 bg-slate-50 dark:bg-slate-950 transition-colors duration-200 border-t border-b border-slate-100 dark:border-slate-900">
-        <div className="container-custom px-4 max-w-5xl mx-auto">
+        <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-8 lg:gap-12 items-start">
             <motion.div
               variants={fadeUp()}
@@ -1176,7 +1176,7 @@ export default function CollegesPageClient({ states, heroImages }: { states: Sta
 
       {/* Final CTA Section */}
       <section className="py-12 bg-white dark:bg-slate-950 transition-colors duration-200">
-        <div className="container-custom px-4 max-w-5xl mx-auto">
+        <div className="container-custom">
           <motion.div
             variants={fadeUp()}
             initial="hidden"

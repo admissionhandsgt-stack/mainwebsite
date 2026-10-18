@@ -3,7 +3,7 @@
 import Image, { getImageProps } from "next/image";
 import PhotoCredit from "@/components/ui/PhotoCredit";
 import { useCTA } from "@/hooks/useCTA";
-import { ArrowRight, Building2, Users, ShieldCheck, Landmark, Layers, Phone, Sparkles } from "lucide-react";
+import { ArrowRight, Building2, Users, ShieldCheck, Landmark, Phone, Sparkles } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 /** Everything an editor can change here. Each field falls back to the copy
@@ -55,18 +55,18 @@ interface HeroProps {
  * argument for one; the argument belongs further down the page.
  */
 const ASSURANCES = [
+  { icon: Users, label: "Expert, named counsellors" },
   { icon: Landmark, label: "From the authorities" },
   { icon: ShieldCheck, label: "Published, not predicted" },
-  { icon: Layers, label: "Every round, not the last" },
 ];
 
 const DEFAULTS: Required<Omit<HeroCopy, "stats">> = {
   badgeLeft: "NEET 2026 counselling",
-  badgeRight: "Real cutoffs, not estimates",
+  badgeRight: "15+ years of excellence",
   headline: "MBBS & PG admission",
   headlineAccent: "in India, made simple",
   subtitle:
-    "Every closing rank, fee and seat from the last two counselling years — turned into one straight answer about where your seat actually is.",
+    "15+ years of MBBS, BDS and MD/MS counselling — your NEET rank turned into one clear answer about where your seat actually is.",
   ctaPrimary: "Get expert guidance",
   ctaSecondary: "Browse top colleges",
 };

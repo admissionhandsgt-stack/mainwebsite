@@ -7,6 +7,7 @@ import { getMbbsStates, resolveMetadata } from "@/lib/content";
 import CategoryCutTable from "@/components/cutoffs/CategoryCutTable";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
+import TelegramJoin from "@/components/engage/TelegramJoin";
 
 /**
  * "NEET cutoff for MBBS", "MBBS cutoff for government college", "NEET cutoff
@@ -64,7 +65,7 @@ export default async function NeetUgCutoffPage() {
       ? [
           {
             question: `What was the NEET UG ${mbbs.year} cutoff for MBBS in a government college (general category)?`,
-            answer: `In the All India Quota, the most sought-after general-category MBBS seat closed at AIR ${n(ur.bestR1)} in round 1, and the last general-category seat was taken at AIR ${n(ur.widest)} across all rounds. Each college closed somewhere in between — its own page shows where.`,
+            answer: `In the All India Quota, the most sought-after general-category MBBS seat closed at AIR ${n(ur.bestR1)} in round 1, and the last general-category seat was taken at AIR ${n(ur.widest)} across all rounds. Each college closed somewhere in between — sign in to see your own chance at each.`,
           },
         ]
       : []),
@@ -215,6 +216,7 @@ export default async function NeetUgCutoffPage() {
         title="Know your rank? Get a choice list built on these numbers"
         body="A counsellor orders your MBBS and BDS choices against the published closing ranks — AIQ and your state — and stays with you through every round."
       />
+      <TelegramJoin placement="neet_ug_cutoff" />
     </main>
   );
 }

@@ -15,6 +15,7 @@ import { unstable_cache } from "next/cache";
 import { sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { branchSlug } from "@/lib/branchSlug";
+import { groupRank } from "@/lib/chance";
 
 const rows = <T,>(r: unknown) => r as unknown as T[];
 
@@ -160,8 +161,8 @@ export const getPgStatePage = unstable_cache(
         quota: String(x.quota ?? "—"),
         counselling: String(x.counselling),
         colleges: Number(x.colleges),
-        bestR1: num(x.best_r1),
-        widest: num(x.widest),
+        bestR1: groupRank(num(x.best_r1), Number(x.colleges)),
+        widest: groupRank(num(x.widest), Number(x.colleges)),
         feeFrom: x.fee_from == null ? null : Math.round(Number(x.fee_from)),
         feeTo: x.fee_to == null ? null : Math.round(Number(x.fee_to)),
       })),
@@ -173,6 +174,6 @@ export const getPgStatePage = unstable_cache(
       })),
     };
   },
-  ["pg-state-page-v1"],
+  ["pg-state-page-v2"],
   { revalidate: 86400, tags: ["seat-data"] },
 );

@@ -4,9 +4,12 @@ import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import {
   ArrowDown, ArrowUp, CornerDownRight, ExternalLink, Eye, EyeOff,
-  Loader2, Pencil, Plus, Trash2, X,
+  Loader2, Menu as MenuIcon, Pencil, Plus, RefreshCw, Trash2,
 } from "lucide-react";
 import { listRows, createRow, updateRow, deleteRow } from "@/lib/adminApi";
+import {
+  Badge, BUTTON, Button, Card, Drawer, EmptyState, Field, INPUT, INPUT_H, Notice, PageHeader, SIZE, Tabs, Toggle,
+} from "@/components/admin/ui";
 
 interface NavRow {
   id: number;
@@ -42,19 +45,30 @@ const MENUS = [
 
 const BLANK = { label: "", url: "", opens_new_tab: false, parent_id: null as number | null };
 
+// Square row controls. The delete one turns red on hover; swapped into the kit's
+// ghost class rather than appended, so the two hovers cannot fight.
+const ICON_BTN = `${BUTTON.ghost} ${SIZE.icon}`;
+const ICON_BTN_DANGER = `${BUTTON.ghost.replace("text-slate-600 hover:bg-slate-100", "text-slate-500 hover:bg-red-50 hover:text-red-600")} ${SIZE.icon}`;
+const ORDER_BTN =
+  "flex h-6 w-6 items-center justify-center rounded text-slate-400 hover:bg-slate-100 hover:text-slate-700 disabled:opacity-30 disabled:hover:bg-transparent";
+
 export default function NavigationPage() {
   const [items, setItems] = useState<NavRow[]>([]);
   const [menu, setMenu] = useState(MENUS[0]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<(typeof BLANK & { id?: number }) | null>(null);
   const [saving, setSaving] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   const load = async () => {
     setLoading(true);
+    setLoadError(null);
     try {
       setItems(await listRows<NavRow>("nav"));
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Could not load the menus");
+      const message = e instanceof Error ? e.message : "Could not load the menus";
+      toast.error(message);
+      setLoadError(message);
     } finally {
       setLoading(false);
     }
@@ -151,74 +165,112 @@ export default function NavigationPage() {
     }
   };
 
-  if (loading) {
+  const addLink = (
+    <Button variant="primary" onClick={() => setEditing({ ...BLANK })}>
+      <Plus className="h-4 w-4" />
+      Add link
+    </Button>
+  );
+
+  const header = (
+    <PageHeader
+      title="Navigation"
+      description="The menus on every page. Changes go live without a deploy."
+      // Hidden only during the first load, when the menu's existing links (and so
+      // the new link's position) are not known yet.
+      actions={loading && items.length === 0 ? undefined : addLink}
+    >
+      <Tabs
+        items={MENUS.map((m) => ({
+          id: m.slug,
+          label: m.label,
+          count: items.filter((i) => i.menu === m.slug).length,
+        }))}
+        value={menu.slug}
+        onChange={(slug) => {
+          setMenu(MENUS.find((m) => m.slug === slug) ?? MENUS[0]);
+          setEditing(null);
+        }}
+      />
+    </PageHeader>
+  );
+
+  if (loading && items.length === 0) {
     return (
-      <div className="flex items-center justify-center py-20 text-gray-400">
-        <Loader2 className="h-6 w-6 animate-spin" />
+      <div>
+        {header}
+        <div className="flex items-center justify-center py-20 text-slate-400">
+          <Loader2 className="h-6 w-6 animate-spin" />
+        </div>
       </div>
     );
   }
 
   const renderRow = (row: NavRow, list: NavRow[], index: number, isChild: boolean) => (
-    <div
+    <li
       key={row.id}
-      className={`flex items-center gap-3 rounded-xl border px-4 py-2.5 ${
-        isChild ? "ml-8 border-gray-100 bg-gray-50/60" : "border-gray-200 bg-white"
-      } ${row.is_active ? "" : "opacity-60"}`}
+      className={`flex items-center gap-3 py-2.5 pr-3 sm:pr-4 ${
+        isChild ? "bg-slate-50/70 pl-8 sm:pl-12" : "pl-3 sm:pl-4"
+      }`}
     >
-      <div className="flex flex-col gap-0.5">
+      <div className="flex flex-col">
         <button
+          type="button"
           onClick={() => move(list, index, -1)}
           disabled={index === 0}
           aria-label="Move up"
-          className="rounded p-0.5 text-gray-300 hover:bg-gray-100 hover:text-gray-600 disabled:opacity-30 disabled:hover:bg-transparent"
+          className={ORDER_BTN}
         >
           <ArrowUp className="h-3.5 w-3.5" />
         </button>
         <button
+          type="button"
           onClick={() => move(list, index, 1)}
           disabled={index === list.length - 1}
           aria-label="Move down"
-          className="rounded p-0.5 text-gray-300 hover:bg-gray-100 hover:text-gray-600 disabled:opacity-30 disabled:hover:bg-transparent"
+          className={ORDER_BTN}
         >
           <ArrowDown className="h-3.5 w-3.5" />
         </button>
       </div>
 
-      {isChild && <CornerDownRight className="h-4 w-4 shrink-0 text-gray-300" />}
+      {isChild && <CornerDownRight className="h-4 w-4 shrink-0 text-slate-300" />}
 
-      <div className="min-w-0 flex-1">
+      <div className={`min-w-0 flex-1 ${row.is_active ? "" : "opacity-60"}`}>
         <div className="flex flex-wrap items-center gap-2">
-          <span className="font-semibold text-gray-900">{row.label}</span>
-          {row.opens_new_tab && <ExternalLink className="h-3 w-3 text-gray-400" />}
-          {!row.is_active && (
-            <span className="rounded bg-gray-200 px-1.5 py-0.5 text-[10px] font-semibold text-gray-600">
-              Hidden
-            </span>
+          <span className={`font-semibold ${isChild ? "text-sm text-slate-800" : "text-slate-900"}`}>{row.label}</span>
+          {row.opens_new_tab && (
+            <ExternalLink className="h-3 w-3 text-slate-400" role="img" aria-label="Opens in a new tab" />
           )}
+          {!row.is_active && <Badge>Hidden</Badge>}
         </div>
-        <code className="text-xs text-gray-400">{row.url}</code>
+        <code className="block truncate text-xs text-slate-400">{row.url}</code>
       </div>
 
-      <div className="flex shrink-0 items-center gap-1">
+      <div className="flex shrink-0 items-center">
         {menu.allowsChildren && !isChild && (
           <button
+            type="button"
             onClick={() => setEditing({ ...BLANK, parent_id: row.id })}
             title="Add a sub-link"
-            className="rounded-lg px-2 py-2 text-xs font-semibold text-gray-400 hover:bg-gray-100 hover:text-medical-700"
+            aria-label={`Add a sub-link under ${row.label}`}
+            className={`${BUTTON.ghost} h-9 px-2 text-[13px]`}
           >
-            + Sub-link
+            <Plus className="h-4 w-4" />
+            <span className="hidden sm:inline">Sub-link</span>
           </button>
         )}
         <button
+          type="button"
           onClick={() => toggle(row)}
           aria-label={row.is_active ? "Hide from the site" : "Show on the site"}
           title={row.is_active ? "Hide from the site" : "Show on the site"}
-          className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-700"
+          className={ICON_BTN}
         >
           {row.is_active ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
         </button>
         <button
+          type="button"
           onClick={() =>
             setEditing({
               id: row.id,
@@ -229,150 +281,118 @@ export default function NavigationPage() {
             })
           }
           aria-label="Edit"
-          className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-medical-700"
+          title="Edit"
+          className={ICON_BTN}
         >
           <Pencil className="h-4 w-4" />
         </button>
         <button
+          type="button"
           onClick={() => remove(row)}
           aria-label="Delete"
-          className="rounded-lg p-2 text-gray-400 hover:bg-red-50 hover:text-red-600"
+          title="Delete"
+          className={ICON_BTN_DANGER}
         >
           <Trash2 className="h-4 w-4" />
         </button>
       </div>
-    </div>
+    </li>
   );
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Navigation</h1>
-        <p className="mt-1 text-sm text-gray-500">
-          The menus on every page. Changes go live without a deploy.
-        </p>
-      </div>
+    <div>
+      {header}
 
-      <div className="flex flex-wrap gap-1 rounded-xl border border-gray-200 bg-white p-1">
-        {MENUS.map((m) => (
-          <button
-            key={m.slug}
-            onClick={() => {
-              setMenu(m);
-              setEditing(null);
-            }}
-            className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors ${
-              menu.slug === m.slug
-                ? "bg-medical-50 text-medical-900"
-                : "text-gray-500 hover:bg-gray-50 hover:text-gray-800"
-            }`}
+      <div className="space-y-5">
+        {loadError && (
+          <Notice
+            tone="danger"
+            title="The menus did not load"
+            action={
+              <Button size="sm" onClick={load}>
+                <RefreshCw className="h-4 w-4" /> Retry
+              </Button>
+            }
           >
-            {m.label}
-          </button>
-        ))}
+            {loadError}
+          </Notice>
+        )}
+
+        <Card flush title={menu.label} description={menu.help}>
+          {parents.length === 0 ? (
+            <EmptyState
+              icon={MenuIcon}
+              title="This menu is empty"
+              hint="The site falls back to the links built into the code. Add one here to take over."
+              action={addLink}
+            />
+          ) : (
+            <ul className="divide-y divide-slate-100">
+              {parents.map((row, i) => (
+                <li key={row.id}>
+                  <ul className="divide-y divide-slate-100">
+                    {renderRow(row, parents, i, false)}
+                    {childrenOf(row.id).map((child, ci, kids) =>
+                      renderRow(child, kids, ci, true),
+                    )}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Card>
       </div>
 
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <p className="max-w-xl text-sm text-gray-500">{menu.help}</p>
-        <button
-          onClick={() => setEditing({ ...BLANK })}
-          className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-medical-600 to-medical-500 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-medical-500/20"
-        >
-          <Plus className="h-4 w-4" />
-          Add link
-        </button>
-      </div>
-
-      {editing && (
-        <div className="rounded-2xl border border-medical-200 bg-medical-50/40 p-5">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-sm font-bold text-gray-900">
-              {editing.id
-                ? "Edit link"
-                : editing.parent_id
-                  ? `New sub-link under "${items.find((i) => i.id === editing.parent_id)?.label ?? ""}"`
-                  : "New link"}
-            </h2>
-            <button onClick={() => setEditing(null)} aria-label="Close the editor">
-              <X className="h-4 w-4 text-gray-400 hover:text-gray-700" />
-            </button>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div>
-              <label htmlFor="nav-label" className="mb-1 block text-xs font-semibold text-gray-700">
-                Label
-              </label>
+      <Drawer
+        open={!!editing}
+        title={
+          editing?.id
+            ? "Edit link"
+            : editing?.parent_id
+              ? `New sub-link under "${items.find((i) => i.id === editing.parent_id)?.label ?? ""}"`
+              : "New link"
+        }
+        onClose={() => setEditing(null)}
+        footer={
+          <>
+            <Button onClick={() => setEditing(null)}>Cancel</Button>
+            <Button variant="primary" onClick={save} disabled={saving}>
+              {saving && <Loader2 className="h-4 w-4 animate-spin" />}
+              {editing?.id ? "Save changes" : "Add to the menu"}
+            </Button>
+          </>
+        }
+      >
+        {editing && (
+          <div className="space-y-4">
+            <p className="text-sm text-slate-500">
+              In <span className="font-medium text-slate-700">{menu.label}</span>
+            </p>
+            <Field label="Label" htmlFor="nav-label">
               <input
                 id="nav-label"
                 value={editing.label}
                 onChange={(e) => setEditing({ ...editing, label: e.target.value })}
-                className="w-full rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm outline-none focus:border-medical-500 focus:ring-2 focus:ring-medical-500/20"
+                className={`${INPUT} ${INPUT_H}`}
               />
-            </div>
-            <div>
-              <label htmlFor="nav-url" className="mb-1 block text-xs font-semibold text-gray-700">
-                URL
-              </label>
+            </Field>
+            <Field label="URL" htmlFor="nav-url" hint="A path on this site, a full https:// address, or # for a header menu that only opens its list (like Other Courses).">
               <input
                 id="nav-url"
                 value={editing.url}
                 onChange={(e) => setEditing({ ...editing, url: e.target.value })}
                 placeholder="/mbbs-india"
-                className="w-full rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm outline-none focus:border-medical-500 focus:ring-2 focus:ring-medical-500/20"
+                className={`${INPUT} ${INPUT_H}`}
               />
-              <p className="mt-1 text-xs text-gray-500">
-                A path on this site, or a full https:// address.
-              </p>
-            </div>
-          </div>
-
-          <label className="mt-4 flex items-center gap-2 text-sm text-gray-700">
-            <input
-              type="checkbox"
+            </Field>
+            <Toggle
               checked={editing.opens_new_tab}
-              onChange={(e) => setEditing({ ...editing, opens_new_tab: e.target.checked })}
-              className="h-4 w-4 rounded border-gray-300 text-medical-600"
+              onChange={(v) => setEditing({ ...editing, opens_new_tab: v })}
+              label="Open in a new tab"
             />
-            Open in a new tab
-          </label>
-
-          <div className="mt-5 flex items-center gap-2">
-            <button
-              onClick={save}
-              disabled={saving}
-              className="inline-flex items-center gap-1.5 rounded-xl bg-medical-600 px-4 py-2 text-sm font-semibold text-white disabled:opacity-50"
-            >
-              {saving && <Loader2 className="h-4 w-4 animate-spin" />}
-              {editing.id ? "Save changes" : "Add to the menu"}
-            </button>
-            <button
-              onClick={() => setEditing(null)}
-              className="rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-600"
-            >
-              Cancel
-            </button>
           </div>
-        </div>
-      )}
-
-      {parents.length === 0 ? (
-        <p className="rounded-2xl border border-dashed border-gray-300 bg-white px-5 py-12 text-center text-sm text-gray-500">
-          This menu is empty, so the site falls back to the links built into the code.
-          Add one here to take over.
-        </p>
-      ) : (
-        <div className="space-y-2">
-          {parents.map((row, i) => (
-            <div key={row.id} className="space-y-2">
-              {renderRow(row, parents, i, false)}
-              {childrenOf(row.id).map((child, ci, kids) =>
-                renderRow(child, kids, ci, true),
-              )}
-            </div>
-          ))}
-        </div>
-      )}
+        )}
+      </Drawer>
     </div>
   );
 }

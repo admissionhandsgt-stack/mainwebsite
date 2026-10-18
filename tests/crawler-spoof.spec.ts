@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, blockAnalytics } from "./helpers/noAnalytics";
 import {
   GATED_SURFACES,
   SEAT_TABLE,
@@ -44,6 +44,7 @@ test.describe("A spoofed crawler gets nothing", () => {
           userAgent: crawler.userAgent,
           extraHTTPHeaders: { "X-Forwarded-For": crawler.forwarded },
         });
+        await blockAnalytics(context);
         const page = await context.newPage();
         try {
           for (const surface of GATED_SURFACES.slice(0, 3)) {
@@ -79,7 +80,8 @@ test.describe("A spoofed crawler gets nothing", () => {
             "/api/college-cutoffs?slug=sms-medical-college-jaipur&level=pg",
           ]) {
             const res = await api.get(path);
-            expect(res.status(), `${path} answered a forged ${crawler.name}`).toBe(401);
+            // Removed on 2026-10-12: there are no row APIs to refuse anybody.
+            expect(res.status(), `${path} answered a forged ${crawler.name}`).toBe(404);
           }
         } finally {
           await api.dispose();
@@ -97,6 +99,7 @@ test.describe("A spoofed crawler gets nothing", () => {
         "X-Real-IP": "66.249.66.1",
       },
     });
+    await blockAnalytics(context);
     const page = await context.newPage();
     try {
       await page.goto(GATED_SURFACES[0].path);

@@ -5,6 +5,7 @@ import { getMdsOverview } from "@/lib/mdsQueries";
 import { resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
+import TelegramJoin from "@/components/engage/TelegramJoin";
 
 /** NEET MDS cutoff, speciality by speciality — for BDS graduates. See lib/mdsQueries.ts. */
 
@@ -184,6 +185,7 @@ export default async function NeetMdsCutoffPage() {
         title="Planning your MDS choices?"
         body="A counsellor orders your MDS specialities and colleges — AIQ, deemed and your state — against MCC's published results and your budget."
       />
+      <TelegramJoin placement="neet_mds_cutoff" />
     </main>
   );
 }

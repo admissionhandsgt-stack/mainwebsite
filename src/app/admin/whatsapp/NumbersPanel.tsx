@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Loader2, Plus, Smartphone, Trash2, Power } from "lucide-react";
+import { Badge, Button, Card, Field, INPUT, INPUT_H, type Tone } from "@/components/admin/ui";
 
 /**
  * Every number we send from, and the backups that take over when one is out.
@@ -54,11 +55,7 @@ function state(s: SenderRow): { text: string; tone: "good" | "warn" | "bad" } {
   return { text: "Sending codes", tone: "good" };
 }
 
-const toneCls = {
-  good: "bg-emerald-50 text-emerald-700 border-emerald-200",
-  warn: "bg-amber-50 text-amber-700 border-amber-200",
-  bad: "bg-rose-50 text-rose-700 border-rose-200",
-};
+const toneOf: Record<"good" | "warn" | "bad", Tone> = { good: "success", warn: "warning", bad: "danger" };
 
 export default function NumbersPanel({
   senders,
@@ -80,71 +77,72 @@ export default function NumbersPanel({
   const ready = senders.filter((s) => state(s).tone === "good").length;
 
   return (
-    <section className="rounded-2xl border border-gray-200 bg-white p-5">
-      <header className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h2 className="text-base font-bold text-gray-900">Numbers</h2>
-          <p className="mt-1 max-w-xl text-sm text-gray-500">
-            Sign-in codes go from whichever connected number has sent the fewest today. A number WhatsApp
-            locks, logs out or that reaches its daily cap is skipped automatically. If none can send, visitors
-            are shown the &ldquo;send us this code&rdquo; screen instead, which still works.
-          </p>
-        </div>
-        <span
-          className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold ${
-            ready ? toneCls.good : toneCls.bad
-          }`}
-        >
+    <Card
+      flush
+      title="Numbers"
+      description={
+        <>
+          Sign-in codes go from whichever connected number has sent the fewest today. A number WhatsApp
+          locks, logs out or that reaches its daily cap is skipped automatically. If none can send, visitors
+          are shown the &ldquo;send us this code&rdquo; screen instead, which still works.
+        </>
+      }
+      actions={
+        <Badge tone={ready ? "success" : "danger"}>
           {ready} of {senders.length} sending codes
-        </span>
-      </header>
-
-      <ul className="mt-4 divide-y divide-gray-100 rounded-xl border border-gray-100">
+        </Badge>
+      }
+    >
+      <ul className="divide-y divide-slate-100">
         {senders.map((s) => {
           const st = state(s);
           return (
-            <li key={s.id} className="flex flex-col gap-3 p-4">
-              <div className="flex flex-wrap items-center justify-between gap-3">
+            <li key={s.id} className="flex flex-col gap-3 px-5 py-4">
+              <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <p className="font-semibold text-gray-900">
+                  <p className="flex flex-wrap items-center gap-x-2 font-semibold text-slate-900">
                     {s.label}
-                    {s.primary && <span className="ml-2 text-xs font-medium text-gray-400">set up in the steps below</span>}
+                    {s.primary && <span className="text-xs font-medium text-slate-400">set up in the steps below</span>}
                   </p>
-                  <p className="text-sm text-gray-500">
-                    {s.phone ? `+${s.phone}` : "No number paired yet"} · {s.sentToday} of {s.capToday} codes today
+                  <p className="mt-0.5 text-sm text-slate-500">
+                    <span className="font-mono">{s.phone ? `+${s.phone}` : "No number paired yet"}</span>
+                    {" · "}
+                    <span className="tabular-nums">
+                      {s.sentToday} of {s.capToday} codes today
+                    </span>
                     {s.capToday < s.dailyCap && " (warming up — full cap after its first week)"}
                   </p>
-                  {s.health.error && st.tone !== "good" && <p className="text-xs text-rose-600">{s.health.error}</p>}
+                  {s.health.error && st.tone !== "good" && (
+                    <p className="mt-1 break-words text-xs text-red-600">{s.health.error}</p>
+                  )}
                 </div>
-                <span className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold ${toneCls[st.tone]}`}>
-                  {st.text}
-                </span>
+                <Badge tone={toneOf[st.tone]}>{st.text}</Badge>
               </div>
 
               {!s.primary && (
                 <div className="flex flex-wrap items-center gap-2">
                   {s.health.status !== "WORKING" && s.health.reachable && (
-                    <button
+                    <Button
+                      size="sm"
                       onClick={() => {
                         setPairFor(pairFor === s.id ? null : s.id);
                         setPairCode(null);
                       }}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-1.5 text-sm font-semibold text-gray-700 hover:bg-gray-50"
                     >
                       <Smartphone className="h-4 w-4" /> Pair a phone
-                    </button>
+                    </Button>
                   )}
-                  <button
+                  <Button
+                    size="sm"
                     onClick={async () => {
                       const r = await post({ action: "sender-update", id: s.id, enabled: !s.enabled }, `toggle-${s.id}`);
                       if (r) reload();
                     }}
                     disabled={busy === `toggle-${s.id}`}
-                    className="rounded-lg border border-gray-200 px-3 py-1.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 disabled:opacity-50"
                   >
                     {s.enabled ? "Turn off" : "Turn on"}
-                  </button>
-                  <label className="inline-flex items-center gap-1.5 text-sm text-gray-600">
+                  </Button>
+                  <label className="inline-flex items-center gap-1.5 text-[13px] text-slate-600">
                     Cap
                     <input
                       type="number"
@@ -158,50 +156,54 @@ export default function NumbersPanel({
                           if (r) reload();
                         }
                       }}
-                      className="w-20 rounded-lg border border-gray-200 px-2 py-1 text-sm"
+                      className={`${INPUT} h-8 w-20 tabular-nums`}
                     />
                     / day
                   </label>
                   {s.health.status === "WORKING" && (
-                    <button
+                    <Button
+                      size="sm"
+                      variant="danger"
                       onClick={async () => {
                         if (!confirm(`Disconnect ${s.label}? It stops sending until it is paired again.`)) return;
                         const r = await post({ action: "sender-logout", id: s.id }, `logout-${s.id}`);
                         if (r) reload();
                       }}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-rose-200 px-3 py-1.5 text-sm font-semibold text-rose-700 hover:bg-rose-50"
                     >
                       <Power className="h-4 w-4" /> Disconnect
-                    </button>
+                    </Button>
                   )}
-                  <button
+                  <Button
+                    size="sm"
+                    variant="ghost"
                     onClick={async () => {
                       if (!confirm(`Remove ${s.label} from the list? Its container keeps running; this only stops the website using it.`)) return;
                       const r = await post({ action: "sender-remove", id: s.id }, `remove-${s.id}`);
                       if (r) reload();
                     }}
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-1.5 text-sm font-semibold text-gray-500 hover:bg-gray-50"
                   >
                     <Trash2 className="h-4 w-4" /> Remove
-                  </button>
+                  </Button>
                 </div>
               )}
 
               {pairFor === s.id && (
-                <div className="rounded-xl bg-gray-50 p-3">
-                  <p className="text-sm text-gray-600">
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="text-sm text-slate-600">
                     The phone number this backup will send from (a 10-digit Indian number is fine — 91 is added). Then on that phone: WhatsApp
                     &rarr; Linked devices &rarr; Link a device &rarr; <em>Link with phone number instead</em>.
                   </p>
-                  <div className="mt-2 flex flex-wrap gap-2">
+                  <div className="mt-3 flex flex-wrap gap-2">
                     <input
                       value={pairNumber}
                       onChange={(e) => setPairNumber(e.target.value)}
                       placeholder="9876512345"
                       inputMode="tel"
-                      className="w-48 rounded-lg border border-gray-200 px-3 py-1.5 text-sm"
+                      aria-label="Phone number to pair"
+                      className={`${INPUT} ${INPUT_H} w-full font-mono sm:w-48`}
                     />
-                    <button
+                    <Button
+                      variant="primary"
                       onClick={async () => {
                         const started = await post({ action: "sender-connect", id: s.id }, `pair-${s.id}`);
                         if (!started) return;
@@ -209,16 +211,17 @@ export default function NumbersPanel({
                         if (r?.code) setPairCode({ id: s.id, code: String(r.code), number: String(r.number ?? pairNumber) });
                       }}
                       disabled={busy === `pair-${s.id}` || pairNumber.replace(/\D/g, "").length < 10}
-                      className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-sm font-bold text-white hover:bg-emerald-700 disabled:opacity-50"
                     >
                       {busy === `pair-${s.id}` && <Loader2 className="h-4 w-4 animate-spin" />}
                       Get a pairing code
-                    </button>
+                    </Button>
                   </div>
                   {pairCode?.id === s.id && (
-                    <p className="mt-3">
-                      <span className="block text-xs uppercase tracking-wide text-gray-500">Type this on the +{pairCode.number} phone, within a couple of minutes</span>
-                      <span className="font-mono text-2xl font-bold tracking-[0.2em] text-gray-900">{pairCode.code}</span>
+                    <p className="mt-4 rounded-lg border border-slate-200 bg-white p-3">
+                      <span className="block text-xs font-medium uppercase tracking-wide text-slate-500">
+                        Type this on the +{pairCode.number} phone, within a couple of minutes
+                      </span>
+                      <span className="mt-1 block font-mono text-2xl font-bold tracking-[0.2em] text-slate-900">{pairCode.code}</span>
                     </p>
                   )}
                 </div>
@@ -228,80 +231,77 @@ export default function NumbersPanel({
         })}
       </ul>
 
-      {adding ? (
-        <div className="mt-4 rounded-xl border border-gray-200 p-4">
-          <p className="text-sm text-gray-600">
-            Each backup is its own gateway container on the server, already running before it is added here. Use a
-            number the team can see — people reply to the codes.
-          </p>
-          <div className="mt-3 grid gap-3 sm:grid-cols-2">
-            <label className="text-sm text-gray-700">
-              Name
-              <input
-                value={form.label}
-                onChange={(e) => setForm({ ...form, label: e.target.value })}
-                placeholder="Backup 1"
-                className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
-              />
-            </label>
-            <label className="text-sm text-gray-700">
-              Gateway address
-              <input
-                value={form.gatewayUrl}
-                onChange={(e) => setForm({ ...form, gatewayUrl: e.target.value })}
-                className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 font-mono text-sm"
-              />
-            </label>
-            <label className="text-sm text-gray-700">
-              Gateway API key
-              <input
-                type="password"
-                value={form.apiKey}
-                onChange={(e) => setForm({ ...form, apiKey: e.target.value })}
-                className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
-              />
-            </label>
-            <label className="text-sm text-gray-700">
-              Sign-in codes per day
-              <input
-                type="number"
-                min={0}
-                max={500}
-                value={form.dailyCap}
-                onChange={(e) => setForm({ ...form, dailyCap: e.target.value })}
-                className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
-              />
-            </label>
+      <div className="border-t border-slate-100 px-5 py-4">
+        {adding ? (
+          <div>
+            <p className="text-sm text-slate-600">
+              Each backup is its own gateway container on the server, already running before it is added here. Use a
+              number the team can see — people reply to the codes.
+            </p>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              <Field label="Name" htmlFor="sender-label">
+                <input
+                  id="sender-label"
+                  value={form.label}
+                  onChange={(e) => setForm({ ...form, label: e.target.value })}
+                  placeholder="Backup 1"
+                  className={`${INPUT} ${INPUT_H}`}
+                />
+              </Field>
+              <Field label="Gateway address" htmlFor="sender-url">
+                <input
+                  id="sender-url"
+                  value={form.gatewayUrl}
+                  onChange={(e) => setForm({ ...form, gatewayUrl: e.target.value })}
+                  className={`${INPUT} ${INPUT_H} font-mono`}
+                />
+              </Field>
+              <Field label="Gateway API key" htmlFor="sender-key">
+                <input
+                  id="sender-key"
+                  type="password"
+                  value={form.apiKey}
+                  onChange={(e) => setForm({ ...form, apiKey: e.target.value })}
+                  className={`${INPUT} ${INPUT_H}`}
+                />
+              </Field>
+              <Field label="Sign-in codes per day" htmlFor="sender-cap">
+                <input
+                  id="sender-cap"
+                  type="number"
+                  min={0}
+                  max={500}
+                  value={form.dailyCap}
+                  onChange={(e) => setForm({ ...form, dailyCap: e.target.value })}
+                  className={`${INPUT} ${INPUT_H} tabular-nums`}
+                />
+              </Field>
+            </div>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <Button
+                variant="primary"
+                onClick={async () => {
+                  const r = await post({ action: "sender-add", ...form, dailyCap: Number(form.dailyCap) }, "sender-add");
+                  if (r) {
+                    setAdding(false);
+                    setForm({ label: "", gatewayUrl: "http://waha2:3000", apiKey: "", dailyCap: "40" });
+                    reload();
+                  }
+                }}
+                disabled={busy === "sender-add"}
+              >
+                {busy === "sender-add" && <Loader2 className="h-4 w-4 animate-spin" />}
+                Add number
+              </Button>
+              <Button onClick={() => setAdding(false)}>Cancel</Button>
+            </div>
           </div>
-          <div className="mt-3 flex gap-2">
-            <button
-              onClick={async () => {
-                const r = await post({ action: "sender-add", ...form, dailyCap: Number(form.dailyCap) }, "sender-add");
-                if (r) {
-                  setAdding(false);
-                  setForm({ label: "", gatewayUrl: "http://waha2:3000", apiKey: "", dailyCap: "40" });
-                  reload();
-                }
-              }}
-              disabled={busy === "sender-add"}
-              className="inline-flex items-center gap-2 rounded-xl bg-gray-900 px-4 py-2 text-sm font-bold text-white hover:bg-gray-800 disabled:opacity-50"
-            >
-              {busy === "sender-add" && <Loader2 className="h-4 w-4 animate-spin" />}
-              Add number
-            </button>
-            <button onClick={() => setAdding(false)} className="rounded-xl border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-600">
-              Cancel
-            </button>
-          </div>
-        </div>
-      ) : (
-        <button
-          onClick={() => setAdding(true)}
-          className="mt-4 inline-flex items-center gap-2 rounded-xl border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
-        >
-          <Plus className="h-4 w-4" /> Add a backup number
-        </button>
-      )}
-    </section>
+        ) : (
+          <Button onClick={() => setAdding(true)}>
+            <Plus className="h-4 w-4" /> Add a backup number
+          </Button>
+        )}
+      </div>
+    </Card>
   );
 }

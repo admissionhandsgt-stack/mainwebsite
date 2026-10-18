@@ -2,6 +2,8 @@
 import React from 'react';
 import { CheckCircle, XCircle } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { CONTACT_INFO } from "@/lib/constants";
 
 const NRIEligibility = () => {
   return (
@@ -17,7 +19,7 @@ const NRIEligibility = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="nri" className="max-w-5xl mx-auto">
+        <Tabs defaultValue="nri" className="mx-auto">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto p-1.5 glass-white rounded-2xl border border-white/40 shadow-sm">
             <TabsTrigger value="nri" className="rounded-xl py-3 data-[state=active]:bg-cyan-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all font-bold">NRI</TabsTrigger>
             <TabsTrigger value="nri-sponsored" className="rounded-xl py-3 data-[state=active]:bg-cyan-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all font-bold">NRI Sponsored</TabsTrigger>
@@ -111,7 +113,7 @@ const NRIEligibility = () => {
           </TabsContent>
         </Tabs>
         
-        <div className="mt-16 glass-white p-8 md:p-12 rounded-[2.5rem] max-w-5xl mx-auto shadow-xl border border-white/60">
+        <div className="mt-16 glass-white p-8 md:p-12 rounded-[2.5rem] shadow-xl border border-white/60">
           <h3 className="text-2xl font-black mb-8 text-slate-900 tracking-tight">General Academic Requirements</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <ul className="space-y-4">
@@ -127,10 +129,33 @@ const NRIEligibility = () => {
                 </li>
               ))}
             </ul>
-            <div className="p-6 bg-slate-900 rounded-3xl text-white shadow-2xl">
-              <p className="text-cyan-100/70 font-medium leading-relaxed italic">
-                Eligibility varies by state and institution. Contact our NRI desk for a personalized profile assessment.
+            <div className="flex flex-col gap-4 p-6 md:p-8 bg-slate-900 rounded-3xl text-white shadow-2xl">
+              <p className="font-heading text-xl font-extrabold leading-snug">
+                Eligibility differs by state, college and document.{" "}
+                <span className="bg-gradient-to-r from-cyan-300 to-emerald-300 bg-clip-text text-transparent">
+                  One missing paper can cost an NRI seat.
+                </span>
               </p>
+              <p className="text-cyan-100/75 font-medium leading-relaxed">
+                Our NRI desk checks your profile and paperwork against each college before you apply — sponsorship
+                letters, embassy attestation and all.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <a
+                  href={`https://wa.me/${CONTACT_INFO.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent("Hello AdmissionHands, I need help with NRI quota eligibility.")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#25D366] px-5 text-[14px] font-bold text-white hover:bg-[#1fbf5b]"
+                >
+                  <WhatsAppIcon className="h-4 w-4" /> Ask the NRI desk
+                </a>
+                <a
+                  href={`tel:${CONTACT_INFO.phone}`}
+                  className="inline-flex min-h-11 items-center rounded-xl border border-white/20 px-5 text-[14px] font-bold text-white hover:border-cyan-300/60"
+                >
+                  Call an expert counsellor
+                </a>
+              </div>
             </div>
           </div>
         </div>

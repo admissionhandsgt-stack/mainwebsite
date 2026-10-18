@@ -6,7 +6,7 @@ import { listColleges, getCollegeFacets, type CollegeFilters } from "@/lib/colle
 import PageHero from "@/components/ui/PageHero";
 import CollegeFilterBar from "@/components/colleges/CollegeFilterBar";
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
-import { canSeeDepthServer } from "@/lib/depth";
+import { approxFee } from "@/lib/chance";
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +17,7 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata(): Promise<Metadata> {
   return resolveMetadata('/md-ms-india/colleges', {
     title: "MD/MS Colleges in India — Seats, Fees, Stipend & Cutoffs | AdmissionHands",
-    description: "All 2,168 PG medical colleges with published seat counts, fee structures, stipends and closing ranks. Filter by state, ownership and fee.",
+    description: "All 2,168 PG medical colleges with seat counts, approximate fees and stipends. Filter by state, ownership and fee, and see your chance by rank.",
   });
 }
 
@@ -51,10 +51,9 @@ export default async function PGCollegesPage({ searchParams }: PageProps) {
     perPage: 24,
   };
 
-  const [{ items, total, page, perPage }, facets, depth, hero] = await Promise.all([
+  const [{ items, total, page, perPage }, facets, hero] = await Promise.all([
     listColleges(filters),
     getCollegeFacets("pg"),
-    canSeeDepthServer(),
     // Was a hardcoded path to an AI-generated campus that read "SWAMI
     // VIVEKANANDA MEDICAL COLLEGE AND HOSPITAL", with SCIENCES misspelt, on a
     // page about every PG college in the country.
@@ -87,7 +86,7 @@ export default async function PGCollegesPage({ searchParams }: PageProps) {
           webPage({
             name: "PG Medical Colleges in India",
             description:
-              "Every PG medical college with published closing ranks, filterable by state, branch and quota.",
+              "Every PG medical college with seats, approximate fees and stipends, filterable by state and ownership.",
             path: "/md-ms-india/colleges",
           }),
           breadcrumb([{ name: "Home", path: "/" }, { name: "MD/MS India", path: "/md-ms-india" }, { name: "Colleges", path: "/md-ms-india/colleges" }]),
@@ -98,7 +97,7 @@ export default async function PGCollegesPage({ searchParams }: PageProps) {
         eyebrowIcon="building"
         title="Every PG medical college,"
         titleAccent="with the numbers behind it"
-        subtitle="Seat counts, fee structures, stipends and the closing rank each seat actually went to — as published by the counselling authorities, for all 2,168 colleges."
+        subtitle="Seat counts, approximate fees and stipends for all 2,168 colleges — and, once you sign in, your own chance at each one."
         image={hero?.imageUrl && hero.imageUrl !== "none" ? hero.imageUrl : undefined}
         imageSubject={hero?.subject}
         imageCredit={hero?.attribution}
@@ -178,9 +177,9 @@ export default async function PGCollegesPage({ searchParams }: PageProps) {
                       </div>
                       <div>
                         <dd className="tnum font-heading text-lg font-extrabold leading-none text-foreground">
-                          {money(c.minFee)}
+                          {approxFee(c.minFee)?.replace(/ \/yr\*$/, "*") ?? "—"}
                         </dd>
-                        <dt className="mt-1 text-[11px] uppercase tracking-wide text-muted-foreground">Fee from</dt>
+                        <dt className="mt-1 text-[11px] uppercase tracking-wide text-muted-foreground">Fee from / yr</dt>
                       </div>
                       <div>
                         <dd className="tnum font-heading text-lg font-extrabold leading-none text-signal-safe">
@@ -191,14 +190,8 @@ export default async function PGCollegesPage({ searchParams }: PageProps) {
                     </dl>
 
                     <div className="mt-4 flex items-center gap-1.5 text-[13px] font-semibold text-primary">
-                      {/*
-                        The precise best cut used to print here — 2,168 colleges
-                        each with a real closing rank beside its name is a
-                        dataset, and it is the dataset. The band a rank falls in
-                        comes from RankLens and stays: four buckets cannot be
-                        turned back into a cutoff.
-                      */}
-                      <span>{depth.full && c.bestRank != null ? `Best cut ${c.bestRank.toLocaleString("en-IN")}` : "See cutoffs"}</span>
+                      {/* No college's cut is printed anywhere (lib/depth.ts). */}
+                      <span>Fees, seats &amp; your chance</span>
                       <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                     </div>
                   </Link>

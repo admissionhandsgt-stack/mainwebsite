@@ -3,10 +3,8 @@ import { AlertTriangle, ArrowRight, MapPin, Search, TrendingDown } from "lucide-
 import type { QuotaOverview } from "@/lib/quotaQueries";
 import StructuredData from "@/components/seo/StructuredData";
 import CtaBand from "@/components/ui/CtaBand";
-import GatedSeatTable from "@/components/seats/GatedSeatTable";
-import { canSeeDepthServer } from "@/lib/depth";
+import SeatOverview from "@/components/seats/SeatOverview";
 import { summariseSeats } from "@/lib/seatSummary";
-import { paywallJsonLd } from "@/lib/paywall";
 
 const SITE = "https://www.admissionhands.com";
 
@@ -57,11 +55,7 @@ export default async function QuotaPage({
   faqs: Faq[];
   intro: string;
 }) {
-  const access = await canSeeDepthServer();
-  // Both tables are all-or-nothing: the rows only exist in the response when
-  // the caller may have them.
-  const pgRows = access.full && pg ? pg.rowsList : [];
-  const ugRows = access.full && ug ? ug.rowsList : [];
+  // Aggregates only — the per-college rows stay on the server (lib/depth.ts).
   const pgSummary = pg ? summariseSeats(pg.rowsList) : null;
   const ugSummary = ug ? summariseSeats(ug.rowsList) : null;
 
@@ -95,13 +89,6 @@ export default async function QuotaPage({
               acceptedAnswer: { "@type": "Answer", text: f.a },
             })),
           },
-          // Declares the seat tables as gated, which is what makes serving them
-          // to a crawler a paywall and not cloaking. See lib/paywall.ts.
-          paywallJsonLd({
-            url: `${SITE}${family.path}`,
-            name: `${family.label} seats — closing ranks and fees`,
-            description: `${family.label} seats by college and quota, with closing ranks${pg ? " and the fee each seat carries" : ""}.`,
-          }),
         ]}
       />
 
@@ -151,8 +138,8 @@ export default async function QuotaPage({
           <span>
             <span className="font-bold">A larger rank is not a cheaper seat.</span> {family.label}{" "}
             seats stay open to ranks the government quota closed long before — and they cost several
-            times more. Every row below keeps its rank and its own fee together, so the two are
-            never read apart.
+            times more. Which of them your rank reaches — and what each would cost you — is the
+            first thing a counsellor works out with you.
           </span>
         </p>
 
@@ -160,32 +147,18 @@ export default async function QuotaPage({
         {pg && (
           <section className="mt-9">
             <h2 className="font-heading text-xl font-bold text-foreground md:text-2xl">
-              MD/MS {family.short} seats — rank and fee
+              MD/MS {family.short} seats
             </h2>
             <p className="mt-1.5 max-w-[72ch] text-[14px] leading-relaxed text-muted-foreground">
               {inr(pg.seats)} seats across {inr(pg.colleges)} colleges in {pg.states} states
-              {pg.year ? `, from the ${pg.year} counselling results` : ""}. Widest reach first.
+              {pg.year ? `, from the ${pg.year} counselling results` : ""}.
             </p>
 
-            <GatedSeatTable
-              rows={pgRows}
+            <SeatOverview
               summary={pgSummary!}
-              level="pg"
-              states={pgSummary!.stateNames}
-              counsellingHeadline={`${family.label} seats vary by crores between colleges. A counsellor knows which are worth it.`}
-              total={pg.rowsList.length}
-              query={`kind=quota&family=${encodeURIComponent(family.id)}&level=pg`}
-              collegeBase="/md-ms-india/colleges"
-              showCourse
-              noun="seats"
+              ctaHref={`/neet-college-predictor?course=pg&seatType=${encodeURIComponent(family.id)}`}
+              ctaLabel={`See my ${family.short} chances`}
             />
-
-            {pg.truncated && (
-              <p className="mt-3 text-[13px] text-muted-foreground">
-                Showing the {pg.rowsList.length} seats whose cut reached furthest, of {inr(pg.seats)}.
-                The predictor narrows them to the ones your own rank reaches.
-              </p>
-            )}
           </section>
         )}
 
@@ -193,7 +166,7 @@ export default async function QuotaPage({
         {ug && (
           <section className="mt-12">
             <h2 className="font-heading text-xl font-bold text-foreground md:text-2xl">
-              MBBS {family.short} seats — rank only
+              MBBS {family.short} seats
             </h2>
             <p className="mt-1.5 max-w-[74ch] text-[14px] leading-relaxed text-muted-foreground">
               {inr(ug.seats)} seats across {inr(ug.colleges)} colleges.{" "}
@@ -205,16 +178,11 @@ export default async function QuotaPage({
               an {family.short} fee is the most expensive kind to get wrong.
             </p>
 
-            <GatedSeatTable
-              rows={ugRows}
+            <SeatOverview
               summary={ugSummary!}
-              level="ug"
-              states={ugSummary!.stateNames}
-              total={ug.rowsList.length}
-              query={`kind=quota&family=${encodeURIComponent(family.id)}&level=ug`}
-              collegeBase="/mbbs-india/colleges"
               showFee={false}
-              noun="seats"
+              ctaHref={`/neet-college-predictor?course=mbbs&seatType=${encodeURIComponent(family.id)}`}
+              ctaLabel={`See my MBBS ${family.short} chances`}
             />
           </section>
         )}

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "sonner";
+import { listRows } from "@/lib/adminApi";
 
 export interface Alert {
   id: number;
@@ -10,6 +11,10 @@ export interface Alert {
   image_url?: string;
   is_active: boolean;
   order_index: number;
+  /** Written by the official-notice feed (lib/alertFeed.ts) rather than a person. */
+  auto?: boolean;
+  source?: string | null;
+  expires_at?: string | null;
 }
 
 export interface AlertFormData {
@@ -30,11 +35,12 @@ const EMPTY_FORM: AlertFormData = {
 };
 
 /**
- * The scrolling notice bar, and the admin screen that edits it.
+ * The admin screen that edits the scrolling notice bar.
  *
- * Reads go through the public content API; writes go through the admin API,
- * which is the only path that can change anything. `silent` suppresses toasts
- * for the public bar, where a failed load should not interrupt a visitor.
+ * Reads and writes both go through the admin API. It used to read the public
+ * content API, which returns only live alerts — so a hidden alert vanished from
+ * the admin with no way to switch it back on, and every row looked hand-written.
+ * `silent` suppresses the error toast.
  */
 export const useLiveAlerts = (options: { silent?: boolean } = {}) => {
   const { silent = false } = options;
@@ -49,20 +55,14 @@ export const useLiveAlerts = (options: { silent?: boolean } = {}) => {
     setIsLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/content/alerts");
-      if (!res.ok) throw new Error("Could not load alerts");
-      const { data } = await res.json();
+      const rows = await listRows<Alert & { link: string | null; image_url: string | null }>("alerts");
       setAlerts(
-        (data ?? []).map(
-          (a: { id: number; title: string; link: string | null; imageUrl: string | null }): Alert => ({
-            id: a.id,
-            title: a.title,
-            link: a.link ?? "",
-            image_url: a.imageUrl ?? undefined,
-            is_active: true, // the content API only returns active rows
-            order_index: 0,
-          }),
-        ),
+        rows.map((a) => ({
+          ...a,
+          link: a.link ?? "",
+          image_url: a.image_url ?? undefined,
+          order_index: a.order_index ?? 0,
+        })),
       );
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Could not load alerts";
@@ -141,11 +141,15 @@ export const useLiveAlerts = (options: { silent?: boolean } = {}) => {
     setEditingAlert((prev) => (prev ? { ...prev, [field]: value } : prev));
   }, []);
 
-  /** Flip a single alert on or off from the list, without opening the editor. */
+  /**
+   * Flip a single alert on or off from the list, without opening the editor.
+   * `isActive` is the alert's value now; it used to be saved back unchanged,
+   * so the switch did nothing.
+   */
   const toggleActive = useCallback(
     async (id: number, isActive: boolean) => {
       try {
-        await write("PATCH", { is_active: isActive }, id);
+        await write("PATCH", { is_active: !isActive }, id);
       } catch (err) {
         toast.error(err instanceof Error ? err.message : "Could not change the alert");
       }

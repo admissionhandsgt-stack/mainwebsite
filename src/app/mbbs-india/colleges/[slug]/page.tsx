@@ -1,37 +1,29 @@
-import { fitTitle, fitDescription, nameWith, ugCourseLabel } from "@/lib/seoTitle";
 import { OG_IMAGE } from "@/lib/ogImage";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { collegeFaqs, collegeJsonLd, collegePlace } from "@/lib/collegeSeo";
+import { collegeFaqs, collegeJsonLd } from "@/lib/collegeSeo";
 import CollegeFaq from "@/components/colleges/CollegeFaq";
 import Link from "@/components/ui/Link";
 import Image from "next/image";
 import PhotoCredit from "@/components/ui/PhotoCredit";
-import { GraduationCap, Landmark, MapPin, Banknote, Users } from "lucide-react";
-import {
-  getCollege,
-  getCollegeCutoffs,
-  getCollegeFees,
-  getSimilarColleges,
-  getCollegeSlugs,
-} from "@/lib/collegeQueries";
-import { getMbbsStates, getUgCollegeExtras } from "@/lib/content";
+import { getSimilarColleges } from "@/lib/collegeQueries";
+import { getMbbsStates } from "@/lib/content";
+import { loadCollegePage, collegeTitle, collegeDescription } from "@/lib/collegeSnippet";
+import CollegeGlance from "@/components/colleges/CollegeGlance";
 import { extractStateName } from "@/lib/stateQueries";
 import CollegeRankCheck from "@/components/colleges/CollegeRankCheck";
-import CollegeCutoffs from "@/components/colleges/CollegeCutoffs";
-import { canSeeDepthServer } from "@/lib/depth";
-import { summariseCollegeCutoffs } from "@/lib/seatSummary";
+import { generalBands } from "@/lib/cutoffBands";
+import CutoffBands from "@/components/colleges/CutoffBands";
+import CounsellorEdge from "@/components/home/CounsellorEdge";
+import TelegramJoin from "@/components/engage/TelegramJoin";
 import CtaBand from "@/components/ui/CtaBand";
+import TrackView from "@/components/analytics/TrackView";
 
 /**
- * Rendered per request.
- *
- * These pages carry the search traffic and were pre-rendered and cached for
- * a day, which is why they only ever published a fixed eight-row preview:
- * one cached page cannot be two different answers. Closing the table
- * entirely to visitors while keeping it readable by a verified crawler is a
- * per-request decision, so the page has to be one. Every query behind it is
- * still cached, so the database is not re-read.
+ * Rendered per request. Since 2026-10-12 the page is the same for everybody —
+ * no closing rank for this college is shown to anyone (see lib/depth.ts) — so
+ * it could be cached again; it stays dynamic until the (site) route group
+ * moves the host check out of the root layout (CLAUDE.md, "Still open" 1).
  */
 export const dynamic = "force-dynamic";
 
@@ -58,43 +50,24 @@ export const dynamic = "force-dynamic";
  * and a dark header claims nothing.
  */
 
-const money = (n: number | null) => {
-  if (n == null) return "—";
-  if (n >= 10000000) return `₹${(n / 10000000).toFixed(2)} Cr`;
-  if (n >= 100000) return `₹${(n / 100000).toFixed(2)} L`;
-  return `₹${n.toLocaleString("en-IN")}`;
-};
 const num = (n: number | null) => (n == null ? "—" : n.toLocaleString("en-IN"));
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const college = await getCollege(params.slug, "ug");
-  if (!college) return { title: "College not found | AdmissionHands" };
-
-  const extras = await getUgCollegeExtras(params.slug);
-  // `collegePlace` drops a place already in the name, so these stop reading
-  // "Government Medical College, Kottayam, Kottayam, Kerala".
-  const where = collegePlace({ ...college, city: extras?.city ?? college.city });
-  // A dental or AYUSH college's page is not about MBBS (seoTitle.ugCourseLabel).
-  const course = ugCourseLabel(college.name, (await getCollegeCutoffs(params.slug, "ug")).map((c) => c.course));
-
+  const data = await loadCollegePage(params.slug, "ug");
+  if (!data) return { title: "College not found | AdmissionHands" };
+  // Short name + city + "<course> Cutoff <year>, Fees & Seats", and a
+  // description of the numbers the summary box shows (lib/collegeSnippet.ts).
+  // No brand suffix: the college's own name is what is searched.
+  const title = collegeTitle(data.summary);
+  const description = collegeDescription(data.summary);
   return {
-    // No brand suffix: the college's own name is what is searched, and the
-    // suffix pushed these past the ~60 characters Google shows.
-    title: fitTitle(
-      `${college.name} — ${course} Cutoff & Fees 2026`,
-      `${college.name} — ${course} Cutoff 2026`,
-      nameWith(college.name, ` ${course} Cutoff`),
-    ),
-    description: fitDescription(
-      `NEET UG ${course} closing ranks, fees and seat details for ${college.name}${where ? `, ${where}` : ""}. Published counselling data, round by round.`,
-      `NEET UG ${course} closing ranks, fees and seat details for ${college.name}${where ? `, ${where}` : ""}.`,
-      `NEET UG ${course} closing ranks, fees and seat details for ${college.name}.`,
-    ),
-    alternates: { canonical: `/mbbs-india/colleges/${college.slug}` },
+    title,
+    description,
+    alternates: { canonical: `/mbbs-india/colleges/${data.college.slug}` },
     openGraph: {
-      title: nameWith(college.name, ` — ${course} Cutoff & Fees`),
-      description: fitDescription(`NEET UG ${course} closing ranks and fees for ${college.name}, from published counselling data.`),
-      url: `/mbbs-india/colleges/${college.slug}`,
+      title,
+      description,
+      url: `/mbbs-india/colleges/${data.college.slug}`,
       type: "article",
       images: [OG_IMAGE],
     },
@@ -102,35 +75,18 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export default async function UgCollegePage({ params }: { params: { slug: string } }) {
-  const college = await getCollege(params.slug, "ug");
-  if (!college) notFound();
+  const data = await loadCollegePage(params.slug, "ug");
+  if (!data) notFound();
+  const { college, cutoffs, fees, extras, summary: s } = data;
   // The state page, linked from the breadcrumb (see the PG college page).
-  const stateSlug = (await getMbbsStates()).find((s) => extractStateName(s) === college.state)?.slug ?? null;
-
-  const [cutoffs, fees, similar, extras, access] = await Promise.all([
-    getCollegeCutoffs(params.slug, "ug"),
-    getCollegeFees(params.slug, "ug"),
-    getSimilarColleges(params.slug, "ug"),
-    getUgCollegeExtras(params.slug),
-    canSeeDepthServer(),
-  ]);
-
-  // All of the rows, or none of them. A slice is what this used to do.
-  const cutoffRows = access.full ? cutoffs : [];
-  const { summary: cutoffSummary, years: cutoffYears } = summariseCollegeCutoffs(cutoffs);
+  const [states, similar] = await Promise.all([getMbbsStates(), getSimilarColleges(params.slug, "ug", 5)]);
+  const stateSlug = states.find((st) => extractStateName(st) === college.state)?.slug ?? null;
 
   const where = [extras?.city, college.state].filter(Boolean).join(", ");
-
-  const bestRank = cutoffs.reduce<number | null>(
-    (m, c) => (c.r1Latest != null && (m == null || c.r1Latest < m) ? c.r1Latest : m),
-    null,
-  );
-
-  // UG fee blocks carry no quota in the source, so a range is the only honest
-  // way to show them — see the UG import notes in CLAUDE.md.
-  const feeValues = fees.map((f) => f.feeInr).filter((v): v is number => v != null);
-  const minFee = feeValues.length ? Math.min(...feeValues) : null;
-  const maxFee = feeValues.length ? Math.max(...feeValues) : null;
+  const quotas = Array.from(new Set(cutoffs.map((c) => c.quota).filter(Boolean)));
+  const counsellings = Array.from(new Set(cutoffs.map((c) => c.counselling).filter(Boolean))) as string[];
+  const bands = generalBands(cutoffs, 8);
+  const courseLabel = s.course;
 
   const courses = Array.from(new Set(cutoffs.map((c) => c.course))).sort();
   const latestYear = cutoffs.reduce<number | null>(
@@ -142,17 +98,19 @@ export default async function UgCollegePage({ params }: { params: { slug: string
   // well as in the markup — see the note in `lib/collegeSeo.ts` about what
   // FAQ schema does and does not buy since Google restricted it.
   const faqs = collegeFaqs(college, cutoffs, fees, "ug");
-  const jsonLd = collegeJsonLd({ college, level: "ug", faqs });
-
-  const facts = [
-    { icon: MapPin, label: "Location", value: where || "—" },
-    { icon: Landmark, label: "Type", value: extras?.collegeType ?? college.ownership ?? "—" },
-    { icon: Users, label: "MBBS intake", value: num(extras?.intake ?? null) },
-    { icon: GraduationCap, label: "Established", value: college.establishedYear ? String(college.establishedYear) : "—" },
-  ];
+  const jsonLd = collegeJsonLd({
+    college,
+    level: "ug",
+    faqs,
+    shortName: s.short,
+    state: stateSlug && college.state ? { name: `MBBS in ${college.state}`, path: `/mbbs-india/${stateSlug}` } : null,
+  });
+  // The predictor opens on this college's course (it has MBBS, BDS and PG).
+  const predictorCourse = courseLabel === "BDS" ? "bds" : "mbbs";
 
   return (
     <main className="min-h-screen bg-background">
+      <TrackView event="college_viewed" props={{ college_slug: params.slug, course: "mbbs", state: college.state }} />
       {jsonLd.map((schema, i) => (
         <script
           key={i}
@@ -202,115 +160,91 @@ export default async function UgCollegePage({ params }: { params: { slug: string
           </nav>
 
           <h1 className="font-heading max-w-[24ch] text-[clamp(1.75rem,4vw,2.75rem)] font-extrabold leading-tight text-white">
-            {college.name}
+            {s.short}
           </h1>
-          {where && <p className="mt-2 text-[15px] text-white/70">{where}</p>}
+          {s.official !== s.short && <p className="mt-2 max-w-[70ch] text-[14px] text-white/60">{s.official}</p>}
+          {where && <p className="mt-1.5 text-[15px] text-white/70">{where}</p>}
 
-          <dl className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {facts.map((f) => (
-              <div key={f.label} className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-                <dt className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-white/50">
-                  <f.icon className="h-3.5 w-3.5" />
-                  {f.label}
-                </dt>
-                <dd className="tnum mt-1 truncate text-[17px] font-bold text-white">{f.value}</dd>
-              </div>
-            ))}
-          </dl>
+          <CollegeGlance s={s} />
         </div>
       </header>
 
       <div className="container-custom py-10 md:py-14">
-        {cutoffs.length === 0 ? (
-          <div className="mx-auto max-w-xl rounded-2xl border border-border bg-card p-8 text-center">
-            <h2 className="font-heading text-lg font-bold text-foreground">
-              No published closing rank for this college yet
-            </h2>
-            <p className="mx-auto mt-2 max-w-[48ch] text-[15px] leading-relaxed text-muted-foreground">
-              It is a recognised college, but the counselling authority has not published a round we
-              hold for it. The rank checker below works across every college we do have.
-            </p>
-            <Link
-              href="/neet-college-predictor?course=mbbs"
-              className="mt-5 inline-block rounded-xl bg-gradient-brand px-5 py-2.5 text-sm font-bold text-white shadow-glow"
-            >
-              Check your rank across all colleges
-            </Link>
+        {/* ---------------- your chance, straight under the summary ---------------- */}
+        <CollegeRankCheck collegeName={s.short} course={predictorCourse} slug={college.slug} wide />
+
+        {/* ---------------- the headline facts ---------------- */}
+        <section className="mt-8 grid gap-4 sm:grid-cols-2">
+          <div className="rounded-2xl border border-border bg-card p-5">
+            <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+              Courses{latestYear ? ` · ${latestYear} counselling` : ""}
+            </div>
+            <div className="tnum mt-1 text-3xl font-extrabold text-foreground">{courses.length || "—"}</div>
+            <p className="mt-1 truncate text-[12px] text-muted-foreground">{courses.join(", ") || "—"}</p>
           </div>
-        ) : (
-          <>
-            {/* ---------------- the headline numbers ---------------- */}
-            <section className="grid gap-4 sm:grid-cols-3">
-              <div className="rounded-2xl border border-border bg-card p-5">
-                <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-                  Best round 1 close{latestYear ? ` · ${latestYear}` : ""}
-                </div>
-                <div className="tnum mt-1 text-3xl font-extrabold text-foreground">{num(bestRank)}</div>
-                <p className="mt-1 text-[12px] text-muted-foreground">
-                  The tightest seat here — others go further down.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-border bg-card p-5">
-                <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-                  Courses published
-                </div>
-                <div className="tnum mt-1 text-3xl font-extrabold text-foreground">{courses.length}</div>
-                <p className="mt-1 truncate text-[12px] text-muted-foreground">{courses.join(", ") || "—"}</p>
-              </div>
-              <div className="rounded-2xl border border-border bg-card p-5">
-                <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-                  <Banknote className="h-3.5 w-3.5" />
-                  Fee per year
-                </div>
-                <div className="tnum mt-1 text-3xl font-extrabold text-foreground">
-                  {minFee == null
-                    ? "—"
-                    : minFee === maxFee
-                      ? money(minFee)
-                      : `${money(minFee)} – ${money(maxFee)}`}
-                </div>
-                <p className="mt-1 text-[12px] text-muted-foreground">
-                  {feeValues.length > 1
-                    ? "A range: the source does not say which quota each fee belongs to."
-                    : "As published by the source."}
-                </p>
-              </div>
-            </section>
+          <div className="rounded-2xl border border-border bg-card p-5">
+            <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+              Seat options
+            </div>
+            <div className="tnum mt-1 text-3xl font-extrabold text-foreground">{num(cutoffs.length || null)}</div>
+            <p className="mt-1 truncate text-[12px] text-muted-foreground">
+              {quotas.length
+                ? `${quotas.length} quota${quotas.length === 1 ? "" : "s"}: ${quotas.slice(0, 3).join(", ")}`
+                : "Course × quota × category"}
+            </p>
+          </div>
+        </section>
 
-            {/* ---------------- rank check ---------------- */}
-            <section className="mt-8">
-              <CollegeRankCheck collegeName={college.name} level="ug" />
-            </section>
-
-            {/* ---------------- the seats ---------------- */}
-            <section className="mt-10">
-              <h2 className="font-heading text-xl font-bold text-foreground">
-                Every published seat at {college.name}
-              </h2>
-              <p className="mt-1 max-w-[70ch] text-[14px] leading-relaxed text-muted-foreground">
-                One row per course, quota and category. &ldquo;Widest&rdquo; is how far down the list
-                the seat actually went that year — later rounds can close tighter than earlier ones,
-                so the last round is not the widest.
-              </p>
-
-              <CollegeCutoffs
-                slug={params.slug}
-                level="ug"
-                collegeName={college.name}
-                showCounselling
-                total={cutoffs.length}
-                rows={cutoffRows}
-                summary={cutoffSummary}
-                years={cutoffYears}
-              />
-            </section>
-          </>
+        {bands.length > 0 && (
+          <div className="mt-8">
+            <CutoffBands
+              rows={bands}
+              collegeName={college.name}
+              level="ug"
+              ctaHref={`/neet-college-predictor?course=${predictorCourse}`}
+            />
+          </div>
         )}
+
+        {/* ---------------- how admission works, and your chance ---------------- */}
+        <section className="mt-8">
+          <div className="rounded-2xl border border-border bg-surface-2 p-6">
+            <h2 className="font-heading text-xl font-bold text-foreground">How admission here works</h2>
+            <ul className="mt-3 list-disc space-y-2 pl-5 text-[14.5px] leading-relaxed text-muted-foreground">
+              {counsellings.length > 0 && (
+                <li>
+                  Seats are allotted through{" "}
+                  <b className="text-foreground">{counsellings.slice(0, 3).join(", ")}</b>
+                  {counsellings.length > 3 ? ` and ${counsellings.length - 3} more` : ""}.
+                </li>
+              )}
+              {quotas.length > 0 && (
+                <li>
+                  Quotas published: <b className="text-foreground">{quotas.slice(0, 6).join(", ")}</b>
+                  {quotas.length > 6 ? ` and ${quotas.length - 6} more` : ""} — each closes at a very different
+                  rank and fee.
+                </li>
+              )}
+              <li>
+                Your chance depends on your rank, category, domicile and the round. Later rounds often reach much
+                further than round 1 — which is where families lose a seat by freezing too early.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <div className="mt-12">
+          <CounsellorEdge compact />
+        </div>
+
+        <TelegramJoin placement="college_ug" bare className="mt-6" />
 
         {/* ---------------- similar colleges ---------------- */}
         {similar.length > 0 && (
           <section className="mt-12">
-            <h2 className="font-heading text-xl font-bold text-foreground">Similar colleges</h2>
+            <h2 className="font-heading text-xl font-bold text-foreground">
+              Other {courseLabel} colleges{college.state ? ` in ${college.state}` : ""}
+            </h2>
             <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {similar.map((s) => (
                 <Link
@@ -323,6 +257,16 @@ export default async function UgCollegePage({ params }: { params: { slug: string
                 </Link>
               ))}
             </div>
+            <p className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[14px]">
+              {stateSlug && college.state && (
+                <Link href={`/mbbs-india/${stateSlug}`} className="font-semibold text-primary hover:underline">
+                  All MBBS colleges in {college.state}
+                </Link>
+              )}
+              <Link href={courseLabel === "BDS" ? "/bds-india" : "/neet-ug-cutoff"} className="font-semibold text-primary hover:underline">
+                {courseLabel === "BDS" ? "BDS cutoff and colleges in India" : "NEET UG cutoff by category"}
+              </Link>
+            </p>
           </section>
         )}
 
@@ -330,7 +274,7 @@ export default async function UgCollegePage({ params }: { params: { slug: string
       </div>
 
       <CtaBand
-        title={`Is ${college.name} within reach of your rank?`}
+        title={`Is ${s.short} within reach of your rank?`}
         body="Send us your NEET UG rank, category and domicile. We check it against every published round for this college and the ones around it, and tell you where it actually sits."
         image="/assets/images/hero/medical-admission-counselling-session.avif"
         primaryLabel="Get a free rank check"

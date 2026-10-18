@@ -36,7 +36,7 @@ const NRIProcess = ({ steps: fromCms }: { steps?: NriStep[] | null } = {}) => {
           </p>
         </div>
         
-        <div className="max-w-6xl mx-auto relative px-4 md:px-0">
+        <div className="relative">
           {/* Vertical Timeline Line */}
           <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-cyan-600 via-teal-500 to-teal-600 opacity-20 transform -translate-x-1/2 hidden md:block" />
           
@@ -69,7 +69,7 @@ const NRIProcess = ({ steps: fromCms }: { steps?: NriStep[] | null } = {}) => {
           </div>
         </div>
         
-        <div className="mt-32 max-w-6xl mx-auto glass rounded-[3rem] p-10 md:p-16 border border-white/10 shadow-2xl">
+        <div className="mt-32 glass rounded-[3rem] p-10 md:p-16 border border-white/10 shadow-2xl">
           <h3 className="text-3xl font-black mb-12 text-center text-white tracking-tight">Our Expert Admission Guidance Services</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10">
             {[

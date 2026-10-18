@@ -27,7 +27,7 @@ const services = [
     accent: "blue",
     description: "Every NEET rank has a unique set of possibilities. Our experts analyze your exact rank, category, domicile, and budget to build a customized admission roadmap — not generic advice.",
     features: [
-      "1-on-1 sessions with senior NEET counsellors (12+ yrs experience)",
+      "1-on-1 sessions with senior NEET counsellors (15+ yrs experience)",
       "Category-specific strategy: General, OBC, SC/ST, EWS, PwD",
       "Domicile advantage mapping for state quota seats",
       "Budget-aligned college recommendations (₹5L to ₹2Cr range)",
@@ -57,7 +57,7 @@ const services = [
     tagline: "Predict. Plan. Secure.",
     color: "from-teal-600 to-emerald-600",
     accent: "teal",
-    description: "Your rank placed against every published closing rank we hold — round one, the widest the cut reached that year, and how far it has ever gone. Historical, never a forecast.",
+    description: "Your counsellor places your rank against every published round — round one, the widest the cut reached, and how far it has ever gone — and turns it into your list. Historical, never a forecast.",
     features: [
       "State-wise and AIQ cutoff trend visualization",
       "Round-by-round movement, R1 through mop-up and stray",
@@ -184,7 +184,7 @@ const services = [
 const trustStats = [
   { icon: Users, value: "2100+", label: "Students Placed", color: "text-cyan-600" },
   { icon: TrendingUp, value: "2.7 lakh", label: "Closing Ranks", color: "text-emerald-600" },
-  { icon: Clock, value: "12+", label: "Years Experience", color: "text-teal-600" },
+  { icon: Clock, value: "15+", label: "Years Experience", color: "text-teal-600" },
   { icon: Award, value: "38", label: "States Covered", color: "text-amber-600" },
 ];
 
@@ -308,7 +308,7 @@ export default function ServicesClient({ heroImages, heroCredit }: ServicesClien
         <div className="absolute top-0 right-0 w-1/2 h-full bg-cyan-500/10 blur-[120px] pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-1/3 h-1/2 bg-teal-500/5 blur-[100px] pointer-events-none" />
 
-        <div className="container-custom relative z-10 max-w-6xl mx-auto">
+        <div className="container-custom relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             {/* Left side Content */}
             <motion.div 
@@ -439,7 +439,7 @@ export default function ServicesClient({ heroImages, heroCredit }: ServicesClien
           >
             {[
               { icon: BookOpen, title: "Data, Not Opinions", desc: "Our recommendations are backed by 2.7 lakh published closing ranks across every college in the counselling, and real allotment outcomes — not surface-level guesswork.", color: "from-cyan-600 to-cyan-700" },
-              { icon: HeartHandshake, title: "Dedicated Counsellor", desc: "You get a single, named expert assigned to your case from Day 1 to final admission. No rotating agents, no repeated explanations.", color: "from-emerald-600 to-teal-600" },
+              { icon: HeartHandshake, title: "Dedicated Counsellor", desc: "You get a single, named expert assigned to your case from Day 1 to final admission. No rotating call-centre staff, no repeated explanations.", color: "from-emerald-600 to-teal-600" },
               { icon: ShieldCheck, title: "Documents Checked Early", desc: "We check every document against your state's requirements weeks before the deadline, so a missing certificate is found while there is still time to get it.", color: "from-teal-600 to-teal-600" },
             ].map((item, idx) => (
               <div 

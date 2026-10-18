@@ -17,6 +17,7 @@ import { getDataStats, inr } from "@/lib/dataStats";
 import PageHero from "@/components/ui/PageHero";
 import Reveal from "@/components/ui/Reveal";
 import LeadCapture from "@/components/lead/LeadCapture";
+import TelegramJoin from "@/components/engage/TelegramJoin";
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
 import RoundTimeline, { type RoundStep } from "@/components/neet-pg-process/RoundTimeline";
 
@@ -460,6 +461,7 @@ export default async function NeetPgProcessPage() {
       </div>
 
       <LeadCapture level="pg" source="NEET PG process page" />
+      <TelegramJoin placement="neet_pg_process" />
     </main>
   );
 }

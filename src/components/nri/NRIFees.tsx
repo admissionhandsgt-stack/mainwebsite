@@ -84,7 +84,7 @@ const NRIFees = () => {
           ))}
         </div>
 
-        <div className="glass-white p-10 md:p-16 rounded-[3rem] max-w-5xl mx-auto border border-white/60 shadow-xl">
+        <div className="glass-white p-10 md:p-16 rounded-[3rem] border border-white/60 shadow-xl">
           <h3 className="text-3xl font-black mb-12 text-slate-900 tracking-tight text-center">Important Fee Considerations</h3>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">

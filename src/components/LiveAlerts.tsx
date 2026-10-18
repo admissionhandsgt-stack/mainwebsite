@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import Link from "@/components/ui/Link";
+import { TelegramIcon } from "@/components/icons/TelegramIcon";
+import { CONTACT_INFO } from "@/lib/constants";
 
 /** One notice, as the root layout reads it on the server. */
 export interface BarAlert {
@@ -85,6 +87,23 @@ export default function LiveAlerts({ alerts }: { alerts: BarAlert[] }) {
             )}
           </div>
         </div>
+
+        {/* The channel these notices also go to — fixed width, so the bar keeps
+            its 40px whatever the screen (see the layout-shift note above). */}
+        <a
+          href={CONTACT_INFO.telegram}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-placement="alerts_bar"
+          aria-label="Join Admission Hands on Telegram for counselling updates"
+          className="ml-3 inline-flex min-h-[44px] shrink-0 items-center z-10 md:ml-4"
+        >
+          <span className="inline-flex h-7 items-center gap-1.5 rounded-md bg-white px-2 text-[12px] font-black tracking-tight text-primary-strong shadow-sm transition-colors hover:bg-white/90 md:px-3 md:text-[11px]">
+            <TelegramIcon size={16} className="text-[#229ED9]" />
+            <span className="md:hidden">Join</span>
+            <span className="hidden md:inline">Join on Telegram</span>
+          </span>
+        </a>
       </div>
 
       <style dangerouslySetInnerHTML={{__html: `

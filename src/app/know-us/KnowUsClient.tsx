@@ -79,7 +79,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
             </h1>
             
             <p className="text-cyan-100/90 text-sm md:text-base font-medium leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              For over 12 years, Admission Hands has guided 2,100+ students into MBBS and PG seats. We work from the counselling authorities' own published closing ranks, round by round, with one counsellor beside you from your NEET result to the day you report.
+              For over 15 years, Admission Hands has guided 2,100+ students into MBBS and PG seats. We work from the counselling authorities' own published closing ranks, round by round, with one counsellor beside you from your NEET result to the day you report.
             </p>
 
             <div className="flex flex-col xs:flex-row gap-3 justify-center lg:justify-start mt-6">
@@ -127,7 +127,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
                 Admission Hands was founded with a singular vision: <strong className="text-slate-900 dark:text-white">every NEET rank — whether 500 or 500,000 — deserves a strategic, expert-driven path to the best possible medical college.</strong>
               </p>
               <p className="text-slate-700 dark:text-slate-300 text-sm md:text-base font-medium leading-relaxed">
-                Over the past 12+ years, we&apos;ve evolved from a small counselling desk into India&apos;s most analytically rigorous medical admission advisory. Our team reverse-engineers the NEET counselling system every single year — tracking round-wise seat movements, cutoff drift patterns, category-specific vacancy flows, and institutional fee changes across <strong className="text-slate-900 dark:text-white">every college in the counselling data in 36 states.</strong>
+                Over the past 15+ years, we&apos;ve evolved from a small counselling desk into India&apos;s most analytically rigorous medical admission advisory. Our team reverse-engineers the NEET counselling system every single year — tracking round-wise seat movements, cutoff drift patterns, category-specific vacancy flows, and institutional fee changes across <strong className="text-slate-900 dark:text-white">every college in the counselling data, state by state.</strong>
               </p>
               <p className="text-slate-700 dark:text-slate-300 text-sm md:text-base font-medium leading-relaxed">
                 While most families navigate the medical admission labyrinth with hearsay and hope, our students enter each counselling round armed with <strong className="text-slate-900 dark:text-white">the authorities' published closing ranks, documents checked before reporting, and a named expert counsellor</strong> who stays with them from Day 1 until they physically report to their college.
@@ -276,12 +276,12 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
                 icon: Brain,
                 title: "Data-First, Opinion-Free Advisory",
                 desc: "Every recommendation we make is backed by quantifiable data — cutoff trends, seat matrices, historical allotment outcomes. We never speculate. Our families receive college comparison reports with hard numbers, not vague promises.",
-                highlight: "Every published closing rank we hold, for every college"
+                highlight: "Every published round, read for you by your counsellor"
               },
               {
                 icon: HeartHandshake,
                 title: "Your Counsellor, Your Champion",
-                desc: "You're assigned a single, named senior counsellor who becomes your dedicated admission strategist. No rotating agents. No repeating your story. One expert who knows your rank, your preferences, your budget — and fights for your best outcome.",
+                desc: "You're assigned a single, named senior counsellor who becomes your dedicated admission strategist. No rotating call-centre staff. No repeating your story. One expert who knows your rank, your preferences, your budget — and fights for your best outcome.",
                 highlight: "1-on-1 dedicated mentorship from Day 1"
               },
               {

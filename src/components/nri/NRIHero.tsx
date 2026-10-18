@@ -13,7 +13,7 @@ interface NRIHeroProps {
 
 const NRIHero = ({ backgroundImageUrl, credit }: NRIHeroProps) => {
   return (
-    <section className="relative w-full h-screen min-h-[700px] flex items-center overflow-hidden mesh-gradient pt-[112px]">
+    <section className="relative w-full min-h-[min(720px,calc(100svh-112px))] flex items-center overflow-hidden mesh-gradient py-16">
       {/* Ambient brand light */}
       <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
         <div className="ambient-blob animate-drift -left-28 -top-32 h-[28rem] w-[28rem] bg-primary/20" />

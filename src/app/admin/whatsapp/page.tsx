@@ -9,11 +9,12 @@ import {
   Copy,
   KeyRound,
   Smartphone,
-  Server,
   Power,
   QrCode,
+  Send,
 } from "lucide-react";
 import NumbersPanel, { type SenderRow } from "./NumbersPanel";
+import { Badge, Button, Card, Field, INPUT, INPUT_H, Notice, PageHeader, Toggle, type Tone } from "@/components/admin/ui";
 
 /**
  * WhatsApp verification, set up without a terminal.
@@ -60,20 +61,9 @@ const STATUS_COPY: Record<string, { label: string; tone: "good" | "warn" | "bad"
   PASSKEY_CONFIRMATION_REQUIRED: { label: "Confirm on your phone", tone: "warn" },
 };
 
-function Pill({ tone, children }: { tone: "good" | "warn" | "bad"; children: React.ReactNode }) {
-  const cls =
-    tone === "good"
-      ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-      : tone === "warn"
-        ? "bg-amber-50 text-amber-700 border-amber-200"
-        : "bg-rose-50 text-rose-700 border-rose-200";
-  return (
-    <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold ${cls}`}>
-      {children}
-    </span>
-  );
-}
+const TONE: Record<"good" | "warn" | "bad", Tone> = { good: "success", warn: "warning", bad: "danger" };
 
+/** A numbered setup step: the number turns into a tick once it is done. */
 function Step({
   n,
   title,
@@ -86,19 +76,37 @@ function Step({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-2xl border border-gray-200 bg-white p-5">
-      <header className="mb-4 flex items-center gap-3">
-        <span
-          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
-            done ? "bg-emerald-500 text-white" : "bg-gray-200 text-gray-600"
-          }`}
-        >
-          {done ? <Check className="h-4 w-4" /> : n}
+    <Card
+      title={
+        <span className="flex items-center gap-3">
+          <span
+            className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
+              done ? "bg-emerald-600 text-white" : "bg-slate-100 text-slate-600 ring-1 ring-slate-200"
+            }`}
+            aria-hidden="true"
+          >
+            {done ? <Check className="h-4 w-4" /> : n}
+          </span>
+          <span>
+            <span className="sr-only">Step {n}: </span>
+            {title}
+          </span>
         </span>
-        <h2 className="text-base font-bold text-gray-900">{title}</h2>
-      </header>
+      }
+      actions={done ? <Badge tone="success">Done</Badge> : <Badge tone="neutral">To do</Badge>}
+    >
       {children}
-    </section>
+    </Card>
+  );
+}
+
+/** One line of the status panel. */
+function Row({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 py-2.5">
+      <dt className="text-[13px] text-slate-500">{label}</dt>
+      <dd className="min-w-0 text-right text-[13px] font-medium text-slate-800">{children}</dd>
+    </div>
   );
 }
 
@@ -230,391 +238,413 @@ export default function WhatsAppAdminPage() {
   const live = Boolean(config?.enabled && config?.number && config?.webhookSecretSet);
   const status = gateway?.status ? STATUS_COPY[gateway.status] : null;
 
+  const stepsDone = [
+    Boolean(config?.number),
+    Boolean(config?.webhookSecretSet),
+    Boolean(config?.gatewayUrl && config?.apiKeySet),
+    gateway?.status === "WORKING",
+  ].filter(Boolean).length;
+
   if (loading) {
     return (
-      <div className="flex items-center gap-2 p-8 text-gray-500">
+      <div className="flex items-center justify-center gap-2 py-20 text-sm text-slate-500">
         <Loader2 className="h-5 w-5 animate-spin" /> Loading…
       </div>
     );
   }
 
   return (
-    <div className="max-w-3xl space-y-6">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">WhatsApp verification</h1>
-          <p className="mt-1 text-sm text-gray-500">
-            Visitors send a code to your number to unlock the seat list. Nothing is ever sent to
-            them, which is what keeps the number safe.
-          </p>
-        </div>
-        <button
-          onClick={() => load()}
-          className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-gray-200 px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
-        >
-          <RefreshCw className="h-4 w-4" />
-          Refresh
-        </button>
-      </div>
+    <div>
+      <PageHeader
+        title="WhatsApp gateway"
+        description="The linked-device gateway on the server. When the official API cannot send a code, sign-in falls back to it: visitors message their code to the number set here."
+        actions={
+          <Button onClick={() => load()}>
+            <RefreshCw className="h-4 w-4" />
+            Refresh
+          </Button>
+        }
+      />
 
-      {/* ---- overall state ---- */}
-      <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-gray-200 bg-gray-50 p-4">
-        {live ? (
-          <Pill tone="good">
-            <Check className="h-3.5 w-3.5" /> Verification is on
-          </Pill>
-        ) : (
-          <Pill tone="bad">
-            <AlertTriangle className="h-3.5 w-3.5" /> Not live yet
-          </Pill>
-        )}
-        {gateway?.configured &&
-          (gateway.reachable ? (
-            <Pill tone={status?.tone ?? "warn"}>
-              <Server className="h-3.5 w-3.5" />
-              {status?.label ?? gateway.status}
-            </Pill>
-          ) : (
-            <Pill tone="bad">
-              <Server className="h-3.5 w-3.5" /> Gateway unreachable
-            </Pill>
-          ))}
-        {gateway?.me?.id && (
-          <span className="text-xs text-gray-500">Paired as {gateway.me.id.split("@")[0]}</span>
-        )}
-        {!live && (
-          <span className="text-xs text-gray-500">
-            Until this is on, visitors just type their number instead — nothing is broken.
-          </span>
-        )}
-      </div>
-
-      {(() => {
-        // A 463 from WhatsApp: the number may not start new chats. Every
-        // sign-in code goes to somebody new, so codes cannot be sent — and a
-        // restart does not lift it, which is worth saying before somebody
-        // tries (somebody did, on 2026-10-06).
-        const lock = gateway?.me?.reachoutTimelock;
-        const ends = lock?.timeEnforcementEnds ? new Date(lock.timeEnforcementEnds * 1000) : null;
-        if (!lock?.isActive || (ends && ends.getTime() < Date.now())) return null;
-        return (
-          <div role="status" className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-            <p className="font-semibold">
-              WhatsApp has stopped this number starting new chats
-              {ends
-                ? ` until ${ends.toLocaleString("en-IN", { timeZone: "Asia/Kolkata", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })} IST`
-                : " for now"}
-              .
-            </p>
-            <p className="mt-1">
-              Sign-in codes cannot be sent until then, so visitors are automatically shown the
-              &ldquo;send us this code on WhatsApp&rdquo; screen instead, which still works. Lead
-              alerts to the team and existing chats are unaffected. Restarting or re-pairing the
-              session does not lift it — waiting does. It is WhatsApp&rsquo;s response to messaging
-              many new numbers; fewer codes per day is what keeps it away.
-            </p>
-          </div>
-        );
-      })()}
-
-      {senders.length > 0 && (
-        <NumbersPanel senders={senders} post={post} busy={busy} reload={() => load(true)} />
-      )}
-
-      {msg && (
-        <div
-          role="alert"
-          className={`rounded-xl border px-4 py-3 text-sm ${
-            msg.kind === "ok"
-              ? "border-emerald-200 bg-emerald-50 text-emerald-800"
-              : "border-rose-200 bg-rose-50 text-rose-800"
-          }`}
-        >
-          {msg.text}
-        </div>
-      )}
-
-      {config?.envPinned.length ? (
-        <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-          Some values are fixed in the server environment and cannot be changed here:{" "}
-          <span className="font-mono text-xs">{config.envPinned.join(", ")}</span>
-        </div>
-      ) : null}
-
-      {/* ---- 1. the number ---- */}
-      <Step n={1} title="The number visitors will message" done={Boolean(config?.number)}>
-        <label htmlFor="wa-number" className="mb-1.5 block text-sm font-medium text-gray-700">
-          Country code first, no plus sign
-        </label>
-        <input
-          id="wa-number"
-          value={number}
-          inputMode="numeric"
-          onChange={(e) => setNumber(e.target.value)}
-          placeholder="919876543210"
-          className="w-full rounded-xl border border-gray-200 px-4 py-2.5 font-mono text-sm outline-none focus:border-gray-400"
-        />
-        <p className="mt-2 text-xs text-gray-500">
-          Use a <strong>separate number</strong>, not the one on your Contacts page. If this one is
-          ever restricted, your main lead line keeps working.
-        </p>
-
-        <label className="mt-4 flex items-center gap-3">
-          <input
-            type="checkbox"
-            checked={enabled}
-            onChange={(e) => setEnabled(e.target.checked)}
-            className="h-4 w-4 rounded border-gray-300"
-          />
-          <span className="text-sm font-medium text-gray-700">
-            Offer WhatsApp verification on the site
-          </span>
-        </label>
-
-        <button
-          onClick={async () => {
-            const r = await post(
-              { action: "save", number, gatewayUrl, apiKey, enabled },
-              "save",
-            );
-            if (r) {
-              setApiKey("");
-              setMsg({ kind: "ok", text: "Saved." });
-              load(true);
-            }
-          }}
-          disabled={busy === "save"}
-          className="mt-4 inline-flex items-center gap-2 rounded-xl bg-gray-900 px-5 py-2.5 text-sm font-bold text-white hover:bg-gray-800 disabled:opacity-50"
-        >
-          {busy === "save" && <Loader2 className="h-4 w-4 animate-spin" />}
-          Save
-        </button>
-      </Step>
-
-      {/* ---- 2. the one-time server step ---- */}
-      <Step n={2} title="Start the gateway on your server (once)" done={Boolean(config?.webhookSecretSet)}>
-        <p className="text-sm text-gray-600">
-          This is the only step that needs someone with server access, and it is one command. Press
-          Generate, copy the command, and run it on the VPS.
-        </p>
-
-        <button
-          onClick={async () => {
-            const r = await post({ action: "generate-secret" }, "secret");
-            if (r?.secret) {
-              setFreshSecret(r.secret);
-              setMsg({
-                kind: "ok",
-                text: "New key created. Copy the command below now — the key is only shown once.",
-              });
-              load(true);
-            }
-          }}
-          disabled={busy === "secret"}
-          className="mt-3 inline-flex items-center gap-2 rounded-xl border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 disabled:opacity-50"
-        >
-          {busy === "secret" ? <Loader2 className="h-4 w-4 animate-spin" /> : <KeyRound className="h-4 w-4" />}
-          {config?.webhookSecretSet ? "Generate a new key" : "Generate the key"}
-        </button>
-
-        {config?.webhookSecretSet && !freshSecret && (
-          <p className="mt-2 text-xs text-gray-500">
-            A key is already set ({config.webhookSecretMasked}). Generating a new one means running
-            the command again with the new value.
-          </p>
-        )}
-
-        <div className="mt-4">
-          <div className="mb-1.5 flex items-center justify-between">
-            <span className="text-sm font-medium text-gray-700">Run this on the server</span>
-            <button
-              onClick={() => copy(dockerCommand, "docker")}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-600 hover:text-gray-900"
-            >
-              {copied === "docker" ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-              {copied === "docker" ? "Copied" : "Copy"}
-            </button>
-          </div>
-          <pre className="overflow-x-auto rounded-xl bg-gray-900 p-4 text-[12px] leading-relaxed text-gray-100">
-            {dockerCommand}
-          </pre>
-          <p className="mt-2 text-xs text-gray-500">
-            Messages will be delivered to <span className="font-mono">{webhook}</span>
-          </p>
-        </div>
-      </Step>
-
-      {/* ---- 3. point the site at it ---- */}
-      <Step n={3} title="Tell the site where the gateway is" done={Boolean(config?.gatewayUrl && config?.apiKeySet)}>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label htmlFor="wa-url" className="mb-1.5 block text-sm font-medium text-gray-700">
-              Gateway address
-            </label>
-            <input
-              id="wa-url"
-              value={gatewayUrl}
-              onChange={(e) => setGatewayUrl(e.target.value)}
-              placeholder="https://wa.admissionhands.com"
-              className="w-full rounded-xl border border-gray-200 px-4 py-2.5 font-mono text-sm outline-none focus:border-gray-400"
-            />
-          </div>
-          <div>
-            <label htmlFor="wa-key" className="mb-1.5 block text-sm font-medium text-gray-700">
-              Gateway API key
-            </label>
-            <input
-              id="wa-key"
-              value={apiKey}
-              onChange={(e) => setApiKey(e.target.value)}
-              placeholder={config?.apiKeySet ? config.apiKeyMasked : "the WAHA_API_KEY you chose"}
-              className="w-full rounded-xl border border-gray-200 px-4 py-2.5 font-mono text-sm outline-none focus:border-gray-400"
-            />
-            <p className="mt-1 text-xs text-gray-500">Leave blank to keep the current key.</p>
-          </div>
-        </div>
-
-        <p className="mt-3 text-xs text-gray-500">
-          The command above binds the gateway to the server&apos;s own localhost, which the website
-          cannot reach. To connect the phone from this screen, put it behind your web server on a
-          name like <span className="font-mono">wa.admissionhands.com</span>. You can skip this — the
-          verification still works, you just pair the phone on the server instead.
-        </p>
-
-        <button
-          onClick={async () => {
-            const r = await post({ action: "save", number, gatewayUrl, apiKey, enabled }, "save2");
-            if (r) {
-              setApiKey("");
-              setMsg({ kind: "ok", text: "Saved." });
-              load(true);
-            }
-          }}
-          disabled={busy === "save2"}
-          className="mt-4 inline-flex items-center gap-2 rounded-xl bg-gray-900 px-5 py-2.5 text-sm font-bold text-white hover:bg-gray-800 disabled:opacity-50"
-        >
-          {busy === "save2" && <Loader2 className="h-4 w-4 animate-spin" />}
-          Save
-        </button>
-      </Step>
-
-      {/* ---- 4. pair the phone ---- */}
-      <Step n={4} title="Connect the phone" done={gateway?.status === "WORKING"}>
-        {!config?.gatewayUrl ? (
-          <p className="text-sm text-gray-600">
-            Add the gateway address in step 3 to pair from here.
-          </p>
-        ) : gateway?.reachable === false ? (
-          <p className="text-sm text-rose-700">{gateway.error}</p>
-        ) : gateway?.status === "WORKING" ? (
-          <div className="flex flex-wrap items-center gap-3">
-            <Pill tone="good">
-              <Check className="h-3.5 w-3.5" /> Connected
-            </Pill>
-
-            {/* The alerts this number also sends: a lead form, a document
-                upload. Worth being able to prove they arrive, because when
-                they stopped arriving nobody noticed for weeks. */}
-            <button
-              onClick={async () => {
-                const r = await post({ action: "test-alert" }, "test-alert");
-                if (r) {
-                  setMsg({
-                    kind: "ok",
-                    text: "Test alert sent. Check the number set under Contacts → lead notifications.",
-                  });
-                }
-              }}
-              disabled={busy === "test-alert"}
-              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-50"
-            >
-              Send a test lead alert
-            </button>
-
-            <button
-              onClick={async () => {
-                if (!confirm("Disconnect this number? Verification stops working until you pair again.")) return;
-                const r = await post({ action: "logout" }, "logout");
-                if (r) {
-                  setQr("");
-                  setMsg({ kind: "ok", text: "Disconnected." });
-                  load(true);
-                }
-              }}
-              disabled={busy === "logout"}
-              className="inline-flex items-center gap-2 rounded-xl border border-rose-200 px-4 py-2 text-sm font-semibold text-rose-700 hover:bg-rose-50 disabled:opacity-50"
-            >
-              {busy === "logout" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Power className="h-4 w-4" />}
-              Disconnect
-            </button>
-          </div>
-        ) : (
-          <>
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={async () => {
-                  const started = await post({ action: "connect" }, "connect");
-                  if (!started) return;
-                  const r = await post({ action: "qr" }, "connect");
-                  if (r?.image) setQr(r.image);
-                  load(true);
-                }}
-                disabled={busy === "connect"}
-                className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-emerald-700 disabled:opacity-50"
-              >
-                {busy === "connect" ? <Loader2 className="h-4 w-4 animate-spin" /> : <QrCode className="h-4 w-4" />}
-                Connect with QR
-              </button>
-              <button
-                onClick={async () => {
-                  await post({ action: "connect" }, "pair");
-                  const r = await post({ action: "pair-code", number }, "pair");
-                  if (r?.code) setPairCode(r.code);
-                  load(true);
-                }}
-                disabled={busy === "pair" || !number}
-                className="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 disabled:opacity-50"
-              >
-                {busy === "pair" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Smartphone className="h-4 w-4" />}
-                Pair with a code instead
-              </button>
-            </div>
-
-            {gateway?.status === "FAILED" && (
-              <p className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-                The code expired before it was scanned and the session stopped. Press{" "}
-                <strong>Connect with QR</strong> again with the phone already open at WhatsApp &rarr;
-                Linked devices.
+      <div className="grid grid-cols-1 items-start gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
+        {/* ---- status and messages: on top on a phone, beside the steps on a wide screen ---- */}
+        <aside className="min-w-0 space-y-4 xl:order-2">
+          <Card title="Status" description={`${stepsDone} of 4 steps done`}>
+            <dl className="-my-2.5 divide-y divide-slate-100">
+              <Row label="Verification">
+                {live ? (
+                  <Badge tone="success">
+                    <Check className="h-3.5 w-3.5" /> On
+                  </Badge>
+                ) : (
+                  <Badge tone="danger">
+                    <AlertTriangle className="h-3.5 w-3.5" /> Not live yet
+                  </Badge>
+                )}
+              </Row>
+              <Row label="Gateway">
+                {gateway?.configured ? (
+                  gateway.reachable ? (
+                    <Badge tone={status ? TONE[status.tone] : "warning"}>{status?.label ?? gateway.status}</Badge>
+                  ) : (
+                    <Badge tone="danger">Unreachable</Badge>
+                  )
+                ) : (
+                  <Badge tone="neutral">Not set up</Badge>
+                )}
+              </Row>
+              {gateway?.me?.id && (
+                <Row label="Paired as">
+                  <span className="font-mono">{gateway.me.id.split("@")[0]}</span>
+                </Row>
+              )}
+            </dl>
+            {!live && (
+              <p className="mt-3 text-xs leading-relaxed text-slate-500">
+                Until this is on, visitors just type their number instead — nothing is broken.
               </p>
             )}
+          </Card>
 
-            {qr && (
-              <div className="mt-4 inline-block rounded-2xl border border-gray-200 bg-white p-4">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={qr} alt="QR code to pair WhatsApp" width={256} height={256} />
-                <p className="mt-2 max-w-[256px] text-xs text-gray-500">
-                  On the phone: WhatsApp &rarr; Settings &rarr; Linked devices &rarr; Link a device.
-                  This code refreshes itself, so scan whatever is on screen.
-                </p>
+          {(() => {
+            // A 463 from WhatsApp: the number may not start new chats. Every
+            // sign-in code goes to somebody new, so codes cannot be sent — and a
+            // restart does not lift it, which is worth saying before somebody
+            // tries (somebody did, on 2026-10-06).
+            const lock = gateway?.me?.reachoutTimelock;
+            const ends = lock?.timeEnforcementEnds ? new Date(lock.timeEnforcementEnds * 1000) : null;
+            if (!lock?.isActive || (ends && ends.getTime() < Date.now())) return null;
+            return (
+              <div role="status">
+                <Notice
+                  tone="warning"
+                  icon={AlertTriangle}
+                  title={
+                    <>
+                      WhatsApp has stopped this number starting new chats
+                      {ends
+                        ? ` until ${ends.toLocaleString("en-IN", { timeZone: "Asia/Kolkata", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })} IST`
+                        : " for now"}
+                      .
+                    </>
+                  }
+                >
+                  <p className="mt-1">
+                    Sign-in codes cannot be sent until then, so visitors are automatically shown the
+                    &ldquo;send us this code on WhatsApp&rdquo; screen instead, which still works. Lead
+                    alerts to the team and existing chats are unaffected. Restarting or re-pairing the
+                    session does not lift it — waiting does. It is WhatsApp&rsquo;s response to messaging
+                    many new numbers; fewer codes per day is what keeps it away.
+                  </p>
+                </Notice>
               </div>
-            )}
+            );
+          })()}
 
-            {pairCode && (
-              <div className="mt-4 rounded-2xl border border-gray-200 bg-white p-4">
-                <span className="block text-xs uppercase tracking-wide text-gray-500">
-                  Type this on the phone
-                </span>
-                <span className="font-mono text-2xl font-bold tracking-[0.2em] text-gray-900">
-                  {pairCode}
-                </span>
-                <p className="mt-1 text-xs text-gray-500">
-                  WhatsApp → Linked devices → Link with phone number instead.
+          {msg && (
+            <Notice
+              tone={msg.kind === "ok" ? "success" : "danger"}
+              icon={msg.kind === "ok" ? Check : AlertTriangle}
+              action={
+                msg.kind === "err" && !config ? (
+                  <Button size="sm" onClick={() => load()}>
+                    Retry
+                  </Button>
+                ) : undefined
+              }
+            >
+              {msg.text}
+            </Notice>
+          )}
+
+          {config?.envPinned.length ? (
+            <Notice tone="warning" title="Fixed on the server">
+              Some values are fixed in the server environment and cannot be changed here:{" "}
+              <span className="break-all font-mono text-xs">{config.envPinned.join(", ")}</span>
+            </Notice>
+          ) : null}
+        </aside>
+
+        {/* ---- the numbers, then the four steps ---- */}
+        <div className="min-w-0 space-y-5 xl:order-1">
+          {senders.length > 0 && (
+            <NumbersPanel senders={senders} post={post} busy={busy} reload={() => load(true)} />
+          )}
+
+          {/* ---- 1. the number ---- */}
+          <Step n={1} title="The number visitors will message" done={Boolean(config?.number)}>
+            <div className="max-w-md space-y-4">
+              <Field
+                label="Country code first, no plus sign"
+                htmlFor="wa-number"
+                hint={
+                  <>
+                    Use a <strong>separate number</strong>, not the one on your Contacts page. If this one is
+                    ever restricted, your main lead line keeps working.
+                  </>
+                }
+              >
+                <input
+                  id="wa-number"
+                  value={number}
+                  inputMode="numeric"
+                  onChange={(e) => setNumber(e.target.value)}
+                  placeholder="919876543210"
+                  className={`${INPUT} ${INPUT_H} font-mono`}
+                />
+              </Field>
+
+              <Toggle checked={enabled} onChange={setEnabled} label="Offer WhatsApp verification on the site" />
+            </div>
+
+            <div className="mt-5 border-t border-slate-100 pt-4">
+              <Button
+                variant="primary"
+                onClick={async () => {
+                  const r = await post(
+                    { action: "save", number, gatewayUrl, apiKey, enabled },
+                    "save",
+                  );
+                  if (r) {
+                    setApiKey("");
+                    setMsg({ kind: "ok", text: "Saved." });
+                    load(true);
+                  }
+                }}
+                disabled={busy === "save"}
+              >
+                {busy === "save" && <Loader2 className="h-4 w-4 animate-spin" />}
+                Save
+              </Button>
+            </div>
+          </Step>
+
+          {/* ---- 2. the one-time server step ---- */}
+          <Step n={2} title="Start the gateway on your server (once)" done={Boolean(config?.webhookSecretSet)}>
+            <p className="text-sm text-slate-600">
+              This is the only step that needs someone with server access, and it is one command. Press
+              Generate, copy the command, and run it on the VPS.
+            </p>
+
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              <Button
+                onClick={async () => {
+                  const r = await post({ action: "generate-secret" }, "secret");
+                  if (r?.secret) {
+                    setFreshSecret(r.secret);
+                    setMsg({
+                      kind: "ok",
+                      text: "New key created. Copy the command below now — the key is only shown once.",
+                    });
+                    load(true);
+                  }
+                }}
+                disabled={busy === "secret"}
+              >
+                {busy === "secret" ? <Loader2 className="h-4 w-4 animate-spin" /> : <KeyRound className="h-4 w-4" />}
+                {config?.webhookSecretSet ? "Generate a new key" : "Generate the key"}
+              </Button>
+
+              {config?.webhookSecretSet && !freshSecret && (
+                <p className="text-xs text-slate-500">
+                  A key is already set ({config.webhookSecretMasked}). Generating a new one means running
+                  the command again with the new value.
                 </p>
+              )}
+            </div>
+
+            <div className="mt-4 overflow-hidden rounded-xl border border-slate-800 bg-slate-900">
+              <div className="flex items-center justify-between gap-3 border-b border-slate-800 px-4 py-2">
+                <span className="text-xs font-medium text-slate-300">Run this on the server</span>
+                <button
+                  type="button"
+                  onClick={() => copy(dockerCommand, "docker")}
+                  className="inline-flex h-8 items-center gap-1.5 rounded-md px-2 text-xs font-semibold text-slate-200 hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/40"
+                >
+                  {copied === "docker" ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+                  {copied === "docker" ? "Copied" : "Copy"}
+                </button>
               </div>
+              <pre className="overflow-x-auto p-4 text-[12px] leading-relaxed text-slate-100">{dockerCommand}</pre>
+            </div>
+            <p className="mt-2 break-all text-xs text-slate-500">
+              Messages will be delivered to <span className="font-mono">{webhook}</span>
+            </p>
+          </Step>
+
+          {/* ---- 3. point the site at it ---- */}
+          <Step n={3} title="Tell the site where the gateway is" done={Boolean(config?.gatewayUrl && config?.apiKeySet)}>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field label="Gateway address" htmlFor="wa-url">
+                <input
+                  id="wa-url"
+                  value={gatewayUrl}
+                  onChange={(e) => setGatewayUrl(e.target.value)}
+                  placeholder="https://wa.admissionhands.com"
+                  className={`${INPUT} ${INPUT_H} font-mono`}
+                />
+              </Field>
+              <Field label="Gateway API key" htmlFor="wa-key" hint="Leave blank to keep the current key.">
+                <input
+                  id="wa-key"
+                  value={apiKey}
+                  onChange={(e) => setApiKey(e.target.value)}
+                  placeholder={config?.apiKeySet ? config.apiKeyMasked : "the WAHA_API_KEY you chose"}
+                  className={`${INPUT} ${INPUT_H} font-mono`}
+                />
+              </Field>
+            </div>
+
+            <p className="mt-4 text-xs leading-relaxed text-slate-500">
+              The command above binds the gateway to the server&apos;s own localhost, which the website
+              cannot reach. To connect the phone from this screen, put it behind your web server on a
+              name like <span className="font-mono">wa.admissionhands.com</span>. You can skip this — the
+              verification still works, you just pair the phone on the server instead.
+            </p>
+
+            <div className="mt-5 border-t border-slate-100 pt-4">
+              <Button
+                variant="primary"
+                onClick={async () => {
+                  const r = await post({ action: "save", number, gatewayUrl, apiKey, enabled }, "save2");
+                  if (r) {
+                    setApiKey("");
+                    setMsg({ kind: "ok", text: "Saved." });
+                    load(true);
+                  }
+                }}
+                disabled={busy === "save2"}
+              >
+                {busy === "save2" && <Loader2 className="h-4 w-4 animate-spin" />}
+                Save
+              </Button>
+            </div>
+          </Step>
+
+          {/* ---- 4. pair the phone ---- */}
+          <Step n={4} title="Connect the phone" done={gateway?.status === "WORKING"}>
+            {!config?.gatewayUrl ? (
+              <p className="text-sm text-slate-600">
+                Add the gateway address in step 3 to pair from here.
+              </p>
+            ) : gateway?.reachable === false ? (
+              <Notice tone="danger" icon={AlertTriangle} title="The gateway did not answer">
+                {gateway.error}
+              </Notice>
+            ) : gateway?.status === "WORKING" ? (
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge tone="success">
+                  <Check className="h-3.5 w-3.5" /> Connected
+                </Badge>
+
+                {/* The alerts this number also sends: a lead form, a document
+                    upload. Worth being able to prove they arrive, because when
+                    they stopped arriving nobody noticed for weeks. */}
+                <Button
+                  onClick={async () => {
+                    const r = await post({ action: "test-alert" }, "test-alert");
+                    if (r) {
+                      setMsg({
+                        kind: "ok",
+                        text: "Test alert sent. Check the number set under Contacts → lead notifications.",
+                      });
+                    }
+                  }}
+                  disabled={busy === "test-alert"}
+                >
+                  {busy === "test-alert" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+                  Send a test lead alert
+                </Button>
+
+                <Button
+                  variant="danger"
+                  onClick={async () => {
+                    if (!confirm("Disconnect this number? Verification stops working until you pair again.")) return;
+                    const r = await post({ action: "logout" }, "logout");
+                    if (r) {
+                      setQr("");
+                      setMsg({ kind: "ok", text: "Disconnected." });
+                      load(true);
+                    }
+                  }}
+                  disabled={busy === "logout"}
+                >
+                  {busy === "logout" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Power className="h-4 w-4" />}
+                  Disconnect
+                </Button>
+              </div>
+            ) : (
+              <>
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    variant="primary"
+                    onClick={async () => {
+                      const started = await post({ action: "connect" }, "connect");
+                      if (!started) return;
+                      const r = await post({ action: "qr" }, "connect");
+                      if (r?.image) setQr(r.image);
+                      load(true);
+                    }}
+                    disabled={busy === "connect"}
+                  >
+                    {busy === "connect" ? <Loader2 className="h-4 w-4 animate-spin" /> : <QrCode className="h-4 w-4" />}
+                    Connect with QR
+                  </Button>
+                  <Button
+                    onClick={async () => {
+                      await post({ action: "connect" }, "pair");
+                      const r = await post({ action: "pair-code", number }, "pair");
+                      if (r?.code) setPairCode(r.code);
+                      load(true);
+                    }}
+                    disabled={busy === "pair" || !number}
+                  >
+                    {busy === "pair" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Smartphone className="h-4 w-4" />}
+                    Pair with a code instead
+                  </Button>
+                </div>
+
+                {gateway?.status === "FAILED" && (
+                  <Notice tone="warning" icon={AlertTriangle} className="mt-4">
+                    The code expired before it was scanned and the session stopped. Press{" "}
+                    <strong>Connect with QR</strong> again with the phone already open at WhatsApp &rarr;
+                    Linked devices.
+                  </Notice>
+                )}
+
+                {(qr || pairCode) && (
+                  <div className="mt-4 flex flex-wrap items-start gap-4">
+                    {qr && (
+                      <div className="rounded-2xl border border-slate-200 bg-white p-4">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={qr} alt="QR code to pair WhatsApp" width={256} height={256} className="h-auto max-w-full" />
+                        <p className="mt-2 max-w-[256px] text-xs text-slate-500">
+                          On the phone: WhatsApp &rarr; Settings &rarr; Linked devices &rarr; Link a device.
+                          This code refreshes itself, so scan whatever is on screen.
+                        </p>
+                      </div>
+                    )}
+
+                    {pairCode && (
+                      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                        <span className="block text-xs font-medium uppercase tracking-wide text-slate-500">
+                          Type this on the phone
+                        </span>
+                        <span className="mt-1 block font-mono text-2xl font-bold tracking-[0.2em] text-slate-900">
+                          {pairCode}
+                        </span>
+                        <p className="mt-1 text-xs text-slate-500">
+                          WhatsApp → Linked devices → Link with phone number instead.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </>
             )}
-          </>
-        )}
-      </Step>
+          </Step>
+        </div>
+      </div>
     </div>
   );
 }

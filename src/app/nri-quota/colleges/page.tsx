@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import CollegeVisual from '@/components/ui/CollegeVisual';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Search, MapPin, ThumbsUp, ExternalLink } from 'lucide-react';
+import { Search, MapPin, ExternalLink } from 'lucide-react';
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
 
 
@@ -14,9 +14,7 @@ interface College {
   name: string;
   location: string;
   fees: string;
-  rating: number;
   type: 'government' | 'private' | 'deemed';
-  neetCutoff: string;
   seats: number;
   recognition: string[];
 }
@@ -27,9 +25,7 @@ const collegesList: College[] = [
     name: 'Kasturba Medical College',
     location: 'Manipal, Karnataka',
     fees: '₹25-30 Lakhs/year',
-    rating: 4.7,
     type: 'private',
-    neetCutoff: '500-550',
     seats: 25,
     recognition: ['NMC', 'WHO', 'FAIMER']
   },
@@ -38,9 +34,7 @@ const collegesList: College[] = [
     name: 'CMC Vellore',
     location: 'Vellore, Tamil Nadu',
     fees: '₹20-25 Lakhs/year',
-    rating: 4.9,
     type: 'private',
-    neetCutoff: '600+',
     seats: 15,
     recognition: ['NMC', 'WHO', 'FAIMER', 'NAAC A++']
   },
@@ -49,9 +43,7 @@ const collegesList: College[] = [
     name: 'AIIMS Delhi',
     location: 'New Delhi',
     fees: '₹15-20 Lakhs/year',
-    rating: 5.0,
     type: 'government',
-    neetCutoff: '650+',
     seats: 7,
     recognition: ['NMC', 'WHO', 'FAIMER', 'NAAC A++']
   },
@@ -60,9 +52,7 @@ const collegesList: College[] = [
     name: 'DY Patil Medical College',
     location: 'Pune, Maharashtra',
     fees: '₹20-25 Lakhs/year',
-    rating: 4.5,
     type: 'deemed',
-    neetCutoff: '500-550',
     seats: 30,
     recognition: ['NMC', 'WHO', 'FAIMER']
   },
@@ -71,9 +61,7 @@ const collegesList: College[] = [
     name: 'KMC Mangalore',
     location: 'Mangalore, Karnataka',
     fees: '₹25-30 Lakhs/year',
-    rating: 4.6,
     type: 'private',
-    neetCutoff: '520-570',
     seats: 20,
     recognition: ['NMC', 'WHO', 'FAIMER']
   },
@@ -82,9 +70,7 @@ const collegesList: College[] = [
     name: 'Seth GS Medical College',
     location: 'Mumbai, Maharashtra',
     fees: '₹15-20 Lakhs/year',
-    rating: 4.8,
     type: 'government',
-    neetCutoff: '580-630',
     seats: 10,
     recognition: ['NMC', 'WHO', 'FAIMER', 'NAAC A+']
   },
@@ -93,9 +79,7 @@ const collegesList: College[] = [
     name: 'Jawaharlal Nehru Medical College',
     location: 'Belgaum, Karnataka',
     fees: '₹18-22 Lakhs/year',
-    rating: 4.4,
     type: 'private',
-    neetCutoff: '500-540',
     seats: 15,
     recognition: ['NMC', 'WHO', 'FAIMER']
   },
@@ -104,9 +88,7 @@ const collegesList: College[] = [
     name: 'St. John\'s Medical College',
     location: 'Bangalore, Karnataka',
     fees: '₹22-28 Lakhs/year',
-    rating: 4.6,
     type: 'private',
-    neetCutoff: '540-580',
     seats: 12,
     recognition: ['NMC', 'WHO', 'FAIMER', 'NAAC A']
   }
@@ -257,20 +239,14 @@ const NRICollegesPage = () => {
                             <span className="text-sm">{college.location}</span>
                           </div>
                           
-                          <div className="flex items-center mb-4">
-                            <ThumbsUp className="h-4 w-4 text-yellow-500 mr-1" />
-                            <span className="font-medium">{college.rating}/5</span>
-                            <span className="text-sm text-gray-500 ml-2">College Rating</span>
-                          </div>
-                          
                           <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
                             <div>
-                              <p className="text-gray-500">NRI Quota Fees</p>
-                              <p className="font-medium">{college.fees}</p>
+                              <p className="text-gray-500">NRI Quota Fees*</p>
+                              <p className="font-medium">≈ {college.fees}</p>
                             </div>
                             <div>
-                              <p className="text-gray-500">NEET Cutoff</p>
-                              <p className="font-medium">{college.neetCutoff}</p>
+                              <p className="text-gray-500">Your chance</p>
+                              <a href="/neet-college-predictor?course=mbbs&seatType=nri" className="font-medium text-primary underline-offset-2 hover:underline">Check free</a>
                             </div>
                             <div>
                               <p className="text-gray-500">NRI Seats</p>

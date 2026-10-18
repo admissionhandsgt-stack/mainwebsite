@@ -14,6 +14,7 @@
 // Submit what changed, not the whole site on every deploy: an engine that is
 // told everything changed every day learns to ignore the pings.
 import { readdirSync, readFileSync } from "node:fs";
+import { readSitemap } from "./lib/sitemap.mjs";
 
 const HOST = "www.admissionhands.com";
 const BASE = `https://${HOST}`;
@@ -33,11 +34,8 @@ if (args.length && !args[0].startsWith("--")) {
   urls = args.map((p) => (p.startsWith("http") ? p : BASE + p));
 } else {
   const since = args[0] === "--since" ? args[1] : null;
-  const xml = await (await fetch(`${BASE}/sitemap.xml`)).text();
-  const entries = [...xml.matchAll(/<url>([\s\S]*?)<\/url>/g)].map((m) => ({
-    loc: m[1].match(/<loc>([^<]+)<\/loc>/)?.[1],
-    lastmod: m[1].match(/<lastmod>([^<]+)<\/lastmod>/)?.[1] ?? null,
-  }));
+  // The sitemap is an index of per-type files since 2026-10-17.
+  const { entries } = await readSitemap(BASE);
   urls = entries
     .filter((e) => e.loc && (!since || (e.lastmod && e.lastmod.slice(0, 10) >= since)))
     .map((e) => e.loc.replace(/&amp;/g, "&"));

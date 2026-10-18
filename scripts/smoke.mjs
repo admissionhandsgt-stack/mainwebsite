@@ -15,6 +15,7 @@
  * internals can pass while the site is broken.
  */
 
+import { readSitemap } from "./lib/sitemap.mjs";
 const BASE = (process.argv[2] || "http://localhost:3000").replace(/\/+$/, "");
 
 let passed = 0;
@@ -129,11 +130,10 @@ async function checkGate() {
   if (!res.ok) return bad("/api/predict", `got ${res.status}`);
   const body = await res.json();
 
-  if (body.locked === true) ok("predictor is gated", `${body.results.length} of ${body.total} seats`);
-  else bad("predictor is gated", "an anonymous request got the full list");
-
-  if (body.results.length <= 3) ok("preview is small", `${body.results.length} seats`);
-  else bad("preview is small", `${body.results.length} seats leaked before the gate`);
+  // Since 2026-10-12: counts for anybody, colleges only for a verified account,
+  // seat rows for nobody but staff (lib/depth.ts).
+  if (body.options === null && body.results.length === 0) ok("predictor is gated", `counts only, ${body.total} seats`);
+  else bad("predictor is gated", "an anonymous request got colleges or rows");
 
   const counts = body.counts ?? {};
   const sum = Object.values(counts).reduce((a, b) => a + b, 0);
@@ -145,12 +145,12 @@ async function checkGate() {
     headers: { Cookie: "ah_unlock=forged.signature" },
   });
   const fb = await forged.json();
-  if (fb.locked === true) ok("forged unlock cookie rejected");
+  if (fb.options === null && fb.results.length === 0) ok("forged unlock cookie rejected");
   else bad("forged unlock cookie rejected", "a made-up cookie opened the data");
 
   const cut = await get("/api/college-cutoffs?slug=sms-medical-college-jaipur&level=pg");
-  if (cut.status === 401) ok("college cutoffs gated", "401 without access");
-  else bad("college cutoffs gated", `expected 401, got ${cut.status}`);
+  if (cut.status === 404) ok("college cutoffs API is gone", "404");
+  else bad("college cutoffs API is gone", `expected 404, got ${cut.status}`);
 }
 
 async function checkAdminLocked() {
@@ -191,8 +191,13 @@ async function checkClaims() {
 
 async function checkSitemap() {
   section("Sitemap");
-  const xml = await (await get("/sitemap.xml")).text();
-  const count = (xml.match(/<url>/g) ?? []).length;
+  // An index of per-type sitemaps since 2026-10-17; children are read through
+  // the same base the run targets, whatever host their <loc> names.
+  const sm = await readSitemap(BASE, async (u) => (await get(new URL(u).pathname)).text());
+  if (sm.isIndex && sm.children.length >= 5) ok("sitemap is an index by page type", `${sm.children.length} sitemaps`);
+  else bad("sitemap is an index by page type", sm.isIndex ? `only ${sm.children.length} children` : "a single file");
+  const xml = sm.files.join(" ");
+  const count = sm.entries.length;
 
   if (count > 1000) ok("sitemap is populated", `${count.toLocaleString("en-IN")} URLs`);
   else bad("sitemap is populated", `only ${count} URLs — it may have been built against an empty database`);

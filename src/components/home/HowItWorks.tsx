@@ -85,7 +85,7 @@ const HowItWorks = ({ steps: fromCms, copy }: { steps?: Step[]; copy?: StepsCopy
         </div>
 
         {/* Timeline / Card Hybrid Grid */}
-        <div className="relative max-w-5xl mx-auto">
+        <div className="relative">
           {/* Animated Connector Line (Desktop only) */}
           <div className="hidden lg:block absolute top-[55px] left-12 right-12 h-1 bg-slate-200/60 dark:bg-slate-800 rounded-full overflow-hidden">
             <motion.div 
@@ -109,7 +109,7 @@ const HowItWorks = ({ steps: fromCms, copy }: { steps?: Step[]; copy?: StepsCopy
                 transition={{ delay: 0.4 + index * 0.1 }}
                 className="relative group"
               >
-                <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-5 lg:p-6 lg:pt-8 lg:pb-6 rounded-2xl shadow-sm flex flex-row lg:flex-col items-center text-left lg:text-center gap-4 lg:gap-0 h-full transition-all hover:border-cyan-200 dark:hover:border-cyan-900/60 hover:shadow-md dark:hover:shadow-zinc-950/50 lg:min-h-[240px]">
+                <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-5 lg:p-6 lg:pt-8 lg:pb-6 rounded-2xl shadow-sm flex flex-row lg:flex-col items-center text-left lg:text-center gap-4 lg:gap-0 h-full transition-all hover:border-cyan-200 dark:hover:border-cyan-900/60 hover:shadow-md dark:hover:shadow-zinc-950/50 lg:min-h-[230px]">
                   {/* Icon Node */}
                   <div className={`relative z-10 flex-shrink-0 flex items-center justify-center w-12 h-12 lg:w-16 lg:h-16 rounded-xl lg:rounded-2xl bg-gradient-to-br ${tone.color} text-white shadow-lg lg:mx-auto lg:mb-4 group-hover:scale-110 transition-transform duration-300`}>
                     <BlockIcon name={step.icon} fallback="ClipboardCheck" size={20} className="lg:hidden" />
@@ -121,8 +121,8 @@ const HowItWorks = ({ steps: fromCms, copy }: { steps?: Step[]; copy?: StepsCopy
                   
                   {/* Text Content */}
                   <div className="flex-1 lg:mt-2">
-                    <h3 className="text-sm lg:text-base font-black text-slate-900 dark:text-white mb-1 lg:mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors tracking-tight">{step.title}</h3>
-                    <p className="text-slate-500 dark:text-slate-400 text-[13px] lg:text-xs font-medium leading-snug">{step.description}</p>
+                    <h3 className="text-sm lg:text-[17px] font-black leading-snug text-slate-900 dark:text-white mb-1 lg:mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors tracking-tight">{step.title}</h3>
+                    <p className="text-slate-500 dark:text-slate-400 text-[13px] lg:text-[14px] font-medium leading-relaxed">{step.description}</p>
                   </div>
                 </div>
               </motion.div>

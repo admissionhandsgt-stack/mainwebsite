@@ -7,6 +7,7 @@ import { getStatePage, type StatePage } from "@/lib/stateQueries";
 import { resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
+import TelegramJoin from "@/components/engage/TelegramJoin";
 
 /**
  * One page per state, read on the server.
@@ -282,8 +283,9 @@ export default async function MBBSStatePage({ params }: Props) {
         level="ug"
         source={`MBBS in ${name}`}
         title={`Planning MBBS in ${name}?`}
-        body="Tell us your rank and category. A counsellor will order your choices against the published closing ranks and stay with you through every round."
+        body="Tell us your rank and category. A counsellor builds your choice list for this state, round by round, and stays with you until you report."
       />
+      <TelegramJoin placement="ug_state" />
 
       {/* --------------------------- other states --------------------------- */}
       <section className="container-custom border-t border-border py-10">

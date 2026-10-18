@@ -1,7 +1,6 @@
-import { Button } from '@/components/ui/button';
 import RecordActions from '@/components/admin/shared/RecordActions';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Megaphone, ExternalLink, Activity, Image as ImageIcon } from 'lucide-react';
+import { Badge, Toggle } from '@/components/admin/ui';
+import { ExternalLink, Image as ImageIcon } from 'lucide-react';
 
 interface Alert {
   id: number;
@@ -26,83 +25,62 @@ interface AlertListProps {
   onDelete: (id: number) => void;
 }
 
+/** One row per alert: what it says, where it goes, who added it, and its switch. */
 const AlertList = ({ alerts, onToggleActive, onEdit, onDelete }: AlertListProps) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <AnimatePresence>
-        {alerts.map((alert, index) => (
-          <motion.div
-            key={alert.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.3, delay: index * 0.05 }}
-            className="group relative bg-white/60 backdrop-blur-md border border-white/40 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] rounded-2xl overflow-hidden transition-all duration-300"
-          >
-            {/* Top Status Bar */}
-            <div className={`h-1.5 w-full transition-colors duration-300 ${alert.is_active ? 'bg-emerald-400' : 'bg-gray-300'}`} />
+    <ul className="divide-y divide-slate-100">
+      {alerts.map((alert) => {
+        const expired = !!alert.expires_at && new Date(alert.expires_at) < new Date();
+        return (
+          <li key={alert.id} className="flex flex-col gap-3 px-4 py-4 sm:px-5 lg:flex-row lg:items-center lg:gap-6">
+            <div className="min-w-0 flex-1">
+              <p className="line-clamp-2 text-[15px] font-semibold leading-snug text-slate-900">{alert.title}</p>
 
-            <div className="p-5 flex flex-col h-full">
-              <div className="flex justify-between items-start mb-4">
-                <div className="flex items-center gap-2">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${alert.is_active ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-100 text-gray-500'}`}>
-                    <Megaphone className="w-4 h-4" />
-                  </div>
-                  <span className="text-xs font-semibold text-gray-400">ORDER: {alert.order_index}</span>
-                </div>
-                <Button
-                  variant={alert.is_active ? "default" : "secondary"}
-                  onClick={() => onToggleActive(alert.id, alert.is_active)}
-                  size="sm"
-                  className={`h-7 px-3 text-xs rounded-full border-0 transition-all ${
-                    alert.is_active 
-                      ? 'bg-emerald-500 hover:bg-emerald-600 text-white shadow-md shadow-emerald-500/20' 
-                      : 'bg-gray-200 hover:bg-gray-300 text-gray-600'
-                  }`}
-                >
-                  <Activity className="w-3 h-3 mr-1" />
-                  {alert.is_active ? 'Active' : 'Inactive'}
-                </Button>
-              </div>
+              <a
+                href={alert.link}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-1 flex min-w-0 items-center gap-1.5 text-[13px] text-cyan-700 hover:text-cyan-800 hover:underline"
+              >
+                <ExternalLink className="h-3.5 w-3.5 shrink-0" />
+                <span className="truncate">{alert.link}</span>
+              </a>
 
-              <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 leading-tight">
-                {alert.title}
-              </h3>
-              <p className="text-xs text-gray-500">
-                {alert.auto ? "Added automatically from an official notice board" : "Added by the team"}
+              {alert.image_url && (
+                <p className="mt-1 flex min-w-0 items-center gap-1.5 text-xs text-slate-500">
+                  <ImageIcon className="h-3.5 w-3.5 shrink-0" />
+                  <span className="truncate">{alert.image_url}</span>
+                </p>
+              )}
+
+              <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-slate-500">
+                <span>{alert.auto ? "Added automatically from an official notice board" : "Added by the team"}</span>
                 {alert.expires_at &&
-                  (new Date(alert.expires_at) < new Date()
-                    ? ` · expired ${day(alert.expires_at)}`
-                    : ` · leaves the site ${day(alert.expires_at)}`)}
-              </p>
-
-              <div className="space-y-3 mt-auto pt-4">
-                <div className="flex items-center gap-2 text-sm text-gray-500 bg-gray-50/50 p-2 rounded-lg">
-                  <ExternalLink className="w-4 h-4 text-medical-500 shrink-0" />
-                  <a href={alert.link} target="_blank" rel="noreferrer" className="truncate hover:text-medical-600 transition-colors">
-                    {alert.link}
-                  </a>
-                </div>
-                
-                {alert.image_url && (
-                  <div className="flex items-center gap-2 text-sm text-gray-500 bg-gray-50/50 p-2 rounded-lg">
-                    <ImageIcon className="w-4 h-4 text-teal-500 shrink-0" />
-                    <span className="truncate">{alert.image_url}</span>
-                  </div>
-                )}
-              </div>
-
-              <div className="mt-5 pt-4 border-t border-gray-100/50 flex justify-end">
-                <RecordActions
-                  onEdit={() => onEdit(alert)}
-                  onDelete={() => onDelete(alert.id)}
-                />
+                  (expired ? (
+                    <Badge tone="warning">Expired {day(alert.expires_at)}</Badge>
+                  ) : (
+                    <span>Leaves the site {day(alert.expires_at)}</span>
+                  ))}
+                <span className="tabular-nums">Order {alert.order_index}</span>
               </div>
             </div>
-          </motion.div>
-        ))}
-      </AnimatePresence>
-    </div>
+
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-3 lg:shrink-0">
+              <Toggle
+                checked={alert.is_active}
+                onChange={() => onToggleActive(alert.id, alert.is_active)}
+                label={
+                  <span className={alert.is_active ? "font-medium text-emerald-700" : "text-slate-500"}>
+                    {alert.is_active ? "Live" : "Hidden"}
+                  </span>
+                }
+              />
+              <RecordActions onEdit={() => onEdit(alert)} onDelete={() => onDelete(alert.id)} />
+            </div>
+          </li>
+        );
+      })}
+    </ul>
   );
 };
 

@@ -22,6 +22,7 @@ import { spawnSync } from "node:child_process";
 import { mkdirSync, readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { chromium } from "playwright";
+import { LIGHTHOUSE_BLOCKED } from "./lib/noAnalytics.mjs";
 
 const RUNS = Number(process.env.RUNS) || 3;
 const MODE = process.env.MODE === "observed" ? "observed" : "standard";
@@ -68,6 +69,9 @@ function runOnce(url, file) {
     // day Cloudflare went in front: the ISP resolver held the old address).
     `--chrome-flags=--headless=new --no-sandbox --disable-gpu${process.env.CHROME_EXTRA ? " " + process.env.CHROME_EXTRA : ""}`,
     "--max-wait-for-load=60000",
+    // Our own GA4 and AutoLoom hits never leave a lab run; the scripts still load,
+    // so the page is measured as visitors get it (scripts/lib/noAnalytics.mjs).
+    ...(/admissionhands\.com|localhost|127\.0\.0\.1/.test(url) ? LIGHTHOUSE_BLOCKED.map((p) => `--blocked-url-patterns="${p}"`) : []),
   ];
   if (MODE === "observed") args.push("--throttling-method=provided");
   const r = spawnSync("npx", args, {

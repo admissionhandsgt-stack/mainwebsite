@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { fitTitle, fitDescription } from "@/lib/seoTitle";
 import { getQuotaOverview } from "@/lib/quotaQueries";
 import { resolveMetadata } from "@/lib/content";
 import QuotaPage from "@/components/quota/QuotaPage";
@@ -28,9 +29,21 @@ const inr = (v: number | null) => (v == null ? "—" : v.toLocaleString("en-IN")
 export async function generateMetadata(): Promise<Metadata> {
   const pg = await getQuotaOverview("nri", "pg");
 
-  const title = "NRI Quota Medical Fees & Closing Ranks 2026";
+  // Searched as "nri quota fees", "nri medical seat cost in india".
+  const y = pg?.year ? ` ${pg.year}` : "";
+  const title = pg
+    ? fitTitle(
+        `NRI Quota Fees${y}: MD/MS Seat Cost at ${inr(pg.colleges)} Medical Colleges`,
+        `NRI Quota Medical Fees${y}: MD/MS at ${inr(pg.colleges)} Colleges`,
+        `NRI Quota Medical Fees & Closing Ranks${y}`,
+      )
+    : "NRI Quota Medical Fees & Closing Ranks";
   const description = pg
-    ? `NRI quota seats at ${inr(pg.colleges)} medical colleges — ${money(pg.minFee)} to ${money(pg.maxFee)} a year, with the closing rank beside each fee. Published counselling results, not estimates.`
+    ? fitDescription(
+        `NRI quota MD/MS seats at ${inr(pg.colleges)} medical colleges cost ${money(pg.minFee)} to ${money(pg.maxFee)} a year (median ${money(pg.medianFee)}), with closing ranks by quota. See your chance free.`,
+        `NRI quota MD/MS seats at ${inr(pg.colleges)} medical colleges — ${money(pg.minFee)} to ${money(pg.maxFee)} a year, median ${money(pg.medianFee)}.`,
+        `NRI quota seats at ${inr(pg.colleges)} medical colleges — ${money(pg.minFee)} to ${money(pg.maxFee)} a year.`,
+      )
     : "NRI quota medical seats with published fees and closing ranks.";
 
   return resolveMetadata("/nri-quota/fees", {

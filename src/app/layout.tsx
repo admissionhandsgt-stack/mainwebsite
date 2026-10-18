@@ -12,6 +12,7 @@ import { headers } from 'next/headers'
 import { isAdminSubdomain } from '@/utils/envHelper'
 import { getNav, getSettings, getLiveAlerts, setting } from '@/lib/content'
 import { currentUser } from '@/lib/userAuth'
+import { profileIncomplete } from '@/lib/counsellingProfile'
 
 /*
   Fonts: all three are `swap`, so no text ever waits for one — it paints in the
@@ -110,6 +111,9 @@ export default async function RootLayout({
   // Who, if anyone, is signed in. The layout already reads headers() so it is
   // dynamic either way — this costs one more query, not the caching.
   const siteUser = isAdmin ? null : await currentUser()
+  // Signed in but stopped before the questions that decide their list — the
+  // shell shows a "finish your profile" pop-up.
+  const resumeProfile = siteUser?.verified ? await profileIncomplete(siteUser.id) : false
 
   return (
     <html lang="en" className={`${jakarta.variable} ${inter.variable} ${figtree.variable}`} suppressHydrationWarning>
@@ -119,6 +123,37 @@ export default async function RootLayout({
             would open sockets competing with the critical path. */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+        {/* AutoLoom Analytics, beside GA4. The write key is the public browser key.
+            Not on the admin host: staff sessions are not visitors, and admin URLs
+            name individual leads.
+
+            Initialised from the queue rather than with data-write-key on the tag,
+            because only init() takes redactQueryParams: the predictor and the rank
+            lens keep the rank in the URL (?rank=23456), and every page view and
+            click would otherwise carry it. The SDK drops these params from the page
+            URL, the referrer and clicked links' hrefs. With no data-write-key there
+            is no second, unredacted init to fall back to — if this one is not run,
+            nothing is tracked. Session replay records the page, forms included —
+            where students type their name, phone and rank. Off until the owner
+            decides otherwise. */}
+        {!isAdmin && (
+          <>
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `window.aa=window.aa||[];window.aa.push(["init",${JSON.stringify({
+                  writeKey: "pk_prod_SGbTggoA1rvgFPeWpR29J3CKPXzTsvY0",
+                  host: "https://analytics.theautoloom.in",
+                  autoPageviews: "history",
+                  autocapture: true,
+                  inAppMessages: true,
+                  replay: false,
+                  redactQueryParams: ["rank", "air", "score", "roll", "phone", "mobile", "email"],
+                })}]);`,
+              }}
+            />
+            <script defer src="https://analytics.theautoloom.in/sdk/v1/analytics.js" />
+          </>
+        )}
       </head>
       <body className="antialiased font-body overflow-x-hidden bg-background text-foreground transition-colors duration-200">
         {/*
@@ -148,6 +183,7 @@ export default async function RootLayout({
           ) : (
             <SiteShell
               accountName={siteUser?.name?.split(' ')[0] ?? (siteUser ? 'Account' : null)}
+              resumeProfile={resumeProfile}
               headerNav={headerNav}
               footerExplore={footerExplore}
               footerQuick={footerQuick}

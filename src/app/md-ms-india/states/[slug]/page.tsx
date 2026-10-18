@@ -8,6 +8,7 @@ import { getStipends } from "@/lib/cutoffHubQueries";
 import { resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
+import TelegramJoin from "@/components/engage/TelegramJoin";
 
 /** One state's PG picture. See lib/pgStateQueries.ts for what it will and will not state. */
 
@@ -25,17 +26,26 @@ const span = (a: number | null, b: number | null, f: (v: number | null) => strin
 const OWN: Record<string, string> = { government: "Government", private: "Private", deemed: "Deemed", other: "Other" };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const p = await getPgStatePage(params.slug);
+  const [p, stipends] = await Promise.all([getPgStatePage(params.slug), getStipends()]);
   if (!p) return { title: "State not found", robots: { index: false } };
+  // Searched as "neet pg cut off branch wise maharashtra", "md fees in
+  // maharashtra", "pg medical colleges in maharashtra", "md ms stipend in …".
+  const y = p.year ? ` ${p.year}` : "";
+  const govt = p.ownership.government ?? 0;
+  const pvt = (p.ownership.private ?? 0) + (p.ownership.deemed ?? 0);
+  const split = govt || pvt ? ` (${govt} government, ${pvt} private or deemed)` : "";
+  const st = stipends.states.find((x) => x.state === p.name);
+  const stipend = st ? `, stipend (median ₹${st.median.toLocaleString("en-IN")} a month)` : ", stipend";
   return resolveMetadata(`/md-ms-india/states/${p.slug}`, {
     title: fitTitle(
-      `MD/MS in ${p.name}: ${count(p.colleges.length, "PG College", "PG Colleges")}, NEET PG Cutoff & Fees`,
+      `NEET PG Cutoff ${p.name}${y}: Branch Wise, Fees & ${count(p.colleges.length, "College", "Colleges")}`,
+      `${p.name} NEET PG Cutoff${y} Branch Wise & Fees`,
       `MD/MS in ${p.name}: NEET PG Cutoff & Fees`,
-      `PG Seats in ${p.name}: NEET PG Cutoff`,
       `PG Seats in ${p.name}`,
     ),
     description: fitDescription(
-      `${p.colleges.length} PG medical colleges in ${p.name} — NEET PG closing ranks and fees by quota${p.year ? ` (${p.year})` : ""}, the counselling that fills each seat, branches and stipend.`,
+      `${count(p.colleges.length, "PG medical college", "PG medical colleges")} in ${p.name}${split}: NEET PG${y} closing ranks branch wise and by quota, fees${stipend}, and the counselling for each seat.`,
+      `${count(p.colleges.length, "PG medical college", "PG medical colleges")} in ${p.name}: NEET PG${y} closing ranks branch wise and by quota, fees${stipend}.`,
       `${p.colleges.length} PG medical colleges in ${p.name} — NEET PG closing ranks and fees by quota, counsellings, branches and stipend.`,
     ),
     keywords: `PG seats in ${p.name}, NEET PG cutoff ${p.name}, MD MS colleges in ${p.name}, ${p.name} PG counselling, ${p.name} NEET PG fees`,
@@ -63,7 +73,7 @@ export default async function PgStatePage({ params }: Props) {
       ? [
           {
             question: `What was the NEET PG ${p.year} cutoff for ${p.name} state quota?`,
-            answer: `For ${stateQuota.quota}, open / general merit, seats closed from rank ${n(stateQuota.bestR1)} in round 1 to ${n(stateQuota.widest)} at the furthest, across ${stateQuota.colleges} colleges. Each college and branch closed somewhere in between — its own page shows where.`,
+            answer: `For ${stateQuota.quota}, open / general merit, seats closed from rank ${n(stateQuota.bestR1)} in round 1 to ${n(stateQuota.widest)} at the furthest, across ${stateQuota.colleges} colleges. Each college and branch closed somewhere in between — sign in to see your own chance at each.`,
           },
         ]
       : []),
@@ -241,6 +251,7 @@ export default async function PgStatePage({ params }: Props) {
         title={`Planning MD/MS in ${p.name}?`}
         body="A counsellor orders your branch and college choices across the state quota, AIQ and deemed rounds, against the published closing ranks and your budget."
       />
+      <TelegramJoin placement="pg_state" />
 
       <section className="container-custom border-t border-border py-10">
         <h2 className="font-heading text-xl font-bold text-foreground">PG in other states</h2>

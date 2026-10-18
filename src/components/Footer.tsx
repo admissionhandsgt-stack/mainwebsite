@@ -9,6 +9,7 @@ import { CONTACT_INFO } from '@/lib/constants';
 import { useContactInfo } from '@/hooks/useContactInfo';
 import { useCTA } from '@/hooks/useCTA';
 import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon';
+import { TelegramIcon } from '@/components/icons/TelegramIcon';
 import type { NavItem } from '@/lib/content';
 import type { SocialLinks } from './SiteShell';
 
@@ -50,9 +51,10 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
 
   // An empty setting means "use what shipped"; a blank URL hides that icon.
   const socialLinks = [
-    { key: 'facebook', icon: Facebook, href: social?.facebook ?? DEFAULT_SOCIAL.facebook, color: 'hover:bg-cyan-600' },
-    { key: 'instagram', icon: Instagram, href: social?.instagram ?? DEFAULT_SOCIAL.instagram, color: 'hover:bg-emerald-600' },
-    { key: 'youtube', icon: Youtube, href: social?.youtube ?? DEFAULT_SOCIAL.youtube, color: 'hover:bg-red-600' },
+    { key: 'facebook', label: 'Facebook', icon: Facebook, href: social?.facebook ?? DEFAULT_SOCIAL.facebook, color: 'hover:bg-cyan-600' },
+    { key: 'instagram', label: 'Instagram', icon: Instagram, href: social?.instagram ?? DEFAULT_SOCIAL.instagram, color: 'hover:bg-emerald-600' },
+    { key: 'youtube', label: 'YouTube', icon: Youtube, href: social?.youtube ?? DEFAULT_SOCIAL.youtube, color: 'hover:bg-red-600' },
+    { key: 'telegram', label: 'Telegram', icon: TelegramIcon, href: CONTACT_INFO.telegram, color: 'hover:bg-cyan-600' },
   ].filter((s) => s.href);
   
   return (
@@ -92,13 +94,25 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
                     href={social.href} 
                     target="_blank"
                     rel="noopener noreferrer"
+                    data-placement={`footer_${social.key}`}
                     className={cn("bg-white/5 w-11 h-11 rounded-lg md:rounded-xl transition-all duration-300 border border-white/10 text-gray-400 hover:text-white flex items-center justify-center", social.color)}
-                    aria-label="Social Link"
+                    aria-label={`Admission Hands on ${social.label}`}
                   >
                     <social.icon size={16} className="w-4 h-4 md:w-5 md:h-5" />
                   </a>
                 ))}
               </div>
+
+              <a
+                href={CONTACT_INFO.telegram}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-placement="footer"
+                className="inline-flex min-h-[44px] items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3.5 text-[13px] font-semibold text-gray-200 transition-colors hover:bg-white/10 hover:text-white"
+              >
+                <TelegramIcon size={18} className="text-[#229ED9]" />
+                Counselling updates on Telegram · join free
+              </a>
             </div>
 
             {/* Mobile Quick Links Row (Only on Mobile) */}

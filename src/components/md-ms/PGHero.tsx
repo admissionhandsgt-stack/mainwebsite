@@ -88,7 +88,7 @@ export const PGHero = ({ backgroundImageUrl, credit, stats }: PGHeroProps) => {
         <p className="text-cyan-100/90 text-sm md:text-base font-medium leading-relaxed max-w-2xl mx-auto lg:mx-0 mb-7">
           From rank analysis to college reporting — every recommendation is checked against{" "}
           {stats?.pgRanks ? `${(stats.pgRanks / 100000).toFixed(1)} lakh published closing ranks` : "published closing ranks"}{" "}
-          across {stats?.pgColleges ? stats.pgColleges.toLocaleString("en-IN") : "every"} PG college, with dual-quota
+          across {stats?.pgColleges ? stats.pgColleges.toLocaleString("en-IN") : "every"} PG colleges, with dual-quota
           handling and one named counsellor throughout.
         </p>
 
