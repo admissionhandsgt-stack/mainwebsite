@@ -1,4 +1,6 @@
 import { fitTitle, fitDescription, count } from "@/lib/seoTitle";
+import { getStateAuthority } from "@/lib/stateAuthorities";
+import StateAuthority from "@/components/states/StateAuthority";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { notFound } from "next/navigation";
@@ -73,9 +75,10 @@ export default async function PgStatePage({ params }: Props) {
     )
     .sort((a, b) => Number(/state|govt|government|open|general/i.test(b.quota)) - Number(/state|govt|government|open|general/i.test(a.quota)) || b.colleges - a.colleges)[0];
   // Words from Admin → Content → Text & numbers ("Page: PG state pages"); photo from Admin → Media.
-  const [copy, heroImage] = await Promise.all([
+  const [copy, heroImage, authority] = await Promise.all([
     pageCopy("page.pg_state.hero", { state: p.name, year: p.year ?? "the latest" }),
     pageHeroImage(`page.pg_state.${p.slug}.hero`, "page.pg_state.hero"),
+    getStateAuthority(p.name),
   ]);
 
   const faqs = [
@@ -169,6 +172,13 @@ export default async function PgStatePage({ params }: Props) {
           />
         }
       />
+
+      {/* -------------------- the state's counselling authority -------------------- */}
+      {authority?.scope === "UG and PG" && (
+        <div className="container-custom pt-10 md:pt-14">
+          <StateAuthority a={authority} state={p.name} level="pg" />
+        </div>
+      )}
 
       {p.quotas.length > 0 && (
         <section className="container-custom py-10 md:py-14">

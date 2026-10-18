@@ -1,4 +1,6 @@
 import { fitTitle, count } from "@/lib/seoTitle";
+import { getStateAuthority } from "@/lib/stateAuthorities";
+import StateAuthority from "@/components/states/StateAuthority";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { notFound, permanentRedirect } from "next/navigation";
@@ -94,9 +96,10 @@ export default async function MBBSStatePage({ params }: Props) {
   const name = p.state.name;
   const path = `/mbbs-india/${p.state.slug}`;
   // Words from Admin → Content → Text & numbers ("Page: MBBS state pages"); photo from Admin → Media.
-  const [copy, heroImage] = await Promise.all([
+  const [copy, heroImage, authority] = await Promise.all([
     pageCopy("page.ug_state.hero", { state: name, count: inr(p.colleges.length), counsellings: bodiesOf(p) }),
     pageHeroImage(`page.ug_state.${p.state.slug}.hero`, "page.ug_state.hero"),
+    getStateAuthority(name),
   ]);
   const withRanks = p.colleges.filter((c) => c.rankRows > 0).length;
   const years = p.years.length ? p.years.join(" and ") : null;
@@ -189,6 +192,13 @@ export default async function MBBSStatePage({ params }: Props) {
           ) : undefined
         }
       />
+
+      {/* -------------------- the state's counselling authority -------------------- */}
+      {authority && (
+        <div className="container-custom pt-10 md:pt-14">
+          <StateAuthority a={authority} state={name} level="ug" />
+        </div>
+      )}
 
       {/* --------------------------- counsellings --------------------------- */}
       {p.counsellings.length > 0 && (

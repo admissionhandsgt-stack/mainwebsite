@@ -260,6 +260,16 @@ as written so it shows in review.
 - A new page that wants live figures calls `getLiveFigures()` + `fillLive()` on its own blocks — the
   filling is per resolver, not global.
 
+**Two researched collections the team keeps current (2026-10-18)**, both seeded from an import-free
+shipped list that is also the fallback, and both written only into an empty collection:
+
+| Collection | Shown on | Shipped list / seed | Source |
+|---|---|---|---|
+| `nri_documents` | `/nri-quota/documents` (title = document, subtitle = its group) | `lib/nriDocuments.ts`, `scripts/seed_nri_documents.mjs` | MCC's 2025 NEET UG notices (Jul, Sep) and NEET PG 2025 bulletin, as reported by Careers360 — the notice PDFs are scanned images |
+| `state_authorities` | "Who runs counselling here" on `/mbbs-india/[state]` and, for scope "UG and PG", `/md-ms-india/states/[slug]` | `lib/stateAuthorityList.ts`, `scripts/seed_state_authorities.mjs` | 15 states, each site loaded in Oct 2026; Rajasthan's board changes its domain yearly, so RUHS is linked |
+
+Re-check both against each year's notices; a row's `data.checked` is printed on the page.
+
 ## Site structure the admin owns
 
 Three more tables cover the parts of the site that are structure rather than prose. Each was hardcoded in
