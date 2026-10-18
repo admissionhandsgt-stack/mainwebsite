@@ -10,6 +10,7 @@ import DataHero from "@/components/hero/DataHero";
 import HeroFacts from "@/components/hero/HeroFacts";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
+import SectionHead from "@/components/ui/SectionHead";
 /** One DM / MCh / DrNB course: its cutoff over the years, and where it is taught. */
 
 type Props = { params: { slug: string } };
@@ -112,7 +113,10 @@ export default async function SsCoursePage({ params }: Props) {
       />
 
       <section className="container-custom py-10 md:py-14">
-        <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">{c.course} cutoff by year</h2>
+        <SectionHead
+          icon="chart"
+          title={<>{c.course} cutoff by year</>}
+        />
         <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
           <table className="w-full min-w-[520px] text-left text-sm">
             <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
@@ -142,13 +146,11 @@ export default async function SsCoursePage({ params }: Props) {
 
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">
         <div className="container-custom">
-          <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-            Where {c.course} is taught
-          </h2>
-          <p className="mt-2 max-w-[72ch] text-muted-foreground">
-            {c.institutes.length} institutes, {y ? `seats allotted in round 1 of ${y.year}` : ""}. Which one closed at which rank is
-            what a counsellor works from with you.
-          </p>
+          <SectionHead
+            icon="branch"
+            title={<>Where {c.course} is taught</>}
+            intro={<>{c.institutes.length} institutes, {y ? `seats allotted in round 1 of ${y.year}` : ""}. Which one closed at which rank is what a counsellor works from with you.</>}
+          />
           <ul className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {c.institutes.map((i) => (
               <li key={i.name} className="flex items-start justify-between gap-3 rounded-xl border border-border bg-card px-3 py-2 text-sm">

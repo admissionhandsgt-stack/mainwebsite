@@ -10,6 +10,7 @@ import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
+import SectionHead from "@/components/ui/SectionHead";
 /** NEET MDS cutoff, speciality by speciality — for BDS graduates. See lib/mdsQueries.ts. */
 
 const PATH = "/neet-mds-cutoff";
@@ -97,12 +98,11 @@ export default async function NeetMdsCutoffPage() {
       />
 
       <section className="container-custom py-10 md:py-14">
-        <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">MDS cutoff by speciality</h2>
-        <p className="mt-2 max-w-[72ch] text-[13px] text-muted-foreground">
-          Open category. <strong className="font-semibold text-foreground">Round 1 close</strong>: the last rank allotted in round 1.{" "}
-          <strong className="font-semibold text-foreground">Last admitted</strong>: the furthest any round reached. Deemed = MCC&apos;s
-          management / paid seats in deemed universities. Hardest first.
-        </p>
+        <SectionHead
+          icon="chart"
+          title={<>MDS cutoff by speciality</>}
+          intro={<>Open category. <strong className="font-semibold text-foreground">Round 1 close</strong>: the last rank allotted in round 1.{" "} <strong className="font-semibold text-foreground">Last admitted</strong>: the furthest any round reached. Deemed = MCC&apos;s management / paid seats in deemed universities. Hardest first.</>}
+        />
         <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
           <table className="w-full min-w-[720px] text-left text-sm">
             <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
@@ -136,9 +136,10 @@ export default async function NeetMdsCutoffPage() {
       {o.categories.length > 0 && (
         <section className="border-t border-border bg-surface-1 py-10 md:py-14">
           <div className="container-custom">
-            <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-              All India Quota by category, {o.year}
-            </h2>
+            <SectionHead
+              icon="authority"
+              title={<>All India Quota by category, {o.year}</>}
+            />
             <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
               <table className="w-full min-w-[480px] text-left text-sm">
                 <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
@@ -164,7 +165,10 @@ export default async function NeetMdsCutoffPage() {
       )}
 
       <section className="container-custom py-10 md:py-14">
-        <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">NEET MDS: common questions</h2>
+        <SectionHead
+          icon="help"
+          title={<>NEET MDS: common questions</>}
+        />
         <div className="mt-6 space-y-3">
           {faqs.map((q) => (
             <details key={q.question} className="rounded-2xl border border-border bg-card p-5">

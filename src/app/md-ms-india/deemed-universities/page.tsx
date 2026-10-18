@@ -10,6 +10,7 @@ import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
+import SectionHead from "@/components/ui/SectionHead";
 /**
  * "Deemed university PG fee structure", "NEET PG deemed cutoff". Per-college
  * fees are free on every college page, so listing them here gives nothing away;
@@ -113,8 +114,11 @@ export default async function DeemedPgPage() {
       />
 
       <section className="container-custom py-10 md:py-14">
-        <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">Deemed PG fees by quota</h2>
-        <p className="mt-2 max-w-[72ch] text-muted-foreground">&quot;Most seats&quot; is the middle 80% of published fees.</p>
+        <SectionHead
+          icon="money"
+          title={<>Deemed PG fees by quota</>}
+          intro={<>&quot;Most seats&quot; is the middle 80% of published fees.</>}
+        />
         <div className="mt-5">
           <FeeBandTable bands={d.national} />
         </div>
@@ -122,11 +126,11 @@ export default async function DeemedPgPage() {
 
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">
         <div className="container-custom">
-          <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">Every deemed university</h2>
-          <p className="mt-2 max-w-[72ch] text-muted-foreground">
-            Lowest median management fee first. The range is across the university&apos;s branches; open one for its fees and
-            ranks branch by branch.
-          </p>
+          <SectionHead
+            icon="college"
+            title={<>Every deemed university</>}
+            intro={<>Lowest median management fee first. The range is across the university&apos;s branches; open one for its fees and ranks branch by branch.</>}
+          />
           <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
             <table className="w-full min-w-[680px] text-left text-sm">
               <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
@@ -162,7 +166,10 @@ export default async function DeemedPgPage() {
       </section>
 
       <section className="container-custom py-10 md:py-14">
-        <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">Common questions</h2>
+        <SectionHead
+          icon="help"
+          title={<>Common questions</>}
+        />
         <div className="mt-6 space-y-3">
           {faqs.map((q) => (
             <details key={q.question} className="rounded-2xl border border-border bg-card p-5">

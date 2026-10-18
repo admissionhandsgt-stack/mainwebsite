@@ -8,6 +8,7 @@ import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
+import SectionHead from "@/components/ui/SectionHead";
 /**
  * BAMS, BHMS, BUMS, BSMS — and B.Sc Nursing and BVSc — colleges with published
  * NEET UG closing ranks. Their pages existed and nothing linked to them (162
@@ -126,9 +127,10 @@ export default async function AyushCollegesPage() {
         <div className="space-y-12">
           {courses.map((c) => (
             <div key={c} id={c.replace(/\W+/g, "-").toLowerCase()}>
-              <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-                {LABEL[c] ?? c} colleges <span className="tnum text-base font-normal text-muted-foreground">· {count(c)}</span>
-              </h2>
+              <SectionHead
+                icon="college"
+                title={<>{LABEL[c] ?? c} colleges <span className="tnum text-base font-normal text-muted-foreground">· {count(c)}</span></>}
+              />
               <div className="mt-5 space-y-6">
                 {[...(byCourse.get(c)?.entries() ?? [])].map(([state, list]) => (
                   <div key={state}>

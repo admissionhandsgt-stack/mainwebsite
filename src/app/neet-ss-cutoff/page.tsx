@@ -10,6 +10,7 @@ import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
+import SectionHead from "@/components/ui/SectionHead";
 /**
  * NEET SS cutoff, course by course — for doctors already holding an MD/MS.
  * MCC's own round results (lib/ssQueries.ts). Group ranks throughout.
@@ -155,7 +156,10 @@ export default async function NeetSsCutoffPage() {
 
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">
         <div className="container-custom">
-          <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">NEET SS: common questions</h2>
+          <SectionHead
+            icon="help"
+            title={<>NEET SS: common questions</>}
+          />
           <div className="mt-6 space-y-3">
             {faqs.map((q) => (
               <details key={q.question} className="rounded-2xl border border-border bg-card p-5">

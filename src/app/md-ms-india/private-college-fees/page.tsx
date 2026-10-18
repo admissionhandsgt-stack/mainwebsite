@@ -10,6 +10,7 @@ import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
+import SectionHead from "@/components/ui/SectionHead";
 /** "MD fees in private colleges" — by quota family, nationally and per state. See lib/pgFeeQueries.ts. */
 
 const PATH = "/md-ms-india/private-college-fees";
@@ -107,10 +108,11 @@ export default async function PrivateFeesPage() {
       />
 
       <section className="container-custom py-10 md:py-14">
-        <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">All India, private colleges</h2>
-        <p className="mt-2 max-w-[72ch] text-muted-foreground">
-          &quot;Most seats&quot; is the middle 80% of published fees — the 10th to the 90th percentile.
-        </p>
+        <SectionHead
+          icon="college"
+          title={<>All India, private colleges</>}
+          intro={<>&quot;Most seats&quot; is the middle 80% of published fees — the 10th to the 90th percentile.</>}
+        />
         <div className="mt-5">
           <FeeBandTable bands={f.national} />
         </div>
@@ -118,7 +120,10 @@ export default async function PrivateFeesPage() {
 
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">
         <div className="container-custom">
-          <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">State by state</h2>
+          <SectionHead
+            icon="map"
+            title={<>State by state</>}
+          />
           <div className="mt-6 grid gap-8 lg:grid-cols-2">
             {f.states.map((s) => (
               <div key={s.state}>
@@ -135,7 +140,10 @@ export default async function PrivateFeesPage() {
       </section>
 
       <section className="container-custom py-10 md:py-14">
-        <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">Common questions</h2>
+        <SectionHead
+          icon="help"
+          title={<>Common questions</>}
+        />
         <div className="mt-6 space-y-3">
           {faqs.map((q) => (
             <details key={q.question} className="rounded-2xl border border-border bg-card p-5">

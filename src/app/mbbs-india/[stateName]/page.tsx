@@ -14,6 +14,7 @@ import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
+import SectionHead from "@/components/ui/SectionHead";
 /**
  * One page per state, read on the server.
  *
@@ -203,13 +204,11 @@ export default async function MBBSStatePage({ params }: Props) {
       {/* --------------------------- counsellings --------------------------- */}
       {p.counsellings.length > 0 && (
         <section className="container-custom py-10 md:py-14">
-          <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-            Who fills MBBS seats in {name}
-          </h2>
-          <p className="mt-2 max-w-[66ch] text-muted-foreground">
-            Every counselling that allotted an MBBS seat in {name} in the published results
-            {years ? ` for ${years}` : ""}, and how many of the state&apos;s colleges it covers.
-          </p>
+          <SectionHead
+            icon="authority"
+            title={<>Who fills MBBS seats in {name}</>}
+            intro={<>Every counselling that allotted an MBBS seat in {name} in the published results {years ? ` for ${years}` : ""}, and how many of the state&apos;s colleges it covers.</>}
+          />
           <ul className="mt-6 grid gap-3 md:grid-cols-2">
             {p.counsellings.map((c) => (
               <li key={c.name} className="rounded-2xl border border-border bg-card p-5">
@@ -232,12 +231,11 @@ export default async function MBBSStatePage({ params }: Props) {
       {/* ------------------------------ colleges ----------------------------- */}
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">
         <div className="container-custom">
-          <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-            MBBS colleges in {name}
-          </h2>
-          <p className="mt-2 max-w-[66ch] text-muted-foreground">
-            Open a college for its courses, fees, seat options and its general-category cutoff band.
-          </p>
+          <SectionHead
+            icon="college"
+            title={<>MBBS colleges in {name}</>}
+            intro={<>Open a college for its courses, fees, seat options and its general-category cutoff band.</>}
+          />
           {p.colleges.length === 0 ? (
             <p className="mt-6 text-muted-foreground">No MBBS college in {name} has published closing ranks in our data yet.</p>
           ) : (
@@ -270,9 +268,10 @@ export default async function MBBSStatePage({ params }: Props) {
 
       {/* -------------------------------- faq -------------------------------- */}
       <section className="container-custom py-10 md:py-14">
-        <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-          MBBS in {name}: common questions
-        </h2>
+        <SectionHead
+          icon="help"
+          title={<>MBBS in {name}: common questions</>}
+        />
         <div className="mt-6 space-y-3">
           {faqs.map((f) => (
             <details key={f.question} className="rounded-2xl border border-border bg-card p-5">

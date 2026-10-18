@@ -10,6 +10,7 @@ import DataHero from "@/components/hero/DataHero";
 import HeroFacts from "@/components/hero/HeroFacts";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
+import SectionHead from "@/components/ui/SectionHead";
 /** One MDS speciality: its cutoff by quota and category, and where it is taught. */
 
 type Props = { params: { slug: string } };
@@ -133,9 +134,10 @@ export default async function MdsCoursePage({ params }: Props) {
       />
 
       <section className="container-custom py-10 md:py-14">
-        <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-          MDS {c.course} cutoff {c.year}, by quota and category
-        </h2>
+        <SectionHead
+          icon="chart"
+          title={<>MDS {c.course} cutoff {c.year}, by quota and category</>}
+        />
         <div className="mt-5">
           <CutTable cuts={c.cuts} />
         </div>
@@ -154,7 +156,10 @@ export default async function MdsCoursePage({ params }: Props) {
 
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">
         <div className="container-custom">
-          <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">Where MDS {c.course} is taught</h2>
+          <SectionHead
+            icon="branch"
+            title={<>Where MDS {c.course} is taught</>}
+          />
           <ul className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {c.institutes.map((i) => (
               <li key={i.name} className="flex items-start justify-between gap-3 rounded-xl border border-border bg-card px-3 py-2 text-sm">

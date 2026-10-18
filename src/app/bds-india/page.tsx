@@ -12,6 +12,11 @@ import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
+import SectionHead from "@/components/ui/SectionHead";
+import OpenOnHash from "@/components/ui/OpenOnHash";
+import { ChevronDown, MapPin } from "lucide-react";
+
+const stateSlug = (s: string) => s.toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 /**
  * BDS had 326 colleges and 3,244 seat options in the data, and no page — the
  * predictor offered BDS, but "BDS colleges in India" and "BDS cutoff" found
@@ -145,13 +150,11 @@ export default async function BdsPage() {
 
       {year && (
         <section className="container-custom py-10 md:py-14">
-          <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-            BDS cutoff {year.year} — All India Quota
-          </h2>
-          <p className="mt-2 max-w-[70ch] text-muted-foreground">
-            15% of government dental college seats, filled by MCC on All India Rank. Every round of {year.year}.{" "}
-            <Link href="/neet-ug-cutoff" className="font-semibold text-primary-strong hover:underline">MBBS cutoff →</Link>
-          </p>
+          <SectionHead
+            icon="chart"
+            title={<>BDS cutoff {year.year} — All India Quota</>}
+            intro={<>15% of government dental college seats, filled by MCC on All India Rank. Every round of {year.year}.{" "} <Link href="/neet-ug-cutoff" className="font-semibold text-primary-strong hover:underline">MBBS cutoff →</Link></>}
+          />
           <div className="mt-5">
             <CategoryCutTable cuts={year.categories} />
           </div>
@@ -160,15 +163,41 @@ export default async function BdsPage() {
 
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">
         <div className="container-custom">
-          <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">BDS colleges, state by state</h2>
-          <p className="mt-2 max-w-[70ch] text-muted-foreground">Open a college for its fees, seat options and its general-category cutoff band.</p>
-          <div className="mt-6 space-y-8">
+          <SectionHead
+            icon="college"
+            title={<>BDS colleges, state by state</>}
+            intro={<>Open a college for its fees, seat options and its general-category cutoff band.</>}
+          />
+          {/* One fold per state, the largest open — 326 colleges were 14,800px of page (2026-10-18). */}
+          <OpenOnHash />
+          <nav aria-label="Jump to a state" className="mt-6 flex flex-wrap gap-2">
             {states.map(([state, list]) => (
-              <div key={state}>
-                <h3 className="text-lg font-semibold text-foreground">
-                  BDS colleges in {state} <span className="tnum text-sm font-normal text-muted-foreground">· {list.length}</span>
-                </h3>
-                <ul className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+              <a
+                key={state}
+                href={`#${stateSlug(state)}`}
+                className="inline-flex min-h-[36px] items-center gap-1.5 rounded-full border border-border bg-card px-3 text-[13px] font-medium text-foreground transition-colors hover:border-primary/50"
+              >
+                {state} <span className="tnum text-muted-foreground">{list.length}</span>
+              </a>
+            ))}
+          </nav>
+          <div className="mt-6 space-y-3">
+            {states.map(([state, list], i) => (
+              <details
+                key={state}
+                id={stateSlug(state)}
+                open={i === 0}
+                className="group/state scroll-mt-28 rounded-3xl border border-border bg-card/60 open:bg-background"
+              >
+                <summary className="flex min-h-[56px] cursor-pointer list-none items-center justify-between gap-3 rounded-3xl px-4 py-3 sm:px-5 [&::-webkit-details-marker]:hidden">
+                  <h3 className="flex min-w-0 items-baseline gap-2 font-heading text-[1.05rem] font-bold text-foreground md:text-lg">
+                    <MapPin className="h-4 w-4 shrink-0 self-center text-primary" aria-hidden="true" />
+                    BDS colleges in {state}
+                    <span className="tnum text-[13px] font-normal text-muted-foreground">· {list.length}</span>
+                  </h3>
+                  <ChevronDown className="h-5 w-5 shrink-0 text-muted-foreground transition-transform group-open/state:rotate-180" aria-hidden="true" />
+                </summary>
+                <ul className="grid gap-2 px-3 pb-4 sm:grid-cols-2 sm:px-5 sm:pb-5 lg:grid-cols-3">
                   {list.map((c) => (
                     <li key={c.slug}>
                       <Link
@@ -181,14 +210,17 @@ export default async function BdsPage() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </details>
             ))}
           </div>
         </div>
       </section>
 
       <section className="container-custom py-10 md:py-14">
-        <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">BDS: common questions</h2>
+        <SectionHead
+          icon="help"
+          title={<>BDS: common questions</>}
+        />
         <div className="mt-6 space-y-3">
           {faqs.map((f) => (
             <details key={f.question} className="rounded-2xl border border-border bg-card p-5">

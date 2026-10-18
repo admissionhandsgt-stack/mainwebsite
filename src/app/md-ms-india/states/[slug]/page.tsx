@@ -14,6 +14,7 @@ import DataHero from "@/components/hero/DataHero";
 import HeroFacts from "@/components/hero/HeroFacts";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
+import SectionHead from "@/components/ui/SectionHead";
 /** One state's PG picture. See lib/pgStateQueries.ts for what it will and will not state. */
 
 type Props = { params: { slug: string } };
@@ -182,13 +183,11 @@ export default async function PgStatePage({ params }: Props) {
 
       {p.quotas.length > 0 && (
         <section className="container-custom py-10 md:py-14">
-          <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-            NEET PG {p.year} cutoff in {p.name}, by quota
-          </h2>
-          <p className="mt-2 max-w-[72ch] text-muted-foreground">
-            Open / general merit, in each counselling&apos;s own category code. The rank range and the fee range are separate:
-            each is the lowest and highest across the quota&apos;s colleges, so the cheapest fee is not the seat with the furthest rank.
-          </p>
+          <SectionHead
+            icon="chart"
+            title={<>NEET PG {p.year} cutoff in {p.name}, by quota</>}
+            intro={<>Open / general merit, in each counselling&apos;s own category code. The rank range and the fee range are separate: each is the lowest and highest across the quota&apos;s colleges, so the cheapest fee is not the seat with the furthest rank.</>}
+          />
           <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
             <table className="w-full min-w-[680px] text-left text-sm">
               <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
@@ -225,7 +224,10 @@ export default async function PgStatePage({ params }: Props) {
 
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">
         <div className="container-custom">
-          <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">PG branches in {p.name}</h2>
+          <SectionHead
+            icon="branch"
+            title={<>PG branches in {p.name}</>}
+          />
           <ul className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {p.branches.map((b) => (
               <li key={b.name}>
@@ -243,7 +245,10 @@ export default async function PgStatePage({ params }: Props) {
       </section>
 
       <section className="container-custom py-10 md:py-14">
-        <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">PG medical colleges in {p.name}</h2>
+        <SectionHead
+          icon="college"
+          title={<>PG medical colleges in {p.name}</>}
+        />
         <ul className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
           {p.colleges.map((c) => (
             <li key={c.slug}>
@@ -261,7 +266,10 @@ export default async function PgStatePage({ params }: Props) {
 
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">
         <div className="container-custom">
-          <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">MD/MS in {p.name}: common questions</h2>
+          <SectionHead
+            icon="help"
+            title={<>MD/MS in {p.name}: common questions</>}
+          />
           <div className="mt-6 space-y-3">
             {faqs.map((f) => (
               <details key={f.question} className="rounded-2xl border border-border bg-card p-5">

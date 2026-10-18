@@ -11,6 +11,7 @@ import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
+import SectionHead from "@/components/ui/SectionHead";
 /**
  * A press-ready report: the stipend data as a story an education desk can run.
  * Every number is computed from the same published figures as
@@ -106,7 +107,10 @@ export default async function StipendReportPage() {
       />
 
       <section className="container-custom py-10 md:py-14">
-        <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">Key findings</h2>
+        <SectionHead
+          icon="list"
+          title={<>Key findings</>}
+        />
         <ol className="mt-5 max-w-[78ch] list-decimal space-y-3 pl-5 text-[15px] leading-relaxed text-foreground">
           {findings.map((f) => (
             <li key={f}>{f}</li>
@@ -116,7 +120,10 @@ export default async function StipendReportPage() {
 
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">
         <div className="container-custom">
-          <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">Stipend by state</h2>
+          <SectionHead
+            icon="coins"
+            title={<>Stipend by state</>}
+          />
           <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
             <table className="w-full min-w-[560px] text-left text-sm">
               <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
@@ -149,7 +156,10 @@ export default async function StipendReportPage() {
       </section>
 
       <section className="container-custom py-10 md:py-14">
-        <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">How this was compiled</h2>
+        <SectionHead
+          icon="list"
+          title={<>How this was compiled</>}
+        />
         <ul className="mt-4 max-w-[78ch] list-disc space-y-2 pl-5 text-[15px] leading-relaxed text-muted-foreground">
           <li>Each college&apos;s first-year PG stipend as it published it with the counselling, most recent year, monthly figures only.</li>
           <li>A state&apos;s figure is the median of its colleges; states with fewer than three publishing colleges are left out.</li>
