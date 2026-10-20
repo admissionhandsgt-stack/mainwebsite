@@ -309,6 +309,51 @@ shipped list that is also the fallback, and both written only into an empty coll
 
 Re-check both against each year's notices; a row's `data.checked` is printed on the page.
 
+## MCC's seat matrix, and the PG bond / stipend / seat-leaving terms (2026-10-20)
+
+Two datasets from the PG data session (`pg-4f`), handed over as CSV in `D:/Admisson Hands/pg_handoff/from_pg`
+(outside the repo). **Different provenance, and the pages must keep them apart:**
+
+| Table (migration) | What | Provenance | Load |
+|---|---|---|---|
+| `mcc_seat_matrix` (0038) | MCC's NEET PG 2026 seat matrix: 31,708 seats, AIQ 14,113 · deemed 7,537 · central universities' quotas 857 · DNB + NBE diploma 9,201 | **Official** — MCC's PDFs | `npx tsx --env-file=.env.local scripts/import_mcc_handoff.ts [dir] [--dry-run] [--show-decisions]` |
+| `mcc_allotments` (0038) | MCC's AIQ results 2024 + 2025, every round (ranks included) | **Official** | same script |
+| `pg_seat_terms` (0039) | Per college × course × seat type: stipend Y1–Y3, service bond (years, penalty), seat-leaving penalty / debarment, hostel. 27,478 rows, 2,007 colleges | **Third-party compilation** (the owner's subscription), as listed for the 2026 counselling | `npx tsx --env-file=.env.local scripts/import_seat_terms.ts [file] [--dry-run]` |
+
+- **Never call `pg_seat_terms` figures official or verified**, and never show the compiler's written remarks
+  (none are stored). Every surface carries the caveat ("compiled … by a third-party data service … confirm with
+  the state's notice or the college before you pay a fee or sign a bond") — it is inside `SeatTerms`, not an
+  option. No CiteThis on the bond page: we do not invite others to cite a third party's compilation as ours.
+  Spot-checked 2026-10-20 against public reporting: Uttarakhand 2 years / ₹2.5 Cr, Delhi 1 year / ₹20 L,
+  Kerala ₹50 L to leave the seat — all three match.
+- **Allotment ranks never reach a page** (the chance-view rule). `mcc_allotments` feeds round counts only:
+  a round's list is its fresh allotments plus its upgrades (`status ILIKE 'Upgraded%'`); round 1 is all fresh.
+  It is also there for QA of our own closing ranks against MCC's.
+- **College matching** (both imports): the handoff's `our_id` + `alt_our_ids` at confidence ≥ 0.80, and a
+  DNB / NBE-diploma row goes to the candidate institute holding DNB seats, any other row to the one holding
+  MD/MS seats — our PG data often lists one hospital twice. Hand decisions for the MCC names are
+  `scripts/data/mcc_name_decisions.json` (letters-only pattern, optional state, kind `mdms|dnb|any`; a
+  kind-specific decision beats `any`, a longer pattern wins). The import prints every unused decision;
+  `--show-decisions` prints what each one caught, so a pattern that reaches too far shows up. MCC course
+  labels map to our course names through `lib/mccCourses.ts` (`ourCourseFor`).
+- **Two traps in the matrix data:** (1) **PwD is 0 in every AIQ, deemed and central-quota row** — only DNB rows
+  carry PwD figures. A PwD column/row is shown only where it has something in it; never print "0 seats for
+  candidates with a disability". (2) **No college total across matrices** — a hospital with an MD/MS entry and
+  a DNB entry is two institutes here, so a cross-matrix count double-counts it. Count colleges per matrix.
+- **Read side:** `lib/pgSeatData.ts` (server only; tags `mcc`, `seat-terms`): `getCollegeSeatMatrix(slug)`,
+  `getCollegeSeatTerms(slug)` (one entry per counselling × seat type, modal values, `bondVaries`),
+  `getBranchSeatMatrix(course)`, `getSeatMatrixOverview()`, `getBondByState()`. A college "has a bond" when
+  any of its AIQ/state seats lists one (a mode over every seat called a college unbonded wherever its
+  in-service seats outnumbered the rest — Andhra Pradesh read 13 of 18 instead of 18 of 18). Government =
+  `institute_type` "Government Institute" or AFMS; GMERS and municipal colleges are "State Society/PPP" and
+  sit with private and deemed. A state's penalty figure needs three colleges.
+- **Where it shows:** PG college pages — `components/colleges/MccSeats.tsx` (after the cutoff bands) and
+  `SeatTerms.tsx` (after the fee table, `#seat-terms`); PG branch pages — "seats in MCC's 2026 counselling";
+  `/neet-pg-seat-matrix` (matrix by matrix, AIQ by category, by branch, by state, rounds 2024–25);
+  `/md-ms-india/bond` (government bond by state, private/deemed by state, every government college under its
+  state). Copy: `page.college_pg.mcc`, `page.pg_branch.mcc`, `page.pg_seat_matrix.*`, `page.pg_bond.*`.
+  Menu rows: `scripts/sql/nav_seat_matrix_bond_2026_10_20.sql` (run after the deploy).
+
 ## Site structure the admin owns
 
 Three more tables cover the parts of the site that are structure rather than prose. Each was hardcoded in

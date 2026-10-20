@@ -15,6 +15,7 @@ import CtaBand from "@/components/ui/CtaBand";
 import SeatOverview from "@/components/seats/SeatOverview";
 import BranchBands from "@/components/seats/BranchBands";
 import { summariseSeats } from "@/lib/seatSummary";
+import { getBranchSeatMatrix, MATRIX_LABEL } from "@/lib/pgSeatData";
 
 /**
  * Rendered per request, deliberately.
@@ -110,12 +111,22 @@ export default async function BranchPage({
   // Aggregates only — the per-college rows stay on the server (lib/depth.ts).
   const summary = summariseSeats(b.rowsList);
   // Words from Admin → Content → Text & numbers ("Page: PG branch pages"); photo from Admin → Media.
-  const [where, copy, heroImage] = await Promise.all([
+  const [where, copy, heroImage, mcc] = await Promise.all([
     getBranchStates(b.name),
     pageCopy("page.pg_branch.hero", { branch: b.name, year: b.year ?? "the latest" }),
     // The admin's photo for this branch, else the specialty's picture from Admin → PG branches.
     pageHeroImage(`page.pg_branch.${b.slug}.hero`).then((img) => img ?? branchImage(b.name)),
+    // MCC's own seat matrix for this course — seat counts, never a rank (lib/pgSeatData.ts).
+    getBranchSeatMatrix(b.name),
   ]);
+  const mccCopy = mcc
+    ? await pageCopy("page.pg_branch.mcc", {
+        branch: b.name,
+        year: mcc.year,
+        total: inr(mcc.total),
+        colleges: inr(mcc.colleges),
+      })
+    : null;
 
   const faqs = [
     {
@@ -280,6 +291,72 @@ export default async function BranchPage({
           )}
 
         </section>
+
+        {/* ------------------------ MCC's seat matrix ------------------------ */}
+        {mcc && mccCopy && (
+          <section className="mt-12" id="mcc-seats">
+            <h2 className="font-heading text-xl font-bold text-foreground md:text-2xl">{mccCopy.title}</h2>
+            <p className="mt-1.5 max-w-[72ch] text-[14px] leading-relaxed text-muted-foreground">{mccCopy.intro}</p>
+            <div className="mt-5 grid gap-4 md:grid-cols-2">
+              <div className="rounded-2xl border border-border bg-card p-5">
+                <h3 className="text-[11.5px] font-bold uppercase tracking-[0.1em] text-muted-foreground">{mccCopy.by_matrix}</h3>
+                <dl className="mt-3 divide-y divide-border">
+                  {mcc.byMatrix.map((m) => (
+                    <div key={m.seatMatrix} className="flex items-baseline justify-between gap-3 py-2">
+                      <dt className="text-[14px] text-foreground">{MATRIX_LABEL[m.seatMatrix] ?? m.seatMatrix}</dt>
+                      <dd className="tnum text-[15px] font-semibold text-foreground">{inr(m.seats)}</dd>
+                    </div>
+                  ))}
+                  <div className="flex items-baseline justify-between gap-3 py-2">
+                    <dt className="text-[13px] font-semibold uppercase tracking-wide text-muted-foreground">All</dt>
+                    <dd className="tnum text-[15px] font-bold text-foreground">{inr(mcc.total)}</dd>
+                  </div>
+                </dl>
+              </div>
+              <div className="rounded-2xl border border-border bg-card p-5">
+                <h3 className="text-[11.5px] font-bold uppercase tracking-[0.1em] text-muted-foreground">{mccCopy.by_category}</h3>
+                <dl className="mt-3 grid grid-cols-3 gap-3">
+                  {(
+                    [
+                      ["Open", mcc.categories.open],
+                      ["EWS", mcc.categories.ews],
+                      ["OBC", mcc.categories.obc],
+                      ["SC", mcc.categories.sc],
+                      ["ST", mcc.categories.st],
+                      ["PwD", mcc.categories.pwd],
+                    ] as const
+                  )
+                    // PwD only where MCC's matrix lists PwD seats (DNB does; AIQ and deemed do not).
+                    .filter(([label, v]) => label !== "PwD" || v > 0)
+                    .map(([label, v]) => (
+                    <div key={label} className="rounded-xl bg-surface-2 px-3 py-2.5">
+                      <dt className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">{label}</dt>
+                      <dd className="tnum font-heading mt-0.5 text-[1.1rem] font-extrabold text-foreground">{inr(v)}</dd>
+                    </div>
+                  ))}
+                </dl>
+                {mcc.topStates.length > 0 && (
+                  <p className="mt-4 text-[13px] leading-relaxed text-muted-foreground">
+                    {mccCopy.top_states}{" "}
+                    {mcc.topStates.map((s, i) => (
+                      <span key={s.state}>
+                        {i > 0 ? (i === mcc.topStates.length - 1 ? " and " : ", ") : ""}
+                        <b className="font-semibold text-foreground">{s.state}</b> <span className="tnum">({inr(s.seats)})</span>
+                      </span>
+                    ))}
+                    .
+                  </p>
+                )}
+              </div>
+            </div>
+            <p className="mt-3 text-[12px] leading-relaxed text-muted-foreground">
+              {mccCopy.source}{" "}
+              <Link href="/neet-pg-seat-matrix" className="font-semibold text-primary-strong hover:underline dark:text-primary">
+                {mccCopy.link}
+              </Link>
+            </p>
+          </section>
+        )}
 
         {/* ------------------------------- faq ------------------------------- */}
         <section className="mt-12">

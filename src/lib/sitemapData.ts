@@ -54,6 +54,9 @@ const STATIC: { path: string; priority: number; freq: SitemapEntry["changeFreque
   // Open data and the press report — the pages other sites are asked to cite.
   { path: "/data", priority: 0.7, freq: "monthly" },
   { path: "/reports/neet-pg-stipend-2026", priority: 0.7, freq: "yearly" },
+  // MCC's own seat matrix, and the bond/seat-leaving terms by state (2026-10-20).
+  { path: "/neet-pg-seat-matrix", priority: 0.9, freq: "weekly" },
+  { path: "/md-ms-india/bond", priority: 0.8, freq: "monthly" },
   { path: "/md-ms-india/private-college-fees", priority: 0.8, freq: "monthly" },
   { path: "/md-ms-india/deemed-universities", priority: 0.8, freq: "monthly" },
   { path: "/nri-quota", priority: 0.7, freq: "monthly" },

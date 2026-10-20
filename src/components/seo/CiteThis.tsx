@@ -9,7 +9,18 @@ import { Check, Copy, Quote } from "lucide-react";
  * or blogger using a figure from the page. A link someone chooses to copy is
  * the kind search engines count; making it one click is the whole tool.
  */
-export default function CiteThis({ title, path, source }: { title: string; path: string; source: string }) {
+export default function CiteThis({
+  title,
+  path,
+  source,
+  openData = true,
+}: {
+  title: string;
+  path: string;
+  source: string;
+  /** False on a page whose table is not one of the /data datasets, so the line does not point at a download that is not there. */
+  openData?: boolean;
+}) {
   const url = `https://www.admissionhands.com${path}`;
   const html = `<a href="${url}">${title} — AdmissionHands</a>`;
   const text = `${title}. AdmissionHands, from ${source}. ${url}`;
@@ -31,8 +42,13 @@ export default function CiteThis({ title, path, source }: { title: string; path:
         <Quote className="h-4 w-4 text-primary-strong" aria-hidden="true" /> Using these numbers? Cite the source
       </h2>
       <p className="mt-1 text-sm text-muted-foreground">
-        Free to quote with a link back. Download the table or embed it on your site from the{" "}
-        <Link href="/data" className="font-semibold text-primary-strong hover:underline">open data page</Link>.
+        Free to quote with a link back.
+        {openData && (
+          <>
+            {" "}Download the table or embed it on your site from the{" "}
+            <Link href="/data" className="font-semibold text-primary-strong hover:underline">open data page</Link>.
+          </>
+        )}
       </p>
       {[
         { key: "html", label: "Link (HTML)", value: html },

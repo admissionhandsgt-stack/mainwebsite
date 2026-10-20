@@ -840,6 +840,277 @@ export const PAGE_COPY = {
       visual_title: { label: "Chart title", value: "Colleges by course" },
     }),
   },
+  "page.college_pg.mcc": {
+    group: "Page: PG college pages — MCC seats, bond and stipend",
+    fields: {
+      seats_eyebrow: { label: "Seats eyebrow — {year}", value: "MCC seat matrix · {year}" },
+      seats_title: { label: "Seats heading — {college}, {year}", value: "{college} seats in MCC's {year} counselling" },
+      seats_intro: {
+        label: "Seats line — {total}, {year}",
+        value:
+          "{total} seats at this college are filled through MCC in {year}, course by course and category by category. MCC fills the All India Quota, every seat at a deemed university, the central universities' own quotas and DNB seats. State-quota seats go through the state's own counselling and are not counted here.",
+        long: true,
+      },
+      seats_source: {
+        label: "Seats source line — {year}",
+        value: "From the NEET PG {year} seat matrix published by the Medical Counselling Committee (MCC).",
+        long: true,
+      },
+      seats_pwd: { label: "Seats note, when a PwD column shows", value: "PwD seats are counted once, in the PwD column." },
+      seats_total: { label: "Seats table, total row", value: "All seats MCC fills here" },
+      seats_link: { label: "Link to the full seat matrix — {year}", value: "The whole {year} seat matrix" },
+      terms_eyebrow: { label: "Terms eyebrow — {year}", value: "Bond, stipend and exit · {year}" },
+      terms_title: { label: "Terms heading — {college}", value: "Bond, stipend and seat-leaving rules at {college}" },
+      terms_intro: {
+        label: "Terms line — {year}",
+        value:
+          "What each type of seat here pays and binds you to: the stipend in each year, the service bond, and the penalty for leaving the seat once you have joined. As listed for the {year} counselling.",
+        long: true,
+      },
+      terms_caveat: {
+        label: "Terms caveat",
+        value:
+          "Compiled from counselling notices and college fee schedules by a third-party data service. This is not an official notice. Bond and penalty rules change from year to year, so confirm them in the state's notice or with the college before you pay a fee or sign a bond.",
+        long: true,
+      },
+      terms_stipend: { label: "Card label: stipend", value: "Stipend a month" },
+      terms_bond: { label: "Card label: bond", value: "Service bond" },
+      terms_exit: { label: "Card label: leaving the seat", value: "Leaving the seat" },
+      terms_hostel: { label: "Card label: hostel", value: "Hostel" },
+      terms_more: { label: "Button: more seat types — {count}", value: "{count} more seat types" },
+      terms_link: { label: "Link to the bond page", value: "Every state's PG bond, side by side" },
+    },
+  },
+  "page.pg_branch.mcc": {
+    group: "Page: PG branch pages — MCC seats",
+    fields: {
+      title: { label: "Heading — {branch}, {year}", value: "{branch} seats in MCC's {year} counselling" },
+      intro: {
+        label: "Line — {branch}, {total}, {colleges}, {year}",
+        value:
+          "{total} {branch} seats at {colleges} colleges are filled through MCC in {year}. MCC's matrix covers the All India Quota, deemed universities, central universities' own quotas and DNB. State-quota seats are counted by each state's own counselling.",
+        long: true,
+      },
+      source: { label: "Source line — {year}", value: "From the NEET PG {year} seat matrix published by the Medical Counselling Committee (MCC).", long: true },
+      link: { label: "Link to the full seat matrix — {year}", value: "The whole {year} seat matrix, branch by branch" },
+      by_matrix: { label: "Card heading: by seat matrix", value: "By seat matrix" },
+      by_category: { label: "Card heading: by category", value: "By category" },
+      top_states: { label: "Line before the top states", value: "Most seats in" },
+    },
+  },
+  "page.pg_seat_matrix.hero": {
+    group: "Page: NEET PG seat matrix",
+    fields: hero({
+      eyebrow: { label: "Hero eyebrow — {year}", value: "NEET PG {year} · MCC" },
+      title: { label: "Hero title — {year}", value: "NEET PG seat matrix {year}:" },
+      accent: { label: "Hero title, coloured part", value: "every seat MCC fills" },
+      subtitle: {
+        label: "Hero line — {total}, {year}",
+        value:
+          "{total} MD, MS, diploma and DNB seats in MCC's {year} counselling, by branch, by state and by category. That includes the All India Quota, deemed universities, central universities' quotas and DNB.",
+        long: true,
+      },
+      cta: { label: "Hero button", value: "Enter your PG rank — see your chances" },
+      source: {
+        label: "Source line — {year}, {years}",
+        value:
+          "From the NEET PG {year} seat matrix and MCC's {years} round results, both published by the Medical Counselling Committee. State-quota seats go through each state's own counselling and are not in MCC's matrix.",
+        long: true,
+      },
+      visual_title: { label: "Chart title", value: "Branches with the most seats" },
+      visual_caption: { label: "Chart caption — {year}", value: "Seats in MCC's {year} matrix" },
+      faq_title: { label: "FAQ heading — {year}", value: "NEET PG seat matrix {year}: common questions" },
+    }),
+  },
+  "page.pg_seat_matrix.body": {
+    group: "Page: NEET PG seat matrix — body",
+    fields: {
+      insight_branch: { label: "Card: largest branch", value: "Most seats" },
+      insight_state: { label: "Card: state with most seats", value: "Top state" },
+      insight_upgrades: { label: "Card: upgrades — {year}", value: "Upgrades after round 1, {year}" },
+      insight_upgrades_note: { label: "Card note: upgrades", value: "candidates moved to a seat they ranked higher" },
+      insight_colleges: { label: "Card: colleges in the All India Quota", value: "Colleges in the All India Quota" },
+      matrix_title: { label: "Seat matrices heading", value: "What MCC fills, matrix by matrix" },
+      matrix_intro: {
+        label: "Seat matrices line",
+        value: "MCC runs one counselling with several seat matrices in it. Each one has its own eligibility, fee and rules.",
+        long: true,
+      },
+      aiq_note: { label: "What the AIQ row means", value: "Half of every government college's MD/MS seats, open to candidates from any state." },
+      deemed_note: { label: "What the Deemed row means", value: "Every seat at a deemed university, including its management (paid), NRI and minority seats." },
+      central_note: {
+        label: "What the central-universities row means",
+        value: "Seats that Delhi University, IP University, AMU and BHU keep for their own graduates. MCC fills them.",
+      },
+      dnb_note: { label: "What the DNB row means", value: "National Board seats at accredited hospitals: DNB (three years) and the two-year NBE diploma." },
+      category_title: { label: "Category heading — {year}", value: "All India Quota seats by category, {year}" },
+      category_intro: {
+        label: "Category line",
+        value: "How the All India Quota's seats are reserved between the categories, as MCC's matrix lists them.",
+        long: true,
+      },
+      branch_title: { label: "Branch heading", value: "Seats by branch" },
+      branch_intro: {
+        label: "Branch line",
+        value: "Every MD, MS, diploma and DNB course in the matrix, largest first. Open a branch for how it filled in each quota and category.",
+        long: true,
+      },
+      state_title: { label: "State heading", value: "Seats by state" },
+      state_intro: {
+        label: "State line",
+        value: "Where the seats are. These are only the seats MCC fills, so a state's own quota seats come on top.",
+        long: true,
+      },
+      rounds_title: { label: "Rounds heading", value: "How many seats changed hands in each round" },
+      rounds_intro: {
+        label: "Rounds line",
+        value:
+          "From MCC's published results. A fresh allotment is a candidate with no seat before that round. An upgrade is a candidate who already held a seat and moved to one they ranked higher.",
+        long: true,
+      },
+      rounds_takeaway: {
+        label: "Rounds takeaway — {upgraded}, {year}",
+        value:
+          "{upgraded} candidates moved to a better seat in later rounds of the {year} counselling. Deciding whether to float or freeze a seat matters, so plan it before round 1.",
+        long: true,
+      },
+      faq1_q: { label: "Question 1 — {year}", value: "How many seats are in the NEET PG {year} seat matrix?" },
+      faq1_a: {
+        label: "Answer 1 — {total}, {aiq}, {deemed}, {central}, {dnb}, {year}",
+        value:
+          "MCC's {year} seat matrix lists {total} seats: {aiq} in the All India Quota, {deemed} at deemed universities, {central} in the central universities' own quotas and {dnb} DNB and NBE diploma seats. State-quota seats are counted separately by each state.",
+        long: true,
+      },
+      faq2_q: { label: "Question 2", value: "Does the MCC seat matrix include state quota seats?" },
+      faq2_a: {
+        label: "Answer 2",
+        value:
+          "No. MCC fills the All India Quota (half of a government college's MD/MS seats), deemed universities, the central universities' quotas and DNB. The other half of government seats, and private colleges' seats, go through each state's own counselling, which publishes its own seat matrix.",
+        long: true,
+      },
+      faq3_q: { label: "Question 3", value: "Which branch has the most PG seats?" },
+      faq3_a: {
+        label: "Answer 3 — {top_branch}, {top_branch_seats}, {second_branch}, {second_branch_seats}",
+        value:
+          "In MCC's matrix, {top_branch} has the most seats ({top_branch_seats}), followed by {second_branch} ({second_branch_seats}). The branch table on this page lists every course.",
+        long: true,
+      },
+      faq4_q: { label: "Question 4 — {year}", value: "How many seats are reserved for each category in NEET PG {year}?" },
+      faq4_a: {
+        label: "Answer 4 — {open}, {ews}, {obc}, {sc}, {st}",
+        value:
+          "MCC's All India Quota matrix lists {open} open, {ews} EWS, {obc} OBC, {sc} SC and {st} ST seats. The category table on this page shows each one's share.",
+        long: true,
+      },
+      faq5_q: { label: "Question 5", value: "Do seats really move after round 1?" },
+      faq5_a: {
+        label: "Answer 5 — {year}, {r2_upgraded}, {r3_upgraded}",
+        value:
+          "Yes. In MCC's {year} results, {r2_upgraded} candidates were upgraded in round 2 and {r3_upgraded} in round 3. Every upgrade frees a seat for the next candidate, which is why later rounds can reach much further down the merit list.",
+        long: true,
+      },
+      lead_title: { label: "Enquiry box heading", value: "Which of these seats should be on your list?" },
+      lead_body: {
+        label: "Enquiry box line",
+        value: "A counsellor takes the seat matrix, your rank and your budget, and builds the choice list with you, in the order to fill it.",
+        long: true,
+      },
+    },
+  },
+  "page.pg_bond.hero": {
+    group: "Page: PG service bond",
+    fields: hero({
+      eyebrow: { label: "Hero eyebrow", value: "MD/MS · service bond" },
+      title: { label: "Hero title", value: "PG medical bond," },
+      accent: { label: "Hero title, coloured part", value: "state by state" },
+      subtitle: {
+        label: "Hero line — {colleges}, {states}",
+        value:
+          "How many years each state binds an MD/MS graduate to government service, what breaking that bond costs, and the penalty for leaving a seat once you have joined. Covers {colleges} colleges in {states} states.",
+        long: true,
+      },
+      cta: { label: "Hero button", value: "Check your PG chances" },
+      source: {
+        label: "Source line — {year}",
+        value:
+          "As listed for the {year} counselling, compiled from counselling notices and college fee schedules by a third-party data service. This is not an official notice. Confirm with the state's notice or the college before you pay a fee or sign a bond.",
+        long: true,
+      },
+      visual_title: { label: "Chart title", value: "Bond penalty on government seats" },
+      visual_caption: { label: "Chart caption", value: "Middle penalty for not serving the bond" },
+    }),
+  },
+  "page.pg_bond.body": {
+    group: "Page: PG service bond — body",
+    fields: {
+      states_title: { label: "State table heading", value: "Service bond on government PG seats, by state" },
+      states_intro: {
+        label: "State table line",
+        value:
+          "Government colleges, on their All India and state-quota MD/MS seats. A college counts as having a bond when any of those seats lists one. A state's penalty is shown only where at least three colleges list one: the middle value, with the usual range under it where colleges differ.",
+        long: true,
+      },
+      private_title: { label: "Private colleges heading", value: "Private, deemed and society-run colleges" },
+      private_intro: {
+        label: "Private colleges line",
+        value:
+          "In some states a bond reaches private-college seats too. This table shows, state by state, how many private, deemed and society-run colleges list one on any of their seats, what leaving a seat usually costs, and how many keep the whole course fee if you leave.",
+        long: true,
+      },
+      faq_title: { label: "FAQ heading", value: "PG service bond: common questions" },
+      list_title: { label: "College list heading", value: "Every government college's bond" },
+      list_intro: {
+        label: "College list line",
+        value: "Open a state to see each government college's bond, penalty, seat-leaving terms and first-year stipend. Each college's page has its terms seat type by seat type.",
+        long: true,
+      },
+      faq1_q: { label: "Question 1", value: "Is there a bond for MD/MS in government medical colleges?" },
+      faq1_a: {
+        label: "Answer 1 — {govt_bonded}, {govt_colleges}",
+        value:
+          "{govt_bonded} of the {govt_colleges} government colleges listed here have a service bond on their MD/MS seats: a period of government service after the course, with a penalty for not serving it. Each state sets the length and the penalty. The state table on this page shows both.",
+        long: true,
+      },
+      faq2_q: { label: "Question 2", value: "How long is the PG service bond?" },
+      faq2_a: {
+        label: "Answer 2 — {one_year}, {two_year}, {three_year}",
+        value:
+          "Among the government colleges listed here, {one_year} have a one-year bond, {two_year} a two-year bond and {three_year} a three-year bond. The state table shows each state's usual length.",
+        long: true,
+      },
+      faq3_q: { label: "Question 3", value: "What is the penalty for breaking a PG bond?" },
+      faq3_a: {
+        label: "Answer 3 — {penalty_median}, {penalty_low}, {penalty_high}",
+        value:
+          "It varies by state. Across the government colleges listed here, the middle penalty is {penalty_median}, and most fall between {penalty_low} and {penalty_high}. The state table gives each state's own figure.",
+        long: true,
+      },
+      faq4_q: { label: "Question 4", value: "What happens if I leave a PG seat after joining?" },
+      faq4_a: {
+        label: "Answer 4 — {exit_colleges}, {all_colleges}, {exit_median}",
+        value:
+          "{exit_colleges} of the {all_colleges} colleges listed here charge a seat-leaving penalty, and the middle figure is {exit_median}. Some also bar you from counselling for a few years. The terms can depend on the round you leave in, so read them before you join a seat you might give up.",
+        long: true,
+      },
+      faq5_q: { label: "Question 5", value: "Do private medical colleges have a PG bond?" },
+      faq5_a: {
+        label: "Answer 5 — {private_colleges}, {private_bonded}, {private_bond_states}",
+        value:
+          "Some do. Of the {private_colleges} private, deemed and society-run colleges listed here, {private_bonded} list a service bond on at least one type of seat, most of them in {private_bond_states}. The private-colleges table shows every state.",
+        long: true,
+      },
+      insight_bonded: { label: "Card: government colleges with a bond", value: "Government colleges with a bond" },
+      insight_penalty: { label: "Card: middle bond penalty", value: "Middle bond penalty" },
+      insight_exit: { label: "Card: middle seat-leaving penalty", value: "Middle seat-leaving penalty" },
+      insight_private: { label: "Card: private colleges with a bond", value: "Private colleges with a bond" },
+      lead_title: { label: "Enquiry box heading", value: "Can you serve the bond that comes with the seat?" },
+      lead_body: {
+        label: "Enquiry box line",
+        value: "A counsellor weighs each seat's stipend, bond and seat-leaving penalty against your plans, before you lock a choice you cannot easily leave.",
+        long: true,
+      },
+    },
+  },
   "page.open_data.hero": {
     group: "Page: Open data",
     fields: hero({

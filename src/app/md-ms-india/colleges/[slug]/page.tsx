@@ -22,6 +22,10 @@ import CtaBand from "@/components/ui/CtaBand";
 import PhotoCredit from "@/components/ui/PhotoCredit";
 import { getPgCollegePhoto } from "@/lib/content";
 import TrackView from "@/components/analytics/TrackView";
+import { getCollegeSeatMatrix, getCollegeSeatTerms, termsSession } from "@/lib/pgSeatData";
+import { pageCopy } from "@/lib/pageCopy";
+import MccSeats from "@/components/colleges/MccSeats";
+import SeatTerms from "@/components/colleges/SeatTerms";
 
 // The busiest pages are built at deploy time; the long tail is generated on
 // first request and then cached, so a 2,168-page build stays quick.
@@ -89,10 +93,19 @@ export default async function CollegePage({ params }: { params: { slug: string }
   if (!data) notFound();
   const { college, cutoffs, fees, nmc, summary: s } = data;
 
-  const [pgStates, similar, photo] = await Promise.all([
+  const [pgStates, similar, photo, matrix, terms] = await Promise.all([
     getPgStates(),
     getSimilarColleges(params.slug, "pg", 5),
     getPgCollegePhoto(params.slug),
+    // MCC's own seat matrix (official) and the per-seat bond/stipend/exit terms (third-party,
+    // shown with its caveat) — lib/pgSeatData.ts.
+    getCollegeSeatMatrix(college.slug),
+    getCollegeSeatTerms(college.slug),
+  ]);
+  // Words from Admin → Content ("Page: PG college pages — MCC seats, bond and stipend").
+  const [seatsCopy, termsCopy] = await Promise.all([
+    pageCopy("page.college_pg.mcc", { college: s.short, year: matrix?.year, total: matrix?.total.toLocaleString("en-IN") }),
+    pageCopy("page.college_pg.mcc", { college: s.short, year: termsSession(terms), count: Math.max(0, terms.length - 6) }),
   ]);
   // The state page, linked from the breadcrumb: every college pointing at its
   // state is what makes the 35 state pages more than an index entry.
@@ -274,6 +287,25 @@ export default async function CollegePage({ params }: { params: { slug: string }
               </div>
             )}
 
+            {/* -------- MCC's seat matrix: seats, not ranks -------- */}
+            {matrix && (
+              <div className="mt-12">
+                <MccSeats
+                  matrix={matrix}
+                  branchPages={new Set(branches.map(([name]) => name))}
+                  copy={{
+                    eyebrow: seatsCopy.seats_eyebrow,
+                    title: seatsCopy.seats_title,
+                    intro: seatsCopy.seats_intro,
+                    source: seatsCopy.seats_source,
+                    pwd: seatsCopy.seats_pwd,
+                    total: seatsCopy.seats_total,
+                    link: seatsCopy.seats_link,
+                  }}
+                />
+              </div>
+            )}
+
             {/* -------- Fees -------- */}
             {fees.length > 0 && (
               <section className="mt-12">
@@ -316,6 +348,27 @@ export default async function CollegePage({ params }: { params: { slug: string }
                 </div>
                 <p className="mt-2 text-[11.5px] text-muted-foreground">{FEE_FOOTNOTE}</p>
               </section>
+            )}
+
+            {/* -------- bond, stipend by year, seat-leaving penalty -------- */}
+            {terms.length > 0 && (
+              <div className="mt-12">
+                <SeatTerms
+                  terms={terms}
+                  copy={{
+                    eyebrow: termsCopy.terms_eyebrow,
+                    title: termsCopy.terms_title,
+                    intro: termsCopy.terms_intro,
+                    caveat: termsCopy.terms_caveat,
+                    stipend: termsCopy.terms_stipend,
+                    bond: termsCopy.terms_bond,
+                    exit: termsCopy.terms_exit,
+                    hostel: termsCopy.terms_hostel,
+                    more: termsCopy.terms_more,
+                    link: termsCopy.terms_link,
+                  }}
+                />
+              </div>
             )}
           </div>
 
