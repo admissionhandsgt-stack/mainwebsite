@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { fitTitle, fitDescription } from "@/lib/seoTitle";
 import { getQuotaOverview } from "@/lib/quotaQueries";
+import { getDeemedQuotaSeats } from "@/lib/pgSeatData";
 import { getNriColleges } from "@/lib/nriColleges";
 import { resolveMetadata } from "@/lib/content";
 import QuotaPage from "@/components/quota/QuotaPage";
@@ -28,12 +29,20 @@ const inr = (v: number | null) => (v == null ? "—" : v.toLocaleString("en-IN")
  * ranks for the softer NRI queries; this is the page with the numbers on it.
  */
 export async function generateMetadata(): Promise<Metadata> {
-  const pg = await getQuotaOverview("nri", "pg");
+  const [pg, deemed] = await Promise.all([getQuotaOverview("nri", "pg"), getDeemedQuotaSeats("nri")]);
 
   // Searched as "nri quota fees", "nri medical seat cost in india".
+  // The title's year is the one the page delivers — MCC's 2026 NRI seats (2026-10-20); the fees are
+  // the latest results' and the description says which.
   const y = pg?.year ? ` ${pg.year}` : "";
   const title = pg
     ? fitTitle(
+        ...(deemed
+          ? [
+              `NRI Quota MD/MS ${deemed.year}: ${inr(deemed.total)} Seats, Fees & Colleges`,
+              `NRI Quota MD/MS ${deemed.year}: Seats & Fees`,
+            ]
+          : []),
         `NRI Quota Fees${y}: MD/MS Seat Cost at ${inr(pg.colleges)} Medical Colleges`,
         `NRI Quota Medical Fees${y}: MD/MS at ${inr(pg.colleges)} Colleges`,
         `NRI Quota Medical Fees & Closing Ranks${y}`,
@@ -41,6 +50,11 @@ export async function generateMetadata(): Promise<Metadata> {
     : "NRI Quota Medical Fees & Closing Ranks";
   const description = pg
     ? fitDescription(
+        ...(deemed
+          ? [
+              `MCC's ${deemed.year} matrix: ${inr(deemed.total)} NRI MD/MS seats at ${inr(deemed.colleges.length)} deemed universities. NRI fees at ${inr(pg.colleges)} colleges${y ? ` (${pg.year} results)` : ""}: most ${money(pg.p10Fee)} to ${money(pg.p90Fee)}.`,
+            ]
+          : []),
         // The middle 80% of published fees, never min–max: the top is a whole-course dollar
         // figure converted to rupees, and "₹2.84 Cr a year" described no seat (2026-10-18).
         `NRI quota MD/MS fees at ${inr(pg.colleges)} medical colleges: most published fees run ${money(pg.p10Fee)} to ${money(pg.p90Fee)}, median ${money(pg.medianFee)}, with closing-rank ranges by quota. See your chance free.`,

@@ -1,6 +1,7 @@
 import { fitDescription, fitTitle } from "@/lib/seoTitle";
 import type { Metadata } from "next";
 import { getQuotaOverview } from "@/lib/quotaQueries";
+import { getDeemedQuotaSeats } from "@/lib/pgSeatData";
 import { resolveMetadata } from "@/lib/content";
 import QuotaPage from "@/components/quota/QuotaPage";
 
@@ -23,13 +24,22 @@ const inr = (v: number | null) => (v == null ? "—" : v.toLocaleString("en-IN")
  * level further from the query it exists to answer.
  */
 export async function generateMetadata(): Promise<Metadata> {
-  const pg = await getQuotaOverview("management", "pg");
+  const [pg, deemed] = await Promise.all([getQuotaOverview("management", "pg"), getDeemedQuotaSeats("management")]);
 
   // Searched as "md management quota fees", "<college> management quota fees",
   // "mng quota". Fees are PG only — UG publishes no per-quota fee.
+  // The year in the title is the one the page delivers: MCC's 2026 paid seats (2026-10-20). The
+  // fees are the latest results' and say so in the description — "Fees 2025" in a 2026 season
+  // went with a 90% fall in impressions.
   const y = pg?.year ? ` ${pg.year}` : "";
   const title = pg
     ? fitTitle(
+        ...(deemed
+          ? [
+              `Management Quota MD/MS ${deemed.year}: ${inr(deemed.total)} Paid Seats & Fees`,
+              `Management Quota MD/MS ${deemed.year}: Paid Seats & Fees`,
+            ]
+          : []),
         `Management Quota Fees${y}: MD/MS Seats at ${inr(pg.colleges)} Medical Colleges`,
         `Management Quota Fees${y}: MD/MS at ${inr(pg.colleges)} Colleges`,
         `Management Quota Medical Fees & Closing Ranks${y}`,
@@ -39,6 +49,11 @@ export async function generateMetadata(): Promise<Metadata> {
     // The median, not the minimum: the cheapest published management fee is a
     // ₹1,000 slip, and a headline built on it would mislead.
     ? fitDescription(
+        ...(deemed
+          ? [
+              `MCC's ${deemed.year} matrix: ${inr(deemed.total)} paid MD/MS seats at ${inr(deemed.colleges.length)} deemed universities. Management fees at ${inr(pg.colleges)} colleges${y ? ` (${pg.year} results)` : ""}: median ${money(pg.medianFee)}.`,
+            ]
+          : []),
         `MD/MS management quota fees at ${inr(pg.colleges)} medical colleges in ${pg.states} states: median published fee ${money(pg.medianFee)}, most ${money(pg.p10Fee)} to ${money(pg.p90Fee)}, with how far each quota's closing ranks reach. See your chance free.`,
         `Management quota MD/MS seats at ${inr(pg.colleges)} medical colleges: median published fee ${money(pg.medianFee)}, with closing-rank ranges.`,
       )

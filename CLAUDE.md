@@ -1259,6 +1259,15 @@ table and chart link to them; PG state pages link to theirs and now carry MCC's 
 (`getStateSeatMatrix`, "md medicine seats in maharashtra"). In the "states" sitemap. Copy:
 `page.pg_stipend_state.*`, `page.pg_state.mcc`.
 
+**Management and NRI pages (2026-10-20).** GSC showed both losing ~90% of impressions after 17 Oct — a
+long tail of "<college> management quota fees" that most likely went when Google re-crawled them without
+the college rows the 12 Oct rule removed, while their titles said "Fees 2025" in the 2026 season. Both now
+list MCC's 2026 deemed-university paid / NRI seats college by college and branch by branch
+(`getDeemedQuotaSeats`, inside `components/quota/QuotaPage.tsx`; copy `page.quota_management.mcc`,
+`page.quota_nri.mcc`) — seat counts, never ranks — and the title's year is that delivered 2026 data
+("Management Quota MD/MS 2026: 6,421 Paid Seats & Fees"); the description names the fee year. Judge it
+on GSC after 3–4 weeks before touching these titles again.
+
 ## What the gate asks for (2026-09-28)
 
 The gate had been earning phone numbers and almost nothing else. Of the six enquiries before this,

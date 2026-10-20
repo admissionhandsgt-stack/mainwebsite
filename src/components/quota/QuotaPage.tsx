@@ -10,6 +10,7 @@ import StructuredData from "@/components/seo/StructuredData";
 import CtaBand from "@/components/ui/CtaBand";
 import SeatOverview from "@/components/seats/SeatOverview";
 import { summariseSeats } from "@/lib/seatSummary";
+import { getDeemedQuotaSeats } from "@/lib/pgSeatData";
 
 const SITE = "https://www.admissionhands.com";
 
@@ -69,6 +70,13 @@ export default async function QuotaPage({
   const family = primary.family;
   // Words from Admin → Content → Text & numbers ("Page: Management quota" / "Page: NRI quota fees").
   const key = family.id === "nri" ? "page.quota_nri.hero" : "page.quota_management.hero";
+  // MCC's 2026 matrix: every deemed university's paid / NRI seats (lib/pgSeatData.ts) — seat counts
+  // that put the colleges' names back on the page without any rank.
+  const deemed = await getDeemedQuotaSeats(family.id === "nri" ? "nri" : "management");
+  const mccKey = family.id === "nri" ? "page.quota_nri.mcc" : "page.quota_management.mcc";
+  const mcc = deemed
+    ? await pageCopy(mccKey, { year: deemed.year, total: inr(deemed.total), colleges: inr(deemed.colleges.length) })
+    : null;
   const [copy, heroImage, states] = await Promise.all([
     pageCopy(key, { year: pg?.year ?? ug?.year ?? "", colleges: inr(pg?.colleges ?? ug?.colleges) }),
     pageHeroImage(key),
@@ -198,6 +206,79 @@ export default async function QuotaPage({
               ctaHref={`/neet-college-predictor?course=mbbs&seatType=${encodeURIComponent(family.id)}`}
               ctaLabel={`See my MBBS ${family.short} chances`}
             />
+          </section>
+        )}
+
+        {/* ---------------------- MCC 2026: deemed universities ---------------------- */}
+        {deemed && mcc && (
+          <section className="mt-12" id="deemed-seats">
+            <SectionHead icon="list" eyebrow={`MCC · ${deemed.year}`} title={mcc.title} intro={mcc.intro} />
+            <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+              <div className="overflow-x-auto rounded-2xl border border-border bg-card">
+                <table className="dt w-full min-w-[480px] text-left text-sm">
+                  <caption className="border-b border-border bg-surface-1 px-4 py-3 text-left font-heading text-[15px] font-bold text-foreground">
+                    {mcc.colleges_title}
+                  </caption>
+                  <thead className="border-b border-border text-[12px] uppercase tracking-wide text-muted-foreground">
+                    <tr>
+                      <th scope="col" className="px-4 py-2.5 font-semibold">University</th>
+                      <th scope="col" className="px-4 py-2.5 font-semibold">State</th>
+                      <th scope="col" className="px-4 py-2.5 text-right font-semibold">Seats</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    {deemed.colleges.map((c) => (
+                      <tr key={c.slug ?? c.name}>
+                        <th scope="row" className="px-4 py-2.5 font-medium">
+                          {c.slug ? (
+                            <Link href={`/md-ms-india/colleges/${c.slug}`} className="text-foreground hover:text-primary hover:underline">
+                              {c.name}
+                            </Link>
+                          ) : (
+                            <span className="text-foreground">{c.name}</span>
+                          )}
+                        </th>
+                        <td className="px-4 py-2.5 text-muted-foreground">{c.state ?? "—"}</td>
+                        <td className="tnum px-4 py-2.5 text-right font-semibold">{inr(c.seats)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="overflow-x-auto rounded-2xl border border-border bg-card lg:self-start">
+                <table className="dt w-full min-w-[320px] text-left text-sm">
+                  <caption className="border-b border-border bg-surface-1 px-4 py-3 text-left font-heading text-[15px] font-bold text-foreground">
+                    {mcc.branches_title}
+                  </caption>
+                  <thead className="border-b border-border text-[12px] uppercase tracking-wide text-muted-foreground">
+                    <tr>
+                      <th scope="col" className="px-4 py-2.5 font-semibold">Branch</th>
+                      <th scope="col" className="px-4 py-2.5 text-right font-semibold">Seats</th>
+                      <th scope="col" className="px-4 py-2.5 text-right font-semibold">Universities</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    {deemed.branches.slice(0, 15).map((b) => (
+                      <tr key={b.course}>
+                        <th scope="row" className="px-4 py-2.5 font-medium">
+                          <Link href={`/md-ms-india/branches/${b.slug}`} className="text-foreground hover:text-primary hover:underline">
+                            {b.course}
+                          </Link>
+                        </th>
+                        <td className="tnum px-4 py-2.5 text-right font-semibold">{inr(b.seats)}</td>
+                        <td className="tnum px-4 py-2.5 text-right text-muted-foreground">{inr(b.colleges)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">
+              {mcc.source}{" "}
+              <Link href="/neet-pg-seat-matrix" className="font-semibold text-primary-strong hover:underline dark:text-primary">
+                {mcc.link}
+              </Link>
+            </p>
           </section>
         )}
 

@@ -165,6 +165,38 @@ export const PAGE_COPY = {
       stipend_link: { label: "Link to the state's stipend page — {state}, {median}", value: "PG stipend in {state}: {median} a month in the middle — every college's figure" },
     },
   },
+  "page.quota_management.mcc": {
+    group: "Page: Management quota — MCC 2026 seats",
+    fields: {
+      title: { label: "Heading — {year}", value: "Paid (management) seats at deemed universities, {year}" },
+      intro: {
+        label: "Line — {total}, {colleges}, {year}",
+        value:
+          "{total} paid seats at {colleges} deemed universities are filled through MCC's {year} counselling, which calls them Self-Financed Merit Seats. A private college's management seats go through its state's own counselling and are not in MCC's matrix.",
+        long: true,
+      },
+      colleges_title: { label: "College table heading", value: "Deemed universities, by paid seats" },
+      branches_title: { label: "Branch table heading", value: "Branches with the most paid seats" },
+      source: { label: "Source line — {year}", value: "From the NEET PG {year} seat matrix published by the Medical Counselling Committee (MCC). Seat counts, not ranks.", long: true },
+      link: { label: "Link to the full seat matrix", value: "The whole seat matrix" },
+    },
+  },
+  "page.quota_nri.mcc": {
+    group: "Page: NRI quota fees — MCC 2026 seats",
+    fields: {
+      title: { label: "Heading — {year}", value: "NRI seats at deemed universities, {year}" },
+      intro: {
+        label: "Line — {total}, {colleges}, {year}",
+        value:
+          "{total} NRI seats at {colleges} deemed universities are filled through MCC's {year} counselling. NRI seats at private colleges go through each state's own counselling and are not in MCC's matrix.",
+        long: true,
+      },
+      colleges_title: { label: "College table heading", value: "Deemed universities, by NRI seats" },
+      branches_title: { label: "Branch table heading", value: "Branches with the most NRI seats" },
+      source: { label: "Source line — {year}", value: "From the NEET PG {year} seat matrix published by the Medical Counselling Committee (MCC). Seat counts, not ranks.", long: true },
+      link: { label: "Link to the full seat matrix", value: "The whole seat matrix" },
+    },
+  },
   "page.pg_branch.hero": {
     group: "Page: PG branch pages",
     fields: hero({

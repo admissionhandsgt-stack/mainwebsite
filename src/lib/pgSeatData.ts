@@ -238,6 +238,63 @@ async function loadStateMatrix(state: string): Promise<StateMatrix | null> {
 export const getStateSeatMatrix = (state: string) =>
   unstable_cache(() => loadStateMatrix(state), ["mcc-state-v1", state], { revalidate: DAY, tags: ["mcc"] })();
 
+export interface DeemedQuotaSeats {
+  year: number;
+  total: number;
+  colleges: { name: string; slug: string | null; state: string | null; seats: number }[];
+  branches: { course: string; slug: string; seats: number; colleges: number }[];
+}
+
+/**
+ * MCC's 2026 paid (management) or NRI seats at deemed universities, college by college and branch by
+ * branch — for /management-quota and /nri-quota/fees. MCC calls the paid seats "Self-Financed Merit
+ * Seat". Seat counts only. Private colleges' management and NRI seats are a state's own counselling
+ * and are not in MCC's matrix; the pages say so.
+ */
+async function loadDeemedQuota(kind: "management" | "nri"): Promise<DeemedQuotaSeats | null> {
+  try {
+    const quota = kind === "management" ? "Self-Financed Merit Seat" : "Non-Resident Indian";
+    const r = rows<{ year: number; inst: string; name: string; slug: string | null; state: string | null; course: string; total: number }>(
+      await db.execute(sql`
+        SELECT m.year, COALESCE(m.institute_id::text, m.mcc_college_name) AS inst,
+               COALESCE(i.name, m.mcc_college_name) AS name, i.slug, s.name AS state,
+               COALESCE(c.name, m.mcc_course) AS course, SUM(m.total_seats)::int AS total
+          FROM mcc_seat_matrix m
+          LEFT JOIN institutes i ON i.id = m.institute_id
+          LEFT JOIN states s ON s.id = i.state_id
+          LEFT JOIN courses c ON c.id = m.course_id
+         WHERE m.seat_matrix = 'Deemed' AND m.quota = ${quota}
+         GROUP BY 1, 2, 3, 4, 5, 6`),
+    );
+    if (!r.length) return null;
+    const colleges = new Map<string, { name: string; slug: string | null; state: string | null; seats: number }>();
+    const branches = new Map<string, { seats: number; colleges: Set<string> }>();
+    for (const x of r) {
+      const c = colleges.get(x.inst) ?? { name: x.name, slug: x.slug, state: x.state, seats: 0 };
+      c.seats += x.total;
+      colleges.set(x.inst, c);
+      const b = branches.get(x.course) ?? { seats: 0, colleges: new Set<string>() };
+      b.seats += x.total;
+      b.colleges.add(x.inst);
+      branches.set(x.course, b);
+    }
+    return {
+      year: r[0].year,
+      total: r.reduce((a, x) => a + x.total, 0),
+      colleges: [...colleges.values()].sort((a, b) => b.seats - a.seats || a.name.localeCompare(b.name)),
+      branches: [...branches]
+        .map(([course, v]) => ({ course, slug: branchSlug(course), seats: v.seats, colleges: v.colleges.size }))
+        .sort((a, b) => b.seats - a.seats || a.course.localeCompare(b.course)),
+    };
+  } catch (error) {
+    logError(error, { route: `pgSeatData:deemed:${kind}` });
+    return null;
+  }
+}
+
+export const getDeemedQuotaSeats = (kind: "management" | "nri") =>
+  unstable_cache(() => loadDeemedQuota(kind), ["mcc-deemed-quota-v1", kind], { revalidate: DAY, tags: ["mcc"] })();
+
 export interface RoundCount {
   year: number;
   round: string;
