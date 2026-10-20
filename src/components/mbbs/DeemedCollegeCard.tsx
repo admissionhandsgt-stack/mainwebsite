@@ -32,7 +32,7 @@ export function DeemedCollegeCard({ college }: DeemedCollegeCardProps) {
       <div className="p-3 flex flex-col flex-1 gap-1 min-h-0">
         <div className="space-y-1 min-w-0">
           {/* College Name */}
-          <h3 className="text-xs md:text-sm font-black text-slate-900 dark:text-slate-100 leading-tight group-hover:text-cyan-700 dark:group-hover:text-cyan-400 transition-colors line-clamp-2" title={college.college_name}>
+          <h3 className="text-xs md:text-sm font-black text-slate-900 dark:text-slate-100 leading-tight group-hover:text-cyan-700 dark:group-hover:text-cyan-400 transition-colors line-clamp-3" title={college.college_name}>
             {college.college_name}
           </h3>
 
