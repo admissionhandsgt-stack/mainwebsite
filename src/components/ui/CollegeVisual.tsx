@@ -141,7 +141,7 @@ export default function CollegeVisual({
         */}
         {attribution && (
           <span
-            className="pointer-events-none absolute bottom-1 right-1.5 z-10 max-w-[90%] truncate text-[9px] leading-none text-white/55"
+            className="pointer-events-none absolute bottom-1 right-1.5 z-10 max-w-[90%] text-right text-[9px] leading-tight text-white/60"
             title={`${attribution}${license ? ` · ${license}` : ""}`}
           >
             © {attribution}

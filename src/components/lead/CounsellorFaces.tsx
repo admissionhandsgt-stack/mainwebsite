@@ -53,7 +53,7 @@ export default function CounsellorFaces({
               )}
               <span className="min-w-0">
                 <span className={`block truncate text-[14px] font-bold ${tone === "dark" ? "text-white" : "text-foreground"}`}>{c.name}</span>
-                <span className={`block truncate text-[12px] ${tone === "dark" ? "text-cyan-100/70" : "text-muted-foreground"}`}>
+                <span className={`block text-[12px] leading-snug ${tone === "dark" ? "text-cyan-100/70" : "text-muted-foreground"}`}>
                   {c.title}
                 </span>
               </span>

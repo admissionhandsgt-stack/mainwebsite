@@ -354,7 +354,7 @@ export const InlineLeadForm = ({
               onChange={e => setFormData({ ...formData, preferred_branch: e.target.value })}
             >
               <option className="bg-slate-950" value="">
-                {level === 'ug' ? '-- Select Preferred Course --' : '-- Select Preferred Specialty --'}
+                {level === 'ug' ? 'Select a course' : 'Select a specialty'}
               </option>
               {level === 'ug'
                 ? UG_COURSE_SUGGESTIONS.map((course) => (

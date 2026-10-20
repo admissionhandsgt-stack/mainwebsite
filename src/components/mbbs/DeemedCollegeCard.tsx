@@ -41,12 +41,12 @@ export function DeemedCollegeCard({ college }: DeemedCollegeCardProps) {
             {college.university_name && (
               <div className="flex items-center gap-1 text-slate-500 dark:text-slate-400">
                 <Building2 className="w-3 h-3 shrink-0 text-cyan-500/70" />
-                <span className="text-[9px] font-bold truncate">{college.university_name}</span>
+                <span className="text-[11px] font-bold leading-snug">{college.university_name}</span>
               </div>
             )}
             <div className="flex items-center gap-1 text-slate-400 dark:text-slate-500">
               <MapPin className="w-3 h-3 shrink-0 text-slate-400 dark:text-slate-500" />
-              <span className="text-[9px] font-bold uppercase tracking-wide truncate">
+              <span className="text-[10.5px] font-bold uppercase tracking-wide leading-snug">
                 {[college.city, college.state].filter(Boolean).join(', ') || 'India'}
               </span>
             </div>

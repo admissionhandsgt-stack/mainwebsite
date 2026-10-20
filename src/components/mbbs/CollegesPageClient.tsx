@@ -702,7 +702,7 @@ export default function CollegesPageClient({
                             </h3>
                             <p className="text-[12px] md:text-[10px] text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-0.5">
                               <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
-                              <span className="truncate">{[college.city, college.state].filter(Boolean).join(", ")}</span>
+                              <span className="leading-snug">{[college.city, college.state].filter(Boolean).join(", ")}</span>
                             </p>
                           </div>
                           <div className="flex items-center gap-1.5 shrink-0">

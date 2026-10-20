@@ -159,9 +159,12 @@ const NRICTA = ({ benefits: fromCms }: { benefits?: NriBenefit[] | null } = {}) 
                     required
                     value={form.phone}
                     onChange={set('phone')}
-                    placeholder="98765 12345 or +971 50 123 4567"
+                    aria-describedby="phone-hint"
+                    placeholder="+971 50 123 4567"
                     className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-medium"
                   />
+                  {/* Help under the field, not in the placeholder: "98765 12345 or +971 50 123 4567" was cut off on every phone. */}
+                  <p id="phone-hint" className="ml-1 text-[12.5px] text-cyan-100/50">An Indian or an international number, with its country code.</p>
                 </div>
               </div>
               

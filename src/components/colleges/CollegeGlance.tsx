@@ -37,8 +37,8 @@ export default function CollegeGlance({ s }: { s: CollegeSummary }) {
         {tiles.map((t) => (
           <div key={t.label} className="min-w-0 rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
             <dt className="text-[11px] font-semibold uppercase tracking-wide text-white/55">{t.label}</dt>
-            <dd className="tnum font-heading mt-1 truncate text-[19px] font-extrabold leading-tight text-white md:text-[21px]">{t.value}</dd>
-            {t.sub && <dd className="mt-0.5 truncate text-[12px] text-white/60">{t.sub}</dd>}
+            <dd className="tnum font-heading mt-1 text-[19px] font-extrabold leading-tight text-white [overflow-wrap:anywhere] md:text-[21px]">{t.value}</dd>
+            {t.sub && <dd className="mt-0.5 text-[12px] leading-snug text-white/60">{t.sub}</dd>}
           </div>
         ))}
       </dl>

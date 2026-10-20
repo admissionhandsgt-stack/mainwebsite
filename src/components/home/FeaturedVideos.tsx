@@ -213,7 +213,7 @@ export default function FeaturedVideos() {
                       Featured
                     </div>
                   )}
-                  <h4 className={`text-sm font-bold line-clamp-2 leading-snug transition-colors ${
+                  <h4 className={`text-sm font-bold line-clamp-3 leading-snug transition-colors ${
                     activeVideo?.id === video.id ? "text-cyan-900 dark:text-cyan-200" : "text-slate-900 dark:text-slate-100 group-hover:text-cyan-600 dark:group-hover:text-cyan-400"
                   }`}>
                     {video.title || "Untitled"}

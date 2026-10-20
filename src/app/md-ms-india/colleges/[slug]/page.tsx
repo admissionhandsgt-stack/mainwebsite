@@ -387,7 +387,7 @@ export default async function CollegePage({ params }: { params: { slug: string }
                     <li key={name}>
                       <Link
                         href={`/md-ms-india/branches/${branchSlug(name)}`}
-                        className="block truncate rounded-lg px-2 py-2 text-[14px] text-muted-foreground transition-colors hover:bg-primary-soft hover:text-primary-strong dark:hover:text-primary"
+                        className="block rounded-lg px-2 py-2 text-[14px] leading-snug text-muted-foreground transition-colors hover:bg-primary-soft hover:text-primary-strong dark:hover:text-primary"
                       >
                         {name}
                       </Link>
@@ -413,7 +413,7 @@ export default async function CollegePage({ params }: { params: { slug: string }
                     <li key={s.slug}>
                       <Link
                         href={`/md-ms-india/colleges/${s.slug}`}
-                        className="block truncate rounded-lg px-2 py-2 text-[14px] text-muted-foreground transition-colors hover:bg-primary-soft hover:text-primary-strong dark:hover:text-primary"
+                        className="block rounded-lg px-2 py-2 text-[14px] leading-snug text-muted-foreground transition-colors hover:bg-primary-soft hover:text-primary-strong dark:hover:text-primary"
                       >
                         {s.name}
                       </Link>

@@ -115,9 +115,9 @@ export function CollegeCard({
 
         {/* Location + Year row */}
         <div className="flex items-center justify-between gap-1">
-          <div className="flex items-center gap-1 text-slate-500 dark:text-slate-400 text-[8.5px] font-bold tracking-tight min-w-0">
+          <div className="flex items-center gap-1 text-slate-500 dark:text-slate-400 text-[11px] font-bold tracking-tight min-w-0">
             <MapPin className="w-3 h-3 shrink-0 text-cyan-500/70" />
-            <span className="truncate">{city ? `${city}, ` : ''}{state}</span>
+            <span className="leading-snug">{city ? `${city}, ` : ''}{state}</span>
           </div>
           {yearEstablished && (
             <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-cyan-50/80 dark:bg-cyan-950/50 text-cyan-600 dark:text-cyan-400 text-[7.5px] font-black border border-cyan-200/40 dark:border-cyan-900/30 whitespace-nowrap shrink-0">
