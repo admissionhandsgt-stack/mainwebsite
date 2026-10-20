@@ -1,6 +1,7 @@
 import { unstable_cache } from "next/cache";
 import { getBranches } from "@/lib/branchQueries";
 import { getPgStates } from "@/lib/pgStateQueries";
+import { getStipends } from "@/lib/cutoffHubQueries";
 import { getSsCourses } from "@/lib/ssQueries";
 import { getMdsSlugs } from "@/lib/mdsQueries";
 import { db } from "@/db/client";
@@ -160,6 +161,16 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
     }
   } catch (error) {
     console.error("[sitemap] PG states could not be listed", error);
+  }
+  // One stipend page per state with three or more colleges publishing one (2026-10-20).
+  try {
+    const slugOf = new Map((await getPgStates()).map((s) => [s.name, s.slug]));
+    for (const s of (await getStipends()).states) {
+      const slug = slugOf.get(s.state);
+      if (slug) out.states.push({ url: `${BASE}/md-ms-india/stipend/${seg(slug)}`, lastModified: pgDate, changeFrequency: "monthly", priority: 0.7 });
+    }
+  } catch (error) {
+    console.error("[sitemap] stipend states could not be listed", error);
   }
 
   // One page per PG branch — "MD Radiology cutoff", "rank required for MD Dermatology".

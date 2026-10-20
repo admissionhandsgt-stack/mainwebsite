@@ -269,6 +269,74 @@ export const getStipends = unstable_cache(
   { revalidate: 86400, tags: ["seat-data"] },
 );
 
+export interface StateStipendPage extends StateStipend {
+  /** Medians of the second- and third-year stipends, where colleges publish them. */
+  y2Median: number | null;
+  y3Median: number | null;
+  /** Every college in the state with a published monthly stipend, highest first. */
+  list: CollegeStipend[];
+}
+
+/**
+ * One state's PG stipend, college by college (2026-10-20) — for
+ * /md-ms-india/stipend/[state], which answers "rajasthan pg stipend",
+ * "gujarat pg stipend" and the rest, queries that until now all landed on the
+ * national page. Same rule as the hub: each college's latest published monthly
+ * stipend, and a state needs three such colleges to have a page at all.
+ */
+export const getStateStipend = (state: string) =>
+  unstable_cache(
+    async (): Promise<StateStipendPage | null> => {
+      try {
+        const list = rows<Record<string, unknown>>(
+          await db.execute(sql`
+            WITH s AS (${LATEST_STIPEND})
+            SELECT i.name, i.slug, stt.name AS state, i.ownership::text AS ownership, s.y1, s.y2, s.y3
+              FROM s JOIN institutes i ON i.id = s.institute_id
+              JOIN states stt ON stt.id = i.state_id
+             WHERE i.is_active = true AND stt.name = ${state}
+             ORDER BY s.y1 DESC, i.name
+          `),
+        ).map((x) => ({
+          name: String(x.name),
+          slug: String(x.slug),
+          state: String(x.state),
+          ownership: String(x.ownership),
+          y1: Math.round(Number(x.y1)),
+          y2: x.y2 == null || Number(x.y2) <= 0 ? null : Math.round(Number(x.y2)),
+          y3: x.y3 == null || Number(x.y3) <= 0 ? null : Math.round(Number(x.y3)),
+        }));
+        if (list.length < 3) return null;
+        const median = (xs: number[]) => {
+          if (!xs.length) return null;
+          const s = [...xs].sort((a, b) => a - b);
+          const m = (s.length - 1) / 2;
+          return Math.round((s[Math.floor(m)] + s[Math.ceil(m)]) / 2);
+        };
+        const y1 = list.map((c) => c.y1);
+        const govt = list.filter((c) => c.ownership === "government").map((c) => c.y1);
+        const pvt = list.filter((c) => c.ownership === "private" || c.ownership === "deemed").map((c) => c.y1);
+        return {
+          state,
+          colleges: list.length,
+          median: median(y1) ?? 0,
+          min: Math.min(...y1),
+          max: Math.max(...y1),
+          govtMedian: median(govt),
+          privateMedian: median(pvt),
+          y2Median: median(list.map((c) => c.y2).filter((v): v is number => v != null)),
+          y3Median: median(list.map((c) => c.y3).filter((v): v is number => v != null)),
+          list,
+        };
+      } catch (error) {
+        logError(error, { route: `cutoffHubQueries:stipend:${state}` });
+        return null;
+      }
+    },
+    ["state-stipend-v1", state],
+    { revalidate: 86400, tags: ["seat-data"] },
+  )();
+
 /* -------------------------------- BDS -------------------------------- */
 
 export interface BdsCollege {

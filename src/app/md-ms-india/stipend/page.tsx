@@ -120,7 +120,7 @@ export default async function StipendPage() {
               label: r.state,
               value: r.median,
               display: inr(r.median),
-              href: stateSlug.get(r.state) ? `/md-ms-india/states/${stateSlug.get(r.state)}` : undefined,
+              href: stateSlug.get(r.state) ? `/md-ms-india/stipend/${stateSlug.get(r.state)}` : undefined,
               note: `${r.colleges} colleges${r.govtMedian ? ` · govt ${inr(r.govtMedian)}` : ""}`,
             }))}
             footnote={low ? `Lowest: ${low.state}, ${inr(low.median)} a month. Every state is in the table below.` : undefined}
@@ -163,7 +163,16 @@ export default async function StipendPage() {
             <tbody className="divide-y divide-border">
               {s.states.map((r) => (
                 <tr key={r.state}>
-                  <th scope="row" className="px-4 py-3 font-semibold text-foreground">{r.state}</th>
+                  <th scope="row" className="px-4 py-3 font-semibold text-foreground">
+                    {/* Each state's own page lists every college in it (2026-10-20). */}
+                    {stateSlug.get(r.state) ? (
+                      <Link href={`/md-ms-india/stipend/${stateSlug.get(r.state)}`} className="hover:text-primary hover:underline">
+                        {r.state}
+                      </Link>
+                    ) : (
+                      r.state
+                    )}
+                  </th>
                   <td className="tnum px-4 py-3 text-right text-muted-foreground">{r.colleges}</td>
                   <td className="tnum px-4 py-3 text-right font-semibold">{inr(r.median)}</td>
                   <td className="tnum px-4 py-3 text-right">{inr(r.govtMedian)}</td>

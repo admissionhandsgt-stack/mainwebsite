@@ -186,6 +186,58 @@ async function loadBranchMatrix(course: string): Promise<BranchMatrix | null> {
 export const getBranchSeatMatrix = (course: string) =>
   unstable_cache(() => loadBranchMatrix(course), ["mcc-branch-v1", course], { revalidate: DAY, tags: ["mcc"] })();
 
+export interface StateMatrix {
+  year: number;
+  total: number;
+  byMatrix: { seatMatrix: string; seats: number }[];
+  courses: { course: string; slug: string; total: number; aiq: number; deemed: number; dnb: number }[];
+}
+
+async function loadStateMatrix(state: string): Promise<StateMatrix | null> {
+  try {
+    const r = rows<{ year: number; seat_matrix: string; course: string; our_state: string | null; mcc_state: string | null; total: number }>(
+      await db.execute(sql`
+        SELECT m.year, m.seat_matrix, c.name AS course, s.name AS our_state, m.state AS mcc_state, SUM(m.total_seats)::int AS total
+          FROM mcc_seat_matrix m
+          JOIN courses c ON c.id = m.course_id
+          LEFT JOIN institutes i ON i.id = m.institute_id
+          LEFT JOIN states s ON s.id = i.state_id
+         GROUP BY m.year, m.seat_matrix, c.name, s.name, m.state`),
+    );
+    const ourState = await stateNames();
+    const mine = r.filter((x) => (x.our_state ?? ourState(x.mcc_state)) === state);
+    if (!mine.length) return null;
+    const byMatrix = new Map<string, number>();
+    const course = new Map<string, { total: number; aiq: number; deemed: number; dnb: number }>();
+    for (const x of mine) {
+      byMatrix.set(x.seat_matrix, (byMatrix.get(x.seat_matrix) ?? 0) + x.total);
+      const c = course.get(x.course) ?? { total: 0, aiq: 0, deemed: 0, dnb: 0 };
+      c.total += x.total;
+      if (x.seat_matrix === "AIQ") c.aiq += x.total;
+      if (x.seat_matrix === "Deemed") c.deemed += x.total;
+      if (x.seat_matrix === "DNB") c.dnb += x.total;
+      course.set(x.course, c);
+    }
+    return {
+      year: mine[0].year,
+      total: mine.reduce((a, x) => a + x.total, 0),
+      byMatrix: [...byMatrix]
+        .map(([seatMatrix, seats]) => ({ seatMatrix, seats }))
+        .sort((a, b) => matrixRank(a.seatMatrix) - matrixRank(b.seatMatrix)),
+      courses: [...course]
+        .map(([name, v]) => ({ course: name, slug: branchSlug(name), ...v }))
+        .sort((a, b) => b.total - a.total || a.course.localeCompare(b.course)),
+    };
+  } catch (error) {
+    logError(error, { route: `pgSeatData:state:${state}` });
+    return null;
+  }
+}
+
+/** One state's seats in MCC's counselling, course by course (for a PG state page). */
+export const getStateSeatMatrix = (state: string) =>
+  unstable_cache(() => loadStateMatrix(state), ["mcc-state-v1", state], { revalidate: DAY, tags: ["mcc"] })();
+
 export interface RoundCount {
   year: number;
   round: string;

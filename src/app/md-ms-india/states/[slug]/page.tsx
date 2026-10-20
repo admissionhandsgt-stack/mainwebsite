@@ -13,6 +13,8 @@ import TelegramJoin from "@/components/engage/TelegramJoin";
 import DataHero from "@/components/hero/DataHero";
 import HeroFacts from "@/components/hero/HeroFacts";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
+import { getStateSeatMatrix, MATRIX_LABEL } from "@/lib/pgSeatData";
+import { getBranches } from "@/lib/branchQueries";
 
 import SectionHead from "@/components/ui/SectionHead";
 /** One state's PG picture. See lib/pgStateQueries.ts for what it will and will not state. */
@@ -58,6 +60,51 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
+/** A state's MCC seats, course by course: seat counts only, never a rank. */
+function SeatsTable({
+  list,
+  hasBranch,
+}: {
+  list: { course: string; slug: string; total: number; aiq: number; deemed: number; dnb: number }[];
+  hasBranch: Set<string>;
+}) {
+  const dash = (v: number) => (v ? n(v) : "–");
+  return (
+    <div className="mt-4 overflow-x-auto rounded-2xl border border-border bg-card">
+      <table className="dt w-full min-w-[560px] text-left text-sm">
+        <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
+          <tr>
+            <th scope="col" className="px-4 py-3 font-semibold">Course</th>
+            <th scope="col" className="px-4 py-3 text-right font-semibold">AIQ</th>
+            <th scope="col" className="px-4 py-3 text-right font-semibold">Deemed</th>
+            <th scope="col" className="px-4 py-3 text-right font-semibold">DNB</th>
+            <th scope="col" className="px-4 py-3 text-right font-semibold">All MCC seats</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border">
+          {list.map((c) => (
+            <tr key={c.course}>
+              <th scope="row" className="px-4 py-2.5 font-medium">
+                {hasBranch.has(c.slug) ? (
+                  <Link href={`/md-ms-india/branches/${c.slug}`} className="text-foreground hover:text-primary hover:underline">
+                    {c.course}
+                  </Link>
+                ) : (
+                  <span className="text-foreground">{c.course}</span>
+                )}
+              </th>
+              <td className="tnum px-4 py-2.5 text-right">{dash(c.aiq)}</td>
+              <td className="tnum px-4 py-2.5 text-right">{dash(c.deemed)}</td>
+              <td className="tnum px-4 py-2.5 text-right">{dash(c.dnb)}</td>
+              <td className="tnum px-4 py-2.5 text-right font-semibold">{n(c.total)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 export default async function PgStatePage({ params }: Props) {
   const [p, stipends, all] = await Promise.all([getPgStatePage(params.slug), getStipends(), getPgStates()]);
   if (!p) notFound();
@@ -76,11 +123,23 @@ export default async function PgStatePage({ params }: Props) {
     )
     .sort((a, b) => Number(/state|govt|government|open|general/i.test(b.quota)) - Number(/state|govt|government|open|general/i.test(a.quota)) || b.colleges - a.colleges)[0];
   // Words from Admin → Content → Text & numbers ("Page: PG state pages"); photo from Admin → Media.
-  const [copy, heroImage, authority] = await Promise.all([
+  const [copy, heroImage, authority, mcc, branchPages] = await Promise.all([
     pageCopy("page.pg_state.hero", { state: p.name, year: p.year ?? "the latest" }),
     pageHeroImage(`page.pg_state.${p.slug}.hero`, "page.pg_state.hero"),
     getStateAuthority(p.name),
+    // MCC's 2026 seat matrix for the state — "md medicine seats in <state>" (lib/pgSeatData.ts).
+    getStateSeatMatrix(p.name),
+    getBranches(),
   ]);
+  const MCC_SHOWN = 12;
+  const mccCopy = await pageCopy("page.pg_state.mcc", {
+    state: p.name,
+    year: mcc?.year,
+    total: mcc ? n(mcc.total) : undefined,
+    count: mcc ? Math.max(0, mcc.courses.length - MCC_SHOWN) : 0,
+    median: stipend ? `₹${stipend.median.toLocaleString("en-IN")}` : undefined,
+  });
+  const hasBranch = new Set(branchPages.map((b) => b.slug));
 
   const faqs = [
     {
@@ -179,6 +238,46 @@ export default async function PgStatePage({ params }: Props) {
         <div className="container-custom pt-10 md:pt-14">
           <StateAuthority a={authority} state={p.name} level="pg" />
         </div>
+      )}
+
+      {/* -------------------- MCC's seats in the state, 2026 -------------------- */}
+      {mcc && (
+        <section className="container-custom pt-10 md:pt-14">
+          <SectionHead icon="list" eyebrow={`MCC · ${mcc.year}`} title={mccCopy.title} intro={mccCopy.intro} />
+          <ul className="mt-5 flex flex-wrap gap-2" aria-label="Seats by seat matrix">
+            {mcc.byMatrix.map((m) => (
+              <li key={m.seatMatrix} className="inline-flex items-baseline gap-2 rounded-full border border-border bg-card px-3.5 py-1.5 text-[13px] text-muted-foreground">
+                {MATRIX_LABEL[m.seatMatrix] ?? m.seatMatrix}
+                <b className="tnum text-[14px] text-foreground">{n(m.seats)}</b>
+              </li>
+            ))}
+          </ul>
+          {[mcc.courses.slice(0, MCC_SHOWN), mcc.courses.slice(MCC_SHOWN)].map((list, part) =>
+            list.length === 0 ? null : (
+              <div key={part} className={part === 0 ? "" : "mt-0"}>
+                {part === 1 ? (
+                  <details className="mt-4">
+                    <summary className="cursor-pointer list-none rounded-xl border border-border bg-card px-4 py-3 text-[14px] font-semibold text-primary-strong hover:border-primary/40 dark:text-primary">
+                      {mccCopy.more}
+                    </summary>
+                    <SeatsTable list={list} hasBranch={hasBranch} />
+                  </details>
+                ) : (
+                  <SeatsTable list={list} hasBranch={hasBranch} />
+                )}
+              </div>
+            ),
+          )}
+          <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">{mccCopy.source}</p>
+          {stipend && (
+            <Link
+              href={`/md-ms-india/stipend/${p.slug}`}
+              className="mt-4 inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-3 text-[14px] font-semibold text-primary-strong hover:border-primary/40 dark:text-primary"
+            >
+              {mccCopy.stipend_link} →
+            </Link>
+          )}
+        </section>
       )}
 
       {p.quotas.length > 0 && (

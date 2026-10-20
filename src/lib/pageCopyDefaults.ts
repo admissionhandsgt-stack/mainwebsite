@@ -49,6 +49,88 @@ export const PAGE_COPY = {
       visual_title: { label: "Chart title", value: "Highest-paying states" },
     }),
   },
+  "page.pg_stipend_state.hero": {
+    group: "Page: PG stipend, one state",
+    fields: hero({
+      eyebrow: { label: "Hero eyebrow — {state}", value: "MD/MS stipend · {state}" },
+      title: { label: "Hero title — {state}", value: "{state} PG stipend," },
+      accent: { label: "Hero title, coloured part", value: "college by college" },
+      subtitle: {
+        label: "Hero line — {state}, {colleges}, {median}",
+        value:
+          "The middle first-year MD/MS stipend in {state} is {median} a month, across {colleges} PG colleges that publish one. Here is every college's own figure for years one, two and three, government against private.",
+        long: true,
+      },
+      cta: { label: "Hero button — {state}", value: "Check your PG chances in {state}" },
+      source: {
+        label: "Source line",
+        value:
+          "From each college's own published stipend, per month, the latest year it published one. The bond terms further down are compiled by a third-party data service; confirm them in the state's notice before you sign.",
+        long: true,
+      },
+      visual_title: { label: "Chart title — {state}", value: "Highest-paying colleges in {state}" },
+      visual_caption: { label: "Chart caption", value: "First-year stipend a month" },
+    }),
+  },
+  "page.pg_stipend_state.body": {
+    group: "Page: PG stipend, one state — body",
+    fields: {
+      table_title: { label: "Table heading — {state}", value: "Every PG college in {state} with a published stipend" },
+      table_intro: {
+        label: "Table line",
+        value: "Monthly stipend in each year of the course, highest first. A dash means the college did not publish that year's figure.",
+        long: true,
+      },
+      bond_title: { label: "Bond box heading — {state}", value: "The bond that comes with a government seat in {state}" },
+      bond_intro: {
+        label: "Bond box line — {state}, {year}",
+        value: "{state}'s government colleges, on their All India and state-quota MD/MS seats, as listed for the {year} counselling.",
+        long: true,
+      },
+      bond_link: { label: "Bond box link", value: "Every state's bond, side by side" },
+      faq1_q: { label: "Question 1 — {state}", value: "What is the PG stipend in {state}?" },
+      faq1_a: {
+        label: "Answer 1 — {state}, {colleges}, {median}, {min}, {max}",
+        value:
+          "Across the {colleges} PG colleges in {state} that publish one, the middle first-year stipend is {median} a month. It runs from {min} to {max}, and the table on this page lists every college.",
+        long: true,
+      },
+      faq2_q: { label: "Question 2 — {state}", value: "Do government and private colleges in {state} pay the same PG stipend?" },
+      faq2_a: {
+        label: "Answer 2 — {state}, {govt_median}, {private_median}",
+        value:
+          "No. The middle first-year stipend at government colleges in {state} is {govt_median} a month, against {private_median} at private and deemed colleges. The table shows each college's own figure.",
+        long: true,
+      },
+      faq3_q: { label: "Question 3 — {state}", value: "Which college in {state} pays the highest PG stipend?" },
+      faq3_a: {
+        label: "Answer 3 — {top_college}, {top_stipend}",
+        value: "{top_college}, at {top_stipend} a month in the first year, among the colleges that publish a stipend.",
+        long: true,
+      },
+      faq4_q: { label: "Question 4", value: "Does the stipend rise in the second and third year?" },
+      faq4_a: {
+        label: "Answer 4 — {state}, {median}, {y2_median}, {y3_median}",
+        value:
+          "Where colleges publish all three figures, the middle stipend in {state} is {median} in year one, {y2_median} in year two and {y3_median} in year three.",
+        long: true,
+      },
+      faq5_q: { label: "Question 5 — {state}", value: "Is there a bond with a government PG seat in {state}?" },
+      faq5_a: {
+        label: "Answer 5 — {bond_bonded}, {bond_colleges}, {bond_years}, {bond_penalty}",
+        value:
+          "{bond_bonded} of the {bond_colleges} government colleges listed for {state} have a service bond, usually {bond_years}, with a penalty of {bond_penalty} for not serving it. This is compiled by a third-party data service, so confirm it in the state's notice.",
+        long: true,
+      },
+      faq_title: { label: "FAQ heading — {state}", value: "{state} PG stipend: common questions" },
+      lead_title: { label: "Enquiry box heading — {state}", value: "Weighing stipend against fee in {state}?" },
+      lead_body: {
+        label: "Enquiry box line",
+        value: "A counsellor sets each seat's fee, stipend and bond against your rank and budget, so the shortlist is one you can afford for three years.",
+        long: true,
+      },
+    },
+  },
   "page.pg_state.hero": {
     group: "Page: PG state pages",
     fields: hero({
@@ -67,6 +149,21 @@ export const PAGE_COPY = {
         long: true,
       },
     }),
+  },
+  "page.pg_state.mcc": {
+    group: "Page: PG state pages — MCC seats and stipend",
+    fields: {
+      title: { label: "Heading — {state}, {year}", value: "MD/MS and DNB seats in {state}, {year}" },
+      intro: {
+        label: "Line — {state}, {total}, {year}",
+        value:
+          "{total} seats in {state} are filled through MCC in {year}, course by course. These are the All India Quota, deemed-university and DNB seats. The state quota's seats are filled by {state}'s own counselling and come on top.",
+        long: true,
+      },
+      source: { label: "Source line — {year}", value: "From the NEET PG {year} seat matrix published by the Medical Counselling Committee (MCC).", long: true },
+      more: { label: "Button: more courses — {count}", value: "{count} more courses" },
+      stipend_link: { label: "Link to the state's stipend page — {state}, {median}", value: "PG stipend in {state}: {median} a month in the middle — every college's figure" },
+    },
   },
   "page.pg_branch.hero": {
     group: "Page: PG branch pages",
