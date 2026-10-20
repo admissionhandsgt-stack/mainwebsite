@@ -1697,6 +1697,12 @@ views; the 70k line ≈ 10,000. Past ~70k/day the user decides on Workers Paid (
 EDGE_SHARED_SECRET), custom domain www, www = CNAME `admissionhands-edge.pages.dev` **DNS-only**. The zone token
 (`CLOUDFLARE_API_TOKEN`) was given Pages: Edit and is also stored as `CLOUDFLARE_PAGES_TOKEN`; `CLOUDFLARE_ACCOUNT_ID`
 is in .env.local. Every `deploy_oracle.sh` now updates the edge before switching.
+**The origin's "go to www" redirect must never be cached (found 2026-10-20).** origin.* is proxied, the worker's
+fetches and a stranger's share one Cloudflare cache key, and Cloudflare keeps a 301 for hours: a crawler's key-less
+`origin.admissionhands.com/robots.txt` left the redirect in the cache and `www/robots.txt` answered **301 to
+itself** (smoke caught it; `?x=1` answered 200). The redirect now carries `Cache-Control: no-store` (Caddy origin
+block); a key-less probe followed by a www fetch proves it. If it ever recurs: purge the exact URLs, never test
+the origin without the key until the header is confirmed — a probe re-poisons it.
 **Rollback:** `node --env-file=.env.local scripts/edge/switch_www.mjs --rollback` (www → A 137.23.39.214 proxied).
 The apex (301 → www), admin and origin stay on proxied A records. The zone's "HTML for logged-out visitors" cache
 rule no longer applies to www (Pages serves it); it would only matter again after a rollback.

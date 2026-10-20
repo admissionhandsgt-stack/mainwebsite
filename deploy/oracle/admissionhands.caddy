@@ -151,6 +151,11 @@ origin.admissionhands.com {
 	# On the redirect only: pages carry the app's own HSTS (with
 	# includeSubDomains; preload), and a second header in front would win.
 	header @not_edge Strict-Transport-Security "max-age=31536000"
+	# Never cached (2026-10-20). origin.* is proxied and Cloudflare keeps a 301 for
+	# hours; a crawler's key-less fetch of /robots.txt left this redirect in the
+	# cache, the edge's own fetches share that cache key, and www/robots.txt
+	# answered 301 to itself until it was purged.
+	header @not_edge Cache-Control "no-store"
 	redir @not_edge https://www.admissionhands.com{uri} permanent
 
 	import admissionhands_uploads

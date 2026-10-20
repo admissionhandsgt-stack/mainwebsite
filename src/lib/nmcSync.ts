@@ -243,6 +243,13 @@ const isGovernment = (n: string) => nameTokens(n).includes("government");
  */
 function plausible(nmcName: string, ourName: string, places: Set<string>) {
   if (/\bcollege\b/i.test(nmcName) && !INSTITUTION.test(ourName)) return false;
+  // Initials are dropped from the score, so "K.H. Patil Institute" and "Shri B M Patil
+  // Medical College" shared only "Patil" (2026-10-20). When both names carry initials,
+  // they must be the same initials.
+  const initials = (n: string) => nameTokens(n, true).filter((t) => t.length === 1).join("");
+  const ia = initials(nmcName);
+  const ib = initials(ourName);
+  if (ia && ib && ia !== ib) return false;
   const a = new Set(nameTokens(nmcName).filter((t) => !GENERIC.has(t)));
   const shared = nameTokens(ourName).filter((t) => !GENERIC.has(t) && a.has(t));
   if (shared.length && shared.every((t) => places.has(t)) && isGovernment(nmcName) !== isGovernment(ourName)) return false;
