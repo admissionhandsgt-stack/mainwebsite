@@ -9,7 +9,7 @@ import {
   Target, Search, BarChart3, Map, ShieldCheck, FileCheck,
   Landmark, GraduationCap, Banknote, ArrowUpRight, Phone,
   CheckCircle2, ChevronDown, ChevronUp, Sparkles, Users,
-  TrendingUp, Clock, Award, BookOpen, HeartHandshake
+  TrendingUp, Clock, Award, BookOpen, HeartHandshake, Handshake
 } from 'lucide-react';
 import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon';
 import CtaBand from '@/components/ui/CtaBand';
@@ -33,6 +33,7 @@ const ICONS: Record<string, React.ElementType> = {
   banknote: Banknote,
   upgrade: ArrowUpRight,
   graduation: GraduationCap,
+  handshake: Handshake,
 };
 const COLORS = [
   "from-cyan-600 to-teal-600",
@@ -43,6 +44,7 @@ const COLORS = [
   "from-teal-600 to-teal-600",
   "from-cyan-700 to-teal-700",
   "from-green-600 to-teal-600",
+  "from-amber-500 to-emerald-600",
   "from-rose-500 to-emerald-600",
   "from-cyan-600 to-cyan-600",
 ];
@@ -64,13 +66,13 @@ interface Card {
   stat: { value: string; label: string };
 }
 
-function ServiceCard({ service, show, hide }: { service: Card; show: string; hide: string }) {
+function ServiceCard({ service, show, hide, wide }: { service: Card; show: string; hide: string; wide?: boolean }) {
   const [expanded, setExpanded] = useState(false);
   const Icon = service.icon;
 
   return (
     <div
-      className="group bg-white rounded-xl border border-slate-100 hover:border-cyan-200 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
+      className={`group bg-white rounded-xl border border-slate-100 hover:border-cyan-200 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden${wide ? ' lg:col-span-2' : ''}`}
     >
       <div className="p-4 md:p-5">
         {/* Header */}
@@ -376,7 +378,14 @@ export default function ServicesClient({ heroImages, heroCredit, data }: Service
             className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4"
           >
             {cards.map((service, index) => (
-              <ServiceCard key={index} service={service} show={copy.details_show} hide={copy.details_hide} />
+              // An odd last card takes the full row rather than leaving half of it empty.
+              <ServiceCard
+                key={index}
+                service={service}
+                show={copy.details_show}
+                hide={copy.details_hide}
+                wide={cards.length % 2 === 1 && index === cards.length - 1}
+              />
             ))}
           </motion.div>
         </div>

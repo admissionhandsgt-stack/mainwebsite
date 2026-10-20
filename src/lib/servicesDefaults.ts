@@ -10,6 +10,11 @@
  * families about agents who offer it), no "zero rejection" or "#1 reason"
  * claims, no "bank partners", no "inter-state migration", and MCC's late rounds
  * named as they are now (round 3, then stray vacancy).
+ *
+ * Fee negotiation (owner's request, 2026-10-20) is the team's direct work with
+ * college offices on how a seat is paid for — instalments, a discount the college
+ * itself offers, hostel and deposit terms — never on getting the seat, which only
+ * counselling allots. It promises no discount a college does not offer.
  */
 
 export interface ServiceItem {
@@ -150,6 +155,23 @@ export const SERVICES: ServiceItem[] = [
     ],
     statValue: "₹5L-2Cr",
     statLabel: "Budget Range",
+  },
+  {
+    icon: "handshake",
+    title: "Direct Fee Negotiation with Colleges",
+    tagline: "The best terms the college will put in writing.",
+    description:
+      "We deal directly with college admission and accounts offices to get you the best fee package the college will agree to — instalment plans, lump-sum or early-payment discounts where the college offers them, and fair hostel and deposit terms — confirmed in writing before you pay. The seat itself always comes through counselling; what we negotiate is how you pay for it.",
+    features: [
+      "Direct contact with college admission and accounts offices",
+      "Instalment plans in place of a full year's fee upfront",
+      "Lump-sum and early-payment discounts, where the college offers them",
+      "Hostel, mess and caution-deposit charges compared and negotiated",
+      "Bank-guarantee and bond terms clarified before you commit",
+      "Every agreed term confirmed in writing, before any payment",
+    ],
+    statValue: "Direct",
+    statLabel: "With colleges",
   },
   {
     icon: "upgrade",

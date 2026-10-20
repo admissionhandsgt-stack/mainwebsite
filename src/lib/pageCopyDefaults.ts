@@ -582,7 +582,11 @@ export const PAGE_COPY = {
       },
       hero_points: {
         label: "Hero points — one per line",
-        value: "1-on-1 Personalized counseling with senior experts\nEvery shortlist backed by the published closing rank it came from\nEvery document pre-checked weeks before your reporting date",
+        value:
+          "1-on-1 Personalized counseling with senior experts\nEvery shortlist backed by the published closing rank it came from\nFee packages negotiated directly with colleges, confirmed in writing\nEvery document pre-checked weeks before your reporting date",
+        was: [
+          "1-on-1 Personalized counseling with senior experts\nEvery shortlist backed by the published closing rank it came from\nEvery document pre-checked weeks before your reporting date",
+        ],
         long: true,
       },
       hero_call: { label: "Hero call button", value: "Talk to an Expert" },
@@ -884,6 +888,19 @@ export const TELEGRAM_SETTINGS: { key: string; label: string; value: string; lon
     label: "Telegram pop-up text",
     value: "Round dates, results, cutoffs and choice-filling tips on the Admission Hands Telegram channel.",
     long: true,
+  },
+];
+
+/**
+ * Profile links that join the other social.* settings ("Social links" in Admin → Content).
+ * The Google Business Profile goes into the homepage's Organization `sameAs` and the
+ * footer's address links to it.
+ */
+export const SOCIAL_SETTINGS: { key: string; label: string; value: string }[] = [
+  {
+    key: "social.google",
+    label: "Google Business Profile link (https://www.google.com/maps?cid=…)",
+    value: "https://www.google.com/maps?cid=15474144466729356168",
   },
 ];
 

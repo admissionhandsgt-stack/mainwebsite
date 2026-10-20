@@ -10,7 +10,7 @@ const dry = process.argv.includes("--dry-run");
 const sql = postgres(process.env.DATABASE_URL, { max: 1 });
 
 const description =
-  "The service cards on /services, in order. Title, subtitle = the tagline, body = the description. Icon: target, search, chart, map, landmark, filecheck, shield, banknote, upgrade or graduation. Features: one per line. Stat value may use {students}, {colleges}, {closing_ranks} or {states} — filled with the team's figures and the live counts.";
+  "The service cards on /services, in order. Title, subtitle = the tagline, body = the description. Icon: target, search, chart, map, landmark, filecheck, shield, banknote, upgrade, graduation or handshake. Features: one per line. Stat value may use {students}, {colleges}, {closing_ranks} or {states} — filled with the team's figures and the live counts.";
 
 if (dry) {
   console.log(`would register services_page and write ${SERVICES.length} rows if empty`);

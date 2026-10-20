@@ -147,11 +147,12 @@ const Index = async () => {
   // The site name Google prints above a result, and the brand panel, come
   // from these two — read from the homepage only. See StructuredData.tsx.
   const contact = await getContactInfo();
-  const social = ['social.facebook', 'social.instagram', 'social.youtube', 'social.linkedin', 'social.twitter']
+  const social = ['social.facebook', 'social.instagram', 'social.youtube', 'social.linkedin', 'social.twitter', 'social.google']
     .map((k) => setting(s, k))
     .filter((u) => u.startsWith('https://'))
-    // Share-tracking parameters ("?igsh=…") are not part of a profile's address.
-    .map((u) => u.split('?')[0])
+    // Share-tracking parameters ("?igsh=…") are not part of a profile's address —
+    // but a Google Business Profile's is its "?cid=…", so that one keeps it.
+    .map((u) => (/^https:\/\/(www\.)?google\.[a-z.]+\/maps/.test(u) ? u : u.split('?')[0]))
     // The Telegram channel: the admin's setting, or the shipped address.
     .concat(/^https:\/\/(t\.me|telegram\.me)\//.test(setting(s, 'social.telegram')) ? setting(s, 'social.telegram') : CONTACT_INFO.telegram);
   const siteSchema = [

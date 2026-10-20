@@ -1,5 +1,5 @@
 export const CONTACT_INFO = {
-  address: "915, Bhutani City Center, Sector 32, Noida, UP 201301",
+  address: "Office #915, 9th Floor, Bhutani City Centre, Sector 32, Noida, UP 201301",
   phone: "+919310301949",
   whatsapp: "919310301949",
   email: "info@admissionhands.com",
@@ -9,6 +9,12 @@ export const CONTACT_INFO = {
    * channel's own description and lands on our homepage, tagged as Telegram traffic.
    */
   telegram: "https://t.me/AdmissionHandsIndia",
+  /**
+   * The Google Business Profile (verified 2026-10-17, "Admission Hands — Counselor
+   * in Noida"), by its CID so the link survives a rename. The admin's
+   * `social.google` setting wins over this.
+   */
+  google: "https://www.google.com/maps?cid=15474144466729356168",
 };
 
 /**
@@ -17,7 +23,8 @@ export const CONTACT_INFO = {
  * listing must say exactly the same thing (NAP consistency).
  */
 export const OFFICE = {
-  street: "915, Bhutani City Center, Sector 32",
+  // As the Google Business Profile writes it (2026-10-20), plus the sector it leaves out.
+  street: "Office #915, 9th Floor, Office Tower, Bhutani City Centre, Sector 32",
   locality: "Noida",
   region: "Uttar Pradesh",
   postalCode: "201301",

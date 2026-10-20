@@ -122,7 +122,35 @@ const SYNONYMS: [RegExp, string][] = [
   [/\binstt\b|\binst\b/g, "institute"],
   [/\bdr\b/g, "dr"],
   [/\bst\b/g, "saint"],
+  // NMC writes "Employees State Insurance Corporation Medical College, Patna"; the
+  // counselling lists say "ESIC Medical College" or "ESI-PGIMSR".
+  [/\bemployees?'?\s+state\s+insurance(\s+corporation)?\b|\besic?\b/g, "esic"],
 ];
+
+/**
+ * The same state, spelt two ways (2026-10-20): NMC's "Chattisgarh" against our
+ * "Chhattisgarh" left all 21 of its colleges without a single candidate, and our
+ * "Pondicherry" and "Dadra Nagar Havelli" missed NMC's spellings the same way.
+ */
+const STATE_ALIASES: Record<string, string> = {
+  chattisgarh: "chhattisgarh",
+  pondicherry: "puducherry",
+  "dadra nagar havelli": "dadra nagar haveli",
+};
+
+/**
+ * A college's earlier names, from NMC's own brackets: "Government Medical College,
+ * Kadapa ( previously Rajiv Gandhi Institute of Medical Sciences, Kadapa)". The
+ * counselling lists often still use the old one, and `nameTokens` drops brackets.
+ */
+export function formerNames(name: string): string[] {
+  const out: string[] = [];
+  for (const m of name.matchAll(/\(\s*(?:previously|formerly|formely|earlier|prev\.?|old name)\s*(?:known as|named|called)?\s*:?\s*([^)]+)\)?/gi)) {
+    const n = m[1].trim();
+    if (n.length > 4) out.push(n);
+  }
+  return out;
+}
 // Words every second college shares. Matching on them would pair "Government Medical
 // College, Nagpur" with "Government Medical College, Akola".
 const GENERIC = new Set(
@@ -132,20 +160,22 @@ const GENERIC = new Set(
 );
 
 /** Lower case, no brackets, PIN codes or single letters, `&` as "and", a plural `s` dropped. */
-export function nameTokens(name: string): string[] {
+export function nameTokens(name: string, keepInitials = false): string[] {
   let s = name.toLowerCase().replace(/\(.*?\)/g, " ").replace(/&/g, " and ").replace(/\b\d{6}\b/g, " ");
   for (const [re, to] of SYNONYMS) s = s.replace(re, to);
   return s
     .replace(/[^a-z0-9 ]+/g, " ")
     .split(/\s+/)
-    .filter((t) => t.length > 1)
+    .filter((t) => t.length > (keepInitials ? 0 : 1))
     .map((t) => (t.length > 4 && t.endsWith("s") ? t.slice(0, -1) : t));
 }
 
-export const stateKey = (s: string | null | undefined) =>
-  nameTokens(s ?? "")
+export const stateKey = (s: string | null | undefined) => {
+  const k = nameTokens(s ?? "")
     .filter((t) => t !== "and")
     .join(" ");
+  return STATE_ALIASES[k] ?? k;
+};
 
 /**
  * A name scorer weighted by how rare each word is across every name it will see.
@@ -180,6 +210,10 @@ export function makeScorer(names: string[]) {
 
 /** Unweighted, for a one-off comparison. Matching uses `makeScorer` over the whole set. */
 export const nameScore = (a: string, b: string) => makeScorer([a, b])(a, b);
+
+/** The better of an NMC name and its former names (see `formerNames`) against one of ours. */
+export const bestNameScore = (nmcName: string, ourName: string) =>
+  Math.max(...[nmcName, ...formerNames(nmcName)].map((v) => nameScore(v, ourName)));
 
 /**
  * Words used as a place somewhere: the last comma-separated part of any name
@@ -234,27 +268,65 @@ export function matchColleges(
   ours: Candidate[],
   taken: { codes: Set<string>; institutes: Set<number> },
 ) {
-  const allNames = [...nmc.map((c) => c.name), ...ours.map((o) => o.name)];
+  const variants = (n: string) => [n, ...formerNames(n)];
+  const allNames = [...nmc.flatMap((c) => variants(c.name)), ...ours.map((o) => o.name)];
   const score = makeScorer(allNames);
   const places = placeWords(allNames);
+  // Every word, generic ones and initials included: "L.N. Medical College and
+  // Research Centre, Bhopal" shares every distinguishing word with "Bhopal Memorial
+  // Hospital and Research Centre", and "S N" / "F H Medical College, Agra" differ
+  // only in their initials.
+  const sigOf = (n: string) => [...new Set(nameTokens(n, true))].sort().join(" ");
+  const rank = (cands: Candidate[], s: (o: Candidate) => number) => {
+    const scored = cands.map((o) => ({ o, s: s(o) })).sort((x, y) => y.s - x.s);
+    const top = scored[0];
+    return top && top.s >= AUTO_MIN && top.s - (scored[1]?.s ?? 0) >= AUTO_MARGIN
+      ? { inst: top.o, score: top.s, margin: top.s - (scored[1]?.s ?? 0) }
+      : null;
+  };
+  /**
+   * In order, each only when the one before settles nothing (2026-10-20):
+   * 1. the current name, as before;
+   * 2. exactly one of ours with the same name, word for word once normalised —
+   *    "Gulbarga Institute of Medical Sciences, Gulbarga" against an ESIC college in
+   *    the same town scores too close for the margin;
+   * 3. a former name from NMC's brackets — tried last, because our lists can hold
+   *    the old name and the new one side by side.
+   */
+  const decide = (c: { name: string }, cands: Candidate[]) => {
+    const now = rank(cands, (o) => (plausible(c.name, o.name, places) ? score(c.name, o.name) : 0));
+    if (now) return now;
+    const sig = sigOf(c.name);
+    const same = sig ? cands.filter((o) => sigOf(o.name) === sig && isGovernment(o.name) === isGovernment(c.name)) : [];
+    if (same.length === 1) return { inst: same[0], score: 1, margin: 1 };
+    const former = formerNames(c.name);
+    if (!former.length) return null;
+    return rank(cands, (o) => Math.max(0, ...former.map((v) => (plausible(v, o.name, places) ? score(v, o.name) : 0))));
+  };
   const out: { code: string; instituteId: number; score: number }[] = [];
   for (const level of ["ug", "pg"] as const) {
     const pool = ours.filter((o) => o.level === level && !taken.institutes.has(o.id));
     const byState = new Map<string, Candidate[]>();
     for (const o of pool) byState.set(stateKey(o.state), [...(byState.get(stateKey(o.state)) ?? []), o]);
 
+    // Two NMC colleges with one name in one state (IMS & SUM Hospital, Bhubaneswar: the
+    // 2007 college and its 2024 campus) — which is which is not in the names, so a
+    // person decides; an automatic pick paired the old college's seats with the new one.
+    const sameName = new Map<string, number>();
+    for (const c of nmc) {
+      if (level === "ug" ? !c.hasMbbs : !c.hasPg) continue;
+      const k = `${stateKey(c.state)}|${sigOf(c.name)}`;
+      sameName.set(k, (sameName.get(k) ?? 0) + 1);
+    }
+
     const pairs: { code: string; inst: Candidate; score: number; margin: number }[] = [];
     for (const c of nmc) {
       if (level === "ug" ? !c.hasMbbs : !c.hasPg) continue;
       if (taken.codes.has(`${c.code}|${level}`)) continue;
+      if ((sameName.get(`${stateKey(c.state)}|${sigOf(c.name)}`) ?? 0) > 1) continue;
       const cands = byState.get(stateKey(c.state)) ?? [];
-      const scored = cands
-        .map((o) => ({ o, s: plausible(c.name, o.name, places) ? score(c.name, o.name) : 0 }))
-        .sort((x, y) => y.s - x.s);
-      const best = scored[0];
-      if (!best) continue;
-      const margin = best.s - (scored[1]?.s ?? 0);
-      if (best.s >= AUTO_MIN && margin >= AUTO_MARGIN) pairs.push({ code: c.code, inst: best.o, score: best.s, margin });
+      const d = decide(c, cands);
+      if (d) pairs.push({ code: c.code, ...d });
     }
     pairs.sort((a, b) => b.score - a.score);
     const used = new Set<number>();
@@ -340,18 +412,20 @@ export async function syncNmc(triggeredBy: string): Promise<SyncResult> {
       await tx.execute(sql`DELETE FROM nmc_institutes WHERE method = 'auto'`);
       const kept = rowsOf<{ college_code: string; institute_id: number | null; level: string | null }>(
         await tx.execute(sql`
-          SELECT m.college_code, m.institute_id, i.level::text AS level
+          SELECT m.college_code, m.institute_id, COALESCE(i.level::text, m.level) AS level
             FROM nmc_institutes m LEFT JOIN institutes i ON i.id = m.institute_id
         `),
       );
       const taken = { codes: new Set<string>(), institutes: new Set<number>() };
       for (const k of kept) {
         if (k.institute_id) taken.institutes.add(k.institute_id);
-        // "admin-none" closes a code at both levels; an admin pair closes its own level.
-        if (!k.institute_id) {
+        // A pair closes its own level; "admin-none" closes the level it names, or both
+        // when it names none (migration 0037).
+        if (k.level) taken.codes.add(`${k.college_code}|${k.level}`);
+        else if (!k.institute_id) {
           taken.codes.add(`${k.college_code}|ug`);
           taken.codes.add(`${k.college_code}|pg`);
-        } else if (k.level) taken.codes.add(`${k.college_code}|${k.level}`);
+        }
       }
 
       const colleges = new Map<string, { code: string; name: string; state: string | null; hasMbbs: boolean; hasPg: boolean }>();

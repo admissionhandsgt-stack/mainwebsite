@@ -56,8 +56,9 @@ export async function POST(request: Request) {
       if (!code || !Number.isInteger(id) || id <= 0) return NextResponse.json({ error: "Pick a college." }, { status: 400 });
       await mapNmc(code, id);
     } else if (action === "none") {
-      if (!code) return NextResponse.json({ error: "Bad request." }, { status: 400 });
-      await markNmcNone(code);
+      const level = body.level === "ug" || body.level === "pg" ? body.level : null;
+      if (!code || !level) return NextResponse.json({ error: "Bad request." }, { status: 400 });
+      await markNmcNone(code, level);
     } else if (action === "unmap") {
       const id = Number(body.id);
       if (!Number.isInteger(id) || id <= 0) return NextResponse.json({ error: "Bad request." }, { status: 400 });

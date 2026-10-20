@@ -194,6 +194,7 @@ export default async function RootLayout({
                 facebook: setting(settings, 'social.facebook'),
                 instagram: setting(settings, 'social.instagram'),
                 youtube: setting(settings, 'social.youtube'),
+                google: setting(settings, 'social.google'),
               }}
               telegram={{
                 url: setting(settings, 'social.telegram'),

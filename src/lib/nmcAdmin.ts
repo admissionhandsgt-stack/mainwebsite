@@ -6,7 +6,7 @@
 
 import { sql } from "drizzle-orm";
 import { db } from "@/db/client";
-import { nameScore } from "@/lib/nmcSync";
+import { bestNameScore, stateKey } from "@/lib/nmcSync";
 import { ugCourseOf } from "@/lib/seoTitle";
 
 const rowsOf = <T,>(r: unknown) => r as unknown as T[];
@@ -46,7 +46,7 @@ export interface NmcStatus {
   byManagement: { management: string; colleges: number; seats: number }[];
   coverage: { ugMatched: number; ugTotal: number; pgMatched: number; pgTotal: number };
   unmatched: Unmatched[];
-  decided: { id: number; code: string; name: string; institute: string | null; method: string }[];
+  decided: { id: number; code: string; name: string; institute: string | null; method: string; level: string | null }[];
 }
 
 // NMC's course types for what NEET PG fills — see PG_COURSE_TYPES in nmcSync.ts.
@@ -75,7 +75,8 @@ export async function nmcStatus(): Promise<NmcStatus> {
              COALESCE(SUM(approved_seat) FILTER (WHERE ${PG}), 0)::int AS pg_seats
         FROM nmc_courses GROUP BY college_code`),
     db.execute(sql`
-      SELECT m.id, m.college_code AS code, m.method, m.institute_id, i.name AS institute, i.level::text AS level
+      SELECT m.id, m.college_code AS code, m.method, m.institute_id, i.name AS institute,
+             COALESCE(i.level::text, m.level) AS level
         FROM nmc_institutes m LEFT JOIN institutes i ON i.id = m.institute_id`),
     db.execute(sql`
       SELECT i.id, i.name, i.level::text AS level, COALESCE(st.name, '') AS state,
@@ -105,13 +106,16 @@ export async function nmcStatus(): Promise<NmcStatus> {
   const usedInstitutes = new Set<number>();
   for (const m of ms) {
     if (m.institute_id) usedInstitutes.add(m.institute_id);
-    if (m.method === "admin-none") {
+    // "None of ours" closes the level it names; one naming none closes both.
+    if (m.level) closed.add(`${m.code}|${m.level}`);
+    else if (m.method === "admin-none") {
       closed.add(`${m.code}|ug`);
       closed.add(`${m.code}|pg`);
-    } else if (m.level) closed.add(`${m.code}|${m.level}`);
+    }
   }
 
-  const stateKey = (s: string | null) => (s ?? "").toLowerCase().replace(/&/g, "and").replace(/[^a-z]/g, "").replace(/s$/, "");
+  // The sync's own state key, so a spelling it treats as one state (Chattisgarh /
+  // Chhattisgarh) is one state here too.
   const byState = new Map<string, typeof cands>();
   for (const c of cands) {
     if (usedInstitutes.has(c.id)) continue;
@@ -126,7 +130,7 @@ export async function nmcStatus(): Promise<NmcStatus> {
       if (closed.has(`${c.code}|${level}`)) continue;
       const pool = (byState.get(stateKey(c.state)) ?? []).filter((x) => x.level === level);
       const suggestions = pool
-        .map((x) => ({ instituteId: x.id, name: x.name, score: Math.round(nameScore(c.name, x.name) * 100) / 100 }))
+        .map((x) => ({ instituteId: x.id, name: x.name, score: Math.round(bestNameScore(c.name, x.name) * 100) / 100 }))
         .sort((a, b) => b.score - a.score)
         .slice(0, 3)
         .filter((s) => s.score > 0.15);
@@ -165,7 +169,7 @@ export async function nmcStatus(): Promise<NmcStatus> {
     unmatched,
     decided: ms
       .filter((m) => m.method !== "auto")
-      .map((m) => ({ id: m.id, code: m.code, name: nameOf.get(m.code) ?? m.code, institute: m.institute, method: m.method })),
+      .map((m) => ({ id: m.id, code: m.code, name: nameOf.get(m.code) ?? m.code, institute: m.institute, method: m.method, level: m.level })),
   };
 }
 
@@ -182,9 +186,15 @@ export async function mapNmc(code: string, instituteId: number) {
   });
 }
 
-/** A person's decision: this NMC college is none of our institutes — stop suggesting it. */
-export async function markNmcNone(code: string) {
-  await db.execute(sql`INSERT INTO nmc_institutes (college_code, institute_id, method) VALUES (${code}, NULL, 'admin-none')`);
+/**
+ * A person's decision: at this level the NMC college is none of our institutes — stop
+ * suggesting it there. The other level is left to its own pairing (migration 0037).
+ */
+export async function markNmcNone(code: string, level: "ug" | "pg") {
+  await db.execute(sql`
+    INSERT INTO nmc_institutes (college_code, institute_id, method, level)
+    SELECT ${code}, NULL, 'admin-none', ${level}
+     WHERE NOT EXISTS (SELECT 1 FROM nmc_institutes WHERE college_code = ${code} AND method = 'admin-none' AND level = ${level})`);
 }
 
 /** Undo one decision (or one automatic pairing). The next sync may pair it again automatically. */

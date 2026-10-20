@@ -18,6 +18,8 @@ export interface SocialLinks {
   facebook?: string;
   instagram?: string;
   youtube?: string;
+  /** The Google Business Profile — the footer's address links to it. */
+  google?: string;
 }
 
 interface SiteShellProps {

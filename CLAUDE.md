@@ -181,6 +181,13 @@ a deploy). Each keeps an import-free shipped fallback (`servicesDefaults.ts`, `u
 **Still hardcoded:** on the NRI page the eligibility tabs, whose markup is interleaved rather than a clean
 array.
 
+**"Direct Fee Negotiation with Colleges" (owner's request, 2026-10-20)** is the eleventh `services_page` card
+(`scripts/sql/services_fee_negotiation_2026_10_20.sql`, icon `handshake`) and a hero point. It is worded as
+what the team does with college offices — instalments, a lump-sum or early-payment discount *where the
+college offers one*, hostel and deposit terms, all in writing — and says the seat itself comes only through
+counselling. Keep it that way: an agent promising a seat or a discount the college does not give is the
+fraud the site warns families about (`TrustShield`). An odd last card spans the full row on desktop.
+
 ## Data pages: the hero, the copy registry, the photos (2026-10-18)
 
 Every data page (stipend, PG/UG states, branches, NEET UG/PG/SS/MDS cutoffs, BDS, AYUSH, deemed and
@@ -245,6 +252,33 @@ Private), university, founding year and recognition status. Source: NMC's public
   shared words are place names both must agree on "Government" ("GMC Kadapa" ≠ "Fathima Institute,
   Kadapa"). 664/834 MBBS and 504/639 MD/MS matched automatically, 30/30 sampled correct. The rest are
   matched by a person in the admin; `admin` / `admin-none` rows are never touched by a sync.
+- **Every NMC college is decided since 2026-10-20: MBBS 834/834, MD/MS 639/639.** The matcher was fixed
+  first, then the remainder decided by hand (`scripts/data/nmc_decisions_2026_10_20.json`, applied by
+  `scripts/apply_nmc_decisions.ts`, which checks level, state and MD/MS seats and writes nothing without
+  `--apply`; each pair carries its evidence). What the matcher had wrong, all in `nmcSync.ts`:
+  - **States spelt two ways** (`STATE_ALIASES`): NMC's "Chattisgarh" left all 21 Chhattisgarh colleges with
+    no candidate; our "Pondicherry" and "Dadra Nagar Havelli" missed NMC's spellings. `nmcAdmin` now uses
+    the same `stateKey`.
+  - **Former names** in NMC's brackets ("GMC Kadapa ( previously RIMS Kadapa)") are tried — but **last**,
+    because our lists can hold the old and new name side by side; tried first they broke four good pairs.
+  - "Employees State Insurance Corporation" ≡ "ESIC"/"ESI"; an **identical name** (every word, initials
+    kept — "S N" vs "F H Medical College, Agra" differ only in initials, and dropping them paired "L.N.
+    Medical College" with "Bhopal Memorial Hospital") pairs when exactly one of ours has it.
+  - **Two NMC colleges with one name in one state are never auto-paired.** IMS & SUM Hospital,
+    Bhubaneswar is OD/010 (2007) and OD/009 (its 2024 campus at Phulnakhara); the matcher had given the
+    2007 college's institutes to the 2024 code.
+  - Re-check any matcher change with a simulation against the stored pairs (added / changed / dropped)
+    before a real sync — the first version of these fixes looked right and dropped six correct pairs.
+- **"None of ours" is per level** (migration 0037, `nmc_institutes.level`): Kiran Medical College, Surat is
+  one of our MD/MS colleges but its MBBS seats are in no list we hold. A level-less row still closes both.
+- **Our PG data lists many colleges twice** — the MD/MS entry (MCC's name) and a DNB/Diploma entry for the
+  same hospital (NBEMS's name, ending in a PIN code). NMC's register is about MD/MS, so the MD/MS entry is
+  the pair. GMC Shahjahanpur and RINPAS have only the DNB entry and are paired to it.
+- **38 MBBS "none" decisions to revisit after the next UG import:** 34 colleges NMC permitted in 2026 that
+  no counselling list we hold contains yet (inception 2026), Rajalakshmi (2024), Kiran and Dhanalakshmi
+  Srinivasan Institute (their MBBS side), and MES Medical College — our UG source files its MBBS rows
+  under "MES Dental College" and its BDS rows under "MES Medical College" (known gaps, #1). Undo them in
+  Admin → Data sync → Decided by hand once the data holds them.
 - **Read side:** `lib/nmcData.ts` (`getNmcFacts(slug, level)`, `getNmcUgIndex()`, tag `nmc`).
   `components/colleges/NmcRecord.tsx` is the "Official record" card on both college templates, and
   `collegeSnippet.ts` takes seats, type and founding year from NMC (`summary.fromNmc`), so the summary
@@ -578,7 +612,22 @@ hourly cron (`/api/cron/followups`, minute 23, 10 AM–9 PM IST, users created a
 `ah_callback_request` (UTILITY) is sent by `/api/profile` the moment a verified student presses the
 `CounsellingCTA` ("Counselling request — …" source). Nothing sends until Meta approves the template; approval is
 checked live. `scripts/tmp/wa_send_all_templates.mjs` sends every approved `ah_*` template to Gulshan and Dev
-for a look.
+for a look. `ah_meet_counsellor_v2` (with the Telegram line) was approved and has gone out since 19 Oct.
+
+**Meta holds back about a quarter of the marketing follow-ups (2026-10-20).** 12 of the first 46 came back
+`failed` 131049 ("to maintain healthy ecosystem engagement") — Meta's limit on how many business marketing
+messages one person receives, not a fault of ours, and the student never saw them. `lib/followups.ts` now
+offers such a slot **once more, after 24 hours**, inside its window and only if its reason still stands
+(profile still incomplete / nobody has called); the retry is recorded `resent` and never retried again.
+Every other failure is final. Codes (AUTHENTICATION) are not affected. About 1 code in 10 fails 131026
+"undeliverable" (a number not on WhatsApp, or an old app) — 6 of 60 in 17–20 Oct.
+
+**"A code arrived on Gulshan's number" is not a site sign-in while the official sender is on.**
+`/api/auth/otp` never offers the inbound path when `whatsapp.cloud.enabled` is true (owner's call,
+2026-10-13), so check `otp_codes.sent_channel` (all `cloud` 17–20 Oct, 60 codes) and `verification_attempts`
+(none) before suspecting the site. The one on 20 Oct was the team's own ZyNerd login code, forwarded by
+hand between two staff phones (the gateway's message `source` was `app`, i.e. typed on the phone).
+`node --env-file=.env.local scripts/otp_diag.mjs` prints the last three days of codes, receipts and errors without full numbers.
 
 **The outage of 13–16 October, and the delivery log it left (migration 0031).** From go-live (13 Oct 20:36
 IST) to 16 Oct 17:20 IST Meta answered every code "accepted" and **delivered none**: 53 codes, 0 sign-ins,
@@ -1482,6 +1531,16 @@ for 8–9 Oct (root-only). Remedy: Request indexing for the affected URLs.
 
 ## SEO, and the one canonical host (2026-09-25)
 
+- **The Google Business Profile exists (verified 2026-10-17)** — "Admission Hands · Counselor in Noida",
+  `https://www.google.com/maps?cid=15474144466729356168` (feature id `0x390ce5c62016fac3:0xd6bf34682e7acb88`,
+  KG `/g/11zyl3kjlj`). It is the admin's `social.google` (Social links), joins the homepage Organization
+  `sameAs` with its `?cid=` kept (page.tsx strips query strings from every other profile link), and the
+  footer's address links to it. The address on the site (`OFFICE`, `CONTACT_INFO.address`) follows the
+  profile's own wording, plus the sector it omits; the /know-us map embeds the profile's place, not the
+  old pin in Sector 62. **Owner's side, open on 2026-10-20:** the profile has no phone number and no photos,
+  it says 9 pm closing where the site says 10 pm (one of them is wrong), and an old "Admission Hands"
+  listing at A-42, Sector 2, Noida shows "Permanently closed" for a Maps search of the brand — report it
+  as a duplicate from the new profile's account.
 - **The apex and www both served 200**, making every one of 3,600+ URLs a duplicate of itself and
   splitting the crawl budget. Canonicals and the sitemap already said www, so the apex now **301s
   to www at Caddy**, path preserved. `npm run smoke` and `audit_site.mjs` both target

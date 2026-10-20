@@ -11,6 +11,15 @@
  * `whatsapp.followups.enabled` is on. `run({ dry: true })` lists who would get
  * what without sending anything.
  *
+ * One retry, for one reason (2026-10-20): Meta accepts a marketing template and
+ * then holds it back with error 131049 ("to maintain healthy ecosystem
+ * engagement") when the student has had too many business messages lately — 12
+ * of the first 46 follow-ups. The student never saw it, so once a day has passed
+ * the slot is offered again, still inside its window and still only if the
+ * reason for it stands. Meta's advice for 131049 is to retry later, not at once.
+ * A retry is recorded as 'resent' and is never retried again; any other failure
+ * is final.
+ *
  * Server only.
  */
 
@@ -61,6 +70,19 @@ interface Candidate {
   template: string;
 }
 
+/**
+ * True when this student's slot is still open: never sent, or sent once and held
+ * back by Meta with 131049 more than a day ago (see the header).
+ */
+const slotOpen = (slot: string) => sql`
+  NOT EXISTS (
+    SELECT 1 FROM wa_followups f
+     WHERE f.user_id = u.id AND f.template = ${slot}
+       AND NOT (f.status = 'sent' AND EXISTS (
+         SELECT 1 FROM wa_messages m
+          WHERE m.wamid = f.message_id AND m.status = 'failed' AND m.error_code = 131049
+            AND m.failed_at < now() - interval '24 hours')))`;
+
 async function candidates(): Promise<Candidate[]> {
   const finish = (await db.execute(sql`
     SELECT u.id AS user_id, u.phone, u.name
@@ -69,7 +91,7 @@ async function candidates(): Promise<Candidate[]> {
        AND u.created_at BETWEEN now() - interval '7 days' AND now() - interval '1 hour'
        AND u.created_at >= ${SINCE}::timestamptz
        AND (u.stream IS NULL OR u.gender IS NULL OR u.domicile_state IS NULL OR u.budget_max IS NULL)
-       AND NOT EXISTS (SELECT 1 FROM wa_followups f WHERE f.user_id = u.id AND f.template = ${FOLLOWUPS.finish})
+       AND ${slotOpen(FOLLOWUPS.finish)}
      ORDER BY u.created_at
      LIMIT ${MAX_PER_RUN}
   `)) as unknown as { user_id: number; phone: string; name: string | null }[];
@@ -80,7 +102,7 @@ async function candidates(): Promise<Candidate[]> {
      WHERE u.verified_at IS NOT NULL
        AND u.created_at BETWEEN now() - interval '14 days' AND now() - interval '3 hours'
        AND u.created_at >= ${SINCE}::timestamptz
-       AND NOT EXISTS (SELECT 1 FROM wa_followups f WHERE f.user_id = u.id AND f.template = ${FOLLOWUPS.counsellor})
+       AND ${slotOpen(FOLLOWUPS.counsellor)}
        -- Not if the team has already spoken to them: a lead from this number
        -- that has moved on from "new" or has a contact logged.
        AND NOT EXISTS (
@@ -186,16 +208,32 @@ export async function runFollowups({ dry }: { dry: boolean }): Promise<FollowupR
   if (dry || !enabled || !ready || !inHours) return report;
 
   for (const d of due) {
-    // Claim the row first, so a second run in parallel cannot send it again.
-    const claimed = (await db.execute(sql`
+    // Claim the row first, so a second run in parallel cannot send it again. A slot
+    // that exists already is the one retry: claimed only from 'sent', and only while
+    // Meta's 131049 hold on that message stands.
+    let claimed = (await db.execute(sql`
       INSERT INTO wa_followups (user_id, template, status) VALUES (${d.userId}, ${d.template}, 'sending')
       ON CONFLICT (user_id, template) DO NOTHING RETURNING id
     `)) as unknown as { id: number }[];
+    let retry = false;
+    if (!claimed.length) {
+      claimed = (await db.execute(sql`
+        UPDATE wa_followups f SET status = 'resending'
+         WHERE f.user_id = ${d.userId} AND f.template = ${d.template} AND f.status = 'sent'
+           AND EXISTS (SELECT 1 FROM wa_messages m
+                        WHERE m.wamid = f.message_id AND m.status = 'failed' AND m.error_code = 131049
+                          AND m.failed_at < now() - interval '24 hours')
+        RETURNING f.id
+      `)) as unknown as { id: number }[];
+      retry = true;
+    }
     if (!claimed.length) continue;
     const r = await sendTemplate(d.phone, sendAs(d.template), [firstName(d.name)], "followup");
     if (r.ok) {
       report.sent++;
-      await db.execute(sql`UPDATE wa_followups SET status = 'sent', message_id = ${r.id} WHERE id = ${claimed[0].id}`);
+      await db.execute(
+        sql`UPDATE wa_followups SET status = ${retry ? "resent" : "sent"}, message_id = ${r.id} WHERE id = ${claimed[0].id}`,
+      );
     } else {
       report.failed++;
       await db.execute(sql`UPDATE wa_followups SET status = 'failed', error = ${r.error.slice(0, 300)} WHERE id = ${claimed[0].id}`);

@@ -528,7 +528,9 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
             {/* Embedded Map */}
             <div className="lg:col-span-7 h-[280px] lg:h-auto rounded-xl overflow-hidden shadow-sm border border-slate-100 dark:border-slate-800/80 bg-white dark:bg-slate-900">
               <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.0154924824307!2d77.3701033!3d28.6303843!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce5f55555555%3A0xd6e6726c5fb03344!2sBhutani%20City%20Center%2C%20Sector%2032%2C%20Noida%2C%20Uttar%20Pradesh%20201301!5e0!3m2!1sen!2sin!4v1652888888888!5m2!1sen!2sin" 
+                // The Google Business Profile's own place (2026-10-20). The old embed
+                // was centred on Sector 62 with a placeholder place id.
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1751.5!2d77.3540636!3d28.5742522!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce5c62016fac3%3A0xd6bf34682e7acb88!2sAdmission%20Hands!5e0!3m2!1sen!2sin!4v1760918400000!5m2!1sen!2sin"
                 width="100%" 
                 height="100%" 
                 style={{ border: 0 }} 

@@ -194,7 +194,7 @@ export default function NmcSync() {
                             {u.state ?? "—"} · {u.management ?? "—"} · {n(u.seats)} {u.level === "ug" ? "MBBS" : "MD/MS"} seats · {u.code}
                           </p>
                         </div>
-                        <Button size="sm" variant="ghost" disabled={busy === key} onClick={() => act(key, { action: "none", code: u.code })}>
+                        <Button size="sm" variant="ghost" disabled={busy === key} onClick={() => act(key, { action: "none", code: u.code, level: u.level })}>
                           <X className="h-3.5 w-3.5" /> None of ours
                         </Button>
                       </div>
@@ -277,7 +277,11 @@ export default function NmcSync() {
                   <li key={d.id} className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 text-sm">
                     <span className="min-w-0 text-slate-700">
                       <span className="font-medium text-slate-900">{d.name}</span> →{" "}
-                      {d.method === "admin-none" ? <Badge>None of ours</Badge> : d.institute}
+                      {d.method === "admin-none" ? (
+                        <Badge>{d.level === "ug" ? "None of ours · MBBS" : d.level === "pg" ? "None of ours · MD/MS" : "None of ours"}</Badge>
+                      ) : (
+                        d.institute
+                      )}
                     </span>
                     <Button size="sm" variant="ghost" disabled={busy === `undo${d.id}`} onClick={() => act(`undo${d.id}`, { action: "unmap", id: d.id })}>
                       Undo

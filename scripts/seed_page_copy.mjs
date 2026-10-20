@@ -9,7 +9,7 @@
 //
 //   node --env-file=.env.local scripts/seed_page_copy.mjs [--dry-run]
 import postgres from "postgres";
-import { PAGE_COPY, TELEGRAM_SETTINGS } from "../src/lib/pageCopyDefaults.ts";
+import { PAGE_COPY, SOCIAL_SETTINGS, TELEGRAM_SETTINGS } from "../src/lib/pageCopyDefaults.ts";
 
 const dry = process.argv.includes("--dry-run");
 const sql = postgres(process.env.DATABASE_URL, { max: 1 });
@@ -85,6 +85,20 @@ for (const t of TELEGRAM_SETTINGS) {
     VALUES (${t.key}, ${t.value}, ${t.key === "social.telegram" ? "url" : t.long ? "longtext" : "text"}, ${"Telegram channel"}, ${t.label}, ${i})
     ON CONFLICT (key) DO UPDATE
       SET label = EXCLUDED.label, group_name = EXCLUDED.group_name, display_order = EXCLUDED.display_order
+    RETURNING (xmax = 0) AS inserted`;
+  if (r[0]?.inserted) settings++;
+}
+// Written once; the label and group follow the code, the value stays the admin's.
+for (const t of SOCIAL_SETTINGS) {
+  i++;
+  if (dry) {
+    console.log("setting", t.key, "=", t.value.slice(0, 60));
+    continue;
+  }
+  const r = await sql`
+    INSERT INTO site_settings (key, value, value_type, group_name, label, display_order)
+    VALUES (${t.key}, ${t.value}, ${"url"}, ${"Social links"}, ${t.label}, ${i})
+    ON CONFLICT (key) DO UPDATE SET label = EXCLUDED.label, group_name = EXCLUDED.group_name
     RETURNING (xmax = 0) AS inserted`;
   if (r[0]?.inserted) settings++;
 }

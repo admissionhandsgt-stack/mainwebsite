@@ -31,6 +31,7 @@ const DEFAULT_SOCIAL: Required<SocialLinks> = {
   facebook: 'https://facebook.com/admissionhands',
   instagram: 'https://www.instagram.com/admissionhandss?igsh=cDEyd2dsdXBpeW5v',
   youtube: 'https://youtube.com/@admissionhands',
+  google: CONTACT_INFO.google,
 };
 
 interface FooterProps {
@@ -58,7 +59,8 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
     { key: 'youtube', label: 'YouTube', icon: Youtube, href: social?.youtube ?? DEFAULT_SOCIAL.youtube, color: 'hover:bg-red-600' },
     { key: 'telegram', label: 'Telegram', icon: TelegramIcon, href: telegram.url, color: 'hover:bg-cyan-600' },
   ].filter((s) => s.href);
-  
+  const googleProfile = social?.google ?? DEFAULT_SOCIAL.google;
+
   return (
     <>
       <footer className="relative bg-[#060b16] text-white pt-6 pb-2 md:pt-10 md:pb-6 overflow-hidden">
@@ -202,9 +204,22 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
                     <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 shrink-0">
                       <MapPin className="h-4 w-4" />
                     </div>
-                    <p className="text-gray-300 text-xs font-bold leading-relaxed mt-1">
-                      {CONTACT_INFO.address}
-                    </p>
+                    {googleProfile ? (
+                      <a
+                        href={googleProfile}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        data-placement="footer_google"
+                        className="text-gray-300 hover:text-white text-xs font-bold leading-relaxed mt-1 transition-colors"
+                      >
+                        {CONTACT_INFO.address}
+                        <span className="block text-[11px] font-semibold text-cyan-400 mt-0.5">See us on Google Maps</span>
+                      </a>
+                    ) : (
+                      <p className="text-gray-300 text-xs font-bold leading-relaxed mt-1">
+                        {CONTACT_INFO.address}
+                      </p>
+                    )}
                   </li>
                 </ul>
               </div>
