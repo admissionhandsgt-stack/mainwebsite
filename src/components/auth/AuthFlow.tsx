@@ -237,7 +237,9 @@ export default function AuthFlow({
         const json = await res.json();
         if (!live) return;
         if (json.verified) {
-          setStep(json.hasPassword ? "done" : "setpass");
+          // The predictor (skipProfile) goes straight to the colleges: a password can be set later
+          // from /account, and one more screen between a student and the list is one too many.
+          setStep(json.hasPassword || skipProfile ? "done" : "setpass");
           return;
         }
         if (json.expired) {
@@ -430,23 +432,24 @@ export default function AuthFlow({
 
   return (
     <div className={wrap}>
-      {/* A three-dot rail, so the visitor can see this is short and where they
-          are in it. Two steps look endless when you cannot see the end. */}
+      {/* A short rail of dots, so the visitor can see this is short and where they
+          are in it. Two steps look endless when you cannot see the end. Every dot
+          but the last is followed by a line — the rail had grown a fourth step
+          while still drawing lines after the first two only. */}
       {step !== "done" && (
         <ol className="mb-6 flex items-center gap-2" aria-label="Progress">
           {(
-            ["phone", step === "password" ? "password" : "code", "profile", "setpass"] as const
-          ).map((s, i) => {
-            const order: Step[] = [
-              "phone",
-              step === "password" ? "password" : "code",
-              "profile",
-              "setpass",
-            ];
-            const at = order.indexOf(step);
+            // Only the steps this visitor will see: the predictor's sign-in is number + code.
+            (skipProfile
+              ? ["phone", step === "password" ? "password" : "code"]
+              : ["phone", step === "password" ? "password" : "code", "profile", "setpass"]) as Step[]
+          ).map((s, i, rail) => {
+            const order: Step[] = rail;
+            // A step past the rail (a reset's new password in the short flow) shows every dot done.
+            const at = order.includes(step) ? order.indexOf(step) : order.length;
             const state = i < at ? "done" : i === at ? "now" : "todo";
             return (
-              <li key={s} className="flex flex-1 items-center gap-2">
+              <li key={s} className={`flex items-center gap-2 ${i < rail.length - 1 ? "flex-1" : ""}`}>
                 <span
                   aria-current={state === "now" ? "step" : undefined}
                   className={`inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-bold ${
@@ -459,7 +462,7 @@ export default function AuthFlow({
                 >
                   {state === "done" ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : i + 1}
                 </span>
-                {i < 2 && <span className="h-px flex-grow bg-border" aria-hidden="true" />}
+                {i < rail.length - 1 && <span className="h-px flex-grow bg-border" aria-hidden="true" />}
               </li>
             );
           })}
@@ -506,14 +509,15 @@ export default function AuthFlow({
           </Field>
 
           {/* Only asked of somebody we have never met, and never asked twice. */}
-          <Field label="Your name" htmlFor="auth-name" icon={User}>
+          <Field label="Your name" htmlFor="auth-name" icon={User} hint="So a counsellor knows who they are speaking to.">
             <input
               id="auth-name"
               type="text"
               autoComplete="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="So a counsellor knows who they are speaking to"
+              aria-describedby="auth-name-hint"
+              placeholder="Your full name"
               className="h-14 w-full rounded-xl border-2 border-border bg-background pl-11 pr-4 text-[16px] text-foreground outline-none transition-colors focus:border-primary"
             />
           </Field>
@@ -918,12 +922,19 @@ function Field({
   htmlFor,
   icon: Icon,
   optional = false,
+  hint,
   children,
 }: {
   label: string;
   htmlFor: string;
   icon: React.ComponentType<{ className?: string; "aria-hidden"?: boolean | "true" | "false" }>;
   optional?: boolean;
+  /**
+   * Help text, shown under the field. Never put it in the placeholder: a phone-width input cuts a
+   * sentence off mid-word ("…who they are spea"), and it vanishes the moment you type. The input
+   * points at it with aria-describedby={`${htmlFor}-hint`}.
+   */
+  hint?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -938,6 +949,11 @@ function Field({
         <Icon className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
         {children}
       </div>
+      {hint && (
+        <p id={`${htmlFor}-hint`} className="mt-1.5 text-[13px] leading-snug text-muted-foreground">
+          {hint}
+        </p>
+      )}
     </div>
   );
 }

@@ -93,6 +93,31 @@ export default function ChanceFinder({
   const rank = checked.ok ? checked.value : 0;
   const cat = category && categories.includes(category) ? category : defaultCategory;
 
+  // Score first, for MD/MS (owner's request, 2026-10-20): the score shows the rank range it held in
+  // NBEMS's published result (/api/score-rank), and the student types the exact rank inside it.
+  // MBBS/BDS stay rank-first — NTA publishes no complete marks-to-rank list.
+  const [scoreText, setScoreText] = useState(profile?.neetScore != null && stream === "pg" ? String(profile.neetScore) : "");
+  const [scoreRange, setScoreRange] = useState<{ year: number; score: number; outOf: number; rankMin: number; rankMax: number; candidates: number | null } | null>(null);
+  const [scoreError, setScoreError] = useState<string | null>(null);
+  useEffect(() => {
+    setScoreRange(null);
+    setScoreError(null);
+    const s = scoreText.trim();
+    if (stream !== "pg" || !/^-?\d{1,3}$/.test(s)) return;
+    const t = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/score-rank?exam=pg&score=${encodeURIComponent(s)}`);
+        const json = await res.json();
+        if (res.ok) setScoreRange(json);
+        else setScoreError(json.error ?? null);
+      } catch {
+        /* the rank field still works without it */
+      }
+    }, 350);
+    return () => clearTimeout(t);
+  }, [scoreText, stream]);
+  const rankOutside = !!scoreRange && rank > 0 && (rank < scoreRange.rankMin || rank > scoreRange.rankMax);
+
   // The category list differs by course (UG publishes UR, PG publishes GEN).
   useEffect(() => {
     if (category && !categories.includes(category)) setCategory("");
@@ -188,6 +213,8 @@ export default function ChanceFinder({
         stream,
         rank,
         category: cat,
+        // The score typed on the first screen (MD/MS) — a counsellor reads it beside the rank.
+        ...(stream === "pg" && scoreRange ? { neetScore: scoreRange.score } : {}),
         ...(last ? { notify: true, source: `Admission Chance (${spec.label})`, optionsSeen: matching ?? undefined } : {}),
       }),
     });
@@ -304,16 +331,55 @@ export default function ChanceFinder({
             ))}
           </div>
         </fieldset>
+        {stacked && stream === "pg" && (
+          <div>
+            <label className="block">
+              <span className="text-[13px] font-semibold text-foreground">NEET PG score</span>
+              <input
+                value={scoreText}
+                onChange={(e) => setScoreText(e.target.value.replace(/[^\d-]/g, "").slice(0, 4))}
+                inputMode="numeric"
+                placeholder="e.g. 450"
+                className="tnum font-heading mt-1.5 h-12 w-full rounded-xl border border-border bg-background px-4 text-lg font-extrabold text-foreground outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+              />
+            </label>
+            {scoreRange ? (
+              <p className="mt-2 rounded-xl bg-primary-soft px-3.5 py-2.5 text-[13.5px] leading-snug text-foreground" aria-live="polite">
+                Score <b className="tnum">{scoreRange.score}</b> in NEET PG {scoreRange.year} = rank{" "}
+                <b className="tnum">
+                  {inr(scoreRange.rankMin)}
+                  {scoreRange.rankMax !== scoreRange.rankMin ? ` – ${inr(scoreRange.rankMax)}` : ""}
+                </b>
+                {scoreRange.candidates && scoreRange.candidates > 1 ? (
+                  <span className="text-muted-foreground"> · {inr(scoreRange.candidates)} candidates had this score</span>
+                ) : null}
+                {!rankText && (
+                  <button
+                    type="button"
+                    onClick={() => setRankText(String(Math.round((scoreRange.rankMin + scoreRange.rankMax) / 2)))}
+                    className="mt-1.5 block text-[13px] font-semibold text-primary-strong underline-offset-2 hover:underline dark:text-primary"
+                  >
+                    Rank not handy? Use {inr(Math.round((scoreRange.rankMin + scoreRange.rankMax) / 2))}
+                  </button>
+                )}
+              </p>
+            ) : scoreError ? (
+              <p className="mt-2 text-[12.5px] text-signal-stretch">{scoreError}</p>
+            ) : null}
+          </div>
+        )}
         <div className={stacked ? "grid gap-4 sm:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]" : "contents"}>
           <label className="block">
-            <span className="text-[13px] font-semibold text-foreground">NEET {spec.level.toUpperCase()} all-India rank</span>
+            <span className="text-[13px] font-semibold text-foreground">
+              {stacked && scoreRange ? "Your exact rank" : `NEET ${spec.level.toUpperCase()} all-India rank`}
+            </span>
             <input
               value={rankText}
               onChange={(e) => setRankText(e.target.value)}
               inputMode="numeric"
-              placeholder={spec.level === "pg" ? "e.g. 25000" : "e.g. 45000"}
+              placeholder={scoreRange ? `${inr(scoreRange.rankMin)} – ${inr(scoreRange.rankMax)}` : spec.level === "pg" ? "e.g. 25000" : "e.g. 45000"}
               className={`tnum font-heading mt-1.5 h-12 w-full rounded-xl border bg-background px-4 text-lg font-extrabold text-foreground outline-none transition-colors focus:ring-2 focus:ring-primary/20 ${
-                rankText && !checked.ok ? "border-signal-stretch" : "border-border focus:border-primary"
+                (rankText && !checked.ok) || rankOutside ? "border-signal-stretch" : "border-border focus:border-primary"
               }`}
             />
           </label>
@@ -334,7 +400,9 @@ export default function ChanceFinder({
         </div>
         {stacked && (
           <p className="-mt-2 text-[12px] text-muted-foreground">
-            Your all-India rank is on your NEET scorecard — not your marks.
+            {stream === "pg"
+              ? "Your score and your rank are both on your NEET PG scorecard."
+              : "Your all-India rank is on your NEET scorecard — not your marks."}
           </p>
         )}
         <button
@@ -350,6 +418,11 @@ export default function ChanceFinder({
         </button>
       </form>
       {rankText && !checked.ok && <p className="mt-2 text-[12.5px] text-signal-stretch">{checked.error}</p>}
+      {checked.ok && rankOutside && scoreRange && (
+        <p className="mt-2 text-[12.5px] text-signal-stretch">
+          A score of {scoreRange.score} held ranks {inr(scoreRange.rankMin)} – {inr(scoreRange.rankMax)} in NEET PG {scoreRange.year}. Check the rank or the score on your scorecard.
+        </p>
+      )}
       {error && (
         <p role="alert" className="mt-3 text-[13.5px] font-medium text-destructive">
           {error}
@@ -378,7 +451,9 @@ export default function ChanceFinder({
             <h2 className="font-heading mt-2 text-[1.35rem] font-extrabold leading-tight text-foreground">
               Get your possibility report
             </h2>
-            <p className="mt-1 text-[13.5px] text-muted-foreground">Three details. No sign-in needed for the first answer.</p>
+            <p className="mt-1 text-[13.5px] text-muted-foreground">
+              {stream === "pg" ? "Your score, rank and category." : "Your rank and category."} No sign-in needed for the first answer.
+            </p>
             {renderForm(true)}
             <div className="mt-5 border-t border-border pt-4">{trust}</div>
           </section>
@@ -542,6 +617,7 @@ export default function ChanceFinder({
               <CounsellingCTA
                 headline={`${inr((data.options ?? []).length)} colleges are on your list. Which order to fill them in is the decision.`}
                 source={`Admission Chance results (${spec.label})`}
+                level={spec.level === "pg" ? "pg" : "ug"}
               />
               {/* The first screen after the sign-in code — the WhatsApp code
                   itself cannot carry it (Meta fixes an authentication template's text). */}

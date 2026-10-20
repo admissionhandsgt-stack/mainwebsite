@@ -17,10 +17,13 @@ import { aaTrack, trackLead } from "@/lib/analytics";
  * accuracy" claims this site removed, because it describes a limit rather than
  * inventing a certainty.
  *
- * It collects the last two profile fields here rather than in the tuner because
- * neither changes anything on screen. Attempt and MBBS college tell a counsellor
- * who they are talking to, and asking for them at the point where the visitor is
- * requesting a call is the one place they are obviously relevant.
+ * It collects one last profile field here rather than in the tuner, because it
+ * changes nothing on screen: the attempt for an MBBS/BDS aspirant, the MBBS college
+ * for a PG one (2026-10-20 — it used to ask every student where they did MBBS).
+ *
+ * It sits in a 340px sidebar on a laptop and full width on a phone, so the layout
+ * follows the panel's own width, not the page's: the field and the two buttons sit
+ * side by side only when each gets ~13rem, and a button label never wraps.
  */
 
 /** The questions published closing ranks genuinely cannot answer. */
@@ -35,10 +38,13 @@ export default function CounsellingCTA({
   /** Something true about what they are looking at, e.g. "47 seats are in reach at your rank". */
   headline,
   source,
+  level = "pg",
   className = "",
 }: {
   headline?: string;
   source: string;
+  /** Which one question to ask: the attempt (UG) or the MBBS college (PG). */
+  level?: "ug" | "pg";
   className?: string;
 }) {
   const { contactInfo } = useContactInfo();
@@ -115,52 +121,56 @@ export default function CounsellingCTA({
         ))}
       </ul>
 
-      <div className="mt-6 grid gap-3 sm:grid-cols-2">
-        <div>
-          <label
-            htmlFor="cta-attempt"
-            className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground"
-          >
-            Which attempt is this?
-          </label>
-          <select
-            id="cta-attempt"
-            value={attempt}
-            onChange={(e) => setAttempt(e.target.value)}
-            className="mt-1.5 h-12 w-full rounded-xl border border-border bg-card px-3 text-[15px] text-foreground outline-none focus:border-primary"
-          >
-            <option value="">Select</option>
-            {ATTEMPTS.map((a) => (
-              <option key={a} value={a}>
-                {a}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label
-            htmlFor="cta-college"
-            className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground"
-          >
-            Where did you do MBBS?
-          </label>
-          <input
-            id="cta-college"
-            type="text"
-            value={college}
-            onChange={(e) => setCollege(e.target.value)}
-            placeholder="College and city"
-            className="mt-1.5 h-12 w-full rounded-xl border border-border bg-card px-3 text-[15px] text-foreground outline-none focus:border-primary"
-          />
-        </div>
+      <div className="mt-6">
+        {level === "ug" ? (
+          <>
+            <label
+              htmlFor="cta-attempt"
+              className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground"
+            >
+              Your NEET attempt <span className="font-semibold normal-case tracking-normal opacity-70">optional</span>
+            </label>
+            <select
+              id="cta-attempt"
+              value={attempt}
+              onChange={(e) => setAttempt(e.target.value)}
+              className="mt-1.5 h-12 w-full rounded-xl border border-border bg-card px-3 text-[15px] text-foreground outline-none focus:border-primary"
+            >
+              <option value="">Select</option>
+              {ATTEMPTS.map((a) => (
+                <option key={a} value={a}>
+                  {a}
+                </option>
+              ))}
+            </select>
+          </>
+        ) : (
+          <>
+            <label
+              htmlFor="cta-college"
+              className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground"
+            >
+              Your MBBS college <span className="font-semibold normal-case tracking-normal opacity-70">optional</span>
+            </label>
+            <input
+              id="cta-college"
+              type="text"
+              value={college}
+              onChange={(e) => setCollege(e.target.value)}
+              placeholder="College and city"
+              className="mt-1.5 h-12 w-full rounded-xl border border-border bg-card px-3 text-[15px] text-foreground outline-none focus:border-primary"
+            />
+          </>
+        )}
       </div>
 
-      <div className="mt-5 flex flex-col gap-2.5 sm:flex-row">
+      {/* Side by side only when each button gets 13rem; otherwise one above the other, full width. */}
+      <div className="mt-5 flex flex-wrap gap-2.5">
         <button
           type="button"
           onClick={() => void submit("whatsapp")}
           disabled={state === "saving"}
-          className="inline-flex min-h-[52px] flex-1 items-center justify-center gap-2 rounded-xl bg-accent px-6 text-[15px] font-bold text-white shadow-glow transition-all hover:-translate-y-0.5 disabled:opacity-60"
+          className="inline-flex min-h-[52px] flex-[1_1_13rem] items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-accent px-5 text-[15px] font-bold text-white shadow-glow transition-all hover:-translate-y-0.5 disabled:opacity-60"
         >
           {state === "saving" ? (
             <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
@@ -173,7 +183,7 @@ export default function CounsellingCTA({
           type="button"
           onClick={() => void submit("call")}
           disabled={state === "saving"}
-          className="inline-flex min-h-[52px] flex-1 items-center justify-center gap-2 rounded-xl border border-border bg-card px-6 text-[15px] font-bold text-foreground transition-colors hover:border-primary disabled:opacity-60"
+          className="inline-flex min-h-[52px] flex-[1_1_13rem] items-center justify-center gap-2 whitespace-nowrap rounded-xl border border-border bg-card px-5 text-[15px] font-bold text-foreground transition-colors hover:border-primary disabled:opacity-60"
         >
           <Phone className="h-4 w-4" aria-hidden="true" />
           Request a call back

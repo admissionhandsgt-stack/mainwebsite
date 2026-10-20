@@ -1214,6 +1214,51 @@ animation that escapes that block.
   Caddy (verified: one PID in the service's cgroup). Run it as more than one process and it silently
   becomes per-process again.
 
+## The predictor form, cut to one screen (owner's rule, 2026-10-20) — supersedes the next section
+
+The owner's verdict on the four-step profile ("itna lamba karoge to sab bhag jayenge"): ask the score,
+show the rank range, take the rank and the main details, nothing else. So:
+
+- **Start form, MD/MS:** NEET PG score → `/api/score-rank` shows "Score 450 in NEET PG 2026 = rank
+  28,677 – 29,130 · 454 candidates had this score" → the student types the exact rank inside that range
+  ("Rank not handy? Use 28,904" fills the middle) → category. A rank outside the score's range is
+  flagged, not refused. The score is saved with the profile (`neetScore`).
+  Data: `score_ranks` (migration 0040, `scripts/import_score_ranks.ts`) — NBEMS's own published NEET-PG
+  result PDFs for 2025 and 2026, one row per score with the ranks it holds (ties share a score),
+  handed over by `pg-4f`. Only score and rank are stored. `lib/scoreRank.ts` reads the latest year.
+- **Start form, MBBS/BDS: rank-first.** No complete official marks→AIR list exists (NTA publishes
+  scorecards; MCC shows ranks without marks; state merit lists are official but partial). Never fill
+  the gap with a coaching site's table. The state-merit-list route is an open decision for the owner.
+- **After the code: one screen** (`ProfileWizard`): domicile state + fee a year (MBBS/BDS); plus branches
+  and an optional MBBS state (PG). Gone: gender, PwD, city, attempt, college types, preferred states,
+  "what the family can raise", seat types, bond, internship, in-service, guardian phone — a counsellor
+  asks on the call. `essentialsDone` = domicile + budget (+ a branch for PG).
+- **Sign-in rail:** the predictor's (`skipProfile`) shows two dots, number and code, and never offers a
+  password — it can be set from /account. The four-dot rail had drawn lines after the first two only.
+- **The counselling panel** (`CounsellingCTA`, 340px sidebar on a laptop) asks one optional field —
+  attempt for UG, MBBS college for PG (it used to ask MBBS aspirants where they did MBBS) — and lays out
+  by its own width: buttons `flex-[1_1_13rem]` + `whitespace-nowrap`, so they sit side by side only when
+  each fits.
+
+**Help text never goes in a placeholder.** On a phone a sentence is cut mid-word ("…who they are spea"),
+and it vanishes when typing starts. `AuthFlow`'s `Field` has a `hint` shown under the input
+(`aria-describedby={id}-hint`). Check any form with `node scripts/clip_check.mjs <base> 360 <paths…>`
+(placeholders wider than their input, selects whose option does not fit, ellipsis/line-clamped text
+that is actually cut) and `node scripts/layout_scan.mjs <base> <width> <paths…>` (short button labels
+that wrap, uppercase labels that wrap, text under 11px, controls spilling out of their box). Both block
+analytics. Two-line "buttons" in layout_scan are often cards by design (name + title, label + count).
+
+## Per-state PG stipend pages (2026-10-20)
+
+`/md-ms-india/stipend/[state]` for every state with three or more colleges publishing a monthly stipend
+(`getStateStipend` in `lib/cutoffHubQueries.ts`, same rule as the hub): median / govt / private, every
+college's Y1–Y3, the state's government-seat bond box from `pg_seat_terms` (third-party caveat), FAQs.
+It answers "rajasthan pg stipend", "gujarat pg stipend", "punjab pg stipend" — in GSC 7–18 Oct the stipend
+cluster was 4,123 impressions, mostly state queries, all landing on the national page. The hub's state
+table and chart link to them; PG state pages link to theirs and now carry MCC's 2026 seats for the state
+(`getStateSeatMatrix`, "md medicine seats in maharashtra"). In the "states" sitemap. Copy:
+`page.pg_stipend_state.*`, `page.pg_state.mcc`.
+
 ## What the gate asks for (2026-09-28)
 
 The gate had been earning phone numbers and almost nothing else. Of the six enquiries before this,
