@@ -101,7 +101,7 @@ export default async function BdsPage() {
             { name: "Home", path: "/" },
             { name: "BDS in India", path: PATH },
           ]),
-          webPage({ name: "BDS colleges in India", description: "Every BDS college with published closing ranks, and the BDS cutoff.", path: PATH }),
+          webPage({ name: "BDS colleges in India", description: "Every BDS college with published counselling results, and the BDS cutoff.", path: PATH }),
           {
             "@context": "https://schema.org",
             "@type": "ItemList",

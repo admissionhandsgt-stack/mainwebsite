@@ -47,7 +47,7 @@ export const StickyDecisionBar = () => {
             <p className="text-white font-black tracking-tight leading-none mb-1 text-sm">
               Need Direct Answer?
             </p>
-            <p className="text-cyan-300/60 text-[9px] font-black uppercase tracking-widest">
+            <p className="text-cyan-300/60 text-[11px] font-black uppercase tracking-widest">
               Experts Online Now
             </p>
           </div>

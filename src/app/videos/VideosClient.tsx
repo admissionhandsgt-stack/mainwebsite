@@ -110,7 +110,7 @@ export function VideosClient({ videos }: { videos: VideoRecord[] }) {
                 <div>
                   <div className="flex items-center gap-2 mb-2.5">
                     {video.featured && (
-                      <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-900/30 text-[9px] font-black uppercase tracking-wider">
+                      <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-900/30 text-[11px] font-black uppercase tracking-wider">
                         <Star size={10} className="fill-current" />
                         Featured
                       </span>

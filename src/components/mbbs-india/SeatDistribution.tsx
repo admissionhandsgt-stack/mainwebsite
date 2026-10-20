@@ -30,7 +30,7 @@ export const SeatDistribution = ({ data = mbbsData }: { data?: MbbsContent } = {
                     <p className="text-base md:text-3xl font-black text-slate-900 dark:text-white leading-none mb-0.5 md:mb-1 tracking-tight">
                       {item.count}
                     </p>
-                    <p className="text-[7.5px] md:text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-tight">
+                    <p className="text-[10.5px] md:text-[11px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-tight">
                       {item.label}
                     </p>
                   </div>

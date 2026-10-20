@@ -286,7 +286,7 @@ export const InlineLeadForm = ({
             <span>Open daily 10 AM – 10 PM</span>
           </div>
         </div>
-        <div className="flex items-center justify-between text-[9px] text-slate-400 font-bold uppercase tracking-wider">
+        <div className="flex items-center justify-between text-[11px] text-slate-400 font-bold uppercase tracking-wider">
           <span>{copy.guided}</span>
           <span>🎯 AIQ • STATE • DEEMED • NRI</span>
         </div>
@@ -387,7 +387,7 @@ export const InlineLeadForm = ({
                     type="button"
                     key={i}
                     onClick={() => handleStateToggle(state)}
-                    className={`text-xs md:text-[9.5px] px-3 md:px-2 py-2.5 md:py-1 min-h-11 md:min-h-0 rounded-lg border font-bold transition-all cursor-pointer ${
+                    className={`text-xs md:text-[11.5px] px-3 md:px-2 py-2.5 md:py-1 min-h-11 md:min-h-0 rounded-lg border font-bold transition-all cursor-pointer ${
                       isSelected 
                         ? 'bg-cyan-600/25 border-cyan-500 text-cyan-300' 
                         : 'bg-slate-950/20 border-white/10 text-slate-400 hover:border-white/20'
@@ -415,7 +415,7 @@ export const InlineLeadForm = ({
                       type="button"
                       key={quota}
                       onClick={() => setFormData({ ...formData, quota_interest: quota })}
-                      className={`flex-1 text-xs md:text-[9.5px] py-2.5 md:py-1 min-h-11 md:min-h-0 rounded-lg font-black transition-all cursor-pointer ${
+                      className={`flex-1 text-xs md:text-[11.5px] py-2.5 md:py-1 min-h-11 md:min-h-0 rounded-lg font-black transition-all cursor-pointer ${
                         isActive 
                           ? 'bg-cyan-600/30 text-cyan-300 border border-cyan-500/20' 
                           : 'text-slate-400 hover:text-white border border-transparent'
@@ -442,7 +442,7 @@ export const InlineLeadForm = ({
                       type="button"
                       key={statusOption}
                       onClick={() => setFormData({ ...formData, internship_status: statusOption })}
-                      className={`flex-1 text-xs md:text-[9.5px] py-2.5 md:py-1 min-h-11 md:min-h-0 rounded-lg font-black transition-all cursor-pointer ${
+                      className={`flex-1 text-xs md:text-[11.5px] py-2.5 md:py-1 min-h-11 md:min-h-0 rounded-lg font-black transition-all cursor-pointer ${
                         isActive 
                           ? 'bg-cyan-600/30 text-cyan-300 border border-cyan-500/20' 
                           : 'text-slate-400 hover:text-white border border-transparent'
@@ -527,7 +527,7 @@ export const InlineLeadForm = ({
 
           {/* Summary Panel */}
           <div className="bg-slate-950/30 border border-white/5 rounded-xl p-3 text-[10px] space-y-1.5">
-            <span className="text-slate-400 font-bold block uppercase tracking-wider text-[9px] mb-1">
+            <span className="text-slate-400 font-bold block uppercase tracking-wider text-[11px] mb-1">
               Intake Summary:
             </span>
             <div data-aa-mask className="flex justify-between">
@@ -588,7 +588,7 @@ export const InlineLeadForm = ({
       )}
 
       {/* Trust Reminder */}
-      <p className="text-[9px] text-center text-slate-500 mt-4 font-bold flex items-center justify-center gap-1.5">
+      <p className="text-[11px] text-center text-slate-500 mt-4 font-bold flex items-center justify-center gap-1.5">
         <Heart className="w-3 h-3 text-red-500/80" />
         <span>🔒 Your details go only to your counsellor.</span>
       </p>

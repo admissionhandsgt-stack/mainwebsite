@@ -18,8 +18,10 @@ export function StatesIndex({ states }: { states: { name: string; slug: string; 
           MBBS colleges by state
         </h2>
         <p className="mt-2 max-w-[66ch] text-muted-foreground">
-          Who runs the counselling in each state, and every MBBS college there with its published closing ranks.
+          Who runs the counselling in each state, and every MBBS college there with its seats, fees and cutoff band.
         </p>
+        {/* On a phone the tile shows the state alone — "MBBS in Arunachal Pradesh" folded onto three
+            lines in a 175px column. The words stay in the link for screen readers and search. */}
         <ul className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
           {states.map((s) => (
             <li key={s.slug}>
@@ -28,7 +30,10 @@ export function StatesIndex({ states }: { states: { name: string; slug: string; 
                 className="flex min-h-11 items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary"
               >
                 <MapPin className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                MBBS in {s.name}
+                <span className="leading-snug">
+                  <span className="sr-only sm:not-sr-only">MBBS in </span>
+                  {s.name}
+                </span>
               </Link>
             </li>
           ))}

@@ -301,7 +301,7 @@ export default function ServicesClient({ heroImages, heroCredit, data }: Service
               initial={mounted ? { opacity: 0 } : false}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              className="inline-block px-3 py-1 mb-2 text-[9px] font-black tracking-widest text-cyan-600 uppercase bg-cyan-600/10 rounded-full"
+              className="inline-block px-3 py-1 mb-2 text-[11px] font-black tracking-widest text-cyan-600 uppercase bg-cyan-600/10 rounded-full"
             >
               {copy.why_badge}
             </motion.div>
@@ -353,7 +353,7 @@ export default function ServicesClient({ heroImages, heroCredit, data }: Service
               initial={mounted ? { opacity: 0 } : false}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              className="inline-block px-3 py-1 mb-2 text-[9px] font-black tracking-widest text-teal-600 uppercase bg-teal-600/10 rounded-full"
+              className="inline-block px-3 py-1 mb-2 text-[11px] font-black tracking-widest text-teal-600 uppercase bg-teal-600/10 rounded-full"
             >
               {copy.services_badge}
             </motion.div>

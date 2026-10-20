@@ -107,7 +107,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
             viewport={{ once: true }}
             className="text-center mb-8"
           >
-            <div className="inline-block px-3 py-1 mb-3 text-[9px] font-black tracking-widest text-cyan-600 dark:text-cyan-400 uppercase bg-cyan-50 dark:bg-cyan-950/40 rounded-full">
+            <div className="inline-block px-3 py-1 mb-3 text-[11px] font-black tracking-widest text-cyan-600 dark:text-cyan-400 uppercase bg-cyan-50 dark:bg-cyan-950/40 rounded-full">
               OUR STORY
             </div>
             <h2 className="text-2xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight mb-3">
@@ -174,7 +174,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
             viewport={{ once: true }}
             className="text-center mb-8"
           >
-            <div className="inline-block px-3 py-1 mb-3 text-[9px] font-black tracking-widest text-teal-600 dark:text-teal-400 uppercase bg-teal-50 dark:bg-teal-950/40 rounded-full">
+            <div className="inline-block px-3 py-1 mb-3 text-[11px] font-black tracking-widest text-teal-600 dark:text-teal-400 uppercase bg-teal-50 dark:bg-teal-950/40 rounded-full">
               WHAT WE DELIVER
             </div>
             <h2 className="text-2xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight mb-3">
@@ -253,7 +253,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
             viewport={{ once: true }}
             className="text-center mb-8"
           >
-            <div className="inline-block px-3 py-1 mb-3 text-[9px] font-black tracking-widest text-emerald-600 dark:text-emerald-400 uppercase bg-emerald-50 dark:bg-emerald-950/40 rounded-full">
+            <div className="inline-block px-3 py-1 mb-3 text-[11px] font-black tracking-widest text-emerald-600 dark:text-emerald-400 uppercase bg-emerald-50 dark:bg-emerald-950/40 rounded-full">
               THE ADMISSION HANDS EDGE
             </div>
             <h2 className="text-2xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight mb-3">
@@ -326,7 +326,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
             initial={mounted ? { opacity: 0, scale: 0.95 } : false}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-block px-3 py-1 mb-4 text-[9px] font-black tracking-widest text-cyan-300 uppercase bg-white/10 rounded-full border border-white/20"
+            className="inline-block px-3 py-1 mb-4 text-[11px] font-black tracking-widest text-cyan-300 uppercase bg-white/10 rounded-full border border-white/20"
           >
             OUR PHILOSOPHY
           </motion.div>
@@ -385,7 +385,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
             viewport={{ once: true }}
             className="text-center mb-8"
           >
-            <div className="inline-block px-3 py-1 mb-3 text-[9px] font-black tracking-widest text-teal-600 dark:text-teal-400 uppercase bg-teal-50 dark:bg-teal-950/20 rounded-full">
+            <div className="inline-block px-3 py-1 mb-3 text-[11px] font-black tracking-widest text-teal-600 dark:text-teal-400 uppercase bg-teal-50 dark:bg-teal-950/20 rounded-full">
               OUR PROCESS
             </div>
             <h2 className="text-2xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight mb-3">

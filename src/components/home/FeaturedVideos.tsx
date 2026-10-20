@@ -208,7 +208,7 @@ export default function FeaturedVideos() {
                 </div>
                 <div className="flex-1 min-w-0 py-1">
                   {video.featured && (
-                    <div className="inline-flex items-center gap-1 px-2 py-0.5 mb-1.5 rounded bg-amber-100 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 text-[9px] font-black uppercase tracking-wider">
+                    <div className="inline-flex items-center gap-1 px-2 py-0.5 mb-1.5 rounded bg-amber-100 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 text-[11px] font-black uppercase tracking-wider">
                       <Star className="w-2.5 h-2.5 fill-amber-500 text-amber-500" />
                       Featured
                     </div>

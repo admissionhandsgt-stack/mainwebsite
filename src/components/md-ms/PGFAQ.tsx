@@ -78,7 +78,7 @@ export const PGFAQ = ({ items: fromCms, copy }: { items?: FaqItem[]; copy?: FaqC
       <div className="container-custom max-w-4xl">
         {/* Header */}
         <div className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest bg-cyan-50 text-cyan-600 dark:bg-cyan-950/40 dark:text-cyan-400 mb-2">
+          <span className="inline-block px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-widest bg-cyan-50 text-cyan-600 dark:bg-cyan-950/40 dark:text-cyan-400 mb-2">
             {text.eyebrow}
           </span>
           <h2 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-2 tracking-tight">

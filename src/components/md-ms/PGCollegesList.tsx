@@ -49,7 +49,7 @@ export const PGCollegesList = () => {
       <div className="container-custom max-w-7xl">
         {/* Header */}
         <div className="text-center mb-4">
-          <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-cyan-50 text-cyan-600 dark:bg-cyan-950/40 dark:text-cyan-400 text-[9px] font-black tracking-widest uppercase mb-1">
+          <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-cyan-50 text-cyan-600 dark:bg-cyan-950/40 dark:text-cyan-400 text-[11px] font-black tracking-widest uppercase mb-1">
             <GraduationCap className="w-2.5 h-2.5" /> Verified Institutions
           </div>
           <h2 className="text-xl md:text-2xl lg:text-3xl font-black text-slate-900 dark:text-white tracking-tight mb-1">
