@@ -93,6 +93,21 @@ export async function sendMorningDigest(opts: { force?: boolean } = {}) {
   const people = (await loadPeople()).filter((p) => !CLOSED.includes(p.team.status));
   const link = await sheetUrl();
   const sinceYesterday = Date.now() - 24 * 3600_000;
+  // Students none of our WhatsApp follow-ups reached in three days (2026-10-21). Meta holds back marketing
+  // messages to people it thinks get too many (131049 — about 1 in 3 of ours in Oct) and to its own test
+  // groups (130472); the one retry recovers about 1 in 3 of those. For the rest, a call is the only way.
+  const last10 = (p: string) => String(p ?? "").replace(/\D/g, "").slice(-10);
+  const unreached = new Set(
+    ((await db.execute(sql`
+      SELECT DISTINCT right(regexp_replace(m.phone, '\\D', '', 'g'), 10) AS phone
+        FROM wa_messages m
+       WHERE m.direction = 'out' AND m.kind = 'followup' AND m.status = 'failed' AND m.created_at > now() - interval '3 days'
+         AND NOT EXISTS (
+           SELECT 1 FROM wa_messages x
+            WHERE x.direction = 'out' AND x.kind = 'followup' AND x.status IN ('delivered', 'read')
+              AND right(regexp_replace(x.phone, '\\D', '', 'g'), 10) = right(regexp_replace(m.phone, '\\D', '', 'g'), 10))
+    `)) as unknown as { phone: string }[]).map((r) => r.phone),
+  );
   const newCount: Record<string, number> = {};
   for (const p of people) {
     const lastAt = +new Date(p.rows[p.rows.length - 1].created_at);
@@ -109,6 +124,8 @@ export async function sendMorningDigest(opts: { force?: boolean } = {}) {
     const hot = mine
       .filter((p) => p.team.status === "Not contacted" && p.priority === "Hot")
       .sort((a, b) => +new Date(b.rows[b.rows.length - 1].created_at) - +new Date(a.rows[a.rows.length - 1].created_at));
+    const listed = new Set([...today, ...overdue, ...hot]);
+    const notReached = mine.filter((p) => p.team.status === "Not contacted" && !listed.has(p) && unreached.has(last10(p.phone)));
 
     const list = (items: Person[], extra: (p: Person) => string, max = 8) =>
       items
@@ -125,6 +142,9 @@ export async function sendMorningDigest(opts: { force?: boolean } = {}) {
       today.length ? `\n*Follow-ups today (${today.length})*\n${list(today, (p) => (p.team.followTime ? ` — ${p.team.followTime}` : ""))}` : "\nNo follow-ups set for today.",
       overdue.length ? `\n*Overdue (${overdue.length})*\n${list(overdue, (p) => ` — was ${p.team.followDate.split("-").reverse().join("-")}`, 5)}` : "",
       hot.length ? `\n*Hot, not contacted yet (${hot.length})*\n${list(hot, () => "")}` : "",
+      notReached.length
+        ? `\n*WhatsApp did not reach them — call instead (${notReached.length})*\n${list(notReached, () => "", 6)}`
+        : "",
       link ? `\nSheet: ${link}` : "",
     ].filter(Boolean);
     const text = parts.join("\n");

@@ -740,6 +740,11 @@ offers such a slot **once more, after 24 hours**, inside its window and only if 
 (profile still incomplete / nobody has called); the retry is recorded `resent` and never retried again.
 Every other failure is final. Codes (AUTHENTICATION) are not affected. About 1 code in 10 fails 131026
 "undeliverable" (a number not on WhatsApp, or an old app) — 6 of 60 in 17–20 Oct.
+**Measured 2026-10-21 (10 days):** first attempts 54 of 76 delivered (71%); the 24-hour retry 4 of 11 (about 1 in
+3 recovered — keep it); 130472 is Meta's marketing hold-out experiment, final like the rest. 7 days: codes 117
+sent, 6 failed (all 131026); `ah_meet_counsellor_v2` 18 of 48 failed and `ah_finish_profile` 10 of 25, nearly all
+131049. Nothing of ours to fix — the answer is a call: the 10 AM digest (`sendMorningDigest`) lists "WhatsApp
+did not reach them — call instead", students still "Not contacted" whom no follow-up reached in three days.
 
 **"A code arrived on Gulshan's number" is not a site sign-in while the official sender is on.**
 `/api/auth/otp` never offers the inbound path when `whatsapp.cloud.enabled` is true (owner's call,
