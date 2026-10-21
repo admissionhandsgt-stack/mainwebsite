@@ -143,7 +143,8 @@ export const PGAdmissionProcess = ({ items: fromCms }: { items?: PgStep[] | null
   })();
 
   const [mounted, setMounted] = useState(false);
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  // All seven phases start closed (2026-10-21): the first one open made this section 1,369px tall.
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   useEffect(() => {
     setMounted(true);

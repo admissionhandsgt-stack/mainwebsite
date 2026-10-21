@@ -83,7 +83,7 @@ export default async function CounsellorEdge({ compact = false }: { compact?: bo
         {
           icon: TrendingUp,
           value: `${f.movedAfterR1.pg}%`,
-          text: `of MD/MS seats went to a later rank after round 1 (${f.movedAfterR1.ug}% in NEET UG). Lock your seat too early and the upgrade goes to someone else.`,
+          text: `of PG seat options went to a later rank after round 1 (${f.movedAfterR1.ug}% in NEET UG). Lock your seat too early and the upgrade goes to someone else.`,
         },
         {
           icon: Layers,
@@ -147,7 +147,7 @@ export default async function CounsellorEdge({ compact = false }: { compact?: bo
     </>
   );
 
-  /* ---------------- compact: one card, for the college pages ---------------- */
+  /* ---------------- compact: one card, for the college pages and the homepage ---------------- */
   if (compact) {
     return (
       <section className="rounded-3xl border border-primary/25 bg-surface-2 p-6 md:p-8" aria-label="The difference a counsellor makes">

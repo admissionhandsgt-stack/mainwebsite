@@ -729,6 +729,7 @@ export const PAGE_COPY = {
       cta_call: { label: "Call button", value: "Talk to a PG expert" },
       cta_whatsapp: { label: "WhatsApp button", value: "WhatsApp us" },
       wa_text: { label: "WhatsApp message the button starts", value: "Hi, I need guidance for NEET PG counselling" },
+      browse: { label: "Link to the PG colleges list", value: "Browse every MD/MS college" },
       fact_colleges: { label: "Fact 1 — {md_ms_colleges} (NMC's register)", value: "{md_ms_colleges} MD/MS colleges on NMC's register" },
       fact_dnb: { label: "Fact 2 — {dnb_hospitals}, {mcc_year} (MCC's matrix)", value: "{dnb_hospitals} DNB hospitals in MCC's {mcc_year} counselling" },
       fact_ranks: { label: "Fact 3 — {pg_ranks_lakh}", value: "{pg_ranks_lakh} published PG closing ranks" },

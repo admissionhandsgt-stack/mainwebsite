@@ -116,7 +116,7 @@ export default function Hero({
     "absolute inset-0 h-full w-full object-cover object-center opacity-[0.035] sm:opacity-[0.07] dark:opacity-[0.08] dark:sm:opacity-[0.10]";
 
   return (
-    <section className="relative w-full overflow-hidden bg-background lg:min-h-[min(760px,calc(100svh-112px))] flex items-center">
+    <section className="relative w-full overflow-hidden bg-background lg:min-h-[min(640px,calc(100svh-112px))] flex items-center">
       {/* Ambient light — the page's only continuous motion */}
       <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
         <div className="ambient-blob animate-drift -left-32 -top-40 h-[34rem] w-[34rem] bg-primary/25 dark:bg-primary/20" />

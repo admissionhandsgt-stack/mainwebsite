@@ -6,8 +6,6 @@ import Image from 'next/image';
 import MobileFooter from './MobileFooter';
 import { CONTACT_INFO } from '@/lib/constants';
 import { useContactInfo } from '@/hooks/useContactInfo';
-import { useCTA } from '@/hooks/useCTA';
-import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon';
 import { TelegramIcon } from '@/components/icons/TelegramIcon';
 import { useTelegram } from '@/components/engage/TelegramLink';
 import type { NavItem } from '@/lib/content';
@@ -22,6 +20,11 @@ import type { SocialLinks } from './SiteShell';
  *     reads before the rows are grouped.
  *   - "Footer — Bottom line" (footer_quick): the small links beside the copyright.
  * Below lg every column is an accordion with 44px rows; from lg the columns sit side by side.
+ *
+ * Compact since the same day's second pass (owner: "footer kitna faila hua hai"): four short columns of
+ * section pages — every deeper page is one hover away in the header's menus, which are in every page's
+ * HTML — the contact lines and social icons in one block, no second WhatsApp button (the floating one is
+ * always on screen).
  */
 const FALLBACK_EXPLORE: NavItem[] = [
   { id: -1, label: 'MBBS India', url: '/mbbs-india', newTab: false, children: [] },
@@ -71,7 +74,6 @@ const linkProps = (l: NavItem) => (l.newTab ? { target: '_blank', rel: 'noopener
 const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social }) => {
   const currentYear = new Date().getFullYear();
   const { contactInfo } = useContactInfo();
-  const cta = useCTA();
   const telegram = useTelegram();
   const phoneNumber = contactInfo?.phone_number || CONTACT_INFO.phone;
   // "+919310301949" reads as "+91 93103 01949"; anything else is shown as it was entered.
@@ -88,64 +90,64 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
     { key: 'facebook', label: 'Facebook', icon: Facebook, href: social?.facebook ?? DEFAULT_SOCIAL.facebook },
     { key: 'instagram', label: 'Instagram', icon: Instagram, href: social?.instagram ?? DEFAULT_SOCIAL.instagram },
     { key: 'youtube', label: 'YouTube', icon: Youtube, href: social?.youtube ?? DEFAULT_SOCIAL.youtube },
-    { key: 'telegram', label: 'Telegram', icon: TelegramIcon, href: telegram.url },
-  ].filter((s) => s.href);
+  ].filter((s) => s.href); // Telegram has its own pill beside these, so it is not an icon here too
   const googleProfile = social?.google ?? DEFAULT_SOCIAL.google;
 
-  const contactRow = 'flex min-h-[44px] items-start gap-3 text-[14px] text-muted-foreground transition-colors hover:text-primary-strong dark:hover:text-primary';
-  const iconBox = 'mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-soft text-primary-strong dark:text-primary';
+  const contactRow = 'flex min-h-[44px] items-center gap-2.5 text-[14px] text-muted-foreground transition-colors hover:text-primary-strong dark:hover:text-primary lg:min-h-[36px]';
+  const iconBox = 'flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary-soft text-primary-strong dark:text-primary';
+  const COLS: Record<number, string> = { 1: 'lg:grid-cols-1', 2: 'lg:grid-cols-2', 3: 'lg:grid-cols-3', 4: 'lg:grid-cols-4', 5: 'lg:grid-cols-5' };
 
   return (
     <>
       <footer className="relative border-t border-border bg-surface-1 text-foreground">
-        <div className="container-custom pb-4 pt-10 md:pt-14">
-          <div className="grid gap-10 lg:grid-cols-[minmax(240px,0.85fr)_minmax(0,3.2fr)] lg:gap-12">
+        <div className="container-custom pb-3 pt-8 md:pt-10">
+          <div className="grid gap-8 lg:grid-cols-[minmax(240px,0.9fr)_minmax(0,2.6fr)] lg:gap-12">
             {/* Who we are and how to reach us */}
-            <div className="space-y-5">
+            <div className="space-y-4">
               <Link href="/" className="inline-flex min-h-[44px] items-center" aria-label="Admission Hands — home">
                 <Image
                   src="/assets/images/logos/logo.avif"
                   alt="Admission Hands Logo"
                   width={220}
                   height={55}
-                  className="h-[46px] w-[184px] object-contain dark:brightness-110"
+                  className="h-[40px] w-[160px] object-contain dark:brightness-110"
                   unoptimized
                 />
               </Link>
-              <p className="max-w-sm text-[14px] leading-relaxed text-muted-foreground">{tagline || DEFAULT_TAGLINE}</p>
+              <p className="max-w-sm text-[13.5px] leading-relaxed text-muted-foreground">{tagline || DEFAULT_TAGLINE}</p>
 
-              <ul className="space-y-1">
+              <ul>
                 <li>
                   <a href={`tel:${phoneNumber}`} className={contactRow}>
                     <span className={iconBox}><Phone className="h-4 w-4" aria-hidden="true" /></span>
-                    <span className="pt-1.5 font-semibold text-foreground tnum">{phoneShown}</span>
+                    <span className="font-semibold text-foreground tnum">{phoneShown}</span>
                   </a>
                 </li>
                 <li>
                   <a href={`mailto:${emailAddress}`} className={contactRow}>
                     <span className={iconBox}><Mail className="h-4 w-4" aria-hidden="true" /></span>
-                    <span className="break-all pt-1.5">{emailAddress}</span>
+                    <span className="break-all">{emailAddress}</span>
                   </a>
                 </li>
                 <li>
                   {googleProfile ? (
                     <a href={googleProfile} target="_blank" rel="noopener noreferrer" data-placement="footer_google" className={contactRow}>
                       <span className={iconBox}><MapPin className="h-4 w-4" aria-hidden="true" /></span>
-                      <span className="pt-1 leading-relaxed">
-                        {CONTACT_INFO.address}
-                        <span className="block text-[12.5px] font-semibold text-primary-strong dark:text-primary">See us on Google Maps</span>
+                      <span className="py-1 leading-snug">
+                        {CONTACT_INFO.address}{' '}
+                        <span className="whitespace-nowrap text-[12.5px] font-semibold text-primary-strong dark:text-primary">· Maps</span>
                       </span>
                     </a>
                   ) : (
                     <p className={contactRow}>
                       <span className={iconBox}><MapPin className="h-4 w-4" aria-hidden="true" /></span>
-                      <span className="pt-1 leading-relaxed">{CONTACT_INFO.address}</span>
+                      <span className="py-1 leading-snug">{CONTACT_INFO.address}</span>
                     </p>
                   )}
                 </li>
               </ul>
 
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 {socialLinks.map((s) => (
                   <a
                     key={s.key}
@@ -154,51 +156,36 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
                     rel="noopener noreferrer"
                     data-placement={`footer_${s.key}`}
                     aria-label={`Admission Hands on ${s.label}`}
-                    className="flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary-strong dark:hover:text-primary"
+                    className="flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary-strong dark:hover:text-primary lg:h-10 lg:w-10"
                   >
-                    <s.icon size={18} className="h-[18px] w-[18px]" />
+                    <s.icon size={17} className="h-[17px] w-[17px]" />
                   </a>
                 ))}
-              </div>
-
-              {/*
-                This was an email box and a Subscribe button wired to nothing: whatever was typed was
-                lost, on every page. There is no mail system behind the site, and the team works on
-                WhatsApp — so the visitor asks there, which reaches a person.
-              */}
-              <div className="flex flex-col gap-2 sm:flex-row lg:flex-col">
-                <button
-                  type="button"
-                  onClick={() => cta.whatsapp('Hi, please send me NEET counselling updates and admission notifications.')}
-                  className="inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-accent px-4 text-[13.5px] font-bold text-accent-foreground transition-colors hover:bg-accent/90"
-                >
-                  <WhatsAppIcon size={16} /> Updates on WhatsApp
-                </button>
                 <a
                   href={telegram.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   data-placement="footer"
-                  className="inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-xl border border-border bg-card px-4 text-[13.5px] font-semibold text-foreground transition-colors hover:border-primary/40"
+                  className="inline-flex h-11 items-center gap-2 whitespace-nowrap rounded-xl border border-border bg-card px-3.5 text-[13px] font-semibold text-foreground transition-colors hover:border-primary/40 lg:h-10"
                 >
-                  <TelegramIcon size={17} className="text-[#229ED9]" /> Join on Telegram
+                  <TelegramIcon size={16} className="text-[#229ED9]" /> Join on Telegram
                 </a>
               </div>
             </div>
 
             {/* The site, by course — Admin → Navigation → Footer — Explore */}
             <nav aria-label="Footer">
-              <div className="hidden gap-x-6 gap-y-10 lg:grid lg:grid-cols-3 xl:grid-cols-5">
+              <div className={`hidden gap-x-6 gap-y-8 lg:grid ${COLS[Math.min(columns.length, 5)] ?? 'lg:grid-cols-4'}`}>
                 {columns.map((col) => (
                   <div key={col.id} className="min-w-0">
                     <h2 className="text-[12px] font-bold uppercase leading-snug tracking-[0.1em] text-foreground">{col.label}</h2>
-                    <ul className="mt-3 space-y-0.5">
+                    <ul className="mt-2.5">
                       {col.links.map((l) => (
                         <li key={l.id}>
                           <Link
                             href={l.url}
                             {...linkProps(l)}
-                            className="group inline-flex items-center gap-1 py-1.5 text-[14px] leading-snug text-muted-foreground transition-colors hover:text-primary-strong dark:hover:text-primary"
+                            className="group inline-flex items-center gap-1 py-1 text-[14px] leading-snug text-muted-foreground transition-colors hover:text-primary-strong dark:hover:text-primary"
                           >
                             {l.label}
                             <ArrowRight className="h-3 w-3 -translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" aria-hidden="true" />
@@ -237,7 +224,7 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
           </div>
 
           {/* The bottom line — Admin → Navigation → Footer — Bottom line */}
-          <div className="mt-10 flex flex-col items-center justify-between gap-2 border-t border-border pt-4 md:flex-row">
+          <div className="mt-8 flex flex-col items-center justify-between gap-1 border-t border-border pt-3 md:flex-row">
             <p className="text-[13px] text-muted-foreground">&copy; {currentYear} AdmissionHands. All rights reserved.</p>
             <ul className="flex flex-wrap items-center justify-center gap-x-1">
               {bottom.map((l) => (

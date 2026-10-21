@@ -212,11 +212,13 @@ const Index = async () => {
               </div>
             ),
           },
+          // Compact on the homepage (owner, 2026-10-21: "kafi lamba bada homepage hogya hai") — the full
+          // versions stay on the predictor, where somebody has stopped to weigh the decision.
           {
             key: 'counsellor_edge',
             node: (
-              <div className="content-visibility-auto border-y border-border bg-surface-2">
-                <CounsellorEdge />
+              <div className="content-visibility-auto container-custom py-10 md:py-14">
+                <CounsellorEdge compact />
               </div>
             ),
           },
@@ -224,7 +226,7 @@ const Index = async () => {
             key: 'trust',
             node: (
               <div className="content-visibility-auto">
-                <TrustShield />
+                <TrustShield compact />
               </div>
             ),
           },

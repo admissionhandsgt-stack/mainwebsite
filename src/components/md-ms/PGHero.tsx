@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { CheckCircle2, Phone, Stethoscope } from "lucide-react";
+import { ArrowRight, CheckCircle2, Phone, Stethoscope } from "lucide-react";
+import Link from "@/components/ui/Link";
 import { useCTA } from "@/hooks/useCTA";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import PhotoCredit, { type PhotoCreditInfo } from "@/components/ui/PhotoCredit";
@@ -14,6 +15,7 @@ export interface PGHeroCopy {
   cta_call: string;
   cta_whatsapp: string;
   wa_text: string;
+  browse?: string;
 }
 
 interface PGHeroProps {
@@ -97,6 +99,14 @@ export const PGHero = ({ copy, facts, imageUrl, imageAlt, credit }: PGHeroProps)
               <WhatsAppIcon size={17} /> {copy.cta_whatsapp}
             </button>
           </div>
+          {copy.browse && (
+            <Link
+              href="/md-ms-india/colleges"
+              className="mt-4 inline-flex min-h-11 items-center gap-1.5 text-[14.5px] font-semibold text-primary-strong hover:underline"
+            >
+              {copy.browse} <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          )}
 
           {facts.length > 0 && (
             <ul className="mt-7 grid max-w-2xl gap-x-6 gap-y-2.5 sm:grid-cols-2">

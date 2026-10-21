@@ -57,8 +57,72 @@ const RED_FLAGS = [
   "Any claim you cannot check yourself on mcc.nic.in or your state's counselling website.",
 ];
 
-export default function TrustShield() {
+/**
+ * `compact` (the homepage, 2026-10-21): the same three things — the years, the four things a family can
+ * check, the six signs of a fraud agent — in one band about half the height: the checks become a short
+ * list beside the words, the warnings a box beside them.
+ */
+export default function TrustShield({ compact = false }: { compact?: boolean }) {
   const wa = CONTACT_INFO.whatsapp.replace(/\D/g, "");
+  const offerHref = `https://wa.me/${wa}?text=${encodeURIComponent("Hello AdmissionHands counsellor, someone has offered me a seat. Can you help me check if it is genuine?")}`;
+  if (compact) {
+    return (
+      <section className="relative overflow-hidden border-y border-border bg-surface-2 py-12 md:py-16" aria-labelledby="trust-h">
+        <div className="container-custom relative grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-start lg:gap-12">
+          <div>
+            <p className="inline-flex items-center gap-1.5 rounded-full border border-primary/25 bg-card px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-primary-strong dark:text-primary">
+              <BadgeCheck className="h-3.5 w-3.5" aria-hidden="true" /> <TeamFigure k="years" /> years of excellence
+            </p>
+            <h2 id="trust-h" className="font-heading mt-4 max-w-[24ch] text-[clamp(1.5rem,2.8vw,2.05rem)] font-extrabold leading-tight text-foreground">
+              Every rule change in medical counselling, navigated with real families.
+            </h2>
+            <p className="mt-3 max-w-[56ch] text-[15px] leading-relaxed text-muted-foreground">
+              Admission season brings out agents selling certainty that does not exist. So do not take anyone&apos;s word
+              for it, including ours — verify us.
+            </p>
+            <ul className="mt-5 grid gap-2 sm:grid-cols-2">
+              {VERIFY.map((v) => (
+                <li key={v.title}>
+                  <Link
+                    href={v.href}
+                    className="flex min-h-12 items-center gap-3 rounded-xl border border-border bg-card px-3 py-2 transition-colors hover:border-primary/40"
+                  >
+                    <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-soft text-primary">
+                      <v.icon className="h-4 w-4" aria-hidden="true" />
+                    </span>
+                    <span className="text-[14px] font-semibold leading-snug text-foreground">{v.title}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="overflow-hidden rounded-2xl border border-signal-borderline/30 bg-card">
+            <div className="flex items-center gap-2.5 border-b border-border bg-signal-borderline/[0.07] px-5 py-3.5">
+              <AlertTriangle className="h-5 w-5 text-signal-borderline" aria-hidden="true" />
+              <h3 className="font-heading text-[16px] font-extrabold text-foreground">Fraud agent se bachein — six warning signs</h3>
+            </div>
+            <ul className="space-y-2.5 px-5 py-4">
+              {RED_FLAGS.map((f) => (
+                <li key={f} className="flex gap-2.5 text-[14px] leading-snug text-foreground">
+                  <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-signal-stretch" aria-hidden="true" />
+                  <span>{f}</span>
+                </li>
+              ))}
+            </ul>
+            <a
+              href={offerHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex min-h-12 items-center gap-2 border-t border-border bg-surface-2 px-5 text-[14px] font-semibold text-[#128C7E] hover:bg-surface-3 dark:text-[#25D366]"
+            >
+              <WhatsAppIcon className="h-4 w-4" /> Been offered a seat? Ask a counsellor to check it, free
+            </a>
+          </div>
+        </div>
+      </section>
+    );
+  }
   return (
     <section className="relative overflow-hidden py-16 md:py-24" aria-labelledby="trust-h">
       <div className="ambient-blob pointer-events-none absolute -left-40 top-10 h-[26rem] w-[26rem] bg-primary/15" aria-hidden="true" />
@@ -83,7 +147,7 @@ export default function TrustShield() {
               Every rule change in medical counselling, navigated with real families.
             </h2>
             <p className="mt-3 max-w-[56ch] text-[15.5px] leading-relaxed text-muted-foreground">
-              More than fifteen admission seasons of MBBS, BDS, MD/MS and NRI counselling — through every new rule, round and
+              <TeamFigure k="years" /> admission seasons of MBBS, BDS, MD/MS and NRI counselling — through every new rule, round and
               quota. Admission season also brings out fake admission agents selling certainty that does not exist. So do not
               take anyone&apos;s word for it, including ours. Verify us.
             </p>
@@ -95,7 +159,7 @@ export default function TrustShield() {
                 Check your chances free
               </Link>
               <a
-                href={`https://wa.me/${wa}?text=${encodeURIComponent("Hello AdmissionHands counsellor, someone has offered me a seat. Can you help me check if it is genuine?")}`}
+                href={offerHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-[#25D366]/40 bg-[#25D366]/10 px-5 text-[15px] font-bold text-[#128C7E] hover:bg-[#25D366]/15 dark:text-[#25D366]"
