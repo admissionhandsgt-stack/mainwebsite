@@ -233,12 +233,16 @@ async function checkSectionsRender() {
   // a 200. That is how the homepage's Top Medical Institutes vanished for a day
   // in October 2026 — 1,084 "Failed query" log lines, every status code green.
   // So look for the section itself, and for a college inside it.
+  // Top Medical Institutes left the homepage on 2026-10-21 (Admin → Page layout hides it); the homepage's
+  // data-driven section now is the counsellor card, whose line under its facts prints only when the
+  // facts query succeeded. The list check moved to the PG directory, which is nothing but a query.
   const html = await (await get("/")).text();
-  if (/id="top-medical-institutes"/.test(html)) ok("homepage: Top Medical Institutes renders");
-  else bad("homepage: Top Medical Institutes renders", "section missing — check the app log for 'Failed query'");
-  const colleges = (html.match(/Medical College|Institute of Medical Sciences|AIIMS/g) || []).length;
-  if (colleges >= 3) ok("homepage: lists colleges", `${colleges} college names in the HTML`);
-  else bad("homepage: lists colleges", `only ${colleges} college names found`);
+  if (/Counted from the official counselling results we hold/.test(html)) ok("homepage: counted facts render");
+  else bad("homepage: counted facts render", "facts missing — check the app log for 'Failed query'");
+  const dir = await (await get("/md-ms-india/colleges")).text();
+  const cards = new Set(dir.match(/href="\/md-ms-india\/colleges\/[a-z0-9-]+"/g) || []).size;
+  if (cards >= 10) ok("PG directory: lists colleges", `${cards} college links`);
+  else bad("PG directory: lists colleges", `only ${cards} college links`);
 }
 
 async function checkStaticFiles() {
