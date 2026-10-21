@@ -130,9 +130,15 @@ export default async function CounsellorEdge({ compact = false }: { compact?: bo
 
   const factList = shown.length > 0 && (
     <>
-      <ul className={`grid gap-3 ${compact ? "mt-6 sm:grid-cols-3" : "mt-10 sm:grid-cols-2 lg:grid-cols-5"}`}>
+      <ul
+        className={
+          compact
+            ? "-mx-6 mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-1 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0 sm:pb-0"
+            : "mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-5"
+        }
+      >
         {shown.map((x) => (
-          <li key={x.value + x.text.slice(0, 12)} className="flex flex-col rounded-2xl border border-border bg-card p-5 shadow-sm">
+          <li key={x.value + x.text.slice(0, 12)} className={`flex flex-col rounded-2xl border border-border bg-card p-5 shadow-sm ${compact ? "w-[80%] shrink-0 snap-start sm:w-auto sm:shrink" : ""}`}>
             <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-primary-soft text-primary">
               <x.icon className="h-[18px] w-[18px]" aria-hidden="true" />
             </span>

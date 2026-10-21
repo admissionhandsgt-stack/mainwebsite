@@ -227,6 +227,15 @@ hogyi hai… kya 2168 colleges hai?… third party tool… bharosa girata hai." 
 - **Search descriptions in `page_seo` win over the page's own** — a typed count there freezes it. The
   /md-ms-india row ("2,168 colleges") was blanked (`scripts/sql/seo_md_ms_live_2026_10_21.sql`) so the page's
   live description applies; check `page_seo` too whenever a count is corrected.
+- **Compact pages (same day, second pass — "kafi lamba bada homepage hogya hai"):** the homepage was 10,683px on a
+  laptop and 19,586px on a phone. Now 8 sections in Admin → Content → Page layout (hero, services, how it works,
+  enquiry, counsellor card, testimonials, trust, Telegram); hidden, not deleted: data_insights (typed "45% : 55%"),
+  top_institutes (colleges as initials), cta_band, why_us, videos. `CounsellorEdge compact` and `TrustShield
+  compact` on the homepage; the full versions stay on the predictor. The footer is four columns of ≤5 section
+  pages (`scripts/sql/footer_compact_2026_10_21.sql` switched the rest off — they are in the header menus).
+  MD/MS: `quota` and `colleges` hidden (the hero links to the directory), the journey accordion starts closed;
+  MBBS: the second why-us hidden; NRI: the process is a light grid (2,904 → 875px). Before adding a section to
+  any page, ask what it says that the page does not already say.
 - **The team's own figures** (students guided, years) are one setting, "Site: the team's own figures"
   (`page.services.figures.*`): `useTeamFigures()` / `<TeamFigure k="years" />` in client and server trees,
   `pageCopy` in server code. Never type "15+" or "2100+" again.

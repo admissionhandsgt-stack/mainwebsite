@@ -97,7 +97,12 @@ const Testimonials = ({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-8">
+        {/* A row to swipe on a phone (each card 85% wide, the next one peeking), three columns from md. */}
+        <div
+          tabIndex={0}
+          aria-label="Student stories — swipe for more"
+          className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:mx-0 md:grid md:grid-cols-3 md:overflow-visible md:px-0 md:pb-0 lg:gap-8"
+        >
           {testimonials.map((t, index) => (
             <motion.div
               key={index}
@@ -105,7 +110,7 @@ const Testimonials = ({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ delay: 0.2 + index * 0.12 }}
-              className="group relative p-6 md:p-8 rounded-3xl md:rounded-[2.5rem] bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 hover:border-cyan-200 dark:hover:border-cyan-800 hover:shadow-2xl transition-all h-full flex flex-col justify-between"
+              className="group relative w-[85%] shrink-0 snap-start p-6 md:w-auto md:shrink md:p-8 rounded-3xl md:rounded-[2.5rem] bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 hover:border-cyan-200 dark:hover:border-cyan-800 hover:shadow-2xl transition-all h-full flex flex-col justify-between"
             >
               <div>
                 {/* Quote icon */}

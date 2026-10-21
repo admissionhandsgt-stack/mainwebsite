@@ -80,7 +80,7 @@ export default function TrustShield({ compact = false }: { compact?: boolean }) 
               Admission season brings out agents selling certainty that does not exist. So do not take anyone&apos;s word
               for it, including ours — verify us.
             </p>
-            <ul className="mt-5 grid gap-2 sm:grid-cols-2">
+            <ul className="mt-5 grid grid-cols-2 gap-2">
               {VERIFY.map((v) => (
                 <li key={v.title}>
                   <Link

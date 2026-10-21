@@ -154,7 +154,7 @@ const ServicesList = ({
                       {service.description}
                     </p>
                     {POINTS[index] && (
-                      <ul className="mb-5 space-y-2 border-t border-slate-100 pt-4 md:mb-6">
+                      <ul className="mb-5 hidden space-y-2 border-t border-slate-100 pt-4 md:mb-6 md:block">
                         {POINTS[index].map((pt) => (
                           <li key={pt} className="flex gap-2 text-[13px] md:text-[14px] font-medium leading-snug text-slate-700">
                             <span aria-hidden="true" className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-500" />
