@@ -61,7 +61,7 @@ const WhyAdmissionHands = ({ reasons: fromCms, copy }: { reasons?: Reason[]; cop
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-full bg-cyan-100/40 dark:bg-cyan-900/10 blur-[100px] rounded-full pointer-events-none" />
 
       <div className="container-custom relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           {/* Left Content */}
           <div className="max-w-xl mx-auto lg:mx-0 text-center lg:text-left">
             <motion.div
@@ -76,7 +76,7 @@ const WhyAdmissionHands = ({ reasons: fromCms, copy }: { reasons?: Reason[]; cop
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-4 tracking-tight leading-tight"
+              className="text-[1.7rem] sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-3 md:mb-4 tracking-tight leading-tight"
             >
               {text.title}{' '}
               <br className="hidden lg:block"/>
@@ -88,12 +88,12 @@ const WhyAdmissionHands = ({ reasons: fromCms, copy }: { reasons?: Reason[]; cop
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true, margin: "-50px" }}
-              className="text-sm md:text-base text-slate-500 dark:text-slate-400 mb-8 font-medium leading-relaxed"
+              className="text-sm md:text-base text-slate-500 dark:text-slate-400 mb-6 md:mb-8 font-medium leading-relaxed"
             >
               {text.subtitle}
             </motion.p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-left">
+            <div className="grid grid-cols-2 gap-2.5 sm:gap-4 text-left">
               {points.map((point, i) => (
                 <motion.div
                   key={i}
@@ -101,7 +101,7 @@ const WhyAdmissionHands = ({ reasons: fromCms, copy }: { reasons?: Reason[]; cop
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ delay: 0.2 + i * 0.1 }}
-                  className="flex items-center gap-3 p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm"
+                  className="flex items-center gap-2.5 p-2.5 sm:gap-3 sm:p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm"
                 >
                   <div className="bg-emerald-50 dark:bg-emerald-950/20 w-8 h-8 rounded-xl flex items-center justify-center shrink-0">
                     <CheckCircle2 size={16} className="text-emerald-500 dark:text-emerald-400" />
@@ -113,7 +113,7 @@ const WhyAdmissionHands = ({ reasons: fromCms, copy }: { reasons?: Reason[]; cop
           </div>
 
           {/* Right Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
             {reasons.map((item, index) => {
               const tone = PALETTE[index % PALETTE.length];
               return (
@@ -123,16 +123,16 @@ const WhyAdmissionHands = ({ reasons: fromCms, copy }: { reasons?: Reason[]; cop
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ delay: 0.3 + index * 0.1 }}
-                className="group relative bg-white dark:bg-slate-900 p-5 md:p-6 rounded-[2rem] border border-slate-100/60 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+                className="group relative bg-white dark:bg-slate-900 p-4 md:p-6 rounded-3xl md:rounded-[2rem] border border-slate-100/60 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
               >
                 {/* Animated Gradient Border Bottom */}
                 <div className={`absolute bottom-0 inset-x-0 h-1 bg-gradient-to-r ${tone.gradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`} />
 
-                <div className={`w-12 h-12 rounded-2xl ${tone.bg} dark:bg-slate-950/50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                <div className={`w-10 h-10 md:w-12 md:h-12 rounded-2xl ${tone.bg} dark:bg-slate-950/50 flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform duration-300`}>
                   <BlockIcon name={item.icon} fallback="ShieldCheck" size={24} className={tone.iconColor} />
                 </div>
                 
-                <h3 className="text-base font-black text-slate-900 dark:text-white mb-2 tracking-tight group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
+                <h3 className="text-[15px] md:text-base font-black leading-snug text-slate-900 dark:text-white mb-1.5 md:mb-2 tracking-tight group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
                   {item.title}
                 </h3>
                 <p className="text-slate-500 dark:text-slate-400 text-xs font-medium leading-relaxed">
