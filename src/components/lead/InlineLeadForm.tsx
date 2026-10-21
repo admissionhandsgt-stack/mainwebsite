@@ -402,7 +402,8 @@ export const InlineLeadForm = ({
           </div>
 
           {/* Quota Pills & Internship Toggle */}
-          <div className={`grid gap-3.5 ${level === 'pg' ? 'grid-cols-2' : 'grid-cols-1'}`}>
+          {/* Side by side from 420px: narrower, "Deemed" spilled out of its pill and the label wrapped. */}
+          <div className={`grid gap-3.5 ${level === 'pg' ? 'grid-cols-1 min-[420px]:grid-cols-2' : 'grid-cols-1'}`}>
             {/* Quota Selector */}
             <div>
               <label className="block text-[11.5px] font-black text-slate-355 uppercase tracking-wider mb-1.5 ml-0.5">

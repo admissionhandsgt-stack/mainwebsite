@@ -26,10 +26,14 @@ export const settingsForRequest = cache(getSettings);
 
 export type CopyTokens = Record<string, string | number | null | undefined>;
 
+// Line breaks survive (a "one per line" field is split on them); spaces around one, a Windows "\r\n" and
+// runs of blank lines do not. Collapsing every run of whitespace used to turn "item \nitem" into one item.
 const fill = (text: string, tokens: CopyTokens) =>
   text
     .replace(/\{(\w+)\}/g, (whole, key: string) => (key in tokens ? String(tokens[key] ?? "") : whole))
-    .replace(/\s{2,}/g, " ")
+    .replace(/[^\S\n]*\n[^\S\n]*/g, "\n")
+    .replace(/\n{2,}/g, "\n")
+    .replace(/[^\S\n]{2,}/g, " ")
     .trim();
 
 export async function pageCopy<K extends CopyKey>(key: K, tokens: CopyTokens = {}): Promise<CopyFields<K>> {

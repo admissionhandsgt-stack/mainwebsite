@@ -11,6 +11,7 @@ import { pageCopy } from '@/lib/pageCopy';
 import { fitDescription } from '@/lib/seoTitle';
 import { InlineLeadForm } from '@/components/lead/InlineLeadForm';
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
+import { PGOverviewQuotas } from '@/components/md-ms/PGOverviewQuotas';
 
 // The hero: the admin's photograph and words, with today's official counts filled in.
 const PGHeroWrapper = async () => {
@@ -44,16 +45,13 @@ const PGHeroWrapper = async () => {
 
 // Dynamic imports for code splitting
 const PGWhyUs = dynamic(() => import('@/components/md-ms/PGWhyUs').then(m => m.PGWhyUs));
-const PGOverview = dynamic(() => import('@/components/md-ms/PGOverview').then(m => m.PGOverview));
 const PGAdmissionProcess = dynamic(() => import('@/components/md-ms/PGAdmissionProcess').then(m => m.PGAdmissionProcess));
 const PGSpecializations = dynamic(() => import('@/components/md-ms/PGSpecializations').then(m => m.PGSpecializations));
-const PGQuotaSystem = dynamic(() => import('@/components/md-ms/PGQuotaSystem').then(m => m.PGQuotaSystem));
 const PGCollegesList = dynamic(() => import('@/components/md-ms/PGCollegesList').then(m => m.PGCollegesList), {
   loading: () => <div className="animate-pulse h-[500px] bg-slate-100 dark:bg-slate-900 rounded-xl container-custom my-12" />,
   ssr: false,
 });
 const PGDocumentChecklist = dynamic(() => import('@/components/md-ms/PGDocumentChecklist').then(m => m.PGDocumentChecklist));
-const PGCutoffInsights = dynamic(() => import('@/components/md-ms/PGCutoffInsights').then(m => m.PGCutoffInsights));
 const PGFAQ = dynamic(() => import('@/components/md-ms/PGFAQ').then(m => m.PGFAQ));
 const PGStickyMobileBar = dynamic(() => import('@/components/md-ms/PGStickyMobileBar').then(m => m.PGStickyMobileBar), { ssr: false });
 
@@ -99,11 +97,26 @@ const PGFAQSection = async () => {
 };
 
 export default async function PGMDMSPage() {
-  const [s, sections, pg] = await Promise.all([
+  const [s, sections, pg, overviewCopy] = await Promise.all([
     getSettings(),
     getSections('pg'),
     getPgContent(),
+    pageCopy('page.md_ms.overview'),
   ]);
+
+  // Overview, quota cards and counselling parameters are one section (2026-10-21). Each part follows its
+  // own row; the section stands where the first of them that is switched on stands.
+  const parts = { overview: sections.shows('overview'), quotas: sections.shows('quota'), params: sections.shows('cutoffs') };
+  const host = parts.overview ? 'overview' : parts.quotas ? 'quota' : 'cutoffs';
+  const overviewSection = (
+    <PGOverviewQuotas
+      copy={overviewCopy}
+      overviewItems={pg.overview}
+      quotaItems={pg.quotas}
+      paramItems={pg.cutoffQuotas}
+      {...parts}
+    />
+  );
 
   // The closing banner's copy lives in settings; the bullets are four keys so
   // an editor can change them without touching a list format.
@@ -176,10 +189,10 @@ export default async function PGMDMSPage() {
             /* @ts-ignore — an async server component in a list */
             { key: 'hero', node: <PGHeroWrapper /> },
             { key: 'why_us', node: <PGWhyUs items={pg.whyUs} /> },
-            { key: 'overview', node: <PGOverview items={pg.overview} /> },
+            { key: 'overview', node: host === 'overview' ? overviewSection : null },
             { key: 'process', node: <PGAdmissionProcess items={pg.steps} /> },
             { key: 'specializations', node: <PGSpecializations /> },
-            { key: 'quota', node: <PGQuotaSystem items={pg.quotas} /> },
+            { key: 'quota', node: host === 'quota' ? overviewSection : null },
             {
               key: 'colleges',
               node: (
@@ -189,7 +202,7 @@ export default async function PGMDMSPage() {
               ),
             },
             { key: 'documents', node: <PGDocumentChecklist items={pg.documents} /> },
-            { key: 'cutoffs', node: <PGCutoffInsights items={pg.cutoffQuotas} /> },
+            { key: 'cutoffs', node: host === 'cutoffs' ? overviewSection : null },
             /* @ts-ignore — an async server component in a list */
             { key: 'faq', node: <PGFAQSection /> },
             { key: 'lead_form', node: leadForm },

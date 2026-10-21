@@ -757,6 +757,168 @@ export const PAGE_COPY = {
       },
     },
   },
+  // The four eligibility groups used to be tabs, so three of them were hidden until clicked; they are
+  // four cards side by side now (owner, 2026-10-21: "koi bhi information hide na ho"). Lists are one
+  // item per line.
+  "page.nri.eligibility": {
+    group: "Page: NRI quota — eligibility",
+    fields: {
+      title: { label: "Heading", value: "NRI Quota" },
+      accent: { label: "Heading, coloured part", value: "Eligibility Criteria" },
+      intro: {
+        label: "Intro",
+        value: "Understanding who qualifies for NRI quota seats is crucial for a successful application process.",
+        long: true,
+      },
+      docs_label: { label: "Label over each group's documents", value: "Documentation" },
+      g1_title: { label: "Group 1: name", value: "Non-Resident Indians (NRI)" },
+      g1_def: {
+        label: "Group 1: who it is",
+        value: "An Indian citizen who is ordinarily residing outside India and holds an Indian Passport.",
+        long: true,
+      },
+      g1_points: {
+        label: "Group 1: requirements — one per line",
+        value:
+          "Must hold an Indian passport\nShould be ordinarily residing outside India\nNEET-UG qualification (mandatory, NRI seats included)\nMust have completed 10+2 with PCB",
+        long: true,
+      },
+      g1_not: { label: "Group 1: not accepted — one per line", value: "", long: true },
+      g1_docs: {
+        label: "Group 1: documents",
+        value: "NRI status certificate, passport copies, visa stamps, bank statements showing foreign transactions.",
+        long: true,
+      },
+      g2_title: { label: "Group 2: name", value: "NRI Sponsored Candidates" },
+      g2_def: {
+        label: "Group 2: who it is",
+        value: "Indian nationals who are sponsored by an NRI relative (blood relations only).",
+        long: true,
+      },
+      g2_points: {
+        label: "Group 2: requirements — one per line",
+        value: "Student must be an Indian national\nMust have a clear blood relation\nNEET qualification required",
+        long: true,
+      },
+      g2_not: {
+        label: "Group 2: not accepted — one per line",
+        value: "Distant relatives or friends typically not acceptable",
+        long: true,
+      },
+      g2_docs: {
+        label: "Group 2: documents",
+        value: "Sponsor's NRI proof, affidavit of relation, sponsorship letter, NEET scorecard.",
+        long: true,
+      },
+      g3_title: { label: "Group 3: name", value: "OCI/PIO Card Holders" },
+      g3_def: {
+        label: "Group 3: who it is",
+        value: "Overseas Citizen of India (OCI) or Person of Indian Origin (PIO) card holders.",
+        long: true,
+      },
+      g3_points: { label: "Group 3: requirements — one per line", value: "", long: true },
+      g3_not: { label: "Group 3: not accepted — one per line", value: "", long: true },
+      g3_docs: {
+        label: "Group 3: documents",
+        value: "OCI/PIO card, foreign passport, 10+2 mark sheets, NEET score card (if applicable)",
+        long: true,
+      },
+      g4_title: { label: "Group 4: name", value: "Foreign Nationals" },
+      g4_def: { label: "Group 4: who it is", value: "Non-Indian citizens who wish to study medicine in India.", long: true },
+      g4_points: { label: "Group 4: requirements — one per line", value: "", long: true },
+      g4_not: { label: "Group 4: not accepted — one per line", value: "", long: true },
+      g4_docs: {
+        label: "Group 4: documents",
+        value: "Foreign passport, visa, 10+2 equivalent mark sheets, NEET score card (if applicable)",
+        long: true,
+      },
+      general_title: { label: "Academic requirements heading", value: "General Academic Requirements" },
+      general_points: {
+        label: "Academic requirements — one per line",
+        value:
+          "Min 50% marks in PCB in 10+2\nQualified NEET-UG score\nAt least 17 years old by 31 December of the admission year\nEnglish language proficiency",
+        long: true,
+      },
+      cta_title: { label: "Help box: heading", value: "Eligibility differs by state, college and document." },
+      cta_accent: { label: "Help box: heading, coloured part", value: "One missing paper can cost an NRI seat." },
+      cta_body: {
+        label: "Help box: text",
+        value: "Our NRI desk checks your profile and paperwork against each college before you apply — sponsorship letters, embassy attestation and all.",
+        long: true,
+      },
+      cta_whatsapp: { label: "Help box: WhatsApp button", value: "Ask the NRI desk" },
+      wa_text: { label: "Help box: WhatsApp message", value: "Hello AdmissionHands, I need help with NRI quota eligibility." },
+      cta_call: { label: "Help box: call button", value: "Call an expert counsellor" },
+    },
+  },
+  // The counselling categories and the seat matrix, one section (owner, 2026-10-21). Each category's
+  // goal strategy is printed under it — it used to sit behind a "Learn strategy" button.
+  "page.mbbs.counselling": {
+    group: "Page: MBBS — counselling system & seat matrix",
+    fields: {
+      eyebrow: { label: "Eyebrow", value: "Counselling & seats" },
+      title: { label: "Heading", value: "The Counselling System" },
+      accent: { label: "Heading, coloured part", value: "& Seat Matrix" },
+      intro: {
+        label: "Intro",
+        value: "Understanding seat division is vital. Each category below carries our recommended goal strategy.",
+        long: true,
+      },
+      strategy_label: { label: "Label over each goal strategy", value: "Goal strategy" },
+      seats_title: { label: "Seat box: heading", value: "Seat Distribution & Matrix" },
+      seats_intro: {
+        label: "Seat box: line",
+        value: "India's medical infrastructure is expanding. Here's a quick look at the current seat distribution.",
+        long: true,
+      },
+      states_title: { label: "Seat box: top states heading", value: "Top States by Seats" },
+    },
+  },
+  "page.mbbs.why": {
+    group: "Page: MBBS — why students trust us",
+    fields: {
+      title: { label: "Heading (under the four phases)", value: "Why Students Trust Admission Hands" },
+      intro: {
+        label: "Line under the heading",
+        value: "Professional medical counselling with zero compromises on quality and transparency.",
+        long: true,
+      },
+    },
+  },
+  // Overview, quota system and counselling parameters, one section (owner, 2026-10-21). The quota cards
+  // had been switched off with their section; they are back, inside this one.
+  "page.md_ms.overview": {
+    group: "Page: MD/MS — overview, quotas & counselling parameters",
+    fields: {
+      eyebrow: { label: "Eyebrow", value: "PG Admission Overview" },
+      title: { label: "Heading", value: "Everything You Need to Know About" },
+      accent: { label: "Heading, coloured part", value: "MD/MS Admissions" },
+      intro: {
+        label: "Intro",
+        value: "The PG medical admission landscape is complex — multiple exams, parallel counselling systems, and high-stakes decisions at every step.",
+        long: true,
+      },
+      quota_title: { label: "Quota cards: heading", value: "Understanding PG Seat Distribution" },
+      quota_intro: {
+        label: "Quota cards: line",
+        value: "PG medical seats are distributed across multiple quota systems. Understanding each one is key to maximizing your admission chances.",
+        long: true,
+      },
+      params_title: { label: "Parameter table: heading", value: "Counselling Process Parameters" },
+      params_intro: {
+        label: "Parameter table: line",
+        value: "Core parameters governing NEET PG seat allocation across centralized and state-level quota systems.",
+        long: true,
+      },
+      cta_strong: { label: "Call band: bold line", value: "Counselling rules, seat matrices, and state policies change every year." },
+      cta_body: {
+        label: "Call band: text",
+        value: "Our experts build your customized strategy using real-time seat availability and historical trends. We manage registrations and strategy across all quota systems simultaneously.",
+        long: true,
+      },
+      cta_button: { label: "Call band: button", value: "Get Strategic Counselling Support" },
+    },
+  },
   "page.services.figures": {
     group: "Site: the team's own figures (used on every page)",
     fields: {

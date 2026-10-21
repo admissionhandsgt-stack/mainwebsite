@@ -1,109 +1,111 @@
-"use client";
-
 import React from "react";
 import { mbbsData } from "@/data/mbbs-india";
-import type { MbbsContent } from '@/lib/pageContent';
-import { ShieldCheck, Target, Zap, Clock, FileSearch, Headphones, ArrowRight } from "lucide-react";
-import { CTAButton } from "@/components/CTAButton";
-import { motion } from "framer-motion";
+import type { MbbsContent } from "@/lib/pageContent";
+import type { CopyFields } from "@/lib/pageCopyDefaults";
+import { ShieldCheck, Target, Zap, Clock, FileSearch, Headphones, TrendingUp, Search, Heart, UserCheck } from "lucide-react";
 
 const icons = [Target, Zap, ShieldCheck, Clock, FileSearch, Headphones];
+const whyIcons = [TrendingUp, Search, Heart, UserCheck];
 
-const stepColors = [
-  { bg: "bg-cyan-600", light: "bg-cyan-50", border: "border-cyan-200", text: "text-cyan-600", shadow: "shadow-cyan-200" },
-  { bg: "bg-teal-600", light: "bg-teal-50", border: "border-teal-200", text: "text-teal-600", shadow: "shadow-teal-200" },
-  { bg: "bg-teal-600", light: "bg-teal-50", border: "border-teal-200", text: "text-teal-600", shadow: "shadow-teal-200" },
-  { bg: "bg-teal-600", light: "bg-teal-50", border: "border-teal-200", text: "text-teal-600", shadow: "shadow-teal-200" },
-  { bg: "bg-emerald-600", light: "bg-emerald-50", border: "border-emerald-200", text: "text-emerald-600", shadow: "shadow-emerald-200" },
-  { bg: "bg-amber-600", light: "bg-amber-50", border: "border-amber-200", text: "text-amber-600", shadow: "shadow-amber-200" },
-];
-
-export const CollegeSelectionGuide = ({ data = mbbsData }: { data?: MbbsContent } = {}) => {
-  const { whatWeDo } = data;
+/**
+ * "How we help you secure the best MBBS seat" — the four phases — and, under them, why students trust
+ * Admission Hands (owner, 2026-10-21: nothing hidden). The second was a section of its own; it had been
+ * switched off as making the same case, and its four points are back here, compactly. Each part follows
+ * its row in Admin → Content → Page layout ("College selection guide", "Why Admission Hands").
+ */
+export const CollegeSelectionGuide = ({
+  data = mbbsData,
+  why = null,
+  phases = true,
+}: {
+  data?: MbbsContent;
+  why?: CopyFields<"page.mbbs.why"> | null;
+  phases?: boolean;
+}) => {
+  const { whatWeDo, whyUs } = data;
+  const whyPoints = why ? whyUs.points.filter((p) => p.title) : [];
+  // The admin's title, with "Secure" picked out when it has the word.
+  const at = whatWeDo.title.indexOf("Secure");
+  const title =
+    at >= 0 ? (
+      <>
+        {whatWeDo.title.slice(0, at)}
+        <span className="text-primary-strong dark:text-primary">Secure</span>
+        {whatWeDo.title.slice(at + "Secure".length)}
+      </>
+    ) : (
+      whatWeDo.title
+    );
+  const WhyHeading = phases ? "h3" : "h2";
 
   return (
-    <section className="py-14 bg-white dark:bg-slate-950 relative overflow-hidden">
-      <div className="absolute inset-0 opacity-[0.015] pointer-events-none" style={{
-        backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(0,0,0,0.4) 1px, transparent 0)',
-        backgroundSize: '36px 36px'
-      }} />
+    <section className="bg-background py-12 md:py-16">
+      <div className="container-custom">
+        {phases && (
+          <>
+            <div className="mx-auto mb-7 max-w-3xl text-center md:mb-10">
+              <p className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-soft px-3 py-1.5 text-[11.5px] font-black uppercase tracking-widest text-primary-strong dark:text-primary">
+                <Target className="h-3.5 w-3.5" aria-hidden="true" />
+                Strategic Approach
+              </p>
+              <h2 className="font-heading mt-4 text-[1.75rem] font-black leading-tight tracking-tight text-foreground [text-wrap:balance] md:text-4xl">
+                {title}
+              </h2>
+              {whatWeDo.subtitle && (
+                <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">{whatWeDo.subtitle}</p>
+              )}
+            </div>
 
-      <div className="container-custom relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-cyan-50 dark:bg-cyan-950/40 border border-cyan-100 dark:border-cyan-900/30 rounded-full mb-4">
-            <Target className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
-            <span className="text-[11.5px] font-black text-cyan-700 dark:text-cyan-300 uppercase tracking-widest">
-              Strategic Approach
-            </span>
-          </div>
-          <h2 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-3 tracking-tight leading-tight">
-            {whatWeDo.title.split('Secure')[0]} <span className="text-cyan-600 dark:text-cyan-400">Secure</span> {whatWeDo.title.split('Secure')[1]}
-          </h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
-            {whatWeDo.subtitle}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
-          {whatWeDo.points.map((point, idx) => {
-            const Icon = icons[idx] || Target;
-            const color = stepColors[idx] || stepColors[0];
-            const isLast = idx === whatWeDo.points.length - 1;
-
-            return (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-20px" }}
-                transition={{ delay: idx * 0.08, duration: 0.4 }}
-                className="relative group h-full"
-              >
-                {/* Connector arrow on desktop */}
-                {!isLast && (
-                  <div className="hidden lg:flex absolute -right-2.5 top-1/2 -translate-y-1/2 z-20 w-5 h-5 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 items-center justify-center">
-                    <ArrowRight className="w-3 h-3 text-slate-400 dark:text-slate-200" />
-                  </div>
-                )}
-
-                <div className={`relative p-3.5 md:p-6 rounded-2xl md:rounded-3xl bg-white dark:bg-slate-900/60 border-2 ${color.border} dark:border-slate-800/80 group-hover:shadow-xl group-hover:${color.shadow} dark:group-hover:shadow-black/40 group-hover:-translate-y-1 transition-all duration-300 h-full flex flex-col justify-between gap-2.5 md:gap-4`}>
-                  {/* Step number badge */}
-                  <div className="flex items-center justify-between gap-2">
-                    <div className={`w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl ${color.bg} flex items-center justify-center shadow-lg ${color.shadow} shrink-0`}>
-                      <Icon className="w-4 h-4 md:w-6 md:h-6 text-white" />
+            {/* Two up on a phone: the "Phase N" line carries the order the arrows used to. */}
+            <ol className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
+              {whatWeDo.points.map((point, idx) => {
+                const Icon = icons[idx] || Target;
+                return (
+                  <li key={idx} className="flex min-w-0 flex-col rounded-2xl border border-border bg-card p-3.5 shadow-sm md:p-5">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground md:h-11 md:w-11">
+                        <Icon className="h-[18px] w-[18px] md:h-5 md:w-5" aria-hidden="true" />
+                      </span>
+                      <span className="tnum font-heading select-none text-2xl font-black leading-none text-primary/15 md:text-4xl" aria-hidden="true">
+                        {String(idx + 1).padStart(2, "0")}
+                      </span>
                     </div>
-                    <span className={`text-2xl md:text-5xl font-black ${color.text} opacity-10 dark:opacity-30 select-none leading-none`}>
-                      {String(idx + 1).padStart(2, '0')}
+                    <p className="mt-3 text-[11.5px] font-black uppercase tracking-widest text-primary-strong dark:text-primary">Phase {idx + 1}</p>
+                    <h3 className="mt-1 break-words text-[14.5px] font-black leading-snug text-foreground md:text-base">{point.title}</h3>
+                    <p className="mt-1 break-words text-[13px] leading-relaxed text-muted-foreground md:text-[13.5px]">{point.desc}</p>
+                  </li>
+                );
+              })}
+            </ol>
+          </>
+        )}
+
+        {why && whyPoints.length > 0 && (
+          <div className={`rounded-2xl border border-border bg-surface-1 p-4 md:p-6 ${phases ? "mt-6 md:mt-8" : ""}`}>
+            <div className="md:flex md:items-end md:justify-between md:gap-8">
+              <WhyHeading className="font-heading text-xl font-black leading-tight tracking-tight text-foreground md:text-2xl">
+                {why.title}
+              </WhyHeading>
+              {why.intro && <p className="mt-1.5 text-[14px] leading-relaxed text-muted-foreground md:mt-0 md:max-w-md md:text-right">{why.intro}</p>}
+            </div>
+            <ul className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
+              {whyPoints.map((p, i) => {
+                const Icon = whyIcons[i] || ShieldCheck;
+                return (
+                  <li key={`${i}-${p.title}`} className="flex min-w-0 gap-3 rounded-xl border border-border bg-card p-3 md:p-4">
+                    <span className="hidden h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary-soft text-primary-strong dark:text-primary sm:flex" aria-hidden="true">
+                      <Icon className="h-[18px] w-[18px]" />
                     </span>
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex-1 min-w-0 w-full break-words">
-                    <div className={`inline-block px-1.5 py-0.5 rounded-full ${color.light} dark:bg-slate-800 ${color.text} dark:text-slate-300 text-[11.5px] font-black uppercase tracking-widest mb-1 md:mb-2`}>
-                      Phase {idx + 1}
+                    <div className="min-w-0">
+                      <p className="break-words text-[14.5px] font-bold leading-snug text-foreground">{p.title}</p>
+                      {p.desc && <p className="mt-0.5 break-words text-[13px] leading-snug text-muted-foreground">{p.desc}</p>}
                     </div>
-                    <h3 className="text-xs md:text-base font-black text-slate-900 dark:text-white leading-snug mb-1 break-words">
-                      {point.title}
-                    </h3>
-                    <p className="text-[13px] md:text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed break-words">
-                      {point.desc}
-                    </p>
-                  </div>
-
-                  {/* Mobile connector */}
-                  {!isLast && (
-                    <div className="lg:hidden flex items-center justify-center pt-0.5">
-                      <div className={`w-5 h-5 rounded-full ${color.light} dark:bg-slate-800 ${color.border} dark:border-slate-800 border flex items-center justify-center`}>
-                        <ArrowRight className={`w-2.5 h-2.5 ${color.text} dark:text-slate-300 rotate-90`} />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
-
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
       </div>
     </section>
   );

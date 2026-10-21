@@ -93,7 +93,7 @@ export default function LeadCapture({
                   <li key={t.title} className="rounded-xl border border-white/10 bg-white/[0.06] p-3 backdrop-blur-sm sm:p-4">
                     <t.icon className="h-5 w-5 text-cyan-300" aria-hidden="true" />
                     <p className="mt-2 text-[15px] font-bold text-white">{t.title}</p>
-                    <p className="mt-0.5 hidden text-[13px] text-cyan-100/70 sm:block">{t.body}</p>
+                    <p className="mt-0.5 text-[12.5px] leading-snug text-cyan-100/70 sm:text-[13px]">{t.body}</p>
                   </li>
                 ))}
               </ul>

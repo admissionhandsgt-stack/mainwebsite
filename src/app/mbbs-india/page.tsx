@@ -11,15 +11,14 @@ import StructuredData, { breadcrumb } from '@/components/seo/StructuredData';
 import { StatesIndex } from '@/components/mbbs-india/StatesIndex';
 import { creditOf } from '@/components/ui/PhotoCredit';
 import { getMbbsContent } from '@/lib/pageContent';
+import { pageCopy } from '@/lib/pageCopy';
+import { CounsellingAndSeats } from '@/components/mbbs-india/CounsellingAndSeats';
+import { CollegeSelectionGuide } from '@/components/mbbs-india/CollegeSelectionGuide';
 
 // Lazy load sections for better performance
 const EligibilityInfo = dynamic(() => import("@/components/mbbs-india/EligibilityCutoff").then(mod => mod.MBBSEligibilityInfo));
 const AdmissionProcess = dynamic(() => import("@/components/mbbs-india/AdmissionProcess").then(mod => mod.AdmissionProcess));
-const CounsellingSystem = dynamic(() => import("@/components/mbbs-india/CounsellingSystem").then(mod => mod.CounsellingSystem));
-const SeatDistribution = dynamic(() => import("@/components/mbbs-india/SeatDistribution").then(mod => mod.SeatDistribution));
 const FeesStructure = dynamic(() => import("@/components/mbbs-india/FeesStructure").then(mod => mod.FeesStructure));
-const CollegeSelectionGuide = dynamic(() => import("@/components/mbbs-india/CollegeSelectionGuide").then(mod => mod.CollegeSelectionGuide));
-const MBBSWhyUs = dynamic(() => import("@/components/mbbs-india/MBBSWhyUs").then(mod => mod.MBBSWhyUs));
 const GlobalDisclaimer = dynamic(() => import("@/components/mbbs-india/GlobalDisclaimer").then(mod => mod.GlobalDisclaimer));
 
 /**
@@ -35,12 +34,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function MBBSIndiaPage() {
-  const [mbbsHeroAsset, sections, data, states] = await Promise.all([
+  const [mbbsHeroAsset, sections, data, states, counsellingCopy, whyCopy] = await Promise.all([
     getMediaAsset('mbbs_hero_campus'),
     getSections('mbbs'),
     // The CMS layered over the shipped copy — see src/lib/pageContent.ts.
     getMbbsContent(),
     getMbbsStates(),
+    pageCopy('page.mbbs.counselling'),
+    pageCopy('page.mbbs.why'),
   ]);
   // JSON-LD FAQ Schema
   const faqSchema = {
@@ -78,12 +79,27 @@ export default async function MBBSIndiaPage() {
             { key: 'overview', node: <QuickOverview data={data} /> },
             { key: 'eligibility', node: <EligibilityInfo data={data} /> },
             { key: 'process', node: <AdmissionProcess data={data} /> },
-            { key: 'counselling', node: <CounsellingSystem data={data} /> },
-            { key: 'seats', node: <SeatDistribution data={data} /> },
+            // One section for the counselling categories and the seat matrix (2026-10-21); each half
+            // still follows its own row, and stands alone when the other is switched off.
+            {
+              key: 'counselling',
+              node: <CounsellingAndSeats data={data} copy={counsellingCopy} seats={sections.shows('seats')} />,
+            },
+            {
+              key: 'seats',
+              node: sections.shows('counselling') ? null : <CounsellingAndSeats data={data} copy={counsellingCopy} counselling={false} />,
+            },
             { key: 'fees', node: <FeesStructure data={data} /> },
-            { key: 'selection_guide', node: <CollegeSelectionGuide data={data} /> },
+            // "Why students trust us" sits under the four phases when both rows are on.
+            {
+              key: 'selection_guide',
+              node: <CollegeSelectionGuide data={data} why={sections.shows('why_us') ? whyCopy : null} />,
+            },
             { key: 'states', node: <StatesIndex states={states} /> },
-            { key: 'why_us', node: <MBBSWhyUs data={data} /> },
+            {
+              key: 'why_us',
+              node: sections.shows('selection_guide') ? null : <CollegeSelectionGuide data={data} why={whyCopy} phases={false} />,
+            },
             { key: 'disclaimer', node: <GlobalDisclaimer data={data} /> },
           ])
           .filter((section) => sections.shows(section.key))

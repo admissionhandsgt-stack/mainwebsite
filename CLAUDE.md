@@ -178,8 +178,8 @@ A nested list editor was not worth building for four bullet points.
 process" + `pg_process_rounds`, `pg_process_mistakes` and `pg_schedule`, so MCC's revised dates go live without
 a deploy). Each keeps an import-free shipped fallback (`servicesDefaults.ts`, `ugProcessSteps.ts`,
 `pgProcessDefaults.ts`, `neetPgSchedule.ts`) and a `scripts/seed_*.mjs` that fills an empty collection.
-**Still hardcoded:** on the NRI page the eligibility tabs, whose markup is interleaved rather than a clean
-array.
+The NRI page's eligibility (four groups, once tabs) is admin-driven too since 2026-10-21: "Page: NRI quota —
+eligibility" in Text & numbers, lists one item per line.
 
 **"Direct Fee Negotiation with Colleges" (owner's request, 2026-10-20)** is the eleventh `services_page` card
 (`scripts/sql/services_fee_negotiation_2026_10_20.sql`, icon `handshake`) and a hero point. It is worded as
@@ -236,6 +236,20 @@ hogyi hai… kya 2168 colleges hai?… third party tool… bharosa girata hai." 
   MD/MS: `quota` and `colleges` hidden (the hero links to the directory), the journey accordion starts closed;
   MBBS: the second why-us hidden; NRI: the process is a light grid (2,904 → 875px). Before adding a section to
   any page, ask what it says that the page does not already say.
+- **Merged, nothing hidden (third pass — "koi regression na aaye, koi bhi information hide na ho"):** compact by
+  merging, never by hiding. No tabs, no "Learn more" toggles, no line-clamps on information; a section switched
+  off must have its words somewhere visible. MBBS: `CounsellingAndSeats` (the four categories with every goal
+  strategy printed, beside the seat matrix — 625 + 632 → 1,015px) and `CollegeSelectionGuide` carrying the why-us
+  points under its phases. MD/MS: `PGOverviewQuotas` — the six cards, the quota cards (`pg_quotas`, back on) and
+  the AIQ-vs-state parameter table (`pg_cutoff_quotas`) — 691 + 814 → 1,277px with more in it. NRI: four
+  eligibility cards side by side (1,339px showing one group → 928 showing all four), fees in three rows
+  (1,659 → 1,089). Each merged part still follows its own `page_sections` row; the section stands where the first
+  part switched on stands (`scripts/sql/merged_sections_2026_10_21.sql` — after the release). Still off, on
+  purpose: home `data_insights`, `top_institutes` (typed figures), `cta_band`, `videos` (on /videos), and PG
+  `colleges` — its cards were `pg_colleges_content`'s typed seat counts ("100", "110") and one-line blurbs.
+  `pageCopy` keeps line breaks now (it used to collapse "item ⏎ item", a space before the line break, into one item).
+  Check any such change line by line: capture every line of `<main>` with tabs, toggles and `<details>` opened,
+  before (production) and after (local), and diff case-insensitively — innerText carries `text-transform`.
 - **The team's own figures** (students guided, years) are one setting, "Site: the team's own figures"
   (`page.services.figures.*`): `useTeamFigures()` / `<TeamFigure k="years" />` in client and server trees,
   `pageCopy` in server code. Never type "15+" or "2100+" again.
