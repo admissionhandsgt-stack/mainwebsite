@@ -213,14 +213,20 @@ hogyi hai… kya 2168 colleges hai?… third party tool… bharosa girata hai." 
   applied only after the release that renders groups (an older header draws a `#` row as a dead link).
   The header has 18px spare at 1280–1535 with the search button; measure before adding anything.
 - **Site search** (`components/SiteSearch.tsx`, `/api/search`): pages from the menus, colleges by name (every
-  word must match), branches, states. "/" or Ctrl+K opens it; focus is trapped and returned (`useFocusTrap`, also
-  on the phone drawer). Menus open instantly and fade out in 150ms.
+  word must match), branches, states. `ALIASES` widens what people type to what the names say ("radiology" →
+  Radio Diagnosis, "skin" → Dermatology, "aiims" → All India Institute…, Bangalore ↔ Bengaluru); a word of ≤3
+  letters matches only whole words ("md" ≠ Hamdard). Each result says what it is — MD/MS college or DNB
+  hospital; MBBS, BDS, AYUSH, nursing or veterinary for UG listings. "/" or Ctrl+K opens it; focus is trapped
+  and returned (`useFocusTrap`, also on the phone drawer). Menus open instantly and fade out in 150ms.
 - **Counts: never a total of our PG list as "colleges".** It has one row per MD/MS college and one per DNB
   hospital (1,536 of 2,168 are DNB-only; a hospital with both is two rows). Use NMC for colleges
   (`md_ms_only_colleges` 634, `mbbs_colleges` 834, `nmc_colleges` 906, `md_ms_only_seats`), MCC for DNB
   (`dnb_hospitals`, `aiq_colleges`, `mcc_seats`) — all tokens in `lib/liveFigures.ts`, matrix by matrix. Where a
   page counts our own list, split it: `getPgStates()` / `getPgStatePage()` return `mdms` and `dnb`. A seat
   option is never called a seat. `getDataStats().states` folds the three places spelt two ways (it said 38).
+- **Search descriptions in `page_seo` win over the page's own** — a typed count there freezes it. The
+  /md-ms-india row ("2,168 colleges") was blanked (`scripts/sql/seo_md_ms_live_2026_10_21.sql`) so the page's
+  live description applies; check `page_seo` too whenever a count is corrected.
 - **The team's own figures** (students guided, years) are one setting, "Site: the team's own figures"
   (`page.services.figures.*`): `useTeamFigures()` / `<TeamFigure k="years" />` in client and server trees,
   `pageCopy` in server code. Never type "15+" or "2100+" again.
