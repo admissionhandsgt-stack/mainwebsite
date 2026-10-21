@@ -1598,6 +1598,94 @@ export const PAGE_COPY = {
       },
     },
   },
+  // The counsellor card after the main table of the data pages (2026-10-21) — components/lead/DataPageCounsel.
+  // Google and AI assistants send people straight to these pages with one question; the card is where a
+  // reader who has the answer can talk to a counsellor. Before it, the only block sat under the FAQs.
+  "page.counsel_card": {
+    group: "Counsellor card on data pages",
+    fields: {
+      eyebrow: { label: "Small heading", value: "Talk to a counsellor" },
+      branch_title: { label: "Heading on a branch page — {name}", value: "Aiming for {name}? Plan the rounds with a counsellor" },
+      branch_body: {
+        label: "Line on a branch page — {name}",
+        value:
+          "Which college to fill first, when to float for an upgrade, and which quota is yours — the calls that decide a {name} seat. Talk them through before you fill your choices.",
+        long: true,
+      },
+      state_title: { label: "Heading on a PG state page — {name}", value: "PG in {name}? Plan both counsellings with a counsellor" },
+      state_body: {
+        label: "Line on a PG state page — {name}",
+        value:
+          "The All India Quota and {name}'s own counselling run side by side, each with its own rules, dates and quotas. A counsellor works out which seats are open to you and the order to fill them in.",
+        long: true,
+      },
+      stipend_title: { label: "Heading on the stipend pages", value: "Weighing stipend against fee and bond?" },
+      stipend_body: {
+        label: "Line on the stipend pages",
+        value:
+          "A higher stipend can come with a longer bond or a costlier seat. A counsellor puts stipend, fee and bond side by side for the colleges your rank can reach.",
+        long: true,
+      },
+      cutoff_title: { label: "Heading on the NEET PG cutoff page", value: "Where does your rank stand this year?" },
+      cutoff_body: {
+        label: "Line on the NEET PG cutoff page",
+        value:
+          "Last year's cutoffs are a guide, not this year's answer. A counsellor reads your rank against every quota and round open to you, and the order to fill your choices in.",
+        long: true,
+      },
+      fact: {
+        label: "Fact under the line — {moved_pct}",
+        value: "{moved_pct}% of MD/MS seats went to a later rank after round 1. Lock your seat too early and the upgrade goes to someone else.",
+        long: true,
+      },
+      wa: { label: "WhatsApp button", value: "Talk to a counsellor on WhatsApp" },
+      wa_text: { label: "The WhatsApp message — {topic}", value: "Hi Admission Hands, I need help with NEET PG counselling ({topic})." },
+      call: { label: "Call button", value: "Call a counsellor" },
+      predictor: { label: "Predictor link", value: "Or check your chances with your rank" },
+    },
+  },
+  // /llms.txt (2026-10-21) — the plain-text summary AI assistants and agents read (app/llms.txt). It must say
+  // exactly what the site does and does not publish: an assistant repeats it to students.
+  "site.llms": {
+    group: "AI summary (llms.txt)",
+    fields: {
+      summary: {
+        label: "One-line summary",
+        value:
+          "NEET counselling for India — MBBS, BDS, MD/MS, DNB, DM/MCh and MDS — by a team with 15+ years of counselling, on a site built from the counselling authorities' own published results.",
+        long: true,
+      },
+      about: {
+        label: "Who we are and what we do",
+        value:
+          "Admission Hands, Noida (Uttar Pradesh), counsels NEET UG and NEET PG candidates one to one: which colleges to fill and in what order, when to float or freeze between rounds, the All India Quota against a state's own quota, fees, bonds and documents for reporting. The website publishes the data behind that advice.",
+        long: true,
+      },
+      publishes: {
+        label: "What the site publishes, one per line — {matrix_year}, {matrix_total}, {round_years}, {stipend_colleges}, {college_pages}",
+        value:
+          "MCC's NEET PG {matrix_year} seat matrix: {matrix_total} MD, MS, diploma and DNB seats, by branch, state and category.\nNEET PG round results ({round_years}) from MCC's own PDFs: seats allotted by quota, category, programme and state, and per branch the last rank admitted where three or more colleges admitted.\nCutoffs as group figures — by branch, category, quota and state, each over three or more colleges.\nFirst-year PG stipends published by {stipend_colleges} colleges, fees as the median and the 10th–90th percentile, and PG service-bond rules by state (a third-party compilation, marked as such on every page).\n{college_pages} college pages with seats from the National Medical Commission's register, fees and a general-category cutoff band.",
+        long: true,
+      },
+      not_published: {
+        label: "What the site does not publish",
+        value:
+          "A single college's exact closing rank is not published. College pages give a cutoff band; candidates who sign in see their colleges in chance words (high, good, possible, reach); exact options are discussed with a counsellor.",
+        long: true,
+      },
+      how_to_read: {
+        label: "How to read the numbers, one per line",
+        value:
+          "Every figure comes from a published counselling result, seat matrix or register; nothing is predicted.\nA seat is one institute, course, quota and category. Ranges are stated within one quota and one category, never across them.\nNEET UG ranks are All India Ranks for the All India Quota and state merit ranks for state quotas. NEET SS ranks are group ranks.\nA fee of 0 in a published list means not published, not free.",
+        long: true,
+      },
+      contact: {
+        label: "How to reach a counsellor — {phone}, {whatsapp}, {email}, {address}",
+        value: "WhatsApp {whatsapp} or call {phone}, 10 AM to 10 PM IST, every day. Email {email}. Office: {address}.",
+        long: true,
+      },
+    },
+  },
 } satisfies Record<string, CopyGroup>;
 
 /** Site-wide Telegram settings, read by the root layout (see components/engage/TelegramLink). */

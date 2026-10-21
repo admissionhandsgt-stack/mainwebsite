@@ -10,6 +10,7 @@ import { resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
+import DataPageCounsel from "@/components/lead/DataPageCounsel";
 import DataHero from "@/components/hero/DataHero";
 import HeroFacts from "@/components/hero/HeroFacts";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
@@ -315,11 +316,15 @@ export default async function PgStatePage({ params }: Props) {
             </table>
           </div>
           <p className="mt-3 text-[13px] text-muted-foreground">
-            Which college closed where is on each college&apos;s own page.{" "}
+            Each college&apos;s own page has its seats, fees and cutoff band.{" "}
             <Link href="/neet-pg-cutoff" className="font-semibold text-primary-strong hover:underline">All-India cutoff, branch wise →</Link>
           </p>
         </section>
       )}
+
+      <section className="container-custom pb-10 md:pb-14">
+        <DataPageCounsel kind="state" name={p.name} placement="counsel_pg_state" />
+      </section>
 
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">
         <div className="container-custom">

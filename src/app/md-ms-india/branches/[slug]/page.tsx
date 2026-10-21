@@ -8,6 +8,7 @@ import { getBranch, getBranches, getBranchStates, DEFAULT_CATEGORY } from "@/lib
 import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import TelegramJoin from "@/components/engage/TelegramJoin";
+import DataPageCounsel from "@/components/lead/DataPageCounsel";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import { branchImage } from "@/lib/branchImage";
 import StructuredData from "@/components/seo/StructuredData";
@@ -290,6 +291,11 @@ export default async function BranchPage({
             />
           )}
 
+        </section>
+
+        {/* The reader has the cut-off now: the moment to offer a counsellor (ChatGPT sends people here). */}
+        <section className="mt-12">
+          <DataPageCounsel kind="branch" name={b.name} placement="counsel_branch" />
         </section>
 
         {/* ------------------------ MCC's seat matrix ------------------------ */}

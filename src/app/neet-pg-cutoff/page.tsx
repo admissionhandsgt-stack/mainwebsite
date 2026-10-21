@@ -9,6 +9,7 @@ import CategoryCutTable from "@/components/cutoffs/CategoryCutTable";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
+import DataPageCounsel from "@/components/lead/DataPageCounsel";
 import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import SectionHead from "@/components/ui/SectionHead";
@@ -293,6 +294,10 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
             </table>
           </div>
         </div>
+      </section>
+
+      <section className="container-custom pt-10 md:pt-14">
+        <DataPageCounsel kind="cutoff" placement="counsel_neet_pg_cutoff" />
       </section>
 
       <section className="container-custom py-10 md:py-14">

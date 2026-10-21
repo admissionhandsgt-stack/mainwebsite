@@ -5,12 +5,14 @@ import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { CONTACT_INFO } from "@/lib/constants";
 
 /**
- * The result-day card on a round page (2026-10-21), placed high — before the long tables — because
- * the decision a result forces (report, keep, or try for a better seat) is exactly when a counsellor
- * is worth a call. WhatsApp and a call are one tap; the predictor is the quieter third way.
- * Every word comes from Admin → Content ("Page: NEET PG round result — body").
+ * A counsellor card in the middle of a page (2026-10-21): a heading and a line for the moment, an
+ * optional fact, then WhatsApp and a call one tap away and the predictor as the quieter third way.
+ * Used on the round-result pages (the decision a result forces) and, through DataPageCounsel, after
+ * the main table of the data pages Google and AI assistants send people to. Words come from the
+ * caller, which reads them from Admin → Content.
  */
-export default function RoundDecision({
+export default function CounselCard({
+  id = "counsel-card",
   eyebrow,
   title,
   body,
@@ -23,6 +25,7 @@ export default function RoundDecision({
   predictorHref,
   placement,
 }: {
+  id?: string;
   eyebrow: string;
   title: string;
   body: string;
@@ -37,13 +40,13 @@ export default function RoundDecision({
 }) {
   const wa = `https://wa.me/${CONTACT_INFO.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(waText)}`;
   return (
-    <section className="rounded-3xl border border-primary/25 bg-surface-2 p-5 md:p-7" aria-labelledby="round-decision">
+    <section className="rounded-3xl border border-primary/25 bg-surface-2 p-5 md:p-7" aria-labelledby={id}>
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
         <div className="min-w-0">
           <p className="inline-flex items-center rounded-full border border-primary/25 bg-card px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-primary-strong dark:text-primary">
             {eyebrow}
           </p>
-          <h2 id="round-decision" className="font-heading mt-3 text-[clamp(1.3rem,2.6vw,1.75rem)] font-extrabold leading-tight text-foreground">
+          <h2 id={id} className="font-heading mt-3 text-[clamp(1.3rem,2.6vw,1.75rem)] font-extrabold leading-tight text-foreground">
             {title}
           </h2>
           <p className="mt-2 max-w-[68ch] text-[15px] leading-relaxed text-muted-foreground">{body}</p>

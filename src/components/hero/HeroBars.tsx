@@ -43,11 +43,11 @@ export default function HeroBars({
               <span className="flex min-w-0 items-baseline gap-2">
                 <span className="tnum w-4 shrink-0 text-[11px] font-bold text-slate-500">{i + 1}</span>
                 {r.href ? (
-                  <Link href={r.href} className="line-clamp-2 font-semibold leading-snug text-slate-100 hover:text-white hover:underline">
+                  <Link href={r.href} className="line-clamp-3 font-semibold leading-snug text-slate-100 hover:text-white hover:underline">
                     {r.label}
                   </Link>
                 ) : (
-                  <span className="line-clamp-2 font-semibold leading-snug text-slate-100">{r.label}</span>
+                  <span className="line-clamp-3 font-semibold leading-snug text-slate-100">{r.label}</span>
                 )}
               </span>
               <span className="tnum shrink-0 font-bold text-white">{r.display}</span>

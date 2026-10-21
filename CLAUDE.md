@@ -1785,6 +1785,20 @@ for 8–9 Oct (root-only). Remedy: Request indexing for the affected URLs.
   property is a whole-domain one), so the site is verified by meta tag: `msvalidate.01` is printed in the
   root layout from the admin setting `seo.verify.bing` (Admin → Content → "Site verification"; only a
   32-hex code is accepted). Add the site in Bing as `https://www.admissionhands.com/`, the canonical host.
+- **AI search (2026-10-21, owner: "AI ke liye optimised karo… conversion aaye").** Measured first:
+  every AI crawler (GPTBot, OAI-SearchBot, ChatGPT-User, PerplexityBot, ClaudeBot, Claude-SearchBot,
+  Google-Extended, Applebot, bingbot, meta-externalagent, CCBot) gets the full page and robots.txt allows
+  them — www is DNS-only on Pages, so the zone's bot rules never apply. GA4: chatgpt.com sent 36 sessions in
+  60 days, all to deep data pages (radiology branches, Gujarat/Maharashtra PG states), converting at 5.6 key
+  events per 100 sessions against Google's 2.0; no other assistant yet. The web outside our site never names
+  "Admission Hands", so assistants cite our data but do not recommend us — that needs mentions elsewhere
+  (Google reviews, YouTube, Quora/Reddit by a person, press for the stipend report), not code.
+  Built: **`/llms.txt` is a route** (`app/llms.txt/route.ts`) from live figures, wording in Admin → Content →
+  "AI summary (llms.txt)" — the hand-typed file of 2026-10-08 said the predictor showed "every seat … by
+  round" and that we publish colleges' closing ranks, both untrue since 2026-10-12, and an assistant repeats
+  it to students. **A counsellor card after the main table** of branch, PG state, stipend (hub and state)
+  and NEET PG cutoff pages (`components/lead/DataPageCounsel` → `CounselCard`; words in "Counsellor card on
+  data pages") — those pages had their only counsellor block under the FAQs, and branch pages none.
 - **IndexNow** (Bing, Yandex, Naver, Seznam): `node scripts/indexnow.mjs --since <date>` after a change,
   or with paths. The key file `public/<32 hex>.txt` is public by design. All 3,630 URLs submitted
   2026-10-08. Cloudflare's Crawler Hints would automate this but cannot be enabled by API token (10405).

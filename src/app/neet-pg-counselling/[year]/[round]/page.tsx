@@ -33,7 +33,7 @@ import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import RoundCuts from "@/components/mcc/RoundCuts";
 import RoundWatch from "@/components/mcc/RoundWatch";
-import RoundDecision from "@/components/mcc/RoundDecision";
+import CounselCard from "@/components/lead/CounselCard";
 import { getSeatMatrixOverview } from "@/lib/pgSeatData";
 
 /**
@@ -46,7 +46,7 @@ import { getSeatMatrixOverview } from "@/lib/pgSeatData";
  *     only where three or more colleges admitted, so no college's own cut is ever printed.
  * The page never says how it gets there — no "we check every two minutes", no "read automatically"
  * (owner's rule, 2026-10-21: visitors see the result, not our methods). The result-day card
- * (RoundDecision) sits high, before the long tables, because the decision a result forces is when a
+ * (CounselCard) sits high, before the long tables, because the decision a result forces is when a
  * counsellor is worth a call. An open tab follows the state by itself (components/mcc/RoundWatch).
  * Words from Admin → Content ("Page: NEET PG round result").
  */
@@ -377,7 +377,8 @@ export default async function RoundResultPage({ params }: { params: Params }) {
       {/* ------------------------------ what to do now (this year's counselling) ------------------------------ */}
       {year === current && (
         <section className={`container-custom ${state.sourceUrl || insights.length ? "pt-8" : "pt-10"}`}>
-          <RoundDecision
+          <CounselCard
+            id="round-decision"
             eyebrow={body.decide_eyebrow}
             title={live || out ? body.decide_title_live : body.decide_title_pending}
             body={live || out ? body.decide_body_live : body.decide_body_pending}

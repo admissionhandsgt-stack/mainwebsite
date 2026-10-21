@@ -7,6 +7,7 @@ import { resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
+import DataPageCounsel from "@/components/lead/DataPageCounsel";
 import DataHero from "@/components/hero/DataHero";
 import SectionHead from "@/components/ui/SectionHead";
 import InsightCards from "@/components/ui/InsightCards";
@@ -185,6 +186,10 @@ export default async function StipendPage() {
             </tbody>
           </table>
         </div>
+      </section>
+
+      <section className="container-custom pb-10 md:pb-14">
+        <DataPageCounsel kind="stipend" placement="counsel_stipend" />
       </section>
 
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">

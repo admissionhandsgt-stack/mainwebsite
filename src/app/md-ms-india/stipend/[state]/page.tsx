@@ -15,6 +15,14 @@ import InsightCards from "@/components/ui/InsightCards";
 import SectionHead from "@/components/ui/SectionHead";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
+import DataPageCounsel from "@/components/lead/DataPageCounsel";
+import { collegeName } from "@/lib/collegeName";
+
+/** The hero chart has room for a name, not an address: "ESIC Medical College, Alwar". The table below keeps the full one. */
+const barName = (raw: string) => {
+  const { short, place } = collegeName(raw);
+  return place && !short.toLowerCase().includes(place.toLowerCase()) ? `${short}, ${place}` : short;
+};
 
 /**
  * One state's PG stipend, college by college (2026-10-20): "rajasthan pg stipend", "gujarat pg
@@ -149,7 +157,7 @@ export default async function StateStipendPage({ params }: { params: { state: st
             title={copy.visual_title}
             caption={copy.visual_caption}
             rows={s.list.slice(0, 7).map((c) => ({
-              label: c.name,
+              label: barName(c.name),
               value: c.y1,
               display: rupees(c.y1),
               href: `/md-ms-india/colleges/${c.slug}`,
@@ -205,6 +213,10 @@ export default async function StateStipendPage({ params }: { params: { state: st
             </tbody>
           </table>
         </div>
+      </section>
+
+      <section className="container-custom pb-10 md:pb-14">
+        <DataPageCounsel kind="stipend" name={s.state} placement="counsel_stipend_state" />
       </section>
 
       {/* -------------------------- the bond -------------------------- */}
