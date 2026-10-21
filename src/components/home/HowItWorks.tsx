@@ -122,7 +122,7 @@ const HowItWorks = ({ steps: fromCms, copy }: { steps?: Step[]; copy?: StepsCopy
                   {/* Text Content */}
                   <div className="flex-1 lg:mt-2">
                     <h3 className="text-sm lg:text-[17px] font-black leading-snug text-slate-900 dark:text-white mb-1 lg:mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors tracking-tight">{step.title}</h3>
-                    <p className="hidden sm:block text-slate-500 dark:text-slate-400 text-[13px] lg:text-[14px] font-medium leading-relaxed">{step.description}</p>
+                    <p className="text-slate-500 dark:text-slate-400 text-[12.5px] sm:text-[13px] lg:text-[14px] font-medium leading-snug sm:leading-relaxed">{step.description}</p>
                   </div>
                 </div>
               </motion.div>
