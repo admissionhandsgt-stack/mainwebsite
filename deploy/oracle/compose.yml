@@ -130,3 +130,29 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
+
+  # MCC's NEET PG round results, published by themselves (2026-10-21). Watches MCC's PG pages —
+  # every 2 minutes around a round's result date in the admin's schedule, every 30 otherwise —
+  # reads a result PDF into mcc_allotments_staging and asks the app (http://app:8150, the
+  # compose network) to publish it. See mcc-worker/worker.py and src/lib/mccResults.ts.
+  #
+  # It parses PDFs from the internet, so it holds nothing else: mcc-worker.env (mode 600) carries
+  # its own database role, mcc_worker, which can write only its three tables and read the two it
+  # needs (scripts/sql/mcc_worker_role.sql), and the cron secret for the one app call.
+  mcc-worker:
+    build: ./mcc-worker
+    image: admissionhands-mcc-worker:latest
+    restart: unless-stopped
+    env_file: ./mcc-worker.env
+    environment:
+      MCC_APP_URL: http://app:8150
+      MCC_PARSE_PROCESSES: "3"
+    depends_on:
+      db:
+        condition: service_healthy
+    # A 2,800-page result is minutes of CPU: never more than three of the four cores, and behind
+    # the app whenever both want them — result day is the app's busiest hour too.
+    cpus: 3
+    cpu_shares: 256
+    mem_limit: 1536m
+    memswap_limit: 1536m

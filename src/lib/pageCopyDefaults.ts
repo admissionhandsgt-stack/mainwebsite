@@ -1271,6 +1271,284 @@ export const PAGE_COPY = {
       visual_title: { label: "Chart title", value: "Highest-paying states" },
     }),
   },
+  // /neet-pg-counselling/<year>/<round> (2026-10-21): built by itself from MCC's result PDF — see lib/mccResults.ts.
+  "page.pg_round.hero": {
+    group: "Page: NEET PG round result",
+    fields: hero({
+      eyebrow: { label: "Hero eyebrow — {year}, {kind_label}", value: "NEET PG {year} · MCC · {kind_label}" },
+      title: { label: "Hero title — {year}, {round}", value: "NEET PG {year} {round} result:" },
+      accent_live: { label: "Hero title, coloured part, result read — {total}", value: "{total} seats allotted" },
+      subtitle_live: {
+        label: "Hero line, result read — {round_lc}",
+        value:
+          "MCC's {round_lc} allotment for the All India Quota, deemed universities, central universities' quotas and DNB, read from MCC's own result PDF: seats by branch, quota, category and state, and the last rank admitted in each branch.",
+        long: true,
+      },
+      accent_out: { label: "Hero title, coloured part, PDF just out", value: "out now" },
+      subtitle_out: {
+        label: "Hero line, PDF just out — {detected}",
+        value:
+          "MCC published it at {detected}. This page is reading the PDF now and fills itself in within a few minutes. MCC's own PDF is linked below.",
+        long: true,
+      },
+      subtitle_failed: {
+        label: "Hero line, PDF could not be read — {detected}",
+        value:
+          "MCC published it at {detected}, but its PDF could not be read automatically. Our team is on it. Meanwhile, MCC's own PDF is linked below.",
+        long: true,
+      },
+      accent_pending: { label: "Hero title, coloured part, not out — {expected}", value: "expected around {expected}" },
+      accent_pending_nodate: { label: "Hero title, coloured part, not out, no date", value: "not out yet" },
+      subtitle_pending: {
+        label: "Hero line, not out — {round_lc}, {window}",
+        value:
+          "{round} of MCC's counselling runs {window}. This page builds itself from MCC's result as soon as it is published: around result day we check MCC's site every two minutes.",
+        long: true,
+      },
+      subtitle_pending_nodate: {
+        label: "Hero line, not out, no date — {round_lc}",
+        value: "This page builds itself from MCC's {round_lc} result as soon as it is published: around result day we check MCC's site every two minutes.",
+        long: true,
+      },
+      mcc_link: { label: "Button to MCC's PDF", value: "Open MCC's result PDF" },
+      cta: { label: "Hero button", value: "Enter your PG rank — see your chances" },
+      source_live: {
+        label: "Source line, result read — {kind}, {source_title}, {published}",
+        value:
+          "From MCC's {kind} result PDF ({source_title}), read automatically on {published}. The allotment list is MCC's; the counts and ranks here are computed from it.",
+        long: true,
+      },
+      source_archive: {
+        label: "Source line, an earlier year's result — {kind}, {source_title}",
+        value: "From MCC's {kind} result PDF ({source_title}). The allotment list is MCC's; the counts and ranks here are computed from it.",
+        long: true,
+      },
+      source_pending: {
+        label: "Source line, not out — {prev_year}",
+        value: "Dates from MCC's schedule, which it revises in most years. Last year's figures are from MCC's {prev_year} result PDF.",
+        long: true,
+      },
+      visual_title: { label: "Chart title", value: "Seats allotted, by branch" },
+      visual_caption: { label: "Chart caption — {round_lc}, {year}", value: "Largest branches in {round_lc}, {year}" },
+      visual_title_waiting: { label: "Card title before the result is read — {round}", value: "{round} at a glance" },
+      faq_title: { label: "FAQ heading — {year}, {round_lc}", value: "NEET PG {year} {round_lc} result: common questions" },
+    }),
+  },
+  "page.pg_round.body": {
+    group: "Page: NEET PG round result — body",
+    fields: {
+      status_final: { label: "Badge: final result", value: "Final result" },
+      status_provisional: { label: "Badge: provisional result", value: "Provisional result" },
+      status_result: { label: "Badge: result", value: "Result" },
+      status_out: { label: "Badge: PDF just out", value: "Just published" },
+      status_pending: { label: "Badge: not out", value: "Awaited" },
+      fact_window: { label: "Card fact: MCC's dates", value: "MCC's dates" },
+      fact_join: { label: "Card fact: join by", value: "Join by" },
+      fact_checked: { label: "Card fact: last checked", value: "MCC last checked" },
+      fact_published: { label: "Card fact: published on MCC", value: "On MCC since" },
+      fact_reading: { label: "Card fact: status", value: "This page" },
+      fact_reading_now: { label: "Card fact value: being read", value: "Reading MCC's PDF" },
+      fact_reading_failed: { label: "Card fact value: not readable", value: "PDF not readable — team informed" },
+      mcc_box_title: { label: "Box heading: MCC's PDF", value: "MCC's result PDF" },
+      updating_note: {
+        label: "Note while MCC's newer PDF is read — {detected}",
+        value: "MCC posted an updated result at {detected}. This page is reading it now; the figures below are from the earlier PDF until it finishes.",
+        long: true,
+      },
+      insight_total: { label: "Card: seats allotted", value: "Seats allotted" },
+      insight_total_note: { label: "Card note: seats allotted", value: "All India Quota, deemed, central universities and DNB" },
+      insight_fresh: { label: "Card: fresh allotments", value: "Fresh allotments" },
+      insight_fresh_note: { label: "Card note: fresh allotments", value: "candidates with no seat before this round" },
+      insight_upgraded: { label: "Card: upgrades", value: "Upgrades" },
+      insight_upgraded_note: { label: "Card note: upgrades", value: "moved to a seat they ranked higher" },
+      insight_aiq: { label: "Card: last AIQ open rank", value: "Last All India Open rank admitted" },
+      insight_aiq_note: { label: "Card note: last AIQ open rank — {aiq_colleges}", value: "across {aiq_colleges} colleges" },
+      insight_prev: { label: "Card: last year — {prev_year}", value: "Seats allotted in {prev_year}" },
+      insight_prev_note: { label: "Card note: last year — {round_lc}", value: "same round, MCC" },
+      cuts_title: { label: "Branch table heading — {round_lc}", value: "Branch-wise last rank admitted, {round_lc}" },
+      cuts_intro: {
+        label: "Branch table line",
+        value:
+          "The highest rank admitted in each branch, by seat type and category. A rank is shown only where three or more colleges admitted in that branch and category, so no single college's cut-off appears here.",
+        long: true,
+      },
+      cuts_search: { label: "Branch search placeholder", value: "Search a branch, e.g. radiology" },
+      cuts_none: { label: "Branch search, nothing found", value: "No branch matches that." },
+      cuts_note: {
+        label: "Note under the branch table",
+        value: "– means fewer than three colleges admitted in that category, or none. Ranks are All India ranks from MCC's list.",
+        long: true,
+      },
+      cuts_note_prev: {
+        label: "Note under the branch table, when last year is shown — {prev_year}",
+        value: "The smaller figure under a rank is the same round in {prev_year}.",
+        long: true,
+      },
+      stat_colleges: { label: "Hero figure: colleges in the All India Quota", value: "AIQ colleges" },
+      stat_aiq: { label: "Hero figure: last AIQ open rank", value: "Last AIQ Open rank" },
+      stat_prev_total: { label: "Hero figure: last year's seats — {prev_year}", value: "Seats allotted, {prev_year}" },
+      stat_prev_upgrades: { label: "Hero figure: last year's upgrades — {prev_year}", value: "Upgrades, {prev_year}" },
+      stat_prev_aiq: { label: "Hero figure: last year's last AIQ open rank — {prev_year}", value: "Last AIQ Open rank, {prev_year}" },
+      nav_all: { label: "Link: every round this year — {year}", value: "All {year} rounds" },
+      process_link: { label: "Link: how counselling works", value: "How NEET PG counselling works, round by round" },
+      quota_title: { label: "Quota heading", value: "Seats by quota" },
+      quota_intro: { label: "Quota line", value: "Every quota in MCC's list, as MCC names it.", long: true },
+      category_title: { label: "Category heading", value: "Seats by category" },
+      category_intro: { label: "Category line", value: "By the category the seat was allotted in, which can differ from the candidate's own.", long: true },
+      programme_title: { label: "Programme heading", value: "MD, MS, diploma and DNB" },
+      state_title: { label: "State heading", value: "Seats by state" },
+      state_intro: { label: "State line", value: "Where the allotted seats are. These are MCC's seats only; each state's own quota is counselled by the state.", long: true },
+      prev_title: { label: "Last year heading — {prev_year}, {round_lc}", value: "How {round_lc} went in {prev_year}" },
+      prev_intro: {
+        label: "Last year line — {prev_year}",
+        value: "From MCC's {prev_year} result PDF — the closest guide until this year's result is out.",
+        long: true,
+      },
+      watch_reload: { label: "Pop-up when the result moves on", value: "MCC's result is in — loading it now" },
+      watch_title: { label: "Watcher heading", value: "This page updates itself" },
+      watch_body: {
+        label: "Watcher line — {checked}",
+        value:
+          "We check MCC's PG counselling page every two minutes around result day, and every half hour otherwise (last checked {checked}). When the result PDF appears, this page shows MCC's link at once and the analysis within minutes.",
+        long: true,
+      },
+      next_title: { label: "Next steps heading — {round_lc}", value: "After the {round_lc} result" },
+      next_items: {
+        label: "Next steps, one per line — {join_by}",
+        value:
+          "Check your allotment in your MCC login: the allotment letter names the college, course, quota and category.\nReport to the allotted college with your original documents by {join_by}, as MCC's schedule says.\nDecide before reporting whether you will take part in the next round. What you can do with this round's seat is set by MCC's rules for the year; our counselling process page goes round by round.\nIf you are unsure, talk to a counsellor first. A seat given up cannot be taken back.",
+        long: true,
+      },
+      next_items_nodate: {
+        label: "Next steps when MCC has no joining date yet, one per line",
+        value:
+          "Check your allotment in your MCC login: the allotment letter names the college, course, quota and category.\nReport to the allotted college with your original documents within the dates MCC gives.\nDecide before reporting whether you will take part in the next round. What you can do with this round's seat is set by MCC's rules for the year; our counselling process page goes round by round.\nIf you are unsure, talk to a counsellor first. A seat given up cannot be taken back.",
+        long: true,
+      },
+      faq1_q: { label: "Question 1 — {year}, {round_lc}", value: "How many seats were allotted in NEET PG {year} {round_lc}?" },
+      faq1_a: {
+        label: "Answer 1 — {total}, {split}, {aiq_colleges_all}, {round_lc}",
+        value:
+          "MCC's {round_lc} result allotted {total} seats{split}, across the All India Quota ({aiq_colleges_all} colleges), deemed universities, central universities' quotas and DNB.",
+        long: true,
+      },
+      faq2_q: { label: "Question 2 — {round_lc}", value: "What was the last All India Open rank admitted in {round_lc}?" },
+      faq2_a: {
+        label: "Answer 2 — {aiq_open_last}, {aiq_colleges}",
+        value:
+          "{aiq_open_last}, in the All India Quota's Open category, across {aiq_colleges} colleges. The branch table on this page breaks it down by branch and category.",
+        long: true,
+      },
+      faq3_q: { label: "Question 3 — {year}, {round_lc}", value: "When is the NEET PG {year} {round_lc} result?" },
+      faq3_a: {
+        label: "Answer 3 — {window}, {join_by}, {round_lc}",
+        value:
+          "MCC's schedule has {round_lc} running {window}, with joining by {join_by}. MCC revises its dates in most years; this page updates itself when the result is published.",
+        long: true,
+      },
+      faq3_live_q: { label: "Question 3, result read — {round_lc}", value: "When did MCC publish the {round_lc} result?" },
+      faq3_live_a: {
+        label: "Answer 3, result read — {kind}, {published}",
+        value: "This page was built from MCC's {kind} result on {published}, automatically, from MCC's own PDF.",
+        long: true,
+      },
+      faq4_q: { label: "Question 4 — {round_lc}", value: "How do I check my NEET PG {round_lc} allotment?" },
+      faq4_a: {
+        label: "Answer 4 — {round_lc}",
+        value:
+          "On MCC's website, mcc.nic.in, under PG Medical Counselling: the {round_lc} result PDF lists every allotted rank with the college, course, quota and category. Search the PDF for your rank. Your allotment letter is in your MCC login.",
+        long: true,
+      },
+      faq5_q: { label: "Question 5 — {year}, {prev_year}, {round_lc}", value: "How did {round_lc} compare with {prev_year}?" },
+      faq5_a: {
+        label: "Answer 5 — {prev_year}, {prev_total}, {year}, {total}",
+        value: "{prev_year}'s {round_lc} allotted {prev_total} seats; {year}'s allotted {total}.",
+        long: true,
+      },
+      lead_title: { label: "Enquiry form heading", value: "Got a seat, or waiting for the next round?" },
+      lead_body: {
+        label: "Enquiry form line",
+        value: "Tell us your rank. A counsellor will go through your allotment and the next round's options with you.",
+        long: true,
+      },
+    },
+  },
+  // /neet-pg-counselling/<year> — the year's rounds, each linking to its own page.
+  "page.pg_counselling.hero": {
+    group: "Page: NEET PG counselling (year)",
+    fields: hero({
+      eyebrow: { label: "Hero eyebrow — {year}", value: "NEET PG {year} · MCC" },
+      title: { label: "Hero title — {year}", value: "NEET PG counselling {year}:" },
+      accent: { label: "Hero title, coloured part", value: "every round's result" },
+      subtitle: {
+        label: "Hero line — {year}",
+        value:
+          "Each round of MCC's {year} counselling as it is published: seats allotted, upgrades and branch-wise last ranks, read from MCC's own result PDFs. Round pages build themselves the moment MCC posts a result.",
+        long: true,
+      },
+      cta: { label: "Hero button", value: "Enter your PG rank — see your chances" },
+      source: {
+        label: "Source line — {year}",
+        value: "From MCC's {year} result PDFs and schedule. State-quota counselling is run by each state and is not part of MCC's lists.",
+        long: true,
+      },
+      visual_title: { label: "Card title", value: "Round by round" },
+      faq_title: { label: "FAQ heading — {year}", value: "NEET PG counselling {year}: common questions" },
+    }),
+  },
+  "page.pg_counselling.body": {
+    group: "Page: NEET PG counselling (year) — body",
+    fields: {
+      rounds_title: { label: "Rounds heading — {year}", value: "{year} rounds" },
+      rounds_intro: {
+        label: "Rounds line",
+        value: "Open a round for its seats by branch, quota, category and state, and the last rank admitted in each branch.",
+        long: true,
+      },
+      stat_allotted: { label: "Hero figure: allotments so far", value: "Allotments so far" },
+      stat_allotted_done: { label: "Hero figure: allotments, a finished year", value: "Allotments, all rounds" },
+      unit_seats: { label: "Under a figure: seats", value: "seats allotted" },
+      unit_upgrades: { label: "Under a figure: upgrades", value: "upgrades" },
+      unit_colleges: { label: "Under a figure: colleges in the All India Quota", value: "AIQ colleges" },
+      other_years: { label: "Line before other years' links", value: "Other years:" },
+      process_link: { label: "Link: how the rounds work", value: "How the rounds work" },
+      chip_live: { label: "Badge: result read", value: "Result out" },
+      chip_out: { label: "Badge: PDF being read", value: "Out — being read" },
+      chip_failed: { label: "Badge: PDF not readable", value: "Out — see MCC" },
+      chip_pending: { label: "Badge: expected — {expected}", value: "Expected {expected}" },
+      chip_pending_nodate: { label: "Badge: not out", value: "Not out yet" },
+      schedule_title: { label: "Schedule heading — {year}", value: "MCC's schedule, {year}" },
+      schedule_intro: {
+        label: "Schedule line",
+        value: "As MCC's notices give it. MCC revises the dates in most years; round pages follow the latest copy here.",
+        long: true,
+      },
+      faq1_q: { label: "Question 1 — {year}", value: "How many rounds are there in NEET PG counselling {year}?" },
+      faq1_a: {
+        label: "Answer 1 — {rounds_count}, {rounds_list}",
+        value: "MCC's schedule lists {rounds_count} rounds: {rounds_list}. MCC can add a special stray round at the end when seats are still vacant.",
+        long: true,
+      },
+      faq2_q: { label: "Question 2 — {year}", value: "How many seats have been allotted so far in NEET PG counselling {year}?" },
+      faq2_a: {
+        label: "Answer 2 — {allotted_so_far}, {live_rounds}",
+        value: "{allotted_so_far} allotments across {live_rounds}, counting a candidate again each time they are upgraded.",
+        long: true,
+      },
+      faq2_done_q: { label: "Question 2, a finished year — {year}", value: "How many seats were allotted in NEET PG counselling {year}?" },
+      faq2_done_a: {
+        label: "Answer 2, a finished year — {allotted_so_far}, {live_rounds}",
+        value: "{allotted_so_far} allotments across {live_rounds}, counting a candidate again each time they were upgraded.",
+        long: true,
+      },
+      lead_title: { label: "Enquiry form heading", value: "Plan your rounds with a counsellor" },
+      lead_body: {
+        label: "Enquiry form line",
+        value: "Tell us your rank and what you are aiming for. A counsellor will help you decide what to fill, and when to keep or give up a seat.",
+        long: true,
+      },
+    },
+  },
 } satisfies Record<string, CopyGroup>;
 
 /** Site-wide Telegram settings, read by the root layout (see components/engage/TelegramLink). */

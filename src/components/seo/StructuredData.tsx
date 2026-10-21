@@ -54,13 +54,15 @@ export function faqPage(items: { question: string; answer: string }[]) {
 }
 
 /** What this page is, in one object. */
-export function webPage(opts: { name: string; description: string; path: string }) {
+export function webPage(opts: { name: string; description: string; path: string; datePublished?: string; dateModified?: string }) {
   return {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: opts.name,
     description: opts.description,
     url: SITE + opts.path,
+    ...(opts.datePublished ? { datePublished: opts.datePublished } : {}),
+    ...(opts.dateModified ? { dateModified: opts.dateModified } : {}),
     isPartOf: {
       "@type": "WebSite",
       name: "AdmissionHands",

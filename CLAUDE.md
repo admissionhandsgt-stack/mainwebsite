@@ -326,9 +326,10 @@ Two datasets from the PG data session (`pg-4f`), handed over as CSV in `D:/Admis
   option. No CiteThis on the bond page: we do not invite others to cite a third party's compilation as ours.
   Spot-checked 2026-10-20 against public reporting: Uttarakhand 2 years / ₹2.5 Cr, Delhi 1 year / ₹20 L,
   Kerala ₹50 L to leave the seat — all three match.
-- **Allotment ranks never reach a page** (the chance-view rule). `mcc_allotments` feeds round counts only:
-  a round's list is its fresh allotments plus its upgrades (`status ILIKE 'Upgraded%'`); round 1 is all fresh.
-  It is also there for QA of our own closing ranks against MCC's.
+- **No allotment row's rank reaches a page** (the chance-view rule). `mcc_allotments` feeds round counts,
+  and since 2026-10-21 the round pages' branch figures — the last rank admitted per branch × seat family ×
+  category, only over three or more colleges (`groupRank`'s rule). A round's list is its fresh allotments plus
+  its upgrades (`status ILIKE 'Upgraded%'`); round 1 is all fresh. Also there for QA of our own closing ranks.
 - **College matching** (both imports): the handoff's `our_id` + `alt_our_ids` at confidence ≥ 0.80, and a
   DNB / NBE-diploma row goes to the candidate institute holding DNB seats, any other row to the one holding
   MD/MS seats — our PG data often lists one hospital twice. Hand decisions for the MCC names are
@@ -353,6 +354,63 @@ Two datasets from the PG data session (`pg-4f`), handed over as CSV in `D:/Admis
   `/md-ms-india/bond` (government bond by state, private/deemed by state, every government college under its
   state). Copy: `page.college_pg.mcc`, `page.pg_branch.mcc`, `page.pg_seat_matrix.*`, `page.pg_bond.*`.
   Menu rows: `scripts/sql/nav_seat_matrix_bond_2026_10_20.sql` (run after the deploy).
+
+## NEET PG round results, published by themselves (2026-10-21)
+
+Owner's request: *"page automatic ban jaye… result aa jayega wahan fetch karta rahe… har 2-2 min… turant banade"*.
+MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within minutes a page on the site shows it.
+
+| Piece | Where |
+|---|---|
+| Worker (Python, pdfplumber) | `deploy/oracle/mcc-worker/worker.py`, compose service `mcc-worker` (≤3 cores, `cpu_shares` 256 — behind the app) |
+| Its state | `mcc_round_results`, `mcc_allotments_staging`, `mcc_worker_log` (migration 0041) |
+| App half | `lib/mccResults.ts` (`ingestRound`, `getRoundState`, `getRoundResult`), `POST /api/cron/mcc-results` (`x-cron-secret`) |
+| Pages | `/neet-pg-counselling/<year>` and `/<year>/<round-slug>` (`round-1-result` … `special-stray-vacancy-round-result`); `/neet-pg-counselling` 307s to the running year |
+| Copy | `page.pg_round.*`, `page.pg_counselling.*` (Admin → Content). Dates from the admin's `pg_schedule` |
+
+- **The loop.** Every 2 min from 2 days before to 3 days after a round's last AIQ date in `pg_schedule` (and
+  for 5 days after any provisional or unread result), every 30 min otherwise. It reads MCC's PG page **and**
+  the two full lists behind its "View More" (`current-events-pg`, `news-events-pg`) — the front page shows
+  four items per box. On a result: `mcc_round_results` row → the app's `detected` (page shows MCC's link, team
+  gets one WhatsApp per PDF) → download (≤200 MB) → parse → staging → the app's `ingest` (courses and colleges
+  mapped, the round replaced in `mcc_allotments` in one transaction, `revalidateTag`, IndexNow, "page is live"
+  alert). A final result replaces a provisional one. A PDF that yields fewer rows than the round's floor is
+  `parse_failed` (never published); a download or app error is `error`, retried after 10 minutes.
+- **Reading the PDF** — checked against MCC's 2024 and 2025 PDFs, every count exact (R1 26,889, R2 20,787,
+  R3 18,673, stray 2,798; 2024 R2 16,182, special stray 558). The header row says where Rank is — round 1 has
+  a serial column before it, later rounds do not — and **the header is printed once**, on page 2: it is read
+  first and handed to every page chunk (the version that guessed read 2,425 of R2's 20,787 rows). Later rounds
+  repeat earlier rounds' columns: the last block of seven cells is this round's; "-" there (kept the old seat)
+  is not an allotment.
+- **Recognising a result** — titles from MCC's 2021–25 archive: "Final Result of Round 1 for PG Counselling
+  2025", "Provisional Allotment Result Round 1 of PG Counselling 2024" are results; "Notice for Final Result…"
+  is not. **The upload path is the upload date, not the counselling**: 2025's round 3 result sits under
+  `/uploads/2026/02/`. A year in the title must be the counselling's; with none, the path must be July–Dec of
+  that year or Jan–Jun of the next (`of_year`). Run against the archive, it picks exactly the right final PDF
+  for every round of 2022–2025.
+- **Matching colleges** — the whole MCC name (normalised) + DNB-or-not against earlier rounds and the seat
+  matrix: on 2025 R1 with only 2024 + the matrix to go on, 95.7% of rows with **zero** disagreements. The
+  fallback on the name before its first comma is taken only when one college has that start (unguarded it put
+  84 rows at the wrong college — "Government Medical College" is dozens) **and** that college's state is named
+  in MCC's wording (a chain hospital known only in Hyderabad is not the one in Aurangabad). Unmatched rows are
+  kept, without a state.
+- **What a page prints:** counts by quota, category, programme and state; per branch, per seat family (AIQ,
+  deemed paid seats, DNB — matched by family, since MCC renames them yearly) the last rank admitted in each
+  category, **only over 3+ colleges**; last year's same round under each figure. **No college total across
+  families** (the twin-entry rule above) — college counts are the AIQ's. Before a result: MCC's dates, last
+  year's round, "last checked MCC at …"; only the next awaited round is indexable, later ones `noindex`.
+  An open tab follows the state by itself (`components/mcc/RoundWatch` polls `/api/mcc-round-status` every
+  ~90 s and reloads — through the edge, so a thousand tabs are not a thousand renders).
+- **Least privilege:** the worker parses PDFs from the internet, so it runs as `nobody` with its own database
+  role (`scripts/sql/mcc_worker_role.sql` — writes only its three tables, reads `mcc_seat_matrix` and
+  `content_blocks`) and `/opt/admissionhands/mcc-worker.env` (mode 600: that role's URL + the cron secret).
+- **Operate:** `bash scripts/setup_mcc_worker.sh` (role, env, build, start — deploy the app first);
+  `--check` for status and the last log lines. Test without publishing anything:
+  `docker compose -p admissionhands -f /opt/admissionhands/compose.yml run --rm --no-deps -v <pdf>:/t.pdf:ro
+  mcc-worker python -P worker.py --test /t.pdf 2099 "Round 1"` (parse, stage, the app's ingest as a rolled-back
+  dry run, unstage). `--parse <pdf>` reads only; `--once` makes one real check.
+- Menu rows: `scripts/sql/nav_pg_counselling_2026_10_21.sql` (run after the deploy; the year is in the URL —
+  change it when the next counselling starts).
 
 ## Site structure the admin owns
 

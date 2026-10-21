@@ -1,0 +1,7 @@
+# The versions worker.py was tested with against MCC's 2024 and 2025 result PDFs (2026-10-21).
+pdfplumber==0.11.10
+pdfminer.six==20260107
+pypdfium2==5.10.1
+pillow==12.2.0
+psycopg[binary]==3.2.10
+requests==2.32.4

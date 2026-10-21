@@ -4,6 +4,7 @@ import { getPgStates } from "@/lib/pgStateQueries";
 import { getStipends } from "@/lib/cutoffHubQueries";
 import { getSsCourses } from "@/lib/ssQueries";
 import { getMdsSlugs } from "@/lib/mdsQueries";
+import { ROUNDS, getCounsellingYear, getCounsellingYears, getRoundState, roundPath } from "@/lib/mccResults";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 
@@ -149,6 +150,32 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
   for (const s of STATIC) {
     if (noIndex.has(s.path)) continue;
     out.hubs.push({ url: BASE + s.path, changeFrequency: s.freq, priority: s.priority });
+  }
+
+  // NEET PG counselling, year by year and round by round (2026-10-21): every round that is out, and
+  // of this year's rounds still awaited only the next one — the rest are noindex until their turn.
+  try {
+    const [current, years] = await Promise.all([getCounsellingYear(), getCounsellingYears()]);
+    for (const year of [...new Set([current, ...years])].sort((a, b) => b - a)) {
+      const states = await Promise.all(ROUNDS.map((r) => getRoundState(year, r.round)));
+      const next = ROUNDS.find((r, i) => r.order <= 4 && states[i]?.status === "pending" && year === current);
+      const listed = ROUNDS.filter((r, i) => states[i]?.status !== "pending" || r === next);
+      if (!listed.length) continue;
+      const day = (s: (typeof states)[number]) => (s?.updatedAt ?? s?.publishedAt ?? "").slice(0, 10) || undefined;
+      const latest = newest(states.map((s) => day(s) ?? "")) || undefined;
+      out.hubs.push({ url: `${BASE}/neet-pg-counselling/${year}`, lastModified: latest, changeFrequency: year === current ? "daily" : "yearly", priority: year === current ? 0.9 : 0.6 });
+      for (const r of listed) {
+        const s = states[ROUNDS.indexOf(r)];
+        out.hubs.push({
+          url: BASE + roundPath(year, r.slug),
+          lastModified: day(s),
+          changeFrequency: year === current ? "hourly" : "yearly",
+          priority: year === current ? 0.9 : 0.6,
+        });
+      }
+    }
+  } catch (error) {
+    console.error("[sitemap] counselling rounds could not be listed", error);
   }
 
   for (const slug of states) {
