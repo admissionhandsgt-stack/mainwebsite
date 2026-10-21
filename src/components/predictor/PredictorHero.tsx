@@ -1,6 +1,8 @@
 import CounsellorFaces from "@/components/lead/CounsellorFaces";
 import { BadgeCheck, LineChart, Route, Sparkles } from "lucide-react";
 import { getDataStats, inr } from "@/lib/dataStats";
+import { getLiveFigures } from "@/lib/liveFigures";
+import { pageCopy } from "@/lib/pageCopy";
 
 /**
  * The predictor's first screen, beside the form (ChanceFinder renders it).
@@ -18,9 +20,11 @@ const STEPS = [
 
 
 export default async function PredictorHero() {
-  const stats = await getDataStats();
+  const [stats, live, team] = await Promise.all([getDataStats(), getLiveFigures(), pageCopy("page.services.figures")]);
+  // NMC's register for the colleges: our UG and PG lists together (3,895 rows) counted DNB hospitals,
+  // dental and AYUSH colleges, and every college with both levels twice.
   const figures: [string, string][] = [
-    [inr(stats.pgColleges + stats.ugColleges), "colleges"],
+    [live.nmc_colleges, "medical colleges · NMC"],
     [inr(stats.seatOptions), "seat options"],
     [inr(stats.counsellings), "counsellings"],
   ];
@@ -28,7 +32,7 @@ export default async function PredictorHero() {
   return (
     <div>
       <p className="inline-flex items-center gap-1.5 rounded-full border border-primary/25 bg-card px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-primary-strong dark:text-primary">
-        <BadgeCheck className="h-3.5 w-3.5" aria-hidden="true" /> 15+ years of NEET counselling
+        <BadgeCheck className="h-3.5 w-3.5" aria-hidden="true" /> {team.years} years of NEET counselling
       </p>
       <h1 className="font-heading mt-4 max-w-[16ch] text-[clamp(2rem,4.6vw,3.3rem)] font-extrabold leading-[1.04] tracking-[-0.03em] text-foreground">
         Where can your NEET rank <span className="text-gradient-brand">take you?</span>

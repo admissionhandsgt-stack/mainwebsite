@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
 import Link from "@/components/ui/Link";
 import { usePathname } from 'next/navigation';
-import { Menu, X, Phone, ChevronDown, ChevronRight, Sun, Moon, UserRound } from 'lucide-react';
+import { Menu, X, Phone, ChevronDown, ChevronRight, Sun, Moon, UserRound, ArrowRight, Search } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useCTA } from '@/hooks/useCTA';
 import { WhatsAppIcon } from './icons/WhatsAppIcon';
@@ -19,32 +20,26 @@ import type { NavItem } from '@/lib/content';
  * `/md-ms-india/cutoffs`, a route that has redirected for weeks, so the one
  * time this fallback mattered it would have shipped a dead link.
  *
- * Labels are short because the bar has to hold every item on one line —
- * "MBBS India" and "PG – MD/MS" wrapped it onto two and looked broken. The
- * section a link leads to says the rest.
- *
- * Since 2026-10-17 (owner's request) MBBS holds only MBBS, MD/MS only PG, and
- * BDS, MDS, AYUSH and NEET SS sit under "Other Courses". To make room on a
- * 1280–1535px laptop, Home left the bar (the logo is home) and Services and
- * Videos went under Know Us — see the budget note on the <nav> below.
+ * Since 2026-10-21 the course menus are grouped (see "Mega menus" below); the
+ * fallback stays flat — it only has to get somebody somewhere.
  */
 const FALLBACK_NAV: NavItem[] = [
   { id: -2, label: 'NEET College Predictor', url: '/neet-college-predictor', newTab: false, children: [] },
   {
     id: -3, label: 'MBBS', url: '/mbbs-india', newTab: false,
     children: [
-      { id: -31, label: 'Deemed Universities', url: '/mbbs-india/deemed-universities', newTab: false, children: [] },
-      { id: -32, label: 'Govt & Pvt Colleges', url: '/mbbs-india/colleges', newTab: false, children: [] },
-      { id: -33, label: 'NEET UG Process', url: '/neet-ug-process', newTab: false, children: [] },
-      { id: -34, label: 'NEET UG Cutoff', url: '/neet-ug-cutoff', newTab: false, children: [] },
+      { id: -31, label: 'MBBS Colleges', url: '/mbbs-india/colleges', newTab: false, children: [] },
+      { id: -32, label: 'Deemed Universities', url: '/mbbs-india/deemed-universities', newTab: false, children: [] },
+      { id: -33, label: 'NEET UG Cutoff', url: '/neet-ug-cutoff', newTab: false, children: [] },
+      { id: -34, label: 'NEET UG Process', url: '/neet-ug-process', newTab: false, children: [] },
     ],
   },
   {
     id: -4, label: 'MD/MS', url: '/md-ms-india', newTab: false,
     children: [
-      { id: -41, label: 'All PG Colleges', url: '/md-ms-india/colleges', newTab: false, children: [] },
-      { id: -42, label: 'NEET PG Process', url: '/neet-pg-process', newTab: false, children: [] },
-      { id: -43, label: 'NEET PG Cutoff', url: '/neet-pg-cutoff', newTab: false, children: [] },
+      { id: -41, label: 'PG Colleges', url: '/md-ms-india/colleges', newTab: false, children: [] },
+      { id: -42, label: 'NEET PG Cutoff', url: '/neet-pg-cutoff', newTab: false, children: [] },
+      { id: -43, label: 'NEET PG Process', url: '/neet-pg-process', newTab: false, children: [] },
     ],
   },
   {
@@ -74,18 +69,33 @@ const FALLBACK_NAV: NavItem[] = [
 
 /** A menu with no page of its own — its url is "#" — only opens its list. */
 const isMenuOnly = (link: NavItem) => !link.url || link.url === '#';
+/**
+ * Mega menus (2026-10-21, owner: "MD/MS ki drop down kitni badi hogyi hai"). An item whose children
+ * have children of their own is a grouped menu: each child is a titled column (url "#"), its children
+ * the links, each with a one-line description. Plain children stay a simple dropdown. All of it is
+ * Admin → Navigation; nothing here names a page.
+ */
+const isGrouped = (link: NavItem) => link.children.some((c) => c.children.length > 0);
+/** The item, or anything under it, is the page being shown. */
+const holds = (link: NavItem, path: string | null): boolean =>
+  !!path && ((!isMenuOnly(link) && path === link.url) || link.children.some((c) => holds(c, path)));
+
+const linkProps = (l: NavItem) => (l.newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {});
 
 export default function Header({
   nav,
   ctaLabel,
   showThemeToggle = true,
   accountName,
+  onSearch,
 }: {
   nav?: NavItem[];
   ctaLabel?: string;
   showThemeToggle?: boolean;
   /** First name when signed in, null when not. Decides Sign in vs Account. */
   accountName?: string | null;
+  /** Opens the site search, when the shell provides one. */
+  onSearch?: () => void;
 }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   // Keyed by item id: one shared flag meant opening MBBS also opened PG.
@@ -96,6 +106,8 @@ export default function Header({
   const [mounted, setMounted] = useState(false);
 
   const [scrolled, setScrolled] = useState(false);
+  const drawer = useRef<HTMLDivElement>(null);
+  useFocusTrap(drawer, isMobileMenuOpen);
 
   useEffect(() => {
     setMounted(true);
@@ -128,6 +140,19 @@ export default function Header({
     setExpanded(null);
   }, [pathname]);
 
+  // Escape closes the drawer, and takes focus out of an open desktop menu (the menus open on
+  // hover and on focus, so leaving focus is what closes them for a keyboard user).
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      setIsMobileMenuOpen(false);
+      const el = document.activeElement as HTMLElement | null;
+      if (el?.closest('[data-desktop-nav]')) el.blur();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
   const navLinks = nav?.length ? nav : FALLBACK_NAV;
 
   const renderThemeToggle = () => {
@@ -141,12 +166,116 @@ export default function Header({
       <button
         onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
         className="w-11 h-11 rounded-full flex items-center justify-center text-slate-500 hover:text-cyan-600 dark:text-slate-400 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors shrink-0"
-        aria-label="Toggle Theme"
+        aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
       >
         {theme === 'dark' ? <Sun className="w-[18px] h-[18px]" /> : <Moon className="w-[18px] h-[18px]" />}
       </button>
     );
   };
+
+  const searchButton = (extra = '') =>
+    onSearch ? (
+      <button
+        type="button"
+        onClick={onSearch}
+        aria-label="Search colleges, branches and pages"
+        title="Search"
+        className={`w-11 h-11 rounded-full flex items-center justify-center text-slate-500 hover:text-cyan-600 dark:text-slate-400 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors shrink-0 ${extra}`}
+      >
+        <Search className="w-[18px] h-[18px]" aria-hidden="true" />
+      </button>
+    ) : null;
+
+  /* ---------------------------------------------------------------- desktop panels */
+
+  const megaPanel = (link: NavItem) => {
+    const groups = link.children.filter((g) => g.children.length > 0);
+    const loose = link.children.filter((g) => g.children.length === 0);
+    const cols = Math.min(groups.length, 3);
+    return (
+      <div
+        className="rounded-2xl border border-border bg-card shadow-lift overflow-hidden"
+        style={{ width: `min(${cols >= 3 ? 880 : 600}px, calc(100vw - 3rem))` }}
+      >
+        <div className="grid gap-x-6 gap-y-5 p-5" style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}>
+          {groups.map((g) => (
+            <div key={g.id} className="min-w-0">
+              <p className="px-3 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">{g.label}</p>
+              <ul className="mt-2 space-y-0.5">
+                {g.children.map((l) => {
+                  const here = pathname === l.url;
+                  return (
+                    <li key={l.id}>
+                      <Link
+                        href={l.url}
+                        {...linkProps(l)}
+                        aria-current={here ? 'page' : undefined}
+                        className={`block rounded-xl px-3 py-2.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                          here ? 'bg-primary-soft' : 'hover:bg-primary-soft/70'
+                        }`}
+                      >
+                        <span className={`block text-[14px] font-semibold leading-snug ${here ? 'text-primary-strong dark:text-primary' : 'text-foreground'}`}>
+                          {l.label}
+                        </span>
+                        {l.description && (
+                          <span className="mt-0.5 block text-[12.5px] leading-snug text-muted-foreground">{l.description}</span>
+                        )}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
+        </div>
+        {(loose.length > 0 || !isMenuOnly(link)) && (
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border bg-surface-1 px-6 py-3">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
+              {!isMenuOnly(link) && (
+                <Link
+                  href={link.url}
+                  className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-primary-strong hover:underline dark:text-primary"
+                >
+                  {link.label} overview <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                </Link>
+              )}
+              {loose.map((l) => (
+                <Link key={l.id} href={l.url} {...linkProps(l)} className="text-[13px] font-semibold text-muted-foreground hover:text-primary">
+                  {l.label}
+                </Link>
+              ))}
+            </div>
+            <Link
+              href="/neet-college-predictor"
+              className="inline-flex items-center gap-1.5 rounded-full bg-primary-soft px-3.5 py-1.5 text-[12.5px] font-bold text-primary-strong hover:bg-primary-soft/70 dark:text-primary"
+            >
+              <Search className="h-3.5 w-3.5" aria-hidden="true" /> Check your chances with your rank
+            </Link>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const simplePanel = (link: NavItem) => (
+    <div className="rounded-xl border border-border bg-card p-1.5 shadow-lift min-w-[250px] max-w-[320px]">
+      {link.children.map((sub) => (
+        <Link
+          key={sub.id}
+          href={sub.url}
+          {...linkProps(sub)}
+          aria-current={pathname === sub.url ? 'page' : undefined}
+          className="flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-soft transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring group/item"
+        >
+          <span className="min-w-0">
+            <span className="block text-[13.5px] font-semibold text-foreground group-hover/item:text-primary-strong dark:group-hover/item:text-primary">{sub.label}</span>
+            {sub.description && <span className="mt-0.5 block text-[12px] leading-snug text-muted-foreground">{sub.description}</span>}
+          </span>
+          <ChevronRight className="w-3.5 h-3.5 shrink-0 opacity-40" aria-hidden="true" />
+        </Link>
+      ))}
+    </div>
+  );
 
   return (
     <>
@@ -154,16 +283,16 @@ export default function Header({
         data-site-header
         className={`fixed top-0 left-0 right-0 w-full z-[100] transition-all duration-300 ${
           scrolled
-            ? 'bg-background/80 backdrop-blur-xl border-b border-border/70 shadow-sm'
-            : 'bg-background/40 backdrop-blur-md border-b border-transparent'
+            ? 'bg-background/85 backdrop-blur-xl border-b border-border/70 shadow-sm'
+            : 'bg-background/60 backdrop-blur-md border-b border-transparent'
         }`}
       >
         <div className="w-full max-w-[var(--page-max)] mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between gap-4">
           {/* Extreme Left: Logo */}
-          <Link href="/" className="flex min-h-[44px] items-center justify-start shrink-0 mr-2">
-            <Image 
-              src="/assets/images/logos/logo.avif" 
-              alt="Admission Hands Logo" 
+          <Link href="/" className="flex min-h-[44px] items-center justify-start shrink-0 mr-2" aria-label="Admission Hands — home">
+            <Image
+              src="/assets/images/logos/logo.avif"
+              alt="Admission Hands Logo"
               width={220}
               height={55}
               className="object-contain w-[160px] h-[40px] sm:w-[180px] sm:h-[45px] md:w-[200px] md:h-[50px] xl:w-[180px] xl:h-[45px] min-[1800px]:w-[200px] min-[1800px]:h-[50px] transition-all dark:brightness-110 dark:hue-rotate-15"
@@ -173,31 +302,21 @@ export default function Header({
           </Link>
 
           {/*
-            Center: the navigation. From 1280px, and compact until 1800px.
+            Center: the navigation, from 1280px; compact until 1800px.
 
-            The row needs ~1,400px at full size (logo, eight links, four
-            controls) and the page container gives it 1,216px at 1280–1535px
-            and 1,376px at 1536–1799px. Everything is shrink-0 and nowrap, and
-            body has overflow-x: hidden, so it did not wrap or scroll — the
-            "Talk to a counsellor" button was silently cut off the right edge on
-            every laptop: 252px off-screen at 1024, 77px at 1440 (measured
-            2026-10-06). Below 1280 the drawer takes over, as on a tablet; up
-            to 1800 the links are 13px with tighter padding, Sign in is an icon
-            and the logo is 180px. From 1800px it is exactly as designed.
-
-            2026-10-17: adding "Other Courses" to the old eight cut the controls
-            off by 132px at 1280–1535. With Home out (the logo is home) and
-            Services and Videos under Know Us, seven items leave 19px spare
-            there. Measure before adding anything:
+            The row needs ~1,400px at full size and the container gives it 1,216px at 1280–1535px.
+            Everything is shrink-0 and nowrap, and body clips horizontal overflow, so an over-long row
+            does not wrap — its right-hand button silently disappears (it did, until 2026-10-06).
+            Six items leave room at 1280. Measure before adding a top-level item:
             node scripts/tmp/header_budget.mjs <base> "<label>" --real
           */}
-          <nav className="mx-auto hidden items-center gap-0.5 xl:flex min-[1800px]:gap-1.5">
+          <nav data-desktop-nav aria-label="Main" className="mx-auto hidden items-center gap-0.5 xl:flex min-[1800px]:gap-1.5">
             {navLinks.map((link) => {
               const hasDropdown = link.children.length > 0;
               const menuOnly = hasDropdown && isMenuOnly(link);
-              const isActive =
-                pathname === link.url || (menuOnly && link.children.some((c) => c.url === pathname));
-              const itemClass = `flex items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-2 text-[13px] font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background min-[1800px]:px-3.5 min-[1800px]:text-sm ${
+              const grouped = hasDropdown && isGrouped(link);
+              const isActive = holds(link, pathname);
+              const itemClass = `flex items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-2 text-[13px] font-semibold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background min-[1800px]:px-3.5 min-[1800px]:text-sm ${
                 isActive
                   ? 'bg-primary-soft text-primary-strong dark:text-primary'
                   : 'text-muted-foreground hover:text-primary hover:bg-primary-soft/60'
@@ -209,35 +328,25 @@ export default function Header({
                   {menuOnly ? (
                     <button type="button" aria-haspopup="true" className={itemClass}>
                       {link.label}
-                      <ChevronDown className="w-3.5 h-3.5" aria-hidden="true" />
+                      <ChevronDown className="w-3.5 h-3.5 transition-transform group-hover:rotate-180 group-focus-within:rotate-180" aria-hidden="true" />
                     </button>
                   ) : (
-                    <Link
-                      href={link.url}
-                      target={link.newTab ? '_blank' : undefined}
-                      rel={link.newTab ? 'noopener noreferrer' : undefined}
-                      className={itemClass}
-                    >
+                    <Link href={link.url} {...linkProps(link)} aria-haspopup={hasDropdown ? 'true' : undefined} className={itemClass}>
                       {link.label}
-                      {hasDropdown && <ChevronDown className="w-3.5 h-3.5" />}
+                      {hasDropdown && (
+                        <ChevronDown className="w-3.5 h-3.5 transition-transform group-hover:rotate-180 group-focus-within:rotate-180" aria-hidden="true" />
+                      )}
                     </Link>
                   )}
                   {hasDropdown && (
-                    <div className="absolute top-full left-0 pt-2 opacity-0 invisible translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 transition-all duration-200 z-50">
-                      <div className="rounded-xl border border-border bg-card p-1.5 shadow-lift min-w-[230px]">
-                        {link.children.map((sub) => (
-                          <Link
-                            key={sub.id}
-                            href={sub.url}
-                            target={sub.newTab ? '_blank' : undefined}
-                            rel={sub.newTab ? 'noopener noreferrer' : undefined}
-                            className="flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium text-muted-foreground hover:bg-primary-soft hover:text-primary-strong dark:hover:text-primary transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                          >
-                            {sub.label}
-                            <ChevronRight className="w-3 h-3 opacity-40" />
-                          </Link>
-                        ))}
-                      </div>
+                    <div
+                      // Opens at once and fades out (150ms): a menu used many times a visit should not
+                      // make anybody wait for it to arrive.
+                      className={`absolute top-full z-50 pt-3 opacity-0 invisible transition-[opacity,visibility] duration-150 group-hover:visible group-hover:opacity-100 group-hover:duration-0 group-focus-within:visible group-focus-within:opacity-100 group-focus-within:duration-0 ${
+                        grouped ? 'left-1/2 -translate-x-1/2' : 'left-0'
+                      }`}
+                    >
+                      {grouped ? megaPanel(link) : simplePanel(link)}
                     </div>
                   )}
                 </div>
@@ -245,8 +354,9 @@ export default function Header({
             })}
           </nav>
 
-          {/* Extreme Right: WhatsApp, Call, Theme Toggle */}
-          <div className="hidden xl:flex items-center gap-1.5 shrink-0">
+          {/* Extreme Right: search, WhatsApp, theme, account, call */}
+          <div className="hidden xl:flex items-center gap-1 shrink-0">
+            {searchButton()}
             <button
               onClick={() => CTA.whatsapp()}
               className="w-11 h-11 rounded-full flex items-center justify-center text-accent hover:bg-accent-soft transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -277,13 +387,16 @@ export default function Header({
             </button>
           </div>
 
-          {/* Mobile menu trigger + theme toggle row */}
-          <div className="flex xl:hidden items-center gap-1 shrink-0">
+          {/* Phone and tablet: search, theme, menu */}
+          <div className="flex xl:hidden items-center gap-0.5 shrink-0">
+            {searchButton()}
             {renderThemeToggle()}
             <button
               className="p-2 -mr-2 text-slate-600 dark:text-slate-400 min-w-[44px] min-h-[44px] flex items-center justify-center transition-transform active:scale-90"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle Menu"
+              aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-nav-drawer"
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -304,133 +417,170 @@ export default function Header({
               style={{ zIndex: 110 }}
             />
             <motion.div
+              ref={drawer}
+              id="mobile-nav-drawer"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Menu"
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="xl:hidden fixed top-0 right-0 bottom-0 w-[78%] max-w-[320px] bg-white dark:bg-slate-950 shadow-2xl flex flex-col border-l border-slate-100 dark:border-slate-800"
+              className="xl:hidden fixed top-0 right-0 bottom-0 w-[86%] max-w-[360px] bg-background shadow-2xl flex flex-col border-l border-border overscroll-contain"
               style={{ zIndex: 120 }}
             >
-              <div className="p-4 pt-16 flex-1 overflow-y-auto">
-                <nav className="flex flex-col gap-0.5" role="navigation">
+              <div className="flex items-center justify-between px-4 h-[72px] border-b border-border shrink-0">
+                <span className="text-[13px] font-bold uppercase tracking-[0.14em] text-muted-foreground">Menu</span>
+                <button
+                  type="button"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  aria-label="Close menu"
+                  className="min-w-[44px] min-h-[44px] -mr-2 flex items-center justify-center rounded-full text-muted-foreground hover:bg-surface-2"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <div className="px-3 py-3 flex-1 overflow-y-auto overscroll-contain">
+                <nav className="flex flex-col gap-0.5" aria-label="Main">
                   {navLinks.map((link) => {
                     const hasDropdown = link.children.length > 0;
                     const menuOnly = hasDropdown && isMenuOnly(link);
-                    const isActive =
-                      pathname === link.url ||
-                      (menuOnly
-                        ? link.children.some((c) => c.url === pathname)
-                        : hasDropdown && link.url !== '/' && pathname?.startsWith(link.url));
+                    const isActive = holds(link, pathname);
                     const isOpen = expanded === link.id;
-                    const rowClass = `flex-1 flex items-center gap-2 p-2 rounded-xl text-left transition-all active:scale-[0.97] ${
-                      isActive ? 'bg-cyan-50/80 dark:bg-cyan-950/20 text-cyan-750 dark:text-cyan-400' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-900/40'
+                    const rowClass = `flex-1 flex items-center min-h-[48px] px-3 rounded-xl text-left text-[15px] font-semibold transition-colors ${
+                      isActive ? 'bg-primary-soft text-primary-strong dark:text-primary' : 'text-foreground hover:bg-surface-2'
                     }`;
-                    const rowInner = (
-                      <>
-                        <div className={`w-1 h-3 rounded-full bg-emerald-500 ${isActive ? 'opacity-100' : 'opacity-20'}`} />
-                        <span className="text-[12px] font-bold tracking-tight">{link.label}</span>
-                      </>
-                    );
 
-                    if (hasDropdown) {
+                    if (!hasDropdown) {
                       return (
-                        <div key={link.id}>
-                          <div className="flex items-center gap-0">
-                            {/* No page of its own: the label opens the list too. */}
-                            {menuOnly ? (
-                              <button
-                                type="button"
-                                onClick={() => setExpanded(isOpen ? null : link.id)}
-                                aria-expanded={isOpen}
-                                className={rowClass}
-                              >
-                                {rowInner}
-                              </button>
-                            ) : (
-                              <Link
-                                href={link.url}
-                                target={link.newTab ? '_blank' : undefined}
-                                rel={link.newTab ? 'noopener noreferrer' : undefined}
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className={rowClass}
-                              >
-                                {rowInner}
-                              </Link>
-                            )}
-                            <button
-                              onClick={() => setExpanded(isOpen ? null : link.id)}
-                              className="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900/40 transition-colors min-w-[40px] min-h-[40px] flex items-center justify-center"
-                              aria-expanded={isOpen}
-                              aria-label={`${isOpen ? 'Collapse' : 'Expand'} ${link.label} submenu`}
-                            >
-                              <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
-                            </button>
-                          </div>
-                          <AnimatePresence>
-                            {isOpen && (
-                              <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: 'auto', opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                transition={{ duration: 0.2 }}
-                                className="overflow-hidden"
-                              >
-                                <div className="pl-4 py-0.5 flex flex-col gap-0.5">
-                                  {link.children.map((sub) => {
-                                    const subActive = pathname === sub.url;
-                                    return (
-                                      <Link
-                                        key={sub.id}
-                                        href={sub.url}
-                                        target={sub.newTab ? '_blank' : undefined}
-                                        rel={sub.newTab ? 'noopener noreferrer' : undefined}
-                                        onClick={() => setIsMobileMenuOpen(false)}
-                                        className={`flex items-center justify-between p-2 pl-3 rounded-lg text-[11px] font-bold transition-all active:scale-[0.97] ${
-                                          subActive ? 'bg-cyan-50 dark:bg-cyan-950/30 text-cyan-700 dark:text-cyan-400' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900/40 hover:text-slate-800'
-                                        }`}
-                                      >
-                                        <span>{sub.label}</span>
-                                        <ChevronRight className="w-3 h-3 opacity-30" />
-                                      </Link>
-                                    );
-                                  })}
-                                </div>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </div>
+                        <Link
+                          key={link.id}
+                          href={link.url}
+                          {...linkProps(link)}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          aria-current={pathname === link.url ? 'page' : undefined}
+                          className={rowClass}
+                        >
+                          {link.label}
+                        </Link>
                       );
                     }
+
+                    const subLink = (sub: NavItem) => {
+                      const here = pathname === sub.url;
+                      return (
+                        <Link
+                          key={sub.id}
+                          href={sub.url}
+                          {...linkProps(sub)}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          aria-current={here ? 'page' : undefined}
+                          className={`flex items-center justify-between min-h-[44px] pl-4 pr-3 rounded-lg text-[14px] font-medium transition-colors ${
+                            here ? 'bg-primary-soft text-primary-strong dark:text-primary' : 'text-muted-foreground hover:bg-surface-2 hover:text-foreground'
+                          }`}
+                        >
+                          <span>{sub.label}</span>
+                          <ChevronRight className="w-3.5 h-3.5 opacity-40" aria-hidden="true" />
+                        </Link>
+                      );
+                    };
+
                     return (
-                      <Link
-                        key={link.id}
-                        href={link.url}
-                        target={link.newTab ? '_blank' : undefined}
-                        rel={link.newTab ? 'noopener noreferrer' : undefined}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className={`flex items-center gap-2 p-2 rounded-xl transition-all active:scale-[0.97] ${
-                          isActive ? 'bg-cyan-50/80 dark:bg-cyan-950/20 text-cyan-750 dark:text-cyan-400' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-900/40'
-                        }`}
-                      >
-                        <div className={`w-1 h-3 rounded-full bg-cyan-500 ${isActive ? 'opacity-100' : 'opacity-20'}`} />
-                        <span className="text-[12px] font-bold tracking-tight">{link.label}</span>
-                      </Link>
+                      <div key={link.id}>
+                        <div className="flex items-center gap-1">
+                          {/* No page of its own: the label opens the list too. */}
+                          {menuOnly ? (
+                            <button
+                              type="button"
+                              onClick={() => setExpanded(isOpen ? null : link.id)}
+                              aria-expanded={isOpen}
+                              className={rowClass}
+                            >
+                              {link.label}
+                            </button>
+                          ) : (
+                            <Link
+                              href={link.url}
+                              {...linkProps(link)}
+                              onClick={() => setIsMobileMenuOpen(false)}
+                              className={rowClass}
+                            >
+                              {link.label}
+                            </Link>
+                          )}
+                          <button
+                            onClick={() => setExpanded(isOpen ? null : link.id)}
+                            className="min-w-[48px] min-h-[48px] rounded-xl hover:bg-surface-2 transition-colors flex items-center justify-center"
+                            aria-expanded={isOpen}
+                            aria-label={`${isOpen ? 'Collapse' : 'Expand'} ${link.label}`}
+                          >
+                            <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+                          </button>
+                        </div>
+                        <AnimatePresence>
+                          {isOpen && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.2 }}
+                              className="overflow-hidden"
+                            >
+                              <div className="pb-2 pt-0.5 flex flex-col gap-0.5">
+                                {isGrouped(link)
+                                  ? link.children.map((g) =>
+                                      g.children.length ? (
+                                        <div key={g.id} className="pt-2">
+                                          <p className="px-4 pb-1 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">{g.label}</p>
+                                          {g.children.map(subLink)}
+                                        </div>
+                                      ) : (
+                                        subLink(g)
+                                      ),
+                                    )
+                                  : link.children.map(subLink)}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
                     );
                   })}
                 </nav>
               </div>
 
-              {/* Quick Actions */}
-              <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/30">
-                <div className="flex items-center justify-center">
-                  <Image 
-                    src="/assets/images/logos/logo.avif" 
-                    alt="Admission Hands Logo" 
-                    width={130}
-                    height={32}
-                    className="object-contain w-[130px] h-[32px]"
-                    unoptimized
-                  />
+              {/* What a visitor on a phone most often wants: a person. */}
+              <div className="p-4 border-t border-border bg-surface-1 grid gap-2 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    CTA.call();
+                  }}
+                  className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-gradient-brand px-5 text-[15px] font-bold text-white shadow-glow"
+                >
+                  <Phone className="h-4 w-4" aria-hidden="true" /> {ctaLabel || 'Talk to a counsellor'}
+                </button>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      CTA.whatsapp();
+                    }}
+                    className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-border bg-card text-[14px] font-semibold text-foreground"
+                  >
+                    <WhatsAppIcon size={16} /> WhatsApp
+                  </button>
+                  <Link
+                    href={accountName ? '/account' : '/login'}
+                    data-aa-mask
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-border bg-card text-[14px] font-semibold text-foreground"
+                  >
+                    <UserRound className="h-4 w-4" aria-hidden="true" /> {accountName ? 'Account' : 'Sign in'}
+                  </Link>
                 </div>
               </div>
             </motion.div>

@@ -7,20 +7,36 @@ import { getMediaAsset, getBlocks, getSettings, setting, getSections, resolveMet
 import { creditOf } from '@/components/ui/PhotoCredit';
 import { getPgContent } from '@/lib/pgContent';
 import { getDataStats } from '@/lib/dataStats';
+import { pageCopy } from '@/lib/pageCopy';
 import { InlineLeadForm } from '@/components/lead/InlineLeadForm';
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
 
-// Fetch the hero image server-side
+// The hero: the admin's photograph and words, with today's official counts filled in.
 const PGHeroWrapper = async () => {
-  const pgHeroAsset = await getMediaAsset('pg_hero_bg');
+  const [pgHeroAsset, live, stats, team] = await Promise.all([
+    getMediaAsset('pg_hero_bg'),
+    getLiveFigures(),
+    getDataStats(),
+    pageCopy('page.services.figures'),
+  ]);
   const PGHeroComponent = (await import('@/components/md-ms/PGHero')).PGHero;
-  // Numbers that describe the data come from the data — see src/lib/dataStats.ts.
-  const stats = await getDataStats();
+  // Only figures we actually hold become tokens; a fact whose token stays unfilled is dropped.
+  const tokens: Record<string, string> = { students: team.students };
+  if (stats.pgRanks) tokens.pg_ranks_lakh = `${(stats.pgRanks / 100000).toFixed(1)} lakh`;
+  if (live.md_ms_only_colleges) tokens.md_ms_colleges = live.md_ms_only_colleges;
+  if (live.dnb_hospitals && live.mcc_year) {
+    tokens.dnb_hospitals = live.dnb_hospitals;
+    tokens.mcc_year = live.mcc_year;
+  }
+  const copy = await pageCopy('page.md_ms.hero', tokens);
+  const unfilled = (t: string) => /\{[a-z_]+\}/.test(t);
   return (
     <PGHeroComponent
-      backgroundImageUrl={pgHeroAsset?.image_url}
+      copy={{ ...copy, subtitle: unfilled(copy.subtitle) ? '' : copy.subtitle }}
+      facts={[copy.fact_colleges, copy.fact_dnb, copy.fact_ranks, copy.fact_students].filter((f) => f && !unfilled(f))}
+      imageUrl={pgHeroAsset?.image_url}
+      imageAlt={pgHeroAsset?.alt_text ?? undefined}
       credit={creditOf(pgHeroAsset)}
-      stats={{ pgColleges: stats.pgColleges, pgRanks: stats.pgRanks, pgBranches: stats.pgBranches }}
     />
   );
 };
@@ -45,9 +61,12 @@ const PGStickyMobileBar = dynamic(() => import('@/components/md-ms/PGStickyMobil
  * Blank admin values fall through to the defaults below.
  */
 export async function generateMetadata(): Promise<Metadata> {
+  const [stats, live] = await Promise.all([getDataStats(), getLiveFigures()]);
+  const ranks = stats.pgRanks ? `${(stats.pgRanks / 100000).toFixed(1)} lakh published NEET PG closing ranks` : 'published NEET PG closing ranks';
+  const colleges = live.md_ms_only_colleges ? `${live.md_ms_only_colleges} MD/MS colleges and every DNB hospital` : 'every MD/MS college and DNB hospital';
   return resolveMetadata('/md-ms-india', {
     title: 'MD/MS Admission in India 2026 | NEET PG Counselling & College Predictor | Admission Hands',
-    description: 'MD/MS admissions in India, checked against 2.3 lakh published NEET PG closing ranks across 2,168 colleges. Seat predictor, round-by-round movement, dual-quota and choice-filling guidance.',
+    description: `MD/MS admissions in India, checked against ${ranks} across ${colleges}. Seat predictor, round-by-round movement, dual-quota and choice-filling guidance.`,
     keywords: 'MD MS admission India, NEET PG counselling, PG medical colleges, Government medical colleges, Deemed university PG, NEET PG cutoff, AIQ State Quota PG, MD MS seat counselling',
   });
 }
@@ -137,7 +156,7 @@ export default async function PGMDMSPage() {
           webPage({
             name: "MD/MS Admission in India",
             description:
-              "NEET PG counselling, closing ranks, fees and seat details across 2,168 PG medical colleges.",
+              "NEET PG counselling, closing ranks, fees and seat details for every MD/MS college and DNB hospital in India.",
             path: "/md-ms-india",
           }),
           breadcrumb([{ name: "Home", path: "/" }, { name: "MD/MS India", path: "/md-ms-india" }]),

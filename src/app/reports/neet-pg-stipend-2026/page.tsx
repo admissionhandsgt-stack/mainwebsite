@@ -47,7 +47,7 @@ export default async function StipendReportPage() {
   ]);
 
   const findings = [
-    `The median first-year MD/MS stipend in India is ${inr(s.median)} a month, across ${s.colleges.toLocaleString("en-IN")} colleges that publish one.`,
+    `The median first-year MD/MS stipend in India is ${inr(s.median)} a month, across ${s.colleges.toLocaleString("en-IN")} colleges and DNB hospitals that publish one.`,
     ...(top && low
       ? [`${top.state} pays the most (median ${inr(top.median)}); ${low.state} the least (median ${inr(low.median)}) — a ${(top.median / low.median).toFixed(1)}× difference for the same year of residency.`]
       : []),

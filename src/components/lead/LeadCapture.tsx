@@ -4,6 +4,7 @@ import { InlineLeadForm } from "@/components/lead/InlineLeadForm";
 import CounsellorFaces from "@/components/lead/CounsellorFaces";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { CONTACT_INFO } from "@/lib/constants";
+import { TeamFigure } from "@/components/engage/TeamFigures";
 
 /** What a family gets from a counsellor — the work, not the data. */
 const TILES = [
@@ -102,7 +103,7 @@ export default function LeadCapture({
               <div className="mt-6 flex items-center gap-3 border-t border-white/10 pt-5">
                 <CounsellorFaces tone="dark" />
                 <p className="text-[13.5px] leading-snug text-cyan-100/80">
-                  15+ years of NEET counselling.
+                  <TeamFigure k="years" /> years of NEET counselling.
                   <br />
                   <span className="font-semibold text-white">Expert counsellors, open daily 10 AM – 10 PM.</span>
                 </p>
@@ -121,7 +122,7 @@ export default function LeadCapture({
                 <p className="font-heading mt-3 text-[1.35rem] font-extrabold leading-tight text-white">
                   Talk to the people who make these calls
                 </p>
-                <p className="mt-1 text-[13.5px] text-cyan-100/70">15+ years of NEET counselling. Tap a counsellor to see their card.</p>
+                <p className="mt-1 text-[13.5px] text-cyan-100/70"><TeamFigure k="years" /> years of NEET counselling. Tap a counsellor to see their card.</p>
                 <div className="mt-5">
                   <CounsellorFaces tone="dark" withNames />
                 </div>

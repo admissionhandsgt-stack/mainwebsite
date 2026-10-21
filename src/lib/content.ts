@@ -602,6 +602,8 @@ export interface NavItem {
   label: string;
   url: string;
   newTab: boolean;
+  /** One line under the link in a mega menu (migration 0042). */
+  description?: string | null;
   children: NavItem[];
 }
 
@@ -615,7 +617,7 @@ export async function getNav(menu: string): Promise<NavItem[]> {
     async () => {
       const all = rows<Record<string, unknown>>(
         await db.execute(sql`
-          SELECT id, label, url, parent_id, opens_new_tab, display_order
+          SELECT id, label, url, parent_id, opens_new_tab, display_order, description
           FROM nav_items
           WHERE menu = ${menu} AND is_active = true
           ORDER BY display_order ASC, id ASC
@@ -629,6 +631,7 @@ export async function getNav(menu: string): Promise<NavItem[]> {
           label: r.label as string,
           url: r.url as string,
           newTab: Boolean(r.opens_new_tab),
+          description: (r.description as string | null) ?? null,
           children: [],
         });
       }

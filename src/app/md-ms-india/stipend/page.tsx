@@ -65,7 +65,7 @@ export default async function StipendPage() {
   const faqs = [
     {
       question: "What is the NEET PG stipend in India?",
-      answer: `Across the ${s.colleges.toLocaleString("en-IN")} PG colleges that publish one, the median first-year stipend is ${inr(s.median)} a month. It varies widely by state and between government and private colleges — the table on this page lists each state.`,
+      answer: `Across the ${s.colleges.toLocaleString("en-IN")} colleges and DNB hospitals that publish one, the median first-year stipend is ${inr(s.median)} a month. It varies widely by state and between government and private colleges — the table on this page lists each state.`,
     },
     ...(top && low
       ? [
@@ -106,7 +106,7 @@ export default async function StipendPage() {
         topic="money"
         stats={[
           { label: "Median / month", value: inr(s.median), note: "first year, all India" },
-          { label: "Colleges", value: s.colleges.toLocaleString("en-IN"), note: "that publish a stipend" },
+          { label: "Colleges & hospitals", value: s.colleges.toLocaleString("en-IN"), note: "that publish a stipend" },
           { label: "States", value: String(s.states.length) },
           ...(top ? [{ label: "Highest state", value: inr(top.median), note: top.state }] : []),
         ]}

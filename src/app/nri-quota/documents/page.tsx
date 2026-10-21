@@ -101,7 +101,7 @@ export default async function NriDocumentsPage() {
               { label: "Sponsorship", text: body.rule_sponsor },
             ].map((f) => ({
               label: f.label,
-              value: <span className="font-body text-[14px] font-medium leading-relaxed text-slate-100">{f.text}</span>,
+              value: <span className="font-body text-[14px] font-medium leading-relaxed text-foreground">{f.text}</span>,
               wide: true,
             }))}
           />

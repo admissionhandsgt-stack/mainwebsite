@@ -1,122 +1,131 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { Phone, Sparkles, CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Phone, Stethoscope } from "lucide-react";
 import { useCTA } from "@/hooks/useCTA";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import PhotoCredit, { type PhotoCreditInfo } from "@/components/ui/PhotoCredit";
 
-interface PGHeroStats {
-  pgColleges: number;
-  pgRanks: number;
-  pgBranches: number;
+export interface PGHeroCopy {
+  eyebrow: string;
+  title: string;
+  accent: string;
+  subtitle: string;
+  cta_call: string;
+  cta_whatsapp: string;
+  wa_text: string;
 }
 
 interface PGHeroProps {
-  /** Real counts from `src/lib/dataStats.ts`. Absent = the badge is dropped. */
-  stats?: PGHeroStats;
-  backgroundImageUrl?: string;
-  /** Who photographed the campus, and which campus it is. */
+  /** Admin → Content → "Page: MD/MS overview", with the live figures already filled in. */
+  copy: PGHeroCopy;
+  /**
+   * The short facts under the buttons, already worded: each from an official count (NMC's register,
+   * MCC's matrix), the published results we hold, or the team's own figure from the admin. A fact
+   * with no figure is left out rather than shown with a guess.
+   */
+  facts: string[];
+  imageUrl?: string;
+  imageAlt?: string;
+  /** Who photographed it, and which place it is. */
   credit?: PhotoCreditInfo;
 }
 
-export const PGHero = ({ backgroundImageUrl, credit, stats }: PGHeroProps) => {
+/**
+ * The MD/MS overview's hero — light since 2026-10-21, like every hero on the site: words on the left,
+ * the admin's photograph framed on the right. It said "2,168 PG colleges", which was every row in our
+ * PG list — 1,536 of them DNB-only hospitals, some hospitals twice — and "NEET PG 2025-26" a season
+ * late. The counts now come from NMC and MCC, the words from the admin.
+ */
+export const PGHero = ({ copy, facts, imageUrl, imageAlt, credit }: PGHeroProps) => {
   const CTA = useCTA();
-  const bgImage = backgroundImageUrl || "/assets/images/hero/pg_hero_bg.avif";
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => { setMounted(true); }, []);
-
-  // Counted from the database, not written by hand. The old list said
-  // "250+ PG Colleges" against a real 2,168, and "95%+ Success Rate", which
-  // is not a thing anyone can verify — the first student who checks is the
-  // one deciding whether to trust us.
-  const trustBadges = [
-    stats?.pgColleges ? `${stats.pgColleges.toLocaleString("en-IN")} PG colleges` : null,
-    stats?.pgRanks ? `${(stats.pgRanks / 100000).toFixed(1)} lakh closing ranks` : null,
-    stats?.pgBranches ? `${stats.pgBranches} branches` : null,
-    "2100+ students guided",
-  ].filter(Boolean) as string[];
+  const photo = imageUrl && imageUrl !== "none" ? imageUrl : null;
 
   return (
-    <section
-      id="pg-hero"
-      className="relative flex items-center overflow-hidden py-12 md:py-16 bg-slate-950 text-white"
-      role="banner"
-    >
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
-        {bgImage && bgImage !== "none" && (
-          <Image
-            src={bgImage}
-            alt="PG Medical Residents in Hospital"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-            placeholder="blur"
-            blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMjAiIGhlaWdodD0iMjQwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDcwZTFlIi8+PC9zdmc+"
-          />
-        )}
-        <div className="absolute inset-0 bg-slate-950/25" />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/50 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-slate-950/60" />
+    <section id="pg-hero" className="relative isolate overflow-hidden border-b border-border bg-background" aria-labelledby="pg-hero-title">
+      <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary-soft/80 via-background to-background" />
+        <div className="absolute -right-40 -top-48 h-[32rem] w-[32rem] rounded-full bg-secondary/10 blur-[110px]" />
+        <div className="absolute inset-0 opacity-60 [background-image:linear-gradient(hsl(var(--border))_1px,transparent_1px),linear-gradient(90deg,hsl(var(--border))_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(ellipse_60%_55%_at_75%_10%,#000,transparent)]" />
       </div>
 
-      {/* Ambient glow */}
-      <div className="absolute top-0 right-0 w-1/2 h-full bg-cyan-500/10 blur-[120px] pointer-events-none" />
-
-      {/* Content */}
-      <motion.div
-        initial={mounted ? { opacity: 0, y: 15 } : false}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="container-custom relative z-10 max-w-5xl mx-auto text-center lg:text-left"
+      <div
+        className={`container-custom relative grid gap-10 py-10 md:py-14 ${
+          photo ? "lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] lg:items-center lg:gap-14 xl:grid-cols-[minmax(0,1fr)_minmax(0,32rem)]" : ""
+        }`}
       >
-        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-cyan-300 text-[10px] font-black tracking-widest uppercase mb-5 backdrop-blur-md">
-          <Sparkles className="w-3 h-3 text-cyan-400" /> NEET PG 2025-26 · Expert Counselling
-        </div>
+        <div className="min-w-0">
+          {copy.eyebrow && (
+            <p className="mb-4 flex items-center gap-2.5 text-[12px] font-bold uppercase tracking-[0.14em] text-primary-strong">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-soft ring-1 ring-primary/15">
+                <Stethoscope className="h-4 w-4" aria-hidden="true" />
+              </span>
+              {copy.eyebrow}
+            </p>
+          )}
 
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.4rem] font-black text-white leading-[1.08] tracking-tight mb-5">
-          Your MBBS Was the Beginning.{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-teal-300">
-            Your Specialty Defines Your Legacy.
-          </span>
-        </h1>
-
-        <p className="text-cyan-100/90 text-sm md:text-base font-medium leading-relaxed max-w-2xl mx-auto lg:mx-0 mb-7">
-          From rank analysis to college reporting — every recommendation is checked against{" "}
-          {stats?.pgRanks ? `${(stats.pgRanks / 100000).toFixed(1)} lakh published closing ranks` : "published closing ranks"}{" "}
-          across {stats?.pgColleges ? stats.pgColleges.toLocaleString("en-IN") : "every"} PG colleges, with dual-quota
-          handling and one named counsellor throughout.
-        </p>
-
-        <div className="flex flex-col xs:flex-row gap-3 justify-center lg:justify-start mb-8">
-          <button
-            onClick={() => CTA.call()}
-            className="inline-flex items-center justify-center gap-2 bg-white dark:!bg-cyan-600 text-slate-900 dark:!text-white px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl font-black text-xs sm:text-sm hover:bg-cyan-50 dark:!hover:bg-cyan-500 transition-all shadow-lg active:scale-95 w-full xs:w-auto"
+          <h1
+            id="pg-hero-title"
+            className="font-heading max-w-[22ch] text-[clamp(2rem,4.4vw,3.35rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-foreground [text-wrap:balance]"
           >
-            <Phone className="w-4 h-4 shrink-0" /> Talk to a PG Expert
-          </button>
-          <button
-            onClick={() => CTA.whatsapp("Hi, I need guidance for NEET PG counselling")}
-            className="inline-flex items-center justify-center gap-2 border-2 border-white/60 backdrop-blur-sm text-white px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl font-black text-xs sm:text-sm hover:bg-white/10 transition-all active:scale-95 w-full xs:w-auto"
-          >
-            <WhatsAppIcon size={16} /> WhatsApp Us
-          </button>
+            {copy.title}
+            {copy.accent && (
+              <>
+                {" "}
+                <span className="text-primary-strong">{copy.accent}</span>
+              </>
+            )}
+          </h1>
+
+          {copy.subtitle && (
+            <p className="mt-5 max-w-[60ch] text-[15.5px] leading-relaxed text-muted-foreground md:text-[17px]">{copy.subtitle}</p>
+          )}
+
+          <div className="mt-7 flex flex-col gap-3 xs:flex-row">
+            <button
+              type="button"
+              onClick={() => CTA.call()}
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary-strong px-6 text-[15px] font-bold text-primary-foreground shadow-glow transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              <Phone className="h-4 w-4 shrink-0" aria-hidden="true" /> {copy.cta_call}
+            </button>
+            <button
+              type="button"
+              onClick={() => CTA.whatsapp(copy.wa_text)}
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-border bg-card px-6 text-[15px] font-semibold text-foreground transition-colors hover:border-primary/40"
+            >
+              <WhatsAppIcon size={17} /> {copy.cta_whatsapp}
+            </button>
+          </div>
+
+          {facts.length > 0 && (
+            <ul className="mt-7 grid max-w-2xl gap-x-6 gap-y-2.5 sm:grid-cols-2">
+              {facts.map((f) => (
+                <li key={f} className="flex items-start gap-2 text-[14px] font-medium leading-snug text-foreground">
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+                  {f}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
-        <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2">
-          {trustBadges.map((badge, i) => (
-            <span key={i} className="inline-flex items-center gap-1.5 text-[10px] font-black text-cyan-200/80 uppercase tracking-widest">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-              {badge}
-            </span>
-          ))}
-        </div>
-      </motion.div>
-      <PhotoCredit {...credit} className="absolute bottom-1.5 right-2 z-10" />
+        {photo && (
+          <div className="relative min-w-0">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] border border-border bg-surface-3 shadow-lift">
+              <Image
+                src={photo}
+                alt={imageAlt || "PG residents at work in a hospital"}
+                fill
+                priority
+                sizes="(min-width: 1280px) 32rem, (min-width: 1024px) 28rem, 100vw"
+                className="object-cover"
+              />
+              <PhotoCredit {...credit} tone="chip" className="absolute right-2.5 top-2.5" />
+            </div>
+          </div>
+        )}
+      </div>
     </section>
   );
 };

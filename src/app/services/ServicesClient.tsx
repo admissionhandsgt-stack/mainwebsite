@@ -165,98 +165,72 @@ export default function ServicesClient({ heroImages, heroCredit, data }: Service
   return (
     <main className="min-h-screen bg-slate-50 flex flex-col">
 
-      {/* Hero Section - Reduced padding by 50% and made compact */}
-      <section className="relative min-h-[56vh] md:min-h-[62vh] flex items-center overflow-hidden py-14 md:py-20 bg-slate-950 text-white">
-
-        {/* Background Image behind the text */}
-        <div className="absolute inset-0 z-0">
-          {bgImage && bgImage !== "none" && (
-            <Image
-              src={bgImage}
-              alt={heroCredit?.subject ?? "Medical college campus"}
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover"
-              placeholder="blur"
-              blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMjAiIGhlaWdodD0iMjQwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDcwZTFlIi8+PC9zdmc+"
-            />
-          )}
-          <div className="absolute inset-0 bg-slate-950/20" />
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-950/40 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-slate-950/50" />
-          {/*
-            Lifted clear of the trust-stats bar below, which is pulled up over
-            the hero by `-mt-6` and was covering all but the last few words of
-            the credit. A credit that is half-hidden behind a card is not a
-            credit — it is the licence condition, and it has to be readable.
-          */}
-          <PhotoCredit {...heroCredit} className="absolute bottom-10 right-2" />
+      {/* Hero — light since 2026-10-21: words left, the admin's photograph framed right. */}
+      <section className="relative isolate overflow-hidden border-b border-border bg-background pb-12 pt-10 md:pb-16 md:pt-14">
+        <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+          <div className="absolute inset-0 bg-gradient-to-b from-primary-soft/80 via-background to-background" />
+          <div className="absolute -right-40 -top-48 h-[32rem] w-[32rem] rounded-full bg-secondary/10 blur-[110px]" />
+          <div className="absolute inset-0 opacity-60 [background-image:linear-gradient(hsl(var(--border))_1px,transparent_1px),linear-gradient(90deg,hsl(var(--border))_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(ellipse_60%_55%_at_75%_10%,#000,transparent)]" />
         </div>
 
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-cyan-500/10 blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-1/3 h-1/2 bg-teal-500/5 blur-[100px] pointer-events-none" />
+        <div className={`container-custom relative grid gap-10 ${bgImage && bgImage !== "none" ? "lg:grid-cols-[minmax(0,1fr)_minmax(0,30rem)] lg:items-center lg:gap-14" : ""}`}>
+          <div className="min-w-0">
+            <p className="mb-4 flex items-center gap-2.5 text-[12px] font-bold uppercase tracking-[0.14em] text-primary-strong">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-soft ring-1 ring-primary/15">
+                <Sparkles className="h-4 w-4" aria-hidden="true" />
+              </span>
+              {copy.hero_badge}
+            </p>
 
-        <div className="container-custom relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-            {/* Left side Content */}
-            <motion.div
-              initial={mounted ? { opacity: 0, y: 15 } : false}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="lg:col-span-9 xl:col-span-8 text-center lg:text-left space-y-4 md:space-y-5"
-            >
-              <div
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-cyan-300 text-xs font-black tracking-widest uppercase mb-1 backdrop-blur-md"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-cyan-400" /> {copy.hero_badge}
-              </div>
+            <h1 className="font-heading max-w-[22ch] text-[clamp(2rem,4.4vw,3.35rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-foreground [text-wrap:balance]">
+              {copy.hero_title}{' '}
+              <span className="text-primary-strong">{copy.hero_accent}</span>
+            </h1>
 
-              <h1
-                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white leading-[1.1] tracking-tight drop-shadow-md"
-              >
-                {copy.hero_title}{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-teal-300 drop-shadow-sm">
-                  {copy.hero_accent}
-                </span>
-              </h1>
+            <p className="mt-5 max-w-[60ch] text-[15.5px] leading-relaxed text-muted-foreground md:text-[17px]">{copy.hero_subtitle}</p>
 
-              <p
-                className="text-cyan-100/90 text-xs md:text-sm font-medium leading-relaxed max-w-2xl mx-auto lg:mx-0 drop-shadow-sm"
-              >
-                {copy.hero_subtitle}
-              </p>
+            <ul className="mt-6 grid max-w-2xl gap-2.5 sm:grid-cols-2">
+              {lines(copy.hero_points).map((point, idx) => (
+                <li key={idx} className="flex items-start gap-2 text-[14px] font-medium leading-snug text-foreground">
+                  <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+                  {point}
+                </li>
+              ))}
+            </ul>
 
-              {/* Highlights */}
-              <ul
-                className="space-y-2 hidden sm:inline-block text-left text-cyan-100/80 text-xs font-semibold max-w-md"
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+              <button
+                type="button"
+                onClick={() => CTA.call()}
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary-strong px-6 text-[15px] font-bold text-primary-foreground shadow-glow transition-transform hover:-translate-y-0.5"
               >
-                {lines(copy.hero_points).map((point, idx) => (
-                  <li key={idx} className="flex items-center gap-2.5">
-                    <div className="h-4.5 w-4.5 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400">
-                      <ShieldCheck size={12} />
-                    </div>
-                    {point}
-                  </li>
-                ))}
-              </ul>
-
-              <div
-                className="flex flex-col sm:flex-row gap-2.5 justify-center lg:justify-start"
+                <Phone className="h-4 w-4" aria-hidden="true" /> {copy.hero_call}
+              </button>
+              <button
+                type="button"
+                onClick={() => CTA.whatsapp(copy.hero_whatsapp_message)}
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-border bg-card px-6 text-[15px] font-semibold text-foreground transition-colors hover:border-primary/40"
               >
-                <button onClick={() => CTA.call()}
-                  className="inline-flex items-center justify-center gap-2 bg-white dark:!bg-cyan-600 text-slate-900 dark:!text-white px-5 py-3 rounded-xl font-black text-xs hover:bg-cyan-50 dark:!hover:bg-cyan-500 transition-all shadow-lg active:scale-95"
-                >
-                  <Phone className="w-3.5 h-3.5" /> {copy.hero_call}
-                </button>
-                <button onClick={() => CTA.whatsapp(copy.hero_whatsapp_message)}
-                  className="inline-flex items-center justify-center gap-2 border-2 border-white/60 backdrop-blur-sm text-white px-5 py-3 rounded-xl font-black text-xs hover:bg-white/10 transition-all active:scale-95"
-                >
-                  <WhatsAppIcon size={14} /> {copy.hero_whatsapp}
-                </button>
-              </div>
-            </motion.div>
+                <WhatsAppIcon size={16} /> {copy.hero_whatsapp}
+              </button>
+            </div>
           </div>
+
+          {bgImage && bgImage !== "none" && (
+            <div className="relative min-w-0">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] border border-border bg-surface-3 shadow-lift">
+                <Image
+                  src={bgImage}
+                  alt={heroCredit?.subject ?? "Medical college campus"}
+                  fill
+                  priority
+                  sizes="(min-width: 1024px) 30rem, 100vw"
+                  className="object-cover"
+                />
+                <PhotoCredit {...heroCredit} tone="chip" className="absolute right-2.5 top-2.5" />
+              </div>
+            </div>
+          )}
         </div>
       </section>
 

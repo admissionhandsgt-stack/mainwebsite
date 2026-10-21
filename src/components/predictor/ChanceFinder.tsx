@@ -13,6 +13,7 @@ import ChanceResults from "./ChanceResults";
 import ProfileWizard, { draftFrom, essentialsDone, type Draft } from "./ProfileWizard";
 import type { PredictData, RoundsData, StreamFacets, Viewer } from "./chanceTypes";
 import { aaTrack, aaCourse, trackLead } from "@/lib/analytics";
+import { TeamFigure } from "@/components/engage/TeamFigures";
 
 /**
  * The Admission Chance flow (2026-10-12) — what /neet-college-predictor is now.
@@ -274,7 +275,7 @@ export default function ChanceFinder({
     () => (
       <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[12.5px] text-muted-foreground">
         <li className="inline-flex items-center gap-1.5">
-          <BadgeCheck className="h-4 w-4 text-accent" aria-hidden="true" /> 15+ years of counselling
+          <BadgeCheck className="h-4 w-4 text-accent" aria-hidden="true" /> <TeamFigure k="years" /> years of counselling
         </li>
         <li className="inline-flex items-center gap-1.5">
           <Users className="h-4 w-4 text-primary" aria-hidden="true" /> Expert counsellors

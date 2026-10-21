@@ -20,7 +20,9 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function DeemedUniversitiesPage() {
-  const heroKeys = ['deemed_campus_1', 'college_campus_2', 'college_campus_3', 'college_campus_4'];
+  // Only photographs of deemed universities: the other campuses that rotated here (GCS Ahmedabad,
+  // Murshidabad, Gujarat Adani) are government or private colleges, under a heading about deemed ones.
+  const heroKeys = ['deemed_campus_1'];
 
   // One round trip for every image plus one for the contact row, in parallel.
   // The loop this replaces made four sequential trips through the tunnel on

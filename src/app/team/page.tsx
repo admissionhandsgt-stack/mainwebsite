@@ -66,12 +66,16 @@ export default function TeamPage() {
         ]}
       />
 
-      <section className="bg-slate-950">
-        <div className="container-custom py-12 md:py-16">
-          <h1 className="font-heading text-[clamp(2rem,4.2vw,3.1rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-white">
+      <section className="relative isolate overflow-hidden border-b border-border bg-background">
+        <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+          <div className="absolute inset-0 bg-gradient-to-b from-primary-soft/80 via-background to-background" />
+          <div className="absolute inset-0 opacity-60 [background-image:linear-gradient(hsl(var(--border))_1px,transparent_1px),linear-gradient(90deg,hsl(var(--border))_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(ellipse_60%_55%_at_75%_10%,#000,transparent)]" />
+        </div>
+        <div className="container-custom py-10 md:py-14">
+          <h1 className="font-heading text-[clamp(2rem,4.2vw,3.1rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-foreground">
             Our counsellors
           </h1>
-          <p className="mt-3 max-w-[62ch] text-[15px] leading-relaxed text-slate-300 md:text-base">
+          <p className="mt-3 max-w-[62ch] text-[15.5px] leading-relaxed text-muted-foreground md:text-[17px]">
             The people you speak to at AdmissionHands. Call or WhatsApp any of them directly — or visit the office in{" "}
             {OFFICE.locality}, open {OFFICE.hoursShort}.
           </p>

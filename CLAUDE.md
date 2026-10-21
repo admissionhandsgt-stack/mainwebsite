@@ -188,6 +188,43 @@ college offers one*, hostel and deposit terms, all in writing — and says the s
 counselling. Keep it that way: an agent promising a seat or a discount the college does not give is the
 fraud the site warns families about (`TrustShield`). An odd last card spans the full row on desktop.
 
+## Light pages, grouped menus, honest counts (owner, 2026-10-21) — read before touching a hero, a menu or a count
+
+"Dark dark hero… light theme mai light background with relevant images… MD/MS ki drop down kitni badi
+hogyi hai… kya 2168 colleges hai?… third party tool… bharosa girata hai." What changed, and the rules:
+
+- **No dark heroes, anywhere.** `DataHero`, `PageHero`, `PGHero`, `NRIHero`, both college templates and the
+  hand-built heroes (services, know-us, team, contact, NEET UG process, MBBS colleges, deemed) are light:
+  a `primary-soft → background` wash with a faint grid, words left, the photograph **framed** on the right
+  (rounded, bordered, credit on a `PhotoCredit tone="chip"`), and on data pages the `HeroBars`/`HeroFacts` card
+  laid over the photo's foot. Accent words are solid `text-primary-strong`, never gradient text; the eyebrow is
+  an icon box + uppercase line, not a pill; the primary button is `bg-primary-strong text-primary-foreground`.
+  Tokens only, so dark mode still works. `PageHero tone="dark"` now means "photo framed beside the words".
+- **Photos:** generic scenes only (a lab, a ward, an OT, a counselling session, doctors) or a credited photo of
+  the very college a page is about. `scripts/seed_page_copy.mjs` `HERO_PHOTOS` fills the empty page keys from
+  the media rows and the specialty photos in `uploads/branches-*.avif`, never replacing an admin's choice.
+  Removed: the NRI hero's AI "D.Y. PATIL UNIVERSITY" fallback, and the government/private campuses that rotated
+  under "Deemed universities" (only `deemed_campus_1` now). BDS, MDS and AYUSH have no suitable photo yet.
+- **Menus are grouped in Admin → Navigation.** A header item whose children have children is a mega menu:
+  each child (url `#`) is a titled column, its links carry `nav_items.description` (migration 0042). MD/MS =
+  Colleges & seats · Cutoff & counselling · Fees, stipend & bond. Footer Explore: top-level `#` rows are the
+  columns (MBBS, MD/MS, PG fees & stipend, Courses & tools, Company); footer_quick is the **bottom line**
+  (Privacy, Terms, Data & DPDP), no longer phone pills. Rows: `scripts/sql/nav_megamenu_2026_10_21.sql` —
+  applied only after the release that renders groups (an older header draws a `#` row as a dead link).
+  The header has 18px spare at 1280–1535 with the search button; measure before adding anything.
+- **Site search** (`components/SiteSearch.tsx`, `/api/search`): pages from the menus, colleges by name (every
+  word must match), branches, states. "/" or Ctrl+K opens it; focus is trapped and returned (`useFocusTrap`, also
+  on the phone drawer). Menus open instantly and fade out in 150ms.
+- **Counts: never a total of our PG list as "colleges".** It has one row per MD/MS college and one per DNB
+  hospital (1,536 of 2,168 are DNB-only; a hospital with both is two rows). Use NMC for colleges
+  (`md_ms_only_colleges` 634, `mbbs_colleges` 834, `nmc_colleges` 906, `md_ms_only_seats`), MCC for DNB
+  (`dnb_hospitals`, `aiq_colleges`, `mcc_seats`) — all tokens in `lib/liveFigures.ts`, matrix by matrix. Where a
+  page counts our own list, split it: `getPgStates()` / `getPgStatePage()` return `mdms` and `dnb`. A seat
+  option is never called a seat. `getDataStats().states` folds the three places spelt two ways (it said 38).
+- **The team's own figures** (students guided, years) are one setting, "Site: the team's own figures"
+  (`page.services.figures.*`): `useTeamFigures()` / `<TeamFigure k="years" />` in client and server trees,
+  `pageCopy` in server code. Never type "15+" or "2100+" again.
+
 ## Data pages: the hero, the copy registry, the photos (2026-10-18)
 
 Every data page (stipend, PG/UG states, branches, NEET UG/PG/SS/MDS cutoffs, BDS, AYUSH, deemed and
@@ -321,9 +358,12 @@ Two datasets from the PG data session (`pg-4f`), handed over as CSV in `D:/Admis
 | `pg_seat_terms` (0039) | Per college × course × seat type: stipend Y1–Y3, service bond (years, penalty), seat-leaving penalty / debarment, hostel. 27,478 rows, 2,007 colleges | **Third-party compilation** (the owner's subscription), as listed for the 2026 counselling | `npx tsx --env-file=.env.local scripts/import_seat_terms.ts [file] [--dry-run]` |
 
 - **Never call `pg_seat_terms` figures official or verified**, and never show the compiler's written remarks
-  (none are stored). Every surface carries the caveat ("compiled … by a third-party data service … confirm with
-  the state's notice or the college before you pay a fee or sign a bond") — it is inside `SeatTerms`, not an
-  option. No CiteThis on the bond page: we do not invite others to cite a third party's compilation as ours.
+  (none are stored). Every surface carries the caveat ("as listed for the counselling … not an official notice …
+  confirm with the state's notice or the college before you pay a fee or sign a bond") — it is inside `SeatTerms`,
+  not an option. **The words "third-party data service" are gone from every page (owner, 2026-10-21: "ye sab
+  bharosa girata hai clients ka")** — the caveat stays, and so does the rule that it is never presented as
+  official, verified or our own compilation. No CiteThis on the bond page: we do not invite others to cite a
+  third party's compilation as ours.
   Spot-checked 2026-10-20 against public reporting: Uttarakhand 2 years / ₹2.5 Cr, Delhi 1 year / ₹20 L,
   Kerala ₹50 L to leave the seat — all three match.
 - **No allotment row's rank reaches a page** (the chance-view rule). `mcc_allotments` feeds round counts,

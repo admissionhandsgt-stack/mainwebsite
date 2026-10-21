@@ -120,51 +120,52 @@ export default async function UgCollegePage({ params }: { params: { slug: string
         />
       ))}
 
-      {/* ---------------- header ---------------- */}
-      <header className="relative overflow-hidden border-b border-border">
-        <div className="absolute inset-0 bg-slate-950">
-          {extras?.imageUrl && (
-            <Image
-              src={extras.imageUrl}
-              alt={`${college.name} campus`}
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover object-center"
-            />
-          )}
-          <div
-            className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/85 to-slate-950/60"
-            aria-hidden="true"
-          />
-          <PhotoCredit
-            subject={extras?.imageUrl ? college.name : null}
-            attribution={extras?.imageAttribution}
-            license={extras?.imageLicense}
-            className="absolute bottom-1.5 right-2"
-          />
+      {/* ---------------- header (light since 2026-10-21; the college's own photograph framed beside it) ---------------- */}
+      <header className="relative isolate overflow-hidden border-b border-border bg-background">
+        <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+          <div className="absolute inset-0 bg-gradient-to-b from-primary-soft/80 via-background to-background" />
+          <div className="absolute inset-0 opacity-60 [background-image:linear-gradient(hsl(var(--border))_1px,transparent_1px),linear-gradient(90deg,hsl(var(--border))_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(ellipse_60%_55%_at_75%_10%,#000,transparent)]" />
         </div>
 
-        <div className="container-custom relative z-10 py-12 md:py-16">
-          <nav aria-label="Breadcrumb" className="mb-4 text-[13px] text-white/60">
-            <Link href="/mbbs-india" className="hover:text-white">MBBS India</Link>
-            <span className="mx-2">/</span>
-            {stateSlug && college.state ? (
-              <>
-                <Link href={`/mbbs-india/${stateSlug}`} className="hover:text-white">
-                  MBBS in {college.state}
-                </Link>
-                <span className="mx-2">/</span>
-              </>
-            ) : null}
-            <Link href="/mbbs-india/colleges" className="hover:text-white">Colleges</Link>
-          </nav>
+        <div className="container-custom relative py-9 md:py-12">
+          <div className={extras?.imageUrl ? "grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:items-center lg:gap-12 xl:grid-cols-[minmax(0,1fr)_minmax(0,26rem)]" : ""}>
+            <div className="min-w-0">
+              <nav aria-label="Breadcrumb" className="mb-5 text-[13px] text-muted-foreground">
+                <Link href="/mbbs-india" className="hover:text-foreground hover:underline">MBBS India</Link>
+                <span className="mx-2 text-border" aria-hidden="true">/</span>
+                {stateSlug && college.state ? (
+                  <>
+                    <Link href={`/mbbs-india/${stateSlug}`} className="hover:text-foreground hover:underline">
+                      MBBS in {college.state}
+                    </Link>
+                    <span className="mx-2 text-border" aria-hidden="true">/</span>
+                  </>
+                ) : null}
+                <Link href="/mbbs-india/colleges" className="hover:text-foreground hover:underline">Colleges</Link>
+              </nav>
 
-          <h1 className="font-heading max-w-[24ch] text-[clamp(1.75rem,4vw,2.75rem)] font-extrabold leading-tight text-white">
-            {s.short}
-          </h1>
-          {s.official !== s.short && <p className="mt-2 max-w-[70ch] text-[14px] text-white/60">{s.official}</p>}
-          {where && <p className="mt-1.5 text-[15px] text-white/70">{where}</p>}
+              <h1 className="font-heading max-w-[22ch] text-[clamp(1.8rem,4vw,2.9rem)] font-extrabold leading-[1.07] tracking-[-0.03em] text-foreground [text-wrap:balance]">
+                {s.short}
+              </h1>
+              {s.official !== s.short && <p className="mt-2.5 max-w-[70ch] text-[14px] text-muted-foreground">{s.official}</p>}
+              {where && <p className="mt-2 text-[15px] font-medium text-foreground">{where}</p>}
+            </div>
+
+            {extras?.imageUrl && (
+              <div className="relative min-w-0">
+            <div className="relative aspect-[16/10] overflow-hidden rounded-[1.75rem] border border-border bg-surface-3 shadow-lift">
+              <Image src={extras.imageUrl} alt={`${college.name} campus`} fill priority sizes="(min-width: 1280px) 26rem, (min-width: 1024px) 24rem, 100vw" className="object-cover" />
+              <PhotoCredit
+                subject={college.name}
+                attribution={extras?.imageAttribution}
+                license={extras?.imageLicense}
+                tone="chip"
+                className="absolute right-2.5 top-2.5"
+              />
+            </div>
+              </div>
+            )}
+          </div>
 
           <CollegeGlance s={s} />
         </div>

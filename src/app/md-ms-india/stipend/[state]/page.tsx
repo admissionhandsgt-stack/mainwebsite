@@ -145,7 +145,7 @@ export default async function StateStipendPage({ params }: { params: { state: st
         topic="money"
         stats={[
           { label: "Median / month", value: rupees(s.median), note: "first year" },
-          { label: "Colleges", value: String(s.colleges), note: "that publish a stipend" },
+          { label: "Colleges & hospitals", value: String(s.colleges), note: "that publish a stipend" },
           ...(s.govtMedian ? [{ label: "Govt median", value: rupees(s.govtMedian) }] : []),
           ...(s.privateMedian ? [{ label: "Private median", value: rupees(s.privateMedian) }] : []),
         ]}
@@ -176,7 +176,7 @@ export default async function StateStipendPage({ params }: { params: { state: st
               : []),
             ...(s.y3Median ? [{ icon: "spark" as const, label: "Year 3 median", value: rupees(s.y3Median), note: `year 1: ${rupees(s.median)}` }] : []),
             ...(showBond && bond!.govt.withBond > 0
-              ? [{ icon: "authority" as const, label: "Govt seats with a bond", value: `${bond!.govt.withBond} of ${bond!.govt.colleges}`, note: `usually ${years(bond!.govt.typicalYears)}` }]
+              ? [{ icon: "authority" as const, label: "Govt colleges with a bond", value: `${bond!.govt.withBond} of ${bond!.govt.colleges}`, note: `usually ${years(bond!.govt.typicalYears)}` }]
               : []),
           ]}
         />

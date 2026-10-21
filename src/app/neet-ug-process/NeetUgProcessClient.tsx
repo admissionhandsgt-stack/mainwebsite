@@ -57,51 +57,48 @@ const NeetUgProcessClient = ({
 
   return (
     <main className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-white transition-colors duration-200">
-      {/* 1. HERO SECTION */}
-      <section className="relative min-h-[55vh] md:min-h-[50vh] h-auto flex flex-col overflow-hidden bg-slate-950">
-        <Image
-          src={
-            heroImageUrl && heroImageUrl !== "none"
-              ? heroImageUrl
-              : "/assets/images/exam/neet-exam.avif"
-          }
-          alt="Students at a NEET examination centre"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover opacity-55"
-        />
-        <PhotoCredit {...heroCredit} className="absolute bottom-1.5 right-2 z-20" />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-slate-950/35" />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/50" />
-        {/* Ambient brand light */}
-        <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-          <div className="ambient-blob animate-drift -left-24 -top-28 h-[24rem] w-[24rem] bg-primary/25" />
-          <div className="ambient-blob animate-drift-slow right-[-6rem] bottom-[-7rem] h-[20rem] w-[20rem] bg-secondary/20 [animation-delay:-6s]" />
+      {/* 1. HERO — light since 2026-10-21: words left, the admin's photograph framed right */}
+      <section className="relative isolate overflow-hidden border-b border-border bg-background py-10 md:py-14">
+        <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+          <div className="absolute inset-0 bg-gradient-to-b from-primary-soft/80 via-background to-background" />
+          <div className="absolute -right-40 -top-48 h-[32rem] w-[32rem] rounded-full bg-secondary/10 blur-[110px]" />
+          <div className="absolute inset-0 opacity-60 [background-image:linear-gradient(hsl(var(--border))_1px,transparent_1px),linear-gradient(90deg,hsl(var(--border))_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(ellipse_60%_55%_at_75%_10%,#000,transparent)]" />
         </div>
-        <div className="container-custom relative z-10 text-white flex-1 flex flex-col pt-24 pb-6 md:py-32">
-          <div className="max-w-3xl flex-1 flex flex-col">
-            <div className="space-y-3 flex-1 flex flex-col justify-center">
-              <h1 className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight">
-                {copy.hero_title} <span className="text-primary">{copy.hero_accent}</span>
-              </h1>
-              <p className="text-base md:text-lg lg:text-xl text-slate-200 max-w-2xl">
-                {copy.hero_subtitle}
-              </p>
-            </div>
-            <div className="grid grid-cols-2 gap-3 w-full max-w-[340px] md:max-w-md mt-8 md:mt-6 pb-2 md:pb-0">
-              <a 
+        <div className="container-custom relative grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,30rem)] lg:items-center lg:gap-14">
+          <div className="min-w-0">
+            <h1 className="font-heading max-w-[22ch] text-[clamp(2rem,4.4vw,3.35rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-foreground [text-wrap:balance]">
+              {copy.hero_title} <span className="text-primary-strong">{copy.hero_accent}</span>
+            </h1>
+            <p className="mt-5 max-w-[60ch] text-[15.5px] leading-relaxed text-muted-foreground md:text-[17px]">
+              {copy.hero_subtitle}
+            </p>
+            <div className="mt-7 flex flex-col gap-3 xs:flex-row">
+              <a
                 href={`tel:${CONTACT_INFO.phone}`}
-                className="flex items-center justify-center rounded-full bg-primary hover:bg-primary/90 text-white px-2 py-2.5 md:py-3 text-xs sm:text-sm font-bold transition-all shadow-lg hover:shadow-primary/20 whitespace-nowrap"
+                className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary-strong px-6 text-[15px] font-bold text-primary-foreground shadow-glow transition-transform hover:-translate-y-0.5"
               >
                 {copy.hero_cta_call}
               </a>
-              <button 
+              <button
+                type="button"
                 onClick={scrollToSteps}
-                className="flex items-center justify-center rounded-full border border-white/60 bg-white/10 text-white hover:bg-white hover:text-slate-900 px-2 py-2.5 md:py-3 text-xs sm:text-sm font-bold transition-all backdrop-blur-sm whitespace-nowrap"
+                className="inline-flex min-h-12 items-center justify-center rounded-full border border-border bg-card px-6 text-[15px] font-semibold text-foreground transition-colors hover:border-primary/40"
               >
                 {copy.hero_cta_steps}
               </button>
+            </div>
+          </div>
+          <div className="relative min-w-0">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] border border-border bg-surface-3 shadow-lift">
+              <Image
+                src={heroImageUrl && heroImageUrl !== "none" ? heroImageUrl : "/assets/images/exam/neet-exam.avif"}
+                alt="Students at a NEET examination centre"
+                fill
+                priority
+                sizes="(min-width: 1024px) 30rem, 100vw"
+                className="object-cover"
+              />
+              <PhotoCredit {...heroCredit} tone="chip" className="absolute right-2.5 top-2.5" />
             </div>
           </div>
         </div>

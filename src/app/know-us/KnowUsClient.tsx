@@ -11,6 +11,7 @@ import {
   BarChart3, Target, Zap, TrendingUp, Brain, 
   Lightbulb, Shield, Clock, FileCheck
 } from 'lucide-react';
+import { useTeamFigures } from '@/components/engage/TeamFigures';
 import { useCTA } from '@/hooks/useCTA';
 import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon';
 import { CONTACT_INFO } from '@/lib/constants';
@@ -29,6 +30,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
   // Admission Counselor", a person who does not work here.
   const bgImage = backgroundImageUrl && backgroundImageUrl !== "none" ? backgroundImageUrl : null;
   
+  const team = useTeamFigures();
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
@@ -37,64 +39,65 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col text-slate-800 dark:text-slate-100 transition-colors duration-200">
       
-      {/* ═══════════════ HERO SECTION ═══════════════ */}
-      <section className="relative min-h-[62vh] md:min-h-[68vh] flex items-center overflow-hidden py-16 md:py-24 bg-slate-950 text-white">
-        <div className="absolute inset-0 z-0">
-          {bgImage && bgImage !== "none" && (
-            <Image
-              src={bgImage}
-              alt={credit?.subject ?? "Medical college campus"}
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover"
-              placeholder="blur"
-              blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMjAiIGhlaWdodD0iMjQwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDcwZTFlIi8+PC9zdmc+"
-            />
-          )}
-          <div className="absolute inset-0 bg-slate-950/20" />
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-950/40 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-slate-950/50" />
-          <PhotoCredit {...credit} className="absolute bottom-1.5 right-2" />
+      {/* ═══════════════ HERO — light since 2026-10-21 ═══════════════ */}
+      <section className="relative isolate overflow-hidden border-b border-border bg-background py-10 md:py-14">
+        <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+          <div className="absolute inset-0 bg-gradient-to-b from-primary-soft/80 via-background to-background" />
+          <div className="absolute -right-40 -top-48 h-[32rem] w-[32rem] rounded-full bg-secondary/10 blur-[110px]" />
+          <div className="absolute inset-0 opacity-60 [background-image:linear-gradient(hsl(var(--border))_1px,transparent_1px),linear-gradient(90deg,hsl(var(--border))_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(ellipse_60%_55%_at_75%_10%,#000,transparent)]" />
         </div>
-        
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-cyan-500/10 blur-[100px] pointer-events-none" />
-        
-        <div className="container-custom relative z-10 max-w-5xl mx-auto text-center lg:text-left">
-          <motion.div 
-            initial={mounted ? { opacity: 0, y: 15 } : false} 
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="space-y-4 sm:space-y-5"
-          >
-            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-cyan-300 text-[10px] font-black tracking-widest uppercase mb-4 backdrop-blur-md">
-              <Sparkles className="w-3 h-3 text-cyan-400" /> NEET UG &amp; PG Admission Counselling
-            </div>
-            
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.4rem] font-black text-white leading-[1.1] tracking-tight mb-4">
-              We Don&apos;t Just Guide.{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-teal-300">
-                We Engineer Admissions.
+
+        <div className={`container-custom relative grid gap-10 ${bgImage ? "lg:grid-cols-[minmax(0,1fr)_minmax(0,30rem)] lg:items-center lg:gap-14" : ""}`}>
+          <div className="min-w-0">
+            <p className="mb-4 flex items-center gap-2.5 text-[12px] font-bold uppercase tracking-[0.14em] text-primary-strong">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-soft ring-1 ring-primary/15">
+                <Sparkles className="h-4 w-4" aria-hidden="true" />
               </span>
-            </h1>
-            
-            <p className="text-cyan-100/90 text-sm md:text-base font-medium leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              For over 15 years, Admission Hands has guided 2,100+ students into MBBS and PG seats. We work from the counselling authorities' own published closing ranks, round by round, with one counsellor beside you from your NEET result to the day you report.
+              NEET UG &amp; PG admission counselling
             </p>
 
-            <div className="flex flex-col xs:flex-row gap-3 justify-center lg:justify-start mt-6">
-              <button onClick={() => CTA.call()}
-                className="inline-flex items-center justify-center gap-2 bg-white dark:!bg-cyan-600 text-slate-900 dark:!text-white px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl font-black text-xs sm:text-sm hover:bg-cyan-50 dark:!hover:bg-cyan-500 transition-all shadow-lg active:scale-95 cursor-pointer w-full xs:w-auto"
+            <h1 className="font-heading max-w-[22ch] text-[clamp(2rem,4.4vw,3.35rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-foreground [text-wrap:balance]">
+              We don&apos;t just guide.{' '}
+              <span className="text-primary-strong">We engineer admissions.</span>
+            </h1>
+
+            <p className="mt-5 max-w-[60ch] text-[15.5px] leading-relaxed text-muted-foreground md:text-[17px]">
+              For {team.years} years, Admission Hands has guided {team.students} students into MBBS and PG seats. We work from the counselling authorities&apos; own published closing ranks, round by round, with one counsellor beside you from your NEET result to the day you report.
+            </p>
+
+            <div className="mt-7 flex flex-col gap-3 xs:flex-row">
+              <button
+                type="button"
+                onClick={() => CTA.call()}
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary-strong px-6 text-[15px] font-bold text-primary-foreground shadow-glow transition-transform hover:-translate-y-0.5"
               >
-                <Phone className="w-4 h-4 shrink-0" /> Talk to Our Experts
+                <Phone className="h-4 w-4 shrink-0" aria-hidden="true" /> Talk to our experts
               </button>
-              <button onClick={() => CTA.whatsapp("Hi, I want to learn more about Admission Hands")}
-                className="inline-flex items-center justify-center gap-2 border-2 border-white/60 backdrop-blur-sm text-white px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl font-black text-xs sm:text-sm hover:bg-white/10 transition-all active:scale-95 cursor-pointer w-full xs:w-auto"
+              <button
+                type="button"
+                onClick={() => CTA.whatsapp("Hi, I want to learn more about Admission Hands")}
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-border bg-card px-6 text-[15px] font-semibold text-foreground transition-colors hover:border-primary/40"
               >
-                <WhatsAppIcon size={16} /> WhatsApp Us
+                <WhatsAppIcon size={16} /> WhatsApp us
               </button>
             </div>
-          </motion.div>
+          </div>
+
+          {bgImage && (
+            <div className="relative min-w-0">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] border border-border bg-surface-3 shadow-lift">
+                <Image
+                  src={bgImage}
+                  alt={credit?.subject ?? "Medical college campus"}
+                  fill
+                  priority
+                  sizes="(min-width: 1024px) 30rem, 100vw"
+                  className="object-cover"
+                />
+                <PhotoCredit {...credit} tone="chip" className="absolute right-2.5 top-2.5" />
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -127,7 +130,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
                 Admission Hands was founded with a singular vision: <strong className="text-slate-900 dark:text-white">every NEET rank — whether 500 or 500,000 — deserves a strategic, expert-driven path to the best possible medical college.</strong>
               </p>
               <p className="text-slate-700 dark:text-slate-300 text-sm md:text-base font-medium leading-relaxed">
-                Over the past 15+ years, we&apos;ve evolved from a small counselling desk into India&apos;s most analytically rigorous medical admission advisory. Our team reverse-engineers the NEET counselling system every single year — tracking round-wise seat movements, cutoff drift patterns, category-specific vacancy flows, and institutional fee changes across <strong className="text-slate-900 dark:text-white">every college in the counselling data, state by state.</strong>
+                Over the past {team.years} years, we&apos;ve evolved from a small counselling desk into India&apos;s most analytically rigorous medical admission advisory. Our team reverse-engineers the NEET counselling system every single year — tracking round-wise seat movements, cutoff drift patterns, category-specific vacancy flows, and institutional fee changes across <strong className="text-slate-900 dark:text-white">every college in the counselling data, state by state.</strong>
               </p>
               <p className="text-slate-700 dark:text-slate-300 text-sm md:text-base font-medium leading-relaxed">
                 While most families navigate the medical admission labyrinth with hearsay and hope, our students enter each counselling round armed with <strong className="text-slate-900 dark:text-white">the authorities' published closing ranks, documents checked before reporting, and a named expert counsellor</strong> who stays with them from Day 1 until they physically report to their college.
@@ -257,7 +260,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
               THE ADMISSION HANDS EDGE
             </div>
             <h2 className="text-2xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight mb-3">
-              Why <span className="text-cyan-600 dark:text-cyan-400">2100+ Families</span> Chose Us
+              Why <span className="text-cyan-600 dark:text-cyan-400">{team.students} Families</span> Chose Us
             </h2>
             <p className="text-sm text-slate-600 dark:text-slate-400 font-semibold max-w-2xl mx-auto">
               In a landscape filled with noise, here&apos;s what sets us apart — and why families come back year after year.
@@ -288,7 +291,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
                 icon: Shield,
                 title: "Zero-Error Documentation Standard",
                 desc: "Document rejection is the most heartbreaking way to lose a confirmed seat. Our document audit team pre-verifies every single paper — domicile certificates, category proofs, gap year affidavits, NRI sponsorships — against state-specific norms, weeks before deadlines.",
-                highlight: "documentation handled end to end for 2100+ students"
+                highlight: `documentation handled end to end for ${team.students} students`
               },
               {
                 icon: Clock,

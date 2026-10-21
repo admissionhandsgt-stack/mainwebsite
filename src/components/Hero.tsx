@@ -3,6 +3,7 @@
 import Image, { getImageProps } from "next/image";
 import PhotoCredit from "@/components/ui/PhotoCredit";
 import { useCTA } from "@/hooks/useCTA";
+import { useTeamFigures } from "@/components/engage/TeamFigures";
 import { ArrowRight, Building2, Users, ShieldCheck, Landmark, Phone, Sparkles } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
@@ -62,11 +63,11 @@ const ASSURANCES = [
 
 const DEFAULTS: Required<Omit<HeroCopy, "stats">> = {
   badgeLeft: "NEET 2026 counselling",
-  badgeRight: "15+ years of excellence",
+  badgeRight: "{years} years of excellence",
   headline: "MBBS & PG admission",
   headlineAccent: "in India, made simple",
   subtitle:
-    "15+ years of MBBS, BDS and MD/MS counselling — your NEET rank turned into one clear answer about where your seat actually is.",
+    "{years} years of MBBS, BDS and MD/MS counselling — your NEET rank turned into one clear answer about where your seat actually is.",
   ctaPrimary: "Get expert guidance",
   ctaSecondary: "Browse top colleges",
 };
@@ -81,10 +82,15 @@ export default function Hero({
   copy,
 }: HeroProps) {
   const CTA = useCTA();
+  const team = useTeamFigures();
 
-  const text = { ...DEFAULTS, ...Object.fromEntries(
-    Object.entries(copy ?? {}).filter(([, v]) => typeof v === "string" && v !== ""),
-  ) } as Required<HeroCopy>;
+  // {years} and {students} in the words are the team's own figures (Admin → "Site: the team's own figures").
+  const text = Object.fromEntries(
+    Object.entries({
+      ...DEFAULTS,
+      ...Object.fromEntries(Object.entries(copy ?? {}).filter(([, v]) => typeof v === "string" && v !== "")),
+    }).map(([k, v]) => [k, typeof v === "string" ? v.replace(/\{years\}/g, team.years).replace(/\{students\}/g, team.students) : v]),
+  ) as Required<HeroCopy>;
 
   /*
     One orchestrated entrance on load, in CSS rather than Framer Motion.

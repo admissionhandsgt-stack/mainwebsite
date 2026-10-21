@@ -58,15 +58,21 @@ export const PAGE_COPY = {
       subtitle: {
         label: "Hero line — {state}, {colleges}, {median}",
         value:
-          "The middle first-year MD/MS stipend in {state} is {median} a month, across {colleges} PG colleges that publish one. Here is every college's own figure for years one, two and three, government against private.",
+          "The middle first-year MD/MS stipend in {state} is {median} a month, across {colleges} colleges and DNB hospitals that publish one. Here is every college's own figure for years one, two and three, government against private.",
         long: true,
+        was: [
+          "The middle first-year MD/MS stipend in {state} is {median} a month, across {colleges} PG colleges that publish one. Here is every college's own figure for years one, two and three, government against private.",
+        ],
       },
       cta: { label: "Hero button — {state}", value: "Check your PG chances in {state}" },
       source: {
         label: "Source line",
         value:
-          "From each college's own published stipend, per month, the latest year it published one. The bond terms further down are compiled by a third-party data service; confirm them in the state's notice before you sign.",
+          "From each college's own published stipend, per month, the latest year it published one. The bond terms further down are as listed for the counselling; confirm them in the state's notice before you sign.",
         long: true,
+        was: [
+          "From each college's own published stipend, per month, the latest year it published one. The bond terms further down are compiled by a third-party data service; confirm them in the state's notice before you sign.",
+        ],
       },
       visual_title: { label: "Chart title — {state}", value: "Highest-paying colleges in {state}" },
       visual_caption: { label: "Chart caption", value: "First-year stipend a month" },
@@ -92,8 +98,11 @@ export const PAGE_COPY = {
       faq1_a: {
         label: "Answer 1 — {state}, {colleges}, {median}, {min}, {max}",
         value:
-          "Across the {colleges} PG colleges in {state} that publish one, the middle first-year stipend is {median} a month. It runs from {min} to {max}, and the table on this page lists every college.",
+          "Across the {colleges} colleges and DNB hospitals in {state} that publish one, the middle first-year stipend is {median} a month. It runs from {min} to {max}, and the table on this page lists every college.",
         long: true,
+        was: [
+          "Across the {colleges} PG colleges in {state} that publish one, the middle first-year stipend is {median} a month. It runs from {min} to {max}, and the table on this page lists every college.",
+        ],
       },
       faq2_q: { label: "Question 2 — {state}", value: "Do government and private colleges in {state} pay the same PG stipend?" },
       faq2_a: {
@@ -119,8 +128,11 @@ export const PAGE_COPY = {
       faq5_a: {
         label: "Answer 5 — {bond_bonded}, {bond_colleges}, {bond_years}, {bond_penalty}",
         value:
-          "{bond_bonded} of the {bond_colleges} government colleges listed for {state} have a service bond, usually {bond_years}, with a penalty of {bond_penalty} for not serving it. This is compiled by a third-party data service, so confirm it in the state's notice.",
+          "{bond_bonded} of the {bond_colleges} government colleges listed for {state} have a service bond, usually {bond_years}, with a penalty of {bond_penalty} for not serving it. Bond rules change from year to year, so confirm it in the state's notice before you sign.",
         long: true,
+        was: [
+          "{bond_bonded} of the {bond_colleges} government colleges listed for {state} have a service bond, usually {bond_years}, with a penalty of {bond_penalty} for not serving it. This is compiled by a third-party data service, so confirm it in the state's notice.",
+        ],
       },
       faq_title: { label: "FAQ heading — {state}", value: "{state} PG stipend: common questions" },
       lead_title: { label: "Enquiry box heading — {state}", value: "Weighing stipend against fee in {state}?" },
@@ -663,14 +675,23 @@ export const PAGE_COPY = {
       float_cta: { label: "Float or freeze — button", value: "See what moved at your rank" },
       held_title: { label: "Figures panel heading", value: "What the published results hold" },
       held_ranks_label: { label: "Figure 1 label", value: "PG closing ranks, round by round" },
-      held_ranks_note: { label: "Figure 1 note — {colleges}, {branches}", value: "Across {colleges} colleges and {branches} branches." },
+      held_ranks_note: {
+        label: "Figure 1 note — {branches}",
+        value: "Across every MD/MS college and DNB hospital, in {branches} PG courses.",
+        was: ["Across {colleges} colleges and {branches} branches."],
+      },
       held_rounds_label: { label: "Figure 2 label", value: "Rounds our PG data covers" },
       held_rounds_note: { label: "Figure 2 note", value: "Counselling does not stop after round 2, and the numbers show it." },
-      held_tight_label: { label: "Figure 3 label", value: "PG seats that tightened after round 1" },
+      held_tight_label: {
+        label: "Figure 3 label",
+        value: "PG seat options that tightened after round 1",
+        was: ["PG seats that tightened after round 1"],
+      },
       held_tight_note: {
         label: "Figure 3 note",
-        value: "Every later round closed at a better rank than round 1 did. Give one of those up and it is gone.",
+        value: "A seat option is one college, course, quota and category in one year. For each of these, every later round closed at a better rank than round 1 did. Give one up and it is gone.",
         long: true,
+        was: ["Every later round closed at a better rank than round 1 did. Give one of those up and it is gone."],
       },
       docs_title: { label: "Documents heading", value: "What to have ready" },
       docs_intro: {
@@ -691,8 +712,49 @@ export const PAGE_COPY = {
       mistakes_title: { label: "Mistakes heading — {count}", value: "{count} mistakes that cost people a seat" },
     },
   },
+  "page.md_ms.hero": {
+    group: "Page: MD/MS overview",
+    fields: {
+      eyebrow: { label: "Hero eyebrow", value: "NEET PG counselling · MD/MS" },
+      title: { label: "Hero title", value: "Your MBBS was the beginning." },
+      accent: { label: "Hero title, coloured part", value: "Your specialty defines your legacy." },
+      subtitle: {
+        label: "Hero line — {pg_ranks_lakh}",
+        value: "Every recommendation is checked against {pg_ranks_lakh} published closing ranks, across every MD/MS college and DNB hospital. One named counsellor stays with you from rank analysis to reporting.",
+        long: true,
+      },
+      cta_call: { label: "Call button", value: "Talk to a PG expert" },
+      cta_whatsapp: { label: "WhatsApp button", value: "WhatsApp us" },
+      wa_text: { label: "WhatsApp message the button starts", value: "Hi, I need guidance for NEET PG counselling" },
+      fact_colleges: { label: "Fact 1 — {md_ms_colleges} (NMC's register)", value: "{md_ms_colleges} MD/MS colleges on NMC's register" },
+      fact_dnb: { label: "Fact 2 — {dnb_hospitals}, {mcc_year} (MCC's matrix)", value: "{dnb_hospitals} DNB hospitals in MCC's {mcc_year} counselling" },
+      fact_ranks: { label: "Fact 3 — {pg_ranks_lakh}", value: "{pg_ranks_lakh} published PG closing ranks" },
+      fact_students: { label: "Fact 4 — {students} (the team's figure)", value: "{students} students guided" },
+    },
+  },
+  "page.nri.hero": {
+    group: "Page: NRI quota",
+    fields: {
+      eyebrow: { label: "Hero eyebrow", value: "NRI quota medical admissions" },
+      title: { label: "Hero title", value: "Secure your medical seat" },
+      accent: { label: "Hero title, coloured part", value: "through the NRI quota" },
+      subtitle: {
+        label: "Hero line",
+        value: "Guidance for NRI, NRI-sponsored, OCI, PIO and foreign-national candidates seeking MBBS, BDS and MD/MS seats in India's medical colleges.",
+        long: true,
+      },
+      cta_primary: { label: "Main button (to the NRI colleges list)", value: "Explore NRI colleges" },
+      cta_secondary: { label: "Second button (to eligibility)", value: "Check eligibility" },
+      card_title: { label: "Card on the photograph: title", value: "Why the NRI quota?" },
+      card_body: {
+        label: "Card on the photograph: text",
+        value: "A separate pool of seats for NRI candidates, allotted through counselling, with its own fees and documents.",
+        long: true,
+      },
+    },
+  },
   "page.services.figures": {
-    group: "Page: Services — the team's own figures",
+    group: "Site: the team's own figures (used on every page)",
     fields: {
       students: { label: "Students guided (the team's figure)", value: "2100+" },
       years: { label: "Years of counselling (the team's figure)", value: "15+" },
@@ -870,13 +932,14 @@ export const PAGE_COPY = {
       title: { label: "Hero title", value: "PG medical seats," },
       accent: { label: "Hero title, coloured part", value: "state by state" },
       subtitle: {
-        label: "Hero line — {colleges}, {states}",
-        value: "{colleges} PG colleges across {states} states and union territories. Open one for its quotas, cutoffs, fees, branches and stipend.",
+        label: "Hero line — {colleges} (MD/MS), {dnb} (DNB hospitals), {states}",
+        value: "{colleges} MD/MS colleges and {dnb} DNB hospitals across {states} states and union territories. Open a state for its quotas, cutoffs, fees, branches and stipend.",
         long: true,
+        was: ["{colleges} PG colleges across {states} states and union territories. Open one for its quotas, cutoffs, fees, branches and stipend."],
       },
       cta: { label: "Hero button", value: "Check your PG chances" },
       source: { label: "Source line", value: "From the published NEET PG counselling results and each college's own published stipend.", long: true },
-      visual_title: { label: "Chart title", value: "Most PG colleges" },
+      visual_title: { label: "Chart title", value: "Most MD/MS colleges", was: ["Most PG colleges"] },
       how_title: { label: "Box title", value: "How PG seats in a state are filled" },
       how_aiq: {
         label: "Box point: All India Quota",
@@ -999,8 +1062,11 @@ export const PAGE_COPY = {
       terms_caveat: {
         label: "Terms caveat",
         value:
-          "Compiled from counselling notices and college fee schedules by a third-party data service. This is not an official notice. Bond and penalty rules change from year to year, so confirm them in the state's notice or with the college before you pay a fee or sign a bond.",
+          "As listed for the counselling. This is not an official notice: bond and penalty rules change from year to year, so confirm them in the state's notice or with the college before you pay a fee or sign a bond.",
         long: true,
+        was: [
+          "Compiled from counselling notices and college fee schedules by a third-party data service. This is not an official notice. Bond and penalty rules change from year to year, so confirm them in the state's notice or with the college before you pay a fee or sign a bond.",
+        ],
       },
       terms_stipend: { label: "Card label: stipend", value: "Stipend a month" },
       terms_bond: { label: "Card label: bond", value: "Service bond" },
@@ -1162,8 +1228,11 @@ export const PAGE_COPY = {
       source: {
         label: "Source line — {year}",
         value:
-          "As listed for the {year} counselling, compiled from counselling notices and college fee schedules by a third-party data service. This is not an official notice. Confirm with the state's notice or the college before you pay a fee or sign a bond.",
+          "As listed for the {year} counselling. This is not an official notice: confirm with the state's notice or the college before you pay a fee or sign a bond.",
         long: true,
+        was: [
+          "As listed for the {year} counselling, compiled from counselling notices and college fee schedules by a third-party data service. This is not an official notice. Confirm with the state's notice or the college before you pay a fee or sign a bond.",
+        ],
       },
       visual_title: { label: "Chart title", value: "Bond penalty on government seats" },
       visual_caption: { label: "Chart caption", value: "Middle penalty for not serving the bond" },
@@ -1263,11 +1332,17 @@ export const PAGE_COPY = {
       accent: { label: "Hero title, coloured part", value: "state by state" },
       subtitle: {
         label: "Hero line — {colleges}, {states}",
-        value: "First-year MD/MS stipends published by {colleges} medical colleges, compiled across {states} states.",
+        value: "First-year MD/MS stipends published by {colleges} colleges and DNB hospitals, across {states} states.",
         long: true,
+        was: ["First-year MD/MS stipends published by {colleges} medical colleges, compiled across {states} states."],
       },
       cta: { label: "Hero button", value: "See every state's stipend" },
-      source: { label: "Source line", value: "Every figure is computed from each college's own published stipend when the page is opened — nothing is typed in.", long: true },
+      source: {
+        label: "Source line",
+        value: "From each college's own published stipend: first year, per month, the latest year it published one.",
+        long: true,
+        was: ["Every figure is computed from each college's own published stipend when the page is opened — nothing is typed in."],
+      },
       visual_title: { label: "Chart title", value: "Highest-paying states" },
     }),
   },
@@ -1635,7 +1710,8 @@ export const PAGE_COPY = {
       },
       fact: {
         label: "Fact under the line — {moved_pct}",
-        value: "{moved_pct}% of MD/MS seats went to a later rank after round 1. Lock your seat too early and the upgrade goes to someone else.",
+        value: "After round 1, {moved_pct}% of PG seat options went to a later rank. Lock your seat too early and the upgrade goes to someone else.",
+        was: ["{moved_pct}% of MD/MS seats went to a later rank after round 1. Lock your seat too early and the upgrade goes to someone else."],
         long: true,
       },
       wa: { label: "WhatsApp button", value: "Talk to a counsellor on WhatsApp" },
@@ -1662,9 +1738,12 @@ export const PAGE_COPY = {
         long: true,
       },
       publishes: {
-        label: "What the site publishes, one per line — {matrix_year}, {matrix_total}, {round_years}, {stipend_colleges}, {college_pages}",
+        label: "What the site publishes, one per line — {matrix_year}, {matrix_total}, {round_years}, {stipend_colleges}",
         value:
+          "MCC's NEET PG {matrix_year} seat matrix: {matrix_total} MD, MS, diploma and DNB seats, by branch, state and category.\nNEET PG round results ({round_years}) from MCC's own PDFs: seats allotted by quota, category, programme and state, and per branch the last rank admitted where three or more colleges admitted.\nCutoffs as group figures — by branch, category, quota and state, each over three or more colleges.\nFirst-year PG stipends published by {stipend_colleges} colleges and DNB hospitals, fees as the median and the 10th–90th percentile, and PG service-bond terms by state as listed for the counselling.\nA page for every MBBS, BDS and MD/MS college and DNB hospital, with seats from the National Medical Commission's register where NMC lists the college, fees and a general-category cutoff band.",
+        was: [
           "MCC's NEET PG {matrix_year} seat matrix: {matrix_total} MD, MS, diploma and DNB seats, by branch, state and category.\nNEET PG round results ({round_years}) from MCC's own PDFs: seats allotted by quota, category, programme and state, and per branch the last rank admitted where three or more colleges admitted.\nCutoffs as group figures — by branch, category, quota and state, each over three or more colleges.\nFirst-year PG stipends published by {stipend_colleges} colleges, fees as the median and the 10th–90th percentile, and PG service-bond rules by state (a third-party compilation, marked as such on every page).\n{college_pages} college pages with seats from the National Medical Commission's register, fees and a general-category cutoff band.",
+        ],
         long: true,
       },
       not_published: {

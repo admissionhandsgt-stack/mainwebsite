@@ -7,6 +7,7 @@ import TrustShield from "@/components/home/TrustShield";
 import CounsellorEdge from "@/components/home/CounsellorEdge";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import StructuredData, { webPage, breadcrumb, faqPage } from "@/components/seo/StructuredData";
+import { getLiveFigures } from "@/lib/liveFigures";
 import { getDataStats, approxLakh, inr, yearSpan } from "@/lib/dataStats";
 import { CHANCE, CHANCE_ORDER } from "@/lib/chance";
 import { fitTitle, fitDescription } from "@/lib/seoTitle";
@@ -51,7 +52,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function NeetCollegePredictorPage() {
-  const [facets, user, stats] = await Promise.all([getAllFacets(), currentUser(), getDataStats()]);
+  const [facets, user, stats, live] = await Promise.all([getAllFacets(), currentUser(), getDataStats(), getLiveFigures()]);
   const profile = user ? await getProfile(user.id).catch(() => null) : null;
 
   const viewer: Viewer = {
@@ -104,7 +105,7 @@ export default async function NeetCollegePredictorPage() {
         </div>
       </section>
 
-      <HowItWorks stats={stats} faqs={faqs} />
+      <HowItWorks stats={stats} faqs={faqs} nmcColleges={live.nmc_colleges} />
 
       <div className="border-t border-border">
         <CounsellorEdge />
@@ -156,7 +157,7 @@ function predictorFaqs(stats: Stats) {
 }
 
 /** What the tool does and what it reads — in words, on the page, for people and for search. */
-function HowItWorks({ stats, faqs }: { stats: Stats; faqs: { question: string; answer: string }[] }) {
+function HowItWorks({ stats, faqs, nmcColleges }: { stats: Stats; faqs: { question: string; answer: string }[]; nmcColleges: string }) {
   const steps = [
     "Choose MBBS, BDS or MD/MS, then enter your NEET rank and category.",
     "Get a free possibility report at once: how many seat options, colleges and states your rank reached in past rounds, grouped by chance, and where your rank stands among everyone who sat the paper.",
@@ -183,9 +184,9 @@ function HowItWorks({ stats, faqs }: { stats: Stats; faqs: { question: string; a
           <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
             Published closing ranks from MCC and the state counselling authorities:{" "}
             <b className="tnum text-foreground">{approxLakh(stats.totalRanks)}</b> rank records across{" "}
-            <b className="tnum text-foreground">{inr(stats.seatOptions)}</b> seat options,{" "}
-            <b className="tnum text-foreground">{inr(stats.ugColleges + stats.pgColleges)}</b> colleges and{" "}
-            <b className="tnum text-foreground">{inr(stats.counsellings)}</b> counsellings — NEET UG {yearSpan(stats.ugYears)} and NEET PG{" "}
+            <b className="tnum text-foreground">{inr(stats.seatOptions)}</b> seat options at the{" "}
+            <b className="tnum text-foreground">{nmcColleges}</b> medical colleges on NMC&apos;s register, the BDS colleges
+            and the DNB hospitals, in <b className="tnum text-foreground">{inr(stats.counsellings)}</b> counsellings — NEET UG {yearSpan(stats.ugYears)} and NEET PG{" "}
             {yearSpan(stats.pgYears)}, every round including mop-up and stray. A seat&apos;s chance comes from where that same seat closed
             in round 1, in the last round of the year, and in earlier years.
           </p>

@@ -3,7 +3,6 @@ import React from 'react';
 import { Mail, Phone, MapPin, ArrowRight, Instagram, Facebook, Youtube, ChevronDown } from 'lucide-react';
 import Link from "@/components/ui/Link";
 import Image from 'next/image';
-import { cn } from "@/lib/utils";
 import MobileFooter from './MobileFooter';
 import { CONTACT_INFO } from '@/lib/constants';
 import { useContactInfo } from '@/hooks/useContactInfo';
@@ -14,15 +13,30 @@ import { useTelegram } from '@/components/engage/TelegramLink';
 import type { NavItem } from '@/lib/content';
 import type { SocialLinks } from './SiteShell';
 
+/**
+ * The footer (rebuilt 2026-10-21, owner: "professional website honi chahiye").
+ *
+ * Light, on the page's own tokens, and laid out by Admin → Navigation:
+ *   - "Footer — Explore": each top-level row with url "#" is a column heading, its sub-links the
+ *     column. Loose top-level links (the old flat list) gather in one column, so the footer still
+ *     reads before the rows are grouped.
+ *   - "Footer — Bottom line" (footer_quick): the small links beside the copyright.
+ * Below lg every column is an accordion with 44px rows; from lg the columns sit side by side.
+ */
 const FALLBACK_EXPLORE: NavItem[] = [
   { id: -1, label: 'MBBS India', url: '/mbbs-india', newTab: false, children: [] },
   { id: -2, label: 'MD/MS India', url: '/md-ms-india', newTab: false, children: [] },
-  { id: -3, label: 'Services', url: '/services', newTab: false, children: [] },
-  { id: -4, label: 'Know Us', url: '/know-us', newTab: false, children: [] },
-  { id: -5, label: 'Terms', url: '/terms', newTab: false, children: [] },
+  { id: -3, label: 'NEET College Predictor', url: '/neet-college-predictor', newTab: false, children: [] },
+  { id: -4, label: 'Services', url: '/services', newTab: false, children: [] },
+  { id: -5, label: 'Know Us', url: '/know-us', newTab: false, children: [] },
+  { id: -6, label: 'Contact', url: '/contact', newTab: false, children: [] },
 ];
 
-const FALLBACK_QUICK: NavItem[] = FALLBACK_EXPLORE.slice(0, 4);
+const FALLBACK_BOTTOM: NavItem[] = [
+  { id: -11, label: 'Privacy', url: '/terms#privacy', newTab: false, children: [] },
+  { id: -12, label: 'Terms', url: '/terms#terms', newTab: false, children: [] },
+  { id: -13, label: 'Data & DPDP', url: '/terms#dpdp', newTab: false, children: [] },
+];
 
 const DEFAULT_TAGLINE =
   'Admission counselling for MBBS & PG medical seats in India. Expert guidance and transparent processes for your career.';
@@ -41,249 +55,208 @@ interface FooterProps {
   social?: SocialLinks;
 }
 
+type Column = { id: number; label: string; links: NavItem[] };
+
+/** Group rows become columns; loose links share one "Explore" column, placed first. */
+function columnsOf(items: NavItem[]): Column[] {
+  const groups = items.filter((i) => (!i.url || i.url === '#') && i.children.length > 0);
+  const loose = items.filter((i) => i.url && i.url !== '#');
+  const cols: Column[] = groups.map((g) => ({ id: g.id, label: g.label, links: g.children }));
+  if (loose.length) cols.unshift({ id: -100, label: groups.length ? 'More' : 'Explore', links: loose });
+  return cols;
+}
+
+const linkProps = (l: NavItem) => (l.newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {});
+
 const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social }) => {
   const currentYear = new Date().getFullYear();
   const { contactInfo } = useContactInfo();
   const cta = useCTA();
   const telegram = useTelegram();
   const phoneNumber = contactInfo?.phone_number || CONTACT_INFO.phone;
+  // "+919310301949" reads as "+91 93103 01949"; anything else is shown as it was entered.
+  const phoneShown = /^\+91\d{10}$/.test(phoneNumber.replace(/\s/g, ''))
+    ? phoneNumber.replace(/\s/g, '').replace(/^\+91(\d{5})(\d{5})$/, '+91 $1 $2')
+    : phoneNumber;
   const emailAddress = contactInfo?.email || CONTACT_INFO.email;
 
-  const exploreLinks = explore?.length ? explore : FALLBACK_EXPLORE;
-  const quick = quickLinks?.length ? quickLinks : FALLBACK_QUICK;
+  const columns = columnsOf(explore?.length ? explore : FALLBACK_EXPLORE);
+  const bottom = quickLinks?.length ? quickLinks : FALLBACK_BOTTOM;
 
   // An empty setting means "use what shipped"; a blank URL hides that icon.
   const socialLinks = [
-    { key: 'facebook', label: 'Facebook', icon: Facebook, href: social?.facebook ?? DEFAULT_SOCIAL.facebook, color: 'hover:bg-cyan-600' },
-    { key: 'instagram', label: 'Instagram', icon: Instagram, href: social?.instagram ?? DEFAULT_SOCIAL.instagram, color: 'hover:bg-emerald-600' },
-    { key: 'youtube', label: 'YouTube', icon: Youtube, href: social?.youtube ?? DEFAULT_SOCIAL.youtube, color: 'hover:bg-red-600' },
-    { key: 'telegram', label: 'Telegram', icon: TelegramIcon, href: telegram.url, color: 'hover:bg-cyan-600' },
+    { key: 'facebook', label: 'Facebook', icon: Facebook, href: social?.facebook ?? DEFAULT_SOCIAL.facebook },
+    { key: 'instagram', label: 'Instagram', icon: Instagram, href: social?.instagram ?? DEFAULT_SOCIAL.instagram },
+    { key: 'youtube', label: 'YouTube', icon: Youtube, href: social?.youtube ?? DEFAULT_SOCIAL.youtube },
+    { key: 'telegram', label: 'Telegram', icon: TelegramIcon, href: telegram.url },
   ].filter((s) => s.href);
   const googleProfile = social?.google ?? DEFAULT_SOCIAL.google;
 
+  const contactRow = 'flex min-h-[44px] items-start gap-3 text-[14px] text-muted-foreground transition-colors hover:text-primary-strong dark:hover:text-primary';
+  const iconBox = 'mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-soft text-primary-strong dark:text-primary';
+
   return (
     <>
-      <footer className="relative bg-[#060b16] text-white pt-6 pb-2 md:pt-10 md:pb-6 overflow-hidden">
-        {/* Subtle mesh gradient background */}
-        <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-          <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-cyan-600 blur-[120px]" />
-          <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-cyan-400 blur-[100px]" />
-        </div>
+      <footer className="relative border-t border-border bg-surface-1 text-foreground">
+        <div className="container-custom pb-4 pt-10 md:pt-14">
+          <div className="grid gap-10 lg:grid-cols-[minmax(240px,0.85fr)_minmax(0,3.2fr)] lg:gap-12">
+            {/* Who we are and how to reach us */}
+            <div className="space-y-5">
+              <Link href="/" className="inline-flex min-h-[44px] items-center" aria-label="Admission Hands — home">
+                <Image
+                  src="/assets/images/logos/logo.avif"
+                  alt="Admission Hands Logo"
+                  width={220}
+                  height={55}
+                  className="h-[46px] w-[184px] object-contain dark:brightness-110"
+                  unoptimized
+                />
+              </Link>
+              <p className="max-w-sm text-[14px] leading-relaxed text-muted-foreground">{tagline || DEFAULT_TAGLINE}</p>
 
-        <div className="container-custom relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-12">
-            {/* Brand Section */}
-            <div className="lg:col-span-4 space-y-3">
-              <div className="flex flex-col">
-                <Link href="/" className="flex items-center justify-start">
-                  <Image 
-                    src="/assets/images/logos/logo.avif" 
-                    alt="Admission Hands Logo" 
-                    width={240}
-                    height={60}
-                    className="object-contain w-[200px] h-[50px] md:w-[240px] md:h-[60px]"
-                    unoptimized
-                  />
-                </Link>
-              </div>
-              
-              <p className="text-gray-400 text-[13px] md:text-xs font-medium leading-relaxed max-w-sm">
-                {tagline || DEFAULT_TAGLINE}
-              </p>
-              
-              <div className="flex space-x-2 md:space-x-3">
-                {socialLinks.map((social) => (
+              <ul className="space-y-1">
+                <li>
+                  <a href={`tel:${phoneNumber}`} className={contactRow}>
+                    <span className={iconBox}><Phone className="h-4 w-4" aria-hidden="true" /></span>
+                    <span className="pt-1.5 font-semibold text-foreground tnum">{phoneShown}</span>
+                  </a>
+                </li>
+                <li>
+                  <a href={`mailto:${emailAddress}`} className={contactRow}>
+                    <span className={iconBox}><Mail className="h-4 w-4" aria-hidden="true" /></span>
+                    <span className="break-all pt-1.5">{emailAddress}</span>
+                  </a>
+                </li>
+                <li>
+                  {googleProfile ? (
+                    <a href={googleProfile} target="_blank" rel="noopener noreferrer" data-placement="footer_google" className={contactRow}>
+                      <span className={iconBox}><MapPin className="h-4 w-4" aria-hidden="true" /></span>
+                      <span className="pt-1 leading-relaxed">
+                        {CONTACT_INFO.address}
+                        <span className="block text-[12.5px] font-semibold text-primary-strong dark:text-primary">See us on Google Maps</span>
+                      </span>
+                    </a>
+                  ) : (
+                    <p className={contactRow}>
+                      <span className={iconBox}><MapPin className="h-4 w-4" aria-hidden="true" /></span>
+                      <span className="pt-1 leading-relaxed">{CONTACT_INFO.address}</span>
+                    </p>
+                  )}
+                </li>
+              </ul>
+
+              <div className="flex flex-wrap gap-2">
+                {socialLinks.map((s) => (
                   <a
-                    key={social.key}
-                    href={social.href} 
+                    key={s.key}
+                    href={s.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    data-placement={`footer_${social.key}`}
-                    className={cn("bg-white/5 w-11 h-11 rounded-lg md:rounded-xl transition-all duration-300 border border-white/10 text-gray-400 hover:text-white flex items-center justify-center", social.color)}
-                    aria-label={`Admission Hands on ${social.label}`}
+                    data-placement={`footer_${s.key}`}
+                    aria-label={`Admission Hands on ${s.label}`}
+                    className="flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary-strong dark:hover:text-primary"
                   >
-                    <social.icon size={16} className="w-4 h-4 md:w-5 md:h-5" />
+                    <s.icon size={18} className="h-[18px] w-[18px]" />
                   </a>
                 ))}
               </div>
 
-              <a
-                href={telegram.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                data-placement="footer"
-                className="inline-flex min-h-[44px] items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3.5 text-[13px] font-semibold text-gray-200 transition-colors hover:bg-white/10 hover:text-white"
-              >
-                <TelegramIcon size={18} className="text-[#229ED9]" />
-                Counselling updates on Telegram · join free
-              </a>
-            </div>
-
-            {/* Mobile Quick Links Row (Only on Mobile) */}
-            <div className="lg:hidden flex flex-wrap gap-2 py-2 border-y border-white/5 mt-2">
-              {quick.map((link) => (
-                <Link
-                  key={link.id}
-                  href={link.url}
-                  target={link.newTab ? '_blank' : undefined}
-                  rel={link.newTab ? 'noopener noreferrer' : undefined}
-                  className="bg-white/5 border border-white/10 px-4 py-2.5 rounded-full text-xs font-bold text-gray-300 hover:text-white hover:bg-white/10 transition-colors flex items-center justify-center min-h-[44px]"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-            
-            {/* Desktop Explore / Mobile Accordion */}
-            <div className="lg:col-span-2">
-              <div className="hidden lg:block space-y-4">
-                <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-500">Explore</h2>
-                <ul className="space-y-2">
-                  {exploreLinks.map((item) => (
-                    <li key={item.id}>
-                      <Link
-                        href={item.url}
-                        target={item.newTab ? '_blank' : undefined}
-                        rel={item.newTab ? 'noopener noreferrer' : undefined}
-                        className="text-gray-400 hover:text-white text-xs font-bold transition-colors flex items-center group"
-                      >
-                        <ArrowRight className="h-3 w-3 mr-2 opacity-0 group-hover:opacity-100 transition-all -ml-5 group-hover:ml-0" />
-                        {item.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <details className="lg:hidden group border-b border-white/5 pb-1">
-                <summary className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em] text-cyan-500 cursor-pointer list-none py-2 [&::-webkit-details-marker]:hidden">
-                  Explore
-                  <ChevronDown className="w-3 h-3 group-open:rotate-180 transition-transform" />
-                </summary>
-                <div className="pt-1 pb-3 pl-1">
-                  <ul className="space-y-2">
-                    {exploreLinks.map((item) => (
-                      <li key={item.id}>
-                        <Link
-                          href={item.url}
-                          target={item.newTab ? '_blank' : undefined}
-                          rel={item.newTab ? 'noopener noreferrer' : undefined}
-                          className="text-gray-400 text-xs font-bold block py-3.5"
-                        >
-                          {item.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </details>
-            </div>
-
-            {/* Desktop Contact / Mobile Accordion */}
-            <div className="lg:col-span-3">
-              <div className="hidden lg:block space-y-4">
-                <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-500">Get in Touch</h2>
-                <ul className="space-y-3">
-                  <li className="flex items-start gap-3">
-                    <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 shrink-0">
-                      <Phone className="h-4 w-4" />
-                    </div>
-                    <a href={`tel:${phoneNumber}`} className="text-gray-300 hover:text-white text-xs font-bold transition-colors mt-1.5">
-                      {phoneNumber}
-                    </a>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 shrink-0">
-                      <Mail className="h-4 w-4" />
-                    </div>
-                    <a href={`mailto:${emailAddress}`} className="text-gray-300 hover:text-white text-xs font-bold transition-colors mt-1.5 break-all">
-                      {emailAddress}
-                    </a>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 shrink-0">
-                      <MapPin className="h-4 w-4" />
-                    </div>
-                    {googleProfile ? (
-                      <a
-                        href={googleProfile}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        data-placement="footer_google"
-                        className="text-gray-300 hover:text-white text-xs font-bold leading-relaxed mt-1 transition-colors"
-                      >
-                        {CONTACT_INFO.address}
-                        <span className="block text-[11px] font-semibold text-cyan-400 mt-0.5">See us on Google Maps</span>
-                      </a>
-                    ) : (
-                      <p className="text-gray-300 text-xs font-bold leading-relaxed mt-1">
-                        {CONTACT_INFO.address}
-                      </p>
-                    )}
-                  </li>
-                </ul>
-              </div>
-
-              <details className="lg:hidden group border-b border-white/5 pb-1">
-                <summary className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em] text-cyan-500 cursor-pointer list-none py-2 [&::-webkit-details-marker]:hidden">
-                  Get in Touch
-                  <ChevronDown className="w-3 h-3 group-open:rotate-180 transition-transform" />
-                </summary>
-                <div className="pt-1 pb-3 pl-1">
-                  <ul className="space-y-2.5">
-                    <li className="flex items-center gap-2">
-                      <Phone className="h-3 w-3 text-cyan-400" />
-                      <a href={`tel:${phoneNumber}`} className="text-gray-400 text-xs font-bold block py-3.5">{phoneNumber}</a>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Mail className="h-3 w-3 text-cyan-400" />
-                      <a href={`mailto:${emailAddress}`} className="text-gray-400 text-xs font-bold block py-3.5">{emailAddress}</a>
-                    </li>
-                  </ul>
-                </div>
-              </details>
-            </div>
-
-            {/* Newsletter */}
-            <div className="lg:col-span-3 space-y-3 lg:space-y-4">
-              <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-500 hidden lg:block">Updates</h2>
-              <p className="text-gray-400 text-[13px] md:text-xs font-medium leading-relaxed mt-2 lg:mt-0">
-                Stay updated with the latest admission notifications.
-              </p>
               {/*
-                This was an email box and a Subscribe button wired to nothing:
-                whatever was typed was lost, on every page. There is no mail
-                system behind the site, and the team works on WhatsApp — so
-                the visitor asks there, which reaches a person, and costs the
-                number nothing because they are messaging us.
+                This was an email box and a Subscribe button wired to nothing: whatever was typed was
+                lost, on every page. There is no mail system behind the site, and the team works on
+                WhatsApp — so the visitor asks there, which reaches a person.
               */}
-              <button
-                type="button"
-                onClick={() => cta.whatsapp("Hi, please send me NEET counselling updates and admission notifications.")}
-                className="flex w-full items-center justify-center gap-2 rounded-lg md:rounded-xl bg-cyan-700 hover:bg-cyan-600 px-4 py-3 text-[13px] md:text-xs font-bold text-white transition-all active:scale-95 shadow-lg shadow-cyan-900/20 min-h-[44px]"
-              >
-                <WhatsAppIcon size={16} />
-                Get updates on WhatsApp
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </button>
+              <div className="flex flex-col gap-2 sm:flex-row lg:flex-col">
+                <button
+                  type="button"
+                  onClick={() => cta.whatsapp('Hi, please send me NEET counselling updates and admission notifications.')}
+                  className="inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-accent px-4 text-[13.5px] font-bold text-accent-foreground transition-colors hover:bg-accent/90"
+                >
+                  <WhatsAppIcon size={16} /> Updates on WhatsApp
+                </button>
+                <a
+                  href={telegram.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-placement="footer"
+                  className="inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-xl border border-border bg-card px-4 text-[13.5px] font-semibold text-foreground transition-colors hover:border-primary/40"
+                >
+                  <TelegramIcon size={17} className="text-[#229ED9]" /> Join on Telegram
+                </a>
+              </div>
             </div>
+
+            {/* The site, by course — Admin → Navigation → Footer — Explore */}
+            <nav aria-label="Footer">
+              <div className="hidden gap-x-6 gap-y-10 lg:grid lg:grid-cols-3 xl:grid-cols-5">
+                {columns.map((col) => (
+                  <div key={col.id} className="min-w-0">
+                    <h2 className="text-[12px] font-bold uppercase leading-snug tracking-[0.1em] text-foreground">{col.label}</h2>
+                    <ul className="mt-3 space-y-0.5">
+                      {col.links.map((l) => (
+                        <li key={l.id}>
+                          <Link
+                            href={l.url}
+                            {...linkProps(l)}
+                            className="group inline-flex items-center gap-1 py-1.5 text-[14px] leading-snug text-muted-foreground transition-colors hover:text-primary-strong dark:hover:text-primary"
+                          >
+                            {l.label}
+                            <ArrowRight className="h-3 w-3 -translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" aria-hidden="true" />
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+
+              <div className="divide-y divide-border rounded-2xl border border-border bg-card lg:hidden">
+                {columns.map((col) => (
+                  <details key={col.id} className="group">
+                    <summary className="flex min-h-[52px] cursor-pointer list-none items-center justify-between px-4 text-[14px] font-bold text-foreground [&::-webkit-details-marker]:hidden">
+                      {col.label}
+                      <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" aria-hidden="true" />
+                    </summary>
+                    <ul className="grid gap-x-4 px-2 pb-2 sm:grid-cols-2">
+                      {col.links.map((l) => (
+                        <li key={l.id}>
+                          <Link
+                            href={l.url}
+                            {...linkProps(l)}
+                            className="flex min-h-[44px] items-center rounded-lg px-2 text-[14px] text-muted-foreground hover:bg-surface-2 hover:text-foreground"
+                          >
+                            {l.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
+                ))}
+              </div>
+            </nav>
           </div>
-          
-          {/* Bottom Bar */}
-          <div className="mt-6 md:mt-8 pt-4 md:pt-6 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-3">
-            <p className="text-[12px] md:text-[10px] font-bold text-gray-400">
-              &copy; {currentYear} AdmissionHands. All rights reserved.
-            </p>
-            <div className="flex gap-4 md:gap-6">
-              <Link href="/terms#privacy" className="text-[12px] md:text-[10px] font-bold text-gray-400 hover:text-white transition-colors block py-2.5 min-h-[44px] min-w-[44px] text-center">Privacy</Link>
-              <Link href="/terms#terms" className="text-[12px] md:text-[10px] font-bold text-gray-400 hover:text-white transition-colors block py-2.5 min-h-[44px] min-w-[44px] text-center">Terms</Link>
-              <Link href="/terms#dpdp" className="text-[12px] md:text-[10px] font-bold text-gray-400 hover:text-white transition-colors block py-2.5 min-h-[44px] min-w-[44px] text-center">Data &amp; DPDP</Link>
-            </div>
+
+          {/* The bottom line — Admin → Navigation → Footer — Bottom line */}
+          <div className="mt-10 flex flex-col items-center justify-between gap-2 border-t border-border pt-4 md:flex-row">
+            <p className="text-[13px] text-muted-foreground">&copy; {currentYear} AdmissionHands. All rights reserved.</p>
+            <ul className="flex flex-wrap items-center justify-center gap-x-1">
+              {bottom.map((l) => (
+                <li key={l.id}>
+                  <Link
+                    href={l.url}
+                    {...linkProps(l)}
+                    className="flex min-h-[44px] items-center px-2.5 text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
         <div className="h-[calc(4rem+env(safe-area-inset-bottom))] md:hidden" /> {/* Spacer for floating CTA icons */}
       </footer>
-      
+
       <MobileFooter />
     </>
   );

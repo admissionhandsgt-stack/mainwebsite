@@ -20,30 +20,37 @@ interface NavRow {
   display_order: number;
   is_active: boolean;
   opens_new_tab: boolean;
+  description: string | null;
 }
 
+/**
+ * `depth` is how many levels a menu can hold (2026-10-21). The main menu has three: an item, its
+ * groups (the titled columns of a mega menu, url "#"), and the links in each group — an item whose
+ * children are plain links stays a simple dropdown. The footer's Explore menu has two: column headings
+ * and their links.
+ */
 const MENUS = [
   {
     slug: "header",
     label: "Main menu",
-    help: "The links across the top of every page. An item with children becomes a dropdown.",
-    allowsChildren: true,
+    help: "The links across the top of every page. An item with sub-links becomes a dropdown; give those sub-links links of their own and they become the titled columns of a larger menu.",
+    depth: 3,
   },
   {
     slug: "footer_explore",
     label: "Footer — Explore",
-    help: "The link column in the footer, and the same list in the mobile accordion.",
-    allowsChildren: false,
+    help: "The footer's link columns: each top-level row with the address # is a column heading, and its sub-links are the column. A top-level row with an address of its own lands in a column called More.",
+    depth: 2,
   },
   {
     slug: "footer_quick",
-    label: "Footer — Mobile pills",
-    help: "The row of rounded link pills shown in the footer on phones.",
-    allowsChildren: false,
+    label: "Footer — Bottom line",
+    help: "The small links beside the copyright line at the very bottom: privacy, terms and the like.",
+    depth: 1,
   },
 ];
 
-const BLANK = { label: "", url: "", opens_new_tab: false, parent_id: null as number | null };
+const BLANK = { label: "", url: "", opens_new_tab: false, description: "", parent_id: null as number | null };
 
 // Square row controls. The delete one turns red on hover; swapped into the kit's
 // ghost class rather than appended, so the two hovers cannot fight.
@@ -110,6 +117,7 @@ export default function NavigationPage() {
         url: editing.url.trim(),
         parent_id: editing.parent_id,
         opens_new_tab: editing.opens_new_tab,
+        description: editing.description.trim() || null,
       };
 
       if (editing.id) {
@@ -151,9 +159,10 @@ export default function NavigationPage() {
   };
 
   const remove = async (row: NavRow) => {
-    const kids = childrenOf(row.id);
-    const warning = kids.length
-      ? `Delete "${row.label}" and its ${kids.length} sub-links?`
+    const below = (id: number): number => childrenOf(id).reduce((n, c) => n + 1 + below(c.id), 0);
+    const kids = below(row.id);
+    const warning = kids
+      ? `Delete "${row.label}" and the ${kids} links under it?`
       : `Delete "${row.label}"?`;
     if (!window.confirm(`${warning} It disappears from the site straight away.`)) return;
     try {
@@ -206,12 +215,11 @@ export default function NavigationPage() {
     );
   }
 
-  const renderRow = (row: NavRow, list: NavRow[], index: number, isChild: boolean) => (
+  const INDENT = ["pl-3 sm:pl-4", "bg-slate-50/70 pl-8 sm:pl-12", "bg-slate-50 pl-14 sm:pl-20"];
+  const renderRow = (row: NavRow, list: NavRow[], index: number, depth: number) => (
     <li
       key={row.id}
-      className={`flex items-center gap-3 py-2.5 pr-3 sm:pr-4 ${
-        isChild ? "bg-slate-50/70 pl-8 sm:pl-12" : "pl-3 sm:pl-4"
-      }`}
+      className={`flex items-center gap-3 py-2.5 pr-3 sm:pr-4 ${INDENT[depth] ?? INDENT[2]}`}
     >
       <div className="flex flex-col">
         <button
@@ -234,21 +242,23 @@ export default function NavigationPage() {
         </button>
       </div>
 
-      {isChild && <CornerDownRight className="h-4 w-4 shrink-0 text-slate-300" />}
+      {depth > 0 && <CornerDownRight className="h-4 w-4 shrink-0 text-slate-300" />}
 
       <div className={`min-w-0 flex-1 ${row.is_active ? "" : "opacity-60"}`}>
         <div className="flex flex-wrap items-center gap-2">
-          <span className={`font-semibold ${isChild ? "text-sm text-slate-800" : "text-slate-900"}`}>{row.label}</span>
+          <span className={`font-semibold ${depth ? "text-sm text-slate-800" : "text-slate-900"}`}>{row.label}</span>
+          {childrenOf(row.id).length > 0 && depth < menu.depth - 1 && depth > 0 && <Badge>Group</Badge>}
           {row.opens_new_tab && (
             <ExternalLink className="h-3 w-3 text-slate-400" role="img" aria-label="Opens in a new tab" />
           )}
           {!row.is_active && <Badge>Hidden</Badge>}
         </div>
         <code className="block truncate text-xs text-slate-400">{row.url}</code>
+        {row.description && <span className="block truncate text-xs text-slate-500">{row.description}</span>}
       </div>
 
       <div className="flex shrink-0 items-center">
-        {menu.allowsChildren && !isChild && (
+        {depth < menu.depth - 1 && (
           <button
             type="button"
             onClick={() => setEditing({ ...BLANK, parent_id: row.id })}
@@ -277,6 +287,7 @@ export default function NavigationPage() {
               label: row.label,
               url: row.url,
               opens_new_tab: row.opens_new_tab,
+              description: row.description ?? "",
               parent_id: row.parent_id,
             })
           }
@@ -331,10 +342,15 @@ export default function NavigationPage() {
               {parents.map((row, i) => (
                 <li key={row.id}>
                   <ul className="divide-y divide-slate-100">
-                    {renderRow(row, parents, i, false)}
-                    {childrenOf(row.id).map((child, ci, kids) =>
-                      renderRow(child, kids, ci, true),
-                    )}
+                    {renderRow(row, parents, i, 0)}
+                    {childrenOf(row.id).map((child, ci, kids) => (
+                      <li key={child.id}>
+                        <ul className="divide-y divide-slate-100">
+                          {renderRow(child, kids, ci, 1)}
+                          {childrenOf(child.id).map((leaf, li, leaves) => renderRow(leaf, leaves, li, 2))}
+                        </ul>
+                      </li>
+                    ))}
                   </ul>
                 </li>
               ))}
@@ -382,6 +398,19 @@ export default function NavigationPage() {
                 value={editing.url}
                 onChange={(e) => setEditing({ ...editing, url: e.target.value })}
                 placeholder="/mbbs-india"
+                className={`${INPUT} ${INPUT_H}`}
+              />
+            </Field>
+            <Field
+              label="Description (optional)"
+              htmlFor="nav-description"
+              hint="One short line under the link in the larger menus, e.g. “Every branch: seats, colleges and cutoff”."
+            >
+              <input
+                id="nav-description"
+                value={editing.description}
+                onChange={(e) => setEditing({ ...editing, description: e.target.value })}
+                maxLength={90}
                 className={`${INPUT} ${INPUT_H}`}
               />
             </Field>

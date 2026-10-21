@@ -187,7 +187,8 @@ export default function CollegeFilterBar({
             "Updating…"
           ) : (
             <>
-              <span className="font-semibold text-foreground">{total.toLocaleString("en-IN")}</span> colleges
+              {/* The PG list holds MD/MS colleges and DNB hospitals, a hospital with both twice. */}
+              <span className="font-semibold text-foreground">{total.toLocaleString("en-IN")}</span> colleges and DNB hospitals
             </>
           )}
         </p>

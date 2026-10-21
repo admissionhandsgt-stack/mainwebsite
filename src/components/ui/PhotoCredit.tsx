@@ -68,8 +68,11 @@ export default function PhotoCredit({
   attribution?: string | null;
   license?: string | null;
   className?: string;
-  /** `onImage` sits on the darkened photograph; `onSurface` on a page background. */
-  tone?: "onImage" | "onSurface";
+  /**
+   * `onImage` sits on the darkened photograph; `onSurface` on a page background; `chip` brings its
+   * own small dark backing, for a photograph that is not darkened (the light heroes, 2026-10-21).
+   */
+  tone?: "onImage" | "onSurface" | "chip";
 }) {
   const parts = [subject, attribution ? `© ${attribution}` : null, license].filter(Boolean);
   // Nothing to say is not the same as an empty line: render nothing at all,
@@ -79,7 +82,9 @@ export default function PhotoCredit({
   const colour =
     tone === "onImage"
       ? "text-white/45"
-      : "text-slate-500/70 dark:text-slate-400/70";
+      : tone === "chip"
+        ? "rounded-md bg-slate-950/55 px-2 py-1 text-white/85 backdrop-blur-sm"
+        : "text-slate-500/70 dark:text-slate-400/70";
 
   return (
     <span

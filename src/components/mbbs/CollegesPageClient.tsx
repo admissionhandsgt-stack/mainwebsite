@@ -174,24 +174,24 @@ function HeroImageRotator({ images }: HeroImageRotatorProps) {
   }, [images]);
 
   return (
-    <div className="absolute inset-0 bg-slate-900 pointer-events-none">
+    <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] border border-border bg-surface-3 shadow-lift">
       {images.map((shot, i) => (
         <div
           key={i}
-          className="absolute inset-0 bg-cover bg-center transition-opacity duration-[2000ms]"
+          className="pointer-events-none absolute inset-0 bg-cover bg-center transition-opacity duration-[2000ms]"
           style={{
             backgroundImage: `url(${shot.src})`,
             opacity: i === current ? 1 : 0,
           }}
+          aria-hidden="true"
         />
       ))}
-      <div className="absolute inset-0 bg-slate-900/55" />
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-transparent to-slate-950" />
       <PhotoCredit
         subject={images[current]?.subject}
         attribution={images[current]?.credit}
         license={images[current]?.license}
-        className="absolute bottom-1.5 right-2"
+        tone="chip"
+        className="absolute right-2.5 top-2.5"
       />
     </div>
   );
@@ -358,85 +358,67 @@ export default function CollegesPageClient({
   return (
     <div className="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-zinc-100 min-h-screen font-body selection:bg-cyan-600/30 selection:text-white transition-colors duration-200">
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden pt-16 pb-20 sm:pt-20 sm:pb-28 bg-slate-950 text-white border-b border-slate-900">
-        <HeroImageRotator images={finalHeroImages} />
+      {/* Hero — light since 2026-10-21: words and counts left, the campus photographs framed right */}
+      <section className="relative isolate overflow-hidden border-b border-border bg-background py-10 md:py-14">
+        <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+          <div className="absolute inset-0 bg-gradient-to-b from-primary-soft/80 via-background to-background" />
+          <div className="absolute -right-40 -top-48 h-[32rem] w-[32rem] rounded-full bg-secondary/10 blur-[110px]" />
+          <div className="absolute inset-0 opacity-60 [background-image:linear-gradient(hsl(var(--border))_1px,transparent_1px),linear-gradient(90deg,hsl(var(--border))_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(ellipse_60%_55%_at_75%_10%,#000,transparent)]" />
+        </div>
 
-        <div className="container-custom px-4 max-w-5xl mx-auto text-center relative z-10">
-          <motion.div
-            variants={fadeUp(0)}
-            initial="hidden"
-            animate="visible"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 border border-white/25 text-[11px] font-black tracking-wider uppercase text-cyan-200 mb-5 backdrop-blur-sm"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            NMC Recognized · NEET 2026
-          </motion.div>
+        <div className={`container-custom relative grid gap-10 ${finalHeroImages.length ? "lg:grid-cols-[minmax(0,1fr)_minmax(0,30rem)] lg:items-center lg:gap-14" : ""}`}>
+          <div className="min-w-0">
+            <p className="mb-4 flex items-center gap-2.5 text-[12px] font-bold uppercase tracking-[0.14em] text-primary-strong">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-soft ring-1 ring-primary/15">
+                <Building2 className="h-4 w-4" aria-hidden="true" />
+              </span>
+              MBBS colleges · government and private
+            </p>
 
-          <motion.h1
-            variants={fadeUp(0.06)}
-            initial="hidden"
-            animate="visible"
-            className="font-heading text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-white mb-5 leading-[1.1]"
-          >
-            MBBS Colleges <br className="hidden sm:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-teal-300">
-              in India
-            </span>
-          </motion.h1>
+            <h1 className="font-heading max-w-[22ch] text-[clamp(2rem,4.4vw,3.35rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-foreground [text-wrap:balance]">
+              MBBS colleges <span className="text-primary-strong">in India</span>
+            </h1>
 
-          <motion.p
-            variants={fadeUp(0.12)}
-            initial="hidden"
-            animate="visible"
-            className="text-cyan-100/90 text-sm sm:text-base max-w-2xl mx-auto mb-8 leading-relaxed font-medium"
-          >
-            Explore {liveStats.total.toLocaleString()} NMC-recognized medical institutions across {liveStats.states} states. Access official seat matrices, government vs. private details, and find your ideal college.
-          </motion.p>
+            <p className="mt-5 max-w-[60ch] text-[15.5px] leading-relaxed text-muted-foreground md:text-[17px]">
+              Every MBBS college in the counselling data, state by state, with its fees, seats and cutoff band. Filter by state and type, or open a college for the full picture.
+            </p>
 
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
-            className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl mx-auto mb-8"
-          >
-            {[
-              { label: "Total Colleges", value: liveStats.total.toLocaleString(), icon: Building2, color: "text-cyan-300" },
-              { label: "Government", value: liveStats.govt.toLocaleString(), icon: Landmark, color: "text-emerald-300" },
-              { label: "Private", value: liveStats.private.toLocaleString(), icon: GraduationCap, color: "text-teal-300" },
-              { label: "States & UTs", value: liveStats.states.toString(), icon: MapPin, color: "text-rose-300" },
-            ].map((s) => (
-              <motion.div
-                key={s.label}
-                variants={staggerItem}
-                className="flex flex-col items-center justify-center p-3 rounded-2xl bg-white/5 border border-white/10 shadow-sm backdrop-blur-sm hover:bg-white/10 transition-all duration-300 group"
+            <dl className="mt-7 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4">
+              {[
+                { label: "MBBS colleges", value: liveStats.total.toLocaleString("en-IN") },
+                { label: "Government", value: liveStats.govt.toLocaleString("en-IN") },
+                { label: "Private", value: liveStats.private.toLocaleString("en-IN") },
+                { label: "States & UTs", value: liveStats.states.toLocaleString("en-IN") },
+              ].map((st) => (
+                <div key={st.label} className="min-w-0 rounded-2xl border border-border bg-card px-4 py-3.5 shadow-sm">
+                  <dt className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">{st.label}</dt>
+                  <dd className="tnum font-heading mt-1 text-[1.35rem] font-extrabold leading-tight text-foreground md:text-[1.55rem]">{st.value}</dd>
+                </div>
+              ))}
+            </dl>
+
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+              <a
+                href="#explorer"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary-strong px-6 text-[15px] font-bold text-primary-foreground shadow-glow transition-transform hover:-translate-y-0.5"
               >
-                <s.icon className={`w-5 h-5 ${s.color} mb-1.5 group-hover:scale-110 transition-transform`} />
-                <span className="text-lg font-black text-white">{s.value}</span>
-                <span className="text-[10px] uppercase font-bold text-cyan-200/60 tracking-wider mt-0.5">{s.label}</span>
-              </motion.div>
-            ))}
-          </motion.div>
+                Explore colleges <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </a>
+              <button
+                type="button"
+                onClick={CTA.call}
+                className="inline-flex min-h-12 items-center justify-center rounded-full border border-border bg-card px-6 text-[15px] font-semibold text-foreground transition-colors hover:border-primary/40"
+              >
+                Get expert counselling
+              </button>
+            </div>
+          </div>
 
-          <motion.div
-            variants={fadeUp(0.18)}
-            initial="hidden"
-            animate="visible"
-            className="flex flex-col sm:flex-row gap-3 justify-center"
-          >
-            <a
-              href="#explorer"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white dark:!bg-cyan-600 border border-slate-200 dark:!border-cyan-600 text-slate-900 dark:!text-white hover:bg-slate-50 dark:!hover:bg-cyan-500 font-black text-sm rounded-xl shadow-lg active:scale-95 transition-all"
-            >
-              Explore Colleges <ArrowRight className="w-4 h-4" />
-            </a>
-            <button
-              onClick={CTA.call}
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white/10 border border-white/20 hover:bg-white/20 text-white font-black text-sm rounded-xl transition-all active:scale-95"
-            >
-              Get Expert Counselling
-            </button>
-          </motion.div>
+          {finalHeroImages.length > 0 && (
+            <div className="relative min-w-0">
+              <HeroImageRotator images={finalHeroImages} />
+            </div>
+          )}
         </div>
       </section>
 

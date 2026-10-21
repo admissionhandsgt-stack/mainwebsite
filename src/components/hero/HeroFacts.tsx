@@ -23,24 +23,21 @@ export default function HeroFacts({
   footnote?: ReactNode;
 }) {
   return (
-    <section aria-label={title} className="glass-hero rounded-3xl p-5 md:p-6">
-      <p className="flex items-center justify-between gap-3 text-[11.5px] font-bold uppercase tracking-[0.14em] text-cyan-300">
-        {title}
-        <span className="inline-flex h-2 w-2 shrink-0 rounded-full bg-cyan-300 shadow-[0_0_12px_2px_rgb(103_232_249/0.7)]" aria-hidden="true" />
-      </p>
+    <section aria-label={title} className="rounded-3xl border border-border bg-card p-5 shadow-lift md:p-6">
+      <p className="text-[11.5px] font-bold uppercase tracking-[0.14em] text-primary-strong">{title}</p>
       <dl className="mt-5 grid grid-cols-2 gap-x-4 gap-y-4">
         {facts.map((f) => (
           <div
             key={f.label}
-            className={`rounded-2xl border border-white/[0.07] bg-white/[0.03] px-3.5 py-3 ${f.wide ? "col-span-2" : ""}`}
+            className={`rounded-2xl border border-border bg-surface-2 px-3.5 py-3 ${f.wide ? "col-span-2" : ""}`}
           >
-            <dt className="text-[10.5px] font-semibold uppercase tracking-[0.1em] text-slate-400">{f.label}</dt>
-            <dd className="tnum font-heading mt-1 text-[1.05rem] font-extrabold leading-snug text-white">{f.value}</dd>
-            {f.sub && <dd className="mt-0.5 text-[11.5px] leading-snug text-slate-400">{f.sub}</dd>}
+            <dt className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">{f.label}</dt>
+            <dd className="tnum font-heading mt-1 text-[1.05rem] font-extrabold leading-snug text-foreground">{f.value}</dd>
+            {f.sub && <dd className="mt-0.5 text-[12px] leading-snug text-muted-foreground">{f.sub}</dd>}
           </div>
         ))}
       </dl>
-      {footnote && <p className="mt-5 border-t border-white/10 pt-3 text-[12px] leading-relaxed text-slate-400">{footnote}</p>}
+      {footnote && <p className="mt-5 border-t border-border pt-3 text-[12px] leading-relaxed text-muted-foreground">{footnote}</p>}
     </section>
   );
 }

@@ -28,41 +28,40 @@ export default function HeroBars({
 }) {
   const max = Math.max(1, ...rows.map((r) => r.value));
   return (
-    <figure className="glass-hero rounded-3xl p-5 md:p-6">
+    <figure className="rounded-3xl border border-border bg-card p-5 shadow-lift md:p-6">
       <figcaption className="flex items-start justify-between gap-3">
         <span>
-          <span className="block text-[11.5px] font-bold uppercase tracking-[0.14em] text-cyan-300">{title}</span>
-          {caption && <span className="mt-1 block text-[13px] leading-snug text-slate-400">{caption}</span>}
+          <span className="block text-[11.5px] font-bold uppercase tracking-[0.14em] text-primary-strong">{title}</span>
+          {caption && <span className="mt-1 block text-[13px] leading-snug text-muted-foreground">{caption}</span>}
         </span>
-        <span className="mt-0.5 inline-flex h-2 w-2 shrink-0 rounded-full bg-cyan-300 shadow-[0_0_12px_2px_rgb(103_232_249/0.7)]" aria-hidden="true" />
       </figcaption>
       <ol className="mt-5 space-y-3.5">
         {rows.map((r, i) => (
           <li key={`${r.label}-${i}`} className={i >= 4 ? "hidden sm:block" : undefined}>
             <div className="flex items-baseline justify-between gap-3 text-[13.5px]">
               <span className="flex min-w-0 items-baseline gap-2">
-                <span className="tnum w-4 shrink-0 text-[11px] font-bold text-slate-500">{i + 1}</span>
+                <span className="tnum w-4 shrink-0 text-[11px] font-bold text-muted-foreground">{i + 1}</span>
                 {r.href ? (
-                  <Link href={r.href} className="line-clamp-3 font-semibold leading-snug text-slate-100 hover:text-white hover:underline">
+                  <Link href={r.href} className="line-clamp-3 font-semibold leading-snug text-foreground hover:text-primary-strong hover:underline">
                     {r.label}
                   </Link>
                 ) : (
-                  <span className="line-clamp-3 font-semibold leading-snug text-slate-100">{r.label}</span>
+                  <span className="line-clamp-3 font-semibold leading-snug text-foreground">{r.label}</span>
                 )}
               </span>
-              <span className="tnum shrink-0 font-bold text-white">{r.display}</span>
+              <span className="tnum shrink-0 font-bold text-foreground">{r.display}</span>
             </div>
-            <div className="ml-6 mt-1.5 h-2 rounded-full bg-white/[0.08]" aria-hidden="true">
+            <div className="ml-6 mt-1.5 h-2 rounded-full bg-surface-3" aria-hidden="true">
               <div
-                className="h-2 rounded-full bg-gradient-to-r from-cyan-400 to-teal-300 shadow-[0_0_10px_rgb(34_211_238/0.45)]"
+                className="h-2 rounded-full bg-primary"
                 style={{ width: `${Math.max(3, (r.value / max) * 100)}%` }}
               />
             </div>
-            {r.note && <p className="ml-6 mt-1 text-[11.5px] text-slate-400">{r.note}</p>}
+            {r.note && <p className="ml-6 mt-1 text-[12px] text-muted-foreground">{r.note}</p>}
           </li>
         ))}
       </ol>
-      {footnote && <p className="mt-5 border-t border-white/10 pt-3 text-[12px] leading-relaxed text-slate-400">{footnote}</p>}
+      {footnote && <p className="mt-5 border-t border-border pt-3 text-[12px] leading-relaxed text-muted-foreground">{footnote}</p>}
     </figure>
   );
 }

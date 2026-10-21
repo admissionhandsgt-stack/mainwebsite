@@ -11,6 +11,7 @@
 
 import { getBlocks } from "@/lib/content";
 import { approxLakh, getDataStats, inr } from "@/lib/dataStats";
+import { getLiveFigures } from "@/lib/liveFigures";
 import { pageCopy } from "@/lib/pageCopy";
 import { SERVICES, type ServiceItem } from "@/lib/servicesDefaults";
 
@@ -23,12 +24,19 @@ const lines = (v: unknown) =>
 const fill = (text: string, tokens: Record<string, string>) => text.replace(/\{([a-z_]+)\}/g, (m, k: string) => tokens[k] ?? m);
 
 export async function getServicesPage() {
-  const [figures, stats, blocks] = await Promise.all([pageCopy("page.services.figures"), getDataStats(), getBlocks("services_page")]);
+  const [figures, stats, blocks, live] = await Promise.all([
+    pageCopy("page.services.figures"),
+    getDataStats(),
+    getBlocks("services_page"),
+    getLiveFigures(),
+  ]);
   const tokens: Record<string, string> = {
     students: figures.students,
     years: figures.years,
     closing_ranks: stats.totalRanks ? approxLakh(stats.totalRanks) : "",
-    colleges: stats.pgColleges + stats.ugColleges ? inr(stats.pgColleges + stats.ugColleges) : "",
+    // NMC's register, not our UG and PG lists added together (3,895 rows with DNB hospitals, dental
+    // and AYUSH colleges, and every two-level college twice).
+    colleges: live.nmc_colleges ?? "",
     states: stats.states ? String(stats.states) : "",
   };
 

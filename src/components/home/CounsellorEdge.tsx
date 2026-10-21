@@ -16,6 +16,7 @@ import {
 import { CONTACT_INFO } from "@/lib/constants";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { getCounsellingFacts } from "@/lib/counsellingFacts";
+import { TeamFigure } from "@/components/engage/TeamFigures";
 
 /**
  * Why a cutoff list is not a counsellor (2026-10-12).
@@ -187,7 +188,7 @@ export default async function CounsellorEdge({ compact = false }: { compact?: bo
           <p className="mx-auto mt-4 max-w-[64ch] text-[16px] leading-relaxed text-muted-foreground">
             Cutoff lists show where seats closed last year. They cannot tell you which choice to lock first, when to float
             for an upgrade, which quota is genuinely yours, or what a college will actually charge. Those calls decide your
-            seat — and they are made in days, not weeks. That is where 15+ years of counselling, and a team in touch with
+            seat — and they are made in days, not weeks. That is where <TeamFigure k="years" /> years of counselling, and a team in touch with
             colleges and counsellors across India, works for you.
           </p>
         </header>
@@ -238,7 +239,7 @@ export default async function CounsellorEdge({ compact = false }: { compact?: bo
           <p className="font-heading text-[1.2rem] font-extrabold text-foreground">
             Talk to a counsellor before your next round — not after it.
           </p>
-          <p className="mt-1 text-[14px] text-muted-foreground">Open daily, 10 AM – 10 PM · 15+ years of NEET counselling</p>
+          <p className="mt-1 text-[14px] text-muted-foreground">Open daily, 10 AM – 10 PM · <TeamFigure k="years" /> years of NEET counselling</p>
           <div className="mt-5">{ctas}</div>
         </div>
       </div>

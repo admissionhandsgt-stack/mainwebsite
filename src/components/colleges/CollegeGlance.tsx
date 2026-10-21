@@ -4,7 +4,7 @@ import { money, type CollegeSummary } from "@/lib/collegeSnippet";
 /**
  * The summary box under a college's H1: the numbers its search snippet quotes,
  * and nothing the data does not hold — a tile with no figure is left out
- * rather than shown as a dash. Sits on the dark header of both templates.
+ * rather than shown as a dash. Sits in the (light, since 2026-10-21) header of both templates.
  */
 export default function CollegeGlance({ s }: { s: CollegeSummary }) {
   const n = (v: number) => v.toLocaleString("en-IN");
@@ -35,15 +35,15 @@ export default function CollegeGlance({ s }: { s: CollegeSummary }) {
     <div className="mt-8">
       <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         {tiles.map((t) => (
-          <div key={t.label} className="min-w-0 rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-            <dt className="text-[11px] font-semibold uppercase tracking-wide text-white/55">{t.label}</dt>
-            <dd className="tnum font-heading mt-1 text-[19px] font-extrabold leading-tight text-white [overflow-wrap:anywhere] md:text-[21px]">{t.value}</dd>
-            {t.sub && <dd className="mt-0.5 text-[12px] leading-snug text-white/60">{t.sub}</dd>}
+          <div key={t.label} className="min-w-0 rounded-2xl border border-border bg-card p-4 shadow-sm">
+            <dt className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">{t.label}</dt>
+            <dd className="tnum font-heading mt-1 text-[19px] font-extrabold leading-tight text-foreground [overflow-wrap:anywhere] md:text-[21px]">{t.value}</dd>
+            {t.sub && <dd className="mt-0.5 text-[12px] leading-snug text-muted-foreground">{t.sub}</dd>}
           </div>
         ))}
       </dl>
       {(s.band || s.fee) && (
-        <p className="mt-3 max-w-[90ch] text-[11.5px] leading-relaxed text-white/50">
+        <p className="mt-3 max-w-[90ch] text-[12px] leading-relaxed text-muted-foreground">
           {s.band ? BAND_FOOTNOTE : ""} {s.fee ? FEE_FOOTNOTE.replace(/^\*/, "") : ""}
         </p>
       )}

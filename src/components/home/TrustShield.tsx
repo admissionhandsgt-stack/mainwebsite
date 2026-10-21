@@ -2,6 +2,7 @@ import Link from "@/components/ui/Link";
 import { AlertTriangle, BadgeCheck, Building2, Database, MapPin, ShieldCheck, Users, XCircle } from "lucide-react";
 import { OFFICE, CONTACT_INFO } from "@/lib/constants";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { TeamFigure } from "@/components/engage/TeamFigures";
 
 /**
  * 15+ years, and how a family can check that for themselves.
@@ -66,11 +67,11 @@ export default function TrustShield() {
           {/* ---------------- the USP ---------------- */}
           <div>
             <p className="inline-flex items-center gap-1.5 rounded-full border border-primary/25 bg-card px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-primary-strong dark:text-primary">
-              <BadgeCheck className="h-3.5 w-3.5" aria-hidden="true" /> Trusted through 15+ admission seasons
+              <BadgeCheck className="h-3.5 w-3.5" aria-hidden="true" /> Trusted through <TeamFigure k="years" /> admission seasons
             </p>
             <div className="mt-5 flex items-end gap-4">
               <span className="font-heading text-gradient-brand text-[clamp(5rem,12vw,8.5rem)] font-extrabold leading-[0.85] tracking-[-0.04em]">
-                15+
+                <TeamFigure k="years" />
               </span>
               <span className="font-heading pb-2 text-[clamp(1.2rem,2.4vw,1.7rem)] font-extrabold leading-tight text-foreground">
                 Years of

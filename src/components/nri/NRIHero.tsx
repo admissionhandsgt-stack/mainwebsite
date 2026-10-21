@@ -1,9 +1,8 @@
-
-import React from 'react';
 import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Globe2, Plus } from 'lucide-react';
 import Link from "@/components/ui/Link";
 import PhotoCredit, { type PhotoCreditInfo } from "@/components/ui/PhotoCredit";
+import { pageCopy } from "@/lib/pageCopy";
 
 interface NRIHeroProps {
   backgroundImageUrl?: string;
@@ -11,95 +10,79 @@ interface NRIHeroProps {
   credit?: PhotoCreditInfo;
 }
 
-const NRIHero = ({ backgroundImageUrl, credit }: NRIHeroProps) => {
+/**
+ * The NRI page's hero — light since 2026-10-21, words from Admin → Content → "Page: NRI quota".
+ *
+ * Its fallback backdrop was an AI picture with "D.Y. PATIL UNIVERSITY" on the building, behind the
+ * words about every NRI college; it is gone. With no photograph set in the admin the words stand
+ * alone. Server component.
+ */
+export default async function NRIHero({ backgroundImageUrl, credit }: NRIHeroProps) {
+  const copy = await pageCopy("page.nri.hero");
+  const photo = backgroundImageUrl && backgroundImageUrl !== "none" ? backgroundImageUrl : null;
   return (
-    <section className="relative w-full min-h-[min(720px,calc(100svh-112px))] flex items-center overflow-hidden mesh-gradient py-16">
-      {/* Ambient brand light */}
-      <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
-        <div className="ambient-blob animate-drift -left-28 -top-32 h-[28rem] w-[28rem] bg-primary/20" />
-        <div className="ambient-blob animate-drift-slow right-[-7rem] bottom-[-8rem] h-[24rem] w-[24rem] bg-secondary/15 [animation-delay:-6s]" />
+    <section className="relative isolate w-full overflow-hidden border-b border-border bg-background">
+      <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary-soft/80 via-background to-background" />
+        <div className="absolute -right-40 -top-48 h-[32rem] w-[32rem] rounded-full bg-secondary/10 blur-[110px]" />
+        <div className="absolute inset-0 opacity-60 [background-image:linear-gradient(hsl(var(--border))_1px,transparent_1px),linear-gradient(90deg,hsl(var(--border))_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(ellipse_60%_55%_at_75%_10%,#000,transparent)]" />
       </div>
 
-      {/* Background Image Overlay */}
-      <div className="absolute inset-0 z-0">
-        {(
-          <Image
-            src={
-              backgroundImageUrl && backgroundImageUrl !== "none"
-                ? backgroundImageUrl
-                : "/assets/images/hero/dy-patil-mumbai.avif"
-            }
-            alt="Medical college campus"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover opacity-20"
-            placeholder="blur"
-            blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMjAiIGhlaWdodD0iMjQwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDcwZTFlIi8+PC9zdmc+"
-          />
-        )}
-        <div className="absolute inset-0 bg-slate-900/50" />
-      </div>
-
-      {/* Decorative blurred orbs */}
-      <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full bg-cyan-600/20 blur-[120px] pointer-events-none z-1" />
-      <div className="absolute bottom-[-15%] left-[-10%] w-[400px] h-[400px] rounded-full bg-teal-500/15 blur-[100px] pointer-events-none z-1" />
-      <div className="container-custom relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center">
-          <div className="space-y-4 sm:space-y-5 animate-fade-in">
-            <div className="inline-block px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20">
-              <span className="text-sm font-bold uppercase tracking-widest text-cyan-300">NRI Quota Medical Admissions</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
-              Secure Your <span className="gradient-text">Medical Seat</span> Through NRI Quota
-            </h1>
-            <p className="text-xl text-cyan-100/80 leading-relaxed font-medium">
-              Expert guidance for NRI, NRI-sponsored, OCI, PIO, and foreign national candidates seeking MBBS & BDS seats in top medical colleges across India.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-5 pt-4">
-              <Link href="/nri-quota/colleges" className="indian-medical-gradient text-white font-bold py-4 px-8 rounded-2xl transition-all shadow-xl shadow-cyan-900/40 text-center hover:scale-105 active:scale-95">
-                Explore NRI Colleges <ArrowRight className="inline-block ml-2 h-5 w-5" />
-              </Link>
-              <a href="#eligibility" className="glass py-4 px-8 rounded-2xl font-bold text-white border border-white/20 text-center hover:bg-white/10 transition-all">
-                Check Eligibility
-              </a>
-            </div>
+      <div className={`container-custom relative grid gap-10 py-10 md:py-14 ${photo ? "lg:grid-cols-[minmax(0,1fr)_minmax(0,30rem)] lg:items-center lg:gap-14" : ""}`}>
+        <div className="min-w-0">
+          <p className="mb-4 flex items-center gap-2.5 text-[12px] font-bold uppercase tracking-[0.14em] text-primary-strong">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-soft ring-1 ring-primary/15">
+              <Globe2 className="h-4 w-4" aria-hidden="true" />
+            </span>
+            {copy.eyebrow}
+          </p>
+          <h1 className="font-heading max-w-[22ch] text-[clamp(2rem,4.4vw,3.35rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-foreground [text-wrap:balance]">
+            {copy.title} <span className="text-primary-strong">{copy.accent}</span>
+          </h1>
+          <p className="mt-5 max-w-[60ch] text-[15.5px] leading-relaxed text-muted-foreground md:text-[17px]">{copy.subtitle}</p>
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+            <Link
+              href="/nri-quota/colleges"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary-strong px-6 text-[15px] font-bold text-primary-foreground shadow-glow transition-transform hover:-translate-y-0.5"
+            >
+              {copy.cta_primary} <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+            <a
+              href="#eligibility"
+              className="inline-flex min-h-12 items-center justify-center rounded-full border border-border bg-card px-6 text-[15px] font-semibold text-foreground transition-colors hover:border-primary/40"
+            >
+              {copy.cta_secondary}
+            </a>
           </div>
-          <div className="relative h-[400px] lg:h-[550px] group hidden lg:block">
-            <div className="absolute -inset-4 bg-gradient-to-br from-cyan-600/30 to-teal-500/30 rounded-[3rem] blur-2xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
-            {backgroundImageUrl && backgroundImageUrl !== "none" && (
+        </div>
+
+        {photo && (
+          <div className="relative min-w-0">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] border border-border bg-surface-3 shadow-lift">
               <Image
-                src={backgroundImageUrl}
+                src={photo}
                 alt="Medical college campus"
                 fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover rounded-[2.5rem] shadow-2xl border border-white/20"
-                placeholder="blur"
-                blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMjAiIGhlaWdodD0iMjQwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDcwZTFlIi8+PC9zdmc+"
+                priority
+                sizes="(min-width: 1024px) 30rem, 100vw"
+                className="object-cover"
               />
-            )}
-            {/* Inside the rounded frame: this photograph is a panel on the
-                page rather than a wash behind the type, so the credit sits on
-                the image itself. */}
-            <PhotoCredit {...credit} className="absolute bottom-3 right-5 z-10" />
-            <div className="absolute bottom-10 -left-10 glass-white p-6 rounded-3xl shadow-2xl border border-white/40 max-w-xs group-hover:translate-x-2 transition-transform">
-              <div className="flex items-start gap-4">
-                <div className="shrink-0 bg-cyan-600 text-white p-3 rounded-2xl shadow-lg">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 4V20M4 12H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
+              <PhotoCredit {...credit} tone="chip" className="absolute right-2.5 top-2.5" />
+            </div>
+            <div className="relative z-10 -mt-14 ml-4 mr-8 rounded-2xl border border-border bg-card p-5 shadow-lift sm:-mt-16 lg:-ml-8 lg:mr-10">
+              <div className="flex items-start gap-3.5">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary-strong" aria-hidden="true">
+                  <Plus className="h-5 w-5" />
+                </span>
                 <div>
-                  <h2 className="text-lg font-bold text-slate-900 mb-1">Why NRI Quota?</h2>
-                  <p className="text-sm text-slate-600 leading-relaxed font-medium">Higher chances of admission with specialized seats reserved exclusively for NRI candidates.</p>
+                  <h2 className="font-heading text-[16px] font-bold text-foreground">{copy.card_title}</h2>
+                  <p className="mt-1 text-[14px] leading-relaxed text-muted-foreground">{copy.card_body}</p>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );
-};
-
-export default NRIHero;
+}

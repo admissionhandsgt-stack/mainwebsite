@@ -7,6 +7,7 @@ import PageHero from "@/components/ui/PageHero";
 import CollegeFilterBar from "@/components/colleges/CollegeFilterBar";
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
 import { approxFee } from "@/lib/chance";
+import { getLiveFigures } from "@/lib/liveFigures";
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +18,7 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata(): Promise<Metadata> {
   return resolveMetadata('/md-ms-india/colleges', {
     title: "MD/MS Colleges in India — Seats, Fees, Stipend & Cutoffs | AdmissionHands",
-    description: "All 2,168 PG medical colleges with seat counts, approximate fees and stipends. Filter by state, ownership and fee, and see your chance by rank.",
+    description: "Every MD/MS college and DNB hospital in India with seat counts, approximate fees and stipends. Filter by state, ownership and fee, and see your chance by rank.",
   });
 }
 
@@ -51,13 +52,14 @@ export default async function PGCollegesPage({ searchParams }: PageProps) {
     perPage: 24,
   };
 
-  const [{ items, total, page, perPage }, facets, hero] = await Promise.all([
+  const [{ items, total, page, perPage }, facets, hero, live] = await Promise.all([
     listColleges(filters),
     getCollegeFacets("pg"),
     // Was a hardcoded path to an AI-generated campus that read "SWAMI
     // VIVEKANANDA MEDICAL COLLEGE AND HOSPITAL", with SCIENCES misspelt, on a
     // page about every PG college in the country.
     getMediaAsset("pg_hero_campus"),
+    getLiveFigures(),
   ]);
 
   const lastPage = Math.max(1, Math.ceil(total / perPage));
@@ -97,18 +99,20 @@ export default async function PGCollegesPage({ searchParams }: PageProps) {
         eyebrowIcon="building"
         title="Every PG medical college,"
         titleAccent="with the numbers behind it"
-        subtitle="Seat counts, approximate fees and stipends for all 2,168 colleges — and, once you sign in, your own chance at each one."
+        subtitle="Seat counts, approximate fees and stipends for every MD/MS college and DNB hospital — and, once you sign in, your own chance at each one."
         image={hero?.imageUrl && hero.imageUrl !== "none" ? hero.imageUrl : undefined}
         imageSubject={hero?.subject}
         imageCredit={hero?.attribution}
         imageLicense={hero?.license}
         tone="dark"
+        // Official counts, matrix by matrix — this list itself (one row per college and per DNB
+        // hospital, some hospitals in both) is never quoted as a number of colleges.
         stats={[
-          { value: "2,168", label: "Colleges" },
-          { value: String(facets.states.length), label: "States" },
-          { value: "58,279", label: "Seats tracked" },
-          { value: "2024–25", label: "Cutoff years" },
-        ]}
+          { value: live.md_ms_only_colleges, label: "MD/MS colleges · NMC" },
+          live.dnb_hospitals && live.mcc_year ? { value: live.dnb_hospitals, label: `DNB hospitals · MCC ${live.mcc_year}` } : null,
+          live.md_ms_only_seats ? { value: live.md_ms_only_seats, label: "MD/MS seats · NMC" } : null,
+          { value: facets.states.length.toLocaleString("en-IN"), label: "States & UTs" },
+        ].filter((x): x is { value: string; label: string } => Boolean(x?.value))}
       />
 
       <div className="container-custom py-9 md:py-12">

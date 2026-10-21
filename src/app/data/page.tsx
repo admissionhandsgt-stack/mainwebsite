@@ -72,7 +72,7 @@ export default async function OpenDataPage() {
         source={
           contact?.email ? (
             <>
-              {copy.source} Journalists: <a href={`mailto:${contact.email}`} className="font-semibold text-cyan-300 hover:underline">{contact.email}</a>
+              {copy.source} Journalists: <a href={`mailto:${contact.email}`} className="font-semibold text-primary-strong hover:underline">{contact.email}</a>
             </>
           ) : (
             copy.source

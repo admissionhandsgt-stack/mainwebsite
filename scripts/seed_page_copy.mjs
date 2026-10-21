@@ -39,6 +39,28 @@ const HERO_PHOTOS = [
   ["page.neet_pg_cutoff.hero", "neet_exam"], // an exam hall
   ["page.neet_ug_cutoff.hero", "neet_exam"],
   ["page.pg_stipend.hero", "pg_hero_doctors"], // two residents
+  // The light heroes (2026-10-21): every data page gets a relevant scene — a lab, a ward, an OT, a
+  // counselling session, doctors at work. Generic pictures that name no college. An admin's own choice
+  // is never replaced (ON CONFLICT DO NOTHING); change any of them in Admin → Media.
+  ["page.stipend_report.hero", "pg_hero_doctors"],
+  ["page.deemed_pg.hero", "services_carousel_2"], // doctors in a library
+  ["page.nri_colleges.hero", "services_carousel_2"],
+  ["page.private_pg_fees.hero", "services_carousel_1"], // a family with a counsellor
+  ["page.quota_management.hero", "services_carousel_1"],
+  ["page.quota_nri.hero", "services_carousel_1"],
+  ["page.nri_documents.hero", "services_carousel_1"],
+  ["page.pg_counselling.hero", "services_carousel_1"],
+  ["page.pg_round.hero", "services_carousel_1"],
+  ["page.ug_state.hero", "mbbs_doctors_stats"], // doctors on a hospital floor
+  // Specialty scenes, from the branch photographs in public/assets/images/uploads.
+  ["page.pg_seat_matrix.hero", { url: "/assets/images/uploads/branches-pathology.avif", alt: "A pathologist at the microscope in a hospital lab" }],
+  ["page.pg_states.hero", { url: "/assets/images/uploads/branches-general-medicine.avif", alt: "A resident doctor on a hospital ward" }],
+  ["page.pg_state.hero", { url: "/assets/images/uploads/branches-general-medicine.avif", alt: "A resident doctor on a hospital ward" }],
+  ["page.pg_bond.hero", { url: "/assets/images/uploads/branches-general-medicine.avif", alt: "A resident doctor on a hospital ward" }],
+  ["page.pg_branches.hero", { url: "/assets/images/uploads/branches-pulmonary-medicine.avif", alt: "A specialist reading a chest X-ray" }],
+  ["page.open_data.hero", { url: "/assets/images/uploads/branches-radio-diagnosis.avif", alt: "A radiologist reading scans" }],
+  ["page.neet_ss.hero", { url: "/assets/images/uploads/branches-general-surgery.avif", alt: "Surgeons in an operating theatre" }],
+  ["page.neet_ss_course.hero", { url: "/assets/images/uploads/branches-general-surgery.avif", alt: "Surgeons in an operating theatre" }],
 ];
 
 let settings = 0;
@@ -120,13 +142,17 @@ for (const t of VERIFY_SETTINGS) {
 
 let media = 0;
 for (const [key, from] of HERO_PHOTOS) {
-  const [src] = await sql`SELECT image_url, alt_text, attribution, license, source_url, subject FROM media_assets WHERE media_key = ${from}`;
+  // A media row to copy (picture and credit), or a file we hold with its own alt text.
+  const [src] =
+    typeof from === "string"
+      ? await sql`SELECT image_url, alt_text, attribution, license, source_url, subject FROM media_assets WHERE media_key = ${from}`
+      : [{ image_url: from.url, alt_text: from.alt, attribution: null, license: null, source_url: null, subject: null }];
   if (!src) {
     console.log("no source media row", from);
     continue;
   }
   if (dry) {
-    console.log("media", key, "<-", from, src.subject ?? "");
+    console.log("media", key, "<-", typeof from === "string" ? from : from.url, src.subject ?? "");
     continue;
   }
   const r = await sql`

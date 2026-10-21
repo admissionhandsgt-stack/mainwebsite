@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import Header from './Header';
 import Footer from './Footer';
@@ -12,6 +12,8 @@ import type { NavItem } from '@/lib/content';
 import LiveAlerts, { type BarAlert } from '@/components/LiveAlerts';
 import EngagementLayer from '@/components/engage/EngagementLayer';
 import ClickTracker from '@/components/analytics/ClickTracker';
+import SiteSearch from '@/components/SiteSearch';
+import { TeamFiguresProvider, type TeamFigures } from '@/components/engage/TeamFigures';
 import { TelegramProvider, type TelegramCopy } from '@/components/engage/TelegramLink';
 
 export interface SocialLinks {
@@ -41,6 +43,8 @@ interface SiteShellProps {
   alerts?: BarAlert[];
   /** The Telegram channel's address and invite copy, from the admin's settings. */
   telegram?: Partial<TelegramCopy>;
+  /** The team's own figures (students guided, years), from the admin's settings. */
+  teamFigures?: Partial<TeamFigures>;
 }
 
 export default function SiteShell({
@@ -57,9 +61,13 @@ export default function SiteShell({
   alertsEnabled = true,
   alerts = [],
   telegram,
+  teamFigures,
 }: SiteShellProps) {
   const pathname = usePathname();
   const [isAdminSubdomain, setIsAdminSubdomain] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const openSearch = useCallback(() => setSearchOpen(true), []);
+  const closeSearch = useCallback(() => setSearchOpen(false), []);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -76,7 +84,9 @@ export default function SiteShell({
 
   return (
     <TelegramProvider copy={telegram}>
-      <Header nav={headerNav} ctaLabel={headerCtaLabel} showThemeToggle={showThemeToggle} accountName={accountName} />
+    <TeamFiguresProvider figures={teamFigures}>
+      <Header nav={headerNav} ctaLabel={headerCtaLabel} showThemeToggle={showThemeToggle} accountName={accountName} onSearch={openSearch} />
+      <SiteSearch open={searchOpen} onOpen={openSearch} onClose={closeSearch} nav={headerNav ?? []} />
       {showBar && (
         <div className="fixed top-[72px] left-0 right-0 z-[35]">
           <LiveAlerts alerts={alerts} />
@@ -100,6 +110,7 @@ export default function SiteShell({
         resumeProfile={resumeProfile}
         alerts={showBar ? alerts : []}
       />
+    </TeamFiguresProvider>
     </TelegramProvider>
   );
 }

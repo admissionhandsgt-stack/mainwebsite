@@ -201,6 +201,10 @@ export default async function RootLayout({
                 youtube: setting(settings, 'social.youtube'),
                 google: setting(settings, 'social.google'),
               }}
+              teamFigures={{
+                students: setting(settings, 'page.services.figures.students'),
+                years: setting(settings, 'page.services.figures.years'),
+              }}
               telegram={{
                 url: setting(settings, 'social.telegram'),
                 heading: setting(settings, 'telegram.card.heading'),

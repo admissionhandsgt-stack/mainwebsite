@@ -69,8 +69,15 @@ async function load(): Promise<DataStats> {
       db.execute(sql`SELECT count(*)::int AS n FROM closing_ranks WHERE level = 'ug'`),
       db.execute(sql`SELECT count(*)::int AS n FROM seat_options`),
       db.execute(sql`SELECT count(DISTINCT course_id)::int AS n FROM closing_ranks WHERE level = 'pg'`),
+      // Three places are spelt two ways in the source data (Andaman, Dadra Nagar Haveli,
+      // Pondicherry / Puducherry), which counted India's states and UTs as 38 on the
+      // services page (2026-10-21). One key per real place.
       db.execute(sql`
-        SELECT count(DISTINCT st.id)::int AS n
+        SELECT count(DISTINCT CASE
+                 WHEN st.name ILIKE 'andaman%' THEN 'andaman'
+                 WHEN st.name ILIKE 'dadra%' THEN 'dadra'
+                 WHEN st.name IN ('Pondicherry', 'Puducherry') THEN 'puducherry'
+                 ELSE lower(st.name) END)::int AS n
         FROM institutes i JOIN states st ON st.id = i.state_id
       `),
       db.execute(sql`SELECT count(*)::int AS n FROM counsellings`),

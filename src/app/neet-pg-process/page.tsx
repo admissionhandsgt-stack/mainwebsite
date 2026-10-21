@@ -15,6 +15,7 @@ import { pageCopy } from "@/lib/pageCopy";
 import { getPgProcessContent } from "@/lib/pgProcessContent";
 import { resolveMetadata, getMediaAsset } from "@/lib/content";
 import { getDataStats, inr } from "@/lib/dataStats";
+import { getLiveFigures } from "@/lib/liveFigures";
 import { getRoundSpan, getTightenedTotal } from "@/lib/roundQueries";
 import PageHero from "@/components/ui/PageHero";
 import Reveal from "@/components/ui/Reveal";
@@ -67,13 +68,14 @@ const WORDS = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "E
 /* ------------------------------------------------------------------ page */
 
 export default async function NeetPgProcessPage() {
-  const [stats, hero, tightened, span, copy, content] = await Promise.all([
+  const [stats, hero, tightened, span, copy, content, live] = await Promise.all([
     getDataStats(),
     getMediaAsset("neet_hero"),
     getTightenedTotal("pg"),
     getRoundSpan("pg"),
     pageCopy("page.neet_pg_process"),
     getPgProcessContent(),
+    getLiveFigures(),
   ]);
   const sources = [
     { label: copy.schedule_source_1_label, url: copy.schedule_source_1_url },
@@ -111,9 +113,10 @@ export default async function NeetPgProcessPage() {
         imageCredit={hero?.attribution}
         imageLicense={hero?.license}
         tone="dark"
+        // NMC's count of MD/MS colleges, not the rows of our PG list (which has DNB hospitals, some twice).
         stats={[
-          { value: inr(stats.pgColleges), label: "PG colleges" },
-          { value: inr(stats.pgBranches), label: "Branches" },
+          { value: live.md_ms_only_colleges, label: "MD/MS colleges · NMC" },
+          { value: inr(stats.pgBranches), label: "PG courses" },
           { value: inr(stats.pgRanks), label: "Published cutoffs" },
         ]}
       />

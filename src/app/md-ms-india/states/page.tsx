@@ -28,11 +28,14 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function PgStatesIndex() {
   const [states, stipends] = await Promise.all([getPgStates(), getStipends()]);
   const stipendOf = new Map(stipends.states.map((s) => [s.state, s.median]));
-  const total = states.reduce((a, s) => a + s.colleges, 0);
+  // MD/MS colleges and DNB hospitals counted apart: our PG list has one row per college and one per
+  // DNB hospital, and a hospital with both is two rows — never one total of "PG colleges".
+  const mdms = states.reduce((a, s) => a + s.mdms, 0);
+  const dnb = states.reduce((a, s) => a + s.dnb, 0);
   const topStipend = stipends.states[0];
   // Words from Admin → Content → Text & numbers ("Page: PG states"); photo from Admin → Media.
   const [copy, heroImage] = await Promise.all([
-    pageCopy("page.pg_states.hero", { colleges: total.toLocaleString("en-IN"), states: states.length }),
+    pageCopy("page.pg_states.hero", { colleges: mdms.toLocaleString("en-IN"), dnb: dnb.toLocaleString("en-IN"), states: states.length }),
     pageHeroImage("page.pg_states.hero"),
   ]);
 
@@ -55,7 +58,8 @@ export default async function PgStatesIndex() {
         accent={copy.accent}
         subtitle={copy.subtitle}
         stats={[
-          { label: "PG colleges", value: total.toLocaleString("en-IN") },
+          { label: "MD/MS colleges", value: mdms.toLocaleString("en-IN") },
+          { label: "DNB hospitals", value: dnb.toLocaleString("en-IN") },
           { label: "States & UTs", value: String(states.length) },
           ...(topStipend ? [{ label: "Highest stipend", value: `₹${topStipend.median.toLocaleString("en-IN")}`, note: `${topStipend.state}, median / month` }] : []),
         ]}
@@ -67,16 +71,18 @@ export default async function PgStatesIndex() {
         visual={
           <HeroBars
             title={copy.visual_title}
-            caption="PG colleges with published NEET PG closing ranks"
+            caption="MD/MS colleges with published NEET PG closing ranks"
             rows={[...states]
-              .sort((a, b) => b.colleges - a.colleges)
+              .sort((a, b) => b.mdms - a.mdms)
               .slice(0, 7)
               .map((s) => ({
                 label: s.name,
-                value: s.colleges,
-                display: `${s.colleges} colleges`,
+                value: s.mdms,
+                display: `${s.mdms} colleges`,
                 href: `${PATH}/${s.slug}`,
-                note: stipendOf.get(s.name) ? `stipend ₹${stipendOf.get(s.name)!.toLocaleString("en-IN")}/month` : undefined,
+                note: [s.dnb ? `${s.dnb} DNB hospitals` : "", stipendOf.get(s.name) ? `stipend ₹${stipendOf.get(s.name)!.toLocaleString("en-IN")}/month` : ""]
+                  .filter(Boolean)
+                  .join(" · ") || undefined,
               }))}
           />
         }
@@ -104,10 +110,10 @@ export default async function PgStatesIndex() {
       </section>
 
       <section className="container-custom py-10 md:py-14">
-        <SectionHead icon="map" eyebrow={`${states.length} states and UTs`} title="Pick a state" intro="Most PG colleges first. Each page has the state's quotas and where they closed, its fees, branches and stipend." />
+        <SectionHead icon="map" eyebrow={`${states.length} states and UTs`} title="Pick a state" intro="Most MD/MS colleges first. Each page has the state's quotas and where they closed, its fees, branches and stipend." />
         <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {[...states]
-            .sort((a, b) => b.colleges - a.colleges)
+            .sort((a, b) => b.mdms - a.mdms || b.colleges - a.colleges)
             .map((s) => (
               <li key={s.slug}>
                 <Link
@@ -131,7 +137,7 @@ export default async function PgStatesIndex() {
                       PG in {s.name}
                     </span>
                     <span className="tnum mt-0.5 block text-[12.5px] text-muted-foreground">
-                      {s.colleges} colleges
+                      {s.mdms} MD/MS colleges{s.dnb ? ` · ${s.dnb} DNB hospitals` : ""}
                       {stipendOf.get(s.name) ? ` · ₹${stipendOf.get(s.name)!.toLocaleString("en-IN")}/month stipend` : ""}
                     </span>
                   </span>

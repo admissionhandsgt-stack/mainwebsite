@@ -40,6 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Searched as "neet pg cut off branch wise maharashtra", "md fees in
   // maharashtra", "pg medical colleges in maharashtra", "md ms stipend in …".
   const y = p.year ? ` ${p.year}` : "";
+  const dnbPart = p.dnbCount ? ` and ${count(p.dnbCount, "DNB hospital", "DNB hospitals")}` : "";
   const govt = p.ownership.government ?? 0;
   const pvt = (p.ownership.private ?? 0) + (p.ownership.deemed ?? 0);
   const split = govt || pvt ? ` (${govt} government, ${pvt} private or deemed)` : "";
@@ -47,15 +48,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const stipend = st ? `, stipend (median ₹${st.median.toLocaleString("en-IN")} a month)` : ", stipend";
   return resolveMetadata(`/md-ms-india/states/${p.slug}`, {
     title: fitTitle(
-      `NEET PG Cutoff ${p.name}${y}: Branch Wise, Fees & ${count(p.colleges.length, "College", "Colleges")}`,
+      `NEET PG Cutoff ${p.name}${y}: Branch Wise, Fees & ${count(p.mdmsCount, "MD/MS College", "MD/MS Colleges")}`,
       `${p.name} NEET PG Cutoff${y} Branch Wise & Fees`,
       `MD/MS in ${p.name}: NEET PG Cutoff & Fees`,
       `PG Seats in ${p.name}`,
     ),
     description: fitDescription(
-      `${count(p.colleges.length, "PG medical college", "PG medical colleges")} in ${p.name}${split}: NEET PG${y} closing ranks branch wise and by quota, fees${stipend}, and the counselling for each seat.`,
-      `${count(p.colleges.length, "PG medical college", "PG medical colleges")} in ${p.name}: NEET PG${y} closing ranks branch wise and by quota, fees${stipend}.`,
-      `${p.colleges.length} PG medical colleges in ${p.name} — NEET PG closing ranks and fees by quota, counsellings, branches and stipend.`,
+      `${count(p.mdmsCount, "MD/MS college", "MD/MS colleges")}${split}${dnbPart} in ${p.name}: NEET PG${y} closing ranks branch wise and by quota, fees${stipend}, and the counselling for each seat.`,
+      `${count(p.mdmsCount, "MD/MS college", "MD/MS colleges")}${dnbPart} in ${p.name}: NEET PG${y} closing ranks branch wise and by quota, fees${stipend}.`,
+      `${p.mdmsCount} MD/MS colleges in ${p.name} — NEET PG closing ranks and fees by quota, counsellings, branches and stipend.`,
     ),
     keywords: `PG seats in ${p.name}, NEET PG cutoff ${p.name}, MD MS colleges in ${p.name}, ${p.name} PG counselling, ${p.name} NEET PG fees`,
   });
@@ -145,7 +146,7 @@ export default async function PgStatePage({ params }: Props) {
   const faqs = [
     {
       question: `How many PG medical colleges are there in ${p.name}?`,
-      answer: `${p.colleges.length} colleges in ${p.name} have published NEET PG closing ranks: ${own.map(([k, v]) => `${v} ${OWN[k]?.toLowerCase() ?? k}`).join(", ")}.`,
+      answer: `${count(p.mdmsCount, "MD/MS college", "MD/MS colleges")} in ${p.name} have published NEET PG closing ranks${own.length ? `: ${own.map(([k, v]) => `${v} ${OWN[k]?.toLowerCase() ?? k}`).join(", ")}` : ""}.${p.dnbCount ? ` ${count(p.dnbCount, "DNB hospital", "DNB hospitals")} also offer National Board seats.` : ""}`,
     },
     {
       question: `Which counselling fills PG seats in ${p.name}?`,
@@ -203,8 +204,9 @@ export default async function PgStatePage({ params }: Props) {
         accent={copy.accent}
         subtitle={copy.subtitle}
         stats={[
-          { label: "PG colleges", value: n(p.colleges.length) },
-          ...own.slice(0, 2).map(([k, v]) => ({ label: OWN[k] ?? k, value: n(v) })),
+          { label: "MD/MS colleges", value: n(p.mdmsCount) },
+          ...(p.dnbCount ? [{ label: "DNB hospitals", value: n(p.dnbCount) }] : []),
+          ...own.slice(0, p.dnbCount ? 1 : 2).map(([k, v]) => ({ label: OWN[k] ?? k, value: n(v), note: "MD/MS colleges" })),
           { label: "Stipend / month", value: stipend ? `₹${stipend.median.toLocaleString("en-IN")}` : "—", note: stipend ? "median, first year" : undefined },
         ]}
         cta={{ label: copy.cta, href: "/neet-college-predictor?course=pg" }}
@@ -216,7 +218,8 @@ export default async function PgStatePage({ params }: Props) {
           <HeroFacts
             title={`${p.name} at a glance`}
             facts={[
-              ...own.map(([k, v]) => ({ label: `${OWN_SHORT[k] ?? k} colleges`, value: n(v) })),
+              ...own.map(([k, v]) => ({ label: `${OWN_SHORT[k] ?? k} colleges`, value: n(v), sub: "MD/MS" })),
+              ...(p.dnbCount ? [{ label: "DNB hospitals", value: n(p.dnbCount), sub: "National Board seats" }] : []),
               ...(stipend?.govtMedian ? [{ label: "Govt stipend", value: `₹${stipend.govtMedian.toLocaleString("en-IN")}`, sub: "median a month, year 1" }] : []),
               ...(stipend?.privateMedian ? [{ label: "Private stipend", value: `₹${stipend.privateMedian.toLocaleString("en-IN")}`, sub: "median a month, year 1" }] : []),
               ...(stateQuota && p.year
@@ -225,7 +228,7 @@ export default async function PgStatePage({ params }: Props) {
               {
                 label: "Counsellings",
                 value: p.counsellings.slice(0, 2).map((c) => c.name.replace(/\s*\(.*\)\s*$/, "")).join(" · ") || "—",
-                sub: `${p.counsellings.length > 2 ? `+${p.counsellings.length - 2} more · ` : ""}${p.branches.length} branches offered`,
+                sub: `${p.counsellings.length > 2 ? `+${p.counsellings.length - 2} more · ` : ""}${p.branchCount} courses offered`,
                 wide: true,
               },
             ]}

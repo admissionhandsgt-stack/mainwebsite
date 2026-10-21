@@ -22,7 +22,11 @@
  *   govt_pg_fee, govt_pg_fee_median, private_pg_fee, private_pg_fee_median,
  *   deemed_pg_fee, deemed_pg_fee_median,
  *   pg_stipend_median, pg_stipend_range, govt_stipend_median, private_stipend_median, stipend_colleges,
- *   closing_ranks_lakh
+ *   closing_ranks_lakh,
+ *   nmc_colleges (every college on NMC's register), md_ms_only_colleges (MD or MS, no diploma-only),
+ *   md_ms_only_seats, mcc_year, mcc_seats, aiq_colleges, aiq_seats, deemed_pg_colleges, deemed_pg_seats,
+ *   dnb_hospitals, dnb_seats (MCC's latest PG seat matrix, counted matrix by matrix — never summed
+ *   across matrices into a college total: a hospital with MD/MS and DNB seats is in two of them)
  *
  * Fee and stipend ranges are the middle 80% (10th–90th percentile), never
  * min–max: the extremes of published fees hold slips. A government college's
@@ -58,6 +62,8 @@ const FALLBACK: LiveFigures = {
   mbbs_seats_lakh: "over 1.2 lakh",
   govt_mbbs_colleges: "over 400",
   private_mbbs_colleges: "over 350",
+  nmc_colleges: "over 900",
+  md_ms_only_colleges: "over 600",
   nmc_date: "its latest update",
 };
 
@@ -69,7 +75,7 @@ async function load(): Promise<LiveFigures> {
   const nmcMbbs = sql`JOIN nmc_institutes m ON m.institute_id = f.institute_id
                       JOIN nmc_courses nc ON nc.college_code = m.college_code AND nc.course_type = 'M.B.B.S.'`;
 
-  const [nmc, states, types, govtUg, privateUg, deemedUgFees, pgFees, stipend, ranks] = await Promise.all([
+  const [nmc, states, types, govtUg, privateUg, deemedUgFees, pgFees, stipend, ranks, register, mcc] = await Promise.all([
     db.execute(sql`
       SELECT management_type AS m, COUNT(*)::int AS colleges, COALESCE(SUM(approved_seat), 0)::int AS seats,
              MAX(nmc_updated)::text AS updated
@@ -112,6 +118,16 @@ async function load(): Promise<LiveFigures> {
              PERCENTILE_CONT(ARRAY[0.1, 0.5, 0.9]) WITHIN GROUP (ORDER BY v) AS p
         FROM s GROUP BY ROLLUP (1)`),
     db.execute(sql`SELECT COUNT(*)::int AS n FROM closing_ranks`),
+    db.execute(sql`
+      SELECT COUNT(DISTINCT college_code)::int AS colleges,
+             COUNT(DISTINCT college_code) FILTER (WHERE course_type IN ('MD', 'MS'))::int AS md_ms,
+             COALESCE(SUM(approved_seat) FILTER (WHERE course_type IN ('MD', 'MS')), 0)::int AS md_ms_seats
+        FROM nmc_courses`),
+    db.execute(sql`
+      SELECT seat_matrix AS m, MAX(year)::int AS year, COUNT(DISTINCT mcc_institute_code)::int AS colleges,
+             COALESCE(SUM(total_seats), 0)::int AS seats
+        FROM mcc_seat_matrix WHERE year = (SELECT MAX(year) FROM mcc_seat_matrix)
+       GROUP BY ROLLUP (seat_matrix)`),
   ]);
 
   const out: LiveFigures = {};
@@ -168,10 +184,32 @@ async function load(): Promise<LiveFigures> {
   }
   const cr = rowsOf<{ n: number }>(ranks)[0]?.n;
   if (cr) out.closing_ranks_lakh = lakh(cr);
+
+  const reg = rowsOf<{ colleges: number; md_ms: number; md_ms_seats: number }>(register)[0];
+  if (reg && reg.colleges > 600) {
+    out.nmc_colleges = inr(reg.colleges);
+    out.md_ms_only_colleges = inr(reg.md_ms);
+    out.md_ms_only_seats = inr(reg.md_ms_seats);
+  }
+  for (const r of rowsOf<{ m: string | null; year: number; colleges: number; seats: number }>(mcc)) {
+    if (r.m == null) {
+      out.mcc_year = String(r.year);
+      out.mcc_seats = inr(r.seats);
+    } else if (r.m === "AIQ") {
+      out.aiq_colleges = inr(r.colleges);
+      out.aiq_seats = inr(r.seats);
+    } else if (r.m === "Deemed") {
+      out.deemed_pg_colleges = inr(r.colleges);
+      out.deemed_pg_seats = inr(r.seats);
+    } else if (r.m === "DNB") {
+      out.dnb_hospitals = inr(r.colleges);
+      out.dnb_seats = inr(r.seats);
+    }
+  }
   return out;
 }
 
-const cached = unstable_cache(load, ["live-figures-v1"], { revalidate: 3600, tags: ["nmc", "closing-ranks"] });
+const cached = unstable_cache(load, ["live-figures-v2"], { revalidate: 3600, tags: ["nmc", "closing-ranks", "mcc"] });
 
 export async function getLiveFigures(): Promise<LiveFigures> {
   try {

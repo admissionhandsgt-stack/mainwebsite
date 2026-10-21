@@ -11,6 +11,7 @@ import { checkRank } from "@/lib/neetLimits";
 import { checkName } from "@/lib/formRules";
 import { checkPhone } from "@/lib/phone";
 import { trackEvent, trackLead } from "@/lib/analytics";
+import { TeamFigure } from "@/components/engage/TeamFigures";
 
 /**
  * The site reaching out (2026-10-12) — four nudges, each a step toward a
@@ -591,7 +592,7 @@ function ExitOffer({ onClose, source }: { onClose: () => void; source: string })
               Call me with my roadmap
             </button>
             <p className="text-center text-[12px] text-muted-foreground">
-              15+ years of counselling · Your details go only to your counsellor.
+              <TeamFigure k="years" /> years of counselling · Your details go only to your counsellor.
             </p>
           </form>
         )}
@@ -666,7 +667,7 @@ function ResumeOffer({ firstName, onClose, onGo }: { firstName: string | null; o
             <img src="/card/gulshan-tomar.jpg" alt="" width={44} height={44} className="h-11 w-11 rounded-full object-cover" />
             <span className="min-w-0 flex-1">
               <span className="block text-[14px] font-bold text-foreground">Talk to an Expert Admission Counsellor</span>
-              <span className="block text-[12.5px] text-muted-foreground">15+ years of NEET counselling · open 10 AM – 10 PM</span>
+              <span className="block text-[12.5px] text-muted-foreground"><TeamFigure k="years" /> years of NEET counselling · open 10 AM – 10 PM</span>
             </span>
             <WhatsAppIcon className="h-6 w-6 shrink-0 text-[#25D366]" />
           </a>

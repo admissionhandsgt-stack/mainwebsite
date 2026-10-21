@@ -192,6 +192,7 @@ export const RESOURCE_SPECS: Record<string, ResourceSpec> = {
       "display_order",
       "is_active",
       "opens_new_tab",
+      "description",
     ],
     orderBy: sql`menu ASC, display_order ASC, id ASC`,
     hasUpdatedAt: true,

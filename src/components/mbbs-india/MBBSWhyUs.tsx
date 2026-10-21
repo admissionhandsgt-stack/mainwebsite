@@ -4,6 +4,7 @@ import { mbbsData } from "@/data/mbbs-india";
 import type { MbbsContent } from '@/lib/pageContent';
 import { ShieldCheck, TrendingUp, Search, UserCheck, Heart } from "lucide-react";
 import { BackendImage } from "@/components/ui/BackendImage";
+import { TeamFigure } from "@/components/engage/TeamFigures";
 
 const icons = [TrendingUp, Search, Heart, UserCheck];
 
@@ -71,11 +72,11 @@ export const MBBSWhyUs = ({ data = mbbsData }: { data?: MbbsContent } = {}) => {
 
               <div className="grid grid-cols-2 gap-4 relative z-10">
                 <div className="text-center p-4 rounded-2xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border border-slate-100 dark:border-slate-800 shadow-sm">
-                  <p className="text-2xl font-black text-slate-900 dark:text-white leading-none">2100+</p>
+                  <p className="text-2xl font-black text-slate-900 dark:text-white leading-none"><TeamFigure k="students" /></p>
                   <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1">Admits</p>
                 </div>
                 <div className="text-center p-4 rounded-2xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border border-slate-100 dark:border-slate-800 shadow-sm">
-                  <p className="text-2xl font-black text-slate-900 dark:text-white leading-none">15+</p>
+                  <p className="text-2xl font-black text-slate-900 dark:text-white leading-none"><TeamFigure k="years" /></p>
                   <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1">Years Exp</p>
                 </div>
               </div>

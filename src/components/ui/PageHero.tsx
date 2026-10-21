@@ -55,12 +55,12 @@ interface PageHeroProps {
 /**
  * The shared hero for every page below the homepage.
  *
- * One treatment everywhere: the page's own photograph, held back behind a
- * gradient so type stays readable, two drifting ambient lights in the brand
- * hue, and a single staggered entrance. `tone="dark"` puts white type over a
- * darkened photo (used where the image is the point, e.g. campuses);
- * `tone="light"` keeps the page background and lets the photo sit at low
- * opacity behind it.
+ * Light on every page since 2026-10-21 (owner: no more dark heroes). `tone` now says how much the
+ * photograph matters, not how dark the hero is:
+ * - `tone="dark"` (the photograph is the point): it sits framed on the right, in full colour, with
+ *   its credit on it — the same composition as the data pages' DataHero.
+ * - `tone="light"`: the page background, with the photograph as a faint wash behind the words.
+ * Two drifting ambient lights in the brand hue and a single staggered entrance either way.
  */
 const EYEBROW_ICONS = {
   target: Target,
@@ -110,132 +110,119 @@ export default function PageHero({
   // arrived. Everything else here keeps its staggered entrance; the words a
   // visitor came to read are painted with the page.
 
+  // The photograph framed beside the words, or a faint wash behind them.
+  const framed = dark && !!image;
+
   return (
-    <section
-      className={`relative w-full overflow-hidden ${dark ? "bg-slate-950" : "bg-background"} ${className}`}
-    >
-      {/* Photograph */}
-      <div className="absolute inset-0 z-0" aria-hidden={imageAlt ? undefined : true}>
-        {image && (
+    <section className={`relative w-full overflow-hidden border-b border-border bg-background ${className}`}>
+      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary-soft/70 via-background to-background" />
+        <div className="absolute inset-0 opacity-60 [background-image:linear-gradient(hsl(var(--border))_1px,transparent_1px),linear-gradient(90deg,hsl(var(--border))_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(ellipse_60%_55%_at_75%_10%,#000,transparent)]" />
+      </div>
+
+      {image && !framed && (
+        <div className="absolute inset-0 z-0">
           <Image
             src={image}
             alt={imageAlt}
             fill
             priority
             sizes="100vw"
-            className={
-              dark
-                ? "object-cover object-center opacity-60"
-                : "object-cover object-center opacity-[0.05] sm:opacity-[0.09] dark:opacity-[0.10]"
-            }
+            className="object-cover object-center opacity-[0.05] sm:opacity-[0.08] dark:opacity-[0.10]"
           />
-        )}
-        {dark ? (
-          <>
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-slate-950/35" />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/50" />
-          </>
-        ) : (
           <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/25 to-background" />
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Ambient brand light */}
       <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
-        <div className="ambient-blob animate-drift -left-24 -top-32 h-[26rem] w-[26rem] bg-primary/25" />
-        <div className="ambient-blob animate-drift-slow right-[-8rem] bottom-[-10rem] h-[22rem] w-[22rem] bg-secondary/20 [animation-delay:-6s]" />
+        <div className="ambient-blob animate-drift -left-24 -top-32 h-[26rem] w-[26rem] bg-primary/15" />
+        <div className="ambient-blob animate-drift-slow right-[-8rem] bottom-[-10rem] h-[22rem] w-[22rem] bg-secondary/15 [animation-delay:-6s]" />
       </div>
 
       <motion.div
         variants={stage}
         initial="hidden"
         animate="show"
-        className="container-custom relative z-10 py-9 md:py-12 lg:py-14"
+        className={`container-custom relative z-10 py-9 md:py-12 lg:py-14 ${
+          framed ? "grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,27rem)] lg:items-center lg:gap-14 xl:grid-cols-[minmax(0,1fr)_minmax(0,30rem)]" : ""
+        }`}
       >
-        {eyebrow && (
-          <motion.div variants={item} className="mb-5">
-            <span
-              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider ${
-                dark
-                  ? "border border-white/20 bg-white/10 text-cyan-200 backdrop-blur-sm"
-                  : "border border-primary/25 bg-primary-soft text-primary-strong dark:text-primary"
-              }`}
-            >
-              {EyebrowIcon && <EyebrowIcon className="h-3.5 w-3.5" />}
+        <div className="min-w-0">
+          {eyebrow && (
+            <motion.p variants={item} className="mb-4 flex items-center gap-2.5 text-[12px] font-bold uppercase tracking-[0.14em] text-primary-strong">
+              {EyebrowIcon && (
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-soft ring-1 ring-primary/15">
+                  <EyebrowIcon className="h-4 w-4" aria-hidden="true" />
+                </span>
+              )}
               {eyebrow}
-            </span>
-          </motion.div>
-        )}
-
-        <h1
-          className={`font-heading max-w-[22ch] text-[clamp(1.75rem,3.6vw,2.9rem)] font-extrabold leading-[1.08] tracking-[-0.03em] ${
-            dark ? "text-white" : "text-foreground"
-          }`}
-        >
-          {title}
-          {titleAccent && (
-            <>
-              {" "}
-              <span className={dark ? "bg-gradient-to-r from-cyan-300 to-teal-200 bg-clip-text text-transparent" : "text-gradient-brand"}>
-                {titleAccent}
-              </span>
-            </>
+            </motion.p>
           )}
-        </h1>
 
-        {subtitle && (
-          <p
-            className={`mt-4 max-w-[62ch] text-[15px] md:text-base leading-relaxed ${
-              dark ? "text-slate-300" : "text-muted-foreground"
-            }`}
-          >
-            {subtitle}
-          </p>
-        )}
+          <h1 className="font-heading max-w-[22ch] text-[clamp(1.8rem,3.8vw,3rem)] font-extrabold leading-[1.07] tracking-[-0.03em] text-foreground [text-wrap:balance]">
+            {title}
+            {titleAccent && (
+              <>
+                {" "}
+                <span className="text-primary-strong">{titleAccent}</span>
+              </>
+            )}
+          </h1>
 
-        {children && (
-          <motion.div variants={item} className="mt-6">
-            {children}
-          </motion.div>
-        )}
+          {subtitle && <p className="mt-4 max-w-[62ch] text-[15.5px] leading-relaxed text-muted-foreground md:text-[17px]">{subtitle}</p>}
 
-        {stats && stats.length > 0 && (
-          <motion.div
-            variants={item}
-            className={`mt-7 grid grid-cols-2 gap-4 border-t pt-6 sm:gap-8 md:max-w-3xl md:grid-cols-4 ${
-              dark ? "border-white/15" : "border-border/70"
-            }`}
-          >
-            {stats.map((s) => (
-              <div key={s.label}>
-                <div
-                  className={`tnum font-heading text-2xl md:text-3xl font-extrabold leading-none ${
-                    dark ? "text-white" : "text-foreground"
-                  }`}
-                >
-                  {s.value}
+          {children && (
+            <motion.div variants={item} className="mt-6">
+              {children}
+            </motion.div>
+          )}
+
+          {stats && stats.length > 0 && (
+            <motion.dl variants={item} className="mt-7 grid grid-cols-2 gap-3 md:max-w-3xl md:grid-cols-4">
+              {stats.map((s) => (
+                <div key={s.label} className="min-w-0 rounded-2xl border border-border bg-card px-4 py-3.5 shadow-sm">
+                  <dt className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">{s.label}</dt>
+                  <dd className="tnum font-heading mt-1 text-[1.35rem] font-extrabold leading-tight text-foreground md:text-[1.55rem]">{s.value}</dd>
                 </div>
-                <div
-                  className={`mt-1.5 text-[11px] font-medium uppercase tracking-wide ${
-                    dark ? "text-slate-400" : "text-muted-foreground"
-                  }`}
-                >
-                  {s.label}
-                </div>
-              </div>
-            ))}
+              ))}
+            </motion.dl>
+          )}
+        </div>
+
+        {framed && (
+          <motion.div variants={item} className="relative min-w-0">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] border border-border bg-surface-3 shadow-lift">
+              <Image
+                src={image}
+                alt={imageAlt}
+                fill
+                priority
+                sizes="(min-width: 1280px) 30rem, (min-width: 1024px) 27rem, 100vw"
+                className="object-cover"
+              />
+              {/* The photographer's credit — a licence condition, not a courtesy. */}
+              <PhotoCredit
+                subject={imageSubject}
+                attribution={imageCredit}
+                license={imageLicense}
+                tone="chip"
+                className="absolute right-2.5 top-2.5"
+              />
+            </div>
           </motion.div>
         )}
       </motion.div>
 
-      {/* The photographer's credit — a licence condition, not a courtesy. */}
-      <PhotoCredit
-        subject={imageSubject}
-        attribution={imageCredit}
-        license={imageLicense}
-        tone={dark ? "onImage" : "onSurface"}
-        className="absolute bottom-1.5 right-2 z-20"
-      />
+      {!framed && (
+        <PhotoCredit
+          subject={imageSubject}
+          attribution={imageCredit}
+          license={imageLicense}
+          tone="onSurface"
+          className="absolute bottom-1.5 right-2 z-20"
+        />
+      )}
     </section>
   );
 }

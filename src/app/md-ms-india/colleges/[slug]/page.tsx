@@ -145,72 +145,74 @@ export default async function CollegePage({ params }: { params: { slug: string }
         />
       ))}
 
-      {/* ---------------- Hero ---------------- */}
-      <section className="relative overflow-hidden bg-slate-950">
-        {photo && (
-          <Image
-            src={photo.imageUrl}
-            alt={`${college.name} campus`}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center opacity-45"
-          />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 to-slate-950/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/50" />
-        <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-          <div className="ambient-blob animate-drift -left-24 -top-32 h-[24rem] w-[24rem] bg-primary/25" />
+      {/* ---------------- Hero (light since 2026-10-21; the college's own photograph framed beside it) ---------------- */}
+      <section className="relative isolate overflow-hidden border-b border-border bg-background">
+        <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+          <div className="absolute inset-0 bg-gradient-to-b from-primary-soft/80 via-background to-background" />
+          <div className="absolute inset-0 opacity-60 [background-image:linear-gradient(hsl(var(--border))_1px,transparent_1px),linear-gradient(90deg,hsl(var(--border))_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(ellipse_60%_55%_at_75%_10%,#000,transparent)]" />
         </div>
-        <PhotoCredit
-          subject={photo ? college.name : null}
-          attribution={photo?.imageAttribution}
-          license={photo?.imageLicense}
-          className="absolute bottom-1.5 right-2 z-10"
-        />
 
-        <div className="container-custom relative z-10 py-12 md:py-16">
-          <nav className="mb-5 text-[13px] text-slate-400" aria-label="Breadcrumb">
-            <Link href="/" className="hover:text-cyan-300">Home</Link>
-            <span className="mx-2">›</span>
-            <Link href="/md-ms-india" className="hover:text-cyan-300">MD/MS</Link>
-            <span className="mx-2">›</span>
-            {stateSlug && college.state ? (
-              <>
-                <Link href={`/md-ms-india/states/${stateSlug}`} className="hover:text-cyan-300">
-                  {college.state}
-                </Link>
-                <span className="mx-2">›</span>
-              </>
-            ) : null}
-            <Link href="/md-ms-india/colleges" className="hover:text-cyan-300">Colleges</Link>
-            <span className="mx-2">›</span>
-            <span className="text-slate-200">{s.short}</span>
-          </nav>
+        <div className="container-custom relative py-9 md:py-12">
+          <div className={photo ? "grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:items-center lg:gap-12 xl:grid-cols-[minmax(0,1fr)_minmax(0,26rem)]" : ""}>
+            <div className="min-w-0">
+              <nav className="mb-5 text-[13px] text-muted-foreground" aria-label="Breadcrumb">
+                <Link href="/" className="hover:text-foreground hover:underline">Home</Link>
+                <span className="mx-2 text-border" aria-hidden="true">/</span>
+                <Link href="/md-ms-india" className="hover:text-foreground hover:underline">MD/MS</Link>
+                <span className="mx-2 text-border" aria-hidden="true">/</span>
+                {stateSlug && college.state ? (
+                  <>
+                    <Link href={`/md-ms-india/states/${stateSlug}`} className="hover:text-foreground hover:underline">
+                      {college.state}
+                    </Link>
+                    <span className="mx-2 text-border" aria-hidden="true">/</span>
+                  </>
+                ) : null}
+                <Link href="/md-ms-india/colleges" className="hover:text-foreground hover:underline">Colleges</Link>
+                <span className="mx-2 text-border" aria-hidden="true">/</span>
+                <span className="font-medium text-foreground" aria-current="page">{s.short}</span>
+              </nav>
 
-          {s.kind === "dnb" && (
-            <div className="mb-4 flex flex-wrap gap-2">
-              <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-cyan-200 backdrop-blur-sm">
-                DNB / National Board seats
-              </span>
-            </div>
-          )}
-
-          <h1 className="font-heading max-w-[20ch] text-[clamp(1.9rem,4.4vw,3.2rem)] font-extrabold leading-[1.06] tracking-[-0.032em] text-white">
-            {s.short}
-          </h1>
-          {s.official !== s.short && <p className="mt-3 max-w-[70ch] text-[14px] text-slate-400">{s.official}</p>}
-          {(where || college.university) && (
-            <p className="mt-4 max-w-[68ch] text-[15px] leading-relaxed text-slate-300">
-              {where && (
-                <span className="inline-flex items-center gap-1.5">
-                  <MapPin className="h-4 w-4" />
-                  {where}
-                </span>
+              {s.kind === "dnb" && (
+                <div className="mb-4 flex flex-wrap gap-2">
+                  <span className="rounded-full border border-primary/25 bg-primary-soft px-3 py-1 text-[11.5px] font-bold uppercase tracking-wider text-primary-strong">
+                    DNB / National Board seats
+                  </span>
+                </div>
               )}
-              {college.university && <span className="block sm:inline sm:before:mx-2 sm:before:content-['·']">{college.university}</span>}
-            </p>
-          )}
+
+              <h1 className="font-heading max-w-[22ch] text-[clamp(1.9rem,4.2vw,3.1rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-foreground [text-wrap:balance]">
+                {s.short}
+              </h1>
+              {s.official !== s.short && <p className="mt-3 max-w-[70ch] text-[14px] text-muted-foreground">{s.official}</p>}
+              {(where || college.university) && (
+                <p className="mt-4 max-w-[68ch] text-[15px] leading-relaxed text-muted-foreground">
+                  {where && (
+                    <span className="inline-flex items-center gap-1.5 font-medium text-foreground">
+                      <MapPin className="h-4 w-4 text-primary-strong" aria-hidden="true" />
+                      {where}
+                    </span>
+                  )}
+                  {college.university && <span className="block sm:inline sm:before:mx-2 sm:before:content-['·']">{college.university}</span>}
+                </p>
+              )}
+            </div>
+
+            {photo && (
+              <div className="relative min-w-0">
+            <div className="relative aspect-[16/10] overflow-hidden rounded-[1.75rem] border border-border bg-surface-3 shadow-lift">
+              <Image src={photo.imageUrl} alt={`${college.name} campus`} fill priority sizes="(min-width: 1280px) 26rem, (min-width: 1024px) 24rem, 100vw" className="object-cover" />
+              <PhotoCredit
+                subject={college.name}
+                attribution={photo.imageAttribution}
+                license={photo.imageLicense}
+                tone="chip"
+                className="absolute right-2.5 top-2.5"
+              />
+            </div>
+              </div>
+            )}
+          </div>
 
           <CollegeGlance s={s} />
         </div>

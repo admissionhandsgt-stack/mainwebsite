@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
 import BlockIcon from '@/components/ui/BlockIcon';
 import { pick } from '@/lib/copy';
+import { useTeamFigures } from '@/components/engage/TeamFigures';
 
 export interface Reason {
   title: string;
@@ -43,12 +44,16 @@ const WHY_DEFAULTS = {
 
 // "95% Success Rate" was a number nobody can verify. The scale of the data
 // is verifiable, and it is the actual differentiator.
-const DEFAULT_POINTS = ['2.7 Lakh Closing Ranks', '2100+ Families Guided', 'Pan-India Coverage', 'Zero Hidden Fees'];
+// No typed counts: the families figure is the team's own (Admin → "Site: the team's own figures").
+const DEFAULT_POINTS = ['Official closing ranks', '{students} Families Guided', 'Pan-India Coverage', 'Zero Hidden Fees'];
 
 const WhyAdmissionHands = ({ reasons: fromCms, copy }: { reasons?: Reason[]; copy?: WhyCopy }) => {
   const reasons = fromCms?.length ? fromCms : FALLBACK_REASONS;
   const text = { ...WHY_DEFAULTS, ...pick(copy) };
-  const points = copy?.points?.filter(Boolean).length ? copy.points!.filter(Boolean) : DEFAULT_POINTS;
+  const team = useTeamFigures();
+  const points = (copy?.points?.filter(Boolean).length ? copy.points!.filter(Boolean) : DEFAULT_POINTS).map((p) =>
+    p.replace('{students}', team.students).replace('{years}', team.years),
+  );
 
   return (
     <section className="compact-padding bg-slate-50 dark:bg-slate-950 relative overflow-hidden transition-colors duration-200">

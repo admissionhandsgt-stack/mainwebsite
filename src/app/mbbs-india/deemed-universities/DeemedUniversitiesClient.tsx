@@ -48,26 +48,25 @@ function HeroImageRotator({ images }: HeroImageRotatorProps) {
   }, [images]);
 
   return (
-    <div className="absolute inset-0 -z-10 bg-slate-950">
+    <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] border border-border bg-surface-3 shadow-lift">
       {images.map((shot, i) => (
         <div
           key={i}
-          className="absolute inset-0 bg-cover bg-center transition-opacity duration-[2000ms]"
+          className="pointer-events-none absolute inset-0 bg-cover bg-center transition-opacity duration-[2000ms]"
           style={{
             backgroundImage: `url(${shot.src})`,
-            opacity: i === current ? 0.45 : 0,
+            opacity: i === current ? 1 : 0,
           }}
+          aria-hidden="true"
         />
       ))}
-      {/* ~55% dark overlay */}
-      <div className="absolute inset-0 bg-slate-900/55" />
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-transparent to-slate-900/80" />
-      {/* The credit follows the backdrop: four campuses rotate through here. */}
+      {/* The credit follows the photograph on show. */}
       <PhotoCredit
         subject={images[current]?.subject}
         attribution={images[current]?.credit}
         license={images[current]?.license}
-        className="absolute bottom-1.5 right-2"
+        tone="chip"
+        className="absolute right-2.5 top-2.5"
       />
     </div>
   );
@@ -95,46 +94,52 @@ export default function DeemedUniversitiesClient({ heroImages, phoneNumber = "+9
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
 
       <div className="flex-grow">
-        {/* ─── Hero Section ─── */}
-        <section className="relative min-h-[75vh] md:min-h-[85vh] flex items-center overflow-hidden text-white">
-          <HeroImageRotator images={imagesToUse} />
+        {/* ─── Hero — light since 2026-10-21 ─── */}
+        <section className="relative isolate overflow-hidden border-b border-border bg-background py-10 md:py-14">
+          <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+            <div className="absolute inset-0 bg-gradient-to-b from-primary-soft/80 via-background to-background" />
+            <div className="absolute -right-40 -top-48 h-[32rem] w-[32rem] rounded-full bg-secondary/10 blur-[110px]" />
+            <div className="absolute inset-0 opacity-60 [background-image:linear-gradient(hsl(var(--border))_1px,transparent_1px),linear-gradient(90deg,hsl(var(--border))_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(ellipse_60%_55%_at_75%_10%,#000,transparent)]" />
+          </div>
 
-          <div className="container-custom relative z-10 py-12 md:py-16">
-            <div className="max-w-3xl mx-auto text-center lg:text-left lg:mx-0">
-              <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-cyan-300 text-xs font-black tracking-widest uppercase mb-5 backdrop-blur-sm"
-              >
-                <Sparkles className="w-3.5 h-3.5" /> Premier Deemed Medical Universities
-              </motion.div>
+          <div className={`container-custom relative grid gap-10 ${imagesToUse.length ? "lg:grid-cols-[minmax(0,1fr)_minmax(0,30rem)] lg:items-center lg:gap-14" : ""}`}>
+            <div className="min-w-0">
+              <p className="mb-4 flex items-center gap-2.5 text-[12px] font-bold uppercase tracking-[0.14em] text-primary-strong">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-soft ring-1 ring-primary/15">
+                  <Sparkles className="h-4 w-4" aria-hidden="true" />
+                </span>
+                MBBS · deemed universities
+              </p>
 
-              <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] tracking-tight mb-5"
-              >
-                India&apos;s Finest <br className="hidden sm:block" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400">Deemed Universities</span> for MBBS
-              </motion.h1>
+              <h1 className="font-heading max-w-[22ch] text-[clamp(2rem,4.4vw,3.35rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-foreground [text-wrap:balance]">
+                Deemed universities <span className="text-primary-strong">for MBBS in India</span>
+              </h1>
 
-              <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-                className="text-cyan-100/85 text-sm sm:text-base lg:text-lg font-medium leading-relaxed max-w-2xl mb-8"
-              >
-                Discover world-class deemed medical institutions offering autonomous curricula, global research exposure, and NMC-recognized MBBS programs — with expert-guided admission support through every MCC counselling round.
-              </motion.p>
+              <p className="mt-5 max-w-[60ch] text-[15.5px] leading-relaxed text-muted-foreground md:text-[17px]">
+                Deemed universities fill their MBBS seats through MCC&apos;s own deemed-university counselling, with fees of their own. See each one&apos;s fees, seats and counselling, and have a counsellor beside you through every round.
+              </p>
 
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
-                className="flex flex-col xs:flex-row gap-3 justify-center lg:justify-start"
-              >
-                <a href={`tel:${phoneNumber}`}
-                  className="inline-flex justify-center items-center gap-2 bg-white dark:!bg-cyan-600 border border-slate-200 dark:!border-cyan-600 text-slate-900 dark:!text-white px-4 py-2.5 sm:px-5 sm:py-3 rounded-xl font-black text-xs sm:text-sm hover:bg-cyan-50 dark:!hover:bg-cyan-500 transition-all shadow-xl active:scale-95 w-full xs:w-auto"
+              <div className="mt-7 flex flex-col gap-3 xs:flex-row">
+                <a
+                  href={`tel:${phoneNumber}`}
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary-strong px-6 text-[15px] font-bold text-primary-foreground shadow-glow transition-transform hover:-translate-y-0.5"
                 >
-                  <Phone className="w-4 h-4 shrink-0" /> Get Expert Guidance
+                  <Phone className="h-4 w-4 shrink-0" aria-hidden="true" /> Get expert guidance
                 </a>
-                <a href="#deemed-listing"
-                  className="inline-flex justify-center items-center gap-2 border-2 border-white/60 text-white px-4 py-2.5 sm:px-5 sm:py-3 rounded-xl font-black text-xs sm:text-sm hover:bg-white/10 transition-all active:scale-95 w-full xs:w-auto"
+                <a
+                  href="#deemed-listing"
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-border bg-card px-6 text-[15px] font-semibold text-foreground transition-colors hover:border-primary/40"
                 >
-                  Explore Colleges <ArrowRight className="w-4 h-4 shrink-0" />
+                  Explore the universities <ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
                 </a>
-              </motion.div>
+              </div>
             </div>
+
+            {imagesToUse.length > 0 && (
+              <div className="relative min-w-0">
+                <HeroImageRotator images={imagesToUse} />
+              </div>
+            )}
           </div>
         </section>
 

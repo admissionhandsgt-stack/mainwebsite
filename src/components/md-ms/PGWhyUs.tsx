@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import type { PgCard } from '@/lib/pgContent';
 import { motion } from "framer-motion";
 import { BarChart3, Target, Brain, FileCheck, CheckCircle2 } from "lucide-react";
+import { TeamFigure, useTeamFigures } from "@/components/engage/TeamFigures";
 
 const SHIPPED_CARDS = [
   {
@@ -32,7 +33,7 @@ const SHIPPED_CARDS = [
     gradient: "from-amber-500 to-orange-600",
     title: "Documents Checked Early",
     desc: "Internship completion certificates, NMC registration, domicile proofs, category certificates — PG documentation is more complex than UG. Our audit team pre-verifies every paper weeks before deadlines.",
-    highlight: "documentation handled end to end for 2100+ students",
+    highlight: "documentation handled end to end for {students} students",
   },
 ];
 
@@ -56,6 +57,7 @@ export const PGWhyUs = ({ items: fromCms }: { items?: PgCard[] | null } = {}) =>
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => { setMounted(true); }, []);
+  const team = useTeamFigures();
 
   return (
     <section className="py-12 md:py-16 bg-white dark:bg-slate-950">
@@ -83,7 +85,7 @@ export const PGWhyUs = ({ items: fromCms }: { items?: PgCard[] | null } = {}) =>
             viewport={{ once: true }}
             className="text-slate-500 dark:text-slate-400 text-sm md:text-base font-medium max-w-2xl mx-auto"
           >
-            NEET PG counselling is high-stakes with zero margin for error. Here&apos;s why 2100+ families trusted us with their PG admission journey.
+            NEET PG counselling is high-stakes with zero margin for error. Here&apos;s why <TeamFigure k="students" /> families trusted us with their PG admission journey.
           </motion.p>
         </div>
 
@@ -106,7 +108,7 @@ export const PGWhyUs = ({ items: fromCms }: { items?: PgCard[] | null } = {}) =>
                   <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-2 md:mb-3">{card.desc}</p>
                   <div className="inline-flex items-center gap-1 md:gap-1.5 px-2 py-0.5 md:px-2.5 md:py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900/40">
                     <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600 dark:text-emerald-400" />
-                    <span className="text-[12px] md:text-[10px] font-black text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">{card.highlight}</span>
+                    <span className="text-[12px] md:text-[10px] font-black text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">{card.highlight.replace("{students}", team.students)}</span>
                   </div>
                 </div>
               </div>

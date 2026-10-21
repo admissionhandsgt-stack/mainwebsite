@@ -148,7 +148,7 @@ export default async function BranchPage({
           {
             q: `Does the ${b.name} cutoff loosen in later rounds?`,
             a:
-              `For ${inr(b.movedCount)} of the ${inr(b.seatsInCategory)} ${b.category} seats, yes — a later round reached a ` +
+              `For ${inr(b.movedCount)} of the ${inr(b.seatsInCategory)} ${b.category} seat options (a college, quota and category each), yes — a later round reached a ` +
               `worse rank than round 1 did, because upgrades free seats and a freed seat goes to whoever ` +
               `is next. The rest closed tighter or did not move.`,
           },
@@ -202,7 +202,8 @@ export default async function BranchPage({
           // A seat option is one college + quota + category in the published results — not a count of seats.
           { label: "Seat options", value: inr(b.seats), note: "college × quota × category" },
           { label: "States", value: inr(b.states) },
-          { label: "Categories", value: inr(b.categories.length) },
+          // MCC's own count for this course (its seat matrix), where it has one.
+          ...(mcc ? [{ label: `MCC seats, ${mcc.year}`, value: inr(mcc.total), note: "All India, deemed and DNB" }] : []),
         ]}
         cta={{ label: copy.cta, href: `/neet-college-predictor?course=pg&branch=${encodeURIComponent(b.name)}` }}
         telegram="hero_pg_branch"

@@ -25,6 +25,7 @@ import { checkName } from '@/lib/formRules';
 import { checkRank } from '@/lib/neetLimits';
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { trackLead, rankBand } from '@/lib/analytics';
+import { TeamFigure } from "@/components/engage/TeamFigures";
 
 // Top medical states in India for selection chips
 const AVAILABLE_STATES = [
@@ -58,7 +59,7 @@ type BranchGroup = { key: string; variants: string[] };
 const COPY = {
   ug: {
     desk: 'Admission Desk Active',
-    guided: '👥 2100+ Students Guided',
+    guided: 'Students guided',
     title: 'Get Your Personalised MBBS Admission Plan',
     intro: 'Tell us your NEET UG rank and preferences, and a counsellor will call you back with a plan.',
     rankLabel: 'Your NEET UG Rank',
@@ -71,7 +72,7 @@ const COPY = {
   },
   pg: {
     desk: 'PG Advisory Desk Active',
-    guided: '👥 2100+ Doctors Guided',
+    guided: 'Doctors guided',
     title: 'Get Your Personalised PG Admission Strategy',
     intro: 'Tell us your NEET PG rank and preferences, and a counsellor will call you back with a plan.',
     rankLabel: 'Your NEET PG Rank',
@@ -287,7 +288,7 @@ export const InlineLeadForm = ({
           </div>
         </div>
         <div className="flex items-center justify-between text-[11px] text-slate-400 font-bold uppercase tracking-wider">
-          <span>{copy.guided}</span>
+          <span><TeamFigure k="students" /> {copy.guided.toLowerCase()}</span>
           <span>🎯 AIQ • STATE • DEEMED • NRI</span>
         </div>
       </div>

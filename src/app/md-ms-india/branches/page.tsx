@@ -64,7 +64,7 @@ export default async function BranchesPage() {
         stats={[
           { label: "Branches", value: branches.length.toLocaleString("en-IN") },
           { label: "Seat options", value: branches.reduce((a, b) => a + b.seats, 0).toLocaleString("en-IN"), note: "college × quota × category" },
-          { label: "Most offered", value: branches[0]?.name ?? "—", note: branches[0] ? `${branches[0].colleges} colleges` : undefined },
+          { label: "Most seat options", value: branches[0]?.name ?? "—", note: branches[0] ? `at ${branches[0].colleges} colleges` : undefined },
         ]}
         cta={{ label: copy.cta, href: "/neet-college-predictor?course=pg" }}
         telegram="hero_pg_branches"

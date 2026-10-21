@@ -38,23 +38,43 @@ const num = (v: unknown) => (v == null ? null : Number(v));
 export interface PgState {
   name: string;
   slug: string;
+  /** Every listing: MD/MS colleges and DNB hospitals together (a hospital with both is two). */
   colleges: number;
+  /** Listings with MD/MS (or a college's own diploma) seats — the medical colleges. */
+  mdms: number;
+  /** Listings with National Board seats only — DNB hospitals. */
+  dnb: number;
 }
+
+/** A course a DNB-only hospital can have (lib/collegeName.ts isDnbOnly, in SQL). */
+const NB_COURSE = sql`'^(DNB|DrNB|FNB|Diploma|PG Diploma)'`;
 
 export const getPgStates = unstable_cache(
   async (): Promise<PgState[]> =>
     rows<Record<string, unknown>>(
       await db.execute(sql`
-        SELECT st.name, st.slug, COUNT(DISTINCT i.id)::int AS colleges
-          FROM institutes i
-          JOIN states st ON st.id = i.state_id
-         WHERE i.level = 'pg' AND i.is_active = true
-           AND EXISTS (SELECT 1 FROM seat_options so WHERE so.institute_id = i.id)
+        WITH k AS (
+          SELECT i.id, i.state_id, bool_or(co.name !~* ${NB_COURSE}) AS mdms
+            FROM institutes i
+            JOIN seat_options so ON so.institute_id = i.id
+            JOIN courses co ON co.id = so.course_id
+           WHERE i.level = 'pg' AND i.is_active = true
+           GROUP BY i.id, i.state_id)
+        SELECT st.name, st.slug, COUNT(*)::int AS colleges,
+               COUNT(*) FILTER (WHERE k.mdms)::int AS mdms,
+               COUNT(*) FILTER (WHERE NOT k.mdms)::int AS dnb
+          FROM k JOIN states st ON st.id = k.state_id
          GROUP BY st.name, st.slug
-         ORDER BY colleges DESC, st.name
+         ORDER BY mdms DESC, colleges DESC, st.name
       `),
-    ).map((x) => ({ name: String(x.name), slug: String(x.slug), colleges: Number(x.colleges) })),
-  ["pg-states-v1"],
+    ).map((x) => ({
+      name: String(x.name),
+      slug: String(x.slug),
+      colleges: Number(x.colleges),
+      mdms: Number(x.mdms),
+      dnb: Number(x.dnb),
+    })),
+  ["pg-states-v2"],
   { revalidate: 86400, tags: ["seat-data"] },
 );
 
@@ -72,8 +92,13 @@ export interface PgStatePage {
   name: string;
   slug: string;
   year: number | null;
-  colleges: { name: string; slug: string; ownership: string }[];
+  colleges: { name: string; slug: string; ownership: string; dnb: boolean }[];
+  /** Ownership of the MD/MS colleges (DNB hospitals are counted in `dnbCount`, not here). */
   ownership: Record<string, number>;
+  mdmsCount: number;
+  dnbCount: number;
+  /** Every PG course offered in the state; `branches` holds the 24 most offered. */
+  branchCount: number;
   counsellings: { name: string; colleges: number }[];
   quotas: QuotaRange[];
   branches: { name: string; slug: string; colleges: number; seats: number }[];
@@ -87,10 +112,13 @@ export const getPgStatePage = unstable_cache(
 
     const [colleges, year] = await Promise.all([
       db.execute(sql`
-        SELECT i.name, i.slug, i.ownership::text AS ownership
+        SELECT i.name, i.slug, i.ownership::text AS ownership,
+               NOT bool_or(co.name !~* ${NB_COURSE}) AS dnb
           FROM institutes i
+          JOIN seat_options so ON so.institute_id = i.id
+          JOIN courses co ON co.id = so.course_id
          WHERE i.level = 'pg' AND i.is_active = true AND i.state_id = ${stateId}
-           AND EXISTS (SELECT 1 FROM seat_options so WHERE so.institute_id = i.id)
+         GROUP BY i.id, i.name, i.slug, i.ownership
          ORDER BY CASE i.ownership WHEN 'government' THEN 0 WHEN 'deemed' THEN 1 WHEN 'private' THEN 2 ELSE 3 END, i.name
       `),
       db.execute(sql`
@@ -102,6 +130,7 @@ export const getPgStatePage = unstable_cache(
       name: String(x.name),
       slug: String(x.slug),
       ownership: String(x.ownership),
+      dnb: Boolean(x.dnb),
     }));
     if (!list.length) return null;
     const y = num(rows<Record<string, unknown>>(year)[0]?.y);
@@ -138,7 +167,8 @@ export const getPgStatePage = unstable_cache(
              LIMIT 12
           `),
       db.execute(sql`
-        SELECT co.name, COUNT(DISTINCT so.institute_id)::int AS colleges, COUNT(*)::int AS seats
+        SELECT co.name, COUNT(DISTINCT so.institute_id)::int AS colleges, COUNT(*)::int AS seats,
+               COUNT(*) OVER ()::int AS total
           FROM seat_options so
           JOIN institutes i ON i.id = so.institute_id
           JOIN courses co ON co.id = so.course_id
@@ -148,7 +178,8 @@ export const getPgStatePage = unstable_cache(
     ]);
 
     const ownership: Record<string, number> = {};
-    for (const c of list) ownership[c.ownership] = (ownership[c.ownership] ?? 0) + 1;
+    for (const c of list) if (!c.dnb) ownership[c.ownership] = (ownership[c.ownership] ?? 0) + 1;
+    const branchRows = rows<Record<string, unknown>>(branches);
 
     return {
       name: String(st.name),
@@ -156,6 +187,9 @@ export const getPgStatePage = unstable_cache(
       year: y,
       colleges: list,
       ownership,
+      mdmsCount: list.filter((c) => !c.dnb).length,
+      dnbCount: list.filter((c) => c.dnb).length,
+      branchCount: Number(branchRows[0]?.total ?? branchRows.length),
       counsellings: rows<Record<string, unknown>>(counsellings).map((x) => ({ name: String(x.name), colleges: Number(x.colleges) })),
       quotas: rows<Record<string, unknown>>(quotas).map((x) => ({
         quota: String(x.quota ?? "—"),
@@ -174,6 +208,6 @@ export const getPgStatePage = unstable_cache(
       })),
     };
   },
-  ["pg-state-page-v2"],
+  ["pg-state-page-v3"],
   { revalidate: 86400, tags: ["seat-data"] },
 );
