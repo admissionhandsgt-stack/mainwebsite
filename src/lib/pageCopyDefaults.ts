@@ -1286,37 +1286,51 @@ export const PAGE_COPY = {
       },
       accent_out: { label: "Hero title, coloured part, PDF just out", value: "out now" },
       subtitle_out: {
-        label: "Hero line, PDF just out — {detected}",
+        label: "Hero line, result just out — {detected}",
         value:
-          "MCC published it at {detected}. This page is reading the PDF now and fills itself in within a few minutes. MCC's own PDF is linked below.",
+          "MCC published the result at {detected}. MCC's own PDF is linked below, and the seat allotment analysis — branch-wise last ranks, seats by quota, category and state — follows here shortly.",
         long: true,
+        was: [
+          "MCC published it at {detected}. This page is reading the PDF now and fills itself in within a few minutes. MCC's own PDF is linked below.",
+        ],
       },
       subtitle_failed: {
-        label: "Hero line, PDF could not be read — {detected}",
-        value:
-          "MCC published it at {detected}, but its PDF could not be read automatically. Our team is on it. Meanwhile, MCC's own PDF is linked below.",
+        label: "Hero line, result out, analysis not ready — {detected}",
+        value: "MCC published the result at {detected}. MCC's own PDF is linked below.",
         long: true,
+        was: [
+          "MCC published it at {detected}, but its PDF could not be read automatically. Our team is on it. Meanwhile, MCC's own PDF is linked below.",
+        ],
       },
       accent_pending: { label: "Hero title, coloured part, not out — {expected}", value: "expected around {expected}" },
       accent_pending_nodate: { label: "Hero title, coloured part, not out, no date", value: "not out yet" },
       subtitle_pending: {
-        label: "Hero line, not out — {round_lc}, {window}",
+        label: "Hero line, not out — {round}, {window}",
         value:
-          "{round} of MCC's counselling runs {window}. This page builds itself from MCC's result as soon as it is published: around result day we check MCC's site every two minutes.",
+          "{round} of MCC's counselling runs {window}. The moment MCC publishes the result, it is here: MCC's own PDF, seats allotted by branch, quota, category and state, and the last rank admitted in each branch.",
         long: true,
+        was: [
+          "{round} of MCC's counselling runs {window}. This page builds itself from MCC's result as soon as it is published: around result day we check MCC's site every two minutes.",
+        ],
       },
       subtitle_pending_nodate: {
         label: "Hero line, not out, no date — {round_lc}",
-        value: "This page builds itself from MCC's {round_lc} result as soon as it is published: around result day we check MCC's site every two minutes.",
+        value:
+          "The moment MCC publishes the {round_lc} result, it is here: MCC's own PDF, seats allotted by branch, quota, category and state, and the last rank admitted in each branch.",
         long: true,
+        was: ["This page builds itself from MCC's {round_lc} result as soon as it is published: around result day we check MCC's site every two minutes."],
       },
       mcc_link: { label: "Button to MCC's PDF", value: "Open MCC's result PDF" },
       cta: { label: "Hero button", value: "Enter your PG rank — see your chances" },
+      cta_live: { label: "Hero button once the result is out — {next_round}", value: "See your {next_round} chances with your rank" },
       source_live: {
         label: "Source line, result read — {kind}, {source_title}, {published}",
         value:
-          "From MCC's {kind} result PDF ({source_title}), read automatically on {published}. The allotment list is MCC's; the counts and ranks here are computed from it.",
+          "From MCC's {kind} result PDF ({source_title}), updated {published}. The allotment list is MCC's; the counts and ranks here are computed from it.",
         long: true,
+        was: [
+          "From MCC's {kind} result PDF ({source_title}), read automatically on {published}. The allotment list is MCC's; the counts and ranks here are computed from it.",
+        ],
       },
       source_archive: {
         label: "Source line, an earlier year's result — {kind}, {source_title}",
@@ -1344,16 +1358,17 @@ export const PAGE_COPY = {
       status_pending: { label: "Badge: not out", value: "Awaited" },
       fact_window: { label: "Card fact: MCC's dates", value: "MCC's dates" },
       fact_join: { label: "Card fact: join by", value: "Join by" },
-      fact_checked: { label: "Card fact: last checked", value: "MCC last checked" },
+      fact_matrix: { label: "Card fact: seats in MCC's matrix — {year}", value: "Seats in MCC's {year} matrix" },
       fact_published: { label: "Card fact: published on MCC", value: "On MCC since" },
-      fact_reading: { label: "Card fact: status", value: "This page" },
-      fact_reading_now: { label: "Card fact value: being read", value: "Reading MCC's PDF" },
-      fact_reading_failed: { label: "Card fact value: not readable", value: "PDF not readable — team informed" },
+      fact_reading: { label: "Card fact: the analysis", value: "Seat-wise analysis", was: ["This page"] },
+      fact_reading_now: { label: "Card fact value: analysis coming", value: "Coming up shortly", was: ["Reading MCC's PDF"] },
+      fact_reading_failed: { label: "Card fact value: analysis not ready", value: "Open MCC's PDF below", was: ["PDF not readable — team informed"] },
       mcc_box_title: { label: "Box heading: MCC's PDF", value: "MCC's result PDF" },
       updating_note: {
-        label: "Note while MCC's newer PDF is read — {detected}",
-        value: "MCC posted an updated result at {detected}. This page is reading it now; the figures below are from the earlier PDF until it finishes.",
+        label: "Note while MCC's newer result is added — {detected}",
+        value: "MCC posted an updated result at {detected}. The figures below are from the earlier list and will be updated shortly.",
         long: true,
+        was: ["MCC posted an updated result at {detected}. This page is reading it now; the figures below are from the earlier PDF until it finishes."],
       },
       insight_total: { label: "Card: seats allotted", value: "Seats allotted" },
       insight_total_note: { label: "Card note: seats allotted", value: "All India Quota, deemed, central universities and DNB" },
@@ -1405,12 +1420,38 @@ export const PAGE_COPY = {
         long: true,
       },
       watch_reload: { label: "Pop-up when the result moves on", value: "MCC's result is in — loading it now" },
-      watch_title: { label: "Watcher heading", value: "This page updates itself" },
-      watch_body: {
-        label: "Watcher line — {checked}",
+      // The result-day card, high on the page: the moment a counsellor is worth a call.
+      decide_eyebrow: { label: "Result-day card: small heading — {round}", value: "{round} · what to do next" },
+      decide_title_pending: { label: "Result-day card heading, before the result — {round_lc}", value: "Plan your {round_lc} move before the result is out" },
+      decide_body_pending: {
+        label: "Result-day card line, before the result",
         value:
-          "We check MCC's PG counselling page every two minutes around result day, and every half hour otherwise (last checked {checked}). When the result PDF appears, this page shows MCC's link at once and the analysis within minutes.",
+          "Once the result is out you have days, not weeks, to report — and to decide whether to keep your seat or try for a better one in the next round. A counsellor plans it with you before the result, not after.",
         long: true,
+      },
+      decide_title_live: { label: "Result-day card heading, after the result — {round_lc}", value: "Got a seat in {round_lc}? Decide before you report." },
+      decide_body_live: {
+        label: "Result-day card line, after the result — {next_round}",
+        value:
+          "Keep it, or try for a better one in {next_round}? No seat yet — what can your rank still reach? A counsellor goes through your allotment and your options with you.",
+        long: true,
+      },
+      decide_fact: {
+        label: "Result-day card fact — {prev_year}, {next_upgrades}, {next_round}",
+        value: "In {prev_year}, {next_upgrades} candidates who already held a seat moved to a better one in {next_round}.",
+        long: true,
+      },
+      decide_join: { label: "Result-day card: reporting date — {join_by}", value: "Reporting closes {join_by}, as MCC's schedule says." },
+      decide_wa: { label: "Result-day card: WhatsApp button", value: "Talk to a counsellor on WhatsApp" },
+      decide_wa_text: { label: "Result-day card: the WhatsApp message — {year}, {round}", value: "Hi Admission Hands, I need help with my NEET PG {year} {round} result." },
+      decide_call: { label: "Result-day card: call button", value: "Call a counsellor" },
+      decide_predictor: { label: "Result-day card: predictor link", value: "Or check your chances with your rank" },
+      cuts_more: { label: "Branch table: show every branch — {count}", value: "Show all {count} branches" },
+      // The alerts bar on every page, while a round's result is new.
+      alert_out: { label: "Alerts bar, result just out — {year}, {round}", value: "NEET PG {year} {round} result declared — check your seat allotment" },
+      alert_live: {
+        label: "Alerts bar, analysis up — {year}, {round}, {total}",
+        value: "NEET PG {year} {round} result: {total} seats allotted — branch-wise cutoff & analysis",
       },
       next_title: { label: "Next steps heading — {round_lc}", value: "After the {round_lc} result" },
       next_items: {
@@ -1443,14 +1484,18 @@ export const PAGE_COPY = {
       faq3_a: {
         label: "Answer 3 — {window}, {join_by}, {round_lc}",
         value:
-          "MCC's schedule has {round_lc} running {window}, with joining by {join_by}. MCC revises its dates in most years; this page updates itself when the result is published.",
+          "MCC's schedule has {round_lc} running {window}, with joining by {join_by}. MCC revises its dates in most years; the result and its analysis will be on this page as soon as it is published.",
         long: true,
+        was: [
+          "MCC's schedule has {round_lc} running {window}, with joining by {join_by}. MCC revises its dates in most years; this page updates itself when the result is published.",
+        ],
       },
       faq3_live_q: { label: "Question 3, result read — {round_lc}", value: "When did MCC publish the {round_lc} result?" },
       faq3_live_a: {
-        label: "Answer 3, result read — {kind}, {published}",
-        value: "This page was built from MCC's {kind} result on {published}, automatically, from MCC's own PDF.",
+        label: "Answer 3, result read — {kind}, {detected_day}",
+        value: "MCC published the {kind} result on {detected_day}. MCC's own PDF is linked at the top of this page.",
         long: true,
+        was: ["This page was built from MCC's {kind} result on {published}, automatically, from MCC's own PDF."],
       },
       faq4_q: { label: "Question 4 — {round_lc}", value: "How do I check my NEET PG {round_lc} allotment?" },
       faq4_a: {
@@ -1483,8 +1528,11 @@ export const PAGE_COPY = {
       subtitle: {
         label: "Hero line — {year}",
         value:
-          "Each round of MCC's {year} counselling as it is published: seats allotted, upgrades and branch-wise last ranks, read from MCC's own result PDFs. Round pages build themselves the moment MCC posts a result.",
+          "Each round of MCC's {year} counselling as it is published: seats allotted, upgrades and branch-wise last ranks, from MCC's own result PDFs, with each new round added as soon as MCC publishes it.",
         long: true,
+        was: [
+          "Each round of MCC's {year} counselling as it is published: seats allotted, upgrades and branch-wise last ranks, read from MCC's own result PDFs. Round pages build themselves the moment MCC posts a result.",
+        ],
       },
       cta: { label: "Hero button", value: "Enter your PG rank — see your chances" },
       source: {
@@ -1513,15 +1561,16 @@ export const PAGE_COPY = {
       other_years: { label: "Line before other years' links", value: "Other years:" },
       process_link: { label: "Link: how the rounds work", value: "How the rounds work" },
       chip_live: { label: "Badge: result read", value: "Result out" },
-      chip_out: { label: "Badge: PDF being read", value: "Out — being read" },
+      chip_out: { label: "Badge: result just out", value: "Out — analysis soon", was: ["Out — being read"] },
       chip_failed: { label: "Badge: PDF not readable", value: "Out — see MCC" },
       chip_pending: { label: "Badge: expected — {expected}", value: "Expected {expected}" },
       chip_pending_nodate: { label: "Badge: not out", value: "Not out yet" },
       schedule_title: { label: "Schedule heading — {year}", value: "MCC's schedule, {year}" },
       schedule_intro: {
         label: "Schedule line",
-        value: "As MCC's notices give it. MCC revises the dates in most years; round pages follow the latest copy here.",
+        value: "As MCC's notices give it. MCC revises the dates in most years.",
         long: true,
+        was: ["As MCC's notices give it. MCC revises the dates in most years; round pages follow the latest copy here."],
       },
       faq1_q: { label: "Question 1 — {year}", value: "How many rounds are there in NEET PG counselling {year}?" },
       faq1_a: {
@@ -1580,6 +1629,14 @@ export const SOCIAL_SETTINGS: { key: string; label: string; value: string }[] = 
     label: "Google Business Profile link (https://www.google.com/maps?cid=…)",
     value: "https://www.google.com/maps?cid=15474144466729356168",
   },
+];
+
+/**
+ * Codes a search engine gives to prove the site is ours (2026-10-21). Public by design — each sits in
+ * the page source as a meta tag (app/layout.tsx) — so they live in the admin, not in code.
+ */
+export const VERIFY_SETTINGS: { key: string; label: string }[] = [
+  { key: "seo.verify.bing", label: "Bing Webmaster Tools code (the content of the msvalidate.01 meta tag)" },
 ];
 
 export type CopyKey = keyof typeof PAGE_COPY;

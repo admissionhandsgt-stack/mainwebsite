@@ -401,6 +401,22 @@ MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within mi
   year's round, "last checked MCC at …"; only the next awaited round is indexable, later ones `noindex`.
   An open tab follows the state by itself (`components/mcc/RoundWatch` polls `/api/mcc-round-status` every
   ~90 s and reloads — through the edge, so a thousand tabs are not a thousand renders).
+- **The pages never say how they are made** (owner, 2026-10-21: "apne logics and tricks users ko kyu show kar
+  rahe hai"): no "we check MCC every two minutes", no "last checked", no "read automatically", no "this page
+  builds itself". Visitors read *that* the result is here the moment MCC publishes it, never *how*. The team's
+  own WhatsApp alerts may say how; public copy may not. Grep the copy registry for these before adding any.
+- **Result-day CRO (same day):** `components/mcc/RoundDecision.tsx`, high on the current year's round page
+  (before the long tables): "Plan your round 1 move before the result is out" / "Got a seat? Decide before you
+  report", last year's upgrades into the next round (`decide_fact`, e.g. 5,552 moved to a better seat in 2025's
+  round 2), MCC's reporting date, then WhatsApp (prefilled with the round), a call, and the predictor. The
+  branch table shows 15 branches and a "Show all N" button (search covers all). The hero button becomes "See
+  your round 2 chances" once the result is out (`cta_live`). Leads in the 14 days before: the predictor 113,
+  "code not delivered" 25, exit offer 9, every content page 1–2 — content pages convert through WhatsApp taps,
+  which the leads table does not count.
+- **The alerts bar carries the round** (`roundAlert` in `lib/mccResults.ts`): one `live_alerts` row per round
+  (`source = 'mcc-round'`, `auto = false` so it leads the bar), titled from `alert_out` when MCC's PDF appears
+  and `alert_live` with the seat count once the analysis is up, kept until a day after reporting closes.
+  An admin switching it off is final. `LiveAlerts` opens our own pages in the same tab, a board's PDF in a new one.
 - **Least privilege:** the worker parses PDFs from the internet, so it runs as `nobody` with its own database
   role (`scripts/sql/mcc_worker_role.sql` — writes only its three tables, reads `mcc_seat_matrix` and
   `content_blocks`) and `/opt/admissionhands/mcc-worker.env` (mode 600: that role's URL + the cron secret).
@@ -1760,6 +1776,10 @@ for 8–9 Oct (root-only). Remedy: Request indexing for the affected URLs.
   `node --env-file=.env.local scripts/gsc.mjs status` shows sitemap processing and key URLs;
   `inspect <url>` any one. Key file: `GSC_SA_KEY` (outside the repo). No "request indexing" — Google's
   Indexing API is for job postings only.
+- **Bing Webmaster Tools (2026-10-21):** its "Import from Google Search Console" found nothing (our GSC
+  property is a whole-domain one), so the site is verified by meta tag: `msvalidate.01` is printed in the
+  root layout from the admin setting `seo.verify.bing` (Admin → Content → "Site verification"; only a
+  32-hex code is accepted). Add the site in Bing as `https://www.admissionhands.com/`, the canonical host.
 - **IndexNow** (Bing, Yandex, Naver, Seznam): `node scripts/indexnow.mjs --since <date>` after a change,
   or with paths. The key file `public/<32 hex>.txt` is public by design. All 3,630 URLs submitted
   2026-10-08. Cloudflare's Crawler Hints would automate this but cannot be enabled by API token (10405).

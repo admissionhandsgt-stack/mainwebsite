@@ -83,7 +83,11 @@ function decode(s: string): string {
     .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
     .replace(/&([a-z]+);/gi, (m, n) => ENTITIES[n.toLowerCase()] ?? m);
 }
-const text = (html: string) => decode(html.replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
+// Comments first: a commented-out tag inside a link left "/ -->" in front of its words.
+const text = (html: string) =>
+  decode(html.replace(/<!--[\s\S]*?-->/g, " ").replace(/<[^>]+>/g, " ").replace(/^[\s/]*-->/, " "))
+    .replace(/\s+/g, " ")
+    .trim();
 
 const MONTHS = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
 
@@ -154,6 +158,10 @@ export function extractItems(html: string, base: string, source: AlertSource): F
       continue;
     }
     if (!/^https?:/i.test(url) || /(facebook|twitter|x\.com|instagram|youtube|whatsapp|play\.google|linkedin)\./i.test(url)) continue;
+    // A board's home page is never a notice: it is the logo link in the page header, whose text is the
+    // board's own name ("West Bengal Medical Counselling Committee Admission and eCounselling Services"
+    // went live as an alert on 2026-10-21, wrapped in comment debris).
+    if (/^\/?(index\.(html?|php|aspx?|jsp))?$/i.test(new URL(url).pathname)) continue;
 
     let title = text(m[2])
       .replace(/^[\s•·»*>–-]+/, "")

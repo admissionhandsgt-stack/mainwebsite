@@ -70,14 +70,25 @@ export default function LiveAlerts({ alerts }: { alerts: BarAlert[] }) {
                   aria-hidden={copy > 0 ? true : undefined}
                 >
                   <span className="text-white/60 mr-1.5 md:mr-2">⚲</span>
+                  {/* A board's notice opens in a new tab; one of our own pages (a round result) opens here. */}
                   {copy === 0 ? (
-                    <Link href={alert.link || "#"} target="_blank" rel="noopener noreferrer" className={TITLE_CLASS}>
-                      {alert.title}
-                    </Link>
+                    alert.link?.startsWith("/") ? (
+                      <Link href={alert.link} className={TITLE_CLASS}>
+                        {alert.title}
+                      </Link>
+                    ) : (
+                      <Link href={alert.link || "#"} target="_blank" rel="noopener noreferrer" className={TITLE_CLASS}>
+                        {alert.title}
+                      </Link>
+                    )
                   ) : (
                     <span
                       className={`${TITLE_CLASS} cursor-pointer`}
-                      onClick={() => alert.link && window.open(alert.link, "_blank", "noopener,noreferrer")}
+                      onClick={() => {
+                        if (!alert.link) return;
+                        if (alert.link.startsWith("/")) window.location.href = alert.link;
+                        else window.open(alert.link, "_blank", "noopener,noreferrer");
+                      }}
                     >
                       {alert.title}
                     </span>

@@ -25,6 +25,9 @@ import { sendText } from "@/lib/waGateway";
 import { pingIndexNow } from "@/lib/indexNow";
 import { logError } from "@/lib/logger";
 import { CUT_CATS, quotaFamily, type BranchCut, type CutCat, type CutQuota } from "@/lib/mccRoundTypes";
+import { getSettings } from "@/lib/content";
+import { PAGE_COPY } from "@/lib/pageCopyDefaults";
+import { getPgProcessContent } from "@/lib/pgProcessContent";
 
 export { CUT_CATS, CUT_QUOTAS, type BranchCut, type CutCat, type CutQuota } from "@/lib/mccRoundTypes";
 
@@ -87,12 +90,57 @@ function refresh() {
   revalidateTag("mcc");
 }
 
+const DAY_MS = 86_400_000;
+const MONTH_NAMES = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+
+/** An admin copy field read outside a page render (this runs in the worker's API call), tokens filled. */
+async function roundCopy(field: "alert_out" | "alert_live", tokens: Record<string, string | number | undefined>) {
+  const settings = await getSettings();
+  const own = (settings[`page.pg_round.body.${field}`] ?? "").trim();
+  return (own || PAGE_COPY["page.pg_round.body"].fields[field].value)
+    .replace(/\{(\w+)\}/g, (whole, k: string) => (k in tokens ? String(tokens[k] ?? "") : whole))
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
+/**
+ * The alerts bar on every page carries a round's result while it is new (2026-10-21) — our page,
+ * whose top links MCC's PDF anyway. One row per round (`source_key`), first among the alerts, kept
+ * until a day after reporting closes in the admin's schedule (10 days when it gives none). The title
+ * follows the result; an admin who switched the alert off has the last word — it never comes back on.
+ */
+async function roundAlert(year: number, spec: RoundSpec, which: "out" | "live", total?: number) {
+  try {
+    const when = roundSchedule(spec, year, (await getPgProcessContent()).schedule);
+    const m = when?.joinBy ? /(\d{1,2})\s+([A-Za-z]{3})/.exec(when.joinBy) : null;
+    const mon = m ? MONTH_NAMES.indexOf(m[2].toLowerCase()) : -1;
+    const joinBy = m && mon >= 0 ? Date.UTC(mon < 6 ? year + 1 : year, mon, Number(m[1])) : null;
+    const expires = new Date(Math.max(Date.now() + 3 * DAY_MS, joinBy ? joinBy + DAY_MS : Date.now() + 10 * DAY_MS));
+    const title = await roundCopy(which === "live" ? "alert_live" : "alert_out", {
+      year,
+      round: spec.label,
+      total: total ? total.toLocaleString("en-IN") : undefined,
+    });
+    await db.execute(sql`
+      INSERT INTO live_alerts (title, link, is_active, order_index, source, source_key, auto, published_at, expires_at)
+      VALUES (${title}, ${roundPath(year, spec.slug)}, true, 0, 'mcc-round', ${`mcc-round:${year}:${spec.slug}`}, false, now(), ${expires.toISOString()})
+      ON CONFLICT (source_key) WHERE source_key IS NOT NULL
+      DO UPDATE SET title = EXCLUDED.title, expires_at = GREATEST(live_alerts.expires_at, EXCLUDED.expires_at)
+       WHERE live_alerts.is_active`);
+  } catch (error) {
+    logError(error, { route: "mccResults.alert" });
+  }
+}
+
 /** The worker found a result PDF: refresh the page, and tell the team once per PDF. */
 export async function onDetected(year: number, round: string) {
   const r = await roundRow(year, round);
   const spec = roundByName(round);
   if (!r || !spec) return { ok: false, error: "unknown round" };
   refresh();
+  // A final result after a provisional one: the bar already says the analysis is up — leave it.
+  const [held] = rows<{ n: number }>(await db.execute(sql`SELECT COUNT(*)::int AS n FROM mcc_allotments WHERE year = ${year} AND round = ${round}`));
+  if (!held?.n) await roundAlert(year, spec, "out");
   if (r.source_url && r.alerted_detected_url !== r.source_url) {
     await db.execute(sql`UPDATE mcc_round_results SET alerted_detected_url = ${r.source_url} WHERE year = ${year} AND round = ${round}`);
     await tellTeam(
@@ -251,6 +299,7 @@ export async function ingestRound(year: number, round: string, opts: { dryRun?: 
     await tx.execute(sql`DELETE FROM mcc_allotments_staging WHERE year = ${year} AND round = ${round}`);
   });
   refresh();
+  await roundAlert(year, spec, "live", stats.rows);
 
   const path = roundPath(year, spec.slug);
   const ping = await pingIndexNow([path, `/neet-pg-counselling/${year}`, "/neet-pg-seat-matrix"]);

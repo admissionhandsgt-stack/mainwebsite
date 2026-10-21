@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ExternalLink, FileText, RadioTower } from "lucide-react";
+import { ExternalLink, FileText } from "lucide-react";
 import Link from "@/components/ui/Link";
 import { fitDescription, fitTitle } from "@/lib/seoTitle";
 import { resolveMetadata } from "@/lib/content";
@@ -14,7 +14,6 @@ import {
   getCounsellingYear,
   getRoundResult,
   getRoundState,
-  getWorkerLast,
   roundBySlug,
   roundPath,
   roundSchedule,
@@ -34,17 +33,22 @@ import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import RoundCuts from "@/components/mcc/RoundCuts";
 import RoundWatch from "@/components/mcc/RoundWatch";
+import RoundDecision from "@/components/mcc/RoundDecision";
+import { getSeatMatrixOverview } from "@/lib/pgSeatData";
 
 /**
  * /neet-pg-counselling/<year>/<round> (2026-10-21) — one round of MCC's NEET PG counselling, built by
  * itself: the mcc-worker container watches MCC's page, reads the result PDF and publishes it here
  * (lib/mccResults.ts). Three states:
- *   - awaited: MCC's dates from the admin's schedule, last year's same round, "we check every 2 min";
+ *   - awaited: MCC's dates from the admin's schedule and last year's same round;
  *   - out: MCC's own PDF link at once, while the PDF is read (a few minutes);
  *   - read: seats by branch, quota, category and state, and per branch the last rank admitted —
  *     only where three or more colleges admitted, so no college's own cut is ever printed.
- * An open tab follows the state by itself (components/mcc/RoundWatch). Words from Admin → Content
- * ("Page: NEET PG round result").
+ * The page never says how it gets there — no "we check every two minutes", no "read automatically"
+ * (owner's rule, 2026-10-21: visitors see the result, not our methods). The result-day card
+ * (RoundDecision) sits high, before the long tables, because the decision a result forces is when a
+ * counsellor is worth a call. An open tab follows the state by itself (components/mcc/RoundWatch).
+ * Words from Admin → Content ("Page: NEET PG round result").
  */
 
 type Params = { year: string; round: string };
@@ -61,6 +65,7 @@ const IST = new Intl.DateTimeFormat("en-IN", {
 });
 const ist = (iso: string | null | undefined) => (iso ? `${IST.format(new Date(iso))} IST` : "");
 const DAY = new Intl.DateTimeFormat("en-IN", { timeZone: "UTC", day: "numeric", month: "short", year: "numeric" });
+const DAY_IST = new Intl.DateTimeFormat("en-IN", { timeZone: "Asia/Kolkata", day: "numeric", month: "short", year: "numeric" });
 
 async function load(params: Params) {
   if (!/^20\d\d$/.test(params.year)) return null;
@@ -123,7 +128,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     meta = await resolveMetadata(path, {
       title: fitTitle(`NEET PG ${year} ${T} Result Out: MCC Allotment PDF`, `NEET PG ${year} ${T} Result Out`),
       description: fitDescription(
-        `MCC has published the NEET PG ${year} ${lc} result. MCC's own PDF link here, and the seats by branch, quota and category as soon as it is read.`,
+        `MCC has published the NEET PG ${year} ${lc} result. MCC's own PDF link here, with seats by branch, quota and category and the branch-wise last rank.`,
       ),
       keywords,
     });
@@ -132,7 +137,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     meta = await resolveMetadata(path, {
       title: fitTitle(`NEET PG ${year} ${T} Result: Date & Seat Allotment`, `NEET PG ${year} ${T} Result`),
       description: fitDescription(
-        `NEET PG ${year} ${lc} result${expected ? `, expected around ${expected} as per MCC's schedule` : ""}. This page builds itself from MCC's result PDF the moment it is out${prev ? `; ${prev.year}'s figures meanwhile` : ""}.`,
+        `NEET PG ${year} ${lc} result${expected ? `, expected around ${expected} as per MCC's schedule` : ""}: MCC's PDF, seat allotment and branch-wise last rank, here the moment it is out${prev ? `. ${prev.year}'s figures meanwhile` : ""}.`,
       ),
       keywords,
     });
@@ -153,7 +158,11 @@ export default async function RoundResultPage({ params }: { params: Params }) {
   if (!d) notFound();
   const { year, spec, current, state, result, prev, when } = d;
   const path = roundPath(year, spec.slug);
-  const [branchPages, pgStates, worker] = await Promise.all([getBranches(), getPgStates(), getWorkerLast()]);
+  const [branchPages, pgStates, matrix] = await Promise.all([
+    getBranches(),
+    getPgStates(),
+    year === current ? getSeatMatrixOverview() : Promise.resolve(null),
+  ]);
   const stateSlug = new Map(pgStates.map((s) => [s.name, s.slug]));
   const branchSlugs = branchPages.map((b) => b.slug);
   const hasBranch = new Set(branchSlugs);
@@ -162,6 +171,10 @@ export default async function RoundResultPage({ params }: { params: Params }) {
   const prevPrev = !result && prev ? await getRoundResult(year - 2, spec.round) : null;
   const shown = result ?? prev; // what the branch table shows: this year's result, else last year's
   const shownPrev = result ? prev : prevPrev;
+
+  // The round after this one — what a seat holder can still try for — and how many moved up in it last year.
+  const nextSpec = ROUNDS.find((r) => r.order === spec.order + 1 && r.order <= 4) ?? null;
+  const nextLastYear = nextSpec ? await getRoundResult(year - 1, nextSpec.round) : null;
 
   const body0 = await pageCopy("page.pg_round.body", {});
   const kind = kindOf(state, body0);
@@ -186,9 +199,11 @@ export default async function RoundResultPage({ params }: { params: Params }) {
     window: when?.window,
     join_by: when?.joinBy ?? undefined,
     detected: ist(state.detectedAt),
+    detected_day: state.detectedAt ? DAY_IST.format(new Date(state.detectedAt)) : undefined,
     published: ist(state.publishedAt ?? state.detectedAt),
-    checked: ist(worker?.at) || "—",
     source_title: (result?.sourceTitle ?? state.sourceTitle ?? "").trim(),
+    next_round: nextSpec ? nextSpec.label.toLowerCase() : "the next round",
+    next_upgrades: nextLastYear?.upgraded ? n(nextLastYear.upgraded) : undefined,
   };
   const [copy, body, heroImage, shownBody] = await Promise.all([
     pageCopy("page.pg_round.hero", tokens),
@@ -256,7 +271,7 @@ export default async function RoundResultPage({ params }: { params: Params }) {
           : []),
         ...(when ? [{ label: body.fact_window, value: when.window }] : []),
         ...(when?.joinBy ? [{ label: body.fact_join, value: when.joinBy }] : []),
-        ...(worker?.at ? [{ label: body.fact_checked, value: ist(worker.at), wide: true }] : []),
+        ...(matrix && matrix.year === year ? [{ label: body.fact_matrix, value: n(matrix.total), wide: true }] : []),
       ]}
     />
   );
@@ -273,7 +288,7 @@ export default async function RoundResultPage({ params }: { params: Params }) {
   const faqs = [
     ...(result ? [{ question: body.faq1_q, answer: body.faq1_a }] : []),
     ...(result?.aiqOpenLast ? [{ question: body.faq2_q, answer: body.faq2_a }] : []),
-    ...(result && (state.publishedAt || state.detectedAt) ? [{ question: body.faq3_live_q, answer: body.faq3_live_a }] : []),
+    ...(result && state.detectedAt ? [{ question: body.faq3_live_q, answer: body.faq3_live_a }] : []),
     ...(!result && when?.joinBy ? [{ question: body.faq3_q, answer: body.faq3_a }] : []),
     { question: body.faq4_q, answer: body.faq4_a },
     ...(result && prev ? [{ question: body.faq5_q, answer: body.faq5_a }] : []),
@@ -318,7 +333,7 @@ export default async function RoundResultPage({ params }: { params: Params }) {
         image={heroImage}
         topic="document"
         stats={stats}
-        cta={{ label: copy.cta, href: "/neet-college-predictor?course=pg" }}
+        cta={{ label: live && nextSpec ? copy.cta_live : copy.cta, href: "/neet-college-predictor?course=pg" }}
         telegram="hero_pg_round"
         source={source}
         visual={visual}
@@ -359,16 +374,22 @@ export default async function RoundResultPage({ params }: { params: Params }) {
         </section>
       )}
 
-      {/* ------------------------------ waiting ------------------------------ */}
-      {!live && (
-        <section className={`container-custom ${state.sourceUrl ? "pt-8" : "pt-10"} pb-2`}>
-          <div className="flex items-start gap-3 rounded-2xl border border-border bg-surface-1 px-5 py-4">
-            <RadioTower className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
-            <div>
-              <p className="font-semibold text-foreground">{body.watch_title}</p>
-              <p className="mt-1 text-[14px] leading-relaxed text-muted-foreground">{body.watch_body}</p>
-            </div>
-          </div>
+      {/* ------------------------------ what to do now (this year's counselling) ------------------------------ */}
+      {year === current && (
+        <section className={`container-custom ${state.sourceUrl || insights.length ? "pt-8" : "pt-10"}`}>
+          <RoundDecision
+            eyebrow={body.decide_eyebrow}
+            title={live || out ? body.decide_title_live : body.decide_title_pending}
+            body={live || out ? body.decide_body_live : body.decide_body_pending}
+            fact={nextSpec && nextLastYear?.upgraded ? body.decide_fact : undefined}
+            join={when?.joinBy ? body.decide_join : undefined}
+            waLabel={body.decide_wa}
+            waText={body.decide_wa_text}
+            callLabel={body.decide_call}
+            predictorLabel={body.decide_predictor}
+            predictorHref="/neet-college-predictor?course=pg"
+            placement={`round_decision_${spec.slug}`}
+          />
         </section>
       )}
 
@@ -390,6 +411,7 @@ export default async function RoundResultPage({ params }: { params: Params }) {
               search: body.cuts_search,
               none: body.cuts_none,
               note: shownPrev ? `${body.cuts_note} ${shownBody.cuts_note_prev}` : body.cuts_note,
+              more: body.cuts_more,
             }}
           />
         </section>

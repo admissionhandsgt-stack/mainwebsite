@@ -14,6 +14,7 @@ import { CUT_CATS, CUT_QUOTAS, type BranchCut, type CutCat, type CutQuota } from
 type Prev = Partial<Record<CutQuota, Record<string, Partial<Record<CutCat, number>>>>>;
 
 const n = (v: number) => v.toLocaleString("en-IN");
+const FIRST = 15;
 const letters = (s: string) => s.toLowerCase().replace(/[^a-z]/g, "");
 // What people type, against how MCC names the course.
 const ALIAS: Record<string, string> = {
@@ -62,17 +63,22 @@ export default function RoundCuts({
   prev: Prev | null;
   prevYear: number | null;
   branchPages: string[];
-  labels: { search: string; none: string; note: string };
+  /** `more` takes {count}. */
+  labels: { search: string; none: string; note: string; more: string };
 }) {
   const families = CUT_QUOTAS.filter((q) => cuts[q.key].length > 0);
   const [family, setFamily] = useState<CutQuota>(families[0]?.key ?? "aiq");
   const [query, setQuery] = useState("");
+  // The largest branches first; the full hundred on request. On a phone the whole table put
+  // everything after it — what to do next, the counsellors — out of anybody's reach.
+  const [open, setOpen] = useState(false);
   const pages = useMemo(() => new Set(branchPages), [branchPages]);
 
   const all = cuts[family] ?? [];
   // Only the categories this seat family actually admits in (deemed seats are all Open).
   const cats = CUT_CATS.filter((c) => all.some((b) => b.last[c]));
-  const shown = all.filter((b) => matches(b.course, query));
+  const found = all.filter((b) => matches(b.course, query));
+  const shown = open || query.trim() ? found : found.slice(0, FIRST);
   const before = prev?.[family] ?? {};
 
   if (!families.length) return null;
@@ -167,6 +173,15 @@ export default function RoundCuts({
           </tbody>
         </table>
       </div>
+      {shown.length < found.length && (
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="mt-3 inline-flex min-h-11 items-center rounded-full border border-border bg-card px-5 text-sm font-semibold text-foreground transition-colors hover:border-primary/40 hover:text-primary"
+        >
+          {labels.more.replace("{count}", String(found.length))}
+        </button>
+      )}
       <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">{labels.note}</p>
     </div>
   );

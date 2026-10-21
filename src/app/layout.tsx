@@ -123,6 +123,11 @@ export default async function RootLayout({
             would open sockets competing with the critical path. */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+        {/* Bing Webmaster Tools' ownership check, from Admin → Content → "Site verification". The code is
+            public by design (it sits in the page source); only its own shape is accepted. */}
+        {!isAdmin && /^[A-F0-9]{32}$/i.test(setting(settings, 'seo.verify.bing').trim()) && (
+          <meta name="msvalidate.01" content={setting(settings, 'seo.verify.bing').trim()} />
+        )}
         {/* AutoLoom Analytics, beside GA4. The write key is the public browser key.
             Not on the admin host: staff sessions are not visitors, and admin URLs
             name individual leads.
