@@ -217,10 +217,13 @@ async function checkSitemap() {
 async function checkRealNumbers() {
   section("Numbers on the page come from the data");
   const html = await (await get("/md-ms-india")).text();
-  // The real figures as of the UG/PG imports. A drift here means either the
-  // data changed (fine, update this) or a hardcoded string crept back (not).
-  if (/2,168/.test(html)) ok("PG college count is the real one", "2,168");
-  else bad("PG college count is the real one", "2,168 not found on the PG page");
+  // Since 2026-10-21 the MD/MS count is NMC's register (lib/liveFigures.ts), and our PG list's
+  // row total — 2,168, mostly DNB-only hospitals — is never quoted as a number of colleges.
+  const nmc = html.match(/([\d,]+) MD\/MS colleges on NMC/);
+  if (nmc && Number(nmc[1].replace(/,/g, "")) > 500) ok("MD/MS college count is NMC's", nmc[1]);
+  else bad("MD/MS college count is NMC's", "no \"N MD/MS colleges on NMC's register\" on the PG page");
+  if (/2,168 (PG )?(medical )?colleges|all 2,168/i.test(html)) bad("PG list total is not called colleges", "2,168 colleges on the PG page");
+  else ok("PG list total is not called colleges");
 }
 
 async function checkSectionsRender() {
