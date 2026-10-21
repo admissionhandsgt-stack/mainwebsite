@@ -8,6 +8,7 @@ import { creditOf } from '@/components/ui/PhotoCredit';
 import { getPgContent } from '@/lib/pgContent';
 import { getDataStats } from '@/lib/dataStats';
 import { pageCopy } from '@/lib/pageCopy';
+import { fitDescription } from '@/lib/seoTitle';
 import { InlineLeadForm } from '@/components/lead/InlineLeadForm';
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
 
@@ -61,12 +62,18 @@ const PGStickyMobileBar = dynamic(() => import('@/components/md-ms/PGStickyMobil
  * Blank admin values fall through to the defaults below.
  */
 export async function generateMetadata(): Promise<Metadata> {
+  // Live figures, not typed ones: the admin's row said "2.3 lakh … 2,168 colleges" until 2026-10-21
+  // (scripts/sql/seo_md_ms_live_2026_10_21.sql blanked it, so this wins).
   const [stats, live] = await Promise.all([getDataStats(), getLiveFigures()]);
-  const ranks = stats.pgRanks ? `${(stats.pgRanks / 100000).toFixed(1)} lakh published NEET PG closing ranks` : 'published NEET PG closing ranks';
+  const ranks = stats.pgRanks ? `${(stats.pgRanks / 100000).toFixed(1)} lakh published closing ranks` : 'published closing ranks';
   const colleges = live.md_ms_only_colleges ? `${live.md_ms_only_colleges} MD/MS colleges and every DNB hospital` : 'every MD/MS college and DNB hospital';
   return resolveMetadata('/md-ms-india', {
     title: 'MD/MS Admission in India 2026 | NEET PG Counselling & College Predictor | Admission Hands',
-    description: `MD/MS admissions in India, checked against ${ranks} across ${colleges}. Seat predictor, round-by-round movement, dual-quota and choice-filling guidance.`,
+    description: fitDescription(
+      `NEET PG counselling for MD/MS, built on ${ranks} across ${colleges}. College predictor, round-by-round movement, choice filling.`,
+      `NEET PG counselling for MD/MS, built on ${ranks} across ${colleges}. College predictor and round-by-round movement.`,
+      `NEET PG counselling for MD/MS: ${ranks}, ${colleges}, a college predictor and round-by-round movement.`,
+    ),
     keywords: 'MD MS admission India, NEET PG counselling, PG medical colleges, Government medical colleges, Deemed university PG, NEET PG cutoff, AIQ State Quota PG, MD MS seat counselling',
   });
 }

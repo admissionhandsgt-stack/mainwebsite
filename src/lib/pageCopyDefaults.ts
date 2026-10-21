@@ -722,6 +722,9 @@ export const PAGE_COPY = {
         label: "Hero line — {pg_ranks_lakh}",
         value: "Every recommendation is checked against {pg_ranks_lakh} published closing ranks, across every MD/MS college and DNB hospital. One named counsellor stays with you from rank analysis to reporting.",
         long: true,
+        was: [
+          "From rank analysis to college reporting, every recommendation is checked against {pg_ranks_lakh} published closing ranks across every MD/MS college and DNB hospital, with dual-quota handling and one named counsellor throughout.",
+        ],
       },
       cta_call: { label: "Call button", value: "Talk to a PG expert" },
       cta_whatsapp: { label: "WhatsApp button", value: "WhatsApp us" },
