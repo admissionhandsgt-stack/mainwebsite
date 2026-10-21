@@ -2,6 +2,7 @@
 
 import Image, { getImageProps } from "next/image";
 import PhotoCredit from "@/components/ui/PhotoCredit";
+import Link from "@/components/ui/Link";
 import { useCTA } from "@/hooks/useCTA";
 import { useTeamFigures } from "@/components/engage/TeamFigures";
 import { ArrowRight, Building2, Users, ShieldCheck, Landmark, Phone, Sparkles } from "lucide-react";
@@ -200,15 +201,15 @@ export default function Hero({
               <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
             </button>
 
-            <button
-              onClick={() => {
-                document.getElementById("top-medical-institutes")?.scrollIntoView({ behavior: "smooth", block: "start" });
-              }}
+            {/* A real link to the college directory. It used to scroll to the homepage's colleges strip,
+                and did nothing once the admin hid that strip (2026-10-21). */}
+            <Link
+              href="/mbbs-india/colleges"
               className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-6 py-3.5 text-sm font-bold text-foreground shadow-sm transition-all duration-200 hover:border-primary/40 hover:bg-primary-soft hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               <Building2 className="h-4 w-4 text-primary" />
               {text.ctaSecondary}
-            </button>
+            </Link>
           </div>
 
           {/* ---------------------- how this is made ---------------------- */}

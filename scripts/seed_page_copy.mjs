@@ -51,6 +51,7 @@ const HERO_PHOTOS = [
   ["page.nri_documents.hero", "services_carousel_1"],
   ["page.pg_counselling.hero", "services_carousel_1"],
   ["page.pg_round.hero", "services_carousel_1"],
+  ["page.pg_colleges.hero", "services_carousel_2"], // doctors — the old campus photo was mostly sky
   ["page.ug_state.hero", "mbbs_doctors_stats"], // doctors on a hospital floor
   // Specialty scenes, from the branch photographs in public/assets/images/uploads.
   ["page.pg_seat_matrix.hero", { url: "/assets/images/uploads/branches-pathology.avif", alt: "A pathologist at the microscope in a hospital lab" }],

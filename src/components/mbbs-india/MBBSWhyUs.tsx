@@ -38,7 +38,7 @@ export const MBBSWhyUs = ({ data = mbbsData }: { data?: MbbsContent } = {}) => {
                       <h3 className="text-base font-black text-slate-900 dark:text-white leading-tight">
                         {item.title}
                       </h3>
-                      <p className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest mt-1">
+                      <p className="text-[11.5px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest mt-1">
                         {item.desc}
                       </p>
                     </div>
@@ -73,11 +73,11 @@ export const MBBSWhyUs = ({ data = mbbsData }: { data?: MbbsContent } = {}) => {
               <div className="grid grid-cols-2 gap-4 relative z-10">
                 <div className="text-center p-4 rounded-2xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border border-slate-100 dark:border-slate-800 shadow-sm">
                   <p className="text-2xl font-black text-slate-900 dark:text-white leading-none"><TeamFigure k="students" /></p>
-                  <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1">Admits</p>
+                  <p className="text-[11.5px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1">Admits</p>
                 </div>
                 <div className="text-center p-4 rounded-2xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border border-slate-100 dark:border-slate-800 shadow-sm">
                   <p className="text-2xl font-black text-slate-900 dark:text-white leading-none"><TeamFigure k="years" /></p>
-                  <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1">Years Exp</p>
+                  <p className="text-[11.5px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1">Years Exp</p>
                 </div>
               </div>
 
@@ -94,7 +94,7 @@ export const MBBSWhyUs = ({ data = mbbsData }: { data?: MbbsContent } = {}) => {
                     />
                   </div>
                 ))}
-                <div className="w-10 h-10 rounded-full border-2 border-white dark:border-slate-900 bg-cyan-600 dark:bg-cyan-600 text-white flex items-center justify-center font-black text-[10px] shadow-sm z-10">
+                <div className="w-10 h-10 rounded-full border-2 border-white dark:border-slate-900 bg-cyan-600 dark:bg-cyan-600 text-white flex items-center justify-center font-black text-[11.5px] shadow-sm z-10">
                   +1k
                 </div>
               </div>

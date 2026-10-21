@@ -84,12 +84,12 @@ export function CollegeCard({
         {/* CRO Badges */}
         <div className="absolute top-1.5 left-1.5 flex flex-col gap-0.5">
           {isHighDemand && (
-            <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-rose-600/90 text-[10px] font-black text-white uppercase tracking-wider shadow-sm backdrop-blur-sm">
+            <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-rose-600/90 text-[11.5px] font-black text-white uppercase tracking-wider shadow-sm backdrop-blur-sm">
               <TrendingUp className="w-2.5 h-2.5" /> High Demand
             </span>
           )}
           {isTopChoice && (
-            <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-cyan-600/90 text-[10px] font-black text-white uppercase tracking-wider shadow-sm backdrop-blur-sm">
+            <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-cyan-600/90 text-[11.5px] font-black text-white uppercase tracking-wider shadow-sm backdrop-blur-sm">
               <Sparkles className="w-2.5 h-2.5" /> Top Choice
             </span>
           )}
@@ -98,7 +98,7 @@ export function CollegeCard({
         {/* Type Badge */}
         {collegeType && (
           <div className="absolute top-1.5 right-1.5">
-            <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-black backdrop-blur-md bg-white/90 dark:bg-slate-900/90 ${style.text} shadow-sm border ${style.border}`}>
+            <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[11.5px] font-black backdrop-blur-md bg-white/90 dark:bg-slate-900/90 ${style.text} shadow-sm border ${style.border}`}>
               <span className={`w-1 h-1 rounded-full ${style.dot}`} />
               {collegeType}
             </span>

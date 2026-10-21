@@ -42,8 +42,9 @@ export default function InsightCards({ items, className = "" }: { items: Insight
             <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-primary-soft text-primary-strong sm:h-10 sm:w-10" aria-hidden="true">
               <Icon className="h-5 w-5" />
             </span>
-            <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.1em] text-muted-foreground sm:mt-4 sm:text-[11.5px] sm:tracking-[0.12em]">{it.label}</p>
-            <p className="tnum font-heading mt-1 text-[1.3rem] font-extrabold leading-tight tracking-tight text-foreground [overflow-wrap:anywhere] sm:text-2xl">{it.value}</p>
+            {/* Number first: a label that wrapped used to push its number below the next card's. */}
+            <p className="tnum font-heading mt-3 text-[1.3rem] font-extrabold leading-tight tracking-tight text-foreground [overflow-wrap:anywhere] sm:mt-4 sm:text-2xl">{it.value}</p>
+            <p className="mt-1 text-[13px] font-semibold leading-snug text-muted-foreground">{it.label}</p>
             {it.note && <p className="mt-1 text-[12.5px] leading-snug text-muted-foreground sm:text-[13.5px]">{it.note}</p>}
           </li>
         );

@@ -39,7 +39,7 @@ export const PGOverview = ({ items: fromCms }: { items?: PgCard[] | null } = {})
       <div className="container-custom max-w-5xl">
         <div className="text-center mb-10">
           <motion.div initial={mounted ? { opacity: 0, y: 10 } : false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 dark:bg-teal-950/40 text-teal-600 dark:text-teal-400 text-[10px] font-black tracking-widest uppercase mb-3">
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 dark:bg-teal-950/40 text-teal-600 dark:text-teal-400 text-[11.5px] font-black tracking-widest uppercase mb-3">
             PG Admission Overview
           </motion.div>
           <motion.h2 initial={mounted ? { opacity: 0, y: 10 } : false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}

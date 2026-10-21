@@ -82,7 +82,7 @@ export default function FeaturedVideos() {
           className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8"
         >
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-100/50 dark:bg-cyan-950/40 border border-cyan-200 dark:border-cyan-800 text-cyan-700 dark:text-cyan-300 text-[10px] font-black tracking-widest uppercase mb-2.5 shadow-sm">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-100/50 dark:bg-cyan-950/40 border border-cyan-200 dark:border-cyan-800 text-cyan-700 dark:text-cyan-300 text-[11.5px] font-black tracking-widest uppercase mb-2.5 shadow-sm">
               <Video className="w-3 h-3" />
               Expert MBBS Guidance
             </div>

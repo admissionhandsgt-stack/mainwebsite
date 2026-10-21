@@ -82,7 +82,7 @@ export const AdmissionProcess = ({ data = mbbsData }: { data?: MbbsContent } = {
 
                   {/* Step label */}
                   <div className="min-w-0 w-full break-words">
-                    <div className={`inline-block px-1.5 py-0.5 rounded-full ${color.light} dark:bg-slate-800 ${color.text} dark:text-slate-300 text-[10px] md:text-[11px] font-black uppercase tracking-widest mb-1 md:mb-2`}>
+                    <div className={`inline-block px-1.5 py-0.5 rounded-full ${color.light} dark:bg-slate-800 ${color.text} dark:text-slate-300 text-[11.5px] md:text-[11px] font-black uppercase tracking-widest mb-1 md:mb-2`}>
                       Step {idx + 1}
                     </div>
                     <p className="text-[13px] md:text-base font-black text-slate-900 dark:text-white leading-snug break-words">

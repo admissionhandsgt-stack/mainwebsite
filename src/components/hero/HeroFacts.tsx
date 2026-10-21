@@ -31,7 +31,7 @@ export default function HeroFacts({
             key={f.label}
             className={`rounded-2xl border border-border bg-surface-2 px-3.5 py-3 ${f.wide ? "col-span-2" : ""}`}
           >
-            <dt className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">{f.label}</dt>
+            <dt className="text-[12.5px] font-semibold leading-snug text-muted-foreground">{f.label}</dt>
             <dd className="tnum font-heading mt-1 text-[1.05rem] font-extrabold leading-snug text-foreground">{f.value}</dd>
             {f.sub && <dd className="mt-0.5 text-[12px] leading-snug text-muted-foreground">{f.sub}</dd>}
           </div>

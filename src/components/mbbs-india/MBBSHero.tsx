@@ -54,7 +54,7 @@ export const MBBSHero = ({ backgroundImageUrl, credit, data = mbbsData }: MBBSHe
           <div className="lg:col-span-8 space-y-4 md:space-y-6 text-center md:text-left pt-4 md:pt-0">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-cyan-600/5 dark:bg-cyan-950/30 border border-cyan-600/10 dark:border-cyan-900/30 rounded-full backdrop-blur-md self-center md:self-start">
               <ShieldCheck className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
-              <span className="text-cyan-900 dark:text-cyan-300 text-[10px] font-black uppercase tracking-widest">
+              <span className="text-cyan-900 dark:text-cyan-300 text-[11.5px] font-black uppercase tracking-widest">
                 Trusted, Data-Driven Guidance for AIQ & State Counselling
               </span>
             </div>
@@ -69,7 +69,7 @@ export const MBBSHero = ({ backgroundImageUrl, credit, data = mbbsData }: MBBSHe
                 <div key={idx} className="flex items-center gap-2 md:gap-3">
                   <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-cyan-600" />
                   <div className="text-left">
-                    <p className="text-[12px] md:text-[10px] font-black text-slate-700 md:text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] md:tracking-[0.2em] leading-none mb-1">{stat.label}</p>
+                    <p className="text-[12px] md:text-[11.5px] font-black text-slate-700 md:text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] md:tracking-[0.2em] leading-none mb-1">{stat.label}</p>
                     <p className="text-sm md:text-lg font-black text-slate-950 md:text-slate-900 dark:text-white leading-none">{stat.value}</p>
                   </div>
                 </div>
@@ -97,7 +97,7 @@ export const MBBSHero = ({ backgroundImageUrl, credit, data = mbbsData }: MBBSHe
               <div className="space-y-4 relative z-10">
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/20 rounded-full">
                   <Sparkles className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                  <span className="text-amber-900 dark:text-amber-300 text-[10px] font-black uppercase tracking-[0.2em]">
+                  <span className="text-amber-900 dark:text-amber-300 text-[11.5px] font-black uppercase tracking-[0.2em]">
                     Start Your Journey
                   </span>
                 </div>

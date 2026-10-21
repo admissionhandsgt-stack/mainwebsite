@@ -311,7 +311,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
                   <div className="flex-1">
                     <h3 className="text-base font-black text-slate-900 dark:text-white mb-1.5 tracking-tight">{item.title}</h3>
                     <p className="text-slate-600 dark:text-slate-300 text-xs md:text-sm font-medium leading-relaxed mb-3">{item.desc}</p>
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 text-[10px] font-black uppercase tracking-wider">
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 text-[11.5px] font-black uppercase tracking-wider">
                       <CheckCircle2 className="w-3 h-3" /> {item.highlight}
                     </div>
                   </div>
@@ -508,19 +508,19 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
               
               <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row gap-2 justify-between">
                 <div>
-                  <h4 className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Office Hours</h4>
+                  <h4 className="text-[11.5px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Office Hours</h4>
                   <p className="text-xs text-slate-700 dark:text-slate-300 font-semibold mt-0.5">Mon - Sun: 10:00 AM - 10:00 PM</p>
                 </div>
                 <div className="flex items-end gap-2 mt-2 sm:mt-0">
                   <button 
                     onClick={() => CTA.call()}
-                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1 bg-slate-900 dark:bg-slate-800 text-white px-3.5 py-2 rounded-lg font-black text-[10px] hover:bg-slate-800 dark:hover:bg-slate-700 transition-all cursor-pointer"
+                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1 bg-slate-900 dark:bg-slate-800 text-white px-3.5 py-2 rounded-lg font-black text-[11.5px] hover:bg-slate-800 dark:hover:bg-slate-700 transition-all cursor-pointer"
                   >
                     Call Now
                   </button>
                   <button 
                     onClick={() => CTA.whatsapp("Hi, I want to ask about medical admissions")}
-                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1 bg-emerald-600 text-white px-3.5 py-2 rounded-lg font-black text-[10px] hover:bg-emerald-700 transition-all cursor-pointer"
+                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1 bg-emerald-600 text-white px-3.5 py-2 rounded-lg font-black text-[11.5px] hover:bg-emerald-700 transition-all cursor-pointer"
                   >
                     <WhatsAppIcon size={12} /> WhatsApp
                   </button>

@@ -278,11 +278,11 @@ export const InlineLeadForm = ({
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
-            <span className="text-[10px] font-black uppercase tracking-wider text-emerald-400">
+            <span className="text-[11.5px] font-black uppercase tracking-wider text-emerald-400">
               {copy.desk}
             </span>
           </div>
-          <div className="flex items-center gap-1 text-slate-400 text-[10px] font-bold">
+          <div className="flex items-center gap-1 text-slate-400 text-[11.5px] font-bold">
             <Clock className="w-3 h-3 text-slate-400" />
             <span>Open daily 10 AM – 10 PM</span>
           </div>
@@ -307,7 +307,7 @@ export const InlineLeadForm = ({
         <form onSubmit={handleNextStep} className="space-y-4">
           {/* Rank Field */}
           <div>
-            <label className="block text-[10px] font-black text-slate-300 uppercase tracking-wider mb-1.5 ml-0.5">
+            <label className="block text-[11.5px] font-black text-slate-300 uppercase tracking-wider mb-1.5 ml-0.5">
               {copy.rankLabel}
             </label>
             <div className="relative">
@@ -323,7 +323,7 @@ export const InlineLeadForm = ({
                 onChange={e => setFormData({ ...formData, rank: e.target.value.replace(/\D/g, '') })}
               />
             </div>
-            <p className="text-[10px] text-slate-500 font-bold mt-1 ml-0.5">
+            <p className="text-[11.5px] text-slate-500 font-bold mt-1 ml-0.5">
               {rankCheck && !rankCheck.ok ? rankCheck.error : copy.rankHint}
             </p>
           </div>
@@ -345,7 +345,7 @@ export const InlineLeadForm = ({
 
           {/* Preferred branch (PG) or course (UG) */}
           <div>
-            <label htmlFor="lead-branch" className="block text-[10px] font-black text-slate-355 uppercase tracking-wider mb-1.5 ml-0.5">
+            <label htmlFor="lead-branch" className="block text-[11.5px] font-black text-slate-355 uppercase tracking-wider mb-1.5 ml-0.5">
               {level === 'ug' ? 'Preferred Course' : 'Preferred Specialty Branch'}
             </label>
             <select
@@ -377,7 +377,7 @@ export const InlineLeadForm = ({
 
           {/* Preferred State Selector (Interactive Chips) */}
           <div>
-            <label className="block text-[10px] font-black text-slate-355 uppercase tracking-wider mb-1.5 ml-0.5">
+            <label className="block text-[11.5px] font-black text-slate-355 uppercase tracking-wider mb-1.5 ml-0.5">
               Preferred States (Select Multiple)
             </label>
             <div className="flex flex-wrap gap-1.5 max-h-[85px] overflow-y-auto pr-1">
@@ -405,7 +405,7 @@ export const InlineLeadForm = ({
           <div className={`grid gap-3.5 ${level === 'pg' ? 'grid-cols-2' : 'grid-cols-1'}`}>
             {/* Quota Selector */}
             <div>
-              <label className="block text-[10px] font-black text-slate-355 uppercase tracking-wider mb-1.5 ml-0.5">
+              <label className="block text-[11.5px] font-black text-slate-355 uppercase tracking-wider mb-1.5 ml-0.5">
                 Quota Focus
               </label>
               <div className="flex gap-1 bg-slate-950/40 p-1 border border-white/5 rounded-xl">
@@ -432,7 +432,7 @@ export const InlineLeadForm = ({
             {/* Internship Completion - PG only; a NEET UG candidate has none */}
             {level === 'pg' && (
             <div>
-              <label className="block text-[10px] font-black text-slate-355 uppercase tracking-wider mb-1.5 ml-0.5">
+              <label className="block text-[11.5px] font-black text-slate-355 uppercase tracking-wider mb-1.5 ml-0.5">
                 Internship Status
               </label>
               <div className="flex gap-1 bg-slate-950/40 p-1 border border-white/5 rounded-xl">
@@ -459,7 +459,7 @@ export const InlineLeadForm = ({
           </div>
 
           {errorMsg && (
-            <div className="flex items-start gap-1.5 p-2 bg-red-950/40 text-red-400 rounded-lg text-[10px] font-medium border border-red-900/40">
+            <div className="flex items-start gap-1.5 p-2 bg-red-950/40 text-red-400 rounded-lg text-[11.5px] font-medium border border-red-900/40">
               <AlertCircle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
               <p>{errorMsg}</p>
             </div>
@@ -488,7 +488,7 @@ export const InlineLeadForm = ({
 
           {/* Full Name */}
           <div>
-            <label className="block text-[10px] font-black text-slate-355 uppercase tracking-wider mb-1.5 ml-0.5">
+            <label className="block text-[11.5px] font-black text-slate-355 uppercase tracking-wider mb-1.5 ml-0.5">
               Full Name
             </label>
             <div className="relative">
@@ -507,7 +507,7 @@ export const InlineLeadForm = ({
 
           {/* Mobile Number */}
           <div>
-            <label className="block text-[10px] font-black text-slate-355 uppercase tracking-wider mb-1.5 ml-0.5">
+            <label className="block text-[11.5px] font-black text-slate-355 uppercase tracking-wider mb-1.5 ml-0.5">
               Mobile Number
             </label>
             <div className="relative">
@@ -527,7 +527,7 @@ export const InlineLeadForm = ({
           </div>
 
           {/* Summary Panel */}
-          <div className="bg-slate-950/30 border border-white/5 rounded-xl p-3 text-[10px] space-y-1.5">
+          <div className="bg-slate-950/30 border border-white/5 rounded-xl p-3 text-[11.5px] space-y-1.5">
             <span className="text-slate-400 font-bold block uppercase tracking-wider text-[11px] mb-1">
               Intake Summary:
             </span>
@@ -554,7 +554,7 @@ export const InlineLeadForm = ({
           </div>
 
           {errorMsg && (
-            <div className="flex items-start gap-1.5 p-2 bg-red-950/40 text-red-400 rounded-lg text-[10px] font-medium border border-red-900/40">
+            <div className="flex items-start gap-1.5 p-2 bg-red-950/40 text-red-400 rounded-lg text-[11.5px] font-medium border border-red-900/40">
               <AlertCircle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
               <p>{errorMsg}</p>
             </div>

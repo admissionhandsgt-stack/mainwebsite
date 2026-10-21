@@ -32,7 +32,7 @@ export const CollegeSelectionGuide = ({ data = mbbsData }: { data?: MbbsContent 
         <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-cyan-50 dark:bg-cyan-950/40 border border-cyan-100 dark:border-cyan-900/30 rounded-full mb-4">
             <Target className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
-            <span className="text-[10px] font-black text-cyan-700 dark:text-cyan-300 uppercase tracking-widest">
+            <span className="text-[11.5px] font-black text-cyan-700 dark:text-cyan-300 uppercase tracking-widest">
               Strategic Approach
             </span>
           </div>
@@ -79,7 +79,7 @@ export const CollegeSelectionGuide = ({ data = mbbsData }: { data?: MbbsContent 
 
                   {/* Content */}
                   <div className="flex-1 min-w-0 w-full break-words">
-                    <div className={`inline-block px-1.5 py-0.5 rounded-full ${color.light} dark:bg-slate-800 ${color.text} dark:text-slate-300 text-[10px] font-black uppercase tracking-widest mb-1 md:mb-2`}>
+                    <div className={`inline-block px-1.5 py-0.5 rounded-full ${color.light} dark:bg-slate-800 ${color.text} dark:text-slate-300 text-[11.5px] font-black uppercase tracking-widest mb-1 md:mb-2`}>
                       Phase {idx + 1}
                     </div>
                     <h3 className="text-xs md:text-base font-black text-slate-900 dark:text-white leading-snug mb-1 break-words">

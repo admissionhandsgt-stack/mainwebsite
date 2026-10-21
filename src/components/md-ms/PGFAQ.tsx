@@ -97,7 +97,7 @@ export const PGFAQ = ({ items: fromCms, copy }: { items?: FaqItem[]; copy?: FaqC
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer ${
+                className={`px-3 py-1.5 rounded-lg text-[11.5px] font-black uppercase tracking-wider transition-all cursor-pointer ${
                   activeCategory === cat
                     ? "bg-cyan-600 text-white shadow-sm"
                     : "bg-slate-50 text-slate-500 hover:bg-slate-100 dark:bg-slate-950 dark:text-slate-400 dark:hover:bg-slate-800"
@@ -190,7 +190,7 @@ export const PGFAQ = ({ items: fromCms, copy }: { items?: FaqItem[]; copy?: FaqC
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-5 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800/80 shadow-xs">
           <div className="text-center sm:text-left">
             <p className="text-xs text-slate-800 dark:text-slate-300 font-black leading-snug">Still have unanswered questions?</p>
-            <p className="text-[10px] text-slate-500 dark:text-slate-400 font-bold mt-0.5">Connect instantly with our senior advisors for 1-on-1 support.</p>
+            <p className="text-[11.5px] text-slate-500 dark:text-slate-400 font-bold mt-0.5">Connect instantly with our senior advisors for 1-on-1 support.</p>
           </div>
           <button
             onClick={() =>

@@ -16,6 +16,7 @@ import { resolveMetadata } from "@/lib/content";
 import { getRecommendedColleges } from "@/lib/colleges";
 import { getMediaAsset, getSettings, setting, getBlocks, getSections, getContactInfo } from "@/lib/content";
 import { backdropPlaceholder } from "@/lib/backdrop";
+import { fillLive, getLiveFigures } from "@/lib/liveFigures";
 
 const ServicesList = dynamic(() => import('@/components/ServicesList'), { loading: () => <SectionLoader /> });
 const HowItWorks = dynamic(() => import('@/components/home/HowItWorks'), { loading: () => <SectionLoader /> });
@@ -58,7 +59,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const Index = async () => {
   const [initialColleges, campusHero, doctorsHero, s, serviceBlocks, stepBlocks, whyBlocks,
-    testimonialBlocks, sections] =
+    testimonialBlocks, sections, live] =
     await Promise.all([
       getRecommendedColleges(),
       getMediaAsset('homepage_hero_campus'),
@@ -69,6 +70,7 @@ const Index = async () => {
       getBlocks('why_us'),
       getBlocks('testimonials'),
       getSections('home'),
+      getLiveFigures(),
     ]);
 
   // The campus backdrop's first frame, inline — see lib/backdrop.ts.
@@ -126,7 +128,8 @@ const Index = async () => {
     title: setting(s, 'home.why.title'),
     titleAccent: setting(s, 'home.why.title_accent'),
     subtitle: setting(s, 'home.why.subtitle'),
-    points: [1, 2, 3, 4].map((i) => setting(s, `home.why.point_${i}`)).filter(Boolean),
+    // {closing_ranks_lakh} and the other live tokens filled here; {students}/{years} in the component.
+    points: [1, 2, 3, 4].map((i) => fillLive(setting(s, `home.why.point_${i}`), live)).filter(Boolean),
   };
 
   const testimonialsCopy = {

@@ -54,7 +54,7 @@ function Ring({ value }: { value: number }) {
       <text x="60" y="58" textAnchor="middle" className="fill-foreground font-heading text-[22px] font-extrabold">
         {filled >= 99.95 ? "99.9" : filled.toFixed(1)}%
       </text>
-      <text x="60" y="76" textAnchor="middle" className="fill-muted-foreground text-[10px] font-semibold">
+      <text x="60" y="76" textAnchor="middle" className="fill-muted-foreground text-[11.5px] font-semibold">
         AHEAD OF
       </text>
     </svg>

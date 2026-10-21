@@ -108,7 +108,7 @@ export const PGCutoffInsights = ({ items: fromCms }: { items?: PgQuotaFacts[] | 
                       key={j}
                       className="flex flex-col py-1 md:py-1.5 border-b border-slate-50 dark:border-slate-800/40 last:border-0"
                     >
-                      <span className="text-[12px] md:text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+                      <span className="text-[12px] md:text-[11.5px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider">
                         {item.label}
                       </span>
                       <span className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 mt-0.5">

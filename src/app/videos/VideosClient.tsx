@@ -115,7 +115,7 @@ export function VideosClient({ videos }: { videos: VideoRecord[] }) {
                         Featured
                       </span>
                     )}
-                    <span className="text-[10px] font-black uppercase tracking-wider text-cyan-600 dark:text-cyan-400">
+                    <span className="text-[11.5px] font-black uppercase tracking-wider text-cyan-600 dark:text-cyan-400">
                       Counselling Guide
                     </span>
                   </div>

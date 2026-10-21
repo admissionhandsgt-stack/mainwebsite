@@ -93,17 +93,19 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
   ].filter((s) => s.href); // Telegram has its own pill beside these, so it is not an icon here too
   const googleProfile = social?.google ?? DEFAULT_SOCIAL.google;
 
-  const contactRow = 'flex min-h-[44px] items-center gap-2.5 text-[14px] text-muted-foreground transition-colors hover:text-primary-strong dark:hover:text-primary lg:min-h-[36px]';
-  const iconBox = 'flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary-soft text-primary-strong dark:text-primary';
+  // One line of contact details above the copyright (third pass, owner: "footer ko thora compact") —
+  // they had taken the brand column's height down past the link columns.
+  const contactRow = 'inline-flex min-h-[44px] items-center gap-2 text-[13.5px] text-muted-foreground transition-colors hover:text-primary-strong dark:hover:text-primary md:min-h-[36px]';
+  const contactIcon = 'h-4 w-4 shrink-0 text-primary-strong dark:text-primary';
   const COLS: Record<number, string> = { 1: 'lg:grid-cols-1', 2: 'lg:grid-cols-2', 3: 'lg:grid-cols-3', 4: 'lg:grid-cols-4', 5: 'lg:grid-cols-5' };
 
   return (
     <>
       <footer className="relative border-t border-border bg-surface-1 text-foreground">
         <div className="container-custom pb-3 pt-8 md:pt-10">
-          <div className="grid gap-8 lg:grid-cols-[minmax(240px,0.9fr)_minmax(0,2.6fr)] lg:gap-12">
-            {/* Who we are and how to reach us */}
-            <div className="space-y-4">
+          <div className="grid gap-7 lg:grid-cols-[minmax(220px,0.8fr)_minmax(0,3fr)] lg:gap-12">
+            {/* Who we are */}
+            <div className="space-y-3">
               <Link href="/" className="inline-flex min-h-[44px] items-center" aria-label="Admission Hands — home">
                 <Image
                   src="/assets/images/logos/logo.avif"
@@ -114,38 +116,7 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
                   unoptimized
                 />
               </Link>
-              <p className="max-w-sm text-[13.5px] leading-relaxed text-muted-foreground">{tagline || DEFAULT_TAGLINE}</p>
-
-              <ul>
-                <li>
-                  <a href={`tel:${phoneNumber}`} className={contactRow}>
-                    <span className={iconBox}><Phone className="h-4 w-4" aria-hidden="true" /></span>
-                    <span className="font-semibold text-foreground tnum">{phoneShown}</span>
-                  </a>
-                </li>
-                <li>
-                  <a href={`mailto:${emailAddress}`} className={contactRow}>
-                    <span className={iconBox}><Mail className="h-4 w-4" aria-hidden="true" /></span>
-                    <span className="break-all">{emailAddress}</span>
-                  </a>
-                </li>
-                <li>
-                  {googleProfile ? (
-                    <a href={googleProfile} target="_blank" rel="noopener noreferrer" data-placement="footer_google" className={contactRow}>
-                      <span className={iconBox}><MapPin className="h-4 w-4" aria-hidden="true" /></span>
-                      <span className="py-1 leading-snug">
-                        {CONTACT_INFO.address}{' '}
-                        <span className="whitespace-nowrap text-[12.5px] font-semibold text-primary-strong dark:text-primary">· Maps</span>
-                      </span>
-                    </a>
-                  ) : (
-                    <p className={contactRow}>
-                      <span className={iconBox}><MapPin className="h-4 w-4" aria-hidden="true" /></span>
-                      <span className="py-1 leading-snug">{CONTACT_INFO.address}</span>
-                    </p>
-                  )}
-                </li>
-              </ul>
+              <p className="max-w-sm text-[13.5px] leading-relaxed text-muted-foreground lg:max-w-[30ch]">{tagline || DEFAULT_TAGLINE}</p>
 
               <div className="flex flex-wrap items-center gap-2">
                 {socialLinks.map((s) => (
@@ -223,8 +194,33 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
             </nav>
           </div>
 
+          {/* How to reach us, in one line */}
+          <address className="mt-7 flex flex-col gap-x-6 border-t border-border pt-3 not-italic md:flex-row md:flex-wrap md:items-center">
+            <a href={`tel:${phoneNumber}`} className={contactRow}>
+              <Phone className={contactIcon} aria-hidden="true" />
+              <span className="tnum font-semibold text-foreground">{phoneShown}</span>
+            </a>
+            <a href={`mailto:${emailAddress}`} className={contactRow}>
+              <Mail className={contactIcon} aria-hidden="true" />
+              <span className="break-all">{emailAddress}</span>
+            </a>
+            {googleProfile ? (
+              <a href={googleProfile} target="_blank" rel="noopener noreferrer" data-placement="footer_google" className={contactRow}>
+                <MapPin className={contactIcon} aria-hidden="true" />
+                <span className="leading-snug">
+                  {CONTACT_INFO.address} <span className="whitespace-nowrap font-semibold text-primary-strong dark:text-primary">· Maps</span>
+                </span>
+              </a>
+            ) : (
+              <span className={contactRow}>
+                <MapPin className={contactIcon} aria-hidden="true" />
+                <span className="leading-snug">{CONTACT_INFO.address}</span>
+              </span>
+            )}
+          </address>
+
           {/* The bottom line — Admin → Navigation → Footer — Bottom line */}
-          <div className="mt-8 flex flex-col items-center justify-between gap-1 border-t border-border pt-3 md:flex-row">
+          <div className="mt-2 flex flex-col items-center justify-between gap-1 border-t border-border pt-2 md:flex-row">
             <p className="text-[13px] text-muted-foreground">&copy; {currentYear} AdmissionHands. All rights reserved.</p>
             <ul className="flex flex-wrap items-center justify-center gap-x-1">
               {bottom.map((l) => (

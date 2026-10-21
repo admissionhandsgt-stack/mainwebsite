@@ -35,10 +35,10 @@ export default function CollegeGlance({ s }: { s: CollegeSummary }) {
     <div className="mt-8">
       <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         {tiles.map((t) => (
-          <div key={t.label} className="min-w-0 rounded-2xl border border-border bg-card p-4 shadow-sm">
-            <dt className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">{t.label}</dt>
-            <dd className="tnum font-heading mt-1 text-[19px] font-extrabold leading-tight text-foreground [overflow-wrap:anywhere] md:text-[21px]">{t.value}</dd>
-            {t.sub && <dd className="mt-0.5 text-[12px] leading-snug text-muted-foreground">{t.sub}</dd>}
+          <div key={t.label} className="flex min-w-0 flex-col rounded-2xl border border-border bg-card p-4 shadow-sm">
+            <dt className="order-2 mt-1 text-[13px] font-semibold leading-snug text-muted-foreground">{t.label}</dt>
+            <dd className="tnum font-heading order-1 text-[19px] font-extrabold leading-tight text-foreground [overflow-wrap:anywhere] md:text-[21px]">{t.value}</dd>
+            {t.sub && <dd className="order-3 mt-0.5 text-[12px] leading-snug text-muted-foreground">{t.sub}</dd>}
           </div>
         ))}
       </dl>

@@ -60,7 +60,7 @@ export function DeemedCollegeCard({ college }: DeemedCollegeCardProps) {
               <Users className="w-3 h-3 shrink-0 text-emerald-500" />
               <span className="text-[11px] font-bold">{college.intake} Seats</span>
               {college.nri_seats != null && (
-                <span className="text-[10px] text-amber-600 dark:text-amber-400 font-bold ml-0.5">({college.nri_seats} NRI)</span>
+                <span className="text-[11.5px] text-amber-600 dark:text-amber-400 font-bold ml-0.5">({college.nri_seats} NRI)</span>
               )}
             </div>
           )}
@@ -68,17 +68,17 @@ export function DeemedCollegeCard({ college }: DeemedCollegeCardProps) {
           {/* Badges */}
           <div className="flex flex-wrap gap-1">
             {college.has_nri_seats && (
-              <span className="px-1.5 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400 border border-amber-200/40 dark:border-amber-900/30">
+              <span className="px-1.5 py-0.5 rounded text-[11.5px] font-black uppercase tracking-wider bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400 border border-amber-200/40 dark:border-amber-900/30">
                 NRI
               </span>
             )}
             {college.has_minority_seats && (
-              <span className="px-1.5 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-teal-50 dark:bg-teal-950/20 text-teal-700 dark:text-teal-400 border border-teal-200/40 dark:border-teal-900/30">
+              <span className="px-1.5 py-0.5 rounded text-[11.5px] font-black uppercase tracking-wider bg-teal-50 dark:bg-teal-950/20 text-teal-700 dark:text-teal-400 border border-teal-200/40 dark:border-teal-900/30">
                 Minority
               </span>
             )}
             {college.is_women_only && (
-              <span className="px-1.5 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200/40 dark:border-emerald-900/30">
+              <span className="px-1.5 py-0.5 rounded text-[11.5px] font-black uppercase tracking-wider bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200/40 dark:border-emerald-900/30">
                 Women Only
               </span>
             )}

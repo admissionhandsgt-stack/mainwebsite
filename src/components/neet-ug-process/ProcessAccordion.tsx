@@ -20,7 +20,7 @@ const ProcessAccordion = ({ phases = UG_PHASES }: { phases?: UgPhase[] }) => {
     <div className="bg-white dark:bg-slate-950 rounded-2xl md:rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden flex flex-col md:flex-row">
       {/* Sidebar Tabs for Phases */}
       <div className="w-full md:w-1/3 bg-slate-50 dark:bg-slate-900 border-b md:border-b-0 md:border-r border-slate-200 dark:border-slate-800 p-2.5 sm:p-5">
-        <h2 className="text-[12px] md:text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2 md:mb-4 px-2">Admission Phases</h2>
+        <h2 className="text-[12px] md:text-[11.5px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2 md:mb-4 px-2">Admission Phases</h2>
         <div className="flex flex-row md:flex-col gap-1.5 md:gap-3 overflow-x-auto pb-2 md:pb-0 hide-scrollbar">
           {phases.map((phase, idx) => {
             const isActive = activePhaseIndex === idx;
@@ -53,7 +53,7 @@ const ProcessAccordion = ({ phases = UG_PHASES }: { phases?: UgPhase[] }) => {
       {/* Accordion Steps for Active Phase */}
       <div className="w-full md:w-2/3 p-3 sm:p-5 bg-white dark:bg-slate-950 min-h-[250px] md:min-h-[300px]">
         <div className="mb-3 md:mb-4">
-          <div className="inline-flex px-2 py-0.5 bg-cyan-50 dark:bg-cyan-950/40 text-cyan-600 dark:text-cyan-300 font-black uppercase tracking-wider text-[12px] md:text-[10px] rounded-full mb-1">
+          <div className="inline-flex px-2 py-0.5 bg-cyan-50 dark:bg-cyan-950/40 text-cyan-600 dark:text-cyan-300 font-black uppercase tracking-wider text-[12px] md:text-[11.5px] rounded-full mb-1">
             Phase {activePhaseIndex + 1}
           </div>
           <h2 className="text-base md:text-xl font-black text-slate-900 dark:text-white">{activePhase.title}</h2>
@@ -135,7 +135,7 @@ const ProcessAccordion = ({ phases = UG_PHASES }: { phases?: UgPhase[] }) => {
                               <Info className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />
                             </div>
                             <div>
-                              <p className="text-[10px] font-black text-cyan-600 dark:text-cyan-400 uppercase tracking-widest mb-0.5">Admission Hands Support</p>
+                              <p className="text-[11.5px] font-black text-cyan-600 dark:text-cyan-400 uppercase tracking-widest mb-0.5">Admission Hands Support</p>
                               <p className="text-[13px] md:text-xs text-slate-700 dark:text-slate-300 font-medium leading-tight">{step.support}</p>
                             </div>
                           </div>

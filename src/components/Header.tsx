@@ -135,9 +135,22 @@ export default function Header({
     };
   }, [isMobileMenuOpen]);
 
+  // A desktop menu opens on hover and on focus, so after a click it would stay open over the new
+  // page: the clicked link keeps focus and the pointer is still on it (owner, 2026-10-21). A click
+  // shuts that item's menu until the pointer leaves the item or a key is pressed in the bar, and a
+  // page change takes focus out of the bar.
+  const [shut, setShut] = useState<number | null>(null);
+  const picked = (id: number) => () => {
+    setShut(id);
+    const el = document.activeElement as HTMLElement | null;
+    if (el?.closest('[data-desktop-nav]')) el.blur();
+  };
+
   useEffect(() => {
     setIsMobileMenuOpen(false);
     setExpanded(null);
+    const el = document.activeElement as HTMLElement | null;
+    if (el?.closest('[data-desktop-nav]')) el.blur();
   }, [pathname]);
 
   // Escape closes the drawer, and takes focus out of an open desktop menu (the menus open on
@@ -209,6 +222,7 @@ export default function Header({
                       <Link
                         href={l.url}
                         {...linkProps(l)}
+                        onClick={picked(link.id)}
                         aria-current={here ? 'page' : undefined}
                         className={`block rounded-xl px-3 py-2.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
                           here ? 'bg-primary-soft' : 'hover:bg-primary-soft/70'
@@ -234,19 +248,21 @@ export default function Header({
               {!isMenuOnly(link) && (
                 <Link
                   href={link.url}
+                  onClick={picked(link.id)}
                   className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-primary-strong hover:underline dark:text-primary"
                 >
                   {link.label} overview <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                 </Link>
               )}
               {loose.map((l) => (
-                <Link key={l.id} href={l.url} {...linkProps(l)} className="text-[13px] font-semibold text-muted-foreground hover:text-primary">
+                <Link key={l.id} href={l.url} {...linkProps(l)} onClick={picked(link.id)} className="text-[13px] font-semibold text-muted-foreground hover:text-primary">
                   {l.label}
                 </Link>
               ))}
             </div>
             <Link
               href="/neet-college-predictor"
+              onClick={picked(link.id)}
               className="inline-flex items-center gap-1.5 rounded-full bg-primary-soft px-3.5 py-1.5 text-[12.5px] font-bold text-primary-strong hover:bg-primary-soft/70 dark:text-primary"
             >
               <Search className="h-3.5 w-3.5" aria-hidden="true" /> Check your chances with your rank
@@ -264,6 +280,7 @@ export default function Header({
           key={sub.id}
           href={sub.url}
           {...linkProps(sub)}
+          onClick={picked(link.id)}
           aria-current={pathname === sub.url ? 'page' : undefined}
           className="flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-soft transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring group/item"
         >
@@ -310,7 +327,7 @@ export default function Header({
             Six items leave room at 1280. Measure before adding a top-level item:
             node scripts/tmp/header_budget.mjs <base> "<label>" --real
           */}
-          <nav data-desktop-nav aria-label="Main" className="mx-auto hidden items-center gap-0.5 xl:flex min-[1800px]:gap-1.5">
+          <nav data-desktop-nav aria-label="Main" onKeyDown={() => setShut(null)} className="mx-auto hidden items-center gap-0.5 xl:flex min-[1800px]:gap-1.5">
             {navLinks.map((link) => {
               const hasDropdown = link.children.length > 0;
               const menuOnly = hasDropdown && isMenuOnly(link);
@@ -322,7 +339,7 @@ export default function Header({
                   : 'text-muted-foreground hover:text-primary hover:bg-primary-soft/60'
               }`;
               return (
-                <div key={link.id} className="relative group">
+                <div key={link.id} className="relative group" onMouseLeave={() => setShut((v) => (v === link.id ? null : v))}>
                   {/* A menu with no page of its own ("Other Courses", url "#") is a
                       button: focusing it opens the list, as hovering does. */}
                   {menuOnly ? (
@@ -331,7 +348,7 @@ export default function Header({
                       <ChevronDown className="w-3.5 h-3.5 transition-transform group-hover:rotate-180 group-focus-within:rotate-180" aria-hidden="true" />
                     </button>
                   ) : (
-                    <Link href={link.url} {...linkProps(link)} aria-haspopup={hasDropdown ? 'true' : undefined} className={itemClass}>
+                    <Link href={link.url} {...linkProps(link)} onClick={hasDropdown ? picked(link.id) : undefined} aria-haspopup={hasDropdown ? 'true' : undefined} className={itemClass}>
                       {link.label}
                       {hasDropdown && (
                         <ChevronDown className="w-3.5 h-3.5 transition-transform group-hover:rotate-180 group-focus-within:rotate-180" aria-hidden="true" />
@@ -344,7 +361,7 @@ export default function Header({
                       // make anybody wait for it to arrive.
                       className={`absolute top-full z-50 pt-3 opacity-0 invisible transition-[opacity,visibility] duration-150 group-hover:visible group-hover:opacity-100 group-hover:duration-0 group-focus-within:visible group-focus-within:opacity-100 group-focus-within:duration-0 ${
                         grouped ? 'left-1/2 -translate-x-1/2' : 'left-0'
-                      }`}
+                      } ${shut === link.id ? '!invisible !opacity-0' : ''}`}
                     >
                       {grouped ? megaPanel(link) : simplePanel(link)}
                     </div>

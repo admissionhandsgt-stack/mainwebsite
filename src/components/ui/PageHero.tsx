@@ -9,6 +9,8 @@ import type { ReactNode } from "react";
 export interface PageHeroStat {
   value: string;
   label: string;
+  /** A short line under the label — where the figure comes from. */
+  note?: string;
 }
 
 interface PageHeroProps {
@@ -179,11 +181,12 @@ export default function PageHero({
           )}
 
           {stats && stats.length > 0 && (
-            <motion.dl variants={item} className="mt-7 grid grid-cols-2 gap-3 md:max-w-3xl md:grid-cols-4">
+            <motion.dl variants={item} className={`mt-7 grid grid-cols-2 gap-3 ${stats.length >= 4 ? "md:grid-cols-4" : "md:grid-cols-3"}`}>
               {stats.map((s) => (
-                <div key={s.label} className="min-w-0 rounded-2xl border border-border bg-card px-4 py-3.5 shadow-sm">
-                  <dt className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">{s.label}</dt>
-                  <dd className="tnum font-heading mt-1 text-[1.35rem] font-extrabold leading-tight text-foreground md:text-[1.55rem]">{s.value}</dd>
+                <div key={s.label} className="flex min-w-0 flex-col rounded-2xl border border-border bg-card px-4 py-3.5 shadow-sm">
+                  <dt className="order-2 mt-1 text-[13px] font-semibold leading-snug text-muted-foreground">{s.label}</dt>
+                  <dd className="tnum font-heading order-1 text-[1.4rem] font-extrabold leading-tight text-foreground md:text-[1.6rem]">{s.value}</dd>
+                  {s.note && <dd className="order-3 mt-0.5 text-[12px] leading-snug text-muted-foreground">{s.note}</dd>}
                 </div>
               ))}
             </motion.dl>

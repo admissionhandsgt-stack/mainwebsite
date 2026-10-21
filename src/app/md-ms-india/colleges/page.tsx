@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { resolveMetadata, getMediaAsset } from '@/lib/content';
+import { resolveMetadata } from '@/lib/content';
+import { pageHeroImage } from "@/lib/pageCopy";
 import Link from "@/components/ui/Link";
 import { Building2, ArrowRight } from "lucide-react";
 import { listColleges, getCollegeFacets, type CollegeFilters } from "@/lib/collegeQueries";
@@ -58,7 +59,8 @@ export default async function PGCollegesPage({ searchParams }: PageProps) {
     // Was a hardcoded path to an AI-generated campus that read "SWAMI
     // VIVEKANANDA MEDICAL COLLEGE AND HOSPITAL", with SCIENCES misspelt, on a
     // page about every PG college in the country.
-    getMediaAsset("pg_hero_campus"),
+    // The page's own photo from Admin → Media, else the old campus picture (mostly sky at this crop).
+    pageHeroImage("page.pg_colleges.hero", "pg_hero_campus"),
     getLiveFigures(),
   ]);
 
@@ -100,7 +102,8 @@ export default async function PGCollegesPage({ searchParams }: PageProps) {
         title="Every PG medical college,"
         titleAccent="with the numbers behind it"
         subtitle="Seat counts, approximate fees and stipends for every MD/MS college and DNB hospital — and, once you sign in, your own chance at each one."
-        image={hero?.imageUrl && hero.imageUrl !== "none" ? hero.imageUrl : undefined}
+        image={hero?.url}
+        imageAlt={hero?.alt || undefined}
         imageSubject={hero?.subject}
         imageCredit={hero?.attribution}
         imageLicense={hero?.license}
@@ -108,11 +111,11 @@ export default async function PGCollegesPage({ searchParams }: PageProps) {
         // Official counts, matrix by matrix — this list itself (one row per college and per DNB
         // hospital, some hospitals in both) is never quoted as a number of colleges.
         stats={[
-          { value: live.md_ms_only_colleges, label: "MD/MS colleges · NMC" },
-          live.dnb_hospitals && live.mcc_year ? { value: live.dnb_hospitals, label: `DNB hospitals · MCC ${live.mcc_year}` } : null,
-          live.md_ms_only_seats ? { value: live.md_ms_only_seats, label: "MD/MS seats · NMC" } : null,
+          { value: live.md_ms_only_colleges, label: "MD/MS colleges", note: "NMC register" },
+          live.dnb_hospitals && live.mcc_year ? { value: live.dnb_hospitals, label: "DNB hospitals", note: `MCC ${live.mcc_year}` } : null,
+          live.md_ms_only_seats ? { value: live.md_ms_only_seats, label: "MD/MS seats", note: "approved by NMC" } : null,
           { value: facets.states.length.toLocaleString("en-IN"), label: "States & UTs" },
-        ].filter((x): x is { value: string; label: string } => Boolean(x?.value))}
+        ].filter((x): x is { value: string; label: string; note?: string } => Boolean(x?.value))}
       />
 
       <div className="container-custom py-9 md:py-12">
@@ -156,7 +159,7 @@ export default async function PGCollegesPage({ searchParams }: PageProps) {
                       <h2 className="flex-grow text-[16px] font-bold leading-snug text-foreground group-hover:text-primary">
                         {c.name}
                       </h2>
-                      <span className="mt-0.5 shrink-0 rounded-full border border-border bg-surface-2 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+                      <span className="mt-0.5 shrink-0 rounded-full border border-border bg-surface-2 px-2 py-0.5 text-[11.5px] font-semibold uppercase tracking-wide text-muted-foreground">
                         {c.ownership}
                       </span>
                     </div>

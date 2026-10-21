@@ -115,7 +115,7 @@ export default async function NeetPgProcessPage() {
         tone="dark"
         // NMC's count of MD/MS colleges, not the rows of our PG list (which has DNB hospitals, some twice).
         stats={[
-          { value: live.md_ms_only_colleges, label: "MD/MS colleges · NMC" },
+          { value: live.md_ms_only_colleges, label: "MD/MS colleges", note: "NMC register" },
           { value: inr(stats.pgBranches), label: "PG courses" },
           { value: inr(stats.pgRanks), label: "Published cutoffs" },
         ]}

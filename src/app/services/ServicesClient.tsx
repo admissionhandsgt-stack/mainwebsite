@@ -84,14 +84,14 @@ function ServiceCard({ service, show, hide, wide }: { service: Card; show: strin
             <h3 className="text-base font-black text-slate-900 tracking-tight leading-snug group-hover:text-cyan-700 transition-colors">
               {service.title}
             </h3>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
+            <p className="text-[11.5px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
               {service.tagline}
             </p>
           </div>
           {/* Stat badge */}
           <div className="hidden sm:flex flex-col items-center px-2.5 py-1 bg-slate-50 rounded-lg border border-slate-100 shrink-0">
             <span className="text-xs md:text-sm font-black text-slate-900">{service.stat.value}</span>
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{service.stat.label}</span>
+            <span className="text-[11.5px] font-bold text-slate-400 uppercase tracking-wider">{service.stat.label}</span>
           </div>
         </div>
 
@@ -103,7 +103,7 @@ function ServiceCard({ service, show, hide, wide }: { service: Card; show: strin
         {/* Expandable features */}
         <button
           onClick={() => setExpanded(!expanded)}
-          className="flex items-center gap-1 text-[10px] font-black text-cyan-600 uppercase tracking-widest hover:text-cyan-800 transition-colors mb-2"
+          className="flex items-center gap-1 text-[11.5px] font-black text-cyan-600 uppercase tracking-widest hover:text-cyan-800 transition-colors mb-2"
         >
           {expanded ? hide : show} Details
           {expanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
@@ -128,7 +128,7 @@ function ServiceCard({ service, show, hide, wide }: { service: Card; show: strin
         <div className="flex sm:hidden items-center gap-2 mb-2">
           <div className="px-2.5 py-1 bg-slate-50 rounded-md border border-slate-100">
             <span className="text-xs font-black text-slate-900">{service.stat.value}</span>
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">{service.stat.label}</span>
+            <span className="text-[11.5px] font-bold text-slate-400 uppercase tracking-wider ml-1">{service.stat.label}</span>
           </div>
         </div>
       </div>
@@ -257,7 +257,7 @@ export default function ServicesClient({ heroImages, heroCredit, data }: Service
                   </div>
                   <div>
                     <p className="text-base md:text-xl font-black text-slate-900 leading-none">{s.value}</p>
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">{s.label}</p>
+                    <p className="text-[11.5px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">{s.label}</p>
                   </div>
                 </div>
                 );

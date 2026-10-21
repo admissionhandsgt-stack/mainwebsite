@@ -29,7 +29,7 @@ export const MBBSEligibilityInfo = ({ data = mbbsData }: { data?: MbbsContent } 
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-50 dark:bg-cyan-950/40 border border-cyan-100/50 dark:border-cyan-900/30 text-cyan-600 dark:text-cyan-400 text-[10px] font-black tracking-widest uppercase mb-4"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-50 dark:bg-cyan-950/40 border border-cyan-100/50 dark:border-cyan-900/30 text-cyan-600 dark:text-cyan-400 text-[11.5px] font-black tracking-widest uppercase mb-4"
           >
             <ShieldCheck className="w-3.5 h-3.5" /> Admission Prerequisites
           </motion.div>

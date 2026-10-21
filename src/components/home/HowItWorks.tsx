@@ -54,12 +54,12 @@ const HowItWorks = ({ steps: fromCms, copy }: { steps?: Step[]; copy?: StepsCopy
   return (
     <section className="compact-padding bg-slate-50/50 dark:bg-slate-950 relative overflow-hidden">
       <div className="container-custom relative z-10">
-        <div className="text-center mb-8 md:mb-12">
+        <div className="text-center mb-6 md:mb-8">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            className="inline-block px-3 py-1.5 mb-3 text-[10px] font-black tracking-widest text-cyan-600 dark:text-cyan-400 uppercase bg-cyan-100/50 dark:bg-cyan-950/40 border border-cyan-200/50 dark:border-cyan-900/30 rounded-full"
+            className="inline-block px-3 py-1.5 mb-3 text-[11.5px] font-black tracking-widest text-cyan-600 dark:text-cyan-400 uppercase bg-cyan-100/50 dark:bg-cyan-950/40 border border-cyan-200/50 dark:border-cyan-900/30 rounded-full"
           >
             {text.eyebrow}
           </motion.div>
@@ -109,12 +109,12 @@ const HowItWorks = ({ steps: fromCms, copy }: { steps?: Step[]; copy?: StepsCopy
                 transition={{ delay: 0.4 + index * 0.1 }}
                 className="relative group"
               >
-                <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-4 sm:p-5 lg:p-6 lg:pt-8 lg:pb-6 rounded-2xl shadow-sm flex flex-col sm:flex-row lg:flex-col items-start sm:items-center text-left lg:text-center gap-3 sm:gap-4 lg:gap-0 h-full transition-all hover:border-cyan-200 dark:hover:border-cyan-900/60 hover:shadow-md dark:hover:shadow-zinc-950/50 lg:min-h-[230px]">
+                <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-4 sm:p-5 lg:p-5 lg:pt-6 lg:pb-5 rounded-2xl shadow-sm flex flex-col sm:flex-row lg:flex-col items-start sm:items-center text-left lg:text-center gap-3 sm:gap-4 lg:gap-0 h-full transition-all hover:border-cyan-200 dark:hover:border-cyan-900/60 hover:shadow-md dark:hover:shadow-zinc-950/50 lg:min-h-[196px]">
                   {/* Icon Node */}
                   <div className={`relative z-10 flex-shrink-0 flex items-center justify-center w-12 h-12 lg:w-16 lg:h-16 rounded-xl lg:rounded-2xl bg-gradient-to-br ${tone.color} text-white shadow-lg lg:mx-auto lg:mb-4 group-hover:scale-110 transition-transform duration-300`}>
                     <BlockIcon name={step.icon} fallback="ClipboardCheck" size={20} className="lg:hidden" />
                     <BlockIcon name={step.icon} fallback="ClipboardCheck" size={24} className="hidden lg:block" />
-                    <div className="absolute -top-1 -right-1 lg:-top-2 lg:-right-2 flex h-5 w-5 lg:h-6 lg:w-6 items-center justify-center rounded-full border-2 border-white dark:border-slate-900 bg-gradient-brand text-[12px] lg:text-[10px] font-bold text-white">
+                    <div className="absolute -top-1 -right-1 lg:-top-2 lg:-right-2 flex h-5 w-5 lg:h-6 lg:w-6 items-center justify-center rounded-full border-2 border-white dark:border-slate-900 bg-gradient-brand text-[12px] lg:text-[11.5px] font-bold text-white">
                       {index + 1}
                     </div>
                   </div>
@@ -131,7 +131,7 @@ const HowItWorks = ({ steps: fromCms, copy }: { steps?: Step[]; copy?: StepsCopy
           </div>
         </div>
 
-        <div className="mt-8 md:mt-12 text-center">
+        <div className="mt-6 md:mt-8 text-center">
           {/* The button renders as the link (asChild): a <button> inside an <a> is
               invalid HTML, and the <a> around it measured 20px tall to a tap. */}
           <Button asChild size="lg" className="rounded-xl px-6 py-4 md:px-8 md:py-6 text-xs md:text-sm font-bold bg-gradient-brand text-white shadow-glow hover:shadow-glow-lg hover:-translate-y-0.5 transition-all active:translate-y-0 group border-0">

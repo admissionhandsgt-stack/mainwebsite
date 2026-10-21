@@ -113,7 +113,7 @@ export default function TopMedicalInstitutes({ initialColleges }: TopMedicalInst
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent" />
                   <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-white/20 backdrop-blur-md border border-white/30 text-white text-[10px] font-bold tracking-wider uppercase">
+                    <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-white/20 backdrop-blur-md border border-white/30 text-white text-[11.5px] font-bold tracking-wider uppercase">
                       <Stethoscope className="w-3 h-3" /> MBBS
                     </div>
                   </div>

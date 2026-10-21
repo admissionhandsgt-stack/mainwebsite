@@ -78,7 +78,7 @@ export function DeemedCollegeFilterBar({
 
             <button
               onClick={() => onFilterChange('nriSeats', !filters.nriSeats)}
-              className={`px-3 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider border transition-all ${
+              className={`px-3 py-2 rounded-lg text-[11.5px] font-black uppercase tracking-wider border transition-all ${
                 filters.nriSeats
                   ? 'bg-amber-50 border-amber-300 text-amber-700'
                   : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-300'
@@ -89,7 +89,7 @@ export function DeemedCollegeFilterBar({
 
             <button
               onClick={() => onFilterChange('minoritySeats', !filters.minoritySeats)}
-              className={`px-3 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider border transition-all ${
+              className={`px-3 py-2 rounded-lg text-[11.5px] font-black uppercase tracking-wider border transition-all ${
                 filters.minoritySeats
                   ? 'bg-teal-50 border-teal-300 text-teal-700'
                   : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-300'
@@ -100,7 +100,7 @@ export function DeemedCollegeFilterBar({
 
             <button
               onClick={() => onFilterChange('womenOnly', !filters.womenOnly)}
-              className={`px-3 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider border transition-all ${
+              className={`px-3 py-2 rounded-lg text-[11.5px] font-black uppercase tracking-wider border transition-all ${
                 filters.womenOnly
                   ? 'bg-emerald-50 border-emerald-300 text-emerald-700'
                   : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-300'
@@ -125,7 +125,7 @@ export function DeemedCollegeFilterBar({
             {hasActiveFilters && (
               <button
                 onClick={onReset}
-                className="flex items-center gap-1 px-3 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider border border-red-200 text-red-600 bg-red-50 hover:bg-red-100 transition-all"
+                className="flex items-center gap-1 px-3 py-2 rounded-lg text-[11.5px] font-black uppercase tracking-wider border border-red-200 text-red-600 bg-red-50 hover:bg-red-100 transition-all"
               >
                 <X className="w-3 h-3" />
                 Clear
@@ -137,7 +137,7 @@ export function DeemedCollegeFilterBar({
         {/* Count */}
         <div className="mt-2 flex items-center gap-2">
           <span className="text-cyan-700 text-xs font-black">{totalCount}</span>
-          <span className="text-cyan-600 text-[10px] font-bold uppercase tracking-wider">Colleges found</span>
+          <span className="text-cyan-600 text-[11.5px] font-bold uppercase tracking-wider">Colleges found</span>
         </div>
       </div>
     </div>

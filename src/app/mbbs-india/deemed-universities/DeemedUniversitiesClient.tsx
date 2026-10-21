@@ -153,7 +153,7 @@ export default function DeemedUniversitiesClient({ heroImages, phoneNumber = "+9
           <div className="container-custom relative z-10">
             <div className="text-center mb-8">
               <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                className="inline-block px-4 py-1.5 mb-4 text-[10px] font-black tracking-widest text-cyan-600 uppercase bg-cyan-600/10 rounded-full"
+                className="inline-block px-4 py-1.5 mb-4 text-[11.5px] font-black tracking-widest text-cyan-600 uppercase bg-cyan-600/10 rounded-full"
               >
                 What Makes Them Special
               </motion.div>
@@ -211,7 +211,7 @@ export default function DeemedUniversitiesClient({ heroImages, phoneNumber = "+9
               <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-6 lg:gap-10 items-center">
                 <div>
                   <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                    className="inline-flex items-center gap-2 px-3 py-1.5 mb-5 text-[10px] font-black tracking-widest text-cyan-600 uppercase bg-cyan-50 border border-cyan-100 rounded-full"
+                    className="inline-flex items-center gap-2 px-3 py-1.5 mb-5 text-[11.5px] font-black tracking-widest text-cyan-600 uppercase bg-cyan-50 border border-cyan-100 rounded-full"
                   >
                     <Sparkles className="w-3.5 h-3.5" /> Direct Support
                   </motion.div>

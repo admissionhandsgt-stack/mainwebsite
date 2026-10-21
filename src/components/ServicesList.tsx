@@ -98,12 +98,12 @@ const ServicesList = ({
         <div className="absolute inset-0 bg-slate-50/30 -z-10" />
 
         <div className="container-custom relative z-10">
-          <div className="text-center mb-10 md:mb-14">
+          <div className="text-center mb-7 md:mb-10">
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              className="inline-flex items-center justify-center px-3 py-1.5 mb-4 text-[10px] font-black tracking-widest text-cyan-600 uppercase bg-cyan-50 border border-cyan-100 rounded-full"
+              className="inline-flex items-center justify-center px-3 py-1.5 mb-4 text-[11.5px] font-black tracking-widest text-cyan-600 uppercase bg-cyan-50 border border-cyan-100 rounded-full"
             >
               {text.eyebrow}
             </motion.div>
@@ -138,7 +138,7 @@ const ServicesList = ({
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ delay: 0.3 + index * 0.1 }}
-                  className="group relative rounded-2xl md:rounded-[2rem] bg-white border border-slate-100/60 p-4 md:p-8 flex flex-col h-full shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+                  className="group relative rounded-2xl md:rounded-[2rem] bg-white border border-slate-100/60 p-4 md:p-6 flex flex-col h-full shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
                 >
                   <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${tone.gradient} opacity-[0.03] rounded-full blur-2xl group-hover:opacity-10 transition-opacity duration-500`} />
 
@@ -235,7 +235,7 @@ const ServicesList = ({
                     className="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-100 text-emerald-700 transition-all active:scale-95"
                   >
                     <WhatsAppIcon size={24} />
-                    <span className="text-[10px] font-black uppercase tracking-wider">WhatsApp</span>
+                    <span className="text-[11.5px] font-black uppercase tracking-wider">WhatsApp</span>
                   </button>
                   
                   <button
@@ -246,7 +246,7 @@ const ServicesList = ({
                     className="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-cyan-50 hover:bg-cyan-100 border border-cyan-100 text-cyan-700 transition-all active:scale-95"
                   >
                     <Phone size={24} />
-                    <span className="text-[10px] font-black uppercase tracking-wider">Call Now</span>
+                    <span className="text-[11.5px] font-black uppercase tracking-wider">Call Now</span>
                   </button>
                 </div>
               </motion.div>

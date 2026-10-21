@@ -383,16 +383,16 @@ export default function CollegesPageClient({
               Every MBBS college in the counselling data, state by state, with its fees, seats and cutoff band. Filter by state and type, or open a college for the full picture.
             </p>
 
-            <dl className="mt-7 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4">
+            <dl className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {[
                 { label: "MBBS colleges", value: liveStats.total.toLocaleString("en-IN") },
                 { label: "Government", value: liveStats.govt.toLocaleString("en-IN") },
                 { label: "Private", value: liveStats.private.toLocaleString("en-IN") },
                 { label: "States & UTs", value: liveStats.states.toLocaleString("en-IN") },
               ].map((st) => (
-                <div key={st.label} className="min-w-0 rounded-2xl border border-border bg-card px-4 py-3.5 shadow-sm">
-                  <dt className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">{st.label}</dt>
-                  <dd className="tnum font-heading mt-1 text-[1.35rem] font-extrabold leading-tight text-foreground md:text-[1.55rem]">{st.value}</dd>
+                <div key={st.label} className="flex min-w-0 flex-col rounded-2xl border border-border bg-card px-4 py-3.5 shadow-sm">
+                  <dt className="order-2 mt-1 text-[13px] font-semibold leading-snug text-muted-foreground">{st.label}</dt>
+                  <dd className="tnum font-heading order-1 text-[1.4rem] font-extrabold leading-tight text-foreground md:text-[1.6rem]">{st.value}</dd>
                 </div>
               ))}
             </dl>
@@ -438,7 +438,7 @@ export default function CollegesPageClient({
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-100 dark:border-cyan-900/30 text-[10px] font-bold text-cyan-600 dark:text-cyan-400">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-100 dark:border-cyan-900/30 text-[11.5px] font-bold text-cyan-600 dark:text-cyan-400">
                   <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
                   2026 Seat Matrix Active
                 </span>
@@ -448,19 +448,19 @@ export default function CollegesPageClient({
             {/* 3 columns of insights inside the card */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-slate-100 dark:border-slate-800/60">
               <div className="p-3 bg-slate-50/50 dark:bg-slate-900/50 rounded-xl border border-slate-100/80 dark:border-slate-800/40">
-                <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Counselling Merit</span>
+                <span className="text-[11.5px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Counselling Merit</span>
                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
                   All admissions are strictly via MCC & State NEET Counselling. No direct management/capitation seats permitted.
                 </p>
               </div>
               <div className="p-3 bg-slate-50/50 dark:bg-slate-900/50 rounded-xl border border-slate-100/80 dark:border-slate-800/40">
-                <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Fee Structure</span>
+                <span className="text-[11.5px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Fee Structure</span>
                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
                   Government colleges mostly charge {govtFee} a year. A private college publishes several fees, one per quota — most {privateFee} a year.
                 </p>
               </div>
               <div className="p-3 bg-slate-50/50 dark:bg-slate-900/50 rounded-xl border border-slate-100/80 dark:border-slate-800/40">
-                <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Clinical Exposure</span>
+                <span className="text-[11.5px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Clinical Exposure</span>
                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
                   Focus on high patient inflow (minimum 1000+ daily OPD count) when selecting private & deemed colleges.
                 </p>
@@ -531,7 +531,7 @@ export default function CollegesPageClient({
                     <>
                       <span className="text-slate-300 dark:text-slate-700 mx-0.5">·</span>
                       {search && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded text-[10px] text-slate-700 dark:text-zinc-300 shadow-sm">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded text-[11.5px] text-slate-700 dark:text-zinc-300 shadow-sm">
                           &quot;{search}&quot;
                           <X
                             className="w-2.5 h-2.5 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-white cursor-pointer"
@@ -540,7 +540,7 @@ export default function CollegesPageClient({
                         </span>
                       )}
                       {selectedState !== "all" && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded text-[10px] text-slate-700 dark:text-zinc-300 shadow-sm">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded text-[11.5px] text-slate-700 dark:text-zinc-300 shadow-sm">
                           {selectedState}
                           <X
                             className="w-2.5 h-2.5 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-white cursor-pointer"
@@ -549,7 +549,7 @@ export default function CollegesPageClient({
                         </span>
                       )}
                       {selectedType !== "all" && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded text-[10px] text-slate-700 dark:text-zinc-300 shadow-sm">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded text-[11.5px] text-slate-700 dark:text-zinc-300 shadow-sm">
                           {selectedType === "govt" ? "Government" : "Private"}
                           <X
                             className="w-2.5 h-2.5 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-white cursor-pointer"
@@ -559,7 +559,7 @@ export default function CollegesPageClient({
                       )}
                       <button
                         onClick={clearAll}
-                        className="text-[10px] text-slate-500 hover:text-slate-800 dark:text-slate-500 dark:hover:text-white transition-colors ml-1"
+                        className="text-[11.5px] text-slate-500 hover:text-slate-800 dark:text-slate-500 dark:hover:text-white transition-colors ml-1"
                       >
                         Clear all
                       </button>
@@ -570,7 +570,7 @@ export default function CollegesPageClient({
                 <div className="flex items-center gap-1 p-0.5 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80 rounded-md shrink-0">
                   <button
                     onClick={() => setLayoutView("list")}
-                    className={`flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium transition-all ${
+                    className={`flex items-center gap-1 px-2 py-0.5 rounded text-[11.5px] font-medium transition-all ${
                       layoutView === "list"
                         ? "bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm"
                         : "text-slate-500 hover:text-slate-800 dark:text-slate-500 dark:hover:text-zinc-300"
@@ -582,7 +582,7 @@ export default function CollegesPageClient({
                   </button>
                   <button
                     onClick={() => setLayoutView("grid")}
-                    className={`flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium transition-all ${
+                    className={`flex items-center gap-1 px-2 py-0.5 rounded text-[11.5px] font-medium transition-all ${
                       layoutView === "grid"
                         ? "bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm"
                         : "text-slate-500 hover:text-slate-800 dark:text-slate-500 dark:hover:text-zinc-300"
@@ -631,7 +631,7 @@ export default function CollegesPageClient({
                                 college.name
                               )}
                             </h3>
-                            <div className="flex items-center gap-1 text-[12px] md:text-[10px] text-slate-500 dark:text-slate-400">
+                            <div className="flex items-center gap-1 text-[12px] md:text-[11.5px] text-slate-500 dark:text-slate-400">
                               <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
                               {[college.city, college.state].filter(Boolean).join(", ")}
                             </div>
@@ -641,14 +641,14 @@ export default function CollegesPageClient({
                           <div className="col-span-4 flex items-center justify-end gap-2.5">
                             {lens.bandOf(college.slug) && (
                               <span
-                                className={`shrink-0 rounded border px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${BAND_CHIP[lens.bandOf(college.slug)!].className}`}
+                                className={`shrink-0 rounded border px-1.5 py-0.5 text-[11.5px] font-bold uppercase tracking-wider ${BAND_CHIP[lens.bandOf(college.slug)!].className}`}
                               >
                                 {BAND_CHIP[lens.bandOf(college.slug)!].label}
                               </span>
                             )}
                             {college.type !== "unknown" && (
                               <span
-                                className={`shrink-0 text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${
+                                className={`shrink-0 text-[11.5px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${
                                   college.type === "govt"
                                     ? "bg-emerald-50 dark:bg-emerald-400 text-emerald-600 dark:text-black border-emerald-200 dark:border-emerald-400"
                                     : "bg-teal-50 dark:bg-teal-400 text-teal-600 dark:text-black border-teal-200 dark:border-teal-400"
@@ -682,7 +682,7 @@ export default function CollegesPageClient({
                                 college.name
                               )}
                             </h3>
-                            <p className="text-[12px] md:text-[10px] text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-0.5">
+                            <p className="text-[12px] md:text-[11.5px] text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-0.5">
                               <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
                               <span className="leading-snug">{[college.city, college.state].filter(Boolean).join(", ")}</span>
                             </p>
@@ -690,14 +690,14 @@ export default function CollegesPageClient({
                           <div className="flex items-center gap-1.5 shrink-0">
                             {lens.bandOf(college.slug) && (
                               <span
-                                className={`shrink-0 rounded border px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${BAND_CHIP[lens.bandOf(college.slug)!].className}`}
+                                className={`shrink-0 rounded border px-1.5 py-0.5 text-[11.5px] font-bold uppercase tracking-wider ${BAND_CHIP[lens.bandOf(college.slug)!].className}`}
                               >
                                 {BAND_CHIP[lens.bandOf(college.slug)!].label}
                               </span>
                             )}
                             {college.type !== "unknown" && (
                               <span
-                                className={`shrink-0 text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${
+                                className={`shrink-0 text-[11.5px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${
                                   college.type === "govt"
                                     ? "bg-emerald-50 dark:bg-emerald-400 text-emerald-600 dark:text-black border-emerald-200 dark:border-emerald-400"
                                     : "bg-teal-50 dark:bg-teal-400 text-teal-600 dark:text-black border-teal-200 dark:border-teal-400"
@@ -712,7 +712,7 @@ export default function CollegesPageClient({
                                   `Hi, I would like to get information regarding admissions at ${college.name}`
                                 )
                               }
-                              className="px-3 py-2.5 md:py-1 rounded-lg bg-cyan-50 hover:bg-cyan-100 dark:bg-cyan-900/20 dark:hover:bg-cyan-900/40 text-cyan-600 dark:text-cyan-400 border border-cyan-100/60 dark:border-cyan-900/40 transition-colors text-[12px] md:text-[10px] font-bold shrink-0"
+                              className="px-3 py-2.5 md:py-1 rounded-lg bg-cyan-50 hover:bg-cyan-100 dark:bg-cyan-900/20 dark:hover:bg-cyan-900/40 text-cyan-600 dark:text-cyan-400 border border-cyan-100/60 dark:border-cyan-900/40 transition-colors text-[12px] md:text-[11.5px] font-bold shrink-0"
                             >
                               Enquire
                             </button>
@@ -840,7 +840,7 @@ export default function CollegesPageClient({
             viewport={{ once: true }}
             className="text-center mb-6"
           >
-            <span className="text-[10px] font-bold uppercase tracking-widest text-cyan-600 dark:text-cyan-400 mb-1.5 block">
+            <span className="text-[11.5px] font-bold uppercase tracking-widest text-cyan-600 dark:text-cyan-400 mb-1.5 block">
               Complete Guide 2026
             </span>
             <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">
@@ -1038,7 +1038,7 @@ export default function CollegesPageClient({
             viewport={{ once: true }}
             className="text-center mb-6"
           >
-            <span className="text-[10px] font-bold uppercase tracking-widest text-cyan-600 dark:text-cyan-400 mb-1.5 block">
+            <span className="text-[11.5px] font-bold uppercase tracking-widest text-cyan-600 dark:text-cyan-400 mb-1.5 block">
               Expert Counselling Partner
             </span>
             <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">
@@ -1103,7 +1103,7 @@ export default function CollegesPageClient({
               viewport={{ once: true }}
               className="lg:sticky lg:top-24"
             >
-              <span className="text-[10px] font-bold uppercase tracking-widest text-cyan-600 dark:text-cyan-400 mb-2 block">
+              <span className="text-[11.5px] font-bold uppercase tracking-widest text-cyan-600 dark:text-cyan-400 mb-2 block">
                 Common Questions
               </span>
               <h2 className="font-heading text-2xl md:text-3.5xl font-black text-slate-900 dark:text-white leading-tight">
@@ -1189,7 +1189,7 @@ export default function CollegesPageClient({
 
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 md:gap-8 relative z-10 text-left">
               <div className="max-w-xl">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/5 text-cyan-200 text-[10px] font-bold mb-3.5 shadow-sm">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/5 text-cyan-200 text-[11.5px] font-bold mb-3.5 shadow-sm">
                   <Sparkles className="w-3 h-3 text-cyan-300" /> Expert Counselling 2026
                 </span>
                 <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-black tracking-tight leading-tight">

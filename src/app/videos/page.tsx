@@ -45,7 +45,7 @@ export default async function VideosPage() {
 
           <div className="container-custom relative">
             <div className="max-w-3xl text-center md:text-left">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 mb-4 text-[10px] font-black uppercase tracking-widest text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-950/40 border border-cyan-100 dark:border-cyan-900/30 rounded-full">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 mb-4 text-[11.5px] font-black uppercase tracking-widest text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-950/40 border border-cyan-100 dark:border-cyan-900/30 rounded-full">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
                 Admission Video Guides & Counseling
               </span>

@@ -45,7 +45,7 @@ const WHY_DEFAULTS = {
 // "95% Success Rate" was a number nobody can verify. The scale of the data
 // is verifiable, and it is the actual differentiator.
 // No typed counts: the families figure is the team's own (Admin → "Site: the team's own figures").
-const DEFAULT_POINTS = ['Official closing ranks', '{students} Families Guided', 'Pan-India Coverage', 'Zero Hidden Fees'];
+const DEFAULT_POINTS = ['Official closing ranks', '{students} families guided', 'Pan-India coverage', 'Zero hidden fees'];
 
 const WhyAdmissionHands = ({ reasons: fromCms, copy }: { reasons?: Reason[]; copy?: WhyCopy }) => {
   const reasons = fromCms?.length ? fromCms : FALLBACK_REASONS;
@@ -68,7 +68,7 @@ const WhyAdmissionHands = ({ reasons: fromCms, copy }: { reasons?: Reason[]; cop
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              className="inline-flex items-center justify-center px-3 py-1.5 mb-4 text-[10px] font-black tracking-widest text-cyan-600 dark:text-cyan-400 uppercase bg-cyan-100/50 dark:bg-cyan-950/40 border border-cyan-200/50 dark:border-cyan-900/30 rounded-full"
+              className="inline-flex items-center justify-center px-3 py-1.5 mb-4 text-[11.5px] font-black tracking-widest text-cyan-600 dark:text-cyan-400 uppercase bg-cyan-100/50 dark:bg-cyan-950/40 border border-cyan-200/50 dark:border-cyan-900/30 rounded-full"
             >
               {text.eyebrow}
             </motion.div>
