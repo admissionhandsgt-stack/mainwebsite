@@ -223,7 +223,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
               {
                 icon: TrendingUp,
                 title: "Round-by-Round Seat Upgrades",
-                desc: "Hold, upgrade, or exit? We monitor vacancy patterns in real-time across all rounds — R1, R2, Mop-Up, and Stray — and make split-second upgrade decisions with you.",
+                desc: "Hold, upgrade, or exit? We monitor vacancy patterns in real-time across all rounds — R1, R2, R3 (mop-up in many states) and Stray — and make split-second upgrade decisions with you.",
                 color: "from-rose-500 to-emerald-600"
               },
               {
@@ -296,7 +296,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
               {
                 icon: Clock,
                 title: "Real-Time, Round-by-Round Command",
-                desc: "NEET counselling moves fast. Deadlines shift. Vacancy patterns change. We provide live strategic support during every round — AIQ, State, Mop-Up, Stray — so you make the right call at the right moment, every single time.",
+                desc: "NEET counselling moves fast. Deadlines shift. Vacancy patterns change. We provide live strategic support during every round, AIQ and state — R1, R2, R3/mop-up and Stray — so you make the right call at the right moment, every single time.",
                 highlight: "Live support across all 4 counselling rounds"
               }
             ].map((item, idx) => (

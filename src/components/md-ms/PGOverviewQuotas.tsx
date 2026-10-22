@@ -21,7 +21,7 @@ const SHIPPED_OVERVIEW: { icon: LucideIcon; title: string; desc: string }[] = [
   { icon: Clock, title: "Internship", desc: "1-year compulsory rotating internship must be completed before counselling. Completion certificate mandatory." },
   { icon: Building2, title: "Counselling Bodies", desc: "MCC handles AIQ, Deemed & Central seats. State authorities manage State Quota. Both run in parallel." },
   { icon: ShieldCheck, title: "Reservation", desc: "SC, ST, OBC-NCL, EWS, PwD — each category has specific cutoffs, seat pools, and documentation requirements." },
-  { icon: RotateCcw, title: "Counselling Rounds", desc: "4 rounds typically: Round 1, Round 2, Mop-Up, and Stray Vacancy. Each round opens new opportunities." },
+  { icon: RotateCcw, title: "Counselling Rounds", desc: "4 rounds typically: Round 1, Round 2, Round 3 and Stray Vacancy (many states still call their third round mop-up). Each round opens new opportunities." },
 ];
 
 const SHIPPED_QUOTAS: PgQuota[] = [
