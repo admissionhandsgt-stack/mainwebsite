@@ -1960,7 +1960,7 @@ export const TELEGRAM_SETTINGS: { key: string; label: string; value: string; lon
   {
     key: "telegram.round.body",
     label: "Result alert box: text — {round}",
-    value: "MCC's {round} result and allotment PDF on the Admission Hands Telegram channel as soon as MCC publishes it, with every counselling notice in between. Free to join, leave any time.",
+    value: "MCC's {round} result and allotment PDF on the Admission Hands Telegram channel as soon as MCC publishes it, and every counselling update and notice in between, so you stay up to date. Free to join.",
     long: true,
   },
   { key: "telegram.round.button", label: "Result alert box: button", value: "Join on Telegram" },
@@ -1969,7 +1969,7 @@ export const TELEGRAM_SETTINGS: { key: string; label: string; value: string; lon
   {
     key: "telegram.round.nudge",
     label: "Pop-up text while a result is next — {round}, {year}",
-    value: "NEET PG {year} {round} result: get the alert on Telegram the moment MCC publishes it. Free, leave any time.",
+    value: "NEET PG {year} {round} result: get the alert on Telegram the moment MCC publishes it, and stay up to date with every counselling update. Free to join.",
     long: true,
   },
 ];

@@ -45,11 +45,11 @@ export interface TelegramRoundCopy {
 const ROUND_DEFAULTS: TelegramRoundCopy = {
   eyebrow: "NEET PG {year} · result alert",
   title: "Get the {round} result alert on Telegram, the moment it's out",
-  body: "MCC's {round} result and allotment PDF on the Admission Hands Telegram channel as soon as MCC publishes it, with every counselling notice in between. Free to join, leave any time.",
+  body: "MCC's {round} result and allotment PDF on the Admission Hands Telegram channel as soon as MCC publishes it, and every counselling update and notice in between, so you stay up to date. Free to join.",
   button: "Join on Telegram",
   bar: "{round} result alert",
   barShort: "{short} alert",
-  nudge: "NEET PG {year} {round} result: get the alert on Telegram the moment MCC publishes it. Free, leave any time.",
+  nudge: "NEET PG {year} {round} result: get the alert on Telegram the moment MCC publishes it, and stay up to date with every counselling update. Free to join.",
 };
 
 export const TELEGRAM_DEFAULTS: TelegramCopy = {
