@@ -1798,6 +1798,13 @@ after it once the result is out (the next round); the year hub and earlier years
 result (with the year in the heading). **The channel's posts are not ours** — no code here posts to Telegram; another
 feed posts ~10 notices a day. The box promises the result "the moment it's out", so whoever runs that feed has to post
 MCC's result fast, or the worker has to post it itself (needs a bot token, not built).
+**More placements (2026-10-23, owner: "telegram promote hona chahiye").** `TelegramStrip` right under "Your chance at …"
+on both college templates (most search landings; the full card stays near the foot); a `telegram` section on the
+MBBS, MD/MS and NRI pages, and the homepage's moved up to follow the enquiry form
+(`scripts/sql/telegram_sections_2026_10_23.sql`); a row in the phone menu (`drawer`); `TelegramLine` on the enquiry,
+NRI and exit-offer success screens; every `TelegramJoin` heading names the next result while the cue is set. Which
+placement works is only readable once `placement` is an event-scoped custom dimension in GA4 (Admin → Custom
+definitions) — the service account cannot create it.
 
 **747live.bet as Google's canonical (found 2026-10-17).** URL Inspection reported "Duplicate without user-selected
 canonical", Google canonical `https://www.747live.bet/`, for some state and NEET SS pages crawled on 8–9 Oct (no
