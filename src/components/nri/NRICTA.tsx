@@ -16,6 +16,7 @@ import { checkName, checkEmail } from '@/lib/formRules';
 import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon';
 import { useCTA } from '@/hooks/useCTA';
 import { trackLead } from '@/lib/analytics';
+import { TelegramLine } from "@/components/engage/TelegramStrip";
 
 const NRICTA = ({ benefits: fromCms }: { benefits?: NriBenefit[] | null } = {}) => {
   const benefits = fromCms?.length ? fromCms : SHIPPED_BENEFITS;
@@ -128,6 +129,7 @@ const NRICTA = ({ benefits: fromCms }: { benefits?: NriBenefit[] | null } = {}) 
                 <p className="max-w-sm text-cyan-100/70">
                   An NRI quota counsellor will call you shortly. For a faster reply, message us on WhatsApp.
                 </p>
+                <TelegramLine placement="nri_form_done" tone="dark" />
               </div>
             ) : (
             <form className="space-y-6" onSubmit={submit} noValidate>

@@ -19,6 +19,7 @@ import CounsellorEdge from "@/components/home/CounsellorEdge";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import CtaBand from "@/components/ui/CtaBand";
 import TrackView from "@/components/analytics/TrackView";
+import TelegramStrip from "@/components/engage/TelegramStrip";
 
 /**
  * Rendered per request. Since 2026-10-12 the page is the same for everybody —
@@ -174,6 +175,8 @@ export default async function UgCollegePage({ params }: { params: { slug: string
       <div className="container-custom py-10 md:py-14">
         {/* ---------------- your chance, straight under the summary ---------------- */}
         <CollegeRankCheck collegeName={s.short} course={predictorCourse} slug={college.slug} wide />
+        {/* The channel near the top (2026-10-23): the full card sits far down, past where most read. */}
+        <TelegramStrip placement="college_ug_top" className="mt-4" />
 
         {/* ---------------- the headline facts ---------------- */}
         <section className="mt-8 grid gap-4 sm:grid-cols-2">

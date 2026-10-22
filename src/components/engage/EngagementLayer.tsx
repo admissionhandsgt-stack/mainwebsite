@@ -6,6 +6,7 @@ import { ArrowRight, BellRing, CheckCircle2, Loader2, Sparkles, X } from "lucide
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { TelegramIcon } from "@/components/icons/TelegramIcon";
 import { fillRound, useTelegram } from "@/components/engage/TelegramLink";
+import { TelegramLine } from "@/components/engage/TelegramStrip";
 import { CONTACT_INFO } from "@/lib/constants";
 import { checkRank } from "@/lib/neetLimits";
 import { checkName } from "@/lib/formRules";
@@ -594,6 +595,9 @@ function ExitOffer({ onClose, source }: { onClose: () => void; source: string })
             >
               <WhatsAppIcon className="h-5 w-5" /> WhatsApp a counsellor
             </a>
+            <div className="mt-2">
+              <TelegramLine placement="exit_offer_done" />
+            </div>
           </div>
         ) : (
           <form onSubmit={submit} noValidate className="space-y-3 p-6">

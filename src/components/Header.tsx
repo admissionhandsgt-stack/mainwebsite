@@ -8,6 +8,7 @@ import { Menu, X, Phone, ChevronDown, ChevronRight, Sun, Moon, UserRound, ArrowR
 import { useTheme } from 'next-themes';
 import { useCTA } from '@/hooks/useCTA';
 import { WhatsAppIcon } from './icons/WhatsAppIcon';
+import TelegramLink, { fillRound, useTelegram } from '@/components/engage/TelegramLink';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
@@ -102,6 +103,7 @@ export default function Header({
   const [expanded, setExpanded] = useState<number | null>(null);
   const pathname = usePathname();
   const CTA = useCTA();
+  const telegram = useTelegram();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -599,6 +601,15 @@ export default function Header({
                     <UserRound className="h-4 w-4" aria-hidden="true" /> {accountName ? 'Account' : 'Sign in'}
                   </Link>
                 </div>
+                {/* The channel, under the people (2026-10-23): named for the next NEET PG result while one is due. */}
+                <TelegramLink
+                  placement="drawer"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  iconClassName="text-[#229ED9]"
+                  className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-border bg-card text-[14px] font-semibold text-foreground"
+                >
+                  {telegram.round ? `${fillRound(telegram.roundCopy.bar, telegram.round)} on Telegram` : 'Counselling updates on Telegram'}
+                </TelegramLink>
               </div>
             </motion.div>
           </>

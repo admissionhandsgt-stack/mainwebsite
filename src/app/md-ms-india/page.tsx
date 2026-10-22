@@ -12,6 +12,7 @@ import { fitDescription } from '@/lib/seoTitle';
 import { InlineLeadForm } from '@/components/lead/InlineLeadForm';
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
 import { PGOverviewQuotas } from '@/components/md-ms/PGOverviewQuotas';
+import TelegramJoin from '@/components/engage/TelegramJoin';
 
 // The hero: the admin's photograph and words, with today's official counts filled in.
 const PGHeroWrapper = async () => {
@@ -190,6 +191,7 @@ export default async function PGMDMSPage() {
             { key: 'hero', node: <PGHeroWrapper /> },
             { key: 'why_us', node: <PGWhyUs items={pg.whyUs} /> },
             { key: 'overview', node: host === 'overview' ? overviewSection : null },
+            { key: 'telegram', node: <TelegramJoin placement="pg_overview" /> },
             { key: 'process', node: <PGAdmissionProcess items={pg.steps} /> },
             { key: 'specializations', node: <PGSpecializations /> },
             { key: 'quota', node: host === 'quota' ? overviewSection : null },

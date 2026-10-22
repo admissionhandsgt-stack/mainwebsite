@@ -14,6 +14,7 @@ import { getMbbsContent } from '@/lib/pageContent';
 import { pageCopy } from '@/lib/pageCopy';
 import { CounsellingAndSeats } from '@/components/mbbs-india/CounsellingAndSeats';
 import { CollegeSelectionGuide } from '@/components/mbbs-india/CollegeSelectionGuide';
+import TelegramJoin from '@/components/engage/TelegramJoin';
 
 // Lazy load sections for better performance
 const EligibilityInfo = dynamic(() => import("@/components/mbbs-india/EligibilityCutoff").then(mod => mod.MBBSEligibilityInfo));
@@ -96,6 +97,7 @@ export default async function MBBSIndiaPage() {
               node: <CollegeSelectionGuide data={data} why={sections.shows('why_us') ? whyCopy : null} />,
             },
             { key: 'states', node: <StatesIndex states={states} /> },
+            { key: 'telegram', node: <TelegramJoin placement="mbbs_overview" /> },
             {
               key: 'why_us',
               node: sections.shows('selection_guide') ? null : <CollegeSelectionGuide data={data} why={whyCopy} phases={false} />,

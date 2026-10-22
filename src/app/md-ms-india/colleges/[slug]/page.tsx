@@ -26,6 +26,7 @@ import { getCollegeSeatMatrix, getCollegeSeatTerms, termsSession } from "@/lib/p
 import { pageCopy } from "@/lib/pageCopy";
 import MccSeats from "@/components/colleges/MccSeats";
 import SeatTerms from "@/components/colleges/SeatTerms";
+import TelegramStrip from "@/components/engage/TelegramStrip";
 
 // The busiest pages are built at deploy time; the long tail is generated on
 // first request and then cached, so a 2,168-page build stays quick.
@@ -222,6 +223,8 @@ export default async function CollegePage({ params }: { params: { slug: string }
         {/* -------- your chance, straight under the summary -------- */}
         <div className="mb-10">
           <CollegeRankCheck collegeName={s.short} course="pg" slug={college.slug} wide />
+          {/* The channel near the top (2026-10-23): the full card sits ~6,000px down, past where most read. */}
+          <TelegramStrip placement="college_pg_top" className="mt-4" />
         </div>
 
         {/* -------- NMC's own record: approved seats course by course -------- */}

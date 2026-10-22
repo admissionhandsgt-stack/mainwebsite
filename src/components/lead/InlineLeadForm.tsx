@@ -26,6 +26,7 @@ import { checkRank } from '@/lib/neetLimits';
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { trackLead, rankBand } from '@/lib/analytics';
 import { TeamFigure } from "@/components/engage/TeamFigures";
+import { TelegramLine } from "@/components/engage/TelegramStrip";
 
 // Top medical states in India for selection chips
 const AVAILABLE_STATES = [
@@ -264,6 +265,8 @@ export const InlineLeadForm = ({
           <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
           <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-bounce" style={{ animationDelay: '500ms' }} />
         </div>
+        {/* The moment somebody has asked for help is the likeliest to want the updates too (2026-10-23). */}
+        <TelegramLine placement="lead_form_done" tone="dark" />
       </div>
     );
   }

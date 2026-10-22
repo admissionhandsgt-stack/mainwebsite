@@ -2,7 +2,7 @@
 
 import React from "react";
 import { TelegramIcon } from "@/components/icons/TelegramIcon";
-import TelegramLink, { useTelegram } from "@/components/engage/TelegramLink";
+import TelegramLink, { fillRound, useTelegram } from "@/components/engage/TelegramLink";
 import { cn } from "@/lib/utils";
 
 /**
@@ -54,8 +54,9 @@ export default function TelegramJoin({
       </span>
       <div className="min-w-0 flex-1">
         <p className="text-[11.5px] font-bold uppercase tracking-wide text-primary-strong">Telegram channel · free to join</p>
+        {/* While a NEET PG round's result is next, the heading names it (2026-10-23). */}
         <h2 className="font-heading mt-1 text-lg font-bold leading-snug text-foreground [text-wrap:balance] md:text-xl">
-          {heading ?? copy.heading}
+          {heading ?? (copy.round ? fillRound(copy.roundCopy.title, copy.round) : copy.heading)}
         </h2>
         <p className="mt-1 max-w-[68ch] text-[14px] leading-relaxed text-muted-foreground">{body ?? copy.body}</p>
       </div>

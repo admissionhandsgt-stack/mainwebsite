@@ -11,6 +11,7 @@ import { creditOf } from '@/components/ui/PhotoCredit';
 import { getNriContent } from '@/lib/nriContent';
 import type { Metadata } from 'next';
 import StructuredData, { breadcrumb, faqPage } from "@/components/seo/StructuredData";
+import TelegramJoin from '@/components/engage/TelegramJoin';
 
 /**
  * Metadata the admin can override per route (Admin -> Search & sharing).
@@ -50,6 +51,7 @@ const NRIQuotaPage = async () => {
             { key: 'hero', node: <NRIHero backgroundImageUrl={nriHeroAsset?.image_url} credit={creditOf(nriHeroAsset)} /> },
             { key: 'eligibility', node: <NRIEligibility /> },
             { key: 'process', node: <NRIProcess steps={nri.steps} /> },
+            { key: 'telegram', node: <TelegramJoin placement="nri_overview" /> },
             { key: 'fees', node: <NRIFees /> },
             {
               key: 'faq',
