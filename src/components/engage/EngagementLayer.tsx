@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { ArrowRight, BellRing, CheckCircle2, Loader2, Sparkles, X } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { TelegramIcon } from "@/components/icons/TelegramIcon";
-import { useTelegram } from "@/components/engage/TelegramLink";
+import { fillRound, useTelegram } from "@/components/engage/TelegramLink";
 import { CONTACT_INFO } from "@/lib/constants";
 import { checkRank } from "@/lib/neetLimits";
 import { checkName } from "@/lib/formRules";
@@ -40,6 +40,14 @@ import { TeamFigure } from "@/components/engage/TeamFigures";
  * The Telegram invite (2026-10-17) shows a visitor once a month at most, and
  * never again for 30 days after they follow any link to the channel
  * (ClickTracker calls rememberNudge). The notice toast carries the channel too.
+ *
+ * One exception to "never on the first page" (owner, 2026-10-22): on a data page
+ * (DATA_PAGES — cutoffs, stipend, round results, seat matrix, bond, PG branches
+ * and states) the Telegram invite may show on the first page, to a reader who has
+ * stayed 18 s and scrolled past the first screen. Search visitors mostly read one
+ * page, so the second-page rule meant almost none of them ever saw it. The other
+ * rules hold: one nudge a visit, a week of quiet, once a month. While a NEET PG
+ * round's result is next it invites to that result's alert (TelegramLink `round`).
  */
 
 type Big = "resume" | "toast" | "rank" | "exit" | "telegram" | null;
@@ -53,6 +61,8 @@ interface Alert {
 const KEY = "ah_nudges_v1";
 const DAY = 86_400_000;
 const QUIET_PATHS = /^\/(login|account|admin)/;
+/** Pages read for figures that move round by round — the Telegram invite may show on the first page here. */
+const DATA_PAGES = /^\/(neet-(pg|ug|ss|mds)-cutoff|neet-(ss|mds)\/|neet-pg-counselling|neet-pg-seat-matrix|md-ms-india\/(stipend|bond|branches|states)|reports\/)/;
 
 function memory(): Record<string, number> {
   try {
@@ -179,7 +189,27 @@ export default function EngagementLayer({
       v = { ...v, pv: v.pv + 1 };
       saveVisit(v);
     }
-    if (v.pv < 2 || v.nudged || seenWithin("quiet", QUIET_MS)) return;
+    if (v.nudged || seenWithin("quiet", QUIET_MS)) return;
+    if (v.pv < 2) {
+      // The first page of a visit stays quiet — but on a data page a reader who has stayed and
+      // scrolled past the first screen is offered the Telegram channel.
+      if (!DATA_PAGES.test(pathname) || seenWithin("telegram", 30 * DAY)) return;
+      let ready = false;
+      const offer = () => {
+        if (!ready || window.scrollY < window.innerHeight * 0.6) return;
+        window.removeEventListener("scroll", offer);
+        show("telegram");
+      };
+      const timer = window.setTimeout(() => {
+        ready = true;
+        offer();
+      }, 18_000);
+      window.addEventListener("scroll", offer, { passive: true });
+      return () => {
+        window.clearTimeout(timer);
+        window.removeEventListener("scroll", offer);
+      };
+    }
     const timers: number[] = [];
 
     // The one nudge this page may show, the most useful first. A student who
@@ -341,7 +371,7 @@ export default function EngagementLayer({
       {big === "telegram" && (
         <div
           role="dialog"
-          aria-label="Counselling updates on Telegram"
+          aria-label={telegram.round ? "Result alert on Telegram" : "Counselling updates on Telegram"}
           className="animate-rise fixed bottom-[4.5rem] right-4 z-[91] w-[min(20rem,calc(100vw-2rem))] rounded-2xl border border-primary/30 bg-card p-4 pr-9 shadow-lift md:bottom-[5.75rem] md:right-6"
         >
           <button
@@ -353,16 +383,17 @@ export default function EngagementLayer({
             <X className="h-4 w-4" />
           </button>
           <p className="flex items-center gap-1.5 text-[11.5px] font-bold uppercase tracking-wide text-primary-strong">
-            <TelegramIcon className="h-3.5 w-3.5 text-[#229ED9]" /> Free counselling updates
+            <TelegramIcon className="h-3.5 w-3.5 text-[#229ED9]" />{" "}
+            {telegram.round ? fillRound(telegram.roundCopy.eyebrow, telegram.round) : "Free counselling updates"}
           </p>
           <p className="mt-1.5 text-[14px] leading-snug text-foreground">
-            {telegram.nudge}
+            {telegram.round ? fillRound(telegram.roundCopy.nudge, telegram.round) : telegram.nudge}
           </p>
           <a
             href={telegram.url}
             target="_blank"
             rel="noopener noreferrer"
-            data-placement="nudge"
+            data-placement={telegram.round ? "nudge_round" : "nudge"}
             onClick={() => {
               trackEvent("nudge_click", { type: "telegram" });
               close("telegram", "telegram");

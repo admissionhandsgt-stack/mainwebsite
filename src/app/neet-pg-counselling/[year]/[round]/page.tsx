@@ -11,6 +11,7 @@ import { getPgStates } from "@/lib/pgStateQueries";
 import {
   CUT_QUOTAS,
   ROUNDS,
+  cueFor,
   getCounsellingYear,
   getRoundResult,
   getRoundState,
@@ -31,6 +32,7 @@ import SectionHead from "@/components/ui/SectionHead";
 import CiteThis from "@/components/seo/CiteThis";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
+import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
 import RoundCuts from "@/components/mcc/RoundCuts";
 import RoundWatch from "@/components/mcc/RoundWatch";
 import CounselCard from "@/components/lead/CounselCard";
@@ -299,6 +301,21 @@ export default async function RoundResultPage({ params }: { params: Params }) {
   );
   const roundLinks = otherRounds.filter(({ r, s }) => s.status !== "pending" || (year === current && r.order <= 4));
 
+  // The result alert on Telegram (2026-10-22): this round's while its result is awaited — the first thing to
+  // do then, so before the counsellor card — and the next round's once it is out, after the card. An earlier
+  // year's page invites to the counselling's next result (the shell's cue); the last round invites to nothing.
+  const awaited = year === current && state.status === "pending";
+  const alertRound = year === current ? (awaited ? cueFor(year, spec) : nextSpec ? cueFor(year, nextSpec) : null) : undefined;
+  const topGap = state.sourceUrl || insights.length ? "pt-8" : "pt-10";
+  const roundAlert = (first: boolean) => (
+    <TelegramRoundAlert
+      round={alertRound}
+      withYear={year !== current}
+      placement={`round_alert_${spec.slug}`}
+      className={first ? topGap : year === current ? "pt-6" : topGap}
+    />
+  );
+
   return (
     <main className="min-h-screen bg-background">
       <StructuredData
@@ -374,9 +391,11 @@ export default async function RoundResultPage({ params }: { params: Params }) {
         </section>
       )}
 
+      {awaited && roundAlert(true)}
+
       {/* ------------------------------ what to do now (this year's counselling) ------------------------------ */}
       {year === current && (
-        <section className={`container-custom ${state.sourceUrl || insights.length ? "pt-8" : "pt-10"}`}>
+        <section className={`container-custom ${awaited ? "pt-6" : topGap}`}>
           <CounselCard
             id="round-decision"
             eyebrow={body.decide_eyebrow}
@@ -393,6 +412,8 @@ export default async function RoundResultPage({ params }: { params: Params }) {
           />
         </section>
       )}
+
+      {!awaited && roundAlert(false)}
 
       {/* ------------------------------ branch table ------------------------------ */}
       {shown && (

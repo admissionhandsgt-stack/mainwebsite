@@ -532,6 +532,57 @@ export function roundSchedule(
   return { window: row.aiq, joinBy: row.aiqJoinBy && row.aiqJoinBy !== "—" ? row.aiqJoinBy : null, expected };
 }
 
+/** The round the Telegram invite talks about, and the words for it. */
+export interface TelegramCue {
+  year: number;
+  /** "Round 1" … "Stray round" — short enough for the alerts bar. */
+  label: string;
+  /** "R1" … "Stray" — the alerts bar on a phone. */
+  short: string;
+  path: string;
+}
+const CUE_NAMES: Record<string, { label: string; short: string }> = {
+  "Round 1": { label: "Round 1", short: "R1" },
+  "Round 2": { label: "Round 2", short: "R2" },
+  "Round 3": { label: "Round 3", short: "R3" },
+  "Stray Vacancy Round": { label: "Stray round", short: "Stray" },
+};
+export const cueFor = (year: number, spec: RoundSpec): TelegramCue => ({
+  year,
+  ...(CUE_NAMES[spec.round] ?? { label: spec.label, short: spec.label }),
+  path: roundPath(year, spec.slug),
+});
+
+/**
+ * The round a Telegram invite is about (owner, 2026-10-22: "Round 2 ka result alert Telegram par turant
+ * paayein"): in the counselling now running, the first of rounds 1–4 whose result is not live yet. Round 1
+ * from a week before MCC's expected date in the admin's schedule (or once its PDF is out) until a month
+ * after; every later round at once, because the round before it is live. Null between counsellings, and
+ * the invites say their everyday words. The alerts bar, the pop-up and the round pages' box read it.
+ */
+export const getTelegramCue = unstable_cache(
+  async (): Promise<TelegramCue | null> => {
+    try {
+      const year = await getCounsellingYear();
+      const specs = ROUNDS.filter((r) => r.order <= 4);
+      const states = await Promise.all(specs.map((r) => getRoundState(year, r.round)));
+      const i = states.findIndex((s) => s.status !== "live");
+      if (i < 0) return null;
+      if (i === 0 && states[0].status === "pending") {
+        const when = roundSchedule(specs[0], year, (await getPgProcessContent()).schedule);
+        const at = when?.expected?.getTime();
+        if (!at || Date.now() < at - 7 * DAY_MS || Date.now() > at + 30 * DAY_MS) return null;
+      }
+      return cueFor(year, specs[i]);
+    } catch (error) {
+      logError(error, { route: "mccResults:telegramCue" });
+      return null;
+    }
+  },
+  ["mcc-telegram-cue-v1"],
+  { revalidate: 300, tags: ["mcc-results"] },
+);
+
 /** Every year we hold any round for, newest first, with each round's state — for the hub and the sitemap. */
 export const getCounsellingYears = unstable_cache(
   async (): Promise<number[]> => {

@@ -13,6 +13,7 @@ import { isAdminSubdomain } from '@/utils/envHelper'
 import { getNav, getSettings, getLiveAlerts, setting } from '@/lib/content'
 import { currentUser } from '@/lib/userAuth'
 import { profileIncomplete } from '@/lib/counsellingProfile'
+import { getTelegramCue } from '@/lib/mccResults'
 
 /*
   Fonts: all three are `swap`, so no text ever waits for one — it paints in the
@@ -98,14 +99,16 @@ export default async function RootLayout({
   // nothing was active it went back up — Lighthouse's CLS on the homepage was
   // 0.105, over Google's 0.1, from exactly that. Read here, the bar and the
   // space for it are both in the first HTML.
-  const [headerNav, footerExplore, footerQuick, settings, liveAlerts] = isAdmin
-    ? [[], [], [], {} as Record<string, string>, []]
+  // And the NEET PG round whose result is next, for the Telegram invites (cached; null between counsellings).
+  const [headerNav, footerExplore, footerQuick, settings, liveAlerts, telegramCue] = isAdmin
+    ? [[], [], [], {} as Record<string, string>, [], null]
     : await Promise.all([
         getNav('header'),
         getNav('footer_explore'),
         getNav('footer_quick'),
         getSettings(),
         getLiveAlerts(),
+        getTelegramCue(),
       ])
 
   // Who, if anyone, is signed in. The layout already reads headers() so it is
@@ -210,6 +213,16 @@ export default async function RootLayout({
                 heading: setting(settings, 'telegram.card.heading'),
                 body: setting(settings, 'telegram.card.body'),
                 nudge: setting(settings, 'telegram.nudge.text'),
+                round: telegramCue,
+                roundCopy: {
+                  eyebrow: setting(settings, 'telegram.round.eyebrow'),
+                  title: setting(settings, 'telegram.round.title'),
+                  body: setting(settings, 'telegram.round.body'),
+                  button: setting(settings, 'telegram.round.button'),
+                  bar: setting(settings, 'telegram.round.bar'),
+                  barShort: setting(settings, 'telegram.round.bar_short'),
+                  nudge: setting(settings, 'telegram.round.nudge'),
+                },
               }}
               alertsEnabled={setting(settings, 'site.alert_bar_enabled', 'true') !== 'false'}
               alerts={liveAlerts.map((a) => ({ id: a.id, title: a.title, link: a.link }))}

@@ -1745,6 +1745,10 @@ lastmods, so Search Console shows coverage per page type. Scripts read it throug
 on the first page of a visit; at most one per visit (sessionStorage `ah_visit_v1`) — finish-your-profile, else the
 rank nudge, else a new notice, else the WhatsApp greeting, and the exit offer only if none has shown; seven days of
 quiet (`quiet` in `ah_nudges_v1`) after any nudge is closed or used. The desktop WhatsApp button is not a nudge.
+**One exception since 2026-10-22 (owner):** on a data page (`DATA_PAGES` — cutoffs, stipend, round results, seat
+matrix, bond, PG branches and states; never college pages, the homepage or the predictor) the Telegram invite may show
+on the *first* page, to a reader who has stayed 18 s and scrolled past the first screen — search visitors mostly read
+one page, so before this almost none saw it (site → Telegram was ~3–6 clicks a day; the channel had 12 members).
 
 **The Telegram channel (2026-10-17, owner's request)** — `CONTACT_INFO.telegram` = `https://t.me/AdmissionHandsIndia`,
 linked **directly**. Never put `analytics.theautoloom.in/go/ah-tg` on the site: that AutoLoom link is for the
@@ -1767,6 +1771,17 @@ predictor's results (`stacked`, the first screen after the code) and on `/accoun
 counselling updates and info, join our Telegram channel: https://t.me/AdmissionHandsIndia". `lib/followups.ts`
 sends v2 in that slot once Meta approves it and v1 until then; `wa_followups` keeps recording the slot as
 `ah_meet_counsellor`, so nobody gets both. Status: `node --env-file=.env.local scripts/tmp/wa_make_counsellor_v2.mjs --status`.
+**The result alert (2026-10-22, owner: "Round 2 ka result alert Telegram par turant paayein").** `getTelegramCue()` in
+`lib/mccResults.ts` names the NEET PG round whose result is next — round 1 from a week before MCC's expected date in
+`pg_schedule`, each later round as soon as the one before is live, null between counsellings — and the layout hands it
+to `TelegramProvider` (`round`, plus `roundCopy` from the `telegram.round.*` settings, {round}/{short}/{year} filled by
+`fillRound`). While it is set: the alerts bar's button reads "Round 1 result alert" ("R1 alert" on a phone,
+`data-placement="alerts_bar_round"`), the pop-up names the round (`nudge_round`), and the round pages carry
+`TelegramRoundAlert` — a full-width box, before the counsellor card while the page's own result is awaited (that round),
+after it once the result is out (the next round); the year hub and earlier years' pages show the counselling's next
+result (with the year in the heading). **The channel's posts are not ours** — no code here posts to Telegram; another
+feed posts ~10 notices a day. The box promises the result "the moment it's out", so whoever runs that feed has to post
+MCC's result fast, or the worker has to post it itself (needs a bot token, not built).
 
 **747live.bet as Google's canonical (found 2026-10-17).** URL Inspection reported "Duplicate without user-selected
 canonical", Google canonical `https://www.747live.bet/`, for some state and NEET SS pages crawled on 8–9 Oct (no

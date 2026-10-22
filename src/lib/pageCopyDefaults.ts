@@ -1949,6 +1949,29 @@ export const TELEGRAM_SETTINGS: { key: string; label: string; value: string; lon
     value: "Round dates, results, cutoffs and choice-filling tips on the Admission Hands Telegram channel.",
     long: true,
   },
+  // While a NEET PG round's result is next (2026-10-22): {round} = "Round 1" … "Stray round", {short} = "R1" …
+  // "Stray", {year} = the counselling. Shown on the round pages, in the alerts bar and in the pop-up.
+  { key: "telegram.round.eyebrow", label: "Result alert box: small line — {year}", value: "NEET PG {year} · result alert" },
+  {
+    key: "telegram.round.title",
+    label: "Result alert box: heading — {round}",
+    value: "Get the {round} result alert on Telegram, the moment it's out",
+  },
+  {
+    key: "telegram.round.body",
+    label: "Result alert box: text — {round}",
+    value: "MCC's {round} result and allotment PDF on the Admission Hands Telegram channel as soon as MCC publishes it, with every counselling notice in between. Free to join, leave any time.",
+    long: true,
+  },
+  { key: "telegram.round.button", label: "Result alert box: button", value: "Join on Telegram" },
+  { key: "telegram.round.bar", label: "Alerts bar button, laptop — {round}", value: "{round} result alert" },
+  { key: "telegram.round.bar_short", label: "Alerts bar button, phone — {short}", value: "{short} alert" },
+  {
+    key: "telegram.round.nudge",
+    label: "Pop-up text while a result is next — {round}, {year}",
+    value: "NEET PG {year} {round} result: get the alert on Telegram the moment MCC publishes it. Free, leave any time.",
+    long: true,
+  },
 ];
 
 /**

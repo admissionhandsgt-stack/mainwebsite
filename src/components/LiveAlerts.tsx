@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Link from "@/components/ui/Link";
 import { TelegramIcon } from "@/components/icons/TelegramIcon";
-import { useTelegram } from "@/components/engage/TelegramLink";
+import { fillRound, useTelegram } from "@/components/engage/TelegramLink";
 
 /** One notice, as the root layout reads it on the server. */
 export interface BarAlert {
@@ -28,6 +28,7 @@ const TITLE_CLASS =
 export default function LiveAlerts({ alerts }: { alerts: BarAlert[] }) {
   const [isPaused, setIsPaused] = useState(false);
   const telegram = useTelegram();
+  const round = telegram.round;
   const activeAlerts = alerts;
 
   if (activeAlerts.length === 0) {
@@ -101,19 +102,25 @@ export default function LiveAlerts({ alerts }: { alerts: BarAlert[] }) {
         </div>
 
         {/* The channel these notices also go to — fixed width, so the bar keeps
-            its 40px whatever the screen (see the layout-shift note above). */}
+            its 40px whatever the screen (see the layout-shift note above). While a
+            NEET PG round's result is next it invites to that result's alert
+            ("Round 1 result alert", "R1 alert" on a phone), counted apart. */}
         <a
           href={telegram.url}
           target="_blank"
           rel="noopener noreferrer"
-          data-placement="alerts_bar"
-          aria-label="Join Admission Hands on Telegram for counselling updates"
+          data-placement={round ? "alerts_bar_round" : "alerts_bar"}
+          aria-label={
+            round
+              ? `Get the NEET PG ${round.year} ${round.label} result alert on Telegram`
+              : "Join Admission Hands on Telegram for counselling updates"
+          }
           className="ml-3 inline-flex min-h-[44px] shrink-0 items-center z-10 md:ml-4"
         >
-          <span className="inline-flex h-7 items-center gap-1.5 rounded-md bg-white px-2 text-[12px] font-black tracking-tight text-primary-strong shadow-sm transition-colors hover:bg-white/90 md:px-3 md:text-[11px]">
+          <span className={`inline-flex h-7 items-center gap-1.5 whitespace-nowrap rounded-md bg-white px-2 text-[12px] font-black text-primary-strong shadow-sm transition-colors hover:bg-white/90 md:px-3 md:text-[11px] ${round ? "tracking-normal [word-spacing:0.1em]" : "tracking-tight"}`}>
             <TelegramIcon size={16} className="text-[#229ED9]" />
-            <span className="md:hidden">Join</span>
-            <span className="hidden md:inline">Join on Telegram</span>
+            <span className="md:hidden">{round ? fillRound(telegram.roundCopy.barShort, round) : "Join"}</span>
+            <span className="hidden md:inline">{round ? fillRound(telegram.roundCopy.bar, round) : "Join on Telegram"}</span>
           </span>
         </a>
       </div>

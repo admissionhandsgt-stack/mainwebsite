@@ -13,6 +13,7 @@ import HeroFacts from "@/components/hero/HeroFacts";
 import SectionHead from "@/components/ui/SectionHead";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
+import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
 
 /**
  * /neet-pg-counselling/<year> (2026-10-21) — the year's NEET PG rounds, each with its state (awaited,
@@ -152,6 +153,9 @@ export default async function CounsellingYearPage({ params }: { params: Params }
           />
         }
       />
+
+      {/* The next result's alert on Telegram (2026-10-22) — nothing between counsellings. */}
+      <TelegramRoundAlert placement="round_alert_hub" className="pt-10" />
 
       {/* ------------------------------ rounds ------------------------------ */}
       <section className="container-custom py-10 md:py-14">
