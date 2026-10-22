@@ -250,6 +250,22 @@ hogyi hai… kya 2168 colleges hai?… third party tool… bharosa girata hai." 
   `pageCopy` keeps line breaks now (it used to collapse "item ⏎ item", a space before the line break, into one item).
   Check any such change line by line: capture every line of `<main>` with tabs, toggles and `<details>` opened,
   before (production) and after (local), and diff case-insensitively — innerText carries `text-transform`.
+- **Blank space (2026-10-22, owner: "blank space reduce karna hai… compact yet impactful").** Measure, don't
+  eyeball: in every row of side-by-side columns, the empty area under the shorter column (`blank_scan` in that
+  session's scratchpad; the DataHero words-vs-photo gap was 120–420px on ~20 templates). The rules it left:
+  `DataHero` takes `insights` (compact 2×2 cards under the words — four across when the hero also has stat tiles —
+  after the photo on a phone) and `aside` (one short block: the PG state pages' counselling authority); **a figure
+  is a stat tile or an insight card, never both** (the bond hero said four things twice); `HeroBars`/`HeroFacts`
+  rows are tight; a short card is centred against long words. Uneven blocks go in CSS columns
+  (`lg:columns-2 [&>div]:break-inside-avoid`), not a grid row as tall as its longer half — the round pages' four
+  tables, the private-fee states, the quota pages' 50-odd deemed universities (they sat beside a 15-row branch
+  table and left ~1,700px empty). Check a list's phone height too: a second line per row cost +1,100px there.
+- **`position: sticky` works since 2026-10-22.** html and body were `overflow-x: hidden`, which makes them scroll
+  containers, so nothing on the site ever stuck (legal contents, the MBBS colleges and predictor side panels,
+  the deemed filter bar). They are `overflow-x: clip` where supported (layout.css + the body class), which clips the
+  same without the scroll container — verified no sideways scroll on 12 pages at 360–2560px. A sticky element
+  clears the fixed header with `top-[calc(var(--site-top,112px)_+_1rem)]` (`--site-top` is set on `<main>` by
+  SiteShell: 112px with the alerts bar, 72px without), needs `self-start` in a grid, and room in its parent to move.
 - **The team's own figures** (students guided, years) are one setting, "Site: the team's own figures"
   (`page.services.figures.*`): `useTeamFigures()` / `<TeamFigure k="years" />` in client and server trees,
   `pageCopy` in server code. Never type "15+" or "2100+" again.

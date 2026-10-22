@@ -10,7 +10,6 @@ import TelegramJoin from "@/components/engage/TelegramJoin";
 import DataPageCounsel from "@/components/lead/DataPageCounsel";
 import DataHero from "@/components/hero/DataHero";
 import SectionHead from "@/components/ui/SectionHead";
-import InsightCards from "@/components/ui/InsightCards";
 import HeroBars from "@/components/hero/HeroBars";
 import { getPgStates } from "@/lib/pgStateQueries";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
@@ -104,12 +103,8 @@ export default async function StipendPage() {
         subtitle={copy.subtitle}
         image={heroImage}
         topic="money"
-        stats={[
-          { label: "Median / month", value: inr(s.median), note: "first year, all India" },
-          { label: "Colleges & hospitals", value: s.colleges.toLocaleString("en-IN"), note: "that publish a stipend" },
-          { label: "States", value: String(s.states.length) },
-          ...(top ? [{ label: "Highest state", value: inr(top.median), note: top.state }] : []),
-        ]}
+        // One block of numbers (2026-10-21): the stat tiles repeated the highest state, so the national median
+        // and its counts lead the insight cards instead.
         cta={{ label: copy.cta, href: "/neet-college-predictor?course=pg" }}
         telegram="hero_pg_stipend"
         source={copy.source}
@@ -127,20 +122,20 @@ export default async function StipendPage() {
             footnote={low ? `Lowest: ${low.state}, ${inr(low.median)} a month. Every state is in the table below.` : undefined}
           />
         }
+        insights={[
+          {
+            icon: "people" as const,
+            label: "Median / month, all India",
+            value: inr(s.median),
+            note: `first year · ${s.colleges.toLocaleString("en-IN")} colleges & hospitals that publish a stipend, in ${s.states.length} states`,
+          },
+          ...(top ? [{ icon: "up" as const, label: "Highest median", value: inr(top.median), note: `${top.state} · ${top.colleges} colleges` }] : []),
+          ...(s.govtMedian && s.privateMedian
+            ? [{ icon: "compare" as const, label: "Govt vs private", value: `${inr(s.govtMedian)} vs ${inr(s.privateMedian)}`, note: "All-India medians, first year, a month" }]
+            : []),
+          ...(low ? [{ icon: "down" as const, label: "Lowest median", value: inr(low.median), note: `${low.state} · ${low.colleges} colleges` }] : []),
+        ]}
       />
-
-      {/* The headline findings, each also in the tables below. */}
-      <section className="container-custom relative z-10 -mt-8">
-        <InsightCards
-          items={[
-            ...(top ? [{ icon: "up" as const, label: "Highest median", value: inr(top.median), note: `${top.state} · ${top.colleges} colleges` }] : []),
-            ...(s.govtMedian && s.privateMedian
-              ? [{ icon: "compare" as const, label: "Govt vs private", value: `${inr(s.govtMedian)} vs ${inr(s.privateMedian)}`, note: "All-India medians, first year, a month" }]
-              : []),
-            ...(low ? [{ icon: "down" as const, label: "Lowest median", value: inr(low.median), note: `${low.state} · ${low.colleges} colleges` }] : []),
-          ]}
-        />
-      </section>
 
       <section className="container-custom py-10 md:py-14">
         <SectionHead

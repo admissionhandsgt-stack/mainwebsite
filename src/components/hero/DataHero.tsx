@@ -16,6 +16,7 @@ import PhotoCredit from "@/components/ui/PhotoCredit";
 import TelegramLink from "@/components/engage/TelegramLink";
 import PulseLine from "@/components/graphics/PulseLine";
 import type { HeroImage } from "@/lib/pageCopy";
+import InsightCards, { type Insight } from "@/components/ui/InsightCards";
 
 /**
  * The hero for every data page — cutoffs, stipends, fees, states, branches.
@@ -32,6 +33,11 @@ import type { HeroImage } from "@/lib/pageCopy";
  *
  * The H1 is never animated in. Colours are the theme's tokens, so dark mode keeps working. Server
  * component.
+ *
+ * `insights` — the page's headline findings — sit under the words on a laptop, in the space the taller
+ * photo-and-card column used to leave empty (owner, 2026-10-21: "ye boxes compact karke ye information
+ * wha adjust hojati"); on a phone they follow the photo, as they did when they were a band of their own.
+ * `aside` is the same slot for one short block a page has (a state's counselling authority).
  */
 export interface DataHeroStat {
   label: string;
@@ -64,6 +70,8 @@ export default function DataHero({
   visual,
   image,
   topic = "chart",
+  insights,
+  aside,
 }: {
   crumbs: { label: string; href?: string }[];
   eyebrow?: string;
@@ -82,8 +90,14 @@ export default function DataHero({
   image?: HeroImage;
   /** The line-drawn mark behind the panel when there is no photograph. */
   topic?: HeroTopic;
+  /** Headline findings, under the words (see above). */
+  insights?: Insight[];
+  /** One short block, under the words and any insights. */
+  aside?: ReactNode;
 }) {
   const Mark = TOPIC[topic];
+  const side = !!(visual || image);
+  const below = !!insights?.length || !!aside;
   return (
     <section className="relative isolate overflow-hidden border-b border-border bg-background">
       <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
@@ -95,10 +109,10 @@ export default function DataHero({
 
       <div
         className={`container-custom relative grid gap-10 pb-12 pt-7 md:pb-14 md:pt-10 ${
-          visual || image ? "lg:grid-cols-[minmax(0,1fr)_minmax(0,27rem)] lg:items-start lg:gap-14 xl:grid-cols-[minmax(0,1fr)_minmax(0,30rem)]" : ""
-        }`}
+          side ? "lg:grid-cols-[minmax(0,1fr)_minmax(0,27rem)] lg:items-start lg:gap-x-14 xl:grid-cols-[minmax(0,1fr)_minmax(0,30rem)]" : ""
+        } ${side && below ? "lg:grid-rows-[auto_1fr] lg:gap-y-8" : ""}`}
       >
-        <div className="min-w-0 lg:pt-4">
+        <div className="min-w-0 lg:col-start-1 lg:row-start-1 lg:pt-4">
           <nav aria-label="Breadcrumb" className="mb-5 text-[13px] text-muted-foreground">
             {crumbs.map((c, i) => (
               <span key={`${c.label}-${i}`}>
@@ -169,11 +183,12 @@ export default function DataHero({
           {source && <p className="mt-5 max-w-[62ch] text-[12.5px] leading-relaxed text-muted-foreground">{source}</p>}
         </div>
 
-        {(visual || image) && (
-          <div className="relative min-w-0">
+        {side && (
+          // Centred against longer words, so a short card does not leave its whole gap at the bottom.
+          <div className={`relative min-w-0 lg:col-start-2 lg:row-start-1 ${below ? "lg:row-span-2" : "lg:self-center"}`}>
             {image ? (
               <>
-                <div className="relative aspect-[16/10] overflow-hidden rounded-[1.75rem] border border-border bg-surface-3 shadow-lift">
+                <div className={`relative aspect-[16/10] overflow-hidden rounded-[1.75rem] border border-border bg-surface-3 shadow-lift ${visual ? "lg:aspect-[16/9]" : ""}`}>
                   <Image
                     src={image.url}
                     alt={image.alt}
@@ -204,6 +219,14 @@ export default function DataHero({
                 {visual}
               </>
             )}
+          </div>
+        )}
+
+        {below && (
+          <div className="min-w-0 space-y-4 lg:col-start-1 lg:row-start-2">
+            {/* Beside a row of stat tiles they go four across, so the words column stays the shorter one. */}
+            {!!insights?.length && <InsightCards items={insights} compact across={stats.length > 0} />}
+            {aside}
           </div>
         )}
       </div>

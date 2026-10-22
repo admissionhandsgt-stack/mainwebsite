@@ -563,7 +563,7 @@ export default function ChanceFinder({
                 scrollTop();
               }}
             />
-            <aside className="space-y-4 lg:sticky lg:top-28">
+            <aside className="space-y-4 lg:sticky lg:top-[calc(var(--site-top,112px)_+_1rem)] lg:self-start">
               <div className="rounded-3xl border border-primary/20 bg-card p-6 shadow-lift">
                 <p data-aa-mask className="text-[12px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
                   {spec.label} · rank <span className="tnum">{rank.toLocaleString("en-IN")}</span> · {cat}
@@ -614,7 +614,7 @@ export default function ChanceFinder({
                 scrollTop();
               }}
             />
-            <aside className="space-y-5 lg:sticky lg:top-24 lg:self-start">
+            <aside className="space-y-5 lg:sticky lg:top-[calc(var(--site-top,112px)_+_1rem)] lg:self-start">
               <CounsellingCTA
                 headline={`${inr((data.options ?? []).length)} colleges are on your list. Which order to fill them in is the decision.`}
                 source={`Admission Chance results (${spec.label})`}

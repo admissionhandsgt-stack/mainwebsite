@@ -30,7 +30,7 @@ export function DeemedCollegeFilterBar({
     filters.sortBy !== 'default';
 
   return (
-    <div className="sticky top-[72px] lg:top-[112px] z-[30] bg-white/95 backdrop-blur-lg border-b border-slate-100 shadow-sm w-full overflow-hidden">
+    <div className="sticky top-[var(--site-top,112px)] z-[30] bg-white/95 backdrop-blur-lg border-b border-slate-100 shadow-sm w-full overflow-hidden">
       <div className="container-custom py-3 md:py-4">
         {/* Search */}
         <div className="mb-3">

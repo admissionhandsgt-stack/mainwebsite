@@ -203,7 +203,8 @@ function HowItWorks({ stats, faqs, nmcColleges }: { stats: Stats; faqs: { questi
           </p>
         </div>
 
-        <div>
+        {/* Sticky beside the longer explanation on a laptop, so its column never shows a gap (2026-10-21). */}
+        <div className="lg:sticky lg:top-[calc(var(--site-top,112px)_+_1rem)] lg:self-start">
           <h2 className="font-heading text-2xl font-bold text-foreground md:text-[28px]">Questions about the predictor</h2>
           <div className="mt-5 space-y-3">
             {faqs.map((f) => (

@@ -23,21 +23,21 @@ export default function HeroFacts({
   footnote?: ReactNode;
 }) {
   return (
-    <section aria-label={title} className="rounded-3xl border border-border bg-card p-5 shadow-lift md:p-6">
+    <section aria-label={title} className="rounded-3xl border border-border bg-card p-4 shadow-lift md:p-5">
       <p className="text-[11.5px] font-bold uppercase tracking-[0.14em] text-primary-strong">{title}</p>
-      <dl className="mt-5 grid grid-cols-2 gap-x-4 gap-y-4">
+      <dl className="mt-4 grid grid-cols-2 gap-2.5">
         {facts.map((f) => (
           <div
             key={f.label}
-            className={`rounded-2xl border border-border bg-surface-2 px-3.5 py-3 ${f.wide ? "col-span-2" : ""}`}
+            className={`rounded-2xl border border-border bg-surface-2 px-3.5 py-2.5 ${f.wide ? "col-span-2" : ""}`}
           >
             <dt className="text-[12.5px] font-semibold leading-snug text-muted-foreground">{f.label}</dt>
-            <dd className="tnum font-heading mt-1 text-[1.05rem] font-extrabold leading-snug text-foreground">{f.value}</dd>
+            <dd className="tnum font-heading mt-0.5 text-[1.05rem] font-extrabold leading-snug text-foreground">{f.value}</dd>
             {f.sub && <dd className="mt-0.5 text-[12px] leading-snug text-muted-foreground">{f.sub}</dd>}
           </div>
         ))}
       </dl>
-      {footnote && <p className="mt-5 border-t border-border pt-3 text-[12px] leading-relaxed text-muted-foreground">{footnote}</p>}
+      {footnote && <p className="mt-4 border-t border-border pt-2.5 text-[12px] leading-relaxed text-muted-foreground">{footnote}</p>}
     </section>
   );
 }

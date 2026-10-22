@@ -94,7 +94,11 @@ export default function SiteShell({
       )}
       {/* 72px header, plus the 40px bar only when there is one to show. Known on
           the server, so the first paint already has the right gap. */}
-      <main className="w-full" style={{ paddingTop: showBar ? '112px' : '72px' }}>
+      {/* --site-top: the fixed header (and the alerts bar) a sticky element has to clear. */}
+      <main
+        className="w-full"
+        style={{ paddingTop: showBar ? '112px' : '72px', ['--site-top' as string]: showBar ? '112px' : '72px' }}
+      >
         {children}
       </main>
       <Footer

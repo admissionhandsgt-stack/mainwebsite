@@ -219,7 +219,7 @@ export default async function PgStatePage({ params }: Props) {
             title={`${p.name} at a glance`}
             facts={[
               ...own.map(([k, v]) => ({ label: `${OWN_SHORT[k] ?? k} colleges`, value: n(v), sub: "MD/MS" })),
-              ...(p.dnbCount ? [{ label: "DNB hospitals", value: n(p.dnbCount), sub: "National Board seats" }] : []),
+              // DNB hospitals are a tile beside the heading already.
               ...(stipend?.govtMedian ? [{ label: "Govt stipend", value: `₹${stipend.govtMedian.toLocaleString("en-IN")}`, sub: "median a month, year 1" }] : []),
               ...(stipend?.privateMedian ? [{ label: "Private stipend", value: `₹${stipend.privateMedian.toLocaleString("en-IN")}`, sub: "median a month, year 1" }] : []),
               ...(stateQuota && p.year
@@ -235,14 +235,9 @@ export default async function PgStatePage({ params }: Props) {
             footnote={`From ${p.year ?? "the latest"} published counselling results and each college's published stipend.`}
           />
         }
+        // The state's counselling authority sits under the words, in the space the taller column left.
+        aside={authority?.scope === "UG and PG" ? <StateAuthority a={authority} state={p.name} level="pg" /> : undefined}
       />
-
-      {/* -------------------- the state's counselling authority -------------------- */}
-      {authority?.scope === "UG and PG" && (
-        <div className="container-custom pt-10 md:pt-14">
-          <StateAuthority a={authority} state={p.name} level="pg" />
-        </div>
-      )}
 
       {/* -------------------- MCC's seats in the state, 2026 -------------------- */}
       {mcc && (

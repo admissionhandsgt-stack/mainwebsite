@@ -9,7 +9,6 @@ import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
-import InsightCards from "@/components/ui/InsightCards";
 import SectionHead from "@/components/ui/SectionHead";
 import CiteThis from "@/components/seo/CiteThis";
 import LeadCapture from "@/components/lead/LeadCapture";
@@ -171,22 +170,15 @@ export default async function SeatMatrixPage() {
             />
           ) : undefined
         }
+        insights={o ? [
+          ...(top1 ? [{ icon: "up" as const, label: body.insight_branch, value: n(top1.seats), note: top1.course }] : []),
+          ...(o.states[0] ? [{ icon: "college" as const, label: body.insight_state, value: n(o.states[0].seats), note: o.states[0].state }] : []),
+          ...(upgraded > 0
+            ? [{ icon: "spark" as const, label: roundsCopy.insight_upgrades, value: n(upgraded), note: body.insight_upgrades_note }]
+            : []),
+          ...(aiqColleges ? [{ icon: "authority" as const, label: body.insight_colleges, value: n(aiqColleges), note: `MCC, ${o.year}` }] : []),
+        ] : undefined}
       />
-
-      {o && (
-        <section className="container-custom relative z-10 -mt-8">
-          <InsightCards
-            items={[
-              ...(top1 ? [{ icon: "up" as const, label: body.insight_branch, value: n(top1.seats), note: top1.course }] : []),
-              ...(o.states[0] ? [{ icon: "college" as const, label: body.insight_state, value: n(o.states[0].seats), note: o.states[0].state }] : []),
-              ...(upgraded > 0
-                ? [{ icon: "spark" as const, label: roundsCopy.insight_upgrades, value: n(upgraded), note: body.insight_upgrades_note }]
-                : []),
-              ...(aiqColleges ? [{ icon: "authority" as const, label: body.insight_colleges, value: n(aiqColleges), note: `MCC, ${o.year}` }] : []),
-            ]}
-          />
-        </section>
-      )}
 
       {!o ? (
         <section className="container-custom py-14">

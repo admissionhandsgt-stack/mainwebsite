@@ -27,7 +27,7 @@ import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/S
 import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import HeroFacts from "@/components/hero/HeroFacts";
-import InsightCards, { type Insight } from "@/components/ui/InsightCards";
+import { type Insight } from "@/components/ui/InsightCards";
 import SectionHead from "@/components/ui/SectionHead";
 import CiteThis from "@/components/seo/CiteThis";
 import LeadCapture from "@/components/lead/LeadCapture";
@@ -230,17 +230,10 @@ export default async function RoundResultPage({ params }: { params: Params }) {
           : copy.subtitle_pending_nodate;
   const source = live ? (state.publishedAt ? copy.source_live : copy.source_archive) : copy.source_pending;
 
+  // With a result, its figures are the insight cards under the words (2026-10-21) — the tiles repeated
+  // three of them; before one, last year's figures are tiles.
   const stats = result
-    ? [
-        { label: body.insight_total, value: n(result.total), note: `MCC, ${year}` },
-        ...(result.upgraded
-          ? [
-              { label: body.insight_fresh, value: n(result.fresh) },
-              { label: body.insight_upgraded, value: n(result.upgraded) },
-            ]
-          : [{ label: body.stat_colleges, value: n(result.colleges.aiq) }]),
-        ...(result.aiqOpenLast ? [{ label: body.stat_aiq, value: n(result.aiqOpenLast) }] : []),
-      ]
+    ? []
     : prev
       ? [
           { label: body.stat_prev_total, value: n(prev.total), note: `${spec.label}, MCC` },
@@ -281,6 +274,9 @@ export default async function RoundResultPage({ params }: { params: Params }) {
   const insights: Insight[] = result
     ? [
         { icon: "people", label: body.insight_total, value: n(result.total), note: body.insight_total_note },
+        result.upgraded
+          ? { icon: "college" as const, label: body.insight_fresh, value: n(result.fresh), note: `MCC, ${year}` }
+          : { icon: "college" as const, label: body.stat_colleges, value: n(result.colleges.aiq), note: `MCC, ${year}` },
         ...(result.upgraded ? [{ icon: "spark" as const, label: body.insight_upgraded, value: n(result.upgraded), note: body.insight_upgraded_note }] : []),
         ...(result.aiqOpenLast ? [{ icon: "authority" as const, label: body.insight_aiq, value: n(result.aiqOpenLast), note: body.insight_aiq_note }] : []),
         ...(prev ? [{ icon: "compare" as const, label: body.insight_prev, value: n(prev.total), note: body.insight_prev_note }] : []),
@@ -306,7 +302,7 @@ export default async function RoundResultPage({ params }: { params: Params }) {
   // year's page invites to the counselling's next result (the shell's cue); the last round invites to nothing.
   const awaited = year === current && state.status === "pending";
   const alertRound = year === current ? (awaited ? cueFor(year, spec) : nextSpec ? cueFor(year, nextSpec) : null) : undefined;
-  const topGap = state.sourceUrl || insights.length ? "pt-8" : "pt-10";
+  const topGap = state.sourceUrl ? "pt-8" : "pt-10";
   const roundAlert = (first: boolean) => (
     <TelegramRoundAlert
       round={alertRound}
@@ -354,6 +350,7 @@ export default async function RoundResultPage({ params }: { params: Params }) {
         telegram="hero_pg_round"
         source={source}
         visual={visual}
+        insights={insights}
       />
 
       {/* MCC's own PDF — the first thing anybody wants on result day. */}
@@ -382,12 +379,6 @@ export default async function RoundResultPage({ params }: { params: Params }) {
           {state.updating && (
             <p className="mt-3 rounded-2xl border border-border bg-surface-2 px-5 py-3 text-[14px] text-muted-foreground">{body.updating_note}</p>
           )}
-        </section>
-      )}
-
-      {insights.length > 0 && (
-        <section className={`container-custom relative z-10 ${state.sourceUrl ? "mt-6" : "-mt-8"}`}>
-          <InsightCards items={insights} />
         </section>
       )}
 
@@ -442,7 +433,10 @@ export default async function RoundResultPage({ params }: { params: Params }) {
       {/* ------------------------------ quota, category, programme, state ------------------------------ */}
       {shown && (
         <section className="border-t border-border bg-surface-1 py-10 md:py-14">
-          <div className="container-custom grid gap-8 lg:grid-cols-2">
+          {/* Columns, not a 2×2 grid (2026-10-21): the browser balances the four tables between two columns,
+              where the grid sat the five-row programme table beside the long state table and left the
+              difference empty. */}
+          <div className="container-custom gap-8 lg:columns-2 [&>div]:mb-8 [&>div]:break-inside-avoid [&>div:last-child]:mb-0">
             <div>
               <SectionHead icon="list" eyebrow={`${shown.year}`} title={body.quota_title} intro={body.quota_intro} />
               <CountTable rows={shown.byQuota.map((q) => ({ label: q.quota, seats: q.seats }))} total={shown.total} head="Quota" />

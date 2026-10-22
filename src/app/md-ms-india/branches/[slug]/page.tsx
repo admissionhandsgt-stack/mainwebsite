@@ -319,6 +319,18 @@ export default async function BranchPage({
                     <dd className="tnum text-[15px] font-bold text-foreground">{inr(mcc.total)}</dd>
                   </div>
                 </dl>
+                {mcc.topStates.length > 0 && (
+                  <p className="mt-4 text-[13px] leading-relaxed text-muted-foreground">
+                    {mccCopy.top_states}{" "}
+                    {mcc.topStates.map((s, i) => (
+                      <span key={s.state}>
+                        {i > 0 ? (i === mcc.topStates.length - 1 ? " and " : ", ") : ""}
+                        <b className="font-semibold text-foreground">{s.state}</b> <span className="tnum">({inr(s.seats)})</span>
+                      </span>
+                    ))}
+                    .
+                  </p>
+                )}
               </div>
               <div className="rounded-2xl border border-border bg-card p-5">
                 <h3 className="text-[11.5px] font-bold uppercase tracking-[0.1em] text-muted-foreground">{mccCopy.by_category}</h3>
@@ -342,18 +354,6 @@ export default async function BranchPage({
                     </div>
                   ))}
                 </dl>
-                {mcc.topStates.length > 0 && (
-                  <p className="mt-4 text-[13px] leading-relaxed text-muted-foreground">
-                    {mccCopy.top_states}{" "}
-                    {mcc.topStates.map((s, i) => (
-                      <span key={s.state}>
-                        {i > 0 ? (i === mcc.topStates.length - 1 ? " and " : ", ") : ""}
-                        <b className="font-semibold text-foreground">{s.state}</b> <span className="tnum">({inr(s.seats)})</span>
-                      </span>
-                    ))}
-                    .
-                  </p>
-                )}
               </div>
             </div>
             <p className="mt-3 text-[12px] leading-relaxed text-muted-foreground">

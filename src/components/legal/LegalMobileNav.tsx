@@ -37,7 +37,7 @@ export default function LegalMobileNav({
   }, [activeSection]);
 
   return (
-    <div className="w-full md:hidden print:hidden border-b border-slate-100 dark:border-slate-800 bg-white/90 dark:bg-slate-950/90 backdrop-blur sticky top-[72px] z-35 transition-colors duration-200">
+    <div className="w-full md:hidden print:hidden border-b border-slate-100 dark:border-slate-800 bg-white/90 dark:bg-slate-950/90 backdrop-blur sticky top-[var(--site-top,112px)] z-35 transition-colors duration-200">
       <div 
         ref={containerRef}
         className="flex items-center gap-2 overflow-x-auto scrollbar-none py-2.5 px-4"

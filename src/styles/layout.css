@@ -138,6 +138,16 @@ body {
   overflow-x: hidden;
   width: 100%;
 }
+/* `clip` cuts the same overflow without making html and body scroll containers. `hidden` did, so every
+   position: sticky on the site stuck to a box that never scrolls — i.e. never stuck (found 2026-10-21:
+   the legal pages' contents, the MBBS colleges sidebar, the predictor's side panels). Browsers without
+   `clip` keep `hidden`. */
+@supports (overflow-x: clip) {
+  html,
+  body {
+    overflow-x: clip;
+  }
+}
 
 html {
   -webkit-overflow-scrolling: touch;

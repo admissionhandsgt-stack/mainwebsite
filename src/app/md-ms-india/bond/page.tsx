@@ -9,7 +9,6 @@ import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
-import InsightCards from "@/components/ui/InsightCards";
 import SectionHead from "@/components/ui/SectionHead";
 import OpenOnHash from "@/components/ui/OpenOnHash";
 import LeadCapture from "@/components/lead/LeadCapture";
@@ -125,16 +124,8 @@ export default async function BondPage() {
         subtitle={copy.subtitle}
         image={heroImage}
         topic="document"
-        stats={
-          b
-            ? [
-                { label: "Govt colleges with a bond", value: `${b.govtBonded} of ${b.govtColleges}` },
-                { label: "Middle bond penalty", value: big(b.penaltyMedian), note: "government seats" },
-                { label: "Middle seat-leaving penalty", value: big(b.exitMedian) },
-                { label: "States", value: String(states) },
-              ]
-            : []
-        }
+        // No stat tiles: the four insight cards under the words carry the same figures with their context,
+        // and the subtitle names the states (2026-10-21 — eight boxes said four things twice).
         cta={{ label: copy.cta, href: "/neet-college-predictor?course=pg" }}
         telegram="hero_pg_bond"
         source={copy.source}
@@ -153,20 +144,13 @@ export default async function BondPage() {
             />
           ) : undefined
         }
+        insights={b ? [
+          { icon: "authority" as const, label: body.insight_bonded, value: share(b.govtBonded, b.govtColleges), note: `${b.govtBonded} of ${b.govtColleges}` },
+          ...(b.penaltyMedian ? [{ icon: "up" as const, label: body.insight_penalty, value: big(b.penaltyMedian), note: `usually ${big(b.penaltyLow)} – ${big(b.penaltyHigh)}` }] : []),
+          ...(b.exitMedian ? [{ icon: "compare" as const, label: body.insight_exit, value: big(b.exitMedian), note: `${b.exitColleges} of ${b.allColleges} colleges list one` }] : []),
+          { icon: "college" as const, label: body.insight_private, value: share(b.otherBonded, b.otherColleges), note: `${b.otherBonded} of ${b.otherColleges}` },
+        ] : undefined}
       />
-
-      {b && (
-        <section className="container-custom relative z-10 -mt-8">
-          <InsightCards
-            items={[
-              { icon: "authority" as const, label: body.insight_bonded, value: share(b.govtBonded, b.govtColleges), note: `${b.govtBonded} of ${b.govtColleges}` },
-              ...(b.penaltyMedian ? [{ icon: "up" as const, label: body.insight_penalty, value: big(b.penaltyMedian), note: `usually ${big(b.penaltyLow)} – ${big(b.penaltyHigh)}` }] : []),
-              ...(b.exitMedian ? [{ icon: "compare" as const, label: body.insight_exit, value: big(b.exitMedian), note: `${b.exitColleges} of ${b.allColleges} colleges list one` }] : []),
-              { icon: "college" as const, label: body.insight_private, value: share(b.otherBonded, b.otherColleges), note: `${b.otherBonded} of ${b.otherColleges}` },
-            ]}
-          />
-        </section>
-      )}
 
       {!b ? (
         <section className="container-custom py-14">

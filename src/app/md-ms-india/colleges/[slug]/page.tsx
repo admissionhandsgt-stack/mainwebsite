@@ -375,7 +375,9 @@ export default async function CollegePage({ params }: { params: { slug: string }
           </div>
 
           {/* ---------------- Sidebar ---------------- */}
-          <aside className="space-y-5">
+          {/* Sticky beside the long main column (2026-10-21): it ended ~1,000px down a ~5,800px page and left the
+              rest of its column empty. Scrolls inside itself if a short window cannot hold it. */}
+          <aside className="space-y-5 lg:sticky lg:top-[calc(var(--site-top,112px)_+_1rem)] lg:max-h-[calc(100vh_-_var(--site-top,112px)_-_2rem)] lg:self-start lg:overflow-y-auto">
             {branches.length > 0 && (
               <div className="rounded-2xl border border-border bg-card p-5">
                 <h2 className="font-heading text-[15px] font-bold text-foreground">
@@ -384,12 +386,12 @@ export default async function CollegePage({ params }: { params: { slug: string }
                 <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">
                   How each branch fills across India, and where it sits for your rank.
                 </p>
-                <ul className="mt-3 space-y-1">
+                <ul className="mt-2 space-y-0.5">
                   {branches.slice(0, 14).map(([name]) => (
                     <li key={name}>
                       <Link
                         href={`/md-ms-india/branches/${branchSlug(name)}`}
-                        className="block rounded-lg px-2 py-2 text-[14px] leading-snug text-muted-foreground transition-colors hover:bg-primary-soft hover:text-primary-strong dark:hover:text-primary"
+                        className="block rounded-lg px-2 py-1.5 text-[14px] leading-snug text-muted-foreground transition-colors hover:bg-primary-soft hover:text-primary-strong dark:hover:text-primary"
                       >
                         {name}
                       </Link>
@@ -410,12 +412,12 @@ export default async function CollegePage({ params }: { params: { slug: string }
             {similar.length > 0 && (
               <div className="rounded-2xl border border-border bg-card p-5">
                 <h2 className="font-heading text-[15px] font-bold text-foreground">Others in {college.state}</h2>
-                <ul className="mt-3 space-y-1">
+                <ul className="mt-2 space-y-0.5">
                   {similar.map((s) => (
                     <li key={s.slug}>
                       <Link
                         href={`/md-ms-india/colleges/${s.slug}`}
-                        className="block rounded-lg px-2 py-2 text-[14px] leading-snug text-muted-foreground transition-colors hover:bg-primary-soft hover:text-primary-strong dark:hover:text-primary"
+                        className="block rounded-lg px-2 py-1.5 text-[14px] leading-snug text-muted-foreground transition-colors hover:bg-primary-soft hover:text-primary-strong dark:hover:text-primary"
                       >
                         {s.name}
                       </Link>

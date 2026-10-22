@@ -36,8 +36,9 @@ export default function StateAuthority({
             <p className="text-[11.5px] font-bold uppercase tracking-[0.12em] text-primary-strong">Who runs counselling here</p>
             <h2 className="font-heading mt-1 text-lg font-bold leading-snug text-foreground md:text-xl">{a.authority}</h2>
             <p className="mt-1.5 max-w-[70ch] text-[14.5px] leading-relaxed text-muted-foreground">
-              Allots the state-quota {what} seats in {state}. The 15% All India Quota and deemed universities are
-              counselled by MCC, at mcc.nic.in.
+              {/* MBBS: 15% of a state government college's seats are All India Quota; MD/MS: 50%. */}
+              Allots the state-quota {what} seats in {state}. The {level === "ug" ? "15%" : "50%"} All India Quota and
+              deemed universities are counselled by MCC, at mcc.nic.in.
             </p>
             {a.note && <p className="mt-2 max-w-[70ch] text-[13px] leading-relaxed text-muted-foreground">{a.note}</p>}
           </div>

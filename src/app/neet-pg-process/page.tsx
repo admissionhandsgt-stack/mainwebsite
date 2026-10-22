@@ -327,21 +327,25 @@ export default async function NeetPgProcessPage() {
 
         {/* ----------------------------- documents ----------------------------- */}
         <Reveal>
-          <section className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-            <div>
-              <h2 className="font-heading text-2xl font-extrabold tracking-tight text-foreground md:text-3xl">
-                {copy.docs_title}
-              </h2>
-              <p className="mt-2.5 text-[15px] leading-relaxed text-muted-foreground md:text-base">
-                {copy.docs_intro}
-              </p>
-              <p className="mt-4 flex gap-3 rounded-2xl border border-border bg-surface-2 px-4 py-3.5 text-[14px] leading-relaxed text-muted-foreground">
+          {/* Heading over the list, the list three across (2026-10-21): side by side, the short heading column
+              left ~230px empty beside the long list. */}
+          <section>
+            <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-end lg:gap-8">
+              <div>
+                <h2 className="font-heading text-2xl font-extrabold tracking-tight text-foreground md:text-3xl">
+                  {copy.docs_title}
+                </h2>
+                <p className="mt-2.5 text-[15px] leading-relaxed text-muted-foreground md:text-base">
+                  {copy.docs_intro}
+                </p>
+              </div>
+              <p className="flex gap-3 rounded-2xl border border-border bg-surface-2 px-4 py-3.5 text-[14px] leading-relaxed text-muted-foreground">
                 <FileText className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
                 {copy.docs_note}
               </p>
             </div>
 
-            <ul className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+            <ul className="mt-6 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
               {lines(copy.docs_list).map((d) => (
                 <li
                   key={d}

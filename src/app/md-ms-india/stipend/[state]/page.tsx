@@ -11,7 +11,6 @@ import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
-import InsightCards from "@/components/ui/InsightCards";
 import SectionHead from "@/components/ui/SectionHead";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
@@ -143,12 +142,8 @@ export default async function StateStipendPage({ params }: { params: { state: st
         subtitle={copy.subtitle}
         image={heroImage}
         topic="money"
-        stats={[
-          { label: "Median / month", value: rupees(s.median), note: "first year" },
-          { label: "Colleges & hospitals", value: String(s.colleges), note: "that publish a stipend" },
-          ...(s.govtMedian ? [{ label: "Govt median", value: rupees(s.govtMedian) }] : []),
-          ...(s.privateMedian ? [{ label: "Private median", value: rupees(s.privateMedian) }] : []),
-        ]}
+        // One block of numbers (2026-10-21): the government and private medians were a tile each and a card;
+        // the state's median and its count of colleges lead the cards instead.
         cta={{ label: copy.cta, href: "/neet-college-predictor?course=pg" }}
         telegram="hero_pg_stipend_state"
         source={copy.source}
@@ -165,22 +160,22 @@ export default async function StateStipendPage({ params }: { params: { state: st
             }))}
           />
         }
+        insights={[
+          { icon: "people" as const, label: "Median / month", value: rupees(s.median), note: `first year · ${s.colleges} colleges & hospitals that publish a stipend` },
+          ...(top ? [{ icon: "up" as const, label: "Highest", value: rupees(top.y1), note: top.name }] : []),
+          ...(s.govtMedian && s.privateMedian
+            ? [{ icon: "compare" as const, label: "Govt vs private", value: `${rupees(s.govtMedian)} vs ${rupees(s.privateMedian)}`, note: "medians, first year, a month" }]
+            : s.govtMedian
+              ? [{ icon: "authority" as const, label: "Govt median", value: rupees(s.govtMedian), note: "first year, a month" }]
+              : s.privateMedian
+                ? [{ icon: "college" as const, label: "Private median", value: rupees(s.privateMedian), note: "first year, a month" }]
+                : []),
+          ...(s.y3Median ? [{ icon: "spark" as const, label: "Year 3 median", value: rupees(s.y3Median), note: `year 1: ${rupees(s.median)}` }] : []),
+          ...(showBond && bond!.govt.withBond > 0
+            ? [{ icon: "authority" as const, label: "Govt colleges with a bond", value: `${bond!.govt.withBond} of ${bond!.govt.colleges}`, note: `usually ${years(bond!.govt.typicalYears)}` }]
+            : []),
+        ]}
       />
-
-      <section className="container-custom relative z-10 -mt-8">
-        <InsightCards
-          items={[
-            ...(top ? [{ icon: "up" as const, label: "Highest", value: rupees(top.y1), note: top.name }] : []),
-            ...(s.govtMedian && s.privateMedian
-              ? [{ icon: "compare" as const, label: "Govt vs private", value: `${rupees(s.govtMedian)} vs ${rupees(s.privateMedian)}`, note: "medians, first year, a month" }]
-              : []),
-            ...(s.y3Median ? [{ icon: "spark" as const, label: "Year 3 median", value: rupees(s.y3Median), note: `year 1: ${rupees(s.median)}` }] : []),
-            ...(showBond && bond!.govt.withBond > 0
-              ? [{ icon: "authority" as const, label: "Govt colleges with a bond", value: `${bond!.govt.withBond} of ${bond!.govt.colleges}`, note: `usually ${years(bond!.govt.typicalYears)}` }]
-              : []),
-          ]}
-        />
-      </section>
 
       {/* -------------------------- every college -------------------------- */}
       <section className="container-custom py-10 md:py-14">

@@ -213,65 +213,48 @@ export default async function QuotaPage({
         {deemed && mcc && (
           <section className="mt-12" id="deemed-seats">
             <SectionHead icon="list" eyebrow={`MCC · ${deemed.year}`} title={mcc.title} intro={mcc.intro} />
-            <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
-              <div className="overflow-x-auto rounded-2xl border border-border bg-card">
-                <table className="dt w-full min-w-[480px] text-left text-sm">
-                  <caption className="border-b border-border bg-surface-1 px-4 py-3 text-left font-heading text-[15px] font-bold text-foreground">
-                    {mcc.colleges_title}
-                  </caption>
-                  <thead className="border-b border-border text-[12px] uppercase tracking-wide text-muted-foreground">
-                    <tr>
-                      <th scope="col" className="px-4 py-2.5 font-semibold">University</th>
-                      <th scope="col" className="px-4 py-2.5 font-semibold">State</th>
-                      <th scope="col" className="px-4 py-2.5 text-right font-semibold">Seats</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-border">
-                    {deemed.colleges.map((c) => (
-                      <tr key={c.slug ?? c.name}>
-                        <th scope="row" className="px-4 py-2.5 font-medium">
-                          {c.slug ? (
-                            <Link href={`/md-ms-india/colleges/${c.slug}`} className="text-foreground hover:text-primary hover:underline">
-                              {c.name}
-                            </Link>
-                          ) : (
-                            <span className="text-foreground">{c.name}</span>
-                          )}
-                        </th>
-                        <td className="px-4 py-2.5 text-muted-foreground">{c.state ?? "—"}</td>
-                        <td className="tnum px-4 py-2.5 text-right font-semibold">{inr(c.seats)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div className="overflow-x-auto rounded-2xl border border-border bg-card lg:self-start">
-                <table className="dt w-full min-w-[320px] text-left text-sm">
-                  <caption className="border-b border-border bg-surface-1 px-4 py-3 text-left font-heading text-[15px] font-bold text-foreground">
-                    {mcc.branches_title}
-                  </caption>
-                  <thead className="border-b border-border text-[12px] uppercase tracking-wide text-muted-foreground">
-                    <tr>
-                      <th scope="col" className="px-4 py-2.5 font-semibold">Branch</th>
-                      <th scope="col" className="px-4 py-2.5 text-right font-semibold">Seats</th>
-                      <th scope="col" className="px-4 py-2.5 text-right font-semibold">Universities</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-border">
-                    {deemed.branches.slice(0, 15).map((b) => (
-                      <tr key={b.course}>
-                        <th scope="row" className="px-4 py-2.5 font-medium">
-                          <Link href={`/md-ms-india/branches/${b.slug}`} className="text-foreground hover:text-primary hover:underline">
-                            {b.course}
-                          </Link>
-                        </th>
-                        <td className="tnum px-4 py-2.5 text-right font-semibold">{inr(b.seats)}</td>
-                        <td className="tnum px-4 py-2.5 text-right text-muted-foreground">{inr(b.colleges)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+            {/* Two lists, each flowing into columns (2026-10-21). They were two tables side by side, and the
+                15-row branch table left ~1,700px empty beside the 50-odd universities. */}
+            <div className="mt-6 rounded-2xl border border-border bg-card p-4 md:p-5">
+              <h3 className="font-heading text-[15px] font-bold text-foreground">{mcc.colleges_title}</h3>
+              <ol className="mt-2 md:columns-2 md:gap-x-8 xl:columns-3">
+                {deemed.colleges.map((c) => (
+                  // The state runs on from the name, not on a line of its own — a phone read 54 of them.
+                  <li key={c.slug ?? c.name} className="flex break-inside-avoid items-baseline justify-between gap-3 border-b border-border py-2">
+                    <span className="min-w-0 text-[13.5px] leading-snug sm:text-[14px]">
+                      {c.slug ? (
+                        <Link href={`/md-ms-india/colleges/${c.slug}`} className="font-medium text-foreground hover:text-primary hover:underline">
+                          {c.name}
+                        </Link>
+                      ) : (
+                        <span className="font-medium text-foreground">{c.name}</span>
+                      )}
+                      <span className="text-muted-foreground"> · {c.state ?? "—"}</span>
+                    </span>
+                    <span className="tnum shrink-0 text-right text-[14px] font-semibold text-foreground">
+                      {inr(c.seats)} <span className="text-[12.5px] font-normal text-muted-foreground">seats</span>
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+            <div className="mt-4 rounded-2xl border border-border bg-card p-4 md:p-5">
+              <h3 className="font-heading text-[15px] font-bold text-foreground">{mcc.branches_title}</h3>
+              <ol className="mt-2 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
+                {deemed.branches.slice(0, 15).map((b) => (
+                  <li key={b.course} className="flex items-baseline justify-between gap-3 border-b border-border py-2">
+                    <Link href={`/md-ms-india/branches/${b.slug}`} className="min-w-0 text-[14px] font-medium text-foreground hover:text-primary hover:underline">
+                      {b.course}
+                    </Link>
+                    <span className="tnum shrink-0 text-right text-[14px] font-semibold text-foreground">
+                      {inr(b.seats)}{" "}
+                      <span className="text-[12.5px] font-normal text-muted-foreground">
+                        seats · {inr(b.colleges)} {b.colleges === 1 ? "university" : "universities"}
+                      </span>
+                    </span>
+                  </li>
+                ))}
+              </ol>
             </div>
             <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">
               {mcc.source}{" "}

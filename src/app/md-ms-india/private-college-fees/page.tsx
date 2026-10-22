@@ -124,7 +124,9 @@ export default async function PrivateFeesPage() {
             icon="map"
             title={<>State by state</>}
           />
-          <div className="mt-6 grid gap-8 lg:grid-cols-2">
+          {/* Columns, not a grid: a state's table runs two rows or five, and a grid row is as tall as its
+              longer half (2026-10-21). */}
+          <div className="mt-6 gap-8 lg:columns-2 [&>div]:mb-8 [&>div]:break-inside-avoid [&>div:last-child]:mb-0">
             {f.states.map((s) => (
               <div key={s.state}>
                 <h3 className="text-lg font-semibold text-foreground">

@@ -129,7 +129,7 @@ export default function LegalLayout({ sections }: LegalLayoutProps) {
           <div className="flex relative">
             {/* Sidebar — desktop only */}
             <div className="hidden md:block flex-shrink-0 w-72 border-r border-slate-100 dark:border-slate-800/60 pr-8 pt-3 pb-8 print:hidden">
-              <div className="sticky top-24">
+              <div className="sticky top-[calc(var(--site-top,112px)_+_1rem)]">
                 <LegalSidebar 
                   sections={sidebarSections} 
                   activeSection={activeSection}

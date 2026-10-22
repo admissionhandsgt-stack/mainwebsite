@@ -1101,7 +1101,7 @@ export default function CollegesPageClient({
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="lg:sticky lg:top-24"
+              className="lg:sticky lg:top-[calc(var(--site-top,112px)_+_1rem)]"
             >
               <span className="text-[11.5px] font-bold uppercase tracking-widest text-cyan-600 dark:text-cyan-400 mb-2 block">
                 Common Questions

@@ -163,7 +163,7 @@ export default async function RootLayout({
           </>
         )}
       </head>
-      <body className="antialiased font-body overflow-x-hidden bg-background text-foreground transition-colors duration-200">
+      <body className="antialiased font-body overflow-x-hidden supports-[overflow:clip]:overflow-x-clip bg-background text-foreground transition-colors duration-200">
         {/*
           Analytics after the page has loaded, not before. `afterInteractive`
           made Next emit a preload for gtag.js — 176 KB at high priority,
