@@ -512,6 +512,15 @@ MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within mi
   dry run, unstage). `--parse <pdf>` reads only; `--once` makes one real check.
 - Menu rows: `scripts/sql/nav_pg_counselling_2026_10_21.sql` (run after the deploy; the year is in the URL —
   change it when the next counselling starts).
+- **MCC respells categories between years.** 2025's lists say "SC" / "SC PwD"; 2026's round 1 PDF says "Schedule
+  Caste (SC)" / "Schedule Caste (SC) (Person with Disability)". Matched exactly, the 2026 round page had **no SC
+  or ST column** on result day (found 2026-10-24). `shortCategory()` in `lib/mccRoundTypes.ts` maps both on
+  ingest and on read; the rows stored before the fix still hold the long form, which the read side covers.
+- **The round poster** (owner's "NEET PG <last> vs <this> · MCC Round N closing ranks · All India Quota" image):
+  `node --env-file=.env.local scripts/poster/round_cuts_poster.mjs --year 2026 --round "Round 2" --out <dir>` —
+  every figure from `mcc_allotments`, a 2160px PNG. The hand-made Round 1 version garbled 11 ranks (and one change) and printed the
+  Diploma in Radiation Medicine's figures as MD Radiation Oncology's. Unlike the site, the poster prints cells from
+  one or two colleges (41 of 289 in Round 1) — the owner's poster did, and that is the owner's call.
 
 ## Site structure the admin owns
 
