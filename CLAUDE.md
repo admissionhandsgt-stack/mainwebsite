@@ -549,6 +549,12 @@ MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within mi
   official notice, per-year vs whole-course not always stated, confirm before paying) and marks with † a fee below a
   tenth of the same college's median for that seat type (DY Patil Pimpri's ₹1 L pre-clinical paid seats) — flagged, not
   dropped. NBEMS spells branches its own way ("Orthopedics Surgery", "Oto-Rhino-Laryngology"); `SHORT` maps them.
+  **The Excel version** for junior counsellors (owner, same day: colleges down, branches across, Gen / Mgmt / NRI under
+  each, figures in lakh, hostel too): `state_fees_doc.mjs --json <file>` then `python scripts/poster/state_fees_xlsx.py
+  <file> <out.xlsx>`. Gen = state govt quota; Mgmt = management quota, or a deemed university's MCC Paid seat; NRI
+  likewise; AIQ is one column per government college (its fee never varies by branch — the script asserts it); any
+  other seat type (one Minority Quota) goes in Notes. Hostel is shown as listed (a year / a month / period not listed,
+  mess, included in the fee). The script reads the file back and compares every fee with the JSON before it finishes.
 
 ## Site structure the admin owns
 

@@ -4,6 +4,8 @@
 // type and the branches it applies to.
 //
 //   node --env-file=.env.local scripts/poster/state_fees_doc.mjs [--state Maharashtra] [--out <dir>]
+//   node --env-file=.env.local scripts/poster/state_fees_doc.mjs --json <file>   (the data only, for the Excel
+//                                                    workbook: python scripts/poster/state_fees_xlsx.py <file> <xlsx>)
 //
 // Source: pg_seat_terms — fees "as listed for the 2026 counselling", a compilation, never an official notice. The
 // document carries the site's caveat (confirm with the counselling notice or the college before paying) and never
@@ -67,20 +69,24 @@ const cleanName = (n) => {
 // ------------------------------------------------------------------ data
 const sql = postgres(process.env.DATABASE_URL, { max: 1, idle_timeout: 5 });
 const rows = await sql`
-  SELECT college_name, institute_type, seat_type, counselling, course, degree, fee_inr, fee_session, fetched_on
+  SELECT college_name, institute_type, seat_type, counselling, course, degree, fee_inr, fee_session, fetched_on,
+         hostel_fee_min_inr, hostel_fee_max_inr, hostel_fee_period, hostel_included_in_fee, hostel_includes_mess
     FROM pg_seat_terms WHERE state ILIKE ${STATE}`;
 await sql.end();
 if (!rows.length) throw new Error(`no rows for ${STATE}`);
 const asOf = rows.map((r) => r.fetched_on).filter(Boolean).sort().pop();
 const asOfText = asOf ? new Date(asOf).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" }) : "";
 
-// college -> { section, seats: Map(seatKey -> [{course, fee, session}]) }
+// college -> { section, seats: Map(seatKey -> [{course, fee, session}]), hostel: one entry per seat type as listed }
 const colleges = new Map();
 for (const r of rows) {
   const section = SECTIONS.find((s) => s.test(r.institute_type ?? ""))?.id ?? "nbe";
   const key = `${section}|${r.college_name}`;
-  const c = colleges.get(key) ?? { name: cleanName(r.college_name), type: r.institute_type, section, seats: new Map() };
+  const c = colleges.get(key) ?? { name: cleanName(r.college_name), type: r.institute_type, section, seats: new Map(), hostel: new Map() };
   const seat = seatOf(r.seat_type);
+  if (!c.hostel.has(seat.key))
+    c.hostel.set(seat.key, { min: r.hostel_fee_min_inr, max: r.hostel_fee_max_inr, period: r.hostel_fee_period,
+      included: r.hostel_included_in_fee, mess: r.hostel_includes_mess });
   const list = c.seats.get(seat.key) ?? [];
   list.push({ course: r.course, fee: r.fee_inr > 0 ? Number(r.fee_inr) : null, session: r.fee_session });
   c.seats.set(seat.key, list);
@@ -230,6 +236,25 @@ const sectionLists = SECTIONS.map((s) => ({ ...s, list: [...colleges.values()].f
 const count = (id) => sectionLists.find((s) => s.id === id).list.length;
 // Degree × subject as printed: MS Orthopaedics and DNB Orthopaedics are two courses.
 const branchCount = new Set(rows.map((r) => named(r.course))).size;
+
+// --json: the same colleges, cleaned names and short branch names, for the Excel workbook. Nothing rendered.
+const JSON_OUT = arg("json", null);
+if (JSON_OUT) {
+  const data = {
+    state: STATE,
+    asOf: asOfText,
+    seats: SEATS,
+    courses: [...new Set(rows.map((r) => r.course))].sort(byCourse).map((c) => ({ course: c, name: named(c), degree: degreeOf(c) })),
+    colleges: sectionLists.flatMap((s) => s.list).map((c) => ({
+      name: c.name, type: c.type, section: c.section,
+      seats: Object.fromEntries([...c.seats].map(([k, list]) => [k, [...list].sort((a, b) => byCourse(a.course, b.course))])),
+      hostel: Object.fromEntries(c.hostel),
+    })),
+  };
+  writeFileSync(resolve(JSON_OUT), JSON.stringify(data, null, 1));
+  console.log(`${STATE}: ${data.colleges.length} colleges, ${data.courses.length} courses → ${resolve(JSON_OUT)}`);
+  process.exit(0);
+}
 
 const CSS = `
 :root{--navy:#0b2447;--navy-2:#123a66;--ink:#16243b;--muted:#5d6c82;--line:#dfe6ef;--mint:#1fd8ae;--teal:#0c9c8b}
