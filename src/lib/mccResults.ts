@@ -24,7 +24,7 @@ import { staffList } from "@/lib/staffList";
 import { sendText } from "@/lib/waGateway";
 import { pingIndexNow } from "@/lib/indexNow";
 import { logError } from "@/lib/logger";
-import { CUT_CATS, quotaFamily, type BranchCut, type CutCat, type CutQuota } from "@/lib/mccRoundTypes";
+import { CUT_CATS, quotaFamily, shortCategory, type BranchCut, type CutCat, type CutQuota } from "@/lib/mccRoundTypes";
 import { getSettings } from "@/lib/content";
 import { PAGE_COPY } from "@/lib/pageCopyDefaults";
 import { getPgProcessContent } from "@/lib/pgProcessContent";
@@ -268,7 +268,7 @@ export async function ingestRound(year: number, round: string, opts: { dryRun?: 
             chunk.map(
               (r) =>
                 sql`(${year}::smallint, ${round}::text, ${r.s.rank}::int, ${r.s.quota}::text, ${r.s.institute}::text, ${r.s.course}::text,
-                     ${r.cid}::int, ${r.s.allotted_category}::text, ${r.s.candidate_category}::text, ${r.s.remarks}::text,
+                     ${r.cid}::int, ${shortCategory(r.s.allotted_category)}::text, ${shortCategory(r.s.candidate_category)}::text, ${r.s.remarks}::text,
                      ${r.inst}::int, ${r.method}::text, ${sourceTitle}::text, ${sourceFile}::text)`,
             ),
             sql`, `,
@@ -404,7 +404,7 @@ async function loadResult(year: number, round: string): Promise<RoundResult | nu
              COALESCE(a.institute_id::text, a.mcc_college_name) AS inst, a.rank, a.source_title AS title
         FROM mcc_allotments a LEFT JOIN courses c ON c.id = a.course_id
        WHERE a.year = ${year} AND a.round = ${round}`),
-  );
+  ).map((x) => ({ ...x, acat: shortCategory(x.acat) }));
   if (!r.length) return null;
   const cutMap = new Map<string, { seats: number; colleges: Set<string>; byCat: Map<CutCat, { last: number; colleges: Set<string> }> }>();
   for (const x of r) {
@@ -490,7 +490,7 @@ export function getRoundResult(year: number, round: string, opts: { fresh?: bool
   if (opts.fresh) return loadResult(year, round).catch((error) => (logError(error, { route: "mccResults:result" }), null));
   return unstable_cache(
     () => loadResult(year, round).catch((error) => (logError(error, { route: "mccResults:result" }), null)),
-    ["mcc-round-result-v3", String(year), round],
+    ["mcc-round-result-v4", String(year), round],
     { revalidate: 300, tags: ["mcc-results"] },
   )();
 }

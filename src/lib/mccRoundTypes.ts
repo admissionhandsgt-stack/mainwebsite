@@ -20,6 +20,19 @@ export const quotaFamily = (q: string | null): CutQuota | null =>
 export const CUT_CATS = ["Open", "EWS", "OBC", "SC", "ST"] as const;
 export type CutCat = (typeof CUT_CATS)[number];
 
+/**
+ * One spelling per category. MCC's lists change theirs between years: 2024 and 2025 say "SC" and
+ * "SC PwD", 2026's round 1 says "Schedule Caste (SC)" and "Schedule Caste (SC) (Person with
+ * Disability)". Matched exactly, the long form found no cut, so 2026's round page had no SC or ST
+ * column at all (found 2026-10-24). A label without a code in brackets is kept as it is.
+ */
+export function shortCategory(c: string | null): string | null {
+  if (!c) return c;
+  const code = /\((SC|ST|OBC|EWS)\)/i.exec(c)?.[1]?.toUpperCase();
+  if (!code) return c.trim();
+  return /disab|pwd/i.test(c) ? `${code} PwD` : code;
+}
+
 export interface BranchCut {
   course: string;
   slug: string;
