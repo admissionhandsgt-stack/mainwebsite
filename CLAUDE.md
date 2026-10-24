@@ -524,6 +524,16 @@ MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within mi
   were allotted — owner's request). The hand-made Round 1 version garbled 11 ranks (and one change) and printed the
   Diploma in Radiation Medicine's figures as MD Radiation Oncology's. Unlike the site, the poster prints cells from
   one or two colleges (41 of 289 in Round 1) — the owner's poster did, and that is the owner's call.
+- **The college-wise poster** (`scripts/poster/college_cuts_poster.mjs [--category Open|EWS|OBC|SC|ST]`, owner
+  2026-10-24): one row per college, the 8 most competitive clinical branches, this year's Round 1 closing rank over
+  last year's, grouped by state and paged by measuring every row (8 PNG pages + one PDF for 2026 R1, Open). The
+  frame both posters share is `scripts/poster/kit.mjs`. **`mcc_allotments` splits 12 colleges across two institute
+  ids between the years**: in one year MCC's All India rows went to the hospital's DNB/NBEMS twin (the entry named
+  with a PIN code), and 2025's "GOVERNMENT MEDICAL COLLEGE - KANNUR" went to Kannur Medical College (private, no
+  AIQ seats); six more 2025 names are unmatched. The poster corrects them read-only (`ALIAS`, `SAME_AS`, each
+  checked against MCC's wording in both years); the table still holds them, and a college-level comparison across
+  years anywhere else needs the same care. The script lists colleges with figures in the earlier year only — the
+  shape a split leaves.
 
 ## Site structure the admin owns
 
