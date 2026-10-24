@@ -85,7 +85,7 @@ for (const r of rows) {
     unplaced++;
     continue;
   }
-  const c = colleges.get(id) ?? { id, name: "", state: "", cut: BRANCHES.map(() => ({})), nriCut: BRANCHES.map(() => null), nri: false, minority: new Set(), paid: false };
+  const c = colleges.get(id) ?? { id, name: "", state: "", cut: BRANCHES.map(() => ({})), nriCut: BRANCHES.map(() => ({})), nri: false, minority: new Set(), paid: false };
   // The name and state are the college's own record, never a row placed on it by SAME_AS.
   if (r.institute_id === id && r.name && !c.name) {
     c.name = cleanName(r.name);
@@ -96,12 +96,11 @@ for (const r of rows) {
     c.paid = true;
     const bi = BRANCHES.findIndex((b) => b.course === r.course);
     if (bi >= 0) c.cut[bi][r.year] = Math.max(c.cut[bi][r.year] ?? 0, r.rank);
+  } else if (/non.?resident/i.test(r.quota)) {
+    if (/disab|pwd/i.test(r.acat ?? "")) continue;
+    const bi = BRANCHES.findIndex((b) => b.course === r.course);
+    if (bi >= 0) c.nriCut[bi][r.year] = Math.max(c.nriCut[bi][r.year] ?? 0, r.rank);
   } else if (r.year === YEAR) {
-    if (/non.?resident/i.test(r.quota) && !/disab|pwd/i.test(r.acat ?? "")) {
-      c.nri = true;
-      const bi = BRANCHES.findIndex((b) => b.course === r.course);
-      if (bi >= 0) c.nriCut[bi] = Math.max(c.nriCut[bi] ?? 0, r.rank);
-    }
     const m = /(jain|muslim) minority/i.exec(r.quota);
     if (m) c.minority.add(m[1][0].toUpperCase() + m[1].slice(1).toLowerCase());
   }
@@ -161,6 +160,9 @@ thead th + th + th{border-left:1px solid rgba(255,255,255,.18)}
 thead th small{display:block;font:700 10.5px/1 Inter,sans-serif;letter-spacing:1.2px;opacity:.75;margin-bottom:4px}
 thead th.name{text-align:left;padding-left:10px}
 thead th.seat{background:#123a66;font:900 16px/1.15 Figtree,sans-serif;letter-spacing:.6px;padding:8px 6px 9px;border-bottom:1px solid rgba(255,255,255,.18)}
+thead th.seat .hg,thead th.seat .hn{display:inline-block;width:20px;height:20px;border-radius:5px;font:800 12.5px/20px Inter,sans-serif;vertical-align:1px;color:#fff}
+thead th.seat .hg{background:#fff;color:var(--navy)}
+thead th.seat .hn{background:#e07a2e}
 thead th.seat small{letter-spacing:0;opacity:1;color:#c9d6e8;font:600 11.5px/1.3 Inter,sans-serif;margin:3px 0 0}
 thead th.name small{letter-spacing:0;opacity:1;color:#a9bad1;font-size:11px;margin:3px 0 0}
 tbody td{text-align:center;vertical-align:middle;white-space:nowrap;padding:6px 2px;border-bottom:1px solid var(--line);background:#fff}
@@ -174,19 +176,28 @@ td.name span{display:block;margin-top:3px;font:500 11px/1.3 Inter,sans-serif;col
 td.name i{display:inline-block;font-style:normal;margin-left:5px;padding:0 5px;border-radius:4px;border:1px solid #cdd6e3;
   font:700 9.5px/1.5 Inter,sans-serif;letter-spacing:.3px;color:#4a5a72;vertical-align:1px}
 td.r{font-family:'Roboto Condensed',sans-serif;font-variant-numeric:tabular-nums}
-td.r b{display:block;font-weight:700;font-size:16px;line-height:1.1;color:var(--navy)}
-td.r em{display:block;font-style:normal;font-size:11px;line-height:1.25;margin-top:2px;color:#5d6c82}
-td.r i{display:block;font-style:normal;font-weight:700;font-size:12px;line-height:1.25}
-td.r i.up{color:var(--up)}td.r i.down{color:var(--down)}td.r i.zero{color:var(--muted)}
-td.r .na{color:#a3b0c1;font-weight:400}
-td.r s{display:inline-block;text-decoration:none;margin-top:3px;padding:0 5px;border-radius:4px;border:1px solid #f1b98f;background:#fff6ef;
-  font:700 10.5px/1.45 'Roboto Condensed',sans-serif;color:#a4450b}
+td.r{padding:4px 3px;vertical-align:top}
+/* G = the General / Paid seat, N = the NRI seat: one box each, never mixed */
+.bx{position:relative;border-radius:7px;padding:4px 2px 4px 15px}
+.bx + .bx{margin-top:4px}
+.bx.g{background:#f1f5fb;border:1px solid #d3deec}
+.bx.n{background:#fff4ea;border:1px solid #f0c39e}
+.bx .tag{position:absolute;left:3px;top:4px;width:14px;height:14px;border-radius:4px;color:#fff;text-align:center;font:800 9.5px/14px Inter,sans-serif}
+.bx.g .tag{background:var(--navy)}
+.bx.n .tag{background:#b8510c}
+.bx b{display:block;font-weight:700;font-size:15.5px;line-height:1.1;color:var(--navy)}
+.bx.n b{color:#7a3608}
+.bx em{display:block;font-style:normal;font-size:10.5px;line-height:1.25;margin-top:2px;color:#5d6c82}
+.bx i{display:block;font-style:normal;font-weight:700;font-size:11.5px;line-height:1.25}
+.bx i.up{color:var(--up)}.bx i.down{color:var(--down)}.bx i.zero{color:var(--muted)}
+.bx .na{color:#a3b0c1;font-weight:400}
 `;
 
 // Which seat the numbers are for, over every branch column — so no figure can be read as an NRI seat's.
 const head =
   `<tr><th class="no" rowspan="2">#</th><th class="name" rowspan="2">Deemed university<small>Most competitive first (median of its ${YEAR} ranks)</small></th>` +
-  `<th class="seat" colspan="${BRANCHES.length}">GENERAL / PAID SEAT closing rank<small>MCC: Self-Financed Merit Seat · open to all categories · not NRI — a college's NRI seat rank is the orange “NRI” line</small></th></tr>` +
+  `<th class="seat" colspan="${BRANCHES.length}"><span class="hg">G</span> GENERAL / PAID SEAT &nbsp;·&nbsp; <span class="hn">N</span> NRI SEAT &nbsp;— closing rank` +
+  `<small>G: MCC's Self-Financed Merit Seat, open to all categories · N: Non-Resident Indian seat · each box: ${YEAR} rank, ${LAST} rank, change</small></th></tr>` +
   `<tr>${BRANCHES.map((b) => `<th><small>${b.deg}</small>${esc(b.head)}</th>`).join("")}</tr>`;
 
 // The change as the first poster printed it: green + when the rank closed later, red − when it closed earlier.
@@ -195,25 +206,28 @@ const change = (a, b) => {
   const d = b - a;
   return d > 0 ? `<i class="up">+${num(d)}</i>` : d < 0 ? `<i class="down">−${num(-d)}</i>` : `<i class="zero">0</i>`;
 };
-const cellHtml = (cut, nri) => {
+// One box per seat: its letter, this year's closing rank, last year's, and the change.
+const box = (kind, cut) => {
   const a = cut[LAST] ?? null;
   const b = cut[YEAR] ?? null;
-  const last = `<em>${LAST}: ${a == null ? "–" : num(a)}</em>`;
-  const nriLine = nri != null ? `<s>NRI ${num(nri)}</s>` : "";
-  if (b == null) return `<td class="r"><b><span class="na">–</span></b>${a != null ? last : ""}${nriLine}</td>`;
-  return `<td class="r"><b>${num(b)}</b>${last}${change(a, b)}${nriLine}</td>`;
+  const tag = `<span class="tag">${kind === "g" ? "G" : "N"}</span>`;
+  if (a == null && b == null) return `<div class="bx ${kind}">${tag}<b><span class="na">–</span></b></div>`;
+  return `<div class="bx ${kind}">${tag}<b>${b == null ? `<span class="na">–</span>` : num(b)}</b><em>${LAST}: ${a == null ? "–" : num(a)}</em>${change(a, b)}</div>`;
 };
+// The N box only where the college allotted an NRI seat in that branch in either year.
+const hasNri = (nri) => nri[LAST] != null || nri[YEAR] != null;
+const cellHtml = (cut, nri) => `<td class="r">${box("g", cut)}${hasNri(nri) ? box("n", nri) : ""}</td>`;
 const rowHtml = (c, n) => {
-  const tags = (c.nri ? `<i class="nri">NRI SEATS</i>` : "") + [...c.minority].map((m) => `<i class="min">${m.toUpperCase()} MINORITY</i>`).join("");
+  const tags = [...c.minority].map((m) => `<i class="min">${m.toUpperCase()} MINORITY</i>`).join("");
   return `<tr><td class="no">${n}</td><td class="name"><b>${esc(c.name)}</b><span>${esc(c.state)}${tags}</span></td>${c.cut.map((cut, i) => cellHtml(cut, c.nriCut[i])).join("")}</tr>`;
 };
 
-const basis = `General / Paid seats (not NRI) · ${provisional ? `${YEAR} rank based on provisional result` : `${LAST} and ${YEAR}: MCC's final results`}`;
+const basis = `G = General / Paid seat · N = NRI seat · ${provisional ? `${YEAR} rank based on provisional result` : `${LAST} and ${YEAR}: MCC's final results`}`;
 const sourceLine =
   `Closing rank = the highest All India Rank allotted in that branch at that college on its General / Paid seats — MCC's “Self-Financed Merit Seat” ` +
   `(${LAST}: “Self-Financed Merit Seat/(Paid Seat Quota)”), open to all categories — in MCC's ${esc(ROUND)} ` +
   `(${LAST}: final result; ${YEAR}: ${provisional ? "provisional" : "final"} result${dated ? ` dated ${dated}` : ""}). ` +
-  `Tags: the college also allotted NRI or minority seats in ${YEAR}.`;
+  `NRI: MCC's “Non-Resident Indian” seat, the same way. Tags: the college also allotted Jain or Muslim minority seats in ${YEAR}.`;
 
 const statsHtml =
   `<div class="stats">` +
@@ -231,9 +245,9 @@ ${titleHtml({ last: LAST, year: YEAR, ribbon: `MCC ${ROUND.toUpperCase()} CLOSIN
   after: pages ? `<span class="pg">Page ${pageNo} of ${pages} · ${esc(span)}</span>` : "" })}
   ${first ? statsHtml : ""}
 
-  <div class="legend">${icon(I.info)}<p><b>How to read:</b> big number = ${YEAR} ${esc(ROUND)} closing rank on the <b>General / Paid seat</b> (MCC: Self-Financed Merit Seat), small = ${LAST}. An orange <b>NRI</b> line is that college's ${YEAR} NRI seat closing rank in the branch, shown apart.
+  <div class="legend">${icon(I.info)}<p><b>How to read:</b> in each branch the <b>G</b> box is the <b>General / Paid seat</b> (MCC: Self-Financed Merit Seat) and the <b>N</b> box the <b>NRI seat</b> — big number = ${YEAR} ${esc(ROUND)} closing rank, small = ${LAST}, then the change. An N box appears only where the college allotted an NRI seat in that branch.
     <span class="up">Green change (+)</span> = closing rank went higher in ${YEAR} (seat closed at a later rank); <span class="down">Red change (−)</span> = closing rank went lower in ${YEAR} (more competitive).
-    “–” = no paid seat allotted in that branch that year.</p></div>
+    “–” = no seat of that kind allotted that year.</p></div>
 
   <table class="t">
     <colgroup><col class="c-no"><col class="c-name">${"<col>".repeat(BRANCHES.length)}</colgroup>
