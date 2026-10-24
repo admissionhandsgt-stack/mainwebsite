@@ -105,6 +105,12 @@ def college_fees(college, source, gen=(), mgmt=(), nri_usd=(), nri_inr=()):
         add(college, "NRI", branches, inr=fee, source=source)
 
 
+def no_seat(college, seat, branches, source):
+    """The college's own 2026-27 notice has no such seat in these branches (its seat matrix, or a "-" in the column)."""
+    entries.append({"college": college, "seat": seat, "branches": branches, "fee_inr": None, "fee_usd": None, "max": False,
+                    "none": True, "noseat": True, "year": Y, "source": source})
+
+
 # A college's own 2026-27 notice wins over FRA (owner, 2026-10-25, with N.K.P. Salve's notice: the FRA figure plus FRA's
 # 4×/5× ceiling was not what colleges charge). Two colleges are now under private health-sciences universities (CET
 # Cell brochure, Annexure F): N.K.P. Salve (Lata Mangeshkar University) and Vikhe Patil — FRA does not set their fees.
@@ -124,6 +130,8 @@ college_fees("NKP Salve", NKP, gen=NKP_FEES,
                       (["MS General Surgery", "MS Orthopaedics", "MD Paediatrics"], 67340), (["MD Respiratory Med.", "MD Psychiatry"], 51210)])
 # Its "All India Quota (45%)" charges the state-quota fee; it sits in the Mgmt column, the CET Cell's institutional seat.
 college_fees("NKP Salve", NKP + " — the college's 'All India Quota (45%)' column", mgmt=NKP_FEES)
+# The notice prints "-" in the NRI column for the pre- and para-clinical branches.
+no_seat("NKP Salve", "NRI", ["MD Anatomy", "MD Physiology", "MD Biochemistry", "MD Microbiology", "MD Pharmacology", "MD Community Med."], NKP)
 note("NKP Salve", "Now a constituent unit of Lata Mangeshkar University: State 40% / All India 45% / NRI 15%. Plus university fee "
      "₹1,50,000 a year (NRI US$1,620) and caution money ₹1,00,000 once (US$1,100). Unfilled NRI seats converted to All India "
      "pay 1.5× (e.g. Radiology ₹82,12,500). Fees +5% a year; ₹5 L refundable bond for 1-year service", NKP)
@@ -132,12 +140,6 @@ ARMCH = "Ashwini Rural Medical College: fees approved by FRA for A.Y. 2026-27 (a
 OWN.add("Ashwini Rural")
 college_fees("Ashwini Rural", ARMCH, gen=[("*", 1296000)], mgmt=[("*", 5184000)], nri_inr=[("*", 6480000)])
 note("Ashwini Rural", "NRI seat given to a non-NRI ('against NRI seat') ₹51,84,000; caution money ₹50,000 once", ARMCH)
-
-def no_seat(college, seat, branches, source):
-    """The college's own 2026-27 seat matrix has no such seat in these branches."""
-    entries.append({"college": college, "seat": seat, "branches": branches, "fee_inr": None, "fee_usd": None, "max": False,
-                    "none": True, "noseat": True, "year": Y, "source": source})
-
 
 CLIN = ["MD General Medicine", "MD Dermatology", "MD Paediatrics", "MD Radiology", "MS General Surgery", "MS Orthopaedics",
         "MS Ophthalmology", "MS OBG"]

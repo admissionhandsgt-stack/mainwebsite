@@ -7,7 +7,8 @@
 //
 // The official file holds each college's own 2026-27 notice (government colleges: the CET Cell brochure; deemed
 // universities: the university's notice) — never FRA, never a compiled listing. Every existing `fees` row it names is
-// updated in place (one row per institute × course × quota, checked): the fee, its US$ for an NRI seat, "per year" where
+// updated in place (one row per institute × course × quota, checked) — a "-" in a private college's notice blanks the
+// row with a reason instead of leaving last year's figure: the fee, its US$ for an NRI seat, "per year" where
 // the notice says or the state's one-year rule applies, session 2026, no longer carried forward, and `fee_source`
 // naming the notice (migration 0043; seat_options then prefers this fee). Hostel figures go into the hostel columns.
 // No row is inserted: a notice that prices a seat our data has no row for is reported. Without --apply nothing is
@@ -69,9 +70,29 @@ const collegeOf = (prefix) => {
   return hits[0];
 };
 
-const plan = new Map(); // `${institute}|${course_id}|${quota}` -> { values, college, branch, column }
+const insts = [...new Set(matrix.flatMap((c) => c.institute_ids))];
+const current = await sql`
+  SELECT f.id, f.institute_id, f.course_id, q.code AS quota, f.fee_inr, f.fee_usd, f.fee_periodicity, f.fee_session, f.year,
+         f.is_carried_forward, f.fee_null_reason, f.hostel_min_inr, f.hostel_max_inr, f.hostel_note,
+         to_jsonb(f) ->> 'fee_source' AS fee_source  -- works before migration 0043 too (the dry run)
+    FROM fees f LEFT JOIN quotas q ON q.id = f.quota_id
+   WHERE f.level = 'pg' AND f.institute_id IN ${sql(insts)}`;
+const seen = new Set();
+for (const r of current) {
+  const k = `${r.institute_id}|${r.course_id}|${r.quota}`;
+  if (seen.has(k)) throw new Error(`two fees rows for ${k}`);
+  seen.add(k);
+}
+const NAME_BY_ID = new Map(data.courses.filter((c) => c.course_id).map((c) => [c.course_id, c.name]));
+
+// Targets are the college's own `fees` rows in the quota: "*" is every one of them (the notice's one fee for every
+// branch), named branches match by printed name — also rows for branches the compiled listing lacked, since the
+// notice is newer. A deemed university's seats are MCC's, so there only the seats the listing (MCC's matrix) has.
+// A "no seat" entry blanks a private college's row: its notice prints "-" there.
+const plan = new Map(); // fees row id -> { row, college, branch, column, values }
+const blank = new Map(); // fees row id -> { row, college, branch, column, source }
 const hostels = new Map(); // institute -> entry
-let noSeat = 0;
+const missing = [];
 for (const e of OFFICIAL) {
   if (e.seat === "Note") continue;
   const c = collegeOf(e.college);
@@ -80,57 +101,48 @@ for (const e of OFFICIAL) {
     if (e.min) hostels.set(inst, { ...e, college: c.name });
     continue;
   }
-  if (e.noseat) { noSeat++; continue; }
-  const listed = new Set(Object.entries(c.seats).filter(([k]) => COLUMN_OF[c.section][k] === e.seat).flatMap(([, v]) => v.map((x) => x.course)));
-  const here = new Set(Object.values(c.seats).flatMap((v) => v.map((x) => x.course)));
-  let targets;
-  if (e.branches === "*") targets = [...listed];
-  else {
-    const wanted = [...here].filter((raw) => e.branches.includes(NAME[raw]));
-    // Deemed seats are MCC's and only listed ones exist; a private college's notice fills any branch it has.
-    targets = c.section === "deemed" ? wanted.filter((raw) => listed.has(raw)) : wanted;
-  }
   const quota = QUOTA[c.section][e.seat];
   if (!quota) throw new Error(`no quota for ${c.section} ${e.seat}`);
-  for (const raw of targets) {
+  const listedIds = new Set(Object.entries(c.seats).filter(([k]) => COLUMN_OF[c.section][k] === e.seat)
+    .flatMap(([, v]) => v.map((x) => COURSE_ID[x.course])));
+  let rows = current.filter((r) => r.institute_id === inst && r.quota === quota);
+  if (e.branches !== "*") rows = rows.filter((r) => e.branches.includes(NAME_BY_ID.get(r.course_id)));
+  if (c.section === "deemed") rows = rows.filter((r) => listedIds.has(r.course_id));
+  if (e.branches !== "*" && !e.noseat) {
+    const found = new Set(rows.map((r) => NAME_BY_ID.get(r.course_id)));
+    for (const b of e.branches) {
+      if (!found.has(b) && [...listedIds].some((id) => NAME_BY_ID.get(id) === b)) missing.push(`${c.name} · ${b} · ${e.seat}`);
+    }
+  }
+  for (const r of rows) {
+    const branch = NAME_BY_ID.get(r.course_id) ?? `course ${r.course_id}`;
+    if (e.noseat) {
+      if (c.section !== "deemed") blank.set(r.id, { row: r, college: c.name, branch, column: e.seat, source: e.source });
+      continue;
+    }
     const feeInr = e.fee_inr ?? Math.round(e.fee_usd * RATE);
     const feeUsd = e.fee_usd ?? (e.seat === "NRI" ? Math.round(feeInr / RATE) : null);
     const source = `${e.source}${e.max ? " — up to this figure" : ""}${e.fee_usd ? ` — US$${e.fee_usd.toLocaleString("en-US")}, ₹ at ${RATE} a dollar` : ""}`;
-    plan.set(`${inst}|${COURSE_ID[raw]}|${quota}`, {
-      college: c.name, branch: NAME[raw], column: e.seat, quota,
-      values: { fee_inr: feeInr, fee_usd: feeUsd, per_year: !PERIOD_UNSTATED.some((p) => c.name.startsWith(p)), source },
-    });
+    plan.set(r.id, { row: r, college: c.name, branch, column: e.seat,
+      values: { fee_inr: feeInr, fee_usd: feeUsd, per_year: !PERIOD_UNSTATED.some((p) => c.name.startsWith(p)), source } });
   }
 }
-
-const insts = [...new Set(matrix.flatMap((c) => c.institute_ids))];
-const current = await sql`
-  SELECT f.id, f.institute_id, f.course_id, q.code AS quota, f.fee_inr, f.fee_usd, f.fee_periodicity, f.fee_session, f.year,
-         f.is_carried_forward, f.fee_null_reason, f.hostel_min_inr, f.hostel_max_inr, f.hostel_note,
-         to_jsonb(f) ->> 'fee_source' AS fee_source  -- works before migration 0043 too (the dry run)
-    FROM fees f LEFT JOIN quotas q ON q.id = f.quota_id
-   WHERE f.level = 'pg' AND f.institute_id IN ${sql(insts)}`;
-const byKey = new Map();
-for (const r of current) {
-  const k = `${r.institute_id}|${r.course_id}|${r.quota}`;
-  if (byKey.has(k)) throw new Error(`two fees rows for ${k}`);
-  byKey.set(k, r);
-}
+for (const id of plan.keys()) blank.delete(id);
 
 const updates = []; // { id, set }
-const missing = [];
 const changed = new Map(); // college -> [lines]
-for (const [k, p] of plan) {
-  const r = byKey.get(k);
-  if (!r) { missing.push(`${p.college} · ${p.branch} · ${p.column}`); continue; }
-  const v = p.values;
-  updates.push({ id: r.id, set: { fee_inr: v.fee_inr, fee_usd: v.fee_usd, fee_periodicity: v.per_year ? "per year" : r.fee_periodicity,
+const note = (college, line) => changed.set(college, [...(changed.get(college) ?? []), line]);
+for (const [id, p] of plan) {
+  const r = p.row, v = p.values;
+  updates.push({ id, set: { fee_inr: v.fee_inr, fee_usd: v.fee_usd, fee_periodicity: v.per_year ? "per year" : r.fee_periodicity,
     fee_session: "2026", year: 2026, is_carried_forward: false, fee_null_reason: null, fee_source: v.source } });
-  if (Number(r.fee_inr) !== v.fee_inr) {
-    const list = changed.get(p.college) ?? [];
-    list.push(`${p.branch} ${p.column}: ${r.fee_inr ?? "—"} → ${v.fee_inr}`);
-    changed.set(p.college, list);
-  }
+  if (Number(r.fee_inr) !== v.fee_inr) note(p.college, `${p.branch} ${p.column}: ${r.fee_inr ?? "—"} → ${v.fee_inr}`);
+}
+for (const [id, b] of blank) {
+  updates.push({ id, set: { fee_inr: null, fee_usd: null, fee_periodicity: b.row.fee_periodicity, fee_session: "2026", year: 2026,
+    is_carried_forward: false, fee_null_reason: `No ${b.column === "Mgmt" ? "management" : b.column} seat in the college's 2026-27 fee notice`,
+    fee_source: b.source } });
+  note(b.college, `${b.branch} ${b.column}: ${b.row.fee_inr ?? "—"} → no seat`);
 }
 const hostelUpdates = [];
 for (const [inst, h] of hostels) {
@@ -140,9 +152,9 @@ for (const [inst, h] of hostels) {
 }
 
 const touched = new Set([...updates, ...hostelUpdates].map((u) => u.id));
-console.log(`plan: ${plan.size} official fees → ${updates.length} fees rows (${missing.length} with no row in our data, not inserted; ` +
-  `${noSeat} "no seat this year" entries left as they are); hostel figures on ${hostelUpdates.length} rows of ${hostels.size} colleges`);
-console.log(`fee value changes: ${[...changed.values()].reduce((n, l) => n + l.length, 0)} rows in ${changed.size} colleges`);
+console.log(`plan: ${plan.size} fees rows get an official fee, ${blank.size} are blanked as "no seat in the notice" ` +
+  `(${missing.length} named seats with no row in our data, not inserted); hostel figures on ${hostelUpdates.length} rows of ${hostels.size} colleges`);
+console.log(`value changes: ${[...changed.values()].reduce((n, l) => n + l.length, 0)} rows in ${changed.size} colleges`);
 for (const [college, lines] of changed) console.log(`  ${college}: ${lines.length} — e.g. ${lines.slice(0, 3).join(" · ")}`);
 if (missing.length) console.log(`  no fees row: ${missing.slice(0, 12).join(" | ")}${missing.length > 12 ? " …" : ""}`);
 

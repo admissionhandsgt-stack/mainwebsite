@@ -1343,6 +1343,25 @@
  },
  {
   "college": "NKP Salve",
+  "seat": "NRI",
+  "branches": [
+   "MD Anatomy",
+   "MD Physiology",
+   "MD Biochemistry",
+   "MD Microbiology",
+   "MD Pharmacology",
+   "MD Community Med."
+  ],
+  "fee_inr": null,
+  "fee_usd": null,
+  "max": false,
+  "none": true,
+  "noseat": true,
+  "year": "2026-27",
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner)"
+ },
+ {
+  "college": "NKP Salve",
   "seat": "Note",
   "text": "Now a constituent unit of Lata Mangeshkar University: State 40% / All India 45% / NRI 15%. Plus university fee ₹1,50,000 a year (NRI US$1,620) and caution money ₹1,00,000 once (US$1,100). Unfilled NRI seats converted to All India pay 1.5× (e.g. Radiology ₹82,12,500). Fees +5% a year; ₹5 L refundable bond for 1-year service",
   "year": "2026-27",

@@ -577,9 +577,13 @@ MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within mi
   is row-for-row identical, 76,297 rows); then `scripts/apply_official_fees.mjs <mh.json> <official.json> --rate 96
   --backup <file> --apply` updates the existing `fees` rows in place (one per institute × course × quota; no inserts)
   — fee, NRI US$, "per year", session 2026, not carried forward, hostel — and refreshes seat_options; `--restore
-  <backup>` undoes it. **Applied 2026-10-25:** 1,685 fee rows (1,421 changed values in 49 colleges) and hostel on 1,358
-  rows of 38 colleges; old values of 1,769 rows in `D:/Admisson Hands/fee_backups/fees_before_2026_27.json` (outside the
-  repo). The 10 private colleges with no notice are untouched — re-run when they publish. Order for any re-run:
+  <backup>` undoes it. **Applied 2026-10-25** in two passes: the first matched only branches in the compiled listing and
+  left `fees` rows the listing lacked (NKP's Anatomy still showed ₹4.5 L on the live page); the second targets the
+  college's own `fees` rows — "*" every row in the quota, named branches by printed name (deemed: MCC's listed seats
+  only) — and blanks a row with a reason where a private college's notice prints "-". Result: 1,771 rows carry a
+  source (1,752 fees + 19 "no seat in the notice"), hostel on 1,358 rows of 38 colleges. Old values: first pass
+  `D:/Admisson Hands/fee_backups/fees_before_2026_27.json` (restore this one to undo everything), second pass
+  `…_pass2.json` (outside the repo). The 10 private colleges with no notice are untouched — re-run when they publish. Order for any re-run:
   migration (once), apply, then deploy with `--fresh-cache` (schema.ts names the new column). NRI: a deemed university's fee is
   in dollars ($ is the fee, ₹ = $ × the rate cell); a private college's is in rupees ($ = ₹ ÷ rate). The rate is one
   yellow cell (`--rate`, 96 on 2026-10-25) and every conversion is a formula on it; recalculate in Excel (COM) before
