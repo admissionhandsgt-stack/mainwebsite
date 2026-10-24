@@ -5,10 +5,9 @@
 Read on 2026-10-25 (owner: "2026-2027 session ki new updated fees … NRI fees USD mai bhi"):
 - Government and municipal colleges, central institutions: State CET Cell, NEET-PG 2026 Information Brochure
   (statecetcell S3, updated 16 Oct 2026), section 16, brochure p. 37.
-- Private colleges: Fees Regulating Authority's fee search for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS) —
-  one approved fee a year per college, every branch. Management and NRI quota: FRA notice 1090/2023 (10 Nov 2023,
-  still on FRA's notice board): MD/MS up to 4 times (Management/Institutional) and 5 times (NRI) the regular fee,
-  and never more than one year's fee in a year. Those two are maximums and are marked so.
+- Private colleges: each college's own 2026-27 PG fee notice on its website (owner, 2026-10-25: "dont consider FRA as
+  final fees, find the college fee on college website"). A college with no 2026-27 notice yet keeps the listing's
+  figures, marked so; FRA's approved figure is named in its note for reference only.
 - Deemed universities: each university's own 2026-27 PG fee notice (page or PDF named in its entries).
 Branch names are the sheet's printed names. Seats a counselling does not offer are not added by the builder.
 """
@@ -20,6 +19,16 @@ OUT = Path(__file__).with_name("fees_official_maharashtra_2026_27.json")
 Y = "2026-27"
 CET = "State CET Cell, NEET-PG 2026 Information Brochure (16 Oct 2026), section 16, p. 37"
 entries = []
+
+
+def inr(n):
+    """₹ in Indian digit grouping: 13,20,000."""
+    s, tail = str(int(n)), ""
+    s, tail = s[:-3], s[-3:]
+    while len(s) > 2:
+        tail = s[-2:] + "," + tail
+        s = s[:-2]
+    return "₹" + (s + "," + tail if s else tail)
 
 
 def add(college, seat, branches, inr=None, usd=None, source="", maximum=False, none=False):
@@ -59,7 +68,6 @@ note("All India Institute of Physical Medical", "2026-27 fee: university fees as
 
 # ------------------------------------------------------------------ private colleges: FRA 2026-27 (total = tuition + development)
 FRA = "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS)"
-FRA_RULE = "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee"
 PRIVATE = {  # sheet name start: (tuition, development, total, status, meeting)
     "KJ Somaiyya": (1200000, 120000, 1320000, "Approved", "27-07-2026"),
     "Terna Medical College": (818182, 81818, 900000, "Approved", "27-07-2026"),
@@ -82,13 +90,171 @@ PRIVATE = {  # sheet name start: (tuition, development, total, status, meeting)
     "Postgraduate Institute of Swasthiyog": (830769, 87231, 918000, "No upward revision", "31-07-2025"),
     "Bombay Hospital": (990991, 109009, 1100000, "Approved", "27-07-2026"),
 }
+
+def college_fees(college, source, gen=(), mgmt=(), nri_usd=(), nri_inr=()):
+    """A college's own notice: [(branches, fee)] per seat column. Gen = state quota, Mgmt = the institutional /
+    management (or the college's "All India") quota, NRI in the currency the notice uses."""
+    for branches, fee in gen:
+        add(college, "Gen", branches, inr=fee, source=source)
+    for branches, fee in mgmt:
+        add(college, "Mgmt", branches, inr=fee, source=source)
+    for branches, fee in nri_usd:
+        add(college, "NRI", branches, usd=fee, source=source)
+    for branches, fee in nri_inr:
+        add(college, "NRI", branches, inr=fee, source=source)
+
+
+# A college's own 2026-27 notice wins over FRA (owner, 2026-10-25, with N.K.P. Salve's notice: the FRA figure plus FRA's
+# 4×/5× ceiling was not what colleges charge). Two colleges are now under private health-sciences universities (CET
+# Cell brochure, Annexure F): N.K.P. Salve (Lata Mangeshkar University) and Vikhe Patil — FRA does not set their fees.
+OWN = set()
+
+NKP = ("N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission "
+       "A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner)")
+OWN.add("NKP Salve")
+NKP_FEES = [(["MD Anatomy", "MD Physiology", "MD Biochemistry", "MD Microbiology"], 100000), (["MD Pharmacology"], 475000),
+            (["MD Community Med."], 875000), (["MD Pathology"], 1275000), (["MS ENT", "MD Anaesthesia"], 2075000),
+            (["MS Ophthalmology"], 3975000), (["MD General Medicine"], 4775000), (["MS OBG"], 4375000),
+            (["MD Radiology", "MD Dermatology"], 5475000), (["MS General Surgery", "MS Orthopaedics", "MD Paediatrics"], 4175000),
+            (["MD Respiratory Med.", "MD Psychiatry"], 3175000)]
+college_fees("NKP Salve", NKP, gen=NKP_FEES,
+             nri_usd=[(["MD Pathology"], 20570), (["MS ENT", "MD Anaesthesia"], 33470), (["MS Ophthalmology"], 64115),
+                      (["MD General Medicine"], 77020), (["MS OBG"], 70570), (["MD Radiology", "MD Dermatology"], 88310),
+                      (["MS General Surgery", "MS Orthopaedics", "MD Paediatrics"], 67340), (["MD Respiratory Med.", "MD Psychiatry"], 51210)])
+# Its "All India Quota (45%)" charges the state-quota fee; it sits in the Mgmt column, the CET Cell's institutional seat.
+college_fees("NKP Salve", NKP + " — the college's 'All India Quota (45%)' column", mgmt=NKP_FEES)
+note("NKP Salve", "Now a constituent unit of Lata Mangeshkar University: State 40% / All India 45% / NRI 15%. Plus university fee "
+     "₹1,50,000 a year (NRI US$1,620) and caution money ₹1,00,000 once (US$1,100). Unfilled NRI seats converted to All India "
+     "pay 1.5× (e.g. Radiology ₹82,12,500). Fees +5% a year; ₹5 L refundable bond for 1-year service", NKP)
+
+ARMCH = "Ashwini Rural Medical College: fees approved by FRA for A.Y. 2026-27 (armch.org/fra/), every MD/MS branch"
+OWN.add("Ashwini Rural")
+college_fees("Ashwini Rural", ARMCH, gen=[("*", 1296000)], mgmt=[("*", 5184000)], nri_inr=[("*", 6480000)])
+note("Ashwini Rural", "NRI seat given to a non-NRI ('against NRI seat') ₹51,84,000; caution money ₹50,000 once", ARMCH)
+
+def no_seat(college, seat, branches, source):
+    """The college's own 2026-27 seat matrix has no such seat in these branches."""
+    entries.append({"college": college, "seat": seat, "branches": branches, "fee_inr": None, "fee_usd": None, "max": False,
+                    "none": True, "noseat": True, "year": Y, "source": source})
+
+
+CLIN = ["MD General Medicine", "MD Dermatology", "MD Paediatrics", "MD Radiology", "MS General Surgery", "MS Orthopaedics",
+        "MS Ophthalmology", "MS OBG"]
+
+BKL = "B.K.L. Walawalkar Rural Medical College: PG degree MD/MS first-year fees structure A.Y. 2026-27 (bklwrmc.com, dated 19/10/2026)"
+OWN.add("BKL Walawalkar")
+BKL13 = CLIN + ["MD Anaesthesia", "MD Respiratory Med.", "MD Psychiatry", "MS ENT", "MD Radiation Oncology"]
+college_fees("BKL Walawalkar", BKL, gen=[(BKL13 + ["MD Pathology"], 1023000), (["MD Community Med."], 500000)],
+             mgmt=[(BKL13, 4092000), (["MD Pathology"], 2046000)], nri_inr=[(BKL13, 5115000), (["MD Pathology"], 2046000)])
+no_seat("BKL Walawalkar", "Mgmt", ["MD Community Med."], BKL)
+no_seat("BKL Walawalkar", "NRI", ["MD Community Med."], BKL)
+hostel("BKL Walawalkar", "₹84,000 a year + mess ₹50,000; caution ₹50,000 (refundable)", BKL)
+note("BKL Walawalkar", "State fee = tuition ₹9,01,323 + development ₹1,21,677 (Community Medicine: ₹3,78,323 + ₹1,21,677). "
+     "University eligibility fee collected after the last CAP round", BKL)
+
+PDMMC = "Dr. Panjabrao Deshmukh Memorial Medical College: subject-wise tuition fees for PG admission 2026-27, per year (pdmmc.edu.in, 21/10/2026)"
+OWN.add("Dr Panjabrao")
+PD_PRE = ["MD Anatomy", "MD Physiology", "MD Pharmacology", "MD Microbiology", "MD Community Med."]
+PD_CLIN = CLIN + ["MD Psychiatry", "MD Respiratory Med.", "MD Anaesthesia", "MS ENT"]
+college_fees("Dr Panjabrao", PDMMC, gen=[(PD_PRE, 600000), (["MD Pathology"] + PD_CLIN, 900000)],
+             mgmt=[(PD_PRE, 600000), (["MD Pathology"], 1200000), (PD_CLIN, 3600000)],
+             nri_inr=[(PD_PRE, 600000), (["MD Pathology"], 1400000), (PD_CLIN, 4500000)])
+hostel("Dr Panjabrao", "₹1,70,000 a year (double-seated) + hostel caution ₹50,000", PDMMC)
+note("Dr Panjabrao", "State 50% / Institutional & against-NRI / NRI 15%. Also: admission ₹1,500, caution ₹50,000, S.A.M.C. fee "
+     "₹30,000; MUHS eligibility fees after the last CAP round", PDMMC)
+
+VPMC = ("Dr. Vasantrao Pawar Medical College: fees for PG degree course A.Y. 2026-27 — provisional, pending FRA review "
+        "(drvasantraopawarmedicalcollege.com, 19 Oct 2026)")
+OWN.add("Dr Vasantrao Pawar")
+VP13 = CLIN + ["MD Anaesthesia", "MD Psychiatry", "MD Respiratory Med.", "MS ENT", "MD Pathology"]
+college_fees("Dr Vasantrao Pawar", VPMC, gen=[(VP13 + ["MD Pharmacology", "MD Microbiology"], 990000)],
+             mgmt=[(VP13, 3960000), (["MD Pharmacology", "MD Microbiology"], 990000)],
+             nri_inr=[(VP13, 4950000), (["MD Pharmacology", "MD Microbiology"], 990000)])
+hostel("Dr Vasantrao Pawar", "₹5,55,000 once for 3 years (hostel ₹3,30,000 + mess ₹2,25,000)", VPMC)
+note("Dr Vasantrao Pawar", "Provisional — pending review with FRA. Also: eligibility ₹90,000, caution ₹50,000, SWF/UDF/mediclaim ₹1,135", VPMC)
+
+VIMS = ("Dr. Vithalrao Vikhe Patil Foundation's Medical College (Dr. Balasaheb Vikhe Patil University): interim fee structure "
+        "MD/MS 2026-27, per annum, as approved by the ad-hoc University Fee Regulatory Committee (vimsmch.edu.in, 21.10.2026)")
+OWN.add("Dr Vithalrao Vikhe Patil")
+VI_CLIN = CLIN
+college_fees("Dr Vithalrao Vikhe Patil", VIMS, gen=[(["MD Pathology"], 1500000), (VI_CLIN + ["MD Anaesthesia"], 1795000)],
+             mgmt=[(["MD Pathology"], 1500000), (VI_CLIN + ["MD Anaesthesia"], 3590000)],
+             nri_inr=[(["MD Pathology"], 1500000), (["MD Anaesthesia"], 3590000), (VI_CLIN, 5385000)])
+hostel("Dr Vithalrao Vikhe Patil", "₹1,50,000 a year", VIMS)
+note("Dr Vithalrao Vikhe Patil", "Now under Dr. Balasaheb Vikhe Patil University: State 40% (Gen) / All India 45% (in the Mgmt column) / "
+     "NRI 15% — an NRI seat converted to All India pays the NRI fee. Also: university fee ₹1,50,000 once, caution ₹1,00,000 "
+     "refundable; no fee scholarship/reimbursement", VIMS)
+
+MIMER = "MIMER Medical College, Talegaon: fee structure for A.Y. 2026-27, PG (MD/MS) (mimer.edu.in, Aug 2026)"
+OWN.add("Maharashtra Institute of Medical Education")
+add("Maharashtra Institute of Medical Education", "Gen", "*", inr=900000, source=MIMER)
+add("Maharashtra Institute of Medical Education", "Mgmt", "*", inr=3600000, maximum=True, source=MIMER + " — 'Upto'")
+add("Maharashtra Institute of Medical Education", "NRI", "*", inr=4500000, maximum=True, source=MIMER + " — 'Upto'")
+note("Maharashtra Institute of Medical Education", "State fee = tuition ₹8,18,182 + development ₹81,818. Against-NRI seat up to "
+     "₹36,00,000; caution ₹50,000 once", MIMER)
+
+MIMSR = "MIMSR Medical College, Latur: fees approved for A.Y. 2026-2027, PG (MD/MS) (mimsr.edu.in, 05/08/2026)"
+OWN.add("Maharashtra Institute of Medical Sciences & Research, Latur")
+college_fees("Maharashtra Institute of Medical Sciences & Research, Latur", MIMSR, gen=[("*", 900000)], mgmt=[("*", 3600000)],
+             nri_inr=[("*", 4500000)])
+note("Maharashtra Institute of Medical Sciences & Research, Latur", "State fee = tuition ₹8,18,182 + development ₹81,818. "
+     "Against-NRI seat ₹36,00,000; caution ₹50,000 refundable", MIMSR)
+
+SANCHETI = "Sancheti Institute PG College: seats information & fees structure of MS Orthopaedics, A.Y. 2026-2027 (sanchetipgcollege.org, 21 Oct 2026)"
+OWN.add("Sancheti")
+college_fees("Sancheti", SANCHETI, gen=[("*", 1040000)], mgmt=[("*", 4160000)], nri_inr=[("*", 5200000)])
+note("Sancheti", "MS Orthopaedics 20 seats: State 10 (50%), Institutional 7 (35%), NRI 3 (15%). Against-NRI seat ₹41,60,000", SANCHETI)
+
+SANJ = "Sanjeevan Medical Foundation ENT PG Institute: FRA fees structure, Dept. of E.N.T., Academic Year 2026-27 (sanjeevanpgi.com)"
+OWN.add("Sanjeevan Medical Foundation")
+college_fees("Sanjeevan Medical Foundation", SANJ, gen=[("*", 900000)], mgmt=[("*", 2700000)], nri_inr=[("*", 3600000)])
+note("Sanjeevan Medical Foundation", "Against-NRI seat ₹36,00,000; development fee and caution money nil", SANJ)
+
+SKN = "Smt. Kashibai Navale Medical College: PG degree final fee structure for A.Y. 2026-2027 (sknmcgh.org, 21 Oct 2026)"
+OWN.add("Smt Kashibai Navale")
+SK_1X = ["MD Pharmacology", "MD Microbiology", "MD Community Med.", "MD Pathology", "MD Biochemistry"]
+college_fees("Smt Kashibai Navale", SKN, gen=[("*", 1566000)],
+             mgmt=[(SK_1X, 1566000), (CLIN + ["MD Respiratory Med."], 6264000), (["MD Psychiatry", "MS ENT"], 4698000), (["MD Anaesthesia"], 3132000)],
+             nri_inr=[(SK_1X, 1566000), (CLIN, 7830000), (["MD Respiratory Med."], 6264000), (["MD Psychiatry", "MS ENT"], 4698000),
+                      (["MD Anaesthesia"], 3132000)])
+hostel("Smt Kashibai Navale", "₹72,000 a year + deposit ₹7,500; mess (optional) ₹41,000", SKN)
+note("Smt Kashibai Navale", "State fee = tuition ₹13,92,001 + development ₹1,73,999. After admission, university registration & "
+     "eligibility: State ₹25,000 / Mgmt ₹80,000 / NRI ₹90,000 (+ ₹448 other, ₹5,000 library deposit). Against-NRI = Mgmt fee", SKN)
+
+VED = "Vedantaa Institute of Medical Sciences: PG medical admission (MD/MS) 2026-27, general information (vedantaa.institute, 22.10.2026)"
+OWN.add("Vedantaa")
+VE_MGMT = ["MD Anaesthesia", "MD Dermatology", "MS ENT", "MD Emergency Med.", "MD General Medicine", "MS General Surgery", "MS OBG",
+           "MS Ophthalmology", "MS Orthopaedics", "MD Paediatrics", "MD Pathology", "MD Psychiatry", "MD Radiology"]
+VE_NRI = ["MD Anaesthesia", "MD Dermatology", "MD Emergency Med.", "MD General Medicine", "MS General Surgery", "MS OBG",
+          "MS Ophthalmology", "MS Orthopaedics", "MD Paediatrics", "MD Psychiatry", "MD Radiology", "MD Respiratory Med."]
+VE_PRE = ["MD Anatomy", "MD Forensic Med.", "MD Microbiology", "MD Pharmacology", "MD Community Med."]
+college_fees("Vedantaa", VED, gen=[("*", 1762000)], mgmt=[(VE_MGMT, 7048000)], nri_inr=[(VE_NRI, 8810000)])
+no_seat("Vedantaa", "Mgmt", VE_PRE + ["MD Respiratory Med."], VED + " — seat matrix 2026-27")
+no_seat("Vedantaa", "NRI", VE_PRE + ["MS ENT", "MD Pathology"], VED + " — seat matrix 2026-27")
+hostel("Vedantaa", "₹2,60,000 a year (non-AC) / ₹3,10,000 (AC); mess ₹1,25,000", VED)
+note("Vedantaa", "State 50% / Management 35% / NRI 15%. Also: caution ₹50,000, MUHS eligibility & other ₹1,25,000. The college "
+     "is exempt from FRA (G.R. 10.04.2018, under challenge in the High Court)", VED)
+
+SWASTH = "Post Graduate Institute of Swasthiyog Pratishthan, Miraj: fee structure A.Y. 2025-26 (swasthiyog.in)"
+OWN.add("Postgraduate Institute of Swasthiyog")
+college_fees("Postgraduate Institute of Swasthiyog", SWASTH + "; the college opted for no fee rise in 2026-27 (FRA order, Annexure B, 20 Mar 2026)",
+             gen=[("*", 918000)], mgmt=[("*", 3672000)], nri_inr=[("*", 4590000)])
+note("Postgraduate Institute of Swasthiyog", "College's own fee sheet is for 2025-26; it chose no fee rise for 2026-27, so the same "
+     "fee applies. Against-NRI ₹36,72,000; caution nil", SWASTH)
+
+# A private college that has not put its own 2026-27 PG fee on its website (checked 25 Oct 2026) keeps the listing's
+# figures, black, with this note. FRA's approval is named for reference only — the owner's rule (2026-10-25): "dont
+# consider FRA as final fees, find the college fee on college website".
+NOT_YET = "College's own 2026-27 PG fee is not on its website yet (checked 25 Oct 2026) — figures are as listed earlier; confirm with the college"
 for c, (tuition, dev, total, status, meeting) in PRIVATE.items():
-    src = f"{FRA}: tuition ₹{tuition:,} + development ₹{dev:,}, {status.lower()}, meeting {meeting}"
-    add(c, "Gen", "*", inr=total, source=src)
-    add(c, "Mgmt", "*", inr=4 * total, maximum=True, source=f"{FRA_RULE}; 4 × ₹{total:,}")
-    add(c, "NRI", "*", inr=5 * total, maximum=True, source=f"{FRA_RULE}; 5 × ₹{total:,}")
+    if c in OWN:
+        continue
+    note(c, f"{NOT_YET}. For reference only, FRA approved {inr(total)} a year (state-quota fee) for 2026-27", FRA)
+note("SMBT Institute", "SMBT's own site says it is now deemed to be a university; MCC's 2026 seat matrix does not list it, and the "
+     "CET Cell's NEET-PG 2026 brochure still lists it in state counselling", "smbt.edu.in; MCC seat matrix 2026; CET Cell brochure")
 for c in ("Dr NY Tasgaonkar", "Dr Rajendra Gode", "Prakash Institute"):
-    note(c, "Not in FRA's A.Y. 2026-27 approved list — fees below are as listed; confirm with the college", FRA)
+    if c not in OWN:
+        note(c, NOT_YET, "college website, checked 25 Oct 2026")
 
 # ------------------------------------------------------------------ deemed universities: their own 2026-27 notices
 def deemed(college, source, paid, nri_usd=None, nri_inr=None):

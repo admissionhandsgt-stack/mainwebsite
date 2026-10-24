@@ -560,10 +560,18 @@ MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within mi
   sometimes tuition only (Terna 8.18 of 9.00), and deemed NRI dollars converted at ₹95. So `--official
   scripts/data/fees_official_maharashtra_2026_27.json` (built by `make_fees_official_maharashtra_2026_27.py`) replaces them
   from official sources only, each cell green with its source in a comment: the CET Cell's NEET-PG 2026 brochure §16
-  (government ₹1,67,300 + ₹5,000 development; central institutes), FRA's A.Y. 2026-27 fee search
-  (ay26-27.mahafraportal.org, MDMS — one yearly fee per private college) with FRA notice 1090/2023 (Management up to 4×,
-  NRI up to 5×; printed "≤" because they are ceilings), and each deemed university's own 2026-27 notice (all 12 found).
-  Not in FRA's 2026-27 list: Dr NY Tasgaonkar, Dr Rajendra Gode, Prakash — still black. NRI: a deemed university's fee is
+  (government ₹1,67,300 + ₹5,000 development; central institutes), each deemed university's own 2026-27 notice (all 12),
+  and **each private college's own 2026-27 notice on its website — never FRA** (owner, 2026-10-25, after a first version
+  used FRA's approved fee and its 4×/5× ceiling: "dont consider FRA as final fees, find the college fee on college
+  website"; N.K.P. Salve's own notice showed ₹54.75 L for Radiology against FRA's ₹10.08 L). Colleges charge per branch
+  and per quota differently from FRA's single figure, and two are now under private health-sciences universities (CET
+  Cell brochure Annexure F: N.K.P. Salve — Lata Mangeshkar University; Vikhe Patil — Dr. Balasaheb Vikhe Patil University),
+  with State 40% / All India 45% / NRI 15% (the 45% sits in the Mgmt column). Vedantaa is exempt from FRA (G.R. 10.04.2018).
+  13 private colleges published a 2026-27 notice by 25 Oct 2026 (several on 19–22 Oct); 10 had not (ACPM, Bombay
+  Hospital, NY Tasgaonkar, Rajendra Gode, Ulhas Patil, IIMSR, KJ Somaiya, Prakash, SMBT, Terna) — black, with a note
+  naming FRA's figure for reference only. Re-check those sites before the next update. A private college's notice fills
+  any branch it has (the notice is newer than the listing); a deemed university's only the seats MCC's matrix lists.
+  "≤" now means only that the college's notice says "up to" (MIMER). NRI: a deemed university's fee is
   in dollars ($ is the fee, ₹ = $ × the rate cell); a private college's is in rupees ($ = ₹ ÷ rate). The rate is one
   yellow cell (`--rate`, 96 on 2026-10-25) and every conversion is a formula on it; recalculate in Excel (COM) before
   handing the file over — there is no LibreOffice here — and check no cell's displayed text is ####.

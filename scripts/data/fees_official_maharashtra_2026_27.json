@@ -877,367 +877,422 @@
   "source": "State CET Cell, NEET-PG 2026 Information Brochure (16 Oct 2026), section 16, p. 37"
  },
  {
-  "college": "KJ Somaiyya",
+  "college": "NKP Salve",
   "seat": "Gen",
-  "branches": "*",
-  "fee_inr": 1320000,
+  "branches": [
+   "MD Anatomy",
+   "MD Physiology",
+   "MD Biochemistry",
+   "MD Microbiology"
+  ],
+  "fee_inr": 100000,
   "fee_usd": null,
   "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS): tuition ₹1,200,000 + development ₹120,000, approved, meeting 27-07-2026"
- },
- {
-  "college": "KJ Somaiyya",
-  "seat": "Mgmt",
-  "branches": "*",
-  "fee_inr": 5280000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 4 × ₹1,320,000"
- },
- {
-  "college": "KJ Somaiyya",
-  "seat": "NRI",
-  "branches": "*",
-  "fee_inr": 6600000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 5 × ₹1,320,000"
- },
- {
-  "college": "Terna Medical College",
-  "seat": "Gen",
-  "branches": "*",
-  "fee_inr": 900000,
-  "fee_usd": null,
-  "max": false,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS): tuition ₹818,182 + development ₹81,818, approved, meeting 27-07-2026"
- },
- {
-  "college": "Terna Medical College",
-  "seat": "Mgmt",
-  "branches": "*",
-  "fee_inr": 3600000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 4 × ₹900,000"
- },
- {
-  "college": "Terna Medical College",
-  "seat": "NRI",
-  "branches": "*",
-  "fee_inr": 4500000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 5 × ₹900,000"
- },
- {
-  "college": "Maharashtra Institute of Medical Education",
-  "seat": "Gen",
-  "branches": "*",
-  "fee_inr": 900000,
-  "fee_usd": null,
-  "max": false,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS): tuition ₹818,182 + development ₹81,818, approved, meeting 27-07-2026"
- },
- {
-  "college": "Maharashtra Institute of Medical Education",
-  "seat": "Mgmt",
-  "branches": "*",
-  "fee_inr": 3600000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 4 × ₹900,000"
- },
- {
-  "college": "Maharashtra Institute of Medical Education",
-  "seat": "NRI",
-  "branches": "*",
-  "fee_inr": 4500000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 5 × ₹900,000"
- },
- {
-  "college": "Dr Vasantrao Pawar",
-  "seat": "Gen",
-  "branches": "*",
-  "fee_inr": 990000,
-  "fee_usd": null,
-  "max": false,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS): tuition ₹880,000 + development ₹110,000, approved, meeting 11-06-2026"
- },
- {
-  "college": "Dr Vasantrao Pawar",
-  "seat": "Mgmt",
-  "branches": "*",
-  "fee_inr": 3960000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 4 × ₹990,000"
- },
- {
-  "college": "Dr Vasantrao Pawar",
-  "seat": "NRI",
-  "branches": "*",
-  "fee_inr": 4950000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 5 × ₹990,000"
- },
- {
-  "college": "ACPM Medical College",
-  "seat": "Gen",
-  "branches": "*",
-  "fee_inr": 900000,
-  "fee_usd": null,
-  "max": false,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS): tuition ₹796,460 + development ₹103,540, approved, meeting 27-07-2026"
- },
- {
-  "college": "ACPM Medical College",
-  "seat": "Mgmt",
-  "branches": "*",
-  "fee_inr": 3600000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 4 × ₹900,000"
- },
- {
-  "college": "ACPM Medical College",
-  "seat": "NRI",
-  "branches": "*",
-  "fee_inr": 4500000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 5 × ₹900,000"
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner)"
  },
  {
   "college": "NKP Salve",
   "seat": "Gen",
-  "branches": "*",
-  "fee_inr": 1008000,
+  "branches": [
+   "MD Pharmacology"
+  ],
+  "fee_inr": 475000,
   "fee_usd": null,
   "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS): tuition ₹878,814 + development ₹129,186, approved, meeting 11-06-2026"
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner)"
+ },
+ {
+  "college": "NKP Salve",
+  "seat": "Gen",
+  "branches": [
+   "MD Community Med."
+  ],
+  "fee_inr": 875000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner)"
+ },
+ {
+  "college": "NKP Salve",
+  "seat": "Gen",
+  "branches": [
+   "MD Pathology"
+  ],
+  "fee_inr": 1275000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner)"
+ },
+ {
+  "college": "NKP Salve",
+  "seat": "Gen",
+  "branches": [
+   "MS ENT",
+   "MD Anaesthesia"
+  ],
+  "fee_inr": 2075000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner)"
+ },
+ {
+  "college": "NKP Salve",
+  "seat": "Gen",
+  "branches": [
+   "MS Ophthalmology"
+  ],
+  "fee_inr": 3975000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner)"
+ },
+ {
+  "college": "NKP Salve",
+  "seat": "Gen",
+  "branches": [
+   "MD General Medicine"
+  ],
+  "fee_inr": 4775000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner)"
+ },
+ {
+  "college": "NKP Salve",
+  "seat": "Gen",
+  "branches": [
+   "MS OBG"
+  ],
+  "fee_inr": 4375000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner)"
+ },
+ {
+  "college": "NKP Salve",
+  "seat": "Gen",
+  "branches": [
+   "MD Radiology",
+   "MD Dermatology"
+  ],
+  "fee_inr": 5475000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner)"
+ },
+ {
+  "college": "NKP Salve",
+  "seat": "Gen",
+  "branches": [
+   "MS General Surgery",
+   "MS Orthopaedics",
+   "MD Paediatrics"
+  ],
+  "fee_inr": 4175000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner)"
+ },
+ {
+  "college": "NKP Salve",
+  "seat": "Gen",
+  "branches": [
+   "MD Respiratory Med.",
+   "MD Psychiatry"
+  ],
+  "fee_inr": 3175000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner)"
+ },
+ {
+  "college": "NKP Salve",
+  "seat": "NRI",
+  "branches": [
+   "MD Pathology"
+  ],
+  "fee_inr": null,
+  "fee_usd": 20570,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner)"
+ },
+ {
+  "college": "NKP Salve",
+  "seat": "NRI",
+  "branches": [
+   "MS ENT",
+   "MD Anaesthesia"
+  ],
+  "fee_inr": null,
+  "fee_usd": 33470,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner)"
+ },
+ {
+  "college": "NKP Salve",
+  "seat": "NRI",
+  "branches": [
+   "MS Ophthalmology"
+  ],
+  "fee_inr": null,
+  "fee_usd": 64115,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner)"
+ },
+ {
+  "college": "NKP Salve",
+  "seat": "NRI",
+  "branches": [
+   "MD General Medicine"
+  ],
+  "fee_inr": null,
+  "fee_usd": 77020,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner)"
+ },
+ {
+  "college": "NKP Salve",
+  "seat": "NRI",
+  "branches": [
+   "MS OBG"
+  ],
+  "fee_inr": null,
+  "fee_usd": 70570,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner)"
+ },
+ {
+  "college": "NKP Salve",
+  "seat": "NRI",
+  "branches": [
+   "MD Radiology",
+   "MD Dermatology"
+  ],
+  "fee_inr": null,
+  "fee_usd": 88310,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner)"
+ },
+ {
+  "college": "NKP Salve",
+  "seat": "NRI",
+  "branches": [
+   "MS General Surgery",
+   "MS Orthopaedics",
+   "MD Paediatrics"
+  ],
+  "fee_inr": null,
+  "fee_usd": 67340,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner)"
+ },
+ {
+  "college": "NKP Salve",
+  "seat": "NRI",
+  "branches": [
+   "MD Respiratory Med.",
+   "MD Psychiatry"
+  ],
+  "fee_inr": null,
+  "fee_usd": 51210,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner)"
  },
  {
   "college": "NKP Salve",
   "seat": "Mgmt",
-  "branches": "*",
-  "fee_inr": 4032000,
+  "branches": [
+   "MD Anatomy",
+   "MD Physiology",
+   "MD Biochemistry",
+   "MD Microbiology"
+  ],
+  "fee_inr": 100000,
   "fee_usd": null,
-  "max": true,
+  "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 4 × ₹1,008,000"
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner) — the college's 'All India Quota (45%)' column"
  },
  {
   "college": "NKP Salve",
-  "seat": "NRI",
-  "branches": "*",
-  "fee_inr": 5040000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 5 × ₹1,008,000"
- },
- {
-  "college": "Dr Panjabrao",
-  "seat": "Gen",
-  "branches": "*",
-  "fee_inr": 900000,
+  "seat": "Mgmt",
+  "branches": [
+   "MD Pharmacology"
+  ],
+  "fee_inr": 475000,
   "fee_usd": null,
   "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS): tuition ₹800,000 + development ₹100,000, approved, meeting 25-08-2026"
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner) — the college's 'All India Quota (45%)' column"
  },
  {
-  "college": "Dr Panjabrao",
+  "college": "NKP Salve",
   "seat": "Mgmt",
-  "branches": "*",
-  "fee_inr": 3600000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 4 × ₹900,000"
- },
- {
-  "college": "Dr Panjabrao",
-  "seat": "NRI",
-  "branches": "*",
-  "fee_inr": 4500000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 5 × ₹900,000"
- },
- {
-  "college": "Maharashtra Institute of Medical Sciences & Research, Latur",
-  "seat": "Gen",
-  "branches": "*",
-  "fee_inr": 900000,
+  "branches": [
+   "MD Community Med."
+  ],
+  "fee_inr": 875000,
   "fee_usd": null,
   "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS): tuition ₹818,182 + development ₹81,818, no upward revision, meeting 30-07-2025"
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner) — the college's 'All India Quota (45%)' column"
  },
  {
-  "college": "Maharashtra Institute of Medical Sciences & Research, Latur",
+  "college": "NKP Salve",
   "seat": "Mgmt",
-  "branches": "*",
-  "fee_inr": 3600000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 4 × ₹900,000"
- },
- {
-  "college": "Maharashtra Institute of Medical Sciences & Research, Latur",
-  "seat": "NRI",
-  "branches": "*",
-  "fee_inr": 4500000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 5 × ₹900,000"
- },
- {
-  "college": "Dr Vithalrao Vikhe Patil",
-  "seat": "Gen",
-  "branches": "*",
-  "fee_inr": 900000,
+  "branches": [
+   "MD Pathology"
+  ],
+  "fee_inr": 1275000,
   "fee_usd": null,
   "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS): tuition ₹782,609 + development ₹117,391, no upward revision, meeting 22-07-2025"
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner) — the college's 'All India Quota (45%)' column"
  },
  {
-  "college": "Dr Vithalrao Vikhe Patil",
+  "college": "NKP Salve",
   "seat": "Mgmt",
-  "branches": "*",
-  "fee_inr": 3600000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 4 × ₹900,000"
- },
- {
-  "college": "Dr Vithalrao Vikhe Patil",
-  "seat": "NRI",
-  "branches": "*",
-  "fee_inr": 4500000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 5 × ₹900,000"
- },
- {
-  "college": "Smt Kashibai Navale",
-  "seat": "Gen",
-  "branches": "*",
-  "fee_inr": 1566000,
+  "branches": [
+   "MS ENT",
+   "MD Anaesthesia"
+  ],
+  "fee_inr": 2075000,
   "fee_usd": null,
   "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS): tuition ₹1,392,001 + development ₹173,999, approved, meeting 27-07-2026"
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner) — the college's 'All India Quota (45%)' column"
  },
  {
-  "college": "Smt Kashibai Navale",
+  "college": "NKP Salve",
   "seat": "Mgmt",
-  "branches": "*",
-  "fee_inr": 6264000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 4 × ₹1,566,000"
- },
- {
-  "college": "Smt Kashibai Navale",
-  "seat": "NRI",
-  "branches": "*",
-  "fee_inr": 7830000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 5 × ₹1,566,000"
- },
- {
-  "college": "Dr Ulhas Patil",
-  "seat": "Gen",
-  "branches": "*",
-  "fee_inr": 900000,
+  "branches": [
+   "MS Ophthalmology"
+  ],
+  "fee_inr": 3975000,
   "fee_usd": null,
   "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS): tuition ₹782,609 + development ₹117,391, approved, meeting 27-07-2026"
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner) — the college's 'All India Quota (45%)' column"
  },
  {
-  "college": "Dr Ulhas Patil",
+  "college": "NKP Salve",
   "seat": "Mgmt",
-  "branches": "*",
-  "fee_inr": 3600000,
+  "branches": [
+   "MD General Medicine"
+  ],
+  "fee_inr": 4775000,
   "fee_usd": null,
-  "max": true,
+  "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 4 × ₹900,000"
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner) — the college's 'All India Quota (45%)' column"
  },
  {
-  "college": "Dr Ulhas Patil",
-  "seat": "NRI",
-  "branches": "*",
-  "fee_inr": 4500000,
+  "college": "NKP Salve",
+  "seat": "Mgmt",
+  "branches": [
+   "MS OBG"
+  ],
+  "fee_inr": 4375000,
   "fee_usd": null,
-  "max": true,
+  "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 5 × ₹900,000"
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner) — the college's 'All India Quota (45%)' column"
+ },
+ {
+  "college": "NKP Salve",
+  "seat": "Mgmt",
+  "branches": [
+   "MD Radiology",
+   "MD Dermatology"
+  ],
+  "fee_inr": 5475000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner) — the college's 'All India Quota (45%)' column"
+ },
+ {
+  "college": "NKP Salve",
+  "seat": "Mgmt",
+  "branches": [
+   "MS General Surgery",
+   "MS Orthopaedics",
+   "MD Paediatrics"
+  ],
+  "fee_inr": 4175000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner) — the college's 'All India Quota (45%)' column"
+ },
+ {
+  "college": "NKP Salve",
+  "seat": "Mgmt",
+  "branches": [
+   "MD Respiratory Med.",
+   "MD Psychiatry"
+  ],
+  "fee_inr": 3175000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner) — the college's 'All India Quota (45%)' column"
+ },
+ {
+  "college": "NKP Salve",
+  "seat": "Note",
+  "text": "Now a constituent unit of Lata Mangeshkar University: State 40% / All India 45% / NRI 15%. Plus university fee ₹1,50,000 a year (NRI US$1,620) and caution money ₹1,00,000 once (US$1,100). Unfilled NRI seats converted to All India pay 1.5× (e.g. Radiology ₹82,12,500). Fees +5% a year; ₹5 L refundable bond for 1-year service",
+  "year": "2026-27",
+  "source": "N.K.P. Salve Institute (constituent unit of Lata Mangeshkar University): interim fees structure for MDMS admission A.Y. 2026-2027, tuition & development fees per annum (college's notice, sent by the owner)"
  },
  {
   "college": "Ashwini Rural",
@@ -1248,7 +1303,7 @@
   "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS): tuition ₹1,170,732 + development ₹125,268, approved, meeting 11-06-2026"
+  "source": "Ashwini Rural Medical College: fees approved by FRA for A.Y. 2026-27 (armch.org/fra/), every MD/MS branch"
  },
  {
   "college": "Ashwini Rural",
@@ -1256,10 +1311,10 @@
   "branches": "*",
   "fee_inr": 5184000,
   "fee_usd": null,
-  "max": true,
+  "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 4 × ₹1,296,000"
+  "source": "Ashwini Rural Medical College: fees approved by FRA for A.Y. 2026-27 (armch.org/fra/), every MD/MS branch"
  },
  {
   "college": "Ashwini Rural",
@@ -1267,13 +1322,588 @@
   "branches": "*",
   "fee_inr": 6480000,
   "fee_usd": null,
-  "max": true,
+  "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 5 × ₹1,296,000"
+  "source": "Ashwini Rural Medical College: fees approved by FRA for A.Y. 2026-27 (armch.org/fra/), every MD/MS branch"
  },
  {
-  "college": "Indian Institute of Medical Science & Research, Jalna",
+  "college": "Ashwini Rural",
+  "seat": "Note",
+  "text": "NRI seat given to a non-NRI ('against NRI seat') ₹51,84,000; caution money ₹50,000 once",
+  "year": "2026-27",
+  "source": "Ashwini Rural Medical College: fees approved by FRA for A.Y. 2026-27 (armch.org/fra/), every MD/MS branch"
+ },
+ {
+  "college": "BKL Walawalkar",
+  "seat": "Gen",
+  "branches": [
+   "MD General Medicine",
+   "MD Dermatology",
+   "MD Paediatrics",
+   "MD Radiology",
+   "MS General Surgery",
+   "MS Orthopaedics",
+   "MS Ophthalmology",
+   "MS OBG",
+   "MD Anaesthesia",
+   "MD Respiratory Med.",
+   "MD Psychiatry",
+   "MS ENT",
+   "MD Radiation Oncology",
+   "MD Pathology"
+  ],
+  "fee_inr": 1023000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "B.K.L. Walawalkar Rural Medical College: PG degree MD/MS first-year fees structure A.Y. 2026-27 (bklwrmc.com, dated 19/10/2026)"
+ },
+ {
+  "college": "BKL Walawalkar",
+  "seat": "Gen",
+  "branches": [
+   "MD Community Med."
+  ],
+  "fee_inr": 500000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "B.K.L. Walawalkar Rural Medical College: PG degree MD/MS first-year fees structure A.Y. 2026-27 (bklwrmc.com, dated 19/10/2026)"
+ },
+ {
+  "college": "BKL Walawalkar",
+  "seat": "Mgmt",
+  "branches": [
+   "MD General Medicine",
+   "MD Dermatology",
+   "MD Paediatrics",
+   "MD Radiology",
+   "MS General Surgery",
+   "MS Orthopaedics",
+   "MS Ophthalmology",
+   "MS OBG",
+   "MD Anaesthesia",
+   "MD Respiratory Med.",
+   "MD Psychiatry",
+   "MS ENT",
+   "MD Radiation Oncology"
+  ],
+  "fee_inr": 4092000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "B.K.L. Walawalkar Rural Medical College: PG degree MD/MS first-year fees structure A.Y. 2026-27 (bklwrmc.com, dated 19/10/2026)"
+ },
+ {
+  "college": "BKL Walawalkar",
+  "seat": "Mgmt",
+  "branches": [
+   "MD Pathology"
+  ],
+  "fee_inr": 2046000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "B.K.L. Walawalkar Rural Medical College: PG degree MD/MS first-year fees structure A.Y. 2026-27 (bklwrmc.com, dated 19/10/2026)"
+ },
+ {
+  "college": "BKL Walawalkar",
+  "seat": "NRI",
+  "branches": [
+   "MD General Medicine",
+   "MD Dermatology",
+   "MD Paediatrics",
+   "MD Radiology",
+   "MS General Surgery",
+   "MS Orthopaedics",
+   "MS Ophthalmology",
+   "MS OBG",
+   "MD Anaesthesia",
+   "MD Respiratory Med.",
+   "MD Psychiatry",
+   "MS ENT",
+   "MD Radiation Oncology"
+  ],
+  "fee_inr": 5115000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "B.K.L. Walawalkar Rural Medical College: PG degree MD/MS first-year fees structure A.Y. 2026-27 (bklwrmc.com, dated 19/10/2026)"
+ },
+ {
+  "college": "BKL Walawalkar",
+  "seat": "NRI",
+  "branches": [
+   "MD Pathology"
+  ],
+  "fee_inr": 2046000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "B.K.L. Walawalkar Rural Medical College: PG degree MD/MS first-year fees structure A.Y. 2026-27 (bklwrmc.com, dated 19/10/2026)"
+ },
+ {
+  "college": "BKL Walawalkar",
+  "seat": "Mgmt",
+  "branches": [
+   "MD Community Med."
+  ],
+  "fee_inr": null,
+  "fee_usd": null,
+  "max": false,
+  "none": true,
+  "noseat": true,
+  "year": "2026-27",
+  "source": "B.K.L. Walawalkar Rural Medical College: PG degree MD/MS first-year fees structure A.Y. 2026-27 (bklwrmc.com, dated 19/10/2026)"
+ },
+ {
+  "college": "BKL Walawalkar",
+  "seat": "NRI",
+  "branches": [
+   "MD Community Med."
+  ],
+  "fee_inr": null,
+  "fee_usd": null,
+  "max": false,
+  "none": true,
+  "noseat": true,
+  "year": "2026-27",
+  "source": "B.K.L. Walawalkar Rural Medical College: PG degree MD/MS first-year fees structure A.Y. 2026-27 (bklwrmc.com, dated 19/10/2026)"
+ },
+ {
+  "college": "BKL Walawalkar",
+  "seat": "Hostel",
+  "text": "₹84,000 a year + mess ₹50,000; caution ₹50,000 (refundable)",
+  "year": "2026-27",
+  "source": "B.K.L. Walawalkar Rural Medical College: PG degree MD/MS first-year fees structure A.Y. 2026-27 (bklwrmc.com, dated 19/10/2026)"
+ },
+ {
+  "college": "BKL Walawalkar",
+  "seat": "Note",
+  "text": "State fee = tuition ₹9,01,323 + development ₹1,21,677 (Community Medicine: ₹3,78,323 + ₹1,21,677). University eligibility fee collected after the last CAP round",
+  "year": "2026-27",
+  "source": "B.K.L. Walawalkar Rural Medical College: PG degree MD/MS first-year fees structure A.Y. 2026-27 (bklwrmc.com, dated 19/10/2026)"
+ },
+ {
+  "college": "Dr Panjabrao",
+  "seat": "Gen",
+  "branches": [
+   "MD Anatomy",
+   "MD Physiology",
+   "MD Pharmacology",
+   "MD Microbiology",
+   "MD Community Med."
+  ],
+  "fee_inr": 600000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Dr. Panjabrao Deshmukh Memorial Medical College: subject-wise tuition fees for PG admission 2026-27, per year (pdmmc.edu.in, 21/10/2026)"
+ },
+ {
+  "college": "Dr Panjabrao",
+  "seat": "Gen",
+  "branches": [
+   "MD Pathology",
+   "MD General Medicine",
+   "MD Dermatology",
+   "MD Paediatrics",
+   "MD Radiology",
+   "MS General Surgery",
+   "MS Orthopaedics",
+   "MS Ophthalmology",
+   "MS OBG",
+   "MD Psychiatry",
+   "MD Respiratory Med.",
+   "MD Anaesthesia",
+   "MS ENT"
+  ],
+  "fee_inr": 900000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Dr. Panjabrao Deshmukh Memorial Medical College: subject-wise tuition fees for PG admission 2026-27, per year (pdmmc.edu.in, 21/10/2026)"
+ },
+ {
+  "college": "Dr Panjabrao",
+  "seat": "Mgmt",
+  "branches": [
+   "MD Anatomy",
+   "MD Physiology",
+   "MD Pharmacology",
+   "MD Microbiology",
+   "MD Community Med."
+  ],
+  "fee_inr": 600000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Dr. Panjabrao Deshmukh Memorial Medical College: subject-wise tuition fees for PG admission 2026-27, per year (pdmmc.edu.in, 21/10/2026)"
+ },
+ {
+  "college": "Dr Panjabrao",
+  "seat": "Mgmt",
+  "branches": [
+   "MD Pathology"
+  ],
+  "fee_inr": 1200000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Dr. Panjabrao Deshmukh Memorial Medical College: subject-wise tuition fees for PG admission 2026-27, per year (pdmmc.edu.in, 21/10/2026)"
+ },
+ {
+  "college": "Dr Panjabrao",
+  "seat": "Mgmt",
+  "branches": [
+   "MD General Medicine",
+   "MD Dermatology",
+   "MD Paediatrics",
+   "MD Radiology",
+   "MS General Surgery",
+   "MS Orthopaedics",
+   "MS Ophthalmology",
+   "MS OBG",
+   "MD Psychiatry",
+   "MD Respiratory Med.",
+   "MD Anaesthesia",
+   "MS ENT"
+  ],
+  "fee_inr": 3600000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Dr. Panjabrao Deshmukh Memorial Medical College: subject-wise tuition fees for PG admission 2026-27, per year (pdmmc.edu.in, 21/10/2026)"
+ },
+ {
+  "college": "Dr Panjabrao",
+  "seat": "NRI",
+  "branches": [
+   "MD Anatomy",
+   "MD Physiology",
+   "MD Pharmacology",
+   "MD Microbiology",
+   "MD Community Med."
+  ],
+  "fee_inr": 600000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Dr. Panjabrao Deshmukh Memorial Medical College: subject-wise tuition fees for PG admission 2026-27, per year (pdmmc.edu.in, 21/10/2026)"
+ },
+ {
+  "college": "Dr Panjabrao",
+  "seat": "NRI",
+  "branches": [
+   "MD Pathology"
+  ],
+  "fee_inr": 1400000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Dr. Panjabrao Deshmukh Memorial Medical College: subject-wise tuition fees for PG admission 2026-27, per year (pdmmc.edu.in, 21/10/2026)"
+ },
+ {
+  "college": "Dr Panjabrao",
+  "seat": "NRI",
+  "branches": [
+   "MD General Medicine",
+   "MD Dermatology",
+   "MD Paediatrics",
+   "MD Radiology",
+   "MS General Surgery",
+   "MS Orthopaedics",
+   "MS Ophthalmology",
+   "MS OBG",
+   "MD Psychiatry",
+   "MD Respiratory Med.",
+   "MD Anaesthesia",
+   "MS ENT"
+  ],
+  "fee_inr": 4500000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Dr. Panjabrao Deshmukh Memorial Medical College: subject-wise tuition fees for PG admission 2026-27, per year (pdmmc.edu.in, 21/10/2026)"
+ },
+ {
+  "college": "Dr Panjabrao",
+  "seat": "Hostel",
+  "text": "₹1,70,000 a year (double-seated) + hostel caution ₹50,000",
+  "year": "2026-27",
+  "source": "Dr. Panjabrao Deshmukh Memorial Medical College: subject-wise tuition fees for PG admission 2026-27, per year (pdmmc.edu.in, 21/10/2026)"
+ },
+ {
+  "college": "Dr Panjabrao",
+  "seat": "Note",
+  "text": "State 50% / Institutional & against-NRI / NRI 15%. Also: admission ₹1,500, caution ₹50,000, S.A.M.C. fee ₹30,000; MUHS eligibility fees after the last CAP round",
+  "year": "2026-27",
+  "source": "Dr. Panjabrao Deshmukh Memorial Medical College: subject-wise tuition fees for PG admission 2026-27, per year (pdmmc.edu.in, 21/10/2026)"
+ },
+ {
+  "college": "Dr Vasantrao Pawar",
+  "seat": "Gen",
+  "branches": [
+   "MD General Medicine",
+   "MD Dermatology",
+   "MD Paediatrics",
+   "MD Radiology",
+   "MS General Surgery",
+   "MS Orthopaedics",
+   "MS Ophthalmology",
+   "MS OBG",
+   "MD Anaesthesia",
+   "MD Psychiatry",
+   "MD Respiratory Med.",
+   "MS ENT",
+   "MD Pathology",
+   "MD Pharmacology",
+   "MD Microbiology"
+  ],
+  "fee_inr": 990000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Dr. Vasantrao Pawar Medical College: fees for PG degree course A.Y. 2026-27 — provisional, pending FRA review (drvasantraopawarmedicalcollege.com, 19 Oct 2026)"
+ },
+ {
+  "college": "Dr Vasantrao Pawar",
+  "seat": "Mgmt",
+  "branches": [
+   "MD General Medicine",
+   "MD Dermatology",
+   "MD Paediatrics",
+   "MD Radiology",
+   "MS General Surgery",
+   "MS Orthopaedics",
+   "MS Ophthalmology",
+   "MS OBG",
+   "MD Anaesthesia",
+   "MD Psychiatry",
+   "MD Respiratory Med.",
+   "MS ENT",
+   "MD Pathology"
+  ],
+  "fee_inr": 3960000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Dr. Vasantrao Pawar Medical College: fees for PG degree course A.Y. 2026-27 — provisional, pending FRA review (drvasantraopawarmedicalcollege.com, 19 Oct 2026)"
+ },
+ {
+  "college": "Dr Vasantrao Pawar",
+  "seat": "Mgmt",
+  "branches": [
+   "MD Pharmacology",
+   "MD Microbiology"
+  ],
+  "fee_inr": 990000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Dr. Vasantrao Pawar Medical College: fees for PG degree course A.Y. 2026-27 — provisional, pending FRA review (drvasantraopawarmedicalcollege.com, 19 Oct 2026)"
+ },
+ {
+  "college": "Dr Vasantrao Pawar",
+  "seat": "NRI",
+  "branches": [
+   "MD General Medicine",
+   "MD Dermatology",
+   "MD Paediatrics",
+   "MD Radiology",
+   "MS General Surgery",
+   "MS Orthopaedics",
+   "MS Ophthalmology",
+   "MS OBG",
+   "MD Anaesthesia",
+   "MD Psychiatry",
+   "MD Respiratory Med.",
+   "MS ENT",
+   "MD Pathology"
+  ],
+  "fee_inr": 4950000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Dr. Vasantrao Pawar Medical College: fees for PG degree course A.Y. 2026-27 — provisional, pending FRA review (drvasantraopawarmedicalcollege.com, 19 Oct 2026)"
+ },
+ {
+  "college": "Dr Vasantrao Pawar",
+  "seat": "NRI",
+  "branches": [
+   "MD Pharmacology",
+   "MD Microbiology"
+  ],
+  "fee_inr": 990000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Dr. Vasantrao Pawar Medical College: fees for PG degree course A.Y. 2026-27 — provisional, pending FRA review (drvasantraopawarmedicalcollege.com, 19 Oct 2026)"
+ },
+ {
+  "college": "Dr Vasantrao Pawar",
+  "seat": "Hostel",
+  "text": "₹5,55,000 once for 3 years (hostel ₹3,30,000 + mess ₹2,25,000)",
+  "year": "2026-27",
+  "source": "Dr. Vasantrao Pawar Medical College: fees for PG degree course A.Y. 2026-27 — provisional, pending FRA review (drvasantraopawarmedicalcollege.com, 19 Oct 2026)"
+ },
+ {
+  "college": "Dr Vasantrao Pawar",
+  "seat": "Note",
+  "text": "Provisional — pending review with FRA. Also: eligibility ₹90,000, caution ₹50,000, SWF/UDF/mediclaim ₹1,135",
+  "year": "2026-27",
+  "source": "Dr. Vasantrao Pawar Medical College: fees for PG degree course A.Y. 2026-27 — provisional, pending FRA review (drvasantraopawarmedicalcollege.com, 19 Oct 2026)"
+ },
+ {
+  "college": "Dr Vithalrao Vikhe Patil",
+  "seat": "Gen",
+  "branches": [
+   "MD Pathology"
+  ],
+  "fee_inr": 1500000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Dr. Vithalrao Vikhe Patil Foundation's Medical College (Dr. Balasaheb Vikhe Patil University): interim fee structure MD/MS 2026-27, per annum, as approved by the ad-hoc University Fee Regulatory Committee (vimsmch.edu.in, 21.10.2026)"
+ },
+ {
+  "college": "Dr Vithalrao Vikhe Patil",
+  "seat": "Gen",
+  "branches": [
+   "MD General Medicine",
+   "MD Dermatology",
+   "MD Paediatrics",
+   "MD Radiology",
+   "MS General Surgery",
+   "MS Orthopaedics",
+   "MS Ophthalmology",
+   "MS OBG",
+   "MD Anaesthesia"
+  ],
+  "fee_inr": 1795000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Dr. Vithalrao Vikhe Patil Foundation's Medical College (Dr. Balasaheb Vikhe Patil University): interim fee structure MD/MS 2026-27, per annum, as approved by the ad-hoc University Fee Regulatory Committee (vimsmch.edu.in, 21.10.2026)"
+ },
+ {
+  "college": "Dr Vithalrao Vikhe Patil",
+  "seat": "Mgmt",
+  "branches": [
+   "MD Pathology"
+  ],
+  "fee_inr": 1500000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Dr. Vithalrao Vikhe Patil Foundation's Medical College (Dr. Balasaheb Vikhe Patil University): interim fee structure MD/MS 2026-27, per annum, as approved by the ad-hoc University Fee Regulatory Committee (vimsmch.edu.in, 21.10.2026)"
+ },
+ {
+  "college": "Dr Vithalrao Vikhe Patil",
+  "seat": "Mgmt",
+  "branches": [
+   "MD General Medicine",
+   "MD Dermatology",
+   "MD Paediatrics",
+   "MD Radiology",
+   "MS General Surgery",
+   "MS Orthopaedics",
+   "MS Ophthalmology",
+   "MS OBG",
+   "MD Anaesthesia"
+  ],
+  "fee_inr": 3590000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Dr. Vithalrao Vikhe Patil Foundation's Medical College (Dr. Balasaheb Vikhe Patil University): interim fee structure MD/MS 2026-27, per annum, as approved by the ad-hoc University Fee Regulatory Committee (vimsmch.edu.in, 21.10.2026)"
+ },
+ {
+  "college": "Dr Vithalrao Vikhe Patil",
+  "seat": "NRI",
+  "branches": [
+   "MD Pathology"
+  ],
+  "fee_inr": 1500000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Dr. Vithalrao Vikhe Patil Foundation's Medical College (Dr. Balasaheb Vikhe Patil University): interim fee structure MD/MS 2026-27, per annum, as approved by the ad-hoc University Fee Regulatory Committee (vimsmch.edu.in, 21.10.2026)"
+ },
+ {
+  "college": "Dr Vithalrao Vikhe Patil",
+  "seat": "NRI",
+  "branches": [
+   "MD Anaesthesia"
+  ],
+  "fee_inr": 3590000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Dr. Vithalrao Vikhe Patil Foundation's Medical College (Dr. Balasaheb Vikhe Patil University): interim fee structure MD/MS 2026-27, per annum, as approved by the ad-hoc University Fee Regulatory Committee (vimsmch.edu.in, 21.10.2026)"
+ },
+ {
+  "college": "Dr Vithalrao Vikhe Patil",
+  "seat": "NRI",
+  "branches": [
+   "MD General Medicine",
+   "MD Dermatology",
+   "MD Paediatrics",
+   "MD Radiology",
+   "MS General Surgery",
+   "MS Orthopaedics",
+   "MS Ophthalmology",
+   "MS OBG"
+  ],
+  "fee_inr": 5385000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Dr. Vithalrao Vikhe Patil Foundation's Medical College (Dr. Balasaheb Vikhe Patil University): interim fee structure MD/MS 2026-27, per annum, as approved by the ad-hoc University Fee Regulatory Committee (vimsmch.edu.in, 21.10.2026)"
+ },
+ {
+  "college": "Dr Vithalrao Vikhe Patil",
+  "seat": "Hostel",
+  "text": "₹1,50,000 a year",
+  "year": "2026-27",
+  "source": "Dr. Vithalrao Vikhe Patil Foundation's Medical College (Dr. Balasaheb Vikhe Patil University): interim fee structure MD/MS 2026-27, per annum, as approved by the ad-hoc University Fee Regulatory Committee (vimsmch.edu.in, 21.10.2026)"
+ },
+ {
+  "college": "Dr Vithalrao Vikhe Patil",
+  "seat": "Note",
+  "text": "Now under Dr. Balasaheb Vikhe Patil University: State 40% (Gen) / All India 45% (in the Mgmt column) / NRI 15% — an NRI seat converted to All India pays the NRI fee. Also: university fee ₹1,50,000 once, caution ₹1,00,000 refundable; no fee scholarship/reimbursement",
+  "year": "2026-27",
+  "source": "Dr. Vithalrao Vikhe Patil Foundation's Medical College (Dr. Balasaheb Vikhe Patil University): interim fee structure MD/MS 2026-27, per annum, as approved by the ad-hoc University Fee Regulatory Committee (vimsmch.edu.in, 21.10.2026)"
+ },
+ {
+  "college": "Maharashtra Institute of Medical Education",
   "seat": "Gen",
   "branches": "*",
   "fee_inr": 900000,
@@ -1281,10 +1911,10 @@
   "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS): tuition ₹818,182 + development ₹81,818, approved, meeting 27-07-2026"
+  "source": "MIMER Medical College, Talegaon: fee structure for A.Y. 2026-27, PG (MD/MS) (mimer.edu.in, Aug 2026)"
  },
  {
-  "college": "Indian Institute of Medical Science & Research, Jalna",
+  "college": "Maharashtra Institute of Medical Education",
   "seat": "Mgmt",
   "branches": "*",
   "fee_inr": 3600000,
@@ -1292,10 +1922,10 @@
   "max": true,
   "none": false,
   "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 4 × ₹900,000"
+  "source": "MIMER Medical College, Talegaon: fee structure for A.Y. 2026-27, PG (MD/MS) (mimer.edu.in, Aug 2026) — 'Upto'"
  },
  {
-  "college": "Indian Institute of Medical Science & Research, Jalna",
+  "college": "Maharashtra Institute of Medical Education",
   "seat": "NRI",
   "branches": "*",
   "fee_inr": 4500000,
@@ -1303,106 +1933,54 @@
   "max": true,
   "none": false,
   "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 5 × ₹900,000"
+  "source": "MIMER Medical College, Talegaon: fee structure for A.Y. 2026-27, PG (MD/MS) (mimer.edu.in, Aug 2026) — 'Upto'"
  },
  {
-  "college": "SMBT Institute",
+  "college": "Maharashtra Institute of Medical Education",
+  "seat": "Note",
+  "text": "State fee = tuition ₹8,18,182 + development ₹81,818. Against-NRI seat up to ₹36,00,000; caution ₹50,000 once",
+  "year": "2026-27",
+  "source": "MIMER Medical College, Talegaon: fee structure for A.Y. 2026-27, PG (MD/MS) (mimer.edu.in, Aug 2026)"
+ },
+ {
+  "college": "Maharashtra Institute of Medical Sciences & Research, Latur",
   "seat": "Gen",
   "branches": "*",
-  "fee_inr": 1830000,
+  "fee_inr": 900000,
   "fee_usd": null,
   "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS): tuition ₹1,605,263 + development ₹224,737, approved, meeting 27-07-2026"
+  "source": "MIMSR Medical College, Latur: fees approved for A.Y. 2026-2027, PG (MD/MS) (mimsr.edu.in, 05/08/2026)"
  },
  {
-  "college": "SMBT Institute",
+  "college": "Maharashtra Institute of Medical Sciences & Research, Latur",
   "seat": "Mgmt",
   "branches": "*",
-  "fee_inr": 7320000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 4 × ₹1,830,000"
- },
- {
-  "college": "SMBT Institute",
-  "seat": "NRI",
-  "branches": "*",
-  "fee_inr": 9150000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 5 × ₹1,830,000"
- },
- {
-  "college": "BKL Walawalkar",
-  "seat": "Gen",
-  "branches": "*",
-  "fee_inr": 1023000,
+  "fee_inr": 3600000,
   "fee_usd": null,
   "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS): tuition ₹901,323 + development ₹121,677, no upward revision, meeting 22-07-2025"
+  "source": "MIMSR Medical College, Latur: fees approved for A.Y. 2026-2027, PG (MD/MS) (mimsr.edu.in, 05/08/2026)"
  },
  {
-  "college": "BKL Walawalkar",
-  "seat": "Mgmt",
-  "branches": "*",
-  "fee_inr": 4092000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 4 × ₹1,023,000"
- },
- {
-  "college": "BKL Walawalkar",
+  "college": "Maharashtra Institute of Medical Sciences & Research, Latur",
   "seat": "NRI",
   "branches": "*",
-  "fee_inr": 5115000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 5 × ₹1,023,000"
- },
- {
-  "college": "Vedantaa",
-  "seat": "Gen",
-  "branches": "*",
-  "fee_inr": 1762000,
+  "fee_inr": 4500000,
   "fee_usd": null,
   "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS): tuition ₹1,594,569 + development ₹167,431, no upward revision, meeting 22-07-2025"
+  "source": "MIMSR Medical College, Latur: fees approved for A.Y. 2026-2027, PG (MD/MS) (mimsr.edu.in, 05/08/2026)"
  },
  {
-  "college": "Vedantaa",
-  "seat": "Mgmt",
-  "branches": "*",
-  "fee_inr": 7048000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
+  "college": "Maharashtra Institute of Medical Sciences & Research, Latur",
+  "seat": "Note",
+  "text": "State fee = tuition ₹8,18,182 + development ₹81,818. Against-NRI seat ₹36,00,000; caution ₹50,000 refundable",
   "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 4 × ₹1,762,000"
- },
- {
-  "college": "Vedantaa",
-  "seat": "NRI",
-  "branches": "*",
-  "fee_inr": 8810000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 5 × ₹1,762,000"
+  "source": "MIMSR Medical College, Latur: fees approved for A.Y. 2026-2027, PG (MD/MS) (mimsr.edu.in, 05/08/2026)"
  },
  {
   "college": "Sancheti",
@@ -1413,7 +1991,7 @@
   "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS): tuition ₹936,937 + development ₹103,063, no upward revision, meeting 29-07-2025"
+  "source": "Sancheti Institute PG College: seats information & fees structure of MS Orthopaedics, A.Y. 2026-2027 (sanchetipgcollege.org, 21 Oct 2026)"
  },
  {
   "college": "Sancheti",
@@ -1421,10 +1999,10 @@
   "branches": "*",
   "fee_inr": 4160000,
   "fee_usd": null,
-  "max": true,
+  "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 4 × ₹1,040,000"
+  "source": "Sancheti Institute PG College: seats information & fees structure of MS Orthopaedics, A.Y. 2026-2027 (sanchetipgcollege.org, 21 Oct 2026)"
  },
  {
   "college": "Sancheti",
@@ -1432,10 +2010,17 @@
   "branches": "*",
   "fee_inr": 5200000,
   "fee_usd": null,
-  "max": true,
+  "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 5 × ₹1,040,000"
+  "source": "Sancheti Institute PG College: seats information & fees structure of MS Orthopaedics, A.Y. 2026-2027 (sanchetipgcollege.org, 21 Oct 2026)"
+ },
+ {
+  "college": "Sancheti",
+  "seat": "Note",
+  "text": "MS Orthopaedics 20 seats: State 10 (50%), Institutional 7 (35%), NRI 3 (15%). Against-NRI seat ₹41,60,000",
+  "year": "2026-27",
+  "source": "Sancheti Institute PG College: seats information & fees structure of MS Orthopaedics, A.Y. 2026-2027 (sanchetipgcollege.org, 21 Oct 2026)"
  },
  {
   "college": "Sanjeevan Medical Foundation",
@@ -1446,29 +2031,316 @@
   "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS): tuition ₹814,479 + development ₹85,521, approved, meeting 27-07-2026"
+  "source": "Sanjeevan Medical Foundation ENT PG Institute: FRA fees structure, Dept. of E.N.T., Academic Year 2026-27 (sanjeevanpgi.com)"
  },
  {
   "college": "Sanjeevan Medical Foundation",
   "seat": "Mgmt",
   "branches": "*",
-  "fee_inr": 3600000,
+  "fee_inr": 2700000,
   "fee_usd": null,
-  "max": true,
+  "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 4 × ₹900,000"
+  "source": "Sanjeevan Medical Foundation ENT PG Institute: FRA fees structure, Dept. of E.N.T., Academic Year 2026-27 (sanjeevanpgi.com)"
  },
  {
   "college": "Sanjeevan Medical Foundation",
   "seat": "NRI",
   "branches": "*",
-  "fee_inr": 4500000,
+  "fee_inr": 3600000,
   "fee_usd": null,
-  "max": true,
+  "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 5 × ₹900,000"
+  "source": "Sanjeevan Medical Foundation ENT PG Institute: FRA fees structure, Dept. of E.N.T., Academic Year 2026-27 (sanjeevanpgi.com)"
+ },
+ {
+  "college": "Sanjeevan Medical Foundation",
+  "seat": "Note",
+  "text": "Against-NRI seat ₹36,00,000; development fee and caution money nil",
+  "year": "2026-27",
+  "source": "Sanjeevan Medical Foundation ENT PG Institute: FRA fees structure, Dept. of E.N.T., Academic Year 2026-27 (sanjeevanpgi.com)"
+ },
+ {
+  "college": "Smt Kashibai Navale",
+  "seat": "Gen",
+  "branches": "*",
+  "fee_inr": 1566000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Smt. Kashibai Navale Medical College: PG degree final fee structure for A.Y. 2026-2027 (sknmcgh.org, 21 Oct 2026)"
+ },
+ {
+  "college": "Smt Kashibai Navale",
+  "seat": "Mgmt",
+  "branches": [
+   "MD Pharmacology",
+   "MD Microbiology",
+   "MD Community Med.",
+   "MD Pathology",
+   "MD Biochemistry"
+  ],
+  "fee_inr": 1566000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Smt. Kashibai Navale Medical College: PG degree final fee structure for A.Y. 2026-2027 (sknmcgh.org, 21 Oct 2026)"
+ },
+ {
+  "college": "Smt Kashibai Navale",
+  "seat": "Mgmt",
+  "branches": [
+   "MD General Medicine",
+   "MD Dermatology",
+   "MD Paediatrics",
+   "MD Radiology",
+   "MS General Surgery",
+   "MS Orthopaedics",
+   "MS Ophthalmology",
+   "MS OBG",
+   "MD Respiratory Med."
+  ],
+  "fee_inr": 6264000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Smt. Kashibai Navale Medical College: PG degree final fee structure for A.Y. 2026-2027 (sknmcgh.org, 21 Oct 2026)"
+ },
+ {
+  "college": "Smt Kashibai Navale",
+  "seat": "Mgmt",
+  "branches": [
+   "MD Psychiatry",
+   "MS ENT"
+  ],
+  "fee_inr": 4698000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Smt. Kashibai Navale Medical College: PG degree final fee structure for A.Y. 2026-2027 (sknmcgh.org, 21 Oct 2026)"
+ },
+ {
+  "college": "Smt Kashibai Navale",
+  "seat": "Mgmt",
+  "branches": [
+   "MD Anaesthesia"
+  ],
+  "fee_inr": 3132000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Smt. Kashibai Navale Medical College: PG degree final fee structure for A.Y. 2026-2027 (sknmcgh.org, 21 Oct 2026)"
+ },
+ {
+  "college": "Smt Kashibai Navale",
+  "seat": "NRI",
+  "branches": [
+   "MD Pharmacology",
+   "MD Microbiology",
+   "MD Community Med.",
+   "MD Pathology",
+   "MD Biochemistry"
+  ],
+  "fee_inr": 1566000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Smt. Kashibai Navale Medical College: PG degree final fee structure for A.Y. 2026-2027 (sknmcgh.org, 21 Oct 2026)"
+ },
+ {
+  "college": "Smt Kashibai Navale",
+  "seat": "NRI",
+  "branches": [
+   "MD General Medicine",
+   "MD Dermatology",
+   "MD Paediatrics",
+   "MD Radiology",
+   "MS General Surgery",
+   "MS Orthopaedics",
+   "MS Ophthalmology",
+   "MS OBG"
+  ],
+  "fee_inr": 7830000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Smt. Kashibai Navale Medical College: PG degree final fee structure for A.Y. 2026-2027 (sknmcgh.org, 21 Oct 2026)"
+ },
+ {
+  "college": "Smt Kashibai Navale",
+  "seat": "NRI",
+  "branches": [
+   "MD Respiratory Med."
+  ],
+  "fee_inr": 6264000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Smt. Kashibai Navale Medical College: PG degree final fee structure for A.Y. 2026-2027 (sknmcgh.org, 21 Oct 2026)"
+ },
+ {
+  "college": "Smt Kashibai Navale",
+  "seat": "NRI",
+  "branches": [
+   "MD Psychiatry",
+   "MS ENT"
+  ],
+  "fee_inr": 4698000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Smt. Kashibai Navale Medical College: PG degree final fee structure for A.Y. 2026-2027 (sknmcgh.org, 21 Oct 2026)"
+ },
+ {
+  "college": "Smt Kashibai Navale",
+  "seat": "NRI",
+  "branches": [
+   "MD Anaesthesia"
+  ],
+  "fee_inr": 3132000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Smt. Kashibai Navale Medical College: PG degree final fee structure for A.Y. 2026-2027 (sknmcgh.org, 21 Oct 2026)"
+ },
+ {
+  "college": "Smt Kashibai Navale",
+  "seat": "Hostel",
+  "text": "₹72,000 a year + deposit ₹7,500; mess (optional) ₹41,000",
+  "year": "2026-27",
+  "source": "Smt. Kashibai Navale Medical College: PG degree final fee structure for A.Y. 2026-2027 (sknmcgh.org, 21 Oct 2026)"
+ },
+ {
+  "college": "Smt Kashibai Navale",
+  "seat": "Note",
+  "text": "State fee = tuition ₹13,92,001 + development ₹1,73,999. After admission, university registration & eligibility: State ₹25,000 / Mgmt ₹80,000 / NRI ₹90,000 (+ ₹448 other, ₹5,000 library deposit). Against-NRI = Mgmt fee",
+  "year": "2026-27",
+  "source": "Smt. Kashibai Navale Medical College: PG degree final fee structure for A.Y. 2026-2027 (sknmcgh.org, 21 Oct 2026)"
+ },
+ {
+  "college": "Vedantaa",
+  "seat": "Gen",
+  "branches": "*",
+  "fee_inr": 1762000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Vedantaa Institute of Medical Sciences: PG medical admission (MD/MS) 2026-27, general information (vedantaa.institute, 22.10.2026)"
+ },
+ {
+  "college": "Vedantaa",
+  "seat": "Mgmt",
+  "branches": [
+   "MD Anaesthesia",
+   "MD Dermatology",
+   "MS ENT",
+   "MD Emergency Med.",
+   "MD General Medicine",
+   "MS General Surgery",
+   "MS OBG",
+   "MS Ophthalmology",
+   "MS Orthopaedics",
+   "MD Paediatrics",
+   "MD Pathology",
+   "MD Psychiatry",
+   "MD Radiology"
+  ],
+  "fee_inr": 7048000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Vedantaa Institute of Medical Sciences: PG medical admission (MD/MS) 2026-27, general information (vedantaa.institute, 22.10.2026)"
+ },
+ {
+  "college": "Vedantaa",
+  "seat": "NRI",
+  "branches": [
+   "MD Anaesthesia",
+   "MD Dermatology",
+   "MD Emergency Med.",
+   "MD General Medicine",
+   "MS General Surgery",
+   "MS OBG",
+   "MS Ophthalmology",
+   "MS Orthopaedics",
+   "MD Paediatrics",
+   "MD Psychiatry",
+   "MD Radiology",
+   "MD Respiratory Med."
+  ],
+  "fee_inr": 8810000,
+  "fee_usd": null,
+  "max": false,
+  "none": false,
+  "year": "2026-27",
+  "source": "Vedantaa Institute of Medical Sciences: PG medical admission (MD/MS) 2026-27, general information (vedantaa.institute, 22.10.2026)"
+ },
+ {
+  "college": "Vedantaa",
+  "seat": "Mgmt",
+  "branches": [
+   "MD Anatomy",
+   "MD Forensic Med.",
+   "MD Microbiology",
+   "MD Pharmacology",
+   "MD Community Med.",
+   "MD Respiratory Med."
+  ],
+  "fee_inr": null,
+  "fee_usd": null,
+  "max": false,
+  "none": true,
+  "noseat": true,
+  "year": "2026-27",
+  "source": "Vedantaa Institute of Medical Sciences: PG medical admission (MD/MS) 2026-27, general information (vedantaa.institute, 22.10.2026) — seat matrix 2026-27"
+ },
+ {
+  "college": "Vedantaa",
+  "seat": "NRI",
+  "branches": [
+   "MD Anatomy",
+   "MD Forensic Med.",
+   "MD Microbiology",
+   "MD Pharmacology",
+   "MD Community Med.",
+   "MS ENT",
+   "MD Pathology"
+  ],
+  "fee_inr": null,
+  "fee_usd": null,
+  "max": false,
+  "none": true,
+  "noseat": true,
+  "year": "2026-27",
+  "source": "Vedantaa Institute of Medical Sciences: PG medical admission (MD/MS) 2026-27, general information (vedantaa.institute, 22.10.2026) — seat matrix 2026-27"
+ },
+ {
+  "college": "Vedantaa",
+  "seat": "Hostel",
+  "text": "₹2,60,000 a year (non-AC) / ₹3,10,000 (AC); mess ₹1,25,000",
+  "year": "2026-27",
+  "source": "Vedantaa Institute of Medical Sciences: PG medical admission (MD/MS) 2026-27, general information (vedantaa.institute, 22.10.2026)"
+ },
+ {
+  "college": "Vedantaa",
+  "seat": "Note",
+  "text": "State 50% / Management 35% / NRI 15%. Also: caution ₹50,000, MUHS eligibility & other ₹1,25,000. The college is exempt from FRA (G.R. 10.04.2018, under challenge in the High Court)",
+  "year": "2026-27",
+  "source": "Vedantaa Institute of Medical Sciences: PG medical admission (MD/MS) 2026-27, general information (vedantaa.institute, 22.10.2026)"
  },
  {
   "college": "Postgraduate Institute of Swasthiyog",
@@ -1479,7 +2351,7 @@
   "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS): tuition ₹830,769 + development ₹87,231, no upward revision, meeting 31-07-2025"
+  "source": "Post Graduate Institute of Swasthiyog Pratishthan, Miraj: fee structure A.Y. 2025-26 (swasthiyog.in); the college opted for no fee rise in 2026-27 (FRA order, Annexure B, 20 Mar 2026)"
  },
  {
   "college": "Postgraduate Institute of Swasthiyog",
@@ -1487,10 +2359,10 @@
   "branches": "*",
   "fee_inr": 3672000,
   "fee_usd": null,
-  "max": true,
+  "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 4 × ₹918,000"
+  "source": "Post Graduate Institute of Swasthiyog Pratishthan, Miraj: fee structure A.Y. 2025-26 (swasthiyog.in); the college opted for no fee rise in 2026-27 (FRA order, Annexure B, 20 Mar 2026)"
  },
  {
   "college": "Postgraduate Institute of Swasthiyog",
@@ -1498,64 +2370,94 @@
   "branches": "*",
   "fee_inr": 4590000,
   "fee_usd": null,
-  "max": true,
-  "none": false,
-  "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 5 × ₹918,000"
- },
- {
-  "college": "Bombay Hospital",
-  "seat": "Gen",
-  "branches": "*",
-  "fee_inr": 1100000,
-  "fee_usd": null,
   "max": false,
   "none": false,
   "year": "2026-27",
-  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS): tuition ₹990,991 + development ₹109,009, approved, meeting 27-07-2026"
+  "source": "Post Graduate Institute of Swasthiyog Pratishthan, Miraj: fee structure A.Y. 2025-26 (swasthiyog.in); the college opted for no fee rise in 2026-27 (FRA order, Annexure B, 20 Mar 2026)"
+ },
+ {
+  "college": "Postgraduate Institute of Swasthiyog",
+  "seat": "Note",
+  "text": "College's own fee sheet is for 2025-26; it chose no fee rise for 2026-27, so the same fee applies. Against-NRI ₹36,72,000; caution nil",
+  "year": "2026-27",
+  "source": "Post Graduate Institute of Swasthiyog Pratishthan, Miraj: fee structure A.Y. 2025-26 (swasthiyog.in)"
+ },
+ {
+  "college": "KJ Somaiyya",
+  "seat": "Note",
+  "text": "College's own 2026-27 PG fee is not on its website yet (checked 25 Oct 2026) — figures are as listed earlier; confirm with the college. For reference only, FRA approved ₹13,20,000 a year (state-quota fee) for 2026-27",
+  "year": "2026-27",
+  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS)"
+ },
+ {
+  "college": "Terna Medical College",
+  "seat": "Note",
+  "text": "College's own 2026-27 PG fee is not on its website yet (checked 25 Oct 2026) — figures are as listed earlier; confirm with the college. For reference only, FRA approved ₹9,00,000 a year (state-quota fee) for 2026-27",
+  "year": "2026-27",
+  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS)"
+ },
+ {
+  "college": "ACPM Medical College",
+  "seat": "Note",
+  "text": "College's own 2026-27 PG fee is not on its website yet (checked 25 Oct 2026) — figures are as listed earlier; confirm with the college. For reference only, FRA approved ₹9,00,000 a year (state-quota fee) for 2026-27",
+  "year": "2026-27",
+  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS)"
+ },
+ {
+  "college": "Dr Ulhas Patil",
+  "seat": "Note",
+  "text": "College's own 2026-27 PG fee is not on its website yet (checked 25 Oct 2026) — figures are as listed earlier; confirm with the college. For reference only, FRA approved ₹9,00,000 a year (state-quota fee) for 2026-27",
+  "year": "2026-27",
+  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS)"
+ },
+ {
+  "college": "Indian Institute of Medical Science & Research, Jalna",
+  "seat": "Note",
+  "text": "College's own 2026-27 PG fee is not on its website yet (checked 25 Oct 2026) — figures are as listed earlier; confirm with the college. For reference only, FRA approved ₹9,00,000 a year (state-quota fee) for 2026-27",
+  "year": "2026-27",
+  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS)"
+ },
+ {
+  "college": "SMBT Institute",
+  "seat": "Note",
+  "text": "College's own 2026-27 PG fee is not on its website yet (checked 25 Oct 2026) — figures are as listed earlier; confirm with the college. For reference only, FRA approved ₹18,30,000 a year (state-quota fee) for 2026-27",
+  "year": "2026-27",
+  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS)"
  },
  {
   "college": "Bombay Hospital",
-  "seat": "Mgmt",
-  "branches": "*",
-  "fee_inr": 4400000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
+  "seat": "Note",
+  "text": "College's own 2026-27 PG fee is not on its website yet (checked 25 Oct 2026) — figures are as listed earlier; confirm with the college. For reference only, FRA approved ₹11,00,000 a year (state-quota fee) for 2026-27",
   "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 4 × ₹1,100,000"
+  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS)"
  },
  {
-  "college": "Bombay Hospital",
-  "seat": "NRI",
-  "branches": "*",
-  "fee_inr": 5500000,
-  "fee_usd": null,
-  "max": true,
-  "none": false,
+  "college": "SMBT Institute",
+  "seat": "Note",
+  "text": "SMBT's own site says it is now deemed to be a university; MCC's 2026 seat matrix does not list it, and the CET Cell's NEET-PG 2026 brochure still lists it in state counselling",
   "year": "2026-27",
-  "source": "FRA notice 1090/2023 (10 Nov 2023): MD/MS Management/Institutional quota up to 4×, NRI quota up to 5× the regular fee; 5 × ₹1,100,000"
+  "source": "smbt.edu.in; MCC seat matrix 2026; CET Cell brochure"
  },
  {
   "college": "Dr NY Tasgaonkar",
   "seat": "Note",
-  "text": "Not in FRA's A.Y. 2026-27 approved list — fees below are as listed; confirm with the college",
+  "text": "College's own 2026-27 PG fee is not on its website yet (checked 25 Oct 2026) — figures are as listed earlier; confirm with the college",
   "year": "2026-27",
-  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS)"
+  "source": "college website, checked 25 Oct 2026"
  },
  {
   "college": "Dr Rajendra Gode",
   "seat": "Note",
-  "text": "Not in FRA's A.Y. 2026-27 approved list — fees below are as listed; confirm with the college",
+  "text": "College's own 2026-27 PG fee is not on its website yet (checked 25 Oct 2026) — figures are as listed earlier; confirm with the college",
   "year": "2026-27",
-  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS)"
+  "source": "college website, checked 25 Oct 2026"
  },
  {
   "college": "Prakash Institute",
   "seat": "Note",
-  "text": "Not in FRA's A.Y. 2026-27 approved list — fees below are as listed; confirm with the college",
+  "text": "College's own 2026-27 PG fee is not on its website yet (checked 25 Oct 2026) — figures are as listed earlier; confirm with the college",
   "year": "2026-27",
-  "source": "FRA Maharashtra, fee approved for A.Y. 2026-27 (ay26-27.mahafraportal.org, MDMS)"
+  "source": "college website, checked 25 Oct 2026"
  },
  {
   "college": "Dr DY Patil Medical College, Hospital and Research Centre, Pimpri",

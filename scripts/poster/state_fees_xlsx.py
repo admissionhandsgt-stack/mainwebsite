@@ -141,9 +141,11 @@ wb = Workbook()
 # ------------------------------------------------------------------ official 2026-27 fees, where we have them
 # OFFICIAL: [{college, seat, branches ("*" or [printed names]), fee_inr | fee_usd, max, none, year, source}] — seat is
 # Gen | Mgmt | NRI (per branch), AIQ (the college's one AIQ fee), Hostel or Note (with "text"). A college matches by the
-# start of its printed name and must match exactly one. An official fee only fills a seat the counselling offers here;
-# a notice that prices a branch the college has no such seat in is counted, not added.
-official, per_college, unused = {}, {}, []
+# start of its printed name and must match exactly one. "*" fills the seats the listing has for that column; a notice that
+# names branches fills them wherever a private college has the branch, even a seat the 2026 listing lacked, because the
+# college's own notice is the newer word (a deemed university's seats are MCC's, so there only listed seats fill). A branch the college does not have in the listing goes into its Notes line,
+# so nothing a notice says is dropped. A "noseat" entry (the college's own seat matrix) blanks a listed seat.
+official, per_college, unused, priced_elsewhere = {}, {}, [], {}
 not_offered = 0
 by_name = {NAME[x]: x for x in courses}
 for e in OFFICIAL:
@@ -154,17 +156,23 @@ for e in OFFICIAL:
         per_college.setdefault(c["name"], {}).setdefault(e["seat"], []).append(e)
         continue
     listed_here = {x["course"] for k, items in c["seats"].items() if COLUMN_OF[c["section"]].get(k) == e["seat"] for x in items}
+    branches_here = {x["course"] for items in c["seats"].values() for x in items}
     if e["branches"] == "*":
-        wanted = listed_here
+        wanted = to_fill = listed_here
     else:
         missing = [b for b in e["branches"] if b not in by_name]
         assert not missing, f"unknown branch names in official entry for {c['name']}: {missing}"
         wanted = {by_name[b] for b in e["branches"]}
-    for course in wanted & listed_here:
+        # Deemed seats are MCC's: its 2026 seat matrix (the listing) says which exist, so a notice cannot add one there.
+        to_fill = wanted & (listed_here if e.get("noseat") or c["section"] == "deemed" else branches_here)
+    for course in to_fill:
         assert (c["name"], course, e["seat"]) not in official, f"two official fees for {c['name']} {NAME[course]} {e['seat']}"
         official[(c["name"], course, e["seat"])] = e
-    not_offered += len(wanted - listed_here)
-    if not wanted & listed_here:
+    if not e.get("noseat") and c["section"] != "deemed":
+        elsewhere = wanted - branches_here
+        not_offered += len(elsewhere)
+        priced_elsewhere.setdefault(c["name"], set()).update(NAME[x] for x in elsewhere)
+    if not to_fill:
         unused.append(e)
 
 # ------------------------------------------------------------------ sheet 1: MD/MS colleges
@@ -188,8 +196,8 @@ LEGEND = [
      "AIQ = All India Quota (MCC), government colleges"),
     ("NRI ₹ / NRI $ = NRI Quota (CET Cell) / NRI seat at a deemed university (MCC). Deemed universities set NRI fees in dollars, so there the $ is "
      "the fee and ₹ is worked out at the rate in C7; private colleges set them in rupees, so there ₹ is the fee and $ is worked out"),
-    ("Green = official 2026-27 fee (CET Cell brochure, FRA, or the university's own notice — hover for the source)   ·   ≤ green = the most a "
-     "private college may charge (FRA: Mgmt up to 4×, NRI up to 5× its fee)   ·   Black = as listed, not confirmed   ·   Grey = branch not here   ·   "
+    ("Green = the college's / university's own 2026-27 fee notice (government colleges: CET Cell brochure) — hover for the source   ·   "
+     "≤ = the notice says 'up to'   ·   Black = college has not published 2026-27 yet, figure as listed   ·   Grey = branch not here   ·   "
      "– = no such seat   ·   NL = fee not listed"),
     (f"Fees as listed for the 2026 NEET PG counselling (as of {AS_OF}) unless green — not an official notice, and a year's fee or the whole "
      "course's is not always stated. Confirm with the college before a student pays a fee or signs a bond."),
@@ -240,9 +248,9 @@ for sub, text in {"Gen": "State Govt Quota seat, allotted by the CET Cell.",
     ws.cell(HEAD2, FIRST + SUB.index(sub)).comment = Comment(text, "AdmissionHands")
 
 USD_FMT = '"$"#,##0'
-MAX_FMT, MAX_USD_FMT = '"≤ "General', '"≤ $"#,##0'  # FRA's ceiling for Management / NRI seats at private colleges
+MAX_FMT, MAX_USD_FMT = '"≤ "General', '"≤ $"#,##0'  # a college notice that gives a fee as "up to"
 expected, formulas = {}, {}  # (row, col) -> value / formula, checked after the file is written back
-filled = added = 0  # fees written; official fees for a slot the listing had no fee for
+filled = added = removed = 0  # fees written; official fees where the listing had none; listed seats a college no longer has
 for i, c in enumerate(matrix):
     r = TOP + i
     columns = COLUMN_OF[c["section"]]
@@ -268,7 +276,8 @@ for i, c in enumerate(matrix):
         if name != c["name"]:
             continue
         x = cell_of.get((course, col_), {"course": course, "session": None, "key": None, "low": False, "listed": None})
-        added += x["listed"] is None
+        added += x["listed"] is None and not e.get("noseat")
+        removed += x["listed"] is not None and bool(e.get("noseat"))
         cell_of[(course, col_)] = {**x, "fee": None if e.get("none") else e.get("fee_inr"), "usd": None if e.get("none") else e.get("fee_usd"),
                                    "source": e, "low": False, "session": "2026"}
     here = {x["course"] for items in c["seats"].values() for x in items} | {k[0] for k in cell_of}
@@ -323,6 +332,12 @@ for i, c in enumerate(matrix):
                 for t in targets:
                     t.value, t.font = "–", f(color="94A3B8")
                 continue
+            if x["source"] and x["source"].get("noseat"):
+                for t in targets:
+                    t.value, t.font = "–", f(color="94A3B8")
+                targets[0].comment = Comment(f"No {seat} seat here in {x['source']['year']} (the college's own seat matrix). "
+                                             f"Source: {x['source']['source']}.", "AdmissionHands")
+                continue
             if x["fee"] is None and x.get("usd") is None:
                 for t in targets:
                     t.value, t.font = "NL", f(size=9, italic=True, color="64748B")
@@ -363,7 +378,7 @@ for i, c in enumerate(matrix):
                 listed_inr = x["listed"]
                 official_inr = e["fee_inr"] if e.get("fee_inr") else e["fee_usd"] * 95
                 if listed_inr is None:
-                    was = " Not in the listing."
+                    was = " The 2026 listing had no such seat here; the college's own notice prices one."
                 elif listed_inr == official_inr:
                     was = " Same as the listing."
                 else:
@@ -371,9 +386,9 @@ for i, c in enumerate(matrix):
                     if listed_inr < 0.75 * official_inr and not e.get("max"):
                         was += " The college listed a lower fee for this branch before — ask whether it still applies."
                     if e.get("max") and listed_inr < official_inr:
-                        was += " Some colleges charge less than the maximum for some branches — confirm with the college."
+                        was += " The notice gives this as an upper limit — confirm the exact figure with the college."
                 amount = f"US${e['fee_usd']:,}" if e.get("fee_usd") else rupees(e["fee_inr"])
-                head = f"Most the college may charge in {e['year']}: {amount}" if e.get("max") else f"Official {e['year']}: {amount}"
+                head = f"{e['year']}: up to {amount} (the college's notice says 'up to')" if e.get("max") else f"{e['year']}: {amount}"
                 cell.comment = Comment(f"{head}. Source: {e['source']}.{was}", "AdmissionHands")
             elif old:
                 cell.comment = Comment(f"{x['session']} fee — the 2026 fee is not listed yet.", "AdmissionHands")
@@ -383,6 +398,9 @@ for i, c in enumerate(matrix):
                                        "Often a pre-clinical branch priced lower; confirm with the college.", "AdmissionHands")
 
     notes = [f"{n['year']}: {n['text']}" for n in mine.get("Note", [])]
+    if priced_elsewhere.get(c["name"]):
+        notes.append(f"Its 2026-27 notice also prices {', '.join(sorted(priced_elsewhere[c['name']], key=lambda n: courses.index(by_name[n])))}"
+                     " — no seats for these in the 2026 listing")
     for key in extra:
         parts, groups = [], fee_groups(c["seats"][key])
         for fee, cs in groups:
@@ -477,9 +495,9 @@ lines = [
     ("pair", ("Notes column", "Any other seat type a college lists (for example a Minority Quota), with its fee and branches.")),
     ("gap", ""),
     ("head", "What the cells mean"),
-    ("pair", ("Green figure", "Matches the official 2026-27 fee — the CET Cell's NEET-PG 2026 information brochure, or the university's own 2026-27 fee notice. Hover for the source.")),
-    ("pair", ("≤ figure", "At a private college: the most it may charge for a Management or NRI seat in 2026-27 under FRA's rule (up to 4× and 5× its FRA fee). Most colleges charge exactly this; some charge less for some branches — hover to see what was listed.")),
-    ("pair", ("Black figure", "As listed for the 2026 counselling, not yet matched to an official 2026-27 notice — confirm before quoting.")),
+    ("pair", ("Green figure", "The college's or university's own 2026-27 fee notice, from its website (government colleges: the CET Cell's NEET-PG 2026 brochure). Hover for the notice and its date.")),
+    ("pair", ("≤ figure", "The college's notice gives this fee as 'up to' — confirm the exact figure with the college.")),
+    ("pair", ("Black figure", "The college has not put its 2026-27 PG fee on its website yet (checked 25 Oct 2026); the figure is as listed earlier — confirm before quoting. The Notes column says so.")),
     ("pair", ("Grey cell", "The college does not have this branch.")),
     ("pair", ("–", "The college has the branch, but not under this seat type.")),
     ("pair", ("NL", "The seat is listed, but no fee is listed for it.")),
@@ -537,8 +555,8 @@ got = lambda k: h.cell(k[1], 5).value if k[0] == "h" else m.cell(*k).value
 bad = [(k, v, got(k)) for k, v in expected.items() if got(k) != v] + [(k, v, m.cell(*k).value) for k, v in formulas.items() if m.cell(*k).value != v]
 assert not bad, f"{len(bad)} cells differ, e.g. {bad[:3]}"
 listed = sum(1 for c in matrix for key, items in c["seats"].items() if key in COLUMN_OF[c["section"]] for x in items if x["fee"] is not None)
-assert filled == listed + added, f"fee count mismatch: wrote {filled}, listing {listed} + official-only {added}"
-print(f"{OUT}\n  MD/MS sheet: {len(matrix)} colleges × {len(courses)} branches, {filled} fees ({len(official)} official 2026-27; {not_offered} official fees for seats not offered here left out; "
+assert filled == listed + added - removed, f"fee count mismatch: wrote {filled}, listing {listed} + official-only {added} - no seat now {removed}"
+print(f"{OUT}\n  MD/MS sheet: {len(matrix)} colleges × {len(courses)} branches, {filled} fees ({len(official)} official 2026-27; {not_offered} official fees for branches the college does not have in the listing, in Notes; "
       f"{added} of them not in the listing) + AIQ for {sum(1 for c in matrix if c['seats'].get('AIQ'))} colleges · "
       f"{len(formulas)} NRI conversions at ₹{USD_RATE}/$ · DNB/NBE sheet: {len(hospitals)} hospitals · read back: all match")
 if unused:
