@@ -4,11 +4,15 @@
 // first version garbled eleven ranks and carried the Diploma in Radiation Medicine's figures under MD Radiation
 // Oncology.
 //
-//   node --env-file=.env.local scripts/poster/round_cuts_poster.mjs [--year 2026] [--round "Round 1"] [--out <dir>]
+//   node --env-file=.env.local scripts/poster/round_cuts_poster.mjs [--set aiq|deemed] [--year 2026] [--round "Round 1"] [--out <dir>]
 //
-// Writes <out>/neet-pg-<last>-vs-<year>-<round>.html and .png (2160 px wide). Needs the database tunnel and
-// network access for the Google Fonts. The branch list and its order rule are the owner's poster's own;
-// a branch with no All India allotment in either year is reported and left out.
+// --set aiq (default): All India Quota, one column group per category, the owner's branch list.
+// --set deemed: deemed universities, one group per seat type — paid/management (MCC's "Self-Financed Merit
+// Seat") and NRI — over every MD/MS branch they allotted. Deemed seats carry no reservation (every allotment
+// is Open), and MCC has no separate "general" deemed seat: the self-financed merit seat is the general one.
+//
+// Writes <out>/neet-pg-<last>-vs-<year>-<round>[-deemed].html and .png (2160 px wide). Needs the database
+// tunnel and network access for the Google Fonts. Rows are ordered by the first group's last-year rank.
 
 import { createRequire } from "node:module";
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
@@ -72,6 +76,33 @@ const catOf = (c) => {
   const code = (/\((SC|ST|OBC|EWS)\)/i.exec(c)?.[1] ?? c).trim().toUpperCase();
   return CATS.find((k) => k.toUpperCase() === code) ?? null;
 };
+const isPaid = (q) => /self.?financed|paid seat|management/i.test(q ?? "");
+const isNri = (q) => /non.?resident|\bnri\b/i.test(q ?? "");
+const notPwd = (r) => !/disab|pwd/i.test(r.acat ?? "");
+const SETS = {
+  aiq: {
+    pill: "ALL INDIA QUOTA",
+    suffix: "",
+    branches: BRANCHES,
+    groups: CATS.map((c) => ({ tone: c.toLowerCase(), label: `${c} Closing Rank`, has: (r) => r.quota === "All India" && catOf(r.acat) === c })),
+    what: "in that branch and category on All India Quota seats",
+    note: "",
+  },
+  deemed: {
+    pill: "DEEMED UNIVERSITIES",
+    suffix: "-deemed",
+    branches: null,
+    groups: [
+      { tone: "open", label: "Paid / Management Seat Closing Rank", sub: "MCC: Self-Financed Merit Seat", has: (r) => isPaid(r.quota) && notPwd(r) },
+      { tone: "sc", label: "NRI Seat Closing Rank", sub: "MCC: Non-Resident Indian", has: (r) => isNri(r.quota) && notPwd(r) },
+    ],
+    what: "in that branch on deemed universities' seats of that type",
+    note: " Paid seats are MCC's “Self-Financed Merit Seat” (2025: “Self-Financed Merit Seat/(Paid Seat Quota)”), open to all categories.",
+  },
+};
+const SET = SETS[arg("set", "aiq")];
+if (!SET) throw new Error(`--set must be one of: ${Object.keys(SETS).join(", ")}`);
+const GROUPS = SET.groups;
 const cleanLabel = (s) => s.replace(/\s+/g, " ").replace(/\s*\/\s*/g, "/").trim();
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const num = (n) => n.toLocaleString("en-US");
@@ -79,21 +110,23 @@ const num = (n) => n.toLocaleString("en-US");
 // ------------------------------------------------------------------ data
 const sql = postgres(process.env.DATABASE_URL, { max: 1, idle_timeout: 5 });
 const rows = await sql`
-  SELECT a.year, c.name AS course, a.mcc_course, a.allotted_category AS acat, a.rank, a.source_title
+  SELECT a.year, c.name AS course, a.mcc_course, a.quota, a.allotted_category AS acat, a.rank, a.source_title,
+         COALESCE(a.institute_id::text, a.mcc_college_name) AS inst
     FROM mcc_allotments a JOIN courses c ON c.id = a.course_id
-   WHERE a.round = ${ROUND} AND a.quota = 'All India' AND a.year IN (${LAST}, ${YEAR})`;
+   WHERE a.round = ${ROUND} AND a.year IN (${LAST}, ${YEAR})`;
 await sql.end();
 if (!rows.some((r) => r.year === YEAR)) throw new Error(`no ${YEAR} ${ROUND} allotments loaded`);
 
-const data = new Map(); // course -> { label: Map<label, n>, cut: { [cat]: { [year]: rank } } }
+// course -> { labels: Map<MCC label, n>, cut: per group { [year]: { rank, colleges } } }
+const data = new Map();
 for (const r of rows) {
-  const d = data.get(r.course) ?? { labels: new Map(), cut: {} };
+  const gi = GROUPS.findIndex((g) => g.has(r));
+  if (gi < 0) continue;
+  const d = data.get(r.course) ?? { labels: new Map(), cut: GROUPS.map(() => ({})) };
   if (r.year === YEAR && r.mcc_course) d.labels.set(r.mcc_course, (d.labels.get(r.mcc_course) ?? 0) + 1);
-  const cat = catOf(r.acat);
-  if (cat) {
-    const c = (d.cut[cat] ??= {});
-    c[r.year] = Math.max(c[r.year] ?? 0, r.rank);
-  }
+  const c = (d.cut[gi][r.year] ??= { rank: 0, colleges: new Set() });
+  c.rank = Math.max(c.rank, r.rank);
+  c.colleges.add(r.inst);
   data.set(r.course, d);
 }
 const titleOf = (y) => rows.find((r) => r.year === y)?.source_title ?? "";
@@ -101,24 +134,28 @@ const provisional = /provisional/i.test(titleOf(YEAR));
 const dated = /dated\s+([\d.]+)/i.exec(titleOf(YEAR))?.[1] ?? null;
 
 const lines = [];
-for (const course of BRANCHES) {
+let thin = 0;
+for (const course of SET.branches ?? [...data.keys()].filter((c) => /^M[DS] /.test(c))) {
   const d = data.get(course);
   if (!d) {
-    console.warn(`! ${course}: no All India allotment in ${LAST} or ${YEAR} ${ROUND} — left out`);
+    console.warn(`! ${course}: no allotment in ${LAST} or ${YEAR} ${ROUND} — left out`);
     continue;
   }
   const label = d.labels.size ? cleanLabel([...d.labels].sort((a, b) => b[1] - a[1])[0][0]) : course;
-  const cells = CATS.map((cat) => {
-    const a = d.cut[cat]?.[LAST] ?? null;
-    const b = d.cut[cat]?.[YEAR] ?? null;
+  const cells = d.cut.map((byYear) => {
+    const a = byYear[LAST]?.rank ?? null;
+    const b = byYear[YEAR]?.rank ?? null;
+    for (const y of [LAST, YEAR]) if (byYear[y] && byYear[y].colleges.size < 3) thin++;
     return { a, b, change: a != null && b != null ? b - a : null };
   });
   lines.push({ course, label, cells });
 }
 const key = (l) => l.cells[0].a ?? l.cells[0].b ?? Infinity;
 lines.sort((x, y) => key(x) - key(y));
-const unused = [...data.keys()].filter((c) => !BRANCHES.includes(c) && /^M[DS] /.test(c));
-if (unused.length) console.log(`  MD/MS branches with ${ROUND} AIQ allotments not on the poster: ${unused.join(", ")}`);
+if (SET.branches) {
+  const unused = [...data.keys()].filter((c) => !SET.branches.includes(c) && /^M[DS] /.test(c));
+  if (unused.length) console.log(`  MD/MS branches with ${ROUND} allotments not on the poster: ${unused.join(", ")}`);
+}
 
 // ------------------------------------------------------------------ html
 const logo = readFileSync(join(ROOT, "public/icon-512.png")).toString("base64");
@@ -141,7 +178,7 @@ const body = lines
   .map((l, i) => {
     const tds = l.cells
       .map((c, j) => {
-        const g = CATS[j].toLowerCase();
+        const g = GROUPS[j].tone;
         const ch =
           c.change == null
             ? `<span class="na">–</span>`
@@ -162,20 +199,19 @@ const body = lines
   })
   .join("\n");
 
-const groupHead = CATS.map((c) => `<th colspan="3" class="g ${c.toLowerCase()} gs">${c} Closing Rank</th>`).join("");
-const subHead = CATS.map((c) => {
-  const g = c.toLowerCase();
-  return `<th class="${g} gs">${LAST}</th><th class="${g}">${YEAR}</th><th class="${g}">Change</th>`;
-}).join("");
+const groupHead = GROUPS.map(
+  (g) => `<th colspan="3" class="g ${g.tone} gs">${esc(g.label)}${g.sub ? `<small>${esc(g.sub)}</small>` : ""}</th>`,
+).join("");
+const subHead = GROUPS.map(({ tone: g }) => `<th class="${g} gs">${LAST}</th><th class="${g}">${YEAR}</th><th class="${g}">Change</th>`).join("");
 
 const basis = provisional ? `${YEAR} rank based on provisional result` : `${LAST} and ${YEAR}: MCC's final results`;
 const sourceLine =
-  `Closing rank = the highest All India Rank allotted in that branch and category on All India Quota seats in MCC's ${esc(ROUND)} ` +
-  `(${LAST}: final result; ${YEAR}: ${provisional ? `provisional result${dated ? ` dated ${dated}` : ""}` : "final result"}).`;
+  `Closing rank = the highest All India Rank allotted ${SET.what} in MCC's ${esc(ROUND)} ` +
+  `(${LAST}: final result; ${YEAR}: ${provisional ? `provisional result${dated ? ` dated ${dated}` : ""}` : "final result"}).${SET.note}`;
 
 const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
-<title>NEET PG ${LAST} vs ${YEAR} — MCC ${esc(ROUND)} closing ranks</title>
+<title>NEET PG ${LAST} vs ${YEAR} — MCC ${esc(ROUND)} closing ranks — ${esc(SET.pill)}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@700;800;900&family=Inter:wght@400;500;600;700;800&family=Kaushan+Script&family=Montserrat:wght@300;800&family=Roboto+Condensed:wght@400;500;700&display=block" rel="stylesheet">
 <style>
@@ -246,6 +282,16 @@ thead tr.h1 th{font:800 14.5px/1.15 Figtree,sans-serif;padding:10px 4px;letter-s
 thead tr.h1 th.no,thead tr.h1 th.name{background:var(--navy);font:800 13px/1.2 Figtree,sans-serif}
 thead tr.h1 th.name{text-align:left;padding-left:10px}
 thead tr.h1 th.name small{display:block;font:600 11px/1.2 Inter,sans-serif;color:#a9bad1;margin-top:2px}
+thead tr.h1 th.g small{display:block;font:600 11.5px/1.2 Inter,sans-serif;color:rgba(255,255,255,.86);margin-top:3px;letter-spacing:.2px}
+/* Two groups (deemed): the room five category groups need goes to bigger figures and whole branch names. */
+.t.n2 col.c-no{width:46px}.t.n2 col.c-name{width:330px}
+.t.n2 thead tr.h1 th.g{font-size:16.5px;white-space:nowrap}
+.t.n2 tbody td{font-size:18px;height:35px}
+.t.n2 td.name{font-size:14.5px;padding-left:12px}
+.t.n2 td.no{font-size:13.5px}
+.t.n2 thead tr.h1 th{font-size:18px;padding:11px 6px}
+.t.n2 thead tr.h1 th.no,.t.n2 thead tr.h1 th.name{font-size:14px}
+.t.n2 thead tr.h2 th{font-size:14px;padding:7px 4px}
 thead tr.h2 th{font:700 12px/1 Inter,sans-serif;padding:6px 2px}
 th.g.open,th.open{background:var(--open)}tr.h2 th.open{background:var(--open-d)}
 th.g.ews,th.ews{background:var(--ews)}tr.h2 th.ews{background:var(--ews-d)}
@@ -306,15 +352,15 @@ td.st{background:var(--st-t)}tbody tr:nth-child(even) td.st{background:var(--st-
 
   <section class="title">
     <h1>NEET PG <span class="y1">${LAST}</span><span class="vs">vs</span>${YEAR}</h1>
-    <div class="ribbon"><span class="l">MCC ${esc(roundWord)} CLOSING RANKS</span><span class="r">ALL INDIA QUOTA</span></div>
+    <div class="ribbon"><span class="l">MCC ${esc(roundWord)} CLOSING RANKS</span><span class="r">${esc(SET.pill)}</span></div>
     <div class="prov">${icon(I.megaphone)}${esc(basis)}</div>
   </section>
 
   <div class="legend">${icon(I.info)}<p><b>How to read:</b> <span class="up">Green change (+)</span> = closing rank went higher in ${YEAR} (seat closed at a later rank);
     <span class="down">Red change (−)</span> = closing rank went lower in ${YEAR} (more competitive). “–” = no allotment / data not available in that year.</p></div>
 
-  <table class="t">
-    <colgroup><col class="c-no"><col class="c-name">${'<col>'.repeat(15)}</colgroup>
+  <table class="t n${GROUPS.length}">
+    <colgroup><col class="c-no"><col class="c-name">${"<col>".repeat(GROUPS.length * 3)}</colgroup>
     <thead>
       <tr class="h1"><th rowspan="2" class="no">S.No</th><th rowspan="2" class="name">Course / Branch<small>(${YEAR} MCC name)</small></th>${groupHead}</tr>
       <tr class="h2">${subHead}</tr>
@@ -338,7 +384,7 @@ ${body}
 
 // ------------------------------------------------------------------ render
 mkdirSync(OUT, { recursive: true });
-const base = `neet-pg-${LAST}-vs-${YEAR}-${ROUND.toLowerCase().replace(/\s+/g, "-")}`;
+const base = `neet-pg-${LAST}-vs-${YEAR}-${ROUND.toLowerCase().replace(/\s+/g, "-")}${SET.suffix}`;
 const htmlPath = join(OUT, `${base}.html`);
 const pngPath = join(OUT, `${base}.png`);
 writeFileSync(htmlPath, html);
@@ -372,6 +418,7 @@ await (await page.$(".poster")).screenshot({ path: pngPath });
 await browser.close();
 
 console.log(`${lines.length} branches · ${YEAR} ${provisional ? "provisional" : "final"} · poster ${report.w}×${report.h} css px`);
+console.log(`  ${thin} printed ranks rest on one or two colleges (the website never prints those)`);
 if (report.fonts.length) console.warn("! fonts not loaded:", report.fonts.join(", "));
 if (report.tall.length) console.warn("! names on three lines:", report.tall.join(" | "));
 if (report.tight.length) console.warn("! numbers wider than their cell:", report.tight.join(" | "));
