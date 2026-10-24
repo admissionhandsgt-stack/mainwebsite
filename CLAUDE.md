@@ -520,7 +520,8 @@ MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within mi
   `node --env-file=.env.local scripts/poster/round_cuts_poster.mjs --year 2026 --round "Round 2" --out <dir>` —
   every figure from `mcc_allotments`, a 2160px PNG; `--set deemed` makes the deemed-universities one (Paid/Management =
   MCC's "Self-Financed Merit Seat", and NRI — deemed seats carry no reservation and MCC has no separate "general" deemed
-  seat; the Jain/Muslim minority quotas are 1–2 colleges and left off). The hand-made Round 1 version garbled 11 ranks (and one change) and printed the
+  seat; the Jain and Muslim minority quotas, 1–2 colleges each, are their own column groups, shaded where seats
+  were allotted — owner's request). The hand-made Round 1 version garbled 11 ranks (and one change) and printed the
   Diploma in Radiation Medicine's figures as MD Radiation Oncology's. Unlike the site, the poster prints cells from
   one or two colleges (41 of 289 in Round 1) — the owner's poster did, and that is the owner's call.
 

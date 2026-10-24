@@ -7,8 +7,8 @@
 //   node --env-file=.env.local scripts/poster/round_cuts_poster.mjs [--set aiq|deemed] [--year 2026] [--round "Round 1"] [--out <dir>]
 //
 // --set aiq (default): All India Quota, one column group per category, the owner's branch list.
-// --set deemed: deemed universities, one group per seat type — paid/management (MCC's "Self-Financed Merit
-// Seat") and NRI — over every MD/MS branch they allotted. Deemed seats carry no reservation (every allotment
+// --set deemed: deemed universities, one group per seat type — general/paid (MCC's "Self-Financed Merit
+// Seat"), NRI, and the Jain and Muslim minority quotas (shaded where allotted) — over every MD/MS branch. Deemed seats carry no reservation (every allotment
 // is Open), and MCC has no separate "general" deemed seat: the self-financed merit seat is the general one.
 //
 // Writes <out>/neet-pg-<last>-vs-<year>-<round>[-deemed].html and .png (2160 px wide). Needs the database
@@ -92,9 +92,12 @@ const SETS = {
     pill: "DEEMED UNIVERSITIES",
     suffix: "-deemed",
     branches: null,
+    // The minority quotas are one or two colleges each; the owner asked for them highlighted, not left off.
     groups: [
-      { tone: "open", label: "Paid / Management Seat Closing Rank", sub: "MCC: Self-Financed Merit Seat", has: (r) => isPaid(r.quota) && notPwd(r) },
+      { tone: "open", label: "General / Paid Seat Closing Rank", sub: "MCC: Self-Financed Merit Seat", has: (r) => isPaid(r.quota) && notPwd(r) },
       { tone: "sc", label: "NRI Seat Closing Rank", sub: "MCC: Non-Resident Indian", has: (r) => isNri(r.quota) && notPwd(r) },
+      { tone: "ews", label: "Jain Minority Seat Closing Rank", sub: "Jain candidates only", community: "Jain", has: (r) => /jain minority/i.test(r.quota ?? "") && notPwd(r) },
+      { tone: "st", label: "Muslim Minority Seat Closing Rank", sub: "Muslim candidates only", community: "Muslim", has: (r) => /muslim minority/i.test(r.quota ?? "") && notPwd(r) },
     ],
     what: "in that branch on deemed universities' seats of that type",
     note: " Paid seats are MCC's “Self-Financed Merit Seat” (2025: “Self-Financed Merit Seat/(Paid Seat Quota)”), open to all categories.",
@@ -111,7 +114,7 @@ const num = (n) => n.toLocaleString("en-US");
 const sql = postgres(process.env.DATABASE_URL, { max: 1, idle_timeout: 5 });
 const rows = await sql`
   SELECT a.year, c.name AS course, a.mcc_course, a.quota, a.allotted_category AS acat, a.rank, a.source_title,
-         COALESCE(a.institute_id::text, a.mcc_college_name) AS inst
+         COALESCE(a.institute_id::text, a.mcc_college_name) AS inst, a.mcc_college_name AS cname
     FROM mcc_allotments a JOIN courses c ON c.id = a.course_id
    WHERE a.round = ${ROUND} AND a.year IN (${LAST}, ${YEAR})`;
 await sql.end();
@@ -119,9 +122,17 @@ if (!rows.some((r) => r.year === YEAR)) throw new Error(`no ${YEAR} ${ROUND} all
 
 // course -> { labels: Map<MCC label, n>, cut: per group { [year]: { rank, colleges } } }
 const data = new Map();
+// For a community quota, the colleges that hold it: institute -> { name (this year's wording), years }.
+const holders = GROUPS.map(() => new Map());
 for (const r of rows) {
   const gi = GROUPS.findIndex((g) => g.has(r));
   if (gi < 0) continue;
+  if (GROUPS[gi].community) {
+    const h = holders[gi].get(r.inst) ?? { name: "", years: new Set() };
+    if (!h.name || r.year === YEAR) h.name = (r.cname ?? "").split(",")[0].trim();
+    h.years.add(r.year);
+    holders[gi].set(r.inst, h);
+  }
   const d = data.get(r.course) ?? { labels: new Map(), cut: GROUPS.map(() => ({})) };
   if (r.year === YEAR && r.mcc_course) d.labels.set(r.mcc_course, (d.labels.get(r.mcc_course) ?? 0) + 1);
   const c = (d.cut[gi][r.year] ??= { rank: 0, colleges: new Set() });
@@ -178,7 +189,8 @@ const body = lines
   .map((l, i) => {
     const tds = l.cells
       .map((c, j) => {
-        const g = GROUPS[j].tone;
+        // A community quota's cells are filled in where its seats were allotted, so they read at a glance.
+        const g = GROUPS[j].tone + (GROUPS[j].community && (c.a != null || c.b != null) ? " hit" : "");
         const ch =
           c.change == null
             ? `<span class="na">–</span>`
@@ -199,10 +211,23 @@ const body = lines
   })
   .join("\n");
 
+// Four groups are too narrow for a heading on one line: break every one before "Closing Rank", never mid-phrase.
+const headLabel = (g) => (GROUPS.length >= 4 ? esc(g.label).replace(/ Closing Rank$/, "<br>Closing Rank") : esc(g.label));
 const groupHead = GROUPS.map(
-  (g) => `<th colspan="3" class="g ${g.tone} gs">${esc(g.label)}${g.sub ? `<small>${esc(g.sub)}</small>` : ""}</th>`,
+  (g) => `<th colspan="3" class="g ${g.tone} gs">${headLabel(g)}${g.sub ? `<small>${esc(g.sub)}</small>` : ""}</th>`,
 ).join("");
 const subHead = GROUPS.map(({ tone: g }) => `<th class="${g} gs">${LAST}</th><th class="${g}">${YEAR}</th><th class="${g}">Change</th>`).join("");
+
+// Who a community quota's seats are for, and which colleges hold them (a college new this year is marked so).
+const onlyIn = (ys) => (ys.size > 1 ? "" : ` (${[...ys][0]} only)`);
+const minorityNote = GROUPS.map((g, gi) =>
+  g.community
+    ? `<span><i class="chip ${g.tone}"></i><b>${g.community} Minority</b> — only ${g.community} candidates: ` +
+      `${[...holders[gi].values()].map((h) => esc(h.name) + onlyIn(h.years)).join("; ")}</span>`
+    : "",
+)
+  .filter(Boolean)
+  .join("");
 
 const basis = provisional ? `${YEAR} rank based on provisional result` : `${LAST} and ${YEAR}: MCC's final results`;
 const sourceLine =
@@ -292,6 +317,22 @@ thead tr.h1 th.g small{display:block;font:600 11.5px/1.2 Inter,sans-serif;color:
 .t.n2 thead tr.h1 th{font-size:18px;padding:11px 6px}
 .t.n2 thead tr.h1 th.no,.t.n2 thead tr.h1 th.name{font-size:14px}
 .t.n2 thead tr.h2 th{font-size:14px;padding:7px 4px}
+/* Four groups (deemed with the minority quotas). */
+.t.n4 col.c-name{width:236px}
+.t.n4 tbody td{font-size:14.5px;height:32px}
+.t.n4 thead tr.h1 th.g{font-size:14px;line-height:1.15;padding:8px 4px}
+.t.n4 thead tr.h1 th.g small{font-size:10.5px}
+.t.n4 thead tr.h2 th{font-size:12px}
+/* A community quota's cells, filled in where its seats were allotted. */
+.t tbody td.hit.ews{background:#e3d4ff}
+.t tbody td.hit.st{background:#c8ebd5}
+.t tbody td.hit.v1{color:#24314a;font-weight:500}
+.mnote{display:flex;flex-wrap:wrap;gap:4px 22px;align-items:center;margin:10px 16px 0;padding:10px 16px;border-radius:12px;
+  background:#fbf8ff;border:1.5px dashed #b9a2ef;font:500 13px/1.45 Inter,sans-serif;color:#33425a}
+.mnote b{color:var(--navy);font-weight:800}
+.mnote .hint{color:var(--muted);font-size:12.5px}
+.chip{display:inline-block;width:13px;height:13px;border-radius:4px;vertical-align:-2px;margin-right:7px}
+.chip.ews{background:var(--ews)}.chip.st{background:var(--st)}
 thead tr.h2 th{font:700 12px/1 Inter,sans-serif;padding:6px 2px}
 th.g.open,th.open{background:var(--open)}tr.h2 th.open{background:var(--open-d)}
 th.g.ews,th.ews{background:var(--ews)}tr.h2 th.ews{background:var(--ews-d)}
@@ -358,6 +399,7 @@ td.st{background:var(--st-t)}tbody tr:nth-child(even) td.st{background:var(--st-
 
   <div class="legend">${icon(I.info)}<p><b>How to read:</b> <span class="up">Green change (+)</span> = closing rank went higher in ${YEAR} (seat closed at a later rank);
     <span class="down">Red change (−)</span> = closing rank went lower in ${YEAR} (more competitive). “–” = no allotment / data not available in that year.</p></div>
+  ${minorityNote ? `<div class="mnote">${minorityNote}<span class="hint">Shaded cells = branches where these seats were allotted.</span></div>` : ""}
 
   <table class="t n${GROUPS.length}">
     <colgroup><col class="c-no"><col class="c-name">${"<col>".repeat(GROUPS.length * 3)}</colgroup>
