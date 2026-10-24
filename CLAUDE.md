@@ -534,6 +534,12 @@ MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within mi
   checked against MCC's wording in both years); the table still holds them, and a college-level comparison across
   years anywhere else needs the same care. The script lists colleges with figures in the earlier year only — the
   shape a split leaves.
+- **The deemed universities' college-wise poster** (`scripts/poster/deemed_college_poster.mjs`, owner 2026-10-24: "sirf
+  Deemed universities only college wise… better visualise"): General / Paid seats (MCC's "Self-Financed Merit Seat"), the
+  54 deemed colleges ranked by the median of their 2026 ranks, each cell a tile shaded by rank band (one teal hue, darker =
+  lower rank; checked with the dataviz validator, text ≥ 5:1 on every step), NRI and Jain/Muslim minority as tags. 2025's
+  SRM Kattankulathur paid seats sit on Trichy SRM (2061) in `mcc_allotments`; the poster joins them to 1523. MCC's final
+  Round 1 result (24.10.2026, ingested 18:40 IST) changed none of the figures on any of the four posters — only the label.
 
 ## Site structure the admin owns
 
