@@ -555,6 +555,18 @@ MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within mi
   likewise; AIQ is one column per government college (its fee never varies by branch — the script asserts it); any
   other seat type (one Minority Quota) goes in Notes. Hostel is shown as listed (a year / a month / period not listed,
   mess, included in the fee). The script reads the file back and compares every fee with the JSON before it finishes.
+  **The listing's "2026" fees were partly 2025-26** (owner, 2026-10-25: "2026-2027 session ki new updated fees nahi hai"):
+  government colleges at ₹1,57,100 (2026-27: ₹1,67,300), private colleges at last year's FRA fee (SMBT 16.34 → 18.30),
+  sometimes tuition only (Terna 8.18 of 9.00), and deemed NRI dollars converted at ₹95. So `--official
+  scripts/data/fees_official_maharashtra_2026_27.json` (built by `make_fees_official_maharashtra_2026_27.py`) replaces them
+  from official sources only, each cell green with its source in a comment: the CET Cell's NEET-PG 2026 brochure §16
+  (government ₹1,67,300 + ₹5,000 development; central institutes), FRA's A.Y. 2026-27 fee search
+  (ay26-27.mahafraportal.org, MDMS — one yearly fee per private college) with FRA notice 1090/2023 (Management up to 4×,
+  NRI up to 5×; printed "≤" because they are ceilings), and each deemed university's own 2026-27 notice (all 12 found).
+  Not in FRA's 2026-27 list: Dr NY Tasgaonkar, Dr Rajendra Gode, Prakash — still black. NRI: a deemed university's fee is
+  in dollars ($ is the fee, ₹ = $ × the rate cell); a private college's is in rupees ($ = ₹ ÷ rate). The rate is one
+  yellow cell (`--rate`, 96 on 2026-10-25) and every conversion is a formula on it; recalculate in Excel (COM) before
+  handing the file over — there is no LibreOffice here — and check no cell's displayed text is ####.
 
 ## Site structure the admin owns
 
