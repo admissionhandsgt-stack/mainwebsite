@@ -535,11 +535,20 @@ MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within mi
   years anywhere else needs the same care. The script lists colleges with figures in the earlier year only — the
   shape a split leaves.
 - **The deemed universities' college-wise poster** (`scripts/poster/deemed_college_poster.mjs`, owner 2026-10-24: "sirf
-  Deemed universities only college wise… better visualise"): General / Paid seats (MCC's "Self-Financed Merit Seat"), the
-  54 deemed colleges ranked by the median of their 2026 ranks, each cell a tile shaded by rank band (one teal hue, darker =
-  lower rank; checked with the dataviz validator, text ≥ 5:1 on every step), NRI and Jain/Muslim minority as tags. 2025's
+  Deemed universities only college wise… better visualise"): the 54 deemed colleges ranked by the median of their 2026
+  paid ranks; per branch a **G** box (General / Paid — MCC's "Self-Financed Merit Seat") and, where the college has one, an
+  **N** box (NRI), each with this year's closing rank, last year's and the change — plain cells, the change in green or red
+  (the owner turned down the shaded heatmap: "jyada colorful"). 2025's
   SRM Kattankulathur paid seats sit on Trichy SRM (2061) in `mcc_allotments`; the poster joins them to 1523. MCC's final
   Round 1 result (24.10.2026, ingested 18:40 IST) changed none of the figures on any of the four posters — only the label.
+- **A state's PG fee document** (`node --env-file=.env.local scripts/poster/state_fees_doc.mjs --state Maharashtra --out
+  <dir>`, owner 2026-10-24): an A4 PDF from `pg_seat_terms` — every college × seat type (state govt quota, AIQ,
+  management, NRI, minority, deemed paid/NRI, DNB, NBE diploma) with the branches each fee applies to; government and
+  private colleges a row each, deemed universities branch by branch, DNB/NBE hospitals a row each. The front page gives
+  the middle 80% and median per seat type. It carries the `pg_seat_terms` caveat (as listed for the counselling, not an
+  official notice, per-year vs whole-course not always stated, confirm before paying) and marks with † a fee below a
+  tenth of the same college's median for that seat type (DY Patil Pimpri's ₹1 L pre-clinical paid seats) — flagged, not
+  dropped. NBEMS spells branches its own way ("Orthopedics Surgery", "Oto-Rhino-Laryngology"); `SHORT` maps them.
 
 ## Site structure the admin owns
 
