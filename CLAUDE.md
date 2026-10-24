@@ -577,8 +577,10 @@ MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within mi
   is row-for-row identical, 76,297 rows); then `scripts/apply_official_fees.mjs <mh.json> <official.json> --rate 96
   --backup <file> --apply` updates the existing `fees` rows in place (one per institute × course × quota; no inserts)
   — fee, NRI US$, "per year", session 2026, not carried forward, hostel — and refreshes seat_options; `--restore
-  <backup>` undoes it. Dry run on 2026-10-25: 1,685 rows, 1,421 changed values in 49 colleges. Order: migration, apply,
-  then deploy with `--fresh-cache` (schema.ts names the new column, so do not deploy before the migration). NRI: a deemed university's fee is
+  <backup>` undoes it. **Applied 2026-10-25:** 1,685 fee rows (1,421 changed values in 49 colleges) and hostel on 1,358
+  rows of 38 colleges; old values of 1,769 rows in `D:/Admisson Hands/fee_backups/fees_before_2026_27.json` (outside the
+  repo). The 10 private colleges with no notice are untouched — re-run when they publish. Order for any re-run:
+  migration (once), apply, then deploy with `--fresh-cache` (schema.ts names the new column). NRI: a deemed university's fee is
   in dollars ($ is the fee, ₹ = $ × the rate cell); a private college's is in rupees ($ = ₹ ÷ rate). The rate is one
   yellow cell (`--rate`, 96 on 2026-10-25) and every conversion is a formula on it; recalculate in Excel (COM) before
   handing the file over — there is no LibreOffice here — and check no cell's displayed text is ####.
