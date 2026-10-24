@@ -1,17 +1,14 @@
 // The deemed universities' college-wise poster (owner, 2026-10-24: "sirf Deemed universities only college
 // wise… more better tarike se format/visualise karo"). One row per deemed college, ranked most competitive
-// first; one column per branch; each cell a tile shaded by the band its closing rank falls in, with last year's
-// rank under it. General / Paid seats only — MCC's "Self-Financed Merit Seat" — which carry no reservation.
+// first; one column per branch; each cell this year's closing rank, last year's under it, and the change in green
+// (closed at a later rank) or red (closed earlier, tougher) — the first poster's style; the owner found a shaded
+// version too colourful. General / Paid seats only — MCC's "Self-Financed Merit Seat" — which carry no reservation.
 // Every figure is read from mcc_allotments when the script runs.
 //
 //   node --env-file=.env.local scripts/poster/deemed_college_poster.mjs [--year 2026] [--round "Round 1"]
 //        [--page-height 2400] [--out <dir>]
 //
 // Writes <out>/neet-pg-<last>-vs-<year>-<round>-deemed-college-wise-p<N>.png (2160 px wide) and one PDF.
-//
-// The shading is a sequential ramp of one hue, darker = a lower closing rank (more competitive), checked with
-// the dataviz validator (monotone lightness, even steps); text is navy on the four light steps and white on the
-// two dark ones (≥ 5:1). Every cell prints its number, so nothing rests on colour alone.
 
 import { createRequire } from "node:module";
 import { writeFileSync, mkdirSync } from "node:fs";
@@ -42,17 +39,6 @@ const BRANCHES = [
   { course: "MS General Surgery", deg: "MS", head: "General Surgery" },
   { course: "MS Orthopaedics", deg: "MS", head: "Ortho­paedics" },
 ];
-
-// Rank bands, most competitive first. h6 is the darkest step.
-const BANDS = [
-  { max: 25000, cls: "h6", label: "Up to 25K" },
-  { max: 50000, cls: "h5", label: "25K – 50K" },
-  { max: 75000, cls: "h4", label: "50K – 75K" },
-  { max: 100000, cls: "h3", label: "75K – 1L" },
-  { max: 125000, cls: "h2", label: "1L – 1.25L" },
-  { max: Infinity, cls: "h1", label: "Above 1.25L" },
-];
-const bandOf = (r) => BANDS.find((b) => r <= b.max).cls;
 
 const isPaid = (q) => /self.?financed|paid seat|management/i.test(q ?? "");
 // MCC's 2025 "SRM MEDICAL COLLEGE HOSPITAL AND RESEARCH CENTRE, SRM IST, KATTANKULATHUR, CHENGALPATTU DIST" was
@@ -162,44 +148,31 @@ h1 .vs{font-size:52px;margin:0 15px 0 13px}
 .stat .v{margin-top:6px;font:800 30px/1 Figtree,sans-serif;color:var(--navy);font-variant-numeric:tabular-nums}
 .stat .v small{font:600 14px/1 Inter,sans-serif;color:var(--muted);margin-left:8px}
 
-/* ---------- the colour key */
-.key{display:flex;align-items:center;gap:14px;margin:10px 16px 0;padding:10px 16px;border-radius:12px;background:#fff;border:1px solid #d9e2ee}
-.key .kt{flex:none;font:800 13.5px/1.2 Inter,sans-serif;color:var(--navy);white-space:nowrap}
-.key .kt small{display:block;font:500 11.5px/1.3 Inter,sans-serif;color:var(--muted)}
-.scale{flex:1;display:grid;grid-template-columns:repeat(6,1fr);gap:3px}
-.scale span{height:34px;border-radius:7px;display:grid;place-items:center;font:700 12.5px/1 Inter,sans-serif;white-space:nowrap}
-.key .na-chip{flex:none;height:34px;padding:0 12px;border-radius:7px;display:grid;place-items:center;background:#f3f5f8;border:1px dashed #c7d2e0;
-  font:700 12.5px/1 Inter,sans-serif;color:#7d8aa0}
-
-/* ---------- the heat table */
-.t{width:calc(100% - 26px);margin:12px 13px 0;border-collapse:separate;border-spacing:3px;table-layout:fixed;background:#fff;
-  border-radius:16px;box-shadow:0 12px 30px rgba(11,36,71,.10),0 0 0 1px #d4deeb;padding:4px}
+/* ---------- the table: plain cells, the change in green or red */
+.t{width:calc(100% - 32px);margin:14px 16px 0;border-collapse:separate;border-spacing:0;table-layout:fixed;background:#fff;
+  border-radius:14px;overflow:hidden;box-shadow:0 12px 30px rgba(11,36,71,.10),0 0 0 1px #d4deeb}
 col.c-no{width:34px}col.c-name{width:262px}
-thead th{color:#fff;text-align:center;background:var(--navy);border-radius:8px;font:800 14px/1.12 Figtree,sans-serif;padding:9px 3px 10px;vertical-align:middle}
+thead th{color:#fff;text-align:center;background:var(--navy);font:800 14px/1.12 Figtree,sans-serif;padding:9px 3px 10px;vertical-align:middle}
+thead th + th + th{border-left:1px solid rgba(255,255,255,.18)}
 thead th small{display:block;font:700 10.5px/1 Inter,sans-serif;letter-spacing:1.2px;opacity:.75;margin-bottom:4px}
 thead th.name{text-align:left;padding-left:10px}
 thead th.name small{letter-spacing:0;opacity:1;color:#a9bad1;font-size:11px;margin:3px 0 0}
-tbody td{border-radius:8px;text-align:center;vertical-align:middle;white-space:nowrap;padding:5px 2px}
-td.no{font:800 13px/1 Figtree,sans-serif;color:var(--muted);background:#f4f7fb}
-td.name{text-align:left;white-space:normal;padding:6px 8px 6px 10px;background:#f4f7fb}
+tbody td{text-align:center;vertical-align:middle;white-space:nowrap;padding:6px 2px;border-bottom:1px solid var(--line);background:#fff}
+tbody td + td + td{border-left:1px solid var(--line)}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:nth-child(even) td{background:#f6f8fb}
+td.no{font:700 12.5px/1 Inter,sans-serif;color:var(--muted)}
+td.name{text-align:left;white-space:normal;padding:6px 8px 6px 10px}
 td.name b{display:block;font:700 13px/1.2 Inter,sans-serif;color:var(--navy);letter-spacing:-.1px}
 td.name span{display:block;margin-top:3px;font:500 11px/1.3 Inter,sans-serif;color:var(--muted)}
-td.name i{display:inline-block;font-style:normal;margin-left:5px;padding:1px 6px;border-radius:5px;font:700 9.5px/1.4 Inter,sans-serif;letter-spacing:.3px;vertical-align:1px}
-td.name i.nri{background:#fff1e6;color:#a4450b}
-td.name i.min{background:#efe8ff;color:#4b2fa3}
+td.name i{display:inline-block;font-style:normal;margin-left:5px;padding:0 5px;border-radius:4px;border:1px solid #cdd6e3;
+  font:700 9.5px/1.5 Inter,sans-serif;letter-spacing:.3px;color:#4a5a72;vertical-align:1px}
 td.r{font-family:'Roboto Condensed',sans-serif;font-variant-numeric:tabular-nums}
-td.r b{display:block;font-weight:700;font-size:16px;line-height:1.1}
-td.r em{display:block;font-style:normal;font-size:11px;line-height:1.2;margin-top:2px}
-td.r em u{text-decoration:none;font-size:9.5px;margin-left:2px}
-td.na{background:#f6f7f9;color:#a3b0c1;font:400 14px/1 'Roboto Condensed',sans-serif}
-td.na em{display:block;font-style:normal;font-size:11px;line-height:1.2;margin-top:2px;color:#7d8aa0}
-/* one hue, light to dark: darker = lower closing rank = more competitive */
-.h1{background:#e6f5f2;color:#0b2447}.h1 em{color:#33425a}
-.h2{background:#b4e0d9;color:#0b2447}.h2 em{color:#24344f}
-.h3{background:#7dc5bc;color:#0b2447}.h3 em{color:#16243b}
-.h4{background:#4aa39d;color:#0b2447}.h4 em{color:#0f1d33}
-.h5{background:#23787a;color:#fff}.h5 em{color:#e6f2f2}
-.h6{background:#0e4f5b;color:#fff}.h6 em{color:#e6f2f2}
+td.r b{display:block;font-weight:700;font-size:16px;line-height:1.1;color:var(--navy)}
+td.r em{display:block;font-style:normal;font-size:11px;line-height:1.25;margin-top:2px;color:#5d6c82}
+td.r i{display:block;font-style:normal;font-weight:700;font-size:12px;line-height:1.25}
+td.r i.up{color:var(--up)}td.r i.down{color:var(--down)}td.r i.zero{color:var(--muted)}
+td.r .na{color:#a3b0c1;font-weight:400}
 `;
 
 const head =
@@ -207,12 +180,18 @@ const head =
   BRANCHES.map((b) => `<th><small>${b.deg}</small>${esc(b.head)}</th>`).join("") +
   `</tr>`;
 
-const arrow = (a, b) => (a == null || b == null || a === b ? "" : `<u>${b > a ? "▲" : "▼"}</u>`);
+// The change as the first poster printed it: green + when the rank closed later, red − when it closed earlier.
+const change = (a, b) => {
+  if (a == null || b == null) return "";
+  const d = b - a;
+  return d > 0 ? `<i class="up">+${num(d)}</i>` : d < 0 ? `<i class="down">−${num(-d)}</i>` : `<i class="zero">0</i>`;
+};
 const cellHtml = (cut) => {
   const a = cut[LAST] ?? null;
   const b = cut[YEAR] ?? null;
-  if (b == null) return `<td class="na">–${a != null ? `<em>${LAST}: ${num(a)}</em>` : ""}</td>`;
-  return `<td class="r ${bandOf(b)}"><b>${num(b)}</b><em>${LAST}: ${a == null ? "–" : num(a)}${arrow(a, b)}</em></td>`;
+  const last = `<em>${LAST}: ${a == null ? "–" : num(a)}</em>`;
+  if (b == null) return `<td class="r"><b><span class="na">–</span></b>${a != null ? last : ""}</td>`;
+  return `<td class="r"><b>${num(b)}</b>${last}${change(a, b)}</td>`;
 };
 const rowHtml = (c, n) => {
   const tags = (c.nri ? `<i class="nri">NRI SEATS</i>` : "") + [...c.minority].map((m) => `<i class="min">${m.toUpperCase()} MINORITY</i>`).join("");
@@ -226,10 +205,6 @@ const sourceLine =
   `(${LAST}: final result; ${YEAR}: ${provisional ? "provisional" : "final"} result${dated ? ` dated ${dated}` : ""}). ` +
   `Tags: the college also allotted NRI or minority seats in ${YEAR}.`;
 
-const keyHtml =
-  `<div class="key"><div class="kt">${YEAR} closing rank<small>darker = tougher to get</small></div><div class="scale">` +
-  BANDS.map((b) => `<span class="${b.cls}">${b.label}</span>`).join("") +
-  `</div><span class="na-chip">– no seat allotted</span></div>`;
 const statsHtml =
   `<div class="stats">` +
   stats.map((s) => `<div class="stat"><div class="k">${esc(s.label)}</div><div class="v">${num(Math.round(s.b))}<small>${LAST}: ${num(Math.round(s.a))}</small></div></div>`).join("") +
@@ -246,9 +221,9 @@ ${titleHtml({ last: LAST, year: YEAR, ribbon: `MCC ${ROUND.toUpperCase()} CLOSIN
   after: pages ? `<span class="pg">Page ${pageNo} of ${pages} · ${esc(span)}</span>` : "" })}
   ${first ? statsHtml : ""}
 
-  <div class="legend">${icon(I.info)}<p><b>How to read:</b> each tile is the ${YEAR} ${esc(ROUND)} closing rank on General / Paid seats, with ${LAST} under it.
-    ▲ = closed at a later rank than in ${LAST} (easier this year); ▼ = closed at an earlier rank (tougher). “–” = no paid seat allotted in that branch that year.</p></div>
-  ${keyHtml}
+  <div class="legend">${icon(I.info)}<p><b>How to read:</b> big number = ${YEAR} ${esc(ROUND)} closing rank on General / Paid seats, small = ${LAST}.
+    <span class="up">Green change (+)</span> = closing rank went higher in ${YEAR} (seat closed at a later rank); <span class="down">Red change (−)</span> = closing rank went lower in ${YEAR} (more competitive).
+    “–” = no paid seat allotted in that branch that year.</p></div>
 
   <table class="t">
     <colgroup><col class="c-no"><col class="c-name">${"<col>".repeat(BRANCHES.length)}</colgroup>
@@ -292,7 +267,7 @@ const measure = async (first) => {
     const tight = [...body.querySelectorAll("td.r b")].filter((b) => b.scrollWidth > b.clientWidth + 0.5).length;
     return {
       frame: document.querySelector(".poster").getBoundingClientRect().height - body.getBoundingClientRect().height,
-      heights: [...body.rows].map((r) => r.getBoundingClientRect().height + 3),
+      heights: [...body.rows].map((r) => r.getBoundingClientRect().height),
       tight,
     };
   });
