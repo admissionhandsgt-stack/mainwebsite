@@ -225,6 +225,8 @@ export const fees = pgTable(
     feeUsd: real("fee_usd"),
     /** Why a fee is missing, so the UI can say so instead of showing a blank. */
     feeNullReason: text("fee_null_reason"),
+    /** The notice an official fee came from (migration 0043); null = as imported. seat_options prefers it. */
+    feeSource: text("fee_source"),
 
     hostelMinInr: real("hostel_min_inr"),
     hostelMaxInr: real("hostel_max_inr"),

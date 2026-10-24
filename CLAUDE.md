@@ -571,7 +571,14 @@ MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within mi
   Hospital, NY Tasgaonkar, Rajendra Gode, Ulhas Patil, IIMSR, KJ Somaiya, Prakash, SMBT, Terna) — black, with a note
   naming FRA's figure for reference only. Re-check those sites before the next update. A private college's notice fills
   any branch it has (the notice is newer than the listing); a deemed university's only the seats MCC's matrix lists.
-  "≤" now means only that the college's notice says "up to" (MIMER). NRI: a deemed university's fee is
+  "≤" now means only that the college's notice says "up to" (MIMER).
+  **Into the database (owner, 2026-10-25: "hamare DB mai update karlo fees and all"; no new page):** migration 0043 adds
+  `fees.fee_source` and makes `seat_options` prefer a fee that has one (checked read-only first: with no source the view
+  is row-for-row identical, 76,297 rows); then `scripts/apply_official_fees.mjs <mh.json> <official.json> --rate 96
+  --backup <file> --apply` updates the existing `fees` rows in place (one per institute × course × quota; no inserts)
+  — fee, NRI US$, "per year", session 2026, not carried forward, hostel — and refreshes seat_options; `--restore
+  <backup>` undoes it. Dry run on 2026-10-25: 1,685 rows, 1,421 changed values in 49 colleges. Order: migration, apply,
+  then deploy with `--fresh-cache` (schema.ts names the new column, so do not deploy before the migration). NRI: a deemed university's fee is
   in dollars ($ is the fee, ₹ = $ × the rate cell); a private college's is in rupees ($ = ₹ ÷ rate). The rate is one
   yellow cell (`--rate`, 96 on 2026-10-25) and every conversion is a formula on it; recalculate in Excel (COM) before
   handing the file over — there is no LibreOffice here — and check no cell's displayed text is ####.

@@ -36,8 +36,9 @@ def add(college, seat, branches, inr=None, usd=None, source="", maximum=False, n
                     "max": maximum, "none": none, "year": Y, "source": source})
 
 
-def hostel(college, text, source):
-    entries.append({"college": college, "seat": "Hostel", "text": text, "year": Y, "source": source})
+def hostel(college, text, source, lo=None, hi=None):
+    """lo/hi: a yearly hostel fee in ₹ when the notice gives one (the fees table's hostel columns); else text only."""
+    entries.append({"college": college, "seat": "Hostel", "text": text, "year": Y, "source": source, "min": lo, "max": hi or lo})
 
 
 def note(college, text, source):
@@ -57,7 +58,7 @@ for c in GOVT:
     for seat in ("Gen", "AIQ"):
         add(c, seat, "*", inr=167300, source=f"{CET}: Government and Municipal Corporation medical colleges, tuition ₹1,67,300 a year "
             "+ development ₹5,000, admission ₹1,500, gymkhana ₹500")
-    hostel(c, "₹4,000 a year", CET)
+    hostel(c, "₹4,000 a year", CET, 4000)
 for c, fee in (("Tata Memorial", 105500), ("Bhabha Atomic", 75500), ("Mahatma Gandhi Institute of Medical Sciences, Sevagram", 495250)):
     for seat in ("Gen", "AIQ"):
         add(c, seat, "*", inr=fee, source=f"{CET}: central government institutions, total fee for 2026-27")
@@ -148,7 +149,7 @@ college_fees("BKL Walawalkar", BKL, gen=[(BKL13 + ["MD Pathology"], 1023000), ([
              mgmt=[(BKL13, 4092000), (["MD Pathology"], 2046000)], nri_inr=[(BKL13, 5115000), (["MD Pathology"], 2046000)])
 no_seat("BKL Walawalkar", "Mgmt", ["MD Community Med."], BKL)
 no_seat("BKL Walawalkar", "NRI", ["MD Community Med."], BKL)
-hostel("BKL Walawalkar", "₹84,000 a year + mess ₹50,000; caution ₹50,000 (refundable)", BKL)
+hostel("BKL Walawalkar", "₹84,000 a year + mess ₹50,000; caution ₹50,000 (refundable)", BKL, 84000)
 note("BKL Walawalkar", "State fee = tuition ₹9,01,323 + development ₹1,21,677 (Community Medicine: ₹3,78,323 + ₹1,21,677). "
      "University eligibility fee collected after the last CAP round", BKL)
 
@@ -159,7 +160,7 @@ PD_CLIN = CLIN + ["MD Psychiatry", "MD Respiratory Med.", "MD Anaesthesia", "MS 
 college_fees("Dr Panjabrao", PDMMC, gen=[(PD_PRE, 600000), (["MD Pathology"] + PD_CLIN, 900000)],
              mgmt=[(PD_PRE, 600000), (["MD Pathology"], 1200000), (PD_CLIN, 3600000)],
              nri_inr=[(PD_PRE, 600000), (["MD Pathology"], 1400000), (PD_CLIN, 4500000)])
-hostel("Dr Panjabrao", "₹1,70,000 a year (double-seated) + hostel caution ₹50,000", PDMMC)
+hostel("Dr Panjabrao", "₹1,70,000 a year (double-seated) + hostel caution ₹50,000", PDMMC, 170000)
 note("Dr Panjabrao", "State 50% / Institutional & against-NRI / NRI 15%. Also: admission ₹1,500, caution ₹50,000, S.A.M.C. fee "
      "₹30,000; MUHS eligibility fees after the last CAP round", PDMMC)
 
@@ -180,7 +181,7 @@ VI_CLIN = CLIN
 college_fees("Dr Vithalrao Vikhe Patil", VIMS, gen=[(["MD Pathology"], 1500000), (VI_CLIN + ["MD Anaesthesia"], 1795000)],
              mgmt=[(["MD Pathology"], 1500000), (VI_CLIN + ["MD Anaesthesia"], 3590000)],
              nri_inr=[(["MD Pathology"], 1500000), (["MD Anaesthesia"], 3590000), (VI_CLIN, 5385000)])
-hostel("Dr Vithalrao Vikhe Patil", "₹1,50,000 a year", VIMS)
+hostel("Dr Vithalrao Vikhe Patil", "₹1,50,000 a year", VIMS, 150000)
 note("Dr Vithalrao Vikhe Patil", "Now under Dr. Balasaheb Vikhe Patil University: State 40% (Gen) / All India 45% (in the Mgmt column) / "
      "NRI 15% — an NRI seat converted to All India pays the NRI fee. Also: university fee ₹1,50,000 once, caution ₹1,00,000 "
      "refundable; no fee scholarship/reimbursement", VIMS)
@@ -217,7 +218,7 @@ college_fees("Smt Kashibai Navale", SKN, gen=[("*", 1566000)],
              mgmt=[(SK_1X, 1566000), (CLIN + ["MD Respiratory Med."], 6264000), (["MD Psychiatry", "MS ENT"], 4698000), (["MD Anaesthesia"], 3132000)],
              nri_inr=[(SK_1X, 1566000), (CLIN, 7830000), (["MD Respiratory Med."], 6264000), (["MD Psychiatry", "MS ENT"], 4698000),
                       (["MD Anaesthesia"], 3132000)])
-hostel("Smt Kashibai Navale", "₹72,000 a year + deposit ₹7,500; mess (optional) ₹41,000", SKN)
+hostel("Smt Kashibai Navale", "₹72,000 a year + deposit ₹7,500; mess (optional) ₹41,000", SKN, 72000)
 note("Smt Kashibai Navale", "State fee = tuition ₹13,92,001 + development ₹1,73,999. After admission, university registration & "
      "eligibility: State ₹25,000 / Mgmt ₹80,000 / NRI ₹90,000 (+ ₹448 other, ₹5,000 library deposit). Against-NRI = Mgmt fee", SKN)
 
@@ -231,7 +232,7 @@ VE_PRE = ["MD Anatomy", "MD Forensic Med.", "MD Microbiology", "MD Pharmacology"
 college_fees("Vedantaa", VED, gen=[("*", 1762000)], mgmt=[(VE_MGMT, 7048000)], nri_inr=[(VE_NRI, 8810000)])
 no_seat("Vedantaa", "Mgmt", VE_PRE + ["MD Respiratory Med."], VED + " — seat matrix 2026-27")
 no_seat("Vedantaa", "NRI", VE_PRE + ["MS ENT", "MD Pathology"], VED + " — seat matrix 2026-27")
-hostel("Vedantaa", "₹2,60,000 a year (non-AC) / ₹3,10,000 (AC); mess ₹1,25,000", VED)
+hostel("Vedantaa", "₹2,60,000 a year (non-AC) / ₹3,10,000 (AC); mess ₹1,25,000", VED, 260000, 310000)
 note("Vedantaa", "State 50% / Management 35% / NRI 15%. Also: caution ₹50,000, MUHS eligibility & other ₹1,25,000. The college "
      "is exempt from FRA (G.R. 10.04.2018, under challenge in the High Court)", VED)
 
@@ -276,7 +277,7 @@ deemed("Dr DY Patil Medical College, Hospital and Research Centre, Pimpri",
        nri_usd=[(["MD Dermatology", "MD Radiology", "MS OBG", "MS Orthopaedics", "MD General Medicine"], 130000),
                 (["MD Paediatrics", "MS General Surgery"], 110000)])
 hostel("Dr DY Patil Medical College, Hospital and Research Centre, Pimpri", "₹3,40,000 (3-seater non-AC, mess included); NRI US$4,600",
-       "Dr D Y Patil Vidyapeeth, PG fee structure 2026-27")
+       "Dr D Y Patil Vidyapeeth, PG fee structure 2026-27", 340000)
 note("Dr DY Patil Medical College, Hospital and Research Centre, Pimpri",
      "Once at admission: registration & eligibility ₹2,00,000 (NRI US$3,000) for clinical branches and Pathology; caution deposit ₹50,000 refundable",
      "Dr D Y Patil Vidyapeeth, PG fee structure 2026-27")
@@ -299,7 +300,7 @@ deemed("Bharati Vidyapeeth Deemed University Medical College & Hospital, Sangli"
        nri_usd=[(["MD Radiology", "MD Dermatology"], 120000), (["MD Paediatrics", "MS Orthopaedics"], 90000),
                 (["MS OBG"], 95000), (["MD General Medicine"], 100000)])
 hostel("Bharati Vidyapeeth Deemed University Medical College & Hospital, Sangli", "₹1,10,000 a year per head (shared; mess and AC extra)",
-       "BV (DU) Medical College, Sangli: PG college information 2026-27")
+       "BV (DU) Medical College, Sangli: PG college information 2026-27", 110000)
 
 deemed("Krishna Institute of Medical Sciences, Karad",
        "Krishna Vishwa Vidyapeeth: annual fee structure for PG degree (MD/MS) 2026-27 (kvv.edu.in, 10 Oct 2026)",
@@ -310,7 +311,7 @@ deemed("Krishna Institute of Medical Sciences, Karad",
        nri_usd=[(["MD Psychiatry", "MS Ophthalmology", "MS General Surgery"], 90000),
                 (["MD General Medicine", "MD Radiology", "MD Dermatology"], 120000), (["MS OBG", "MS Orthopaedics"], 100000)])
 hostel("Krishna Institute of Medical Sciences, Karad", "₹1,32,000 a year (non-AC) · ₹2,20,000 a year (AC); deposit ₹1,00,000 refundable",
-       "Krishna Vishwa Vidyapeeth fee structure 2026-27")
+       "Krishna Vishwa Vidyapeeth fee structure 2026-27", 132000, 220000)
 note("Krishna Institute of Medical Sciences, Karad", "Tuition rises 5% every year. Once: eligibility ₹1,00,000; caution ₹25,000 refundable",
      "Krishna Vishwa Vidyapeeth fee structure 2026-27")
 
@@ -320,7 +321,7 @@ deemed("Dr DY Patil Medical College, Kolhapur",
         (["MD Paediatrics"], 3010000), (["MS General Surgery", "MS Ophthalmology"], 3210000), (["MD Pathology"], 1220000),
         (["MS ENT", "MD Anaesthesia"], 2310000), (["MD Psychiatry"], 2710000)],
        nri_usd=[(["MD Radiology", "MS OBG", "MD General Medicine"], 77000), (["MD Dermatology"], 85000), (["MD Paediatrics"], 55000)])
-hostel("Dr DY Patil Medical College, Kolhapur", "₹1,60,000 a year (mess not included)", "DY Patil Education Society, Kolhapur, MD/MS Admissions 2026-27")
+hostel("Dr DY Patil Medical College, Kolhapur", "₹1,60,000 a year (mess not included)", "DY Patil Education Society, Kolhapur, MD/MS Admissions 2026-27", 160000)
 note("Dr DY Patil Medical College, Kolhapur", "Same fee every year for 3 years; fee includes tuition and development",
      "DY Patil Education Society, Kolhapur, MD/MS Admissions 2026-27")
 
@@ -356,7 +357,7 @@ deemed("Rural Medical College, Loni", LONI,
                 (["MD Pathology"], 88420), (["MD Anaesthesia", "MD Psychiatry"], 117890),
                 (["MD General Medicine", "MD Paediatrics", "MD Radiology", "MD Radiation Oncology", "MS General Surgery", "MS Ophthalmology",
                   "MS Orthopaedics", "MS ENT", "MS OBG"], 184210)])
-hostel("Rural Medical College, Loni", "RMO hostel ₹75,000 a year (double) / ₹1,25,000 (single); mess ₹35,500", LONI)
+hostel("Rural Medical College, Loni", "RMO hostel ₹75,000 a year (double) / ₹1,25,000 (single); mess ₹35,500", LONI, 75000, 125000)
 note("Rural Medical College, Loni", "Deposit ₹5,000; first-year eligibility fee 5% of tuition", LONI)
 
 SMCW = "Symbiosis Medical College for Women: fee structure for academic year 2026-27 (smcw.edu.in, PG admissions)"
@@ -369,7 +370,7 @@ deemed("Symbiosis Medical College", SMCW,
                 (["MD Paediatrics", "MS Orthopaedics", "MS OBG"], 63900), (["MS General Surgery", "MS Ophthalmology"], 57900),
                 (["MD Dermatology"], 96800), (["MD Radiology"], 72000), (["MD Pathology"], 34750),
                 (PRE + ["MD Microbiology", "MD Pharmacology", "MD Community Med."], 2500)])
-hostel("Symbiosis Medical College", "Twin ₹2,31,000 · three-sharing ₹1,53,500 · dormitory ₹83,600; mess ₹1,04,000 a year", SMCW)
+hostel("Symbiosis Medical College", "Twin ₹2,31,000 · three-sharing ₹1,53,500 · dormitory ₹83,600; mess ₹1,04,000 a year", SMCW, 83600, 231000)
 note("Symbiosis Medical College", "Deposit ₹50,000 (NRI: admin US$540 + deposit US$680); 1-year senior residency bond, ₹10 L", SMCW)
 
 AIHER = "AIHER (formerly DMIHER), notification 50 of 2026 dated 08/10/2026: PG fees 2026-27, JNMC and DMMC, tuition per annum"

@@ -70,7 +70,8 @@ const cleanName = (n) => {
 const sql = postgres(process.env.DATABASE_URL, { max: 1, idle_timeout: 5 });
 const rows = await sql`
   SELECT college_name, institute_type, seat_type, counselling, course, degree, fee_inr, fee_session, fetched_on,
-         hostel_fee_min_inr, hostel_fee_max_inr, hostel_fee_period, hostel_included_in_fee, hostel_includes_mess
+         hostel_fee_min_inr, hostel_fee_max_inr, hostel_fee_period, hostel_included_in_fee, hostel_includes_mess,
+         institute_id, course_id
     FROM pg_seat_terms WHERE state ILIKE ${STATE}`;
 await sql.end();
 if (!rows.length) throw new Error(`no rows for ${STATE}`);
@@ -82,7 +83,8 @@ const colleges = new Map();
 for (const r of rows) {
   const section = SECTIONS.find((s) => s.test(r.institute_type ?? ""))?.id ?? "nbe";
   const key = `${section}|${r.college_name}`;
-  const c = colleges.get(key) ?? { name: cleanName(r.college_name), type: r.institute_type, section, seats: new Map(), hostel: new Map() };
+  const c = colleges.get(key) ?? { name: cleanName(r.college_name), type: r.institute_type, section, seats: new Map(), hostel: new Map(), ids: new Set() };
+  if (r.institute_id) c.ids.add(r.institute_id);
   const seat = seatOf(r.seat_type);
   if (!c.hostel.has(seat.key))
     c.hostel.set(seat.key, { min: r.hostel_fee_min_inr, max: r.hostel_fee_max_inr, period: r.hostel_fee_period,
@@ -244,9 +246,11 @@ if (JSON_OUT) {
     state: STATE,
     asOf: asOfText,
     seats: SEATS,
-    courses: [...new Set(rows.map((r) => r.course))].sort(byCourse).map((c) => ({ course: c, name: named(c), degree: degreeOf(c) })),
+    courses: [...new Set(rows.map((r) => r.course))].sort(byCourse).map((c) => ({
+      course: c, name: named(c), degree: degreeOf(c), course_id: rows.find((r) => r.course === c && r.course_id)?.course_id ?? null,
+    })),
     colleges: sectionLists.flatMap((s) => s.list).map((c) => ({
-      name: c.name, type: c.type, section: c.section,
+      name: c.name, type: c.type, section: c.section, institute_ids: [...c.ids],
       seats: Object.fromEntries([...c.seats].map(([k, list]) => [k, [...list].sort((a, b) => byCourse(a.course, b.course))])),
       hostel: Object.fromEntries(c.hostel),
     })),
