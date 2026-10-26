@@ -1,0 +1,75 @@
+{
+ "state": "Gujarat",
+ "checked": "2026-10-26",
+ "round": 2,
+ "colleges": [],
+ "replaces_not_published": [],
+ "files": [
+  {
+   "id": "ddu",
+   "url": "https://medical.ddu.ac.in/pdf/PG%20FEES%20AND%20STIPEND%20DETAILS.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west_r2/01_ddu/ddu_pg_fees_stipend.pdf",
+   "title": "PG FEES AND STIPEND DETAILS",
+   "issuer": "Dr. N. D. Desai Faculty of Medical Science and Research, Nadiad (DD University) — seal and signature",
+   "bytes": 975866,
+   "scanned": true,
+   "finding": "No 2026-27 figure. p2 (college-signed, dated 2/1/26) is headed 'Details of Tuition Fees Details for Academic Year 2025-26 Third Round' (e.g. General Medicine 3600000.00 Govt / 5500000.00 Mgmt, Yearly; NRI 0.00). p1 is a lakh table (GQ/MQ/NRI, e.g. MD-General Medicine 40 / 59 / NA) with no year label."
+  },
+  {
+   "id": "sims",
+   "url": "https://swaminarayanuniversity.ac.in/uploads/pdfs/fd343241393bc732d215d7ba4d4d0612.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west_r2/02_sims/sims_pg_fees.pdf",
+   "title": "Post Graduate Courses - Tuition Fees and other fees",
+   "issuer": "Swaminarayan Institute of Medical Sciences & Research, Kalol (PG Section / Dean)",
+   "bytes": 350297,
+   "scanned": false,
+   "finding": "No 2026-27 figure: 'Ref: PG Section/SIMSR/PG Tuition Fee Batch 2025-26/2026/001 Date: 05-03-2026' — the 2025-26 batch's fees (e.g. MD-Radiodiagnosis 5200000 GQ / 6000000 MQ per year)."
+  },
+  {
+   "id": "gcs",
+   "url": "https://gcsmc.org/assets/pdf/medical-college/nmc-corner/information-under-msr/k.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west_r2/03_gcs/gcs_k.pdf",
+   "title": "K.) Details of fees for UG _PG Courses and other cost",
+   "issuer": "pp1-2: Fee Regulatory Committee (Medical), Gujarat (FRC/No/64/2025 and FRC/No/63/2025, 30/05/2025); p3-4: GCS Medical College (hostel, stipend)",
+   "bytes": 754400,
+   "scanned": true,
+   "finding": "No usable figure. The only tuition figures are the Fee Regulatory Committee's 'FEE STRUCTURE FOR THE YEAR 2025-26 and 2026-27 (Rs. In Lakhs)' tables (excluded by the owner's rule). GCS's own pages: hostel 'Postgraduate – Free Accommodation', deposit 'One Month Stipend', and the stipend table."
+  },
+  {
+   "id": "gmers_valsad",
+   "url": "https://gmersmcvalsad.com/Files/FeesStructureMBBS-MD-MS.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west_r2/04_gmers_valsad/FeesStructureMBBS-MD-MS.pdf",
+   "title": "Fee Structure (Academic Year 2025-26)",
+   "issuer": "Dean, GMERS Medical College, Valsad",
+   "bytes": 2251808,
+   "scanned": true,
+   "finding": "No 2026-27 figure: headed '(Academic Year 2025-26)'. PG table (Fees Yearly, GQ / MQ / NRI in ₹, e.g. MD-General Medicine 11,25,000/- / 16,88,000/- / 33,75,000/-) cites 'CEO, Gandhinagar letter No. GMERSG/0139/10/2025 Dt:28/10/2025' — i.e. a GMERS society (CEO) letter, so likely society-wide, but it is 2025-26 and lists only Valsad's 7 PG branches."
+  }
+ ],
+ "html": [],
+ "not_published_updates": [
+  {
+   "college": "Dr ND Desai Faculty of Medical Science and Research, Nadiad",
+   "roster_id": 1912,
+   "latest_seen": "college-signed 'Academic Year 2025-26 Third Round' tuition sheet (PG FEES AND STIPEND DETAILS, p2)"
+  },
+  {
+   "college": "Swaminarayan Institute of Medical Sciences & Research, Kalol",
+   "roster_id": 1922,
+   "latest_seen": "'PG Tuition Fee Batch 2025-26' notice dated 05-03-2026"
+  },
+  {
+   "college": "GCS Medical College, Ahmedabad",
+   "roster_id": 1910,
+   "latest_seen": "k.pdf holds only FRC orders (excluded) + hostel/stipend; no own tuition figure"
+  },
+  {
+   "college": "GMERS Medical College, Valsad (and GMERS society)",
+   "roster_id": 1911,
+   "latest_seen": "Fee Structure (Academic Year 2025-26), PG per CEO GMERS letter dt 28/10/2025"
+  }
+ ],
+ "notes": [
+  "Round 2 adds no 2026-27 figure for Gujarat."
+ ]
+}

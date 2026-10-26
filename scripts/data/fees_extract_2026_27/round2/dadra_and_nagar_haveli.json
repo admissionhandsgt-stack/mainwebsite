@@ -1,0 +1,181 @@
+{
+ "checked": "2026-10-26",
+ "round": 2,
+ "html": [],
+ "government_all": [],
+ "not_published": [],
+ "candidate_files_not_downloaded": [],
+ "state": "Dadra and Nagar Haveli",
+ "files": [
+  {
+   "id": "namo-pg-prospectus-2026-27",
+   "url": "https://namomeri.in/sites/default/files/2026/pg%20ad%20file%20hd.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_r2/12_namo_prospectus/NAMO_PG_Prospectus_2026-27.pdf",
+   "title": "PG-Admission Prospectus 2026-27 — Policy for admission to Postgraduate courses in NAMO Medical Education and Research Institute, Silvassa (key dates for NEET-PG Medical Courses 2026)",
+   "issuer": "NAMO Medical Education and Research Society / Institute, Silvassa (U.T. of DNH & DD)",
+   "bytes": 28946280,
+   "scanned": true
+  }
+ ],
+ "colleges": [
+  {
+   "college": "NAMO Medical Education and Research Institute, Silvassa",
+   "roster": [
+    {
+     "id": 564,
+     "name": "NAMO Medical Education and Research Institute, Silvassa (Prev. Shri Vinoba Bhave Institute of Medical Sciences), (Government Medical College, Silvassa)"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "namo-pg-prospectus-2026-27",
+   "page": 13,
+   "year_label": "Cover 'PG-Admission Prospectus 2026-27'; p.2 'IMPORTANT ANNOUNCEMENTS & PROVISIONAL KEY DATES FOR NEET-PG MEDICAL COURSES 2026'; p.13 '13. FEE STRUCTURE OF THE COURSE'",
+   "period": "per year ('Annual Tuition Fee (per year)')",
+   "quote": "Annual Tuition Fee (per year) | Fees for Candidates Claiming Seats of U.T. of Dadra & Nagar Haveli and Daman & Diu | Management Quota | NRI Quota: M.D. – Anaesthesiology ₹12.00 Lakhs -- --; M.D. – Community Medicine ₹7.00 Lakhs -- --; M.D. – Dermatology & Venereology ₹20.00 Lakhs ₹70.00 Lakhs --; M.D. – General Medicine ₹15.00 Lakhs ₹60.00 Lakhs $60,000/-; M.S. – General Surgery ₹15.00 Lakhs -- --; M.D. – Microbiology ₹7.00 Lakhs -- --; M.S. – Obstetrics & Gynaecology ₹15.00 Lakhs ₹60.00 Lakhs --; M.S. – Ophthalmology ₹15.00 Lakhs -- --; M.S. – Orthopaedics ₹15.00 Lakhs ₹60.00 Lakhs --; M.D. – Paediatrics ₹15.00 Lakhs ₹60.00 Lakhs $60,000/-; M.D. – Pathology ₹7.00 Lakhs -- --; M.D. – Radio Diagnosis ₹20.00 Lakhs ₹70.00 Lakhs --",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Annual Tuition Fee (per year) — Fees for Candidates Claiming Seats of U.T. of Dadra & Nagar Haveli and Daman & Diu",
+     "branches": [
+      "M.D. – Anaesthesiology (MD Anaesthesiology)"
+     ],
+     "ours": [
+      "MD Anaesthesiology"
+     ],
+     "inr": null,
+     "lakh": 12,
+     "usd": null,
+     "printed": "12.00 Lakhs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Annual Tuition Fee (per year) — Fees for Candidates Claiming Seats of U.T. of Dadra & Nagar Haveli and Daman & Diu",
+     "branches": [
+      "M.D. – Community Medicine (MD Social & Preventive Medicine)",
+      "M.D. – Microbiology (MD Microbiology)",
+      "M.D. – Pathology (MD Pathology)"
+     ],
+     "ours": [
+      "MD Social & Preventive Medicine",
+      "MD Microbiology",
+      "MD Pathology"
+     ],
+     "inr": null,
+     "lakh": 7,
+     "usd": null,
+     "printed": "7.00 Lakhs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Annual Tuition Fee (per year) — Fees for Candidates Claiming Seats of U.T. of Dadra & Nagar Haveli and Daman & Diu",
+     "branches": [
+      "M.D. – Dermatology & Venereology (MD Dermatology, Venereology & Leprosy)",
+      "M.D. – Radio Diagnosis (MD Radio Diagnosis)"
+     ],
+     "ours": [
+      "MD Dermatology, Venereology & Leprosy",
+      "MD Radio Diagnosis"
+     ],
+     "inr": null,
+     "lakh": 20,
+     "usd": null,
+     "printed": "20.00 Lakhs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Annual Tuition Fee (per year) — Fees for Candidates Claiming Seats of U.T. of Dadra & Nagar Haveli and Daman & Diu",
+     "branches": [
+      "M.D. – General Medicine (MD General Medicine)",
+      "M.S. – General Surgery (MS General Surgery)",
+      "M.S. – Obstetrics & Gynaecology (MS Obstetrics & Gynaecology)",
+      "M.S. – Ophthalmology (MS Ophthalmology)",
+      "M.S. – Orthopaedics (MS Orthopaedics)",
+      "M.D. – Paediatrics (MD Paediatrics)"
+     ],
+     "ours": [
+      "MD General Medicine",
+      "MS General Surgery",
+      "MS Obstetrics & Gynaecology",
+      "MS Ophthalmology",
+      "MS Orthopaedics",
+      "MD Paediatrics"
+     ],
+     "inr": null,
+     "lakh": 15,
+     "usd": null,
+     "printed": "15.00 Lakhs",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Tuition Fee (per year) — Management Quota",
+     "branches": [
+      "M.D. – Dermatology & Venereology (MD Dermatology, Venereology & Leprosy)",
+      "M.D. – Radio Diagnosis (MD Radio Diagnosis)"
+     ],
+     "ours": [
+      "MD Dermatology, Venereology & Leprosy",
+      "MD Radio Diagnosis"
+     ],
+     "inr": null,
+     "lakh": 70,
+     "usd": null,
+     "printed": "70.00 Lakhs",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Tuition Fee (per year) — Management Quota",
+     "branches": [
+      "M.D. – General Medicine (MD General Medicine)",
+      "M.S. – Obstetrics & Gynaecology (MS Obstetrics & Gynaecology)",
+      "M.S. – Orthopaedics (MS Orthopaedics)",
+      "M.D. – Paediatrics (MD Paediatrics)"
+     ],
+     "ours": [
+      "MD General Medicine",
+      "MS Obstetrics & Gynaecology",
+      "MS Orthopaedics",
+      "MD Paediatrics"
+     ],
+     "inr": null,
+     "lakh": 60,
+     "usd": null,
+     "printed": "60.00 Lakhs",
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "Annual Tuition Fee (per year) — NRI Quota",
+     "branches": [
+      "M.D. – General Medicine (MD General Medicine)",
+      "M.D. – Paediatrics (MD Paediatrics)"
+     ],
+     "ours": [
+      "MD General Medicine",
+      "MD Paediatrics"
+     ],
+     "inr": null,
+     "lakh": null,
+     "usd": 60000,
+     "printed": "$60,000",
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": null,
+    "max": null,
+    "text": "Hostel Fee (per month) ₹2,000/- (also Admission Fee ₹5,000 one time; Library ₹2,000 per year; Security Deposit ₹1,00,000 refundable)"
+   },
+   "notes": "Scanned prospectus (17 image pages, no text layer); page 13 read from the rendered image. 'Gen' = the UT column (our roster's DD Seats and DNH Seats); our roster's 'Other State Seats' (2) are not named in the table. Seat table p.3: Management Quota 4 seats (DVL, Gen Med, OBG, Ortho, Radio-Diagnosis), NRI 2 (Gen Med, Paediatrics); a '--' cell = no seat. Fee 'subject to revision from time to time'. AIQ: this prospectus has NO AIQ column. The separate AIQ sheet (round-1 file 'Fee Structure and Bond Details AIQ', 17 Oct 2026) prints the same 12 figures as this UT column but still carries no year — the AIQ figure stays the owner's decision (round-1 dadra_and_nagar_haveli.json, not_published → unlabelled_candidate)."
+  }
+ ],
+ "replaces_not_published": [
+  "NAMO Medical Education and Research Institute, Silvassa (Prev. Shri Vinoba Bhave Institute of Medical Sciences), (Government Medical College, Silvassa)"
+ ],
+ "decision_needed": "AIQ seats: the labelled 2026-27 prospectus gives the UT, Management and NRI columns only; the AIQ sheet's identical figures remain unlabelled."
+}

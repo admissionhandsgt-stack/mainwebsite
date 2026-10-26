@@ -39,5 +39,551 @@
   "TEL Govt PG": "Gen",
   "AP Mgmt PG": "NRI"
  },
- "entries": []
+ "entries": [
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anatomy",
+    "MD Bio-Chemistry",
+    "MD Physiology"
+   ],
+   "fee_inr": 240000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Anatomy",
+    "MD Bio-Chemistry",
+    "MD Physiology"
+   ],
+   "fee_inr": 240000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy",
+    "MD Bio-Chemistry",
+    "MD Physiology"
+   ],
+   "fee_inr": 240000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Anatomy",
+    "MD Bio-Chemistry",
+    "MD Physiology"
+   ],
+   "fee_inr": 240000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Anatomy",
+    "MD Bio-Chemistry",
+    "MD Physiology"
+   ],
+   "fee_inr": 240000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 1790000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 1790000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 1790000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 1790000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 1790000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 3290000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 3290000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 3290000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 3290000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 3290000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1455000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1455000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1455000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1455000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1455000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 912000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 912000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 912000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 912000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 912000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Obstetrics & Gynaecology",
+    "MD General Medicine",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 2990000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MS Obstetrics & Gynaecology",
+    "MD General Medicine",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 2990000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology",
+    "MD General Medicine",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 2990000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Min",
+   "branches": [
+    "MS Obstetrics & Gynaecology",
+    "MD General Medicine",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 2990000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MS Obstetrics & Gynaecology",
+    "MD General Medicine",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 2990000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 720000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 720000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 720000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 720000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "ids": [
+    1931
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 720000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "alfalah-prospectus-2026-27, p. 23 — \"Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'\""
+  }
+ ]
 }

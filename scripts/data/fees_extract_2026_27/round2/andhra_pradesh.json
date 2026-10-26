@@ -1,0 +1,28 @@
+{
+  "state": "Andhra Pradesh",
+  "checked": "2026-10-26",
+  "round": 2,
+  "note": "Round 2 adds no fee entries: all four AP files are MBBS-only fee sheets. not_published below only updates latest_seen for these colleges.",
+  "files": [
+    { "id": "r2-ongole-aiq", "url": "https://www.gmcongole.org/wp-content/uploads/2026/08/AIQ-FEE-STRUCTURE-2026-2027.pdf", "path": "dl/apts_r2/01_ongole_aiq/AIQ-FEE-STRUCTURE-2026-2027.pdf",
+      "title": "FEE PAYMENT DETAILS FOR ADMISSION INTO MBBS COURSE DURING THE ACADEMIC YEAR 2026-27 FOR ALL INDIA QUOTA STUDENTS ONLY", "issuer": "ADME/Principal, Govt. Medical College, Ongole", "bytes": 205805, "scanned": true, "result": "MBBS only - no MD/MS figure" },
+    { "id": "r2-ongole-state", "url": "https://www.gmcongole.org/wp-content/uploads/2026/08/STATE-QUOTA-FEE-STRUCTURE-2026-2027.pdf", "path": "dl/apts_r2/02_ongole_state/STATE-QUOTA-FEE-STRUCTURE-2026-2027.pdf",
+      "title": "FEE PAYMENT DETAILS FOR ADMISSION INTO MBBS COURSE DURING THE ACADEMIC YEAR 2026-27 FOR STATE QUOTA STUDENTS ONLY", "issuer": "ADME/Principal, Govt. Medical College, Ongole (signed 5/8/26)", "bytes": 180185, "scanned": true, "result": "MBBS only - no MD/MS figure" },
+    { "id": "r2-machilipatnam-aiq", "url": "https://www.gmcmachilipatnam-ap-gov.com/wp-content/uploads/2026/08/AIQ-04.08.2026_2582.pdf", "path": "dl/apts_r2/03_machilipatnam_aiq/AIQ-04.08.2026_2582.pdf",
+      "title": "Government Medical College, Machilipatnam - FEE PAYMENT DETAILS FOR ADMISSION INTO MBBS FOR THE ACADEMIC YEAR 2026-27", "issuer": "Government Medical College, Machilipatnam", "bytes": 451121, "scanned": false, "result": "MBBS only - no MD/MS figure" },
+    { "id": "r2-nandyal-bsf", "url": "https://www.gmcnandyal-ap-gov.com/wp-content/uploads/2026/09/GMC-Nandyal-Category-B-SF-2026-details.pdf", "path": "dl/apts_r2/04_nandyal_bsf/GMC-Nandyal-Category-B-SF-2026-details.pdf",
+      "title": "GOVERNMENT MEDICAL COLLEGE, NANDYAL - SELF FINANACE QUOTA (B-CATEGORY) FEE PAYMENT DETAILS FOR ADMISSIONS IN TO MBBS", "issuer": "Government Medical College, Nandyal", "bytes": 177829, "scanned": false, "result": "MBBS only - no MD/MS figure" }
+  ],
+  "html": [],
+  "colleges": [],
+  "replaces_not_published": [],
+  "government_all": [],
+  "not_published": [
+    { "college": "Government Medical College, Ongole", "roster_id": 171, "latest_seen": "Round 2: both 2026-27 files are MBBS only (AIQ: University Fee Rs.12,600 one time, Tution Fee Rs.15,000 every year, Special Fee Rs.2,000; State quota: Tution Fee Rs.15,000 every year + Rs.2,000). Latest MD/MS: 2025-26 fee image (Nov 2025)." }
+  ],
+  "mbbs_only_seen": [
+    { "college": "Government Medical College, Machilipatnam", "roster_id": 463, "quote": "FEE PAYMENT DETAILS FOR ADMISSION INTO MBBS FOR THE ACADEMIC YEAR 2026-27: University Fee Rs.12,600/- (AIQ, one time); Tuition Fee Rs.15,000/- yearly (AIQ & Competent Quota); Management Quota – B Category Rs.12,00,000/- yearly; Management Quota – C Category Rs.20,00,000/- yearly", "note": "MBBS, not MD/MS. The college's MD/MS 2026-27 fees stay as in round 1 (NTRUHS CQ prospectus §9.2)." },
+    { "college": "Government Medical College, Nandyal", "roster_id": 354, "quote": "SELF FINANACE QUOTA (B-CATEGORY) FEE PAYMENT DETAILS FOR ADMISSIONS IN TO MBBS: Tuition Fee Rs. 12,00,000 YEARLY; undertaking: 'Competent Authority (Self Financing) category for the academic year 2026-2027 for the amount of Rs.12,00,000/- per annum for a period of four and half years'", "note": "MBBS, not MD/MS. The college's MD/MS 2026-27 fees stay as in round 1 (NTRUHS CQ prospectus §9.2)." }
+  ],
+  "candidate_files_not_downloaded": []
+}

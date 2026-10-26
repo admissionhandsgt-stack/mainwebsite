@@ -41,345 +41,6 @@
  },
  "entries": [
   {
-   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
-   "ids": [
-    1818
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Anaesthesiology"
-   ],
-   "fee_inr": 2300000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
-  },
-  {
-   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
-   "ids": [
-    1818
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Paediatrics"
-   ],
-   "fee_inr": 4800000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
-  },
-  {
-   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
-   "ids": [
-    1818
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD General Medicine"
-   ],
-   "fee_inr": 5000000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
-  },
-  {
-   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
-   "ids": [
-    1818
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Psychiatry"
-   ],
-   "fee_inr": 2800000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
-  },
-  {
-   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
-   "ids": [
-    1818
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Tuberculosis & Respiratory Diseases"
-   ],
-   "fee_inr": 4200000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
-  },
-  {
-   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
-   "ids": [
-    1818
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Emergency Medicine"
-   ],
-   "fee_inr": 3000000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
-  },
-  {
-   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
-   "ids": [
-    1818
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Dermatology, Venereology & Leprosy"
-   ],
-   "fee_inr": 6800000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
-  },
-  {
-   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
-   "ids": [
-    1818
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Radio Diagnosis"
-   ],
-   "fee_inr": 7600000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
-  },
-  {
-   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
-   "ids": [
-    1818
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MS ENT"
-   ],
-   "fee_inr": 2800000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
-  },
-  {
-   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
-   "ids": [
-    1818
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MS General Surgery"
-   ],
-   "fee_inr": 3800000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
-  },
-  {
-   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
-   "ids": [
-    1818
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Immuno Haematology & Blood Transfusion"
-   ],
-   "fee_inr": 950000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
-  },
-  {
-   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
-   "ids": [
-    1818
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MS Obstetrics & Gynaecology"
-   ],
-   "fee_inr": 5000000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
-  },
-  {
-   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
-   "ids": [
-    1818
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MS Ophthalmology"
-   ],
-   "fee_inr": 3000000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
-  },
-  {
-   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
-   "ids": [
-    1818
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Anatomy"
-   ],
-   "fee_inr": 300000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
-  },
-  {
-   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
-   "ids": [
-    1818
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MS Orthopaedics"
-   ],
-   "fee_inr": 3900000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
-  },
-  {
-   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
-   "ids": [
-    1818
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Bio-Chemistry"
-   ],
-   "fee_inr": 350000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
-  },
-  {
-   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
-   "ids": [
-    1818
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Social & Preventive Medicine"
-   ],
-   "fee_inr": 350000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
-  },
-  {
-   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
-   "ids": [
-    1818
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Microbiology"
-   ],
-   "fee_inr": 300000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
-  },
-  {
-   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
-   "ids": [
-    1818
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Physiology"
-   ],
-   "fee_inr": 250000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
-  },
-  {
-   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
-   "ids": [
-    1818
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Pathology"
-   ],
-   "fee_inr": 1050000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
-  },
-  {
-   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
-   "ids": [
-    1818
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Pharmacology"
-   ],
-   "fee_inr": 300000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
-  },
-  {
-   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
-   "ids": [
-    1818
-   ],
-   "seat": "NRI",
-   "branches": [
-    "MD Paediatrics",
-    "MD General Medicine",
-    "MD Psychiatry",
-    "MD Tuberculosis & Respiratory Diseases",
-    "MD Dermatology, Venereology & Leprosy",
-    "MD Radio Diagnosis",
-    "MS General Surgery",
-    "MS Obstetrics & Gynaecology",
-    "MS Ophthalmology",
-    "MS Orthopaedics"
-   ],
-   "fee_inr": null,
-   "fee_usd": 100000,
-   "max": false,
-   "year": "2026-27",
-   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
-  },
-  {
    "college": "Rama Medical College Hospital & Research Centre, Hapur",
    "ids": [
     2134
@@ -1807,6 +1468,357 @@
    "year": "2026-27",
    "source": "basti_pg, p. 1 — \"ADMISSION – PG COURSE – MD/MS SESSION 2026-27 (letter dated 08.09.2026)\"",
    "period": null
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Courses (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 2300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_drive, p. 1 — \"PG Courses 2026-27 — Course Fee, 'Annual Mode' (both columns)\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Courses (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 6800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_drive, p. 1 — \"PG Courses 2026-27 — Course Fee, 'Annual Mode' (both columns)\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Courses (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_drive, p. 1 — \"PG Courses 2026-27 — Course Fee, 'Annual Mode' (both columns)\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Courses (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 4800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_drive, p. 1 — \"PG Courses 2026-27 — Course Fee, 'Annual Mode' (both columns)\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Courses (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 2800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_drive, p. 1 — \"PG Courses 2026-27 — Course Fee, 'Annual Mode' (both columns)\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Courses (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_drive, p. 1 — \"PG Courses 2026-27 — Course Fee, 'Annual Mode' (both columns)\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Courses (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 2800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_drive, p. 1 — \"PG Courses 2026-27 — Course Fee, 'Annual Mode' (both columns)\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Courses (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 3800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_drive, p. 1 — \"PG Courses 2026-27 — Course Fee, 'Annual Mode' (both columns)\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Courses (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_drive, p. 1 — \"PG Courses 2026-27 — Course Fee, 'Annual Mode' (both columns)\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Courses (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_drive, p. 1 — \"PG Courses 2026-27 — Course Fee, 'Annual Mode' (both columns)\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Courses (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 3900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_drive, p. 1 — \"PG Courses 2026-27 — Course Fee, 'Annual Mode' (both columns)\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Courses (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_drive, p. 1 — \"PG Courses 2026-27 — Course Fee, 'Annual Mode' (both columns)\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Courses (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 7600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_drive, p. 1 — \"PG Courses 2026-27 — Course Fee, 'Annual Mode' (both columns)\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Courses (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Immuno Haematology & Blood Transfusion"
+   ],
+   "fee_inr": 950000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_drive, p. 1 — \"PG Courses 2026-27 — Course Fee, 'Annual Mode' (both columns)\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Courses (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_drive, p. 1 — \"PG Courses 2026-27 — Course Fee, 'Annual Mode' (both columns)\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Courses (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 350000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_drive, p. 1 — \"PG Courses 2026-27 — Course Fee, 'Annual Mode' (both columns)\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Courses (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 350000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_drive, p. 1 — \"PG Courses 2026-27 — Course Fee, 'Annual Mode' (both columns)\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Courses (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_drive, p. 1 — \"PG Courses 2026-27 — Course Fee, 'Annual Mode' (both columns)\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Courses (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1050000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_drive, p. 1 — \"PG Courses 2026-27 — Course Fee, 'Annual Mode' (both columns)\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Courses (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_drive, p. 1 — \"PG Courses 2026-27 — Course Fee, 'Annual Mode' (both columns)\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Courses (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Physiology"
+   ],
+   "fee_inr": 250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_drive, p. 1 — \"PG Courses 2026-27 — Course Fee, 'Annual Mode' (both columns)\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Courses (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD General Medicine",
+    "MD Paediatrics",
+    "MD Psychiatry",
+    "MD Tuberculosis & Respiratory Diseases",
+    "MS General Surgery",
+    "MS Obstetrics & Gynaecology",
+    "MS Ophthalmology",
+    "MS Orthopaedics",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_drive, p. 1 — \"PG Courses 2026-27 — Course Fee, 'Annual Mode' (both columns)\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Courses (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Hostel",
+   "text": "Student Hostel Fee Structure (Annual) including mess — Single Accomodation (AC) 2,00,000",
+   "year": "2026-27",
+   "source": "santosh_drive, p. 1 — \"PG Courses 2026-27 — Course Fee, 'Annual Mode' (both columns)\"",
+   "min": 200000,
+   "max": 200000
   }
  ]
 }

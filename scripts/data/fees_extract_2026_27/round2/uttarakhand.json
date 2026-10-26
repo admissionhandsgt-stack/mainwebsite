@@ -1,0 +1,32 @@
+{
+ "state": "Uttarakhand",
+ "checked": "2026-10-26",
+ "round": 2,
+ "files": [
+  {
+   "id": "vcsg_mdms",
+   "url": "https://vcsgsrinagar.org/p-contents/uploads/SKuvQsYzDdrf7I8k6Vnwq0HUi.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_up_r2/10_vcsg_mdms/vcsg_mdms_fee.pdf",
+   "title": "वीर चन्द्र सिंह गढ़वाली राजकीय आयुर्विज्ञान शोध संस्थान, श्रीनगर गढ़वाल — स्नातकोत्तर पाठ्यक्रम (PG Course) हेतु निर्धारित ट्यूशन एवं अन्य शुल्कों का विवरण — Fee Details (MD/MS Seats)",
+   "issuer": "VCSG GIMS&R Srinagar",
+   "bytes": 313403,
+   "scanned": true,
+   "usable_2026_27_mdms": false,
+   "notes": "No year label on the fee table; page 2 (same file) is an acknowledgement form for 'NEET PG 2024' with date '…/2024' — a 2024 document. Not used. Figures: tuition 60000.00 (clinical with bond) / 500000.00 (clinical without bond) / 100000.00 (non-clinical, non bond) / 500000.00 (Pathology, non bond); hostel 12000.00; totals 98,000.00 / 5,38,000.00 / 1,38,000 / 5,38,000.00."
+  },
+  {
+   "id": "sgrr_prospectus",
+   "url": "https://www.sgrru.ac.in/uploads/Prospectus-SGRR-2026-2027.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_up_r2/11_sgrr_prosp/sgrr_prospectus_2026_27.pdf",
+   "title": "Shri Guru Ram Rai University — Prospectus 2026-2027",
+   "issuer": "SGRR University",
+   "bytes": 40839323,
+   "scanned": true,
+   "usable_2026_27_mdms": false,
+   "notes": "56 scanned pages, no text layer. Sampled at low resolution: pp.2-7 (messages), 46 (SGRR Institute of Medical & Health Sciences — 'PROGRAMS OFFERED': MBBS/MD/MS/DM/M.Ch with duration, eligibility and admission process — no fee column), 48-51 (other schools, same layout), 52-53 ('FEE CONCESSIONS/SCHOLARSHIP POLICY FOR THE ACADEMIC YEAR 2026-27'), 54-55 (achievers, placements). No PG fee table and no NRI tuition table found. Pages 8-45 (school descriptions) not rendered."
+  }
+ ],
+ "html": [],
+ "colleges": [],
+ "replaces_not_published": []
+}

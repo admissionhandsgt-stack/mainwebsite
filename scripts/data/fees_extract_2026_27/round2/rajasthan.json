@@ -1,0 +1,60 @@
+{
+ "state": "Rajasthan",
+ "checked": "2026-10-26",
+ "round": 2,
+ "colleges": [],
+ "replaces_not_published": [],
+ "files": [
+  {
+   "id": "bhilwara",
+   "url": "https://jankalyanfile.rajasthan.gov.in/Files//Content/UploadFolder/DepartmentMaster/489/2026/Aug/30409/489e9dc3bf8-d097-495f-b68e-4cbc5dce965f.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west_r2/07_bhilwara/bhilwara_pg_fees.pdf",
+   "title": "RajMES order F.7(326)RajMES/Acad./PG/Fees/2023-03483 (linked as 'Click here for PG Fees Details')",
+   "issuer": "Director, Rajasthan Medical Education Society (RajMES), Jaipur (digitally signed 2025)",
+   "bytes": 507166,
+   "scanned": true,
+   "finding": "No 2026-27 figure: fixes PG fees for 'सत्र 2025–2026' (session 2025-26) for all RajMES colleges — Govt.Seat (50%) 63800, Payment Seat (50%) 868200 tuition per year, plus admission 20507, caution 8710, sports 16979, infrastructure 8710; part B +5%/yr and part C +10%/yr."
+  },
+  {
+   "id": "jln_ajmer",
+   "url": "https://jankalyanfile.rajasthan.gov.in/Files//Content/UploadFolder/Department/PDF/JLNAjmer/2026/Aug/JLNAjmer7529f784-83d5-4fdc-8842-e0a9cc82deae.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west_r2/08_jln_ajmer/jln_ajmer_aug2026.pdf",
+   "title": "JLN Medical College, Ajmer — fee orders (MBBS, PG, NRI) + DME late-fee circular",
+   "issuer": "Principal & Controller, JLN Medical College, Ajmer (signed 26-07-2025); p6 DME Rajasthan",
+   "bytes": 664976,
+   "scanned": false,
+   "finding": "No 2026-27 figure: the PG order (p3) fixes fees 'सत्र 2025–26 तक' (up to session 2025-26) — Tuition Fees Every Year 8053, Sports & Academic Fund 4027; the other pages are MBBS/NRI 2025-26 and a late-fee circular."
+  },
+  {
+   "id": "tantia",
+   "url": "https://drsstantiamch.org/uploads/pdf/Fee_Details_UG_PG.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west_r2/09_tantia/Fee_Details_UG_PG.pdf",
+   "title": "Fees Structure of the M.B.B.S course 2025-26; FEE STRUCTURE FOR MD/MS BATCH-2025",
+   "issuer": "Tantia University (Directorate of Admission; Registrar office order TU/Reg(04)/2026/437 dt 10-02-2026)",
+   "bytes": 1151904,
+   "scanned": true,
+   "finding": "No 2026-27 figure: the MD/MS page is 'for the session 2025-26 … FEE STRUCTURE FOR MD/MS BATCH-2025' (e.g. MD Radio Diagnosis 95,00,000 Govt / 100,00,000 Mgmt annual)."
+  }
+ ],
+ "html": [],
+ "not_published_updates": [
+  {
+   "college": "Government Medical College, Bhilwara (and all RajMES colleges)",
+   "roster_id": 902,
+   "latest_seen": "RajMES order for session 2025-26: Govt seat 63800 / Payment seat 868200 per year"
+  },
+  {
+   "college": "Jawaharlal Nehru Medical College, Ajmer",
+   "roster_id": 105,
+   "latest_seen": "college order fixing PG fees up to session 2025-26 (tuition 8053), signed 26-07-2025"
+  },
+  {
+   "college": "Dr SS Tantia Medical College",
+   "roster_id": 2050,
+   "latest_seen": "Tantia University office order dt 10-02-2026: MD/MS Batch-2025, session 2025-26"
+  }
+ ],
+ "notes": [
+  "Round 2 adds no 2026-27 figure for Rajasthan."
+ ]
+}

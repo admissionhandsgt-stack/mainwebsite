@@ -2,6 +2,10 @@
  "state": "Sikkim",
  "classes": [
   [
+   "^Sikkim Gen Quota$",
+   "CatA"
+  ],
+  [
    "NRI",
    "NRI"
   ],
@@ -39,5 +43,260 @@
   "TEL Govt PG": "Gen",
   "AP Mgmt PG": "NRI"
  },
- "entries": []
+ "entries": [
+  {
+   "college": "SIKKIM MANIPAL INSTITUTE OF MEDICAL SCIENCES (SMIMS)",
+   "ids": [
+    2053
+   ],
+   "seat": "CatA",
+   "branches": [
+    "MS Obstetrics & Gynaecology",
+    "MD General Medicine",
+    "MS Orthopaedics",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 2960000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "smu-prospectus-2026, p. 94 — \"PROSPECTUS 2026 — 'FEE STRUCTURE FOR MD/MS COURSE' (printed pp. 74-76)\" — clinical / non-clinical as usually grouped"
+  },
+  {
+   "college": "SIKKIM MANIPAL INSTITUTE OF MEDICAL SCIENCES (SMIMS)",
+   "ids": [
+    2053
+   ],
+   "seat": "CatA",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "smu-prospectus-2026, p. 94 — \"PROSPECTUS 2026 — 'FEE STRUCTURE FOR MD/MS COURSE' (printed pp. 74-76)\""
+  },
+  {
+   "college": "SIKKIM MANIPAL INSTITUTE OF MEDICAL SCIENCES (SMIMS)",
+   "ids": [
+    2053
+   ],
+   "seat": "CatA",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 2300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "smu-prospectus-2026, p. 94 — \"PROSPECTUS 2026 — 'FEE STRUCTURE FOR MD/MS COURSE' (printed pp. 74-76)\""
+  },
+  {
+   "college": "SIKKIM MANIPAL INSTITUTE OF MEDICAL SCIENCES (SMIMS)",
+   "ids": [
+    2053
+   ],
+   "seat": "CatA",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 2700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "smu-prospectus-2026, p. 94 — \"PROSPECTUS 2026 — 'FEE STRUCTURE FOR MD/MS COURSE' (printed pp. 74-76)\""
+  },
+  {
+   "college": "SIKKIM MANIPAL INSTITUTE OF MEDICAL SCIENCES (SMIMS)",
+   "ids": [
+    2053
+   ],
+   "seat": "CatA",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "smu-prospectus-2026, p. 94 — \"PROSPECTUS 2026 — 'FEE STRUCTURE FOR MD/MS COURSE' (printed pp. 74-76)\""
+  },
+  {
+   "college": "SIKKIM MANIPAL INSTITUTE OF MEDICAL SCIENCES (SMIMS)",
+   "ids": [
+    2053
+   ],
+   "seat": "CatA",
+   "branches": [
+    "MD Social & Preventive Medicine",
+    "MD Bio-Chemistry",
+    "MD Microbiology",
+    "MD Pharmacology",
+    "MD Physiology"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "smu-prospectus-2026, p. 94 — \"PROSPECTUS 2026 — 'FEE STRUCTURE FOR MD/MS COURSE' (printed pp. 74-76)\" — clinical / non-clinical as usually grouped"
+  },
+  {
+   "college": "SIKKIM MANIPAL INSTITUTE OF MEDICAL SCIENCES (SMIMS)",
+   "ids": [
+    2053
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Obstetrics & Gynaecology",
+    "MD General Medicine",
+    "MS Orthopaedics",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 1035000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "smu-prospectus-2026, p. 94 — \"PROSPECTUS 2026 — 'FEE STRUCTURE FOR MD/MS COURSE' (printed pp. 74-76)\" — clinical / non-clinical as usually grouped"
+  },
+  {
+   "college": "SIKKIM MANIPAL INSTITUTE OF MEDICAL SCIENCES (SMIMS)",
+   "ids": [
+    2053
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 920000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "smu-prospectus-2026, p. 94 — \"PROSPECTUS 2026 — 'FEE STRUCTURE FOR MD/MS COURSE' (printed pp. 74-76)\""
+  },
+  {
+   "college": "SIKKIM MANIPAL INSTITUTE OF MEDICAL SCIENCES (SMIMS)",
+   "ids": [
+    2053
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 870000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "smu-prospectus-2026, p. 94 — \"PROSPECTUS 2026 — 'FEE STRUCTURE FOR MD/MS COURSE' (printed pp. 74-76)\""
+  },
+  {
+   "college": "SIKKIM MANIPAL INSTITUTE OF MEDICAL SCIENCES (SMIMS)",
+   "ids": [
+    2053
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 970000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "smu-prospectus-2026, p. 94 — \"PROSPECTUS 2026 — 'FEE STRUCTURE FOR MD/MS COURSE' (printed pp. 74-76)\""
+  },
+  {
+   "college": "SIKKIM MANIPAL INSTITUTE OF MEDICAL SCIENCES (SMIMS)",
+   "ids": [
+    2053
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 1170000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "smu-prospectus-2026, p. 94 — \"PROSPECTUS 2026 — 'FEE STRUCTURE FOR MD/MS COURSE' (printed pp. 74-76)\""
+  },
+  {
+   "college": "SIKKIM MANIPAL INSTITUTE OF MEDICAL SCIENCES (SMIMS)",
+   "ids": [
+    2053
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Social & Preventive Medicine",
+    "MD Bio-Chemistry",
+    "MD Microbiology",
+    "MD Pharmacology",
+    "MD Physiology"
+   ],
+   "fee_inr": 256000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "smu-prospectus-2026, p. 94 — \"PROSPECTUS 2026 — 'FEE STRUCTURE FOR MD/MS COURSE' (printed pp. 74-76)\" — clinical / non-clinical as usually grouped"
+  },
+  {
+   "college": "SIKKIM MANIPAL INSTITUTE OF MEDICAL SCIENCES (SMIMS)",
+   "ids": [
+    2053
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology",
+    "MD General Medicine",
+    "MS Orthopaedics",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 5300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "smu-prospectus-2026, p. 94 — \"PROSPECTUS 2026 — 'FEE STRUCTURE FOR MD/MS COURSE' (printed pp. 74-76)\" — clinical / non-clinical as usually grouped"
+  },
+  {
+   "college": "SIKKIM MANIPAL INSTITUTE OF MEDICAL SCIENCES (SMIMS)",
+   "ids": [
+    2053
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 4400000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "smu-prospectus-2026, p. 94 — \"PROSPECTUS 2026 — 'FEE STRUCTURE FOR MD/MS COURSE' (printed pp. 74-76)\""
+  },
+  {
+   "college": "SIKKIM MANIPAL INSTITUTE OF MEDICAL SCIENCES (SMIMS)",
+   "ids": [
+    2053
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 6600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "smu-prospectus-2026, p. 94 — \"PROSPECTUS 2026 — 'FEE STRUCTURE FOR MD/MS COURSE' (printed pp. 74-76)\""
+  },
+  {
+   "college": "SIKKIM MANIPAL INSTITUTE OF MEDICAL SCIENCES (SMIMS)",
+   "ids": [
+    2053
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Facilities … SMIMS Tadong campus: Post Graduate Hostel: Double Sharing — Annual Hostel Rent 66,000; Mess & Utility Deposit NA; Total Amount 66,000",
+   "year": "2026-27",
+   "source": "smu-prospectus-2026, p. 94 — \"PROSPECTUS 2026 — 'FEE STRUCTURE FOR MD/MS COURSE' (printed pp. 74-76)\"",
+   "min": 66000,
+   "max": 66000
+  }
+ ]
 }

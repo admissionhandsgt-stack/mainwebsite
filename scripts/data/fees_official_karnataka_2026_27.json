@@ -1419,242 +1419,6 @@
    "max": 290000
   },
   {
-   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
-   "ids": [
-    1843
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Anatomy",
-    "MD Physiology",
-    "MD Bio-Chemistry"
-   ],
-   "fee_inr": 100000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
-  },
-  {
-   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
-   "ids": [
-    1843
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Pathology"
-   ],
-   "fee_inr": 1000000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
-  },
-  {
-   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
-   "ids": [
-    1843
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Microbiology",
-    "MD Social & Preventive Medicine",
-    "MD Pharmacology"
-   ],
-   "fee_inr": 300000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
-  },
-  {
-   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
-   "ids": [
-    1843
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD General Medicine",
-    "MD Paediatrics",
-    "MS Obstetrics & Gynaecology",
-    "MS Orthopaedics",
-    "MS General Surgery"
-   ],
-   "fee_inr": 6000000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
-  },
-  {
-   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
-   "ids": [
-    1843
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Anaesthesiology",
-    "MD Psychiatry"
-   ],
-   "fee_inr": 3250000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
-  },
-  {
-   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
-   "ids": [
-    1843
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Radio Diagnosis",
-    "MD Dermatology, Venereology & Leprosy"
-   ],
-   "fee_inr": 7000000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
-  },
-  {
-   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
-   "ids": [
-    1843
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Tuberculosis & Respiratory Diseases",
-    "MD Emergency Medicine",
-    "MS ENT",
-    "MS Ophthalmology"
-   ],
-   "fee_inr": 5000000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
-  },
-  {
-   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
-   "ids": [
-    1839
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Anatomy",
-    "MD Physiology",
-    "MD Bio-Chemistry"
-   ],
-   "fee_inr": 100000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
-  },
-  {
-   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
-   "ids": [
-    1839
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Pathology"
-   ],
-   "fee_inr": 1000000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
-  },
-  {
-   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
-   "ids": [
-    1839
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Microbiology",
-    "MD Social & Preventive Medicine",
-    "MD Pharmacology"
-   ],
-   "fee_inr": 300000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
-  },
-  {
-   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
-   "ids": [
-    1839
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD General Medicine",
-    "MD Paediatrics",
-    "MS Obstetrics & Gynaecology",
-    "MS Orthopaedics",
-    "MS General Surgery"
-   ],
-   "fee_inr": 6000000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
-  },
-  {
-   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
-   "ids": [
-    1839
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Anaesthesiology",
-    "MD Psychiatry"
-   ],
-   "fee_inr": 3250000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
-  },
-  {
-   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
-   "ids": [
-    1839
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Radio Diagnosis",
-    "MD Dermatology, Venereology & Leprosy"
-   ],
-   "fee_inr": 7000000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
-  },
-  {
-   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
-   "ids": [
-    1839
-   ],
-   "seat": "Mgmt",
-   "branches": [
-    "MD Tuberculosis & Respiratory Diseases",
-    "MD Emergency Medicine",
-    "MS ENT",
-    "MS Ophthalmology"
-   ],
-   "fee_inr": 5000000,
-   "fee_usd": null,
-   "max": false,
-   "year": "2026-27",
-   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
-  },
-  {
    "college": "Yenepoya Medical College, Mangaluru",
    "ids": [
     1397
@@ -2479,32 +2243,32 @@
    ],
    "seat": "AIQ",
    "branches": [
-    "MD Paediatrics",
-    "MD Tropical Medicine",
     "MD Physical Medicine & Rehabilitation",
-    "MD Hospital Administration",
-    "MD Psychiatry",
-    "MS Orthopaedics",
+    "MD Aviation Medicine/Aerospace Medicine",
+    "MD Emergency Medicine",
+    "MD General Medicine",
+    "MD Sports Medicine",
+    "MS Traumatology and Surgery",
+    "MD Radio Diagnosis",
+    "MD Community Health Administration",
     "MD Nuclear Medicine",
     "MD Lab Medicine",
-    "MD Emergency Medicine",
-    "MD Dermatology, Venereology & Leprosy",
-    "MD Radiation Oncology",
-    "MS General Surgery",
-    "MD Immuno Haematology & Blood Transfusion",
-    "MD General Medicine",
-    "MD Community Health Administration",
-    "MD Anaesthesiology",
-    "MS Obstetrics & Gynaecology",
-    "MD Aviation Medicine/Aerospace Medicine",
-    "MS Traumatology and Surgery",
-    "MS Ophthalmology",
-    "MD Geriatrics",
-    "MD Sports Medicine",
+    "MD Psychiatry",
     "MD Family Medicine",
-    "MS ENT",
+    "MD Hospital Administration",
+    "MD Geriatrics",
+    "MD Dermatology, Venereology & Leprosy",
+    "MS Obstetrics & Gynaecology",
+    "MS Orthopaedics",
+    "MD Immuno Haematology & Blood Transfusion",
     "MD Palliative Medicine",
-    "MD Radio Diagnosis",
+    "MD Tropical Medicine",
+    "MS General Surgery",
+    "MD Radiation Oncology",
+    "MD Paediatrics",
+    "MS ENT",
+    "MD Anaesthesiology",
+    "MS Ophthalmology",
     "MD Tuberculosis & Respiratory Diseases"
    ],
    "fee_inr": 110000,
@@ -2532,32 +2296,32 @@
    ],
    "seat": "AIQ",
    "branches": [
-    "MD Paediatrics",
-    "MD Tropical Medicine",
     "MD Physical Medicine & Rehabilitation",
-    "MD Hospital Administration",
-    "MD Psychiatry",
-    "MS Orthopaedics",
+    "MD Aviation Medicine/Aerospace Medicine",
+    "MD Emergency Medicine",
+    "MD General Medicine",
+    "MD Sports Medicine",
+    "MS Traumatology and Surgery",
+    "MD Radio Diagnosis",
+    "MD Community Health Administration",
     "MD Nuclear Medicine",
     "MD Lab Medicine",
-    "MD Emergency Medicine",
-    "MD Dermatology, Venereology & Leprosy",
-    "MD Radiation Oncology",
-    "MS General Surgery",
-    "MD Immuno Haematology & Blood Transfusion",
-    "MD General Medicine",
-    "MD Community Health Administration",
-    "MD Anaesthesiology",
-    "MS Obstetrics & Gynaecology",
-    "MD Aviation Medicine/Aerospace Medicine",
-    "MS Traumatology and Surgery",
-    "MS Ophthalmology",
-    "MD Geriatrics",
-    "MD Sports Medicine",
+    "MD Psychiatry",
     "MD Family Medicine",
-    "MS ENT",
+    "MD Hospital Administration",
+    "MD Geriatrics",
+    "MD Dermatology, Venereology & Leprosy",
+    "MS Obstetrics & Gynaecology",
+    "MS Orthopaedics",
+    "MD Immuno Haematology & Blood Transfusion",
     "MD Palliative Medicine",
-    "MD Radio Diagnosis",
+    "MD Tropical Medicine",
+    "MS General Surgery",
+    "MD Radiation Oncology",
+    "MD Paediatrics",
+    "MS ENT",
+    "MD Anaesthesiology",
+    "MS Ophthalmology",
     "MD Tuberculosis & Respiratory Diseases"
    ],
    "fee_inr": 110000,
@@ -2601,6 +2365,334 @@
    "max": false,
    "year": "2026-27",
    "source": "gims, p. [15, 16] — \"Post Graduate Fee Details 2026-27 — FEES STRUCTURE FOR PG DEGREE COURSE FOR THE YEAR 2026-27\" — clinical / non-clinical as usually grouped"
+  },
+  {
+   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
+   "ids": [
+    1839
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssahe-brochure, p. [32, 33, 34, 35, 36] — \"5. Annual tuition fee structure for the academic year 2026-27 — 'PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27'\""
+  },
+  {
+   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
+   "ids": [
+    1839
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssahe-brochure, p. [32, 33, 34, 35, 36] — \"5. Annual tuition fee structure for the academic year 2026-27 — 'PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27'\""
+  },
+  {
+   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
+   "ids": [
+    1839
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology",
+    "MD Social & Preventive Medicine",
+    "MD Pharmacology"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssahe-brochure, p. [32, 33, 34, 35, 36] — \"5. Annual tuition fee structure for the academic year 2026-27 — 'PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27'\""
+  },
+  {
+   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
+   "ids": [
+    1839
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine",
+    "MD Paediatrics",
+    "MS Obstetrics & Gynaecology",
+    "MS Orthopaedics",
+    "MS General Surgery"
+   ],
+   "fee_inr": 6000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssahe-brochure, p. [32, 33, 34, 35, 36] — \"5. Annual tuition fee structure for the academic year 2026-27 — 'PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27'\""
+  },
+  {
+   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
+   "ids": [
+    1839
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology",
+    "MD Psychiatry"
+   ],
+   "fee_inr": 3250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssahe-brochure, p. [32, 33, 34, 35, 36] — \"5. Annual tuition fee structure for the academic year 2026-27 — 'PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27'\""
+  },
+  {
+   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
+   "ids": [
+    1839
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis",
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 7000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssahe-brochure, p. [32, 33, 34, 35, 36] — \"5. Annual tuition fee structure for the academic year 2026-27 — 'PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27'\""
+  },
+  {
+   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
+   "ids": [
+    1839
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases",
+    "MD Emergency Medicine",
+    "MS ENT",
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssahe-brochure, p. [32, 33, 34, 35, 36] — \"5. Annual tuition fee structure for the academic year 2026-27 — 'PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27'\""
+  },
+  {
+   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
+   "ids": [
+    1839
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD General Medicine",
+    "MD Paediatrics",
+    "MS Obstetrics & Gynaecology",
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 10000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssahe-brochure, p. [32, 33, 34, 35, 36] — \"5. Annual tuition fee structure for the academic year 2026-27 — 'PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27'\""
+  },
+  {
+   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
+   "ids": [
+    1839
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Radio Diagnosis",
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 15000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssahe-brochure, p. [32, 33, 34, 35, 36] — \"5. Annual tuition fee structure for the academic year 2026-27 — 'PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27'\""
+  },
+  {
+   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
+   "ids": [
+    1839
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Fee for Boys and Girls: 1,00,000/- (Caution Deposit) + 1,74,000/- (Boarding & Mess Charges) — Sri Siddhartha Medical College (p.35)",
+   "year": "2026-27",
+   "source": "ssahe-brochure, p. [32, 33, 34, 35, 36] — \"5. Annual tuition fee structure for the academic year 2026-27 — 'PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27'\"",
+   "min": 274000,
+   "max": 274000
+  },
+  {
+   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
+   "ids": [
+    1843
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssahe-brochure, p. [32, 33, 34, 35, 36] — \"5. Annual tuition fee structure for the academic year 2026-27 — 'PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27'\""
+  },
+  {
+   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
+   "ids": [
+    1843
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssahe-brochure, p. [32, 33, 34, 35, 36] — \"5. Annual tuition fee structure for the academic year 2026-27 — 'PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27'\""
+  },
+  {
+   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
+   "ids": [
+    1843
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology",
+    "MD Social & Preventive Medicine",
+    "MD Pharmacology"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssahe-brochure, p. [32, 33, 34, 35, 36] — \"5. Annual tuition fee structure for the academic year 2026-27 — 'PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27'\""
+  },
+  {
+   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
+   "ids": [
+    1843
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine",
+    "MD Paediatrics",
+    "MS Obstetrics & Gynaecology",
+    "MS Orthopaedics",
+    "MS General Surgery"
+   ],
+   "fee_inr": 6000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssahe-brochure, p. [32, 33, 34, 35, 36] — \"5. Annual tuition fee structure for the academic year 2026-27 — 'PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27'\""
+  },
+  {
+   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
+   "ids": [
+    1843
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology",
+    "MD Psychiatry"
+   ],
+   "fee_inr": 3250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssahe-brochure, p. [32, 33, 34, 35, 36] — \"5. Annual tuition fee structure for the academic year 2026-27 — 'PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27'\""
+  },
+  {
+   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
+   "ids": [
+    1843
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis",
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 7000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssahe-brochure, p. [32, 33, 34, 35, 36] — \"5. Annual tuition fee structure for the academic year 2026-27 — 'PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27'\""
+  },
+  {
+   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
+   "ids": [
+    1843
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases",
+    "MD Emergency Medicine",
+    "MS ENT",
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssahe-brochure, p. [32, 33, 34, 35, 36] — \"5. Annual tuition fee structure for the academic year 2026-27 — 'PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27'\""
+  },
+  {
+   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
+   "ids": [
+    1843
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD General Medicine",
+    "MD Paediatrics",
+    "MS Obstetrics & Gynaecology",
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 10000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssahe-brochure, p. [32, 33, 34, 35, 36] — \"5. Annual tuition fee structure for the academic year 2026-27 — 'PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27'\""
+  },
+  {
+   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
+   "ids": [
+    1843
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Radio Diagnosis",
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 15000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssahe-brochure, p. [32, 33, 34, 35, 36] — \"5. Annual tuition fee structure for the academic year 2026-27 — 'PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27'\""
+  },
+  {
+   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
+   "ids": [
+    1843
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Fee for Boys & Girls: 2,00,000/- (Caution Deposit) + 2,50,000/- (Boarding & Mess Charges) — SSIMS&RC T-Begur (p.36)",
+   "year": "2026-27",
+   "source": "ssahe-brochure, p. [32, 33, 34, 35, 36] — \"5. Annual tuition fee structure for the academic year 2026-27 — 'PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27'\"",
+   "min": 450000,
+   "max": 450000
   }
  ]
 }

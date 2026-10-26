@@ -164,6 +164,36 @@
    "issuer": "Vydehi Institute of Medical Sciences & Research Centre (Srinivasa Trust)",
    "bytes": 12717395,
    "scanned": true
+  },
+  {
+   "id": "ssahe-brochure",
+   "url": "https://ssimrc.in/wp-content/uploads/2026/10/Brochure-Medical-and-Dental-PG-MD-MS-MDS-2026.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka_r2/01_ssahe_brochure/Brochure-Medical-and-Dental-PG-MD-MS-MDS-2026.pdf",
+   "title": "SSAHE e-Brochure – Admissions to PG Medical (MD/MS) & PG Dental (MDS) Courses – 2026 (Academic Year 2026–27)",
+   "issuer": "Sri Siddhartha Academy of Higher Education (university)",
+   "bytes": 7138515,
+   "scanned": false,
+   "round": 2
+  },
+  {
+   "id": "blde-nri-note",
+   "url": "https://bldedu.ac.in/wp-content/uploads/2026/10/BLDEDU-PG-NOTE-ON-NRI.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka_r2/02_blde_nri_note/BLDEDU-PG-NOTE-ON-NRI.pdf",
+   "title": "NOTE ON NRI / PIO / OCI / SPONSORED ADMISSION (09-10-2026)",
+   "issuer": "BLDE (Deemed to be University) (Registrar)",
+   "bytes": 206729,
+   "scanned": false,
+   "round": 2
+  },
+  {
+   "id": "kbn-fee",
+   "url": "https://www.kbn.university/_files/ugd/00e3a9_0df28e7285fa4fa0bf2cdb67df83f62a.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka_r2/03_kbn_fee/KBN_Fee_Structure_2026-27.pdf",
+   "title": "FEE STRUCTURE (linked on kbn.university/admissions as 'Fee Structure 2026-27')",
+   "issuer": "Khaja Bandanawaz University",
+   "bytes": 178848,
+   "scanned": false,
+   "round": 2
   }
  ],
  "html": [
@@ -2820,356 +2850,6 @@
    "notes": "'No Tuition Fee' recorded as inr 0 with as_printed — not a missing value. Instalments due at admission, 01.09.2027 and 01.09.2028. Also printed: 'DNB-(NBEMS) Immuno-Haematology And Blood Transfusion | 2 | Rs.1,25,000' (a DNB seat, not recorded here)."
   },
   {
-   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
-   "roster": [
-    {
-     "id": 1843,
-     "name": "Sri Siddhartha Institute of Medical Sciences & Research Centre, T Begur"
-    }
-   ],
-   "ownership": "deemed",
-   "source_kind": "college-own",
-   "source": "ssimrc",
-   "page": [
-    1
-   ],
-   "year_label": "PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats",
-   "period": "per year",
-   "quote": "MD Radio- Diagnosis | 70,00,000/- | 81,000/- | 50,000/-",
-   "fees": [
-    {
-     "seat": "Mgmt",
-     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
-     "branches": [
-      "MD Anatomy → MD Anatomy",
-      "MD Physiology → MD Physiology",
-      "MD Biochemistry → MD Bio-Chemistry"
-     ],
-     "inr": 100000,
-     "usd": null,
-     "maximum": false,
-     "other_fees": [
-      {
-       "label": "Other Fee",
-       "inr": 81000
-      },
-      {
-       "label": "University Fee",
-       "inr": 50000
-      }
-     ]
-    },
-    {
-     "seat": "Mgmt",
-     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
-     "branches": [
-      "MD Pathology → MD Pathology"
-     ],
-     "inr": 1000000,
-     "usd": null,
-     "maximum": false,
-     "other_fees": [
-      {
-       "label": "Other Fee",
-       "inr": 81000
-      },
-      {
-       "label": "University Fee",
-       "inr": 50000
-      }
-     ]
-    },
-    {
-     "seat": "Mgmt",
-     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
-     "branches": [
-      "MD Microbiology → MD Microbiology",
-      "MD Community Medicine → MD Social & Preventive Medicine",
-      "MD Pharmacology → MD Pharmacology"
-     ],
-     "inr": 300000,
-     "usd": null,
-     "maximum": false,
-     "other_fees": [
-      {
-       "label": "Other Fee",
-       "inr": 81000
-      },
-      {
-       "label": "University Fee",
-       "inr": 50000
-      }
-     ]
-    },
-    {
-     "seat": "Mgmt",
-     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
-     "branches": [
-      "MD General Medicine → MD General Medicine",
-      "MD Paediatrics → MD Paediatrics",
-      "MS Obstetrics & Gynaecology → MS Obstetrics & Gynaecology",
-      "MS Orthopaedics → MS Orthopaedics",
-      "MS General Surgery → MS General Surgery"
-     ],
-     "inr": 6000000,
-     "usd": null,
-     "maximum": false,
-     "other_fees": [
-      {
-       "label": "Other Fee",
-       "inr": 81000
-      },
-      {
-       "label": "University Fee",
-       "inr": 50000
-      }
-     ]
-    },
-    {
-     "seat": "Mgmt",
-     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
-     "branches": [
-      "MD Anaesthesiology → MD Anaesthesiology",
-      "MD Psychiatry → MD Psychiatry"
-     ],
-     "inr": 3250000,
-     "usd": null,
-     "maximum": false,
-     "other_fees": [
-      {
-       "label": "Other Fee",
-       "inr": 81000
-      },
-      {
-       "label": "University Fee",
-       "inr": 50000
-      }
-     ]
-    },
-    {
-     "seat": "Mgmt",
-     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
-     "branches": [
-      "MD Radio- Diagnosis → MD Radio Diagnosis",
-      "MD Dermatology, Venerology & Leprosy → MD Dermatology, Venereology & Leprosy"
-     ],
-     "inr": 7000000,
-     "usd": null,
-     "maximum": false,
-     "other_fees": [
-      {
-       "label": "Other Fee",
-       "inr": 81000
-      },
-      {
-       "label": "University Fee",
-       "inr": 50000
-      }
-     ]
-    },
-    {
-     "seat": "Mgmt",
-     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
-     "branches": [
-      "MD Respiratory Medicine → MD Tuberculosis & Respiratory Diseases",
-      "MD Emergency Medicine → MD Emergency Medicine",
-      "MS Otorhinolaryngology → MS ENT",
-      "MS Ophthalmology → MS Ophthalmology"
-     ],
-     "inr": 5000000,
-     "usd": null,
-     "maximum": false,
-     "other_fees": [
-      {
-       "label": "Other Fee",
-       "inr": 81000
-      },
-      {
-       "label": "University Fee",
-       "inr": 50000
-      }
-     ]
-    }
-   ],
-   "hostel": null,
-   "notes": "One table for both SSAHE colleges ('SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR & SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR'); page is p.33 of the 'SSAHE e-Brochure – Admissions to PG Medical (MD/MS) & PG Dental (MDS) Courses – 2026'. Section ii) (NRI) is NOT in this 2-page extract — it is in the full brochure, not downloaded. Scanned, read from rendered page. Same figures as the undated HTML table on ssahe.edu.in/fee-structure.html."
-  },
-  {
-   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
-   "roster": [
-    {
-     "id": 1839,
-     "name": "Sri Siddhartha Medical College, Tumkur"
-    }
-   ],
-   "ownership": "deemed",
-   "source_kind": "university-own",
-   "source": "ssimrc",
-   "page": [
-    1
-   ],
-   "year_label": "PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats",
-   "period": "per year",
-   "quote": "MD Radio- Diagnosis | 70,00,000/- | 81,000/- | 50,000/-",
-   "fees": [
-    {
-     "seat": "Mgmt",
-     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
-     "branches": [
-      "MD Anatomy → MD Anatomy",
-      "MD Physiology → MD Physiology",
-      "MD Biochemistry → MD Bio-Chemistry"
-     ],
-     "inr": 100000,
-     "usd": null,
-     "maximum": false,
-     "other_fees": [
-      {
-       "label": "Other Fee",
-       "inr": 81000
-      },
-      {
-       "label": "University Fee",
-       "inr": 50000
-      }
-     ]
-    },
-    {
-     "seat": "Mgmt",
-     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
-     "branches": [
-      "MD Pathology → MD Pathology"
-     ],
-     "inr": 1000000,
-     "usd": null,
-     "maximum": false,
-     "other_fees": [
-      {
-       "label": "Other Fee",
-       "inr": 81000
-      },
-      {
-       "label": "University Fee",
-       "inr": 50000
-      }
-     ]
-    },
-    {
-     "seat": "Mgmt",
-     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
-     "branches": [
-      "MD Microbiology → MD Microbiology",
-      "MD Community Medicine → MD Social & Preventive Medicine",
-      "MD Pharmacology → MD Pharmacology"
-     ],
-     "inr": 300000,
-     "usd": null,
-     "maximum": false,
-     "other_fees": [
-      {
-       "label": "Other Fee",
-       "inr": 81000
-      },
-      {
-       "label": "University Fee",
-       "inr": 50000
-      }
-     ]
-    },
-    {
-     "seat": "Mgmt",
-     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
-     "branches": [
-      "MD General Medicine → MD General Medicine",
-      "MD Paediatrics → MD Paediatrics",
-      "MS Obstetrics & Gynaecology → MS Obstetrics & Gynaecology",
-      "MS Orthopaedics → MS Orthopaedics",
-      "MS General Surgery → MS General Surgery"
-     ],
-     "inr": 6000000,
-     "usd": null,
-     "maximum": false,
-     "other_fees": [
-      {
-       "label": "Other Fee",
-       "inr": 81000
-      },
-      {
-       "label": "University Fee",
-       "inr": 50000
-      }
-     ]
-    },
-    {
-     "seat": "Mgmt",
-     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
-     "branches": [
-      "MD Anaesthesiology → MD Anaesthesiology",
-      "MD Psychiatry → MD Psychiatry"
-     ],
-     "inr": 3250000,
-     "usd": null,
-     "maximum": false,
-     "other_fees": [
-      {
-       "label": "Other Fee",
-       "inr": 81000
-      },
-      {
-       "label": "University Fee",
-       "inr": 50000
-      }
-     ]
-    },
-    {
-     "seat": "Mgmt",
-     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
-     "branches": [
-      "MD Radio- Diagnosis → MD Radio Diagnosis",
-      "MD Dermatology, Venerology & Leprosy → MD Dermatology, Venereology & Leprosy"
-     ],
-     "inr": 7000000,
-     "usd": null,
-     "maximum": false,
-     "other_fees": [
-      {
-       "label": "Other Fee",
-       "inr": 81000
-      },
-      {
-       "label": "University Fee",
-       "inr": 50000
-      }
-     ]
-    },
-    {
-     "seat": "Mgmt",
-     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
-     "branches": [
-      "MD Respiratory Medicine → MD Tuberculosis & Respiratory Diseases",
-      "MD Emergency Medicine → MD Emergency Medicine",
-      "MS Otorhinolaryngology → MS ENT",
-      "MS Ophthalmology → MS Ophthalmology"
-     ],
-     "inr": 5000000,
-     "usd": null,
-     "maximum": false,
-     "other_fees": [
-      {
-       "label": "Other Fee",
-       "inr": 81000
-      },
-      {
-       "label": "University Fee",
-       "inr": 50000
-      }
-     ]
-    }
-   ],
-   "hostel": null,
-   "notes": "Same table as SSIMS&RC T-Begur (the 2026-27 SSAHE brochure page names both colleges); hosted on ssimrc.in. NRI fees not in the downloaded extract."
-  },
-  {
    "college": "Yenepoya Medical College, Mangaluru",
    "roster": [
     {
@@ -3842,6 +3522,480 @@
    ],
    "hostel": null,
    "notes": "Grand total = University fee 15000 + College fee (Clinical 137800 / Para 82800 / Pre 55300; tuition 110000 / 55000 / 27500). Note 2: 'Students admitting through KEA shall pay fees as prescribed by the KEA and next reporting amount to Institution'. Note 3: SC/ST pay tuition and claim reimbursement under SSP. Tuition figures match HIMS Haveri's 2026-27 table."
+  },
+  {
+   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
+   "roster": [
+    {
+     "id": 1839,
+     "name": "Sri Siddhartha Medical College, Tumkur"
+    }
+   ],
+   "source_kind": "university-own",
+   "ownership": "deemed",
+   "source": "ssahe-brochure",
+   "page": [
+    32,
+    33,
+    34,
+    35,
+    36
+   ],
+   "year_label": "5. Annual tuition fee structure for the academic year 2026-27 — 'PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27'",
+   "period": "per year",
+   "quote": "ii) For NRI / PIO / FN Quota Seats: MD Radio-Diagnosis | 1,50,000,00/- | 81,000/- | 50,000/-",
+   "fees": [
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "i) For All India Quota / General Merit Quota Seats — Tuition Fee (in Rs.)",
+     "branches": [
+      "MD Anatomy → MD Anatomy",
+      "MD Physiology → MD Physiology",
+      "MD Biochemistry → MD Bio-Chemistry"
+     ],
+     "inr": 100000,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "1,00,000/-",
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "i) For All India Quota / General Merit Quota Seats — Tuition Fee (in Rs.)",
+     "branches": [
+      "MD Pathology → MD Pathology"
+     ],
+     "inr": 1000000,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "10,00,000/-",
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "i) For All India Quota / General Merit Quota Seats — Tuition Fee (in Rs.)",
+     "branches": [
+      "MD Microbiology → MD Microbiology",
+      "MD Community Medicine → MD Social & Preventive Medicine",
+      "MD Pharmacology → MD Pharmacology"
+     ],
+     "inr": 300000,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "3,00,000/-",
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "i) For All India Quota / General Merit Quota Seats — Tuition Fee (in Rs.)",
+     "branches": [
+      "MD General Medicine → MD General Medicine",
+      "MD Paediatrics → MD Paediatrics",
+      "MS Obstetrics & Gynaecology → MS Obstetrics & Gynaecology",
+      "MS Orthopaedics → MS Orthopaedics",
+      "MS General Surgery → MS General Surgery"
+     ],
+     "inr": 6000000,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "60,00,000/-",
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "i) For All India Quota / General Merit Quota Seats — Tuition Fee (in Rs.)",
+     "branches": [
+      "MD Anaesthesiology → MD Anaesthesiology",
+      "MD Psychiatry → MD Psychiatry"
+     ],
+     "inr": 3250000,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "32,50,000/-",
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "i) For All India Quota / General Merit Quota Seats — Tuition Fee (in Rs.)",
+     "branches": [
+      "MD Radio- Diagnosis → MD Radio Diagnosis",
+      "MD Dermatology, Venerology & Leprosy → MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": 7000000,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "70,00,000/-",
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "i) For All India Quota / General Merit Quota Seats — Tuition Fee (in Rs.)",
+     "branches": [
+      "MD Respiratory Medicine → MD Tuberculosis & Respiratory Diseases",
+      "MD Emergency Medicine → MD Emergency Medicine",
+      "MS Otorhinolaryngology → MS ENT",
+      "MS Ophthalmology → MS Ophthalmology"
+     ],
+     "inr": 5000000,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "50,00,000/-",
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "ii) For NRI / PIO / FN Quota Seats — Tuition Fee (in Rs.)",
+     "branches": [
+      "MD General Medicine → MD General Medicine",
+      "MD Paediatrics → MD Paediatrics",
+      "MS Obstetrics & Gynaecology → MS Obstetrics & Gynaecology",
+      "MS Orthopaedics → MS Orthopaedics"
+     ],
+     "inr": 10000000,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "1,00,000,00/-",
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "ii) For NRI / PIO / FN Quota Seats — Tuition Fee (in Rs.)",
+     "branches": [
+      "MD Radio-Diagnosis → MD Radio Diagnosis",
+      "MD Dermatology, Venerology & Leprosy → MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": 15000000,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "1,50,000,00/-",
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    }
+   ],
+   "hostel": {
+    "min": 274000,
+    "max": 274000,
+    "text": "Hostel Fee for Boys and Girls: 1,00,000/- (Caution Deposit) + 1,74,000/- (Boarding & Mess Charges) — Sri Siddhartha Medical College (p.35)"
+   },
+   "notes": "CORRECTED ENTRY: replaces the round-1 entry (which had only the All India / General Merit table from the 2-page extract) — same Mgmt figures, plus the NRI/PIO/FN table and hostel from the full brochure. Section 5(a): 'annual fees payable by the candidate admitted to the constituent Colleges of SSAHE viz., Sri Siddhartha Medical College & Hospital, Tumkur, ... and Sri Siddhartha Institute of Medical Sciences & Research Centre, T-Begur for the academic year 2026-27'; the MD/MS tables name both colleges. NRI tuition is printed '1,00,000,00/-' and '1,50,000,00/-' (non-standard comma grouping; digits = 10000000 and 15000000, i.e. ₹1 crore / ₹1.5 crore per annum, in rupees not USD). Hostel deposit and boarding are paid to a separate account; period of the hostel charge not stated.",
+   "round": 2
+  },
+  {
+   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
+   "roster": [
+    {
+     "id": 1843,
+     "name": "Sri Siddhartha Institute of Medical Sciences & Research Centre, T Begur"
+    }
+   ],
+   "source_kind": "university-own",
+   "ownership": "deemed",
+   "source": "ssahe-brochure",
+   "page": [
+    32,
+    33,
+    34,
+    35,
+    36
+   ],
+   "year_label": "5. Annual tuition fee structure for the academic year 2026-27 — 'PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27'",
+   "period": "per year",
+   "quote": "ii) For NRI / PIO / FN Quota Seats: MD Radio-Diagnosis | 1,50,000,00/- | 81,000/- | 50,000/-",
+   "fees": [
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "i) For All India Quota / General Merit Quota Seats — Tuition Fee (in Rs.)",
+     "branches": [
+      "MD Anatomy → MD Anatomy",
+      "MD Physiology → MD Physiology",
+      "MD Biochemistry → MD Bio-Chemistry"
+     ],
+     "inr": 100000,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "1,00,000/-",
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "i) For All India Quota / General Merit Quota Seats — Tuition Fee (in Rs.)",
+     "branches": [
+      "MD Pathology → MD Pathology"
+     ],
+     "inr": 1000000,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "10,00,000/-",
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "i) For All India Quota / General Merit Quota Seats — Tuition Fee (in Rs.)",
+     "branches": [
+      "MD Microbiology → MD Microbiology",
+      "MD Community Medicine → MD Social & Preventive Medicine",
+      "MD Pharmacology → MD Pharmacology"
+     ],
+     "inr": 300000,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "3,00,000/-",
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "i) For All India Quota / General Merit Quota Seats — Tuition Fee (in Rs.)",
+     "branches": [
+      "MD General Medicine → MD General Medicine",
+      "MD Paediatrics → MD Paediatrics",
+      "MS Obstetrics & Gynaecology → MS Obstetrics & Gynaecology",
+      "MS Orthopaedics → MS Orthopaedics",
+      "MS General Surgery → MS General Surgery"
+     ],
+     "inr": 6000000,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "60,00,000/-",
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "i) For All India Quota / General Merit Quota Seats — Tuition Fee (in Rs.)",
+     "branches": [
+      "MD Anaesthesiology → MD Anaesthesiology",
+      "MD Psychiatry → MD Psychiatry"
+     ],
+     "inr": 3250000,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "32,50,000/-",
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "i) For All India Quota / General Merit Quota Seats — Tuition Fee (in Rs.)",
+     "branches": [
+      "MD Radio- Diagnosis → MD Radio Diagnosis",
+      "MD Dermatology, Venerology & Leprosy → MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": 7000000,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "70,00,000/-",
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "i) For All India Quota / General Merit Quota Seats — Tuition Fee (in Rs.)",
+     "branches": [
+      "MD Respiratory Medicine → MD Tuberculosis & Respiratory Diseases",
+      "MD Emergency Medicine → MD Emergency Medicine",
+      "MS Otorhinolaryngology → MS ENT",
+      "MS Ophthalmology → MS Ophthalmology"
+     ],
+     "inr": 5000000,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "50,00,000/-",
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "ii) For NRI / PIO / FN Quota Seats — Tuition Fee (in Rs.)",
+     "branches": [
+      "MD General Medicine → MD General Medicine",
+      "MD Paediatrics → MD Paediatrics",
+      "MS Obstetrics & Gynaecology → MS Obstetrics & Gynaecology",
+      "MS Orthopaedics → MS Orthopaedics"
+     ],
+     "inr": 10000000,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "1,00,000,00/-",
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "ii) For NRI / PIO / FN Quota Seats — Tuition Fee (in Rs.)",
+     "branches": [
+      "MD Radio-Diagnosis → MD Radio Diagnosis",
+      "MD Dermatology, Venerology & Leprosy → MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": 15000000,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "1,50,000,00/-",
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    }
+   ],
+   "hostel": {
+    "min": 450000,
+    "max": 450000,
+    "text": "Hostel Fee for Boys & Girls: 2,00,000/- (Caution Deposit) + 2,50,000/- (Boarding & Mess Charges) — SSIMS&RC T-Begur (p.36)"
+   },
+   "notes": "CORRECTED ENTRY: replaces the round-1 entry (2-page college extract, which lacked the NRI table) — same Mgmt figures, plus NRI/PIO/FN and hostel from the full SSAHE brochure. NRI tuition printed '1,00,000,00/-' / '1,50,000,00/-' (₹1 crore / ₹1.5 crore per annum, rupees). Hostel: deposit 2,00,000 + boarding & mess 2,50,000 as printed; period not stated.",
+   "round": 2
   }
  ],
  "government_all": [],

@@ -2,6 +2,10 @@
  "state": "Dadra and Nagar Haveli",
  "classes": [
   [
+   "Other State",
+   "OtherState"
+  ],
+  [
    "NRI",
    "NRI"
   ],
@@ -39,5 +43,124 @@
   "TEL Govt PG": "Gen",
   "AP Mgmt PG": "NRI"
  },
- "entries": []
+ "entries": [
+  {
+   "college": "NAMO Medical Education and Research Institute, Silvassa",
+   "ids": [
+    564
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 1200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "namo-pg-prospectus-2026-27, p. 13 — \"Cover 'PG-Admission Prospectus 2026-27'; p.2 'IMPORTANT ANNOUNCEMENTS & PROVISIONAL KEY DATES FOR NEET-PG MEDICAL COURSES 2026'; p.13 '13. FEE STRUCTURE OF THE COURSE'\""
+  },
+  {
+   "college": "NAMO Medical Education and Research Institute, Silvassa",
+   "ids": [
+    564
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Social & Preventive Medicine",
+    "MD Microbiology",
+    "MD Pathology"
+   ],
+   "fee_inr": 700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "namo-pg-prospectus-2026-27, p. 13 — \"Cover 'PG-Admission Prospectus 2026-27'; p.2 'IMPORTANT ANNOUNCEMENTS & PROVISIONAL KEY DATES FOR NEET-PG MEDICAL COURSES 2026'; p.13 '13. FEE STRUCTURE OF THE COURSE'\""
+  },
+  {
+   "college": "NAMO Medical Education and Research Institute, Silvassa",
+   "ids": [
+    564
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 2000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "namo-pg-prospectus-2026-27, p. 13 — \"Cover 'PG-Admission Prospectus 2026-27'; p.2 'IMPORTANT ANNOUNCEMENTS & PROVISIONAL KEY DATES FOR NEET-PG MEDICAL COURSES 2026'; p.13 '13. FEE STRUCTURE OF THE COURSE'\""
+  },
+  {
+   "college": "NAMO Medical Education and Research Institute, Silvassa",
+   "ids": [
+    564
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD General Medicine",
+    "MS General Surgery",
+    "MS Obstetrics & Gynaecology",
+    "MS Ophthalmology",
+    "MS Orthopaedics",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 1500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "namo-pg-prospectus-2026-27, p. 13 — \"Cover 'PG-Admission Prospectus 2026-27'; p.2 'IMPORTANT ANNOUNCEMENTS & PROVISIONAL KEY DATES FOR NEET-PG MEDICAL COURSES 2026'; p.13 '13. FEE STRUCTURE OF THE COURSE'\""
+  },
+  {
+   "college": "NAMO Medical Education and Research Institute, Silvassa",
+   "ids": [
+    564
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 7000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "namo-pg-prospectus-2026-27, p. 13 — \"Cover 'PG-Admission Prospectus 2026-27'; p.2 'IMPORTANT ANNOUNCEMENTS & PROVISIONAL KEY DATES FOR NEET-PG MEDICAL COURSES 2026'; p.13 '13. FEE STRUCTURE OF THE COURSE'\""
+  },
+  {
+   "college": "NAMO Medical Education and Research Institute, Silvassa",
+   "ids": [
+    564
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine",
+    "MS Obstetrics & Gynaecology",
+    "MS Orthopaedics",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 6000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "namo-pg-prospectus-2026-27, p. 13 — \"Cover 'PG-Admission Prospectus 2026-27'; p.2 'IMPORTANT ANNOUNCEMENTS & PROVISIONAL KEY DATES FOR NEET-PG MEDICAL COURSES 2026'; p.13 '13. FEE STRUCTURE OF THE COURSE'\""
+  },
+  {
+   "college": "NAMO Medical Education and Research Institute, Silvassa",
+   "ids": [
+    564
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD General Medicine",
+    "MD Paediatrics"
+   ],
+   "fee_inr": null,
+   "fee_usd": 60000,
+   "max": false,
+   "year": "2026-27",
+   "source": "namo-pg-prospectus-2026-27, p. 13 — \"Cover 'PG-Admission Prospectus 2026-27'; p.2 'IMPORTANT ANNOUNCEMENTS & PROVISIONAL KEY DATES FOR NEET-PG MEDICAL COURSES 2026'; p.13 '13. FEE STRUCTURE OF THE COURSE'\""
+  }
+ ]
 }

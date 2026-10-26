@@ -1,0 +1,41 @@
+{
+ "state": "Tamil Nadu",
+ "checked": "2026-10-26",
+ "round": 2,
+ "files": [
+  {
+   "id": "kmch-fees",
+   "url": "https://www.kmchihsr.edu.in/pdf/Fees%20Structure.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/tnpy_r2/01_kmch_fees/Fees_Structure.pdf",
+   "title": "FEES DETAILS (FEE STRUCTURE)",
+   "issuer": "KMCH Institute of Health Sciences and Research",
+   "bytes": 578797,
+   "scanned": false,
+   "result": "MBBS only, no year label: \"FEE STRUCTURE Tuition Fee 1 Government Quota Rs. 4,35,000/- 2 Management Quota Rs. 15,00,000/- 3 NRI Quota Rs. 27,00,000/-\" — no course named, no MD/MS figure (listed under the site's UG Admission menu; amounts are MBBS-level). Not usable."
+  },
+  {
+   "id": "arunai-brochure",
+   "url": "https://www.amchtvm.org/images/Broucher%20with%20Fee%20Final.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/tnpy_r2/02_arunai_brochure/Broucher_with_Fee_Final.pdf",
+   "title": "Broucher with Fee",
+   "issuer": "Arunai Medical College and Hospital",
+   "bytes": 3261274,
+   "scanned": true,
+   "result": "Page 5 \"Fees Particulars\" has MD/MS figures but NO year label: \"Postgraduate (PG) Courses (Per Annum) Clinical / Non-Clinical — Government Quota ₹3,50,000/- / ₹3,00,000/-; Management Quota ₹16,00,000/- / ₹5,00,000/-; NRI Quota/ Foreign ₹29,00,000/- / ₹19,00,000/-\" (file Last-Modified 17 Jul 2026). Not usable under the 2026-27 label rule; Arunai stays not_published."
+  },
+  {
+   "id": "acs-institute-profile",
+   "url": "https://acsmch.ac.in/wp-content/uploads/2026/08/Institute-Profile-.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/tnpy_r2/03_acs_institute_profile/Institute-Profile-.pdf",
+   "title": "ACSMCH Institute Profile 2026",
+   "issuer": "ACS Medical College and Hospital (Dean) — MCC Annexure-C + institute profile",
+   "bytes": 1423768,
+   "scanned": false,
+   "result": "MBBS only: \"NEET UG Counselling for MBBS, BDS & B.Sc. Nursing 2026\"; Annexure-C row \"1 | MBBS | 250 | … | $34,000 | 38 | Rs.27,00,000 | 212\"; \"Annual Fees of Candidates(INR): 2700000\". No MD/MS figure. Not usable."
+  }
+ ],
+ "html": [],
+ "colleges": [],
+ "replaces_not_published": [],
+ "notes": "Round 2 adds no college entry. Arunai printed PG fees without a year label; KMCH and ACS files are MBBS-only."
+}

@@ -1,0 +1,25 @@
+{
+ "state": "West Bengal",
+ "checked": "2026-10-26",
+ "round": 2,
+ "files": [
+  {
+   "id": "jisu-brochure-2026",
+   "url": "https://www.jisuniversity.ac.in/pdf/JISU-Brochure-26.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/east_r2/01_jisu_brochure/JISU-Brochure-26.pdf",
+   "title": "JIS University brochure 2026 (8 pages, image only)",
+   "issuer": "JIS University",
+   "bytes": 3095894,
+   "scanned": true
+  }
+ ],
+ "html": [],
+ "colleges": [],
+ "replaces_not_published": [],
+ "no_usable_figure": [
+  {
+   "source": "jisu-brochure-2026",
+   "why": "8-page image brochure (rendered): programmes, JET exam, labs, recruiters; page 5 names 'JIS SCHOOL OF MEDICAL SCIENCE & RESEARCH … M.B.B.S • M.D • M.S' — no fees anywhere."
+  }
+ ]
+}

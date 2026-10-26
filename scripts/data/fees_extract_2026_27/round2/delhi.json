@@ -1,0 +1,16 @@
+{
+ "state": "Delhi",
+ "checked": "2026-10-26",
+ "round": 2,
+ "files": [],
+ "html": [],
+ "colleges": [],
+ "replaces_not_published": [],
+ "not_downloaded": [
+  {
+   "college": "National Institute of Health and Family Welfare, New Delhi",
+   "url": "https://nihfw.ac.in/Doc/MD(%20CHA)%20website%2013.10.2026.pdf",
+   "why": "still 403 Forbidden on 26 Oct 2026 (http:// answers 301 to https://, which answers 403); not retried with other headers"
+  }
+ ]
+}

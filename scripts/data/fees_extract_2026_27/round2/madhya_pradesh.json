@@ -1,0 +1,58 @@
+{
+ "state": "Madhya Pradesh",
+ "checked": "2026-10-26",
+ "round": 2,
+ "colleges": [],
+ "replaces_not_published": [],
+ "files": [
+  {
+   "id": "chirayu",
+   "url": "https://chirayuuniversity.ac.in/pdf/Fee%20Structure%202026-27.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west_r2/05_chirayu/chirayu_fee_structure_2026-27.pdf",
+   "title": "University Teaching Departments – Programmes (Courses) Fee Structure after CONSIDERATION for the Academic Session 2026-27",
+   "issuer": "Chirayu University (Assistant Registrar / Registrar)",
+   "bytes": 2050295,
+   "scanned": true,
+   "finding": "No MD/MS figure: covers only the university teaching departments (BBA, MBA, MHA, PhD, B.Tech, M.Tech, B.Com, BA, BPES/MPES) and, under the medical college, M.Sc. (Medical) 80,000.00. Notes '*Subject to revision by MPPURC'."
+  },
+  {
+   "id": "amaltas",
+   "url": "https://amaltasmedicalcollege.in/wp-content/uploads/2026/09/Fees-Letter-Amaltas.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west_r2/06_amaltas/Fees-Letter-Amaltas.pdf",
+   "title": "आदेश क्र 3088/शुल्क/म.प्र.नि.वि.वि.आयोग/2026 दिनांक 03.09.2026 — शैक्षणिक सत्र वर्ष 2026-27 में संचालित पाठ्यक्रमों की शुल्क समीक्षा",
+   "issuer": "M.P. Private University Regulatory Commission (MPPURC), Bhopal — addressed to the Registrar, Amaltas University",
+   "bytes": 489378,
+   "scanned": false,
+   "finding": "Labelled 2026-27 and lists MD/MS fees ('Fee Reviewed by Fee Review Committee': e.g. Radiodiagnosis tuition 1966900 + development 347100 = 2314000; General Medicine 2065000), but it is the regulator's order, not the college's own notice — excluded by the owner's rule. Not used."
+  }
+ ],
+ "html": [
+  {
+   "id": "peoples",
+   "url": "https://www.peoplesuniversity.edu.in/programmes-offered-fees-structure/",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west_r2/html/peoples_fees.txt",
+   "title": "Programmes Offered & Fees Structure - People's University",
+   "finding": "Faculty of Medicine block, 'Annual Fees', no year label: 'Radiodiagnosis & Dermatology ₹21,62,000; General Medicine ₹20,31,000; Obstetrics & Gynaecology ₹20,31,000; Anesthesiology, General Surgery, Orthopedics, Paediatrics, Psychiatry, Respiratory Medicine, Ophthalmology, ENT, Emergency Medicine ₹19,40,000; MD Pathology ₹8,74,000; Anatomy … Forensic Medicine ₹9,07,000'. The page carries 'Note: Proposed fee is subject to final approval by MPPURC.' (printed under other faculty blocks). No final 2026-27 figure — stays not_published."
+  }
+ ],
+ "not_published_updates": [
+  {
+   "college": "Chirayu Medical College and Hospital, Bhopal",
+   "roster_id": 1997,
+   "latest_seen": "Chirayu University 'Fee Structure … 2026-27' covers teaching departments only — no MD/MS"
+  },
+  {
+   "college": "Amaltas Institute of Medical Sciences, Dewas",
+   "roster_id": 2000,
+   "latest_seen": "only the MPPURC order 3088 dt 03.09.2026 for session 2026-27 (regulator — excluded)"
+  },
+  {
+   "college": "Peoples College of Medical Sciences & Research Centre, Bhopal",
+   "roster_id": 1996,
+   "latest_seen": "university HTML 'Annual Fees' with no year label; 'Proposed fee is subject to final approval by MPPURC'"
+  }
+ ],
+ "notes": [
+  "Round 2 adds no 2026-27 figure for Madhya Pradesh."
+ ]
+}

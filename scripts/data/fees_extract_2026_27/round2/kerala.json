@@ -1,0 +1,104 @@
+{
+ "state": "Kerala",
+ "checked": "2026-10-26",
+ "round": 2,
+ "files": [
+  {
+   "id": "gmc-kannur-mdms-2026",
+   "url": "https://gmckannur.edu.in/news/pgan26.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/east_r2/03_gmc_kannur/pgan26.pdf",
+   "title": "MD/MS Admission - 2026 (No: B2/11400/2026/GMCKNR) — Original certificates + 'Fee to be remitted at the time of admission'",
+   "issuer": "Principal, Govt. Medical College, Kannur",
+   "bytes": 970433,
+   "scanned": true
+  },
+  {
+   "id": "gmct-pg-2026-27",
+   "url": "https://tmc.kerala.gov.in/uploads/forms/Notice%20(2)_20261014_094339.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/east_r2/04_gmct_tvm/Notice_2_20261014_094339.pdf",
+   "title": "NOTICE B2/3547/2026/GMCTVM dated 13-10-2026 — GMCT - Academic - Medical PG(MD/MS) Admission 2026-27 - Instructions to candidates",
+   "issuer": "Principal, Govt. Medical College, Thiruvananthapuram",
+   "bytes": 113278,
+   "scanned": false
+  },
+  {
+   "id": "mes-fee-2026",
+   "url": "https://www.mesmedicalcollege.edu.in/wp-content/uploads/2026/08/Fee-Structure-2026.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/east_r2/02_mes_fee/Fee-Structure-2026.pdf",
+   "title": "MES Medical College — Fee Structure - 2026 / MBBS Admission 2026-2027",
+   "issuer": "MES Medical College",
+   "bytes": 408307,
+   "scanned": false
+  }
+ ],
+ "html": [],
+ "colleges": [
+  {
+   "college": "Govt. Medical College, Kannur",
+   "roster": [
+    {
+     "id": 77,
+     "name": "Government Medical College, Pariyaram, Kannur (Prev. Academy of Medical Sciences, Pariyaram, Kannur)"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "gmc-kannur-mdms-2026",
+   "page": 1,
+   "year_label": "MD/MS Admission - 2026",
+   "period": "first year",
+   "quote": "Fee to be remitted at the time of admission | Item | MD/MS | Tuition Fee 57,890 | Miscellaneous Fee 11,580 | Caution Deposit 11,580 | University Fee 4,070 | Registration Fee 100 | Total 85,220",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "MD/MS — Tuition Fee (fee to be remitted at the time of admission)",
+     "branches": "*",
+     "inr": 57890,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": null,
+    "max": null,
+    "text": "*Hostel fees extra"
+   },
+   "notes": "Scanned page, read from the render. Same tuition as the state prospectus (G.O. 313/2026). SC/ST/OEC line prints 'Rs.100+3,900+11,580(Caution Deposit) only' — 3,900 differs from the table's University Fee 4,070 (printed so). Signed by the Principal, dated 13/10/26 (handwritten). Supplements the round-1 government_all entry; it does not replace a not_published item."
+  },
+  {
+   "college": "GOVT. MEDICAL COLLEGE Thiruvananthapuram",
+   "roster": [
+    {
+     "id": 23,
+     "name": "Medical College, Thiruvananthapuram"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "gmct-pg-2026-27",
+   "page": 2,
+   "year_label": "GMCT - Academic - Medical PG(MD/MS) Admission 2026-27 - Instructions to candidates (13-10-2026)",
+   "period": "first year",
+   "quote": "II) Fee to be remitted at the time of admission. | Fees | MD/MS Course | 1 Tuition Fee 57890 | 2 Miscellaneous Fee 11580 | 3 Caution Deposit 11580 | 4 University Fee & Bank charges 3890 | 5 Registration fee 100 | Total 85040",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "MD/MS Course — Tuition Fee (fee to be remitted at the time of admission)",
+     "branches": "*",
+     "inr": 57890,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": null,
+   "notes": "Also printed: 'Campus and Academic Development Fund = Rs 5000/-(Online payment) [This fee is non refundable]'; 'Library, LRC fee (Cash only)' (no amount). For SC/ST/OEC: 'Rs.100+11580+3890 (Caution Deposit & University Fee only)'. University fee here 3,890 (incl. bank charges) vs Kannur/Thrissur 4,070. Supplements the round-1 government_all entry."
+  }
+ ],
+ "replaces_not_published": [],
+ "no_usable_figure": [
+  {
+   "source": "mes-fee-2026",
+   "why": "MBBS only: 'Fee Structure - 2026 / MBBS Admission 2026-2027' — General tuition 8,56,840, NRI 22,74,006 (provisional). No MD/MS figure; MES stays not_published."
+  }
+ ]
+}

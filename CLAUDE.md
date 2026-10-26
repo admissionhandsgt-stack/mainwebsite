@@ -610,6 +610,10 @@ MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within mi
   amount paid at admission is **held back** (owner chose to leave those out: MAHE's 3-year totals, NIMS ₹6,000/month,
   Punjab's six-month instalment, Uttarakhand's with/without-bond pair, BMCRI, RIMS Imphal, four deemed NRI course fees).
   **Applied 2026-10-26:** 4,275 rows at 136 colleges in 21 states/UTs (backups `D:/Admisson Hands/fee_backups/fees_before_2026_27_<state>.json`).
+  Round 2 the same day (~55 more own-notice files, `fees_extract_2026_27/round2/` keeps what each held, mostly "2025-26 /
+  unlabelled / MBBS only / regulator"): +SMIMS (Sikkim), Al-Falah (Haryana), NAMO Silvassa (its UT seats only — the AIQ
+  sheet has no year), Sri Siddhartha's NRI fees, Santosh's own 2026-27 sheet; plus Amrita's Anatomy "Full Scholarship".
+  A state applied twice has a `…_pass2.json` backup — restore pass 2 first, then pass 1.
   Not yet published anywhere on 2026-10-25: KEA's fee list, Tamil Nadu private colleges, UP's government and most private
   colleges, Haryana, Odisha, J&K, Jharkhand, most of Bihar, Gujarat government/GMERS, Rajasthan and West Bengal government
   colleges, Assam, Goa (only 2025-26), and **DNB** (no 2026 amount is printed by NBEMS or MCC — DNB rows untouched).

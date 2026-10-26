@@ -1,0 +1,21 @@
+{
+  "state": "Telangana",
+  "checked": "2026-10-26",
+  "round": 2,
+  "note": "Round 2 adds no fee entries. RVM's file is two Government of Telangana fee G.O.s for the 2020-23 block (excluded by the owner's rule and old). Apollo Hyderabad's sheet carries no year label (unlabelled figures are not used).",
+  "files": [
+    { "id": "r2-rvm-pg", "url": "https://rvmims.edu.in/Pdf_Files/PG_Medical_College_Fee.pdf", "path": "dl/apts_r2/05_rvm_pg/PG_Medical_College_Fee.pdf",
+      "title": "G.O.Ms.No.8 HM&FW (C1) dt 03/02/2022 (RVM - fee for newly approved PG courses, block period 2020-2023) + G.O.Ms.No.25 HM&FW (C1) dt 22/05/2020 (amendment, PG course 2020-2023)", "issuer": "Government of Telangana, HM&FW (C1) Department (TAFRC recommendation) - not the college", "bytes": 679048, "scanned": true, "result": "No usable figure: fee G.O., block 2020-2023" },
+    { "id": "r2-apollo-hyd", "url": "https://apolloimsr.edu.in/wp-content/uploads/2026/01/FEE-Structure.pdf", "path": "dl/apts_r2/06_apollo_hyd/FEE-Structure.pdf",
+      "title": "FEE Structure (Undergraduate course / Post Graduate Courses) - no institution name, no year, no signature", "issuer": "uploaded by Apollo Institute of Medical Sciences and Research, Hyderabad (apolloimsr.edu.in, 28 Jan 2026)", "bytes": 205332, "scanned": false, "result": "No usable figure: no year label" }
+  ],
+  "html": [],
+  "colleges": [],
+  "replaces_not_published": [],
+  "government_all": [],
+  "not_published": [
+    { "college": "RVM Institute of Medical Sciences and Research Centre, Siddipet", "roster_id": 2092, "latest_seen": "Round 2: 'Fee for PG' PDF = G.O.Ms.No.8 (03/02/2022) and G.O.Ms.No.25 (22/05/2020), block 2020-2023: PG Clinical CAT-A 7,00,000 / CAT-B 23,00,000 / CAT-C up to 3 times of B; Para-clinical 4,30,000 / 5,30,000 / up to 3x B; Non-clinical 1,70,000 / 1,70,000 / up to 3x B (per annum) - government fee order, not used" },
+    { "college": "Apollo Institute of Medical Sciences and Research, Hyderabad", "roster_id": 2081, "latest_seen": "Round 2: FEE-Structure.pdf (uploaded 28 Jan 2026) has NO year label: PG Tuition fee - Clinical: Convener Quota 7,50,000; Management Quota-1 23,00,000; Management Quota – 2 & 3 69,00,000; Para-Clinical: 4,30,000 / 5,30,000 / 15,90,000; Non-Clinical: 1,70,000 / 1,70,000 / 5,10,000 (period not printed). Not used (unlabelled)." }
+  ],
+  "candidate_files_not_downloaded": []
+}

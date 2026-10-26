@@ -43,6 +43,10 @@ STATE_CLASSES = {
     "Andhra Pradesh": [["^APMgmt-CA SF$", "SF"]],
     # A Karnataka private college's "private seats" carry their own fee, between government quota and management.
     "Karnataka": [["^KAR Priv Seats-(Open|GMP)$", "Priv"]],
+    # SMIMS prices Category A (general / North-East / defence) apart from the Sikkim government-nominated quota.
+    "Sikkim": [["^Sikkim Gen Quota$", "CatA"]],
+    # NAMO's prospectus prices the UT's own seats; its other-state seats are not in the table.
+    "Dadra and Nagar Haveli": [["Other State", "OtherState"]],
 }
 # A quota-less row, by its counselling: the AP/Telangana convener seats, and the new AP government colleges' NRI seats.
 NULL_CLASS = {"AP Govt PG": "Gen", "TEL Govt PG": "Gen", "AP Mgmt PG": "NRI"}
@@ -56,6 +60,9 @@ STATE_SEATS = {
     "Uttar Pradesh": [("^general \\(category", "GOVT")],
     # NEIGRIHMS's prospectus prices its MD/MS seats (open North-Eastern and pass-out) as one.
     "Meghalaya": [("^md/ms", "GOVT")],
+    "Sikkim": [("^category a", ["CatA"])],
+    # Only the UT candidates' column is printed — not the AIQ seats (an unlabelled AIQ sheet is not used).
+    "Dadra and Nagar Haveli": [("^ut of dnh", ["Gen"])],
 }
 NON_NRI = ["Gen", "Priv", "Mgmt", "Min", "Inst"]
 
@@ -123,8 +130,16 @@ def our_course(printed):
         drop = set(sum((our_course(x) or [] for x in re.split(r",|&|\band\b", m.group(2))), []))
         return [c for c in our_course(m.group(1)) if c not in drop]
     m = re.search(r"\(=\s*([^)]+)\)\s*$", printed) or re.search(r"(?:→|->)\s*(.+?)\s*$", printed)
-    if m:  # the extract already names our course; trust it only if it is one of ours
-        return [m.group(1).strip()] if m.group(1).strip() in COURSES else None
+    if m:  # the extract already names our course(s); trust only names that are ours, and nothing left over
+        named = m.group(1).strip()
+        if named in COURSES:
+            return [named]
+        found, rest = [], named
+        for c in sorted(COURSES, key=len, reverse=True):  # longest first: "MD Dermatology, Venereology & Leprosy"
+            if c in rest:
+                found.append(c)
+                rest = rest.replace(c, " ")
+        return found if found and not re.sub(r"[\s,;/&]+|\band\b", "", rest) else None
     name = re.sub(r"\s*\(=.*$", "", printed).strip()
     if name in COURSES:
         return [name]

@@ -1,0 +1,25 @@
+{
+ "state": "Manipur",
+ "checked": "2026-10-26",
+ "round": 2,
+ "files": [
+  {
+   "id": "jnims-cap-2026",
+   "url": "https://jnims.nic.in/wp-content/uploads/2026/09/revised-cap-2026.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/east_r2/05_jnims_cap/revised-cap-2026.pdf",
+   "title": "JNIMS NOTICE 28 & 31 August 2026 — Central Assessment Programme (CAP) of Manipur University exams",
+   "issuer": "Dean (Academics), JNIMS",
+   "bytes": 821939,
+   "scanned": true
+  }
+ ],
+ "html": [],
+ "colleges": [],
+ "replaces_not_published": [],
+ "no_usable_figure": [
+  {
+   "source": "jnims-cap-2026",
+   "why": "'PG CAP AT JNIMS' is the Central Assessment Programme (exam paper evaluation) notice of 28/31 Aug 2026 — no admission or fee content. JNIMS stays not_published."
+  }
+ ]
+}

@@ -1,0 +1,162 @@
+{
+ "checked": "2026-10-26",
+ "round": 2,
+ "html": [],
+ "government_all": [],
+ "not_published": [],
+ "candidate_files_not_downloaded": [],
+ "state": "Haryana",
+ "files": [
+  {
+   "id": "alfalah-prospectus-2026-27",
+   "url": "https://www.alfalahuniversity.edu.in/assets/uploads/pdf/Al-Falah-Univerity.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_r2/03_alfalah/AlFalah_Prospectus_2026-27.pdf",
+   "title": "Al-Falah University PROSPECTUS 2026-27 (\"Presently operating under the Administrative Control of the Government of Haryana\")",
+   "issuer": "Al-Falah University, Dhauj, Faridabad",
+   "bytes": 58277422,
+   "scanned": false
+  }
+ ],
+ "colleges": [
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad (Al-Falah University)",
+   "roster": [
+    {
+     "id": 1931,
+     "name": "Al Falah School of Medical Sciences & Research Centre, Faridabad"
+    }
+   ],
+   "ownership": "private",
+   "source_kind": "university-own",
+   "source": "alfalah-prospectus-2026-27",
+   "page": 23,
+   "year_label": "Cover (p.1) 'PROSPECTUS 2026-27'; p.23 'COURSE DURATION & FEE STRUCTURE'",
+   "period": "per year ('… Lakhs per year')",
+   "quote": "MD/MS | 03 years | (1) Anatomy - 2.40 Lakhs per year (2) Anaesthesiology - 17.90 Lakhs per year (3) Dermatology Venereology & Leprosy - 32.90 Lakhs per year (4) Pathology - 14.55 Lakhs per year (5) Community Medicine - 9.12 Lakhs per year (6) Obstetrics & Gynaecology - 29.90 Lakhs per year (7) Microbiology - 7.20 Lakhs per year (8) General Medicine - 29.90 Lakhs per year (9) Biochemistry - 2.40 Lakhs per year (10) Physiology - 2.40 Lakhs per year (11) Paediatrics - 29.90 Lakhs per year",
+   "fees": [
+    {
+     "seat": "Other:all MD/MS seats — no quota stated",
+     "seat_as_printed": "COURSE DURATION & FEE STRUCTURE — MD/MS (no quota or category stated)",
+     "branches": [
+      "Anatomy (MD Anatomy)",
+      "Biochemistry (MD Bio-Chemistry)",
+      "Physiology (MD Physiology)"
+     ],
+     "ours": [
+      "MD Anatomy",
+      "MD Bio-Chemistry",
+      "MD Physiology"
+     ],
+     "inr": null,
+     "lakh": 2.4,
+     "usd": null,
+     "printed": "2.40 Lakhs",
+     "maximum": false
+    },
+    {
+     "seat": "Other:all MD/MS seats — no quota stated",
+     "seat_as_printed": "COURSE DURATION & FEE STRUCTURE — MD/MS (no quota or category stated)",
+     "branches": [
+      "Anaesthesiology (MD Anaesthesiology)"
+     ],
+     "ours": [
+      "MD Anaesthesiology"
+     ],
+     "inr": null,
+     "lakh": 17.9,
+     "usd": null,
+     "printed": "17.90 Lakhs",
+     "maximum": false
+    },
+    {
+     "seat": "Other:all MD/MS seats — no quota stated",
+     "seat_as_printed": "COURSE DURATION & FEE STRUCTURE — MD/MS (no quota or category stated)",
+     "branches": [
+      "Dermatology Venereology & Leprosy (MD Dermatology, Venereology & Leprosy)"
+     ],
+     "ours": [
+      "MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": null,
+     "lakh": 32.9,
+     "usd": null,
+     "printed": "32.90 Lakhs",
+     "maximum": false
+    },
+    {
+     "seat": "Other:all MD/MS seats — no quota stated",
+     "seat_as_printed": "COURSE DURATION & FEE STRUCTURE — MD/MS (no quota or category stated)",
+     "branches": [
+      "Pathology (MD Pathology)"
+     ],
+     "ours": [
+      "MD Pathology"
+     ],
+     "inr": null,
+     "lakh": 14.55,
+     "usd": null,
+     "printed": "14.55 Lakhs",
+     "maximum": false
+    },
+    {
+     "seat": "Other:all MD/MS seats — no quota stated",
+     "seat_as_printed": "COURSE DURATION & FEE STRUCTURE — MD/MS (no quota or category stated)",
+     "branches": [
+      "Community Medicine (MD Social & Preventive Medicine)"
+     ],
+     "ours": [
+      "MD Social & Preventive Medicine"
+     ],
+     "inr": null,
+     "lakh": 9.12,
+     "usd": null,
+     "printed": "9.12 Lakhs",
+     "maximum": false
+    },
+    {
+     "seat": "Other:all MD/MS seats — no quota stated",
+     "seat_as_printed": "COURSE DURATION & FEE STRUCTURE — MD/MS (no quota or category stated)",
+     "branches": [
+      "Obstetrics & Gynaecology (MS Obstetrics & Gynaecology)",
+      "General Medicine (MD General Medicine)",
+      "Paediatrics (MD Paediatrics)"
+     ],
+     "ours": [
+      "MS Obstetrics & Gynaecology",
+      "MD General Medicine",
+      "MD Paediatrics"
+     ],
+     "inr": null,
+     "lakh": 29.9,
+     "usd": null,
+     "printed": "29.90 Lakhs",
+     "maximum": false
+    },
+    {
+     "seat": "Other:all MD/MS seats — no quota stated",
+     "seat_as_printed": "COURSE DURATION & FEE STRUCTURE — MD/MS (no quota or category stated)",
+     "branches": [
+      "Microbiology (MD Microbiology)"
+     ],
+     "ours": [
+      "MD Microbiology"
+     ],
+     "inr": null,
+     "lakh": 7.2,
+     "usd": null,
+     "printed": "7.20 Lakhs",
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": null,
+    "max": null,
+    "text": "not printed on the fee page"
+   },
+   "notes": "One figure per branch with NO quota, category or NRI split; our roster lists Haryana Private Seats - Govt Quota / Management / NRI / Minority for this college — whether one figure applies to all of them is not stated (no US$ / NRI figure printed). Lakh figures recorded as printed (inr null). Cover: 'A Private University … (Presently operating under the Administrative Control of the Government of Haryana)'. File Last-Modified 22 Oct 2026. MBBS on the same page: '16,37,500/- per year during first 4 years + 9,00,000/- in 5th year'."
+  }
+ ],
+ "replaces_not_published": [
+  "Al Falah School of Medical Sciences & Research Centre, Faridabad"
+ ]
+}

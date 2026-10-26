@@ -1,7 +1,18 @@
 {
  "state": "Sikkim",
  "checked": "2026-10-25",
- "files": [],
+ "files": [
+  {
+   "id": "smu-prospectus-2026",
+   "url": "https://www.smu.edu.in/img/pdf/Prospectus.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/east_r2/06_smu_prospectus/Prospectus.pdf",
+   "title": "Sikkim Manipal University PROSPECTUS 2026 (169 pp.) — SMIMS 'FEE STRUCTURE FOR MD/MS COURSE' pp. 74-76 (PDF pp. 94-96)",
+   "issuer": "Sikkim Manipal University",
+   "bytes": 5817123,
+   "scanned": false,
+   "round": 2
+  }
+ ],
  "html": [
   {
    "id": "smims-md-gm",
@@ -22,15 +33,185 @@
    "title": "MD Anesthesiology | Sikkim Manipal University"
   }
  ],
- "colleges": [],
- "government_all": [],
- "not_published": [
+ "colleges": [
   {
-   "college": "Sikkim Manipal Institute of Medical Sciences",
-   "roster_id": 2053,
-   "latest_seen": "smu.edu.in/smims PG pages 'Program FEES' with NO year label (page shows 'Admission open 2026'): Lump sum (Yearly) — MD General Medicine 29,60,000 (General) | 10,35,000 (Sikkim Quota) | 53,00,000 (Management); MD Radiodiagnosis 35,00,000 | 11,70,000 | 66,00,000; MD Anaesthesiology 25,00,000 | 9,20,000 | 44,00,000; Caution 25,000, Registration 10,000. Not used: unlabelled."
+   "college": "SIKKIM MANIPAL INSTITUTE OF MEDICAL SCIENCES (SMIMS)",
+   "roster": [
+    {
+     "id": 2053,
+     "name": "Sikkim Manipal Institute of Medical Sciences, Gangtok"
+    }
+   ],
+   "ownership": "private",
+   "source_kind": "university-own",
+   "source": "smu-prospectus-2026",
+   "page": 94,
+   "year_label": "PROSPECTUS 2026 — 'FEE STRUCTURE FOR MD/MS COURSE' (printed pp. 74-76)",
+   "period": "per year",
+   "quote": "Duration 3 Years | Caution Deposit ₹ 25,000 (One Time Fee, Refundable) | Registration Fee ₹ 10,000 (One Time Fee, Non Refundable) | A. Category: General (Gen), North East (NE), Defence (Def): Gen Medicine, OBG, Orthopedics & Paediatrics Annual (A1) 29,60,000 … Radiology 35,00,000 … | Sikkim Quota … 75% concession of Tution fee: 10,35,000 … | Management: 53,00,000 | 44,00,000 | 66,00,000",
+   "fees": [
+    {
+     "seat": "Other:Category A — General (Gen), North East (NE), Defence (Def)",
+     "seat_as_printed": "A. Category: General (Gen), North East (NE), Defence (Def) — Annual (A1/A2/A3)",
+     "branches": [
+      "Gen Medicine, OBG, Orthopedics & Paediatrics (= MD General Medicine, MS Obstetrics & Gynaecology, MS Orthopaedics, MD Paediatrics)"
+     ],
+     "inr": 2960000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:Category A — General (Gen), North East (NE), Defence (Def)",
+     "seat_as_printed": "A. Category: General (Gen), North East (NE), Defence (Def) — Annual",
+     "branches": [
+      "Aneasthesia (= MD Anaesthesiology)"
+     ],
+     "inr": 2500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:Category A — General (Gen), North East (NE), Defence (Def)",
+     "seat_as_printed": "A. Category: General (Gen), North East (NE), Defence (Def) — Annual",
+     "branches": [
+      "Psychiatric (= MD Psychiatry)"
+     ],
+     "inr": 2300000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:Category A — General (Gen), North East (NE), Defence (Def)",
+     "seat_as_printed": "A. Category: General (Gen), North East (NE), Defence (Def) — Annual",
+     "branches": [
+      "ENT (= MS ENT)"
+     ],
+     "inr": 2700000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:Category A — General (Gen), North East (NE), Defence (Def)",
+     "seat_as_printed": "A. Category: General (Gen), North East (NE), Defence (Def) — Annual",
+     "branches": [
+      "Radiology (= MD Radio Diagnosis)"
+     ],
+     "inr": 3500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:Category A — General (Gen), North East (NE), Defence (Def)",
+     "seat_as_printed": "A. Category: General (Gen), North East (NE), Defence (Def) — Annual",
+     "branches": [
+      "Microbio. /Bio-chem/Com Med / Pharma/ Physiology (= MD Microbiology, MD Bio-Chemistry, MD Social & Preventive Medicine, MD Pharmacology, MD Physiology)"
+     ],
+     "inr": 500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Sikkim Quota - 20% Seats … selected by Govt. of Sikkim with 75% concession of Tution fee — Annual",
+     "branches": [
+      "Gen Medicine, OBG, Orthopedics & Paediatrics (= MD General Medicine, MS Obstetrics & Gynaecology, MS Orthopaedics, MD Paediatrics)"
+     ],
+     "inr": 1035000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Sikkim Quota — Annual",
+     "branches": [
+      "Aneasthesia (= MD Anaesthesiology)"
+     ],
+     "inr": 920000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Sikkim Quota — Annual",
+     "branches": [
+      "Psychiatric (= MD Psychiatry)"
+     ],
+     "inr": 870000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Sikkim Quota — Annual",
+     "branches": [
+      "ENT (= MS ENT)"
+     ],
+     "inr": 970000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Sikkim Quota — Annual",
+     "branches": [
+      "Radiology (= MD Radio Diagnosis)"
+     ],
+     "inr": 1170000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Sikkim Quota — Annual",
+     "branches": [
+      "Microbio. /Bio-chem/Com Med / Pharma/ Physiology (= MD Microbiology, MD Bio-Chemistry, MD Social & Preventive Medicine, MD Pharmacology, MD Physiology)"
+     ],
+     "inr": 256000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management — Annual",
+     "branches": [
+      "Gen Medicine, OBG, Orthopedics & Paediatrics (= MD General Medicine, MS Obstetrics & Gynaecology, MS Orthopaedics, MD Paediatrics)"
+     ],
+     "inr": 5300000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management — Annual",
+     "branches": [
+      "Aneasthesia (= MD Anaesthesiology)"
+     ],
+     "inr": 4400000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management — Annual",
+     "branches": [
+      "Radiology (= MD Radio Diagnosis)"
+     ],
+     "inr": 6600000,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 66000,
+    "max": 66000,
+    "text": "Hostel Facilities … SMIMS Tadong campus: Post Graduate Hostel: Double Sharing — Annual Hostel Rent 66,000; Mess & Utility Deposit NA; Total Amount 66,000"
+   },
+   "notes": "Prospectus pages read from renders (PDF pp. 94-96; printed 'PROSPECTUS 2026 | 74/75/76'). These are the same figures as the SMIMS HTML 'Program FEES' pages snapshotted in round 1 (e.g. Gen Med 29,60,000 / 10,35,000 / 53,00,000; Radiology 35,00,000 / 11,70,000 / 66,00,000; Anaesthesia 25,00,000 / 9,20,000 / 44,00,000), so the HTML figures are the 2026 prospectus figures. Annual columns A1-A3 = one instalment per year of the 3-year course (bi-annual option B1-B6 at half, e.g. 15,39,000). Note iv says 'The Total Fee of Entire Course may be paid … Annual Payment … In 5 Instalments (A1-A5)' — printed so (generic). 'Course fee includes: Tution fee, Laboratory fee, University fee and Other fees'; examination fee extra; 1% p.m. late fine. Management fee printed only for Gen Medicine/OBG/Ortho/Paediatrics, Anaesthesia and Radiology. Seat mapping: our roster's 'Sikkim Gen Quota' = Category A General (Gen)/NE/Def; 'Sikkim Govt Quota' = 'Sikkim Quota' (Govt. of Sikkim nominated, 75% tuition concession); 'Sikkim Mgmt Quota' = Management. Seat matrix p.92 (MD/MS): General (All India) 21, North East NIL, Govt. of Sikkim Nominated 6** (in-service doctors), Management 5. The label is 'PROSPECTUS 2026' (no '2026-27').",
+   "round": 2
   }
  ],
+ "government_all": [],
+ "not_published": [],
  "candidate_files_not_downloaded": [
   {
    "college": "SMIMS (Sikkim Manipal University)",
