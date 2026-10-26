@@ -1,0 +1,170 @@
+{
+ "state": "Chhattisgarh",
+ "classes": [
+  [
+   "NRI",
+   "NRI"
+  ],
+  [
+   "^(MM|JM)$|Minority|Min\\.? |Min$|Min\\.$|-Min",
+   "Min"
+  ],
+  [
+   "^AIQ$",
+   "AIQ"
+  ],
+  [
+   "^MNG$|Mgmt|Management|Mgt|Others \\(Inst|CatB|MQ1|Paid",
+   "Mgmt"
+  ],
+  [
+   "CatC-Inst|MQ3",
+   "Inst"
+  ],
+  [
+   "^DNB Post MBBS$|^NBE Diploma$",
+   "DNB"
+  ],
+  [
+   "DNB|AFMS",
+   "Other"
+  ],
+  [
+   ".",
+   "Gen"
+  ]
+ ],
+ "null_class": {
+  "AP Govt PG": "Gen",
+  "TEL Govt PG": "Gen",
+  "AP Mgmt PG": "NRI"
+ },
+ "entries": [
+  {
+   "college": "Pt. J.N.M. Medical College, Raipur",
+   "ids": [
+    78
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 20000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "jnm, p. 1 — \"home-page link 'List of Document Required for Admission in PG Course (All India Quota) 2026-27'; the page: 'for this academic year the internship completion date may be treated as 30 th September, 2026'\"",
+   "period": null
+  },
+  {
+   "college": "Pt. J.N.M. Medical College, Raipur",
+   "ids": [
+    78
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 20000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "jnm, p. 1 — \"home-page link 'List of Document Required for Admission in PG Course (All India Quota) 2026-27'; the page: 'for this academic year the internship completion date may be treated as 30 th September, 2026'\"",
+   "period": null
+  },
+  {
+   "college": "Pt. J.N.M. Medical College, Raipur",
+   "ids": [
+    78
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 20000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "jnm, p. 1 — \"home-page link 'List of Document Required for Admission in PG Course (All India Quota) 2026-27'; the page: 'for this academic year the internship completion date may be treated as 30 th September, 2026'\"",
+   "period": null
+  },
+  {
+   "college": "Chhattisgarh Institute of Medical Sciences, Bilaspur",
+   "ids": [
+    220
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 20000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "cims, p. 1 — \"college's link title '…Fees Detail for Admission in PG Course in The Year of 2026-27' (ZIP PG_Documents2026.zip, folder down2026, Last-Modified 21 Oct 2026); BROCHURE_PG.pdf itself prints no year\"",
+   "period": null
+  },
+  {
+   "college": "Chhattisgarh Institute of Medical Sciences, Bilaspur",
+   "ids": [
+    220
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 20000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "cims, p. 1 — \"college's link title '…Fees Detail for Admission in PG Course in The Year of 2026-27' (ZIP PG_Documents2026.zip, folder down2026, Last-Modified 21 Oct 2026); BROCHURE_PG.pdf itself prints no year\"",
+   "period": null
+  },
+  {
+   "college": "Chhattisgarh Institute of Medical Sciences, Bilaspur",
+   "ids": [
+    220
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 20000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "cims, p. 1 — \"college's link title '…Fees Detail for Admission in PG Course in The Year of 2026-27' (ZIP PG_Documents2026.zip, folder down2026, Last-Modified 21 Oct 2026); BROCHURE_PG.pdf itself prints no year\"",
+   "period": null
+  },
+  {
+   "college": "Government Medical College, Korba",
+   "ids": [
+    512
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 20000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "korba, p. 1 — \"file PG_Admission_Doc_2026.pdf; p1 'Disability certificate as per latest MCC NEET PG 2026 guide line'\"",
+   "period": null
+  },
+  {
+   "college": "Government Medical College, Korba",
+   "ids": [
+    512
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 20000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "korba, p. 1 — \"file PG_Admission_Doc_2026.pdf; p1 'Disability certificate as per latest MCC NEET PG 2026 guide line'\"",
+   "period": null
+  },
+  {
+   "college": "Government Medical College, Korba",
+   "ids": [
+    512
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 20000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "korba, p. 1 — \"file PG_Admission_Doc_2026.pdf; p1 'Disability certificate as per latest MCC NEET PG 2026 guide line'\"",
+   "period": null
+  }
+ ]
+}

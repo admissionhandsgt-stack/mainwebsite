@@ -1,0 +1,97 @@
+{
+ "state": "Himachal Pradesh",
+ "classes": [
+  [
+   "NRI",
+   "NRI"
+  ],
+  [
+   "^(MM|JM)$|Minority|Min\\.? |Min$|Min\\.$|-Min",
+   "Min"
+  ],
+  [
+   "^AIQ$",
+   "AIQ"
+  ],
+  [
+   "^MNG$|Mgmt|Management|Mgt|Others \\(Inst|CatB|MQ1|Paid",
+   "Mgmt"
+  ],
+  [
+   "CatC-Inst|MQ3",
+   "Inst"
+  ],
+  [
+   "^DNB Post MBBS$|^NBE Diploma$",
+   "DNB"
+  ],
+  [
+   "DNB|AFMS",
+   "Other"
+  ],
+  [
+   ".",
+   "Gen"
+  ]
+ ],
+ "null_class": {
+  "AP Govt PG": "Gen",
+  "TEL Govt PG": "Gen",
+  "AP Mgmt PG": "NRI"
+ },
+ "entries": [
+  {
+   "college": "Government Medical Colleges of HP in AMRU's state counselling ('8.2 Fee and Host",
+   "ids": [
+    88,
+    89,
+    312,
+    625,
+    737,
+    1835
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 24000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "amru-pg-2026-27, p. 26 — \"Prospectus … Postgraduate Degree (MD/MS/DNB) Courses, Session 2026-2027 — '8.2.1 Postgraduate Degree Courses – College Fee (Per Year)'\""
+  },
+  {
+   "college": "Government Medical Colleges of HP in AMRU's state counselling ('8.2 Fee and Host",
+   "ids": [
+    88,
+    89,
+    312,
+    625,
+    737,
+    1835
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 24000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "amru-pg-2026-27, p. 26 — \"Prospectus … Postgraduate Degree (MD/MS/DNB) Courses, Session 2026-2027 — '8.2.1 Postgraduate Degree Courses – College Fee (Per Year)'\""
+  },
+  {
+   "college": "Government Medical Colleges of HP in AMRU's state counselling ('8.2 Fee and Host",
+   "ids": [
+    88,
+    89,
+    312,
+    625,
+    737,
+    1835
+   ],
+   "seat": "Hostel",
+   "text": "8.2.2 Hostel Fees (Per Year, excluding mess security): Rent 10,000; Electricity 5,000; Hostel Fund 5,000; Student Fund 1,000; Total 21,000. Securities (refundable) 12,500.",
+   "year": "2026-27",
+   "source": "amru-pg-2026-27, p. 26 — \"Prospectus … Postgraduate Degree (MD/MS/DNB) Courses, Session 2026-2027 — '8.2.1 Postgraduate Degree Courses – College Fee (Per Year)'\"",
+   "min": 21000,
+   "max": 21000
+  }
+ ]
+}

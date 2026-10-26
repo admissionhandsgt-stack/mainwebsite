@@ -1,0 +1,83 @@
+{
+ "state": "Chandigarh",
+ "classes": [
+  [
+   "NRI",
+   "NRI"
+  ],
+  [
+   "^(MM|JM)$|Minority|Min\\.? |Min$|Min\\.$|-Min",
+   "Min"
+  ],
+  [
+   "^AIQ$",
+   "AIQ"
+  ],
+  [
+   "^MNG$|Mgmt|Management|Mgt|Others \\(Inst|CatB|MQ1|Paid",
+   "Mgmt"
+  ],
+  [
+   "CatC-Inst|MQ3",
+   "Inst"
+  ],
+  [
+   "^DNB Post MBBS$|^NBE Diploma$",
+   "DNB"
+  ],
+  [
+   "DNB|AFMS",
+   "Other"
+  ],
+  [
+   ".",
+   "Gen"
+  ]
+ ],
+ "null_class": {
+  "AP Govt PG": "Gen",
+  "TEL Govt PG": "Gen",
+  "AP Mgmt PG": "NRI"
+ },
+ "entries": [
+  {
+   "college": "Government Medical College & Hospital, Sector-32, Chandigarh",
+   "ids": [
+    3
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 22000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gmch32-mdms-2026, p. 28 — \"PROSPECTUS For ADMISSION TO MD/MS COURSES (SESSION 2026) — 'PG-11: Fee'\""
+  },
+  {
+   "college": "Government Medical College & Hospital, Sector-32, Chandigarh",
+   "ids": [
+    3
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 22000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gmch32-mdms-2026, p. 28 — \"PROSPECTUS For ADMISSION TO MD/MS COURSES (SESSION 2026) — 'PG-11: Fee'\""
+  },
+  {
+   "college": "Government Medical College & Hospital, Sector-32, Chandigarh",
+   "ids": [
+    3
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 22000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gmch32-mdms-2026, p. 28 — \"PROSPECTUS For ADMISSION TO MD/MS COURSES (SESSION 2026) — 'PG-11: Fee'\""
+  }
+ ]
+}

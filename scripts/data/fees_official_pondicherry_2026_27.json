@@ -1,0 +1,1109 @@
+{
+ "state": "Pondicherry",
+ "classes": [
+  [
+   "NRI",
+   "NRI"
+  ],
+  [
+   "^(MM|JM)$|Minority|Min\\.? |Min$|Min\\.$|-Min",
+   "Min"
+  ],
+  [
+   "^AIQ$",
+   "AIQ"
+  ],
+  [
+   "^MNG$|Mgmt|Management|Mgt|Others \\(Inst|CatB|MQ1|Paid",
+   "Mgmt"
+  ],
+  [
+   "CatC-Inst|MQ3",
+   "Inst"
+  ],
+  [
+   "^DNB Post MBBS$|^NBE Diploma$",
+   "DNB"
+  ],
+  [
+   "DNB|AFMS",
+   "Other"
+  ],
+  [
+   ".",
+   "Gen"
+  ]
+ ],
+ "null_class": {
+  "AP Govt PG": "Gen",
+  "TEL Govt PG": "Gen",
+  "AP Mgmt PG": "NRI"
+ },
+ "entries": [
+  {
+   "college": "Indira Gandhi Medical College & Research Institute (A Government of Puducherry Institution functioning under Perunthalaivar Kamaraj Medical College Society)",
+   "ids": [
+    90
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 160000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "igmcri-centac, p. 1 — \"PG (MD/MS) COURSE FOR THE ACADEMIC YEAR 2026-27\"",
+   "period": null
+  },
+  {
+   "college": "Indira Gandhi Medical College & Research Institute (A Government of Puducherry Institution functioning under Perunthalaivar Kamaraj Medical College Society)",
+   "ids": [
+    90
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 160000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "igmcri-centac, p. 1 — \"PG (MD/MS) COURSE FOR THE ACADEMIC YEAR 2026-27\"",
+   "period": null
+  },
+  {
+   "college": "Indira Gandhi Medical College & Research Institute (A Government of Puducherry Institution functioning under Perunthalaivar Kamaraj Medical College Society)",
+   "ids": [
+    90
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 160000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "igmcri-centac, p. 1 — \"PG (MD/MS) COURSE FOR THE ACADEMIC YEAR 2026-27\"",
+   "period": null
+  },
+  {
+   "college": "Indira Gandhi Medical College & Research Institute (A Government of Puducherry Institution functioning under Perunthalaivar Kamaraj Medical College Society)",
+   "ids": [
+    90
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Fees: Caution Deposit (refundable) Rs. 10,000/-; Room Rent (per month) Rs. 4,000/- (single room) — 'shall be deducted from the Stipend'. Website .docx: 'Room Rent (per year; single room) Rs. 48,000/-'",
+   "year": "2026-27",
+   "source": "igmcri-centac, p. 1 — \"PG (MD/MS) COURSE FOR THE ACADEMIC YEAR 2026-27\"",
+   "min": 48000,
+   "max": 48000
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "fee_inr": 600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Physiology"
+   ],
+   "fee_inr": 600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "fee_inr": 700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 1000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 3200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 5500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 5500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 5500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": null,
+   "fee_usd": 60000,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": null,
+   "fee_usd": 75000,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": null,
+   "fee_usd": 75000,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": null,
+   "fee_usd": 75000,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": null,
+   "fee_usd": 75000,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\""
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1783
+   ],
+   "seat": "Hostel",
+   "text": "Hostel (Boarding & Lodging) (Single Air-conditioned Room) per Annum Rs.3,50,000/-; Laundry Services (Annual) Rs. 13,000/-; Hostel Upkeep Charges (Annual) Rs.6,000/- — Total Rs. 3,69,000",
+   "year": "2026-27",
+   "source": "mgmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY\"",
+   "min": 369000,
+   "max": 369000
+  },
+  {
+   "college": "AARUPADAI VEEDU MEDICAL COLLEGE & HOSPITAL, PUDUCHERRY",
+   "ids": [
+    1769
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 5050000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "avmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "AARUPADAI VEEDU MEDICAL COLLEGE & HOSPITAL, PUDUCHERRY",
+   "ids": [
+    1769
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 5100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "avmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "AARUPADAI VEEDU MEDICAL COLLEGE & HOSPITAL, PUDUCHERRY",
+   "ids": [
+    1769
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 4850000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "avmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "AARUPADAI VEEDU MEDICAL COLLEGE & HOSPITAL, PUDUCHERRY",
+   "ids": [
+    1769
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 4600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "avmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "AARUPADAI VEEDU MEDICAL COLLEGE & HOSPITAL, PUDUCHERRY",
+   "ids": [
+    1769
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 4300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "avmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "AARUPADAI VEEDU MEDICAL COLLEGE & HOSPITAL, PUDUCHERRY",
+   "ids": [
+    1769
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 4600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "avmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "AARUPADAI VEEDU MEDICAL COLLEGE & HOSPITAL, PUDUCHERRY",
+   "ids": [
+    1769
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "avmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "AARUPADAI VEEDU MEDICAL COLLEGE & HOSPITAL, PUDUCHERRY",
+   "ids": [
+    1769
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "avmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "AARUPADAI VEEDU MEDICAL COLLEGE & HOSPITAL, PUDUCHERRY",
+   "ids": [
+    1769
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "avmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "AARUPADAI VEEDU MEDICAL COLLEGE & HOSPITAL, PUDUCHERRY",
+   "ids": [
+    1769
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "avmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "AARUPADAI VEEDU MEDICAL COLLEGE & HOSPITAL, PUDUCHERRY",
+   "ids": [
+    1769
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "avmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "AARUPADAI VEEDU MEDICAL COLLEGE & HOSPITAL, PUDUCHERRY",
+   "ids": [
+    1769
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "avmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "AARUPADAI VEEDU MEDICAL COLLEGE & HOSPITAL, PUDUCHERRY",
+   "ids": [
+    1769
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 4300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "avmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "AARUPADAI VEEDU MEDICAL COLLEGE & HOSPITAL, PUDUCHERRY",
+   "ids": [
+    1769
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "avmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "AARUPADAI VEEDU MEDICAL COLLEGE & HOSPITAL, PUDUCHERRY",
+   "ids": [
+    1769
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "avmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "AARUPADAI VEEDU MEDICAL COLLEGE & HOSPITAL, PUDUCHERRY",
+   "ids": [
+    1769
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "avmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "AARUPADAI VEEDU MEDICAL COLLEGE & HOSPITAL, PUDUCHERRY",
+   "ids": [
+    1769
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 150000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "avmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\" — after the college's fee concession (as printed: Annual Fee Rs. 3,00,000; Scholarship / Fee concession Rs. 1,50,000; Annual fee after deduction of Fee Concession Rs. 1,50,000)"
+  },
+  {
+   "college": "AARUPADAI VEEDU MEDICAL COLLEGE & HOSPITAL, PUDUCHERRY",
+   "ids": [
+    1769
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 150000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "avmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\" — after the college's fee concession (as printed: Annual Fee Rs. 3,00,000; Scholarship / Fee concession Rs. 1,50,000; Annual fee after deduction of Fee Concession Rs. 1,50,000)"
+  },
+  {
+   "college": "AARUPADAI VEEDU MEDICAL COLLEGE & HOSPITAL, PUDUCHERRY",
+   "ids": [
+    1769
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "fee_inr": 150000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "avmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\" — after the college's fee concession (as printed: Annual Fee Rs. 3,00,000; Scholarship / Fee concession Rs. 1,50,000; Annual fee after deduction of Fee Concession Rs. 1,50,000)"
+  },
+  {
+   "college": "AARUPADAI VEEDU MEDICAL COLLEGE & HOSPITAL, PUDUCHERRY",
+   "ids": [
+    1769
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Accommodation & Mess Fees Rs. 3,00,000/- (Per Year); Hostel Caution Deposit Rs. 1,00,000/-",
+   "year": "2026-27",
+   "source": "avmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\"",
+   "min": 300000,
+   "max": 300000
+  },
+  {
+   "college": "VINAYAKA MISSION'S MEDICAL COLLEGE & HOSPITALS KARAIKAL",
+   "ids": [
+    1710
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S MEDICAL COLLEGE & HOSPITALS KARAIKAL",
+   "ids": [
+    1710
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 4300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S MEDICAL COLLEGE & HOSPITALS KARAIKAL",
+   "ids": [
+    1710
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 3800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S MEDICAL COLLEGE & HOSPITALS KARAIKAL",
+   "ids": [
+    1710
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 3600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S MEDICAL COLLEGE & HOSPITALS KARAIKAL",
+   "ids": [
+    1710
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S MEDICAL COLLEGE & HOSPITALS KARAIKAL",
+   "ids": [
+    1710
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 3800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S MEDICAL COLLEGE & HOSPITALS KARAIKAL",
+   "ids": [
+    1710
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S MEDICAL COLLEGE & HOSPITALS KARAIKAL",
+   "ids": [
+    1710
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 3900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S MEDICAL COLLEGE & HOSPITALS KARAIKAL",
+   "ids": [
+    1710
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S MEDICAL COLLEGE & HOSPITALS KARAIKAL",
+   "ids": [
+    1710
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 2300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S MEDICAL COLLEGE & HOSPITALS KARAIKAL",
+   "ids": [
+    1710
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 2800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S MEDICAL COLLEGE & HOSPITALS KARAIKAL",
+   "ids": [
+    1710
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 2700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S MEDICAL COLLEGE & HOSPITALS KARAIKAL",
+   "ids": [
+    1710
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1150000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S MEDICAL COLLEGE & HOSPITALS KARAIKAL",
+   "ids": [
+    1710
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 550000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S MEDICAL COLLEGE & HOSPITALS KARAIKAL",
+   "ids": [
+    1710
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Immuno Haematology & Blood Transfusion"
+   ],
+   "fee_inr": 1050000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S MEDICAL COLLEGE & HOSPITALS KARAIKAL",
+   "ids": [
+    1710
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 350000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S MEDICAL COLLEGE & HOSPITALS KARAIKAL",
+   "ids": [
+    1710
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Forensic Medicine"
+   ],
+   "fee_inr": 550000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S MEDICAL COLLEGE & HOSPITALS KARAIKAL",
+   "ids": [
+    1710
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Fee per year 90,000 (Non A/C double) | 1,25,000 (A/C single) | 1,05,000 (A/C double) | 2,00,000 (1 BHK PG Apartment); Mess Fee per year 85,000 — Total 1,75,000 | 2,10,000 | 1,90,000 | 2,85,000; Hostel Caution Deposit 1,00,000",
+   "year": "2026-27",
+   "source": "vmmc, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\"",
+   "min": 175000,
+   "max": 285000
+  }
+ ]
+}

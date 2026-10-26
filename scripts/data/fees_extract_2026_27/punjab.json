@@ -1,0 +1,316 @@
+{
+ "checked": "2026-10-25",
+ "files": [
+  {
+   "id": "bfuhs-pg-2026",
+   "url": "https://admission.bfuhsonline.ac.in/PGET2026/MDMS/Prospectus.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north/01_bfuhs/Prospectus.pdf",
+   "title": "PROSPECTUS-NEET-PG-2026 (MD/MS/PG Diploma), state counselling Punjab",
+   "issuer": "Baba Farid University of Health Sciences, Faridkot (state counselling authority, Govt of Punjab)",
+   "bytes": 22226527,
+   "scanned": false
+  },
+  {
+   "id": "sgrd-mdms-2026-27",
+   "url": "https://www.sgrduhs.in/prospectus/2026/MD%20MS%202026%20Prospectus.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north/08_sgrd/SGRD_MDMS_2026_Prospectus.pdf",
+   "title": "Prospectus cum Information Bulletin for Admission to MD/MS Courses, Session 2026-27",
+   "issuer": "Sri Guru Ram Das University of Health Sciences, Sri Amritsar",
+   "bytes": 783922,
+   "scanned": false
+  },
+  {
+   "id": "adesh-pg-2026-27",
+   "url": "https://administration.adeshuniversity.ac.in/Assets/Notice/2026062305345626.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north/09_adesh/Adesh_PG_Prospectus_2026-27.pdf",
+   "title": "Prospectus for Admission to Post Graduate Medical/Dental Programmes (MD/MS & MDS), Academic Session 2026-27 through NEET PG-2026",
+   "issuer": "Adesh University, Bathinda",
+   "bytes": 1312419,
+   "scanned": false
+  }
+ ],
+ "html": [],
+ "colleges": [
+  {
+   "college": "Adesh Institute of Medical Sciences and Research, Bathinda (Adesh University)",
+   "roster": [
+    {
+     "id": 2040,
+     "name": "Adesh Institute of Medical Sciences & Research, Bhatinda"
+    }
+   ],
+   "ownership": "private",
+   "source_kind": "university-own",
+   "source": "adesh-pg-2026-27",
+   "page": 18,
+   "year_label": "Cover: 'Academic Session – 2026-27 through NEET PG-2026'; §11 'FEE STRUCTURE MD/MS PROGRAMMES — 11.1 Tuition fee for MD/MS programmes are as under'",
+   "period": "per year (separate figures for 1st, 2nd and 3rd year; 'fees' below = 1st year)",
+   "quote": "(a) MS Otorhinolaryngology … MD General Medicine: 1st Year Rs. 16,90,000/- | 2nd Year Rs. 18,59,000/- | 3rd Year Rs. 20,45,900/- ; (b) MD Anatomy, MD Physiology, MD Biochemistry, MD Pharmacology, MD Microbiology, MD Community Medicine: 1st Year Rs. 7,00,000/- | 2nd Year Rs. 7,70,000/- | 3rd Year Rs. 8,47,000/- (column 'Tuition fee for Indian Students')",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Tuition fee for Indian Students (seat: Punjab Domicile Seats) — group (a), 1st Year",
+     "branches": [
+      "MS Otorhinolaryngology (MS ENT)",
+      "MS Obstetrics and Gynaecology (MS Obstetrics & Gynaecology)",
+      "MS General Surgery",
+      "MD Pathology",
+      "MS Orthopaedics",
+      "MS Ophthalmology",
+      "MD Psychiatry",
+      "MD Radio-Diagnosis (MD Radio Diagnosis)",
+      "MD Anaesthesiology",
+      "MD Dermatology, Venerology and Leprosy (MD Dermatology, Venereology & Leprosy)",
+      "MD Paediatrics",
+      "MD Immuno Haematology and Blood Transfusion (MD Immuno Haematology & Blood Transfusion)",
+      "MD Respiratory Medicine (MD Tuberculosis & Respiratory Diseases)",
+      "MD General Medicine"
+     ],
+     "inr": 1690000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Inst",
+     "seat_as_printed": "Tuition fee for Indian Students (seat: Punjab Adesh Institutional Preference Quota) — group (a), 1st Year",
+     "branches": [
+      "MS Otorhinolaryngology (MS ENT)",
+      "MS Obstetrics and Gynaecology (MS Obstetrics & Gynaecology)",
+      "MS General Surgery",
+      "MD Pathology",
+      "MS Orthopaedics",
+      "MS Ophthalmology",
+      "MD Psychiatry",
+      "MD Radio-Diagnosis (MD Radio Diagnosis)",
+      "MD Anaesthesiology",
+      "MD Dermatology, Venerology and Leprosy (MD Dermatology, Venereology & Leprosy)",
+      "MD Paediatrics",
+      "MD Immuno Haematology and Blood Transfusion (MD Immuno Haematology & Blood Transfusion)",
+      "MD Respiratory Medicine (MD Tuberculosis & Respiratory Diseases)",
+      "MD General Medicine"
+     ],
+     "inr": 1690000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:Punjab Open Quota (All India Basis)",
+     "seat_as_printed": "Tuition fee for Indian Students (seat: Punjab Open Quota (AI Basis)) — group (a), 1st Year",
+     "branches": [
+      "MS Otorhinolaryngology (MS ENT)",
+      "MS Obstetrics and Gynaecology (MS Obstetrics & Gynaecology)",
+      "MS General Surgery",
+      "MD Pathology",
+      "MS Orthopaedics",
+      "MS Ophthalmology",
+      "MD Psychiatry",
+      "MD Radio-Diagnosis (MD Radio Diagnosis)",
+      "MD Anaesthesiology",
+      "MD Dermatology, Venerology and Leprosy (MD Dermatology, Venereology & Leprosy)",
+      "MD Paediatrics",
+      "MD Immuno Haematology and Blood Transfusion (MD Immuno Haematology & Blood Transfusion)",
+      "MD Respiratory Medicine (MD Tuberculosis & Respiratory Diseases)",
+      "MD General Medicine"
+     ],
+     "inr": 1690000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Tuition fee for Indian Students (seat: Punjab Domicile Seats) — group (b), 1st Year",
+     "branches": [
+      "MD Anatomy",
+      "MD Physiology",
+      "MD Biochemistry (MD Bio-Chemistry)",
+      "MD Pharmacology",
+      "MD Microbiology",
+      "MD Community Medicine (MD Social & Preventive Medicine)"
+     ],
+     "inr": 700000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Inst",
+     "seat_as_printed": "Tuition fee for Indian Students (seat: Punjab Adesh Institutional Preference Quota) — group (b), 1st Year",
+     "branches": [
+      "MD Anatomy",
+      "MD Physiology",
+      "MD Biochemistry (MD Bio-Chemistry)",
+      "MD Pharmacology",
+      "MD Microbiology",
+      "MD Community Medicine (MD Social & Preventive Medicine)"
+     ],
+     "inr": 700000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:Punjab Open Quota (All India Basis)",
+     "seat_as_printed": "Tuition fee for Indian Students (seat: Punjab Open Quota (AI Basis)) — group (b), 1st Year",
+     "branches": [
+      "MD Anatomy",
+      "MD Physiology",
+      "MD Biochemistry (MD Bio-Chemistry)",
+      "MD Pharmacology",
+      "MD Microbiology",
+      "MD Community Medicine (MD Social & Preventive Medicine)"
+     ],
+     "inr": 700000,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 118500,
+    "max": 118500,
+    "text": "§19 'Hostel Fee (Double Sharing without mess charges) Rs. 1,18,500/- Per annum; Allied Charges* Rs. 1,69,000/- (*Excluding electricity charges for additional appliances)' (p.22)"
+   },
+   "notes": "One tuition column 'Indian Students' — no split by quota; repeated for the three seat types our roster lists (Punjab Domicile / Adesh IP / Open AI basis). Year-wise: group (a) 16,90,000 → 18,59,000 → 20,45,900; group (b) 7,00,000 → 7,70,000 → 8,47,000. Also: Development Charges Rs. 95,000/- (Per Year); University Registration Charges Rs. 2,10,000 (One Time); College Securities Rs. 50,000 (refundable/adjustable); Library Securities Rs. 35,000; Hostel Securities Rs. 30,000; Examination Rs. 22,100 per chance; Thesis Rs. 35,000; enrolment fee Rs. 20,000 (SC 15,000) + medical exam Rs. 8,000. §13.4 'THE MANAGEMENT RESERVES THE RIGHT TO REVISE ALL FEE'. Bond Rs. 25 lakh with 18% interest for not serving one year as Senior Resident. No NRI fee printed (roster has no Adesh NRI quota). Prospectus dated 23 Jun 2026 (file Last-Modified). BFUHS prospectus §NRI says the 15% registration fee does not apply to Adesh/SGRD."
+  },
+  {
+   "college": "Netaji Subhas National Institute of Sports Medicine, Patiala (PGDSM)",
+   "roster": [
+    {
+     "id": 1587,
+     "name": "Netaji Subhas National Institute of Sports Medicine, Patiala"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "state-govt-official",
+   "source": "bfuhs-pg-2026",
+   "page": 28,
+   "year_label": "PROSPECTUS-NEET-PG-2026 — 'Details of Tuition Fee Payable at the Time of Provisional Admission' (printed p.27)",
+   "period": "six months (first instalment) — '(equivalent to six months' tuition fee/first instalment, as applicable)'",
+   "quote": "25. | PGDSM | 20000 (column 'Govt. College/Hospital six month fee (Rs.)')",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Govt. College/Hospital six month fee (Rs.) — PGDSM",
+     "branches": [
+      "PGDSM (Diploma in Sports Medicine)"
+     ],
+     "inr": 20000,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "notes": "Six-month amount, not annual — not multiplied. Note 2 under the table: 'minimum amount payable at the time of provisional admission and is subject to the applicable fee structure notified by the Government of Punjab'. NSNIS's own undated web page says 'First Year : Rs. 40,000/- Second Year : Rs. 45,000/-' (not used: unlabelled). AIQ seats not covered by this state prospectus."
+  }
+ ],
+ "government_all": [
+  {
+   "scope": "Government colleges/hospitals in BFUHS's NEET-PG 2026 state counselling — column 'Govt. College/Hospital six month fee (Rs.)'; colleges are not named. Applies to GMC Amritsar (87), GMC Patiala (64), GGS Medical College Faridkot (188), Dr BR Ambedkar SIMS Mohali (1780). NSNIS Patiala has its own PGDSM row (see colleges). Homi Bhabha Cancer Hospitals New Chandigarh (112) and Sangrur (714) are government (TMC) hospitals but are not named — see not_published.",
+   "source": "bfuhs-pg-2026",
+   "page": 27,
+   "year_label": "PROSPECTUS-NEET-PG-2026 (header on every page) — 'Details of Tuition Fee Payable at the Time of Provisional Admission' (printed pp.26-27)",
+   "period": "six months (first instalment) — 'The following tuition fee (equivalent to six months' tuition fee/first instalment, as applicable) shall be deposited by the provisionally allotted candidates'",
+   "quote": "Basic (Anatomy, Biochemistry, Immuno Haematology and Blood Transfusion, Microbiology, Pharmacology, Physiology, Community Medicine, Forensic Medicine & Toxicology): Govt. 50000 | Clinical (Anaesthesiology … TB & Chest, Diploma in Anaesthesia, Diploma in Child Health): Govt. 62500 | 27. DNB Courses: 37500",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Govt. College/Hospital six month fee (Rs.) — Basic",
+     "branches": [
+      "Anatomy (MD Anatomy)",
+      "Biochemistry (MD Bio-Chemistry)",
+      "Immuno Haematology and Blood Transfusion (MD Immuno Haematology & Blood Transfusion)",
+      "Microbiology (MD Microbiology)",
+      "Pharmacology (MD Pharmacology)",
+      "Physiology (MD Physiology)",
+      "Community Medicine (MD Social & Preventive Medicine)",
+      "Forensic Medicine & Toxicology (MD Forensic Medicine)"
+     ],
+     "inr": 50000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Govt. College/Hospital six month fee (Rs.) — Clinical",
+     "branches": [
+      "Anaesthesiology (MD Anaesthesiology)",
+      "Skin & STD (MD Dermatology, Venereology & Leprosy)",
+      "General Medicine (MD General Medicine)",
+      "Obstetrics & Gynaecology (MS Obstetrics & Gynaecology)",
+      "Ophthalmology (MS Ophthalmology)",
+      "Orthopedics (MS Orthopaedics)",
+      "ENT (MS ENT)",
+      "Pathology (MD Pathology)",
+      "Paediatrics (MD Paediatrics)",
+      "Psychiatry (MD Psychiatry)",
+      "Radio-diagnosis (MD Radio Diagnosis)",
+      "General Surgery (MS General Surgery)",
+      "Radiotherapy (MD Radiation Oncology)",
+      "TB & Chest (MD Tuberculosis & Respiratory Diseases)",
+      "Diploma in Anaesthesia (DA) (Diploma in Anaesthesia)",
+      "Diploma in Child Health (DCH) (Diploma in Child Health)"
+     ],
+     "inr": 62500,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:DNB Courses (Govt. College/Hospital, BFUHS counselling)",
+     "seat_as_printed": "27. DNB Courses — Govt. 37500",
+     "branches": "*",
+     "inr": 37500,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "notes": "Six-month (first-instalment) amounts as printed; per-year amount not printed — do not double. Note 2: 'The fee indicated above represents the minimum amount payable at the time of provisional admission and is subject to the applicable fee structure notified by the Government of Punjab from time to time.' Pathology is listed under 'Clinical'. AIQ seats are not covered (state counselling prospectus). Same table's 'Private Colleges Six month fee' columns (Govt. Quota 137500 basic / 342500 clinical / 205000 diploma; Mgt. Quota same; NRI Quota 1st instalment US$ 10000 / 65000 / 15000) and the NRI table on printed p.17 (Total Course Fee (Lump Sum) US$ 1,25,000 clinical, 20,000 basic, 30,000 PG Diploma) are the counselling authority's tables for private colleges — NOT used (owner's rule). Security deposit for subsequent rounds: Govt colleges Rs. 25,000 (SC/BC/PwBD 10,000), private Rs. 2,00,000. HSLIBNET fee MD/MS Rs. 9000."
+  }
+ ],
+ "not_published": [
+  {
+   "college": "Sri Guru Ram Das Institute of Medical Sciences and Research, Sri Amritsar",
+   "roster_id": 2039,
+   "latest_seen": "Own 'Prospectus cum Information Bulletin for Admission to MD/MS Courses Session 2026-27' (sgrduhs.in, 15 Oct 2026, downloaded) prints NO tuition figure: only 'submit their full fees for the year 2026-27' (p.20), computer-course fee '@ 15000/- per annum', University Registration fee '15% of the total tuition fee of three years' (p.3), stipend Rs. 76,000/77,000/78,000 per month. BFUHS's private-college columns not used."
+  },
+  {
+   "college": "Christian Medical College, Ludhiana",
+   "roster_id": 2038,
+   "latest_seen": "No 2026 MD/MS fee notice on cmcludhiana.in (2026 PG section has only minority/sponsorship notices). Latest: 'Information Bulletin PG MD/MS 2025' (…/2025/05/PG_MD_MS_-Information-Bulletin-2025.pdf, 627,949 B). BFUHS private columns not used."
+  },
+  {
+   "college": "Dayanand Medical College & Hospital, Ludhiana",
+   "roster_id": 2037,
+   "latest_seen": "dmch.edu has no PG fee document (admissions page covers MBBS 2026 only). BFUHS private columns not used."
+  },
+  {
+   "college": "Gian Sagar Medical College & Hospital, Patiala",
+   "roster_id": 2041,
+   "latest_seen": "giansagar.net latest: 'Batch 2025 Fee Structure' (storage/653/pg-fee-2025.pdf, 592,481 B, 19 Mar 2026). BFUHS private columns not used."
+  },
+  {
+   "college": "Homi Bhabha Cancer Hospital and Research Center, New Chandigarh",
+   "roster_id": 112,
+   "latest_seen": "TMC/HBNI institute; latest own: 'Guidelines for M.D Admission' 2025 (hbchs.tmc.gov.in, 617,167 B, 13 Dec 2025). Not named in BFUHS's 'Govt. College/Hospital' fee table."
+  },
+  {
+   "college": "Homi Bhabha Cancer Hospital, Sangrur, Punjab",
+   "roster_id": 714,
+   "latest_seen": "Same TMC 2025 guidelines; its state seat goes through BFUHS whose 'Govt. College/Hospital' row does not name it."
+  }
+ ],
+ "candidate_files_not_downloaded": [
+  {
+   "college": "Christian Medical College, Ludhiana",
+   "url": "https://www.cmcludhiana.in/wp-content/uploads/2025/05/PG_MD_MS_-Information-Bulletin-2025.pdf",
+   "title": "Information Bulletin PG MD/MS 2025",
+   "bytes": 627949,
+   "date": "2026-01-08",
+   "why": "2025 only — re-check site for a 2026 bulletin"
+  },
+  {
+   "college": "Adesh Institute of Medical Sciences & Research, Bathinda",
+   "url": "https://administration.adeshuniversity.ac.in/Assets/Notice/20251128111843.pdf",
+   "title": "FEE FOR MD MS PROGRAMME 2025-26",
+   "bytes": 164798,
+   "date": "2025-11-28",
+   "why": "previous year, for comparison only"
+  }
+ ],
+ "state": "Punjab"
+}

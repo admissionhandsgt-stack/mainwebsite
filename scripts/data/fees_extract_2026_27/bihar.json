@@ -1,0 +1,486 @@
+{
+ "checked": "2026-10-25",
+ "files": [
+  {
+   "id": "bceceb-pgmac-2026",
+   "url": "https://bceceboard.bihar.gov.in/pdf_Pros/PROS_PGMAC26.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north/02_bceceb/PROS_PGMAC26.pdf",
+   "title": "PGMAC-2026 Prospectus (PG Medical Admission Counselling, NEET-PG 2026)",
+   "issuer": "Bihar Combined Entrance Competitive Examination Board",
+   "bytes": 13480930,
+   "scanned": false
+  },
+  {
+   "id": "dmc-darbhanga-pg-2026",
+   "url": "https://dmc.edu.in/wp-content/uploads/2026/10/PG-Broad-Specialty-Admission-2026-%E2%80%93-Reporting-Guidelines.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north/05_dmc_darbhanga/DMC_PG2026_Reporting.pdf",
+   "title": "Office of the Principal, Darbhanga Medical College — Notices Memo No. 6650 (Bihar State Quota) and 6649 (All India Quota), dated 22/10/26, reporting + Fee Structure",
+   "issuer": "Principal, Darbhanga Medical College, Laheriasarai",
+   "bytes": 1259999,
+   "scanned": true
+  },
+  {
+   "id": "kmc-pg-fee-2026-27",
+   "url": "https://kmckatihar.org/assets/pdf/PG%20Fee%20Structure.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north/06_katihar_fee/KMC_PG_Fee_Structure.pdf",
+   "title": "Katihar Medical College — Postgraduate (MD/MS) courses fee and bank details for session 2026-27",
+   "issuer": "Katihar Medical College, Katihar (Al-Karim University)",
+   "bytes": 682075,
+   "scanned": false
+  },
+  {
+   "id": "kmc-pg-prospectus-2026-27",
+   "url": "https://kmckatihar.org/assets/pdf/PG%20Prospectus%202026-27.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north/07_katihar_prospectus/KMC_PG_Prospectus_2026-27.pdf",
+   "title": "PG Prospectus 2026-27 (Al-Karim University) — Fee Structure pp. 14-16",
+   "issuer": "Al-Karim University, Katihar",
+   "bytes": 6081855,
+   "scanned": true
+  }
+ ],
+ "html": [],
+ "colleges": [
+  {
+   "college": "Darbhanga Medical College, Laheriasarai",
+   "roster": [
+    {
+     "id": 207,
+     "name": "Darbhanga Medical College, Lehriasarai"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "dmc-darbhanga-pg-2026",
+   "page": 1,
+   "year_label": "Principal's notices Memo No. 6650 (Broad Speciality through Bihar State Quota, 'Allotment Letter of PGMAC-2026') and Memo No. 6649 (Broad Speciality through All India Quota), both dated 22/10/26 — 'Fee Structure'",
+   "period": "per year ('Tuition Fee Rs. 9000 Yearly')",
+   "quote": "1 PG Degree Admission Fee Rs. 4000 One Time | 2 PG Diploma Admission Fee Rs. 2000 One Time | 3 Tuition Fee Rs. 9000 Yearly | 4 Hostel Fee Rs. 12000 Yearly | 5 Caution Money Rs. 10000 One Time | 6 Electricity Charge Rs. 1200 Yearly | 7 Magazine Society Rs. 1000 Yearly | 8 Student Welfare Fund Rs. 5000 One Time",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Tuition Fee (notice for Broad Speciality through Bihar State Quota, Memo 6650)",
+     "branches": "*",
+     "inr": 9000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Tuition Fee (notice for Broad Speciality through All India Quota, Memo 6649)",
+     "branches": "*",
+     "inr": 9000,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 12000,
+    "max": 12000,
+    "text": "Hostel Fee Rs. 12000 Yearly (+ Electricity Charge Rs. 1200 Yearly)"
+   },
+   "notes": "Scanned, signed notices (pages 1 and 2 carry the identical fee table). Year shown as 'PGMAC-2026' and the date 22/10/26, not the words '2026-27'. Applies to DMC only — not extended to other Bihar government colleges."
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "roster": [
+    {
+     "id": 1936,
+     "name": "Katihar Medical College, Katihar"
+    }
+   ],
+   "ownership": "private",
+   "source_kind": "college-own",
+   "source": "kmc-pg-fee-2026-27",
+   "page": 1,
+   "year_label": "'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures",
+   "period": "per year ('Tuition fee (per annum)')",
+   "quote": "i) General and Muslim Minority category (amount in INR): MD General Medicine 34,50,000.00 … MS Obst. & Gynaecology 60,00,000.00 … MD Radio-diagnosis 60,00,000.00 … MD Anatomy 2,50,000.00 | ii) NRI category: MD General Medicine USD66,450.00 … MD Radio-diagnosis USD90,000.00 … MD Respiratory Medicine USD70,600.00",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "General and Muslim Minority category — Tuition fee (per annum) [General = Bihar Private Seats - Open Quota]",
+     "branches": [
+      "MD General Medicine",
+      "MS General Surgery",
+      "MD Respiratory Medicine (MD Tuberculosis & Respiratory Diseases)"
+     ],
+     "inr": 3450000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Min",
+     "seat_as_printed": "General and Muslim Minority category — Tuition fee (per annum) [Muslim Minority]",
+     "branches": [
+      "MD General Medicine",
+      "MS General Surgery",
+      "MD Respiratory Medicine (MD Tuberculosis & Respiratory Diseases)"
+     ],
+     "inr": 3450000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "General and Muslim Minority category — Tuition fee (per annum) [General = Bihar Private Seats - Open Quota]",
+     "branches": [
+      "MD Paediatrics",
+      "MS Orthopaedics",
+      "MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": 4500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Min",
+     "seat_as_printed": "General and Muslim Minority category — Tuition fee (per annum) [Muslim Minority]",
+     "branches": [
+      "MD Paediatrics",
+      "MS Orthopaedics",
+      "MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": 4500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "General and Muslim Minority category — Tuition fee (per annum) [General = Bihar Private Seats - Open Quota]",
+     "branches": [
+      "MS Obst. & Gynaecology (MS Obstetrics & Gynaecology)",
+      "MD Radio-diagnosis (MD Radio Diagnosis)"
+     ],
+     "inr": 6000000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Min",
+     "seat_as_printed": "General and Muslim Minority category — Tuition fee (per annum) [Muslim Minority]",
+     "branches": [
+      "MS Obst. & Gynaecology (MS Obstetrics & Gynaecology)",
+      "MD Radio-diagnosis (MD Radio Diagnosis)"
+     ],
+     "inr": 6000000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "General and Muslim Minority category — Tuition fee (per annum) [General = Bihar Private Seats - Open Quota]",
+     "branches": [
+      "MD Anaesthesiology"
+     ],
+     "inr": 1800000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Min",
+     "seat_as_printed": "General and Muslim Minority category — Tuition fee (per annum) [Muslim Minority]",
+     "branches": [
+      "MD Anaesthesiology"
+     ],
+     "inr": 1800000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "General and Muslim Minority category — Tuition fee (per annum) [General = Bihar Private Seats - Open Quota]",
+     "branches": [
+      "MD Psychiatry"
+     ],
+     "inr": 2265000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Min",
+     "seat_as_printed": "General and Muslim Minority category — Tuition fee (per annum) [Muslim Minority]",
+     "branches": [
+      "MD Psychiatry"
+     ],
+     "inr": 2265000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "General and Muslim Minority category — Tuition fee (per annum) [General = Bihar Private Seats - Open Quota]",
+     "branches": [
+      "MS Otorhinolaryngology (E.N.T) (MS ENT)"
+     ],
+     "inr": 1650000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Min",
+     "seat_as_printed": "General and Muslim Minority category — Tuition fee (per annum) [Muslim Minority]",
+     "branches": [
+      "MS Otorhinolaryngology (E.N.T) (MS ENT)"
+     ],
+     "inr": 1650000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "General and Muslim Minority category — Tuition fee (per annum) [General = Bihar Private Seats - Open Quota]",
+     "branches": [
+      "MS Ophthalmology"
+     ],
+     "inr": 2250000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Min",
+     "seat_as_printed": "General and Muslim Minority category — Tuition fee (per annum) [Muslim Minority]",
+     "branches": [
+      "MS Ophthalmology"
+     ],
+     "inr": 2250000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "General and Muslim Minority category — Tuition fee (per annum) [General = Bihar Private Seats - Open Quota]",
+     "branches": [
+      "MD Pathology",
+      "MD Community Medicine (MD Social & Preventive Medicine)"
+     ],
+     "inr": 750000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Min",
+     "seat_as_printed": "General and Muslim Minority category — Tuition fee (per annum) [Muslim Minority]",
+     "branches": [
+      "MD Pathology",
+      "MD Community Medicine (MD Social & Preventive Medicine)"
+     ],
+     "inr": 750000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "General and Muslim Minority category — Tuition fee (per annum) [General = Bihar Private Seats - Open Quota]",
+     "branches": [
+      "MD Pharmacology",
+      "MD Biochemistry (MD Bio-Chemistry)",
+      "MD Physiology",
+      "MD Anatomy"
+     ],
+     "inr": 250000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Min",
+     "seat_as_printed": "General and Muslim Minority category — Tuition fee (per annum) [Muslim Minority]",
+     "branches": [
+      "MD Pharmacology",
+      "MD Biochemistry (MD Bio-Chemistry)",
+      "MD Physiology",
+      "MD Anatomy"
+     ],
+     "inr": 250000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "General and Muslim Minority category — Tuition fee (per annum) [General = Bihar Private Seats - Open Quota]",
+     "branches": [
+      "MD Microbiology"
+     ],
+     "inr": 375000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Min",
+     "seat_as_printed": "General and Muslim Minority category — Tuition fee (per annum) [Muslim Minority]",
+     "branches": [
+      "MD Microbiology"
+     ],
+     "inr": 375000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI category — Tuition fee (per annum) in USD",
+     "branches": [
+      "MD General Medicine",
+      "MS General Surgery"
+     ],
+     "inr": null,
+     "usd": 66450,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI category — Tuition fee (per annum) in USD",
+     "branches": [
+      "MD Paediatrics",
+      "MS Orthopaedics"
+     ],
+     "inr": null,
+     "usd": 72000,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI category — Tuition fee (per annum) in USD",
+     "branches": [
+      "MS Obstetrics & Gynaecology",
+      "MD Radio-diagnosis (MD Radio Diagnosis)"
+     ],
+     "inr": null,
+     "usd": 90000,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI category — Tuition fee (per annum) in USD",
+     "branches": [
+      "MD Anaesthesiology"
+     ],
+     "inr": null,
+     "usd": 32500,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI category — Tuition fee (per annum) in USD",
+     "branches": [
+      "MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": null,
+     "usd": 72600,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI category — Tuition fee (per annum) in USD",
+     "branches": [
+      "MD Respiratory Medicine (MD Tuberculosis & Respiratory Diseases)"
+     ],
+     "inr": null,
+     "usd": 70600,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 300000,
+    "max": 300000,
+    "text": "Hostel fee (per annum) 3,00,000.00 (prospectus: 'Rs. 3,00,000/- … per annum, the hostel fee is payable for three years')"
+   },
+   "notes": "Same figures in the 2026-27 prospectus (PDF p.19 = printed p.14; scanned). Also: Student Amenities and Services fee 50,000 per annum; refundable security deposit 3,00,000 one-time; University Registration Fee Rs. 22,500 once (prospectus p.15); NRI total at admission printed as 'USD … + INR 6,50,000.00'; NRI paying in INR pays at the USD rate of the payment date. Prospectus p.16 note: this 'minimum fee structure' will be revised for the other 50% of seats if 50% are fixed at the Government college fee — subject to Supreme Court W.P.(C) 682/2023. Fee concession for Bihar domicile SC/ST/BC/EBC/women/EWS under s.36(2) Bihar Private Universities Act 2013 (not on NRI seats). BCECEB PGMAC-2026 prospectus §8.2: Health Dept Resolution 840(1) dt 19.08.2026 (50% private seats at govt fee) 'kept in abeyance' after Patna High Court order of 05.08.2026. Psychiatry, ENT, Ophthalmology, preclinical and Pathology/Community Medicine have no NRI fee ('--')."
+  }
+ ],
+ "government_all": [],
+ "not_published": [
+  {
+   "college": "Anugrah Narayan Magadh Medical College, Gaya",
+   "roster_id": 440,
+   "latest_seen": "anmmc.ac.in: PG page shows seats only; latest fee document is state letter 187 dt 14.03.2023. BCECEB PGMAC-2026 prospectus has no government tuition table (counselling fee Rs. 2200; security deposit govt Rs. 25,000 / 12,500)."
+  },
+  {
+   "college": "Bhagwan Mahavir Institute of Medical Sciences, Pawapuri, Nalanda (Prev. Vardhman Institute of Medical Sciences, Pawapuri)",
+   "roster_id": 475,
+   "latest_seen": "vimspawapuri.org: MBBS fee only; nothing for PG 2026."
+  },
+  {
+   "college": "Government Medical College, Bettiah",
+   "roster_id": 289,
+   "latest_seen": "No working official site (NMC-listed gmcbettiah.org redirects to an unrelated tap.bio page)."
+  },
+  {
+   "college": "Indira Gandhi Institute of Medical Sciences, Sheikhpura, Patna",
+   "roster_id": 33,
+   "latest_seen": "igims.org: 'Revised Fee Structure - 2018' and MBBS items only."
+  },
+  {
+   "college": "Jawaharlal Nehru Medical College, Bhagalpur",
+   "roster_id": 424,
+   "latest_seen": "jlnmcbgp.org latest: 'Instruction for Admission Postgraduate (MD/MS) Course_AY 2025 - 26'."
+  },
+  {
+   "college": "Nalanda Medical College, Patna",
+   "roster_id": 182,
+   "latest_seen": "nmchpatna.ac.in latest: 'Admission fees for Post Graduate (PG)' pg-fee.pdf (6 Dec 2025) and 'PG Admisison 2025'."
+  },
+  {
+   "college": "Patna Medical College, Patna",
+   "roster_id": 16,
+   "latest_seen": "pmchpatna.in behind a Cloudflare bot check (403) — not readable."
+  },
+  {
+   "college": "Shri Krishna Medical College, Muzzafarpur",
+   "roster_id": 435,
+   "latest_seen": "skmedicalcollege.org: no PG fee notice (latest PG item: PwD assessment committee order for PG 2026, 3.10.26)."
+  },
+  {
+   "college": "Lord Buddha Koshi Medical College and Hospital, Saharsa",
+   "roster_id": 1935,
+   "latest_seen": "lbkmch.org fee page (phase 1): 'The 2026–27 fee structure has NOT yet been finalized for PG (MD / MS) courses'; table shown is 'Session 2025-26'."
+  },
+  {
+   "college": "Madhubani Medical College, Madhubani",
+   "roster_id": 1941,
+   "latest_seen": "mmcworld.org/academics/pg-fee-structure: table with NO session label (e.g. MD-Radio Diagnosis ₹55,00,000 / $93000; MD-General Medicine ₹30,00,000 / $60000) — unlabelled, not used. Snapshot: dl/north/html/madhubani_pg_fee.txt"
+  },
+  {
+   "college": "Narayan Medical College & Hospital, Sasaram",
+   "roster_id": 1939,
+   "latest_seen": "nmch.ac.in latest: 'PG-Fee-Structure-2025-26' (576,375 B, 1 Nov 2025)."
+  },
+  {
+   "college": "Netaji Subhas Medical College & Hospital, Amhara, Bihta",
+   "roster_id": 1937,
+   "latest_seen": "nsmch.com/admission/mdms-postgraduate: 'General Fees (per year)' / 'Fees for NRI (per year)' table with NO session label (MD - Radiology ₹ 44,50,000/- / $ 90,000/-; MD - General Medicine ₹ 31,50,000/- / $ 65,000/-) — unlabelled, not used. Snapshot: dl/north/html/nsmch_mdms.txt"
+  },
+  {
+   "college": "Radha Devi Jageshwari Memorial Medical College and Hospital, Muzaffarpur",
+   "roster_id": 1942,
+   "latest_seen": "rdjmmch.in latest: 'Fee Notice for PG Course (MD/MS) Session 2025-26' (1,044,194 B, 13 Jan 2026)."
+  },
+  {
+   "college": "Shree Narayan Medical Institute and Hospital, Saharsa",
+   "roster_id": 1940,
+   "latest_seen": "snmih.in: 'Admissions Open for PG(MD/MS) 2026–27' but no fee in HTML; 'PGMAC Notice.pdf' (18 Oct 2026) not downloaded — see candidates."
+  },
+  {
+   "college": "Mata Gujri Memorial Medical College, Kishanganj",
+   "roster_id": 1934,
+   "latest_seen": "matagujriuniversity.com latest: 'POSTGRADUATE FEE STRUCTURE 2025-26' (PG-FEE-STRUCTURE-2025-26.pdf, 537,985 B, 20 May 2026)."
+  }
+ ],
+ "candidate_files_not_downloaded": [
+  {
+   "college": "Shree Narayan Medical Institute and Hospital, Saharsa",
+   "url": "https://assets.snmih.in/PGMAC%20Notice.pdf",
+   "title": "PGMAC Notice.pdf",
+   "bytes": 4800665,
+   "date": "2026-10-18",
+   "why": "own notice posted during PGMAC-2026; may carry the 2026-27 PG fee"
+  },
+  {
+   "college": "Shree Narayan Medical Institute and Hospital, Saharsa",
+   "url": "https://assets.snmih.in/SNMIH%20Prospectus.pdf",
+   "title": "SNMIH Prospectus.pdf",
+   "bytes": 7862284,
+   "date": "2026-09-05",
+   "why": "own prospectus; year/fees unknown"
+  }
+ ],
+ "state": "Bihar"
+}

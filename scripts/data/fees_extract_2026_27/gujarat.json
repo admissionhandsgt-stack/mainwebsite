@@ -1,0 +1,1719 @@
+{
+ "state": "Gujarat",
+ "checked": "2026-10-25",
+ "units_note": "inr = rupees as printed; lakh = figure printed in lakh (not converted); usd = US dollars as printed",
+ "files": [
+  {
+   "id": "gaims",
+   "url": "https://gaims.ac.in/-/media/Project/AdaniGaims/Home/Announcement/Post-Graduate-Fees-MDMS-2026.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west/05_gaims/Post-Graduate-Fees-MDMS-2026.pdf",
+   "title": "Post Graduate Fees (MD/MS) 2026 — 'Fees Structure 2026-27, MD/MS - Post Graduate Courses'",
+   "issuer": "Gujarat Adani Institute of Medical Sciences, Bhuj (college)",
+   "bytes": 83394,
+   "scanned": false
+  }
+ ],
+ "html": [
+  {
+   "id": "kiran",
+   "url": "https://kiranmedicalcollege.ac.in/student_section/fees-structure-pg",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west/html/kiran_pg.txt",
+   "title": "POSTGRADUATE COURSES - Tuition, Hostel, University, Other Fees & PG Stipend"
+  },
+  {
+   "id": "spu",
+   "url": "https://spu.ac.in/fees-structure/",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west/html/spu_fees.txt",
+   "title": "FEES STRUCTURE — Sankalchand Patel University (Nootan Medical College)"
+  },
+  {
+   "id": "nhl",
+   "url": "https://www.nhlmmc.edu.in/administration/fees-structure/",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west/html/nhl_fees.txt",
+   "title": "FEES STRUCTURE — STUDENT FEES BY COLLEGE"
+  },
+  {
+   "id": "smimer",
+   "url": "https://www.suratmunicipal.gov.in/smimer/TheCollege/Courses",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west/html/smimer_courses.txt",
+   "title": "Courses → Fee Structure tab (opened by click before the snapshot)"
+  }
+ ],
+ "colleges": [
+  {
+   "college": "Kiran Medical College",
+   "roster": [
+    {
+     "id": 1919,
+     "name": "Kiran Medical College, Surat"
+    }
+   ],
+   "ownership": "private",
+   "source_kind": "college-own",
+   "source": "kiran",
+   "page": null,
+   "year_label": "II.  AY 2026-27",
+   "period": "per year",
+   "quote": "II.  AY 2026-27 … General Medicine ₹39,00,000 ₹46,00,000 NA … Radio Diagnosis ₹46,50,000 ₹52,00,000 NA",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Govt. Quota (₹ / Year)",
+     "branches": [
+      "Community Medicine"
+     ],
+     "ours": [
+      "MD Social & Preventive Medicine"
+     ],
+     "inr": 900000,
+     "lakh": null,
+     "usd": null,
+     "printed": "₹9,00,000",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Govt. Quota (₹ / Year)",
+     "branches": [
+      "General Medicine"
+     ],
+     "ours": [
+      "MD General Medicine"
+     ],
+     "inr": 3900000,
+     "lakh": null,
+     "usd": null,
+     "printed": "₹39,00,000",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management Quota (₹ / Year)",
+     "branches": [
+      "General Medicine"
+     ],
+     "ours": [
+      "MD General Medicine"
+     ],
+     "inr": 4600000,
+     "lakh": null,
+     "usd": null,
+     "printed": "₹46,00,000",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Govt. Quota (₹ / Year)",
+     "branches": [
+      "Paediatrics"
+     ],
+     "ours": [
+      "MD Paediatrics"
+     ],
+     "inr": 3550000,
+     "lakh": null,
+     "usd": null,
+     "printed": "₹35,50,000",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management Quota (₹ / Year)",
+     "branches": [
+      "Paediatrics"
+     ],
+     "ours": [
+      "MD Paediatrics"
+     ],
+     "inr": 4000000,
+     "lakh": null,
+     "usd": null,
+     "printed": "₹40,00,000",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Govt. Quota (₹ / Year)",
+     "branches": [
+      "Pathology"
+     ],
+     "ours": [
+      "MD Pathology"
+     ],
+     "inr": 1200000,
+     "lakh": null,
+     "usd": null,
+     "printed": "₹12,00,000",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management Quota (₹ / Year)",
+     "branches": [
+      "Pathology"
+     ],
+     "ours": [
+      "MD Pathology"
+     ],
+     "inr": 1438000,
+     "lakh": null,
+     "usd": null,
+     "printed": "₹14,38,000",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Govt. Quota (₹ / Year)",
+     "branches": [
+      "Pharmacology"
+     ],
+     "ours": [
+      "MD Pharmacology"
+     ],
+     "inr": 1000000,
+     "lakh": null,
+     "usd": null,
+     "printed": "₹10,00,000",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management Quota (₹ / Year)",
+     "branches": [
+      "Pharmacology"
+     ],
+     "ours": [
+      "MD Pharmacology"
+     ],
+     "inr": 1600000,
+     "lakh": null,
+     "usd": null,
+     "printed": "₹16,00,000",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Govt. Quota (₹ / Year)",
+     "branches": [
+      "Physiology"
+     ],
+     "ours": [
+      "MD Physiology"
+     ],
+     "inr": 900000,
+     "lakh": null,
+     "usd": null,
+     "printed": "₹9,00,000",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management Quota (₹ / Year)",
+     "branches": [
+      "Physiology"
+     ],
+     "ours": [
+      "MD Physiology"
+     ],
+     "inr": 1600000,
+     "lakh": null,
+     "usd": null,
+     "printed": "₹16,00,000",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Govt. Quota (₹ / Year)",
+     "branches": [
+      "Radio Diagnosis"
+     ],
+     "ours": [
+      "MD Radio Diagnosis"
+     ],
+     "inr": 4650000,
+     "lakh": null,
+     "usd": null,
+     "printed": "₹46,50,000",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management Quota (₹ / Year)",
+     "branches": [
+      "Radio Diagnosis"
+     ],
+     "ours": [
+      "MD Radio Diagnosis"
+     ],
+     "inr": 5200000,
+     "lakh": null,
+     "usd": null,
+     "printed": "₹52,00,000",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Govt. Quota (₹ / Year)",
+     "branches": [
+      "Orthopaedics"
+     ],
+     "ours": [
+      "MS Orthopaedics"
+     ],
+     "inr": 3700000,
+     "lakh": null,
+     "usd": null,
+     "printed": "₹37,00,000",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management Quota (₹ / Year)",
+     "branches": [
+      "Orthopaedics"
+     ],
+     "ours": [
+      "MS Orthopaedics"
+     ],
+     "inr": 4200000,
+     "lakh": null,
+     "usd": null,
+     "printed": "₹42,00,000",
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 133000,
+    "max": 172000,
+    "text": "Hostel Fees (Including Mess Fee) 2026-27 AC (₹) ₹1,72,000 Non-AC (₹) ₹1,33,000"
+   },
+   "notes": "Columns 'Govt. Quota (₹ / Year)' and 'Management Quota (₹ / Year)'; NRI Quota 'NA' for every branch ('There is no NRI Quota in any Course/ Branch currently'). Community Medicine Management 'NA'. 'Tuition Fees have to be paid every 6 months.' The same page also lists AY 2025-26 (not used)."
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "roster": [
+    {
+     "id": 1920,
+     "name": "Nootan Medical College and Research Centre, Mehsana"
+    }
+   ],
+   "ownership": "private",
+   "source_kind": "university-own",
+   "source": "spu",
+   "page": null,
+   "year_label": "Academic 2026-27 Fee (Yearly in Rs.)",
+   "period": "per year",
+   "quote": "MD – Radio Diagnosis 3 50,00,000 (G.Q.) 60,00,000/- (M.Q.)",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "G.Q.",
+     "branches": [
+      "MD – Pathology"
+     ],
+     "ours": [
+      "MD Pathology"
+     ],
+     "inr": 650000,
+     "lakh": null,
+     "usd": null,
+     "printed": "6,50,000 (G.Q.)",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "M.Q.",
+     "branches": [
+      "MD – Pathology"
+     ],
+     "ours": [
+      "MD Pathology"
+     ],
+     "inr": 900000,
+     "lakh": null,
+     "usd": null,
+     "printed": "9,00,000 (M.Q.)",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "G.Q.",
+     "branches": [
+      "MD – Anesthesiology"
+     ],
+     "ours": [
+      "MD Anaesthesiology"
+     ],
+     "inr": 1500000,
+     "lakh": null,
+     "usd": null,
+     "printed": "15,00,000 (G.Q.)",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "M.Q.",
+     "branches": [
+      "MD – Anesthesiology"
+     ],
+     "ours": [
+      "MD Anaesthesiology"
+     ],
+     "inr": 2500000,
+     "lakh": null,
+     "usd": null,
+     "printed": "25,00,000 (M.Q.)",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "G.Q.",
+     "branches": [
+      "MD – Radio Diagnosis"
+     ],
+     "ours": [
+      "MD Radio Diagnosis"
+     ],
+     "inr": 5000000,
+     "lakh": null,
+     "usd": null,
+     "printed": "50,00,000 (G.Q.)",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "M.Q.",
+     "branches": [
+      "MD – Radio Diagnosis"
+     ],
+     "ours": [
+      "MD Radio Diagnosis"
+     ],
+     "inr": 6000000,
+     "lakh": null,
+     "usd": null,
+     "printed": "60,00,000/- (M.Q.)",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "G.Q.",
+     "branches": [
+      "MD – General Medicine"
+     ],
+     "ours": [
+      "MD General Medicine"
+     ],
+     "inr": 3200000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,00,000 (G.Q.)",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "G.Q.",
+     "branches": [
+      "MD – Biochemistry"
+     ],
+     "ours": [
+      "MD Bio-Chemistry"
+     ],
+     "inr": 200000,
+     "lakh": null,
+     "usd": null,
+     "printed": "2,00,000 (G.Q.)",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "G.Q.",
+     "branches": [
+      "MD – Pharmacology"
+     ],
+     "ours": [
+      "MD Pharmacology"
+     ],
+     "inr": 200000,
+     "lakh": null,
+     "usd": null,
+     "printed": "2,00,000 (G.Q.)",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "G.Q.",
+     "branches": [
+      "MD – Microbiology"
+     ],
+     "ours": [
+      "MD Microbiology"
+     ],
+     "inr": 300000,
+     "lakh": null,
+     "usd": null,
+     "printed": "3,00,000 (G.Q.)",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "M.Q.",
+     "branches": [
+      "MD – Microbiology"
+     ],
+     "ours": [
+      "MD Microbiology"
+     ],
+     "inr": 600000,
+     "lakh": null,
+     "usd": null,
+     "printed": "6,00,000/- (M.Q.)",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "G.Q.",
+     "branches": [
+      "MD – Community Medicine"
+     ],
+     "ours": [
+      "MD Social & Preventive Medicine"
+     ],
+     "inr": 200000,
+     "lakh": null,
+     "usd": null,
+     "printed": "2,00,000 (G.Q.)",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "M.Q.",
+     "branches": [
+      "MD – Community Medicine"
+     ],
+     "ours": [
+      "MD Social & Preventive Medicine"
+     ],
+     "inr": 400000,
+     "lakh": null,
+     "usd": null,
+     "printed": "4,00,000/- (M.Q.)",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "G.Q.",
+     "branches": [
+      "MD – Respiratory Medicine"
+     ],
+     "ours": [
+      "MD Tuberculosis & Respiratory Diseases"
+     ],
+     "inr": 2200000,
+     "lakh": null,
+     "usd": null,
+     "printed": "22,00,000 (G.Q.)",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "M.Q.",
+     "branches": [
+      "MD – Respiratory Medicine"
+     ],
+     "ours": [
+      "MD Tuberculosis & Respiratory Diseases"
+     ],
+     "inr": 3000000,
+     "lakh": null,
+     "usd": null,
+     "printed": "30,00,000/- (M.Q.)",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "G.Q.",
+     "branches": [
+      "MD – Paediatrics"
+     ],
+     "ours": [
+      "MD Paediatrics"
+     ],
+     "inr": 3400000,
+     "lakh": null,
+     "usd": null,
+     "printed": "34,00,000 (G.Q.)",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "M.Q.",
+     "branches": [
+      "MD – Paediatrics"
+     ],
+     "ours": [
+      "MD Paediatrics"
+     ],
+     "inr": 4400000,
+     "lakh": null,
+     "usd": null,
+     "printed": "44,00,000/- (M.Q.)",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "G.Q.",
+     "branches": [
+      "MS – General Surgery"
+     ],
+     "ours": [
+      "MS General Surgery"
+     ],
+     "inr": 3200000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,00,000 (G.Q.)",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "M.Q.",
+     "branches": [
+      "MS – General Surgery"
+     ],
+     "ours": [
+      "MS General Surgery"
+     ],
+     "inr": 4400000,
+     "lakh": null,
+     "usd": null,
+     "printed": "44,00,000/- (M.Q.)",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "G.Q.",
+     "branches": [
+      "MS – Obstetrics & Gynaecology"
+     ],
+     "ours": [
+      "MS Obstetrics & Gynaecology"
+     ],
+     "inr": 3000000,
+     "lakh": null,
+     "usd": null,
+     "printed": "30,00,000 (G.Q.)",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "M.Q.",
+     "branches": [
+      "MS – Obstetrics & Gynaecology"
+     ],
+     "ours": [
+      "MS Obstetrics & Gynaecology"
+     ],
+     "inr": 4200000,
+     "lakh": null,
+     "usd": null,
+     "printed": "42,00,000/- (M.Q.)",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "G.Q.",
+     "branches": [
+      "MS – Orthopaedics"
+     ],
+     "ours": [
+      "MS Orthopaedics"
+     ],
+     "inr": 4000000,
+     "lakh": null,
+     "usd": null,
+     "printed": "40,00,000 (G.Q.)",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "M.Q.",
+     "branches": [
+      "MS – Orthopaedics"
+     ],
+     "ours": [
+      "MS Orthopaedics"
+     ],
+     "inr": 5000000,
+     "lakh": null,
+     "usd": null,
+     "printed": "50,00,000/- (M.Q.)",
+     "maximum": false
+    }
+   ],
+   "hostel": null,
+   "notes": "Sankalchand Patel University's fee page (Nootan is its constituent college). General Medicine, Biochemistry and Pharmacology print a G.Q. figure only. No NRI figure printed."
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "roster": [
+    {
+     "id": 1917,
+     "name": "Gujarat Adani Institute of Medical Sciences, Bhuj"
+    }
+   ],
+   "ownership": "private",
+   "source_kind": "college-own",
+   "source": "gaims",
+   "page": 1,
+   "year_label": "Fees Structure 2026-27 — MD/MS - Post Graduate Courses",
+   "period": "per year",
+   "quote": "Tuition Fees in Lakhs … 13 | General Medicine | 40.00 | 52.00 | 60.00 | 40.00 | 52.00 | 60.00 | 40.00 | 52.00 | 60.00",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "GQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Anatomy"
+     ],
+     "ours": [
+      "MD Anatomy"
+     ],
+     "inr": null,
+     "lakh": 4.08,
+     "usd": null,
+     "printed": "4.08",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Anatomy"
+     ],
+     "ours": [
+      "MD Anatomy"
+     ],
+     "inr": null,
+     "lakh": 1.5,
+     "usd": null,
+     "printed": "1.50",
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Q Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Anatomy"
+     ],
+     "ours": [
+      "MD Anatomy"
+     ],
+     "inr": null,
+     "lakh": 20,
+     "usd": null,
+     "printed": "20.00",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "GQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Physiology"
+     ],
+     "ours": [
+      "MD Physiology"
+     ],
+     "inr": null,
+     "lakh": 4.08,
+     "usd": null,
+     "printed": "4.08",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Physiology"
+     ],
+     "ours": [
+      "MD Physiology"
+     ],
+     "inr": null,
+     "lakh": 1.5,
+     "usd": null,
+     "printed": "1.50",
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Q Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Physiology"
+     ],
+     "ours": [
+      "MD Physiology"
+     ],
+     "inr": null,
+     "lakh": 20,
+     "usd": null,
+     "printed": "20.00",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "GQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Microbiology"
+     ],
+     "ours": [
+      "MD Microbiology"
+     ],
+     "inr": null,
+     "lakh": 4.08,
+     "usd": null,
+     "printed": "4.08",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Microbiology"
+     ],
+     "ours": [
+      "MD Microbiology"
+     ],
+     "inr": null,
+     "lakh": 8,
+     "usd": null,
+     "printed": "8.00",
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Q Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Microbiology"
+     ],
+     "ours": [
+      "MD Microbiology"
+     ],
+     "inr": null,
+     "lakh": 20,
+     "usd": null,
+     "printed": "20.00",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "GQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Pathology"
+     ],
+     "ours": [
+      "MD Pathology"
+     ],
+     "inr": null,
+     "lakh": 12,
+     "usd": null,
+     "printed": "12.00",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Pathology"
+     ],
+     "ours": [
+      "MD Pathology"
+     ],
+     "inr": null,
+     "lakh": 12,
+     "usd": null,
+     "printed": "12.00",
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Q Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Pathology"
+     ],
+     "ours": [
+      "MD Pathology"
+     ],
+     "inr": null,
+     "lakh": 20,
+     "usd": null,
+     "printed": "20.00",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "GQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Otorhinolaryngology (ENT)"
+     ],
+     "ours": [
+      "MS ENT"
+     ],
+     "inr": null,
+     "lakh": 15,
+     "usd": null,
+     "printed": "15.00",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Otorhinolaryngology (ENT)"
+     ],
+     "ours": [
+      "MS ENT"
+     ],
+     "inr": null,
+     "lakh": 19,
+     "usd": null,
+     "printed": "19.00",
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Q Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Otorhinolaryngology (ENT)"
+     ],
+     "ours": [
+      "MS ENT"
+     ],
+     "inr": null,
+     "lakh": 30,
+     "usd": null,
+     "printed": "30.00",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "GQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Respiratory Medicine"
+     ],
+     "ours": [
+      "MD Tuberculosis & Respiratory Diseases"
+     ],
+     "inr": null,
+     "lakh": 15,
+     "usd": null,
+     "printed": "15.00",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Respiratory Medicine"
+     ],
+     "ours": [
+      "MD Tuberculosis & Respiratory Diseases"
+     ],
+     "inr": null,
+     "lakh": 19,
+     "usd": null,
+     "printed": "19.00",
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Q Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Respiratory Medicine"
+     ],
+     "ours": [
+      "MD Tuberculosis & Respiratory Diseases"
+     ],
+     "inr": null,
+     "lakh": 30,
+     "usd": null,
+     "printed": "30.00",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "GQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Anaesthesiology"
+     ],
+     "ours": [
+      "MD Anaesthesiology"
+     ],
+     "inr": null,
+     "lakh": 15,
+     "usd": null,
+     "printed": "15.00",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Anaesthesiology"
+     ],
+     "ours": [
+      "MD Anaesthesiology"
+     ],
+     "inr": null,
+     "lakh": 19,
+     "usd": null,
+     "printed": "19.00",
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Q Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Anaesthesiology"
+     ],
+     "ours": [
+      "MD Anaesthesiology"
+     ],
+     "inr": null,
+     "lakh": 30,
+     "usd": null,
+     "printed": "30.00",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "GQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Emergency Medicine"
+     ],
+     "ours": [
+      "MD Emergency Medicine"
+     ],
+     "inr": null,
+     "lakh": 20,
+     "usd": null,
+     "printed": "20.00",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Emergency Medicine"
+     ],
+     "ours": [
+      "MD Emergency Medicine"
+     ],
+     "inr": null,
+     "lakh": 25,
+     "usd": null,
+     "printed": "25.00",
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Q Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Emergency Medicine"
+     ],
+     "ours": [
+      "MD Emergency Medicine"
+     ],
+     "inr": null,
+     "lakh": 40,
+     "usd": null,
+     "printed": "40.00",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "GQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Psychiatry"
+     ],
+     "ours": [
+      "MD Psychiatry"
+     ],
+     "inr": null,
+     "lakh": 20,
+     "usd": null,
+     "printed": "20.00",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Psychiatry"
+     ],
+     "ours": [
+      "MD Psychiatry"
+     ],
+     "inr": null,
+     "lakh": 25,
+     "usd": null,
+     "printed": "25.00",
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Q Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Psychiatry"
+     ],
+     "ours": [
+      "MD Psychiatry"
+     ],
+     "inr": null,
+     "lakh": 40,
+     "usd": null,
+     "printed": "40.00",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "GQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Ophthalmology"
+     ],
+     "ours": [
+      "MS Ophthalmology"
+     ],
+     "inr": null,
+     "lakh": 27,
+     "usd": null,
+     "printed": "27.00",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Ophthalmology"
+     ],
+     "ours": [
+      "MS Ophthalmology"
+     ],
+     "inr": null,
+     "lakh": 36,
+     "usd": null,
+     "printed": "36.00",
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Q Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Ophthalmology"
+     ],
+     "ours": [
+      "MS Ophthalmology"
+     ],
+     "inr": null,
+     "lakh": 50,
+     "usd": null,
+     "printed": "50.00",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "GQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "General Surgery"
+     ],
+     "ours": [
+      "MS General Surgery"
+     ],
+     "inr": null,
+     "lakh": 27,
+     "usd": null,
+     "printed": "27.00",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "General Surgery"
+     ],
+     "ours": [
+      "MS General Surgery"
+     ],
+     "inr": null,
+     "lakh": 36,
+     "usd": null,
+     "printed": "36.00",
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Q Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "General Surgery"
+     ],
+     "ours": [
+      "MS General Surgery"
+     ],
+     "inr": null,
+     "lakh": 50,
+     "usd": null,
+     "printed": "50.00",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "GQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Pediatrics"
+     ],
+     "ours": [
+      "MD Paediatrics"
+     ],
+     "inr": null,
+     "lakh": 33,
+     "usd": null,
+     "printed": "33.00",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Pediatrics"
+     ],
+     "ours": [
+      "MD Paediatrics"
+     ],
+     "inr": null,
+     "lakh": 42,
+     "usd": null,
+     "printed": "42.00",
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Q Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Pediatrics"
+     ],
+     "ours": [
+      "MD Paediatrics"
+     ],
+     "inr": null,
+     "lakh": 50,
+     "usd": null,
+     "printed": "50.00",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "GQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Obstetrics and Gynaecology"
+     ],
+     "ours": [
+      "MS Obstetrics & Gynaecology"
+     ],
+     "inr": null,
+     "lakh": 33,
+     "usd": null,
+     "printed": "33.00",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Obstetrics and Gynaecology"
+     ],
+     "ours": [
+      "MS Obstetrics & Gynaecology"
+     ],
+     "inr": null,
+     "lakh": 42,
+     "usd": null,
+     "printed": "42.00",
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Q Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Obstetrics and Gynaecology"
+     ],
+     "ours": [
+      "MS Obstetrics & Gynaecology"
+     ],
+     "inr": null,
+     "lakh": 50,
+     "usd": null,
+     "printed": "50.00",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "GQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "General Medicine"
+     ],
+     "ours": [
+      "MD General Medicine"
+     ],
+     "inr": null,
+     "lakh": 40,
+     "usd": null,
+     "printed": "40.00",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "General Medicine"
+     ],
+     "ours": [
+      "MD General Medicine"
+     ],
+     "inr": null,
+     "lakh": 52,
+     "usd": null,
+     "printed": "52.00",
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Q Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "General Medicine"
+     ],
+     "ours": [
+      "MD General Medicine"
+     ],
+     "inr": null,
+     "lakh": 60,
+     "usd": null,
+     "printed": "60.00",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "GQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Orthopaedics"
+     ],
+     "ours": [
+      "MS Orthopaedics"
+     ],
+     "inr": null,
+     "lakh": 40,
+     "usd": null,
+     "printed": "40.00",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Orthopaedics"
+     ],
+     "ours": [
+      "MS Orthopaedics"
+     ],
+     "inr": null,
+     "lakh": 52,
+     "usd": null,
+     "printed": "52.00",
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Q Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Orthopaedics"
+     ],
+     "ours": [
+      "MS Orthopaedics"
+     ],
+     "inr": null,
+     "lakh": 60,
+     "usd": null,
+     "printed": "60.00",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "GQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Dermatology"
+     ],
+     "ours": [
+      "MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": null,
+     "lakh": 40,
+     "usd": null,
+     "printed": "40.00",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Dermatology"
+     ],
+     "ours": [
+      "MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": null,
+     "lakh": 52,
+     "usd": null,
+     "printed": "52.00",
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Q Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Dermatology"
+     ],
+     "ours": [
+      "MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": null,
+     "lakh": 60,
+     "usd": null,
+     "printed": "60.00",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "GQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Radio Diagnosis"
+     ],
+     "ours": [
+      "MD Radio Diagnosis"
+     ],
+     "inr": null,
+     "lakh": 40,
+     "usd": null,
+     "printed": "40.00",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MQ Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Radio Diagnosis"
+     ],
+     "ours": [
+      "MD Radio Diagnosis"
+     ],
+     "inr": null,
+     "lakh": 52,
+     "usd": null,
+     "printed": "52.00",
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Q Fees (₹) — Tuition Fees in Lakhs, 1st Year PG",
+     "branches": [
+      "Radio Diagnosis"
+     ],
+     "ours": [
+      "MD Radio Diagnosis"
+     ],
+     "inr": null,
+     "lakh": 60,
+     "usd": null,
+     "printed": "60.00",
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": null,
+    "max": null,
+    "text": "Accommodation Charges for Six Months ₹ 57750"
+   },
+   "notes": "Printed in lakh with a (₹) header for all three quotas, incl. NRI (no US$). Separate 1st/2nd/3rd Year PG columns, identical for every branch; the 1st-year figure is recorded. Anatomy and Physiology print MQ 1.50 below GQ 4.08 — recorded as printed. Also: University Enrollment Fees ₹ 600; Exam Fees ₹ 15025. Branch serial numbers are out of order in the file (14 Ophthalmology printed before 10)."
+  },
+  {
+   "college": "Smt. N.H.L. Municipal Medical College",
+   "roster": [
+    {
+     "id": 1902,
+     "name": "Smt NHL Municipal Medical College, Ahmedabad"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "nhl",
+   "page": null,
+   "year_label": "PER YEAR POST GRADUATE (PG) … 2026-27",
+   "period": "per year",
+   "quote": "2026-27\tRs. 9,94,000\tRs. 33.79,000",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Govt. Quota",
+     "branches": "*",
+     "ours": null,
+     "inr": 994000,
+     "lakh": null,
+     "usd": null,
+     "printed": "Rs. 9,94,000",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management Quota",
+     "branches": "*",
+     "ours": null,
+     "inr": 3379000,
+     "lakh": null,
+     "usd": null,
+     "printed": "Rs. 33.79,000",
+     "maximum": false
+    }
+   ],
+   "hostel": null,
+   "notes": "Municipal corporation college (our roster says ownership 'private', management 'Govt.'). One figure for all PG branches. Management figure printed 'Rs. 33.79,000' (stray dot) — read as 33,79,000; 2025-26 row is Rs. 30,17,000. PG NRI table stops at 2025-26 (85,938 $ Ortho & Radiology … 70,313 $ other subjects) — no 2026-27 NRI figure, none recorded."
+  },
+  {
+   "college": "Surat Municipal Institute of Medical Education & Research (SMIMER)",
+   "roster": [
+    {
+     "id": 1904,
+     "name": "Surat Municipal Institute of Medical Education & Research, Surat"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "smimer",
+   "page": null,
+   "year_label": "Fee Structure for Postgraduate … (Annual) … 2026-27",
+   "period": "per year",
+   "quote": "2026-27\t23,38,000\t15,68,000\t-\t11,92,000 (Degree Course Clinical Rs. | Degree Course Non-Clinical Rs. | Diploma Course Clinical Rs. | Diploma Course Non-Clinical Rs.)",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Postgraduate Course (Annual) — quota not printed",
+     "branches": [
+      "Degree Course Clinical"
+     ],
+     "ours": null,
+     "inr": 2338000,
+     "lakh": null,
+     "usd": null,
+     "printed": "23,38,000",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Postgraduate Course (Annual) — quota not printed",
+     "branches": [
+      "Degree Course Non-Clinical"
+     ],
+     "ours": null,
+     "inr": 1568000,
+     "lakh": null,
+     "usd": null,
+     "printed": "15,68,000",
+     "maximum": false
+    }
+   ],
+   "hostel": null,
+   "notes": "Surat Municipal Corporation college. The PG table names no quota; the UG table beside it is headed 'Non N.R.I. Fee (Annual)' with Management Quota in its own column, and the PG Management Quota (Lacs) / NRI (USD) table stops at 2025-26 — so this is read as the non-management, non-NRI (Gen) fee. The page splits only Clinical vs Non-Clinical degree courses, not branches. Page says the fees are 'approved and sanctioned by the fee regulatory committee (Medical), Gujarat State' — but the source is the college's own page. Diploma figures not recorded."
+  }
+ ],
+ "government_all": [],
+ "not_published": [
+  {
+   "college": "SBKS Medical Institute & Research Centre, Vadodara (Sumandeep Vidyapeeth, deemed)",
+   "roster_id": 1148,
+   "latest_seen": "HTML admission.sumandeepvidyapeethdu.edu.in/department-of-medical.php 'Anual Fees' (Mgmt/Jain Minority ₹, NRI USD) — no year label"
+  },
+  {
+   "college": "BJ Medical College, Ahmedabad",
+   "roster_id": 20,
+   "latest_seen": "HTML bjmcabd.edu.in/fee-structure/ 'Medical Degree ₹ 30,000' annual tuition — no year label"
+  },
+  {
+   "college": "Government Medical College, Bhavnagar",
+   "roster_id": 145,
+   "latest_seen": "PG Information booklet 2025-26 final (gmcbhavnagar.edu.in/upload/pdf/2026/…)"
+  },
+  {
+   "college": "Government Medical College, Surat",
+   "roster_id": 93,
+   "latest_seen": "nothing; NMC-listed gmcsurat.edu.in does not resolve"
+  },
+  {
+   "college": "Medical College, Baroda",
+   "roster_id": 70,
+   "latest_seen": "nothing on medicalcollegebaroda.edu.in"
+  },
+  {
+   "college": "MP Shah Medical College, Jamnagar",
+   "roster_id": 83,
+   "latest_seen": "nothing; official domain unverified (NMC-listed mpsmc.in is an unrelated news blog)"
+  },
+  {
+   "college": "Pandit Deendayal Upadhyay Medical College, Rajkot",
+   "roster_id": 116,
+   "latest_seen": "HTML pdumcrajkot.org/students/courses/pg/ 'Annual Tuition Fees Rs. 30000/-' — no year label"
+  },
+  {
+   "college": "Smt GR Doshi and Smt KM Mehta Institute of Kidney Diseases and Research Centre (IKDRC)",
+   "roster_id": 266,
+   "latest_seen": "nothing"
+  },
+  {
+   "college": "Ananya College of Medicine & Research, Kalol",
+   "roster_id": 1924,
+   "latest_seen": "nothing; NMC-listed acmr.co.in answers 503 / times out"
+  },
+  {
+   "college": "CU Shah Medical College, Surendranagar",
+   "roster_id": 1915,
+   "latest_seen": "2025-26: cusmc.org/assets/pdf/fee/pg-25-26.pdf"
+  },
+  {
+   "college": "Dr MK Shah Medical College & Research Centre",
+   "roster_id": 1908,
+   "latest_seen": "2025-26: mkshahmcrc.org/pdf/PG_Fees_2025-26.pdf (2026-27 name is 404)"
+  },
+  {
+   "college": "GCS Medical College, Ahmedabad",
+   "roster_id": 1910,
+   "latest_seen": "gcsmc.org …/information-under-msr/k.pdf (Mar 2026), year unknown — see candidates"
+  },
+  {
+   "college": "Pramukhswami Medical College, Karmsad",
+   "roster_id": 1916,
+   "latest_seen": "HTML 'Admission to MD/MS 2026-27': 'Tuition Fee: As per Admission Order of ACPPGMEC' — no figure"
+  },
+  {
+   "college": "Shantabaa Medical College, Amreli",
+   "roster_id": 1923,
+   "latest_seen": "HTML smcgh.edu.in fee-structure (GQ/MQ/NRI) — no year label"
+  },
+  {
+   "college": "Zydus Medical College & Hospital, Dahod",
+   "roster_id": 1918,
+   "latest_seen": "2024-25: zmchdahod.org/pdf/Medical_College_Seat_Intake_Tution_Fees_2024-25.pdf (PG fee link 404)"
+  },
+  {
+   "college": "Dr ND Desai Faculty of Medical Science and Research, Nadiad",
+   "roster_id": 1912,
+   "latest_seen": "medical.ddu.ac.in 'PG FEES AND STIPEND DETAILS' (Jun 2026), year unknown — see candidates"
+  },
+  {
+   "college": "Parul Institute of Medical Sciences & Research, Vadodara",
+   "roster_id": 1914,
+   "latest_seen": "nothing (no MD/MS figures on paruluniversity.ac.in)"
+  },
+  {
+   "college": "Swaminarayan Institute of Medical Sciences & Research, Kalol",
+   "roster_id": 1922,
+   "latest_seen": "swaminarayanuniversity.ac.in 'PG Fees' (Apr 2026), year unknown — see candidates"
+  },
+  {
+   "college": "GMERS Medical College, Dharpur Patan",
+   "roster_id": 1909,
+   "latest_seen": "no PG fee on site (gmersmchpatan.org timed out); GMERS society site has none"
+  },
+  {
+   "college": "GMERS Medical College, Gandhinagar",
+   "roster_id": 1906,
+   "latest_seen": "payment link only"
+  },
+  {
+   "college": "GMERS Medical College, Gotri, Vadodara",
+   "roster_id": 1901,
+   "latest_seen": "payment link only"
+  },
+  {
+   "college": "GMERS Medical College, Hadiyol, Himmatnagar",
+   "roster_id": 1907,
+   "latest_seen": "payment link only"
+  },
+  {
+   "college": "GMERS Medical College, Junagadh",
+   "roster_id": 1913,
+   "latest_seen": "payment link only"
+  },
+  {
+   "college": "GMERS Medical College, Sola, Ahmedabad",
+   "roster_id": 1905,
+   "latest_seen": "PG Fees Structure, Oct 2024 (gmersmchsola.com/Files/Fees/PGFeesStructure.pdf)"
+  },
+  {
+   "college": "GMERS Medical College, Vadnagar, Mehsana",
+   "roster_id": 1921,
+   "latest_seen": "payment link only"
+  },
+  {
+   "college": "GMERS Medical College, Valsad",
+   "roster_id": 1911,
+   "latest_seen": "'FEE STRUCTURE FOR MBBS & PG', Dec 2025 (gmersmcvalsad.com/Files/FeesStructureMBBS-MD-MS.pdf), year label unknown"
+  },
+  {
+   "college": "Narendra Modi Medical College, Ahmedabad",
+   "roster_id": 1903,
+   "latest_seen": "HTML narendramodimedicalcollege.edu.in fees-structure: '2026-2027 ₹ 5,73,000.00 (General Quota / Semester) …' — no UG/PG label, series starts 2009-10 (MBBS start), so probably MBBS; not used"
+  }
+ ],
+ "candidate_files_not_downloaded": [
+  {
+   "college": "All 31 state-counselling colleges",
+   "url": "https://medadmgujarat.ncode.in/web/PG2026/MDMS/PG%20MD%20MS%20FEES%202026-27.pdf",
+   "title": "(expected name, after the 2025-26 file) PG MD/MS/Diploma Fees Details 2026-27",
+   "bytes": 0,
+   "date": "404 on 2026-10-25",
+   "why": "ACPPGMEC's 2026-27 consolidated list is not posted yet; for government and GMERS colleges it would be the state's official notice. Re-probe once choice filling opens."
+  },
+  {
+   "college": "Dr ND Desai Faculty of Medical Science and Research, Nadiad",
+   "url": "https://medical.ddu.ac.in/pdf/PG%20FEES%20AND%20STIPEND%20DETAILS.pdf",
+   "title": "PG FEES AND STIPEND DETAILS",
+   "bytes": 975866,
+   "date": "2026-06-21",
+   "why": "college's own file, year label unknown until opened"
+  },
+  {
+   "college": "Swaminarayan Institute of Medical Sciences & Research, Kalol",
+   "url": "https://swaminarayanuniversity.ac.in/uploads/pdfs/fd343241393bc732d215d7ba4d4d0612.pdf",
+   "title": "PG Fees",
+   "bytes": 350297,
+   "date": "2026-04-17",
+   "why": "university's own file, year label unknown"
+  },
+  {
+   "college": "GCS Medical College, Ahmedabad",
+   "url": "https://gcsmc.org/assets/pdf/medical-college/nmc-corner/information-under-msr/k.pdf",
+   "title": "K.) Details of fees for UG _PG Courses and other cost",
+   "bytes": 754400,
+   "date": "2026-03-30",
+   "why": "college's own file, year label unknown"
+  },
+  {
+   "college": "GMERS colleges (8)",
+   "url": "https://gmersmcvalsad.com/Files/FeesStructureMBBS-MD-MS.pdf",
+   "title": "FEE STRUCTURE FOR MBBS & PG",
+   "bytes": 2251808,
+   "date": "2025-12-15",
+   "why": "probably 2025-26; would apply society-wide if labelled 2026-27"
+  }
+ ],
+ "notes": [
+  "Owner's rule applied: the Fee Regulatory Committee (frcmedical.org) orders — incl. 'PG MEDICAL MD/MS FEE STRUCTURE FOR THE YEAR 2025-26 AND 2026-27' and the 14 Aug 2026 files — were not downloaded or used.",
+  "Government (state) and GMERS colleges: no official 2026-27 notice found; ACPPGMEC's 2026-27 fee file is 404 today."
+ ]
+}

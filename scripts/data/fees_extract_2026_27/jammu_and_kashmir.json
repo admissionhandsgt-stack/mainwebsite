@@ -1,0 +1,70 @@
+{
+ "checked": "2026-10-25",
+ "files": [
+  {
+   "id": "bopee-pg-2026",
+   "url": "https://www.jkbopee.gov.in/Pdf/Downloader.ashx?nid=192&type=1",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north/04_bopee/BOPEE_PG_Brochure_2026.pdf",
+   "title": "Information Brochure, 2026 — MD/MS/PG Diploma in Govt/Private Medical Colleges of UT of J&K, NEET-PG/2026",
+   "issuer": "J&K Board of Professional Entrance Examinations",
+   "bytes": 2104082,
+   "scanned": false
+  }
+ ],
+ "html": [],
+ "colleges": [],
+ "government_all": [],
+ "not_published": [
+  {
+   "college": "Government Medical College, Jammu",
+   "roster_id": 57,
+   "latest_seen": "BOPEE Information Brochure 2026 §26 'FEE STRUCTURE (TENTATIVE): Regarding Fee structure, candidates are advised to contact the respective colleges/institution as it does not come under the domain of BOPEE.' (p.30). No 2026-27 fee on the college site (GMC Srinagar site returned 503)."
+  },
+  {
+   "college": "Government Medical College, Srinagar",
+   "roster_id": 113,
+   "latest_seen": "BOPEE Information Brochure 2026 §26 'FEE STRUCTURE (TENTATIVE): Regarding Fee structure, candidates are advised to contact the respective colleges/institution as it does not come under the domain of BOPEE.' (p.30). No 2026-27 fee on the college site (GMC Srinagar site returned 503)."
+  },
+  {
+   "college": "Government Medical College, Anantnag",
+   "roster_id": 387,
+   "latest_seen": "BOPEE Information Brochure 2026 §26 'FEE STRUCTURE (TENTATIVE): Regarding Fee structure, candidates are advised to contact the respective colleges/institution as it does not come under the domain of BOPEE.' (p.30). No 2026-27 fee on the college site (GMC Srinagar site returned 503)."
+  },
+  {
+   "college": "Government Medical College, Baramulla",
+   "roster_id": 1016,
+   "latest_seen": "BOPEE Information Brochure 2026 §26 'FEE STRUCTURE (TENTATIVE): Regarding Fee structure, candidates are advised to contact the respective colleges/institution as it does not come under the domain of BOPEE.' (p.30). No 2026-27 fee on the college site (GMC Srinagar site returned 503)."
+  },
+  {
+   "college": "Government Medical College, Kathua",
+   "roster_id": 541,
+   "latest_seen": "BOPEE Information Brochure 2026 §26 'FEE STRUCTURE (TENTATIVE): Regarding Fee structure, candidates are advised to contact the respective colleges/institution as it does not come under the domain of BOPEE.' (p.30). No 2026-27 fee on the college site (GMC Srinagar site returned 503)."
+  },
+  {
+   "college": "Government Medical College, Rajouri",
+   "roster_id": 615,
+   "latest_seen": "BOPEE Information Brochure 2026 §26 'FEE STRUCTURE (TENTATIVE): Regarding Fee structure, candidates are advised to contact the respective colleges/institution as it does not come under the domain of BOPEE.' (p.30). No 2026-27 fee on the college site (GMC Srinagar site returned 503)."
+  },
+  {
+   "college": "Sher-I-Kashmir Institute of Medical Sciences, Srinagar",
+   "roster_id": 52,
+   "latest_seen": "BOPEE Information Brochure 2026 §26 'FEE STRUCTURE (TENTATIVE): Regarding Fee structure, candidates are advised to contact the respective colleges/institution as it does not come under the domain of BOPEE.' (p.30). No 2026-27 fee on the college site (GMC Srinagar site returned 503)."
+  },
+  {
+   "college": "Acharya Shri Chander College of Medical Sciences, Jammu",
+   "roster_id": 1943,
+   "latest_seen": "BOPEE brochure p.29: 'Annual fee for the management quota seats can be confirmed from the respective college only … official website of the concerned Medical College (ASCOMS)'. ascomscollege.com latest: 'Order for MD MS Course 2025' (30 Dec 2025)."
+  }
+ ],
+ "candidate_files_not_downloaded": [
+  {
+   "college": "Acharya Shri Chander College of Medical Sciences, Jammu",
+   "url": "https://www.jkbopee.gov.in/Pdf/Downloader.ashx?nid=19296&type=n",
+   "title": "BOPEE NN-237 (21.10.2026) — ASCOMS NRI quota PG 2026",
+   "bytes": 0,
+   "date": "2026-10-21",
+   "why": "BOPEE notification about ASCOMS NRI seats; would count only if it reproduces the college's own fee notice"
+  }
+ ],
+ "state": "Jammu and Kashmir"
+}

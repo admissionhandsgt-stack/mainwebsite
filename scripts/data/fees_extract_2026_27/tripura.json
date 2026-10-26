@@ -1,0 +1,21 @@
+{
+ "state": "Tripura",
+ "checked": "2026-10-25",
+ "files": [],
+ "html": [],
+ "colleges": [],
+ "government_all": [],
+ "not_published": [
+  {
+   "college": "Agartala Government Medical College",
+   "roster_id": 275,
+   "latest_seen": "agmc.nic.in (DME Tripura's link) does not resolve; TRMCC PG 2026 page has only a candidates-list notification (12 Oct 2026)"
+  },
+  {
+   "college": "Tripura Medical College and Dr BRAM Teaching Hospital",
+   "roster_id": 2122,
+   "latest_seen": "tmc.nic.in (DME Tripura's link) does not resolve"
+  }
+ ],
+ "candidate_files_not_downloaded": []
+}

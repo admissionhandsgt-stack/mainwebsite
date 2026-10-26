@@ -1,0 +1,86 @@
+{
+ "checked": "2026-10-25",
+ "files": [
+  {
+   "id": "amru-pg-2026-27",
+   "url": "https://amruhp.ac.in/wp-content/uploads/2026/10/Final-Merged-PG-MD-MS-DNB-Prospectus-2026-22-10-2026.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north/03_amru/AMRU_PG_Prospectus_2026.pdf",
+   "title": "Prospectus — Centralized Counselling and Admission for Postgraduate Degree (MD/MS/DNB) Courses, Session 2026-2027 (released 22/10/2026)",
+   "issuer": "Atal Medical & Research University, HP, on behalf of Govt of HP, Dept of Medical Education & Research",
+   "bytes": 18319273,
+   "scanned": false
+  }
+ ],
+ "html": [],
+ "colleges": [],
+ "government_all": [
+  {
+   "scope": "Government Medical Colleges of HP in AMRU's state counselling ('8.2 Fee and Hostel Charges for Government Medical Colleges' — colleges not named): IGMC Shimla (89), Dr RPGMC Tanda (88), Dr RKGMC Hamirpur (737), Dr YSPGMC Nahan (1835), PJLNGMC Chamba (625), SLBSGMC Mandi (312)",
+   "source": "amru-pg-2026-27",
+   "page": 26,
+   "year_label": "Prospectus … Postgraduate Degree (MD/MS/DNB) Courses, Session 2026-2027 — '8.2.1 Postgraduate Degree Courses – College Fee (Per Year)'",
+   "period": "per year",
+   "quote": "1 Tuition Fee 24,000 | 2 College Depreciation Fee 5,000 | 3 Athletic Charges 1,000 | 4 Student Fund 1,500 | Total 31,500",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Postgraduate Degree Courses – College Fee (Per Year) — Tuition Fee",
+     "branches": "*",
+     "inr": 24000,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 21000,
+    "max": 21000,
+    "text": "8.2.2 Hostel Fees (Per Year, excluding mess security): Rent 10,000; Electricity 5,000; Hostel Fund 5,000; Student Fund 1,000; Total 21,000. Securities (refundable) 12,500."
+   },
+   "notes": "College fee total 31,500 per year (tuition 24,000 + depreciation 5,000 + athletic 1,000 + student fund 1,500). Conflict: token money for a Government Medical College is 39,000, described as 'Equivalent to full first-year tuition fee (excluding hostel fee and security)' (§6.2.1, p.20). AIQ seats not covered (state prospectus). Students with >40% disability are not charged any fee (AMRU notification 15.05.2024).",
+   "roster": [
+    {
+     "id": 88,
+     "name": "Dr Rajendra Prasad Government Medical College, Tanda"
+    },
+    {
+     "id": 89,
+     "name": "Indira Gandhi Medical College, Shimla"
+    },
+    {
+     "id": 312,
+     "name": "Shri Lal Bahadur Shastri Government Medical College, Mandi"
+    },
+    {
+     "id": 625,
+     "name": "Pt Jawahar Lal Nehru Government Medical College, Chamba"
+    },
+    {
+     "id": 737,
+     "name": "Dr Radhakrishnan Government Medical College, Hamirpur"
+    },
+    {
+     "id": 1835,
+     "name": "Dr YS Parmar Government Medical College, Nahan"
+    }
+   ]
+  }
+ ],
+ "not_published": [
+  {
+   "college": "Maharishi Markandeshwar Medical College & Hospital, Solan",
+   "roster_id": 1932,
+   "latest_seen": "Own site mmusolan.org: latest MD/MS Information Booklet 2023-24. AMRU prospectus §8.3 prints a 'Fee Structure for Maharishi Markandeshwer Medical College & Hospital, Kumarhatti' (e.g. M.D. Radiodiagnosis 33,39,600 / US$ 80,000; M.D. General Medicine 28,99,600 / 70,000; M.S. Anatomy 3,00,000) — counselling authority's table, NOT used (owner's rule)."
+  }
+ ],
+ "candidate_files_not_downloaded": [
+  {
+   "college": "Maharishi Markandeshwar Medical College & Hospital, Solan",
+   "url": "https://web.mm-edu.in/uploads/pdf_solan/L1_17_5512.pdf",
+   "title": "FAQ related to Fee Structure in MMMCH",
+   "bytes": 440108,
+   "date": "unknown (Last-Modified generated per request)",
+   "why": "university's own fee document; year unknown"
+  }
+ ],
+ "state": "Himachal Pradesh"
+}

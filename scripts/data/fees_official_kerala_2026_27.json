@@ -1,0 +1,558 @@
+{
+ "state": "Kerala",
+ "classes": [
+  [
+   "NRI",
+   "NRI"
+  ],
+  [
+   "^(MM|JM)$|Minority|Min\\.? |Min$|Min\\.$|-Min",
+   "Min"
+  ],
+  [
+   "^AIQ$",
+   "AIQ"
+  ],
+  [
+   "^MNG$|Mgmt|Management|Mgt|Others \\(Inst|CatB|MQ1|Paid",
+   "Mgmt"
+  ],
+  [
+   "CatC-Inst|MQ3",
+   "Inst"
+  ],
+  [
+   "^DNB Post MBBS$|^NBE Diploma$",
+   "DNB"
+  ],
+  [
+   "DNB|AFMS",
+   "Other"
+  ],
+  [
+   ".",
+   "Gen"
+  ]
+ ],
+ "null_class": {
+  "AP Govt PG": "Gen",
+  "TEL Govt PG": "Gen",
+  "AP Mgmt PG": "NRI"
+ },
+ "entries": [
+  {
+   "college": "AMRITA SCHOOL OF MEDICINE, KOCHI",
+   "ids": [
+    1238
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "noseat": true,
+   "year": "2026-27",
+   "source": "amrita-kochi-mdms-2026-27, p. 1 — \"M.D/ M.S 2026-2027 FEE STRUCTURE\"",
+   "reason": "Full scholarship (no tuition fee) in the college's 2026-27 notice"
+  },
+  {
+   "college": "AMRITA SCHOOL OF MEDICINE, KOCHI",
+   "ids": [
+    1238
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Physiology"
+   ],
+   "fee_inr": 600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "amrita-kochi-mdms-2026-27, p. 1 — \"M.D/ M.S 2026-2027 FEE STRUCTURE\""
+  },
+  {
+   "college": "AMRITA SCHOOL OF MEDICINE, KOCHI",
+   "ids": [
+    1238
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Bio-Chemistry",
+    "MD Pharmacology"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "amrita-kochi-mdms-2026-27, p. 1 — \"M.D/ M.S 2026-2027 FEE STRUCTURE\""
+  },
+  {
+   "college": "AMRITA SCHOOL OF MEDICINE, KOCHI",
+   "ids": [
+    1238
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Forensic Medicine"
+   ],
+   "fee_inr": 660000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "amrita-kochi-mdms-2026-27, p. 1 — \"M.D/ M.S 2026-2027 FEE STRUCTURE\""
+  },
+  {
+   "college": "AMRITA SCHOOL OF MEDICINE, KOCHI",
+   "ids": [
+    1238
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "amrita-kochi-mdms-2026-27, p. 1 — \"M.D/ M.S 2026-2027 FEE STRUCTURE\""
+  },
+  {
+   "college": "AMRITA SCHOOL OF MEDICINE, KOCHI",
+   "ids": [
+    1238
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "amrita-kochi-mdms-2026-27, p. 1 — \"M.D/ M.S 2026-2027 FEE STRUCTURE\""
+  },
+  {
+   "college": "AMRITA SCHOOL OF MEDICINE, KOCHI",
+   "ids": [
+    1238
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "amrita-kochi-mdms-2026-27, p. 1 — \"M.D/ M.S 2026-2027 FEE STRUCTURE\""
+  },
+  {
+   "college": "AMRITA SCHOOL OF MEDICINE, KOCHI",
+   "ids": [
+    1238
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Emergency Medicine",
+    "MD Physical Medicine & Rehabilitation",
+    "MD Psychiatry",
+    "MS Ophthalmology",
+    "MS ENT"
+   ],
+   "fee_inr": 2600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "amrita-kochi-mdms-2026-27, p. 1 — \"M.D/ M.S 2026-2027 FEE STRUCTURE\""
+  },
+  {
+   "college": "AMRITA SCHOOL OF MEDICINE, KOCHI",
+   "ids": [
+    1238
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology",
+    "MD Radiation Oncology",
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "amrita-kochi-mdms-2026-27, p. 1 — \"M.D/ M.S 2026-2027 FEE STRUCTURE\""
+  },
+  {
+   "college": "AMRITA SCHOOL OF MEDICINE, KOCHI",
+   "ids": [
+    1238
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Geriatrics"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "amrita-kochi-mdms-2026-27, p. 1 — \"M.D/ M.S 2026-2027 FEE STRUCTURE\""
+  },
+  {
+   "college": "AMRITA SCHOOL OF MEDICINE, KOCHI",
+   "ids": [
+    1238
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Nuclear Medicine",
+    "MD Paediatrics",
+    "MD General Medicine"
+   ],
+   "fee_inr": 4100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "amrita-kochi-mdms-2026-27, p. 1 — \"M.D/ M.S 2026-2027 FEE STRUCTURE\""
+  },
+  {
+   "college": "AMRITA SCHOOL OF MEDICINE, KOCHI",
+   "ids": [
+    1238
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 4600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "amrita-kochi-mdms-2026-27, p. 1 — \"M.D/ M.S 2026-2027 FEE STRUCTURE\""
+  },
+  {
+   "college": "AMRITA SCHOOL OF MEDICINE, KOCHI",
+   "ids": [
+    1238
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Palliative Medicine"
+   ],
+   "fee_inr": 2100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "amrita-kochi-mdms-2026-27, p. 1 — \"M.D/ M.S 2026-2027 FEE STRUCTURE\""
+  },
+  {
+   "college": "AMRITA SCHOOL OF MEDICINE, KOCHI",
+   "ids": [
+    1238
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 3900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "amrita-kochi-mdms-2026-27, p. 1 — \"M.D/ M.S 2026-2027 FEE STRUCTURE\""
+  },
+  {
+   "college": "AMRITA SCHOOL OF MEDICINE, KOCHI",
+   "ids": [
+    1238
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 5200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "amrita-kochi-mdms-2026-27, p. 1 — \"M.D/ M.S 2026-2027 FEE STRUCTURE\""
+  },
+  {
+   "college": "AMRITA SCHOOL OF MEDICINE, KOCHI",
+   "ids": [
+    1238
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Paediatrics",
+    "MD General Medicine",
+    "MS Orthopaedics"
+   ],
+   "fee_inr": null,
+   "fee_usd": 85000,
+   "max": false,
+   "year": "2026-27",
+   "source": "amrita-kochi-mdms-2026-27, p. 1 — \"M.D/ M.S 2026-2027 FEE STRUCTURE\""
+  },
+  {
+   "college": "AMRITA SCHOOL OF MEDICINE, KOCHI",
+   "ids": [
+    1238
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": null,
+   "fee_usd": 92000,
+   "max": false,
+   "year": "2026-27",
+   "source": "amrita-kochi-mdms-2026-27, p. 1 — \"M.D/ M.S 2026-2027 FEE STRUCTURE\""
+  },
+  {
+   "college": "AMRITA SCHOOL OF MEDICINE, KOCHI",
+   "ids": [
+    1238
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS General Surgery",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": null,
+   "fee_usd": 84000,
+   "max": false,
+   "year": "2026-27",
+   "source": "amrita-kochi-mdms-2026-27, p. 1 — \"M.D/ M.S 2026-2027 FEE STRUCTURE\""
+  },
+  {
+   "college": "AMRITA SCHOOL OF MEDICINE, KOCHI",
+   "ids": [
+    1238
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Fees (in INR) 62,000 (period not stated)",
+   "year": "2026-27",
+   "source": "amrita-kochi-mdms-2026-27, p. 1 — \"M.D/ M.S 2026-2027 FEE STRUCTURE\"",
+   "min": 62000,
+   "max": 62000
+  },
+  {
+   "college": "Sree Uthradom Thirunal Academy of Medical Sciences (SUTAMS)",
+   "ids": [
+    1989
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MS General Surgery",
+    "MD Family Medicine",
+    "MD Hospital Administration",
+    "MS Orthopaedics",
+    "MD Radiation Oncology",
+    "MD Geriatrics",
+    "MD Emergency Medicine",
+    "MD Paediatrics",
+    "MS Obstetrics & Gynaecology",
+    "MD Psychiatry",
+    "MS Traumatology and Surgery",
+    "MD Immuno Haematology & Blood Transfusion",
+    "MD Lab Medicine",
+    "MD Radio Diagnosis",
+    "MD Tuberculosis & Respiratory Diseases",
+    "MD Palliative Medicine",
+    "MS ENT",
+    "MD Community Health Administration",
+    "MD Nuclear Medicine",
+    "MD Aviation Medicine/Aerospace Medicine",
+    "MD Anaesthesiology",
+    "MD General Medicine",
+    "MS Ophthalmology",
+    "MD Physical Medicine & Rehabilitation",
+    "MD Sports Medicine",
+    "MD Tropical Medicine"
+   ],
+   "fee_inr": 1942235,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sutams-pg-2026-27, p. 1 — \"PG Admission 2026–2027 Fee Structure\" — clinical / non-clinical as usually grouped",
+   "period": null
+  },
+  {
+   "college": "Sree Uthradom Thirunal Academy of Medical Sciences (SUTAMS)",
+   "ids": [
+    1989
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Pharmacology",
+    "MD Microbiology",
+    "MD Pathology",
+    "MD Forensic Medicine",
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 1179215,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sutams-pg-2026-27, p. 1 — \"PG Admission 2026–2027 Fee Structure\" — clinical / non-clinical as usually grouped",
+   "period": null
+  },
+  {
+   "college": "Sree Uthradom Thirunal Academy of Medical Sciences (SUTAMS)",
+   "ids": [
+    1989
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MS General Surgery",
+    "MD Family Medicine",
+    "MD Hospital Administration",
+    "MS Orthopaedics",
+    "MD Radiation Oncology",
+    "MD Geriatrics",
+    "MD Emergency Medicine",
+    "MD Paediatrics",
+    "MS Obstetrics & Gynaecology",
+    "MD Psychiatry",
+    "MS Traumatology and Surgery",
+    "MD Immuno Haematology & Blood Transfusion",
+    "MD Lab Medicine",
+    "MD Radio Diagnosis",
+    "MD Tuberculosis & Respiratory Diseases",
+    "MD Palliative Medicine",
+    "MS ENT",
+    "MD Community Health Administration",
+    "MD Nuclear Medicine",
+    "MD Aviation Medicine/Aerospace Medicine",
+    "MD Anaesthesiology",
+    "MD General Medicine",
+    "MS Ophthalmology",
+    "MD Physical Medicine & Rehabilitation",
+    "MD Sports Medicine",
+    "MD Tropical Medicine"
+   ],
+   "fee_inr": 4081014,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sutams-pg-2026-27, p. 1 — \"PG Admission 2026–2027 Fee Structure\" — clinical / non-clinical as usually grouped",
+   "period": null
+  },
+  {
+   "college": "Sree Uthradom Thirunal Academy of Medical Sciences (SUTAMS)",
+   "ids": [
+    1989
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Pharmacology",
+    "MD Microbiology",
+    "MD Pathology",
+    "MD Forensic Medicine",
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 4081014,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sutams-pg-2026-27, p. 1 — \"PG Admission 2026–2027 Fee Structure\" — clinical / non-clinical as usually grouped",
+   "period": null
+  },
+  {
+   "college": "Sree Uthradom Thirunal Academy of Medical Sciences (SUTAMS)",
+   "ids": [
+    1989
+   ],
+   "seat": "Hostel",
+   "text": "2. Hostel Fee | General & NRI | 1,50,000 (Fee Concession (FC) 96,000); non-refundable",
+   "year": "2026-27",
+   "source": "sutams-pg-2026-27, p. 1 — \"PG Admission 2026–2027 Fee Structure\"",
+   "min": 150000,
+   "max": 150000
+  },
+  {
+   "college": "REGIONAL CANCER CENTRE, THIRUVANANTHAPURAM",
+   "ids": [
+    787
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Radiation Oncology",
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "rcc-md-2026-27, p. 1 — \"ADMISSIONS TO POST GRADUATE MD COURSES 2026-27\""
+  },
+  {
+   "college": "REGIONAL CANCER CENTRE, THIRUVANANTHAPURAM",
+   "ids": [
+    787
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Radiation Oncology",
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "rcc-md-2026-27, p. 1 — \"ADMISSIONS TO POST GRADUATE MD COURSES 2026-27\""
+  },
+  {
+   "college": "All Kerala Government Medical Colleges (Thiruvananthapuram, Kollam/Parippally, A",
+   "ids": [
+    23,
+    172,
+    32,
+    41,
+    152,
+    11,
+    99,
+    1,
+    77,
+    1582
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 57890,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "cee-kerala-pg2026, p. 5 — \"Prospectus for admission to the Medical Post Graduate Degree Courses … for the academic session 2026-27 (G.O.(Ms)No.313/2026/H&FWD dated 04-10-2026)\""
+  },
+  {
+   "college": "All Kerala Government Medical Colleges (Thiruvananthapuram, Kollam/Parippally, A",
+   "ids": [
+    23,
+    172,
+    32,
+    41,
+    152,
+    11,
+    99,
+    1,
+    77,
+    1582
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 57890,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "cee-kerala-pg2026, p. 5 — \"Prospectus for admission to the Medical Post Graduate Degree Courses … for the academic session 2026-27 (G.O.(Ms)No.313/2026/H&FWD dated 04-10-2026)\""
+  }
+ ]
+}

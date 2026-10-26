@@ -1,0 +1,27 @@
+{
+ "checked": "2026-10-25",
+ "files": [
+  {
+   "id": "goa-pg-rules-2026",
+   "url": "https://dte.goa.gov.in/sites/default/files/2026-10/PG-MEDICAL-Rules-2026.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north/12_dte_goa/PG-MEDICAL-Rules-2026.pdf",
+   "title": "Official Gazette, Govt of Goa, Series I No. 9, 29 May 2026 — Notification 1/4/2008-II/PHD-Part/1304 dt 21-May-2026: Goa (Rules for admission to the PG Degree Courses of the Goa University at the Goa Medical College) Rules, 2026",
+   "issuer": "Department of Public Health, Govt of Goa (hosted by DTE Goa)",
+   "bytes": 411411,
+   "scanned": false
+  }
+ ],
+ "html": [],
+ "colleges": [],
+ "government_all": [],
+ "not_published": [
+  {
+   "college": "Goa Medical College, Panaji",
+   "roster_id": 18,
+   "latest_seen": "Goa (Rules for admission to the PG Degree Courses … at the Goa Medical College) Rules, 2026 (Gazette 29 May 2026, notification dt 21-May-2026) rule 8(2), p.5: 'The candidates selected for the Post-Graduate Degree courses in 2025-26 shall pay the fees as under:— (i) Admission fees: ₹ 2,000.00/- (ii) Tuition fees per term: ₹ 64,324.00/- (iii) Library Deposit (refundable): ₹ 2,000.00/- (iv) Hostel Deposit (refundable): ₹ 2,000.00/- Provided that there shall be a 5% increase in tuition fees for every academic year.' Labelled 2025-26 (in the 2026 rules) → not used; 2026-27 amount would need the 5% increase, which is not printed. Terms per year not stated. Own site gmcgoa.edu.in lists PG admissions only up to 2022.",
+   "decision_needed": "2026 rules print a fee labelled '2025-26' plus '5% increase every academic year' — owner to decide whether this counts"
+  }
+ ],
+ "candidate_files_not_downloaded": [],
+ "state": "Goa"
+}

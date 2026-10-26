@@ -1,0 +1,1925 @@
+{
+ "state": "Rajasthan",
+ "checked": "2026-10-25",
+ "units_note": "inr = rupees as printed; lakh = figure printed in lakh/Lacs (not converted)",
+ "files": [
+  {
+   "id": "rj_booklet",
+   "url": "https://pg.neetrajasthan.com/notifications/1792302615499.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west/01_rj_booklet/rj_info_booklet_2026.pdf",
+   "title": "Information Booklet — NEET PG Admission/Counselling Board 2026",
+   "issuer": "Chairman, NEET PG Admission/Counselling Board-2026 (SMS Medical College, Jaipur)",
+   "bytes": 3690324,
+   "scanned": false,
+   "scanned_pages": "14, 35-73 (35-73 = NMC PwBD guidelines)"
+  },
+  {
+   "id": "aiims",
+   "url": "https://aiimsudr.ac.in/wp-content/uploads/2026/10/Fees-Structure-PG.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west/02_aiims_bedwas/Fees-Structure-PG.pdf",
+   "title": "Post Graduate Programme (MD / MS) Fee Structure for Academic Year 2026-27",
+   "issuer": "American International Institute of Medical Sciences, Bedwas, Udaipur (college letterhead)",
+   "bytes": 315841,
+   "scanned": false
+  },
+  {
+   "id": "mgumst",
+   "url": "https://www.mgumst.org/uploads/files/Notification-AdmissiontoMD-MScourses(2026-27).pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west/03_mgumst/mgumst_mdms_2026-27.pdf",
+   "title": "NOTIFICATION — ADMISSION TO MD/MS COURSES – 2026-27 in Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "issuer": "Registrar, Mahatma Gandhi University of Medical Sciences and Technology (university), dated October 21, 2026",
+   "bytes": 1559346,
+   "scanned": false
+  },
+  {
+   "id": "kota",
+   "url": "https://jankalyanfile.rajasthan.gov.in/Files//Content/UploadFolder/DepartmentMaster/302/2026/Aug/30409/30218178344-e94e-40d1-b587-86dac1a06d49.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west/04_kota/kota_fees_pg_ss_2026-27.pdf",
+   "title": "Notice F.3(11)Acad-II/Fees Orders-00201/2026-27/964 dated 14.08.2026 (Fees Deposition Notice 2026-27 PG and SS)",
+   "issuer": "Principal & Controller, Government Medical College, Kota (digitally signed)",
+   "bytes": 954014,
+   "scanned": true
+  }
+ ],
+ "html": [],
+ "colleges": [
+  {
+   "college": "American International Institute of Medical Sciences",
+   "roster": [
+    {
+     "id": 2045,
+     "name": "American International Institute of Medical Sciences, Bedwas"
+    }
+   ],
+   "ownership": "private",
+   "source_kind": "college-own",
+   "source": "aiims",
+   "page": 1,
+   "year_label": "Fee Structure for Academic Year 2026-27",
+   "period": "per year",
+   "quote": "Tuition Fees (Per Year) … 8 MD – Radio Diagnosis 32,55,000/- 1,00,00,000/-",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MD – Anesthesiology"
+     ],
+     "ours": [
+      "MD Anaesthesiology"
+     ],
+     "inr": 2600000,
+     "lakh": null,
+     "usd": null,
+     "printed": "26,00,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MD – Anesthesiology"
+     ],
+     "ours": [
+      "MD Anaesthesiology"
+     ],
+     "inr": 2600000,
+     "lakh": null,
+     "usd": null,
+     "printed": "26,00,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MD – Community Medicine"
+     ],
+     "ours": [
+      "MD Social & Preventive Medicine"
+     ],
+     "inr": 300000,
+     "lakh": null,
+     "usd": null,
+     "printed": "3,00,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MD – Community Medicine"
+     ],
+     "ours": [
+      "MD Social & Preventive Medicine"
+     ],
+     "inr": 300000,
+     "lakh": null,
+     "usd": null,
+     "printed": "3,00,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MD - Dermatology"
+     ],
+     "ours": [
+      "MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": 3255000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,55,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MD - Dermatology"
+     ],
+     "ours": [
+      "MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": 3255000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,55,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Mgmt Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MD - Dermatology"
+     ],
+     "ours": [
+      "MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": 8500000,
+     "lakh": null,
+     "usd": null,
+     "printed": "85,00,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MD – General Medicine"
+     ],
+     "ours": [
+      "MD General Medicine"
+     ],
+     "inr": 3255000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,55,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MD – General Medicine"
+     ],
+     "ours": [
+      "MD General Medicine"
+     ],
+     "inr": 3255000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,55,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Mgmt Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MD – General Medicine"
+     ],
+     "ours": [
+      "MD General Medicine"
+     ],
+     "inr": 7500000,
+     "lakh": null,
+     "usd": null,
+     "printed": "75,00,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MD – Pediatrics"
+     ],
+     "ours": [
+      "MD Paediatrics"
+     ],
+     "inr": 3255000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,55,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MD – Pediatrics"
+     ],
+     "ours": [
+      "MD Paediatrics"
+     ],
+     "inr": 3255000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,55,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Mgmt Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MD – Pediatrics"
+     ],
+     "ours": [
+      "MD Paediatrics"
+     ],
+     "inr": 6500000,
+     "lakh": null,
+     "usd": null,
+     "printed": "65,00,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MD – Pathology"
+     ],
+     "ours": [
+      "MD Pathology"
+     ],
+     "inr": 1000000,
+     "lakh": null,
+     "usd": null,
+     "printed": "10,00,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MD – Pathology"
+     ],
+     "ours": [
+      "MD Pathology"
+     ],
+     "inr": 1000000,
+     "lakh": null,
+     "usd": null,
+     "printed": "10,00,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MD – Psychiatry"
+     ],
+     "ours": [
+      "MD Psychiatry"
+     ],
+     "inr": 3255000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,55,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MD – Psychiatry"
+     ],
+     "ours": [
+      "MD Psychiatry"
+     ],
+     "inr": 3255000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,55,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MD – Radio Diagnosis"
+     ],
+     "ours": [
+      "MD Radio Diagnosis"
+     ],
+     "inr": 3255000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,55,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MD – Radio Diagnosis"
+     ],
+     "ours": [
+      "MD Radio Diagnosis"
+     ],
+     "inr": 3255000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,55,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Mgmt Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MD – Radio Diagnosis"
+     ],
+     "ours": [
+      "MD Radio Diagnosis"
+     ],
+     "inr": 10000000,
+     "lakh": null,
+     "usd": null,
+     "printed": "1,00,00,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MD - Respiratory Medicine"
+     ],
+     "ours": [
+      "MD Tuberculosis & Respiratory Diseases"
+     ],
+     "inr": 3255000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,55,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MD - Respiratory Medicine"
+     ],
+     "ours": [
+      "MD Tuberculosis & Respiratory Diseases"
+     ],
+     "inr": 3255000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,55,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MS – General Surgery"
+     ],
+     "ours": [
+      "MS General Surgery"
+     ],
+     "inr": 3255000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,55,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MS – General Surgery"
+     ],
+     "ours": [
+      "MS General Surgery"
+     ],
+     "inr": 3255000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,55,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Mgmt Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MS – General Surgery"
+     ],
+     "ours": [
+      "MS General Surgery"
+     ],
+     "inr": 5000000,
+     "lakh": null,
+     "usd": null,
+     "printed": "50,00,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MS – Obstetrics and Gynecology"
+     ],
+     "ours": [
+      "MS Obstetrics & Gynaecology"
+     ],
+     "inr": 3255000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,55,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MS – Obstetrics and Gynecology"
+     ],
+     "ours": [
+      "MS Obstetrics & Gynaecology"
+     ],
+     "inr": 3255000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,55,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Mgmt Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MS – Obstetrics and Gynecology"
+     ],
+     "ours": [
+      "MS Obstetrics & Gynaecology"
+     ],
+     "inr": 7000000,
+     "lakh": null,
+     "usd": null,
+     "printed": "70,00,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MS – Ophthalmology"
+     ],
+     "ours": [
+      "MS Ophthalmology"
+     ],
+     "inr": 3255000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,55,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MS – Ophthalmology"
+     ],
+     "ours": [
+      "MS Ophthalmology"
+     ],
+     "inr": 3255000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,55,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MS – Orthopedics"
+     ],
+     "ours": [
+      "MS Orthopaedics"
+     ],
+     "inr": 3255000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,55,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MS – Orthopedics"
+     ],
+     "ours": [
+      "MS Orthopaedics"
+     ],
+     "inr": 3255000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,55,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Mgmt Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MS – Orthopedics"
+     ],
+     "ours": [
+      "MS Orthopaedics"
+     ],
+     "inr": 6000000,
+     "lakh": null,
+     "usd": null,
+     "printed": "60,00,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MS – Otorhinolaryngology (ENT)"
+     ],
+     "ours": [
+      "MS ENT"
+     ],
+     "inr": 3255000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,55,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "State/AIQ Quota — Tuition Fees (Per Year)",
+     "branches": [
+      "MS – Otorhinolaryngology (ENT)"
+     ],
+     "ours": [
+      "MS ENT"
+     ],
+     "inr": 3255000,
+     "lakh": null,
+     "usd": null,
+     "printed": "32,55,000/-",
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 350000,
+    "max": 400000,
+    "text": "Hostel Fees Per Year: Room (Single Occupancy) 3,50,000/-; Flat (Single Occupancy) 4,00,000/- (room includes electricity, mess & security charges; hostel compulsory)"
+   },
+   "notes": "Column 'State/AIQ Quota' covers both the state-quota and All-India seats of Rajasthan's private quota, so it is recorded twice (Gen and AIQ). Mgmt '-' (or blank for Respiratory Medicine) = no management figure. Also: Caution Fees (Refundable, Interest Free) 4,50,000/-; One Time Registration Charges 10,000/-; Admission, Examination, Library and Other charges 35,000/- per year."
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "roster": [
+    {
+     "id": 2046,
+     "name": "Mahatma Gandhi Medical College and Hospital, Sitapur, Jaipur"
+    }
+   ],
+   "ownership": "private",
+   "source_kind": "university-own",
+   "source": "mgumst",
+   "page": 3,
+   "year_label": "NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27",
+   "period": "per year",
+   "quote": "FEES STRUCTURE Tuition Fee - MD/MS COURSES Fee Amount (per annum) in Rs. … Dermatology, Venereology & Leprosy 63 Lacs 78.75 Lacs",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Dermatology, Venereology & Leprosy"
+     ],
+     "ours": [
+      "MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": null,
+     "lakh": 63,
+     "usd": null,
+     "printed": "63 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Dermatology, Venereology & Leprosy"
+     ],
+     "ours": [
+      "MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": null,
+     "lakh": 63,
+     "usd": null,
+     "printed": "63 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Dermatology, Venereology & Leprosy"
+     ],
+     "ours": [
+      "MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": null,
+     "lakh": 78.75,
+     "usd": null,
+     "printed": "78.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Radio-diagnosis"
+     ],
+     "ours": [
+      "MD Radio Diagnosis"
+     ],
+     "inr": null,
+     "lakh": 63,
+     "usd": null,
+     "printed": "63 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Radio-diagnosis"
+     ],
+     "ours": [
+      "MD Radio Diagnosis"
+     ],
+     "inr": null,
+     "lakh": 63,
+     "usd": null,
+     "printed": "63 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Radio-diagnosis"
+     ],
+     "ours": [
+      "MD Radio Diagnosis"
+     ],
+     "inr": null,
+     "lakh": 76,
+     "usd": null,
+     "printed": "76 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Obstetrics & Gynecology"
+     ],
+     "ours": [
+      "MS Obstetrics & Gynaecology"
+     ],
+     "inr": null,
+     "lakh": 50.75,
+     "usd": null,
+     "printed": "50.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Obstetrics & Gynecology"
+     ],
+     "ours": [
+      "MS Obstetrics & Gynaecology"
+     ],
+     "inr": null,
+     "lakh": 50.75,
+     "usd": null,
+     "printed": "50.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Obstetrics & Gynecology"
+     ],
+     "ours": [
+      "MS Obstetrics & Gynaecology"
+     ],
+     "inr": null,
+     "lakh": 71.75,
+     "usd": null,
+     "printed": "71.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "General Medicine"
+     ],
+     "ours": [
+      "MD General Medicine"
+     ],
+     "inr": null,
+     "lakh": 50.75,
+     "usd": null,
+     "printed": "50.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "General Medicine"
+     ],
+     "ours": [
+      "MD General Medicine"
+     ],
+     "inr": null,
+     "lakh": 50.75,
+     "usd": null,
+     "printed": "50.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "General Medicine"
+     ],
+     "ours": [
+      "MD General Medicine"
+     ],
+     "inr": null,
+     "lakh": 68.25,
+     "usd": null,
+     "printed": "68.25 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Orthopaedics"
+     ],
+     "ours": [
+      "MS Orthopaedics"
+     ],
+     "inr": null,
+     "lakh": 50.75,
+     "usd": null,
+     "printed": "50.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Orthopaedics"
+     ],
+     "ours": [
+      "MS Orthopaedics"
+     ],
+     "inr": null,
+     "lakh": 50.75,
+     "usd": null,
+     "printed": "50.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Orthopaedics"
+     ],
+     "ours": [
+      "MS Orthopaedics"
+     ],
+     "inr": null,
+     "lakh": 65.5,
+     "usd": null,
+     "printed": "65.50 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Paediatrics"
+     ],
+     "ours": [
+      "MD Paediatrics"
+     ],
+     "inr": null,
+     "lakh": 50.75,
+     "usd": null,
+     "printed": "50.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Paediatrics"
+     ],
+     "ours": [
+      "MD Paediatrics"
+     ],
+     "inr": null,
+     "lakh": 50.75,
+     "usd": null,
+     "printed": "50.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Paediatrics"
+     ],
+     "ours": [
+      "MD Paediatrics"
+     ],
+     "inr": null,
+     "lakh": 63,
+     "usd": null,
+     "printed": "63 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Ophthalmology"
+     ],
+     "ours": [
+      "MS Ophthalmology"
+     ],
+     "inr": null,
+     "lakh": 49.75,
+     "usd": null,
+     "printed": "49.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Ophthalmology"
+     ],
+     "ours": [
+      "MS Ophthalmology"
+     ],
+     "inr": null,
+     "lakh": 49.75,
+     "usd": null,
+     "printed": "49.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Ophthalmology"
+     ],
+     "ours": [
+      "MS Ophthalmology"
+     ],
+     "inr": null,
+     "lakh": 58.75,
+     "usd": null,
+     "printed": "58.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "General Surgery"
+     ],
+     "ours": [
+      "MS General Surgery"
+     ],
+     "inr": null,
+     "lakh": 47.25,
+     "usd": null,
+     "printed": "47.25 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "General Surgery"
+     ],
+     "ours": [
+      "MS General Surgery"
+     ],
+     "inr": null,
+     "lakh": 47.25,
+     "usd": null,
+     "printed": "47.25 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "General Surgery"
+     ],
+     "ours": [
+      "MS General Surgery"
+     ],
+     "inr": null,
+     "lakh": 61.75,
+     "usd": null,
+     "printed": "61.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Traumatology & Surgery"
+     ],
+     "ours": [
+      "MS Traumatology and Surgery"
+     ],
+     "inr": null,
+     "lakh": 45,
+     "usd": null,
+     "printed": "45 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Traumatology & Surgery"
+     ],
+     "ours": [
+      "MS Traumatology and Surgery"
+     ],
+     "inr": null,
+     "lakh": 45,
+     "usd": null,
+     "printed": "45 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Psychiarty"
+     ],
+     "ours": [
+      "MD Psychiatry"
+     ],
+     "inr": null,
+     "lakh": 42,
+     "usd": null,
+     "printed": "42 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Psychiarty"
+     ],
+     "ours": [
+      "MD Psychiatry"
+     ],
+     "inr": null,
+     "lakh": 42,
+     "usd": null,
+     "printed": "42 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Psychiarty"
+     ],
+     "ours": [
+      "MD Psychiatry"
+     ],
+     "inr": null,
+     "lakh": 61.75,
+     "usd": null,
+     "printed": "61.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Respiratory Medicine"
+     ],
+     "ours": [
+      "MD Tuberculosis & Respiratory Diseases"
+     ],
+     "inr": null,
+     "lakh": 42,
+     "usd": null,
+     "printed": "42 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Respiratory Medicine"
+     ],
+     "ours": [
+      "MD Tuberculosis & Respiratory Diseases"
+     ],
+     "inr": null,
+     "lakh": 42,
+     "usd": null,
+     "printed": "42 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Respiratory Medicine"
+     ],
+     "ours": [
+      "MD Tuberculosis & Respiratory Diseases"
+     ],
+     "inr": null,
+     "lakh": 58.75,
+     "usd": null,
+     "printed": "58.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Emergency Medicine"
+     ],
+     "ours": [
+      "MD Emergency Medicine"
+     ],
+     "inr": null,
+     "lakh": 31.5,
+     "usd": null,
+     "printed": "31.50 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Emergency Medicine"
+     ],
+     "ours": [
+      "MD Emergency Medicine"
+     ],
+     "inr": null,
+     "lakh": 31.5,
+     "usd": null,
+     "printed": "31.50 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Emergency Medicine"
+     ],
+     "ours": [
+      "MD Emergency Medicine"
+     ],
+     "inr": null,
+     "lakh": 58.75,
+     "usd": null,
+     "printed": "58.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Nuclear Medicine"
+     ],
+     "ours": [
+      "MD Nuclear Medicine"
+     ],
+     "inr": null,
+     "lakh": 28.35,
+     "usd": null,
+     "printed": "28.35 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Nuclear Medicine"
+     ],
+     "ours": [
+      "MD Nuclear Medicine"
+     ],
+     "inr": null,
+     "lakh": 28.35,
+     "usd": null,
+     "printed": "28.35 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Nuclear Medicine"
+     ],
+     "ours": [
+      "MD Nuclear Medicine"
+     ],
+     "inr": null,
+     "lakh": 58.75,
+     "usd": null,
+     "printed": "58.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Otorhinolaryngology"
+     ],
+     "ours": [
+      "MS ENT"
+     ],
+     "inr": null,
+     "lakh": 26.25,
+     "usd": null,
+     "printed": "26.25 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Otorhinolaryngology"
+     ],
+     "ours": [
+      "MS ENT"
+     ],
+     "inr": null,
+     "lakh": 26.25,
+     "usd": null,
+     "printed": "26.25 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Otorhinolaryngology"
+     ],
+     "ours": [
+      "MS ENT"
+     ],
+     "inr": null,
+     "lakh": 58.75,
+     "usd": null,
+     "printed": "58.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Radio Therapy (Radiation Oncology)"
+     ],
+     "ours": [
+      "MD Radiation Oncology"
+     ],
+     "inr": null,
+     "lakh": 26.25,
+     "usd": null,
+     "printed": "26.25 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Radio Therapy (Radiation Oncology)"
+     ],
+     "ours": [
+      "MD Radiation Oncology"
+     ],
+     "inr": null,
+     "lakh": 26.25,
+     "usd": null,
+     "printed": "26.25 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Radio Therapy (Radiation Oncology)"
+     ],
+     "ours": [
+      "MD Radiation Oncology"
+     ],
+     "inr": null,
+     "lakh": 58.75,
+     "usd": null,
+     "printed": "58.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Anaesthesiology"
+     ],
+     "ours": [
+      "MD Anaesthesiology"
+     ],
+     "inr": null,
+     "lakh": 21,
+     "usd": null,
+     "printed": "21 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Anaesthesiology"
+     ],
+     "ours": [
+      "MD Anaesthesiology"
+     ],
+     "inr": null,
+     "lakh": 21,
+     "usd": null,
+     "printed": "21 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Anaesthesiology"
+     ],
+     "ours": [
+      "MD Anaesthesiology"
+     ],
+     "inr": null,
+     "lakh": 58.75,
+     "usd": null,
+     "printed": "58.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Family Medicine"
+     ],
+     "ours": [
+      "MD Family Medicine"
+     ],
+     "inr": null,
+     "lakh": 18.75,
+     "usd": null,
+     "printed": "18.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Family Medicine"
+     ],
+     "ours": [
+      "MD Family Medicine"
+     ],
+     "inr": null,
+     "lakh": 18.75,
+     "usd": null,
+     "printed": "18.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Palliative Medicine"
+     ],
+     "ours": [
+      "MD Palliative Medicine"
+     ],
+     "inr": null,
+     "lakh": 15.75,
+     "usd": null,
+     "printed": "15.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Palliative Medicine"
+     ],
+     "ours": [
+      "MD Palliative Medicine"
+     ],
+     "inr": null,
+     "lakh": 15.75,
+     "usd": null,
+     "printed": "15.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Pathology"
+     ],
+     "ours": [
+      "MD Pathology"
+     ],
+     "inr": null,
+     "lakh": 15.75,
+     "usd": null,
+     "printed": "15.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Pathology"
+     ],
+     "ours": [
+      "MD Pathology"
+     ],
+     "inr": null,
+     "lakh": 15.75,
+     "usd": null,
+     "printed": "15.75 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Physical Medicine and Rehabilitation"
+     ],
+     "ours": [
+      "MD Physical Medicine & Rehabilitation"
+     ],
+     "inr": null,
+     "lakh": 12,
+     "usd": null,
+     "printed": "12 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Physical Medicine and Rehabilitation"
+     ],
+     "ours": [
+      "MD Physical Medicine & Rehabilitation"
+     ],
+     "inr": null,
+     "lakh": 12,
+     "usd": null,
+     "printed": "12 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Laboratory Medicine"
+     ],
+     "ours": [
+      "MD Lab Medicine"
+     ],
+     "inr": null,
+     "lakh": 10,
+     "usd": null,
+     "printed": "10 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Laboratory Medicine"
+     ],
+     "ours": [
+      "MD Lab Medicine"
+     ],
+     "inr": null,
+     "lakh": 10,
+     "usd": null,
+     "printed": "10 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Immunohaematology and Blood Transfusion"
+     ],
+     "ours": [
+      "MD Immuno Haematology & Blood Transfusion"
+     ],
+     "inr": null,
+     "lakh": 9.5,
+     "usd": null,
+     "printed": "9.5 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Immunohaematology and Blood Transfusion"
+     ],
+     "ours": [
+      "MD Immuno Haematology & Blood Transfusion"
+     ],
+     "inr": null,
+     "lakh": 9.5,
+     "usd": null,
+     "printed": "9.5 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Community Medicine (PSM)"
+     ],
+     "ours": [
+      "MD Social & Preventive Medicine"
+     ],
+     "inr": null,
+     "lakh": 6,
+     "usd": null,
+     "printed": "6 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Community Medicine (PSM)"
+     ],
+     "ours": [
+      "MD Social & Preventive Medicine"
+     ],
+     "inr": null,
+     "lakh": 6,
+     "usd": null,
+     "printed": "6 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Biochemistry"
+     ],
+     "ours": [
+      "MD Bio-Chemistry"
+     ],
+     "inr": null,
+     "lakh": 6,
+     "usd": null,
+     "printed": "6 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Biochemistry"
+     ],
+     "ours": [
+      "MD Bio-Chemistry"
+     ],
+     "inr": null,
+     "lakh": 6,
+     "usd": null,
+     "printed": "6 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Forensic Medicine"
+     ],
+     "ours": [
+      "MD Forensic Medicine"
+     ],
+     "inr": null,
+     "lakh": 6,
+     "usd": null,
+     "printed": "6 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Forensic Medicine"
+     ],
+     "ours": [
+      "MD Forensic Medicine"
+     ],
+     "inr": null,
+     "lakh": 6,
+     "usd": null,
+     "printed": "6 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Microbiology"
+     ],
+     "ours": [
+      "MD Microbiology"
+     ],
+     "inr": null,
+     "lakh": 6,
+     "usd": null,
+     "printed": "6 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Microbiology"
+     ],
+     "ours": [
+      "MD Microbiology"
+     ],
+     "inr": null,
+     "lakh": 6,
+     "usd": null,
+     "printed": "6 Lacs",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Anatomy"
+     ],
+     "ours": [
+      "MD Anatomy"
+     ],
+     "inr": 0,
+     "lakh": null,
+     "usd": null,
+     "printed": "No Tuition Fee",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Anatomy"
+     ],
+     "ours": [
+      "MD Anatomy"
+     ],
+     "inr": 0,
+     "lakh": null,
+     "usd": null,
+     "printed": "No Tuition Fee",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Pharmacology"
+     ],
+     "ours": [
+      "MD Pharmacology"
+     ],
+     "inr": 0,
+     "lakh": null,
+     "usd": null,
+     "printed": "No Tuition Fee",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Pharmacology"
+     ],
+     "ours": [
+      "MD Pharmacology"
+     ],
+     "inr": 0,
+     "lakh": null,
+     "usd": null,
+     "printed": "No Tuition Fee",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Physiology"
+     ],
+     "ours": [
+      "MD Physiology"
+     ],
+     "inr": 0,
+     "lakh": null,
+     "usd": null,
+     "printed": "No Tuition Fee",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Physiology"
+     ],
+     "ours": [
+      "MD Physiology"
+     ],
+     "inr": 0,
+     "lakh": null,
+     "usd": null,
+     "printed": "No Tuition Fee",
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Hospital Administration"
+     ],
+     "ours": [
+      "MD Hospital Administration"
+     ],
+     "inr": 0,
+     "lakh": null,
+     "usd": null,
+     "printed": "No Tuition Fee",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Other than Management Seats — Fee Amount (per annum) in Rs.",
+     "branches": [
+      "Hospital Administration"
+     ],
+     "ours": [
+      "MD Hospital Administration"
+     ],
+     "inr": 0,
+     "lakh": null,
+     "usd": null,
+     "printed": "No Tuition Fee",
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 246400,
+    "max": 392000,
+    "text": "Hostel Fee (per annum): Single seated – Rs. 3,92,000.00; Double seated – Rs. 2,46,400.00; Mess Charges Rs. 69,300.00 (including 5% GST) per annum; Electricity Charges Extra"
+   },
+   "notes": "Columns 'Other than Management Seats' and 'Management Seats'; p2's seat table splits seats into 'AI Quota', 'State Quota' and 'Mgmt. Quota', so 'Other than Management' is recorded as both Gen and AIQ. Anatomy, Pharmacology, Physiology, Hospital Administration: 'No Tuition Fee' (recorded inr 0 with printed text). Two postdated cheques for the next two years' tuition at reporting; Caution Money Rs. 3 Lacs (refundable). 'The University reserves the right to make changes in the guidelines/fees structure'."
+  },
+  {
+   "college": "Government Medical College, Kota",
+   "roster": [
+    {
+     "id": 65,
+     "name": "Government Medical College, Kota"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "kota",
+   "page": 1,
+   "year_label": "एकेडमिक सत्र 2026–27 हेतु … पी0जी0 (एम0डी0/एम0एस0/डी0एम0/एम0सी0एच0) कोर्सेज हेतु वार्षिक शुल्क (academic session 2026-27, annual fee for PG MD/MS/DM/MCh)",
+   "period": "per year",
+   "quote": "Tuition Fee (per annum) Rs. 8858/- … Fee Structure (MD/MS/DM/MCh)",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Fee Structure (MD/MS/DM/MCh) — all PG students, no quota stated",
+     "branches": "*",
+     "ours": null,
+     "inr": 8858,
+     "lakh": null,
+     "usd": null,
+     "printed": "Rs. 8858/-",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Fee Structure (MD/MS/DM/MCh) — all PG students, no quota stated",
+     "branches": "*",
+     "ours": null,
+     "inr": 8858,
+     "lakh": null,
+     "usd": null,
+     "printed": "Rs. 8858/-",
+     "maximum": false
+    }
+   ],
+   "components": "Tuition Fee (per annum) Rs. 8858/- | Sports & Academic Fund (per annum) Rs. 4430/- | Admission Fee (for new batch admissions only) Rs. 6644/- | Hostel Maintenance Charges (Single) (per annum) Rs.10630/- | Hostel Maintenance Charges (Double) (per annum) Rs. 7973/- | Electricity & Water charges (per annum) Rs. 5314/- | Development & maintenance (per annum) Rs. 2214/- | Security deposit (Refundable) Rs. 3543/-",
+   "hostel": {
+    "min": 7973,
+    "max": 10630,
+    "text": "Hostel Maintenance Charges (Single) (per annum) Rs.10630/-; (Double) (per annum) Rs. 7973/-; Electricity & Water charges (per annum) Rs. 5314/-"
+   },
+   "notes": "Tuition only in `fees`; the full list is in `components` (no total printed). Applies to MD/MS batches 2024 and 2025 and the 2026 entrants. Fixed under State Govt order F7(44)/DME/ACAD/2014/Part-1 dt 01.01.2020 para 2 (10% annual increase) and DME order F7(44)/DME/ACAD/2023/2476 dt 29.05.2023 — the same rule likely sets the other state government colleges' fee (JLN Ajmer's unlabelled HTML tuition 8053 is exactly 8858 ÷ 1.1, i.e. last year's), but only Kota's own figure is recorded."
+  }
+ ],
+ "government_all": [],
+ "not_published": [
+  {
+   "college": "Dr SN Medical College, Jodhpur",
+   "roster_id": 35,
+   "latest_seen": "'Fee Structure (2026-27)' on its site is MBBS only"
+  },
+  {
+   "college": "ESIC Medical College, Alwar",
+   "roster_id": 537,
+   "latest_seen": "2025-26 'PG Details' (mcalwar.esic.gov.in, Dec 2025)"
+  },
+  {
+   "college": "Government Medical College, Bharatpur (RajMES)",
+   "roster_id": 313,
+   "latest_seen": "unlabelled file, Oct 2022"
+  },
+  {
+   "college": "Government Medical College, Bhilwara (RajMES)",
+   "roster_id": 902,
+   "latest_seen": "'Click here for PG Fees Details' (Aug 2026, no year label) — see candidates"
+  },
+  {
+   "college": "Government Medical College, Churu (RajMES)",
+   "roster_id": 1716,
+   "latest_seen": "UG only"
+  },
+  {
+   "college": "Government Medical College, Dungarpur (RajMES)",
+   "roster_id": 1775,
+   "latest_seen": "UG only"
+  },
+  {
+   "college": "Government Medical College, Pali (RajMES)",
+   "roster_id": 638,
+   "latest_seen": "UG 2022 only"
+  },
+  {
+   "college": "Jawaharlal Nehru Medical College, Ajmer",
+   "roster_id": 105,
+   "latest_seen": "HTML PG table, no year label: Tuition Fees Every Year 8053 (= Kota's 2026-27 8858 ÷ 1.1, so probably 2025-26)"
+  },
+  {
+   "college": "Jhalawar Medical College (RajMES)",
+   "roster_id": 209,
+   "latest_seen": "'Fee Details Of MD/MS 2025-26' (Nov 2025)"
+  },
+  {
+   "college": "RNT Medical College, Udaipur",
+   "roster_id": 53,
+   "latest_seen": "fee page empty"
+  },
+  {
+   "college": "RUHS College of Medical Sciences, Jaipur",
+   "roster_id": 159,
+   "latest_seen": "no fee page"
+  },
+  {
+   "college": "Sardar Patel Medical College, Bikaner",
+   "roster_id": 58,
+   "latest_seen": "fee page empty"
+  },
+  {
+   "college": "SMS Medical College, Jaipur",
+   "roster_id": 25,
+   "latest_seen": "'For PG Students' (May 2025)"
+  },
+  {
+   "college": "Ananta Institute of Medical Sciences & Research Centre, Rajsamand",
+   "roster_id": 2044,
+   "latest_seen": "HTML 'Fee of PG 2025' (academic session 2025–26)"
+  },
+  {
+   "college": "Dr SS Tantia Medical College",
+   "roster_id": 2050,
+   "latest_seen": "Fee_Details_UG_PG.pdf (Aug 2026), year label unknown — see candidates"
+  },
+  {
+   "college": "Geetanjali Medical College & Hospital, Udaipur",
+   "roster_id": 2048,
+   "latest_seen": "'Bank Guarantee for PG - MD/MS Course - 2025-26'"
+  },
+  {
+   "college": "Jaipur National University IMSRC",
+   "roster_id": 2047,
+   "latest_seen": "'fee-structure-for-ay-2025-26.pdf' (HEAD 403)"
+  },
+  {
+   "college": "National Institute of Medical Science & Research, Jaipur",
+   "roster_id": 2049,
+   "latest_seen": "HTML md-ms.php headed 'MD/MS - AY 2025-26'"
+  },
+  {
+   "college": "Pacific Institute of Medical Sciences, Umarda",
+   "roster_id": 2052,
+   "latest_seen": "HTML /fee-structure/ PG table (State/Management lakh) with no year label of its own (page heading is UG MBBS 2026-27)"
+  },
+  {
+   "college": "Pacific Medical College & Hospital, Bhilo Ka Bedla",
+   "roster_id": 2051,
+   "latest_seen": "HTML CoursesOffered.aspx PG table, no year label (menu says 'PG ADMISSIONS 2024-25')"
+  }
+ ],
+ "candidate_files_not_downloaded": [
+  {
+   "college": "Government Medical College, Bhilwara (RajMES)",
+   "url": "https://jankalyanfile.rajasthan.gov.in/Files//Content/UploadFolder/DepartmentMaster/489/2026/Aug/30409/489e9dc3bf8-d097-495f-b68e-4cbc5dce965f.pdf",
+   "title": "Click here for PG Fees Details",
+   "bytes": 507166,
+   "date": "2026-08-05",
+   "why": "college's own file uploaded Aug 2026; may be 2026-27 (would show RajMES Govt and Management quota fees)"
+  },
+  {
+   "college": "Jawaharlal Nehru Medical College, Ajmer",
+   "url": "https://jankalyanfile.rajasthan.gov.in/Files//Content/UploadFolder/Department/PDF/JLNAjmer/2026/Aug/JLNAjmer7529f784-83d5-4fdc-8842-e0a9cc82deae.pdf",
+   "title": "Show PDF (unlabelled)",
+   "bytes": 664976,
+   "date": "2026-08-17",
+   "why": "uploaded the same week as Kota's 2026-27 fee notice; content unknown"
+  },
+  {
+   "college": "Dr SS Tantia Medical College",
+   "url": "https://drsstantiamch.org/uploads/pdf/Fee_Details_UG_PG.pdf",
+   "title": "Fees Details – Click Here (MSR B.1.11)",
+   "bytes": 1151904,
+   "date": "2026-08-08",
+   "why": "college's own file, year label unknown"
+  }
+ ],
+ "notes": [
+  "Information Booklet (all 80 pages read): no fee table. §6 'Fee Details': 'Government Colleges: Fee details for Government colleges will be as per relevant Government orders as available on website.' Private: 'Fee details as provided by the concerned Institutes/Colleges will be published in due course on the Counselling Website'. Only security deposits are printed (§12: Rs. 1,00,000 Govt seats; Rs. 2,00,000 management seats in Govt. Society colleges and RUHS CMS; Rs. 5,00,000 private colleges) and 'complete one-year tuition fee' is paid to the Board at joining. So it gives no 2026-27 government or RajMES fee.",
+  "Owner's rule applied: the board's 22 Oct 2026 'Fee structure … PRIVATE MEDICAL COLLEGES' compiled file was not downloaded."
+ ]
+}

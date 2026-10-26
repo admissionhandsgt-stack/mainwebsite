@@ -1,0 +1,1761 @@
+{
+ "state": "Rajasthan",
+ "classes": [
+  [
+   "NRI",
+   "NRI"
+  ],
+  [
+   "^(MM|JM)$|Minority|Min\\.? |Min$|Min\\.$|-Min",
+   "Min"
+  ],
+  [
+   "^AIQ$",
+   "AIQ"
+  ],
+  [
+   "^MNG$|Mgmt|Management|Mgt|Others \\(Inst|CatB|MQ1|Paid",
+   "Mgmt"
+  ],
+  [
+   "CatC-Inst|MQ3",
+   "Inst"
+  ],
+  [
+   "^DNB Post MBBS$|^NBE Diploma$",
+   "DNB"
+  ],
+  [
+   "DNB|AFMS",
+   "Other"
+  ],
+  [
+   ".",
+   "Gen"
+  ]
+ ],
+ "null_class": {
+  "AP Govt PG": "Gen",
+  "TEL Govt PG": "Gen",
+  "AP Mgmt PG": "NRI"
+ },
+ "entries": [
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 2600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 2600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 3255000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 3255000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 8500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 3255000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 3255000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 7500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 3255000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 3255000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 6500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 3255000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 3255000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 3255000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 3255000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 10000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 3255000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 3255000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 3255000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 3255000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 3255000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 3255000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 7000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 3255000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 3255000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 3255000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 3255000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 6000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 3255000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 3255000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\""
+  },
+  {
+   "college": "American International Institute of Medical Sciences",
+   "ids": [
+    2045
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Fees Per Year: Room (Single Occupancy) 3,50,000/-; Flat (Single Occupancy) 4,00,000/- (room includes electricity, mess & security charges; hostel compulsory)",
+   "year": "2026-27",
+   "source": "aiims, p. 1 — \"Fee Structure for Academic Year 2026-27\"",
+   "min": 350000,
+   "max": 400000
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 6300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 6300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 7875000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 6300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 6300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 7600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 5075000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 5075000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 7175000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 5075000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 5075000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 6825000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 5075000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 5075000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 6550000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 5075000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 5075000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 6300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 4975000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 4975000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 5875000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 4725000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 4725000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 6175000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Traumatology and Surgery"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MS Traumatology and Surgery"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 6175000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 5875000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 3150000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 3150000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 5875000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Nuclear Medicine"
+   ],
+   "fee_inr": 2835000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Nuclear Medicine"
+   ],
+   "fee_inr": 2835000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Nuclear Medicine"
+   ],
+   "fee_inr": 5875000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 2625000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 2625000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 5875000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Radiation Oncology"
+   ],
+   "fee_inr": 2625000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Radiation Oncology"
+   ],
+   "fee_inr": 2625000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radiation Oncology"
+   ],
+   "fee_inr": 5875000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 2100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 2100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 5875000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Family Medicine"
+   ],
+   "fee_inr": 1875000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Family Medicine"
+   ],
+   "fee_inr": 1875000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Palliative Medicine"
+   ],
+   "fee_inr": 1575000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Palliative Medicine"
+   ],
+   "fee_inr": 1575000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1575000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1575000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Physical Medicine & Rehabilitation"
+   ],
+   "fee_inr": 1200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Physical Medicine & Rehabilitation"
+   ],
+   "fee_inr": 1200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Lab Medicine"
+   ],
+   "fee_inr": 1000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Lab Medicine"
+   ],
+   "fee_inr": 1000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Immuno Haematology & Blood Transfusion"
+   ],
+   "fee_inr": 950000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Immuno Haematology & Blood Transfusion"
+   ],
+   "fee_inr": 950000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Forensic Medicine"
+   ],
+   "fee_inr": 600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Forensic Medicine"
+   ],
+   "fee_inr": 600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\""
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "noseat": true,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\"",
+   "reason": "No tuition fee for this branch in the college's 2026-27 notice"
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "noseat": true,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\"",
+   "reason": "No tuition fee for this branch in the college's 2026-27 notice"
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "noseat": true,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\"",
+   "reason": "No tuition fee for this branch in the college's 2026-27 notice"
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "noseat": true,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\"",
+   "reason": "No tuition fee for this branch in the college's 2026-27 notice"
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Physiology"
+   ],
+   "noseat": true,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\"",
+   "reason": "No tuition fee for this branch in the college's 2026-27 notice"
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Physiology"
+   ],
+   "noseat": true,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\"",
+   "reason": "No tuition fee for this branch in the college's 2026-27 notice"
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Hospital Administration"
+   ],
+   "noseat": true,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\"",
+   "reason": "No tuition fee for this branch in the college's 2026-27 notice"
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Hospital Administration"
+   ],
+   "noseat": true,
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\"",
+   "reason": "No tuition fee for this branch in the college's 2026-27 notice"
+  },
+  {
+   "college": "Mahatma Gandhi Medical College and Hospital, Jaipur",
+   "ids": [
+    2046
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Fee (per annum): Single seated – Rs. 3,92,000.00; Double seated – Rs. 2,46,400.00; Mess Charges Rs. 69,300.00 (including 5% GST) per annum; Electricity Charges Extra",
+   "year": "2026-27",
+   "source": "mgumst, p. 3 — \"NOTIFICATION ADMISSION TO MD/MS COURSES – 2026-27\"",
+   "min": 246400,
+   "max": 392000
+  },
+  {
+   "college": "Government Medical College, Kota",
+   "ids": [
+    65
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 8858,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kota, p. 1 — \"एकेडमिक सत्र 2026–27 हेतु … पी0जी0 (एम0डी0/एम0एस0/डी0एम0/एम0सी0एच0) कोर्सेज हेतु वार्षिक शुल्क (academic session 2026-27, annual fee for PG MD/MS/DM/MCh)\""
+  },
+  {
+   "college": "Government Medical College, Kota",
+   "ids": [
+    65
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 8858,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kota, p. 1 — \"एकेडमिक सत्र 2026–27 हेतु … पी0जी0 (एम0डी0/एम0एस0/डी0एम0/एम0सी0एच0) कोर्सेज हेतु वार्षिक शुल्क (academic session 2026-27, annual fee for PG MD/MS/DM/MCh)\""
+  },
+  {
+   "college": "Government Medical College, Kota",
+   "ids": [
+    65
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 8858,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kota, p. 1 — \"एकेडमिक सत्र 2026–27 हेतु … पी0जी0 (एम0डी0/एम0एस0/डी0एम0/एम0सी0एच0) कोर्सेज हेतु वार्षिक शुल्क (academic session 2026-27, annual fee for PG MD/MS/DM/MCh)\""
+  },
+  {
+   "college": "Government Medical College, Kota",
+   "ids": [
+    65
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Maintenance Charges (Single) (per annum) Rs.10630/-; (Double) (per annum) Rs. 7973/-; Electricity & Water charges (per annum) Rs. 5314/-",
+   "year": "2026-27",
+   "source": "kota, p. 1 — \"एकेडमिक सत्र 2026–27 हेतु … पी0जी0 (एम0डी0/एम0एस0/डी0एम0/एम0सी0एच0) कोर्सेज हेतु वार्षिक शुल्क (academic session 2026-27, annual fee for PG MD/MS/DM/MCh)\"",
+   "min": 7973,
+   "max": 10630
+  }
+ ]
+}

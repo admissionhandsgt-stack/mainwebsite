@@ -1,0 +1,148 @@
+{
+ "state": "Delhi",
+ "checked": "2026-10-25",
+ "files": [
+  {
+   "id": "du_boi",
+   "url": "https://storage.googleapis.com/dudocsfmsc/1791803818376-1791371447114-BOI_2026.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_up/10_du_boi/boi_2026.pdf",
+   "title": "UNIVERSITY OF DELHI, FACULTY OF MEDICAL SCIENCES — BULLETIN OF INFORMATION-2026-27, POST-GRADUATE (DEGREE/DIPLOMA) & MDS COURSES UNDER 50% DELHI UNIVERSITY QUOTA and 50% ALL INDIA QUOTA FOR THE ACADEMIC SESSION 2026-27",
+   "issuer": "University of Delhi, Faculty of Medical Sciences",
+   "bytes": 5282859,
+   "scanned": false,
+   "notes": "Text layer is OCR; fee table on p.17 checked against the extracted text."
+  },
+  {
+   "id": "ipu_ch14",
+   "url": "https://www.ipu.ac.in/adm2026/adm2026br/br280126pgprg/ch14.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_up/11_ipu_ch14/ch14.pdf",
+   "title": "GGSIPU — ADMISSION BROCHURE FOR MASTER's PROGRAMMES 2026-27, PART E, CHAPTER 14: FEE STRUCTURE (brochure pp.160-166)",
+   "issuer": "Guru Gobind Singh Indraprastha University",
+   "bytes": 1878686,
+   "scanned": true
+  },
+  {
+   "id": "ipu_ch09",
+   "url": "https://www.ipu.ac.in/adm2026/adm2026br/br280126pgprg/ch09.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_up/12_ipu_ch09/ch09.pdf",
+   "title": "GGSIPU — CHAPTER-9: PGMC, PGAC, PG HOMEOPATHY ADMISSION INFORMATION (brochure pp.112-114)",
+   "issuer": "Guru Gobind Singh Indraprastha University",
+   "bytes": 1010368,
+   "scanned": true,
+   "notes": "No fee figures. Describes the university's own counselling for 'GGSIP University Quota (State Quota)' PGMC seats for GGSIPU MBBS graduates."
+  }
+ ],
+ "html": [],
+ "colleges": [],
+ "government_all": [
+  {
+   "scope": "All University of Delhi PG institutions (DU quota and AIQ seats): Lady Hardinge Medical College, Maulana Azad Medical College, University College of Medical Sciences, V.P. Chest Institute, G.B. Pant Institute (GIPMER), Kasturba Hospital, NIHFW, IHBAS, Indian Railway PGIMSR (NRCH); also Army Hospital (R&R), INMAS (diploma only) and Hindu Rao Hospital, which the bulletin lists",
+   "roster": [
+    {
+     "id": 10
+    },
+    {
+     "id": 6
+    },
+    {
+     "id": 26
+    },
+    {
+     "id": 474
+    },
+    {
+     "id": 30
+    },
+    {
+     "id": 401
+    },
+    {
+     "id": 1286
+    },
+    {
+     "id": 317
+    },
+    {
+     "id": 49
+    },
+    {
+     "id": 1001,
+     "name": "Army Hospital Research & Referral (AFMS)"
+    }
+   ],
+   "source": "du_boi",
+   "page": 17,
+   "year_label": "BULLETIN OF INFORMATION-2026-27 … FOR THE ACADEMIC SESSION 2026-27",
+   "quote": "7.3 … submit the fee as per following: (i) 1st year Annual Fee of Rs. 19,500/- … 1. Tuition Fee 13000 2. University Student Welfare Fund* 300 3. University Development Fund* 1750 4. University Facilities and Services Charges* 1750 5. Economically Weaker Section Support University Fund* 300 6. Faculty Management Fee (Annual) 2400 Total 19,500",
+   "fees": [
+    {
+     "seat": "Other:all seats (DU quota and AIQ)",
+     "seat_as_printed": "Annual Fee (Total, of which Tuition Fee 13000)",
+     "branches": "*",
+     "inr": 19500,
+     "usd": null,
+     "maximum": false,
+     "tuition_inr": 13000
+    }
+   ],
+   "notes": "Per year: the same Rs. 19,500/- is due for 2nd and 3rd year 'WITHIN FIRST MONTH OF THE STARTING OF RESPECTIVE ACADEMIC SESSION'. Marked '* The Fee mentioned above may change in accordance with the directions of the competent authority'; p.21 adds 'The fee mentioned above is under review and may change.' Registration fee (non-refundable) Rs. 3,000/- per course (SC/ST/PwBD Rs. 2,000/-). Security deposit Rs 25,000/- at joining (refunded on completion/leaving). Surety bond Rs. 10.00 lacs. This is the university's fee paid on the FMSc portal; hostel or any institution-level charges are not in the bulletin."
+  },
+  {
+   "scope": "GGSIPU-affiliated medical colleges in Delhi (IP quota institutes): Vardhman Mahavir Medical College & Safdarjung Hospital, ABVIMS & Dr RML Hospital, ESI-PGIMSR Basaidarapur, Chacha Nehru Bal Chikitsalaya",
+   "roster": [
+    {
+     "id": 4
+    },
+    {
+     "id": 2
+    },
+    {
+     "id": 81
+    },
+    {
+     "id": 227
+    }
+   ],
+   "source": "ipu_ch14",
+   "page": 2,
+   "year_label": "ADMISSION BROCHURE FOR MASTER's PROGRAMMES 2026-27 — CHAPTER 14: FEE STRUCTURE (brochure p.161)",
+   "quote": "Affiliated Colleges/ Institutions located in Delhi | University Charges per year: (a) Rs. 20,000/- (for all the programmes except Medical Colleges) (b) Rs. 25,000/- (only for Medical Colleges) | Security Deposit onetime payment (refundable) Rs. 10,000/- | Alumni Contribution Fund (Onetime payment) Rs. 2,000/- … A. Examination Fee @ Rs. 3,000/- per student/ per annum and Innovation & Incubation Fee of Rs. 500/- per student/ per annum … B. … Rs. 1,000/- (Non Refundable) as 'Student Welfare Activity Fee' Per Annum.",
+   "fees": [
+    {
+     "seat": "Other:university charges only (all seats)",
+     "seat_as_printed": "University Charges per year — Rs. 25,000/- (only for Medical Colleges)",
+     "branches": "*",
+     "inr": 25000,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "notes": "PARTIAL — university charges only, 'In addition to the fee as notified by DHE'. The institutes' own tuition is not printed in ch14 (its tables are for the University School of Studies); item 3 says fees of affiliated colleges for 2026-27 'to be fixed by State Fee Regulatory Committee shall be notified by the University in due course' — that refers to self-financing institutes. Do not treat Rs. 25,000 as the whole fee for these four government institutes."
+  }
+ ],
+ "not_published": [
+  {
+   "college": "Hamdard Institute of Medical Sciences & Research, New Delhi (Jamia Hamdard, deemed)",
+   "roster_id": 1112,
+   "latest_seen": "himsr.ac.in admissions page is 'Admissions 2024'; Jamia Hamdard notice 'Clarification about Fee Submission of MBBS and MD/MS/MSc Students' dated 24 Jul 2025 (jamiahamdard.ac.in/uploads/files/Notice-_Clarification_about_Fee_Submission_of_MBBS_and_MD_MS_MSc_Students_24_07_2025.pdf). No 2026-27 PG fee found."
+  }
+ ],
+ "candidate_files_not_downloaded": [
+  {
+   "college": "National Institute of Health and Family Welfare (govt, DU)",
+   "url": "http://www.nihfw.ac.in/Doc/MD(%20CHA)%20website%2013.10.2026.pdf",
+   "title": "MD (CHA) Course Highlights",
+   "bytes": 0,
+   "date": "file name says 13.10.2026",
+   "why": "own 2026 course document; HEAD answered 403"
+  },
+  {
+   "college": "Vardhman Mahavir Medical College & Safdarjung Hospital (govt, IP)",
+   "url": "https://vmmc-sjh.mohfw.gov.in/admissions-notice-board",
+   "title": "Admissions notice board (latest MD/MS notice 04.11.2025, session 2025-26)",
+   "bytes": 0,
+   "date": "watch",
+   "why": "the 2026-27 MD/MS admission notice (usually lists the institute's fee) is not posted yet"
+  }
+ ]
+}

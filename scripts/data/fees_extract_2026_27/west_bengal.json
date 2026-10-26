@@ -1,0 +1,218 @@
+{
+ "state": "West Bengal",
+ "checked": "2026-10-25",
+ "files": [
+  {
+   "id": "wbmcc-pg-2026",
+   "url": "https://cdnbbsr.s3waas.gov.in/s3aae8d1e00b15a30e5901227e97ffbef7/uploads/2026/10/2026101495338605.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/east/01_wbmcc_bulletin/wbmcc_pg_bulletin_2026.pdf",
+   "title": "Notice cum Information Bulletin WB PG Medical 2026 (Memo No. HFW-23099/… dated 14.10.2026)",
+   "issuer": "Government of West Bengal, Department of Health and Family Welfare (WBMCC)",
+   "bytes": 5642501,
+   "scanned": false
+  }
+ ],
+ "html": [
+  {
+   "id": "ipgmer-pg-2026-aiq",
+   "url": "https://www.ipgmer.gov.in/pg_admission_2026_all_india",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/east/html/ipgmer_pg_2026_aiq.txt",
+   "title": "IPGME&R — MD/MS Admissions 2026: All India"
+  },
+  {
+   "id": "ipgmer-pg-2026-state",
+   "url": "https://www.ipgmer.gov.in/pg_admission_2026_state",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/east/html/ipgmer_pg_2026_state.txt",
+   "title": "IPGME&R — MD/MS Admissions 2026: WB state (no notice body on 25 Oct 2026)"
+  }
+ ],
+ "colleges": [
+  {
+   "college": "Institute of Postgraduate Medical Education & Research (IPGME&R), Kolkata",
+   "roster": [
+    {
+     "id": 17,
+     "name": "Institute of Postgraduate Medical Education & Research, Kolkata"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "ipgmer-pg-2026-aiq",
+   "page": null,
+   "year_label": "Notice regarding admission to MD/MS courses … for 2026-29 academic session",
+   "period": "unstated",
+   "quote": "Fees payable are Rs. 18,050/- (Rupees eighteen thousand fifty) only for all categories of candidates . No concessions are applicable.",
+   "fees": [
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "MD/MS Admissions 2026: All India — 'for all categories of candidates'",
+     "branches": "*",
+     "inr": 18050,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": null,
+   "notes": "Amount payable at admission; not stated per year or whole course. On the AIQ page. The WB-state-quota page (pg_admission_2026_state) had no notice body on 25 Oct 2026 (in phase 1 it carried the same Rs. 18,050 under '2025-28 academic session')."
+  }
+ ],
+ "government_all": [],
+ "not_published": [
+  {
+   "college": "All India Institute of Hygiene & Public Health, Kolkata",
+   "roster_id": 1224,
+   "latest_seen": "aiihph.gov.in — no MD fee"
+  },
+  {
+   "college": "Bankura Sammilani Medical College",
+   "roster_id": 224,
+   "latest_seen": "website not located; WBMCC 2026 bulletin has no college fee table"
+  },
+  {
+   "college": "Burdwan Medical College",
+   "roster_id": 146,
+   "latest_seen": "burdwanmedicalcollege.org behind Cloudflare (403)"
+  },
+  {
+   "college": "Calcutta National Medical College",
+   "roster_id": 119,
+   "latest_seen": "website not located"
+  },
+  {
+   "college": "Chittaranjan National Cancer Institute",
+   "roster_id": 84,
+   "latest_seen": "cnci.ac.in/policy-and-fee: 'Fee: INR 1000/- (Non-refundable)' — context unclear, no MD tuition"
+  },
+  {
+   "college": "Chittaranjan Seva Sadan Hospital",
+   "roster_id": 599,
+   "latest_seen": "website not located"
+  },
+  {
+   "college": "College of Medicine & JNM Hospital, Kalyani",
+   "roster_id": 608,
+   "latest_seen": "wbuhs.ac.in/college-of-medicine-and-jnm-hospital/ — nothing"
+  },
+  {
+   "college": "College of Medicine & Sagore Dutta Hospital",
+   "roster_id": 237,
+   "latest_seen": "website not located"
+  },
+  {
+   "college": "Command Hospital, Kolkata (AFMS)",
+   "roster_id": 1095,
+   "latest_seen": "not checked — no site; AFMS seats"
+  },
+  {
+   "college": "Diamond Harbour GMCH",
+   "roster_id": 2164,
+   "latest_seen": "website not located"
+  },
+  {
+   "college": "Dr BC Roy PGI of Paediatric Sciences",
+   "roster_id": 494,
+   "latest_seen": "website not located"
+  },
+  {
+   "college": "ESIC Medical College, Joka",
+   "roster_id": 144,
+   "latest_seen": "college page not located; esic.gov.in not searched"
+  },
+  {
+   "college": "Medical College, Kolkata",
+   "roster_id": 66,
+   "latest_seen": "medicalcollegekolkata.in 'PG Admission 2026' page has no fee; Admission_fees.pdf (14 Sep 2022) and pgadmission2025.pdf (17 Nov 2025) only"
+  },
+  {
+   "college": "Institute of Child Health, Kolkata",
+   "roster_id": 448,
+   "latest_seen": "website not located"
+  },
+  {
+   "college": "Malda Medical College",
+   "roster_id": 252,
+   "latest_seen": "website not located"
+  },
+  {
+   "college": "Midnapore Medical College",
+   "roster_id": 221,
+   "latest_seen": "website not located"
+  },
+  {
+   "college": "Murshidabad Medical College",
+   "roster_id": 446,
+   "latest_seen": "website not located"
+  },
+  {
+   "college": "Nilratan Sircar Medical College",
+   "roster_id": 60,
+   "latest_seen": "nrsmc.edu.in — payment links only ('New Admission Fee 2024-2025')"
+  },
+  {
+   "college": "North Bengal Medical College",
+   "roster_id": 222,
+   "latest_seen": "website not located"
+  },
+  {
+   "college": "RG Kar Medical College",
+   "roster_id": 92,
+   "latest_seen": "website not located"
+  },
+  {
+   "college": "School of Tropical Medicine",
+   "roster_id": 371,
+   "latest_seen": "stmkolkata.org — nothing"
+  },
+  {
+   "college": "Gouri Devi Institute of Medical Sciences",
+   "roster_id": 2160,
+   "latest_seen": "website not located"
+  },
+  {
+   "college": "ICARE Institute of Medical Sciences",
+   "roster_id": 2161,
+   "latest_seen": "icaremedicalcollege.in renders no content"
+  },
+  {
+   "college": "IQ-City Medical College",
+   "roster_id": 2163,
+   "latest_seen": "iqcity.in/medical-college/ — no PG fee"
+  },
+  {
+   "college": "Jagannath Gupta Institute of Medical Sciences (JIMSH)",
+   "roster_id": 2159,
+   "latest_seen": "jimsh.org/admission/pg-mdms 'PG (MD/MS) Fee Structure (2025 - 2026)': State Quota Rs. 13,50,000/- *, Management Rs. 40,00,000/- * per year; '* Fee Structure is proposed & is subject to approval by Fee Structure Committee of West Bengal'"
+  },
+  {
+   "college": "JIS School of Medical Science & Research",
+   "roster_id": 2165,
+   "latest_seen": "jismsr.org — no fee links; JIS University brochure JISU-Brochure-26.pdf not downloaded"
+  },
+  {
+   "college": "KPC Medical College",
+   "roster_id": 2158,
+   "latest_seen": "website not located"
+  },
+  {
+   "college": "Shri Ramkrishna Institute of Medical Sciences & Sanaka Hospitals",
+   "roster_id": 2162,
+   "latest_seen": "srims.in renders blank"
+  },
+  {
+   "college": "Vivekananda Institute of Medical Sciences",
+   "roster_id": 2157,
+   "latest_seen": "website not located"
+  }
+ ],
+ "candidate_files_not_downloaded": [
+  {
+   "college": "JIS School of Medical Science & Research (JIS University)",
+   "url": "https://www.jisuniversity.ac.in/pdf/JISU-Brochure-26.pdf",
+   "title": "Prospectus (JIS University brochure 2026)",
+   "bytes": 3095894,
+   "date": "Fri, 11 Sep 2026",
+   "why": "university's own 2026 brochure; may list MD/MS fees"
+  }
+ ],
+ "notes": "The WBMCC 'Notice cum Information Bulletin WB PG Medical 2026' contains NO college fee table: only counselling fee (Rs. 3000), security deposits and penalties; p.10 says the approved fee of private management seats 'will be informed to the candidate in the counseling website' and to contact the colleges."
+}

@@ -1,0 +1,233 @@
+{
+ "state": "Chhattisgarh",
+ "checked": "2026-10-25",
+ "files": [
+  {
+   "id": "cg_notice_nic",
+   "url": "https://cdnbbsr.s3waas.gov.in/s34b4edc2630fe75800ddc29a7b4070add/uploads/2026/10/20261022591263730.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west/06_cg_notice/cg_neetpg_2026_notice_nic.pdf",
+   "title": "CG State NEET PG (MD/MS) 2026 Online Application Notice (No. 1686, dated 21/10/2026)",
+   "issuer": "Commissioner, Medical Education, Chhattisgarh / Chairman, PG Counselling Committee",
+   "bytes": 1854302,
+   "scanned": true
+  },
+  {
+   "id": "cg_notice_drive",
+   "url": "https://drive.google.com/file/d/1JV0d9ABHb1yQsSwF1sOsvp3EY4hdUT56",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west/10_cg_notice_drive/cg_neetpg_2026_notice_drive.pdf",
+   "title": "Same notice, cgdme.in Drive copy (9 pages: notice p1-3, NBEMS NEET-PG 2026 result notice p4-7, CG Gazette rules p8-9)",
+   "issuer": "DME Chhattisgarh",
+   "bytes": 5665504,
+   "scanned": true
+  },
+  {
+   "id": "cims",
+   "url": "https://www.cimsbilaspur.ac.in/down2026/PG_Documents2026.zip",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west/07_cims/PG_Documents2026.zip → C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west/07_cims_x/BROCHURE_PG.pdf",
+   "title": "List of Document Required, Bond Format and Fees Detail for Admission in PG Course in The Year of 2026-27 (home-page link title) — BROCHURE_PG.pdf inside the ZIP (16 PDFs)",
+   "issuer": "Chhattisgarh Institute of Medical Sciences, Bilaspur (college)",
+   "bytes": 9572629,
+   "scanned": false
+  },
+  {
+   "id": "korba",
+   "url": "https://sbdmscm.edu.in/pdf/PG_Admission_Doc/PG_Admission_Doc_2026.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west/08_korba/PG_Admission_Doc_2026.pdf",
+   "title": "Post graduate admission document (2026)",
+   "issuer": "Government Medical College, Korba (Lt. Bisahu Das Mahant Smriti MC)",
+   "bytes": 7217282,
+   "scanned": true
+  },
+  {
+   "id": "jnm",
+   "url": "https://ptjnmcraipur.in/pdf2026/PG%20Docs%202026.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west/09_jnm/PG_Docs_2026.pdf",
+   "title": "List of Document Required for Admission in PG Course (All India Quota) 2026-27",
+   "issuer": "Dean, Pt. J.N.M. Medical College, Raipur (signed 23/10)",
+   "bytes": 395498,
+   "scanned": true
+  }
+ ],
+ "html": [],
+ "colleges": [
+  {
+   "college": "Pt. J.N.M. Medical College, Raipur",
+   "roster": [
+    {
+     "id": 78,
+     "name": "Pt JNM Medical College, Raipur"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "jnm",
+   "page": 1,
+   "year_label": "home-page link 'List of Document Required for Admission in PG Course (All India Quota) 2026-27'; the page: 'for this academic year the internship completion date may be treated as 30 th September, 2026'",
+   "period": "unstated",
+   "quote": "FEE DETAIL- Tuition Fee Rs. 20,000/- and Security Deposite Rs. 50,000/-",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "FEE DETAIL (document headed 'For All India Quota Candidates'; no quota split)",
+     "branches": "*",
+     "ours": null,
+     "inr": 20000,
+     "lakh": null,
+     "usd": null,
+     "printed": "Rs. 20,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "FEE DETAIL (document headed 'For All India Quota Candidates'; no quota split)",
+     "branches": "*",
+     "ours": null,
+     "inr": 20000,
+     "lakh": null,
+     "usd": null,
+     "printed": "Rs. 20,000/-",
+     "maximum": false
+    }
+   ],
+   "hostel": null,
+   "notes": "Signed by the Dean, dated 23/10. The document is written for All India Quota joiners; the fee line itself is not quota-specific. Security deposit Rs. 50,000/- (separate DD)."
+  },
+  {
+   "college": "Chhattisgarh Institute of Medical Sciences, Bilaspur",
+   "roster": [
+    {
+     "id": 220,
+     "name": "Chhattisgarh Institute of Medical Sciences, Bilaspur"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "cims",
+   "page": 1,
+   "year_label": "college's link title '…Fees Detail for Admission in PG Course in The Year of 2026-27' (ZIP PG_Documents2026.zip, folder down2026, Last-Modified 21 Oct 2026); BROCHURE_PG.pdf itself prints no year",
+   "period": "unstated",
+   "quote": "16. Fee details are as under:: PG-Course Amount 1. Caution Money Rs.50000/- 2. Tution Fee Rs.20000/-",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Fee details … PG-Course (no quota split)",
+     "branches": "*",
+     "ours": null,
+     "inr": 20000,
+     "lakh": null,
+     "usd": null,
+     "printed": "Rs.20000/-",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Fee details … PG-Course (no quota split)",
+     "branches": "*",
+     "ours": null,
+     "inr": 20000,
+     "lakh": null,
+     "usd": null,
+     "printed": "Rs.20000/-",
+     "maximum": false
+    }
+   ],
+   "hostel": null,
+   "notes": "The year label comes from the college's own download link, not from inside the brochure. The ZIP also holds GAZETTE_PG_2025.pdf (CG PG admission rules 2025) — not a fee source."
+  },
+  {
+   "college": "Government Medical College, Korba",
+   "roster": [
+    {
+     "id": 512,
+     "name": "Government Medical College, Korba"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "korba",
+   "page": 1,
+   "year_label": "file PG_Admission_Doc_2026.pdf; p1 'Disability certificate as per latest MCC NEET PG 2026 guide line'",
+   "period": "unstated",
+   "quote": "14. Fee details are as under (Two separate demand draft to be made): 1. Tuition Fee Rs.20,000/- … 2. CAUTION MONEY+ LIBRARY Rs.50,000/- Rs. 2000/- Total - 52,000/-",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Fee details (no quota split)",
+     "branches": "*",
+     "ours": null,
+     "inr": 20000,
+     "lakh": null,
+     "usd": null,
+     "printed": "Rs.20,000/-",
+     "maximum": false
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Fee details (no quota split)",
+     "branches": "*",
+     "ours": null,
+     "inr": 20000,
+     "lakh": null,
+     "usd": null,
+     "printed": "Rs.20,000/-",
+     "maximum": false
+    }
+   ],
+   "hostel": null,
+   "notes": "Tuition DD in favour of 'Swashasi Samiti Shaskiya Chikitsa Mahavidhyalaya, Korba'; caution + library to the Dean. No session year printed beyond the 2026 references."
+  }
+ ],
+ "government_all": [],
+ "not_published": [
+  {
+   "college": "Bharat Ratna Shri Atal Bihari Vajpayee Memorial Medical College, Rajnandgaon",
+   "roster_id": 1401,
+   "latest_seen": "'All bond & fee Format for PG Admission 2024-25' (Aug 2024)"
+  },
+  {
+   "college": "Late Shri Baliram Kashyap Memorial NDMC GMC, Jagdalpur",
+   "roster_id": 591,
+   "latest_seen": "'…Fees Detail for Admission in PG Course Year 2025-26' (Nov 2025)"
+  },
+  {
+   "college": "Late Shri Lakhi Ram Agrawal Memorial GMC, Raigarh",
+   "roster_id": 363,
+   "latest_seen": "nothing PG-related on gmcraigarh.edu.in"
+  },
+  {
+   "college": "Rajmata Shrimati Devendra Kumari Singhdeo GMC, Ambikapur",
+   "roster_id": 458,
+   "latest_seen": "'PG Fee Details' (Aug 2023)"
+  },
+  {
+   "college": "Raipur Institute of Medical Sciences (RIMS), Raipur",
+   "roster_id": 2168,
+   "latest_seen": "'PG Prospectus 25-26' (HEAD unconfirmed)"
+  },
+  {
+   "college": "Shri Balaji Institute of Medical Science, Raipur",
+   "roster_id": 2167,
+   "latest_seen": "PGFEESSTRUCTURE251225.pdf labelled '…PG BATCH 2025-2026' (Dec 2025)"
+  },
+  {
+   "college": "Shri Shankaracharya Institute of Medical Sciences, Bhilai",
+   "roster_id": 2166,
+   "latest_seen": "'Prospectus 2024' and 'Documents for PG Admission 2025' (Dec 2025)"
+  }
+ ],
+ "candidate_files_not_downloaded": [
+  {
+   "college": "Government Medical College, Korba",
+   "url": "https://sbdmscm.edu.in/pdf/PG_Admission_Doc/Fee_Structure_MD_MS.pdf",
+   "title": "Fee Structure for Post Graduation",
+   "bytes": 204812,
+   "date": "2025-12-24",
+   "why": "no year in the label; the 2026 admission pack already gives the 2026 fee"
+  }
+ ],
+ "notes": [
+  "The state's 2026 MD/MS notice (both copies) prints no tuition: only the application fee (Rs. 2,000; NRI Rs. 10,000) and the refundable registration/security deposit — Govt colleges UR 25,000/-, SC/ST/OBC 12,500/-; private college or private+govt choice 2,00,000/-. The Drive copy's extra pages are the NBEMS result notice and the CG Gazette rules.",
+  "Three government colleges' own 2026 documents (JNM, CIMS, Korba) all print Tuition Fee Rs. 20,000/-; the other four government colleges have published nothing for 2026, so no state-wide figure is recorded.",
+  "Owner's rule applied: the fee committee / Medical Education Dept private MD/MS fee orders (2024, 23-09-2025) were not used."
+ ]
+}

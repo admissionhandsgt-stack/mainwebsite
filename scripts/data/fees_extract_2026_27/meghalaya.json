@@ -1,0 +1,53 @@
+{
+ "state": "Meghalaya",
+ "checked": "2026-10-25",
+ "files": [
+  {
+   "id": "neigrihms-pg-2026-27",
+   "url": "https://www.neigrihms.gov.in/Latest%20News/academics/2026/PG/PG%202026-27/Prospectus%20PG%20MD%20MS%202026-2027.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/east/07_neigrihms/Prospectus_PG_MD_MS_2026-2027.pdf",
+   "title": "Prospectus for Counseling and admission to the PG (MD/MS) COURSE Session: 2026-2027",
+   "issuer": "NEIGRIHMS, Shillong",
+   "bytes": 1462061,
+   "scanned": false
+  }
+ ],
+ "html": [],
+ "colleges": [
+  {
+   "college": "North Eastern Indira Gandhi Regional Institute of Health and Medical Sciences (NEIGRIHMS), Shillong",
+   "roster": [
+    {
+     "id": 24,
+     "name": "North Eastern Indira Gandhi Regional Institute of Health and Medical Sciences, Shillong"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "neigrihms-pg-2026-27",
+   "page": 10,
+   "year_label": "Prospectus for Counseling and admission to the PG (MD/MS) COURSE Session: 2026-2027",
+   "period": "per year",
+   "quote": "FEES: … MD/MS | A One Time Fees: Admission Fees Rs.20,000/- | University Enrolment & Registration Fees Rs.700/- | B Annual Fees: Tuition Fees Rs.8,000/- | Library Rs.2,000/- | Laboratory Rs.3,000/- | Hostel Rs. 12,000/- | Sports & Games Rs.1,000/- | Magazine Rs.300/- | Cultural and Annual Meet Rs. 1,000/- | Health Care Rs. 1,000/- | Sub-Total Rs.28,300/- | Security deposit Rs.20,000/- | Grand Total Rs.69,000/-",
+   "fees": [
+    {
+     "seat": "Other:MD/MS (prospectus covers Open North Eastern and NEIGRIHMS pass-out seats)",
+     "seat_as_printed": "MD/MS — Annual Fees: Tuition Fees",
+     "branches": "*",
+     "inr": 8000,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 12000,
+    "max": 12000,
+    "text": "Hostel Fees Rs. 12,000/- (annual); Mess fee decided by Mess Committee"
+   },
+   "notes": "'*Fee Structure may be changed'; 'subject to revision at the discretion of the Institute/Government of India'. Annual sub-total Rs 28,300; first-year grand total Rs 69,000 incl. one-time Rs 20,700 and refundable security Rs 20,000. Prospectus is for the institute's own counselling (NE Open + NEIGRIHMS pass-out); AIQ seats' fee not separately stated."
+  }
+ ],
+ "government_all": [],
+ "not_published": [],
+ "candidate_files_not_downloaded": []
+}

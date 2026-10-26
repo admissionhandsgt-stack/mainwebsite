@@ -1,0 +1,107 @@
+{
+ "checked": "2026-10-25",
+ "files": [
+  {
+   "id": "namo-aiq-fee",
+   "url": "https://namomeri.in/sites/default/files/2026/Fee%20Structure%20and%20Bond%20Details%20AIQ.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north/10_namo_fee/NAMO_Fee_Bond_AIQ.pdf",
+   "title": "FEE STRUCTURE FOR POSTGRADUATE MEDICAL COURSES (MD/MS) UNDER THE ALL-INDIA QUOTA (AIQ)",
+   "issuer": "NAMO Medical Education & Research Institute, Silvassa (stamp: NAMO Medical Education & Research Society)",
+   "bytes": 446478,
+   "scanned": false
+  }
+ ],
+ "html": [
+  {
+   "id": "namo-fees-page",
+   "url": "https://namomeri.in/fees-stucture.html",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north/html/namo_fees.txt",
+   "title": "Fees Stucture | Namo — lists 'Fees Structure for Post Graduate (MD/MS) to Academic Year 2025-26' and MBBS 2026-27; the AIQ file is linked on the home page as 'FEE STRUCTURE FOR POSTGRADUATE MEDICAL COURSES (MDIMS) UNDER THE ALL-INDIA QUOTA (AIQ) NEW'"
+  }
+ ],
+ "colleges": [],
+ "government_all": [],
+ "not_published": [
+  {
+   "college": "NAMO Medical Education and Research Institute, Silvassa (Prev. Shri Vinoba Bhave Institute of Medical Sciences), (Government Medical College, Silvassa)",
+   "roster_id": 564,
+   "latest_seen": "Own file 'FEE STRUCTURE FOR POSTGRADUATE MEDICAL COURSES (MD/MS) UNDER THE ALL-INDIA QUOTA (AIQ)' (uploaded 17 Oct 2026 under /files/2026/) prints NO year or session — unlabelled, so not used under the rule. Its figures are kept below for the decision.",
+   "decision_needed": "Unlabelled but posted 17 Oct 2026 during NEET-PG 2026 counselling, beside the 'Prospects for admission to PG Course for academic year 2026-27' (not downloaded, 28.9 MB) which may carry the same table with a year label",
+   "unlabelled_candidate": {
+    "source": "namo-aiq-fee",
+    "page": 1,
+    "ownership": "government",
+    "source_kind": "college-own",
+    "period": "per year ('Annual Tuition Fee (per year)')",
+    "quote": "Admission Fee (One Time) ₹5,000/- | Annual Tuition Fee (per year): M.D. – Anaesthesiology ₹12.00 Lakhs; M.D. – Community Medicine ₹7.00 Lakhs; M.D. – Dermatology & Venereology ₹20.00 Lakhs; M.D. – General Medicine ₹15.00 Lakhs; M.S. – General Surgery ₹15.00 Lakhs; M.D. – Microbiology ₹7.00 Lakhs; M.S. – Obstetrics & Gynaecology ₹15.00 Lakhs; M.S. – Ophthalmology ₹15.00 Lakhs; M.S. – Orthopaedics ₹15.00 Lakhs; M.D. – Paediatrics ₹15.00 Lakhs; M.D. – Pathology ₹7.00 Lakhs; M.D. – Radio Diagnosis ₹20.00 Lakhs | Library Fee (per year) ₹2,000/- | Hostel Fee (per month) ₹2,000/- | Security Deposit (Refundable) ₹1,00,000/-",
+    "fees": [
+     {
+      "seat": "AIQ",
+      "seat_as_printed": "Annual Tuition Fee (per year), All-India Quota",
+      "branches": [
+       "M.D. – Anaesthesiology (MD Anaesthesiology)"
+      ],
+      "inr": 1200000,
+      "usd": null,
+      "maximum": false
+     },
+     {
+      "seat": "AIQ",
+      "seat_as_printed": "Annual Tuition Fee (per year), All-India Quota",
+      "branches": [
+       "M.D. – Community Medicine (MD Social & Preventive Medicine)",
+       "M.D. – Microbiology (MD Microbiology)",
+       "M.D. – Pathology (MD Pathology)"
+      ],
+      "inr": 700000,
+      "usd": null,
+      "maximum": false
+     },
+     {
+      "seat": "AIQ",
+      "seat_as_printed": "Annual Tuition Fee (per year), All-India Quota",
+      "branches": [
+       "M.D. – Dermatology & Venereology (MD Dermatology, Venereology & Leprosy)",
+       "M.D. – Radio Diagnosis (MD Radio Diagnosis)"
+      ],
+      "inr": 2000000,
+      "usd": null,
+      "maximum": false
+     },
+     {
+      "seat": "AIQ",
+      "seat_as_printed": "Annual Tuition Fee (per year), All-India Quota",
+      "branches": [
+       "M.D. – General Medicine (MD General Medicine)",
+       "M.S. – General Surgery (MS General Surgery)",
+       "M.S. – Obstetrics & Gynaecology (MS Obstetrics & Gynaecology)",
+       "M.S. – Ophthalmology (MS Ophthalmology)",
+       "M.S. – Orthopaedics (MS Orthopaedics)",
+       "M.D. – Paediatrics (MD Paediatrics)"
+      ],
+      "inr": 1500000,
+      "usd": null,
+      "maximum": false
+     }
+    ],
+    "hostel": {
+     "min": null,
+     "max": null,
+     "text": "Hostel Fee (per month) ₹2,000/-"
+    },
+    "notes": "AIQ only; DD/DNH/Other-State seats not covered. 'No Service Bond is applicable for All India Candidates'; penalty Rs. 5,00,000 plus tuition for the entire course for leaving. 'The fee structure is subject to revision from time to time.'"
+   }
+  }
+ ],
+ "candidate_files_not_downloaded": [
+  {
+   "college": "NAMO Medical Education and Research Institute, Silvassa",
+   "url": "https://namomeri.in/sites/default/files/2026/pg%20ad%20file%20hd.pdf",
+   "title": "Prospects for admission to Post Graduate Course for academic year 2026-27",
+   "bytes": 28946280,
+   "date": "2026-10-22",
+   "why": "own 2026-27 PG prospectus (probably scanned); may give the labelled fee incl. DD/DNH state seats"
+  }
+ ],
+ "state": "Dadra and Nagar Haveli"
+}

@@ -1,0 +1,176 @@
+{
+  "state": "Telangana",
+  "checked": "2026-10-25",
+  "files": [
+    { "id": "knruhs-cq", "url": "https://www.knruhs.telangana.gov.in/wp-content/uploads/notifications/20261014110317_KNRUHS-MEDICAL-PG-DEGREE-DIPLOMA-ADMISSIONS-UNDER-COMPETENT-AUTHORITY-QUOTA-FOR-THE-AY-2026-27-PROSPECTUS.pdf",
+      "path": "dl/apts/03_knruhs_cq/knruhs_pg_cq_prospectus_2026-27.pdf",
+      "title": "PROSPECTUS FOR ADMISSION INTO PG MEDICAL DEGREE AND DIPLOMA COURSES UNDER COMPETENT AUTHORITY QUOTA FOR IN-SERVICE AND NON-SERVICE CANDIDATES FOR THE ACADEMIC YEAR 2026-27",
+      "issuer": "Kaloji Narayana Rao University of Health Sciences, Warangal (state counselling authority)", "bytes": 2098062, "scanned": false },
+    { "id": "mrims", "url": "https://mrims.edu.in/docs/Fee%20Structure/MRIMS_PG%20Fee_26-27.pdf",
+      "path": "dl/apts/07_mrims/MRIMS_PG_Fee_26-27.pdf",
+      "title": "FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27 - Malla Reddy Institute of Medical Sciences (A Constituent Unit of MRV)",
+      "issuer": "Malla Reddy Institute of Medical Sciences / Malla Reddy Vishwavidyapeeth (Deemed to be University); Sd/- Dr. A. Suman Chandra, Dean", "bytes": 376770, "scanned": false },
+    { "id": "mrmcw", "url": "https://mrmcw.edu.in/docs/Fee%20Structure/MRMCW_PG%20Fee_26-27.pdf",
+      "path": "dl/apts/08_mrmcw/MRMCW_PG_Fee_26-27.pdf",
+      "title": "FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27 - Malla Reddy Medical College for Women (A Constituent Unit of MRV)",
+      "issuer": "Malla Reddy Medical College for Women / Malla Reddy Vishwavidyapeeth (Deemed to be University); Sd/- Dr. S. Sreelatha, Dean", "bytes": 360857, "scanned": false },
+    { "id": "nims", "url": "https://nims.edu.in/NIMSWP/upload/admission_uploads/2026-10-23/BROAD_SPECIALITY_MDMS_Prospectus__23-10-26.pdf",
+      "path": "dl/apts/09_nims/BROAD_SPECIALITY_MDMS_Prospectus__23-10-26.pdf",
+      "title": "Prospectus for Admission into Post Graduate Broad Specialty MD/MS Courses for the year 2026-2027 (notice No. NIMS/AC1/236/MD/MS2026Admissions)",
+      "issuer": "Nizam's Institute of Medical Sciences (a university established under the State Act), Hyderabad", "bytes": 3227525, "scanned": false },
+    { "id": "gandhi", "url": "http://gmcsecunderabad.org/wp-content/uploads/2026/10/GMC-PG-Admissions-Guidelines-2026-2027-1.pdf",
+      "path": "dl/apts/10_gandhi/GMC-PG-Admissions-Guidelines-2026-2027-1.pdf",
+      "title": "Gandhi Medical College - ADMISSIONS FOR MD/MS, DIPLOMA COURSES 2026-2027 (PG Admissions Guidelines 2026-2027)",
+      "issuer": "Gandhi Medical College, Secunderabad (Government of Telangana)", "bytes": 515989, "scanned": false },
+    { "id": "nalgonda", "url": "https://api.mularemote.in/files/files/notifications/PG%20Admissions%20Guidelines%202026-2027.pdf",
+      "path": "dl/apts/11_nalgonda/PG_Admissions_Guidelines_2026-2027.pdf",
+      "title": "PG Admissions Guidelines 2026-2027 - Government Medical College, Nalgonda (linked from gmcnalgonda.in; file hosted on the site builder's api.mularemote.in)",
+      "issuer": "Government Medical College, Nalgonda (Government of Telangana)", "bytes": 2927339, "scanned": false }
+  ],
+  "html": [],
+  "colleges": [
+    {
+      "college": "Malla Reddy Institute of Medical Sciences, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+      "roster": [ { "id": 1659, "name": "Malla Reddy Institute of Medical Sciences, Hyderabad" } ],
+      "ownership": "deemed", "source_kind": "college-own", "source": "mrims", "page": 1,
+      "year_label": "FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27",
+      "period": "per year",
+      "quote": "Annual Fee General Category (Rs.) | Annual NRI Course Fee (USD): MD General Medicine 55,00,000/- $ 1,10,000 ... MD Radio Diagnosis 60,00,000/- $ 1,30,000 ... MS General Surgery 40,00,000/- $ 85,000",
+      "fees": [
+        { "seat": "Mgmt", "seat_as_printed": "Annual Fee General Category (Rs.)", "branches": ["MD General Medicine"], "inr": 5500000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Annual Fee General Category (Rs.)", "branches": ["MD Pediatrics (MD Paediatrics)", "MS Obstetrics and Gynaecology (MS Obstetrics & Gynaecology)"], "inr": 5000000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Annual Fee General Category (Rs.)", "branches": ["MD Respiratory Medicine (MD Tuberculosis & Respiratory Diseases)", "MD Emergency Medicine"], "inr": 3500000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Annual Fee General Category (Rs.)", "branches": ["MD Dermatology, Venereology & Leprosy"], "inr": 6500000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Annual Fee General Category (Rs.)", "branches": ["MD Psychiatry"], "inr": 2500000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Annual Fee General Category (Rs.)", "branches": ["MD Anaesthesiology", "MS Oto-Rhino-Laryngology (MS ENT)"], "inr": 3000000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Annual Fee General Category (Rs.)", "branches": ["MD Radio Diagnosis"], "inr": 6000000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Annual Fee General Category (Rs.)", "branches": ["MD Pathology"], "inr": 1100000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Annual Fee General Category (Rs.)", "branches": ["MD Microbiology", "MD Community Medicine / SPM (MD Social & Preventive Medicine)"], "inr": 250000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Annual Fee General Category (Rs.)", "branches": ["MS General Surgery", "MS Orthopedics (MS Orthopaedics)", "MS Ophthalmology"], "inr": 4000000, "usd": null, "maximum": false },
+        { "seat": "NRI", "seat_as_printed": "Annual NRI Course Fee (USD)", "branches": ["MD General Medicine", "MD Pediatrics (MD Paediatrics)", "MS Obstetrics and Gynaecology (MS Obstetrics & Gynaecology)"], "inr": null, "usd": 110000, "maximum": false },
+        { "seat": "NRI", "seat_as_printed": "Annual NRI Course Fee (USD)", "branches": ["MD Dermatology, Venereology & Leprosy", "MD Radio Diagnosis"], "inr": null, "usd": 130000, "maximum": false },
+        { "seat": "NRI", "seat_as_printed": "Annual NRI Course Fee (USD)", "branches": ["MS General Surgery", "MS Orthopedics (MS Orthopaedics)", "MS Ophthalmology"], "inr": null, "usd": 85000, "maximum": false }
+      ],
+      "hostel": { "min": 177000, "max": 177000, "text": "Hostel Fee – Per Annum Rs. 1,77,000/- (Non-A/C Room with Mess) *Upgradation of Hostel Available. (Admission & Hostel Fee Structure – 2026 – 2027)" },
+      "notes": "Column headers say 'Annual'; but page 2 notes: 'Tuition Fee: -Tuition Fee for entire course applicable in 3 installments.' - unclear whether the printed figure is per year or the whole course paid in 3 instalments; recorded as printed ('Annual'). 'General Category' = the deemed university's MCC management/paid seat (our quota MNG). Also p.2: 'Admission Fee, University Registration Fee, Eligibility Certificate Fee, Digital Learning resources, Library, e-Portfolio, Digital Logbook, Research Support - Rs. 1,00,000/-'. Stipend printed 47,500 / 49,500 / 51,500 per month. NRI '-' for branches without NRI fee. Read from rendered page image (text layer duplicated). NMC still files the college under KNRUHS."
+    },
+    {
+      "college": "Malla Reddy Medical College for Women, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+      "roster": [ { "id": 1788, "name": "Mallareddy Medical College for Women, Hyderabad" } ],
+      "ownership": "deemed", "source_kind": "college-own", "source": "mrmcw", "page": 1,
+      "year_label": "FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27",
+      "period": "per year",
+      "quote": "Annual Fee General Category (Rs.) | Annual NRI Course Fee (USD): MD General Medicine 55,00,000/- $ 1,10,000 ... MD Anatomy 1,00,000/- ... MD Pharmacology 2,50,000/- ... MS Orthopedics 40,00,000/- -",
+      "fees": [
+        { "seat": "Mgmt", "seat_as_printed": "Annual Fee General Category (Rs.)", "branches": ["MD General Medicine"], "inr": 5500000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Annual Fee General Category (Rs.)", "branches": ["MD Pediatrics (MD Paediatrics)", "MS Obstetrics and Gynaecology (MS Obstetrics & Gynaecology)"], "inr": 5000000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Annual Fee General Category (Rs.)", "branches": ["MD Respiratory Medicine (MD Tuberculosis & Respiratory Diseases)", "MD Emergency Medicine"], "inr": 3500000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Annual Fee General Category (Rs.)", "branches": ["MD Dermatology (MD Dermatology, Venereology & Leprosy)"], "inr": 6500000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Annual Fee General Category (Rs.)", "branches": ["MD Psychiatry", "MD Radiation Oncology"], "inr": 2500000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Annual Fee General Category (Rs.)", "branches": ["MD Anaesthesiology", "MS ENT"], "inr": 3000000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Annual Fee General Category (Rs.)", "branches": ["MD Radio Diagnosis"], "inr": 6000000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Annual Fee General Category (Rs.)", "branches": ["MD Anatomy"], "inr": 100000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Annual Fee General Category (Rs.)", "branches": ["MD Pathology"], "inr": 1100000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Annual Fee General Category (Rs.)", "branches": ["MD Pharmacology"], "inr": 250000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Annual Fee General Category (Rs.)", "branches": ["MS General Surgery", "MS Orthopedics (MS Orthopaedics)", "MS Ophthalmology"], "inr": 4000000, "usd": null, "maximum": false },
+        { "seat": "NRI", "seat_as_printed": "Annual NRI Course Fee (USD)", "branches": ["MD General Medicine", "MD Pediatrics (MD Paediatrics)", "MS Obstetrics and Gynaecology (MS Obstetrics & Gynaecology)"], "inr": null, "usd": 110000, "maximum": false },
+        { "seat": "NRI", "seat_as_printed": "Annual NRI Course Fee (USD)", "branches": ["MD Dermatology (MD Dermatology, Venereology & Leprosy)", "MD Radio Diagnosis"], "inr": null, "usd": 130000, "maximum": false },
+        { "seat": "NRI", "seat_as_printed": "Annual NRI Course Fee (USD)", "branches": ["MS General Surgery", "MS Ophthalmology"], "inr": null, "usd": 85000, "maximum": false }
+      ],
+      "hostel": { "min": 177000, "max": 177000, "text": "Hostel Fee – Per Annum Rs. 1,77,000/- (Non-A/C Room with Mess) *Upgradation of Hostel Available." },
+      "notes": "Same caveat as MRIMS: headers 'Annual', but p.2 'Tuition Fee for entire course applicable in 3 installments.' Admission/University registration etc. Rs.1,00,000/-. MS Orthopedics has no NRI figure ('-') here (unlike MRIMS). Read from rendered page image."
+    },
+    {
+      "college": "Nizam's Institute of Medical Sciences (a University established under the State Act), Punjagutta, Hyderabad",
+      "roster": [ { "id": 7, "name": "Nizams Institute of Medical Sciences, Hyderabad" } ],
+      "ownership": "government", "source_kind": "university-own", "source": "nims", "page": 6,
+      "year_label": "Prospectus for Admission into Post Graduate Broad Specialty MD/MS Courses for the year 2026-2027",
+      "period": "per month (as printed: 'Tuition fee Monthly' 1st year Rs.6,000, 2nd year Rs.7,000, 3rd year Rs.8,000)",
+      "quote": "V. Fee Structure 1 Admission Fee One time Rs.10,000; 2 Course Fee Periodicity 1st year 2nd year 3rd year: i. Tuition fee Monthly Rs.6,000 Rs.7,000 Rs.8,000; ii. Library fee Annual Rs.3,000 Rs.3,000 Rs.3,000; iii. Medical fee One time Rs.4,050; iv. Examination fee One time Rs.10000 (3rd year); v. Thesis & Paper Evaluation One time Rs.7,500 (2nd year); vi. Alumni Services One time Rs.3,500 (3rd year)",
+      "fees": [
+        { "seat": "Gen", "seat_as_printed": "All the candidates selected for admission including in-service candidates - Tuition fee Monthly, 1st year", "branches": "*", "inr": 6000, "usd": null, "maximum": false },
+        { "seat": "AIQ", "seat_as_printed": "All the candidates selected for admission including in-service candidates - Tuition fee Monthly, 1st year", "branches": "*", "inr": 6000, "usd": null, "maximum": false }
+      ],
+      "hostel": { "min": null, "max": null, "text": "Accommodation within the campus depending upon availability, on the charges fixed as per the rules of the Institution (no amount printed)" },
+      "notes": "Tuition is printed as a MONTHLY amount rising by year (6,000 / 7,000 / 8,000); recorded the 1st-year monthly figure as printed - do not treat as annual. 'For those candidates receiving stipend, the tuition fee shall be deducted from the stipend.' Fee applies to all selected candidates (AIQ and Telangana state quota)."
+    },
+    {
+      "college": "Gandhi Medical College, Secunderabad",
+      "roster": [ { "id": 61, "name": "Gandhi Medical College, Secunderabad" } ],
+      "ownership": "government", "source_kind": "college-own", "source": "gandhi", "page": 5,
+      "year_label": "PG Fee Structure for the Academic Year 2026-27",
+      "period": "per year",
+      "quote": "2 College Fee (To CDS Account) A. CDSFee:Rs.15,000/- B. Academic Fee: Rs. 7,000/- C. LibraryFee:Rs.3,000/- Total Rs.25,000/- Yearly AIQ & State Candidates; 1 University Fee Rs.29,600/- One Time (Only for AIQ Candidates ...)",
+      "fees": [
+        { "seat": "Gen", "seat_as_printed": "College Fee - AIQ & State Candidates", "branches": "*", "inr": 25000, "usd": null, "maximum": false },
+        { "seat": "AIQ", "seat_as_printed": "College Fee - AIQ & State Candidates", "branches": "*", "inr": 25000, "usd": null, "maximum": false }
+      ],
+      "hostel": null,
+      "notes": "No separate 'tuition' head; the college fee (CDS 15,000 + Academic 7,000 + Library 3,000) is what the college charges yearly. Plus University Fee Rs.29,600/- one time for AIQ candidates only (to Registrar KNRUHS); equivalency fee Rs.8,000 (MBBS outside TS & AP) / Rs.10,000 (abroad). Discontinuation bond Rs.50,00,000; service bond Rs.20,00,000 (degree) / Rs.10,00,000 (diploma)."
+    },
+    {
+      "college": "Government Medical College, Nalgonda",
+      "roster": [ { "id": 667, "name": "Government Medical College, Nalgonda" } ],
+      "ownership": "government", "source_kind": "college-own", "source": "nalgonda", "page": 2,
+      "year_label": "FEE STRUCTURE –2026-27(PG)",
+      "period": "per year",
+      "quote": "1. College Fee Rs. 25,000/- (Yearly – AIQ & State Quota) 2. Academic Development Fund Rs.5,000/- (One Time) 3 E-Library Rs.2000/- (Once Yearly) 4. Non Government Fee Rs.2,000/- (One Time) 5 Co-Operative Stores Rs.1000/- (One Time) Total: Rs.37,000/-",
+      "fees": [
+        { "seat": "Gen", "seat_as_printed": "College Fee (Yearly – AIQ & State Quota)", "branches": "*", "inr": 25000, "usd": null, "maximum": false },
+        { "seat": "AIQ", "seat_as_printed": "College Fee (Yearly – AIQ & State Quota)", "branches": "*", "inr": 25000, "usd": null, "maximum": false }
+      ],
+      "hostel": null,
+      "notes": "Other heads one-time or yearly as printed (total Rs.37,000/-). Processing fee Rs.2,000; equivalency fee Rs.5,000 (other states) / Rs.7,000 (other country); University Fee Rs.29,600/- for ALL INDIA QUOTA STUDENTS ONLY (DD to Registrar KNRUHS)."
+    }
+  ],
+  "government_all": [
+    {
+      "scope": "all Competent Authority Quota seats in Telangana (government and private colleges) - university fee and tuition statement",
+      "source": "knruhs-cq", "page": 21,
+      "year_label": "PROSPECTUS ... COMPETENT AUTHORITY QUOTA ... FOR THE ACADEMIC YEAR 2026-27",
+      "quote": "The Tuition fee for Competent Authority Quota seats in respect of Degree and Diploma of clinical, para-clinical and pre-clinical courses shall be as notified by the Government of Telangana. ... The letter of allotment ... has to be downloaded from the website after payment of university fee an amount of Rs. 35,000/- (Rupes Thirty-Five thousand Only) by payment gateway.",
+      "fees": [ { "seat": "Other:University fee (CQ, paid before downloading the allotment letter)", "seat_as_printed": "university fee", "branches": "*", "inr": 35000, "usd": null, "maximum": false } ],
+      "notes": "No tuition figure printed for any college (only 'as notified by the Government of Telangana'). The University fee is not tuition. Registration & processing fee Rs.10,000 (OC/BC) / Rs.8,000 (SC/ST). Discontinuation bond Rs.50,00,000; service bond Rs.20,00,000 (degree) / Rs.10,00,000 (diploma). KNRUHS MQ prospectus was not downloaded (instruction)."
+    }
+  ],
+  "not_published": [
+    { "college": "Employees State Insurance Coporation Medical College, Sanath Nagar", "roster_id": 31, "latest_seen": "No own site found; nothing in KNRUHS CQ prospectus" },
+    { "college": "Government Medical College, Mahabubnagar", "roster_id": 662, "latest_seen": "No own site found" },
+    { "college": "Government Medical College, Nizamabad", "roster_id": 154, "latest_seen": "gmcnzb.org: PG results only, no fee" },
+    { "college": "Government Medical College, Ramagundam", "roster_id": 825, "latest_seen": "gmcramagundam.in: 2025-26 PG list only" },
+    { "college": "Government Medical College, Siddipet", "roster_id": 261, "latest_seen": "2025-26: 'PG Fees and Guidelines 2025-26' https://gmcsiddipet.org/wp-content/uploads/2025/11/GMC-Siddipet-PG-admissions-2025-26.pdf (6,127,700 B)" },
+    { "college": "Government Medical College, Suryapet", "roster_id": 758, "latest_seen": "gmcsuryapet.org notifications: UG 2026-27 and paramedical only" },
+    { "college": "Kakatiya Medical College, Warangal", "roster_id": 149, "latest_seen": "No own site found" },
+    { "college": "Osmania Medical College, Hyderabad", "roster_id": 34, "latest_seen": "omc.ac.in latest PG page 'PG Admission, 2025-26' (documents list, no fee)" },
+    { "college": "Rajiv Gandhi Institute of Medical Sciences, Adilabad", "roster_id": 229, "latest_seen": "rimsadilabad.org: MBBS 2026-27 fee only" },
+    { "college": "Apollo Institute of Medical Sciences and Research, Hyderabad", "roster_id": 2081, "latest_seen": "apolloimsr.edu.in: FEE-Structure.pdf (28 Jan 2026, year not labelled) and 2025-26 PG documents" },
+    { "college": "Ayaan Institute of Medical Sciences, Teaching Hospital & Research Centre, Kanaka Mamidi", "roster_id": 2101, "latest_seen": "ayaaninstitute.com blocked by firewall; unverified" },
+    { "college": "Bhaskar Medical College, Yenkapally", "roster_id": 2088, "latest_seen": "2025-26 PG documents/bonds only" },
+    { "college": "Chalmeda Anand Rao Institute of Medical Sciences, Karimnagar", "roster_id": 2085, "latest_seen": "caims.in: MBBS 2026-27 fee only" },
+    { "college": "CMR Institute of Medical Sciences, Kandlakoya, Medchal", "roster_id": 2095, "latest_seen": "cmrims.ac.in: nothing PG" },
+    { "college": "Deccan College of Medical Sciences, Hyderabad", "roster_id": 2090, "latest_seen": "moved to dcms.ac.in; nothing PG fee" },
+    { "college": "Dr Patnam Mahender Reddy Institute of Medical Sciences, Chevella, Rangareddy", "roster_id": 2094, "latest_seen": "pmrims.com: 2026-27 MD/MS documents page, no fee" },
+    { "college": "Dr VRK Womens Medical College, Aziznagar", "roster_id": 2102, "latest_seen": "No own site found" },
+    { "college": "Kamineni Academy of Medical Sciences & Research Center, Hyderabad", "roster_id": 2082, "latest_seen": "kamsrc.com: 2022 Management Quota Fee Structure pdf" },
+    { "college": "Kamineni Institute of Medical Sciences, Narketpally", "roster_id": 2086, "latest_seen": "kimsmedicalcollege.org: PG admission 2020-21 latest" },
+    { "college": "Mahavir Institute of Medical Sciences, Vikarabad, Telengana", "roster_id": 2098, "latest_seen": "PG-Fee-2023.pdf (2023-24)" },
+    { "college": "Maheshwara Medical College, Chitkul, Patancheru, Medak", "roster_id": 2100, "latest_seen": "'PG ADMISSION MD / MS ARE OPEN' pdf, 21 Oct 2025 (2025-26 cycle)" },
+    { "college": "Mamata Academy of Medical Sciences, Bachupally", "roster_id": 2087, "latest_seen": "HTML 'PG FEE STRUCTURE FOR THE YEAR 2024-25' https://mams.org.in/postgraduate: Clinical A 7.00 L / B 23.00 L / C up to 3x B; Para-clinical A 4.30 L / B 5.30 L; Non-clinical A 1.70 L / B 1.70 L" },
+    { "college": "Mamata Medical College, Khammam", "roster_id": 2091, "latest_seen": "2025-26 CQ and MQ PG fee pdfs (15 Dec 2025) on mamatamedicalcollege.com/pg-fee-structure/" },
+    { "college": "Mediciti Institute of Medical Sciences, Ghanpur", "roster_id": 2084, "latest_seen": "mims.edu.in: MBBS 2026-27 only" },
+    { "college": "MNR Medical College & Hospital, Sangareddy", "roster_id": 2093, "latest_seen": "mnrmch.mnrindia.org: 'ADMISSIONS 2026' PG page, no fee" },
+    { "college": "Prathima Institute of Medical Sciences, Karimnagar", "roster_id": 2089, "latest_seen": "No own site found" },
+    { "college": "RVM Institute of Medical Sciences and Research Centre, Siddipet", "roster_id": 2092, "latest_seen": "rvmims.edu.in 'Fee for PG' PG_Medical_College_Fee.pdf (14 May 2026, year unknown, not downloaded)" },
+    { "college": "Shadan Institute of Medical Sciences, Research Centre and Teaching Hospital, Peerancheru", "roster_id": 2099, "latest_seen": "shadan.in: MBBS 2026-27 fee only; PG admissions archive 2023-24" },
+    { "college": "Surabhi Institute of Medical Sciences, Siddipet", "roster_id": 2096, "latest_seen": "No own site found" },
+    { "college": "SVS Medical College, Mehboobnagar", "roster_id": 2083, "latest_seen": "svsmc.org 'Coming Soon' (unverified)" },
+    { "college": "TRR Institute of Medical Sciences, Inole, Patancheru", "roster_id": 2097, "latest_seen": "No own site found" },
+    { "college": "Neelima Institute of Medical Sciences, Medchal", "roster_id": 2121, "latest_seen": "NMC: under Anurag University; anurag.edu.in fee calculator (2026-27) lists only MBBS for medical sciences, no MD/MS fee" }
+  ],
+  "candidate_files_not_downloaded": [
+    { "college": "RVM Institute of Medical Sciences and Research Centre, Siddipet", "url": "https://rvmims.edu.in/Pdf_Files/PG_Medical_College_Fee.pdf", "title": "Fee for PG", "bytes": 679048, "date": "2026-05-14", "why": "college-hosted PG fee file, year not labelled in the link (May 2026 - probably the 2023-26 G.O. table)" },
+    { "college": "Apollo Institute of Medical Sciences and Research, Hyderabad", "url": "https://apolloimsr.edu.in/wp-content/uploads/2026/01/FEE-Structure.pdf", "title": "FEE Structure", "bytes": 205332, "date": "2026-01-28", "why": "college fee file, year/course not labelled" },
+    { "college": "Apollo Institute of Medical Sciences and Research, Hyderabad", "url": "https://apolloimsr.edu.in/wp-content/uploads/2026/06/Hostel-Fee-Structure-UG-PG.pdf", "title": "Hostel Fee Structure – UG & PG", "bytes": 82141, "date": "2026-06-10", "why": "hostel only" },
+    { "college": "Malla Reddy Vishwavidyapeeth (both Malla Reddy colleges)", "url": "https://mrvv.edu.in/wp-content/uploads/2026/06/MRV-FEE-DETAILS.pdf", "title": "MRV Fee Details", "bytes": 352731, "date": "2026-06-30", "why": "university-level fee list; the colleges' own 2026-27 PG files (downloaded) are newer (17 Oct 2026)" }
+  ]
+}

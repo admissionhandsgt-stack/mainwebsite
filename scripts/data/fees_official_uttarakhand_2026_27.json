@@ -1,0 +1,2261 @@
+{
+ "state": "Uttarakhand",
+ "classes": [
+  [
+   "NRI",
+   "NRI"
+  ],
+  [
+   "^(MM|JM)$|Minority|Min\\.? |Min$|Min\\.$|-Min",
+   "Min"
+  ],
+  [
+   "^AIQ$",
+   "AIQ"
+  ],
+  [
+   "^MNG$|Mgmt|Management|Mgt|Others \\(Inst|CatB|MQ1|Paid",
+   "Mgmt"
+  ],
+  [
+   "CatC-Inst|MQ3",
+   "Inst"
+  ],
+  [
+   "^DNB Post MBBS$|^NBE Diploma$",
+   "DNB"
+  ],
+  [
+   "DNB|AFMS",
+   "Other"
+  ],
+  [
+   ".",
+   "Gen"
+  ]
+ ],
+ "null_class": {
+  "AP Govt PG": "Gen",
+  "TEL Govt PG": "Gen",
+  "AP Mgmt PG": "NRI"
+ },
+ "entries": [
+  {
+   "college": "Government Doon Medical College, Dehradun",
+   "ids": [
+    129
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Pharmacology",
+    "MD Microbiology",
+    "MD Forensic Medicine",
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_doon, p. 1 — \"शैक्षणिक सत्र 2026 हेतु स्नातकोत्तर पाठ्यक्रमों (एम0डी0/एम0एस0) हेतु शुल्क का विवरण\""
+  },
+  {
+   "college": "Government Doon Medical College, Dehradun",
+   "ids": [
+    129
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Pharmacology",
+    "MD Microbiology",
+    "MD Forensic Medicine",
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_doon, p. 1 — \"शैक्षणिक सत्र 2026 हेतु स्नातकोत्तर पाठ्यक्रमों (एम0डी0/एम0एस0) हेतु शुल्क का विवरण\""
+  },
+  {
+   "college": "Government Doon Medical College, Dehradun",
+   "ids": [
+    129
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_doon, p. 1 — \"शैक्षणिक सत्र 2026 हेतु स्नातकोत्तर पाठ्यक्रमों (एम0डी0/एम0एस0) हेतु शुल्क का विवरण\""
+  },
+  {
+   "college": "Government Doon Medical College, Dehradun",
+   "ids": [
+    129
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_doon, p. 1 — \"शैक्षणिक सत्र 2026 हेतु स्नातकोत्तर पाठ्यक्रमों (एम0डी0/एम0एस0) हेतु शुल्क का विवरण\""
+  },
+  {
+   "college": "Government Doon Medical College, Dehradun",
+   "ids": [
+    129
+   ],
+   "seat": "Hostel",
+   "text": "छात्रावास शुल्क (प्रतिवर्ष) Rs. 12,000/-",
+   "year": "2026-27",
+   "source": "hnb_doon, p. 1 — \"शैक्षणिक सत्र 2026 हेतु स्नातकोत्तर पाठ्यक्रमों (एम0डी0/एम0एस0) हेतु शुल्क का विवरण\"",
+   "min": 12000,
+   "max": 12000
+  },
+  {
+   "college": "Government Medical College, Haldwani",
+   "ids": [
+    257
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Pharmacology",
+    "MD Microbiology",
+    "MD Forensic Medicine",
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_haldwani, p. 1 — \"विषय: विश्वविद्यालय द्वारा आगामी सत्र 2026-27 के लिये मेडिकल के स्नातक/स्नातकोत्तर पाठ्यक्रमों में प्रवेश हेतु नीट पी0जी0-2026 काउन्सिलिंग के सम्बन्ध में (letter dated 14/10/2026)\" — clinical / non-clinical as usually grouped",
+   "period": null
+  },
+  {
+   "college": "Government Medical College, Haldwani",
+   "ids": [
+    257
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Pharmacology",
+    "MD Microbiology",
+    "MD Forensic Medicine",
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_haldwani, p. 1 — \"विषय: विश्वविद्यालय द्वारा आगामी सत्र 2026-27 के लिये मेडिकल के स्नातक/स्नातकोत्तर पाठ्यक्रमों में प्रवेश हेतु नीट पी0जी0-2026 काउन्सिलिंग के सम्बन्ध में (letter dated 14/10/2026)\" — clinical / non-clinical as usually grouped",
+   "period": null
+  },
+  {
+   "college": "Government Medical College, Haldwani",
+   "ids": [
+    257
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_haldwani, p. 1 — \"विषय: विश्वविद्यालय द्वारा आगामी सत्र 2026-27 के लिये मेडिकल के स्नातक/स्नातकोत्तर पाठ्यक्रमों में प्रवेश हेतु नीट पी0जी0-2026 काउन्सिलिंग के सम्बन्ध में (letter dated 14/10/2026)\"",
+   "period": null
+  },
+  {
+   "college": "Government Medical College, Haldwani",
+   "ids": [
+    257
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_haldwani, p. 1 — \"विषय: विश्वविद्यालय द्वारा आगामी सत्र 2026-27 के लिये मेडिकल के स्नातक/स्नातकोत्तर पाठ्यक्रमों में प्रवेश हेतु नीट पी0जी0-2026 काउन्सिलिंग के सम्बन्ध में (letter dated 14/10/2026)\"",
+   "period": null
+  },
+  {
+   "college": "Government Medical College, Haldwani",
+   "ids": [
+    257
+   ],
+   "seat": "Hostel",
+   "text": "Hostal Fee 12,000.00",
+   "year": "2026-27",
+   "source": "hnb_haldwani, p. 1 — \"विषय: विश्वविद्यालय द्वारा आगामी सत्र 2026-27 के लिये मेडिकल के स्नातक/स्नातकोत्तर पाठ्यक्रमों में प्रवेश हेतु नीट पी0जी0-2026 काउन्सिलिंग के सम्बन्ध में (letter dated 14/10/2026)\"",
+   "min": 12000,
+   "max": 12000
+  },
+  {
+   "college": "Soban Singh Jeena Govt. Institute of Medical Science & Research, Almora",
+   "ids": [
+    368
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Pharmacology",
+    "MD Microbiology",
+    "MD Forensic Medicine",
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_almora, p. 1 — \"शैक्षणिक सत्र 2026 हेतु स्नातकोत्तर पाठ्यक्रमों (एम0डी0/एम0एस0) हेतु शुल्क का विवरण (signed 17-10-2026)\""
+  },
+  {
+   "college": "Soban Singh Jeena Govt. Institute of Medical Science & Research, Almora",
+   "ids": [
+    368
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Pharmacology",
+    "MD Microbiology",
+    "MD Forensic Medicine",
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_almora, p. 1 — \"शैक्षणिक सत्र 2026 हेतु स्नातकोत्तर पाठ्यक्रमों (एम0डी0/एम0एस0) हेतु शुल्क का विवरण (signed 17-10-2026)\""
+  },
+  {
+   "college": "Soban Singh Jeena Govt. Institute of Medical Science & Research, Almora",
+   "ids": [
+    368
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_almora, p. 1 — \"शैक्षणिक सत्र 2026 हेतु स्नातकोत्तर पाठ्यक्रमों (एम0डी0/एम0एस0) हेतु शुल्क का विवरण (signed 17-10-2026)\""
+  },
+  {
+   "college": "Soban Singh Jeena Govt. Institute of Medical Science & Research, Almora",
+   "ids": [
+    368
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_almora, p. 1 — \"शैक्षणिक सत्र 2026 हेतु स्नातकोत्तर पाठ्यक्रमों (एम0डी0/एम0एस0) हेतु शुल्क का विवरण (signed 17-10-2026)\""
+  },
+  {
+   "college": "Soban Singh Jeena Govt. Institute of Medical Science & Research, Almora",
+   "ids": [
+    368
+   ],
+   "seat": "Hostel",
+   "text": "छात्रावास शुल्क (प्रतिवर्ष) Rs. 12,000/-",
+   "year": "2026-27",
+   "source": "hnb_almora, p. 1 — \"शैक्षणिक सत्र 2026 हेतु स्नातकोत्तर पाठ्यक्रमों (एम0डी0/एम0एस0) हेतु शुल्क का विवरण (signed 17-10-2026)\"",
+   "min": 12000,
+   "max": 12000
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Pharmacology",
+    "MD Microbiology"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Pharmacology",
+    "MD Microbiology"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Pharmacology",
+    "MD Microbiology"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Pharmacology",
+    "MD Microbiology"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Pharmacology",
+    "MD Microbiology"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Immuno Haematology & Blood Transfusion"
+   ],
+   "fee_inr": 1500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Immuno Haematology & Blood Transfusion"
+   ],
+   "fee_inr": 1500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Immuno Haematology & Blood Transfusion"
+   ],
+   "fee_inr": 1500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Immuno Haematology & Blood Transfusion"
+   ],
+   "fee_inr": 1500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Immuno Haematology & Blood Transfusion"
+   ],
+   "fee_inr": 1500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Radiation Oncology",
+    "MD Anaesthesiology",
+    "MS ENT",
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 1800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Radiation Oncology",
+    "MD Anaesthesiology",
+    "MS ENT",
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 1800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radiation Oncology",
+    "MD Anaesthesiology",
+    "MS ENT",
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 1800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Radiation Oncology",
+    "MD Anaesthesiology",
+    "MS ENT",
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 1800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Radiation Oncology",
+    "MD Anaesthesiology",
+    "MS ENT",
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 1800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Ophthalmology",
+    "MS General Surgery",
+    "MD Tuberculosis & Respiratory Diseases",
+    "MD General Medicine"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MS Ophthalmology",
+    "MS General Surgery",
+    "MD Tuberculosis & Respiratory Diseases",
+    "MD General Medicine"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Ophthalmology",
+    "MS General Surgery",
+    "MD Tuberculosis & Respiratory Diseases",
+    "MD General Medicine"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Min",
+   "branches": [
+    "MS Ophthalmology",
+    "MS General Surgery",
+    "MD Tuberculosis & Respiratory Diseases",
+    "MD General Medicine"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MS Ophthalmology",
+    "MS General Surgery",
+    "MD Tuberculosis & Respiratory Diseases",
+    "MD General Medicine"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Psychiatry",
+    "MD Paediatrics",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 2800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Psychiatry",
+    "MD Paediatrics",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 2800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Psychiatry",
+    "MD Paediatrics",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 2800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Psychiatry",
+    "MD Paediatrics",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 2800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Psychiatry",
+    "MD Paediatrics",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 2800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Orthopaedics",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MS Orthopaedics",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Min",
+   "branches": [
+    "MS Orthopaedics",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MS Orthopaedics",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\""
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "ids": [
+    2154
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Fee: PG Girl's / Boy's Hostel (Unmarried) 2,10,000/- per annum; PG Hostel (Married): 2,40,000/- per annum",
+   "year": "2026-27",
+   "source": "hnb_hims, p. 1 — \"Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'\"",
+   "min": 210000,
+   "max": 240000
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Social & Preventive Medicine",
+    "MD Pharmacology",
+    "MD Microbiology"
+   ],
+   "noseat": true,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\"",
+   "reason": "No tuition fee for this branch in the college's 2026-27 notice"
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Social & Preventive Medicine",
+    "MD Pharmacology",
+    "MD Microbiology"
+   ],
+   "noseat": true,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\"",
+   "reason": "No tuition fee for this branch in the college's 2026-27 notice"
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Social & Preventive Medicine",
+    "MD Pharmacology",
+    "MD Microbiology"
+   ],
+   "noseat": true,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\"",
+   "reason": "No tuition fee for this branch in the college's 2026-27 notice"
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Social & Preventive Medicine",
+    "MD Pharmacology",
+    "MD Microbiology"
+   ],
+   "noseat": true,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\"",
+   "reason": "No tuition fee for this branch in the college's 2026-27 notice"
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Social & Preventive Medicine",
+    "MD Pharmacology",
+    "MD Microbiology"
+   ],
+   "noseat": true,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\"",
+   "reason": "No tuition fee for this branch in the college's 2026-27 notice"
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 1700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 1700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 1700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 1700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 1700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Emergency Medicine",
+    "MD Radiation Oncology"
+   ],
+   "fee_inr": 2000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Emergency Medicine",
+    "MD Radiation Oncology"
+   ],
+   "fee_inr": 2000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Emergency Medicine",
+    "MD Radiation Oncology"
+   ],
+   "fee_inr": 2000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Emergency Medicine",
+    "MD Radiation Oncology"
+   ],
+   "fee_inr": 2000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Emergency Medicine",
+    "MD Radiation Oncology"
+   ],
+   "fee_inr": 2000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 2250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 2250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 2250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Min",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 2250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 2250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases",
+    "MS General Surgery"
+   ],
+   "fee_inr": 2575000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases",
+    "MS General Surgery"
+   ],
+   "fee_inr": 2575000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases",
+    "MS General Surgery"
+   ],
+   "fee_inr": 2575000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases",
+    "MS General Surgery"
+   ],
+   "fee_inr": 2575000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases",
+    "MS General Surgery"
+   ],
+   "fee_inr": 2575000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Psychiatry",
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 2675000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Psychiatry",
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 2675000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry",
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 2675000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Psychiatry",
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 2675000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Psychiatry",
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 2675000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD General Medicine",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 2800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD General Medicine",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 2800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 2800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD General Medicine",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 2800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD General Medicine",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 2800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 2850000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 2850000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 2850000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 2850000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 2850000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 3100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 3100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 3100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Min",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 3100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 3100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 3150000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 3150000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 3150000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Min",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 3150000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 3150000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 3200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 3200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 3200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 3200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 3200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\""
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "ids": [
+    2155
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Fee (per annum) 2,77,200/- (Mess Fee (per annum) 2,77,200/- separately)",
+   "year": "2026-27",
+   "source": "hnb_sgrr, p. 1 — \"TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)\"",
+   "min": 277200,
+   "max": 277200
+  },
+  {
+   "college": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun (a constituent college of Ras Bihari Bose Subharti University)",
+   "ids": [
+    2156
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 2575000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_gbcm, p. 1 — \"Tuition Fee for Post Graduate Courses (2026-2027): Tuition Fee per annum in Indian Rupees; NRI: 'Tuition Fee for Post Graduate Courses for NRI Candidates (2026-2027)' (p.3)\""
+  },
+  {
+   "college": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun (a constituent college of Ras Bihari Bose Subharti University)",
+   "ids": [
+    2156
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 2575000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_gbcm, p. 1 — \"Tuition Fee for Post Graduate Courses (2026-2027): Tuition Fee per annum in Indian Rupees; NRI: 'Tuition Fee for Post Graduate Courses for NRI Candidates (2026-2027)' (p.3)\""
+  },
+  {
+   "college": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun (a constituent college of Ras Bihari Bose Subharti University)",
+   "ids": [
+    2156
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_gbcm, p. 1 — \"Tuition Fee for Post Graduate Courses (2026-2027): Tuition Fee per annum in Indian Rupees; NRI: 'Tuition Fee for Post Graduate Courses for NRI Candidates (2026-2027)' (p.3)\""
+  },
+  {
+   "college": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun (a constituent college of Ras Bihari Bose Subharti University)",
+   "ids": [
+    2156
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_gbcm, p. 1 — \"Tuition Fee for Post Graduate Courses (2026-2027): Tuition Fee per annum in Indian Rupees; NRI: 'Tuition Fee for Post Graduate Courses for NRI Candidates (2026-2027)' (p.3)\""
+  },
+  {
+   "college": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun (a constituent college of Ras Bihari Bose Subharti University)",
+   "ids": [
+    2156
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 3050000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_gbcm, p. 1 — \"Tuition Fee for Post Graduate Courses (2026-2027): Tuition Fee per annum in Indian Rupees; NRI: 'Tuition Fee for Post Graduate Courses for NRI Candidates (2026-2027)' (p.3)\""
+  },
+  {
+   "college": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun (a constituent college of Ras Bihari Bose Subharti University)",
+   "ids": [
+    2156
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 3050000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_gbcm, p. 1 — \"Tuition Fee for Post Graduate Courses (2026-2027): Tuition Fee per annum in Indian Rupees; NRI: 'Tuition Fee for Post Graduate Courses for NRI Candidates (2026-2027)' (p.3)\""
+  },
+  {
+   "college": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun (a constituent college of Ras Bihari Bose Subharti University)",
+   "ids": [
+    2156
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 2475000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_gbcm, p. 1 — \"Tuition Fee for Post Graduate Courses (2026-2027): Tuition Fee per annum in Indian Rupees; NRI: 'Tuition Fee for Post Graduate Courses for NRI Candidates (2026-2027)' (p.3)\""
+  },
+  {
+   "college": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun (a constituent college of Ras Bihari Bose Subharti University)",
+   "ids": [
+    2156
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 2475000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_gbcm, p. 1 — \"Tuition Fee for Post Graduate Courses (2026-2027): Tuition Fee per annum in Indian Rupees; NRI: 'Tuition Fee for Post Graduate Courses for NRI Candidates (2026-2027)' (p.3)\""
+  },
+  {
+   "college": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun (a constituent college of Ras Bihari Bose Subharti University)",
+   "ids": [
+    2156
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 2700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_gbcm, p. 1 — \"Tuition Fee for Post Graduate Courses (2026-2027): Tuition Fee per annum in Indian Rupees; NRI: 'Tuition Fee for Post Graduate Courses for NRI Candidates (2026-2027)' (p.3)\""
+  },
+  {
+   "college": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun (a constituent college of Ras Bihari Bose Subharti University)",
+   "ids": [
+    2156
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 2700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_gbcm, p. 1 — \"Tuition Fee for Post Graduate Courses (2026-2027): Tuition Fee per annum in Indian Rupees; NRI: 'Tuition Fee for Post Graduate Courses for NRI Candidates (2026-2027)' (p.3)\""
+  },
+  {
+   "college": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun (a constituent college of Ras Bihari Bose Subharti University)",
+   "ids": [
+    2156
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 3100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_gbcm, p. 1 — \"Tuition Fee for Post Graduate Courses (2026-2027): Tuition Fee per annum in Indian Rupees; NRI: 'Tuition Fee for Post Graduate Courses for NRI Candidates (2026-2027)' (p.3)\""
+  },
+  {
+   "college": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun (a constituent college of Ras Bihari Bose Subharti University)",
+   "ids": [
+    2156
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 3100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_gbcm, p. 1 — \"Tuition Fee for Post Graduate Courses (2026-2027): Tuition Fee per annum in Indian Rupees; NRI: 'Tuition Fee for Post Graduate Courses for NRI Candidates (2026-2027)' (p.3)\""
+  },
+  {
+   "college": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun (a constituent college of Ras Bihari Bose Subharti University)",
+   "ids": [
+    2156
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 2750000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_gbcm, p. 1 — \"Tuition Fee for Post Graduate Courses (2026-2027): Tuition Fee per annum in Indian Rupees; NRI: 'Tuition Fee for Post Graduate Courses for NRI Candidates (2026-2027)' (p.3)\""
+  },
+  {
+   "college": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun (a constituent college of Ras Bihari Bose Subharti University)",
+   "ids": [
+    2156
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 2750000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_gbcm, p. 1 — \"Tuition Fee for Post Graduate Courses (2026-2027): Tuition Fee per annum in Indian Rupees; NRI: 'Tuition Fee for Post Graduate Courses for NRI Candidates (2026-2027)' (p.3)\""
+  },
+  {
+   "college": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun (a constituent college of Ras Bihari Bose Subharti University)",
+   "ids": [
+    2156
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 1700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_gbcm, p. 1 — \"Tuition Fee for Post Graduate Courses (2026-2027): Tuition Fee per annum in Indian Rupees; NRI: 'Tuition Fee for Post Graduate Courses for NRI Candidates (2026-2027)' (p.3)\""
+  },
+  {
+   "college": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun (a constituent college of Ras Bihari Bose Subharti University)",
+   "ids": [
+    2156
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 1700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_gbcm, p. 1 — \"Tuition Fee for Post Graduate Courses (2026-2027): Tuition Fee per annum in Indian Rupees; NRI: 'Tuition Fee for Post Graduate Courses for NRI Candidates (2026-2027)' (p.3)\""
+  },
+  {
+   "college": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun (a constituent college of Ras Bihari Bose Subharti University)",
+   "ids": [
+    2156
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 2700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_gbcm, p. 1 — \"Tuition Fee for Post Graduate Courses (2026-2027): Tuition Fee per annum in Indian Rupees; NRI: 'Tuition Fee for Post Graduate Courses for NRI Candidates (2026-2027)' (p.3)\""
+  },
+  {
+   "college": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun (a constituent college of Ras Bihari Bose Subharti University)",
+   "ids": [
+    2156
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 2700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_gbcm, p. 1 — \"Tuition Fee for Post Graduate Courses (2026-2027): Tuition Fee per annum in Indian Rupees; NRI: 'Tuition Fee for Post Graduate Courses for NRI Candidates (2026-2027)' (p.3)\""
+  },
+  {
+   "college": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun (a constituent college of Ras Bihari Bose Subharti University)",
+   "ids": [
+    2156
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 5517600,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_gbcm, p. 1 — \"Tuition Fee for Post Graduate Courses (2026-2027): Tuition Fee per annum in Indian Rupees; NRI: 'Tuition Fee for Post Graduate Courses for NRI Candidates (2026-2027)' (p.3)\""
+  },
+  {
+   "college": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun (a constituent college of Ras Bihari Bose Subharti University)",
+   "ids": [
+    2156
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 7260000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_gbcm, p. 1 — \"Tuition Fee for Post Graduate Courses (2026-2027): Tuition Fee per annum in Indian Rupees; NRI: 'Tuition Fee for Post Graduate Courses for NRI Candidates (2026-2027)' (p.3)\""
+  },
+  {
+   "college": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun (a constituent college of Ras Bihari Bose Subharti University)",
+   "ids": [
+    2156
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 5662800,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hnb_gbcm, p. 1 — \"Tuition Fee for Post Graduate Courses (2026-2027): Tuition Fee per annum in Indian Rupees; NRI: 'Tuition Fee for Post Graduate Courses for NRI Candidates (2026-2027)' (p.3)\""
+  },
+  {
+   "college": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun (a constituent college of Ras Bihari Bose Subharti University)",
+   "ids": [
+    2156
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Fee (Per Annum) Double Occupancy Rs. 1,80,000/- (Mess Fee (Per Annum) Rs. 1,80,000/- separately)",
+   "year": "2026-27",
+   "source": "hnb_gbcm, p. 1 — \"Tuition Fee for Post Graduate Courses (2026-2027): Tuition Fee per annum in Indian Rupees; NRI: 'Tuition Fee for Post Graduate Courses for NRI Candidates (2026-2027)' (p.3)\"",
+   "min": 180000,
+   "max": 180000
+  }
+ ]
+}

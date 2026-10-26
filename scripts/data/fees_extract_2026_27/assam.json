@@ -1,0 +1,120 @@
+{
+ "state": "Assam",
+ "checked": "2026-10-25",
+ "files": [
+  {
+   "id": "dme-assam-pg1-2026",
+   "url": "https://dme.assam.gov.in/sites/default/files/swf_utility_folder/departments/dme_lipl_in_oid_8/latest/notice_1st_pg_counselling_provisional_merit_list_of_neet-pg-2026.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/east/04_dme_assam_pg1/notice_1st_pg_counselling_neet-pg-2026.pdf",
+   "title": "Educational Notice: 1st Round Online Counselling … Assam State Quota, session 2026 (No. e. DME/PG/2026/855656 dated 16.10.2026) + provisional merit list",
+   "issuer": "Director of Medical Education, Assam",
+   "bytes": 1274702,
+   "scanned": true
+  },
+  {
+   "id": "lgbrimh-2026-27",
+   "url": "https://www.lgbrimh.gov.in/resources/2026/admission/LGBRIMH-Prospectus-2026-27.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/east/08_lgbrimh/LGBRIMH-Prospectus-2026-27.pdf",
+   "title": "LGBRIMH Prospectus 2026–27 (Admission to Academic Courses)",
+   "issuer": "LGBRIMH, Tezpur (autonomous institute under MoHFW)",
+   "bytes": 487045,
+   "scanned": false
+  }
+ ],
+ "html": [],
+ "colleges": [
+  {
+   "college": "Lokopriya Gopinath Bordoloi Regional Institute of Mental Health (LGBRIMH), Tezpur",
+   "roster": [
+    {
+     "id": 702,
+     "name": "Lokopriya Gopinath Bordoloi Regional Institute of Mental Health, Tezpur"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "lgbrimh-2026-27",
+   "page": 21,
+   "year_label": "PROSPECTUS 2026 – 27 — 'Fees payable to the Institute for the various programmes per annum'",
+   "period": "per year",
+   "quote": "Fee Structure … M.D. | 1 Tuition Fees per year ₹ 50,000 | 2 Laboratory per year ₹ 500 | 3 Gymkhana & Recreation fees per year ₹ 250 | 4 Caution Money & Hostel Deposit ₹ 5,000 | 5 Library Fees per year ₹ 1,000 | 6 Identity Card Fees ₹ 100 | TOTAL ₹ 56,850",
+   "fees": [
+    {
+     "seat": "Other:all MD seats (MD Psychiatry; 'NEET-PG / MCC Counselling')",
+     "seat_as_printed": "M.D. — Tuition Fees per year",
+     "branches": [
+      "MD Psychiatry"
+     ],
+     "inr": 50000,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": null,
+    "max": null,
+    "text": "Caution Money & Hostel Deposit ₹ 5,000 (refundable)"
+   },
+   "notes": "Central (MoHFW) institute. Admission route printed as 'NEET-PG / MCC Counselling' (p.4); our roster also lists Assam/Tripura state quotas for it — DME Assam's 'Educational notice (counselling for PG courses at LGB, Tezpur)' (7 Aug 2026) exists but was not downloaded. Enrolment/registration/exam fees payable to Gauhati University separately."
+  }
+ ],
+ "government_all": [],
+ "not_published": [
+  {
+   "college": "Assam Medical College, Dibrugarh",
+   "roster_id": 199,
+   "latest_seen": "amch-dibrugarh.assam.gov.in fee page empty ('Last Updated on: July 16, 2025'); DME 1st-round notice (16.10.2026) has no fees — 'modalities of admission' to be displayed on 02/11/2026"
+  },
+  {
+   "college": "Diphu Medical College",
+   "roster_id": 1362,
+   "latest_seen": "dmcassam.in does not resolve; DME notice has no fees"
+  },
+  {
+   "college": "Dr B Borooah Cancer Institute",
+   "roster_id": 647,
+   "latest_seen": "bbcionline.org blank; DME notice has no fees"
+  },
+  {
+   "college": "Fakhruddin Ali Ahmed Medical College",
+   "roster_id": 385,
+   "latest_seen": "faamcassam.co.in does not resolve; DME notice has no fees"
+  },
+  {
+   "college": "Gauhati Medical College",
+   "roster_id": 72,
+   "latest_seen": "gmchassam.gov.in timed out; DME notice has no fees"
+  },
+  {
+   "college": "Jorhat Medical College",
+   "roster_id": 315,
+   "latest_seen": "jorhatmedicalcollege.in/jmch/ serves casino spam (hijacked); DME notice has no fees"
+  },
+  {
+   "college": "Lakhimpur Medical College",
+   "roster_id": 1850,
+   "latest_seen": "lmchassam.org fee page = committee members only; DME notice has no fees"
+  },
+  {
+   "college": "Silchar Medical College",
+   "roster_id": 308,
+   "latest_seen": "smcassam.org redirects to a gambling site (hijacked); DME notice has no fees"
+  },
+  {
+   "college": "Tezpur Medical College",
+   "roster_id": 336,
+   "latest_seen": "tmchassam.edu.in 'NON-GOVERNMENT FEES STRUCTURE' pdf (3 Jul 2023) — old; DME notice has no fees"
+  }
+ ],
+ "candidate_files_not_downloaded": [
+  {
+   "college": "LGBRIMH, Tezpur (state-quota PG seats)",
+   "url": "https://dme.assam.gov.in/sites/default/files/swf_utility_folder/departments/dme_lipl_in_oid_8/latest/educational_notice_counselling_for_pg_courses_at_lgb_tezpur.pdf",
+   "title": "Educational notice (counselling for PG courses at LGB, Tezpur)",
+   "bytes": 627981,
+   "date": "Fri, 07 Aug 2026",
+   "why": "DME Assam notice for LGBRIMH PG seats; may show quotas/fees"
+  }
+ ],
+ "notes": "DME Assam 1st-round PG notice (No. e. DME/PG/2026/855656, 16.10.2026, page 1 scanned) gives the schedule only; 'a college-wise and subject-wise list of provisionally selected candidates will be displayed along with modalities of admission on 02/11/2026' — re-check then."
+}

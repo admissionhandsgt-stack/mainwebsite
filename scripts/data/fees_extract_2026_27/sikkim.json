@@ -1,0 +1,44 @@
+{
+ "state": "Sikkim",
+ "checked": "2026-10-25",
+ "files": [],
+ "html": [
+  {
+   "id": "smims-md-gm",
+   "url": "https://www.smu.edu.in/smims/program-pg-general-medicine.php",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/east/html/smims_md_general_medicine.txt",
+   "title": "MD General Medicine | Sikkim Manipal University"
+  },
+  {
+   "id": "smims-md-rd",
+   "url": "https://www.smu.edu.in/smims/program-pg-radio-diognisis.php",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/east/html/smims_md_radiodiagnosis.txt",
+   "title": "MD Radiodiagnosis | Sikkim Manipal University"
+  },
+  {
+   "id": "smims-md-an",
+   "url": "https://www.smu.edu.in/smims/program-pg-anesthesiology.php",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/east/html/smims_md_anaesthesiology.txt",
+   "title": "MD Anesthesiology | Sikkim Manipal University"
+  }
+ ],
+ "colleges": [],
+ "government_all": [],
+ "not_published": [
+  {
+   "college": "Sikkim Manipal Institute of Medical Sciences",
+   "roster_id": 2053,
+   "latest_seen": "smu.edu.in/smims PG pages 'Program FEES' with NO year label (page shows 'Admission open 2026'): Lump sum (Yearly) — MD General Medicine 29,60,000 (General) | 10,35,000 (Sikkim Quota) | 53,00,000 (Management); MD Radiodiagnosis 35,00,000 | 11,70,000 | 66,00,000; MD Anaesthesiology 25,00,000 | 9,20,000 | 44,00,000; Caution 25,000, Registration 10,000. Not used: unlabelled."
+  }
+ ],
+ "candidate_files_not_downloaded": [
+  {
+   "college": "SMIMS (Sikkim Manipal University)",
+   "url": "https://www.smu.edu.in/img/pdf/Prospectus.pdf",
+   "title": "DOWNLOAD PROSPECTUS 2026",
+   "bytes": 5817123,
+   "date": "Thu, 06 Aug 2026",
+   "why": "would show whether the HTML fee figures are the 2026 figures"
+  }
+ ]
+}

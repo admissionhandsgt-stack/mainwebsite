@@ -1,0 +1,2606 @@
+{
+ "state": "Karnataka",
+ "classes": [
+  [
+   "^KAR Priv Seats-(Open|GMP)$",
+   "Priv"
+  ],
+  [
+   "NRI",
+   "NRI"
+  ],
+  [
+   "^(MM|JM)$|Minority|Min\\.? |Min$|Min\\.$|-Min",
+   "Min"
+  ],
+  [
+   "^AIQ$",
+   "AIQ"
+  ],
+  [
+   "^MNG$|Mgmt|Management|Mgt|Others \\(Inst|CatB|MQ1|Paid",
+   "Mgmt"
+  ],
+  [
+   "CatC-Inst|MQ3",
+   "Inst"
+  ],
+  [
+   "^DNB Post MBBS$|^NBE Diploma$",
+   "DNB"
+  ],
+  [
+   "DNB|AFMS",
+   "Other"
+  ],
+  [
+   ".",
+   "Gen"
+  ]
+ ],
+ "null_class": {
+  "AP Govt PG": "Gen",
+  "TEL Govt PG": "Gen",
+  "AP Mgmt PG": "NRI"
+ },
+ "entries": [
+  {
+   "college": "JAWAHARLAL NEHRU MEDICAL COLLEGE, BELAGAVI",
+   "ids": [
+    1042
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radio Diagnosis",
+    "MD General Medicine",
+    "MS Obstetrics & Gynaecology",
+    "MS Orthopaedics",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 3505000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kaher, p. [1, 2] — \"FEES STRUCTURE FOR POST-GRADUATE COURSES IN MEDICAL (MD/MS/PG DIPLOMA) FOR THE YEAR 2026-27 BATCH (Date: 14/10/2026)\""
+  },
+  {
+   "college": "JAWAHARLAL NEHRU MEDICAL COLLEGE, BELAGAVI",
+   "ids": [
+    1042
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology",
+    "MD Tuberculosis & Respiratory Diseases",
+    "MS General Surgery",
+    "MS Ophthalmology",
+    "MS ENT",
+    "MD Psychiatry"
+   ],
+   "fee_inr": 3005000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kaher, p. [1, 2] — \"FEES STRUCTURE FOR POST-GRADUATE COURSES IN MEDICAL (MD/MS/PG DIPLOMA) FOR THE YEAR 2026-27 BATCH (Date: 14/10/2026)\""
+  },
+  {
+   "college": "JAWAHARLAL NEHRU MEDICAL COLLEGE, BELAGAVI",
+   "ids": [
+    1042
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Emergency Medicine",
+    "MD Radiation Oncology"
+   ],
+   "fee_inr": 1505000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kaher, p. [1, 2] — \"FEES STRUCTURE FOR POST-GRADUATE COURSES IN MEDICAL (MD/MS/PG DIPLOMA) FOR THE YEAR 2026-27 BATCH (Date: 14/10/2026)\""
+  },
+  {
+   "college": "JAWAHARLAL NEHRU MEDICAL COLLEGE, BELAGAVI",
+   "ids": [
+    1042
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1205000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kaher, p. [1, 2] — \"FEES STRUCTURE FOR POST-GRADUATE COURSES IN MEDICAL (MD/MS/PG DIPLOMA) FOR THE YEAR 2026-27 BATCH (Date: 14/10/2026)\""
+  },
+  {
+   "college": "JAWAHARLAL NEHRU MEDICAL COLLEGE, BELAGAVI",
+   "ids": [
+    1042
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine",
+    "MD Forensic Medicine",
+    "MD Pharmacology"
+   ],
+   "fee_inr": 280000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kaher, p. [1, 2] — \"FEES STRUCTURE FOR POST-GRADUATE COURSES IN MEDICAL (MD/MS/PG DIPLOMA) FOR THE YEAR 2026-27 BATCH (Date: 14/10/2026)\""
+  },
+  {
+   "college": "JAWAHARLAL NEHRU MEDICAL COLLEGE, BELAGAVI",
+   "ids": [
+    1042
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology",
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 27500,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kaher, p. [1, 2] — \"FEES STRUCTURE FOR POST-GRADUATE COURSES IN MEDICAL (MD/MS/PG DIPLOMA) FOR THE YEAR 2026-27 BATCH (Date: 14/10/2026)\""
+  },
+  {
+   "college": "JAWAHARLAL NEHRU MEDICAL COLLEGE, BELAGAVI",
+   "ids": [
+    1042
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "Diploma in Ophthalmology"
+   ],
+   "fee_inr": 1795000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kaher, p. [1, 2] — \"FEES STRUCTURE FOR POST-GRADUATE COURSES IN MEDICAL (MD/MS/PG DIPLOMA) FOR THE YEAR 2026-27 BATCH (Date: 14/10/2026)\""
+  },
+  {
+   "college": "JAWAHARLAL NEHRU MEDICAL COLLEGE, BELAGAVI",
+   "ids": [
+    1042
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": null,
+   "fee_usd": 120800,
+   "max": false,
+   "year": "2026-27",
+   "source": "kaher, p. [1, 2] — \"FEES STRUCTURE FOR POST-GRADUATE COURSES IN MEDICAL (MD/MS/PG DIPLOMA) FOR THE YEAR 2026-27 BATCH (Date: 14/10/2026)\""
+  },
+  {
+   "college": "JAWAHARLAL NEHRU MEDICAL COLLEGE, BELAGAVI",
+   "ids": [
+    1042
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD General Medicine",
+    "MS Obstetrics & Gynaecology",
+    "MS Orthopaedics",
+    "MD Paediatrics",
+    "MD Anaesthesiology",
+    "MD Tuberculosis & Respiratory Diseases",
+    "MS General Surgery",
+    "MS Ophthalmology",
+    "MS ENT"
+   ],
+   "fee_inr": null,
+   "fee_usd": 98300,
+   "max": false,
+   "year": "2026-27",
+   "source": "kaher, p. [1, 2] — \"FEES STRUCTURE FOR POST-GRADUATE COURSES IN MEDICAL (MD/MS/PG DIPLOMA) FOR THE YEAR 2026-27 BATCH (Date: 14/10/2026)\""
+  },
+  {
+   "college": "JAWAHARLAL NEHRU MEDICAL COLLEGE, BELAGAVI",
+   "ids": [
+    1042
+   ],
+   "seat": "NRI",
+   "branches": [
+    "Diploma in Ophthalmology"
+   ],
+   "fee_inr": null,
+   "fee_usd": 51800,
+   "max": false,
+   "year": "2026-27",
+   "source": "kaher, p. [1, 2] — \"FEES STRUCTURE FOR POST-GRADUATE COURSES IN MEDICAL (MD/MS/PG DIPLOMA) FOR THE YEAR 2026-27 BATCH (Date: 14/10/2026)\""
+  },
+  {
+   "college": "JSS Medical College, Mysuru",
+   "ids": [
+    1135
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 10000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "jss, p. [4, 5, 6] — \"All India Merit (Management) / NRI category - 2026 Fee Schedule\""
+  },
+  {
+   "college": "JSS Medical College, Mysuru",
+   "ids": [
+    1135
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pharmacology",
+    "MD Forensic Medicine",
+    "MD Microbiology",
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 550000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "jss, p. [4, 5, 6] — \"All India Merit (Management) / NRI category - 2026 Fee Schedule\""
+  },
+  {
+   "college": "JSS Medical College, Mysuru",
+   "ids": [
+    1135
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 940000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "jss, p. [4, 5, 6] — \"All India Merit (Management) / NRI category - 2026 Fee Schedule\""
+  },
+  {
+   "college": "JSS Medical College, Mysuru",
+   "ids": [
+    1135
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 3600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "jss, p. [4, 5, 6] — \"All India Merit (Management) / NRI category - 2026 Fee Schedule\""
+  },
+  {
+   "college": "JSS Medical College, Mysuru",
+   "ids": [
+    1135
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery",
+    "MS Obstetrics & Gynaecology",
+    "MS Orthopaedics",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 3400000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "jss, p. [4, 5, 6] — \"All India Merit (Management) / NRI category - 2026 Fee Schedule\""
+  },
+  {
+   "college": "JSS Medical College, Mysuru",
+   "ids": [
+    1135
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 3700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "jss, p. [4, 5, 6] — \"All India Merit (Management) / NRI category - 2026 Fee Schedule\""
+  },
+  {
+   "college": "JSS Medical College, Mysuru",
+   "ids": [
+    1135
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 2900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "jss, p. [4, 5, 6] — \"All India Merit (Management) / NRI category - 2026 Fee Schedule\""
+  },
+  {
+   "college": "JSS Medical College, Mysuru",
+   "ids": [
+    1135
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology",
+    "MS Ophthalmology",
+    "MS ENT",
+    "MD Psychiatry",
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "jss, p. [4, 5, 6] — \"All India Merit (Management) / NRI category - 2026 Fee Schedule\""
+  },
+  {
+   "college": "JSS Medical College, Mysuru",
+   "ids": [
+    1135
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Geriatrics"
+   ],
+   "fee_inr": 1700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "jss, p. [4, 5, 6] — \"All India Merit (Management) / NRI category - 2026 Fee Schedule\""
+  },
+  {
+   "college": "JSS Medical College, Mysuru",
+   "ids": [
+    1135
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Hospital Administration"
+   ],
+   "fee_inr": 1000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "jss, p. [4, 5, 6] — \"All India Merit (Management) / NRI category - 2026 Fee Schedule\""
+  },
+  {
+   "college": "JSS Medical College, Mysuru",
+   "ids": [
+    1135
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "Diploma in Psychological Medicine"
+   ],
+   "fee_inr": 1400000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "jss, p. [4, 5, 6] — \"All India Merit (Management) / NRI category - 2026 Fee Schedule\""
+  },
+  {
+   "college": "JSS Medical College, Mysuru",
+   "ids": [
+    1135
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": null,
+   "fee_usd": 115000,
+   "max": false,
+   "year": "2026-27",
+   "source": "jss, p. [4, 5, 6] — \"All India Merit (Management) / NRI category - 2026 Fee Schedule\""
+  },
+  {
+   "college": "JSS Medical College, Mysuru",
+   "ids": [
+    1135
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": null,
+   "fee_usd": 92500,
+   "max": false,
+   "year": "2026-27",
+   "source": "jss, p. [4, 5, 6] — \"All India Merit (Management) / NRI category - 2026 Fee Schedule\""
+  },
+  {
+   "college": "JSS Medical College, Mysuru",
+   "ids": [
+    1135
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology",
+    "MD Paediatrics"
+   ],
+   "fee_inr": null,
+   "fee_usd": 95000,
+   "max": false,
+   "year": "2026-27",
+   "source": "jss, p. [4, 5, 6] — \"All India Merit (Management) / NRI category - 2026 Fee Schedule\""
+  },
+  {
+   "college": "JSS Medical College, Mysuru",
+   "ids": [
+    1135
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": null,
+   "fee_usd": 90000,
+   "max": false,
+   "year": "2026-27",
+   "source": "jss, p. [4, 5, 6] — \"All India Merit (Management) / NRI category - 2026 Fee Schedule\""
+  },
+  {
+   "college": "JSS Medical College, Mysuru",
+   "ids": [
+    1135
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": null,
+   "fee_usd": 120000,
+   "max": false,
+   "year": "2026-27",
+   "source": "jss, p. [4, 5, 6] — \"All India Merit (Management) / NRI category - 2026 Fee Schedule\""
+  },
+  {
+   "college": "JSS Medical College, Mysuru",
+   "ids": [
+    1135
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Fees Structure per annum (Rs) Male Rs. 2,40,400/- Female Rs. 2,40,400/-",
+   "year": "2026-27",
+   "source": "jss, p. [4, 5, 6] — \"All India Merit (Management) / NRI category - 2026 Fee Schedule\"",
+   "min": 240400,
+   "max": 240400
+  },
+  {
+   "college": "K S Hegde Medical Academy (Nitte), Mangaluru campus",
+   "ids": [
+    895
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 50000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nitte-pggen + nitte-pgnri, p. [1] — \"Fee Structure for Postgraduate Programs under General Category 2026-27 / ... under NRI Category 2026-27\""
+  },
+  {
+   "college": "K S Hegde Medical Academy (Nitte), Mangaluru campus",
+   "ids": [
+    895
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pharmacology",
+    "MD Social & Preventive Medicine",
+    "MD Forensic Medicine",
+    "MD Microbiology"
+   ],
+   "fee_inr": 200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nitte-pggen + nitte-pgnri, p. [1] — \"Fee Structure for Postgraduate Programs under General Category 2026-27 / ... under NRI Category 2026-27\""
+  },
+  {
+   "college": "K S Hegde Medical Academy (Nitte), Mangaluru campus",
+   "ids": [
+    895
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nitte-pggen + nitte-pgnri, p. [1] — \"Fee Structure for Postgraduate Programs under General Category 2026-27 / ... under NRI Category 2026-27\""
+  },
+  {
+   "college": "K S Hegde Medical Academy (Nitte), Mangaluru campus",
+   "ids": [
+    895
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry",
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 2200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nitte-pggen + nitte-pgnri, p. [1] — \"Fee Structure for Postgraduate Programs under General Category 2026-27 / ... under NRI Category 2026-27\""
+  },
+  {
+   "college": "K S Hegde Medical Academy (Nitte), Mangaluru campus",
+   "ids": [
+    895
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 2800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nitte-pggen + nitte-pgnri, p. [1] — \"Fee Structure for Postgraduate Programs under General Category 2026-27 / ... under NRI Category 2026-27\""
+  },
+  {
+   "college": "K S Hegde Medical Academy (Nitte), Mangaluru campus",
+   "ids": [
+    895
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nitte-pggen + nitte-pgnri, p. [1] — \"Fee Structure for Postgraduate Programs under General Category 2026-27 / ... under NRI Category 2026-27\""
+  },
+  {
+   "college": "K S Hegde Medical Academy (Nitte), Mangaluru campus",
+   "ids": [
+    895
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis",
+    "MD Paediatrics",
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nitte-pggen + nitte-pgnri, p. [1] — \"Fee Structure for Postgraduate Programs under General Category 2026-27 / ... under NRI Category 2026-27\""
+  },
+  {
+   "college": "K S Hegde Medical Academy (Nitte), Mangaluru campus",
+   "ids": [
+    895
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Ophthalmology",
+    "MS ENT"
+   ],
+   "fee_inr": 2900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nitte-pggen + nitte-pgnri, p. [1] — \"Fee Structure for Postgraduate Programs under General Category 2026-27 / ... under NRI Category 2026-27\""
+  },
+  {
+   "college": "K S Hegde Medical Academy (Nitte), Mangaluru campus",
+   "ids": [
+    895
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology",
+    "MS General Surgery"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nitte-pggen + nitte-pgnri, p. [1] — \"Fee Structure for Postgraduate Programs under General Category 2026-27 / ... under NRI Category 2026-27\""
+  },
+  {
+   "college": "K S Hegde Medical Academy (Nitte), Mangaluru campus",
+   "ids": [
+    895
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 3200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nitte-pggen + nitte-pgnri, p. [1] — \"Fee Structure for Postgraduate Programs under General Category 2026-27 / ... under NRI Category 2026-27\""
+  },
+  {
+   "college": "K S Hegde Medical Academy (Nitte), Mangaluru campus",
+   "ids": [
+    895
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Radio Diagnosis",
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 7500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nitte-pggen + nitte-pgnri, p. [1] — \"Fee Structure for Postgraduate Programs under General Category 2026-27 / ... under NRI Category 2026-27\""
+  },
+  {
+   "college": "K S Hegde Medical Academy (Nitte), Mangaluru campus",
+   "ids": [
+    895
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Paediatrics",
+    "MD General Medicine"
+   ],
+   "fee_inr": 6500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nitte-pggen + nitte-pgnri, p. [1] — \"Fee Structure for Postgraduate Programs under General Category 2026-27 / ... under NRI Category 2026-27\""
+  },
+  {
+   "college": "K S Hegde Medical Academy (Nitte), Mangaluru campus",
+   "ids": [
+    895
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS Orthopaedics",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 6000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nitte-pggen + nitte-pgnri, p. [1] — \"Fee Structure for Postgraduate Programs under General Category 2026-27 / ... under NRI Category 2026-27\""
+  },
+  {
+   "college": "K S Hegde Medical Academy (Nitte), Mangaluru campus",
+   "ids": [
+    895
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 5500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nitte-pggen + nitte-pgnri, p. [1] — \"Fee Structure for Postgraduate Programs under General Category 2026-27 / ... under NRI Category 2026-27\""
+  },
+  {
+   "college": "K S Hegde Medical Academy (Nitte), Mangaluru campus",
+   "ids": [
+    895
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Fee Structure 2026-27, K S Hegde Medical Academy: Double Attached Bath 122000; A/C Double 202000; Suite - Single (for PGs) 272000 — 'Total Fee (I year)' incl. caution deposit (20000–60000)",
+   "year": "2026-27",
+   "source": "nitte-pggen + nitte-pgnri, p. [1] — \"Fee Structure for Postgraduate Programs under General Category 2026-27 / ... under NRI Category 2026-27\"",
+   "min": 122000,
+   "max": 272000
+  },
+  {
+   "college": "Raja Rajeswari Medical College & Hospital, Bangalore",
+   "ids": [
+    1741
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology",
+    "MD Emergency Medicine",
+    "MS Ophthalmology",
+    "MS ENT"
+   ],
+   "fee_inr": 3300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "rrmch, p. [1, 2] — \"NEET PG Medical Counselling 2026 — Annexure-C (posted by the college as 'Fee Structure 2026-27', file PG-2026-27-Batch-Fee-Structure.pdf)\"",
+   "period": null
+  },
+  {
+   "college": "Raja Rajeswari Medical College & Hospital, Bangalore",
+   "ids": [
+    1741
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy",
+    "MD Bio-Chemistry",
+    "MD Physiology"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "rrmch, p. [1, 2] — \"NEET PG Medical Counselling 2026 — Annexure-C (posted by the college as 'Fee Structure 2026-27', file PG-2026-27-Batch-Fee-Structure.pdf)\"",
+   "period": null
+  },
+  {
+   "college": "Raja Rajeswari Medical College & Hospital, Bangalore",
+   "ids": [
+    1741
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "rrmch, p. [1, 2] — \"NEET PG Medical Counselling 2026 — Annexure-C (posted by the college as 'Fee Structure 2026-27', file PG-2026-27-Batch-Fee-Structure.pdf)\"",
+   "period": null
+  },
+  {
+   "college": "Raja Rajeswari Medical College & Hospital, Bangalore",
+   "ids": [
+    1741
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 7500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "rrmch, p. [1, 2] — \"NEET PG Medical Counselling 2026 — Annexure-C (posted by the college as 'Fee Structure 2026-27', file PG-2026-27-Batch-Fee-Structure.pdf)\"",
+   "period": null
+  },
+  {
+   "college": "Raja Rajeswari Medical College & Hospital, Bangalore",
+   "ids": [
+    1741
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Forensic Medicine",
+    "MD Microbiology",
+    "MD Pharmacology"
+   ],
+   "fee_inr": 600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "rrmch, p. [1, 2] — \"NEET PG Medical Counselling 2026 — Annexure-C (posted by the college as 'Fee Structure 2026-27', file PG-2026-27-Batch-Fee-Structure.pdf)\"",
+   "period": null
+  },
+  {
+   "college": "Raja Rajeswari Medical College & Hospital, Bangalore",
+   "ids": [
+    1741
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 4750000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "rrmch, p. [1, 2] — \"NEET PG Medical Counselling 2026 — Annexure-C (posted by the college as 'Fee Structure 2026-27', file PG-2026-27-Batch-Fee-Structure.pdf)\"",
+   "period": null
+  },
+  {
+   "college": "Raja Rajeswari Medical College & Hospital, Bangalore",
+   "ids": [
+    1741
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "rrmch, p. [1, 2] — \"NEET PG Medical Counselling 2026 — Annexure-C (posted by the college as 'Fee Structure 2026-27', file PG-2026-27-Batch-Fee-Structure.pdf)\"",
+   "period": null
+  },
+  {
+   "college": "Raja Rajeswari Medical College & Hospital, Bangalore",
+   "ids": [
+    1741
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 3200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "rrmch, p. [1, 2] — \"NEET PG Medical Counselling 2026 — Annexure-C (posted by the college as 'Fee Structure 2026-27', file PG-2026-27-Batch-Fee-Structure.pdf)\"",
+   "period": null
+  },
+  {
+   "college": "Raja Rajeswari Medical College & Hospital, Bangalore",
+   "ids": [
+    1741
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 7000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "rrmch, p. [1, 2] — \"NEET PG Medical Counselling 2026 — Annexure-C (posted by the college as 'Fee Structure 2026-27', file PG-2026-27-Batch-Fee-Structure.pdf)\"",
+   "period": null
+  },
+  {
+   "college": "Raja Rajeswari Medical College & Hospital, Bangalore",
+   "ids": [
+    1741
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "rrmch, p. [1, 2] — \"NEET PG Medical Counselling 2026 — Annexure-C (posted by the college as 'Fee Structure 2026-27', file PG-2026-27-Batch-Fee-Structure.pdf)\"",
+   "period": null
+  },
+  {
+   "college": "Raja Rajeswari Medical College & Hospital, Bangalore",
+   "ids": [
+    1741
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "rrmch, p. [1, 2] — \"NEET PG Medical Counselling 2026 — Annexure-C (posted by the college as 'Fee Structure 2026-27', file PG-2026-27-Batch-Fee-Structure.pdf)\"",
+   "period": null
+  },
+  {
+   "college": "Raja Rajeswari Medical College & Hospital, Bangalore",
+   "ids": [
+    1741
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 5200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "rrmch, p. [1, 2] — \"NEET PG Medical Counselling 2026 — Annexure-C (posted by the college as 'Fee Structure 2026-27', file PG-2026-27-Batch-Fee-Structure.pdf)\"",
+   "period": null
+  },
+  {
+   "college": "Raja Rajeswari Medical College & Hospital, Bangalore",
+   "ids": [
+    1741
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "rrmch, p. [1, 2] — \"NEET PG Medical Counselling 2026 — Annexure-C (posted by the college as 'Fee Structure 2026-27', file PG-2026-27-Batch-Fee-Structure.pdf)\"",
+   "period": null
+  },
+  {
+   "college": "Raja Rajeswari Medical College & Hospital, Bangalore",
+   "ids": [
+    1741
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "max": false,
+   "year": "2026-27",
+   "source": "rrmch, p. [1, 2] — \"NEET PG Medical Counselling 2026 — Annexure-C (posted by the college as 'Fee Structure 2026-27', file PG-2026-27-Batch-Fee-Structure.pdf)\"",
+   "period": null
+  },
+  {
+   "college": "Raja Rajeswari Medical College & Hospital, Bangalore",
+   "ids": [
+    1741
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD General Medicine",
+    "MD Paediatrics"
+   ],
+   "fee_inr": null,
+   "fee_usd": 75000,
+   "max": false,
+   "year": "2026-27",
+   "source": "rrmch, p. [1, 2] — \"NEET PG Medical Counselling 2026 — Annexure-C (posted by the college as 'Fee Structure 2026-27', file PG-2026-27-Batch-Fee-Structure.pdf)\"",
+   "period": null
+  },
+  {
+   "college": "Raja Rajeswari Medical College & Hospital, Bangalore",
+   "ids": [
+    1741
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": null,
+   "fee_usd": 85000,
+   "max": false,
+   "year": "2026-27",
+   "source": "rrmch, p. [1, 2] — \"NEET PG Medical Counselling 2026 — Annexure-C (posted by the college as 'Fee Structure 2026-27', file PG-2026-27-Batch-Fee-Structure.pdf)\"",
+   "period": null
+  },
+  {
+   "college": "SHRI B. M. PATIL MEDICAL COLLEGE, HOSPITAL AND RESEARCH CENTRE, Vijayapura",
+   "ids": [
+    1272
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Microbiology",
+    "MD Pharmacology",
+    "MD Forensic Medicine"
+   ],
+   "fee_inr": 55000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "blde, p. [2] — \"PG MEDICAL SEAT MATRIX & FEE DETAILS – 2026 (Re-notification PG Medical Admission – 2026, BLDE(DU)/REG/PG-NEET-26/2026-27 dated 28-09-2026)\"",
+   "period": null
+  },
+  {
+   "college": "SHRI B. M. PATIL MEDICAL COLLEGE, HOSPITAL AND RESEARCH CENTRE, Vijayapura",
+   "ids": [
+    1272
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "blde, p. [2] — \"PG MEDICAL SEAT MATRIX & FEE DETAILS – 2026 (Re-notification PG Medical Admission – 2026, BLDE(DU)/REG/PG-NEET-26/2026-27 dated 28-09-2026)\"",
+   "period": null
+  },
+  {
+   "college": "SHRI B. M. PATIL MEDICAL COLLEGE, HOSPITAL AND RESEARCH CENTRE, Vijayapura",
+   "ids": [
+    1272
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 400000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "blde, p. [2] — \"PG MEDICAL SEAT MATRIX & FEE DETAILS – 2026 (Re-notification PG Medical Admission – 2026, BLDE(DU)/REG/PG-NEET-26/2026-27 dated 28-09-2026)\"",
+   "period": null
+  },
+  {
+   "college": "SHRI B. M. PATIL MEDICAL COLLEGE, HOSPITAL AND RESEARCH CENTRE, Vijayapura",
+   "ids": [
+    1272
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine",
+    "MD Paediatrics",
+    "MD Dermatology, Venereology & Leprosy",
+    "MS General Surgery",
+    "MS Orthopaedics",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 3400000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "blde, p. [2] — \"PG MEDICAL SEAT MATRIX & FEE DETAILS – 2026 (Re-notification PG Medical Admission – 2026, BLDE(DU)/REG/PG-NEET-26/2026-27 dated 28-09-2026)\"",
+   "period": null
+  },
+  {
+   "college": "SHRI B. M. PATIL MEDICAL COLLEGE, HOSPITAL AND RESEARCH CENTRE, Vijayapura",
+   "ids": [
+    1272
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "blde, p. [2] — \"PG MEDICAL SEAT MATRIX & FEE DETAILS – 2026 (Re-notification PG Medical Admission – 2026, BLDE(DU)/REG/PG-NEET-26/2026-27 dated 28-09-2026)\"",
+   "period": null
+  },
+  {
+   "college": "SHRI B. M. PATIL MEDICAL COLLEGE, HOSPITAL AND RESEARCH CENTRE, Vijayapura",
+   "ids": [
+    1272
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology",
+    "MS ENT",
+    "MS Ophthalmology",
+    "MD Psychiatry",
+    "MD Tuberculosis & Respiratory Diseases",
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 2200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "blde, p. [2] — \"PG MEDICAL SEAT MATRIX & FEE DETAILS – 2026 (Re-notification PG Medical Admission – 2026, BLDE(DU)/REG/PG-NEET-26/2026-27 dated 28-09-2026)\"",
+   "period": null
+  },
+  {
+   "college": "SHRI B. M. PATIL MEDICAL COLLEGE, HOSPITAL AND RESEARCH CENTRE, Vijayapura",
+   "ids": [
+    1272
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Geriatrics"
+   ],
+   "fee_inr": 1500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "blde, p. [2] — \"PG MEDICAL SEAT MATRIX & FEE DETAILS – 2026 (Re-notification PG Medical Admission – 2026, BLDE(DU)/REG/PG-NEET-26/2026-27 dated 28-09-2026)\"",
+   "period": null
+  },
+  {
+   "college": "SHRI B. M. PATIL MEDICAL COLLEGE, HOSPITAL AND RESEARCH CENTRE, Vijayapura",
+   "ids": [
+    1272
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Physical Medicine & Rehabilitation"
+   ],
+   "fee_inr": 1200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "blde, p. [2] — \"PG MEDICAL SEAT MATRIX & FEE DETAILS – 2026 (Re-notification PG Medical Admission – 2026, BLDE(DU)/REG/PG-NEET-26/2026-27 dated 28-09-2026)\"",
+   "period": null
+  },
+  {
+   "college": "SHRI B. M. PATIL MEDICAL COLLEGE, HOSPITAL AND RESEARCH CENTRE, Vijayapura",
+   "ids": [
+    1272
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Physiology"
+   ],
+   "fee_inr": 1250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "blde, p. [2] — \"PG MEDICAL SEAT MATRIX & FEE DETAILS – 2026 (Re-notification PG Medical Admission – 2026, BLDE(DU)/REG/PG-NEET-26/2026-27 dated 28-09-2026)\"",
+   "period": null
+  },
+  {
+   "college": "SHRI B. M. PATIL MEDICAL COLLEGE, HOSPITAL AND RESEARCH CENTRE, Vijayapura",
+   "ids": [
+    1272
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Pathology",
+    "MD Pharmacology",
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "blde, p. [2] — \"PG MEDICAL SEAT MATRIX & FEE DETAILS – 2026 (Re-notification PG Medical Admission – 2026, BLDE(DU)/REG/PG-NEET-26/2026-27 dated 28-09-2026)\"",
+   "period": null
+  },
+  {
+   "college": "SHRI B. M. PATIL MEDICAL COLLEGE, HOSPITAL AND RESEARCH CENTRE, Vijayapura",
+   "ids": [
+    1272
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD General Medicine",
+    "MD Paediatrics",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 8000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "blde, p. [2] — \"PG MEDICAL SEAT MATRIX & FEE DETAILS – 2026 (Re-notification PG Medical Admission – 2026, BLDE(DU)/REG/PG-NEET-26/2026-27 dated 28-09-2026)\"",
+   "period": null
+  },
+  {
+   "college": "SHRI B. M. PATIL MEDICAL COLLEGE, HOSPITAL AND RESEARCH CENTRE, Vijayapura",
+   "ids": [
+    1272
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 9500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "blde, p. [2] — \"PG MEDICAL SEAT MATRIX & FEE DETAILS – 2026 (Re-notification PG Medical Admission – 2026, BLDE(DU)/REG/PG-NEET-26/2026-27 dated 28-09-2026)\"",
+   "period": null
+  },
+  {
+   "college": "SHRI B. M. PATIL MEDICAL COLLEGE, HOSPITAL AND RESEARCH CENTRE, Vijayapura",
+   "ids": [
+    1272
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Fees ... approximately 2.00 to 2.50 lacks per year including food & Deposit. Hostel & Mess fee may increase 5% to 10% yearly",
+   "year": "2026-27",
+   "source": "blde, p. [2] — \"PG MEDICAL SEAT MATRIX & FEE DETAILS – 2026 (Re-notification PG Medical Admission – 2026, BLDE(DU)/REG/PG-NEET-26/2026-27 dated 28-09-2026)\"",
+   "min": 200000,
+   "max": 250000
+  },
+  {
+   "college": "Sri Devaraj Urs Medical College, Tamaka, Kolar",
+   "ids": [
+    1406
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Pharmacology",
+    "MD Microbiology",
+    "MD Forensic Medicine"
+   ],
+   "noseat": true,
+   "year": "2026-27",
+   "source": "sduaher, p. [5, 6] — \"Details of postgraduate seats and Tuition Fees for 2026-27 / PG FEE STRUCTURE for Batch 2026-27\"",
+   "reason": "No tuition fee for this branch in the college's 2026-27 notice"
+  },
+  {
+   "college": "Sri Devaraj Urs Medical College, Tamaka, Kolar",
+   "ids": [
+    1406
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sduaher, p. [5, 6] — \"Details of postgraduate seats and Tuition Fees for 2026-27 / PG FEE STRUCTURE for Batch 2026-27\""
+  },
+  {
+   "college": "Sri Devaraj Urs Medical College, Tamaka, Kolar",
+   "ids": [
+    1406
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sduaher, p. [5, 6] — \"Details of postgraduate seats and Tuition Fees for 2026-27 / PG FEE STRUCTURE for Batch 2026-27\""
+  },
+  {
+   "college": "Sri Devaraj Urs Medical College, Tamaka, Kolar",
+   "ids": [
+    1406
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sduaher, p. [5, 6] — \"Details of postgraduate seats and Tuition Fees for 2026-27 / PG FEE STRUCTURE for Batch 2026-27\""
+  },
+  {
+   "college": "Sri Devaraj Urs Medical College, Tamaka, Kolar",
+   "ids": [
+    1406
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 3800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sduaher, p. [5, 6] — \"Details of postgraduate seats and Tuition Fees for 2026-27 / PG FEE STRUCTURE for Batch 2026-27\""
+  },
+  {
+   "college": "Sri Devaraj Urs Medical College, Tamaka, Kolar",
+   "ids": [
+    1406
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 3600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sduaher, p. [5, 6] — \"Details of postgraduate seats and Tuition Fees for 2026-27 / PG FEE STRUCTURE for Batch 2026-27\""
+  },
+  {
+   "college": "Sri Devaraj Urs Medical College, Tamaka, Kolar",
+   "ids": [
+    1406
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics",
+    "MS General Surgery",
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 3400000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sduaher, p. [5, 6] — \"Details of postgraduate seats and Tuition Fees for 2026-27 / PG FEE STRUCTURE for Batch 2026-27\""
+  },
+  {
+   "college": "Sri Devaraj Urs Medical College, Tamaka, Kolar",
+   "ids": [
+    1406
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry",
+    "MS Ophthalmology",
+    "MS ENT",
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 3050000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sduaher, p. [5, 6] — \"Details of postgraduate seats and Tuition Fees for 2026-27 / PG FEE STRUCTURE for Batch 2026-27\""
+  },
+  {
+   "college": "Sri Devaraj Urs Medical College, Tamaka, Kolar",
+   "ids": [
+    1406
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radiation Oncology"
+   ],
+   "fee_inr": 2600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sduaher, p. [5, 6] — \"Details of postgraduate seats and Tuition Fees for 2026-27 / PG FEE STRUCTURE for Batch 2026-27\""
+  },
+  {
+   "college": "Sri Devaraj Urs Medical College, Tamaka, Kolar",
+   "ids": [
+    1406
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": null,
+   "fee_usd": 118000,
+   "max": false,
+   "year": "2026-27",
+   "source": "sduaher, p. [5, 6] — \"Details of postgraduate seats and Tuition Fees for 2026-27 / PG FEE STRUCTURE for Batch 2026-27\""
+  },
+  {
+   "college": "Sri Devaraj Urs Medical College, Tamaka, Kolar",
+   "ids": [
+    1406
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD General Medicine",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": null,
+   "fee_usd": 104000,
+   "max": false,
+   "year": "2026-27",
+   "source": "sduaher, p. [5, 6] — \"Details of postgraduate seats and Tuition Fees for 2026-27 / PG FEE STRUCTURE for Batch 2026-27\""
+  },
+  {
+   "college": "Sri Devaraj Urs Medical College, Tamaka, Kolar",
+   "ids": [
+    1406
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Paediatrics",
+    "MS Orthopaedics",
+    "MS General Surgery"
+   ],
+   "fee_inr": null,
+   "fee_usd": 98300,
+   "max": false,
+   "year": "2026-27",
+   "source": "sduaher, p. [5, 6] — \"Details of postgraduate seats and Tuition Fees for 2026-27 / PG FEE STRUCTURE for Batch 2026-27\""
+  },
+  {
+   "college": "Sri Devaraj Urs Medical College, Tamaka, Kolar",
+   "ids": [
+    1406
+   ],
+   "seat": "Hostel",
+   "text": "PG Men's Hostel 122000 + Deposit 1,00,000 = 222000; PG Women's Hostel (Onake Obavva) 190000 + 1,00,000 = 290000; (Kittur Rani Chennamma) 170000 + 1,00,000 = 270000",
+   "year": "2026-27",
+   "source": "sduaher, p. [5, 6] — \"Details of postgraduate seats and Tuition Fees for 2026-27 / PG FEE STRUCTURE for Batch 2026-27\"",
+   "min": 222000,
+   "max": 290000
+  },
+  {
+   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
+   "ids": [
+    1843
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
+  },
+  {
+   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
+   "ids": [
+    1843
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
+  },
+  {
+   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
+   "ids": [
+    1843
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology",
+    "MD Social & Preventive Medicine",
+    "MD Pharmacology"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
+  },
+  {
+   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
+   "ids": [
+    1843
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine",
+    "MD Paediatrics",
+    "MS Obstetrics & Gynaecology",
+    "MS Orthopaedics",
+    "MS General Surgery"
+   ],
+   "fee_inr": 6000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
+  },
+  {
+   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
+   "ids": [
+    1843
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology",
+    "MD Psychiatry"
+   ],
+   "fee_inr": 3250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
+  },
+  {
+   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
+   "ids": [
+    1843
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis",
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 7000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
+  },
+  {
+   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
+   "ids": [
+    1843
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases",
+    "MD Emergency Medicine",
+    "MS ENT",
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
+  },
+  {
+   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
+   "ids": [
+    1839
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
+  },
+  {
+   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
+   "ids": [
+    1839
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
+  },
+  {
+   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
+   "ids": [
+    1839
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology",
+    "MD Social & Preventive Medicine",
+    "MD Pharmacology"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
+  },
+  {
+   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
+   "ids": [
+    1839
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine",
+    "MD Paediatrics",
+    "MS Obstetrics & Gynaecology",
+    "MS Orthopaedics",
+    "MS General Surgery"
+   ],
+   "fee_inr": 6000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
+  },
+  {
+   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
+   "ids": [
+    1839
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology",
+    "MD Psychiatry"
+   ],
+   "fee_inr": 3250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
+  },
+  {
+   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
+   "ids": [
+    1839
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis",
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 7000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
+  },
+  {
+   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
+   "ids": [
+    1839
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases",
+    "MD Emergency Medicine",
+    "MS ENT",
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ssimrc, p. [1] — \"PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats\""
+  },
+  {
+   "college": "Yenepoya Medical College, Mangaluru",
+   "ids": [
+    1397
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology",
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Pharmacology",
+    "MD Forensic Medicine"
+   ],
+   "fee_inr": 10000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "yenepoya-notif, p. [2, 3, 4] — \"ADMISSION TO PG MEDICAL (2026-27) — FEE STRUCTURE: MD/MS 2026-2027 (NRI) / MD/MS 2026-2027 (GENERAL MERIT)\""
+  },
+  {
+   "college": "Yenepoya Medical College, Mangaluru",
+   "ids": [
+    1397
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "yenepoya-notif, p. [2, 3, 4] — \"ADMISSION TO PG MEDICAL (2026-27) — FEE STRUCTURE: MD/MS 2026-2027 (NRI) / MD/MS 2026-2027 (GENERAL MERIT)\""
+  },
+  {
+   "college": "Yenepoya Medical College, Mangaluru",
+   "ids": [
+    1397
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "yenepoya-notif, p. [2, 3, 4] — \"ADMISSION TO PG MEDICAL (2026-27) — FEE STRUCTURE: MD/MS 2026-2027 (NRI) / MD/MS 2026-2027 (GENERAL MERIT)\""
+  },
+  {
+   "college": "Yenepoya Medical College, Mangaluru",
+   "ids": [
+    1397
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Geriatrics",
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "yenepoya-notif, p. [2, 3, 4] — \"ADMISSION TO PG MEDICAL (2026-27) — FEE STRUCTURE: MD/MS 2026-2027 (NRI) / MD/MS 2026-2027 (GENERAL MERIT)\""
+  },
+  {
+   "college": "Yenepoya Medical College, Mangaluru",
+   "ids": [
+    1397
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Emergency Medicine",
+    "MD Radiation Oncology",
+    "MD Psychiatry",
+    "MS ENT",
+    "MS Ophthalmology",
+    "MS General Surgery"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "yenepoya-notif, p. [2, 3, 4] — \"ADMISSION TO PG MEDICAL (2026-27) — FEE STRUCTURE: MD/MS 2026-2027 (NRI) / MD/MS 2026-2027 (GENERAL MERIT)\""
+  },
+  {
+   "college": "Yenepoya Medical College, Mangaluru",
+   "ids": [
+    1397
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine",
+    "MS Orthopaedics",
+    "MD Paediatrics",
+    "MS Obstetrics & Gynaecology",
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "yenepoya-notif, p. [2, 3, 4] — \"ADMISSION TO PG MEDICAL (2026-27) — FEE STRUCTURE: MD/MS 2026-2027 (NRI) / MD/MS 2026-2027 (GENERAL MERIT)\""
+  },
+  {
+   "college": "Yenepoya Medical College, Mangaluru",
+   "ids": [
+    1397
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "yenepoya-notif, p. [2, 3, 4] — \"ADMISSION TO PG MEDICAL (2026-27) — FEE STRUCTURE: MD/MS 2026-2027 (NRI) / MD/MS 2026-2027 (GENERAL MERIT)\""
+  },
+  {
+   "college": "Yenepoya Medical College, Mangaluru",
+   "ids": [
+    1397
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": null,
+   "fee_usd": 111000,
+   "max": false,
+   "year": "2026-27",
+   "source": "yenepoya-notif, p. [2, 3, 4] — \"ADMISSION TO PG MEDICAL (2026-27) — FEE STRUCTURE: MD/MS 2026-2027 (NRI) / MD/MS 2026-2027 (GENERAL MERIT)\""
+  },
+  {
+   "college": "Yenepoya Medical College, Mangaluru",
+   "ids": [
+    1397
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD General Medicine",
+    "MS Orthopaedics",
+    "MD Paediatrics",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": null,
+   "fee_usd": 79000,
+   "max": false,
+   "year": "2026-27",
+   "source": "yenepoya-notif, p. [2, 3, 4] — \"ADMISSION TO PG MEDICAL (2026-27) — FEE STRUCTURE: MD/MS 2026-2027 (NRI) / MD/MS 2026-2027 (GENERAL MERIT)\""
+  },
+  {
+   "college": "Yenepoya Medical College, Mangaluru",
+   "ids": [
+    1397
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": null,
+   "fee_usd": 74000,
+   "max": false,
+   "year": "2026-27",
+   "source": "yenepoya-notif, p. [2, 3, 4] — \"ADMISSION TO PG MEDICAL (2026-27) — FEE STRUCTURE: MD/MS 2026-2027 (NRI) / MD/MS 2026-2027 (GENERAL MERIT)\""
+  },
+  {
+   "college": "Yenepoya Medical College, Mangaluru",
+   "ids": [
+    1397
+   ],
+   "seat": "Hostel",
+   "text": "HOSTEL FEE I YEAR: 2 SHARING 180000 + Food 60000 = 240000 (II 252000, III 264600); 3 SHARING 120000 + 60000 = 180000 (II 189000, III 198500); AC extra Rs.2000 / Rs.1400 per head per month",
+   "year": "2026-27",
+   "source": "yenepoya-notif, p. [2, 3, 4] — \"ADMISSION TO PG MEDICAL (2026-27) — FEE STRUCTURE: MD/MS 2026-2027 (NRI) / MD/MS 2026-2027 (GENERAL MERIT)\"",
+   "min": 180000,
+   "max": 240000
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Pathology",
+    "MD Social & Preventive Medicine",
+    "MD Immuno Haematology & Blood Transfusion"
+   ],
+   "fee_inr": 650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Pathology",
+    "MD Social & Preventive Medicine",
+    "MD Immuno Haematology & Blood Transfusion"
+   ],
+   "fee_inr": 650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology",
+    "MD Social & Preventive Medicine",
+    "MD Immuno Haematology & Blood Transfusion"
+   ],
+   "fee_inr": 650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Pathology",
+    "MD Social & Preventive Medicine",
+    "MD Immuno Haematology & Blood Transfusion"
+   ],
+   "fee_inr": 650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Pathology",
+    "MD Social & Preventive Medicine",
+    "MD Immuno Haematology & Blood Transfusion"
+   ],
+   "fee_inr": 650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Family Medicine",
+    "MD Physical Medicine & Rehabilitation",
+    "MD Radiation Oncology",
+    "MD Psychiatry",
+    "MS General Surgery",
+    "MS ENT",
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 1100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Family Medicine",
+    "MD Physical Medicine & Rehabilitation",
+    "MD Radiation Oncology",
+    "MD Psychiatry",
+    "MS General Surgery",
+    "MS ENT",
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 1100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Family Medicine",
+    "MD Physical Medicine & Rehabilitation",
+    "MD Radiation Oncology",
+    "MD Psychiatry",
+    "MS General Surgery",
+    "MS ENT",
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 1100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Family Medicine",
+    "MD Physical Medicine & Rehabilitation",
+    "MD Radiation Oncology",
+    "MD Psychiatry",
+    "MS General Surgery",
+    "MS ENT",
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 1100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Family Medicine",
+    "MD Physical Medicine & Rehabilitation",
+    "MD Radiation Oncology",
+    "MD Psychiatry",
+    "MS General Surgery",
+    "MS ENT",
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 1100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD General Medicine",
+    "MD Emergency Medicine",
+    "MD Anaesthesiology",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 1150000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD General Medicine",
+    "MD Emergency Medicine",
+    "MD Anaesthesiology",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 1150000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine",
+    "MD Emergency Medicine",
+    "MD Anaesthesiology",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 1150000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD General Medicine",
+    "MD Emergency Medicine",
+    "MD Anaesthesiology",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 1150000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD General Medicine",
+    "MD Emergency Medicine",
+    "MD Anaesthesiology",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 1150000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radio Diagnosis",
+    "MS Orthopaedics",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 1200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radio Diagnosis",
+    "MS Orthopaedics",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 1200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radio Diagnosis",
+    "MS Orthopaedics",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 1200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radio Diagnosis",
+    "MS Orthopaedics",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 1200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "ids": [
+    1945
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radio Diagnosis",
+    "MS Orthopaedics",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 1200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "stjohns, p. [9, 10] — \"PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART\""
+  },
+  {
+   "college": "Vydehi Institute of Medical Sciences & Research Centre, Bengaluru",
+   "ids": [
+    1952
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Pharmacology",
+    "MD Microbiology",
+    "MD Forensic Medicine",
+    "MD Social & Preventive Medicine"
+   ],
+   "noseat": true,
+   "year": "2026-27",
+   "source": "vydehi, p. [1] — \"Full (100%) Tuition Fee Waiver ... for Candidates allotted through counselling conducted by KEA for the Academic Year 2026-27 (letter dated 17.10.2026)\"",
+   "reason": "100% tuition fee waiver in the college's 2026-27 notice"
+  },
+  {
+   "college": "Vydehi Institute of Medical Sciences & Research Centre, Bengaluru",
+   "ids": [
+    1952
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Pharmacology",
+    "MD Microbiology",
+    "MD Forensic Medicine",
+    "MD Social & Preventive Medicine"
+   ],
+   "noseat": true,
+   "year": "2026-27",
+   "source": "vydehi, p. [1] — \"Full (100%) Tuition Fee Waiver ... for Candidates allotted through counselling conducted by KEA for the Academic Year 2026-27 (letter dated 17.10.2026)\"",
+   "reason": "100% tuition fee waiver in the college's 2026-27 notice"
+  },
+  {
+   "college": "Vydehi Institute of Medical Sciences & Research Centre, Bengaluru",
+   "ids": [
+    1952
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Pharmacology",
+    "MD Microbiology",
+    "MD Forensic Medicine",
+    "MD Social & Preventive Medicine"
+   ],
+   "noseat": true,
+   "year": "2026-27",
+   "source": "vydehi, p. [1] — \"Full (100%) Tuition Fee Waiver ... for Candidates allotted through counselling conducted by KEA for the Academic Year 2026-27 (letter dated 17.10.2026)\"",
+   "reason": "100% tuition fee waiver in the college's 2026-27 notice"
+  },
+  {
+   "college": "Vydehi Institute of Medical Sciences & Research Centre, Bengaluru",
+   "ids": [
+    1952
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Pharmacology",
+    "MD Microbiology",
+    "MD Forensic Medicine",
+    "MD Social & Preventive Medicine"
+   ],
+   "noseat": true,
+   "year": "2026-27",
+   "source": "vydehi, p. [1] — \"Full (100%) Tuition Fee Waiver ... for Candidates allotted through counselling conducted by KEA for the Academic Year 2026-27 (letter dated 17.10.2026)\"",
+   "reason": "100% tuition fee waiver in the college's 2026-27 notice"
+  },
+  {
+   "college": "Haveri Institute of Medical Sciences, Haveri",
+   "ids": [
+    483
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 27500,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hims-haveri, p. [21, 22] — \"Post Graduate Fee Details – 2026-27 — FEES STRUCTURE FOR 1st YEAR PG DEGREE COURSE FOR THE YEAR 2026-27\" — clinical / non-clinical as usually grouped"
+  },
+  {
+   "college": "Haveri Institute of Medical Sciences, Haveri",
+   "ids": [
+    483
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Pharmacology",
+    "MD Microbiology",
+    "MD Pathology",
+    "MD Forensic Medicine",
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 55000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hims-haveri, p. [21, 22] — \"Post Graduate Fee Details – 2026-27 — FEES STRUCTURE FOR 1st YEAR PG DEGREE COURSE FOR THE YEAR 2026-27\" — clinical / non-clinical as usually grouped"
+  },
+  {
+   "college": "Haveri Institute of Medical Sciences, Haveri",
+   "ids": [
+    483
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Paediatrics",
+    "MD Tropical Medicine",
+    "MD Physical Medicine & Rehabilitation",
+    "MD Hospital Administration",
+    "MD Psychiatry",
+    "MS Orthopaedics",
+    "MD Nuclear Medicine",
+    "MD Lab Medicine",
+    "MD Emergency Medicine",
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radiation Oncology",
+    "MS General Surgery",
+    "MD Immuno Haematology & Blood Transfusion",
+    "MD General Medicine",
+    "MD Community Health Administration",
+    "MD Anaesthesiology",
+    "MS Obstetrics & Gynaecology",
+    "MD Aviation Medicine/Aerospace Medicine",
+    "MS Traumatology and Surgery",
+    "MS Ophthalmology",
+    "MD Geriatrics",
+    "MD Sports Medicine",
+    "MD Family Medicine",
+    "MS ENT",
+    "MD Palliative Medicine",
+    "MD Radio Diagnosis",
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 110000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "hims-haveri, p. [21, 22] — \"Post Graduate Fee Details – 2026-27 — FEES STRUCTURE FOR 1st YEAR PG DEGREE COURSE FOR THE YEAR 2026-27\" — clinical / non-clinical as usually grouped"
+  },
+  {
+   "college": "Haveri Institute of Medical Sciences, Haveri",
+   "ids": [
+    483
+   ],
+   "seat": "Hostel",
+   "text": "POST GRADUATE (MD/MS) HOSTEL FEES STRUCTURE 2026-27 BATCH: 1st year 75,500/- (2nd, 3rd year 45,500/-), electricity extra, '*Tentative'",
+   "year": "2026-27",
+   "source": "hims-haveri, p. [21, 22] — \"Post Graduate Fee Details – 2026-27 — FEES STRUCTURE FOR 1st YEAR PG DEGREE COURSE FOR THE YEAR 2026-27\"",
+   "min": 75500,
+   "max": 75500
+  },
+  {
+   "college": "GULBARGA INSTITUTE OF MEDICAL SCIENCES, KALABURAGI",
+   "ids": [
+    158
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Paediatrics",
+    "MD Tropical Medicine",
+    "MD Physical Medicine & Rehabilitation",
+    "MD Hospital Administration",
+    "MD Psychiatry",
+    "MS Orthopaedics",
+    "MD Nuclear Medicine",
+    "MD Lab Medicine",
+    "MD Emergency Medicine",
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radiation Oncology",
+    "MS General Surgery",
+    "MD Immuno Haematology & Blood Transfusion",
+    "MD General Medicine",
+    "MD Community Health Administration",
+    "MD Anaesthesiology",
+    "MS Obstetrics & Gynaecology",
+    "MD Aviation Medicine/Aerospace Medicine",
+    "MS Traumatology and Surgery",
+    "MS Ophthalmology",
+    "MD Geriatrics",
+    "MD Sports Medicine",
+    "MD Family Medicine",
+    "MS ENT",
+    "MD Palliative Medicine",
+    "MD Radio Diagnosis",
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 110000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gims, p. [15, 16] — \"Post Graduate Fee Details 2026-27 — FEES STRUCTURE FOR PG DEGREE COURSE FOR THE YEAR 2026-27\" — clinical / non-clinical as usually grouped"
+  },
+  {
+   "college": "GULBARGA INSTITUTE OF MEDICAL SCIENCES, KALABURAGI",
+   "ids": [
+    158
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Pharmacology",
+    "MD Microbiology",
+    "MD Pathology",
+    "MD Forensic Medicine",
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 55000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gims, p. [15, 16] — \"Post Graduate Fee Details 2026-27 — FEES STRUCTURE FOR PG DEGREE COURSE FOR THE YEAR 2026-27\" — clinical / non-clinical as usually grouped"
+  },
+  {
+   "college": "GULBARGA INSTITUTE OF MEDICAL SCIENCES, KALABURAGI",
+   "ids": [
+    158
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 27500,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gims, p. [15, 16] — \"Post Graduate Fee Details 2026-27 — FEES STRUCTURE FOR PG DEGREE COURSE FOR THE YEAR 2026-27\" — clinical / non-clinical as usually grouped"
+  }
+ ]
+}

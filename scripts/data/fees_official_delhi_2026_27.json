@@ -1,0 +1,88 @@
+{
+ "state": "Delhi",
+ "classes": [
+  [
+   "NRI",
+   "NRI"
+  ],
+  [
+   "^(MM|JM)$|Minority|Min\\.? |Min$|Min\\.$|-Min",
+   "Min"
+  ],
+  [
+   "^AIQ$",
+   "AIQ"
+  ],
+  [
+   "^MNG$|Mgmt|Management|Mgt|Others \\(Inst|CatB|MQ1|Paid",
+   "Mgmt"
+  ],
+  [
+   "CatC-Inst|MQ3",
+   "Inst"
+  ],
+  [
+   "^DNB Post MBBS$|^NBE Diploma$",
+   "DNB"
+  ],
+  [
+   "DNB|AFMS",
+   "Other"
+  ],
+  [
+   ".",
+   "Gen"
+  ]
+ ],
+ "null_class": {
+  "AP Govt PG": "Gen",
+  "TEL Govt PG": "Gen",
+  "AP Mgmt PG": "NRI"
+ },
+ "entries": [
+  {
+   "college": "All University of Delhi PG institutions (DU quota and AIQ seats): Lady Hardinge ",
+   "ids": [
+    10,
+    6,
+    26,
+    474,
+    30,
+    401,
+    1286,
+    317,
+    49,
+    1001
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 13000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "du_boi, p. 17 — \"BULLETIN OF INFORMATION-2026-27 … FOR THE ACADEMIC SESSION 2026-27\""
+  },
+  {
+   "college": "All University of Delhi PG institutions (DU quota and AIQ seats): Lady Hardinge ",
+   "ids": [
+    10,
+    6,
+    26,
+    474,
+    30,
+    401,
+    1286,
+    317,
+    49,
+    1001
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 13000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "du_boi, p. 17 — \"BULLETIN OF INFORMATION-2026-27 … FOR THE ACADEMIC SESSION 2026-27\""
+  }
+ ]
+}

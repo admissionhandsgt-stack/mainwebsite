@@ -1,0 +1,1556 @@
+{
+ "state": "Gujarat",
+ "classes": [
+  [
+   "NRI",
+   "NRI"
+  ],
+  [
+   "^(MM|JM)$|Minority|Min\\.? |Min$|Min\\.$|-Min",
+   "Min"
+  ],
+  [
+   "^AIQ$",
+   "AIQ"
+  ],
+  [
+   "^MNG$|Mgmt|Management|Mgt|Others \\(Inst|CatB|MQ1|Paid",
+   "Mgmt"
+  ],
+  [
+   "CatC-Inst|MQ3",
+   "Inst"
+  ],
+  [
+   "^DNB Post MBBS$|^NBE Diploma$",
+   "DNB"
+  ],
+  [
+   "DNB|AFMS",
+   "Other"
+  ],
+  [
+   ".",
+   "Gen"
+  ]
+ ],
+ "null_class": {
+  "AP Govt PG": "Gen",
+  "TEL Govt PG": "Gen",
+  "AP Mgmt PG": "NRI"
+ },
+ "entries": [
+  {
+   "college": "Kiran Medical College",
+   "ids": [
+    1919
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kiran — \"II.  AY 2026-27\""
+  },
+  {
+   "college": "Kiran Medical College",
+   "ids": [
+    1919
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 3900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kiran — \"II.  AY 2026-27\""
+  },
+  {
+   "college": "Kiran Medical College",
+   "ids": [
+    1919
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 4600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kiran — \"II.  AY 2026-27\""
+  },
+  {
+   "college": "Kiran Medical College",
+   "ids": [
+    1919
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 3550000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kiran — \"II.  AY 2026-27\""
+  },
+  {
+   "college": "Kiran Medical College",
+   "ids": [
+    1919
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kiran — \"II.  AY 2026-27\""
+  },
+  {
+   "college": "Kiran Medical College",
+   "ids": [
+    1919
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kiran — \"II.  AY 2026-27\""
+  },
+  {
+   "college": "Kiran Medical College",
+   "ids": [
+    1919
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1438000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kiran — \"II.  AY 2026-27\""
+  },
+  {
+   "college": "Kiran Medical College",
+   "ids": [
+    1919
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "fee_inr": 1000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kiran — \"II.  AY 2026-27\""
+  },
+  {
+   "college": "Kiran Medical College",
+   "ids": [
+    1919
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "fee_inr": 1600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kiran — \"II.  AY 2026-27\""
+  },
+  {
+   "college": "Kiran Medical College",
+   "ids": [
+    1919
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Physiology"
+   ],
+   "fee_inr": 900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kiran — \"II.  AY 2026-27\""
+  },
+  {
+   "college": "Kiran Medical College",
+   "ids": [
+    1919
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Physiology"
+   ],
+   "fee_inr": 1600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kiran — \"II.  AY 2026-27\""
+  },
+  {
+   "college": "Kiran Medical College",
+   "ids": [
+    1919
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 4650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kiran — \"II.  AY 2026-27\""
+  },
+  {
+   "college": "Kiran Medical College",
+   "ids": [
+    1919
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 5200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kiran — \"II.  AY 2026-27\""
+  },
+  {
+   "college": "Kiran Medical College",
+   "ids": [
+    1919
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 3700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kiran — \"II.  AY 2026-27\""
+  },
+  {
+   "college": "Kiran Medical College",
+   "ids": [
+    1919
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kiran — \"II.  AY 2026-27\""
+  },
+  {
+   "college": "Kiran Medical College",
+   "ids": [
+    1919
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Fees (Including Mess Fee) 2026-27 AC (₹) ₹1,72,000 Non-AC (₹) ₹1,33,000",
+   "year": "2026-27",
+   "source": "kiran — \"II.  AY 2026-27\"",
+   "min": 133000,
+   "max": 172000
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "ids": [
+    1920
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "spu — \"Academic 2026-27 Fee (Yearly in Rs.)\""
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "ids": [
+    1920
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "spu — \"Academic 2026-27 Fee (Yearly in Rs.)\""
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "ids": [
+    1920
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 1500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "spu — \"Academic 2026-27 Fee (Yearly in Rs.)\""
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "ids": [
+    1920
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "spu — \"Academic 2026-27 Fee (Yearly in Rs.)\""
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "ids": [
+    1920
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "spu — \"Academic 2026-27 Fee (Yearly in Rs.)\""
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "ids": [
+    1920
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 6000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "spu — \"Academic 2026-27 Fee (Yearly in Rs.)\""
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "ids": [
+    1920
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 3200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "spu — \"Academic 2026-27 Fee (Yearly in Rs.)\""
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "ids": [
+    1920
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "spu — \"Academic 2026-27 Fee (Yearly in Rs.)\""
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "ids": [
+    1920
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "fee_inr": 200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "spu — \"Academic 2026-27 Fee (Yearly in Rs.)\""
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "ids": [
+    1920
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "spu — \"Academic 2026-27 Fee (Yearly in Rs.)\""
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "ids": [
+    1920
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "spu — \"Academic 2026-27 Fee (Yearly in Rs.)\""
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "ids": [
+    1920
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "spu — \"Academic 2026-27 Fee (Yearly in Rs.)\""
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "ids": [
+    1920
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 400000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "spu — \"Academic 2026-27 Fee (Yearly in Rs.)\""
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "ids": [
+    1920
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 2200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "spu — \"Academic 2026-27 Fee (Yearly in Rs.)\""
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "ids": [
+    1920
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "spu — \"Academic 2026-27 Fee (Yearly in Rs.)\""
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "ids": [
+    1920
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 3400000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "spu — \"Academic 2026-27 Fee (Yearly in Rs.)\""
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "ids": [
+    1920
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 4400000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "spu — \"Academic 2026-27 Fee (Yearly in Rs.)\""
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "ids": [
+    1920
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 3200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "spu — \"Academic 2026-27 Fee (Yearly in Rs.)\""
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "ids": [
+    1920
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 4400000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "spu — \"Academic 2026-27 Fee (Yearly in Rs.)\""
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "ids": [
+    1920
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "spu — \"Academic 2026-27 Fee (Yearly in Rs.)\""
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "ids": [
+    1920
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "spu — \"Academic 2026-27 Fee (Yearly in Rs.)\""
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "ids": [
+    1920
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "spu — \"Academic 2026-27 Fee (Yearly in Rs.)\""
+  },
+  {
+   "college": "Nootan Medical College and Research Centre",
+   "ids": [
+    1920
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "spu — \"Academic 2026-27 Fee (Yearly in Rs.)\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "fee_inr": 408000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "fee_inr": 150000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "fee_inr": 2000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Physiology"
+   ],
+   "fee_inr": 408000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Physiology"
+   ],
+   "fee_inr": 150000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Physiology"
+   ],
+   "fee_inr": 2000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 408000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 2000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 2000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 1500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 1900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 1500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 1900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 1500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 1900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 2000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 2000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 2700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 3600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 2700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 3600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 3300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 3300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 5200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 6000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 5200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 6000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 5200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 6000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 5200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Gujarat Adani Institute of Medical Sciences, Bhuj",
+   "ids": [
+    1917
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 6000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gaims, p. 1 — \"Fees Structure 2026-27 — MD/MS - Post Graduate Courses\""
+  },
+  {
+   "college": "Smt. N.H.L. Municipal Medical College",
+   "ids": [
+    1902
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 994000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nhl — \"PER YEAR POST GRADUATE (PG) … 2026-27\""
+  },
+  {
+   "college": "Smt. N.H.L. Municipal Medical College",
+   "ids": [
+    1902
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 994000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nhl — \"PER YEAR POST GRADUATE (PG) … 2026-27\""
+  },
+  {
+   "college": "Smt. N.H.L. Municipal Medical College",
+   "ids": [
+    1902
+   ],
+   "seat": "Mgmt",
+   "branches": "*",
+   "fee_inr": 3379000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nhl — \"PER YEAR POST GRADUATE (PG) … 2026-27\""
+  },
+  {
+   "college": "Surat Municipal Institute of Medical Education & Research (SMIMER)",
+   "ids": [
+    1904
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Geriatrics",
+    "MD Community Health Administration",
+    "MS Orthopaedics",
+    "MD Aviation Medicine/Aerospace Medicine",
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Hospital Administration",
+    "MD Family Medicine",
+    "MD Radiation Oncology",
+    "MD Nuclear Medicine",
+    "MD Sports Medicine",
+    "MD Anaesthesiology",
+    "MS General Surgery",
+    "MS ENT",
+    "MD Emergency Medicine",
+    "MD Lab Medicine",
+    "MD Radio Diagnosis",
+    "MD Tropical Medicine",
+    "MD Psychiatry",
+    "MS Traumatology and Surgery",
+    "MS Obstetrics & Gynaecology",
+    "MD Physical Medicine & Rehabilitation",
+    "MD Immuno Haematology & Blood Transfusion",
+    "MD Palliative Medicine",
+    "MS Ophthalmology",
+    "MD General Medicine",
+    "MD Tuberculosis & Respiratory Diseases",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 2338000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "smimer — \"Fee Structure for Postgraduate … (Annual) … 2026-27\" — clinical / non-clinical as usually grouped"
+  },
+  {
+   "college": "Surat Municipal Institute of Medical Education & Research (SMIMER)",
+   "ids": [
+    1904
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Geriatrics",
+    "MD Community Health Administration",
+    "MS Orthopaedics",
+    "MD Aviation Medicine/Aerospace Medicine",
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Hospital Administration",
+    "MD Family Medicine",
+    "MD Radiation Oncology",
+    "MD Nuclear Medicine",
+    "MD Sports Medicine",
+    "MD Anaesthesiology",
+    "MS General Surgery",
+    "MS ENT",
+    "MD Emergency Medicine",
+    "MD Lab Medicine",
+    "MD Radio Diagnosis",
+    "MD Tropical Medicine",
+    "MD Psychiatry",
+    "MS Traumatology and Surgery",
+    "MS Obstetrics & Gynaecology",
+    "MD Physical Medicine & Rehabilitation",
+    "MD Immuno Haematology & Blood Transfusion",
+    "MD Palliative Medicine",
+    "MS Ophthalmology",
+    "MD General Medicine",
+    "MD Tuberculosis & Respiratory Diseases",
+    "MD Paediatrics"
+   ],
+   "fee_inr": 2338000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "smimer — \"Fee Structure for Postgraduate … (Annual) … 2026-27\" — clinical / non-clinical as usually grouped"
+  },
+  {
+   "college": "Surat Municipal Institute of Medical Education & Research (SMIMER)",
+   "ids": [
+    1904
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Pharmacology",
+    "MD Microbiology",
+    "MD Pathology",
+    "MD Forensic Medicine",
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 1568000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "smimer — \"Fee Structure for Postgraduate … (Annual) … 2026-27\" — clinical / non-clinical as usually grouped"
+  },
+  {
+   "college": "Surat Municipal Institute of Medical Education & Research (SMIMER)",
+   "ids": [
+    1904
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Pharmacology",
+    "MD Microbiology",
+    "MD Pathology",
+    "MD Forensic Medicine",
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 1568000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "smimer — \"Fee Structure for Postgraduate … (Annual) … 2026-27\" — clinical / non-clinical as usually grouped"
+  }
+ ]
+}

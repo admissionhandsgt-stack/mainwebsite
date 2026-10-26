@@ -1,0 +1,1812 @@
+{
+ "state": "Uttar Pradesh",
+ "classes": [
+  [
+   "NRI",
+   "NRI"
+  ],
+  [
+   "^(MM|JM)$|Minority|Min\\.? |Min$|Min\\.$|-Min",
+   "Min"
+  ],
+  [
+   "^AIQ$",
+   "AIQ"
+  ],
+  [
+   "^MNG$|Mgmt|Management|Mgt|Others \\(Inst|CatB|MQ1|Paid",
+   "Mgmt"
+  ],
+  [
+   "CatC-Inst|MQ3",
+   "Inst"
+  ],
+  [
+   "^DNB Post MBBS$|^NBE Diploma$",
+   "DNB"
+  ],
+  [
+   "DNB|AFMS",
+   "Other"
+  ],
+  [
+   ".",
+   "Gen"
+  ]
+ ],
+ "null_class": {
+  "AP Govt PG": "Gen",
+  "TEL Govt PG": "Gen",
+  "AP Mgmt PG": "NRI"
+ },
+ "entries": [
+  {
+   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 2300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 4800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 2800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 6800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 7600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 2800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 3800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Immuno Haematology & Blood Transfusion"
+   ],
+   "fee_inr": 950000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 3900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 350000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 350000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Physiology"
+   ],
+   "fee_inr": 250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1050000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
+  },
+  {
+   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
+   "ids": [
+    1818
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Paediatrics",
+    "MD General Medicine",
+    "MD Psychiatry",
+    "MD Tuberculosis & Respiratory Diseases",
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radio Diagnosis",
+    "MS General Surgery",
+    "MS Obstetrics & Gynaecology",
+    "MS Ophthalmology",
+    "MS Orthopaedics"
+   ],
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "max": false,
+   "year": "2026-27",
+   "source": "santosh_pg — \"Program Fees PG (Medical) 2026\""
+  },
+  {
+   "college": "Rama Medical College Hospital & Research Centre, Hapur",
+   "ids": [
+    2134
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 2970734,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "rama_hapur_fee — \"Fee Structure for the year of 2026-27\""
+  },
+  {
+   "college": "Rama Medical College Hospital & Research Centre, Hapur",
+   "ids": [
+    2134
+   ],
+   "seat": "Priv",
+   "branches": "*",
+   "fee_inr": 2970734,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "rama_hapur_fee — \"Fee Structure for the year of 2026-27\""
+  },
+  {
+   "college": "Rama Medical College Hospital & Research Centre, Hapur",
+   "ids": [
+    2134
+   ],
+   "seat": "Mgmt",
+   "branches": "*",
+   "fee_inr": 2970734,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "rama_hapur_fee — \"Fee Structure for the year of 2026-27\""
+  },
+  {
+   "college": "Rama Medical College Hospital & Research Centre, Hapur",
+   "ids": [
+    2134
+   ],
+   "seat": "Min",
+   "branches": "*",
+   "fee_inr": 2970734,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "rama_hapur_fee — \"Fee Structure for the year of 2026-27\""
+  },
+  {
+   "college": "Rama Medical College Hospital & Research Centre, Hapur",
+   "ids": [
+    2134
+   ],
+   "seat": "Inst",
+   "branches": "*",
+   "fee_inr": 2970734,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "rama_hapur_fee — \"Fee Structure for the year of 2026-27\""
+  },
+  {
+   "college": "Rama Medical College Hospital & Research Centre, Hapur",
+   "ids": [
+    2134
+   ],
+   "seat": "Hostel",
+   "text": "AC Accommodation: Rs.3,46,500 (Hostel Fee, Per annum)*",
+   "year": "2026-27",
+   "source": "rama_hapur_fee — \"Fee Structure for the year of 2026-27\"",
+   "min": 346500,
+   "max": 346500
+  },
+  {
+   "college": "Noida International Institute of Medical Sciences (a unit of Noida International University)",
+   "ids": [
+    2131
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD General Medicine",
+    "MD Anaesthesiology",
+    "MD Paediatrics",
+    "MS General Surgery",
+    "MS Orthopaedics",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 2508698,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "niims_fee — \"PG COURSES FEE STRUCTURE (MD & MS 2026-27)\""
+  },
+  {
+   "college": "Noida International Institute of Medical Sciences (a unit of Noida International University)",
+   "ids": [
+    2131
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD General Medicine",
+    "MD Anaesthesiology",
+    "MD Paediatrics",
+    "MS General Surgery",
+    "MS Orthopaedics",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 2508698,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "niims_fee — \"PG COURSES FEE STRUCTURE (MD & MS 2026-27)\""
+  },
+  {
+   "college": "Noida International Institute of Medical Sciences (a unit of Noida International University)",
+   "ids": [
+    2131
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine",
+    "MD Anaesthesiology",
+    "MD Paediatrics",
+    "MS General Surgery",
+    "MS Orthopaedics",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 2508698,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "niims_fee — \"PG COURSES FEE STRUCTURE (MD & MS 2026-27)\""
+  },
+  {
+   "college": "Noida International Institute of Medical Sciences (a unit of Noida International University)",
+   "ids": [
+    2131
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD General Medicine",
+    "MD Anaesthesiology",
+    "MD Paediatrics",
+    "MS General Surgery",
+    "MS Orthopaedics",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 2508698,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "niims_fee — \"PG COURSES FEE STRUCTURE (MD & MS 2026-27)\""
+  },
+  {
+   "college": "Noida International Institute of Medical Sciences (a unit of Noida International University)",
+   "ids": [
+    2131
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD General Medicine",
+    "MD Anaesthesiology",
+    "MD Paediatrics",
+    "MS General Surgery",
+    "MS Orthopaedics",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 2508698,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "niims_fee — \"PG COURSES FEE STRUCTURE (MD & MS 2026-27)\""
+  },
+  {
+   "college": "Noida International Institute of Medical Sciences (a unit of Noida International University)",
+   "ids": [
+    2131
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1368036,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "niims_fee — \"PG COURSES FEE STRUCTURE (MD & MS 2026-27)\""
+  },
+  {
+   "college": "Noida International Institute of Medical Sciences (a unit of Noida International University)",
+   "ids": [
+    2131
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1368036,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "niims_fee — \"PG COURSES FEE STRUCTURE (MD & MS 2026-27)\""
+  },
+  {
+   "college": "Noida International Institute of Medical Sciences (a unit of Noida International University)",
+   "ids": [
+    2131
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1368036,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "niims_fee — \"PG COURSES FEE STRUCTURE (MD & MS 2026-27)\""
+  },
+  {
+   "college": "Noida International Institute of Medical Sciences (a unit of Noida International University)",
+   "ids": [
+    2131
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1368036,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "niims_fee — \"PG COURSES FEE STRUCTURE (MD & MS 2026-27)\""
+  },
+  {
+   "college": "Noida International Institute of Medical Sciences (a unit of Noida International University)",
+   "ids": [
+    2131
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1368036,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "niims_fee — \"PG COURSES FEE STRUCTURE (MD & MS 2026-27)\""
+  },
+  {
+   "college": "Noida International Institute of Medical Sciences (a unit of Noida International University)",
+   "ids": [
+    2131
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Fees (per year) -INR 2,42,550/- ( with sharing room) AC Room",
+   "year": "2026-27",
+   "source": "niims_fee — \"PG COURSES FEE STRUCTURE (MD & MS 2026-27)\"",
+   "min": 242550,
+   "max": 242550
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 2350000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 2350000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 2350000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 2350000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 2350000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 4250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 4250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 4250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 4250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 4250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 3650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 3650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 3650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Min",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 3650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 3650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Min",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 3650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 3650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 3650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Min",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 3650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 3650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 4100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 4100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 4100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Min",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 4100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 4100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Min",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 2800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 2800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 2800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 2800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 2800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 4250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 4250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 4250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 4250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 4250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 3650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Priv",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 3650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 3650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 3650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 3650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\""
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "ids": [
+    2150
+   ],
+   "seat": "Hostel",
+   "text": "AC Single seater (per year) (including mess charges) 350000.00; 'Hostel is Compulsory for All Clinical and Non Clinical Subjects.'",
+   "year": "2026-27",
+   "source": "fh_pgfee, p. 1 — \"PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')\"",
+   "min": 350000,
+   "max": 350000
+  },
+  {
+   "college": "Maharshi Vashishtha Autonomous State Medical College, Basti",
+   "ids": [
+    1705
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 24000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "basti_pg, p. 1 — \"ADMISSION – PG COURSE – MD/MS SESSION 2026-27 (letter dated 08.09.2026)\"",
+   "period": null
+  },
+  {
+   "college": "Maharshi Vashishtha Autonomous State Medical College, Basti",
+   "ids": [
+    1705
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 24000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "basti_pg, p. 1 — \"ADMISSION – PG COURSE – MD/MS SESSION 2026-27 (letter dated 08.09.2026)\"",
+   "period": null
+  }
+ ]
+}

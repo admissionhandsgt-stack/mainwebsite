@@ -1,0 +1,81 @@
+{
+ "state": "Manipur",
+ "checked": "2026-10-25",
+ "files": [
+  {
+   "id": "rims-2026-27",
+   "url": "https://rims.edu.in/rimsman/wp-content/uploads/Prospectus-2026.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/east/10_rims/Prospectus-2026.pdf",
+   "title": "Prospectus 2026-27 (Academic Section, RIMS, Imphal)",
+   "issuer": "RIMS, Imphal (autonomous institute under MoHFW)",
+   "bytes": 6945741,
+   "scanned": false
+  }
+ ],
+ "html": [],
+ "colleges": [
+  {
+   "college": "Regional Institute of Medical Sciences (RIMS), Imphal",
+   "roster": [
+    {
+     "id": 98,
+     "name": "Regional Institute of Medical Sciences, Imphal"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "rims-2026-27",
+   "page": 68,
+   "year_label": "Prospectus 2026-27 — '21. Admission fee structure … 21.A. 2 M.Ch/DM/MD/MS/MDS Courses'",
+   "period": "first year",
+   "quote": "21.A.2 M.Ch/DM/MD/MS/MDS Courses: Admission Fee 5000 | Tuition Fee 5000 | Library Fee 4800 | Laboratory Fee 600 | Hostel Fee 7200 | … | Security Deposit 6000 | Total 39,500 (p.68); 21.B Annual Fee Structure 21.B.1 MCh/DM/MD/MS/MDS Courses: Tuition Fee 5000 … Total 20,800 (p.70)",
+   "fees": [
+    {
+     "seat": "Other:all MD/MS seats (fee table 'M.Ch/DM/MD/MS/MDS Courses')",
+     "seat_as_printed": "Tuition Fee (admission-time table 21.A.2; also annual 21.B.1)",
+     "branches": "*",
+     "inr": 5000,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 7200,
+    "max": 7200,
+    "text": "Hostel Fee 7200 (in both the admission-time and the annual table)"
+   },
+   "notes": "Admission-time total Rs 39,500 (incl. Admission Fee 5000, Security Deposit 6000, RIMS Suit 4600, House T-Shirt 460, Apron 1640 etc.); annual total from 2nd year Rs 20,800 (21.B.1). PDF pages 68/70 (printed 62/64 of 76). Same table covers M.Ch/DM/MDS."
+  }
+ ],
+ "government_all": [],
+ "not_published": [
+  {
+   "college": "Jawaharlal Nehru Institute of Medical Sciences (JNIMS)",
+   "roster_id": 325,
+   "latest_seen": "jnims.nic.in/academics/fee-details: 'REVISED FEE STRUCTURE w.e.f. 2024-2025' = image fee-structure-1.jpg (19 Aug 2024)"
+  },
+  {
+   "college": "Shija Academy of Health Sciences",
+   "roster_id": 2029,
+   "latest_seen": "shijaacademy.com = application portal only ('Registration Closed'); no fees"
+  }
+ ],
+ "candidate_files_not_downloaded": [
+  {
+   "college": "JNIMS, Imphal",
+   "url": "https://jnims.nic.in/wp-content/uploads/2026/09/revised-cap-2026.pdf",
+   "title": "PG CAP AT JNIMS (revised CAP 2026)",
+   "bytes": 821939,
+   "date": "Tue, 01 Sep 2026",
+   "why": "JNIMS's own PG common admission process 2026; may state fees"
+  },
+  {
+   "college": "JNIMS, Imphal",
+   "url": "https://jnims.nic.in/wp-content/uploads/2021/10/fee-structure-1.jpg",
+   "title": "REVISED FEE STRUCTURE w.e.f. 2024-2025 (image)",
+   "bytes": 304065,
+   "date": "Mon, 19 Aug 2024",
+   "why": "own fee table, labelled w.e.f. 2024-2025 (not 2026-27)"
+  }
+ ]
+}

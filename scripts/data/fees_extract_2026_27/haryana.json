@@ -1,0 +1,130 @@
+{
+ "checked": "2026-10-25",
+ "files": [],
+ "html": [],
+ "colleges": [],
+ "government_all": [],
+ "not_published": [
+  {
+   "college": "Pt BD Sharma Postgraduate Institute of Medical Sciences, Rohtak",
+   "roster_id": 21,
+   "latest_seen": "DMER Haryana / UHSR: MD/MS 2026-27 admission notification not issued by 25 Oct 2026 (portal has only MDS and Post-Diploma DNB 2026-27). Latest state file: DMER 'Fee structure of MD/MS courses' (15 Apr 2025) and gazette 185-2025 (12 Nov 2025)."
+  },
+  {
+   "college": "Kalpana Chawla Government Medical College, Karnal",
+   "roster_id": 492,
+   "latest_seen": "DMER Haryana / UHSR: MD/MS 2026-27 admission notification not issued by 25 Oct 2026 (portal has only MDS and Post-Diploma DNB 2026-27). Latest state file: DMER 'Fee structure of MD/MS courses' (15 Apr 2025) and gazette 185-2025 (12 Nov 2025)."
+  },
+  {
+   "college": "Bhagat Phool Singh Government Medical College for Women, Sonepat (BPS Government Medical College for Women, Sonepat)",
+   "roster_id": 1498,
+   "latest_seen": "DMER Haryana / UHSR: MD/MS 2026-27 admission notification not issued by 25 Oct 2026 (portal has only MDS and Post-Diploma DNB 2026-27). Latest state file: DMER 'Fee structure of MD/MS courses' (15 Apr 2025) and gazette 185-2025 (12 Nov 2025)."
+  },
+  {
+   "college": "Shaheed Hasan Khan Mewati Government Medical College, Nalhar",
+   "roster_id": 1700,
+   "latest_seen": "DMER Haryana / UHSR: MD/MS 2026-27 admission notification not issued by 25 Oct 2026 (portal has only MDS and Post-Diploma DNB 2026-27). Latest state file: DMER 'Fee structure of MD/MS courses' (15 Apr 2025) and gazette 185-2025 (12 Nov 2025)."
+  },
+  {
+   "college": "Employees State Insurance Corporation Medical College, Faridabad",
+   "roster_id": 13,
+   "latest_seen": "ESIC PG fee tables on mcfaridabad.esic.gov.in are empty; ESIC HQ circular not searched."
+  },
+  {
+   "college": "Amrita School of Medicine, Faridabad",
+   "roster_id": 796,
+   "latest_seen": "Amrita Faridabad latest: feestructure-md-ms-fbd-2025.pdf (18 Nov 2025); Amrita's 2026-27 fee file is for Kochi only."
+  },
+  {
+   "college": "Maharishi Markandeshwar Institute of Medical Sciences & Research, Mullana, Ambala",
+   "roster_id": 1702,
+   "latest_seen": "Own fee PDF (embedded on mmumullana.org fee page; undated) and 'MM(DU) Information Booklet (A.Y. 2026-27)' — not downloaded, see candidates."
+  },
+  {
+   "college": "Maharishi Markandeshwar College of Medical Sciences & Research, Sadopur",
+   "roster_id": 1930,
+   "latest_seen": "Own 'Academic Prospectus 2026-27' (MMU Ambala) — not downloaded, see candidates."
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad",
+   "roster_id": 1931,
+   "latest_seen": "Al-Falah University 'Prospectus 2026-27' (22 Oct 2026) — not downloaded, see candidates."
+  },
+  {
+   "college": "Faculty of Medicine and Health Sciences, Gurgaon (Prev. SGGST Medical College & R Centre, Gurgaon)",
+   "roster_id": 1929,
+   "latest_seen": "SGT University MD/MS page: 2025-26 counselling notices only; brochure 2026 (fmhs.pdf) not downloaded."
+  },
+  {
+   "college": "Adesh Medical College and Hospital, Shahabad",
+   "roster_id": 1926,
+   "latest_seen": "amch.ac.in 'Post-graduate Fees' → wp-content/uploads/2024/08/PG-Fees.pdf (Last-Modified 21 Aug 2026; year unknown) — not downloaded."
+  },
+  {
+   "college": "Maharaja Agrasen Medical College, Agroha",
+   "roster_id": 1925,
+   "latest_seen": "mamc.edu.in latest: 'Fee Structure of MD/MS Batch 2025' (11 Dec 2025)."
+  },
+  {
+   "college": "NC Medical College & Hospital, Panipat",
+   "roster_id": 1928,
+   "latest_seen": "ncmedicalcollege.com: only 'College Fee Structure MBBS Batch 2019'."
+  },
+  {
+   "college": "World College of Medical Sciences & Research, Jhajjar",
+   "roster_id": 1927,
+   "latest_seen": "wcmsrh.com: no fee; 'All admissions to MD/MS courses are fulfilled through the DMER'."
+  }
+ ],
+ "candidate_files_not_downloaded": [
+  {
+   "college": "Maharishi Markandeshwar Institute of Medical Sciences & Research, Mullana (deemed)",
+   "url": "https://web.mm-edu.in/uploads/pdf_mullana/L1_67789_161932.pdf",
+   "title": "MMDU fee PDF (embedded on the fee page)",
+   "bytes": 55489,
+   "date": "unknown (Last-Modified generated per request)",
+   "why": "deemed university's own fee document"
+  },
+  {
+   "college": "Maharishi Markandeshwar Institute of Medical Sciences & Research, Mullana (deemed)",
+   "url": "https://www.mmumullana.org/wp-content/uploads/2026/04/MM(DU)%20Information%20Booklet%20(2026-27).pdf",
+   "title": "MM(DU) Information Booklet (A.Y. 2026-27)",
+   "bytes": 14466631,
+   "date": "2026-04-28",
+   "why": "own 2026-27 booklet"
+  },
+  {
+   "college": "Al Falah School of Medical Sciences & Research Centre, Faridabad",
+   "url": "https://www.alfalahuniversity.edu.in/assets/uploads/pdf/Al-Falah-Univerity.pdf",
+   "title": "Al-Falah University Prospectus 2026-27",
+   "bytes": 58277422,
+   "date": "2026-10-22",
+   "why": "university's own 2026-27 prospectus"
+  },
+  {
+   "college": "Maharishi Markandeshwar College of Medical Sciences & Research, Sadopur",
+   "url": "https://web.mm-edu.in/uploads/pdf_ambala/L1_381_6856.pdf",
+   "title": "MMU Ambala Academic Prospectus 2026-27",
+   "bytes": 4106332,
+   "date": "unknown (generated per request)",
+   "why": "university's own 2026-27 prospectus"
+  },
+  {
+   "college": "Adesh Medical College and Hospital, Shahabad",
+   "url": "https://amch.ac.in/wp-content/uploads/2024/08/PG-Fees.pdf",
+   "title": "PG-Fees.pdf ('Post-graduate Fees' tab)",
+   "bytes": 223751,
+   "date": "2026-08-21 (Last-Modified; path says 2024/08)",
+   "why": "own PG fee file, possibly replaced in place"
+  },
+  {
+   "college": "Faculty of Medicine and Health Sciences, SGT University, Gurugram",
+   "url": "https://sgtuniversity.ac.in/assets/brochures-2026/fmhs.pdf",
+   "title": "FMHS brochure 2026",
+   "bytes": 1582455,
+   "date": "2026-03-21",
+   "why": "own 2026 brochure; fee content unknown"
+  }
+ ],
+ "state": "Haryana"
+}

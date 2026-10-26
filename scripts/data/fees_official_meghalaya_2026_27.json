@@ -1,0 +1,82 @@
+{
+ "state": "Meghalaya",
+ "classes": [
+  [
+   "NRI",
+   "NRI"
+  ],
+  [
+   "^(MM|JM)$|Minority|Min\\.? |Min$|Min\\.$|-Min",
+   "Min"
+  ],
+  [
+   "^AIQ$",
+   "AIQ"
+  ],
+  [
+   "^MNG$|Mgmt|Management|Mgt|Others \\(Inst|CatB|MQ1|Paid",
+   "Mgmt"
+  ],
+  [
+   "CatC-Inst|MQ3",
+   "Inst"
+  ],
+  [
+   "^DNB Post MBBS$|^NBE Diploma$",
+   "DNB"
+  ],
+  [
+   "DNB|AFMS",
+   "Other"
+  ],
+  [
+   ".",
+   "Gen"
+  ]
+ ],
+ "null_class": {
+  "AP Govt PG": "Gen",
+  "TEL Govt PG": "Gen",
+  "AP Mgmt PG": "NRI"
+ },
+ "entries": [
+  {
+   "college": "North Eastern Indira Gandhi Regional Institute of Health and Medical Sciences (NEIGRIHMS), Shillong",
+   "ids": [
+    24
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 8000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "neigrihms-pg-2026-27, p. 10 — \"Prospectus for Counseling and admission to the PG (MD/MS) COURSE Session: 2026-2027\""
+  },
+  {
+   "college": "North Eastern Indira Gandhi Regional Institute of Health and Medical Sciences (NEIGRIHMS), Shillong",
+   "ids": [
+    24
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 8000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "neigrihms-pg-2026-27, p. 10 — \"Prospectus for Counseling and admission to the PG (MD/MS) COURSE Session: 2026-2027\""
+  },
+  {
+   "college": "North Eastern Indira Gandhi Regional Institute of Health and Medical Sciences (NEIGRIHMS), Shillong",
+   "ids": [
+    24
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Fees Rs. 12,000/- (annual); Mess fee decided by Mess Committee",
+   "year": "2026-27",
+   "source": "neigrihms-pg-2026-27, p. 10 — \"Prospectus for Counseling and admission to the PG (MD/MS) COURSE Session: 2026-2027\"",
+   "min": 12000,
+   "max": 12000
+  }
+ ]
+}

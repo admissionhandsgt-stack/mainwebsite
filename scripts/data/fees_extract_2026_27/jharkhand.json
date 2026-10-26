@@ -1,0 +1,50 @@
+{
+ "checked": "2026-10-25",
+ "files": [
+  {
+   "id": "jceceb-advt-103-2026",
+   "url": "https://jceceb.jharkhand.gov.in/con_notice/804.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north/13_jceceb_advt103/JCECEB_Advt103_804.pdf",
+   "title": "Advt. No. JCECEB/65/26-103 dated 16/10/2026 — Online Counselling for PG Medical (MD/MS/Diploma & DNB) State Quota seats, NEET-PG 2026",
+   "issuer": "Jharkhand Combined Entrance Competitive Examination Board",
+   "bytes": 366301,
+   "scanned": true
+  }
+ ],
+ "html": [],
+ "colleges": [],
+ "government_all": [],
+ "not_published": [
+  {
+   "college": "Rajendra Institute of Medical Sciences, Ranchi",
+   "roster_id": 136,
+   "latest_seen": "JCECEB Advt 103 (16.10.2026) lists only application fee (₹1000/₹500), counselling fee (₹2000/₹1200) and security deposit (Govt ₹30,000 UR/EWS, ₹15,000 ST/SC/OBC/PWD) — no tuition. 2026 'Indicative Information' not yet issued."
+  },
+  {
+   "college": "MGM Medical College, Jamshedpur",
+   "roster_id": 574,
+   "latest_seen": "JCECEB Advt 103 (16.10.2026) lists only application fee (₹1000/₹500), counselling fee (₹2000/₹1200) and security deposit (Govt ₹30,000 UR/EWS, ₹15,000 ST/SC/OBC/PWD) — no tuition. 2026 'Indicative Information' not yet issued."
+  },
+  {
+   "college": "Shaheed Nirmal Mahto Medical College & Hospital, Dhanbad (Prev. Patliputra Medical College, Dhanbad)",
+   "roster_id": 533,
+   "latest_seen": "JCECEB Advt 103 (16.10.2026) lists only application fee (₹1000/₹500), counselling fee (₹2000/₹1200) and security deposit (Govt ₹30,000 UR/EWS, ₹15,000 ST/SC/OBC/PWD) — no tuition. 2026 'Indicative Information' not yet issued. Own site snmmcdhn.org latest: 'Fee Structure for Postgraduate Medical Courses (MD/MS) for the Academic Year 2025–26' (457,286 B, 16 Feb 2026)."
+  },
+  {
+   "college": "Central Institute of Psychiatry, Ranchi",
+   "roster_id": 565,
+   "latest_seen": "Central institute (AIQ only). Own 'Reporting for admission for MD Psychiatry Session 2026-27' (21 Oct 2026) not downloaded — see candidates."
+  }
+ ],
+ "candidate_files_not_downloaded": [
+  {
+   "college": "Central Institute of Psychiatry, Ranchi",
+   "url": "https://cipranchi.nic.in/sites/default/files/Reporting%20for%20admission%20for%20MD%20Psychiatry%20Session%202026-27.pdf",
+   "title": "Reporting for admission for MD Psychiatry Session 2026-27",
+   "bytes": 154664,
+   "date": "2026-10-21",
+   "why": "own 2026-27 notice; may state the fee"
+  }
+ ],
+ "state": "Jharkhand"
+}

@@ -1,0 +1,238 @@
+{
+  "state": "Andhra Pradesh",
+  "checked": "2026-10-25",
+  "files": [
+    { "id": "ntruhs-cq", "url": "https://drntr.uhsap.in/index/notification/20261014153141837.pdf",
+      "path": "dl/apts/01_ntruhs_cq/ntruhs_pg_cq_prospectus_2026-27.pdf",
+      "title": "PG (MEDICAL) CQ PROSPECTUS 2026-27 (Competent Authority Quota, in-service & non-service, ACADEMIC YEAR 2026-27)",
+      "issuer": "Dr. N.T.R. University of Health Sciences, Vijayawada (state counselling authority)", "bytes": 3879080, "scanned": false },
+    { "id": "ntruhs-mq", "url": "https://drntr.uhsap.in/index/notification/20261017182730260.pdf",
+      "path": "dl/apts/02_ntruhs_mq/ntruhs_pg_mq_prospectus_2026-27.pdf",
+      "title": "PROSPECTUS MANAGEMENT QUOTA ... PG MEDICAL ... FOR THE ACADEMIC YEAR 2026-27",
+      "issuer": "Dr. N.T.R. University of Health Sciences, Vijayawada", "bytes": 1882928, "scanned": false },
+    { "id": "nriims", "url": "https://nrimedicalsciences.com/static/Resource/PG2026-27Feestructure.pdf",
+      "path": "dl/apts/04_nriims/PG2026-27Feestructure.pdf",
+      "title": "NRI INSTITUTE OF MEDICAL SCIENCES Medical PG Fee Structure for the A.Y 2026-27",
+      "issuer": "NRI Institute of Medical Sciences, Visakhapatnam (signed Dr. S. Chandra Sekhar Reddy, CEO, Anil Neerukonda Educational Society; society seal)", "bytes": 1039667, "scanned": true },
+    { "id": "vmc-circular", "url": "https://vmc.edu.in/Circular_dt.31-08-2026_Feestructure_2026_27.pdf",
+      "path": "dl/apts/05_vmc/Circular_dt.31-08-2026_Feestructure_2026_27.pdf",
+      "title": "Dr. NTRUHS Circular No.5148/EA2/PG/2026 dt 31.08.2026 - PG Medical and Dental Courses - Fee Structure for 2026-27 in Private Un-aided ... Colleges - Implementation of G.O.Rt.No.786",
+      "issuer": "Registrar, Dr. NTR University of Health Sciences (NOT the college) - linked by Viswabharathi Medical College as its PG 2026-27 'Fee Structure'", "bytes": 340315, "scanned": false },
+    { "id": "svims", "url": "https://svimstpt.ap.nic.in/adm/adm2026-27_files/md/pros2026-27.pdf",
+      "path": "dl/apts/06_svims/pros2026-27.pdf",
+      "title": "SVIMS (SVIMS University) POST GRADUATE COURSES PROSPECTUS FOR THE ACADEMIC YEAR 2026-27 MD/MS ADMISSION GUIDELINES",
+      "issuer": "Sri Venkateswara Institute of Medical Sciences (state university), Tirupati", "bytes": 825241, "scanned": false }
+  ],
+  "html": [
+    { "id": "gitam-pg", "url": "https://www.gitam.edu/gimsr/admissions/post-graduate",
+      "snapshot": "dl/apts/html/gitam_gimsr_pg.txt",
+      "title": "GIMSR PG Medical Admissions 2026, Programs, Eligibility & Fees" },
+    { "id": "sbmch-fee", "url": "https://www.sbmch.org/fee-details.html",
+      "snapshot": "dl/apts/html/sbmch_fee_details.txt",
+      "title": "Fee Details | Sri Balaji Medical College" }
+  ],
+  "colleges": [
+    {
+      "college": "GITAM Institute of Medical Sciences and Research (GIMSR), GITAM (Deemed to be University), Visakhapatnam",
+      "roster": [ { "id": 1343, "name": "GITAM Institute of Medical Sciences and Research, Visakhapatnam" } ],
+      "ownership": "deemed", "source_kind": "university-own", "source": "gitam-pg", "page": null,
+      "year_label": "Postgraduate (MD/MS) Admissions 2026-27 ... LoPs ... for the academic year 2026-27",
+      "period": "per year",
+      "quote": "Program | Total Seats | Management Seats | Fees per annum (₹) | NRI Seats | Fees per annum (₹) ... MD - Dermatology 3 1 ₹39,66,000 2 $191,000 ... MS - General Surgery 6 5 ₹28,30,000 1 $134,000",
+      "fees": [
+        { "seat": "Mgmt", "seat_as_printed": "Management Seats - Fees per annum (₹)", "branches": ["MD - Anesthesiology (MD Anaesthesiology)"], "inr": 3060000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Management Seats - Fees per annum (₹)", "branches": ["MD - Dermatology (MD Dermatology, Venereology & Leprosy)", "MD - Radio Diagnosis (MD Radio Diagnosis)"], "inr": 3966000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Management Seats - Fees per annum (₹)", "branches": ["MD - General Medicine", "MD - Pediatrics (MD Paediatrics)", "MD - TB & Respiratory diseases (MD Tuberculosis & Respiratory Diseases)"], "inr": 3300000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Management Seats - Fees per annum (₹)", "branches": ["MD - Pathology"], "inr": 1200000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Management Seats - Fees per annum (₹)", "branches": ["MD - Preventive & Social Medicine (MD Social & Preventive Medicine)"], "inr": 800000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Management Seats - Fees per annum (₹)", "branches": ["MD - Psychiatry"], "inr": 2200000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Management Seats - Fees per annum (₹)", "branches": ["MS - General Surgery", "MS - Orthopedics (MS Orthopaedics)"], "inr": 2830000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Management Seats - Fees per annum (₹)", "branches": ["MS - Obstetrics & Gynecology (MS Obstetrics & Gynaecology)"], "inr": 3060000, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Management Seats - Fees per annum (₹)", "branches": ["MS - Ophthalmology", "MS - Otorhinolaryngology (ENT) (MS ENT)"], "inr": 2750000, "usd": null, "maximum": false },
+        { "seat": "NRI", "seat_as_printed": "NRI Seats - Fees per annum", "branches": ["MD - Dermatology (MD Dermatology, Venereology & Leprosy)", "MD - Radio Diagnosis (MD Radio Diagnosis)"], "inr": null, "usd": 191000, "maximum": false },
+        { "seat": "NRI", "seat_as_printed": "NRI Seats - Fees per annum", "branches": ["MD - General Medicine", "MD - Pediatrics (MD Paediatrics)"], "inr": null, "usd": 160000, "maximum": false },
+        { "seat": "NRI", "seat_as_printed": "NRI Seats - Fees per annum", "branches": ["MS - General Surgery"], "inr": null, "usd": 134000, "maximum": false },
+        { "seat": "NRI", "seat_as_printed": "NRI Seats - Fees per annum", "branches": ["MS - Obstetrics & Gynecology (MS Obstetrics & Gynaecology)"], "inr": null, "usd": 144000, "maximum": false }
+      ],
+      "hostel": { "min": 297648, "max": 390331, "text": "Hostel Fee Structure: Aditya Sadan (Single Occupancy) Semester ₹2,12,137 / Annual ₹3,90,331; Aditya Sadan (Double) ₹1,61,765 / ₹2,97,648; Avantika Sadan (Double) ₹1,61,765 / ₹2,97,648. Annual Fee*: Annual Fee with 8% Discount (one-time fee)" },
+      "notes": "NRI fee in US$ ('The prescribed tuition fee must be paid in US Dollars ($) only from the sponsor account'). NRI column '–' for branches without NRI seats. Seat re-allocation deduction Rs 50,000. Read via browser (Cloudflare blocks curl)."
+    },
+    {
+      "college": "NRI Institute of Medical Sciences, Visakhapatnam",
+      "roster": [ { "id": 2115, "name": "NRI Institute of Medical Sciences, Visakhapatnam" } ],
+      "ownership": "private", "source_kind": "college-own", "source": "nriims", "page": 1,
+      "year_label": "Medical PG Fee Structure for the A.Y 2026-27",
+      "period": "unstated",
+      "quote": "CLINICAL DEGREE ... Tuition Fee 5,71,320 | 11,42,640 | 66,12,500 ... Total College Fee 7,07,320 | 12,78,640 | 67,48,500; PARA-CLINICAL DEGREE (Pathology,Microbiology,SPM) Tuition Fee 1,78,538 | 3,57,075 | 19,83,750; PRE-CLINICAL DEGREE (Biochemistry) Tuition Fee 80,937 | 1,61,874 | 10,58,000",
+      "fees": [
+        { "seat": "Gen", "seat_as_printed": "A Category Convenor Quota (Tuition Fee)", "branches": ["General Medicine", "General Surgery", "Respiratory Medicine (MD Tuberculosis & Respiratory Diseases)", "Paediatrics", "Dermatology (DVL)", "ENT", "Opthalmology", "Orthopaedics", "Psychiatry", "OBG & GYN", "ANES (MD Anaesthesiology)", "Radiology (MD Radio Diagnosis)"], "inr": 571320, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "B Category Management Quota (Tuition Fee)", "branches": ["General Medicine", "General Surgery", "Respiratory Medicine (MD Tuberculosis & Respiratory Diseases)", "Paediatrics", "Dermatology (DVL)", "ENT", "Opthalmology", "Orthopaedics", "Psychiatry", "OBG & GYN", "ANES (MD Anaesthesiology)", "Radiology (MD Radio Diagnosis)"], "inr": 1142640, "usd": null, "maximum": false },
+        { "seat": "NRI", "seat_as_printed": "C Category NRI/Institutional Quota (Tuition Fee)", "branches": ["General Medicine", "General Surgery", "Respiratory Medicine (MD Tuberculosis & Respiratory Diseases)", "Paediatrics", "Dermatology (DVL)", "ENT", "Opthalmology", "Orthopaedics", "Psychiatry", "OBG & GYN", "ANES (MD Anaesthesiology)", "Radiology (MD Radio Diagnosis)"], "inr": 6612500, "usd": null, "maximum": false },
+        { "seat": "Inst", "seat_as_printed": "C Category NRI/Institutional Quota (Tuition Fee)", "branches": ["General Medicine", "General Surgery", "Respiratory Medicine (MD Tuberculosis & Respiratory Diseases)", "Paediatrics", "Dermatology (DVL)", "ENT", "Opthalmology", "Orthopaedics", "Psychiatry", "OBG & GYN", "ANES (MD Anaesthesiology)", "Radiology (MD Radio Diagnosis)"], "inr": 6612500, "usd": null, "maximum": false },
+        { "seat": "Gen", "seat_as_printed": "A Category Convenor Quota (Tuition Fee)", "branches": ["Pathology", "Microbiology", "SPM (MD Social & Preventive Medicine)"], "inr": 178538, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "B Category Management Quota (Tuition Fee)", "branches": ["Pathology", "Microbiology", "SPM (MD Social & Preventive Medicine)"], "inr": 357075, "usd": null, "maximum": false },
+        { "seat": "NRI", "seat_as_printed": "C Category NRI/Institutional Quota (Tuition Fee)", "branches": ["Pathology", "Microbiology", "SPM (MD Social & Preventive Medicine)"], "inr": 1983750, "usd": null, "maximum": false },
+        { "seat": "Inst", "seat_as_printed": "C Category NRI/Institutional Quota (Tuition Fee)", "branches": ["Pathology", "Microbiology", "SPM (MD Social & Preventive Medicine)"], "inr": 1983750, "usd": null, "maximum": false },
+        { "seat": "Gen", "seat_as_printed": "A Category Convenor Quota (Tuition Fee)", "branches": ["Biochemistry (MD Bio-Chemistry)"], "inr": 80937, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "B Category Management Quota (Tuition Fee)", "branches": ["Biochemistry (MD Bio-Chemistry)"], "inr": 161874, "usd": null, "maximum": false },
+        { "seat": "NRI", "seat_as_printed": "C Category NRI/Institutional Quota (Tuition Fee)", "branches": ["Biochemistry (MD Bio-Chemistry)"], "inr": 1058000, "usd": null, "maximum": false },
+        { "seat": "Inst", "seat_as_printed": "C Category NRI/Institutional Quota (Tuition Fee)", "branches": ["Biochemistry (MD Bio-Chemistry)"], "inr": 1058000, "usd": null, "maximum": false }
+      ],
+      "hostel": null,
+      "notes": "Scanned single page (read from image). Figures recorded = Tuition Fee row. Other rows, same in all three categories: Admission Fee 50,000; Registration/Application Fee 50,000; Skill Lab Training/Study Material 10,000; College Caution Deposit 25,000; PG Log Book 1,000 -> 'Total College Fee' clinical 7,07,320 / 12,78,640 / 67,48,500; para-clinical 3,14,538 / 4,93,075 / 21,19,750; pre-clinical 2,16,937 / 2,97,874 / 11,94,000. Period not printed (G.O. tuition is annual; whether the other heads recur is not stated). Note on sheet: 'As per APHREMC Guidelines, these fees will may be change. As of now, we collected fees as per G.O.Ms.No786, Dt 29-8-2026' (i.e. interim; equals G.O.Rt.786). C category is one column 'NRI/Institutional Quota' - entered twice as NRI and Inst."
+    },
+    {
+      "college": "Sri Balaji Medical College, Hospital & Research Institute, Renigunta",
+      "roster": [ { "id": 2120, "name": "Sri Balaji Medical College, Hospital and Research Institute, Chittoor" } ],
+      "ownership": "private", "source_kind": "college-own", "source": "sbmch-fee", "page": null,
+      "year_label": "Fee Structure of Post Graduate Courses in Medical Programmes (2026-27)",
+      "period": "per year",
+      "quote": "1 Convenor Quota 5,71,320 /- Yearly; 2 Management Quota - S1 (S1A & S1B) 11,42,640 /- Yearly; 3 Management Quota – S2 66,12,500 /- Yearly",
+      "fees": [
+        { "seat": "Gen", "seat_as_printed": "Convenor Quota", "branches": "*", "inr": 571320, "usd": null, "maximum": false },
+        { "seat": "Mgmt", "seat_as_printed": "Management Quota - S1 (S1A & S1B)", "branches": "*", "inr": 1142640, "usd": null, "maximum": false },
+        { "seat": "NRI", "seat_as_printed": "Management Quota – S2", "branches": "*", "inr": 6612500, "usd": null, "maximum": false }
+      ],
+      "hostel": null,
+      "notes": "One figure per quota, no branch split; all 7 of our branches here are clinical (MD Anaesthesiology, General Medicine, Psychiatry; MS General Surgery, OBG, Ophthalmology, Orthopaedics) and the figures equal G.O.Rt.786's clinical row. The page names no S3 (institutional) figure. 'Management Quota (B & C) Category Tuition Fee has to be paid through DD / NEFT / RTGS only.' Page footer: 'For Further Information: https://drntr.uhsap.in'."
+    },
+    {
+      "college": "Sri Venkateswara Institute of Medical Sciences (SVIMS University), Tirupati - PG seats at SVIMS-Sri Padmavathi Medical College for Women",
+      "roster": [ { "id": 46, "name": "Sri Venkateswara Institute of Medical Sciences (SVIMS), Tirupati" } ],
+      "ownership": "government", "source_kind": "university-own", "source": "svims", "page": 4,
+      "year_label": "PROSPECTUS FOR THE ACADEMIC YEAR 2026-27 MD/MS ADMISSION GUIDELINES",
+      "period": "per year",
+      "quote": "Tuition fee &Other fee (to be paid in each academic year) 01. Tuition fee per annum 1,75,000/- 02. Library fee per annum 5,000/- 03. Registration fee 2,000/- 04. Sports & Cultural Activities fee per annum 1,000/- 05. Medical expenses fee per annum 5,000/- Total 1,88,000/- (p.4); xviii) M.S. Orthopaedics ... training at BIRRD (T) Hospital ... The Tuition fee payable is Rs.30,000/- per annum, in addition to the University fee of Rs.25,600/- (one time) (p.10)",
+      "fees": [
+        { "seat": "Gen", "seat_as_printed": "State quota (Dr NTRUHS) - Tuition fee per annum", "branches": ["MD Anaesthesiology", "MD Anatomy", "MD Bio-Chemistry", "MD Dermatology, Venereology & Leprosy", "MD Emergency Medicine", "MD General Medicine", "MD Immuno Haematology & Blood Transfusion", "MD Microbiology", "MD Nuclear Medicine", "MD Paediatrics", "MD Pathology", "MD Pharmacology", "MD Physiology", "MD Radiation Oncology", "MD Radio Diagnosis", "MD Social & Preventive Medicine", "MS ENT", "MS General Surgery", "MS Obstetrics & Gynaecology", "MS Ophthalmology"], "inr": 175000, "usd": null, "maximum": false },
+        { "seat": "AIQ", "seat_as_printed": "All India Quota - Tuition fee per annum", "branches": ["MD Anaesthesiology", "MD Anatomy", "MD Bio-Chemistry", "MD Dermatology, Venereology & Leprosy", "MD Emergency Medicine", "MD General Medicine", "MD Immuno Haematology & Blood Transfusion", "MD Microbiology", "MD Nuclear Medicine", "MD Paediatrics", "MD Pathology", "MD Pharmacology", "MD Physiology", "MD Radiation Oncology", "MD Radio Diagnosis", "MD Social & Preventive Medicine", "MS ENT", "MS General Surgery", "MS Obstetrics & Gynaecology", "MS Ophthalmology"], "inr": 175000, "usd": null, "maximum": false },
+        { "seat": "Gen", "seat_as_printed": "M.S. Orthopaedics (BIRRD) - Tuition fee per annum", "branches": ["M.S. Orthopaedics (MS Orthopaedics)"], "inr": 30000, "usd": null, "maximum": false },
+        { "seat": "AIQ", "seat_as_printed": "M.S. Orthopaedics (BIRRD) - Tuition fee per annum", "branches": ["M.S. Orthopaedics (MS Orthopaedics)"], "inr": 30000, "usd": null, "maximum": false }
+      ],
+      "hostel": { "min": null, "max": null, "text": "Caution Deposit (Refundable) 10,000/-; Hostel Deposit (Refundable) 5,000/-; Hostel Corpus fund (Non-refundable) 5,000/- (no room rent printed)" },
+      "notes": "The tuition fee sheet does not split by quota; branch list = our roster for SVIMS minus MS Orthopaedics (printed exception, trained at BIRRD). University fee 25,600/- one time (AIQ pay by DD; state quota pay to Dr NTRUHS). At admission: Rs.18,800 (10% of tuition & other fee, non-refundable) + balance Rs.1,69,200; '2nd & 3rd year fees of Rs.1,86,000/- each shall be paid/deducted from the stipend.' The same SVIMS pages are reproduced in the NTRUHS CQ prospectus pp.48-57 with the same figures."
+    },
+    {
+      "college": "Government Medical College, Eluru",
+      "roster": [ { "id": 718, "name": "Government Medical College, Eluru" } ],
+      "ownership": "government", "source_kind": "state-govt-official", "source": "ntruhs-cq", "page": 17,
+      "year_label": "Prospectus ... ACADEMIC YEAR 2026-27, §9.2 'Fee structure notified by the Government of Andhra Pradesh in respect of the permitted Government Medical Colleges from the academic year 2023-24 onwards, vide G.O.Ms.No.163 & 164, HM & FW (C1) Dept., dated.05.12.2025'",
+      "period": "per year",
+      "quote": "All India Quota (50%) 30,000/- | Competent Authority (General Category) (50% of State Quota) 30,000/- | Competent Authority (Self-financing) (35% of State Quota) 9,00,000/- per annum | Competent Authority (NRI Category) (15% of state Quota) 29,00,000/- per annum",
+      "fees": [
+        { "seat": "AIQ", "seat_as_printed": "All India Quota (50%)", "branches": "*", "inr": 30000, "usd": null, "maximum": false },
+        { "seat": "Gen", "seat_as_printed": "Competent Authority (General Category) (50% of State Quota)", "branches": "*", "inr": 30000, "usd": null, "maximum": false },
+        { "seat": "Other:Competent Authority (Self-financing) (35% of State Quota)", "seat_as_printed": "Competent Authority (Self-financing) (35% of State Quota)", "branches": "*", "inr": 900000, "usd": null, "maximum": false },
+        { "seat": "NRI", "seat_as_printed": "Competent Authority (NRI Category) (15% of state Quota)", "branches": "*", "inr": 2900000, "usd": null, "maximum": false }
+      ],
+      "hostel": null,
+      "notes": "Same row for the five new colleges (Eluru, Machilipatnam, Nandyal, Rajahmundry, Vizianagaram). 'per annum' is printed under the Self-financing and NRI columns only; AIQ and General columns print '30,000/-'. Subject to the outcome of writ petitions. The MQ prospectus 2026-27 (p.17, §9.3) prints the same SF 9,00,000/- and NRI 29,00,000/- per annum. Our quota 'APMgmt-CA SF' = Self-financing; NRI category seats may also be filled as SF if lapsed (NTRUHS notice 24-10-2026 'Conversion of unfilled CA NRI seats to CA SF seats' - MBBS)."
+    },
+    {
+      "college": "Government Medical College, Machilipatnam",
+      "roster": [ { "id": 463, "name": "Government Medical College, Machilipatnam" } ],
+      "ownership": "government", "source_kind": "state-govt-official", "source": "ntruhs-cq", "page": 17,
+      "year_label": "Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')",
+      "period": "per year",
+      "quote": "All India Quota (50%) 30,000/- | Competent Authority (General Category) 30,000/- | Competent Authority (Self-financing) 9,00,000/- per annum | Competent Authority (NRI Category) 29,00,000/- per annum",
+      "fees": [
+        { "seat": "AIQ", "seat_as_printed": "All India Quota (50%)", "branches": "*", "inr": 30000, "usd": null, "maximum": false },
+        { "seat": "Gen", "seat_as_printed": "Competent Authority (General Category) (50% of State Quota)", "branches": "*", "inr": 30000, "usd": null, "maximum": false },
+        { "seat": "Other:Competent Authority (Self-financing) (35% of State Quota)", "seat_as_printed": "Competent Authority (Self-financing) (35% of State Quota)", "branches": "*", "inr": 900000, "usd": null, "maximum": false },
+        { "seat": "NRI", "seat_as_printed": "Competent Authority (NRI Category) (15% of state Quota)", "branches": "*", "inr": 2900000, "usd": null, "maximum": false }
+      ],
+      "hostel": null, "notes": "See Eluru entry (same table row)."
+    },
+    {
+      "college": "Government Medical College, Nandyal",
+      "roster": [ { "id": 354, "name": "Government Medical College, Nandyal" } ],
+      "ownership": "government", "source_kind": "state-govt-official", "source": "ntruhs-cq", "page": 17,
+      "year_label": "Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')",
+      "period": "per year",
+      "quote": "All India Quota (50%) 30,000/- | Competent Authority (General Category) 30,000/- | Competent Authority (Self-financing) 9,00,000/- per annum | Competent Authority (NRI Category) 29,00,000/- per annum",
+      "fees": [
+        { "seat": "AIQ", "seat_as_printed": "All India Quota (50%)", "branches": "*", "inr": 30000, "usd": null, "maximum": false },
+        { "seat": "Gen", "seat_as_printed": "Competent Authority (General Category) (50% of State Quota)", "branches": "*", "inr": 30000, "usd": null, "maximum": false },
+        { "seat": "Other:Competent Authority (Self-financing) (35% of State Quota)", "seat_as_printed": "Competent Authority (Self-financing) (35% of State Quota)", "branches": "*", "inr": 900000, "usd": null, "maximum": false },
+        { "seat": "NRI", "seat_as_printed": "Competent Authority (NRI Category) (15% of state Quota)", "branches": "*", "inr": 2900000, "usd": null, "maximum": false }
+      ],
+      "hostel": null, "notes": "See Eluru entry (same table row)."
+    },
+    {
+      "college": "Government Medical College, Rajahmundry",
+      "roster": [ { "id": 341, "name": "Government Medical College, Rajamahendravaram" } ],
+      "ownership": "government", "source_kind": "state-govt-official", "source": "ntruhs-cq", "page": 17,
+      "year_label": "Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')",
+      "period": "per year",
+      "quote": "All India Quota (50%) 30,000/- | Competent Authority (General Category) 30,000/- | Competent Authority (Self-financing) 9,00,000/- per annum | Competent Authority (NRI Category) 29,00,000/- per annum",
+      "fees": [
+        { "seat": "AIQ", "seat_as_printed": "All India Quota (50%)", "branches": "*", "inr": 30000, "usd": null, "maximum": false },
+        { "seat": "Gen", "seat_as_printed": "Competent Authority (General Category) (50% of State Quota)", "branches": "*", "inr": 30000, "usd": null, "maximum": false },
+        { "seat": "Other:Competent Authority (Self-financing) (35% of State Quota)", "seat_as_printed": "Competent Authority (Self-financing) (35% of State Quota)", "branches": "*", "inr": 900000, "usd": null, "maximum": false },
+        { "seat": "NRI", "seat_as_printed": "Competent Authority (NRI Category) (15% of state Quota)", "branches": "*", "inr": 2900000, "usd": null, "maximum": false }
+      ],
+      "hostel": null, "notes": "See Eluru entry (same table row). Printed as 'Rajahmundry'."
+    },
+    {
+      "college": "Government Medical College, Vizianagaram",
+      "roster": [ { "id": 310, "name": "Government Medical College, Vizianagaram" } ],
+      "ownership": "government", "source_kind": "state-govt-official", "source": "ntruhs-cq", "page": 17,
+      "year_label": "Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')",
+      "period": "per year",
+      "quote": "All India Quota (50%) 30,000/- | Competent Authority (General Category) 30,000/- | Competent Authority (Self-financing) 9,00,000/- per annum | Competent Authority (NRI Category) 29,00,000/- per annum",
+      "fees": [
+        { "seat": "AIQ", "seat_as_printed": "All India Quota (50%)", "branches": "*", "inr": 30000, "usd": null, "maximum": false },
+        { "seat": "Gen", "seat_as_printed": "Competent Authority (General Category) (50% of State Quota)", "branches": "*", "inr": 30000, "usd": null, "maximum": false },
+        { "seat": "Other:Competent Authority (Self-financing) (35% of State Quota)", "seat_as_printed": "Competent Authority (Self-financing) (35% of State Quota)", "branches": "*", "inr": 900000, "usd": null, "maximum": false },
+        { "seat": "NRI", "seat_as_printed": "Competent Authority (NRI Category) (15% of state Quota)", "branches": "*", "inr": 2900000, "usd": null, "maximum": false }
+      ],
+      "hostel": null, "notes": "See Eluru entry (same table row)."
+    }
+  ],
+  "government_all": [
+    {
+      "scope": "all candidates selected under the Competent Authority quota (government and private colleges) - university fee only, NOT tuition",
+      "source": "ntruhs-cq", "page": 16,
+      "year_label": "PROSPECTUS ... COMPETENT AUTHORITY QUOTA ... ACADEMIC YEAR 2026-27, 9. FEE STRUCTURE",
+      "quote": "University Fee: All the selected candidates shall pay the Non – Refundable University Fee of ₹.25,600/-",
+      "fees": [ { "seat": "Other:University Fee (non-refundable, CQ)", "seat_as_printed": "University Fee", "branches": "*", "inr": 25600, "usd": null, "maximum": false } ],
+      "notes": "Not a tuition fee. The CQ prospectus prints NO tuition figure for the older government colleges (AMC, Guntur, Kurnool, Rangaraya, SV MC, Siddhartha, Anantapuram, Kadapa, Ongole, Srikakulam, ACSR Nellore); only §9.2 for the five new colleges, and SVIMS's own pages. §9.1 (private colleges' Category-A tuition per G.O.Rt.786: 5,71,320 / 1,78,538 / 80,937) was NOT used (owner's rule). MQ prospectus: University Fee Rs.54,600/- for medical courses (MQ) - also not tuition; its private-college tables (§9.1) NOT used."
+    }
+  ],
+  "not_published": [
+    { "college": "ACSR Government Medical College, Nellore", "roster_id": 250, "latest_seen": "No working own site (acsrgmcnlr.edu.in now a gambling page; notices via spsnellore.ap.gov.in). No 2026-27 tuition in NTRUHS CQ prospectus." },
+    { "college": "Andhra Medical College, Visakhapatnam", "roster_id": 51, "latest_seen": "amc.edu.in: no PG fee (its /tuition-fee/ page is template text). No tuition in CQ prospectus." },
+    { "college": "Government Medical College, Ananthapuram", "roster_id": 150, "latest_seen": "No working site (gmcatp.in / gmc-atp.in unresolvable). No tuition in CQ prospectus." },
+    { "college": "Government Medical College, Kadapa", "roster_id": 203, "latest_seen": "No working site (rimskadapa.in hijacked). No tuition in CQ prospectus." },
+    { "college": "Government Medical College, Ongole", "roster_id": 171, "latest_seen": "2025-26: 'PG Medical, Dental and Super Speciality Courses - Fee Structure for 2025-2026 Admissions' image https://www.gmcongole.org/wp-content/uploads/2025/11/WhatsApp-Image-2025-11-24-at-2.22.30-PM.jpeg + CIRCULAR_GST.pdf (Nov 2025)" },
+    { "college": "Government Medical College, Srikakulam", "roster_id": 268, "latest_seen": "gmcsrikakulam.org: MBBS pages only" },
+    { "college": "Government Siddhartha Medical College, Vijaywada", "roster_id": 151, "latest_seen": "smcvja.in: super-speciality fee 2025-26 only; 'Fee particulars' page 404" },
+    { "college": "Guntur Medical College, Guntur", "roster_id": 106, "latest_seen": "gunturmedicalcollege.edu.in 2026-27 page is the MBBS checklist (Tuition AIQ & State Rs.15000/-; University Fee Rs.12600/-) - UG, not used" },
+    { "college": "Homi Bhabha Cancer Hospital and Research Centre, Visakhapatnam", "roster_id": 726, "latest_seen": "hbchrcv.tmc.gov.in has no academics/fee section" },
+    { "college": "Kurnool Medical College, Kurnool", "roster_id": 91, "latest_seen": "fee image https://www.kurnoolmedicalcollege.ac.in/assets/admissions/Kurnool%20Medical%20College%20Fee%20Structure.jpeg (104,312 B, year unknown, not downloaded)" },
+    { "college": "Rangaraya Medical College, Kakinada", "roster_id": 153, "latest_seen": "rmckakinada.com: nothing" },
+    { "college": "SV Medical College, Tirupati", "roster_id": 86, "latest_seen": "2025-26 HTML https://svmctpt.edu.in/admissions-pg-2025-26: 'For AIQ Candidate (College Fee: 30,000/- and Dr NTRUHS Fee: 23,600/- Total: 53600/-)'; 'For Dr NTRUHS CQ Fee (Only College Fee: 30,000/)'" },
+    { "college": "Alluri Sitaram Raju Academy of Medical Sciences, Eluru", "roster_id": 2104, "latest_seen": "2025-26 HTML https://www.asram.in/#/mcPGAdmissions: tuition yearly pre/para/clinical CQ 70,380/1,55,250/4,96,800; S1 1,40,760/3,10,500/9,93,600; S2 9,20,000/17,25,000/57,50,000" },
+    { "college": "Apollo Institute of Medical Sciences and Research, Chittoor", "roster_id": 2119, "latest_seen": "Own fee sheet 2025-26 (AIMSR_PG_Fee_Structure_2025-26-MQ-1.pdf). Its 2026-27 PG uploads are copies of NTRUHS prospectus/notifications (MQ prospectus copy = 1,882,928 B, same as NTRUHS)" },
+    { "college": "Dr PSI Medical College, Chinoutpalli", "roster_id": 2106, "latest_seen": "drpsims.edu.in not reachable" },
+    { "college": "Fathima Institute of Medical Sciences, Kadapa", "roster_id": 2117, "latest_seen": "fimskadapa.in PG page: 'University fee: Rs.23,500/' only, no year" },
+    { "college": "Gayathri Vidya Parishad Institute of Health Care & Medical Technology, Visakhapatnam", "roster_id": 2114, "latest_seen": "PG Fees Structure 2023-24 pdf (gvpihcmt.in)" },
+    { "college": "Great Eastern Medical School and Hospital, Srikakulam", "roster_id": 2111, "latest_seen": "gems.edu.in not readable (TLS)" },
+    { "college": "GSL Medical College, Rajahmundry", "roster_id": 2105, "latest_seen": "PG-2025-26 prospectus CQ/MQ copies + GO (gslmc.com, Dec 2025)" },
+    { "college": "Katuri Medical College, Guntur", "roster_id": 2103, "latest_seen": "2019-20 PG FEE STRUCTURE.xlsx (katurimedicalcollege.org)" },
+    { "college": "Konaseema Institute of Medical Sciences & Research Foundation, Amalapuram", "roster_id": 2113, "latest_seen": "kims.in: 2025-26 PG checklists only" },
+    { "college": "Maharajah Institute of Medical Sciences, Vizianagaram", "roster_id": 2107, "latest_seen": "mimsvzm.org: nothing" },
+    { "college": "Narayana Medical College, Nellore", "roster_id": 2110, "latest_seen": "PG PROSPECTUS 2022-23 (narayanamedicalcollege.com)" },
+    { "college": "Nimra Institute of Medical Sciences (NIMS), Ibrahimpatnam, Vijayawada", "roster_id": 2118, "latest_seen": "nims.in/college fee page returns 404 / mod_security" },
+    { "college": "NRI Medical College, Guntur", "roster_id": 2109, "latest_seen": "nrias.net: MBBS 2026 only" },
+    { "college": "PES Institute of Medical Sciences and Research, Kuppam", "roster_id": 2108, "latest_seen": "pesimsr.pes.edu: 'MD / MS 2025-26' tab, no fee" },
+    { "college": "Santhiram Medical College, Nandyal", "roster_id": 2112, "latest_seen": "santhirammedicalcollege.org: nothing" },
+    { "college": "Viswabharathi Medical College, Kurnool", "roster_id": 2116, "latest_seen": "vmc.edu.in 'PG (MD/MS) Admissions for 2026-2027 - Fee Structure' links Circular_dt.31-08-2026_Feestructure_2026_27.pdf, which is Dr NTRUHS Registrar's circular No.5148/EA2/PG/2026 implementing G.O.Rt.No.786 for all private colleges (interim; A/B/C clinical 5,71,320 / 11,42,640 / 66,12,500; para 1,78,538 / 3,57,075 / 19,83,750; pre 80,937 / 1,61,874 / 10,58,000) - not the college's own notice, so not used; flag for owner decision" }
+  ],
+  "candidate_files_not_downloaded": [
+    { "college": "Government Medical College, Ongole", "url": "https://www.gmcongole.org/wp-content/uploads/2026/08/AIQ-FEE-STRUCTURE-2026-2027.pdf", "title": "AIQ FEE STRUCTURE – 2026-2027", "bytes": 205805, "date": "2026-08-07", "why": "Labelled 2026-27 but posted in MBBS admission season; probably MBBS - verify" },
+    { "college": "Government Medical College, Ongole", "url": "https://www.gmcongole.org/wp-content/uploads/2026/08/STATE-QUOTA-FEE-STRUCTURE-2026-2027.pdf", "title": "STATE QUOTA FEE STRUCTURE – 2026-2027", "bytes": 180185, "date": "2026-08-07", "why": "Same - probably MBBS" },
+    { "college": "Government Medical College, Machilipatnam", "url": "https://www.gmcmachilipatnam-ap-gov.com/wp-content/uploads/2026/08/AIQ-04.08.2026_2582.pdf", "title": "Fee structure (AIQ 04.08.2026)", "bytes": 451121, "date": "2026-08-05", "why": "2026 fee file, probably MBBS (August)" },
+    { "college": "Government Medical College, Nandyal", "url": "https://www.gmcnandyal-ap-gov.com/wp-content/uploads/2026/09/GMC-Nandyal-Category-B-SF-2026-details.pdf", "title": "B - Category (SF 2026 details)", "bytes": 177829, "date": "2026-09-07", "why": "2026 category files (also AIQ-web-2026_8525.pdf, A-cat-web-2026_2378.pdf, C-Category.pdf); probably MBBS" }
+  ]
+}

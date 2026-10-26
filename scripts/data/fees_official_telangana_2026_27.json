@@ -1,0 +1,572 @@
+{
+ "state": "Telangana",
+ "classes": [
+  [
+   "NRI",
+   "NRI"
+  ],
+  [
+   "^(MM|JM)$|Minority|Min\\.? |Min$|Min\\.$|-Min",
+   "Min"
+  ],
+  [
+   "^AIQ$",
+   "AIQ"
+  ],
+  [
+   "^MNG$|Mgmt|Management|Mgt|Others \\(Inst|CatB|MQ1|Paid",
+   "Mgmt"
+  ],
+  [
+   "CatC-Inst|MQ3",
+   "Inst"
+  ],
+  [
+   "^DNB Post MBBS$|^NBE Diploma$",
+   "DNB"
+  ],
+  [
+   "DNB|AFMS",
+   "Other"
+  ],
+  [
+   ".",
+   "Gen"
+  ]
+ ],
+ "null_class": {
+  "AP Govt PG": "Gen",
+  "TEL Govt PG": "Gen",
+  "AP Mgmt PG": "NRI"
+ },
+ "entries": [
+  {
+   "college": "Malla Reddy Institute of Medical Sciences, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1659
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 5500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrims, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Institute of Medical Sciences, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1659
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrims, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Institute of Medical Sciences, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1659
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases",
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrims, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Institute of Medical Sciences, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1659
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 6500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrims, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Institute of Medical Sciences, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1659
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrims, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Institute of Medical Sciences, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1659
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology",
+    "MS ENT"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrims, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Institute of Medical Sciences, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1659
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 6000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrims, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Institute of Medical Sciences, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1659
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrims, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Institute of Medical Sciences, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1659
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology",
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrims, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Institute of Medical Sciences, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1659
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery",
+    "MS Orthopaedics",
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrims, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Institute of Medical Sciences, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1659
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD General Medicine",
+    "MD Paediatrics",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": null,
+   "fee_usd": 110000,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrims, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Institute of Medical Sciences, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1659
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": null,
+   "fee_usd": 130000,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrims, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Institute of Medical Sciences, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1659
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS General Surgery",
+    "MS Orthopaedics",
+    "MS Ophthalmology"
+   ],
+   "fee_inr": null,
+   "fee_usd": 85000,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrims, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Institute of Medical Sciences, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1659
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Fee – Per Annum Rs. 1,77,000/- (Non-A/C Room with Mess) *Upgradation of Hostel Available. (Admission & Hostel Fee Structure – 2026 – 2027)",
+   "year": "2026-27",
+   "source": "mrims, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\"",
+   "min": 177000,
+   "max": 177000
+  },
+  {
+   "college": "Malla Reddy Medical College for Women, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1788
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 5500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrmcw, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Medical College for Women, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1788
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrmcw, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Medical College for Women, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1788
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases",
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrmcw, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Medical College for Women, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1788
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 6500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrmcw, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Medical College for Women, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1788
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry",
+    "MD Radiation Oncology"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrmcw, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Medical College for Women, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1788
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology",
+    "MS ENT"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrmcw, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Medical College for Women, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1788
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 6000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrmcw, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Medical College for Women, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1788
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "fee_inr": 100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrmcw, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Medical College for Women, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1788
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrmcw, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Medical College for Women, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1788
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "fee_inr": 250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrmcw, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Medical College for Women, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1788
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery",
+    "MS Orthopaedics",
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrmcw, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Medical College for Women, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1788
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD General Medicine",
+    "MD Paediatrics",
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": null,
+   "fee_usd": 110000,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrmcw, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Medical College for Women, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1788
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": null,
+   "fee_usd": 130000,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrmcw, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Medical College for Women, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1788
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS General Surgery",
+    "MS Ophthalmology"
+   ],
+   "fee_inr": null,
+   "fee_usd": 85000,
+   "max": false,
+   "year": "2026-27",
+   "source": "mrmcw, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\""
+  },
+  {
+   "college": "Malla Reddy Medical College for Women, Suraram, Hyderabad (A Constituent Unit of MRV - Malla Reddy Vishwavidyapeeth, Deemed to be University)",
+   "ids": [
+    1788
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Fee – Per Annum Rs. 1,77,000/- (Non-A/C Room with Mess) *Upgradation of Hostel Available.",
+   "year": "2026-27",
+   "source": "mrmcw, p. 1 — \"FEE STRUCTURE FOR POST-GRADUATE (MD/MS) PROGRAMME 2026-27\"",
+   "min": 177000,
+   "max": 177000
+  },
+  {
+   "college": "Gandhi Medical College, Secunderabad",
+   "ids": [
+    61
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 25000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gandhi, p. 5 — \"PG Fee Structure for the Academic Year 2026-27\""
+  },
+  {
+   "college": "Gandhi Medical College, Secunderabad",
+   "ids": [
+    61
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 25000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gandhi, p. 5 — \"PG Fee Structure for the Academic Year 2026-27\""
+  },
+  {
+   "college": "Gandhi Medical College, Secunderabad",
+   "ids": [
+    61
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 25000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gandhi, p. 5 — \"PG Fee Structure for the Academic Year 2026-27\""
+  },
+  {
+   "college": "Government Medical College, Nalgonda",
+   "ids": [
+    667
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 25000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nalgonda, p. 2 — \"FEE STRUCTURE –2026-27(PG)\""
+  },
+  {
+   "college": "Government Medical College, Nalgonda",
+   "ids": [
+    667
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 25000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nalgonda, p. 2 — \"FEE STRUCTURE –2026-27(PG)\""
+  },
+  {
+   "college": "Government Medical College, Nalgonda",
+   "ids": [
+    667
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 25000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nalgonda, p. 2 — \"FEE STRUCTURE –2026-27(PG)\""
+  }
+ ]
+}

@@ -1,0 +1,1014 @@
+{
+ "state": "Uttar Pradesh",
+ "checked": "2026-10-25",
+ "files": [
+  {
+   "id": "dgme_pg_brochure",
+   "url": "https://dgme.up.gov.in/assets/admin/news/PG%202026%20BROCHURE.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_up/13_dgme_pg_brochure/pg2026_brochure.pdf",
+   "title": "UP NEET PG-2026 BROCHURE (uploaded 03-08-2026)",
+   "issuer": "DGME Uttar Pradesh (state counselling authority)",
+   "bytes": 11636253,
+   "scanned": true,
+   "notes": "25 scanned pages. Index has no fee chapter. Chapter-6 (p.12) only says: 'It will be mandatory for the candidates who have been allotted the seats in Private Medical & Dental College/Institute/University (except minority Institutions) to deposit the tuition fee fixed by the government at the time of admission. In minority Colleges/Institutions, it will be mandatory for the candidates to deposit the tuition fee prescribed by the respective Colleges/Institutes.' No fee figure for any college, government or private."
+  },
+  {
+   "id": "basti_pg",
+   "url": "https://asmcbasti.edu.in/pdf/PG%20COURSE%20MD-MS%20-%20ADMISSION%20SESSION%202026-27.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_up/14_basti_pg/basti_pg_2026_27.pdf",
+   "title": "ADMISSION – PG COURSE – MD/MS SESSION 2026-27 (letter dated 08.09.2026)",
+   "issuer": "Principal, Maharshi Vashishtha Autonomous State Medical College, Basti (college letterhead)",
+   "bytes": 4178915,
+   "scanned": false
+  },
+  {
+   "id": "fh_pgfee",
+   "url": "https://fhmc.co.in/images/pgfee.jpg",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_up/15_fh_pgfee/pgfee.jpg",
+   "title": "F.H. Medical College, Agra — PG Courses Fee Detail 2026-27 (image on fhmc.co.in/pg-fee-structure.php, Last-Modified 22 Oct 2026)",
+   "issuer": "F.H. Medical College, Agra (its own fee sheet, college header)",
+   "bytes": 498900,
+   "scanned": true
+  },
+  {
+   "id": "subharti_fee",
+   "url": "https://subharti.org/documents/University%20fee%20structure%20(2026-27).xlsx%20-%2026-27%20final%20Sheet.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_up/16_subharti_fee/subharti_2026_27.pdf",
+   "title": "SWAMI VIVEKANAND SUBHARTI UNIVERSITY — Fee Structure for 2026-27",
+   "issuer": "Swami Vivekanand Subharti University",
+   "bytes": 281295,
+   "scanned": false,
+   "notes": "Row 2 'Doctor of Medicine (MD) / Master in Surgery (MS)' prints no figure; the merged cell reads 'Fee shall be decided as per University Notification uploaded on the University website: www.subharti.org or www.medical.subharti.org as per govt. order'."
+  }
+ ],
+ "html": [
+  {
+   "id": "santosh_pg",
+   "url": "https://www.santosh.ac.in/pg-medical",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_up/html/santosh_pg_medical.txt",
+   "title": "Program Fees PG (Medical) 2026 — Santosh Deemed to be University"
+  },
+  {
+   "id": "rama_hapur_fee",
+   "url": "https://ramamedicalcolleges.com/Fee.aspx",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_up/html/rama_hapur_fee.full.txt",
+   "title": "Rama Medical College Hospital & Research Centre, Hapur — Fee Structure for the year of 2026-27 (tables for 2026-27, 2025-26, 2024-25 … on one page; .full.txt includes the hidden tabs)"
+  },
+  {
+   "id": "niims_fee",
+   "url": "https://niims.edu.in/fee-structure/",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_up/html/niims_fee.full.txt",
+   "title": "NIIMS — PG COURSES FEE STRUCTURE (MD & MS 2026-27)"
+  },
+  {
+   "id": "fh_pg_page",
+   "url": "https://fhmc.co.in/pg-fee-structure.php",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_up/html/fh_pg_fee_page.txt",
+   "title": "FH Medical College — PG Fee Structure page: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)' (fee table itself is pgfee.jpg)"
+  }
+ ],
+ "colleges": [
+  {
+   "college": "Santosh Deemed to be University — PG Medical Programs (Santosh Medical College, Ghaziabad)",
+   "roster": [
+    {
+     "id": 1818,
+     "name": "Santosh Medical College, Ghaziabad"
+    }
+   ],
+   "ownership": "deemed",
+   "source_kind": "university-own",
+   "source": "santosh_pg",
+   "page": null,
+   "year_label": "Program Fees PG (Medical) 2026",
+   "period": "per year",
+   "quote": "Program Fees PG (Medical) 2026 … MD-Anaesthesia General/Management Category - (INR) Yearly Tuition Fee : ₹ 23,00,000 … MD- Paediatrics NRI Fee : $ 1,00,000 Yearly Tuition Fee : ₹ 48,00,000 … MD Radio Diagnosis NRI Fee : $ 1,00,000 Yearly Tuition Fee : ₹ 76,00,000",
+   "fees": [
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General/Management Category - (INR) Yearly Tuition Fee",
+     "branches": [
+      "MD-Anaesthesia"
+     ],
+     "inr": 2300000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General/Management Category - (INR) Yearly Tuition Fee",
+     "branches": [
+      "MD- Paediatrics"
+     ],
+     "inr": 4800000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General/Management Category - (INR) Yearly Tuition Fee",
+     "branches": [
+      "MD-General Medicine"
+     ],
+     "inr": 5000000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General/Management Category - (INR) Yearly Tuition Fee",
+     "branches": [
+      "MD-Psychiatry"
+     ],
+     "inr": 2800000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General/Management Category - (INR) Yearly Tuition Fee",
+     "branches": [
+      "MD-Respiratory Medicine"
+     ],
+     "inr": 4200000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General/Management Category - (INR) Yearly Tuition Fee",
+     "branches": [
+      "MD Emergency Medicine"
+     ],
+     "inr": 3000000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General/Management Category - (INR) Yearly Tuition Fee",
+     "branches": [
+      "MD-Dermatology"
+     ],
+     "inr": 6800000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General/Management Category - (INR) Yearly Tuition Fee",
+     "branches": [
+      "MD Radio Diagnosis"
+     ],
+     "inr": 7600000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General/Management Category - (INR) Yearly Tuition Fee",
+     "branches": [
+      "MS-ENT"
+     ],
+     "inr": 2800000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General/Management Category - (INR) Yearly Tuition Fee",
+     "branches": [
+      "MS-General Surgery"
+     ],
+     "inr": 3800000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General/Management Category - (INR) Yearly Tuition Fee",
+     "branches": [
+      "MD Immunohematology & Blood Transfusion (IHBT)"
+     ],
+     "inr": 950000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General/Management Category - (INR) Yearly Tuition Fee",
+     "branches": [
+      "MS-Obstetrics & Gynaecology"
+     ],
+     "inr": 5000000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General/Management Category - (INR) Yearly Tuition Fee",
+     "branches": [
+      "MS-Opthalmology"
+     ],
+     "inr": 3000000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General/Management Category - (INR) Yearly Tuition Fee",
+     "branches": [
+      "MD-Anatomy"
+     ],
+     "inr": 300000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General/Management Category - (INR) Yearly Tuition Fee",
+     "branches": [
+      "MS-Orthopaedics"
+     ],
+     "inr": 3900000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General/Management Category - (INR) Yearly Tuition Fee",
+     "branches": [
+      "MD-Biochemistry"
+     ],
+     "inr": 350000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General/Management Category - (INR) Yearly Tuition Fee",
+     "branches": [
+      "MD-Community Medicine"
+     ],
+     "inr": 350000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General/Management Category - (INR) Yearly Tuition Fee",
+     "branches": [
+      "MD-Microbiology"
+     ],
+     "inr": 300000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General/Management Category - (INR) Yearly Tuition Fee",
+     "branches": [
+      "MD-Physiology"
+     ],
+     "inr": 250000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General/Management Category - (INR) Yearly Tuition Fee",
+     "branches": [
+      "MD-Pathology"
+     ],
+     "inr": 1050000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General/Management Category - (INR) Yearly Tuition Fee",
+     "branches": [
+      "MD-Pharmacology"
+     ],
+     "inr": 300000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Fee : $ 1,00,000 (period not printed)",
+     "branches": [
+      "MD- Paediatrics",
+      "MD-General Medicine",
+      "MD-Psychiatry",
+      "MD-Respiratory Medicine",
+      "MD-Dermatology",
+      "MD Radio Diagnosis",
+      "MS-General Surgery",
+      "MS-Obstetrics & Gynaecology",
+      "MS-Opthalmology",
+      "MS-Orthopaedics"
+     ],
+     "inr": null,
+     "usd": 100000,
+     "maximum": false
+    }
+   ],
+   "hostel": null,
+   "notes": "HTML page, label '2026' (not '2026-27'). 'General/Management Category - (INR)' heads the first card and the page prints one yearly tuition per branch; MCC lists Santosh's seats as MNG and NRI. 'NRI Fee : $ 1,00,000' is printed on 10 branches only and its period is not stated (yearly tuition is labelled 'Yearly'; the NRI line is not). Monthly stipend ₹ 56,010 on every card. Diploma in Public Health (₹ 2,00,000) left out (not MD/MS). The page also links a Google Drive file 'Download PG Medical Fees' (not downloaded)."
+  },
+  {
+   "college": "Rama Medical College Hospital & Research Centre, Hapur",
+   "roster": [
+    {
+     "id": 2134,
+     "name": "Rama Medical College Hospital and Research Centre, Hapur"
+    }
+   ],
+   "ownership": "private",
+   "source_kind": "college-own",
+   "source": "rama_hapur_fee",
+   "page": null,
+   "year_label": "Fee Structure for the year of 2026-27",
+   "period": "per year",
+   "quote": "Fee Structure for the year of 2026-27 | Course Name | Duration | Tuition Fee (Per annum)* | Hostel Fee (Per annum)* | Security Deposit (Refundable only After end of the Course)* | Misc. (Per annum)* | … MD & MS | 3 Years | Rs. 29,70,734 | AC Accommodation: Rs.3,46,500 | Rs. 5,00,000 (One Time) | Rs.1,41,240",
+   "fees": [
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "MD & MS — Tuition Fee (Per annum)*",
+     "branches": "*",
+     "inr": 2970734,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 346500,
+    "max": 346500,
+    "text": "AC Accommodation: Rs.3,46,500 (Hostel Fee, Per annum)*"
+   },
+   "notes": "One row for all MD & MS branches; no clinical/non-clinical split and no quota split (the college's seats are UP private 'Open' seats). Security Rs. 5,00,000 one time (refundable after the course); Misc. Rs. 1,41,240 per annum. The 2025-26 table on the same page prints the identical MD & MS figure (Rs. 29,70,734); 2024-25 printed Rs. 24,75,612. Footnote for '*' not found on the page."
+  },
+  {
+   "college": "Noida International Institute of Medical Sciences (a unit of Noida International University)",
+   "roster": [
+    {
+     "id": 2131,
+     "name": "Noida International Institute of Medical Sciences, Greater Noida"
+    }
+   ],
+   "ownership": "private",
+   "source_kind": "college-own",
+   "source": "niims_fee",
+   "page": null,
+   "year_label": "PG COURSES FEE STRUCTURE (MD & MS 2026-27)",
+   "period": "per year",
+   "quote": "PG COURSES FEE STRUCTURE (MD & MS 2026-27) Tuition Fee: MD General Medicine MD Anaesthesiology MD Paediatrics MS General Surgery MS Orthopaedics MS Obstetric and Gynaecology INR 25,08,698 Per Year MD Pathology INR 13,68,036 Per Year Hostel Fees (per year) -INR 2,42,550/- ( with sharing room) AC Room",
+   "fees": [
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee … INR 25,08,698 Per Year",
+     "branches": [
+      "MD General Medicine",
+      "MD Anaesthesiology",
+      "MD Paediatrics",
+      "MS General Surgery",
+      "MS Orthopaedics",
+      "MS Obstetric and Gynaecology"
+     ],
+     "inr": 2508698,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee … INR 13,68,036 Per Year",
+     "branches": [
+      "MD Pathology"
+     ],
+     "inr": 1368036,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 242550,
+    "max": 242550,
+    "text": "Hostel Fees (per year) -INR 2,42,550/- ( with sharing room) AC Room"
+   },
+   "notes": "Only 7 branches printed; the roster lists 12 MD/MS courses for this college — the other 5 have no 2026-27 figure. Security INR 5 Lac one time (refundable); Miscellaneous INR 1,41,240 per year. 'Tuition fees is required to be paid through Demand Draft in favour of “Director General Medical Education & Training U.P” payable at Lucknow and will be submit at Nodal Centre.'"
+  },
+  {
+   "college": "F.H. Medical College, Agra",
+   "roster": [
+    {
+     "id": 2150,
+     "name": "FH Medical College & Hospital, Etamdapur, Agra"
+    }
+   ],
+   "ownership": "private",
+   "source_kind": "college-own",
+   "source": "fh_pgfee",
+   "page": 1,
+   "year_label": "PG Courses Fee Detail 2026-27 (page text: 'IMPORTANT INSTRUCTIONS FOR PG STUDENTS AT THE TIME OF ADMISSION (SESSION - 2026-27)')",
+   "period": "per year",
+   "quote": "PG Courses Fee Detail 2026-27 … Tuition Fee (per year) … MD Anaesthesiology 7 2350000.00 350000.00 141240.00 500000.00 3341240.00 … MD Radiodiagnosis 5 4250000.00 … MD Respiratory Medicine 5 3650000.00",
+   "fees": [
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee (per year)",
+     "branches": [
+      "MD Community Medicine"
+     ],
+     "inr": 250000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee (per year)",
+     "branches": [
+      "MD Pathology"
+     ],
+     "inr": 1250000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee (per year)",
+     "branches": [
+      "MD Microbiology"
+     ],
+     "inr": 250000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee (per year)",
+     "branches": [
+      "MD Anaesthesiology"
+     ],
+     "inr": 2350000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee (per year)",
+     "branches": [
+      "MD Dermatology , Venereology & Leprosy"
+     ],
+     "inr": 4250000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee (per year)",
+     "branches": [
+      "MD General Medicine"
+     ],
+     "inr": 4200000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee (per year)",
+     "branches": [
+      "MS General Surgery"
+     ],
+     "inr": 3650000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee (per year)",
+     "branches": [
+      "MS Obstetrics and Gynaecology"
+     ],
+     "inr": 4200000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee (per year)",
+     "branches": [
+      "MS Ophthalmology"
+     ],
+     "inr": 3650000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee (per year)",
+     "branches": [
+      "MS Orthopaedics"
+     ],
+     "inr": 4100000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee (per year)",
+     "branches": [
+      "MS Otorhinolaryngology"
+     ],
+     "inr": 2500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee (per year)",
+     "branches": [
+      "MD Paediatrics"
+     ],
+     "inr": 4000000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee (per year)",
+     "branches": [
+      "MD Psychiatry"
+     ],
+     "inr": 2800000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee (per year)",
+     "branches": [
+      "MD Radiodiagnosis"
+     ],
+     "inr": 4250000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee (per year)",
+     "branches": [
+      "MD Respiratory Medicine"
+     ],
+     "inr": 3650000,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 350000,
+    "max": 350000,
+    "text": "AC Single seater (per year) (including mess charges) 350000.00; 'Hostel is Compulsory for All Clinical and Non Clinical Subjects.'"
+   },
+   "notes": "One table for all seats; the college has UP private Open and Minority seats and the sheet does not split them. Misc. Fee 141240.00 per year; Security 500000.00 one time refundable; 'Total Fee (per year)' column adds tuition + hostel + misc + security (e.g. MD Anaesthesiology 3341240.00) — do not use the total. 'Fee must be deposited within due date, each year … late fee charges @ 2.00% per month'. The HTML page's post-dated-cheque schedule (30.06.2027, 30.06.2028) prints Hostel 3.50 L and Misc 141240.00 for later years."
+  },
+  {
+   "college": "Maharshi Vashishtha Autonomous State Medical College, Basti",
+   "roster": [
+    {
+     "id": 1705,
+     "name": "Autonomous State Medical College, Rampur, Basti (Government Medical College, Rampur, Basti)"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "basti_pg",
+   "page": 1,
+   "year_label": "ADMISSION – PG COURSE – MD/MS SESSION 2026-27 (letter dated 08.09.2026)",
+   "period": "unstated",
+   "quote": "FEE DETAILS | क्र0 सं0 | कैटेगरी | प्रवेश शुल्क | विकास शुल्क | अन्य शुल्क | शिक्षण शुल्क | कॉशन मनी (रिफण्डेबल) | कुल शुल्क | 1 GENERAL 2,000 2,000 4,000 24,000 10,000 42,000 | 2 OBC / SC / ST 2,000 2,000 4,000 12,000 10,000 30,000",
+   "fees": [
+    {
+     "seat": "Other:GENERAL (category; State Quota and All India Quota)",
+     "seat_as_printed": "GENERAL — शिक्षण शुल्क (tuition)",
+     "branches": "*",
+     "inr": 24000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:OBC / SC / ST (category; State Quota and All India Quota)",
+     "seat_as_printed": "OBC / SC / ST — शिक्षण शुल्क (tuition)",
+     "branches": "*",
+     "inr": 12000,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": null,
+   "notes": "Fee split by category, not quota (the declaration form in the same file covers admission 'through State Quota/All India Quota'). Other heads: admission 2,000, development 2,000, other 4,000, caution money 10,000 (refundable); printed totals 42,000 (GENERAL) and 30,000 (OBC/SC/ST). Period not printed (amounts deposited at admission). Declaration: 'am also prepared to pay fee if and when it is revised by the Govt. of U.P.'"
+  }
+ ],
+ "government_all": [],
+ "not_published": [
+  {
+   "college": "Autonomous State Medical College, Etah",
+   "roster_id": 996,
+   "latest_seen": "nothing on valasmcetah.edu.in (news & notices checked)"
+  },
+  {
+   "college": "Autonomous State Medical College, Fatehpur",
+   "roster_id": 1750,
+   "latest_seen": "nothing on asmcfatehpur.com ('NEET PG COUNSELLING' post has no content)"
+  },
+  {
+   "college": "Autonomous State Medical College, Firozabad",
+   "roster_id": 481,
+   "latest_seen": "asmcfirozabad.edu.in 'Admission Documents & Fees PG (MD/MS) 2026' links a file uploaded Aug 2024 (/wp-content/uploads/2024/08/pg-md-ms.pdf, 541661 B, LM 15 Aug 2024) — not downloaded"
+  },
+  {
+   "college": "Autonomous State Medical College, Hardoi",
+   "roster_id": 1853,
+   "latest_seen": "asmchardoi.org admission page: MBBS only"
+  },
+  {
+   "college": "Autonomous State Medical College, Mirzapur",
+   "roster_id": 1842,
+   "latest_seen": "mvasmc.edu.in: 'Fee Structure' menu has no target"
+  },
+  {
+   "college": "Autonomous State Medical College, Pratapgarh",
+   "roster_id": 1823,
+   "latest_seen": "official domain not confirmed (asmcpratapgarh.org.in answers 410 Gone)"
+  },
+  {
+   "college": "Autonomous State Medical College, Siddharthnagar",
+   "roster_id": 1827,
+   "latest_seen": "asmcsiddharthnagar.ac.in/Fee.pdf (LM 22 Sep 2025), apparently MBBS admission fees"
+  },
+  {
+   "college": "BRD Medical College, Gorakhpur",
+   "roster_id": 170,
+   "latest_seen": "nothing on brdmc.ac.in (old brdmc.org is spam-hijacked)"
+  },
+  {
+   "college": "Dr Bhimrao Ramji Ambedkar Government Medical College, Kannauj",
+   "roster_id": 701,
+   "latest_seen": "nothing on gmckannauj.in"
+  },
+  {
+   "college": "Dr Ram Manohar Lohia Institute of Medical Sciences, Lucknow",
+   "roster_id": 39,
+   "latest_seen": "drrmlims.ac.in admissions page 'Under Maintenance' (25 Oct 2026)"
+  },
+  {
+   "college": "Government Allopathic Medical College, Banda",
+   "roster_id": 954,
+   "latest_seen": "nothing on gmcbanda.ac.in"
+  },
+  {
+   "college": "Government Institute of Medical Sciences, Kasna, Greater Noida",
+   "roster_id": 306,
+   "latest_seen": "gims.ac.in 'PG FEE' (LM 16 Feb 2026) and 'Fee Notice For Courses' (LM 21 Jul 2026) — year labels unknown, not downloaded"
+  },
+  {
+   "college": "Government Medical College, Badaun",
+   "roster_id": 1791,
+   "latest_seen": "'MD Fees Structure 04-8-2025' gmcbadaunup.com/Slider/10311172.pdf"
+  },
+  {
+   "college": "Government Medical College, Faizabad",
+   "roster_id": 403,
+   "latest_seen": "asmcayodhya.ac.in admissions: 2025-26 MBBS only"
+  },
+  {
+   "college": "Government Medical College, Shahjhanpur",
+   "roster_id": 614,
+   "latest_seen": "smcshah.in: PG 2023-24 brochure only"
+  },
+  {
+   "college": "Government Medical College & Super facility Hospital, Azamgarh",
+   "roster_id": 1191,
+   "latest_seen": "gmcazamgarh.com MD/MS page: bond GOs only"
+  },
+  {
+   "college": "GSVM Medical College, Kanpur",
+   "roster_id": 189,
+   "latest_seen": "nothing on gsvmmedicalcollege.com"
+  },
+  {
+   "college": "Homi Bhabha Cancer Hospital, Varanasi",
+   "roster_id": 165,
+   "latest_seen": "nothing found on tmc.gov.in"
+  },
+  {
+   "college": "Institute of Medical Sciences, BHU, Varanasi",
+   "roster_id": 14,
+   "latest_seen": "bhu.ac.in 'Fee Structure' page shows no figures"
+  },
+  {
+   "college": "Institute of Mental Health and Hospital, Agra",
+   "roster_id": 949,
+   "latest_seen": "imhh.org.in refuses connections"
+  },
+  {
+   "college": "Jawaharlal Nehru Medical College, Aligarh",
+   "roster_id": 27,
+   "latest_seen": "nothing found on amu.ac.in"
+  },
+  {
+   "college": "King George Medical University, Lucknow",
+   "roster_id": 38,
+   "latest_seen": "kgmu.org admissions page: no PG fee"
+  },
+  {
+   "college": "LLRM Medical College, Meerut",
+   "roster_id": 186,
+   "latest_seen": "llrmmedicalcollege.edu.in fees page has no figures"
+  },
+  {
+   "college": "Maharaja Suheldev Autonomous State Medical College, Bahraich",
+   "roster_id": 956,
+   "latest_seen": "official domain not found"
+  },
+  {
+   "college": "Maharani Laxmi Bai Medical College, Jhansi",
+   "roster_id": 107,
+   "latest_seen": "official domain not confirmed (mlbmcj.in is a generic template)"
+  },
+  {
+   "college": "Maharshi Devraha Baba Autonomous State Medical College, Deoria",
+   "roster_id": 1849,
+   "latest_seen": "mdbmc.ac.in PG admission page: nodal officers only"
+  },
+  {
+   "college": "Maharshi Vishwamitra Autonomous State Medical College, Ghazipur",
+   "roster_id": 1773,
+   "latest_seen": "'Regarding Admission PG for 2025-2026' → asmcghazipur.ac.in/pdf/Fee%20Details.pdf (LM 26 Dec 2025)"
+  },
+  {
+   "college": "Moti Lal Nehru Medical College, Allahabad",
+   "roster_id": 50,
+   "latest_seen": "nothing on mlnmc.edu.in"
+  },
+  {
+   "college": "MRA Medical College, Ambedkarnagar",
+   "roster_id": 660,
+   "latest_seen": "mramc.ac.in: MD/MS seats page only"
+  },
+  {
+   "college": "Post Graduate Institute of Child Health, Noida",
+   "roster_id": 1072,
+   "latest_seen": "official domain not found"
+  },
+  {
+   "college": "Rajkiya Medical College, Jalaun",
+   "roster_id": 421,
+   "latest_seen": "gmcjalaun.com admissions: MBBS only"
+  },
+  {
+   "college": "Regional Institute of Ophthalmology, Sitapur",
+   "roster_id": 928,
+   "latest_seen": "official domain not confirmed"
+  },
+  {
+   "college": "Sanjay Gandhi Postgraduate Institute of Medical Sciences, Lucknow",
+   "roster_id": 28,
+   "latest_seen": "sgpgims.org.in/Home/Fee_stru.html — MD course fee ₹35,000 a year etc., but the page has no year label (not used)"
+  },
+  {
+   "college": "Shaikh-UL-Hind Maulana Mahmood Hasan Medical College, Saharanpur",
+   "roster_id": 124,
+   "latest_seen": "current domain not found (smmhmedicalcollege.com redirects to spam)"
+  },
+  {
+   "college": "SN Medical College, Agra",
+   "roster_id": 100,
+   "latest_seen": "'MBBS/MD/MS/PG Diploma Fee Structure' snmcagra.ac.in/pdf/Fee-Structure-2026.pdf (LM 17 Jan 2026); homepage notice beside it says academic session 2025-26 — not downloaded"
+  },
+  {
+   "college": "Uma Nath Singh Autonomous State Medical College, Jaunpur",
+   "roster_id": 885,
+   "latest_seen": "asmcjaunpur.edu.in: MBBS prospectus only"
+  },
+  {
+   "college": "Uttar Pradesh University of Medical Sciences, Etawah",
+   "roster_id": 520,
+   "latest_seen": "PG2025 admission file upums.ac.in/assets/pdf/admission/mdmsdiploma/PG2025.pdf; no PG2026"
+  },
+  {
+   "college": "Career Institute of Medical Sciences & Hospital, Lucknow",
+   "roster_id": 2153,
+   "latest_seen": "careertrust.in/cimsh: no fee; DGME minority PG 2025 fee structure (not an own notice)"
+  },
+  {
+   "college": "Dr KNS Memorial Institute of Medical Sciences, Barabanki",
+   "roster_id": 2143,
+   "latest_seen": "domain not found; DGME 2025-26 PG tuition letter only"
+  },
+  {
+   "college": "Era Lucknow Medical College, Lucknow",
+   "roster_id": 2137,
+   "latest_seen": "elmcindia.org/feestructure HTML 'MD / MS Fee 2025-26' (+10% annual increment clause)"
+  },
+  {
+   "college": "GS Medical College & Hospital, Pilkhuwa, Hapur",
+   "roster_id": 2135,
+   "latest_seen": "gsmedicalcollege.in 'MD/MS FEE FOR 2025-26' PDF"
+  },
+  {
+   "college": "Heritage Institute of Medical Sciences, Varanasi",
+   "roster_id": 2130,
+   "latest_seen": "heritageims.edu.in timed out; DGME 2025-26 letter only"
+  },
+  {
+   "college": "Hind Institute of Medical Sciences, Barabanki",
+   "roster_id": 2128,
+   "latest_seen": "himsup.com PostGraduate page: 'PG Clinical Course 2025-26 Fee Structure'"
+  },
+  {
+   "college": "Hind Institute of Medical Sciences, Sitapur",
+   "roster_id": 2141,
+   "latest_seen": "himssitapur.com: no fee; DGME 2025-26 letter only"
+  },
+  {
+   "college": "Integral Institute of Medical Sciences & Research, Lucknow",
+   "roster_id": 2152,
+   "latest_seen": "iul.ac.in/admissioninfo/FeeInd.aspx 'Fee (p.a)' PG list has no year label (not used)"
+  },
+  {
+   "college": "KD Medical College Hospital & Research Centre, Mathura",
+   "roster_id": 2125,
+   "latest_seen": "kdmch.in/downloads/Fee-Struture-PG-2025-26-1.pdf"
+  },
+  {
+   "college": "Krishna Mohan Medical College & Hospital, Mathura",
+   "roster_id": 2136,
+   "latest_seen": "now under K.M. University (kmu.edu.in); 'Admissions & Fee' page shows no figures"
+  },
+  {
+   "college": "Muzaffarnagar Medical College, Muzaffarnagar",
+   "roster_id": 2124,
+   "latest_seen": "'PG Fee Structure (2025-2026)' mmcollege.org/pdf/PG-Fees-Structure_25-26.pdf (re-uploaded, LM 11 Oct 2026) — not downloaded"
+  },
+  {
+   "college": "Naraina Medical College & Research Centre, Kanpur",
+   "roster_id": 2146,
+   "latest_seen": "domain unreachable; DGME 2025-26 letters only"
+  },
+  {
+   "college": "National Capital Region Institute of Medical Sciences, Meerut",
+   "roster_id": 2133,
+   "latest_seen": "PG fee PDFs labelled AY 2025-26 (clinical / non-clinical)"
+  },
+  {
+   "college": "Prasad Institute of Medical Sciences, Lucknow",
+   "roster_id": 2144,
+   "latest_seen": "domain not found"
+  },
+  {
+   "college": "Rajshree Medical Research Institute, Bareilly",
+   "roster_id": 2148,
+   "latest_seen": "domain not found; DGME 2025-26 letters only"
+  },
+  {
+   "college": "Rama Medical College and Hospital, Kanpur",
+   "roster_id": 2138,
+   "latest_seen": "ramauniversity.ac.in fee page is JavaScript-built, no MD/MS figure in HTML"
+  },
+  {
+   "college": "Rohilkhand Medical College & Hospital, Bareilly",
+   "roster_id": 2142,
+   "latest_seen": "rmcbareilly.com unreachable (HTTP/2 / TLS errors)"
+  },
+  {
+   "college": "Saraswati Institute of Medical Sciences, Hapur",
+   "roster_id": 2129,
+   "latest_seen": "sims.edu.in 'MD/MS Fee Reference' PDF (LM 1 Apr 2026, no year in title) — not downloaded"
+  },
+  {
+   "college": "Saraswati Medical College, Unnao",
+   "roster_id": 2151,
+   "latest_seen": "saraswatimedical.ac.in fee pages show no figures"
+  },
+  {
+   "college": "Sharda School of Medical Sciences & Research, Greater Noida",
+   "roster_id": 2123,
+   "latest_seen": "sharda.ac.in 'Programme Fee National 2026-27' is JavaScript-built; no MD/MS row rendered"
+  },
+  {
+   "college": "Shri Ram Murti Smarak Institute of Medical Sciences, Bareilly",
+   "roster_id": 2126,
+   "latest_seen": "srms.ac.in/ims/fee-structure HTML: '*Tentative Fee Structure for Post Graduate (M.D. / M.S.) Batch 2025-2026'"
+  },
+  {
+   "college": "SKS Hospital Medical College & Research Centre, Mathura",
+   "roster_id": 2145,
+   "latest_seen": "domain not found; DGME 2025-26 letter only"
+  },
+  {
+   "college": "Subharti Medical College, Meerut",
+   "roster_id": 2127,
+   "latest_seen": "university 'Fee Structure for 2026-27' (downloaded) prints no MD/MS figure: 'Fee shall be decided as per University Notification … as per govt. order'"
+  },
+  {
+   "college": "Teerthanker Mahaveer Medical College, Moradabad",
+   "roster_id": 2140,
+   "latest_seen": "tmu.ac.in: no MD/MS fee in HTML"
+  },
+  {
+   "college": "TS Misra Medical College & Hospital, Amusi, Lucknow",
+   "roster_id": 2149,
+   "latest_seen": "domain not found"
+  },
+  {
+   "college": "United Institute of Medical Sciences, Allahabad",
+   "roster_id": 2132,
+   "latest_seen": "domain not found; DGME 2025-26 letter only"
+  },
+  {
+   "college": "Varun Arjun Medical College, Shahjahanpur",
+   "roster_id": 2147,
+   "latest_seen": "'VAMC MD MS FEE 2025-26' PDF on varunarjunmedicalcollege.com"
+  },
+  {
+   "college": "Venkateshwara Institute of Medical Sciences, Gajraula",
+   "roster_id": 2139,
+   "latest_seen": "svu.edu.in 'Fee Structure (2026-2027)' page shows no MD/MS rows"
+  }
+ ],
+ "candidate_files_not_downloaded": [
+  {
+   "college": "Government Institute of Medical Sciences, Greater Noida (govt)",
+   "url": "https://gims.ac.in/assets/pdf/Notices/Fee%20Notice%20For%20Courses-%20GIMS%20Greater%20Noida.pdf",
+   "title": "Fee Notice For Courses- GIMS Greater Noida",
+   "bytes": 2198836,
+   "date": "LM 2026-07-21",
+   "why": "college's own fee notice; year label unknown"
+  },
+  {
+   "college": "Government Institute of Medical Sciences, Greater Noida (govt)",
+   "url": "https://gims.ac.in/assets/pdf/Admissions/PG%20FEE.pdf",
+   "title": "PG FEE",
+   "bytes": 171790,
+   "date": "LM 2026-02-16",
+   "why": "college's own PG fee file; year label unknown"
+  },
+  {
+   "college": "SN Medical College, Agra (govt)",
+   "url": "http://snmcagra.ac.in/pdf/Fee-Structure-2026.pdf",
+   "title": "MBBS/MD/MS/PG Diploma Fee Structure",
+   "bytes": 378901,
+   "date": "LM 2026-01-17",
+   "why": "own file named 2026; homepage text says session 2025-26"
+  },
+  {
+   "college": "Muzaffarnagar Medical College (private)",
+   "url": "https://www.mmcollege.org/pdf/PG-Fees-Structure_25-26.pdf",
+   "title": "Fee Structure PG (2025-2026)",
+   "bytes": 171147,
+   "date": "LM 2026-10-11",
+   "why": "re-uploaded this month; may now hold 2026-27 figures"
+  },
+  {
+   "college": "Saraswati Institute of Medical Sciences, Hapur (private)",
+   "url": "https://sims.edu.in/wp-content/uploads/2026/04/MD-MS-COURSE-FEE-STRUCTURE-SIMS-HAPUR.pdf",
+   "title": "MD/MS Fee Reference",
+   "bytes": 317107,
+   "date": "LM 2026-04-01",
+   "why": "own PG fee file; year label unknown"
+  },
+  {
+   "college": "Santosh Medical College, Ghaziabad (deemed)",
+   "url": "https://drive.google.com/file/d/1U041C7nT1zf5V1MK-Wnz5k7MhUSdE5hg/view?usp=sharing",
+   "title": "Download PG Medical Fees",
+   "bytes": 0,
+   "date": "unknown",
+   "why": "Google Drive file linked from the 2026 PG fee page; may carry quota/NRI period detail"
+  },
+  {
+   "college": "Integral Institute of Medical Sciences & Research (private university)",
+   "url": "https://www.iul.ac.in/PDF/Prospectus.pdf",
+   "title": "University Prospectus",
+   "bytes": 13517378,
+   "date": "LM 2026-08-27",
+   "why": "may carry a labelled 2026-27 PG fee table (HTML list has no year)"
+  },
+  {
+   "college": "Rama Medical College and Hospital, Kanpur (private university)",
+   "url": "https://www.ramauniversity.ac.in/pdf/2026/university_Brochure.pdf",
+   "title": "Download Brochure (2026)",
+   "bytes": 8684335,
+   "date": "LM 2026-07-04",
+   "why": "only 2026 document on the university site"
+  },
+  {
+   "college": "Venkateshwara Institute of Medical Sciences, Gajraula (private university)",
+   "url": "https://svu.edu.in/panel/assets/images/academics/17746741538861-academics.pdf",
+   "title": "Admission Brochure (2026-2027)",
+   "bytes": 2087457,
+   "date": "LM 2026-03-28",
+   "why": "labelled 2026-27; MD/MS rows not visible in HTML"
+  }
+ ]
+}

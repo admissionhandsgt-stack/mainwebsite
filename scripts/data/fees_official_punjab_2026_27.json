@@ -1,0 +1,156 @@
+{
+ "state": "Punjab",
+ "classes": [
+  [
+   "Open Quota \\(AI Basis\\)",
+   "Mgmt"
+  ],
+  [
+   "NRI",
+   "NRI"
+  ],
+  [
+   "^(MM|JM)$|Minority|Min\\.? |Min$|Min\\.$|-Min",
+   "Min"
+  ],
+  [
+   "^AIQ$",
+   "AIQ"
+  ],
+  [
+   "^MNG$|Mgmt|Management|Mgt|Others \\(Inst|CatB|MQ1|Paid",
+   "Mgmt"
+  ],
+  [
+   "CatC-Inst|MQ3",
+   "Inst"
+  ],
+  [
+   "^DNB Post MBBS$|^NBE Diploma$",
+   "DNB"
+  ],
+  [
+   "DNB|AFMS",
+   "Other"
+  ],
+  [
+   ".",
+   "Gen"
+  ]
+ ],
+ "null_class": {
+  "AP Govt PG": "Gen",
+  "TEL Govt PG": "Gen",
+  "AP Mgmt PG": "NRI"
+ },
+ "entries": [
+  {
+   "college": "Adesh Institute of Medical Sciences and Research, Bathinda (Adesh University)",
+   "ids": [
+    2040
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS ENT",
+    "MS Obstetrics & Gynaecology",
+    "MS General Surgery",
+    "MD Pathology",
+    "MS Orthopaedics",
+    "MS Ophthalmology",
+    "MD Psychiatry",
+    "MD Radio Diagnosis",
+    "MD Anaesthesiology",
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Paediatrics",
+    "MD Immuno Haematology & Blood Transfusion",
+    "MD Tuberculosis & Respiratory Diseases",
+    "MD General Medicine"
+   ],
+   "fee_inr": 1690000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "adesh-pg-2026-27, p. 18 — \"Cover: 'Academic Session – 2026-27 through NEET PG-2026'; §11 'FEE STRUCTURE MD/MS PROGRAMMES — 11.1 Tuition fee for MD/MS programmes are as under'\""
+  },
+  {
+   "college": "Adesh Institute of Medical Sciences and Research, Bathinda (Adesh University)",
+   "ids": [
+    2040
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MS ENT",
+    "MS Obstetrics & Gynaecology",
+    "MS General Surgery",
+    "MD Pathology",
+    "MS Orthopaedics",
+    "MS Ophthalmology",
+    "MD Psychiatry",
+    "MD Radio Diagnosis",
+    "MD Anaesthesiology",
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Paediatrics",
+    "MD Immuno Haematology & Blood Transfusion",
+    "MD Tuberculosis & Respiratory Diseases",
+    "MD General Medicine"
+   ],
+   "fee_inr": 1690000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "adesh-pg-2026-27, p. 18 — \"Cover: 'Academic Session – 2026-27 through NEET PG-2026'; §11 'FEE STRUCTURE MD/MS PROGRAMMES — 11.1 Tuition fee for MD/MS programmes are as under'\""
+  },
+  {
+   "college": "Adesh Institute of Medical Sciences and Research, Bathinda (Adesh University)",
+   "ids": [
+    2040
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Pharmacology",
+    "MD Microbiology",
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "adesh-pg-2026-27, p. 18 — \"Cover: 'Academic Session – 2026-27 through NEET PG-2026'; §11 'FEE STRUCTURE MD/MS PROGRAMMES — 11.1 Tuition fee for MD/MS programmes are as under'\""
+  },
+  {
+   "college": "Adesh Institute of Medical Sciences and Research, Bathinda (Adesh University)",
+   "ids": [
+    2040
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Anatomy",
+    "MD Physiology",
+    "MD Bio-Chemistry",
+    "MD Pharmacology",
+    "MD Microbiology",
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "adesh-pg-2026-27, p. 18 — \"Cover: 'Academic Session – 2026-27 through NEET PG-2026'; §11 'FEE STRUCTURE MD/MS PROGRAMMES — 11.1 Tuition fee for MD/MS programmes are as under'\""
+  },
+  {
+   "college": "Adesh Institute of Medical Sciences and Research, Bathinda (Adesh University)",
+   "ids": [
+    2040
+   ],
+   "seat": "Hostel",
+   "text": "§19 'Hostel Fee (Double Sharing without mess charges) Rs. 1,18,500/- Per annum; Allied Charges* Rs. 1,69,000/- (*Excluding electricity charges for additional appliances)' (p.22)",
+   "year": "2026-27",
+   "source": "adesh-pg-2026-27, p. 18 — \"Cover: 'Academic Session – 2026-27 through NEET PG-2026'; §11 'FEE STRUCTURE MD/MS PROGRAMMES — 11.1 Tuition fee for MD/MS programmes are as under'\"",
+   "min": 118500,
+   "max": 118500
+  }
+ ]
+}

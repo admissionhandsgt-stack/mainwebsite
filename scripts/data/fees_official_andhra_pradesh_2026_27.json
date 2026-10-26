@@ -1,0 +1,1017 @@
+{
+ "state": "Andhra Pradesh",
+ "classes": [
+  [
+   "^APMgmt-CA SF$",
+   "SF"
+  ],
+  [
+   "NRI",
+   "NRI"
+  ],
+  [
+   "^(MM|JM)$|Minority|Min\\.? |Min$|Min\\.$|-Min",
+   "Min"
+  ],
+  [
+   "^AIQ$",
+   "AIQ"
+  ],
+  [
+   "^MNG$|Mgmt|Management|Mgt|Others \\(Inst|CatB|MQ1|Paid",
+   "Mgmt"
+  ],
+  [
+   "CatC-Inst|MQ3",
+   "Inst"
+  ],
+  [
+   "^DNB Post MBBS$|^NBE Diploma$",
+   "DNB"
+  ],
+  [
+   "DNB|AFMS",
+   "Other"
+  ],
+  [
+   ".",
+   "Gen"
+  ]
+ ],
+ "null_class": {
+  "AP Govt PG": "Gen",
+  "TEL Govt PG": "Gen",
+  "AP Mgmt PG": "NRI"
+ },
+ "entries": [
+  {
+   "college": "GITAM Institute of Medical Sciences and Research (GIMSR), GITAM (Deemed to be University), Visakhapatnam",
+   "ids": [
+    1343
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 3060000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gitam-pg — \"Postgraduate (MD/MS) Admissions 2026-27 ... LoPs ... for the academic year 2026-27\""
+  },
+  {
+   "college": "GITAM Institute of Medical Sciences and Research (GIMSR), GITAM (Deemed to be University), Visakhapatnam",
+   "ids": [
+    1343
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 3966000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gitam-pg — \"Postgraduate (MD/MS) Admissions 2026-27 ... LoPs ... for the academic year 2026-27\""
+  },
+  {
+   "college": "GITAM Institute of Medical Sciences and Research (GIMSR), GITAM (Deemed to be University), Visakhapatnam",
+   "ids": [
+    1343
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine",
+    "MD Paediatrics",
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 3300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gitam-pg — \"Postgraduate (MD/MS) Admissions 2026-27 ... LoPs ... for the academic year 2026-27\""
+  },
+  {
+   "college": "GITAM Institute of Medical Sciences and Research (GIMSR), GITAM (Deemed to be University), Visakhapatnam",
+   "ids": [
+    1343
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gitam-pg — \"Postgraduate (MD/MS) Admissions 2026-27 ... LoPs ... for the academic year 2026-27\""
+  },
+  {
+   "college": "GITAM Institute of Medical Sciences and Research (GIMSR), GITAM (Deemed to be University), Visakhapatnam",
+   "ids": [
+    1343
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gitam-pg — \"Postgraduate (MD/MS) Admissions 2026-27 ... LoPs ... for the academic year 2026-27\""
+  },
+  {
+   "college": "GITAM Institute of Medical Sciences and Research (GIMSR), GITAM (Deemed to be University), Visakhapatnam",
+   "ids": [
+    1343
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 2200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gitam-pg — \"Postgraduate (MD/MS) Admissions 2026-27 ... LoPs ... for the academic year 2026-27\""
+  },
+  {
+   "college": "GITAM Institute of Medical Sciences and Research (GIMSR), GITAM (Deemed to be University), Visakhapatnam",
+   "ids": [
+    1343
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery",
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 2830000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gitam-pg — \"Postgraduate (MD/MS) Admissions 2026-27 ... LoPs ... for the academic year 2026-27\""
+  },
+  {
+   "college": "GITAM Institute of Medical Sciences and Research (GIMSR), GITAM (Deemed to be University), Visakhapatnam",
+   "ids": [
+    1343
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 3060000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gitam-pg — \"Postgraduate (MD/MS) Admissions 2026-27 ... LoPs ... for the academic year 2026-27\""
+  },
+  {
+   "college": "GITAM Institute of Medical Sciences and Research (GIMSR), GITAM (Deemed to be University), Visakhapatnam",
+   "ids": [
+    1343
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Ophthalmology",
+    "MS ENT"
+   ],
+   "fee_inr": 2750000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "gitam-pg — \"Postgraduate (MD/MS) Admissions 2026-27 ... LoPs ... for the academic year 2026-27\""
+  },
+  {
+   "college": "GITAM Institute of Medical Sciences and Research (GIMSR), GITAM (Deemed to be University), Visakhapatnam",
+   "ids": [
+    1343
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": null,
+   "fee_usd": 191000,
+   "max": false,
+   "year": "2026-27",
+   "source": "gitam-pg — \"Postgraduate (MD/MS) Admissions 2026-27 ... LoPs ... for the academic year 2026-27\""
+  },
+  {
+   "college": "GITAM Institute of Medical Sciences and Research (GIMSR), GITAM (Deemed to be University), Visakhapatnam",
+   "ids": [
+    1343
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD General Medicine",
+    "MD Paediatrics"
+   ],
+   "fee_inr": null,
+   "fee_usd": 160000,
+   "max": false,
+   "year": "2026-27",
+   "source": "gitam-pg — \"Postgraduate (MD/MS) Admissions 2026-27 ... LoPs ... for the academic year 2026-27\""
+  },
+  {
+   "college": "GITAM Institute of Medical Sciences and Research (GIMSR), GITAM (Deemed to be University), Visakhapatnam",
+   "ids": [
+    1343
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": null,
+   "fee_usd": 134000,
+   "max": false,
+   "year": "2026-27",
+   "source": "gitam-pg — \"Postgraduate (MD/MS) Admissions 2026-27 ... LoPs ... for the academic year 2026-27\""
+  },
+  {
+   "college": "GITAM Institute of Medical Sciences and Research (GIMSR), GITAM (Deemed to be University), Visakhapatnam",
+   "ids": [
+    1343
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": null,
+   "fee_usd": 144000,
+   "max": false,
+   "year": "2026-27",
+   "source": "gitam-pg — \"Postgraduate (MD/MS) Admissions 2026-27 ... LoPs ... for the academic year 2026-27\""
+  },
+  {
+   "college": "GITAM Institute of Medical Sciences and Research (GIMSR), GITAM (Deemed to be University), Visakhapatnam",
+   "ids": [
+    1343
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Fee Structure: Aditya Sadan (Single Occupancy) Semester ₹2,12,137 / Annual ₹3,90,331; Aditya Sadan (Double) ₹1,61,765 / ₹2,97,648; Avantika Sadan (Double) ₹1,61,765 / ₹2,97,648. Annual Fee*: Annual Fee with 8% Discount (one-time fee)",
+   "year": "2026-27",
+   "source": "gitam-pg — \"Postgraduate (MD/MS) Admissions 2026-27 ... LoPs ... for the academic year 2026-27\"",
+   "min": 297648,
+   "max": 390331
+  },
+  {
+   "college": "NRI Institute of Medical Sciences, Visakhapatnam",
+   "ids": [
+    2115
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD General Medicine",
+    "MS General Surgery",
+    "MD Tuberculosis & Respiratory Diseases",
+    "MD Paediatrics",
+    "MD Dermatology, Venereology & Leprosy",
+    "MS ENT",
+    "MS Ophthalmology",
+    "MS Orthopaedics",
+    "MD Psychiatry",
+    "MS Obstetrics & Gynaecology",
+    "MD Anaesthesiology",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 571320,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nriims, p. 1 — \"Medical PG Fee Structure for the A.Y 2026-27\"",
+   "period": null
+  },
+  {
+   "college": "NRI Institute of Medical Sciences, Visakhapatnam",
+   "ids": [
+    2115
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine",
+    "MS General Surgery",
+    "MD Tuberculosis & Respiratory Diseases",
+    "MD Paediatrics",
+    "MD Dermatology, Venereology & Leprosy",
+    "MS ENT",
+    "MS Ophthalmology",
+    "MS Orthopaedics",
+    "MD Psychiatry",
+    "MS Obstetrics & Gynaecology",
+    "MD Anaesthesiology",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 1142640,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nriims, p. 1 — \"Medical PG Fee Structure for the A.Y 2026-27\"",
+   "period": null
+  },
+  {
+   "college": "NRI Institute of Medical Sciences, Visakhapatnam",
+   "ids": [
+    2115
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD General Medicine",
+    "MS General Surgery",
+    "MD Tuberculosis & Respiratory Diseases",
+    "MD Paediatrics",
+    "MD Dermatology, Venereology & Leprosy",
+    "MS ENT",
+    "MS Ophthalmology",
+    "MS Orthopaedics",
+    "MD Psychiatry",
+    "MS Obstetrics & Gynaecology",
+    "MD Anaesthesiology",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 6612500,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nriims, p. 1 — \"Medical PG Fee Structure for the A.Y 2026-27\"",
+   "period": null
+  },
+  {
+   "college": "NRI Institute of Medical Sciences, Visakhapatnam",
+   "ids": [
+    2115
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD General Medicine",
+    "MS General Surgery",
+    "MD Tuberculosis & Respiratory Diseases",
+    "MD Paediatrics",
+    "MD Dermatology, Venereology & Leprosy",
+    "MS ENT",
+    "MS Ophthalmology",
+    "MS Orthopaedics",
+    "MD Psychiatry",
+    "MS Obstetrics & Gynaecology",
+    "MD Anaesthesiology",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 6612500,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nriims, p. 1 — \"Medical PG Fee Structure for the A.Y 2026-27\"",
+   "period": null
+  },
+  {
+   "college": "NRI Institute of Medical Sciences, Visakhapatnam",
+   "ids": [
+    2115
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Pathology",
+    "MD Microbiology",
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 178538,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nriims, p. 1 — \"Medical PG Fee Structure for the A.Y 2026-27\"",
+   "period": null
+  },
+  {
+   "college": "NRI Institute of Medical Sciences, Visakhapatnam",
+   "ids": [
+    2115
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology",
+    "MD Microbiology",
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 357075,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nriims, p. 1 — \"Medical PG Fee Structure for the A.Y 2026-27\"",
+   "period": null
+  },
+  {
+   "college": "NRI Institute of Medical Sciences, Visakhapatnam",
+   "ids": [
+    2115
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Pathology",
+    "MD Microbiology",
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 1983750,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nriims, p. 1 — \"Medical PG Fee Structure for the A.Y 2026-27\"",
+   "period": null
+  },
+  {
+   "college": "NRI Institute of Medical Sciences, Visakhapatnam",
+   "ids": [
+    2115
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Pathology",
+    "MD Microbiology",
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 1983750,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nriims, p. 1 — \"Medical PG Fee Structure for the A.Y 2026-27\"",
+   "period": null
+  },
+  {
+   "college": "NRI Institute of Medical Sciences, Visakhapatnam",
+   "ids": [
+    2115
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 80937,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nriims, p. 1 — \"Medical PG Fee Structure for the A.Y 2026-27\"",
+   "period": null
+  },
+  {
+   "college": "NRI Institute of Medical Sciences, Visakhapatnam",
+   "ids": [
+    2115
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 161874,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nriims, p. 1 — \"Medical PG Fee Structure for the A.Y 2026-27\"",
+   "period": null
+  },
+  {
+   "college": "NRI Institute of Medical Sciences, Visakhapatnam",
+   "ids": [
+    2115
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 1058000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nriims, p. 1 — \"Medical PG Fee Structure for the A.Y 2026-27\"",
+   "period": null
+  },
+  {
+   "college": "NRI Institute of Medical Sciences, Visakhapatnam",
+   "ids": [
+    2115
+   ],
+   "seat": "Inst",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 1058000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "nriims, p. 1 — \"Medical PG Fee Structure for the A.Y 2026-27\"",
+   "period": null
+  },
+  {
+   "college": "Sri Balaji Medical College, Hospital & Research Institute, Renigunta",
+   "ids": [
+    2120
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 571320,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sbmch-fee — \"Fee Structure of Post Graduate Courses in Medical Programmes (2026-27)\""
+  },
+  {
+   "college": "Sri Balaji Medical College, Hospital & Research Institute, Renigunta",
+   "ids": [
+    2120
+   ],
+   "seat": "Mgmt",
+   "branches": "*",
+   "fee_inr": 1142640,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sbmch-fee — \"Fee Structure of Post Graduate Courses in Medical Programmes (2026-27)\""
+  },
+  {
+   "college": "Sri Balaji Medical College, Hospital & Research Institute, Renigunta",
+   "ids": [
+    2120
+   ],
+   "seat": "NRI",
+   "branches": "*",
+   "fee_inr": 6612500,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sbmch-fee — \"Fee Structure of Post Graduate Courses in Medical Programmes (2026-27)\""
+  },
+  {
+   "college": "Sri Venkateswara Institute of Medical Sciences (SVIMS University), Tirupati - PG seats at SVIMS-Sri Padmavathi Medical College for Women",
+   "ids": [
+    46
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anaesthesiology",
+    "MD Anatomy",
+    "MD Bio-Chemistry",
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Emergency Medicine",
+    "MD General Medicine",
+    "MD Immuno Haematology & Blood Transfusion",
+    "MD Microbiology",
+    "MD Nuclear Medicine",
+    "MD Paediatrics",
+    "MD Pathology",
+    "MD Pharmacology",
+    "MD Physiology",
+    "MD Radiation Oncology",
+    "MD Radio Diagnosis",
+    "MD Social & Preventive Medicine",
+    "MS ENT",
+    "MS General Surgery",
+    "MS Obstetrics & Gynaecology",
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 175000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "svims, p. 4 — \"PROSPECTUS FOR THE ACADEMIC YEAR 2026-27 MD/MS ADMISSION GUIDELINES\""
+  },
+  {
+   "college": "Sri Venkateswara Institute of Medical Sciences (SVIMS University), Tirupati - PG seats at SVIMS-Sri Padmavathi Medical College for Women",
+   "ids": [
+    46
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Anaesthesiology",
+    "MD Anatomy",
+    "MD Bio-Chemistry",
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Emergency Medicine",
+    "MD General Medicine",
+    "MD Immuno Haematology & Blood Transfusion",
+    "MD Microbiology",
+    "MD Nuclear Medicine",
+    "MD Paediatrics",
+    "MD Pathology",
+    "MD Pharmacology",
+    "MD Physiology",
+    "MD Radiation Oncology",
+    "MD Radio Diagnosis",
+    "MD Social & Preventive Medicine",
+    "MS ENT",
+    "MS General Surgery",
+    "MS Obstetrics & Gynaecology",
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 175000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "svims, p. 4 — \"PROSPECTUS FOR THE ACADEMIC YEAR 2026-27 MD/MS ADMISSION GUIDELINES\""
+  },
+  {
+   "college": "Sri Venkateswara Institute of Medical Sciences (SVIMS University), Tirupati - PG seats at SVIMS-Sri Padmavathi Medical College for Women",
+   "ids": [
+    46
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MD Anaesthesiology",
+    "MD Anatomy",
+    "MD Bio-Chemistry",
+    "MD Dermatology, Venereology & Leprosy",
+    "MD Emergency Medicine",
+    "MD General Medicine",
+    "MD Immuno Haematology & Blood Transfusion",
+    "MD Microbiology",
+    "MD Nuclear Medicine",
+    "MD Paediatrics",
+    "MD Pathology",
+    "MD Pharmacology",
+    "MD Physiology",
+    "MD Radiation Oncology",
+    "MD Radio Diagnosis",
+    "MD Social & Preventive Medicine",
+    "MS ENT",
+    "MS General Surgery",
+    "MS Obstetrics & Gynaecology",
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 175000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "svims, p. 4 — \"PROSPECTUS FOR THE ACADEMIC YEAR 2026-27 MD/MS ADMISSION GUIDELINES\""
+  },
+  {
+   "college": "Sri Venkateswara Institute of Medical Sciences (SVIMS University), Tirupati - PG seats at SVIMS-Sri Padmavathi Medical College for Women",
+   "ids": [
+    46
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 30000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "svims, p. 4 — \"PROSPECTUS FOR THE ACADEMIC YEAR 2026-27 MD/MS ADMISSION GUIDELINES\""
+  },
+  {
+   "college": "Sri Venkateswara Institute of Medical Sciences (SVIMS University), Tirupati - PG seats at SVIMS-Sri Padmavathi Medical College for Women",
+   "ids": [
+    46
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 30000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "svims, p. 4 — \"PROSPECTUS FOR THE ACADEMIC YEAR 2026-27 MD/MS ADMISSION GUIDELINES\""
+  },
+  {
+   "college": "Sri Venkateswara Institute of Medical Sciences (SVIMS University), Tirupati - PG seats at SVIMS-Sri Padmavathi Medical College for Women",
+   "ids": [
+    46
+   ],
+   "seat": "AIQ",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 30000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "svims, p. 4 — \"PROSPECTUS FOR THE ACADEMIC YEAR 2026-27 MD/MS ADMISSION GUIDELINES\""
+  },
+  {
+   "college": "Government Medical College, Eluru",
+   "ids": [
+    718
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 30000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 'Fee structure notified by the Government of Andhra Pradesh in respect of the permitted Government Medical Colleges from the academic year 2023-24 onwards, vide G.O.Ms.No.163 & 164, HM & FW (C1) Dept., dated.05.12.2025'\""
+  },
+  {
+   "college": "Government Medical College, Eluru",
+   "ids": [
+    718
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 30000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 'Fee structure notified by the Government of Andhra Pradesh in respect of the permitted Government Medical Colleges from the academic year 2023-24 onwards, vide G.O.Ms.No.163 & 164, HM & FW (C1) Dept., dated.05.12.2025'\""
+  },
+  {
+   "college": "Government Medical College, Eluru",
+   "ids": [
+    718
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 30000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 'Fee structure notified by the Government of Andhra Pradesh in respect of the permitted Government Medical Colleges from the academic year 2023-24 onwards, vide G.O.Ms.No.163 & 164, HM & FW (C1) Dept., dated.05.12.2025'\""
+  },
+  {
+   "college": "Government Medical College, Eluru",
+   "ids": [
+    718
+   ],
+   "seat": "SF",
+   "branches": "*",
+   "fee_inr": 900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 'Fee structure notified by the Government of Andhra Pradesh in respect of the permitted Government Medical Colleges from the academic year 2023-24 onwards, vide G.O.Ms.No.163 & 164, HM & FW (C1) Dept., dated.05.12.2025'\""
+  },
+  {
+   "college": "Government Medical College, Eluru",
+   "ids": [
+    718
+   ],
+   "seat": "NRI",
+   "branches": "*",
+   "fee_inr": 2900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 'Fee structure notified by the Government of Andhra Pradesh in respect of the permitted Government Medical Colleges from the academic year 2023-24 onwards, vide G.O.Ms.No.163 & 164, HM & FW (C1) Dept., dated.05.12.2025'\""
+  },
+  {
+   "college": "Government Medical College, Machilipatnam",
+   "ids": [
+    463
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 30000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')\""
+  },
+  {
+   "college": "Government Medical College, Machilipatnam",
+   "ids": [
+    463
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 30000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')\""
+  },
+  {
+   "college": "Government Medical College, Machilipatnam",
+   "ids": [
+    463
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 30000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')\""
+  },
+  {
+   "college": "Government Medical College, Machilipatnam",
+   "ids": [
+    463
+   ],
+   "seat": "SF",
+   "branches": "*",
+   "fee_inr": 900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')\""
+  },
+  {
+   "college": "Government Medical College, Machilipatnam",
+   "ids": [
+    463
+   ],
+   "seat": "NRI",
+   "branches": "*",
+   "fee_inr": 2900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')\""
+  },
+  {
+   "college": "Government Medical College, Nandyal",
+   "ids": [
+    354
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 30000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')\""
+  },
+  {
+   "college": "Government Medical College, Nandyal",
+   "ids": [
+    354
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 30000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')\""
+  },
+  {
+   "college": "Government Medical College, Nandyal",
+   "ids": [
+    354
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 30000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')\""
+  },
+  {
+   "college": "Government Medical College, Nandyal",
+   "ids": [
+    354
+   ],
+   "seat": "SF",
+   "branches": "*",
+   "fee_inr": 900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')\""
+  },
+  {
+   "college": "Government Medical College, Nandyal",
+   "ids": [
+    354
+   ],
+   "seat": "NRI",
+   "branches": "*",
+   "fee_inr": 2900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')\""
+  },
+  {
+   "college": "Government Medical College, Rajahmundry",
+   "ids": [
+    341
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 30000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')\""
+  },
+  {
+   "college": "Government Medical College, Rajahmundry",
+   "ids": [
+    341
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 30000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')\""
+  },
+  {
+   "college": "Government Medical College, Rajahmundry",
+   "ids": [
+    341
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 30000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')\""
+  },
+  {
+   "college": "Government Medical College, Rajahmundry",
+   "ids": [
+    341
+   ],
+   "seat": "SF",
+   "branches": "*",
+   "fee_inr": 900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')\""
+  },
+  {
+   "college": "Government Medical College, Rajahmundry",
+   "ids": [
+    341
+   ],
+   "seat": "NRI",
+   "branches": "*",
+   "fee_inr": 2900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')\""
+  },
+  {
+   "college": "Government Medical College, Vizianagaram",
+   "ids": [
+    310
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 30000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')\""
+  },
+  {
+   "college": "Government Medical College, Vizianagaram",
+   "ids": [
+    310
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 30000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')\""
+  },
+  {
+   "college": "Government Medical College, Vizianagaram",
+   "ids": [
+    310
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 30000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')\""
+  },
+  {
+   "college": "Government Medical College, Vizianagaram",
+   "ids": [
+    310
+   ],
+   "seat": "SF",
+   "branches": "*",
+   "fee_inr": 900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')\""
+  },
+  {
+   "college": "Government Medical College, Vizianagaram",
+   "ids": [
+    310
+   ],
+   "seat": "NRI",
+   "branches": "*",
+   "fee_inr": 2900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "ntruhs-cq, p. 17 — \"Prospectus ... ACADEMIC YEAR 2026-27, §9.2 (G.O.Ms.No.163 & 164 dt 05.12.2025, 'from the academic year 2023-24 onwards')\""
+  }
+ ]
+}

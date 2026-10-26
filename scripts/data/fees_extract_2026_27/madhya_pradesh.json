@@ -1,0 +1,286 @@
+{
+ "state": "Madhya Pradesh",
+ "checked": "2026-10-25",
+ "files": [],
+ "html": [
+  {
+   "id": "dme_mp",
+   "url": "https://dme.mponline.gov.in/Portal/Services/DMEMP/College/RptSubjectFeeDetailsMDMS.aspx (data: POST …/RptSubjectFeeDetailsMDMS.aspx/BindDataTable)",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west/html/dme_mp_mdms_fee_grid_2026-10-25.json",
+   "title": "MP State NEET P.G. Counselling-2026 — link 'Fee Details of Government & Private Dental Colleges of MP STATE NEET MD/MS Counselling 2026 (Dated 25/10/2026)'",
+   "also": [
+    "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west/html/dme_mp_mdms_fee_details_2026-10-25.csv",
+    "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west/html/dme_mp_mdms_page_header.txt"
+   ]
+  },
+  {
+   "id": "satna",
+   "url": "https://gmcsatna.mp.gov.in/fees-structure",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/west/html/satna_fees.txt",
+   "title": "GMC Satna — Fees Structure (Last Updated : 30 Jul, 2026)"
+  }
+ ],
+ "colleges": [],
+ "government_all": [
+  {
+   "scope": "The 14 state government medical colleges listed in DME MP's MD/MS fee report (all except Gandhi Medical College, Bhopal, which is listed separately below): Vidisha, Shahdol, Sagar, Chhindwara, Ratlam, GRMC Gwalior, Satna, Datia, Gwalior Mansik Arogyashala, MGM Indore, Khandwa, NSCB Jabalpur, Shivpuri, SS Rewa",
+   "roster": [
+    {
+     "id": 406,
+     "name": "Atal Bihari Vajpayee Government Medical College, Vidisha",
+     "printed": "Atal Bihari Vajpayee Government Medical College Vidisha",
+     "subject_rows": 15
+    },
+    {
+     "id": 1838,
+     "name": "Birsa Munda Government Medical College, Shahdol, MP",
+     "printed": "Birsa Munda Government Medical College Shahdol",
+     "subject_rows": 2
+    },
+    {
+     "id": 346,
+     "name": "Bundelkhand Medical College, Sagar",
+     "printed": "Bundelkhand Medical College Sagar",
+     "subject_rows": 18
+    },
+    {
+     "id": 705,
+     "name": "Government Medical College, Chhindwara, MP",
+     "printed": "Chhindwara Institute Of Medical Sciences Chhindwara",
+     "subject_rows": 13
+    },
+    {
+     "id": 394,
+     "name": "Dr Laxminarayan Pandey Government Medical College, Ratlam",
+     "printed": "Dr. Laxminarayan Pandey Government Medical College, Ratlam",
+     "subject_rows": 17
+    },
+    {
+     "id": 63,
+     "name": "Gajra Raja Medical College, Gwalior",
+     "printed": "Gajra Raja Medical College Gwalior",
+     "subject_rows": 20
+    },
+    {
+     "id": 1506,
+     "name": "Government Medical College, Satna",
+     "printed": "Goverment Medical College Satna",
+     "subject_rows": 5
+    },
+    {
+     "id": 365,
+     "name": "Government Medical College, Datia",
+     "printed": "Government Medical College Datia",
+     "subject_rows": 13
+    },
+    {
+     "id": 735,
+     "name": "Gwalior Mansik Arogyashala, Gwalior",
+     "printed": "Gwalior Mansik Arogyshala Gwalior",
+     "subject_rows": 1
+    },
+    {
+     "id": 95,
+     "name": "MGM Medical College, Indore",
+     "printed": "Mahatma Gandhi Memorial Medical College Indore",
+     "subject_rows": 23
+    },
+    {
+     "id": 841,
+     "name": "Nandkumar Singh Chouhan Government Medical College, Khandwa",
+     "printed": "Nandkumar Singh Chouhan Government Medical College Khandwa",
+     "subject_rows": 7
+    },
+    {
+     "id": 142,
+     "name": "Netaji Subhash Chandra Bose Medical College, Jabalpur",
+     "printed": "Netaji Subhash Chandra Bose Medical College Jabalpur",
+     "subject_rows": 20
+    },
+    {
+     "id": 917,
+     "name": "Shrimant Rajmata Vijayaraje Scindia Medical College and Hospital, Shivpuri",
+     "printed": "Shrimant Rajmata Vijayaraje Scindia Medical College Shivpuri",
+     "subject_rows": 9
+    },
+    {
+     "id": 139,
+     "name": "Shyam Shah Medical College, Rewa",
+     "printed": "Shyam Shah Medical College Rewa",
+     "subject_rows": 19
+    }
+   ],
+   "source": "dme_mp",
+   "page": null,
+   "year_label": "MP State NEET P.G. Counselling-2026 (page header); 'MD/MS Counselling 2026 (Dated 25/10/2026)' (link title)",
+   "period": "unstated",
+   "quote": "GOVT Tution Fees 100000 | GOVT Student Fund 1500 | GOVT Caution Money 3000 | GOVT Security Fund 10000 | GOVT Total Fees 114500 (identical on every subject row of these 14 colleges)",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "GOVT Tution Fees (report has no quota column; same for every subject)",
+     "branches": "*",
+     "ours": null,
+     "inr": 100000,
+     "lakh": null,
+     "usd": null,
+     "printed": "100000",
+     "maximum": false,
+     "components": "GOVT Tution Fees 100000 | GOVT Student Fund 1500 | GOVT Caution Money 3000 | GOVT Security Fund 10000 | GOVT Total Fees 114500"
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "GOVT Tution Fees (report has no quota column; same for every subject)",
+     "branches": "*",
+     "ours": null,
+     "inr": 100000,
+     "lakh": null,
+     "usd": null,
+     "printed": "100000",
+     "maximum": false,
+     "components": "GOVT Tution Fees 100000 | GOVT Student Fund 1500 | GOVT Caution Money 3000 | GOVT Security Fund 10000 | GOVT Total Fees 114500"
+    }
+   ],
+   "notes": "State counselling authority's (DME MP) official page, used for government colleges only (owner's rule). No year or per-year label inside the data; no quota column (one figure per subject). Satna's own HTML (no session label, not used) agrees: 'Tuition Fee 1,00,000/- Per Year' for MD/MS. DME's separate 'Government Colleges Fee Chart … NEET PG 2026-27 (09.10.2026)' PDF was not downloaded."
+  },
+  {
+   "scope": "Gandhi Medical College, Bhopal",
+   "roster": [
+    {
+     "id": 75,
+     "name": "Gandhi Medical College, Bhopal",
+     "printed": "Gandhi Medical College Bhopal",
+     "subject_rows": 22
+    }
+   ],
+   "source": "dme_mp",
+   "page": null,
+   "year_label": "MP State NEET P.G. Counselling-2026 (page header)",
+   "period": "unstated",
+   "quote": "GOVT Tution Fees 100000 | GOVT Student Fund 2500 | GOVT Caution Money 3000 | GOVT Security Fund 10000 | GOVT Total Fees 115500",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "GOVT Tution Fees (report has no quota column; same for every subject)",
+     "branches": "*",
+     "ours": null,
+     "inr": 100000,
+     "lakh": null,
+     "usd": null,
+     "printed": "100000",
+     "maximum": false,
+     "components": "GOVT Tution Fees 100000 | GOVT Student Fund 2500 | GOVT Caution Money 3000 | GOVT Security Fund 10000 | GOVT Total Fees 115500"
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "GOVT Tution Fees (report has no quota column; same for every subject)",
+     "branches": "*",
+     "ours": null,
+     "inr": 100000,
+     "lakh": null,
+     "usd": null,
+     "printed": "100000",
+     "maximum": false,
+     "components": "GOVT Tution Fees 100000 | GOVT Student Fund 2500 | GOVT Caution Money 3000 | GOVT Security Fund 10000 | GOVT Total Fees 115500"
+    }
+   ],
+   "notes": "Same tuition; student fund 2500 instead of 1500."
+  }
+ ],
+ "not_published": [
+  {
+   "college": "Bhopal Memorial Hospital and Research Centre, Bhopal (central/ICMR, AIQ only)",
+   "roster_id": 493,
+   "latest_seen": "not in the DME report; bmhrc.ac.in shows only running PG seats (Nov 2025)"
+  },
+  {
+   "college": "Amaltas Institute of Medical Sciences, Dewas",
+   "roster_id": 2000,
+   "latest_seen": "DME report (compiled; excluded by owner's rule). Own: 'Fees of MBBS, Post Graduate & Speciality Courses' (Sep 2026) — see candidates"
+  },
+  {
+   "college": "Chirayu Medical College and Hospital, Bhopal",
+   "roster_id": 1997,
+   "latest_seen": "DME report (excluded). Own: 'Fee Structure 2026-27' on chirayuuniversity.ac.in — see candidates"
+  },
+  {
+   "college": "LNCT Medical College & Sewakunj Hospital, Indore",
+   "roster_id": 2005,
+   "latest_seen": "DME report (excluded); lnctvu.ac.in fee page has no MD/MS figures"
+  },
+  {
+   "college": "Mahaveer Institute of Medical Sciences & Research, Bhopal",
+   "roster_id": 2001,
+   "latest_seen": "DME report (excluded); own site mimsbhopal.org links AFRC fee letters only (AFRC excluded)"
+  },
+  {
+   "college": "Ram Krishna College Hospital & Research Centre, Bhopal",
+   "roster_id": 1999,
+   "latest_seen": "DME report (excluded); own site rkmchrc.in links the AFRC page and the DME report only"
+  },
+  {
+   "college": "Ruxmaniben Deepchand Gardi Medical College, Ujjain",
+   "roster_id": 1994,
+   "latest_seen": "DME report and AFRC 2026-27 (both excluded); own admission page links an MD/MS fee structure labelled '2023-24'"
+  },
+  {
+   "college": "Sri Aurobindo Medical College and PG Institute, Indore",
+   "roster_id": 1995,
+   "latest_seen": "DME report (excluded); 'MPPURC-Fees-Order-2026-27.pdf' on sriaurobindouniversity.edu.in is the regulator's order (excluded)"
+  },
+  {
+   "college": "Sukh Sagar Medical College & Hospital, Jabalpur",
+   "roster_id": 2004,
+   "latest_seen": "DME report (excluded); own HTML 'Postgraduate Courses: Clinical ₹ 9,00,000 · Non Clinical ₹ 1,00,000' has no year label (page says 'Admissions Open 2025-26') and conflicts with DME"
+  },
+  {
+   "college": "Index Medical College Hospital & Research Centre, Indore",
+   "roster_id": 2002,
+   "latest_seen": "DME report (excluded); own Medical-Fees-Structure1.pdf dates from Dec 2024"
+  },
+  {
+   "college": "LN Medical College and Research Centre, Bhopal",
+   "roster_id": 1998,
+   "latest_seen": "DME report (excluded); own HTML 'LNMC Fees' labelled 'Fee 23-24'"
+  },
+  {
+   "college": "Peoples College of Medical Sciences & Research Centre, Bhopal",
+   "roster_id": 1996,
+   "latest_seen": "DME report (excluded); own HTML 'Annual Fees' (no year label) says 'Proposed fee is subject to final approval by MPPURC' — see candidates"
+  },
+  {
+   "college": "RKDF Medical College Hospital & Research Centre, Bhopal",
+   "roster_id": 2003,
+   "latest_seen": "DME report (excluded); own feestructure.pdf (Aug 2025)"
+  }
+ ],
+ "candidate_files_not_downloaded": [
+  {
+   "college": "Chirayu Medical College and Hospital, Bhopal",
+   "url": "https://chirayuuniversity.ac.in/pdf/Fee%20Structure%202026-27.pdf",
+   "title": "Fee structure after Consideration, Eligibility 2026-27",
+   "bytes": 2050295,
+   "date": "2026-01-22",
+   "why": "university's own file labelled 2026-27"
+  },
+  {
+   "college": "Amaltas Institute of Medical Sciences, Dewas",
+   "url": "https://amaltasmedicalcollege.in/wp-content/uploads/2026/09/Fees-Letter-Amaltas.pdf",
+   "title": "Fees of MBBS, Post Graduate & Speciality Courses",
+   "bytes": 489378,
+   "date": "2026-09-12",
+   "why": "college's own letter, Sep 2026; year label to confirm"
+  },
+  {
+   "college": "Peoples College of Medical Sciences & Research Centre, Bhopal",
+   "url": "https://www.peoplesuniversity.edu.in/programmes-offered-fees-structure/",
+   "title": "Programmes Offered & Fees Structure (HTML, 'Annual Fees')",
+   "bytes": 0,
+   "date": "HTML",
+   "why": "university's own page, but no year label and 'Proposed fee is subject to final approval by MPPURC' — not snapshotted in phase 2 (not on the approved list)"
+  }
+ ],
+ "notes": [
+  "Owner's rule applied: DME MP's report used for government colleges only; its private-college rows, AFRC (afrcmp.org) and MPPURC figures are not used."
+ ]
+}

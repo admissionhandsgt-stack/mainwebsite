@@ -1,0 +1,3549 @@
+{
+ "state": "Tamil Nadu",
+ "classes": [
+  [
+   "NRI",
+   "NRI"
+  ],
+  [
+   "^(MM|JM)$|Minority|Min\\.? |Min$|Min\\.$|-Min",
+   "Min"
+  ],
+  [
+   "^AIQ$",
+   "AIQ"
+  ],
+  [
+   "^MNG$|Mgmt|Management|Mgt|Others \\(Inst|CatB|MQ1|Paid",
+   "Mgmt"
+  ],
+  [
+   "CatC-Inst|MQ3",
+   "Inst"
+  ],
+  [
+   "^DNB Post MBBS$|^NBE Diploma$",
+   "DNB"
+  ],
+  [
+   "DNB|AFMS",
+   "Other"
+  ],
+  [
+   ".",
+   "Gen"
+  ]
+ ],
+ "null_class": {
+  "AP Govt PG": "Gen",
+  "TEL Govt PG": "Gen",
+  "AP Mgmt PG": "NRI"
+ },
+ "entries": [
+  {
+   "college": "BHAARATH MEDICAL COLLEGE AND HOSPITAL, CHENNAI",
+   "ids": [
+    1841
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 7500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "bhaarath-pg — \"DETAILS OF PG COURSE OFFERED, SANCTIONED SEATS AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27 / FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "BHAARATH MEDICAL COLLEGE AND HOSPITAL, CHENNAI",
+   "ids": [
+    1841
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 7500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "bhaarath-pg — \"DETAILS OF PG COURSE OFFERED, SANCTIONED SEATS AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27 / FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "BHAARATH MEDICAL COLLEGE AND HOSPITAL, CHENNAI",
+   "ids": [
+    1841
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 6000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "bhaarath-pg — \"DETAILS OF PG COURSE OFFERED, SANCTIONED SEATS AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27 / FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "BHAARATH MEDICAL COLLEGE AND HOSPITAL, CHENNAI",
+   "ids": [
+    1841
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 3600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "bhaarath-pg — \"DETAILS OF PG COURSE OFFERED, SANCTIONED SEATS AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27 / FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "BHAARATH MEDICAL COLLEGE AND HOSPITAL, CHENNAI",
+   "ids": [
+    1841
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "bhaarath-pg — \"DETAILS OF PG COURSE OFFERED, SANCTIONED SEATS AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27 / FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "BHAARATH MEDICAL COLLEGE AND HOSPITAL, CHENNAI",
+   "ids": [
+    1841
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 5500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "bhaarath-pg — \"DETAILS OF PG COURSE OFFERED, SANCTIONED SEATS AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27 / FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "BHAARATH MEDICAL COLLEGE AND HOSPITAL, CHENNAI",
+   "ids": [
+    1841
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "bhaarath-pg — \"DETAILS OF PG COURSE OFFERED, SANCTIONED SEATS AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27 / FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "BHAARATH MEDICAL COLLEGE AND HOSPITAL, CHENNAI",
+   "ids": [
+    1841
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "bhaarath-pg — \"DETAILS OF PG COURSE OFFERED, SANCTIONED SEATS AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27 / FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "BHAARATH MEDICAL COLLEGE AND HOSPITAL, CHENNAI",
+   "ids": [
+    1841
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "bhaarath-pg — \"DETAILS OF PG COURSE OFFERED, SANCTIONED SEATS AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27 / FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "BHAARATH MEDICAL COLLEGE AND HOSPITAL, CHENNAI",
+   "ids": [
+    1841
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 6000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "bhaarath-pg — \"DETAILS OF PG COURSE OFFERED, SANCTIONED SEATS AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27 / FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "BHAARATH MEDICAL COLLEGE AND HOSPITAL, CHENNAI",
+   "ids": [
+    1841
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "bhaarath-pg — \"DETAILS OF PG COURSE OFFERED, SANCTIONED SEATS AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27 / FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "BHAARATH MEDICAL COLLEGE AND HOSPITAL, CHENNAI",
+   "ids": [
+    1841
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "bhaarath-pg — \"DETAILS OF PG COURSE OFFERED, SANCTIONED SEATS AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27 / FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "BHAARATH MEDICAL COLLEGE AND HOSPITAL, CHENNAI",
+   "ids": [
+    1841
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 6500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "bhaarath-pg — \"DETAILS OF PG COURSE OFFERED, SANCTIONED SEATS AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27 / FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "BHAARATH MEDICAL COLLEGE AND HOSPITAL, CHENNAI",
+   "ids": [
+    1841
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "max": false,
+   "year": "2026-27",
+   "source": "bhaarath-pg — \"DETAILS OF PG COURSE OFFERED, SANCTIONED SEATS AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27 / FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "BHAARATH MEDICAL COLLEGE AND HOSPITAL, CHENNAI",
+   "ids": [
+    1841
+   ],
+   "seat": "Hostel",
+   "text": "ANNUAL HOSTEL FEE DETAILS: Hostel Room Rent per year Rs. 1,50,000/-; Hostel Caution Deposit Rs. 75,000/-; Mess Fee Rs. 75,000/- Per year (Dividing system)",
+   "year": "2026-27",
+   "source": "bhaarath-pg — \"DETAILS OF PG COURSE OFFERED, SANCTIONED SEATS AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27 / FEE FOR THE ACADEMIC YEAR 2026-27\"",
+   "min": 150000,
+   "max": 150000
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Physiology"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "fee_inr": 600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 900000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Forensic Medicine"
+   ],
+   "fee_inr": 400000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 3300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 4800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 4600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 4300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Sports Medicine"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": null,
+   "fee_usd": 90000,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": null,
+   "fee_usd": 90000,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": null,
+   "fee_usd": 90000,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": null,
+   "fee_usd": 90000,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": null,
+   "fee_usd": 90000,
+   "max": false,
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\""
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute (CHRI)",
+   "ids": [
+    1673
+   ],
+   "seat": "Hostel",
+   "text": "Annual Hostel Fees (Mess & Accommodation) varies from Rs.2,95,000/- to 4,65,000/- depending upon the type of Accommodation",
+   "year": "2026-27",
+   "source": "chettinad, p. 9 — \"VI CHRI - Details of PG seats and payment of fees for the year 2026-27 … Tuition Fee 2026-27 (per year)*\"",
+   "min": 295000,
+   "max": 465000
+  },
+  {
+   "college": "KARPAGA VINAYAGA INSTITUTE OF MEDICAL SCIENCES AND RESEARCH CENTRE (KIMS & RC)",
+   "ids": [
+    2059
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 2800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kims, p. 4 — \"Tuition Fee & Other fee details (2026-27) For Self-financed merit seat Candidates\""
+  },
+  {
+   "college": "KARPAGA VINAYAGA INSTITUTE OF MEDICAL SCIENCES AND RESEARCH CENTRE (KIMS & RC)",
+   "ids": [
+    2059
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 5500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kims, p. 4 — \"Tuition Fee & Other fee details (2026-27) For Self-financed merit seat Candidates\""
+  },
+  {
+   "college": "KARPAGA VINAYAGA INSTITUTE OF MEDICAL SCIENCES AND RESEARCH CENTRE (KIMS & RC)",
+   "ids": [
+    2059
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 5500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kims, p. 4 — \"Tuition Fee & Other fee details (2026-27) For Self-financed merit seat Candidates\""
+  },
+  {
+   "college": "KARPAGA VINAYAGA INSTITUTE OF MEDICAL SCIENCES AND RESEARCH CENTRE (KIMS & RC)",
+   "ids": [
+    2059
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kims, p. 4 — \"Tuition Fee & Other fee details (2026-27) For Self-financed merit seat Candidates\""
+  },
+  {
+   "college": "KARPAGA VINAYAGA INSTITUTE OF MEDICAL SCIENCES AND RESEARCH CENTRE (KIMS & RC)",
+   "ids": [
+    2059
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kims, p. 4 — \"Tuition Fee & Other fee details (2026-27) For Self-financed merit seat Candidates\""
+  },
+  {
+   "college": "KARPAGA VINAYAGA INSTITUTE OF MEDICAL SCIENCES AND RESEARCH CENTRE (KIMS & RC)",
+   "ids": [
+    2059
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kims, p. 4 — \"Tuition Fee & Other fee details (2026-27) For Self-financed merit seat Candidates\""
+  },
+  {
+   "college": "KARPAGA VINAYAGA INSTITUTE OF MEDICAL SCIENCES AND RESEARCH CENTRE (KIMS & RC)",
+   "ids": [
+    2059
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kims, p. 4 — \"Tuition Fee & Other fee details (2026-27) For Self-financed merit seat Candidates\""
+  },
+  {
+   "college": "KARPAGA VINAYAGA INSTITUTE OF MEDICAL SCIENCES AND RESEARCH CENTRE (KIMS & RC)",
+   "ids": [
+    2059
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kims, p. 4 — \"Tuition Fee & Other fee details (2026-27) For Self-financed merit seat Candidates\""
+  },
+  {
+   "college": "KARPAGA VINAYAGA INSTITUTE OF MEDICAL SCIENCES AND RESEARCH CENTRE (KIMS & RC)",
+   "ids": [
+    2059
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radiation Oncology"
+   ],
+   "fee_inr": 2000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kims, p. 4 — \"Tuition Fee & Other fee details (2026-27) For Self-financed merit seat Candidates\""
+  },
+  {
+   "college": "KARPAGA VINAYAGA INSTITUTE OF MEDICAL SCIENCES AND RESEARCH CENTRE (KIMS & RC)",
+   "ids": [
+    2059
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kims, p. 4 — \"Tuition Fee & Other fee details (2026-27) For Self-financed merit seat Candidates\""
+  },
+  {
+   "college": "KARPAGA VINAYAGA INSTITUTE OF MEDICAL SCIENCES AND RESEARCH CENTRE (KIMS & RC)",
+   "ids": [
+    2059
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kims, p. 4 — \"Tuition Fee & Other fee details (2026-27) For Self-financed merit seat Candidates\""
+  },
+  {
+   "college": "KARPAGA VINAYAGA INSTITUTE OF MEDICAL SCIENCES AND RESEARCH CENTRE (KIMS & RC)",
+   "ids": [
+    2059
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 3800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kims, p. 4 — \"Tuition Fee & Other fee details (2026-27) For Self-financed merit seat Candidates\""
+  },
+  {
+   "college": "KARPAGA VINAYAGA INSTITUTE OF MEDICAL SCIENCES AND RESEARCH CENTRE (KIMS & RC)",
+   "ids": [
+    2059
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 2800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kims, p. 4 — \"Tuition Fee & Other fee details (2026-27) For Self-financed merit seat Candidates\""
+  },
+  {
+   "college": "KARPAGA VINAYAGA INSTITUTE OF MEDICAL SCIENCES AND RESEARCH CENTRE (KIMS & RC)",
+   "ids": [
+    2059
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kims, p. 4 — \"Tuition Fee & Other fee details (2026-27) For Self-financed merit seat Candidates\""
+  },
+  {
+   "college": "KARPAGA VINAYAGA INSTITUTE OF MEDICAL SCIENCES AND RESEARCH CENTRE (KIMS & RC)",
+   "ids": [
+    2059
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "fee_inr": 200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kims, p. 4 — \"Tuition Fee & Other fee details (2026-27) For Self-financed merit seat Candidates\""
+  },
+  {
+   "college": "KARPAGA VINAYAGA INSTITUTE OF MEDICAL SCIENCES AND RESEARCH CENTRE (KIMS & RC)",
+   "ids": [
+    2059
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Physiology"
+   ],
+   "fee_inr": 200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kims, p. 4 — \"Tuition Fee & Other fee details (2026-27) For Self-financed merit seat Candidates\""
+  },
+  {
+   "college": "KARPAGA VINAYAGA INSTITUTE OF MEDICAL SCIENCES AND RESEARCH CENTRE (KIMS & RC)",
+   "ids": [
+    2059
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kims, p. 4 — \"Tuition Fee & Other fee details (2026-27) For Self-financed merit seat Candidates\""
+  },
+  {
+   "college": "KARPAGA VINAYAGA INSTITUTE OF MEDICAL SCIENCES AND RESEARCH CENTRE (KIMS & RC)",
+   "ids": [
+    2059
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kims, p. 4 — \"Tuition Fee & Other fee details (2026-27) For Self-financed merit seat Candidates\""
+  },
+  {
+   "college": "KARPAGA VINAYAGA INSTITUTE OF MEDICAL SCIENCES AND RESEARCH CENTRE (KIMS & RC)",
+   "ids": [
+    2059
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kims, p. 4 — \"Tuition Fee & Other fee details (2026-27) For Self-financed merit seat Candidates\""
+  },
+  {
+   "college": "KARPAGA VINAYAGA INSTITUTE OF MEDICAL SCIENCES AND RESEARCH CENTRE (KIMS & RC)",
+   "ids": [
+    2059
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kims, p. 4 — \"Tuition Fee & Other fee details (2026-27) For Self-financed merit seat Candidates\""
+  },
+  {
+   "college": "KARPAGA VINAYAGA INSTITUTE OF MEDICAL SCIENCES AND RESEARCH CENTRE (KIMS & RC)",
+   "ids": [
+    2059
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kims, p. 4 — \"Tuition Fee & Other fee details (2026-27) For Self-financed merit seat Candidates\""
+  },
+  {
+   "college": "KARPAGA VINAYAGA INSTITUTE OF MEDICAL SCIENCES AND RESEARCH CENTRE (KIMS & RC)",
+   "ids": [
+    2059
+   ],
+   "seat": "Hostel",
+   "text": "Hostel fee (Per year) PG (Single Accomodation) Rs.2,15,000/-; PG Quarters fee (Per year) Rs.2,50,000/-; Hostel Caution Deposit Rs.5,000/-",
+   "year": "2026-27",
+   "source": "kims, p. 4 — \"Tuition Fee & Other fee details (2026-27) For Self-financed merit seat Candidates\"",
+   "min": 215000,
+   "max": 250000
+  },
+  {
+   "college": "SREE BALAJI MEDICAL COLLEGE & HOSPITAL",
+   "ids": [
+    1834
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sbmch, p. 1 — \"DETAILS OF MD/MS COURSES OFFERED, AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "SREE BALAJI MEDICAL COLLEGE & HOSPITAL",
+   "ids": [
+    1834
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "fee_inr": 100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sbmch, p. 1 — \"DETAILS OF MD/MS COURSES OFFERED, AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "SREE BALAJI MEDICAL COLLEGE & HOSPITAL",
+   "ids": [
+    1834
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sbmch, p. 1 — \"DETAILS OF MD/MS COURSES OFFERED, AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "SREE BALAJI MEDICAL COLLEGE & HOSPITAL",
+   "ids": [
+    1834
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 7500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sbmch, p. 1 — \"DETAILS OF MD/MS COURSES OFFERED, AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "SREE BALAJI MEDICAL COLLEGE & HOSPITAL",
+   "ids": [
+    1834
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sbmch, p. 1 — \"DETAILS OF MD/MS COURSES OFFERED, AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "SREE BALAJI MEDICAL COLLEGE & HOSPITAL",
+   "ids": [
+    1834
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 5500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sbmch, p. 1 — \"DETAILS OF MD/MS COURSES OFFERED, AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "SREE BALAJI MEDICAL COLLEGE & HOSPITAL",
+   "ids": [
+    1834
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sbmch, p. 1 — \"DETAILS OF MD/MS COURSES OFFERED, AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "SREE BALAJI MEDICAL COLLEGE & HOSPITAL",
+   "ids": [
+    1834
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sbmch, p. 1 — \"DETAILS OF MD/MS COURSES OFFERED, AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "SREE BALAJI MEDICAL COLLEGE & HOSPITAL",
+   "ids": [
+    1834
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 6000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sbmch, p. 1 — \"DETAILS OF MD/MS COURSES OFFERED, AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "SREE BALAJI MEDICAL COLLEGE & HOSPITAL",
+   "ids": [
+    1834
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sbmch, p. 1 — \"DETAILS OF MD/MS COURSES OFFERED, AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "SREE BALAJI MEDICAL COLLEGE & HOSPITAL",
+   "ids": [
+    1834
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sbmch, p. 1 — \"DETAILS OF MD/MS COURSES OFFERED, AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "SREE BALAJI MEDICAL COLLEGE & HOSPITAL",
+   "ids": [
+    1834
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sbmch, p. 1 — \"DETAILS OF MD/MS COURSES OFFERED, AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "SREE BALAJI MEDICAL COLLEGE & HOSPITAL",
+   "ids": [
+    1834
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sbmch, p. 1 — \"DETAILS OF MD/MS COURSES OFFERED, AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "SREE BALAJI MEDICAL COLLEGE & HOSPITAL",
+   "ids": [
+    1834
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sbmch, p. 1 — \"DETAILS OF MD/MS COURSES OFFERED, AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "SREE BALAJI MEDICAL COLLEGE & HOSPITAL",
+   "ids": [
+    1834
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "fee_inr": 600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sbmch, p. 1 — \"DETAILS OF MD/MS COURSES OFFERED, AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "SREE BALAJI MEDICAL COLLEGE & HOSPITAL",
+   "ids": [
+    1834
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Physiology"
+   ],
+   "fee_inr": 100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sbmch, p. 1 — \"DETAILS OF MD/MS COURSES OFFERED, AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "SREE BALAJI MEDICAL COLLEGE & HOSPITAL",
+   "ids": [
+    1834
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sbmch, p. 1 — \"DETAILS OF MD/MS COURSES OFFERED, AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "SREE BALAJI MEDICAL COLLEGE & HOSPITAL",
+   "ids": [
+    1834
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 7500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sbmch, p. 1 — \"DETAILS OF MD/MS COURSES OFFERED, AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "SREE BALAJI MEDICAL COLLEGE & HOSPITAL",
+   "ids": [
+    1834
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 5500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sbmch, p. 1 — \"DETAILS OF MD/MS COURSES OFFERED, AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "SREE BALAJI MEDICAL COLLEGE & HOSPITAL",
+   "ids": [
+    1834
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Room Rent per year: Non Ac Hostel (Twin Sharing) Rs. 150000 /-; Ac Hostel (Twin Sharing) Rs. 250000 /-; Mess Fee Per Month Rs. 5000 to 6000",
+   "year": "2026-27",
+   "source": "sbmch, p. 1 — \"DETAILS OF MD/MS COURSES OFFERED, AND ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2026-27\"",
+   "min": 150000,
+   "max": 250000
+  },
+  {
+   "college": "Faculty of Medicine, Sri Lalithambigai Medical College and Hospital",
+   "ids": [
+    1821
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 3200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "slmch, p. 1 — \"NEET PG Medical Counselling 2026 (Annexure-C, 'For submission of information …', Date of Print: 09-10-2026)\"",
+   "period": null
+  },
+  {
+   "college": "Faculty of Medicine, Sri Lalithambigai Medical College and Hospital",
+   "ids": [
+    1821
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "slmch, p. 1 — \"NEET PG Medical Counselling 2026 (Annexure-C, 'For submission of information …', Date of Print: 09-10-2026)\"",
+   "period": null
+  },
+  {
+   "college": "Faculty of Medicine, Sri Lalithambigai Medical College and Hospital",
+   "ids": [
+    1821
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "slmch, p. 1 — \"NEET PG Medical Counselling 2026 (Annexure-C, 'For submission of information …', Date of Print: 09-10-2026)\"",
+   "period": null
+  },
+  {
+   "college": "Faculty of Medicine, Sri Lalithambigai Medical College and Hospital",
+   "ids": [
+    1821
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 1000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "slmch, p. 1 — \"NEET PG Medical Counselling 2026 (Annexure-C, 'For submission of information …', Date of Print: 09-10-2026)\"",
+   "period": null
+  },
+  {
+   "college": "Faculty of Medicine, Sri Lalithambigai Medical College and Hospital",
+   "ids": [
+    1821
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 6800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "slmch, p. 1 — \"NEET PG Medical Counselling 2026 (Annexure-C, 'For submission of information …', Date of Print: 09-10-2026)\"",
+   "period": null
+  },
+  {
+   "college": "Faculty of Medicine, Sri Lalithambigai Medical College and Hospital",
+   "ids": [
+    1821
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Forensic Medicine"
+   ],
+   "fee_inr": 600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "slmch, p. 1 — \"NEET PG Medical Counselling 2026 (Annexure-C, 'For submission of information …', Date of Print: 09-10-2026)\"",
+   "period": null
+  },
+  {
+   "college": "Faculty of Medicine, Sri Lalithambigai Medical College and Hospital",
+   "ids": [
+    1821
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "slmch, p. 1 — \"NEET PG Medical Counselling 2026 (Annexure-C, 'For submission of information …', Date of Print: 09-10-2026)\"",
+   "period": null
+  },
+  {
+   "college": "Faculty of Medicine, Sri Lalithambigai Medical College and Hospital",
+   "ids": [
+    1821
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "slmch, p. 1 — \"NEET PG Medical Counselling 2026 (Annexure-C, 'For submission of information …', Date of Print: 09-10-2026)\"",
+   "period": null
+  },
+  {
+   "college": "Faculty of Medicine, Sri Lalithambigai Medical College and Hospital",
+   "ids": [
+    1821
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "slmch, p. 1 — \"NEET PG Medical Counselling 2026 (Annexure-C, 'For submission of information …', Date of Print: 09-10-2026)\"",
+   "period": null
+  },
+  {
+   "college": "Faculty of Medicine, Sri Lalithambigai Medical College and Hospital",
+   "ids": [
+    1821
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "slmch, p. 1 — \"NEET PG Medical Counselling 2026 (Annexure-C, 'For submission of information …', Date of Print: 09-10-2026)\"",
+   "period": null
+  },
+  {
+   "college": "Faculty of Medicine, Sri Lalithambigai Medical College and Hospital",
+   "ids": [
+    1821
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "fee_inr": 600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "slmch, p. 1 — \"NEET PG Medical Counselling 2026 (Annexure-C, 'For submission of information …', Date of Print: 09-10-2026)\"",
+   "period": null
+  },
+  {
+   "college": "Faculty of Medicine, Sri Lalithambigai Medical College and Hospital",
+   "ids": [
+    1821
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Physiology"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "slmch, p. 1 — \"NEET PG Medical Counselling 2026 (Annexure-C, 'For submission of information …', Date of Print: 09-10-2026)\"",
+   "period": null
+  },
+  {
+   "college": "Faculty of Medicine, Sri Lalithambigai Medical College and Hospital",
+   "ids": [
+    1821
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 3200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "slmch, p. 1 — \"NEET PG Medical Counselling 2026 (Annexure-C, 'For submission of information …', Date of Print: 09-10-2026)\"",
+   "period": null
+  },
+  {
+   "college": "Faculty of Medicine, Sri Lalithambigai Medical College and Hospital",
+   "ids": [
+    1821
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 6250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "slmch, p. 1 — \"NEET PG Medical Counselling 2026 (Annexure-C, 'For submission of information …', Date of Print: 09-10-2026)\"",
+   "period": null
+  },
+  {
+   "college": "Faculty of Medicine, Sri Lalithambigai Medical College and Hospital",
+   "ids": [
+    1821
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "slmch, p. 1 — \"NEET PG Medical Counselling 2026 (Annexure-C, 'For submission of information …', Date of Print: 09-10-2026)\"",
+   "period": null
+  },
+  {
+   "college": "Faculty of Medicine, Sri Lalithambigai Medical College and Hospital",
+   "ids": [
+    1821
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 5200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "slmch, p. 1 — \"NEET PG Medical Counselling 2026 (Annexure-C, 'For submission of information …', Date of Print: 09-10-2026)\"",
+   "period": null
+  },
+  {
+   "college": "Faculty of Medicine, Sri Lalithambigai Medical College and Hospital",
+   "ids": [
+    1821
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 3200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "slmch, p. 1 — \"NEET PG Medical Counselling 2026 (Annexure-C, 'For submission of information …', Date of Print: 09-10-2026)\"",
+   "period": null
+  },
+  {
+   "college": "Faculty of Medicine, Sri Lalithambigai Medical College and Hospital",
+   "ids": [
+    1821
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "slmch, p. 1 — \"NEET PG Medical Counselling 2026 (Annexure-C, 'For submission of information …', Date of Print: 09-10-2026)\"",
+   "period": null
+  },
+  {
+   "college": "Faculty of Medicine, Sri Lalithambigai Medical College and Hospital",
+   "ids": [
+    1821
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 3200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "slmch, p. 1 — \"NEET PG Medical Counselling 2026 (Annexure-C, 'For submission of information …', Date of Print: 09-10-2026)\"",
+   "period": null
+  },
+  {
+   "college": "Faculty of Medicine, Sri Lalithambigai Medical College and Hospital",
+   "ids": [
+    1821
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": null,
+   "fee_usd": 112000,
+   "max": false,
+   "year": "2026-27",
+   "source": "slmch, p. 1 — \"NEET PG Medical Counselling 2026 (Annexure-C, 'For submission of information …', Date of Print: 09-10-2026)\"",
+   "period": null
+  },
+  {
+   "college": "Faculty of Medicine, Sri Lalithambigai Medical College and Hospital",
+   "ids": [
+    1821
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "max": false,
+   "year": "2026-27",
+   "source": "slmch, p. 1 — \"NEET PG Medical Counselling 2026 (Annexure-C, 'For submission of information …', Date of Print: 09-10-2026)\"",
+   "period": null
+  },
+  {
+   "college": "Faculty of Medicine, Sri Lalithambigai Medical College and Hospital",
+   "ids": [
+    1821
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": null,
+   "fee_usd": 110000,
+   "max": false,
+   "year": "2026-27",
+   "source": "slmch, p. 1 — \"NEET PG Medical Counselling 2026 (Annexure-C, 'For submission of information …', Date of Print: 09-10-2026)\"",
+   "period": null
+  },
+  {
+   "college": "Faculty of Medicine, Sri Lalithambigai Medical College and Hospital",
+   "ids": [
+    1821
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "max": false,
+   "year": "2026-27",
+   "source": "slmch, p. 1 — \"NEET PG Medical Counselling 2026 (Annexure-C, 'For submission of information …', Date of Print: 09-10-2026)\"",
+   "period": null
+  },
+  {
+   "college": "Srinivasan Medical College & Hospital, Dhanalakshmi Srinivasan Institute of Research and Technology (Deemed-to-be-university), Samayapuram",
+   "ids": [
+    2066
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srinivasan, p. 3 — \"3. Fee Structure for M.D / M.S – Academic Year 2026 – 2027\""
+  },
+  {
+   "college": "Srinivasan Medical College & Hospital, Dhanalakshmi Srinivasan Institute of Research and Technology (Deemed-to-be-university), Samayapuram",
+   "ids": [
+    2066
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srinivasan, p. 3 — \"3. Fee Structure for M.D / M.S – Academic Year 2026 – 2027\""
+  },
+  {
+   "college": "Srinivasan Medical College & Hospital, Dhanalakshmi Srinivasan Institute of Research and Technology (Deemed-to-be-university), Samayapuram",
+   "ids": [
+    2066
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srinivasan, p. 3 — \"3. Fee Structure for M.D / M.S – Academic Year 2026 – 2027\""
+  },
+  {
+   "college": "Srinivasan Medical College & Hospital, Dhanalakshmi Srinivasan Institute of Research and Technology (Deemed-to-be-university), Samayapuram",
+   "ids": [
+    2066
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Forensic Medicine"
+   ],
+   "fee_inr": 300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srinivasan, p. 3 — \"3. Fee Structure for M.D / M.S – Academic Year 2026 – 2027\""
+  },
+  {
+   "college": "Srinivasan Medical College & Hospital, Dhanalakshmi Srinivasan Institute of Research and Technology (Deemed-to-be-university), Samayapuram",
+   "ids": [
+    2066
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srinivasan, p. 3 — \"3. Fee Structure for M.D / M.S – Academic Year 2026 – 2027\""
+  },
+  {
+   "college": "Srinivasan Medical College & Hospital, Dhanalakshmi Srinivasan Institute of Research and Technology (Deemed-to-be-university), Samayapuram",
+   "ids": [
+    2066
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srinivasan, p. 3 — \"3. Fee Structure for M.D / M.S – Academic Year 2026 – 2027\""
+  },
+  {
+   "college": "Srinivasan Medical College & Hospital, Dhanalakshmi Srinivasan Institute of Research and Technology (Deemed-to-be-university), Samayapuram",
+   "ids": [
+    2066
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srinivasan, p. 3 — \"3. Fee Structure for M.D / M.S – Academic Year 2026 – 2027\""
+  },
+  {
+   "college": "Srinivasan Medical College & Hospital, Dhanalakshmi Srinivasan Institute of Research and Technology (Deemed-to-be-university), Samayapuram",
+   "ids": [
+    2066
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srinivasan, p. 3 — \"3. Fee Structure for M.D / M.S – Academic Year 2026 – 2027\""
+  },
+  {
+   "college": "Srinivasan Medical College & Hospital, Dhanalakshmi Srinivasan Institute of Research and Technology (Deemed-to-be-university), Samayapuram",
+   "ids": [
+    2066
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srinivasan, p. 3 — \"3. Fee Structure for M.D / M.S – Academic Year 2026 – 2027\""
+  },
+  {
+   "college": "Srinivasan Medical College & Hospital, Dhanalakshmi Srinivasan Institute of Research and Technology (Deemed-to-be-university), Samayapuram",
+   "ids": [
+    2066
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srinivasan, p. 3 — \"3. Fee Structure for M.D / M.S – Academic Year 2026 – 2027\""
+  },
+  {
+   "college": "Srinivasan Medical College & Hospital, Dhanalakshmi Srinivasan Institute of Research and Technology (Deemed-to-be-university), Samayapuram",
+   "ids": [
+    2066
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srinivasan, p. 3 — \"3. Fee Structure for M.D / M.S – Academic Year 2026 – 2027\""
+  },
+  {
+   "college": "Srinivasan Medical College & Hospital, Dhanalakshmi Srinivasan Institute of Research and Technology (Deemed-to-be-university), Samayapuram",
+   "ids": [
+    2066
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srinivasan, p. 3 — \"3. Fee Structure for M.D / M.S – Academic Year 2026 – 2027\""
+  },
+  {
+   "college": "Srinivasan Medical College & Hospital, Dhanalakshmi Srinivasan Institute of Research and Technology (Deemed-to-be-university), Samayapuram",
+   "ids": [
+    2066
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srinivasan, p. 3 — \"3. Fee Structure for M.D / M.S – Academic Year 2026 – 2027\""
+  },
+  {
+   "college": "Srinivasan Medical College & Hospital, Dhanalakshmi Srinivasan Institute of Research and Technology (Deemed-to-be-university), Samayapuram",
+   "ids": [
+    2066
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srinivasan, p. 3 — \"3. Fee Structure for M.D / M.S – Academic Year 2026 – 2027\""
+  },
+  {
+   "college": "Srinivasan Medical College & Hospital, Dhanalakshmi Srinivasan Institute of Research and Technology (Deemed-to-be-university), Samayapuram",
+   "ids": [
+    2066
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srinivasan, p. 3 — \"3. Fee Structure for M.D / M.S – Academic Year 2026 – 2027\""
+  },
+  {
+   "college": "Srinivasan Medical College & Hospital, Dhanalakshmi Srinivasan Institute of Research and Technology (Deemed-to-be-university), Samayapuram",
+   "ids": [
+    2066
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srinivasan, p. 3 — \"3. Fee Structure for M.D / M.S – Academic Year 2026 – 2027\""
+  },
+  {
+   "college": "Srinivasan Medical College & Hospital, Dhanalakshmi Srinivasan Institute of Research and Technology (Deemed-to-be-university), Samayapuram",
+   "ids": [
+    2066
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srinivasan, p. 3 — \"3. Fee Structure for M.D / M.S – Academic Year 2026 – 2027\""
+  },
+  {
+   "college": "Srinivasan Medical College & Hospital, Dhanalakshmi Srinivasan Institute of Research and Technology (Deemed-to-be-university), Samayapuram",
+   "ids": [
+    2066
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srinivasan, p. 3 — \"3. Fee Structure for M.D / M.S – Academic Year 2026 – 2027\""
+  },
+  {
+   "college": "Srinivasan Medical College & Hospital, Dhanalakshmi Srinivasan Institute of Research and Technology (Deemed-to-be-university), Samayapuram",
+   "ids": [
+    2066
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "max": false,
+   "year": "2026-27",
+   "source": "srinivasan, p. 3 — \"3. Fee Structure for M.D / M.S – Academic Year 2026 – 2027\""
+  },
+  {
+   "college": "Srinivasan Medical College & Hospital, Dhanalakshmi Srinivasan Institute of Research and Technology (Deemed-to-be-university), Samayapuram",
+   "ids": [
+    2066
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "max": false,
+   "year": "2026-27",
+   "source": "srinivasan, p. 3 — \"3. Fee Structure for M.D / M.S – Academic Year 2026 – 2027\""
+  },
+  {
+   "college": "Srinivasan Medical College & Hospital, Dhanalakshmi Srinivasan Institute of Research and Technology (Deemed-to-be-university), Samayapuram",
+   "ids": [
+    2066
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": null,
+   "fee_usd": 70000,
+   "max": false,
+   "year": "2026-27",
+   "source": "srinivasan, p. 3 — \"3. Fee Structure for M.D / M.S – Academic Year 2026 – 2027\""
+  },
+  {
+   "college": "Srinivasan Medical College & Hospital, Dhanalakshmi Srinivasan Institute of Research and Technology (Deemed-to-be-university), Samayapuram",
+   "ids": [
+    2066
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": null,
+   "fee_usd": 70000,
+   "max": false,
+   "year": "2026-27",
+   "source": "srinivasan, p. 3 — \"3. Fee Structure for M.D / M.S – Academic Year 2026 – 2027\""
+  },
+  {
+   "college": "Srinivasan Medical College & Hospital, Dhanalakshmi Srinivasan Institute of Research and Technology (Deemed-to-be-university), Samayapuram",
+   "ids": [
+    2066
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": null,
+   "fee_usd": 70000,
+   "max": false,
+   "year": "2026-27",
+   "source": "srinivasan, p. 3 — \"3. Fee Structure for M.D / M.S – Academic Year 2026 – 2027\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 3800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "noseat": true,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\"",
+   "reason": "Full scholarship (no tuition fee) in the college's 2026-27 notice"
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "noseat": true,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\"",
+   "reason": "Full scholarship (no tuition fee) in the college's 2026-27 notice"
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 1000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Forensic Medicine"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 4300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Physiology"
+   ],
+   "noseat": true,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\"",
+   "reason": "Full scholarship (no tuition fee) in the college's 2026-27 notice"
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 3800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 3800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 3800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Immuno Haematology & Blood Transfusion"
+   ],
+   "fee_inr": 1000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": null,
+   "fee_usd": 120000,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": null,
+   "fee_usd": 120000,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": null,
+   "fee_usd": 120000,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "max": false,
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\""
+  },
+  {
+   "college": "SRM Medical College Hospital and Research Centre, Kattankulathur",
+   "ids": [
+    1523
+   ],
+   "seat": "Hostel",
+   "text": "Hostel fees including mess fees … per year: New Boys Hostel Rs. 2,00,000/- + Mess Rs. 75,000/- = Rs. 2,75,000/-; Kopperundevi Girls Hostel (M Block) Rs. 1,97,000/- + Rs. 73,000/- = Rs. 2,70,000/-",
+   "year": "2026-27",
+   "source": "srm, p. 6 — \"NEET PG (MD/MS) Admissions 2026-27 … Seat matrix and Annual Tuition Fees – DOMESTIC CATEGORY SEATS (3-year Programs) – Round 1\"",
+   "min": 270000,
+   "max": 275000
+  },
+  {
+   "college": "VELS Medical College & Hospital",
+   "ids": [
+    1846
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 7000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vels, p. 17 — \"PROSPECTUS FOR ADMISSION TO M.D./M.S. DEGREE PROGRAMS ACADEMIC YEAR 2026-27 (cover) — 'FEE STRUCTURE AND PAYMENT DETAILS' p.17\""
+  },
+  {
+   "college": "VELS Medical College & Hospital",
+   "ids": [
+    1846
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 7000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vels, p. 17 — \"PROSPECTUS FOR ADMISSION TO M.D./M.S. DEGREE PROGRAMS ACADEMIC YEAR 2026-27 (cover) — 'FEE STRUCTURE AND PAYMENT DETAILS' p.17\""
+  },
+  {
+   "college": "VELS Medical College & Hospital",
+   "ids": [
+    1846
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 5500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vels, p. 17 — \"PROSPECTUS FOR ADMISSION TO M.D./M.S. DEGREE PROGRAMS ACADEMIC YEAR 2026-27 (cover) — 'FEE STRUCTURE AND PAYMENT DETAILS' p.17\""
+  },
+  {
+   "college": "VELS Medical College & Hospital",
+   "ids": [
+    1846
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 5500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vels, p. 17 — \"PROSPECTUS FOR ADMISSION TO M.D./M.S. DEGREE PROGRAMS ACADEMIC YEAR 2026-27 (cover) — 'FEE STRUCTURE AND PAYMENT DETAILS' p.17\""
+  },
+  {
+   "college": "VELS Medical College & Hospital",
+   "ids": [
+    1846
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vels, p. 17 — \"PROSPECTUS FOR ADMISSION TO M.D./M.S. DEGREE PROGRAMS ACADEMIC YEAR 2026-27 (cover) — 'FEE STRUCTURE AND PAYMENT DETAILS' p.17\""
+  },
+  {
+   "college": "VELS Medical College & Hospital",
+   "ids": [
+    1846
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vels, p. 17 — \"PROSPECTUS FOR ADMISSION TO M.D./M.S. DEGREE PROGRAMS ACADEMIC YEAR 2026-27 (cover) — 'FEE STRUCTURE AND PAYMENT DETAILS' p.17\""
+  },
+  {
+   "college": "VELS Medical College & Hospital",
+   "ids": [
+    1846
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vels, p. 17 — \"PROSPECTUS FOR ADMISSION TO M.D./M.S. DEGREE PROGRAMS ACADEMIC YEAR 2026-27 (cover) — 'FEE STRUCTURE AND PAYMENT DETAILS' p.17\""
+  },
+  {
+   "college": "VELS Medical College & Hospital",
+   "ids": [
+    1846
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vels, p. 17 — \"PROSPECTUS FOR ADMISSION TO M.D./M.S. DEGREE PROGRAMS ACADEMIC YEAR 2026-27 (cover) — 'FEE STRUCTURE AND PAYMENT DETAILS' p.17\""
+  },
+  {
+   "college": "VELS Medical College & Hospital",
+   "ids": [
+    1846
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vels, p. 17 — \"PROSPECTUS FOR ADMISSION TO M.D./M.S. DEGREE PROGRAMS ACADEMIC YEAR 2026-27 (cover) — 'FEE STRUCTURE AND PAYMENT DETAILS' p.17\""
+  },
+  {
+   "college": "VELS Medical College & Hospital",
+   "ids": [
+    1846
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vels, p. 17 — \"PROSPECTUS FOR ADMISSION TO M.D./M.S. DEGREE PROGRAMS ACADEMIC YEAR 2026-27 (cover) — 'FEE STRUCTURE AND PAYMENT DETAILS' p.17\""
+  },
+  {
+   "college": "VELS Medical College & Hospital",
+   "ids": [
+    1846
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vels, p. 17 — \"PROSPECTUS FOR ADMISSION TO M.D./M.S. DEGREE PROGRAMS ACADEMIC YEAR 2026-27 (cover) — 'FEE STRUCTURE AND PAYMENT DETAILS' p.17\""
+  },
+  {
+   "college": "VELS Medical College & Hospital",
+   "ids": [
+    1846
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vels, p. 17 — \"PROSPECTUS FOR ADMISSION TO M.D./M.S. DEGREE PROGRAMS ACADEMIC YEAR 2026-27 (cover) — 'FEE STRUCTURE AND PAYMENT DETAILS' p.17\""
+  },
+  {
+   "college": "VELS Medical College & Hospital",
+   "ids": [
+    1846
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 1000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vels, p. 17 — \"PROSPECTUS FOR ADMISSION TO M.D./M.S. DEGREE PROGRAMS ACADEMIC YEAR 2026-27 (cover) — 'FEE STRUCTURE AND PAYMENT DETAILS' p.17\""
+  },
+  {
+   "college": "VELS Medical College & Hospital",
+   "ids": [
+    1846
+   ],
+   "seat": "Hostel",
+   "text": "HOSTEL FEE: AC Room Rs.3,00,000 (per year); Non-AC Room Rs.2,00,000 (per year)",
+   "year": "2026-27",
+   "source": "vels, p. 17 — \"PROSPECTUS FOR ADMISSION TO M.D./M.S. DEGREE PROGRAMS ACADEMIC YEAR 2026-27 (cover) — 'FEE STRUCTURE AND PAYMENT DETAILS' p.17\"",
+   "min": 200000,
+   "max": 300000
+  },
+  {
+   "college": "VINAYAKA MISSION'S KIRUPANANDA VARIYAR MEDICAL COLLEGE & HOSPITALS, SALEM",
+   "ids": [
+    1528
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 4300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmkv, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S KIRUPANANDA VARIYAR MEDICAL COLLEGE & HOSPITALS, SALEM",
+   "ids": [
+    1528
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 4300000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmkv, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S KIRUPANANDA VARIYAR MEDICAL COLLEGE & HOSPITALS, SALEM",
+   "ids": [
+    1528
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 4200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmkv, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S KIRUPANANDA VARIYAR MEDICAL COLLEGE & HOSPITALS, SALEM",
+   "ids": [
+    1528
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 4012000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmkv, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S KIRUPANANDA VARIYAR MEDICAL COLLEGE & HOSPITALS, SALEM",
+   "ids": [
+    1528
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 3812000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmkv, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S KIRUPANANDA VARIYAR MEDICAL COLLEGE & HOSPITALS, SALEM",
+   "ids": [
+    1528
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 4000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmkv, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S KIRUPANANDA VARIYAR MEDICAL COLLEGE & HOSPITALS, SALEM",
+   "ids": [
+    1528
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "fee_inr": 3000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmkv, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S KIRUPANANDA VARIYAR MEDICAL COLLEGE & HOSPITALS, SALEM",
+   "ids": [
+    1528
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 4100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmkv, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S KIRUPANANDA VARIYAR MEDICAL COLLEGE & HOSPITALS, SALEM",
+   "ids": [
+    1528
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 2600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmkv, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S KIRUPANANDA VARIYAR MEDICAL COLLEGE & HOSPITALS, SALEM",
+   "ids": [
+    1528
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 2500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmkv, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S KIRUPANANDA VARIYAR MEDICAL COLLEGE & HOSPITALS, SALEM",
+   "ids": [
+    1528
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 3012000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmkv, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S KIRUPANANDA VARIYAR MEDICAL COLLEGE & HOSPITALS, SALEM",
+   "ids": [
+    1528
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 2812000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmkv, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S KIRUPANANDA VARIYAR MEDICAL COLLEGE & HOSPITALS, SALEM",
+   "ids": [
+    1528
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1312000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmkv, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S KIRUPANANDA VARIYAR MEDICAL COLLEGE & HOSPITALS, SALEM",
+   "ids": [
+    1528
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmkv, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\""
+  },
+  {
+   "college": "VINAYAKA MISSION'S KIRUPANANDA VARIYAR MEDICAL COLLEGE & HOSPITALS, SALEM",
+   "ids": [
+    1528
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Immuno Haematology & Blood Transfusion"
+   ],
+   "fee_inr": 1050000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmkv, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\" — after the college's fee concession (as printed: Annual Fee Rs. 15,12,000; Scholarship / Fee concession Rs. 4,62,000; Annual fee after deduction of Fee Concession Rs. 10,50,000)"
+  },
+  {
+   "college": "VINAYAKA MISSION'S KIRUPANANDA VARIYAR MEDICAL COLLEGE & HOSPITALS, SALEM",
+   "ids": [
+    1528
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "fee_inr": 335000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmkv, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\" — after the college's fee concession (as printed: Annual Fee Rs. 5,00,000; Scholarship / Fee concession Rs. 1,65,000; Annual fee after deduction of Fee Concession Rs. 3,35,000)"
+  },
+  {
+   "college": "VINAYAKA MISSION'S KIRUPANANDA VARIYAR MEDICAL COLLEGE & HOSPITALS, SALEM",
+   "ids": [
+    1528
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 335000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmkv, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\" — after the college's fee concession (as printed: Annual Fee Rs. 5,00,000; Scholarship / Fee concession Rs. 1,65,000; Annual fee after deduction of Fee Concession Rs. 3,35,000)"
+  },
+  {
+   "college": "VINAYAKA MISSION'S KIRUPANANDA VARIYAR MEDICAL COLLEGE & HOSPITALS, SALEM",
+   "ids": [
+    1528
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "fee_inr": 268000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmkv, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\" — after the college's fee concession (as printed: Annual Fee Rs. 4,00,000; Scholarship / Fee concession Rs. 1,32,000; Annual fee after deduction of Fee Concession Rs. 2,68,000)"
+  },
+  {
+   "college": "VINAYAKA MISSION'S KIRUPANANDA VARIYAR MEDICAL COLLEGE & HOSPITALS, SALEM",
+   "ids": [
+    1528
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Physiology"
+   ],
+   "fee_inr": 268000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmkv, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\" — after the college's fee concession (as printed: Annual Fee Rs. 4,00,000; Scholarship / Fee concession Rs. 1,32,000; Annual fee after deduction of Fee Concession Rs. 2,68,000)"
+  },
+  {
+   "college": "VINAYAKA MISSION'S KIRUPANANDA VARIYAR MEDICAL COLLEGE & HOSPITALS, SALEM",
+   "ids": [
+    1528
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "fee_inr": 268000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "vmkv, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\" — after the college's fee concession (as printed: Annual Fee Rs. 4,00,000; Scholarship / Fee concession Rs. 1,32,000; Annual fee after deduction of Fee Concession Rs. 2,68,000)"
+  },
+  {
+   "college": "VINAYAKA MISSION'S KIRUPANANDA VARIYAR MEDICAL COLLEGE & HOSPITALS, SALEM",
+   "ids": [
+    1528
+   ],
+   "seat": "Hostel",
+   "text": "HOSTEL & MESS FEES: Hostel Fee per year Non A/C 90,000/- | A/C 1,27,000/- | Sudharsan Hostel A/C only 1,40,000/-; Mess Fee per year 85,000/-; Hostel Other fees 5,900/-; Hostel Admission fee 1,000/-; Hostel Caution Deposit 1,00,000/-",
+   "year": "2026-27",
+   "source": "vmkv, p. 3 — \"PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27\"",
+   "min": 90000,
+   "max": 140000
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "fee_inr": 700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Forensic Medicine"
+   ],
+   "fee_inr": 700000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 1000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Pathology"
+   ],
+   "fee_inr": 1500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 3200000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 3500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": 5000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": 5500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 5500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 5500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": null,
+   "fee_usd": 60000,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "fee_inr": null,
+   "fee_usd": 75000,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "fee_inr": null,
+   "fee_usd": 75000,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "fee_inr": null,
+   "fee_usd": 75000,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": null,
+   "fee_usd": 75000,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "max": false,
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\""
+  },
+  {
+   "college": "SHRI SATHYA SAI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "ids": [
+    1826
+   ],
+   "seat": "Hostel",
+   "text": "Hostel (Boarding and Lodging) (Single Air-conditioned Room) per Annum Rs. 3,25,000/-; Hostel Upkeep Charges per Annum Rs. 6,000/-; Laundry charges Rs. 13,000/- — Total Rs. 3,44,000/-",
+   "year": "2026-27",
+   "source": "sssmcri, p. 3 — \"INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY (cover); file name says 'MD_MS-2025-26 SSSMCRI.pdf'\"",
+   "min": 344000,
+   "max": 344000
+  },
+  {
+   "college": "Aravind Eye Hospital & Postgraduate Institute of Ophthalmology, Madurai",
+   "ids": [
+    2057
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 350000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aravind, p. 1 — \"MS (Ophthalmology) 2026-2027 session\""
+  },
+  {
+   "college": "Aravind Eye Hospital & Postgraduate Institute of Ophthalmology, Madurai",
+   "ids": [
+    2057
+   ],
+   "seat": "Mgmt",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 1600000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "aravind, p. 1 — \"MS (Ophthalmology) 2026-2027 session\""
+  },
+  {
+   "college": "Tamil Nadu Government Medical Colleges ('Fees payable in Government Institutions",
+   "ids": [
+    245,
+    103,
+    351,
+    597,
+    1680,
+    318,
+    230,
+    1232,
+    1078,
+    160,
+    254,
+    369,
+    216,
+    280,
+    133,
+    111,
+    97,
+    19,
+    79,
+    37,
+    122,
+    226,
+    334,
+    232,
+    74
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 40000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "tn-gq-prospectus, p. 26 — \"The above fee structure is applicable for 2026-2027 admissions as per G.O.(D).No.630, Health and Family Welfare (MCA-1) Department, dated 12.06.2023.\""
+  },
+  {
+   "college": "Tamil Nadu Government Medical Colleges ('Fees payable in Government Institutions",
+   "ids": [
+    245,
+    103,
+    351,
+    597,
+    1680,
+    318,
+    230,
+    1232,
+    1078,
+    160,
+    254,
+    369,
+    216,
+    280,
+    133,
+    111,
+    97,
+    19,
+    79,
+    37,
+    122,
+    226,
+    334,
+    232,
+    74
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 40000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "tn-gq-prospectus, p. 26 — \"The above fee structure is applicable for 2026-2027 admissions as per G.O.(D).No.630, Health and Family Welfare (MCA-1) Department, dated 12.06.2023.\""
+  }
+ ]
+}

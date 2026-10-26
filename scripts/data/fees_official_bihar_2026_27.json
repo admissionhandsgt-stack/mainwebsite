@@ -1,0 +1,518 @@
+{
+ "state": "Bihar",
+ "classes": [
+  [
+   "NRI",
+   "NRI"
+  ],
+  [
+   "^(MM|JM)$|Minority|Min\\.? |Min$|Min\\.$|-Min",
+   "Min"
+  ],
+  [
+   "^AIQ$",
+   "AIQ"
+  ],
+  [
+   "^MNG$|Mgmt|Management|Mgt|Others \\(Inst|CatB|MQ1|Paid",
+   "Mgmt"
+  ],
+  [
+   "CatC-Inst|MQ3",
+   "Inst"
+  ],
+  [
+   "^DNB Post MBBS$|^NBE Diploma$",
+   "DNB"
+  ],
+  [
+   "DNB|AFMS",
+   "Other"
+  ],
+  [
+   ".",
+   "Gen"
+  ]
+ ],
+ "null_class": {
+  "AP Govt PG": "Gen",
+  "TEL Govt PG": "Gen",
+  "AP Mgmt PG": "NRI"
+ },
+ "entries": [
+  {
+   "college": "Darbhanga Medical College, Laheriasarai",
+   "ids": [
+    207
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 9000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "dmc-darbhanga-pg-2026, p. 1 — \"Principal's notices Memo No. 6650 (Broad Speciality through Bihar State Quota, 'Allotment Letter of PGMAC-2026') and Memo No. 6649 (Broad Speciality through All India Quota), both dated 22/10/26 — 'Fee Structure'\""
+  },
+  {
+   "college": "Darbhanga Medical College, Laheriasarai",
+   "ids": [
+    207
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 9000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "dmc-darbhanga-pg-2026, p. 1 — \"Principal's notices Memo No. 6650 (Broad Speciality through Bihar State Quota, 'Allotment Letter of PGMAC-2026') and Memo No. 6649 (Broad Speciality through All India Quota), both dated 22/10/26 — 'Fee Structure'\""
+  },
+  {
+   "college": "Darbhanga Medical College, Laheriasarai",
+   "ids": [
+    207
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 9000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "dmc-darbhanga-pg-2026, p. 1 — \"Principal's notices Memo No. 6650 (Broad Speciality through Bihar State Quota, 'Allotment Letter of PGMAC-2026') and Memo No. 6649 (Broad Speciality through All India Quota), both dated 22/10/26 — 'Fee Structure'\""
+  },
+  {
+   "college": "Darbhanga Medical College, Laheriasarai",
+   "ids": [
+    207
+   ],
+   "seat": "Hostel",
+   "text": "Hostel Fee Rs. 12000 Yearly (+ Electricity Charge Rs. 1200 Yearly)",
+   "year": "2026-27",
+   "source": "dmc-darbhanga-pg-2026, p. 1 — \"Principal's notices Memo No. 6650 (Broad Speciality through Bihar State Quota, 'Allotment Letter of PGMAC-2026') and Memo No. 6649 (Broad Speciality through All India Quota), both dated 22/10/26 — 'Fee Structure'\"",
+   "min": 12000,
+   "max": 12000
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD General Medicine",
+    "MS General Surgery",
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 3450000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD General Medicine",
+    "MS General Surgery",
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": 3450000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Paediatrics",
+    "MS Orthopaedics",
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Paediatrics",
+    "MS Orthopaedics",
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": 4500000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Obstetrics & Gynaecology",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 6000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "Min",
+   "branches": [
+    "MS Obstetrics & Gynaecology",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": 6000000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 1800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": 1800000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 2265000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "fee_inr": 2265000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 1650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "Min",
+   "branches": [
+    "MS ENT"
+   ],
+   "fee_inr": 1650000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 2250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "Min",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "fee_inr": 2250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Pathology",
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 750000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Pathology",
+    "MD Social & Preventive Medicine"
+   ],
+   "fee_inr": 750000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Pharmacology",
+    "MD Bio-Chemistry",
+    "MD Physiology",
+    "MD Anatomy"
+   ],
+   "fee_inr": 250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Pharmacology",
+    "MD Bio-Chemistry",
+    "MD Physiology",
+    "MD Anatomy"
+   ],
+   "fee_inr": 250000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "Gen",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 375000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "Min",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "fee_inr": 375000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD General Medicine",
+    "MS General Surgery"
+   ],
+   "fee_inr": null,
+   "fee_usd": 66450,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Paediatrics",
+    "MS Orthopaedics"
+   ],
+   "fee_inr": null,
+   "fee_usd": 72000,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology",
+    "MD Radio Diagnosis"
+   ],
+   "fee_inr": null,
+   "fee_usd": 90000,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "fee_inr": null,
+   "fee_usd": 32500,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "fee_inr": null,
+   "fee_usd": 72600,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "NRI",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "fee_inr": null,
+   "fee_usd": 70600,
+   "max": false,
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\""
+  },
+  {
+   "college": "Katihar Medical College, Katihar (Al-Karim University)",
+   "ids": [
+    1936
+   ],
+   "seat": "Hostel",
+   "text": "Hostel fee (per annum) 3,00,000.00 (prospectus: 'Rs. 3,00,000/- … per annum, the hostel fee is payable for three years')",
+   "year": "2026-27",
+   "source": "kmc-pg-fee-2026-27, p. 1 — \"'Postgraduate (MD/MS) courses fee and bank details for session 2026-27' (fee notice); prospectus 'PG Prospectus 2026-27' p.14 'FEE STRUCTURE … Annual Tuition Fee' has the same figures\"",
+   "min": 300000,
+   "max": 300000
+  }
+ ]
+}

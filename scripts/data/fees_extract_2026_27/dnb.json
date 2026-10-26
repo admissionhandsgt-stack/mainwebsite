@@ -1,0 +1,76 @@
+{
+ "checked": "2026-10-25",
+ "files": [
+  {
+   "id": "nbems-advisory-2026-10-24",
+   "url": "https://natboard.edu.in/viewNotice.php?NBE=Qnptb0lHajdVZ1hmUVdGaXpUdXBhUT09",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north/14_nbems_advisory_2026/NBEMS_Advisory_2026-10-24.pdf",
+   "title": "Advisory & Instructions for Reporting/Joining of NBEMS Seats allotted through NEET PG AIQ 2026 Counseling conducted by MCC (dated 24.10.2026)",
+   "issuer": "NBEMS, Department of Training and Monitoring",
+   "bytes": 274616,
+   "scanned": false
+  },
+  {
+   "id": "mcc-pg-bulletin-2026",
+   "url": "https://cdnbbsr.s3waas.gov.in/s3e0f7a4d0ef9b84b83b693bbf3feb8e6e/uploads/2026/10/202610082121348550.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north/15_mcc_bulletin/MCC_PG_Information_Bulletin_2026.pdf",
+   "title": "PG Information Bulletin 2026 — NEET-PG (MD/MS/DNB) Counselling 2026",
+   "issuer": "Medical Counselling Committee, DGHS, MoHFW",
+   "bytes": 6365884,
+   "scanned": false
+  },
+  {
+   "id": "nbems-annual-fee-2023-10-20",
+   "url": "https://natboard.edu.in/viewNotice.php?NBE=VXlIZXhKKzlTY1c0L25QeGxkdUU5dz09",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north/16_nbems_annual_fee_2023/NBEMS_Annual_Course_Fee_2023-10-20.pdf",
+   "title": "Payment of Annual Course Fee by NBEMS Trainees (notice dated 20-10-2023)",
+   "issuer": "NBEMS",
+   "bytes": 257496,
+   "scanned": false
+  }
+ ],
+ "html": [],
+ "colleges": [],
+ "government_all": [
+  {
+   "scope": "all DNB / DrNB / NBEMS diploma seats",
+   "source": "nbems-advisory-2026-10-24",
+   "page": 6,
+   "year_label": "NBEMS notice dated 24.10.2026 'Advisory & Instructions for Reporting/Joining of NBEMS Seats allotted through NEET PG AIQ 2026 Counseling conducted by MCC' — '4. Annual Course Fee'",
+   "period": "per year ('annual course fee'; the 1st-year fee is paid at joining)",
+   "quote": "4.1 In view of the change in process of counseling conducted by MCC, the competent authority of NBEMS has decided not to collect the 1st year course fee in NBEMS accounts during the counseling process and the candidate allotted with NBEMS seat & finally willing to join the course by exercising FREEZE option, are required to pay the 1st-year annual course fee to NBEMS Accredited hospital where the candidate has been allotted with the seat. 4.2 … candidates … willing to participate in subsequent round of counseling for upgradation … are not required to pay the 1st year course fee while awaiting upgradation. They shall pay the 1st year course fee directly to the institute which they finally decide to join by freezing the seat.",
+   "fees": [],
+   "amount_printed": false,
+   "paid_to": "the NBEMS-accredited hospital where the seat is allotted (2026 change: NBEMS no longer collects it during counselling)",
+   "notes": "NO AMOUNT is printed in any of the three documents. (1) NBEMS advisory 24.10.2026 (pp.6-7): fee paid to the accredited hospital on FREEZE; hospitals must not collect it from candidates who choose FLOAT; candidates needing a joining extension pay the 1st-year annual course fee at reporting (7.3). (2) MCC PG Information Bulletin 2026, Chapter 10 (p.41): 'After allotment of seats by MCC of DGHS, the admission fee is collected by NBE Authorities. Hence for any query refer to NBE … MCC will not entertain any requests for refund.' and 'Stipend /fee structure/ course duration / bond amount / rendering of service in rural / tribal area/other conditions etc. may vary from State to State and Institute to Institute.' — conflicts with NBEMS's later advisory on who collects it. (3) NBEMS notice 20-10-2023: from the 2024 admission session NBEMS collects the course fee only for the first year, at counselling, and transfers it to the hospital; remaining years are paid by candidates directly to the hospital; in-service seats (State Govt / Armed Forces / Railways / PSU / ESIC hospitals) pay the Annual Course Fee to their hospital 'as per policy and rules as applicable to these hospitals'; 1st-year fee refunded if the candidate is upgraded to an MD/MS seat. No government-vs-private difference is stated anywhere except the in-service rule. The only official rupee figure seen is in two NBEMS notice titles of 17.08.2020 ('PAID Rs. 1,25,000/- TO ACCEPT AND FREEZE THE SEAT IN ROUND-3 OF DNB … 2020 ADMISSION SESSION') — 2020, not used. State counselling may differ: Punjab BFUHS 2026 prospectus prints 'DNB Courses 37500' (six-month, Govt. College/Hospital) — see punjab.json."
+  }
+ ],
+ "not_published": [],
+ "candidate_files_not_downloaded": [
+  {
+   "college": "NBEMS (all DNB/Diploma)",
+   "url": "https://natboard.edu.in/viewNBEprogrammes?NBE=Manual%20for%20DNB%20Broad%20Specialty%20Trainees&DNB=DNB",
+   "title": "Manual for DNB Broad Specialty Trainees",
+   "bytes": 0,
+   "date": "unknown",
+   "why": "may state the annual course fee amount (also Manual for Diploma Trainees / DrNB Superspecialty Trainees)"
+  },
+  {
+   "college": "NBEMS (Post MBBS Diploma)",
+   "url": "https://natboard.edu.in/viewNotice.php?NBE=ejVMcmZacGo4Sk1IakpzREQvL0orQT09",
+   "title": "NBEMS Post MBBS Diploma (2 Years) Course - regarding",
+   "bytes": 0,
+   "date": "2026-07-08",
+   "why": "2026 diploma notice; fee content unknown"
+  },
+  {
+   "college": "NBEMS (in-service DNB / Diploma)",
+   "url": "https://natboard.edu.in/viewNotice.php?NBE=a2VES0pVWVhBZXlnTFhUNGtQY0wyQT09",
+   "title": "Counselling and joining of candidates selected for in-service seats (DNB Post MBBS / NBEMS Diploma) — 2026 admission session",
+   "bytes": 0,
+   "date": "2026-10-21",
+   "why": "in-service seats' fee rule for 2026"
+  }
+ ],
+ "state": "DNB / DrNB / NBEMS diploma (national)"
+}

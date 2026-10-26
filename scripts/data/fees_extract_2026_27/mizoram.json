@@ -1,0 +1,16 @@
+{
+ "state": "Mizoram",
+ "checked": "2026-10-25",
+ "files": [],
+ "html": [],
+ "colleges": [],
+ "government_all": [],
+ "not_published": [
+  {
+   "college": "Zoram Medical College",
+   "roster_id": 757,
+   "latest_seen": "zmc.mizoram.gov.in returns 404; dhme.mizoram.gov.in has no PG notices"
+  }
+ ],
+ "candidate_files_not_downloaded": []
+}

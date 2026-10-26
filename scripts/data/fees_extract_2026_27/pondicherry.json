@@ -1,0 +1,1048 @@
+{
+ "state": "Pondicherry",
+ "checked": "2026-10-25",
+ "files": [
+  {
+   "id": "igmcri-centac",
+   "url": "https://drive.google.com/file/d/10XGlIhUdeTu3_09jDN61sCxsoGeZA3Od/view (CENTAC notice board)",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/tnpy/02_igmcri_centac/igmcri_pg_fee_centac.pdf",
+   "title": "[21-10-2026] IGMCRI - FEE STRUCTURE FOR PG MEDICAL (M.D./M.S.) COURSES FOR THE ACADEMIC YEAR 2026-2027",
+   "issuer": "Indira Gandhi Medical College & Research Institute (Dean), No.208/IGMC&RI/Acad./PG/2026/3375 dated 21.10.2026",
+   "bytes": 620503,
+   "scanned": true,
+   "notes": "Page 2 is a bleed-through of page 1."
+  },
+  {
+   "id": "centac-pg-brochure",
+   "url": "https://drive.google.com/file/d/1R4u52A2hnX8sZAs4hrKSZZTPVHFE8YOC/view",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/tnpy/03_centac_pg_brochure/centac_pg_medical_brochure.pdf",
+   "title": "[20-10-2026] INFORMATION BROCHURE FOR ADMISSION TO POST GRADUATE MEDICAL (M.D./M.S.) COURSES",
+   "issuer": "CENTAC, Puducherry",
+   "bytes": 2726310,
+   "scanned": false,
+   "notes": "No college-wise fee figures; tuition 'as prescribed by the Fee Committee' order dated 28.08.2026 (not used). Page 48 lists the colleges' websites."
+  },
+  {
+   "id": "igmcri-docx",
+   "url": "https://igmcri.edu.in/new_wp/wp-content/uploads/2026/10/POSTGRADUATE-FEES-IGMCRI.docx",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/tnpy/04_igmcri_docx/POSTGRADUATE-FEES-IGMCRI.docx",
+   "title": "Fee Structure for Post Graduate",
+   "issuer": "Indira Gandhi Medical College & Research Institute (website)",
+   "bytes": 27883,
+   "scanned": false,
+   "notes": "No year label inside; same college fee as the dated CENTAC copy."
+  },
+  {
+   "id": "avmc",
+   "url": "https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/tnpy/06_avmc/avmc_mdms_2026_27.pdf",
+   "title": "INFORMATION FOR CANDIDATES … MD/MS DEGREE PROGRAMMES AT AARUPADAI VEEDU MEDICAL COLLEGE & HOSPITAL PUDUCHERRY … 2026 -2027",
+   "issuer": "Vinayaka Mission's Research Foundation (university) / AVMC",
+   "bytes": 509638,
+   "scanned": false
+  },
+  {
+   "id": "vmmc",
+   "url": "https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/tnpy/07_vmmc/vmmc_karaikal_mdms_2026_27.pdf",
+   "title": "INFORMATION FOR CANDIDATES … MD/MS DEGREE PROGRAMMES AT VINAYAKA MISSION'S MEDICAL COLLEGE & HOSPITALS KARAIKAL … 2026 -2027",
+   "issuer": "Vinayaka Mission's Research Foundation (university) / VMMC Karaikal",
+   "bytes": 634174,
+   "scanned": false,
+   "notes": "Text layer scrambles table rows; pages 3-4 read from rendered images."
+  },
+  {
+   "id": "mgmcri",
+   "url": "https://drive.google.com/file/d/1Qfjz3kB6_i3MQ7oBpxquUq-LwKMtdxvW/view (embedded on https://mgmcri.ac.in/admissionsmdms/)",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/tnpy/08_mgmcri/mgmcri_mdms_brochure_2026_27.pdf",
+   "title": "INFORMATION BROCHURE FOR ADMISSION - MD_MS-2026-27 MGMCRI",
+   "issuer": "Sri Balaji Vidyapeeth (university) / MGMCRI",
+   "bytes": 2446449,
+   "scanned": true
+  }
+ ],
+ "html": [
+  {
+   "id": "smvmch-mdms",
+   "url": "https://academics.smvmch.ac.in/academic-programs/mdms-admission/",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/tnpy/html/smvmch_mdms.txt",
+   "title": "MDMS Admission - academics.smvmch.ac.in (linked as 'MD & MS 2026' from smvmch.ac.in)"
+  },
+  {
+   "id": "slims-pg",
+   "url": "https://slims.ac.in/admission-pg.php",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/tnpy/html/slims_pg.txt",
+   "title": "Admission 2025-2026 | Sri Lakshmi Narayana Institute of Medical Sciences"
+  }
+ ],
+ "colleges": [
+  {
+   "college": "Indira Gandhi Medical College & Research Institute (A Government of Puducherry Institution functioning under Perunthalaivar Kamaraj Medical College Society)",
+   "roster": [
+    {
+     "id": 90,
+     "name": "Indira Gandhi Medical College & Research Institute, Puducherry"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "igmcri-centac",
+   "page": 1,
+   "year_label": "PG (MD/MS) COURSE FOR THE ACADEMIC YEAR 2026-27",
+   "period": "unstated",
+   "quote": "Fee Structure 1 (A). College Fees: i). Caution Deposit (refundable) : Rs 25,000/- ii). College Fees: (Including Admission fees, Academic fees, Learning Resource fee and Establishment charges. : Rs.1,60,000/- Grand Total : Rs.1,85,000/-",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "College Fees (no quota named)",
+     "branches": "*",
+     "inr": 160000,
+     "usd": null,
+     "maximum": false,
+     "other_inr": {
+      "Caution Deposit (refundable)": 25000
+     }
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "College Fees (no quota named)",
+     "branches": "*",
+     "inr": 160000,
+     "usd": null,
+     "maximum": false,
+     "other_inr": {
+      "Caution Deposit (refundable)": 25000
+     }
+    }
+   ],
+   "hostel": {
+    "min": 48000,
+    "max": 48000,
+    "text": "Hostel Fees: Caution Deposit (refundable) Rs. 10,000/-; Room Rent (per month) Rs. 4,000/- (single room) — 'shall be deducted from the Stipend'. Website .docx: 'Room Rent (per year; single room) Rs. 48,000/-'"
+   },
+   "notes": "Dean-signed notice dated 21.10.2026, CENTAC inward stamp. '*The above fees structures is subject to change.' Period of the Rs.1,60,000 not stated (docx title: 'FEE STRUCTURE FOR POSTGRADUATES (MD/ MS – 3 YEARS)'). No quota named, so the same figure is recorded for state (Gen) and AIQ seats. Pondicherry University registration/recognition/exam fees extra."
+  },
+  {
+   "college": "MAHATMA GANDHI MEDICAL COLLEGE & RESEARCH INSTITUTE (Sri Balaji Vidyapeeth)",
+   "roster": [
+    {
+     "id": 1783,
+     "name": "Mahatma Gandhi Medical College & Research Institute, Pondicherry"
+    }
+   ],
+   "ownership": "deemed",
+   "source_kind": "university-own",
+   "source": "mgmcri",
+   "page": 3,
+   "year_label": "INFORMATION BROCHURE ADMISSION TO MD/MS PROGRAMMES 2026 - 27 AY",
+   "period": "per year",
+   "quote": "ANNUAL TUITION FEES | BRANCH | No.of Seats Management Quota | Annual Fee General - Quota (in Rs.) | No. of seats NRI quota | Annual Fee NRI - Quota (in USD) … Radio diagnosis | 7 | 55,00,000/- | 3 | $80,000",
+   "fees": [
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Fee General - Quota (in Rs.) [column of 'No.of Seats Management Quota']",
+     "branches": [
+      "Anatomy (= MD Anatomy)"
+     ],
+     "inr": 600000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Fee General - Quota (in Rs.) [column of 'No.of Seats Management Quota']",
+     "branches": [
+      "Biochemistry (= MD Bio-Chemistry)"
+     ],
+     "inr": 600000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Fee General - Quota (in Rs.) [column of 'No.of Seats Management Quota']",
+     "branches": [
+      "Physiology (= MD Physiology)"
+     ],
+     "inr": 600000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Fee General - Quota (in Rs.) [column of 'No.of Seats Management Quota']",
+     "branches": [
+      "Microbiology (= MD Microbiology)"
+     ],
+     "inr": 700000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Fee General - Quota (in Rs.) [column of 'No.of Seats Management Quota']",
+     "branches": [
+      "Pharmacology (= MD Pharmacology)"
+     ],
+     "inr": 700000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Fee General - Quota (in Rs.) [column of 'No.of Seats Management Quota']",
+     "branches": [
+      "Community Medicine (= MD Social & Preventive Medicine)"
+     ],
+     "inr": 1000000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Fee General - Quota (in Rs.) [column of 'No.of Seats Management Quota']",
+     "branches": [
+      "Pathology (= MD Pathology)"
+     ],
+     "inr": 1500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Fee General - Quota (in Rs.) [column of 'No.of Seats Management Quota']",
+     "branches": [
+      "Anaesthesiology (= MD Anaesthesiology)"
+     ],
+     "inr": 3200000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Fee General - Quota (in Rs.) [column of 'No.of Seats Management Quota']",
+     "branches": [
+      "Psychiatry (= MD Psychiatry)"
+     ],
+     "inr": 3500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Fee General - Quota (in Rs.) [column of 'No.of Seats Management Quota']",
+     "branches": [
+      "Otorhinolaryngology (E.N.T.) (= MS ENT)"
+     ],
+     "inr": 3500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Fee General - Quota (in Rs.) [column of 'No.of Seats Management Quota']",
+     "branches": [
+      "Ophthalmology (= MS Ophthalmology)"
+     ],
+     "inr": 3500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Fee General - Quota (in Rs.) [column of 'No.of Seats Management Quota']",
+     "branches": [
+      "Respiratory Medicine (= MD Tuberculosis & Respiratory Diseases)"
+     ],
+     "inr": 4500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Fee General - Quota (in Rs.) [column of 'No.of Seats Management Quota']",
+     "branches": [
+      "General Medicine (= MD General Medicine)"
+     ],
+     "inr": 4500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Fee General - Quota (in Rs.) [column of 'No.of Seats Management Quota']",
+     "branches": [
+      "General Surgery (= MS General Surgery)"
+     ],
+     "inr": 4500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Fee General - Quota (in Rs.) [column of 'No.of Seats Management Quota']",
+     "branches": [
+      "Paediatrics (= MD Paediatrics)"
+     ],
+     "inr": 4500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Fee General - Quota (in Rs.) [column of 'No.of Seats Management Quota']",
+     "branches": [
+      "Orthopaedics (= MS Orthopaedics)"
+     ],
+     "inr": 5000000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Fee General - Quota (in Rs.) [column of 'No.of Seats Management Quota']",
+     "branches": [
+      "Obstetrics & Gynaecology (= MS Obstetrics & Gynaecology)"
+     ],
+     "inr": 5500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Fee General - Quota (in Rs.) [column of 'No.of Seats Management Quota']",
+     "branches": [
+      "Dermatology, Venereology & Leprosy (= MD Dermatology, Venereology & Leprosy)"
+     ],
+     "inr": 5500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Fee General - Quota (in Rs.) [column of 'No.of Seats Management Quota']",
+     "branches": [
+      "Radio diagnosis (= MD Radio Diagnosis)"
+     ],
+     "inr": 5500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Fee General - Quota (in Rs.) [column of 'No.of Seats Management Quota']",
+     "branches": [
+      "MD- Emergency Medicine (= MD Emergency Medicine)"
+     ],
+     "inr": 3000000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "Annual Fee NRI - Quota (in USD)",
+     "branches": [
+      "Ophthalmology (= MS Ophthalmology)"
+     ],
+     "inr": null,
+     "usd": 60000,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "Annual Fee NRI - Quota (in USD)",
+     "branches": [
+      "Respiratory Medicine (= MD Tuberculosis & Respiratory Diseases)"
+     ],
+     "inr": null,
+     "usd": 75000,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "Annual Fee NRI - Quota (in USD)",
+     "branches": [
+      "General Medicine (= MD General Medicine)"
+     ],
+     "inr": null,
+     "usd": 75000,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "Annual Fee NRI - Quota (in USD)",
+     "branches": [
+      "General Surgery (= MS General Surgery)"
+     ],
+     "inr": null,
+     "usd": 75000,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "Annual Fee NRI - Quota (in USD)",
+     "branches": [
+      "Paediatrics (= MD Paediatrics)"
+     ],
+     "inr": null,
+     "usd": 75000,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "Annual Fee NRI - Quota (in USD)",
+     "branches": [
+      "Orthopaedics (= MS Orthopaedics)"
+     ],
+     "inr": null,
+     "usd": 80000,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "Annual Fee NRI - Quota (in USD)",
+     "branches": [
+      "Obstetrics & Gynaecology (= MS Obstetrics & Gynaecology)"
+     ],
+     "inr": null,
+     "usd": 80000,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "Annual Fee NRI - Quota (in USD)",
+     "branches": [
+      "Dermatology, Venereology & Leprosy (= MD Dermatology, Venereology & Leprosy)"
+     ],
+     "inr": null,
+     "usd": 80000,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "Annual Fee NRI - Quota (in USD)",
+     "branches": [
+      "Radio diagnosis (= MD Radio Diagnosis)"
+     ],
+     "inr": null,
+     "usd": 80000,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 369000,
+    "max": 369000,
+    "text": "Hostel (Boarding & Lodging) (Single Air-conditioned Room) per Annum Rs.3,50,000/-; Laundry Services (Annual) Rs. 13,000/-; Hostel Upkeep Charges (Annual) Rs.6,000/- — Total Rs. 3,69,000"
+   },
+   "notes": "Scanned brochure, pages 3-4 read from images. 'The fees for all three years will be the same … Students joining under NRI Quota have to pay fees only in USD'. Other fees: Rs. 87,000/- (all PGs except Surgery, Ortho & Emergency), Rs.1,04,000/- (Surgery & Orthopaedics), Rs.1,74,000/- (Emergency Medicine)."
+  },
+  {
+   "college": "AARUPADAI VEEDU MEDICAL COLLEGE & HOSPITAL, PUDUCHERRY",
+   "roster": [
+    {
+     "id": 1769,
+     "name": "Aarupadai Veedu Medical College, Pondicherry"
+    }
+   ],
+   "ownership": "deemed",
+   "source_kind": "university-own",
+   "source": "avmc",
+   "page": 3,
+   "year_label": "PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27",
+   "period": "per year",
+   "quote": "a) DETAILS OF ANNUAL FEE STRUCTURE FOR GENERAL CATEGORY : … Annual fee for General Category Rs. | NRI Course Fee* (USD $) … 1 | M.D. (Radio- Diagnosis) | 9 | 5 | 4 | 50,50,000 | 2,36,000",
+   "fees": [
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (Radio- Diagnosis) (= MD Radio Diagnosis)"
+     ],
+     "inr": 5050000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (Dermatology, Venereology & Leprosy) (= MD Dermatology, Venereology & Leprosy)"
+     ],
+     "inr": 5100000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.S. (Obstetrics & Gynaecology) (= MS Obstetrics & Gynaecology)"
+     ],
+     "inr": 4850000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (General Medicine) (= MD General Medicine)"
+     ],
+     "inr": 4600000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (Paediatrics) (= MD Paediatrics)"
+     ],
+     "inr": 4300000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.S. (Orthopaedics) (= MS Orthopaedics)"
+     ],
+     "inr": 4600000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.S. (General Surgery) (= MS General Surgery)"
+     ],
+     "inr": 4000000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (Emergency Medicine) (= MD Emergency Medicine)"
+     ],
+     "inr": 3500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.S. (Ophthalmology) (= MS Ophthalmology)"
+     ],
+     "inr": 3500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (Anaesthesiology) (= MD Anaesthesiology)"
+     ],
+     "inr": 3000000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.S. (Otorhinolaryngology) (= MS ENT)"
+     ],
+     "inr": 3000000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (Psychiatry) (= MD Psychiatry)"
+     ],
+     "inr": 3000000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (Respiratory Medicine) (= MD Tuberculosis & Respiratory Diseases)"
+     ],
+     "inr": 4300000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (Pathology) (= MD Pathology)"
+     ],
+     "inr": 1500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (Pharmacology) (= MD Pharmacology)"
+     ],
+     "inr": 500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (Community Medicine) (= MD Social & Preventive Medicine)"
+     ],
+     "inr": 500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (Microbiology) (= MD Microbiology)"
+     ],
+     "inr": 300000,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "Annual Fee Rs. 3,00,000; Scholarship / Fee concession Rs. 1,50,000; Annual fee after deduction of Fee Concession Rs. 1,50,000"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (Biochemistry) (= MD Bio-Chemistry)"
+     ],
+     "inr": 300000,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "Annual Fee Rs. 3,00,000; Scholarship / Fee concession Rs. 1,50,000; Annual fee after deduction of Fee Concession Rs. 1,50,000"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (Anatomy) (= MD Anatomy)"
+     ],
+     "inr": 300000,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "Annual Fee Rs. 3,00,000; Scholarship / Fee concession Rs. 1,50,000; Annual fee after deduction of Fee Concession Rs. 1,50,000"
+    }
+   ],
+   "hostel": {
+    "min": 300000,
+    "max": 300000,
+    "text": "Hostel Accommodation & Mess Fees Rs. 3,00,000/- (Per Year); Hostel Caution Deposit Rs. 1,00,000/-"
+   },
+   "notes": "Pages 3-4. Rows 17-19 are in the scholarship / fee-concession table — inr = 'Annual Fee Rs.' before concession; after-concession in as_printed. Other fees: I Installment 1,50,000/-, II 1,25,000/-, III 1,25,000/-."
+  },
+  {
+   "college": "AARUPADAI VEEDU MEDICAL COLLEGE & HOSPITAL, PUDUCHERRY",
+   "roster": [
+    {
+     "id": 1769,
+     "name": "Aarupadai Veedu Medical College, Pondicherry"
+    }
+   ],
+   "ownership": "deemed",
+   "source_kind": "university-own",
+   "source": "avmc",
+   "page": 3,
+   "year_label": "FOR THE ACADEMIC YEAR 2026-27",
+   "period": "whole course",
+   "quote": "NRI Course Fee* (USD $) … *NRI COURSE FEE: Prescribed Fee for entire duration of the course period — COURSE FEES (to be paid at the time of admission)",
+   "fees": [
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Course Fee* (USD $) — Prescribed Fee for entire duration of the course period",
+     "branches": [
+      "M.D. (Radio- Diagnosis) (= MD Radio Diagnosis)"
+     ],
+     "inr": null,
+     "usd": 236000,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Course Fee* (USD $) — Prescribed Fee for entire duration of the course period",
+     "branches": [
+      "M.D. (Dermatology, Venereology & Leprosy) (= MD Dermatology, Venereology & Leprosy)"
+     ],
+     "inr": null,
+     "usd": 236000,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Course Fee* (USD $) — Prescribed Fee for entire duration of the course period",
+     "branches": [
+      "M.S. (Obstetrics & Gynaecology) (= MS Obstetrics & Gynaecology)"
+     ],
+     "inr": null,
+     "usd": 234000,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Course Fee* (USD $) — Prescribed Fee for entire duration of the course period",
+     "branches": [
+      "M.D. (General Medicine) (= MD General Medicine)"
+     ],
+     "inr": null,
+     "usd": 232000,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Course Fee* (USD $) — Prescribed Fee for entire duration of the course period",
+     "branches": [
+      "M.D. (Paediatrics) (= MD Paediatrics)"
+     ],
+     "inr": null,
+     "usd": 230000,
+     "maximum": false
+    }
+   ],
+   "hostel": null,
+   "notes": "Whole-course NRI fee, paid at admission."
+  },
+  {
+   "college": "VINAYAKA MISSION'S MEDICAL COLLEGE & HOSPITALS KARAIKAL",
+   "roster": [
+    {
+     "id": 1710,
+     "name": "Vinayaka Missions Medical College, Karaikal, Pondicherry"
+    }
+   ],
+   "ownership": "deemed",
+   "source_kind": "university-own",
+   "source": "vmmc",
+   "page": 3,
+   "year_label": "PROSPECTUS ADMISSION TO THE MD /MS DEGREE PROGRAMMES FOR THE ACADEMIC YEAR 2026-27",
+   "period": "per year",
+   "quote": "a) DETAILS OF ANNUAL FEE STRUCTURE FOR GENERAL CATEGORY : … Annual fee for General Category Rs. … 1 | M.D. (Radio- Diagnosis) | 4 | 2 | 2 | 42,00,000",
+   "fees": [
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (Radio- Diagnosis) (= MD Radio Diagnosis)"
+     ],
+     "inr": 4200000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (Dermatology, Venereology & Leprosy) (= MD Dermatology, Venereology & Leprosy)"
+     ],
+     "inr": 4300000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (General Medicine) (= MD General Medicine)"
+     ],
+     "inr": 3800000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (Paediatrics) (= MD Paediatrics)"
+     ],
+     "inr": 3600000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.S. (General Surgery) (= MS General Surgery)"
+     ],
+     "inr": 3500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.S. (Orthopaedics) (= MS Orthopaedics)"
+     ],
+     "inr": 3800000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (Emergency Medicine) (= MD Emergency Medicine)"
+     ],
+     "inr": 3000000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.S. (Obstetrics & Gynaecology) (= MS Obstetrics & Gynaecology)"
+     ],
+     "inr": 3900000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (Anaesthesiology) (= MD Anaesthesiology)"
+     ],
+     "inr": 2500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (Psychiatry) (= MD Psychiatry)"
+     ],
+     "inr": 2300000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.S. (Ophthalmology) (= MS Ophthalmology)"
+     ],
+     "inr": 2800000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.S. (Otorhinolaryngology) (= MS ENT)"
+     ],
+     "inr": 2700000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (Pathology) (= MD Pathology)"
+     ],
+     "inr": 1150000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (Community Medicine) (= MD Social & Preventive Medicine)"
+     ],
+     "inr": 550000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (Immuno Haematology & Blood Transfusion) (= MD Immuno Haematology & Blood Transfusion)"
+     ],
+     "inr": 1050000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D. (Biochemistry) (= MD Bio-Chemistry)"
+     ],
+     "inr": 350000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual fee for General Category Rs. [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "M.D.(Forensic Medicine) (= MD Forensic Medicine)"
+     ],
+     "inr": 550000,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 175000,
+    "max": 285000,
+    "text": "Hostel Fee per year 90,000 (Non A/C double) | 1,25,000 (A/C single) | 1,05,000 (A/C double) | 2,00,000 (1 BHK PG Apartment); Mess Fee per year 85,000 — Total 1,75,000 | 2,10,000 | 1,90,000 | 2,85,000; Hostel Caution Deposit 1,00,000"
+   },
+   "notes": "Pages 3-4 read from rendered images (text layer scrambles rows). Other fees: 25,000/- at admission only; 1,25,000/- (Annual)."
+  },
+  {
+   "college": "VINAYAKA MISSION'S MEDICAL COLLEGE & HOSPITALS KARAIKAL",
+   "roster": [
+    {
+     "id": 1710,
+     "name": "Vinayaka Missions Medical College, Karaikal, Pondicherry"
+    }
+   ],
+   "ownership": "deemed",
+   "source_kind": "university-own",
+   "source": "vmmc",
+   "page": 4,
+   "year_label": "FOR THE ACADEMIC YEAR 2026-27",
+   "period": "whole course",
+   "quote": "b). MD / MS Degree Programme - DETAILS OF ANNUAL FEE STRUCTURE FOR NRI CATEGORY: Total Fee for the entire Pogramme period (USD $) | I Installment (Payable at the time of Admission) | II Installment … M.D. (Radio- Diagnosis), M.D. (Dermatology…) | 2,20,000 | 1,50,000 | 70,000",
+   "fees": [
+    {
+     "seat": "NRI",
+     "seat_as_printed": "Total Fee for the entire Programme period (USD $)",
+     "branches": [
+      "M.D. (Radio- Diagnosis) (= MD Radio Diagnosis)"
+     ],
+     "inr": null,
+     "usd": 220000,
+     "maximum": false,
+     "installments_usd_as_printed": "1,50,000 | 70,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "Total Fee for the entire Programme period (USD $)",
+     "branches": [
+      "M.D. (Dermatology, Venereology & Leprosy) (= MD Dermatology, Venereology & Leprosy)"
+     ],
+     "inr": null,
+     "usd": 220000,
+     "maximum": false,
+     "installments_usd_as_printed": "1,50,000 | 70,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "Total Fee for the entire Programme period (USD $)",
+     "branches": [
+      "M.D. (General Medicine) (= MD General Medicine)"
+     ],
+     "inr": null,
+     "usd": 200000,
+     "maximum": false,
+     "installments_usd_as_printed": "1,50,000 | 50,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "Total Fee for the entire Programme period (USD $)",
+     "branches": [
+      "M.S. (Obstetrics & Gynaecology) (= MS Obstetrics & Gynaecology)"
+     ],
+     "inr": null,
+     "usd": 200000,
+     "maximum": false,
+     "installments_usd_as_printed": "1,50,000 | 50,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "Total Fee for the entire Programme period (USD $)",
+     "branches": [
+      "M.S. (General Surgery) (= MS General Surgery)"
+     ],
+     "inr": null,
+     "usd": 190000,
+     "maximum": false,
+     "installments_usd_as_printed": "1,50,000 | 40,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "Total Fee for the entire Programme period (USD $)",
+     "branches": [
+      "M.D.(Paediatrics) (= MD Paediatrics)"
+     ],
+     "inr": null,
+     "usd": 190000,
+     "maximum": false,
+     "installments_usd_as_printed": "1,50,000 | 40,000"
+    }
+   ],
+   "hostel": null,
+   "notes": "One USD figure printed per pair of branches (merged cells)."
+  }
+ ],
+ "government_all": [],
+ "not_published": [
+  {
+   "college": "Sri Lakshmi Narayana Institute of Medical Sciences, Pondicherry",
+   "roster_id": 1851,
+   "latest_seen": "Only 'ANNUAL TUITION FEE FOR THE ACADEMIC YEAR 2025-26' on https://slims.ac.in/admission-pg.php (snapshot dl/tnpy/html/slims_pg.txt): e.g. M.D. (Radio-Diagnosis) 70,00,000 / $1,75,000."
+  },
+  {
+   "college": "Pondicherry Institute of Medical Sciences & Research, Pondicherry",
+   "roster_id": 2034,
+   "latest_seen": "No own PG fee notice on pimsmmm.com; only the Puducherry Fee Committee order (28.08.2026, via CENTAC) — not used."
+  },
+  {
+   "college": "Sri Venkateswaraa Medical College, Hospital & Research Centre, Pondicherry",
+   "roster_id": 2036,
+   "latest_seen": "Own site svmchrc.ac.in hosts 'Fee Fixation Order 2026' (the fee committee's order; 'final fee is subject to the final outcome of WP No. 15159 of 2026') and CENTAC posted the interim-order fee file 'FEE-2024-25 FOR SVMCH AND SVDC.pdf' — neither is an own 2026-27 notice; not downloaded."
+  },
+  {
+   "college": "Sri Manakula Vinayagar Medical College and Hospital",
+   "roster_id": 2035,
+   "latest_seen": "Fee table with no year label; only the site link reads \"MD & MS 2026\" (main session, 2026-10-25: not used)"
+  }
+ ],
+ "candidate_files_not_downloaded": [
+  {
+   "college": "PIMS / SMVMCH / SVMCH (unaided private, Puducherry)",
+   "url": "https://drive.google.com/file/d/1ulK5ZSkqgWfZT6NwCN5LBkYD13GrOJbK/view",
+   "title": "[28-08-2026] FEE STRUCTURE FOR MEDICAL (PG/UG)… UN-AIDED PRIVATE PROFESSIONAL EDUCATIONAL INSTITUTIONS … 2026-27",
+   "bytes": 2302609,
+   "date": "Fri, 28 Aug 2026",
+   "why": "Fee committee order — excluded by the owner's rule."
+  },
+  {
+   "college": "Sri Venkateswaraa Medical College Hospital & Research Centre",
+   "url": "https://svmchrc.ac.in/wp-content/uploads/2026/09/Fee-Fixation-order-2026.pdf",
+   "title": "Fee Fixation Order 2026",
+   "bytes": 694928,
+   "date": "Wed, 16 Sep 2026",
+   "why": "Fee committee order re-hosted by the college; subject to WP 15159/2026 — excluded."
+  }
+ ]
+}

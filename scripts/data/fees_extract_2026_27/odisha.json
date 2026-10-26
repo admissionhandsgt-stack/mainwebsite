@@ -1,0 +1,86 @@
+{
+ "state": "Odisha",
+ "checked": "2026-10-25",
+ "files": [],
+ "html": [],
+ "colleges": [],
+ "government_all": [],
+ "not_published": [
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital (SOA)",
+   "roster_id": 1198,
+   "latest_seen": "soa.ac.in — no fee page found"
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences (KIIT)",
+   "roster_id": 851,
+   "latest_seen": "kiit.ac.in / kims.kiit.ac.in behind Cloudflare (403)"
+  },
+  {
+   "college": "Acharya Harihar Regional Cancer Centre, Cuttack",
+   "roster_id": 1415,
+   "latest_seen": "website not located; DMET Odisha has no 2026-27 PG page (latest 'PG (MEDICAL/DENTAL) COUNSELING 2025-26', Guidelines_PG_Medical_2025 FINAL.pdf)"
+  },
+  {
+   "college": "GMCH (Bhima Bhoi), Balangir",
+   "roster_id": 397,
+   "latest_seen": "website not located; DMET latest 2025-26"
+  },
+  {
+   "college": "GMCH (Fakir Mohan), Balasore",
+   "roster_id": 603,
+   "latest_seen": "website not located; DMET latest 2025-26"
+  },
+  {
+   "college": "MKCG Medical College, Berhampur",
+   "roster_id": 110,
+   "latest_seen": "mkcgmch.org renders no content; DMET latest 2025-26"
+  },
+  {
+   "college": "PGIMER & Capital Hospital, Bhubaneswar",
+   "roster_id": 301,
+   "latest_seen": "website not located; DMET latest 2025-26"
+  },
+  {
+   "college": "Pt Raghunath Murmu MCH, Baripada",
+   "roster_id": 187,
+   "latest_seen": "prmmch.nic.in timed out; DMET latest 2025-26"
+  },
+  {
+   "college": "SCB Medical College, Cuttack",
+   "roster_id": 36,
+   "latest_seen": "website not located; DMET latest 2025-26"
+  },
+  {
+   "college": "VIMSAR, Burla",
+   "roster_id": 181,
+   "latest_seen": "vimsar.ac.in — no fee; latest 'PG Admission Batch 2025-26' list"
+  },
+  {
+   "college": "DRIEMS Institute of Health Sciences (now 'Affiliated to DRIEMS University')",
+   "roster_id": 2031,
+   "latest_seen": "driemsmedicalcollege.org/fees — MBBS only ('As per Government Notification(OJEE)')"
+  },
+  {
+   "college": "Hi-Tech Medical College, Bhubaneswar",
+   "roster_id": 2030,
+   "latest_seen": "hi-techmedical.org — nothing"
+  },
+  {
+   "college": "Hi-Tech Medical College, Rourkela",
+   "roster_id": 2032,
+   "latest_seen": "website not located"
+  }
+ ],
+ "candidate_files_not_downloaded": [
+  {
+   "college": "DRIEMS Institute of Health Sciences",
+   "url": "https://driemsmedicalcollege.org/uploads/2026/03/Notice-for-PG-Stipend-Structure.pdf",
+   "title": "Stipend Structure (PG)",
+   "bytes": 2683502,
+   "date": "Tue, 06 Oct 2026",
+   "why": "stipend, not fee — listed for completeness"
+  }
+ ],
+ "notes": "No 2026-27 Odisha PG file was approved/found; DMET's PG page stops at 2025-26 (PG%202026.html = 404 on 25 Oct 2026)."
+}

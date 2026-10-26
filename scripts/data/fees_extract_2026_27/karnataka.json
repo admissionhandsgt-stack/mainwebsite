@@ -1,0 +1,4183 @@
+{
+ "state": "Karnataka",
+ "checked": "2026-10-25",
+ "notes": "No state-wide 2026-27 MD/MS fee order for government colleges was found (KEA had not posted its 2026-27 fee structure/government fee order by 25-10-2026; the 22-10-2026 KEA notification only extends registration to 25-10-2026; the KEA PG e-brochure says the fee structure is 'issued by the Government' separately and prints no figures). Government colleges are covered only where the college's own 2026-27 PG proforma prints the fee (BMCRI, HIMS Haveri, GIMS Kalaburagi). Private (RGUHS) colleges' KEA-quota fees await KEA's compiled matrix, which the owner's rule excludes; only St John's and Vydehi published their own. 'inr' = the figure the notice prints in the column named in seat_as_printed; extra keys (other_fees, first_year_total_inr, total_course_inr/usd, tuition_inr, as_printed, waiver) keep the printed components.",
+ "files": [
+  {
+   "id": "kea-notif",
+   "url": "https://cetonline.karnataka.gov.in/keawebentry456/pgetmed2026/medicalenglish.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/01_kea_notif22oct/medicalenglish.pdf",
+   "title": "Admission to PG Medical Courses in the state of Karnataka – 2026–27 (No. ED/KEA/PGNEET-MD-MS/CR-12/2026, 22-10-2026)",
+   "issuer": "Karnataka Examinations Authority",
+   "bytes": 134042,
+   "scanned": true
+  },
+  {
+   "id": "kea-ebrochure",
+   "url": "https://cetonline.karnataka.gov.in/keawebentry456/pgden2026/PGET_MDS_2026_e_brochure_15082026english.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/02_kea_ebrochure/PGET_MDS_2026_e_brochure_15082026english.pdf",
+   "title": "PG MEDICAL\\ DENTAL - 2026 E-BROCHURE (dated 14-08-2026)",
+   "issuer": "Karnataka Examinations Authority",
+   "bytes": 2545762,
+   "scanned": false
+  },
+  {
+   "id": "stjohns",
+   "url": "https://cetonline.karnataka.gov.in/keawebentry456/pgetmed2026/Submission%20of%20details%20of%20sanctioned%20seats,%20seat%20matrix%20and%20fees%20for%20PG%20courses-2026-27english.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/03_stjohns_bulletin/stjohns_pg_bulletin_2026-27.pdf",
+   "title": "St. John's Medical College PG Admission Bulletin 2026-2027 dated 28th September 2026 (cover letter No. SJMC/ACA/PG/02/638, 07-10-2026, signed by the Dean)",
+   "issuer": "St. John's Medical College (Dean) — hosted on KEA",
+   "bytes": 1541405,
+   "scanned": true
+  },
+  {
+   "id": "kaher",
+   "url": "https://kaher.edu.in/wp-content/uploads/2026/10/PG-MEDICAL-FEES-STRUCTURE-2026-27-14-10-2026.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/04_kaher/PG-MEDICAL-FEES-STRUCTURE-2026-27-14-10-2026.pdf",
+   "title": "Fees structure for post-graduate courses in medical (MD/MS/PG Diploma) for the year 2026-27 batch — JNMC Belagavi (14/10/2026, Registrar KAHER)",
+   "issuer": "KLE Academy of Higher Education and Research (university)",
+   "bytes": 280118,
+   "scanned": false
+  },
+  {
+   "id": "jss",
+   "url": "https://jssaherstoragenew.blob.core.windows.net/jss/Notices%5CNEM007755.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/05_jss/NEM007755.pdf",
+   "title": "PG Medical MD/MS/PG Diploma Admissions & Reporting Procedure - 2026 (JSS Medical College, Mysuru)",
+   "issuer": "JSS Academy of Higher Education & Research (university)",
+   "bytes": 1673883,
+   "scanned": false
+  },
+  {
+   "id": "rrmch",
+   "url": "https://www.rrmch.org/cms/wp-content/uploads/2026/10/PG-2026-27-Batch-Fee-Structure.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/06_rrmch/PG-2026-27-Batch-Fee-Structure.pdf",
+   "title": "Fee Structure 2026-27 — Annexure-C, NEET PG Medical Counselling 2026, institute seats information (printed 09-10-2026, signed and sealed by the Dean)",
+   "issuer": "Rajarajeswari Medical College & Hospital (Dean)",
+   "bytes": 937049,
+   "scanned": true
+  },
+  {
+   "id": "ssimrc",
+   "url": "https://ssimrc.in/wp-content/uploads/2026/10/Medical-PG-Fee-details-2026-27.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/07_ssimrc/Medical-PG-Fee-details-2026-27.pdf",
+   "title": "PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 (SSAHE e-Brochure 2026 p.33 and p.37, signed by Principal SSIMS&RC)",
+   "issuer": "Sri Siddhartha Academy of Higher Education / SSIMS&RC (college)",
+   "bytes": 1289103,
+   "scanned": true
+  },
+  {
+   "id": "yenepoya-notif",
+   "url": "https://www.yenepoya.edu.in/img/pdf/PG-Medical-2026Notification.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/08_yenepoya_notif/PG-Medical-2026Notification.pdf",
+   "title": "ADMISSION TO PG MEDICAL (2026-27)",
+   "issuer": "Yenepoya (Deemed to be University)",
+   "bytes": 358561,
+   "scanned": false
+  },
+  {
+   "id": "yenepoya-campus",
+   "url": "https://www.yenepoya.edu.in/img/pdf/Mangalore%20Campus%20fee%20structure%202026-27.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/09_yenepoya_fee/Mangalore_Campus_fee_structure_2026-27.pdf",
+   "title": "MANGALORE CAMPUS - COURSE FEES 2026-27 Batch",
+   "issuer": "Yenepoya (Deemed to be University)",
+   "bytes": 255638,
+   "scanned": false
+  },
+  {
+   "id": "blde",
+   "url": "https://bldedu.ac.in/wp-content/uploads/2026/10/BLDEU-PG-2026-NOTIFICATION.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/10_blde/BLDEU-PG-2026-NOTIFICATION.pdf",
+   "title": "RE-NOTIFICATION PG MEDICAL ADMISSION – 2026 (BLDE(DU)/REG/PG-NEET-26/2026-27, 28-09-2026) + PG MEDICAL SEAT MATRIX & FEE DETAILS – 2026",
+   "issuer": "BLDE (Deemed to be University) (Registrar)",
+   "bytes": 236804,
+   "scanned": false
+  },
+  {
+   "id": "sduaher",
+   "url": "https://sduaher.ac.in/storage/1792038202.6994AdmissionPGbulletin2026-27.vJdP.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/11_sduaher/AdmissionPGbulletin2026-27.pdf",
+   "title": "ADMISSION TO POSTGRADUATE (2026-27) — Sri Devaraj Urs Medical College",
+   "issuer": "Sri Devaraj Urs Academy of Higher Education and Research (university)",
+   "bytes": 701681,
+   "scanned": false
+  },
+  {
+   "id": "nitte-pggen",
+   "url": "https://nitte.edu.in/fee/PGGEN.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/12_nitte_pggen/PGGEN.pdf",
+   "title": "Fee Structure for Postgraduate Programs under General Category 2026-27",
+   "issuer": "Nitte (Deemed to be University)",
+   "bytes": 577815,
+   "scanned": false
+  },
+  {
+   "id": "nitte-pgnri",
+   "url": "https://nitte.edu.in/fee/PGNRI.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/13_nitte_pgnri/PGNRI.pdf",
+   "title": "Fee Structure for Postgraduate Programs under NRI Category 2026-27",
+   "issuer": "Nitte (Deemed to be University)",
+   "bytes": 559879,
+   "scanned": false
+  },
+  {
+   "id": "nitte-hostel",
+   "url": "https://nitte.edu.in/Hostel_Mangalore.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/14_nitte_hostel/Hostel_Mangalore.pdf",
+   "title": "Hostel Fee Structure 2026-27",
+   "issuer": "Nitte (Deemed to be University)",
+   "bytes": 536030,
+   "scanned": false
+  },
+  {
+   "id": "bmcri",
+   "url": "https://bmcribengaluru.karnataka.gov.in/uploads/POST%20GRADUATE%20ADMISSION%20PROFORMA%202026-27%20BMCRI,%20BENGALURU_1792221411.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/15_bmcri/BMCRI_PG_ADMISSION_PROFORMA_2026-27.pdf",
+   "title": "POST GRADUATE ADMISSION PROFORMA 2026-27 BMCRI, BENGALURU",
+   "issuer": "Bangalore Medical College & Research Institute (Govt.)",
+   "bytes": 5005493,
+   "scanned": false
+  },
+  {
+   "id": "hims-haveri",
+   "url": "https://himshaveri.karnataka.gov.in/uploads/PG%20Admission%20Brochure%20HIMS%202026-27_1791781710.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/16_hims_haveri/PG_Admission_Brochure_HIMS_2026-27.pdf",
+   "title": "PG Admission Brochure HIMS 2026-27",
+   "issuer": "Haveri Institute of Medical Sciences (Govt.)",
+   "bytes": 2688774,
+   "scanned": "partly (12 of 40 pages are images; fee pages 21-22 rendered)"
+  },
+  {
+   "id": "gims",
+   "url": "https://gimsgulbarga.karnataka.gov.in/uploads/PG%20Admission%202026%20%28MD%EF%80%A2MS%29%20Admission%20Proforma_1791441259.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/17_gims_kalaburagi/PG_Admission_2026_MDMS_Proforma.pdf",
+   "title": "PROFORMA FOR ADMISSION TO POST GRADUATE COURSES (MD/MS) FOR THE ACADEMIC YEAR 2026-27",
+   "issuer": "Gulbarga Institute of Medical Sciences, Kalaburagi (Govt. autonomous)",
+   "bytes": 1624756,
+   "scanned": false
+  },
+  {
+   "id": "vydehi",
+   "url": "https://vims.ac.in/education/wp-content/uploads/2026/10/DME-Letter-1.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/18_vydehi/DME-Letter-1.pdf",
+   "title": "Full (100%) Tuition Fee Waiver for PG Pre-Clinical/ Para-Clinical (MD/MS) Courses ... for the Academic Year 2026-27 (letter to KEA dated 17.10.2026, Chairperson)",
+   "issuer": "Vydehi Institute of Medical Sciences & Research Centre (Srinivasa Trust)",
+   "bytes": 12717395,
+   "scanned": true
+  }
+ ],
+ "html": [
+  {
+   "id": "mahe-md-anaesthesiology-kmc-mangalore",
+   "url": "https://www.manipal.edu/academics/programs/md-anaesthesiology-kmc-mangalore",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_anaesthesiology_kmc_mangalore.txt",
+   "title": "MD Anaesthesiology"
+  },
+  {
+   "id": "mahe-md-anaesthesiology-kmc-manipal",
+   "url": "https://www.manipal.edu/academics/programs/md-anaesthesiology-kmc-manipal",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_anaesthesiology_kmc_manipal.txt",
+   "title": "MD Anaesthesiology"
+  },
+  {
+   "id": "mahe-md-anatomy-kmc-mangalore",
+   "url": "https://www.manipal.edu/academics/programs/md-anatomy-kmc-mangalore",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_anatomy_kmc_mangalore.txt",
+   "title": "MD Anatomy"
+  },
+  {
+   "id": "mahe-md-anatomy-kmc-manipal",
+   "url": "https://www.manipal.edu/academics/programs/md-anatomy-kmc-manipal",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_anatomy_kmc_manipal.txt",
+   "title": "MD Anatomy"
+  },
+  {
+   "id": "mahe-md-biochemistry-kmc-mangalore",
+   "url": "https://www.manipal.edu/academics/programs/md-biochemistry-kmc-mangalore",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_biochemistry_kmc_mangalore.txt",
+   "title": "MD Biochemistry"
+  },
+  {
+   "id": "mahe-md-biochemistry-kmc-manipal",
+   "url": "https://www.manipal.edu/academics/programs/md-biochemistry-kmc-manipal",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_biochemistry_kmc_manipal.txt",
+   "title": "MD Biochemistry"
+  },
+  {
+   "id": "mahe-md-community-medicine-kmc-mangalore",
+   "url": "https://www.manipal.edu/academics/programs/md-community-medicine-kmc-mangalore",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_community_medicine_kmc_mangalore.txt",
+   "title": "MD Community Medicine"
+  },
+  {
+   "id": "mahe-md-community-medicine-kmc-manipal",
+   "url": "https://www.manipal.edu/academics/programs/md-community-medicine-kmc-manipal",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_community_medicine_kmc_manipal.txt",
+   "title": "MD Community Medicine"
+  },
+  {
+   "id": "mahe-md-dermatology-venereology-leprosy-kmc-mangalore",
+   "url": "https://www.manipal.edu/academics/programs/md-dermatology-venereology-leprosy-kmc-mangalore",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_dermatology_venereology_leprosy_kmc_mangalore.txt",
+   "title": "MD Dermatology, Venerology & Leprosy"
+  },
+  {
+   "id": "mahe-md-dermatology-venereology-leprosy-kmc-manipal",
+   "url": "https://www.manipal.edu/academics/programs/md-dermatology-venereology-leprosy-kmc-manipal",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_dermatology_venereology_leprosy_kmc_manipal.txt",
+   "title": "MD Dermatology Venereology and Leprosy"
+  },
+  {
+   "id": "mahe-md-emergency-medicine-kmc-mangalore",
+   "url": "https://www.manipal.edu/academics/programs/md-emergency-medicine-kmc-mangalore",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_emergency_medicine_kmc_mangalore.txt",
+   "title": "MD Emergency Medicine"
+  },
+  {
+   "id": "mahe-md-forensic-medicine-and-toxicology-kmc-manipal",
+   "url": "https://www.manipal.edu/academics/programs/md-forensic-medicine-and-toxicology-kmc-manipal",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_forensic_medicine_and_toxicology_kmc_manipal.txt",
+   "title": "MD Forensic Medicine and Toxicology"
+  },
+  {
+   "id": "mahe-md-general-medicine-kmc-mangalore",
+   "url": "https://www.manipal.edu/academics/programs/md-general-medicine-kmc-mangalore",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_general_medicine_kmc_mangalore.txt",
+   "title": "MD General Medicine"
+  },
+  {
+   "id": "mahe-md-general-medicine-kmc-manipal",
+   "url": "https://www.manipal.edu/academics/programs/md-general-medicine-kmc-manipal",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_general_medicine_kmc_manipal.txt",
+   "title": "MD General Medicine"
+  },
+  {
+   "id": "mahe-md-immunohemotology-blood-transfusion-kmc-mangalore",
+   "url": "https://www.manipal.edu/academics/programs/md-immunohemotology-blood-transfusion-kmc-mangalore",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_immunohemotology_blood_transfusion_kmc_mangalore.txt",
+   "title": "md-immunohemotology-blood-transfusion-kmc-mangalore — page shows no fee (404 'This page has taken a study break')"
+  },
+  {
+   "id": "mahe-md-in-psychiatry-kmc-manipal",
+   "url": "https://www.manipal.edu/academics/programs/md-in-psychiatry-kmc-manipal",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_in_psychiatry_kmc_manipal.txt",
+   "title": "MD Psychiatry"
+  },
+  {
+   "id": "mahe-md-microbiology-kmc-mangalore",
+   "url": "https://www.manipal.edu/academics/programs/md-microbiology-kmc-mangalore",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_microbiology_kmc_mangalore.txt",
+   "title": "MD Microbiology"
+  },
+  {
+   "id": "mahe-md-microbiology-kmc-manipal",
+   "url": "https://www.manipal.edu/academics/programs/md-microbiology-kmc-manipal",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_microbiology_kmc_manipal.txt",
+   "title": "MD Microbiology"
+  },
+  {
+   "id": "mahe-md-paediatrics-kmc-mangalore",
+   "url": "https://www.manipal.edu/academics/programs/md-paediatrics-kmc-mangalore",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_paediatrics_kmc_mangalore.txt",
+   "title": "MD in Paediatrics"
+  },
+  {
+   "id": "mahe-md-paediatrics-kmc-manipal",
+   "url": "https://www.manipal.edu/academics/programs/md-paediatrics-kmc-manipal",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_paediatrics_kmc_manipal.txt",
+   "title": "MD Paediatrics"
+  },
+  {
+   "id": "mahe-md-palliative-medicine-kmc-manipal",
+   "url": "https://www.manipal.edu/academics/programs/md-palliative-medicine-kmc-manipal",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_palliative_medicine_kmc_manipal.txt",
+   "title": "MD Palliative Medicine"
+  },
+  {
+   "id": "mahe-md-pathology-kmc-mangalore",
+   "url": "https://www.manipal.edu/academics/programs/md-pathology-kmc-mangalore",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_pathology_kmc_mangalore.txt",
+   "title": "MD Pathology"
+  },
+  {
+   "id": "mahe-md-pathology-kmc-manipal",
+   "url": "https://www.manipal.edu/academics/programs/md-pathology-kmc-manipal",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_pathology_kmc_manipal.txt",
+   "title": "MD Pathology"
+  },
+  {
+   "id": "mahe-md-pharmacology-kmc-mangalore",
+   "url": "https://www.manipal.edu/academics/programs/md-pharmacology-kmc-mangalore",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_pharmacology_kmc_mangalore.txt",
+   "title": "MD Pharmacology"
+  },
+  {
+   "id": "mahe-md-pharmacology-kmc-manipal",
+   "url": "https://www.manipal.edu/academics/programs/md-pharmacology-kmc-manipal",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_pharmacology_kmc_manipal.txt",
+   "title": "MD Pharmacology"
+  },
+  {
+   "id": "mahe-md-physiology-kmc-mangalore",
+   "url": "https://www.manipal.edu/academics/programs/md-physiology-kmc-mangalore",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_physiology_kmc_mangalore.txt",
+   "title": "MD Physiology"
+  },
+  {
+   "id": "mahe-md-physiology-kmc-manipal",
+   "url": "https://www.manipal.edu/academics/programs/md-physiology-kmc-manipal",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_physiology_kmc_manipal.txt",
+   "title": "MD Physiology"
+  },
+  {
+   "id": "mahe-md-psychiatry-kmc-mangalore",
+   "url": "https://www.manipal.edu/academics/programs/md-psychiatry-kmc-mangalore",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_psychiatry_kmc_mangalore.txt",
+   "title": "MD Psychiatry"
+  },
+  {
+   "id": "mahe-md-radiation-oncology-kmc-mangalore",
+   "url": "https://www.manipal.edu/academics/programs/md-radiation-oncology-kmc-mangalore",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_radiation_oncology_kmc_mangalore.txt",
+   "title": "MD Radiation Oncology"
+  },
+  {
+   "id": "mahe-md-radiation-oncology-kmc-manipal",
+   "url": "https://www.manipal.edu/academics/programs/md-radiation-oncology-kmc-manipal",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_radiation_oncology_kmc_manipal.txt",
+   "title": "MD Radiation Oncology"
+  },
+  {
+   "id": "mahe-md-radiodiagnosis-kmc-mangalore",
+   "url": "https://www.manipal.edu/academics/programs/md-radiodiagnosis-kmc-mangalore",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_radiodiagnosis_kmc_mangalore.txt",
+   "title": "MD Radiodiagnosis"
+  },
+  {
+   "id": "mahe-md-radiodiagnosis-kmc-manipal",
+   "url": "https://www.manipal.edu/academics/programs/md-radiodiagnosis-kmc-manipal",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_radiodiagnosis_kmc_manipal.txt",
+   "title": "MD Radiodiagnosis"
+  },
+  {
+   "id": "mahe-md-respiratory-medicine-kmc-mangalore",
+   "url": "https://www.manipal.edu/academics/programs/md-respiratory-medicine-kmc-mangalore",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_respiratory_medicine_kmc_mangalore.txt",
+   "title": "MD Respiratory Medicine"
+  },
+  {
+   "id": "mahe-md-respiratory-medicine-kmc-manipal",
+   "url": "https://www.manipal.edu/academics/programs/md-respiratory-medicine-kmc-manipal",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_md_respiratory_medicine_kmc_manipal.txt",
+   "title": "MD Respiratory Medicine"
+  },
+  {
+   "id": "mahe-ms-general-surgery-kmc-mangalore",
+   "url": "https://www.manipal.edu/academics/programs/ms-general-surgery-kmc-mangalore",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_ms_general_surgery_kmc_mangalore.txt",
+   "title": "MS General Surgery"
+  },
+  {
+   "id": "mahe-ms-general-surgery-kmc-manipal",
+   "url": "https://www.manipal.edu/academics/programs/ms-general-surgery-kmc-manipal",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_ms_general_surgery_kmc_manipal.txt",
+   "title": "MS General Surgery"
+  },
+  {
+   "id": "mahe-ms-in-obstetrics-and-gynaecology-kmc-mangalore",
+   "url": "https://www.manipal.edu/academics/programs/ms-in-obstetrics-and-gynaecology-kmc-mangalore",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_ms_in_obstetrics_and_gynaecology_kmc_mangalore.txt",
+   "title": "MS Obstetrics & Gynaecology"
+  },
+  {
+   "id": "mahe-ms-in-obstetrics-and-gynaecology-kmc-manipal",
+   "url": "https://www.manipal.edu/academics/programs/ms-in-obstetrics-and-gynaecology-kmc-manipal",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_ms_in_obstetrics_and_gynaecology_kmc_manipal.txt",
+   "title": "MS Obstetrics & Gynaecology"
+  },
+  {
+   "id": "mahe-ms-ophthalmology-kmc-mangalore",
+   "url": "https://www.manipal.edu/academics/programs/ms-ophthalmology-kmc-mangalore",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_ms_ophthalmology_kmc_mangalore.txt",
+   "title": "MS Ophthalmology"
+  },
+  {
+   "id": "mahe-ms-ophthalmology-kmc-manipal",
+   "url": "https://www.manipal.edu/academics/programs/ms-ophthalmology-kmc-manipal",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_ms_ophthalmology_kmc_manipal.txt",
+   "title": "MS Ophthalmology"
+  },
+  {
+   "id": "mahe-ms-orthopaedics-kmc-mangalore",
+   "url": "https://www.manipal.edu/academics/programs/ms-orthopaedics-kmc-mangalore",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_ms_orthopaedics_kmc_mangalore.txt",
+   "title": "MS Orthopaedics"
+  },
+  {
+   "id": "mahe-ms-orthopaedics-kmc-manipal",
+   "url": "https://www.manipal.edu/academics/programs/ms-orthopaedics-kmc-manipal",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_ms_orthopaedics_kmc_manipal.txt",
+   "title": "MS Orthopaedics"
+  },
+  {
+   "id": "mahe-ms-otorhinolaryngology-kmc-mangalore",
+   "url": "https://www.manipal.edu/academics/programs/ms-otorhinolaryngology-kmc-mangalore",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_ms_otorhinolaryngology_kmc_mangalore.txt",
+   "title": "MS Otorhinolaryngology"
+  },
+  {
+   "id": "mahe-ms-otorhinolaryngology-kmc-manipal",
+   "url": "https://www.manipal.edu/academics/programs/ms-otorhinolaryngology-kmc-manipal",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/ka/html/academics_programs_ms_otorhinolaryngology_kmc_manipal.txt",
+   "title": "MS Otorhinolaryngology"
+  }
+ ],
+ "colleges": [
+  {
+   "college": "JAWAHARLAL NEHRU MEDICAL COLLEGE, BELAGAVI",
+   "roster": [
+    {
+     "id": 1042,
+     "name": "Jawaharlal Nehru Medical College, Belgaum"
+    }
+   ],
+   "ownership": "deemed",
+   "source_kind": "university-own",
+   "source": "kaher",
+   "page": [
+    1,
+    2
+   ],
+   "year_label": "FEES STRUCTURE FOR POST-GRADUATE COURSES IN MEDICAL (MD/MS/PG DIPLOMA) FOR THE YEAR 2026-27 BATCH (Date: 14/10/2026)",
+   "period": "per year",
+   "quote": "MD (Radio-Diagnosis) General 11 ₹ 35,05,000 ₹ 35,05,000 ₹ 35,05,000 / NRI 4 $ 1,20,800 $ 1,20,800 $ 1,20,800",
+   "fees": [
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General",
+     "branches": [
+      "MD(Skin & V.D) Dermatology → MD Dermatology, Venereology & Leprosy",
+      "MD (Radio-Diagnosis) → MD Radio Diagnosis",
+      "MD (General Medicine) → MD General Medicine",
+      "MS (Obst. & Gynaecology) → MS Obstetrics & Gynaecology",
+      "MS (Orthopaedics) → MS Orthopaedics",
+      "MD (Paediatrics) → MD Paediatrics"
+     ],
+     "inr": 3505000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General",
+     "branches": [
+      "MD (Anaesthesiology) → MD Anaesthesiology",
+      "MD (TB & RD) → MD Tuberculosis & Respiratory Diseases",
+      "MS (General Surgery) → MS General Surgery",
+      "MS (Ophthalmology) → MS Ophthalmology",
+      "MS (E. N. T.) → MS ENT",
+      "MD (Psychiatry) → MD Psychiatry"
+     ],
+     "inr": 3005000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General",
+     "branches": [
+      "MD (Emergency Medicine) → MD Emergency Medicine",
+      "MD - Radiation Oncology → MD Radiation Oncology"
+     ],
+     "inr": 1505000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General",
+     "branches": [
+      "MD (Pathology) → MD Pathology"
+     ],
+     "inr": 1205000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General",
+     "branches": [
+      "MD (Community Medicine) → MD Social & Preventive Medicine",
+      "MD (Forensic Medicine) → MD Forensic Medicine",
+      "MD (Pharmacology) → MD Pharmacology"
+     ],
+     "inr": 280000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General",
+     "branches": [
+      "MD (Microbiology) → MD Microbiology",
+      "MD (Anatomy) → MD Anatomy",
+      "MD (Physiology) → MD Physiology",
+      "MD (Biochemistry) → MD Bio-Chemistry"
+     ],
+     "inr": 27500,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General",
+     "branches": [
+      "DOMS → Diploma in Ophthalmology"
+     ],
+     "inr": 1795000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI",
+     "branches": [
+      "MD(Skin & V.D) Dermatology → MD Dermatology, Venereology & Leprosy",
+      "MD (Radio-Diagnosis) → MD Radio Diagnosis"
+     ],
+     "inr": null,
+     "usd": 120800,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI",
+     "branches": [
+      "MD (General Medicine) → MD General Medicine",
+      "MS (Obst. & Gynaecology) → MS Obstetrics & Gynaecology",
+      "MS (Orthopaedics) → MS Orthopaedics",
+      "MD (Paediatrics) → MD Paediatrics",
+      "MD (Anaesthesiology) → MD Anaesthesiology",
+      "MD (TB & RD) → MD Tuberculosis & Respiratory Diseases",
+      "MS (General Surgery) → MS General Surgery",
+      "MS (Ophthalmology) → MS Ophthalmology",
+      "MS (E. N. T.) → MS ENT"
+     ],
+     "inr": null,
+     "usd": 98300,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI",
+     "branches": [
+      "DOMS → Diploma in Ophthalmology"
+     ],
+     "inr": null,
+     "usd": 51800,
+     "maximum": false
+    }
+   ],
+   "hostel": null,
+   "notes": "I/II/III Year Fee printed separately and equal in every row; recorded the per-year figure. NRI 'fees in US Dollar only'. MD (Emergency Medicine) row's three cells are split across lines in the PDF text but all read ₹ 15,05,000. Stipend printed ₹56,250 / 62,500 / 68,750 per month. Roster lists only MNG/NRI seats for this college."
+  },
+  {
+   "college": "JSS Medical College, Mysuru",
+   "roster": [
+    {
+     "id": 1135,
+     "name": "JSS Medical College, Mysore"
+    }
+   ],
+   "ownership": "deemed",
+   "source_kind": "university-own",
+   "source": "jss",
+   "page": [
+    4,
+    5,
+    6
+   ],
+   "year_label": "All India Merit (Management) / NRI category - 2026 Fee Schedule",
+   "period": "per year",
+   "quote": "MD General Medicine | Rs. 36,00,000/- | Rs. 1,61,850/- | USD 115000 (should be Equaling to Rs. 1,09,25,000) | Rs. 1,61,850/-",
+   "fees": [
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Merit (Management) — Fee per annum, Tuition Fee",
+     "branches": [
+      "MD Anatomy → MD Anatomy",
+      "MD Physiology → MD Physiology",
+      "MD Biochemistry → MD Bio-Chemistry"
+     ],
+     "inr": 10000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "+ Other Fee",
+       "text": "-"
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Merit (Management) — Fee per annum, Tuition Fee",
+     "branches": [
+      "MD Pharmacology → MD Pharmacology",
+      "MD Forensic Medicine → MD Forensic Medicine",
+      "MD Microbiology → MD Microbiology",
+      "MD Community Medicine → MD Social & Preventive Medicine"
+     ],
+     "inr": 550000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "+ Other Fee",
+       "inr": 84850
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Merit (Management) — Fee per annum, Tuition Fee",
+     "branches": [
+      "MD Pathology → MD Pathology"
+     ],
+     "inr": 940000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "+ Other Fee",
+       "inr": 84850
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Merit (Management) — Fee per annum, Tuition Fee",
+     "branches": [
+      "MD General Medicine → MD General Medicine"
+     ],
+     "inr": 3600000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "+ Other Fee",
+       "inr": 161850
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Merit (Management) — Fee per annum, Tuition Fee",
+     "branches": [
+      "MS General Surgery → MS General Surgery",
+      "MS OBG → MS Obstetrics & Gynaecology",
+      "MS Orthopedics → MS Orthopaedics",
+      "MD Pediatrics → MD Paediatrics"
+     ],
+     "inr": 3400000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "+ Other Fee",
+       "inr": 161850
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Merit (Management) — Fee per annum, Tuition Fee",
+     "branches": [
+      "MD Dermatology → MD Dermatology, Venereology & Leprosy",
+      "MD Radio-Diagnosis → MD Radio Diagnosis"
+     ],
+     "inr": 3700000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "+ Other Fee",
+       "inr": 161850
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Merit (Management) — Fee per annum, Tuition Fee",
+     "branches": [
+      "MD Respiratory Medicine → MD Tuberculosis & Respiratory Diseases"
+     ],
+     "inr": 2900000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "+ Other Fee",
+       "inr": 161850
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Merit (Management) — Fee per annum, Tuition Fee",
+     "branches": [
+      "MD Anesthesia → MD Anaesthesiology",
+      "MS Ophthalmology → MS Ophthalmology",
+      "MS ENT → MS ENT",
+      "MD Psychiatry → MD Psychiatry",
+      "MD Emergency Medicine → MD Emergency Medicine"
+     ],
+     "inr": 2500000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "+ Other Fee",
+       "inr": 161850
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Merit (Management) — Fee per annum, Tuition Fee",
+     "branches": [
+      "MD Geriatrics → MD Geriatrics"
+     ],
+     "inr": 1700000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "+ Other Fee",
+       "inr": 161850
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Merit (Management) — Fee per annum, Tuition Fee",
+     "branches": [
+      "MD Hospital Administration → MD Hospital Administration"
+     ],
+     "inr": 1000000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "+ Other Fee",
+       "inr": 161850
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Merit (Management) — Fee per annum, Tuition Fee",
+     "branches": [
+      "Diploma in Psychiatric Medicine → Diploma in Psychological Medicine"
+     ],
+     "inr": 1400000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "+ Other Fee",
+       "inr": 111850
+      }
+     ]
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Category — Fee per Annum (USD), Tuition Fee",
+     "branches": [
+      "MD General Medicine → MD General Medicine"
+     ],
+     "inr": null,
+     "usd": 115000,
+     "maximum": false,
+     "as_printed": "USD 115000 (should be Equaling to Rs. 1,09,25,000)",
+     "other_fees": [
+      {
+       "label": "+ Other Fee",
+       "inr": 161850
+      }
+     ]
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Category — Fee per Annum (USD), Tuition Fee",
+     "branches": [
+      "MS General Surgery → MS General Surgery"
+     ],
+     "inr": null,
+     "usd": 92500,
+     "maximum": false,
+     "as_printed": "USD 92500 (should be Equaling to Rs. 87,87,500)",
+     "other_fees": [
+      {
+       "label": "+ Other Fee",
+       "inr": 161850
+      }
+     ]
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Category — Fee per Annum (USD), Tuition Fee",
+     "branches": [
+      "MS OBG → MS Obstetrics & Gynaecology",
+      "MD Pediatrics → MD Paediatrics"
+     ],
+     "inr": null,
+     "usd": 95000,
+     "maximum": false,
+     "as_printed": "USD 95000 (should be Equaling to Rs. 90,25,000)",
+     "other_fees": [
+      {
+       "label": "+ Other Fee",
+       "inr": 161850
+      }
+     ]
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Category — Fee per Annum (USD), Tuition Fee",
+     "branches": [
+      "MS Orthopedics → MS Orthopaedics"
+     ],
+     "inr": null,
+     "usd": 90000,
+     "maximum": false,
+     "as_printed": "USD 90000 (should be Equaling to Rs. 85,50,000)",
+     "other_fees": [
+      {
+       "label": "+ Other Fee",
+       "inr": 161850
+      }
+     ]
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Category — Fee per Annum (USD), Tuition Fee",
+     "branches": [
+      "MD Dermatology → MD Dermatology, Venereology & Leprosy",
+      "MD Radio-Diagnosis → MD Radio Diagnosis"
+     ],
+     "inr": null,
+     "usd": 120000,
+     "maximum": false,
+     "as_printed": "USD 120000 (should be Equaling to Rs. 1,14,00,000)",
+     "other_fees": [
+      {
+       "label": "+ Other Fee",
+       "inr": 161850
+      }
+     ]
+    }
+   ],
+   "hostel": {
+    "min": 240400,
+    "max": 240400,
+    "text": "Hostel Fees Structure per annum (Rs) Male Rs. 2,40,400/- Female Rs. 2,40,400/-"
+   },
+   "notes": "Tuition and '+ Other Fee' are separate columns; inr/usd = tuition, other fee in other_fees. The '(should be Equaling to Rs. …)' INR figures are printed and kept in as_printed; not converted. Rs. 2,00,000 security deposit paid to DGHS/MCC is not part of the fee. Notice covers MCC All India Merit (Management) and NRI seats only; the college's 'Karnataka Govt Quota - Open' seats (KEA) are not in it."
+  },
+  {
+   "college": "Kasturba Medical College, Manipal",
+   "roster": [
+    {
+     "id": 383,
+     "name": "Kasturba Medical College, Manipal"
+    }
+   ],
+   "ownership": "deemed",
+   "source_kind": "university-own",
+   "source": "mahe-* (html)",
+   "page": null,
+   "year_label": "Total Program Fee (2026 Admissions) — 'Note : Fee structure for 2027 admissions will be updated shortly'",
+   "period": "whole course",
+   "quote": "Total Program Fee (2026 Admissions) | General: | INR 1,01,83,000 | NRI/Foreign: | USD 240,350 (MD Radiodiagnosis)",
+   "fees": [
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Anaesthesiology → MD Anaesthesiology"
+     ],
+     "inr": 6553000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-anaesthesiology-kmc-manipal",
+     "as_printed": "INR 65,53,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Anaesthesiology → MD Anaesthesiology"
+     ],
+     "inr": null,
+     "usd": 162350,
+     "maximum": false,
+     "source": "mahe-md-anaesthesiology-kmc-manipal",
+     "as_printed": "USD 162,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Anatomy → MD Anatomy"
+     ],
+     "inr": 1474000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-anatomy-kmc-manipal",
+     "as_printed": "INR 14,74,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Anatomy → MD Anatomy"
+     ],
+     "inr": null,
+     "usd": 40850,
+     "maximum": false,
+     "source": "mahe-md-anatomy-kmc-manipal",
+     "as_printed": "USD 40,850"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Biochemistry → MD Bio-Chemistry"
+     ],
+     "inr": 1474000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-biochemistry-kmc-manipal",
+     "as_printed": "INR 14,74,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Biochemistry → MD Bio-Chemistry"
+     ],
+     "inr": null,
+     "usd": 40851,
+     "maximum": false,
+     "source": "mahe-md-biochemistry-kmc-manipal",
+     "as_printed": "USD 40,851"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Community Medicine → MD Social & Preventive Medicine"
+     ],
+     "inr": 3769000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-community-medicine-kmc-manipal",
+     "as_printed": "INR 37,69,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Community Medicine → MD Social & Preventive Medicine"
+     ],
+     "inr": null,
+     "usd": 69350,
+     "maximum": false,
+     "source": "mahe-md-community-medicine-kmc-manipal",
+     "as_printed": "USD 69,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Dermatology Venereology and Leprosy → MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": 8599000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-dermatology-venereology-leprosy-kmc-manipal",
+     "as_printed": "INR 85,99,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Dermatology Venereology and Leprosy → MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": null,
+     "usd": 178550,
+     "maximum": false,
+     "source": "mahe-md-dermatology-venereology-leprosy-kmc-manipal",
+     "as_printed": "USD 178,550"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Forensic Medicine and Toxicology → MD Forensic Medicine"
+     ],
+     "inr": 1474000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-forensic-medicine-and-toxicology-kmc-manipal",
+     "as_printed": "INR 14,74,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Forensic Medicine and Toxicology → MD Forensic Medicine"
+     ],
+     "inr": null,
+     "usd": 40850,
+     "maximum": false,
+     "source": "mahe-md-forensic-medicine-and-toxicology-kmc-manipal",
+     "as_printed": "USD 40,850"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD General Medicine → MD General Medicine"
+     ],
+     "inr": 8365000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-general-medicine-kmc-manipal",
+     "as_printed": "INR 83,65,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD General Medicine → MD General Medicine"
+     ],
+     "inr": null,
+     "usd": 178550,
+     "maximum": false,
+     "source": "mahe-md-general-medicine-kmc-manipal",
+     "as_printed": "USD 178,550"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Psychiatry → MD Psychiatry"
+     ],
+     "inr": 6553000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-in-psychiatry-kmc-manipal",
+     "as_printed": "INR 65,53,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Psychiatry → MD Psychiatry"
+     ],
+     "inr": null,
+     "usd": 162350,
+     "maximum": false,
+     "source": "mahe-md-in-psychiatry-kmc-manipal",
+     "as_printed": "USD 162,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Microbiology → MD Microbiology"
+     ],
+     "inr": 4219000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-microbiology-kmc-manipal",
+     "as_printed": "INR 42,19,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Microbiology → MD Microbiology"
+     ],
+     "inr": null,
+     "usd": 117050,
+     "maximum": false,
+     "source": "mahe-md-microbiology-kmc-manipal",
+     "as_printed": "USD 117,050"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Paediatrics → MD Paediatrics"
+     ],
+     "inr": 8599000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-paediatrics-kmc-manipal",
+     "as_printed": "INR 85,99,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Paediatrics → MD Paediatrics"
+     ],
+     "inr": null,
+     "usd": 177350,
+     "maximum": false,
+     "source": "mahe-md-paediatrics-kmc-manipal",
+     "as_printed": "USD 177,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Palliative Medicine → MD Palliative Medicine"
+     ],
+     "inr": 4219000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-palliative-medicine-kmc-manipal",
+     "as_printed": "INR 42,19,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Palliative Medicine → MD Palliative Medicine"
+     ],
+     "inr": null,
+     "usd": 117050,
+     "maximum": false,
+     "source": "mahe-md-palliative-medicine-kmc-manipal",
+     "as_printed": "USD 117,050"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Pathology → MD Pathology"
+     ],
+     "inr": 5869000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-pathology-kmc-manipal",
+     "as_printed": "INR 58,69,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Pathology → MD Pathology"
+     ],
+     "inr": null,
+     "usd": 126350,
+     "maximum": false,
+     "source": "mahe-md-pathology-kmc-manipal",
+     "as_printed": "USD 126,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Pharmacology → MD Pharmacology"
+     ],
+     "inr": 3619000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-pharmacology-kmc-manipal",
+     "as_printed": "INR 36,19,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Pharmacology → MD Pharmacology"
+     ],
+     "inr": null,
+     "usd": 69350,
+     "maximum": false,
+     "source": "mahe-md-pharmacology-kmc-manipal",
+     "as_printed": "USD 69,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Physiology → MD Physiology"
+     ],
+     "inr": 1474000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-physiology-kmc-manipal",
+     "as_printed": "INR 14,74,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Physiology → MD Physiology"
+     ],
+     "inr": null,
+     "usd": 40850,
+     "maximum": false,
+     "source": "mahe-md-physiology-kmc-manipal",
+     "as_printed": "USD 40,850"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Radiation Oncology → MD Radiation Oncology"
+     ],
+     "inr": 5959000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-radiation-oncology-kmc-manipal",
+     "as_printed": "INR 59,59,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Radiation Oncology → MD Radiation Oncology"
+     ],
+     "inr": null,
+     "usd": 162350,
+     "maximum": false,
+     "source": "mahe-md-radiation-oncology-kmc-manipal",
+     "as_printed": "USD 162,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Radiodiagnosis → MD Radio Diagnosis"
+     ],
+     "inr": 10183000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-radiodiagnosis-kmc-manipal",
+     "as_printed": "INR 1,01,83,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Radiodiagnosis → MD Radio Diagnosis"
+     ],
+     "inr": null,
+     "usd": 240350,
+     "maximum": false,
+     "source": "mahe-md-radiodiagnosis-kmc-manipal",
+     "as_printed": "USD 240,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Respiratory Medicine → MD Tuberculosis & Respiratory Diseases"
+     ],
+     "inr": 5959000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-respiratory-medicine-kmc-manipal",
+     "as_printed": "INR 59,59,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Respiratory Medicine → MD Tuberculosis & Respiratory Diseases"
+     ],
+     "inr": null,
+     "usd": 162350,
+     "maximum": false,
+     "source": "mahe-md-respiratory-medicine-kmc-manipal",
+     "as_printed": "USD 162,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MS General Surgery → MS General Surgery"
+     ],
+     "inr": 7642000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-ms-general-surgery-kmc-manipal",
+     "as_printed": "INR 76,42,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MS General Surgery → MS General Surgery"
+     ],
+     "inr": null,
+     "usd": 177350,
+     "maximum": false,
+     "source": "mahe-ms-general-surgery-kmc-manipal",
+     "as_printed": "USD 177,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MS Obstetrics & Gynaecology → MS Obstetrics & Gynaecology"
+     ],
+     "inr": 7642000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-ms-in-obstetrics-and-gynaecology-kmc-manipal",
+     "as_printed": "INR 76,42,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MS Obstetrics & Gynaecology → MS Obstetrics & Gynaecology"
+     ],
+     "inr": null,
+     "usd": 177350,
+     "maximum": false,
+     "source": "mahe-ms-in-obstetrics-and-gynaecology-kmc-manipal",
+     "as_printed": "USD 177,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MS Ophthalmology → MS Ophthalmology"
+     ],
+     "inr": 7939000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-ms-ophthalmology-kmc-manipal",
+     "as_printed": "INR 79,39,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MS Ophthalmology → MS Ophthalmology"
+     ],
+     "inr": null,
+     "usd": 177350,
+     "maximum": false,
+     "source": "mahe-ms-ophthalmology-kmc-manipal",
+     "as_printed": "USD 177,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MS Orthopaedics → MS Orthopaedics"
+     ],
+     "inr": 8599000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-ms-orthopaedics-kmc-manipal",
+     "as_printed": "INR 85,99,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MS Orthopaedics → MS Orthopaedics"
+     ],
+     "inr": null,
+     "usd": 177350,
+     "maximum": false,
+     "source": "mahe-ms-orthopaedics-kmc-manipal",
+     "as_printed": "USD 177,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MS Otorhinolaryngology → MS ENT"
+     ],
+     "inr": 7939000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-ms-otorhinolaryngology-kmc-manipal",
+     "as_printed": "INR 79,39,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MS Otorhinolaryngology → MS ENT"
+     ],
+     "inr": null,
+     "usd": 177350,
+     "maximum": false,
+     "source": "mahe-ms-otorhinolaryngology-kmc-manipal",
+     "as_printed": "USD 177,350"
+    }
+   ],
+   "hostel": null,
+   "notes": "3-year totals, one program page per branch (manipal.edu). MD Biochemistry (Manipal) page prints USD 40,851 against USD 40,850 on every other pre-clinical page — recorded as printed. MAHE's sitemap has no MD Emergency Medicine page for Manipal. Snapshots 25-10-2026. Roster lists only MNG/NRI seats for this college."
+  },
+  {
+   "college": "Kasturba Medical College, Mangalore",
+   "roster": [
+    {
+     "id": 427,
+     "name": "Kasturba Medical College, Mangalore"
+    }
+   ],
+   "ownership": "deemed",
+   "source_kind": "university-own",
+   "source": "mahe-* (html)",
+   "page": null,
+   "year_label": "Total Program Fee (2026 Admissions) — 'Note : Fee structure for 2027 admissions will be updated shortly'",
+   "period": "whole course",
+   "quote": "Total Program Fee (2026 Admissions) | General: | INR 83,65,000 | NRI/Foreign: | USD 178,550 (MD General Medicine)",
+   "fees": [
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Anaesthesiology → MD Anaesthesiology"
+     ],
+     "inr": 6553000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-anaesthesiology-kmc-mangalore",
+     "as_printed": "INR 65,53,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Anaesthesiology → MD Anaesthesiology"
+     ],
+     "inr": null,
+     "usd": 162350,
+     "maximum": false,
+     "source": "mahe-md-anaesthesiology-kmc-mangalore",
+     "as_printed": "USD 162,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Anatomy → MD Anatomy"
+     ],
+     "inr": 1474000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-anatomy-kmc-mangalore",
+     "as_printed": "INR 14,74,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Anatomy → MD Anatomy"
+     ],
+     "inr": null,
+     "usd": 40850,
+     "maximum": false,
+     "source": "mahe-md-anatomy-kmc-mangalore",
+     "as_printed": "USD 40,850"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Biochemistry → MD Bio-Chemistry"
+     ],
+     "inr": 1474000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-biochemistry-kmc-mangalore",
+     "as_printed": "INR 14,74,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Biochemistry → MD Bio-Chemistry"
+     ],
+     "inr": null,
+     "usd": 40850,
+     "maximum": false,
+     "source": "mahe-md-biochemistry-kmc-mangalore",
+     "as_printed": "USD 40,850"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Community Medicine → MD Social & Preventive Medicine"
+     ],
+     "inr": 3769000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-community-medicine-kmc-mangalore",
+     "as_printed": "INR 37,69,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Community Medicine → MD Social & Preventive Medicine"
+     ],
+     "inr": null,
+     "usd": 69350,
+     "maximum": false,
+     "source": "mahe-md-community-medicine-kmc-mangalore",
+     "as_printed": "USD 69,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Dermatology, Venerology & Leprosy → MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": 8599000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-dermatology-venereology-leprosy-kmc-mangalore",
+     "as_printed": "INR 85,99,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Dermatology, Venerology & Leprosy → MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": null,
+     "usd": 178550,
+     "maximum": false,
+     "source": "mahe-md-dermatology-venereology-leprosy-kmc-mangalore",
+     "as_printed": "USD 178,550"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Emergency Medicine → MD Emergency Medicine"
+     ],
+     "inr": 7939000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-emergency-medicine-kmc-mangalore",
+     "as_printed": "INR 79,39,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Emergency Medicine → MD Emergency Medicine"
+     ],
+     "inr": null,
+     "usd": 177350,
+     "maximum": false,
+     "source": "mahe-md-emergency-medicine-kmc-mangalore",
+     "as_printed": "USD 177,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD General Medicine → MD General Medicine"
+     ],
+     "inr": 8365000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-general-medicine-kmc-mangalore",
+     "as_printed": "INR 83,65,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD General Medicine → MD General Medicine"
+     ],
+     "inr": null,
+     "usd": 178550,
+     "maximum": false,
+     "source": "mahe-md-general-medicine-kmc-mangalore",
+     "as_printed": "USD 178,550"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Microbiology → MD Microbiology"
+     ],
+     "inr": 4219000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-microbiology-kmc-mangalore",
+     "as_printed": "INR 42,19,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Microbiology → MD Microbiology"
+     ],
+     "inr": null,
+     "usd": 117050,
+     "maximum": false,
+     "source": "mahe-md-microbiology-kmc-mangalore",
+     "as_printed": "USD 117,050"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD in Paediatrics → MD Paediatrics"
+     ],
+     "inr": 8599000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-paediatrics-kmc-mangalore",
+     "as_printed": "INR 85,99,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD in Paediatrics → MD Paediatrics"
+     ],
+     "inr": null,
+     "usd": 177350,
+     "maximum": false,
+     "source": "mahe-md-paediatrics-kmc-mangalore",
+     "as_printed": "USD 177,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Pathology → MD Pathology"
+     ],
+     "inr": 5869000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-pathology-kmc-mangalore",
+     "as_printed": "INR 58,69,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Pathology → MD Pathology"
+     ],
+     "inr": null,
+     "usd": 126350,
+     "maximum": false,
+     "source": "mahe-md-pathology-kmc-mangalore",
+     "as_printed": "USD 126,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Pharmacology → MD Pharmacology"
+     ],
+     "inr": 3619000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-pharmacology-kmc-mangalore",
+     "as_printed": "INR 36,19,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Pharmacology → MD Pharmacology"
+     ],
+     "inr": null,
+     "usd": 69350,
+     "maximum": false,
+     "source": "mahe-md-pharmacology-kmc-mangalore",
+     "as_printed": "USD 69,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Physiology → MD Physiology"
+     ],
+     "inr": 1474000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-physiology-kmc-mangalore",
+     "as_printed": "INR 14,74,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Physiology → MD Physiology"
+     ],
+     "inr": null,
+     "usd": 40850,
+     "maximum": false,
+     "source": "mahe-md-physiology-kmc-mangalore",
+     "as_printed": "USD 40,850"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Psychiatry → MD Psychiatry"
+     ],
+     "inr": 6553000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-psychiatry-kmc-mangalore",
+     "as_printed": "INR 65,53,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Psychiatry → MD Psychiatry"
+     ],
+     "inr": null,
+     "usd": 162350,
+     "maximum": false,
+     "source": "mahe-md-psychiatry-kmc-mangalore",
+     "as_printed": "USD 162,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Radiation Oncology → MD Radiation Oncology"
+     ],
+     "inr": 5959000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-radiation-oncology-kmc-mangalore",
+     "as_printed": "INR 59,59,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Radiation Oncology → MD Radiation Oncology"
+     ],
+     "inr": null,
+     "usd": 162350,
+     "maximum": false,
+     "source": "mahe-md-radiation-oncology-kmc-mangalore",
+     "as_printed": "USD 162,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Radiodiagnosis → MD Radio Diagnosis"
+     ],
+     "inr": 10183000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-radiodiagnosis-kmc-mangalore",
+     "as_printed": "INR 1,01,83,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Radiodiagnosis → MD Radio Diagnosis"
+     ],
+     "inr": null,
+     "usd": 240350,
+     "maximum": false,
+     "source": "mahe-md-radiodiagnosis-kmc-mangalore",
+     "as_printed": "USD 240,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Respiratory Medicine → MD Tuberculosis & Respiratory Diseases"
+     ],
+     "inr": 5959000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-md-respiratory-medicine-kmc-mangalore",
+     "as_printed": "INR 59,59,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MD Respiratory Medicine → MD Tuberculosis & Respiratory Diseases"
+     ],
+     "inr": null,
+     "usd": 162350,
+     "maximum": false,
+     "source": "mahe-md-respiratory-medicine-kmc-mangalore",
+     "as_printed": "USD 162,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MS General Surgery → MS General Surgery"
+     ],
+     "inr": 7642000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-ms-general-surgery-kmc-mangalore",
+     "as_printed": "INR 76,42,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MS General Surgery → MS General Surgery"
+     ],
+     "inr": null,
+     "usd": 177350,
+     "maximum": false,
+     "source": "mahe-ms-general-surgery-kmc-mangalore",
+     "as_printed": "USD 177,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MS Obstetrics & Gynaecology → MS Obstetrics & Gynaecology"
+     ],
+     "inr": 7642000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-ms-in-obstetrics-and-gynaecology-kmc-mangalore",
+     "as_printed": "INR 76,42,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MS Obstetrics & Gynaecology → MS Obstetrics & Gynaecology"
+     ],
+     "inr": null,
+     "usd": 177350,
+     "maximum": false,
+     "source": "mahe-ms-in-obstetrics-and-gynaecology-kmc-mangalore",
+     "as_printed": "USD 177,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MS Ophthalmology → MS Ophthalmology"
+     ],
+     "inr": 7939000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-ms-ophthalmology-kmc-mangalore",
+     "as_printed": "INR 79,39,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MS Ophthalmology → MS Ophthalmology"
+     ],
+     "inr": null,
+     "usd": 177350,
+     "maximum": false,
+     "source": "mahe-ms-ophthalmology-kmc-mangalore",
+     "as_printed": "USD 177,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MS Orthopaedics → MS Orthopaedics"
+     ],
+     "inr": 8599000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-ms-orthopaedics-kmc-mangalore",
+     "as_printed": "INR 85,99,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MS Orthopaedics → MS Orthopaedics"
+     ],
+     "inr": null,
+     "usd": 177350,
+     "maximum": false,
+     "source": "mahe-ms-orthopaedics-kmc-mangalore",
+     "as_printed": "USD 177,350"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MS Otorhinolaryngology → MS ENT"
+     ],
+     "inr": 7939000,
+     "usd": null,
+     "maximum": false,
+     "source": "mahe-ms-otorhinolaryngology-kmc-mangalore",
+     "as_printed": "INR 79,39,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI/Foreign (Total Program Fee (2026 Admissions))",
+     "branches": [
+      "MS Otorhinolaryngology → MS ENT"
+     ],
+     "inr": null,
+     "usd": 177350,
+     "maximum": false,
+     "source": "mahe-ms-otorhinolaryngology-kmc-mangalore",
+     "as_printed": "USD 177,350"
+    }
+   ],
+   "hostel": null,
+   "notes": "3-year totals. MD Emergency Medicine (Mangalore) showed INR 79,39,000 / USD 177,350 in this snapshot (phase 1 had read no fee there). MD Immunohaematology & Blood Transfusion page answers 'This page has taken a study break' (no fee). Roster also lists 'Karnataka Govt Quota - Open' seats (KEA) — not covered by these pages."
+  },
+  {
+   "college": "K S Hegde Medical Academy (Nitte), Mangaluru campus",
+   "roster": [
+    {
+     "id": 895,
+     "name": "KS Hegde Medical Academy, Mangalore"
+    }
+   ],
+   "ownership": "deemed",
+   "source_kind": "university-own",
+   "source": "nitte-pggen + nitte-pgnri",
+   "page": [
+    1
+   ],
+   "year_label": "Fee Structure for Postgraduate Programs under General Category 2026-27 / ... under NRI Category 2026-27",
+   "period": "per year",
+   "quote": "MD (General Medicine) | 3 years | 3000000 | 8000 | -- | 3008000 | 3000000 | -- | 3000000 | 24000",
+   "fees": [
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General Category — Tuition Fee (I, II, III year each)",
+     "branches": [
+      "MD Anatomy → MD Anatomy",
+      "MD Physiology → MD Physiology",
+      "MD Biochemistry → MD Bio-Chemistry"
+     ],
+     "inr": 50000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Univ Fee (I year)",
+       "inr": 8000
+      },
+      {
+       "label": "Exam Fee (III year)",
+       "inr": 24000
+      }
+     ],
+     "first_year_total_inr": 58000
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General Category — Tuition Fee (I, II, III year each)",
+     "branches": [
+      "MD Pharmacology → MD Pharmacology",
+      "MD Community Medicine → MD Social & Preventive Medicine",
+      "MD Forensic Medicine → MD Forensic Medicine",
+      "MD Microbiology → MD Microbiology"
+     ],
+     "inr": 200000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Univ Fee (I year)",
+       "inr": 8000
+      },
+      {
+       "label": "Exam Fee (III year)",
+       "inr": 24000
+      }
+     ],
+     "first_year_total_inr": 208000
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General Category — Tuition Fee (I, II, III year each)",
+     "branches": [
+      "MD Pathology → MD Pathology"
+     ],
+     "inr": 1300000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Univ Fee (I year)",
+       "inr": 8000
+      },
+      {
+       "label": "Exam Fee (III year)",
+       "inr": 24000
+      }
+     ],
+     "first_year_total_inr": 1308000
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General Category — Tuition Fee (I, II, III year each)",
+     "branches": [
+      "MD Psychiatry → MD Psychiatry",
+      "MD Anaesthesiology → MD Anaesthesiology"
+     ],
+     "inr": 2200000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Univ Fee (I year)",
+       "inr": 8000
+      },
+      {
+       "label": "Exam Fee (III year)",
+       "inr": 24000
+      }
+     ],
+     "first_year_total_inr": 2208000
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General Category — Tuition Fee (I, II, III year each)",
+     "branches": [
+      "MD Pulmonary Medicine → MD Tuberculosis & Respiratory Diseases"
+     ],
+     "inr": 2800000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Univ Fee (I year)",
+       "inr": 8000
+      },
+      {
+       "label": "Exam Fee (III year)",
+       "inr": 24000
+      }
+     ],
+     "first_year_total_inr": 2808000
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General Category — Tuition Fee (I, II, III year each)",
+     "branches": [
+      "MD General Medicine → MD General Medicine"
+     ],
+     "inr": 3000000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Univ Fee (I year)",
+       "inr": 8000
+      },
+      {
+       "label": "Exam Fee (III year)",
+       "inr": 24000
+      }
+     ],
+     "first_year_total_inr": 3008000
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General Category — Tuition Fee (I, II, III year each)",
+     "branches": [
+      "MD Radiodiagnosis → MD Radio Diagnosis",
+      "MD Paediatrics → MD Paediatrics",
+      "MD Dermatology → MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": 3500000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Univ Fee (I year)",
+       "inr": 8000
+      },
+      {
+       "label": "Exam Fee (III year)",
+       "inr": 24000
+      }
+     ],
+     "first_year_total_inr": 3508000
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General Category — Tuition Fee (I, II, III year each)",
+     "branches": [
+      "MS Ophthalmology → MS Ophthalmology",
+      "MS ENT → MS ENT"
+     ],
+     "inr": 2900000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Univ Fee (I year)",
+       "inr": 8000
+      },
+      {
+       "label": "Exam Fee (III year)",
+       "inr": 24000
+      }
+     ],
+     "first_year_total_inr": 2908000
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General Category — Tuition Fee (I, II, III year each)",
+     "branches": [
+      "MS OB&G → MS Obstetrics & Gynaecology",
+      "MS General Surgery → MS General Surgery"
+     ],
+     "inr": 3000000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Univ Fee (I year)",
+       "inr": 8000
+      },
+      {
+       "label": "Exam Fee (III year)",
+       "inr": 24000
+      }
+     ],
+     "first_year_total_inr": 3008000
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "General Category — Tuition Fee (I, II, III year each)",
+     "branches": [
+      "MS Orthopaedics → MS Orthopaedics"
+     ],
+     "inr": 3200000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Univ Fee (I year)",
+       "inr": 8000
+      },
+      {
+       "label": "Exam Fee (III year)",
+       "inr": 24000
+      }
+     ],
+     "first_year_total_inr": 3208000
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Category — Tuition Fee (in INR) (I, II, III year each)",
+     "branches": [
+      "MD Radiodiagnosis → MD Radio Diagnosis",
+      "MD Dermatology → MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": 7500000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Univ Fee (I year)",
+       "inr": 11000
+      },
+      {
+       "label": "Exam Fee (III year)",
+       "inr": 24000
+      }
+     ],
+     "first_year_total_inr": 7511000
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Category — Tuition Fee (in INR) (I, II, III year each)",
+     "branches": [
+      "MD Paediatrics → MD Paediatrics",
+      "MD General Medicine → MD General Medicine"
+     ],
+     "inr": 6500000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Univ Fee (I year)",
+       "inr": 11000
+      },
+      {
+       "label": "Exam Fee (III year)",
+       "inr": 24000
+      }
+     ],
+     "first_year_total_inr": 6511000
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Category — Tuition Fee (in INR) (I, II, III year each)",
+     "branches": [
+      "MS Orthopaedics → MS Orthopaedics",
+      "MS OB&G → MS Obstetrics & Gynaecology"
+     ],
+     "inr": 6000000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Univ Fee (I year)",
+       "inr": 11000
+      },
+      {
+       "label": "Exam Fee (III year)",
+       "inr": 24000
+      }
+     ],
+     "first_year_total_inr": 6011000
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Category — Tuition Fee (in INR) (I, II, III year each)",
+     "branches": [
+      "MS General Surgery → MS General Surgery"
+     ],
+     "inr": 5500000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Univ Fee (I year)",
+       "inr": 11000
+      },
+      {
+       "label": "Exam Fee (III year)",
+       "inr": 24000
+      }
+     ],
+     "first_year_total_inr": 5511000
+    }
+   ],
+   "hostel": {
+    "min": 122000,
+    "max": 272000,
+    "text": "Hostel Fee Structure 2026-27, K S Hegde Medical Academy: Double Attached Bath 122000; A/C Double 202000; Suite - Single (for PGs) 272000 — 'Total Fee (I year)' incl. caution deposit (20000–60000)"
+   },
+   "notes": "NRI fees are printed in INR (not USD). 'Exam fee is collected at the beginning of each academic year along with the annual Tuition fee.' Grouped rows ('MD (Psychiatry | Anaesthesiology)') split into branches. Roster also lists 'Karnataka Govt Quota - Open' seats — not in these files."
+  },
+  {
+   "college": "Raja Rajeswari Medical College & Hospital, Bangalore",
+   "roster": [
+    {
+     "id": 1741,
+     "name": "Rajarajeswari Medical College & Hospital, Bangalore"
+    }
+   ],
+   "ownership": "deemed",
+   "source_kind": "college-own",
+   "source": "rrmch",
+   "page": [
+    1,
+    2
+   ],
+   "year_label": "NEET PG Medical Counselling 2026 — Annexure-C (posted by the college as 'Fee Structure 2026-27', file PG-2026-27-Batch-Fee-Structure.pdf)",
+   "period": "unstated",
+   "quote": "M.D. Radio-Diagnosis/Radiology | 20 | ... | Rs.0 | 0 | Rs.0 | 0 | $1,00,000 | 11 | Rs.70,00,000 | 9",
+   "fees": [
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "SelfFinanced Merit Seat Fees",
+     "branches": [
+      "M.D. Anaesthesiology → MD Anaesthesiology",
+      "M.D. Emergency Medicine → MD Emergency Medicine",
+      "M.S. Ophthalmology → MS Ophthalmology",
+      "M.S. Otorhinolaryngology/ENT → MS ENT"
+     ],
+     "inr": 3300000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "SelfFinanced Merit Seat Fees",
+     "branches": [
+      "M.D. Anatomy → MD Anatomy",
+      "M.D. Bio-Chemistry → MD Bio-Chemistry",
+      "M.D. Physiology → MD Physiology"
+     ],
+     "inr": 500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "SelfFinanced Merit Seat Fees",
+     "branches": [
+      "M.D. Community Medicine/Social and Preventive Medicine → MD Social & Preventive Medicine"
+     ],
+     "inr": 700000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "SelfFinanced Merit Seat Fees",
+     "branches": [
+      "M.D. Dermatology, Venereology and Leprosy/Dermatology → MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": 7500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "SelfFinanced Merit Seat Fees",
+     "branches": [
+      "M.D. Forensic Medicine and Toxicology/Forensic Medicine → MD Forensic Medicine",
+      "M.D. Microbiology → MD Microbiology",
+      "M.D. Pharmacology → MD Pharmacology"
+     ],
+     "inr": 600000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "SelfFinanced Merit Seat Fees",
+     "branches": [
+      "M.D. General Medicine → MD General Medicine",
+      "M.D. Paediatrics → MD Paediatrics"
+     ],
+     "inr": 4750000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "SelfFinanced Merit Seat Fees",
+     "branches": [
+      "M.D. Pathology → MD Pathology"
+     ],
+     "inr": 1200000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "SelfFinanced Merit Seat Fees",
+     "branches": [
+      "M.D. Psychiatry → MD Psychiatry"
+     ],
+     "inr": 3200000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "SelfFinanced Merit Seat Fees",
+     "branches": [
+      "M.D. Radio-Diagnosis/Radiology → MD Radio Diagnosis"
+     ],
+     "inr": 7000000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "SelfFinanced Merit Seat Fees",
+     "branches": [
+      "M.D. Respiratory Medicine/Tuberculosis and Respiratory Diseases → MD Tuberculosis & Respiratory Diseases"
+     ],
+     "inr": 4200000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "SelfFinanced Merit Seat Fees",
+     "branches": [
+      "M.S. General Surgery → MS General Surgery"
+     ],
+     "inr": 4500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "SelfFinanced Merit Seat Fees",
+     "branches": [
+      "M.S. Obstetrics and Gynaecology → MS Obstetrics & Gynaecology"
+     ],
+     "inr": 5200000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "SelfFinanced Merit Seat Fees",
+     "branches": [
+      "M.S. Orthopaedics → MS Orthopaedics"
+     ],
+     "inr": 5000000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NonResident Indian Fees",
+     "branches": [
+      "M.D. Dermatology, Venereology and Leprosy/Dermatology → MD Dermatology, Venereology & Leprosy",
+      "M.D. Radio-Diagnosis/Radiology → MD Radio Diagnosis"
+     ],
+     "inr": null,
+     "usd": 100000,
+     "maximum": false,
+     "as_printed": "$1,00,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NonResident Indian Fees",
+     "branches": [
+      "M.D. General Medicine → MD General Medicine",
+      "M.D. Paediatrics → MD Paediatrics"
+     ],
+     "inr": null,
+     "usd": 75000,
+     "maximum": false,
+     "as_printed": "$75,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NonResident Indian Fees",
+     "branches": [
+      "M.S. Obstetrics and Gynaecology → MS Obstetrics & Gynaecology"
+     ],
+     "inr": null,
+     "usd": 85000,
+     "maximum": false,
+     "as_printed": "$85,000"
+    }
+   ],
+   "hostel": null,
+   "notes": "MCC 'institute seats information' form signed by the Dean (undertaking that fee/bond/stipend information is correct); it does not say per year or whole course. Jain and Muslim minority columns are Rs.0 with 0 seats (not recorded). NMC lists this college under 'The Tamilnadu Dr. MGR Medical University'; our list says Deemed. Scanned file, figures read from the rendered page (verified at 3x)."
+  },
+  {
+   "college": "SHRI B. M. PATIL MEDICAL COLLEGE, HOSPITAL AND RESEARCH CENTRE, Vijayapura",
+   "roster": [
+    {
+     "id": 1272,
+     "name": "Shri BM Patil Medical College, Hospital & Research Centre, Vijayapura"
+    }
+   ],
+   "ownership": "deemed",
+   "source_kind": "university-own",
+   "source": "blde",
+   "page": [
+    2
+   ],
+   "year_label": "PG MEDICAL SEAT MATRIX & FEE DETAILS – 2026 (Re-notification PG Medical Admission – 2026, BLDE(DU)/REG/PG-NEET-26/2026-27 dated 28-09-2026)",
+   "period": "unstated",
+   "quote": "General Medicine | 21 | 18 | 34,00,000 | 3 | 80,00,000",
+   "fees": [
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Category Fees INR (All India General Category (Management Paid Seat))",
+     "branches": [
+      "Human Anatomy → MD Anatomy",
+      "Human Physiology → MD Physiology",
+      "Biochemistry → MD Bio-Chemistry",
+      "Microbiology → MD Microbiology",
+      "Pharmacology → MD Pharmacology",
+      "Forensic Medicine → MD Forensic Medicine"
+     ],
+     "inr": 55000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Category Fees INR",
+     "branches": [
+      "Pathology → MD Pathology"
+     ],
+     "inr": 900000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Category Fees INR",
+     "branches": [
+      "Community Medicine → MD Social & Preventive Medicine"
+     ],
+     "inr": 400000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Category Fees INR",
+     "branches": [
+      "General Medicine → MD General Medicine",
+      "Paediatrics → MD Paediatrics",
+      "Dermatology → MD Dermatology, Venereology & Leprosy",
+      "General Surgery → MS General Surgery",
+      "Orthopedics → MS Orthopaedics",
+      "Obst.& Gynecology → MS Obstetrics & Gynaecology"
+     ],
+     "inr": 3400000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Category Fees INR",
+     "branches": [
+      "Radiology → MD Radio Diagnosis"
+     ],
+     "inr": 3500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Category Fees INR",
+     "branches": [
+      "Anaesthesiology → MD Anaesthesiology",
+      "E.N.T. → MS ENT",
+      "Ophthalmology → MS Ophthalmology",
+      "Psychiatry → MD Psychiatry",
+      "Respiratory Medicine (TB&Chest) → MD Tuberculosis & Respiratory Diseases",
+      "Emergency Medicine → MD Emergency Medicine"
+     ],
+     "inr": 2200000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Category Fees INR",
+     "branches": [
+      "Geriatrics → MD Geriatrics"
+     ],
+     "inr": 1500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Category Fees INR",
+     "branches": [
+      "Physical Medicine & Rehabilitation* → MD Physical Medicine & Rehabilitation"
+     ],
+     "inr": 1200000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Category Fee (USD Equivalent to INR)",
+     "branches": [
+      "Human Physiology → MD Physiology"
+     ],
+     "inr": 1250000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Category Fee (USD Equivalent to INR)",
+     "branches": [
+      "Pathology → MD Pathology",
+      "Pharmacology → MD Pharmacology",
+      "Community Medicine → MD Social & Preventive Medicine"
+     ],
+     "inr": 2500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Category Fee (USD Equivalent to INR)",
+     "branches": [
+      "General Medicine → MD General Medicine",
+      "Paediatrics → MD Paediatrics",
+      "Obst.& Gynecology → MS Obstetrics & Gynaecology"
+     ],
+     "inr": 8000000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Category Fee (USD Equivalent to INR)",
+     "branches": [
+      "Dermatology → MD Dermatology, Venereology & Leprosy",
+      "Radiology → MD Radio Diagnosis"
+     ],
+     "inr": 9500000,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 200000,
+    "max": 250000,
+    "text": "Hostel Fees ... approximately 2.00 to 2.50 lacks per year including food & Deposit. Hostel & Mess fee may increase 5% to 10% yearly"
+   },
+   "notes": "Fee period not stated (stipend lines are per year). Excludes one-time admission processing fee Rs. 15000/-. '100% seats selection through MCC'; '* As per ECFC condition of GoK, we have shared 01 seat to KEA PG-NEET Counselling' (PMR). NRI figures printed in INR as 'USD Equivalent to INR'."
+  },
+  {
+   "college": "Sri Devaraj Urs Medical College, Tamaka, Kolar",
+   "roster": [
+    {
+     "id": 1406,
+     "name": "Sri Devaraj URS Medical College, Kolar"
+    }
+   ],
+   "ownership": "deemed",
+   "source_kind": "university-own",
+   "source": "sduaher",
+   "page": [
+    5,
+    6
+   ],
+   "year_label": "Details of postgraduate seats and Tuition Fees for 2026-27 / PG FEE STRUCTURE for Batch 2026-27",
+   "period": "per year",
+   "quote": "M.D. (Radio Diagnosis ) | 6 | Rs.40,00,000 | 5 | $ 1,18,000",
+   "fees": [
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Private/Management Quota — Fee per annum",
+     "branches": [
+      "M.D.(Anatomy ) → MD Anatomy",
+      "M.D. (Physiology) → MD Physiology",
+      "M.D. (Biochemistry) → MD Bio-Chemistry",
+      "M.D. (Pharmacology) → MD Pharmacology",
+      "M.D. (Microbiology) → MD Microbiology",
+      "M.D.(Forensic Medicine) → MD Forensic Medicine"
+     ],
+     "inr": 0,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "No Tuition Fee"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Private/Management Quota — Fee per annum",
+     "branches": [
+      "M.D. (Pathology) → MD Pathology"
+     ],
+     "inr": 900000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Private/Management Quota — Fee per annum",
+     "branches": [
+      "M.D.(Community Medicine) → MD Social & Preventive Medicine"
+     ],
+     "inr": 300000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Private/Management Quota — Fee per annum",
+     "branches": [
+      "M.D. (Dermatology) → MD Dermatology, Venereology & Leprosy",
+      "M.D. (Radio Diagnosis ) → MD Radio Diagnosis"
+     ],
+     "inr": 4000000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Private/Management Quota — Fee per annum",
+     "branches": [
+      "M.D. (General Medicine) → MD General Medicine"
+     ],
+     "inr": 3800000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Private/Management Quota — Fee per annum",
+     "branches": [
+      "M.S. (O.B.G) → MS Obstetrics & Gynaecology",
+      "M.D. (Paediatrics) → MD Paediatrics"
+     ],
+     "inr": 3600000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Private/Management Quota — Fee per annum",
+     "branches": [
+      "M.S. (Orthopaedics) → MS Orthopaedics",
+      "M.S. (General Surgery) → MS General Surgery",
+      "M.D. (Emergency Medicine) → MD Emergency Medicine"
+     ],
+     "inr": 3400000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Private/Management Quota — Fee per annum",
+     "branches": [
+      "M.D. (Psychiatry) → MD Psychiatry",
+      "M.S. (Ophthalmology) → MS Ophthalmology",
+      "M.S. (E.N.T.) → MS ENT",
+      "M.D. (Anaesthesiology) → MD Anaesthesiology"
+     ],
+     "inr": 3050000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Private/Management Quota — Fee per annum",
+     "branches": [
+      "M.D. (Radiotherapy/ Radiation Oncology) → MD Radiation Oncology"
+     ],
+     "inr": 2600000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Quota — Fee per annum",
+     "branches": [
+      "M.D. (Dermatology) → MD Dermatology, Venereology & Leprosy",
+      "M.D. (Radio Diagnosis ) → MD Radio Diagnosis"
+     ],
+     "inr": null,
+     "usd": 118000,
+     "maximum": false,
+     "as_printed": "$ 1,18,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Quota — Fee per annum",
+     "branches": [
+      "M.D. (General Medicine) → MD General Medicine",
+      "M.S. (O.B.G) → MS Obstetrics & Gynaecology"
+     ],
+     "inr": null,
+     "usd": 104000,
+     "maximum": false,
+     "as_printed": "$ 1,04,000"
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Quota — Fee per annum",
+     "branches": [
+      "M.D. (Paediatrics) → MD Paediatrics",
+      "M.S. (Orthopaedics) → MS Orthopaedics",
+      "M.S. (General Surgery) → MS General Surgery"
+     ],
+     "inr": null,
+     "usd": 98300,
+     "maximum": false,
+     "as_printed": "$ 98,300"
+    }
+   ],
+   "hostel": {
+    "min": 222000,
+    "max": 290000,
+    "text": "PG Men's Hostel 122000 + Deposit 1,00,000 = 222000; PG Women's Hostel (Onake Obavva) 190000 + 1,00,000 = 290000; (Kittur Rani Chennamma) 170000 + 1,00,000 = 270000"
+   },
+   "notes": "'No Tuition Fee' recorded as inr 0 with as_printed — not a missing value. Instalments due at admission, 01.09.2027 and 01.09.2028. Also printed: 'DNB-(NBEMS) Immuno-Haematology And Blood Transfusion | 2 | Rs.1,25,000' (a DNB seat, not recorded here)."
+  },
+  {
+   "college": "SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR",
+   "roster": [
+    {
+     "id": 1843,
+     "name": "Sri Siddhartha Institute of Medical Sciences & Research Centre, T Begur"
+    }
+   ],
+   "ownership": "deemed",
+   "source_kind": "college-own",
+   "source": "ssimrc",
+   "page": [
+    1
+   ],
+   "year_label": "PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats",
+   "period": "per year",
+   "quote": "MD Radio- Diagnosis | 70,00,000/- | 81,000/- | 50,000/-",
+   "fees": [
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
+     "branches": [
+      "MD Anatomy → MD Anatomy",
+      "MD Physiology → MD Physiology",
+      "MD Biochemistry → MD Bio-Chemistry"
+     ],
+     "inr": 100000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
+     "branches": [
+      "MD Pathology → MD Pathology"
+     ],
+     "inr": 1000000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
+     "branches": [
+      "MD Microbiology → MD Microbiology",
+      "MD Community Medicine → MD Social & Preventive Medicine",
+      "MD Pharmacology → MD Pharmacology"
+     ],
+     "inr": 300000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
+     "branches": [
+      "MD General Medicine → MD General Medicine",
+      "MD Paediatrics → MD Paediatrics",
+      "MS Obstetrics & Gynaecology → MS Obstetrics & Gynaecology",
+      "MS Orthopaedics → MS Orthopaedics",
+      "MS General Surgery → MS General Surgery"
+     ],
+     "inr": 6000000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
+     "branches": [
+      "MD Anaesthesiology → MD Anaesthesiology",
+      "MD Psychiatry → MD Psychiatry"
+     ],
+     "inr": 3250000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
+     "branches": [
+      "MD Radio- Diagnosis → MD Radio Diagnosis",
+      "MD Dermatology, Venerology & Leprosy → MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": 7000000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
+     "branches": [
+      "MD Respiratory Medicine → MD Tuberculosis & Respiratory Diseases",
+      "MD Emergency Medicine → MD Emergency Medicine",
+      "MS Otorhinolaryngology → MS ENT",
+      "MS Ophthalmology → MS Ophthalmology"
+     ],
+     "inr": 5000000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    }
+   ],
+   "hostel": null,
+   "notes": "One table for both SSAHE colleges ('SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR & SRI SIDDHARTHA INSTITUTE OF MEDICAL SCIENCES & RC, T-BEGUR'); page is p.33 of the 'SSAHE e-Brochure – Admissions to PG Medical (MD/MS) & PG Dental (MDS) Courses – 2026'. Section ii) (NRI) is NOT in this 2-page extract — it is in the full brochure, not downloaded. Scanned, read from rendered page. Same figures as the undated HTML table on ssahe.edu.in/fee-structure.html."
+  },
+  {
+   "college": "SRI SIDDHARTHA MEDICAL COLLEGE, TUMKUR",
+   "roster": [
+    {
+     "id": 1839,
+     "name": "Sri Siddhartha Medical College, Tumkur"
+    }
+   ],
+   "ownership": "deemed",
+   "source_kind": "university-own",
+   "source": "ssimrc",
+   "page": [
+    1
+   ],
+   "year_label": "PG - Medical Degree Annual Tuition Fee structure for the A.Y 2026-27 — i) For All India Quota / General Merit Quota Seats",
+   "period": "per year",
+   "quote": "MD Radio- Diagnosis | 70,00,000/- | 81,000/- | 50,000/-",
+   "fees": [
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
+     "branches": [
+      "MD Anatomy → MD Anatomy",
+      "MD Physiology → MD Physiology",
+      "MD Biochemistry → MD Bio-Chemistry"
+     ],
+     "inr": 100000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
+     "branches": [
+      "MD Pathology → MD Pathology"
+     ],
+     "inr": 1000000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
+     "branches": [
+      "MD Microbiology → MD Microbiology",
+      "MD Community Medicine → MD Social & Preventive Medicine",
+      "MD Pharmacology → MD Pharmacology"
+     ],
+     "inr": 300000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
+     "branches": [
+      "MD General Medicine → MD General Medicine",
+      "MD Paediatrics → MD Paediatrics",
+      "MS Obstetrics & Gynaecology → MS Obstetrics & Gynaecology",
+      "MS Orthopaedics → MS Orthopaedics",
+      "MS General Surgery → MS General Surgery"
+     ],
+     "inr": 6000000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
+     "branches": [
+      "MD Anaesthesiology → MD Anaesthesiology",
+      "MD Psychiatry → MD Psychiatry"
+     ],
+     "inr": 3250000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
+     "branches": [
+      "MD Radio- Diagnosis → MD Radio Diagnosis",
+      "MD Dermatology, Venerology & Leprosy → MD Dermatology, Venereology & Leprosy"
+     ],
+     "inr": 7000000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "All India Quota / General Merit Quota Seats — Tuition Fee",
+     "branches": [
+      "MD Respiratory Medicine → MD Tuberculosis & Respiratory Diseases",
+      "MD Emergency Medicine → MD Emergency Medicine",
+      "MS Otorhinolaryngology → MS ENT",
+      "MS Ophthalmology → MS Ophthalmology"
+     ],
+     "inr": 5000000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Other Fee",
+       "inr": 81000
+      },
+      {
+       "label": "University Fee",
+       "inr": 50000
+      }
+     ]
+    }
+   ],
+   "hostel": null,
+   "notes": "Same table as SSIMS&RC T-Begur (the 2026-27 SSAHE brochure page names both colleges); hosted on ssimrc.in. NRI fees not in the downloaded extract."
+  },
+  {
+   "college": "Yenepoya Medical College, Mangaluru",
+   "roster": [
+    {
+     "id": 1397,
+     "name": "Yenepoya Medical College, Mangalore"
+    }
+   ],
+   "ownership": "deemed",
+   "source_kind": "university-own",
+   "source": "yenepoya-notif",
+   "page": [
+    2,
+    3,
+    4
+   ],
+   "year_label": "ADMISSION TO PG MEDICAL (2026-27) — FEE STRUCTURE: MD/MS 2026-2027 (NRI) / MD/MS 2026-2027 (GENERAL MERIT)",
+   "period": "per year",
+   "quote": "MD - RADIO DIAGNOSIS | 5000000 | 5000000 | 5000000 | 15000000 (General Merit); MD - RADIO DIAGNOSIS 111000 111000 111000 333000 (NRI, USD)",
+   "fees": [
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MD/MS 2026-2027 (GENERAL MERIT) — I/II/III Installment",
+     "branches": [
+      "MD - MICROBIOLOGY → MD Microbiology",
+      "MD - ANATOMY → MD Anatomy",
+      "MD - PHYSIOLOGY → MD Physiology",
+      "MD - BIOCHEMISTRY → MD Bio-Chemistry",
+      "MD - PHARMACOLOGY → MD Pharmacology",
+      "MD - FORENSIC MEDICINE → MD Forensic Medicine"
+     ],
+     "inr": 10000,
+     "usd": null,
+     "maximum": false,
+     "total_course_inr": 30000
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MD/MS 2026-2027 (GENERAL MERIT) — I/II/III Installment",
+     "branches": [
+      "MD - COMMUNITY MEDICINE → MD Social & Preventive Medicine"
+     ],
+     "inr": 300000,
+     "usd": null,
+     "maximum": false,
+     "total_course_inr": 900000
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MD/MS 2026-2027 (GENERAL MERIT) — I/II/III Installment",
+     "branches": [
+      "MD - PATHOLOGY → MD Pathology"
+     ],
+     "inr": 1250000,
+     "usd": null,
+     "maximum": false,
+     "total_course_inr": 3750000
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MD/MS 2026-2027 (GENERAL MERIT) — I/II/III Installment",
+     "branches": [
+      "MD - GERIATRICS → MD Geriatrics",
+      "MD - ANAESTHESIOLOGY → MD Anaesthesiology"
+     ],
+     "inr": 3000000,
+     "usd": null,
+     "maximum": false,
+     "total_course_inr": 9000000
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MD/MS 2026-2027 (GENERAL MERIT) — I/II/III Installment",
+     "branches": [
+      "MD - EMERGENCY MEDICINE → MD Emergency Medicine",
+      "MD - RADIATION ONCOLOGY → MD Radiation Oncology",
+      "MD - PSYCHIATRY → MD Psychiatry",
+      "MS - ENT → MS ENT",
+      "MS - OPHTHALMOLOGY → MS Ophthalmology",
+      "MS - GENERAL SURGERY → MS General Surgery"
+     ],
+     "inr": 3500000,
+     "usd": null,
+     "maximum": false,
+     "total_course_inr": 10500000
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MD/MS 2026-2027 (GENERAL MERIT) — I/II/III Installment",
+     "branches": [
+      "MD - GENERAL MEDICINE → MD General Medicine",
+      "MS - ORTHOPAEDICS → MS Orthopaedics",
+      "MD - PAEDIATRICS → MD Paediatrics",
+      "MS - OBG → MS Obstetrics & Gynaecology",
+      "MD - PULMONARY MEDICINE → MD Tuberculosis & Respiratory Diseases"
+     ],
+     "inr": 4000000,
+     "usd": null,
+     "maximum": false,
+     "total_course_inr": 12000000
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MD/MS 2026-2027 (GENERAL MERIT) — I/II/III Installment",
+     "branches": [
+      "MD - DERMATOLOGY → MD Dermatology, Venereology & Leprosy",
+      "MD - RADIO DIAGNOSIS → MD Radio Diagnosis"
+     ],
+     "inr": 5000000,
+     "usd": null,
+     "maximum": false,
+     "total_course_inr": 15000000
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "MD/MS 2026-2027 (NRI) — Fees in USD, I/II/III Installment",
+     "branches": [
+      "MD - DERMATOLOGY → MD Dermatology, Venereology & Leprosy",
+      "MD - RADIO DIAGNOSIS → MD Radio Diagnosis"
+     ],
+     "inr": null,
+     "usd": 111000,
+     "maximum": false,
+     "total_course_usd": 333000
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "MD/MS 2026-2027 (NRI) — Fees in USD, I/II/III Installment",
+     "branches": [
+      "MD - GENERAL MEDICINE → MD General Medicine",
+      "MS - ORTHOPAEDICS → MS Orthopaedics",
+      "MD - PAEDIATRICS → MD Paediatrics",
+      "MS - OBG → MS Obstetrics & Gynaecology"
+     ],
+     "inr": null,
+     "usd": 79000,
+     "maximum": false,
+     "total_course_usd": 237000
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "MD/MS 2026-2027 (NRI) — Fees in USD, I/II/III Installment",
+     "branches": [
+      "MS - GENERAL SURGERY → MS General Surgery"
+     ],
+     "inr": null,
+     "usd": 74000,
+     "maximum": false,
+     "total_course_usd": 222000
+    }
+   ],
+   "hostel": {
+    "min": 180000,
+    "max": 240000,
+    "text": "HOSTEL FEE I YEAR: 2 SHARING 180000 + Food 60000 = 240000 (II 252000, III 264600); 3 SHARING 120000 + 60000 = 180000 (II 189000, III 198500); AC extra Rs.2000 / Rs.1400 per head per month"
+   },
+   "notes": "'GENERAL MERIT' = the MCC Management seats (notice: 'under Management or NRI categories'; undertaking 'FOR MANAGEMENT SEATS/MUSLIM MINORITY SEATS'). NRI fee 'inclusive of hostel, food and Air conditioning Charges'; for General Merit 'Hostel is mandatory for the clinical courses', 'Accommodation and food is additional'. Three equal yearly instalments; total printed. The Mangalore campus fee structure 2026-27 (also downloaded) lists MSc/allied programs only, no MD/MS. Roster also lists 'Karnataka Govt Quota - Open' and 'MM' seats; Muslim minority fee not printed separately."
+  },
+  {
+   "college": "St. John's Medical College, Bengaluru",
+   "roster": [
+    {
+     "id": 1945,
+     "name": "St John's Medical College, Bangalore"
+    }
+   ],
+   "ownership": "private",
+   "source_kind": "college-own",
+   "source": "stjohns",
+   "page": [
+    9,
+    10
+   ],
+   "year_label": "PG ADMISSION BULLETIN 2026-2027 dated 28th September 2026 — 3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 FEE CHART",
+   "period": "per year",
+   "quote": "CATEGORY 7 MD Dermatology / MD Radiodiagnosis / MS Orthopaedics / MS Obstetrics & Gynaecology | 21,770 | 16,000 | 12,00,000 | 53,200 | 12,90,970 | 15,000 | 13,05,970",
+   "fees": [
+    {
+     "seat": "Other:All PG seats (St John's fee chart has no quota split)",
+     "seat_as_printed": "3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 — Annual Tuition fee",
+     "branches": [
+      "MD Anatomy → MD Anatomy",
+      "MD Physiology → MD Physiology",
+      "MD Forensic Medicine → MD Forensic Medicine",
+      "MD Biochemistry → MD Bio-Chemistry"
+     ],
+     "inr": null,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Admission fee",
+       "inr": 25770
+      },
+      {
+       "label": "Refundable",
+       "inr": 16000
+      },
+      {
+       "label": "Annual Other fee",
+       "inr": 53200
+      },
+      {
+       "label": "RGUHS Fee",
+       "inr": 15000
+      }
+     ],
+     "total_college_fee_inr": 94970,
+     "total_college_fee_incl_rguhs_inr": 109970
+    },
+    {
+     "seat": "Other:All PG seats (St John's fee chart has no quota split)",
+     "seat_as_printed": "3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 — Annual Tuition fee",
+     "branches": [
+      "MD Microbiology → MD Microbiology"
+     ],
+     "inr": 200000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Admission fee",
+       "inr": 25770
+      },
+      {
+       "label": "Refundable",
+       "inr": 16000
+      },
+      {
+       "label": "Annual Other fee",
+       "inr": 53200
+      },
+      {
+       "label": "RGUHS Fee",
+       "inr": 15000
+      }
+     ],
+     "total_college_fee_inr": 294970,
+     "total_college_fee_incl_rguhs_inr": 309970
+    },
+    {
+     "seat": "Other:All PG seats (St John's fee chart has no quota split)",
+     "seat_as_printed": "3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 — Annual Tuition fee",
+     "branches": [
+      "MD Pharmacology → MD Pharmacology"
+     ],
+     "inr": 300000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Admission fee",
+       "inr": 25770
+      },
+      {
+       "label": "Refundable",
+       "inr": 16000
+      },
+      {
+       "label": "Annual Other fee",
+       "inr": 53200
+      },
+      {
+       "label": "RGUHS Fee",
+       "inr": 15000
+      }
+     ],
+     "total_college_fee_inr": 394970,
+     "total_college_fee_incl_rguhs_inr": 409970
+    },
+    {
+     "seat": "Other:All PG seats (St John's fee chart has no quota split)",
+     "seat_as_printed": "3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 — Annual Tuition fee",
+     "branches": [
+      "MD Pathology → MD Pathology",
+      "MD Community Health → MD Social & Preventive Medicine",
+      "MD Transfusion Med & Immuno Haematology → MD Immuno Haematology & Blood Transfusion"
+     ],
+     "inr": 650000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Admission fee",
+       "inr": 25770
+      },
+      {
+       "label": "Refundable",
+       "inr": 16000
+      },
+      {
+       "label": "Annual Other fee",
+       "inr": 53200
+      },
+      {
+       "label": "RGUHS Fee",
+       "inr": 15000
+      }
+     ],
+     "total_college_fee_inr": 744970,
+     "total_college_fee_incl_rguhs_inr": 759970
+    },
+    {
+     "seat": "Other:All PG seats (St John's fee chart has no quota split)",
+     "seat_as_printed": "3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 — Annual Tuition fee",
+     "branches": [
+      "MD Family Medicine → MD Family Medicine",
+      "MD Physical Medicine & Rehabilitation → MD Physical Medicine & Rehabilitation",
+      "MD Radiation Oncology → MD Radiation Oncology",
+      "MD Psychiatry → MD Psychiatry",
+      "MS General Surgery → MS General Surgery",
+      "MS ENT → MS ENT",
+      "MS Ophthalmology → MS Ophthalmology"
+     ],
+     "inr": 1100000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Admission fee",
+       "inr": 21770
+      },
+      {
+       "label": "Refundable",
+       "inr": 16000
+      },
+      {
+       "label": "Annual Other fee",
+       "inr": 53200
+      },
+      {
+       "label": "RGUHS Fee",
+       "inr": 15000
+      }
+     ],
+     "total_college_fee_inr": 1190970,
+     "total_college_fee_incl_rguhs_inr": 1205970
+    },
+    {
+     "seat": "Other:All PG seats (St John's fee chart has no quota split)",
+     "seat_as_printed": "3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 — Annual Tuition fee",
+     "branches": [
+      "MD General Medicine → MD General Medicine",
+      "MD Emergency Medicine → MD Emergency Medicine",
+      "MD Anesthesia → MD Anaesthesiology",
+      "MD Paediatrics → MD Paediatrics"
+     ],
+     "inr": 1150000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Admission fee",
+       "inr": 21770
+      },
+      {
+       "label": "Refundable",
+       "inr": 16000
+      },
+      {
+       "label": "Annual Other fee",
+       "inr": 63200
+      },
+      {
+       "label": "RGUHS Fee",
+       "inr": 15000
+      }
+     ],
+     "total_college_fee_inr": 1250970,
+     "total_college_fee_incl_rguhs_inr": 1265970
+    },
+    {
+     "seat": "Other:All PG seats (St John's fee chart has no quota split)",
+     "seat_as_printed": "3.1.6.1 FEE CHART MEDICAL POSTGRADUATE COURSES 2026 — Annual Tuition fee",
+     "branches": [
+      "MD Dermatology → MD Dermatology, Venereology & Leprosy",
+      "MD Radiodiagnosis → MD Radio Diagnosis",
+      "MS Orthopaedics → MS Orthopaedics",
+      "MS Obstetrics & Gynaecology → MS Obstetrics & Gynaecology"
+     ],
+     "inr": 1200000,
+     "usd": null,
+     "maximum": false,
+     "other_fees": [
+      {
+       "label": "Admission fee",
+       "inr": 21770
+      },
+      {
+       "label": "Refundable",
+       "inr": 16000
+      },
+      {
+       "label": "Annual Other fee",
+       "inr": 53200
+      },
+      {
+       "label": "RGUHS Fee",
+       "inr": 15000
+      }
+     ],
+     "total_college_fee_inr": 1290970,
+     "total_college_fee_incl_rguhs_inr": 1305970
+    }
+   ],
+   "hostel": null,
+   "notes": "Annual Tuition fee for Category 1 (Anatomy, Physiology, Forensic, Biochemistry) is printed '-' → inr null; first-year total 1,09,970. 'This table does not include hostel and mess fee.' 'Subject to revision from year to year by the Management and/or as per the KEA/RGUHS/NMC/Govt notifications'. Category 6 Annual Other fee printed 63,200 (others 53,200); the row total 12,50,970 adds up with 63,200. 'CATEGORY 1-7' here are fee bands, not the seat-reservation categories of 3.1.2. Caution deposit Rs.10,000, library deposit Rs.3,000 and laboratory deposit Rs.3,000 extra (refundable). Scanned; read at 2.5x."
+  },
+  {
+   "college": "Vydehi Institute of Medical Sciences & Research Centre, Bengaluru",
+   "roster": [
+    {
+     "id": 1952,
+     "name": "Vydehi Institute of Medical Sciences & Research Centre, Bangalore"
+    }
+   ],
+   "ownership": "private",
+   "source_kind": "college-own",
+   "source": "vydehi",
+   "page": [
+    1
+   ],
+   "year_label": "Full (100%) Tuition Fee Waiver ... for Candidates allotted through counselling conducted by KEA for the Academic Year 2026-27 (letter dated 17.10.2026)",
+   "period": "per year",
+   "quote": "MS – Anatomy | 03 Seats | Full Tuition Fee Waiver (100%) ... 'Only prescribed University fees will be payable by the candidate.'",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Govt. Quota (as listed: 'Govt., Private, NRI, MNG Quota') — Full Tuition Fee Waiver (100%)",
+     "branches": [
+      "MS – Anatomy → MD Anatomy",
+      "MD – Physiology → MD Physiology",
+      "MD – Biochemistry → MD Bio-Chemistry",
+      "MD – Pharmacology → MD Pharmacology",
+      "MD – Microbiology → MD Microbiology",
+      "MD – Forensic Medicine → MD Forensic Medicine",
+      "MD - Community Medicine → MD Social & Preventive Medicine"
+     ],
+     "inr": 0,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "Full Tuition Fee Waiver (100%)",
+     "waiver": true
+    },
+    {
+     "seat": "Other:Private",
+     "seat_as_printed": "Private Quota (as listed: 'Govt., Private, NRI, MNG Quota') — Full Tuition Fee Waiver (100%)",
+     "branches": [
+      "MS – Anatomy → MD Anatomy",
+      "MD – Physiology → MD Physiology",
+      "MD – Biochemistry → MD Bio-Chemistry",
+      "MD – Pharmacology → MD Pharmacology",
+      "MD – Microbiology → MD Microbiology",
+      "MD – Forensic Medicine → MD Forensic Medicine",
+      "MD - Community Medicine → MD Social & Preventive Medicine"
+     ],
+     "inr": 0,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "Full Tuition Fee Waiver (100%)",
+     "waiver": true
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Quota (as listed: 'Govt., Private, NRI, MNG Quota') — Full Tuition Fee Waiver (100%)",
+     "branches": [
+      "MS – Anatomy → MD Anatomy",
+      "MD – Physiology → MD Physiology",
+      "MD – Biochemistry → MD Bio-Chemistry",
+      "MD – Pharmacology → MD Pharmacology",
+      "MD – Microbiology → MD Microbiology",
+      "MD – Forensic Medicine → MD Forensic Medicine",
+      "MD - Community Medicine → MD Social & Preventive Medicine"
+     ],
+     "inr": 0,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "Full Tuition Fee Waiver (100%)",
+     "waiver": true
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "MNG Quota (as listed: 'Govt., Private, NRI, MNG Quota') — Full Tuition Fee Waiver (100%)",
+     "branches": [
+      "MS – Anatomy → MD Anatomy",
+      "MD – Physiology → MD Physiology",
+      "MD – Biochemistry → MD Bio-Chemistry",
+      "MD – Pharmacology → MD Pharmacology",
+      "MD – Microbiology → MD Microbiology",
+      "MD – Forensic Medicine → MD Forensic Medicine",
+      "MD - Community Medicine → MD Social & Preventive Medicine"
+     ],
+     "inr": 0,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "Full Tuition Fee Waiver (100%)",
+     "waiver": true
+    }
+   ],
+   "hostel": {
+    "min": null,
+    "max": null,
+    "text": "Benefits: 'Free boarding and lodging throughout the course.' (for the 7 waived courses only)"
+   },
+   "notes": "Tuition 0 is a printed 100% WAIVER, not a missing fee (the DB treats 0 as 'not published' — handle explicitly). Applies to 7 pre-/para-clinical branches (except MD Pathology) under 'Government, Private NRI, MNG Quota' for 2026-27; university fees still payable; no service bond. All other Vydehi branches: no 2026-27 own notice found. Vydehi itself flags vydehi.in as an unauthorised website."
+  },
+  {
+   "college": "Bangalore Medical College and Research Institute, Bengaluru",
+   "roster": [
+    {
+     "id": 22,
+     "name": "Bangalore Medical College and Research Institute, Bangalore"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "bmcri",
+   "page": [
+    17
+   ],
+   "year_label": "PAYMENT OF FEES — Post Graduate Fee Details 2026-27 (POST GRADUATE ADMISSION PROFORMA 2026-27)",
+   "period": "paid at admission (no breakdown)",
+   "quote": "Broad Specialty | PG Degree — Pre-clinical INR. 53,000/- ; Para-Clinical INR. 80,500/- ; Clinical INR. 1,35,500/-",
+   "fees": [
+    {
+     "seat": "Other:PG Degree (quota not stated; admissions via MCC (AIQ) and KEA (state))",
+     "seat_as_printed": "Broad Specialty PG Degree",
+     "branches": [
+      "Pre-clinical"
+     ],
+     "inr": 53000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:PG Degree (quota not stated; admissions via MCC (AIQ) and KEA (state))",
+     "seat_as_printed": "Broad Specialty PG Degree",
+     "branches": [
+      "Para-Clinical"
+     ],
+     "inr": 80500,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:PG Degree (quota not stated; admissions via MCC (AIQ) and KEA (state))",
+     "seat_as_printed": "Broad Specialty PG Degree",
+     "branches": [
+      "Clinical"
+     ],
+     "inr": 135500,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": null,
+   "notes": "Amount paid at the admission desk after document verification; no breakdown and no per-year wording. Branch groups as printed (pre-clinical = Anatomy/Physiology/Biochemistry; para-clinical = Pathology/Microbiology/Pharmacology/Forensic/Community Medicine — grouping is the usual one, not printed in the proforma). Lower than GIMS/HIMS totals (1,52,800 / 1,47,000 clinical). 'Changes in the Fee Structure ... applicable as per the orders of the Government of Karnataka'."
+  },
+  {
+   "college": "Haveri Institute of Medical Sciences, Haveri",
+   "roster": [
+    {
+     "id": 483,
+     "name": "Haveri Institute of Medical Sciences, Haveri"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "hims-haveri",
+   "page": [
+    21,
+    22
+   ],
+   "year_label": "Post Graduate Fee Details – 2026-27 — FEES STRUCTURE FOR 1st YEAR PG DEGREE COURSE FOR THE YEAR 2026-27",
+   "period": "first year",
+   "quote": "TUITION FEE 27500 | 55000 | 110000 ... GRAND TOTAL 64,500/- | 92,000/- | 1,47,000/-",
+   "fees": [
+    {
+     "seat": "Other:PG Degree (quota not stated)",
+     "seat_as_printed": "PRECLINICAL — GRAND TOTAL (Tuition 27500 + University 13400 + College 23600)",
+     "branches": [
+      "Pre-clinical"
+     ],
+     "inr": 64500,
+     "usd": null,
+     "maximum": false,
+     "tuition_inr": 27500
+    },
+    {
+     "seat": "Other:PG Degree (quota not stated)",
+     "seat_as_printed": "PARACLINICAL — GRAND TOTAL (Tuition 55000 + 13400 + 23600)",
+     "branches": [
+      "Para-clinical"
+     ],
+     "inr": 92000,
+     "usd": null,
+     "maximum": false,
+     "tuition_inr": 55000
+    },
+    {
+     "seat": "Other:PG Degree (quota not stated)",
+     "seat_as_printed": "CLINICAL — GRAND TOTAL (Tuition 110000 + 13400 + 23600)",
+     "branches": [
+      "Clinical"
+     ],
+     "inr": 147000,
+     "usd": null,
+     "maximum": false,
+     "tuition_inr": 110000
+    }
+   ],
+   "hostel": {
+    "min": 75500,
+    "max": 75500,
+    "text": "POST GRADUATE (MD/MS) HOSTEL FEES STRUCTURE 2026-27 BATCH: 1st year 75,500/- (2nd, 3rd year 45,500/-), electricity extra, '*Tentative'"
+   },
+   "notes": "Brochure p.3: 'Students admitting through KEA shall pay fees as prescribed by the KEA and other fee applicable for reporting college as prescribed by Rajiv Gandhi University of ...' — so the grand total applies as printed to AIQ admissions; KEA-allotted students pay KEA's fee. Fee page is an image; read from rendered page."
+  },
+  {
+   "college": "GULBARGA INSTITUTE OF MEDICAL SCIENCES, KALABURAGI",
+   "roster": [
+    {
+     "id": 158,
+     "name": "Gulbarga Institute of Medical Sciences, Gulbarga"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "gims",
+   "page": [
+    15,
+    16
+   ],
+   "year_label": "Post Graduate Fee Details 2026-27 — FEES STRUCTURE FOR PG DEGREE COURSE FOR THE YEAR 2026-27",
+   "period": "unstated",
+   "quote": "Tuition Fee | 110000 | 55000 | 27500 ... GRAND TOTAL | 152800 | 97800 | 70300",
+   "fees": [
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "GENERAL STUDENTS — GRAND TOTAL (Note 1: For AIQ candidates full fees shall be paid through SBI collect)",
+     "branches": [
+      "Clinical"
+     ],
+     "inr": 152800,
+     "usd": null,
+     "maximum": false,
+     "tuition_inr": 110000
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "GENERAL STUDENTS — GRAND TOTAL",
+     "branches": [
+      "Para-Clinical"
+     ],
+     "inr": 97800,
+     "usd": null,
+     "maximum": false,
+     "tuition_inr": 55000
+    },
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "GENERAL STUDENTS — GRAND TOTAL",
+     "branches": [
+      "Pre-clinical"
+     ],
+     "inr": 70300,
+     "usd": null,
+     "maximum": false,
+     "tuition_inr": 27500
+    }
+   ],
+   "hostel": null,
+   "notes": "Grand total = University fee 15000 + College fee (Clinical 137800 / Para 82800 / Pre 55300; tuition 110000 / 55000 / 27500). Note 2: 'Students admitting through KEA shall pay fees as prescribed by the KEA and next reporting amount to Institution'. Note 3: SC/ST pay tuition and claim reimbursement under SSP. Tuition figures match HIMS Haveri's 2026-27 table."
+  }
+ ],
+ "government_all": [],
+ "not_published": [
+  {
+   "college": "Adichunchanagiri Institute of Medical Sciences, Bellur",
+   "roster_id": 1962,
+   "latest_seen": "Adichunchanagiri University fee page 'Fee Structure 2026-27' covers engineering/BGS only (acu.edu.in/fee-structure/)"
+  },
+  {
+   "college": "AJ Institute of Medical Sciences & Research Centre, Mangalore",
+   "roster_id": 1951,
+   "latest_seen": "AJIMS brochure 23.08.2024 (ajims.edu.in)"
+  },
+  {
+   "college": "Akash Institute of Medical Sciences & Research Centre, Devanhalli, Bangalore",
+   "roster_id": 1958,
+   "latest_seen": "nothing on aimsrc.com"
+  },
+  {
+   "college": "Al-Ameen Medical College, Bijapur",
+   "roster_id": 1968,
+   "latest_seen": "nothing on alameenmedical.org"
+  },
+  {
+   "college": "Basaveswara Medical College and Hospital, Chitradurga",
+   "roster_id": 1961,
+   "latest_seen": "nothing; NMC now lists Shri Jagadguru Murugharajendra University (sjmu.edu.in); basaveshwaramedicalcollege.com looks unofficial"
+  },
+  {
+   "college": "Belagavi Institute of Medical Sciences, Belagavi",
+   "roster_id": 130,
+   "latest_seen": "PG course page lists intake only (bimsbelgaum.karnataka.gov.in)"
+  },
+  {
+   "college": "BGS Global Institute of Medical Sciences, Bangalore",
+   "roster_id": 1953,
+   "latest_seen": "bgsgims.edu.in 'Provisional Fees Structure as per KEA Authority AY 2026-27 for First Year' is MBBS (Govt 1,41,621 / Private 11,88,167), not PG"
+  },
+  {
+   "college": "Bidar Institute of Medical Sciences, Bidar",
+   "roster_id": 366,
+   "latest_seen": "domain not found"
+  },
+  {
+   "college": "Chamrajanagar Institute of Medical Sciences, Karnataka",
+   "roster_id": 389,
+   "latest_seen": "domain not found"
+  },
+  {
+   "college": "Chikkamagaluru Institute of Medical Sciences, Chikkamagaluru",
+   "roster_id": 1854,
+   "latest_seen": "nothing on cimschikkamagaluru.karnataka.gov.in"
+  },
+  {
+   "college": "Dharwad Institute of Mental Health and Neuro Sciences, Dharwad",
+   "roster_id": 1031,
+   "latest_seen": "DIMHANS fee documents 2023-24 (dimhans.karnataka.gov.in/104/policy-|-fee-structure/en)"
+  },
+  {
+   "college": "Dr BR Ambedkar Medical College, Bangalore",
+   "roster_id": 1955,
+   "latest_seen": "prospectus Mar 2025 (bramc.edu.in)"
+  },
+  {
+   "college": "Dr Chandramma Dayananda Sagar Institute of Medical Education & Research, Harohalli, Hubli",
+   "roster_id": 1960,
+   "latest_seen": "Fee_Structure_for_PG_Admissions_2024.pdf; PG admission process 18-12-2025 (cdsimer.edu.in)"
+  },
+  {
+   "college": "East Point College of Medical Sciences & Research Centre, Bangalore",
+   "roster_id": 1957,
+   "latest_seen": "epcms.ac.in fee page is MBBS 2026-27 only"
+  },
+  {
+   "college": "Employees State Insurance Corporation Medical College, Bangalore",
+   "roster_id": 54,
+   "latest_seen": "esic.gov.in: no PG fee notice for ESIC Bangalore (only ESIC Hyderabad 'Fee Structure for AY 2026–27')"
+  },
+  {
+   "college": "Employees State Insurance Corporation Medical College, Gulbarga",
+   "roster_id": 256,
+   "latest_seen": "esic.gov.in: no PG fee notice for ESIC Gulbarga"
+  },
+  {
+   "college": "Father Mullers Medical College, Mangalore",
+   "roster_id": 1944,
+   "latest_seen": "nothing on fathermuller.edu.in"
+  },
+  {
+   "college": "Hassan Institute of Medical Sciences, Hassan",
+   "roster_id": 101,
+   "latest_seen": "HIMS Hassan: PG instructions 2025-26; hostel fee 2026-27 only (himshassan.karnataka.gov.in)"
+  },
+  {
+   "college": "Indira Gandhi Institute of Child Health, Bangalore",
+   "roster_id": 198,
+   "latest_seen": "nothing on igich.karnataka.gov.in"
+  },
+  {
+   "college": "JJM Medical College, Davangere",
+   "roster_id": 1947,
+   "latest_seen": "nothing on jjmmc.org"
+  },
+  {
+   "college": "Kanachur Institute of Medical Sciences, Mangalore",
+   "roster_id": 1972,
+   "latest_seen": "nothing on kanachurims.com"
+  },
+  {
+   "college": "Karnataka Institute of Medical Sciences, Hubballi",
+   "roster_id": 55,
+   "latest_seen": "KMCRI Hubballi: PG ADMISSION 2025-26 (kmcrihubballi.karnataka.gov.in)"
+  },
+  {
+   "college": "Karwar Institute of Medical Sciences, Karwar",
+   "roster_id": 395,
+   "latest_seen": "domain not found"
+  },
+  {
+   "college": "Kempegowda Institute of Medical Sciences, Bangalore",
+   "roster_id": 1949,
+   "latest_seen": "'POST GRADUATE FEE STRUCTURE 2024-25' (kimsbangalore.edu.in/md-ms-diploma/)"
+  },
+  {
+   "college": "KH Patil Institute of Medical Sciences, Mallasamudra, Mulgund Road, Gadag (Prev. Gadag Institute of Medical Sciences)",
+   "roster_id": 218,
+   "latest_seen": "2025-26 PG admission brochure (gimsgadag.karnataka.gov.in)"
+  },
+  {
+   "college": "Khaja Bandanawaz University - Faculty of Medical Sciences, Gulbarga",
+   "roster_id": 1969,
+   "latest_seen": "KBN University 'Fee Structure 2026-27' PDF (Apr 2026) not downloaded — may or may not cover MD/MS"
+  },
+  {
+   "college": "Kidwai Memorial Institute of Oncology, Bangalore",
+   "roster_id": 244,
+   "latest_seen": "nothing (kmio.karnataka.gov.in charges page is hospital rates)"
+  },
+  {
+   "college": "Kodagu Institute of Medical Sciences, Kodagu",
+   "roster_id": 404,
+   "latest_seen": "PG instructions 2025-26 (kimskodagu.karnataka.gov.in)"
+  },
+  {
+   "college": "Koppal Institute of Medical Sciences Koppal, Karnataka",
+   "roster_id": 335,
+   "latest_seen": "link labelled 'PG Admission Broucher-2026' opens a Dec 2024 proforma (kimskoppal.karnataka.gov.in)"
+  },
+  {
+   "college": "KVG Medical College, Sullia",
+   "roster_id": 1966,
+   "latest_seen": "domain not found"
+  },
+  {
+   "college": "Mahadevappa Rampure Medical College, Gulbarga",
+   "roster_id": 1950,
+   "latest_seen": "nothing on mrmc.edu.in"
+  },
+  {
+   "college": "Mandya Institute of Medical Sciences, Mandya",
+   "roster_id": 73,
+   "latest_seen": "nothing on mims.karnataka.gov.in"
+  },
+  {
+   "college": "MS Ramaiah Medical College, Bangalore",
+   "roster_id": 1946,
+   "latest_seen": "msrmc.ac.in: only 'DM, M.Ch Fee and Seat Matrix 2025-26'"
+  },
+  {
+   "college": "MVJ Medical College and Research Hospital, Bangalore",
+   "roster_id": 1967,
+   "latest_seen": "nothing on mvjmc.edu.in (hostel circulars only)"
+  },
+  {
+   "college": "Mysore Medical College and Research Institute, Mysore (Prev. Government Medical College, Mysore)",
+   "roster_id": 44,
+   "latest_seen": "PG fee structure 2020-21 (mmcri.karnataka.gov.in)"
+  },
+  {
+   "college": "Nandi Medical College and Research Institute (Chikkaballapura Institute of Medical Sciences), Chikkaballapur",
+   "roster_id": 355,
+   "latest_seen": "nothing PG (cimschikkaballapura.karnataka.gov.in)"
+  },
+  {
+   "college": "Navodaya Medical College, Raichur",
+   "roster_id": 1974,
+   "latest_seen": "nothing on navodaya.edu.in"
+  },
+  {
+   "college": "Raichur Institute of Medical Sciences, Raichur",
+   "roster_id": 247,
+   "latest_seen": "PG admission info 2024-25/2025-26 .docx (rimsraichur.karnataka.gov.in)"
+  },
+  {
+   "college": "S Nijalingappa Medical College & HSK Hospital & Research Centre, Bagalkot",
+   "roster_id": 1959,
+   "latest_seen": "'UG & PG Fees for various courses' PDF, Feb 2026, year not stated (snmcbgk.in)"
+  },
+  {
+   "college": "Sanjay Gandhi Institute of Trauma and Orthopaedics, Bangalore",
+   "roster_id": 143,
+   "latest_seen": "nothing on sgito.org"
+  },
+  {
+   "college": "Sapthagiri Institute of Medical Sciences & Research Centre, Bangalore",
+   "roster_id": 1954,
+   "latest_seen": "simsrc.edu.in/fees: 'CONTENT WILL BE UPDATED SHORTLY'"
+  },
+  {
+   "college": "SDM College of Medical Sciences & Hospital, Sattur, Dharwad",
+   "roster_id": 1948,
+   "latest_seen": "SDMU Prospectus 2026-27 is a flipbook with no readable text (sdmuniversity.edu.in)"
+  },
+  {
+   "college": "SDS Tuberculosis Research Centre and Rajiv Gandhi Institute of Chest Diseases, Bangalore",
+   "roster_id": 526,
+   "latest_seen": "undated HTML fee table (tuition ₹1,10,000 / 1,00,000 / 1,00,000) on rgicd.karnataka.gov.in — no year label"
+  },
+  {
+   "college": "Shimoga Institute of Medical Sciences, Shimoga",
+   "roster_id": 123,
+   "latest_seen": "domain not found"
+  },
+  {
+   "college": "Shri Atal Bihari Vajpayee Medical College & Research Institute, Bengaluru",
+   "roster_id": 85,
+   "latest_seen": "PG Fee Structure 28 Nov 2025 = 2025-26 (sabvmcri.karnataka.gov.in)"
+  },
+  {
+   "college": "Shridevi Institute of Medical Sciences & Research Hospital, Tumkur",
+   "roster_id": 1970,
+   "latest_seen": "domain not found"
+  },
+  {
+   "college": "Siddaganga Medical College and Research Institute, Tumakuru",
+   "roster_id": 1964,
+   "latest_seen": "smcri.edu.in: MBBS 2026-27 fee only"
+  },
+  {
+   "college": "Sri Chamundeshwari Medical College Hospital & Research Institute, Ramanagara",
+   "roster_id": 1975,
+   "latest_seen": "domain not found"
+  },
+  {
+   "college": "Sri Madhusudan Sai Institute of Medical Sciences and Research, Chikkaballapur",
+   "roster_id": 1971,
+   "latest_seen": "smsimsr.org HTML table 'Fee structure — PG courses 2025–26' (official PDF dated 01.12.2025)"
+  },
+  {
+   "college": "Srinivas Institute of Medical Research Centre, Srinivasnagar",
+   "roster_id": 1965,
+   "latest_seen": "college domain not found (srinivasuniversity.edu.in has nothing)"
+  },
+  {
+   "college": "SS Institute of Medical Sciences & Research Centre, Davangere",
+   "roster_id": 1956,
+   "latest_seen": "'PG 2025-26 Fees Structure' (ssimsrc.com/assets/docs/achievements/6.pdf)"
+  },
+  {
+   "college": "Subbaiah Institute of Medical Sciences, Shimoga",
+   "roster_id": 1963,
+   "latest_seen": "domain not found"
+  },
+  {
+   "college": "The Oxford Medical College, Hospital & Research Centre, Bangalore",
+   "roster_id": 1973,
+   "latest_seen": "theoxford.edu fee page has no figures"
+  },
+  {
+   "college": "Vijaynagar Institute of Medical Sciences, Bellary",
+   "roster_id": 94,
+   "latest_seen": "domain not found (vimsbellary.org.in is parked)"
+  },
+  {
+   "college": "Vydehi Institute of Medical Sciences & Research Centre, Bangalore (branches other than the 7 waived)",
+   "roster_id": 1952,
+   "latest_seen": "'Fees and Stipend Details' PDF Mar 2026 (year not stated); seats/fees under the GoK–AMPCK consensual agreement"
+  }
+ ],
+ "candidate_files_not_downloaded": [
+  {
+   "college": "Sri Siddhartha (SSMC Tumkur, SSIMS&RC T-Begur)",
+   "url": "https://ssimrc.in/wp-content/uploads/2026/10/Brochure-Medical-and-Dental-PG-MD-MS-MDS-2026.pdf",
+   "title": "E-Brochure for Admission to Medical Postgraduate (MD / MS) & Dental Postgraduate (MDS) Courses for the Academic Year 2026–27",
+   "bytes": 7138515,
+   "date": "2026-10-23",
+   "why": "holds section ii) NRI/PIO/FN fees (not in the 2-page fee extract)"
+  },
+  {
+   "college": "Rajarajeswari Medical College & Hospital",
+   "url": "https://www.rrmch.org/cms/wp-content/uploads/2026/10/PG-2026-27-Batch-Institute-profile.pdf",
+   "title": "Institute Profile 2026-27",
+   "bytes": 665850,
+   "date": "2026-10-23",
+   "why": "may carry hostel/bond/stipend details"
+  },
+  {
+   "college": "Sri Devaraj Urs Medical College",
+   "url": "https://sduaher.ac.in/storage/1785488115.0685PGNotification.OGUm.pdf",
+   "title": "PG SDUMC (Admissions Notification 2026-27)",
+   "bytes": 138437,
+   "date": "2026-07-31",
+   "why": "earlier 2026-27 PG notification; bulletin of 15 Oct already read"
+  },
+  {
+   "college": "BM Patil (BLDE)",
+   "url": "https://bldedu.ac.in/wp-content/uploads/2026/10/BLDEDU-PG-NOTE-ON-NRI.pdf",
+   "title": "IMP NOTE FOR 'NRI-SEAT' ASPIRANTS",
+   "bytes": 206729,
+   "date": "2026-10-09",
+   "why": "NRI rules; may restate NRI fee"
+  },
+  {
+   "college": "Khaja Bandanawaz University",
+   "url": "https://www.kbn.university/_files/ugd/00e3a9_0df28e7285fa4fa0bf2cdb67df83f62a.pdf",
+   "title": "Fee Structure 2026-27",
+   "bytes": 178848,
+   "date": "2026-04-18",
+   "why": "university's own 2026-27 fee file; unknown whether MD/MS is in it"
+  },
+  {
+   "college": "JNMC Belagavi (KAHER)",
+   "url": "https://kaher.edu.in/wp-content/uploads/2026/08/PG-Medical-Courses.pdf",
+   "title": "PG Medical, Allied Health & Interdisciplinary Courses (fee, Aug 2026)",
+   "bytes": 0,
+   "date": "2026-08-10",
+   "why": "earlier KAHER PG fee list; superseded for MD/MS by the 14-10-2026 file"
+  },
+  {
+   "college": "Hassan Institute of Medical Sciences",
+   "url": "https://himshassan.karnataka.gov.in/uploads/UG%20%20&%20PG%20Boys%20and%20Girls%20Hostel%20Revised%20Fee%20Structure%202026-27_1788523620.pdf",
+   "title": "UG & PG Boys and Girls Hostel Revised Fee Structure 2026-27",
+   "bytes": 218601,
+   "date": "2026-09-04",
+   "why": "hostel only"
+  }
+ ]
+}

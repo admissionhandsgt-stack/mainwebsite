@@ -1,0 +1,738 @@
+{
+ "state": "Uttarakhand",
+ "checked": "2026-10-25",
+ "files": [
+  {
+   "id": "hnb_bulletin",
+   "url": "https://meta-secure.com/MDMS2024/UploadDocs/infromationbulletinNEETPg2026.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_up/01_hnb_bulletin/bulletin.pdf",
+   "title": "Information Bulletin NEET P.G. - 2026 Uttarakhand State Centralised Counselling (For admission to the Academic Session 2026-27)",
+   "issuer": "HNB Uttarakhand Medical Education University (counselling board)",
+   "bytes": 5293343,
+   "scanned": false,
+   "notes": "No fee figures. §11 'DETAILS OF FEES: Details of college wise fees are available on our website in a separate link.' Session starts 20 Nov 2026."
+  },
+  {
+   "id": "hnb_govtfee",
+   "url": "https://meta-secure.com/MDMS2024/UploadDocs/GovtFeeorderandbondandDiploma.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_up/02_hnb_govtfee/govtfee.pdf",
+   "title": "Govt college Fee and Go (portal label)",
+   "issuer": "Govt of Uttarakhand orders, copies signed by the Principal/Dean, VCSG GIMS&R Srinagar",
+   "bytes": 2581850,
+   "scanned": true,
+   "notes": "Not used (no 2026-27 label). Contents: GO 1075/XXVIII(1)/2013-32/2003 dated 08 May 2013 — MD/MS tuition from session 2013-14: bond holders 60,000.00, non-bond 5,00,000.00; GO 372/XXVIII(5)/2020-32/2003 dated 03 Jul 2020 — PG non-clinical (Anatomy, Physiology, Biochemistry, Pharmacology, Forensic Medicine, Microbiology, Community Medicine) ₹ 1,00,000/- a year from session 2020-21; letter of 13 Oct 2021 (GMC Srinagar, post-MBBS diploma bond; bond ₹2,50,00,000 or two years' service)."
+  },
+  {
+   "id": "hnb_hims",
+   "url": "https://meta-secure.com/MDMS2024/UploadDocs/HimsFee.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_up/03_hnb_hims/hims.pdf",
+   "title": "Himalayan Institute of Medical Sciences, Dehradun — Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 (Annexure-2)",
+   "issuer": "Himalayan Institute of Medical Sciences (Dean's seal and signature)",
+   "bytes": 487190,
+   "scanned": false
+  },
+  {
+   "id": "hnb_haldwani",
+   "url": "https://meta-secure.com/MDMS2024/UploadDocs/Hladwabi.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_up/04_hnb_haldwani/haldwani.pdf",
+   "title": "Office of the Principal, Government Medical College, Haldwani — letter 3824/जीएमसी/पी0जी0-काउन्सिलिंग/पी0-05 dated 14/10/2026 to HNBUMU",
+   "issuer": "Principal, GMC Haldwani (letterhead, signed)",
+   "bytes": 419846,
+   "scanned": true
+  },
+  {
+   "id": "hnb_sgrr",
+   "url": "https://meta-secure.com/MDMS2024/UploadDocs/SGRR.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_up/05_hnb_sgrr/sgrr.pdf",
+   "title": "SHRI GURU RAM RAI INSTITUTE OF MEDICAL & HEALTH SCIENCES, DEHRADUN — TUITION FEES FOR POST GRADUATE COURSES - 2026-27",
+   "issuer": "SGRRIM&HS (page 2 signed 'Prof. (Dr) Utkarsh Sharma, Principal, SGRR Institute of Medical & Health Sciences')",
+   "bytes": 1018244,
+   "scanned": false
+  },
+  {
+   "id": "hnb_almora",
+   "url": "https://meta-secure.com/MDMS2024/UploadDocs/Almora.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_up/06_hnb_almora/almora.pdf",
+   "title": "शैक्षणिक सत्र 2026 हेतु स्नातकोत्तर पाठ्यक्रमों (एम0डी0/एम0एस0) हेतु शुल्क का विवरण — signed 17-10-2026",
+   "issuer": "Principal, S.S.J. Govt. Institute of Medical Science & Research, Almora (signed)",
+   "bytes": 367717,
+   "scanned": true
+  },
+  {
+   "id": "hnb_gbcm",
+   "url": "https://meta-secure.com/MDMS2024/UploadDocs/GBCM.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_up/07_hnb_gbcm/gbcm.pdf",
+   "title": "Gautam Buddha Chikitsa Mahavidyalaya — Fee Structure for Post Graduate Course (2026-2027), Ref. PO/GBCM/2026/10/…, NRI page dated 14.10.2026",
+   "issuer": "GBCM letterhead, signed Dr. Anil Kumar Mehta, Principal & Dean",
+   "bytes": 898711,
+   "scanned": false
+  },
+  {
+   "id": "hnb_doon",
+   "url": "https://meta-secure.com/MDMS2024/UploadDocs/Doon.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_up/08_hnb_doon/doon.pdf",
+   "title": "शैक्षणिक सत्र 2026 हेतु स्नातकोत्तर पाठ्यक्रमों (एम0डी0/एम0एस0) हेतु शुल्क का विवरण (Doon)",
+   "issuer": "Government Doon Medical College (table without letterhead, signed; names 'राजकीय दून मेडिकल कॉलेज, देहरादून' for payment)",
+   "bytes": 198211,
+   "scanned": true
+  },
+  {
+   "id": "hnb_nri",
+   "url": "https://meta-secure.com/MDMS2024/UploadDocs/NRIinmerged.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north_up/09_hnb_nri/nri.pdf",
+   "title": "Procedure for admission to MD/MS under NRI quota in private colleges of private universities, session 2026-27 (+ GOs and forms)",
+   "issuer": "HNBUMU counselling board",
+   "bytes": 3230603,
+   "scanned": true,
+   "notes": "No fee figures. 15% of SGRR's All India Quota seats earmarked for NRI for 2026-27 (Govt notification 420406/XXVIII(5)/2026 dated 19/08/2026); NRI registration fee 10000 + security 200000 (non-refundable). Pages 4-8 are certificate formats."
+  }
+ ],
+ "html": [],
+ "colleges": [
+  {
+   "college": "Government Doon Medical College, Dehradun",
+   "roster": [
+    {
+     "id": 129,
+     "name": "Doon Medical College, Dehradun"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "hnb_doon",
+   "page": 1,
+   "year_label": "शैक्षणिक सत्र 2026 हेतु स्नातकोत्तर पाठ्यक्रमों (एम0डी0/एम0एस0) हेतु शुल्क का विवरण",
+   "period": "per year",
+   "quote": "शिक्षण शुल्क (प्रतिवर्ष): क्लीनिकल विषयों हेतु बॉण्ड सहित Rs. 60,000/- | क्लीनिकल विषयों हेतु बॉण्ड रहित Rs. 5,00,000/- | एनॉटॉमी, फिजियोलॉजी, बायोकेमेस्ट्री, फार्माकोलॉजी, माईक्रोबायोलॉजी, फॉरेंसिक मेडिसिन, एवं कम्यूनिटी मेडिसिन Rs. 1,00,000/- | पैथोलॉजी Rs. 5,00,000/- ; कुल योग Rs. 98,000/- | Rs. 5,38,000/- | Rs. 1,38,000/- | Rs. 5,38,000/-",
+   "fees": [
+    {
+     "seat": "Other:clinical subjects, with bond (बॉण्ड सहित)",
+     "seat_as_printed": "क्लीनिकल विषयों हेतु बॉण्ड सहित — शिक्षण शुल्क (प्रतिवर्ष)",
+     "branches": [
+      "क्लीनिकल विषय (clinical subjects)"
+     ],
+     "inr": 60000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:clinical subjects, without bond (बॉण्ड रहित)",
+     "seat_as_printed": "क्लीनिकल विषयों हेतु बॉण्ड रहित — शिक्षण शुल्क (प्रतिवर्ष)",
+     "branches": [
+      "क्लीनिकल विषय (clinical subjects)"
+     ],
+     "inr": 500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats",
+     "seat_as_printed": "एनॉटॉमी … कम्यूनिटी मेडिसिन — शिक्षण शुल्क (प्रतिवर्ष)",
+     "branches": [
+      "एनॉटॉमी (Anatomy)",
+      "फिजियोलॉजी (Physiology)",
+      "बायोकेमेस्ट्री (Biochemistry)",
+      "फार्माकोलॉजी (Pharmacology)",
+      "माईक्रोबायोलॉजी (Microbiology)",
+      "फॉरेंसिक मेडिसिन (Forensic Medicine)",
+      "कम्यूनिटी मेडिसिन (Community Medicine)"
+     ],
+     "inr": 100000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats",
+     "seat_as_printed": "पैथोलॉजी — शिक्षण शुल्क (प्रतिवर्ष)",
+     "branches": [
+      "पैथोलॉजी (Pathology)"
+     ],
+     "inr": 500000,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 12000,
+    "max": 12000,
+    "text": "छात्रावास शुल्क (प्रतिवर्ष) Rs. 12,000/-"
+   },
+   "notes": "Label says 'सत्र 2026' (session 2026). Other heads: admission 6,000 (once), caution 10,000 (refundable, once), sports 5,000 (once), development 5,000 a year, electricity as used; 'Rs.1000/- Cash to be deposited by candidate for College Prospectus and admission forms.' Fee refund rule: ₹6,000 deducted (with bond) / ₹10,000 (without bond). Hosted on the HNBUMU portal under 'DOON'. Bond / no-bond is the candidate's choice of service bond (G.O. 837 dated 26.06.2019 and 374 dated 31.03.2017 per the bulletin), not a quota; applies to state-quota and AIQ seats alike as far as the table shows."
+  },
+  {
+   "college": "Government Medical College, Haldwani",
+   "roster": [
+    {
+     "id": 257,
+     "name": "Government Medical College, Haldwani (Prev. Uttarakhand Forest Hospital Trust Medical College, Haldwani)"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "hnb_haldwani",
+   "page": 1,
+   "year_label": "विषय: विश्वविद्यालय द्वारा आगामी सत्र 2026-27 के लिये मेडिकल के स्नातक/स्नातकोत्तर पाठ्यक्रमों में प्रवेश हेतु नीट पी0जी0-2026 काउन्सिलिंग के सम्बन्ध में (letter dated 14/10/2026)",
+   "period": "unstated",
+   "quote": "Fee Details | Fee Head | Clinical Subjects (With Bond) | Clinical Subjects (Without Bond) | Non-Clinical Subjects (Excluding Pathology) | Non-Clinical Subjects (Pathology) — Admission Fee 6,000.00 ×4; Tuition Fee 60,000.00 | 5,00,000.00 | 1,00,000.00 | 5,00,000.00; Hostal Fee 12,000.00 ×4; Total 99,500.00 | 5,39,500.00 | 1,39,500.00 | 5,39,500.00",
+   "fees": [
+    {
+     "seat": "Other:clinical subjects, with bond",
+     "seat_as_printed": "Fee Details for Clinical Subjects (With Bond) — Tuition Fee",
+     "branches": [
+      "Clinical Subjects"
+     ],
+     "inr": 60000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:clinical subjects, without bond",
+     "seat_as_printed": "Fee Details for Clinical Subjects (Without Bond) — Tuition Fee",
+     "branches": [
+      "Clinical Subjects"
+     ],
+     "inr": 500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats",
+     "seat_as_printed": "Fee Details for Non-Clinical Subjects (Excluding Pathology) — Tuition Fee",
+     "branches": [
+      "Non-Clinical Subjects (Excluding Pathology)"
+     ],
+     "inr": 100000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats",
+     "seat_as_printed": "Fee Details for Non-Clinical Subjects (Pathology) — Tuition Fee",
+     "branches": [
+      "Pathology"
+     ],
+     "inr": 500000,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 12000,
+    "max": 12000,
+    "text": "Hostal Fee 12,000.00"
+   },
+   "notes": "The table does not say per year (Doon's and Almora's identical tuition is labelled प्रतिवर्ष). Caution Money 10,000.00, Sports & Development Fee 10,000.00, Prospectus Fee 1,500.00. Letterhead website 'gmchld.com/org'. Bond / no-bond is the candidate's choice of service bond (G.O. 837 dated 26.06.2019 and 374 dated 31.03.2017 per the bulletin), not a quota; applies to state-quota and AIQ seats alike as far as the table shows."
+  },
+  {
+   "college": "Soban Singh Jeena Govt. Institute of Medical Science & Research, Almora",
+   "roster": [
+    {
+     "id": 368,
+     "name": "Soban Singh Jeena Government Institute of Medical Science & Research, Almora"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "hnb_almora",
+   "page": 1,
+   "year_label": "शैक्षणिक सत्र 2026 हेतु स्नातकोत्तर पाठ्यक्रमों (एम0डी0/एम0एस0) हेतु शुल्क का विवरण (signed 17-10-2026)",
+   "period": "per year",
+   "quote": "शिक्षण शुल्क (प्रतिवर्ष): Rs. 60,000/- (क्लीनिकल, बॉण्ड सहित) | Rs. 5,00,000/- (क्लीनिकल, बॉण्ड रहित) | Rs. 1,00,000/- (एनॉटॉमी … कम्यूनिटी मेडिसिन) | Rs. 5,00,000/- (पैथोलॉजी); कुल योग Rs. 99,500/- | Rs. 5,39,500/- | Rs. 1,39,500/- | Rs. 5,39,500/-",
+   "fees": [
+    {
+     "seat": "Other:clinical subjects, with bond (बॉण्ड सहित)",
+     "seat_as_printed": "क्लीनिकल विषयों हेतु बॉण्ड सहित — शिक्षण शुल्क (प्रतिवर्ष)",
+     "branches": [
+      "क्लीनिकल विषय (clinical subjects)"
+     ],
+     "inr": 60000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:clinical subjects, without bond (बॉण्ड रहित)",
+     "seat_as_printed": "क्लीनिकल विषयों हेतु बॉण्ड रहित — शिक्षण शुल्क (प्रतिवर्ष)",
+     "branches": [
+      "क्लीनिकल विषय (clinical subjects)"
+     ],
+     "inr": 500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats",
+     "seat_as_printed": "एनॉटॉमी … कम्यूनिटी मेडिसिन — शिक्षण शुल्क (प्रतिवर्ष)",
+     "branches": [
+      "एनॉटॉमी (Anatomy)",
+      "फिजियोलॉजी (Physiology)",
+      "बायोकेमेस्ट्री (Biochemistry)",
+      "फार्माकोलॉजी (Pharmacology)",
+      "माईक्रोबायोलॉजी (Microbiology)",
+      "फॉरेंसिक मेडिसिन (Forensic Medicine)",
+      "कम्यूनिटी मेडिसिन (Community Medicine)"
+     ],
+     "inr": 100000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats",
+     "seat_as_printed": "पैथोलॉजी — शिक्षण शुल्क (प्रतिवर्ष)",
+     "branches": [
+      "पैथोलॉजी (Pathology)"
+     ],
+     "inr": 500000,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 12000,
+    "max": 12000,
+    "text": "छात्रावास शुल्क (प्रतिवर्ष) Rs. 12,000/-"
+   },
+   "notes": "Same heads as Doon plus 'प्रवेश सूची पत्र' (prospectus) 1,500.00: admission 6,000, caution 10,000 (refundable), sports 5,000, development 5,000 a year. Bond / no-bond is the candidate's choice of service bond (G.O. 837 dated 26.06.2019 and 374 dated 31.03.2017 per the bulletin), not a quota; applies to state-quota and AIQ seats alike as far as the table shows."
+  },
+  {
+   "college": "Himalayan Institute of Medical Sciences, Dehradun",
+   "roster": [
+    {
+     "id": 2154,
+     "name": "Himalayan Institute of Medical Sciences, Dehradun"
+    }
+   ],
+   "ownership": "private",
+   "source_kind": "college-own",
+   "source": "hnb_hims",
+   "page": 1,
+   "year_label": "Fee structure for various Post Graduate Medical (MD/MS) Programmes for Academic session 2026-27 — 'Tuition Fee per annum for 2026-27'",
+   "period": "per year",
+   "quote": "1. MD – Anatomy / Physiology / Biochemistry / Pharmacology / Microbiology Rs. 5,00,000/- (Full Scholarship) 2. MD – Community Medicine Rs. 5,00,000/- 3. MD – Pathology Rs. 12,50,000/- 4. MD – Immuno Hematology & Blood Transfusion Rs. 15,00,000/- 5. MD – Radiation Oncology, MD – Anesthesiology, MS – Otorhinolaryngology (ENT), MD – Emergency Medicine Rs. 18,00,000/- 6. MS – Ophthalmology, MS – General Surgery, MD – Respiratory Medicine, MD – General Medicine Rs. 25,00,000/- 7. MD – Dermatology, Venereology & Leprosy, MD – Psychiatry, MD – Pediatrics, MS – Obstetrics & Gynecology Rs. 28,00,000/- 8. MS – Orthopedics, MD – Radio-diagnosis Rs. 30,00,000/-",
+   "fees": [
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee per annum for 2026-27 — Rs. 5,00,000/- (Full Scholarship)",
+     "branches": [
+      "MD – Anatomy",
+      "MD – Physiology",
+      "MD – Biochemistry",
+      "MD – Pharmacology",
+      "MD – Microbiology"
+     ],
+     "inr": 500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee per annum for 2026-27",
+     "branches": [
+      "MD – Community Medicine"
+     ],
+     "inr": 500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee per annum for 2026-27",
+     "branches": [
+      "MD – Pathology"
+     ],
+     "inr": 1250000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee per annum for 2026-27",
+     "branches": [
+      "MD – Immuno Hematology & Blood Transfusion"
+     ],
+     "inr": 1500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee per annum for 2026-27",
+     "branches": [
+      "MD – Radiation Oncology",
+      "MD – Anesthesiology",
+      "MS – Otorhinolaryngology (ENT)",
+      "MD – Emergency Medicine"
+     ],
+     "inr": 1800000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee per annum for 2026-27",
+     "branches": [
+      "MS – Ophthalmology",
+      "MS – General Surgery",
+      "MD – Respiratory Medicine",
+      "MD – General Medicine"
+     ],
+     "inr": 2500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee per annum for 2026-27",
+     "branches": [
+      "MD – Dermatology, Venereology & Leprosy",
+      "MD – Psychiatry",
+      "MD – Pediatrics",
+      "MS – Obstetrics & Gynecology"
+     ],
+     "inr": 2800000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee per annum for 2026-27",
+     "branches": [
+      "MS – Orthopedics",
+      "MD – Radio-diagnosis"
+     ],
+     "inr": 3000000,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 210000,
+    "max": 240000,
+    "text": "Hostel Fee: PG Girl's / Boy's Hostel (Unmarried) 2,10,000/- per annum; PG Hostel (Married): 2,40,000/- per annum"
+   },
+   "notes": "One table for all seats (state-quota and All India/Management). Para-clinical/pre-clinical row says 'Rs. 5,00,000/- (Full Scholarship)' — whether the scholarship cancels the fee is not stated. 30% seats (programme-wise) reserved for permanent residents of Uttarakhand. Uttarakhand Private Universities Act, 2023 s.13: 25% tuition rebate for candidates admitted under the Permanent Resident of Uttarakhand quota (rebate given after admissions close, by merit) — the rebated amount is not printed. Other fees (p.2): admission 1,00,000 once; security 2,00,000 (refundable); enrolment 2,000; vaccination 2,000; BLS+ACLS 12,000; university exam fee 50,000 (final year). Payee: Swami Rama Himalayan University. No NRI fee in this file."
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun",
+   "roster": [
+    {
+     "id": 2155,
+     "name": "Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun"
+    }
+   ],
+   "ownership": "private",
+   "source_kind": "college-own",
+   "source": "hnb_sgrr",
+   "page": 1,
+   "year_label": "TUITION FEES FOR POST GRADUATE COURSES - 2026-27 (Tuition Fee per annum in Indian Rupees)",
+   "period": "per year",
+   "quote": "MD-Anatomy … MD-Microbiology: No Tuition Fee | MD-Pathology Rs. 12,50,000/- | MD-Anaesthesia Rs. 17,00,000/- | MD Emergency Medicine, MD Radiation Oncology Rs. 20,00,000/- | MS-Otorhinolaryngology (ENT) Rs. 22,50,000/- | MD-Respiratory Medicine, MS- General Surgery Rs. 25,75,000/- | MD-Psychiatry, MS-Opthamology Rs. 26,75,000/- | MD-General Medicine, MD-Paediatrics Rs. 28,00,000/- | MD-Dermatology Rs. 28,50,000/- | MS-Orthopedics Rs. 31,00,000/- | MS-Obstetrics & Gynaecology Rs. 31,50,000/- | MD-Radio-diagnosis Rs. 32,00,000/-",
+   "fees": [
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee per annum in Indian Rupees — No Tuition Fee",
+     "branches": [
+      "MD-Anatomy",
+      "MD-Physiology",
+      "MD -Bio Chemistry",
+      "MD-Com.Med",
+      "MD- Pharmacolgy",
+      "MD-Microbiology"
+     ],
+     "inr": null,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee per annum in Indian Rupees",
+     "branches": [
+      "MD-Pathology"
+     ],
+     "inr": 1250000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee per annum in Indian Rupees",
+     "branches": [
+      "MD-Anaesthesia"
+     ],
+     "inr": 1700000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee per annum in Indian Rupees",
+     "branches": [
+      "MD Emergency Medicine",
+      "MD Radiation Oncology"
+     ],
+     "inr": 2000000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee per annum in Indian Rupees",
+     "branches": [
+      "MS-Otorhinolaryngology (ENT)"
+     ],
+     "inr": 2250000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee per annum in Indian Rupees",
+     "branches": [
+      "MD-Respiratory Medicine",
+      "MS- General Surgery"
+     ],
+     "inr": 2575000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee per annum in Indian Rupees",
+     "branches": [
+      "MD-Psychiatry",
+      "MS-Opthamology"
+     ],
+     "inr": 2675000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee per annum in Indian Rupees",
+     "branches": [
+      "MD-General Medicine",
+      "MD-Paediatrics"
+     ],
+     "inr": 2800000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee per annum in Indian Rupees",
+     "branches": [
+      "MD-Dermatology"
+     ],
+     "inr": 2850000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee per annum in Indian Rupees",
+     "branches": [
+      "MS-Orthopedics"
+     ],
+     "inr": 3100000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee per annum in Indian Rupees",
+     "branches": [
+      "MS-Obstetrics & Gynaecology"
+     ],
+     "inr": 3150000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:all seats (no quota split printed)",
+     "seat_as_printed": "Tuition Fee per annum in Indian Rupees",
+     "branches": [
+      "MD-Radio-diagnosis"
+     ],
+     "inr": 3200000,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 277200,
+    "max": 277200,
+    "text": "Hostel Fee (per annum) 2,77,200/- (Mess Fee (per annum) 2,77,200/- separately)"
+   },
+   "notes": "Six non-clinical branches print 'No Tuition Fee' (recorded with inr null and that wording in seat_as_printed — the college states no tuition; it is not a missing figure; our DB reads 0 as 'not published', so decide how to store it). Text extraction mis-paired rows; the figures here are read from the page image. 'Other Fee details will be same for State Quota/ All India Management Quota/ NRI Quota': admission 1,00,000 once; security 2,00,000 refundable; exam fee 20,000 a year; library/lab/misc 20,000; grand total of other fees 9,05,400. NRI tuition on the same page is labelled 'TUITION FEES FOR POST GRADUATE COURSES FOR NRI CANDIDATES - 2025-26' (USD, entire course incl. caution deposit 200 USD: Anaesthesia 1,52,000 … Radio-diagnosis 2,20,000) — not used (2025-26 label). Uttarakhand Private Universities Act, 2023 s.13: 25% tuition rebate for candidates admitted under the Permanent Resident of Uttarakhand quota (rebate given after admissions close, by merit) — the rebated amount is not printed."
+  },
+  {
+   "college": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun (a constituent college of Ras Bihari Bose Subharti University)",
+   "roster": [
+    {
+     "id": 2156,
+     "name": "Gautam Buddha Chikitsa Mahavidyalaya, Dehradun"
+    }
+   ],
+   "ownership": "private",
+   "source_kind": "college-own",
+   "source": "hnb_gbcm",
+   "page": 1,
+   "year_label": "Tuition Fee for Post Graduate Courses (2026-2027): Tuition Fee per annum in Indian Rupees; NRI: 'Tuition Fee for Post Graduate Courses for NRI Candidates (2026-2027)' (p.3)",
+   "period": "per year",
+   "quote": "1. MS- Ophthalmology Rs. 25,75,000/- 2. MS- Orthopedics Rs. 30,00,000/- 3. MS- Obstetrics & Gynaecology Rs. 30,50,000/- 4. MS- General Surgery Rs. 24,75,000/- 5. MD- Pediatrics Rs. 27,00,000/- 6. MD- Radio Diagnosis Rs. 31,00,000/- 7. MD- Dermatology Venerology Leprosy Rs. 27,50,000/- 8. MD- Anesthesia Rs. 17,00,000/- 9. MD- General Medicine Rs. 27,00,000/- | NRI (p.3): MD- General Medicine Rs. 55,17,600 $57,000/-; MD- Radio Diagnosis Rs. 72,60,000 $75,000/-; MD- Dermatology Venerology & Leprosy Rs. 56,62,800 $58,500/-",
+   "fees": [
+    {
+     "seat": "Other:State Quota and All India Management Quota (no split printed)",
+     "seat_as_printed": "Tuition Fee per annum in Indian Rupees (2026-2027)",
+     "branches": [
+      "MS- Ophthalmology"
+     ],
+     "inr": 2575000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:State Quota and All India Management Quota (no split printed)",
+     "seat_as_printed": "Tuition Fee per annum in Indian Rupees (2026-2027)",
+     "branches": [
+      "MS- Orthopedics"
+     ],
+     "inr": 3000000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:State Quota and All India Management Quota (no split printed)",
+     "seat_as_printed": "Tuition Fee per annum in Indian Rupees (2026-2027)",
+     "branches": [
+      "MS- Obstetrics & Gynaecology"
+     ],
+     "inr": 3050000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:State Quota and All India Management Quota (no split printed)",
+     "seat_as_printed": "Tuition Fee per annum in Indian Rupees (2026-2027)",
+     "branches": [
+      "MS- General Surgery"
+     ],
+     "inr": 2475000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:State Quota and All India Management Quota (no split printed)",
+     "seat_as_printed": "Tuition Fee per annum in Indian Rupees (2026-2027)",
+     "branches": [
+      "MD- Pediatrics"
+     ],
+     "inr": 2700000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:State Quota and All India Management Quota (no split printed)",
+     "seat_as_printed": "Tuition Fee per annum in Indian Rupees (2026-2027)",
+     "branches": [
+      "MD- Radio Diagnosis"
+     ],
+     "inr": 3100000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:State Quota and All India Management Quota (no split printed)",
+     "seat_as_printed": "Tuition Fee per annum in Indian Rupees (2026-2027)",
+     "branches": [
+      "MD- Dermatology Venerology Leprosy"
+     ],
+     "inr": 2750000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:State Quota and All India Management Quota (no split printed)",
+     "seat_as_printed": "Tuition Fee per annum in Indian Rupees (2026-2027)",
+     "branches": [
+      "MD- Anesthesia"
+     ],
+     "inr": 1700000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Other:State Quota and All India Management Quota (no split printed)",
+     "seat_as_printed": "Tuition Fee per annum in Indian Rupees (2026-2027)",
+     "branches": [
+      "MD- General Medicine"
+     ],
+     "inr": 2700000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "Tuition Fee in INR for per year / Tuition Fee in USD Dollar for per year (NRI, 2026-2027)",
+     "branches": [
+      "MD- General Medicine"
+     ],
+     "inr": 5517600,
+     "usd": 57000,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "Tuition Fee in INR for per year / Tuition Fee in USD Dollar for per year (NRI, 2026-2027)",
+     "branches": [
+      "MD- Radio Diagnosis"
+     ],
+     "inr": 7260000,
+     "usd": 75000,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "Tuition Fee in INR for per year / Tuition Fee in USD Dollar for per year (NRI, 2026-2027)",
+     "branches": [
+      "MD- Dermatology Venerology & Leprosy"
+     ],
+     "inr": 5662800,
+     "usd": 58500,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 180000,
+    "max": 180000,
+    "text": "Hostel Fee (Per Annum) Double Occupancy Rs. 1,80,000/- (Mess Fee (Per Annum) Rs. 1,80,000/- separately)"
+   },
+   "notes": "Letterhead, Ref. No. PO/GBCM/2026/10/…, NRI page dated 14.10.2026, signed Dr. Anil Kumar Mehta, Principal & Dean. NRI page prints both INR and USD per year ('*USD – 96.80/- 08-10-2026'). 25% of PG seats reserved for permanent residents of Uttarakhand (state quota). Uttarakhand Private Universities Act, 2023 s.13: 25% tuition rebate for candidates admitted under the Permanent Resident of Uttarakhand quota (rebate given after admissions close, by merit) — the rebated amount is not printed. 'One year compulsory service bond of Rs. 20 lacs for Senior Residency in Institution or hilly region of Uttarakhand'. Other fees: admission 1,00,000 once; security 2,00,000 refundable; exam 20,000 a year; enrolment 1,500."
+  }
+ ],
+ "government_all": [],
+ "not_published": [
+  {
+   "college": "Veer Chandra Singh Garhwali Govt. Institute of Medical Science & Research, Srinagar (Pauri Garhwal)",
+   "roster_id": 1535,
+   "latest_seen": "No 2026-27 document among the approved files. The portal's 'Govt college Fee and Go' file (signed by its Principal/Dean) holds the 2013 GO (MD/MS 60,000.00 with bond / 5,00,000.00 without, from session 2013-14) and the 2020 GO (non-clinical ₹ 1,00,000/- a year from 2020-21) — standing orders without a 2026-27 label, not used."
+  }
+ ],
+ "candidate_files_not_downloaded": [
+  {
+   "college": "VCSG GIMS&R, Srinagar (govt)",
+   "url": "https://vcsgsrinagar.org/p-contents/uploads/SKuvQsYzDdrf7I8k6Vnwq0HUi.pdf",
+   "title": "Fee Details for MD/MS Seats",
+   "bytes": 313403,
+   "date": "LM 2026-04-24",
+   "why": "the college's own MD/MS fee file; year label unknown"
+  },
+  {
+   "college": "Shri Guru Ram Rai Institute of Medical & Health Sciences (private)",
+   "url": "https://www.sgrru.ac.in/uploads/Prospectus-SGRR-2026-2027.pdf",
+   "title": "Prospectus-SGRR-2026-2027",
+   "bytes": 40839323,
+   "date": "LM 2026-04-02",
+   "why": "may carry a 2026-27 NRI tuition table (the SGRR fee letter's NRI table says 2025-26)"
+  }
+ ]
+}

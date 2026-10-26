@@ -1,0 +1,592 @@
+{
+ "state": "Kerala",
+ "checked": "2026-10-25",
+ "files": [
+  {
+   "id": "cee-kerala-pg2026",
+   "url": "https://cee.kerala.gov.in/pgm2026/pdf/Prospectus.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/east/02_cee_kerala_prospectus/pgm2026_prospectus.pdf",
+   "title": "Prospectus for admission to Medical PG Degree Courses 2026-27 (appended to G.O.(Ms)No.313/2026/H&FWD dated 04-10-2026)",
+   "issuer": "Government of Kerala, Health & Family Welfare (S) Department (via CEE Kerala)",
+   "bytes": 2060305,
+   "scanned": false
+  },
+  {
+   "id": "gmc-thrissur-annexure",
+   "url": "https://gmctcr.kerala.gov.in/files/content/2026/PG_Prospectus_2026_annexure.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/east/03_gmc_thrissur_annexure/PG_Prospectus_2026_annexure.pdf",
+   "title": "'DOWNLOAD Official PG Admission Circular (2026)' — same text as the CEE prospectus (G.O.(Ms)No.313/2026/H&FWD)",
+   "issuer": "Government of Kerala (copy hosted by GMC Thrissur)",
+   "bytes": 2092677,
+   "scanned": false
+  },
+  {
+   "id": "rcc-md-2026-27",
+   "url": "https://www.rcctvm.gov.in/uploads/Downloadtemsuppy/MD%20PROSPECTUS-2026-2027-17919576781742601299.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/east/09_rcc/MD_PROSPECTUS-2026-2027.pdf",
+   "title": "Regional Cancer Centre, Thiruvananthapuram — Admissions to Post Graduate MD Courses 2026-27",
+   "issuer": "Regional Cancer Centre (Director, 25/08/2026)",
+   "bytes": 326792,
+   "scanned": false
+  },
+  {
+   "id": "sutams-pg-2026-27",
+   "url": "https://sutams.edu.in/wp-content/uploads/2026/10/SUTAMS_PG_Fee_Structure_2026_2027.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/east/05_sutams/SUTAMS_PG_Fee_Structure_2026_2027.pdf",
+   "title": "SUTAMS PG Admission Fee Structure 2026–2027",
+   "issuer": "SUTAMS (Principal)",
+   "bytes": 30041,
+   "scanned": false
+  },
+  {
+   "id": "amrita-kochi-mdms-2026-27",
+   "url": "https://webfiles.amrita.edu/2026/04/md-ms-fee-structure-2026-2027-kochi.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/east/06_amrita/md-ms-fee-structure-2026-2027-kochi.pdf",
+   "title": "AMRITA SCHOOL OF MEDICINE, KOCHI — M.D/ M.S 2026-2027 FEE STRUCTURE",
+   "issuer": "Amrita Vishwa Vidyapeetham (deemed university)",
+   "bytes": 251244,
+   "scanned": false
+  }
+ ],
+ "html": [
+  {
+   "id": "gmc-thrissur-pg-2026-27",
+   "url": "https://gmctcr.kerala.gov.in/content?cid=5&title=PG+Admissions+2026-27",
+   "snapshot": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/east/html/gmc_thrissur_pg_2026_27.txt",
+   "title": "College Academics - PG Admissions 2026-27 (GMC Thrissur)"
+  }
+ ],
+ "colleges": [
+  {
+   "college": "AMRITA SCHOOL OF MEDICINE, KOCHI",
+   "roster": [
+    {
+     "id": 1238,
+     "name": "Amrita School of Medicine, Elamkara, Kochi"
+    }
+   ],
+   "ownership": "deemed",
+   "source_kind": "university-own",
+   "source": "amrita-kochi-mdms-2026-27",
+   "page": 1,
+   "year_label": "M.D/ M.S 2026-2027 FEE STRUCTURE",
+   "period": "per year",
+   "quote": "Annual Tuition Fees | General Category (in INR) | NRI Category (in USD) … MD GENERAL MEDICINE 41,00,000 | 85,000 … MD RADIO DIAGNOSIS 52,00,000 | 92,000 … MD ANATOMY Full Scholarship",
+   "fees": [
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Tuition Fees — General Category (in INR) [MCC deemed 'General' = paid seats]",
+     "branches": [
+      "MD ANATOMY (= MD Anatomy)"
+     ],
+     "inr": null,
+     "usd": null,
+     "maximum": false,
+     "as_printed": "Full Scholarship"
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Tuition Fees — General Category (in INR)",
+     "branches": [
+      "MD PHYSIOLOGY (= MD Physiology)"
+     ],
+     "inr": 600000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Tuition Fees — General Category (in INR)",
+     "branches": [
+      "MD BIOCHEMISTRY (= MD Bio-Chemistry)",
+      "MD PHARMACOLOGY (= MD Pharmacology)"
+     ],
+     "inr": 500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Tuition Fees — General Category (in INR)",
+     "branches": [
+      "MD FORENSIC MEDICINE (= MD Forensic Medicine)"
+     ],
+     "inr": 660000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Tuition Fees — General Category (in INR)",
+     "branches": [
+      "MD COMMUNITY MEDICINE (= MD Social & Preventive Medicine)"
+     ],
+     "inr": 800000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Tuition Fees — General Category (in INR)",
+     "branches": [
+      "MD MICROBIOLOGY (= MD Microbiology)"
+     ],
+     "inr": 900000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Tuition Fees — General Category (in INR)",
+     "branches": [
+      "MD PATHOLOGY (= MD Pathology)"
+     ],
+     "inr": 1600000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Tuition Fees — General Category (in INR)",
+     "branches": [
+      "MD EMERGENCY MEDICINE (= MD Emergency Medicine)",
+      "MD PHYSICAL MEDICINE & REHABILITATION (= MD Physical Medicine & Rehabilitation)",
+      "MD PSYCHIATRY (= MD Psychiatry)",
+      "MS OPTHALMOLOGY (= MS Ophthalmology)",
+      "MS OTORHINOLARYNGOLOGY (ENT) (= MS ENT)"
+     ],
+     "inr": 2600000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Tuition Fees — General Category (in INR)",
+     "branches": [
+      "MD ANAESTHESIOLOGY (= MD Anaesthesiology)",
+      "MD RADIATION ONCOLOGY (= MD Radiation Oncology)",
+      "MD RESPIRATORY MEDICINE (= MD Tuberculosis & Respiratory Diseases)"
+     ],
+     "inr": 3000000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Tuition Fees — General Category (in INR)",
+     "branches": [
+      "MD GERIATRICS (= MD Geriatrics)"
+     ],
+     "inr": 2500000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Tuition Fees — General Category (in INR)",
+     "branches": [
+      "MD NUCLEAR MEDICINE (= MD Nuclear Medicine)",
+      "MD PAEDIATRICS (= MD Paediatrics)",
+      "MD GENERAL MEDICINE (= MD General Medicine)"
+     ],
+     "inr": 4100000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Tuition Fees — General Category (in INR)",
+     "branches": [
+      "MD DERMATOLOGY (= MD Dermatology, Venereology & Leprosy)",
+      "MS ORTHOPAEDICS (= MS Orthopaedics)"
+     ],
+     "inr": 4600000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Tuition Fees — General Category (in INR)",
+     "branches": [
+      "MD PALLIATIVE MEDICINE (= MD Palliative Medicine)"
+     ],
+     "inr": 2100000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Tuition Fees — General Category (in INR)",
+     "branches": [
+      "MS GENERAL SURGERY (= MS General Surgery)",
+      "MS OBSTETRICS & GYNAECOLOGY (= MS Obstetrics & Gynaecology)"
+     ],
+     "inr": 3900000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Mgmt",
+     "seat_as_printed": "Annual Tuition Fees — General Category (in INR)",
+     "branches": [
+      "MD RADIO DIAGNOSIS (= MD Radio Diagnosis)"
+     ],
+     "inr": 5200000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "Annual Tuition Fees — NRI Category (in USD)",
+     "branches": [
+      "MD PAEDIATRICS (= MD Paediatrics)",
+      "MD GENERAL MEDICINE (= MD General Medicine)",
+      "MS ORTHOPAEDICS (= MS Orthopaedics)"
+     ],
+     "inr": null,
+     "usd": 85000,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "Annual Tuition Fees — NRI Category (in USD)",
+     "branches": [
+      "MD DERMATOLOGY (= MD Dermatology, Venereology & Leprosy)",
+      "MD RADIO DIAGNOSIS (= MD Radio Diagnosis)"
+     ],
+     "inr": null,
+     "usd": 92000,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "Annual Tuition Fees — NRI Category (in USD)",
+     "branches": [
+      "MS GENERAL SURGERY (= MS General Surgery)",
+      "MS OBSTETRICS & GYNAECOLOGY (= MS Obstetrics & Gynaecology)"
+     ],
+     "inr": null,
+     "usd": 84000,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 62000,
+    "max": 62000,
+    "text": "Hostel Fees (in INR) 62,000 (period not stated)"
+   },
+   "notes": "Columns also printed: 'First Year Other Fees (in INR)' 1,12,800 for every course except MS OTORHINOLARYNGOLOGY (ENT) 1,42,800 and MD ANATOMY 'Full Scholarship'; 'Admission Processing Charge (in INR)' 5,000 for all. MD ANATOMY tuition printed as 'Full Scholarship' (inr left null). NRI tuition is in USD per year (printed under 'Annual Tuition Fees'); NRI seats only in Paediatrics, General Medicine, Dermatology, General Surgery, OBG, Orthopaedics, Radio Diagnosis. Read from the rendered page (text layer garbled)."
+  },
+  {
+   "college": "Sree Uthradom Thirunal Academy of Medical Sciences (SUTAMS)",
+   "roster": [
+    {
+     "id": 1989,
+     "name": "Sree Uthradom Thirunal Academy of Medical Sciences, Trivandrum"
+    }
+   ],
+   "ownership": "private",
+   "source_kind": "college-own",
+   "source": "sutams-pg-2026-27",
+   "page": 1,
+   "year_label": "PG Admission 2026–2027 Fee Structure",
+   "period": "unstated",
+   "quote": "1. Tuition Fee | Course | General Fee | NRI Quota | PG Clinical | 19,42,235.00 | 40,81,014.00 | PG Non-Clinical | 11,79,215.00 | 40,81,014.00 | Special Fee (General & NRI) | 1,02,087",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "General Fee — PG Clinical",
+     "branches": [
+      "PG Clinical (branches not listed)"
+     ],
+     "inr": 1942235,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "General Fee — PG Non-Clinical",
+     "branches": [
+      "PG Non-Clinical (branches not listed)"
+     ],
+     "inr": 1179215,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Quota — PG Clinical",
+     "branches": [
+      "PG Clinical (branches not listed)"
+     ],
+     "inr": 4081014,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "NRI",
+     "seat_as_printed": "NRI Quota — PG Non-Clinical",
+     "branches": [
+      "PG Non-Clinical (branches not listed)"
+     ],
+     "inr": 4081014,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": 150000,
+    "max": 150000,
+    "text": "2. Hostel Fee | General & NRI | 1,50,000 (Fee Concession (FC) 96,000); non-refundable"
+   },
+   "notes": "College's own notice (signed 'Principal SUTAMS'), but it states: 'The above fees are fixed by the Fee Regulatory Committee (FRC). If the fees are revised in the future, students shall be required to pay the revised fees as per the FRC order.' Period not stated (tuition shown as 'Tuition Fee'; section 3 is 'Total Fees Payable at the Time of Admission': General Clinical 20,44,322 / with hostel 21,94,322; NRI 41,83,101 / 43,33,101; Non-Clinical General 12,81,302 / 14,31,302). Special Fee 1,02,087 (General & NRI); Fee Concession (FC) 11,000. Clinical vs non-clinical branch split is not listed in the notice."
+  },
+  {
+   "college": "REGIONAL CANCER CENTRE, THIRUVANANTHAPURAM",
+   "roster": [
+    {
+     "id": 787,
+     "name": "Regional Cancer Centre, Thiruvanthapuram"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "rcc-md-2026-27",
+   "page": 1,
+   "year_label": "ADMISSIONS TO POST GRADUATE MD COURSES 2026-27",
+   "period": "per year",
+   "quote": "MD RADIOTHERAPY … MD ANAESTHESIOLOGY | Tuition Fees: Rs. 3,00,000/year | Refundable Caution deposit: Rs. 10,000/- | University Fees: As applicable to KUHS, Thrissur (p.3/p.19: 'Tuition Fee : Rs. 3,00,000/- per annum')",
+   "fees": [
+    {
+     "seat": "Other:all seats (AIQ via DGHS and State Quota via Kerala CEE)",
+     "seat_as_printed": "Tuition Fees (seats: ALL INDIA QUOTA (DGHS Counselling) and STATE QUOTA (Kerala CEE Counselling))",
+     "branches": [
+      "MD RADIOTHERAPY (= MD Radiation Oncology)",
+      "MD ANAESTHESIOLOGY (= MD Anaesthesiology)"
+     ],
+     "inr": 300000,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": null,
+   "notes": "Seat table lists MD Radiotherapy 4 AIQ + 4 State and MD Anaesthesiology 3 + 3; our roster also has MD Pathology at RCC, which this prospectus does not list. Text says 'will be made from AIPGMEE 2025 and Kerala State PGME 2026' (printed so). The Kerala govt prospectus (G.O. 313/2026, p.5) says 'The fee structure of RCC may be referred in RCC web site'."
+  },
+  {
+   "college": "Government Medical College, Thrissur (own page)",
+   "roster": [
+    {
+     "id": 11,
+     "name": "Government Medical College, Thrissur"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "gmc-thrissur-pg-2026-27",
+   "page": null,
+   "year_label": "PG Admissions 2026-27 — 'Fee to be Remitted at the Time of Admission'",
+   "period": "first year",
+   "quote": "Tution Fee ₹ 57,890 | Miscellaneous Fees ₹ 11,580 | Caution Deposit ₹ 11,580 | University Fees ₹ 4,070 | Verification Fee ₹ 100 | TOTAL ₹ 85,220",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "MD/MS (₹) — Tution Fee",
+     "branches": "*",
+     "inr": 57890,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": null,
+   "notes": "Agrees with the state prospectus (tuition 57,890); adds University Fees ₹4,070 and Verification Fee ₹100 → total at admission ₹85,220."
+  }
+ ],
+ "government_all": [
+  {
+   "scope": "All Kerala Government Medical Colleges (Thiruvananthapuram, Kollam/Parippally, Alappuzha, Kottayam, Ernakulam, Thrissur, Manjeri, Kozhikode, Kannur/Pariyaram) and — as addressee of the order — the Institute of Integrated Medical Sciences, Palakkad. NOT covered: Regional Cancer Centre (own prospectus, above) and Malabar Cancer Centre, Thalassery (not mentioned in the fee clause).",
+   "roster": [
+    {
+     "id": 23,
+     "name": "Medical College, Thiruvananthapuram"
+    },
+    {
+     "id": 172,
+     "name": "Government Medical College, Parippally, Kollam"
+    },
+    {
+     "id": 32,
+     "name": "TD Medical College, Alleppey (Allappuzha)"
+    },
+    {
+     "id": 41,
+     "name": "Government Medical College, Kottayam"
+    },
+    {
+     "id": 152,
+     "name": "Government Medical College, Ernakulam"
+    },
+    {
+     "id": 11,
+     "name": "Government Medical College, Thrissur"
+    },
+    {
+     "id": 99,
+     "name": "Government Medical College, Manjeri"
+    },
+    {
+     "id": 1,
+     "name": "Government Medical College, Kozhikode, Calicut"
+    },
+    {
+     "id": 77,
+     "name": "Government Medical College, Pariyaram, Kannur (Prev. Academy of Medical Sciences, Pariyaram, Kannur)"
+    },
+    {
+     "id": 1582,
+     "name": "Government Medical College (Institute of Integrated Medical Sciences), Yakkara, Palakkad"
+    }
+   ],
+   "source": "cee-kerala-pg2026",
+   "page": 5,
+   "year_label": "Prospectus for admission to the Medical Post Graduate Degree Courses … for the academic session 2026-27 (G.O.(Ms)No.313/2026/H&FWD dated 04-10-2026)",
+   "quote": "3.1 The fee structure given is applicable only for Government Medical Colleges as given in G.O.(Ms)No.92/2023/H&FWD,dated:19.04.2023 … 1 Annual tuition Fees Rs. 57,890/- | 2 Annual miscellaneous Fees Rs.11,580/- | Caution deposit (refundable) Rs. 11,580/- | 4 University Fees As applicable | 5 Total 81,050/-(Including annual misc.fee& C.D)",
+   "fees": [
+    {
+     "seat": "Gen",
+     "seat_as_printed": "PG Degree courses — Annual tuition Fees",
+     "branches": "*",
+     "inr": 57890,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "notes": "Per year ('Annual'). Printed note: 'Fee is subject to change as per the Government Orders issued in this regard'. 3.2: 'The Fee structure for the Post Graduate Medical Degree seats of Self Financing Medical Colleges will be issued separately before the Centralized Allotment Process' (not yet issued on 25 Oct; and in any case not usable for private colleges under the owner's rule). The GMC Thrissur annexure file is the same document. IIMS Palakkad inclusion inferred from the order's copy list ('The Director, Institute of Integrated Medical Sciences, Palakkad') — verify. AIQ seats in these colleges: the prospectus is for state-quota admission; Thrissur's own page gives the same tuition without a quota distinction."
+  }
+ ],
+ "not_published": [
+  {
+   "college": "Malabar Cancer Centre PGIOSR, Thalassery",
+   "roster_id": 892,
+   "latest_seen": "No 2026-27 PG fee. Latest: CEE 'Govt. Order regarding Fee Structure of Malabar Cancer Centre' (PGM 2025, 03-01-2026) https://cee.kerala.gov.in/pgm2025/noti_view/1077/Upload1; own fee page lists B.Sc. Nursing only"
+  },
+  {
+   "college": "Al-Azhar Medical College, Thodupuzha",
+   "roster_id": 1987,
+   "latest_seen": "Nothing found on aamc.org.in / alazharthodupuzha.org (prospectus = Google Drive file, year unknown)"
+  },
+  {
+   "college": "Amala Institute of Medical Sciences",
+   "roster_id": 1976,
+   "latest_seen": "amalaims.org/admission: 'Fees for all courses will be fixed by the Admission and Fee Regulatory Committee, Kerala.' — no MD/MS figure"
+  },
+  {
+   "college": "Azeezia Institute of Medical Science",
+   "roster_id": 1990,
+   "latest_seen": "azeezia.com behind Cloudflare challenge (403); not read"
+  },
+  {
+   "college": "Believers Church Medical College",
+   "roster_id": 1991,
+   "latest_seen": "bcmch.edu.in/fee-details (Google Doc, 'Last updated on 30 Sep 2025'): latest '2024 Batch' — Tuition Non NRI 18,49,748, NRI 38,86,680 (clinical)"
+  },
+  {
+   "college": "Dr Moopen's Medical College (ex-DM WIMS), Wayanad",
+   "roster_id": 1985,
+   "latest_seen": "drmoopensmc.ac.in/pg-admission/ 'PG 2025 Batch Fees Structure': State Merit tuition 1942235.00, NRI 4081014.00, Special Fees & Accommodation 252787.00"
+  },
+  {
+   "college": "Dr Somervell Memorial CSI Medical College",
+   "roster_id": 1983,
+   "latest_seen": "smcsimch.ac.in — no PG fee item"
+  },
+  {
+   "college": "Jubilee Mission Medical College",
+   "roster_id": 1977,
+   "latest_seen": "jmmcri.org/admissions.html — only MBBS 2026-27 notification; no PG fee"
+  },
+  {
+   "college": "KMCT Medical College",
+   "roster_id": 1981,
+   "latest_seen": "kmctmedicalcollege.org — fees menu is a payment portal only"
+  },
+  {
+   "college": "Malabar Medical College",
+   "roster_id": 1982,
+   "latest_seen": "college website not located (web-search quota exhausted)"
+  },
+  {
+   "college": "MOSC Medical College, Kolenchery",
+   "roster_id": 1979,
+   "latest_seen": "college website not located (moscmm.org is the church/hospital site)"
+  },
+  {
+   "college": "MES Medical College",
+   "roster_id": 1986,
+   "latest_seen": "candidate file 'Fee Structure' (Fee-Structure-2026.pdf, 27 Aug 2026) not downloaded — may be MBBS"
+  },
+  {
+   "college": "Mount Zion Medical College",
+   "roster_id": 1993,
+   "latest_seen": "mountzionmedicalcollege.com — no fee links"
+  },
+  {
+   "college": "PK Das Institute of Medical Sciences",
+   "roster_id": 1984,
+   "latest_seen": "pkdims.com renders blank; unverified"
+  },
+  {
+   "college": "Pushpagiri Institute of Medical Sciences",
+   "roster_id": 1978,
+   "latest_seen": "pushpagiri.in (group/hospital site) — nothing"
+  },
+  {
+   "college": "Sree Gokulam Medical College",
+   "roster_id": 1988,
+   "latest_seen": "college website not located"
+  },
+  {
+   "college": "Sree Narayana Institute of Medical Sciences",
+   "roster_id": 1992,
+   "latest_seen": "snims.org — nothing"
+  },
+  {
+   "college": "Travancore Medical College",
+   "roster_id": 1980,
+   "latest_seen": "college website not located"
+  }
+ ],
+ "candidate_files_not_downloaded": [
+  {
+   "college": "MES Medical College, Perinthalmanna",
+   "url": "https://www.mesmedicalcollege.edu.in/wp-content/uploads/2026/08/Fee-Structure-2026.pdf",
+   "title": "Fee Structure",
+   "bytes": 408307,
+   "date": "Thu, 27 Aug 2026",
+   "why": "college's own file, '2026' in name; unknown whether PG or MBBS"
+  },
+  {
+   "college": "Government Medical College, Kannur (Pariyaram)",
+   "url": "https://gmckannur.edu.in/news/pgan26.pdf",
+   "title": "Admission Notice (PG 2026)",
+   "bytes": 970433,
+   "date": "Thu, 15 Oct 2026",
+   "why": "college's own PG 2026 admission notice; may state fees (state figure already covers it)"
+  },
+  {
+   "college": "Medical College, Thiruvananthapuram",
+   "url": "https://tmc.kerala.gov.in/uploads/forms/Notice%20(2)_20261014_094339.pdf",
+   "title": "GMCT Academic Medical PGMDMS Admission 202627 Instructions to candidates",
+   "bytes": 113278,
+   "date": "Wed, 14 Oct 2026",
+   "why": "college's own 2026-27 PG notice; may state fees incl. university fee"
+  },
+  {
+   "college": "Amrita School of Medicine, Kochi",
+   "url": "https://webfiles.amrita.edu/2026/10/md-ms-instructions-guideliness-admission-2026-kochi.pdf",
+   "title": "MD/MS instructions & guidelines admission 2026 (Kochi)",
+   "bytes": 0,
+   "date": "Fri, 23 Oct 2026",
+   "why": "may carry refund/hostel/other-fee detail; size not given by HEAD"
+  }
+ ]
+}

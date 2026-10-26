@@ -588,6 +588,33 @@ MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within mi
   in dollars ($ is the fee, ₹ = $ × the rate cell); a private college's is in rupees ($ = ₹ ÷ rate). The rate is one
   yellow cell (`--rate`, 96 on 2026-10-25) and every conversion is a formula on it; recalculate in Excel (COM) before
   handing the file over — there is no LibreOffice here — and check no cell's displayed text is ####.
+  **Every other state (owner, 2026-10-25: "nation wide har state ke sab colleges k data update karo"; applied 2026-10-26).**
+  The rule tightened twice that day: "fra se koi bhi fees nhi lagegi, sirf official college fees hi mani jayegi", and asked
+  about the counselling authorities' college-wise lists (KEA, DME MP's report, the Rajasthan board's), the owner chose
+  **"only college's own notice"**. So a private or deemed college's fee comes only from its own (or its university's) 2026-27
+  notice or web page — a file it issued counts even when the authority hosts it — and a government college's from the
+  state's official notice/prospectus or its own; never FRA, a fee committee, a fee G.O. for private colleges, or a compiled
+  list; only figures labelled 2026-27; an older notice never fills a gap. Pipeline: `scripts/data/fees_extract_2026_27/<state>.json`
+  (what was read off each notice: college + our institute ids, file/page, the year label as printed, the exact words, each
+  column's fee per branch) → `python scripts/data/make_fees_official_2026_27.py <extract>` (quota code → column per state,
+  branch names → `courses.name` via `pg_course_names.json`; it refuses a state list for a non-government college and
+  holds back anything it cannot place exactly) → `node --env-file=.env.local scripts/apply_state_fees.mjs
+  scripts/data/fees_official_<state>_2026_27.json [--detail] [--backup <f> --apply] [--no-refresh]` (dry run by default;
+  undo with `apply_official_fees.mjs --restore <backup>`). Conventions it enforces: **a government fee is tuition only**
+  (other heads in `fee_source`, as in Maharashtra — Kerala ₹69,470 → ₹57,890, MP ₹1,01,500 → ₹1,00,000, TN ₹50,000 → ₹40,000,
+  DU ₹13,000 of its ₹19,500); "No Tuition Fee" / "Full scholarship" / a 100% waiver blanks the row with that reason (a ₹0
+  reads as "not published"); a fee "after deduction of fee concession" is the one stored; one fee printed for "all seats"
+  prices every column but NRI; lakh notation is written out; a Karnataka private college's "private seats"
+  (`KAR Priv Seats-Open/GMP`) are their own column; Karnataka government colleges' own figures are their AIQ seats' (KEA
+  sets the state-quota fee); a fee whose period is a whole course, a month, six months, a first-year total or an
+  amount paid at admission is **held back** (owner chose to leave those out: MAHE's 3-year totals, NIMS ₹6,000/month,
+  Punjab's six-month instalment, Uttarakhand's with/without-bond pair, BMCRI, RIMS Imphal, four deemed NRI course fees).
+  **Applied 2026-10-26:** 4,275 rows at 136 colleges in 21 states/UTs (backups `D:/Admisson Hands/fee_backups/fees_before_2026_27_<state>.json`).
+  Not yet published anywhere on 2026-10-25: KEA's fee list, Tamil Nadu private colleges, UP's government and most private
+  colleges, Haryana, Odisha, J&K, Jharkhand, most of Bihar, Gujarat government/GMERS, Rajasthan and West Bengal government
+  colleges, Assam, Goa (only 2025-26), and **DNB** (no 2026 amount is printed by NBEMS or MCC — DNB rows untouched).
+  Odd but as printed: Malla Reddy heads its fees "Annual" yet says "entire course in 3 instalments"; Bhaarath and Sree
+  Balaji print ₹75 L a year for Radiology and DVL; GAIMS's management fee for Anatomy/Physiology is below its GQ fee.
 
 ## Site structure the admin owns
 

@@ -1,0 +1,61 @@
+{
+ "checked": "2026-10-25",
+ "files": [
+  {
+   "id": "gmch32-mdms-2026",
+   "url": "https://gmch.gov.in/sites/default/files/documents/approved%20prospectus.pdf",
+   "path": "C:/Users/91971/AppData/Local/Temp/claude/d--Admisson-Hands-Admission-Hands-main/752fcb98-3c4c-4ffb-94d7-3e9ac2441526/scratchpad/dl/north/11_gmch32/GMCH_MDMS_Prospectus_2026.pdf",
+   "title": "PROSPECTUS For ADMISSION TO MD/MS COURSES (SESSION 2026)",
+   "issuer": "Government Medical College & Hospital, Sector-32, Chandigarh",
+   "bytes": 1145561,
+   "scanned": false
+  }
+ ],
+ "html": [],
+ "colleges": [
+  {
+   "college": "Government Medical College & Hospital, Sector-32, Chandigarh",
+   "roster": [
+    {
+     "id": 3,
+     "name": "Government Medical College, Chandigarh"
+    }
+   ],
+   "ownership": "government",
+   "source_kind": "college-own",
+   "source": "gmch32-mdms-2026",
+   "page": 28,
+   "year_label": "PROSPECTUS For ADMISSION TO MD/MS COURSES (SESSION 2026) — 'PG-11: Fee'",
+   "period": "per year (1st, 2nd and 3rd year printed; 'fees' = 1st year)",
+   "quote": "Tuition Fee Payable by the Junior Residents … First year: Rs. 22,000 per annum+ University charges = Rs. 34,500 (approx.) Second year: Rs. 24,500 per annum+ University charges = Rs. 32,500 (approx.) Third year: Rs. 27,500 per annum + University charges = Rs. 36,000 (approx.)",
+   "fees": [
+    {
+     "seat": "AIQ",
+     "seat_as_printed": "Tuition Fee Payable by the Junior Residents — First year",
+     "branches": "*",
+     "inr": 22000,
+     "usd": null,
+     "maximum": false
+    },
+    {
+     "seat": "Gen",
+     "seat_as_printed": "Tuition Fee Payable by the Junior Residents — First year (State Quota / Chandigarh)",
+     "branches": "*",
+     "inr": 22000,
+     "usd": null,
+     "maximum": false
+    }
+   ],
+   "hostel": {
+    "min": null,
+    "max": null,
+    "text": "'Other fees, funds and hostel charges payable by the selected candidates shall be separate as per orders issued by GMCH/Chandigarh Administration/Panjab University'"
+   },
+   "notes": "One fee for all JRs; the refund clause names both State Quota/Chandigarh and AIQ candidates. 2nd year 24,500 and 3rd year 27,500 per annum; 'University charges' are approximate (as printed the 2nd-year total 32,500 is lower than the 1st-year 34,500). Certificate of gmch.gov.in reported revoked; downloaded with revocation check off."
+  }
+ ],
+ "government_all": [],
+ "not_published": [],
+ "candidate_files_not_downloaded": [],
+ "state": "Chandigarh"
+}

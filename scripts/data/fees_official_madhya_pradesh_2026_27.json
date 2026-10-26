@@ -1,0 +1,167 @@
+{
+ "state": "Madhya Pradesh",
+ "classes": [
+  [
+   "NRI",
+   "NRI"
+  ],
+  [
+   "^(MM|JM)$|Minority|Min\\.? |Min$|Min\\.$|-Min",
+   "Min"
+  ],
+  [
+   "^AIQ$",
+   "AIQ"
+  ],
+  [
+   "^MNG$|Mgmt|Management|Mgt|Others \\(Inst|CatB|MQ1|Paid",
+   "Mgmt"
+  ],
+  [
+   "CatC-Inst|MQ3",
+   "Inst"
+  ],
+  [
+   "^DNB Post MBBS$|^NBE Diploma$",
+   "DNB"
+  ],
+  [
+   "DNB|AFMS",
+   "Other"
+  ],
+  [
+   ".",
+   "Gen"
+  ]
+ ],
+ "null_class": {
+  "AP Govt PG": "Gen",
+  "TEL Govt PG": "Gen",
+  "AP Mgmt PG": "NRI"
+ },
+ "entries": [
+  {
+   "college": "The 14 state government medical colleges listed in DME MP's MD/MS fee report (al",
+   "ids": [
+    406,
+    1838,
+    346,
+    705,
+    394,
+    63,
+    1506,
+    365,
+    735,
+    95,
+    841,
+    142,
+    917,
+    139
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "dme_mp — \"MP State NEET P.G. Counselling-2026 (page header); 'MD/MS Counselling 2026 (Dated 25/10/2026)' (link title)\"",
+   "period": null
+  },
+  {
+   "college": "The 14 state government medical colleges listed in DME MP's MD/MS fee report (al",
+   "ids": [
+    406,
+    1838,
+    346,
+    705,
+    394,
+    63,
+    1506,
+    365,
+    735,
+    95,
+    841,
+    142,
+    917,
+    139
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "dme_mp — \"MP State NEET P.G. Counselling-2026 (page header); 'MD/MS Counselling 2026 (Dated 25/10/2026)' (link title)\"",
+   "period": null
+  },
+  {
+   "college": "The 14 state government medical colleges listed in DME MP's MD/MS fee report (al",
+   "ids": [
+    406,
+    1838,
+    346,
+    705,
+    394,
+    63,
+    1506,
+    365,
+    735,
+    95,
+    841,
+    142,
+    917,
+    139
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "dme_mp — \"MP State NEET P.G. Counselling-2026 (page header); 'MD/MS Counselling 2026 (Dated 25/10/2026)' (link title)\"",
+   "period": null
+  },
+  {
+   "college": "Gandhi Medical College, Bhopal",
+   "ids": [
+    75
+   ],
+   "seat": "Gen",
+   "branches": "*",
+   "fee_inr": 100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "dme_mp — \"MP State NEET P.G. Counselling-2026 (page header)\"",
+   "period": null
+  },
+  {
+   "college": "Gandhi Medical College, Bhopal",
+   "ids": [
+    75
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "dme_mp — \"MP State NEET P.G. Counselling-2026 (page header)\"",
+   "period": null
+  },
+  {
+   "college": "Gandhi Medical College, Bhopal",
+   "ids": [
+    75
+   ],
+   "seat": "AIQ",
+   "branches": "*",
+   "fee_inr": 100000,
+   "fee_usd": null,
+   "max": false,
+   "year": "2026-27",
+   "source": "dme_mp — \"MP State NEET P.G. Counselling-2026 (page header)\"",
+   "period": null
+  }
+ ]
+}
