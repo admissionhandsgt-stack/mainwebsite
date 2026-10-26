@@ -1628,12 +1628,12 @@ export const PAGE_COPY = {
       cta: { label: "Hero button", value: "Enter your PG rank — see your chances" },
       cta_live: { label: "Hero button once the result is out — {next_round}", value: "See your {next_round} chances with your rank" },
       source_live: {
-        label: "Source line, result read — {kind}, {source_title}, {published}",
-        value:
-          "From MCC's {kind} result PDF ({source_title}), updated {published}. The allotment list is MCC's; the counts and ranks here are computed from it.",
+        label: "Source line, result read — {kind}, {source_title}",
+        value: "From MCC's {kind} result PDF ({source_title}). The allotment list is MCC's own; every count and rank here comes from it.",
         long: true,
         was: [
           "From MCC's {kind} result PDF ({source_title}), read automatically on {published}. The allotment list is MCC's; the counts and ranks here are computed from it.",
+          "From MCC's {kind} result PDF ({source_title}), updated {published}. The allotment list is MCC's; the counts and ranks here are computed from it.",
         ],
       },
       source_archive: {
@@ -1669,10 +1669,13 @@ export const PAGE_COPY = {
       fact_reading_failed: { label: "Card fact value: analysis not ready", value: "Open MCC's PDF below", was: ["PDF not readable — team informed"] },
       mcc_box_title: { label: "Box heading: MCC's PDF", value: "MCC's result PDF" },
       updating_note: {
-        label: "Note while MCC's newer result is added — {detected}",
-        value: "MCC posted an updated result at {detected}. The figures below are from the earlier list and will be updated shortly.",
+        label: "Note while MCC's newer result is added",
+        value: "MCC has posted an updated result; its PDF is linked on this page. The figures below are from MCC's earlier list.",
         long: true,
-        was: ["MCC posted an updated result at {detected}. This page is reading it now; the figures below are from the earlier PDF until it finishes."],
+        was: [
+          "MCC posted an updated result at {detected}. This page is reading it now; the figures below are from the earlier PDF until it finishes.",
+          "MCC posted an updated result at {detected}. The figures below are from the earlier list and will be updated shortly.",
+        ],
       },
       insight_total: { label: "Card: seats allotted", value: "Seats allotted" },
       insight_total_note: { label: "Card note: seats allotted", value: "All India Quota, deemed, central universities and DNB" },

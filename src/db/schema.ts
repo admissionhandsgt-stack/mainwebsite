@@ -244,6 +244,8 @@ export const fees = pgTable(
 
     year: smallint("year"),
     isCarriedForward: boolean("is_carried_forward").notNull().default(false),
+    /** When the row last changed (migration 0044); null = as imported, date unknown. Drives the sitemap's lastmod. */
+    updatedAt: timestamp("updated_at", { withTimezone: true }),
   },
   (t) => [
     index("fees_institute_idx").on(t.instituteId, t.courseId),

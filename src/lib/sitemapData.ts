@@ -93,12 +93,14 @@ const loadSitemapData = unstable_cache(
       // Both levels serve a page per college, so both belong here. Only
       // colleges with published rounds are listed — a page with no cutoff
       // data is thin content and asking Google to index it does not help.
-      // A PG college page shows its bond / stipend / seat-leaving terms (pg_seat_terms, fetched_on):
-      // the page changed when they arrived, even though the institute row did not.
+      // A PG college page shows its bond / stipend / seat-leaving terms (pg_seat_terms, fetched_on) and
+      // its fees (fees.updated_at, migration 0044): the page changed when either did, even though the
+      // institute row did not.
       db.execute(sql`
         SELECT i.level::text AS level, i.slug,
                GREATEST(i.updated_at::date,
-                        COALESCE((SELECT MAX(t.fetched_on) FROM pg_seat_terms t WHERE t.institute_id = i.id), DATE '1970-01-01'))::text AS updated
+                        COALESCE((SELECT MAX(t.fetched_on) FROM pg_seat_terms t WHERE t.institute_id = i.id), DATE '1970-01-01'),
+                        COALESCE((SELECT MAX(f.updated_at)::date FROM fees f WHERE f.institute_id = i.id), DATE '1970-01-01'))::text AS updated
         FROM institutes i
         WHERE i.is_active = true
           AND EXISTS (SELECT 1 FROM seat_options so WHERE so.institute_id = i.id)
@@ -122,7 +124,7 @@ const loadSitemapData = unstable_cache(
     }
     return result;
   },
-  ["sitemap-routes-v3"],
+  ["sitemap-routes-v4"],
   { revalidate: 86400, tags: ["sitemap"] },
 );
 

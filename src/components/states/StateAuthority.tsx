@@ -52,7 +52,7 @@ export default function StateAuthority({
           >
             {a.label} <ExternalLink className="h-4 w-4" aria-hidden="true" />
           </a>
-          <span className="text-[12px] text-muted-foreground">Official website · checked {a.checked}</span>
+          <span className="text-[12px] text-muted-foreground">Official website</span>
         </div>
       </div>
     </section>

@@ -187,12 +187,12 @@ await sql.begin(async (tx) => {
     const s = u.set;
     await tx`UPDATE fees SET fee_inr = ${s.fee_inr}, fee_usd = ${s.fee_usd}, fee_periodicity = ${s.fee_periodicity},
       fee_session = ${s.fee_session}, year = ${s.year}, is_carried_forward = ${s.is_carried_forward},
-      fee_null_reason = ${s.fee_null_reason}, fee_source = ${s.fee_source} WHERE id = ${u.id}`;
+      fee_null_reason = ${s.fee_null_reason}, fee_source = ${s.fee_source}, updated_at = now() WHERE id = ${u.id}`;
   }
   for (const u of hostelUpdates) {
     const s = u.set;
-    await tx`UPDATE fees SET hostel_min_inr = ${s.hostel_min_inr}, hostel_max_inr = ${s.hostel_max_inr}, hostel_note = ${s.hostel_note}
-      WHERE id = ${u.id}`;
+    await tx`UPDATE fees SET hostel_min_inr = ${s.hostel_min_inr}, hostel_max_inr = ${s.hostel_max_inr}, hostel_note = ${s.hostel_note},
+      updated_at = now() WHERE id = ${u.id}`;
   }
 });
 // --no-refresh when several states are applied in a row: refresh seat_options once after the last.

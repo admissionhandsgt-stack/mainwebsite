@@ -30,7 +30,7 @@ if (opt("restore")) {
       await tx`UPDATE fees SET fee_inr = ${r.fee_inr}, fee_usd = ${r.fee_usd}, fee_periodicity = ${r.fee_periodicity},
         fee_session = ${r.fee_session}, year = ${r.year}, is_carried_forward = ${r.is_carried_forward},
         fee_null_reason = ${r.fee_null_reason}, hostel_min_inr = ${r.hostel_min_inr}, hostel_max_inr = ${r.hostel_max_inr},
-        hostel_note = ${r.hostel_note}, fee_source = ${r.fee_source} WHERE id = ${r.id}`;
+        hostel_note = ${r.hostel_note}, fee_source = ${r.fee_source}, updated_at = now() WHERE id = ${r.id}`;
     }
   });
   await sql`REFRESH MATERIALIZED VIEW CONCURRENTLY seat_options`;
@@ -174,12 +174,12 @@ await sql.begin(async (tx) => {
     const s = u.set;
     await tx`UPDATE fees SET fee_inr = ${s.fee_inr}, fee_usd = ${s.fee_usd}, fee_periodicity = ${s.fee_periodicity},
       fee_session = ${s.fee_session}, year = ${s.year}, is_carried_forward = ${s.is_carried_forward},
-      fee_null_reason = ${s.fee_null_reason}, fee_source = ${s.fee_source} WHERE id = ${u.id}`;
+      fee_null_reason = ${s.fee_null_reason}, fee_source = ${s.fee_source}, updated_at = now() WHERE id = ${u.id}`;
   }
   for (const u of hostelUpdates) {
     const s = u.set;
-    await tx`UPDATE fees SET hostel_min_inr = ${s.hostel_min_inr}, hostel_max_inr = ${s.hostel_max_inr}, hostel_note = ${s.hostel_note}
-      WHERE id = ${u.id}`;
+    await tx`UPDATE fees SET hostel_min_inr = ${s.hostel_min_inr}, hostel_max_inr = ${s.hostel_max_inr}, hostel_note = ${s.hostel_note},
+      updated_at = now() WHERE id = ${u.id}`;
   }
 });
 await sql`REFRESH MATERIALIZED VIEW CONCURRENTLY seat_options`;
