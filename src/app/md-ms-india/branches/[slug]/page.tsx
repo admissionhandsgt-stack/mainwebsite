@@ -19,6 +19,7 @@ import { summariseSeats } from "@/lib/seatSummary";
 import { getBranchSeatMatrix, MATRIX_LABEL } from "@/lib/pgSeatData";
 import { CUT_CATS, getLatestLiveRound, roundPath } from "@/lib/mccResults";
 import { getScoreTables } from "@/lib/scoreRank";
+import { getBranchStateCombos } from "@/lib/branchStateQueries";
 
 /**
  * Rendered per request, deliberately.
@@ -139,6 +140,8 @@ export default async function BranchPage({
   // Aggregates only — the per-college rows stay on the server (lib/depth.ts).
   const summary = summariseSeats(b.rowsList);
   const live = await liveFor(b.name, b.year);
+  // The branch in each state with five or more colleges offering it (lib/branchStateQueries.ts).
+  const byState = (await getBranchStateCombos()).filter((c) => c.course === b.name);
   // Words from Admin → Content → Text & numbers ("Page: PG branch pages"); photo from Admin → Media.
   const [where, copy, heroImage, mcc] = await Promise.all([
     getBranchStates(b.name),
@@ -326,6 +329,28 @@ export default async function BranchPage({
                 NEET PG marks vs rank
               </Link>
             </p>
+          </section>
+        )}
+
+        {/* ------------------------ the branch, state by state ------------------------ */}
+        {byState.length > 0 && (
+          <section className="mt-7" aria-labelledby="by-state">
+            <h2 id="by-state" className="font-heading text-lg font-bold text-foreground md:text-xl">
+              {b.name} by state
+            </h2>
+            <ul className="mt-3 flex flex-wrap gap-2">
+              {byState.map((c) => (
+                <li key={c.stateSlug}>
+                  <Link
+                    href={`/md-ms-india/branches/${c.courseSlug}/${c.stateSlug}`}
+                    className="inline-flex min-h-10 items-center gap-2 rounded-full border border-border bg-card px-4 text-sm text-foreground transition-colors hover:border-primary hover:text-primary"
+                  >
+                    {c.state}
+                    <span className="tnum text-[12px] text-muted-foreground">{c.colleges}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </section>
         )}
 

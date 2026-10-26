@@ -1540,6 +1540,30 @@ radiology") — answered from data we hold, nothing typed:
   say "<State> PG Stipend & Bond"; a round page still awaited says "Round N Result <year>: Date, Seat Allotment &
   Cut Off". Judge them on GSC after 3–4 weeks.
 
+## A PG branch in a state — `/md-ms-india/branches/[slug]/[state]` (2026-10-26)
+
+"MD Radiology cutoff Rajasthan", "MS Orthopaedics seats in Maharashtra": a competitor (Sartha) ranks for these with one
+page per state × branch carrying one rank table. Ours, from `lib/branchStateQueries.ts`: the latest live MCC round's last
+rank per category in the state (AIQ and deemed paid seats, 3+ colleges, with the score from `score_ranks`), the state's
+own results by quota (open merit, each counselling's code, 3+ colleges), the fee per quota as a median and the middle
+80% (one figure per college, from `seat_options`, so an official 2026-27 fee wins), MCC's seats in the state, the
+state's stipend median and bond (the `pg_seat_terms` caveat), the colleges by name (no rank), FAQs, and links to the
+same branch in other states and other branches in the state.
+
+- **Which pages exist:** `BRANCH_STATE_COURSES` (7 clinical branches: Radiology, General Medicine, Dermatology,
+  Paediatrics, General Surgery, OBG, Orthopaedics) × every state with `MIN_STATE_COLLEGES` (5) colleges offering the
+  branch — 143 pages. Any other pair is a 404. Owner's choice: ~150 first, then more once Google indexes them (492 pairs
+  have 3+ colleges). Widen the list in that one constant; sitemap, links and the 404 follow it.
+- Linked from the branch page ("<branch> by state" chips) and the PG state page (its branch list links the state page).
+  `SEARCH_NAME` gives titles the words people type ("MD Radiology", "MS OBG"). Copy: `page.pg_branch_state.*`.
+- **`closing_ranks.closing_rank` is the state's own merit rank for almost every state counselling** (`rank_basis =
+  'State/Counselling rank'`, 111,302 of 230,484 PG rows: Maharashtra, Gujarat, TN, UP, Rajasthan, Telangana, AP, WB,
+  Kerala, MP, Bihar, Haryana…; median 250–3,300) — only All India PG and KEA are AIRs. Those rows also carry `ai_rank`
+  (median 30k–87k, always ≥ closing_rank), not yet checked against an official merit list. This page and the PG state
+  page now label such figures "state rank" (`stateRank` from the quota's modal `rank_basis`). **Nothing else reads
+  `rank_basis`: `seat_options`, the predictor, branch pages and college bands compare a candidate's AIR with these state
+  ranks.** Open decision for the owner (2026-10-26) — verify `ai_rank` on one state's official PG merit list first.
+
 ## Per-state PG stipend pages (2026-10-20)
 
 `/md-ms-india/stipend/[state]` for every state with three or more colleges publishing a monthly stipend

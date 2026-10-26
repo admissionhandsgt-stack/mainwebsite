@@ -1,5 +1,6 @@
 import { unstable_cache } from "next/cache";
 import { getBranches } from "@/lib/branchQueries";
+import { getBranchStateCombos } from "@/lib/branchStateQueries";
 import { getPgStates } from "@/lib/pgStateQueries";
 import { getStipends } from "@/lib/cutoffHubQueries";
 import { getSsCourses } from "@/lib/ssQueries";
@@ -240,6 +241,20 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
     }
   } catch (error) {
     console.error("[sitemap] branches could not be listed", error);
+  }
+  // One page per clinical branch in each state where five or more colleges offer it (2026-10-26).
+  try {
+    for (const c of await getBranchStateCombos()) {
+      const shown = live?.byCourse.has(c.course) ? liveDay : undefined;
+      out.branches.push({
+        url: `${BASE}/md-ms-india/branches/${seg(c.courseSlug)}/${seg(c.stateSlug)}`,
+        lastModified: newest([pgDate ?? "", shown ?? ""]) || undefined,
+        changeFrequency: "monthly",
+        priority: 0.7,
+      });
+    }
+  } catch (error) {
+    console.error("[sitemap] branch × state pages could not be listed", error);
   }
   // One page per DM / MCh / DrNB course, from MCC's SS results (ss_allotments).
   try {

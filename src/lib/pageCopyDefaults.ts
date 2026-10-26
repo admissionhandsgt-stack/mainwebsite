@@ -263,6 +263,57 @@ export const PAGE_COPY = {
       visual_title: { label: "Chart title — {year}", value: "Rank at each score, {year}" },
     }),
   },
+  "page.pg_branch_state.hero": {
+    group: "Page: PG branch in a state",
+    fields: hero({
+      eyebrow: { label: "Hero eyebrow — {branch}, {state}", value: "{branch} · {state}" },
+      title: { label: "Hero title — {name}, {state}", value: "{name} cutoff in {state}:" },
+      accent: { label: "Hero title, coloured part", value: "seats, fees and closing ranks" },
+      subtitle: {
+        label: "Hero line — {branch}, {state}, {count}, {year}",
+        value:
+          "All {count} colleges in {state} that offer {branch} — the closing ranks by quota from the published {year} results, MCC's latest round, the seats, and the fee each quota pays.",
+        long: true,
+      },
+      cta: { label: "Hero button — {name}, {state}", value: "Check {name} in {state} against your rank" },
+      source: {
+        label: "Source line — {year}",
+        value: "From the counselling authorities' published {year} results, MCC's allotment lists and seat matrix, and the colleges' published fees.",
+        long: true,
+      },
+      visual_title: { label: "Card title — {state}", value: "{state} at a glance" },
+    }),
+  },
+  "page.pg_branch_state.body": {
+    group: "Page: PG branch in a state — body",
+    fields: {
+      round_title: { label: "Round heading — {branch}, {state}, {year}, {round}", value: "{branch} in {state}: NEET PG {year} {round}" },
+      round_intro: {
+        label: "Round line — {round_lc}, {state}",
+        value:
+          "The last rank admitted in MCC's {round_lc} result at {state}'s colleges, by category — All India Quota seats and deemed universities' paid seats — with the score that rank held in NBEMS's result. Over every college in the state that took the branch.",
+        long: true,
+      },
+      quota_title: { label: "Quota heading — {branch}, {state}, {year}", value: "{branch} cutoff in {state}, by quota ({year})" },
+      quota_intro: {
+        label: "Quota line",
+        value:
+          "Open / general merit, in each counselling's own category code, over every college in the quota. The fee is one figure per college for that quota — the median, with the middle 80% under it — so the cheapest fee is not the seat with the furthest rank.",
+        long: true,
+      },
+      colleges_title: { label: "Colleges heading — {branch}, {state}", value: "Colleges in {state} offering {branch}" },
+      colleges_intro: { label: "Colleges line", value: "Each college's own page has its seats, fee and cutoff band.", long: true },
+      other_states: { label: "Other states heading — {name}", value: "{name} in other states" },
+      other_branches: { label: "Other branches heading — {state}", value: "Other branches in {state}" },
+      faq_title: { label: "FAQ heading — {name}, {state}", value: "{name} in {state}: common questions" },
+      lead_title: { label: "Enquiry heading — {name}, {state}", value: "Planning {name} in {state}?" },
+      lead_body: {
+        label: "Enquiry line — {state}",
+        value: "A counsellor orders your choices across {state}'s quota, the All India Quota and the deemed rounds, against the published closing ranks and your budget.",
+        long: true,
+      },
+    },
+  },
   "page.neet_pg_marks_rank.body": {
     group: "Page: NEET PG marks vs rank — body",
     fields: {

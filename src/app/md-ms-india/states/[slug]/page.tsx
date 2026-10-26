@@ -16,6 +16,7 @@ import HeroFacts from "@/components/hero/HeroFacts";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import { getStateSeatMatrix, MATRIX_LABEL } from "@/lib/pgSeatData";
 import { getBranches } from "@/lib/branchQueries";
+import { getBranchStateCombos } from "@/lib/branchStateQueries";
 
 import SectionHead from "@/components/ui/SectionHead";
 /** One state's PG picture. See lib/pgStateQueries.ts for what it will and will not state. */
@@ -125,14 +126,17 @@ export default async function PgStatePage({ params }: Props) {
     )
     .sort((a, b) => Number(/state|govt|government|open|general/i.test(b.quota)) - Number(/state|govt|government|open|general/i.test(a.quota)) || b.colleges - a.colleges)[0];
   // Words from Admin → Content → Text & numbers ("Page: PG state pages"); photo from Admin → Media.
-  const [copy, heroImage, authority, mcc, branchPages] = await Promise.all([
+  const [copy, heroImage, authority, mcc, branchPages, combos] = await Promise.all([
     pageCopy("page.pg_state.hero", { state: p.name, year: p.year ?? "the latest" }),
     pageHeroImage(`page.pg_state.${p.slug}.hero`, "page.pg_state.hero"),
     getStateAuthority(p.name),
     // MCC's 2026 seat matrix for the state — "md medicine seats in <state>" (lib/pgSeatData.ts).
     getStateSeatMatrix(p.name),
     getBranches(),
+    getBranchStateCombos(),
   ]);
+  // Branches with their own page for this state ("MD Radiology in Rajasthan") link there, not to all India.
+  const inState = new Set(combos.filter((c) => c.stateSlug === p.slug).map((c) => c.courseSlug));
   const MCC_SHOWN = 12;
   const mccCopy = await pageCopy("page.pg_state.mcc", {
     state: p.name,
@@ -156,7 +160,7 @@ export default async function PgStatePage({ params }: Props) {
       ? [
           {
             question: `What was the NEET PG ${p.year} cutoff for ${p.name} state quota?`,
-            answer: `For ${stateQuota.quota}, open / general merit, seats closed from rank ${n(stateQuota.bestR1)} in round 1 to ${n(stateQuota.widest)} at the furthest, across ${stateQuota.colleges} colleges. Each college and branch closed somewhere in between — sign in to see your own chance at each.`,
+            answer: `For ${stateQuota.quota}, open / general merit, seats closed from ${stateQuota.stateRank ? "state rank" : "AIR"} ${n(stateQuota.bestR1)} in round 1 to ${n(stateQuota.widest)} at the furthest, across ${stateQuota.colleges} colleges${stateQuota.stateRank ? ` — ranks in ${p.name}'s own merit list, not All India Ranks` : ""}. Each college and branch closed somewhere in between — sign in to see your own chance at each.`,
           },
         ]
       : []),
@@ -223,7 +227,7 @@ export default async function PgStatePage({ params }: Props) {
               ...(stipend?.govtMedian ? [{ label: "Govt stipend", value: `₹${stipend.govtMedian.toLocaleString("en-IN")}`, sub: "median a month, year 1" }] : []),
               ...(stipend?.privateMedian ? [{ label: "Private stipend", value: `₹${stipend.privateMedian.toLocaleString("en-IN")}`, sub: "median a month, year 1" }] : []),
               ...(stateQuota && p.year
-                ? [{ label: `${stateQuota.quota.slice(0, 28)}, ${p.year}`, value: `${n(stateQuota.bestR1)} – ${n(stateQuota.widest)}`, sub: "open merit, round 1 close to furthest", wide: true }]
+                ? [{ label: `${stateQuota.quota.slice(0, 28)}, ${p.year}`, value: `${n(stateQuota.bestR1)} – ${n(stateQuota.widest)}`, sub: `open merit, ${stateQuota.stateRank ? "state rank" : "AIR"}, round 1 close to furthest`, wide: true }]
                 : []),
               {
                 label: "Counsellings",
@@ -284,7 +288,7 @@ export default async function PgStatePage({ params }: Props) {
           <SectionHead
             icon="chart"
             title={<>NEET PG {p.year} cutoff in {p.name}, by quota</>}
-            intro={<>Open / general merit, in each counselling&apos;s own category code. The rank range and the fee range are separate: each is the lowest and highest across the quota&apos;s colleges, so the cheapest fee is not the seat with the furthest rank.</>}
+            intro={<>Open / general merit, in each counselling&apos;s own category code. The rank range and the fee range are separate: each is the lowest and highest across the quota&apos;s colleges, so the cheapest fee is not the seat with the furthest rank. &ldquo;State rank&rdquo; is a place in the state&apos;s own merit list, not an All India Rank.</>}
           />
           <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
             <table className="w-full min-w-[680px] text-left text-sm">
@@ -305,8 +309,14 @@ export default async function PgStatePage({ params }: Props) {
                       <span className="block text-[12px] font-normal text-muted-foreground">{q.counselling}</span>
                     </th>
                     <td className="tnum px-4 py-3 text-right text-muted-foreground">{n(q.colleges)}</td>
-                    <td className="tnum px-4 py-3 text-right">{n(q.bestR1)}</td>
-                    <td className="tnum px-4 py-3 text-right font-semibold">{n(q.widest)}</td>
+                    <td className="tnum px-4 py-3 text-right">
+                      {n(q.bestR1)}
+                      {q.stateRank && q.bestR1 != null && <span className="block text-[11px] text-muted-foreground">state rank</span>}
+                    </td>
+                    <td className="tnum px-4 py-3 text-right font-semibold">
+                      {n(q.widest)}
+                      {q.stateRank && q.widest != null && <span className="block text-[11px] font-normal text-muted-foreground">state rank</span>}
+                    </td>
                     <td className="tnum px-4 py-3 text-right text-muted-foreground">{span(q.feeFrom, q.feeTo, money)}</td>
                   </tr>
                 ))}
@@ -334,7 +344,7 @@ export default async function PgStatePage({ params }: Props) {
             {p.branches.map((b) => (
               <li key={b.name}>
                 <Link
-                  href={`/md-ms-india/branches/${b.slug}`}
+                  href={inState.has(b.slug) ? `/md-ms-india/branches/${b.slug}/${p.slug}` : `/md-ms-india/branches/${b.slug}`}
                   className="flex items-center justify-between gap-3 rounded-xl border border-border bg-card px-3 py-2 text-sm transition-colors hover:border-primary"
                 >
                   <span className="font-medium text-foreground">{b.name}</span>

@@ -84,6 +84,8 @@ export interface QuotaRange {
   colleges: number;
   bestR1: number | null;
   widest: number | null;
+  /** True when the counselling publishes its own merit rank, not the All India Rank (closing_ranks.rank_basis). */
+  stateRank: boolean;
   feeFrom: number | null;
   feeTo: number | null;
 }
@@ -154,7 +156,8 @@ export const getPgStatePage = unstable_cache(
                    MIN(cr.closing_rank) FILTER (WHERE cr.round_label = 'R1')::int AS best_r1,
                    MAX(cr.closing_rank)::int AS widest,
                    MIN(NULLIF(cr.fee_inr, 0)) AS fee_from,
-                   MAX(NULLIF(cr.fee_inr, 0)) AS fee_to
+                   MAX(NULLIF(cr.fee_inr, 0)) AS fee_to,
+                   mode() WITHIN GROUP (ORDER BY cr.rank_basis) AS basis
               FROM closing_ranks cr
               JOIN institutes i ON i.id = cr.institute_id
               JOIN counsellings c ON c.id = cr.counselling_id
@@ -197,6 +200,7 @@ export const getPgStatePage = unstable_cache(
         colleges: Number(x.colleges),
         bestR1: groupRank(num(x.best_r1), Number(x.colleges)),
         widest: groupRank(num(x.widest), Number(x.colleges)),
+        stateRank: /state|counselling/i.test(String(x.basis ?? "")),
         feeFrom: x.fee_from == null ? null : Math.round(Number(x.fee_from)),
         feeTo: x.fee_to == null ? null : Math.round(Number(x.fee_to)),
       })),
@@ -208,6 +212,6 @@ export const getPgStatePage = unstable_cache(
       })),
     };
   },
-  ["pg-state-page-v3"],
+  ["pg-state-page-v4"],
   { revalidate: 86400, tags: ["seat-data"] },
 );
