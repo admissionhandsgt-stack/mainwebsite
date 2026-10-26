@@ -13,6 +13,7 @@ import SectionHead from "@/components/ui/SectionHead";
 import OpenOnHash from "@/components/ui/OpenOnHash";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
+import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
 
 /**
  * "PG medical bond state wise" (2026-10-20): the service bond and seat-leaving terms on MD/MS
@@ -207,6 +208,9 @@ export default async function BondPage() {
               <span>{copy.source}</span>
             </p>
           </section>
+
+          {/* The bond is read by someone choosing seats for the next MCC round — the alert is what they need next. */}
+          <TelegramRoundAlert placement="round_alert_pg_bond" className="pb-10 md:pb-14" />
 
           {/* ---------------------- private, deemed, society ---------------------- */}
           {otherStates.length > 0 && (

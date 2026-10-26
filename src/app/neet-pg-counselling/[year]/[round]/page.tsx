@@ -114,14 +114,20 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   let meta: Metadata;
   if (result) {
     const split = result.upgraded ? ` (${n(result.fresh)} fresh, ${n(result.upgraded)} upgraded)` : "";
+    const final = state.kind === "final" ? "final " : "";
+    // Searched as "neet pg round 1 result 2026", "neet pg 2026 round 1 result", "neet pg round 1 counselling
+    // result 2026", "neet pg cut off rank branch wise" (Search Console, 21–25 Oct 2026) — the result first,
+    // then the cut off and closing rank people open it for.
     meta = await resolveMetadata(path, {
       title: fitTitle(
-        `NEET PG ${year} ${T} Result: ${n(result.total)} Seats Allotted, Branch Wise Cutoff`,
+        `NEET PG ${T} Result ${year}: Branch Wise Cut Off & Closing Rank`,
+        `NEET PG ${T} Result ${year}: Branch Wise Cut Off`,
         `NEET PG ${year} ${T} Result: Branch Wise Last Rank`,
         `NEET PG ${year} ${T} Result`,
       ),
       description: fitDescription(
-        `MCC's NEET PG ${year} ${lc} result: ${n(result.total)} seats allotted${split}. Branch-wise last rank admitted by category, for AIQ, deemed and DNB seats.`,
+        `MCC's ${final}NEET PG ${year} ${lc} counselling result: ${n(result.total)} seats allotted${split}. Branch-wise cut off — the last rank admitted — by category, for AIQ, deemed and DNB seats.`,
+        `MCC's ${final}NEET PG ${year} ${lc} result: ${n(result.total)} seats allotted. Branch-wise cut off (last rank admitted) by category, for AIQ, deemed and DNB seats.`,
         `MCC's NEET PG ${year} ${lc} result: ${n(result.total)} seats allotted. Branch-wise last rank admitted by category, for AIQ, deemed and DNB seats.`,
       ),
       keywords,

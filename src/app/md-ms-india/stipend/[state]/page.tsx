@@ -15,6 +15,7 @@ import SectionHead from "@/components/ui/SectionHead";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import DataPageCounsel from "@/components/lead/DataPageCounsel";
+import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
 import { collegeName } from "@/lib/collegeName";
 
 /** The hero chart has room for a name, not an address: "ESIC Medical College, Alwar". The table below keeps the full one. */
@@ -209,6 +210,8 @@ export default async function StateStipendPage({ params }: { params: { state: st
           </table>
         </div>
       </section>
+
+      <TelegramRoundAlert placement="round_alert_pg_stipend_state" className="pb-10 md:pb-14" />
 
       <section className="container-custom pb-10 md:pb-14">
         <DataPageCounsel kind="stipend" name={s.state} placement="counsel_stipend_state" />

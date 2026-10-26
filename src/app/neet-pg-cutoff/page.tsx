@@ -14,6 +14,8 @@ import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import SectionHead from "@/components/ui/SectionHead";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
+import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
+import { ROUNDS, getCounsellingYear, getRoundResult, getRoundState, roundPath, type CutCat } from "@/lib/mccResults";
 
 /**
  * "NEET PG cutoff branch wise", "NEET PG cutoff 2025 OBC", "MD radiology
@@ -36,38 +38,66 @@ async function chosen(searchParams: Props["searchParams"]) {
   return { year, codes, category };
 }
 
+// Our closing-rank data says GEN where MCC's allotment lists say Open; the other codes are the same.
+const MCC_CAT: Record<string, CutCat> = { GEN: "Open", OBC: "OBC", EWS: "EWS", SC: "SC", ST: "ST" };
+
+/**
+ * The running counselling's latest MCC round with a result ("neet pg 2026 cutoff" is searched from the day
+ * round 1 is out): its All India Quota last rank admitted per branch, by category — only where three or more
+ * colleges took part (the round pages' rule, so no figure is one college's cut).
+ */
+async function latestRound() {
+  const cy = await getCounsellingYear();
+  for (const spec of [...ROUNDS].reverse()) {
+    const state = await getRoundState(cy, spec.round);
+    if (state.status !== "live") continue;
+    const result = await getRoundResult(cy, spec.round);
+    if (!result) continue;
+    const byCourse = new Map(result.cuts.aiq.map((b) => [b.course, b.last]));
+    return { year: cy, spec, final: state.kind === "final", total: result.total, byCourse };
+  }
+  return null;
+}
+
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
-  const { year, category } = await chosen(searchParams);
+  const [{ year, category }, live] = await Promise.all([chosen(searchParams), latestRound()]);
   // How it is searched (Search Console, Oct 2026): "neet pg cut off rank branch
-  // wise", "neet pg 2025 cut off branch wise", "neet pg closing rank 2025".
+  // wise", "neet pg 2025 cut off branch wise", "neet pg closing rank 2025" — and,
+  // from the day round 1 is out, the running year's "neet pg 2026 cutoff".
   const y = year?.year ? ` ${year.year}` : "";
+  // "NEET PG Cutoff 2026 Round 1 & 2025": the running round first, the complete year beside it.
+  const lead = live && live.year !== year?.year ? ` ${live.year} ${live.spec.label} &` : "";
+  const leadD = live && live.year !== year?.year ? ` ${live.year} ${live.spec.label.toLowerCase()} (MCC's ${live.final ? "final " : ""}result) and${y}` : y;
   const q = NEET_PG_QUALIFYING[0];
   const scores = q.rows.map((r) => r.score).join("/");
   const base = await resolveMetadata(PATH, {
     title: fitTitle(
+      `NEET PG Cutoff${lead}${y} Branch Wise: AIQ Closing Rank`,
+      `NEET PG Cutoff${lead}${y} Branch Wise (AIQ)`,
       `NEET PG Cutoff${y} Branch Wise: AIQ Closing Ranks by Category`,
-      `NEET PG Cutoff${y} Branch Wise & Category Wise (AIQ)`,
       `NEET PG Cutoff${y} Branch Wise`,
     ),
     description: fitDescription(
-      `NEET PG${y} cutoff branch wise: All India Quota closing ranks for every MD/MS branch by category, round 1 and the last round. NEET PG ${q.year} qualifying score: ${scores}.`,
-      `NEET PG${y} cutoff branch wise: AIQ closing ranks for every MD/MS branch by category, round 1 and the last round. ${q.year} qualifying: ${scores}.`,
+      `NEET PG cutoff${leadD} branch wise: All India Quota closing ranks for every MD/MS branch by category. NEET PG ${q.year} qualifying score: ${scores}.`,
+      `NEET PG cutoff${leadD} branch wise: AIQ closing ranks for every MD/MS branch by category.`,
       `NEET PG${y} cutoff branch wise: AIQ closing ranks for every MD/MS branch by category, round 1 and the last round.`,
     ),
     keywords:
-      "NEET PG cutoff, NEET PG cutoff branch wise, NEET PG cutoff 2025, MD radiology cutoff, NEET PG cutoff OBC, NEET PG cutoff SC, AIQ PG cutoff, NEET PG closing rank",
+      `NEET PG cutoff, NEET PG cutoff branch wise, NEET PG cutoff 2025, ${live ? `NEET PG cutoff ${live.year}, NEET PG ${live.year} ${live.spec.label.toLowerCase()} cutoff, ` : ""}MD radiology cutoff, NEET PG cutoff OBC, NEET PG cutoff SC, AIQ PG cutoff, NEET PG closing rank`,
   });
   if (category === "GEN") return base;
   // A category view is its own page for the searches that name the category.
   return {
     ...base,
     title: fitTitle(
+      `NEET PG Cutoff${lead}${y} ${category}: Branch Wise AIQ Rank`,
       `NEET PG Cutoff${y} ${category}: Branch Wise AIQ Closing Ranks`,
       `NEET PG Cutoff${y} ${category}: Branch Wise AIQ Ranks`,
       `NEET PG ${category} Cutoff${y} Branch Wise`,
     ),
     description: fitDescription(
-      `NEET PG${y} ${category} cutoff branch wise: All India Quota closing ranks for every MD/MS branch in the ${category} category, round 1 and the last round. Published MCC results.`,
+      `NEET PG ${category} cutoff${leadD} branch wise: All India Quota closing ranks for every MD/MS branch in the ${category} category. Published MCC results.`,
+      `NEET PG ${category} cutoff${leadD} branch wise: AIQ closing ranks for every MD/MS branch.`,
       `NEET PG${y} ${category} cutoff branch wise: AIQ closing ranks for every MD/MS branch, round 1 and the last round.`,
     ),
     alternates: { canonical: `${PATH}?category=${encodeURIComponent(category)}` },
@@ -75,8 +105,13 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 }
 
 export default async function NeetPgCutoffPage({ searchParams }: Props) {
-  const { year, codes, category } = await chosen(searchParams);
+  const [{ year, codes, category }, latest] = await Promise.all([chosen(searchParams), latestRound()]);
   const branches = year ? await getPgAiqBranches(category, year.year) : [];
+  // The running year's round beside the complete year — only when it is a different year.
+  const live = latest && latest.year !== year?.year ? latest : null;
+  const liveCat = MCC_CAT[category];
+  const liveLast = (course: string) => (live && liveCat ? live.byCourse.get(course)?.[liveCat] ?? null : null);
+  const liveRadio = branches.find((b) => /radio ?diagnosis/i.test(b.branch) && b.branch.startsWith("MD"));
   const gen = year?.categories.find((c) => c.category === "GEN");
   const radiology = branches.find((b) => /radio ?diagnosis/i.test(b.branch) && b.branch.startsWith("MD"));
   const medicine = branches.find((b) => b.branch === "MD General Medicine");
@@ -89,6 +124,14 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
   ]);
   const lowered2025 = NEET_PG_QUALIFYING.find((n) => n.year === 2025 && n.label.includes("lowered"))!;
   const faqs = [
+    ...(live && liveRadio && liveLast(liveRadio.branch)
+      ? [
+          {
+            question: `What is the NEET PG ${live.year} ${live.spec.label.toLowerCase()} cutoff for MD Radiology?`,
+            answer: `In MCC's ${live.final ? "final " : ""}${live.spec.label.toLowerCase()} result of NEET PG ${live.year}, the last ${category} All India Quota seat in ${liveRadio.branch} went to AIR ${n(liveLast(liveRadio.branch))}. Every branch's ${live.year} figure is in the table on this page, beside ${year?.year}'s.`,
+          },
+        ]
+      : []),
     ...(gen && year
       ? [
           {
@@ -247,9 +290,21 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
           <SectionHead
             icon="branch"
             eyebrow="Branch wise"
-            title={`Branch-wise cutoff, ${category} — ${year?.year ?? ""}`}
-            intro="Most competitive first. Pick a category; open a branch for its colleges, quota by quota."
+            title={`Branch-wise cutoff, ${category} — ${live ? `${live.year} ${live.spec.label} and ` : ""}${year?.year ?? ""}`}
+            intro={
+              live
+                ? `Most competitive first. ${live.year} ${live.spec.label.toLowerCase()}: the last rank admitted in MCC's ${live.final ? "final " : ""}result, All India Quota, shown where three or more colleges took the branch. Pick a category; open a branch for its colleges, quota by quota.`
+                : "Most competitive first. Pick a category; open a branch for its colleges, quota by quota."
+            }
           />
+          {live && (
+            <p className="mt-3 text-sm text-muted-foreground">
+              Seats, quotas and every branch of the {live.year} {live.spec.label.toLowerCase()}:{" "}
+              <Link href={roundPath(live.year, live.spec.slug)} className="font-semibold text-primary-strong hover:underline">
+                NEET PG {live.year} {live.spec.label} result
+              </Link>
+            </p>
+          )}
           <ul className="mt-4 flex flex-wrap gap-2" aria-label="Category">
             {codes.map((c) => (
               <li key={c}>
@@ -268,13 +323,25 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
             ))}
           </ul>
           <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
-            <table className="dt w-full min-w-[560px] text-left text-sm">
+            <table className={`dt w-full text-left text-sm ${live ? "min-w-[680px]" : "min-w-[560px]"}`}>
               <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
                 <tr>
                   <th scope="col" className="px-4 py-3 font-semibold">Branch</th>
                   <th scope="col" className="px-4 py-3 text-right font-semibold">Colleges</th>
-                  <th scope="col" className="px-4 py-3 text-right font-semibold">Round 1 close</th>
-                  <th scope="col" className="px-4 py-3 text-right font-semibold">Last admitted</th>
+                  {live && (
+                    <th scope="col" className="px-4 py-3 text-right font-semibold">
+                      {live.year} {live.spec.label}
+                      <span className="block text-[11px] font-normal normal-case tracking-normal">last admitted</span>
+                    </th>
+                  )}
+                  <th scope="col" className="px-4 py-3 text-right font-semibold">
+                    {live ? `${year?.year} round 1` : "Round 1 close"}
+                    {live && <span className="block text-[11px] font-normal normal-case tracking-normal">close</span>}
+                  </th>
+                  <th scope="col" className="px-4 py-3 text-right font-semibold">
+                    {live ? `${year?.year} last` : "Last admitted"}
+                    {live && <span className="block text-[11px] font-normal normal-case tracking-normal">admitted</span>}
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
@@ -286,6 +353,7 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
                       </Link>
                     </th>
                     <td className="tnum px-4 py-3 text-right text-muted-foreground">{n(b.colleges)}</td>
+                    {live && <td className="tnum px-4 py-3 text-right font-semibold text-primary-strong">{n(liveLast(b.branch))}</td>}
                     <td className="tnum px-4 py-3 text-right">{n(b.bestR1)}</td>
                     <td className="tnum px-4 py-3 text-right font-semibold">{n(b.widest)}</td>
                   </tr>
@@ -295,6 +363,9 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
           </div>
         </div>
       </section>
+
+      {/* The next MCC result is the strongest reason a cutoff reader has to join the channel. */}
+      <TelegramRoundAlert placement="round_alert_neet_pg_cutoff" className="pt-10 md:pt-14" />
 
       <section className="container-custom pt-10 md:pt-14">
         <DataPageCounsel kind="cutoff" placement="counsel_neet_pg_cutoff" />

@@ -8,6 +8,7 @@ import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/S
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import DataPageCounsel from "@/components/lead/DataPageCounsel";
+import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
 import DataHero from "@/components/hero/DataHero";
 import SectionHead from "@/components/ui/SectionHead";
 import HeroBars from "@/components/hero/HeroBars";
@@ -182,6 +183,8 @@ export default async function StipendPage() {
           </table>
         </div>
       </section>
+
+      <TelegramRoundAlert placement="round_alert_pg_stipend" className="pb-10 md:pb-14" />
 
       <section className="container-custom pb-10 md:pb-14">
         <DataPageCounsel kind="stipend" placement="counsel_stipend" />
