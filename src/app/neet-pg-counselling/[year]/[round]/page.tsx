@@ -534,6 +534,7 @@ export default async function RoundResultPage({ params }: { params: Params }) {
               Also:{" "}
               <Link href="/neet-pg-seat-matrix" className="font-semibold text-primary-strong hover:underline">NEET PG seat matrix</Link> ·{" "}
               <Link href="/neet-pg-cutoff" className="font-semibold text-primary-strong hover:underline">NEET PG cutoff, branch wise</Link> ·{" "}
+              <Link href="/neet-pg-marks-vs-rank" className="font-semibold text-primary-strong hover:underline">NEET PG marks vs rank</Link> ·{" "}
               <Link href="/md-ms-india/branches" className="font-semibold text-primary-strong hover:underline">every PG branch</Link>
             </p>
           </nav>

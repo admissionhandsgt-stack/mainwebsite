@@ -12,6 +12,7 @@ import { getPgAiqBranches, getPgAiqCuts, getStipends, getUgAiqCuts, type YearCut
 import { getPrivatePgFees, getDeemedPg } from "@/lib/pgFeeQueries";
 import { getSsCourses } from "@/lib/ssQueries";
 import { getMdsOverview } from "@/lib/mdsQueries";
+import { getScoreTables } from "@/lib/scoreRank";
 
 export const SITE = "https://www.admissionhands.com";
 
@@ -73,6 +74,19 @@ const LOADERS: Record<string, () => Promise<Dataset>> = {
       source: "MCC, All India Quota PG round results",
       columns: ["Branch", "Colleges", "Round 1 close (AIR)", "Last admitted (AIR)"],
       rows: b.map((x) => [x.branch, x.colleges, x.bestR1, x.widest]),
+      embedRows: 15,
+    };
+  },
+  "neet-pg-marks-vs-rank": async () => {
+    const t = (await getScoreTables("pg"))[0];
+    return {
+      id: "neet-pg-marks-vs-rank",
+      title: `NEET PG ${t?.year ?? ""} marks vs rank (score to All India Rank)`,
+      page: "/neet-pg-marks-vs-rank",
+      description: `Every NEET PG ${t?.year ?? ""} score out of ${t?.outOf ?? ""}: the range of All India Ranks it held and how many candidates had it. Candidates on one score share it, so a score is a range of ranks.`,
+      source: t?.source ?? "NBEMS, NEET PG result",
+      columns: [`Score (out of ${t?.outOf ?? ""})`, "Rank from (AIR)", "Rank to (AIR)", "Candidates at this score"],
+      rows: (t?.rows ?? []).map((r) => [r.score, r.rankMin, r.rankMax, r.candidates]),
       embedRows: 15,
     };
   },

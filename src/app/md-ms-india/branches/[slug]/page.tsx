@@ -167,6 +167,23 @@ export default async function BranchPage({
         `does not mean a cheap seat. Sign in to see your own chance at each college in plain words; ` +
         `your counsellor takes you through the seat-by-seat detail.`,
     },
+    // "neet pg score for radiology" — the score the last rank admitted held, from NBEMS's own table.
+    ...(live?.cut.Open && live.scoreAt(live.cut.Open) != null
+      ? [
+          {
+            q: `What NEET PG score is needed for ${b.name}?`,
+            a:
+              `In MCC's NEET PG ${live.year} ${live.spec.label.toLowerCase()} result (All India Quota), the last Open seat in ` +
+              `${b.name} went to AIR ${inr(live.cut.Open)} — a score of about ${live.scoreAt(live.cut.Open)}` +
+              `${live.outOf ? ` out of ${live.outOf}` : ""} in NBEMS's ${live.year} result. ` +
+              CUT_CATS.filter((c) => c !== "Open" && live.cut[c] != null && live.scoreAt(live.cut[c]!) != null)
+                .map((c) => `${c}: AIR ${inr(live.cut[c]!)} (≈ ${live.scoreAt(live.cut[c]!)})`)
+                .join(", ")
+                .replace(/^(.+)$/, "$1. ") +
+              `Later rounds can move either way, and state-quota seats close at their own ranks.`,
+          },
+        ]
+      : []),
     {
       q: `How many colleges offer ${b.name}?`,
       a: `${inr(b.colleges)} colleges in ${b.states} states, in the published counselling results${b.year ? ` for ${b.year}` : ""} — ${inr(b.seats)} seat options in all, where a seat option is one college, quota and category.`,

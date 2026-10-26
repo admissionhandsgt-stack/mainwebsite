@@ -108,6 +108,7 @@ export async function GET() {
       "## NEET PG — MD, MS, diploma, DNB",
       link(`NEET PG seat matrix ${matrix?.year ?? ""}`.trim(), "/neet-pg-seat-matrix", matrix ? `${n(matrix.total)} seats by matrix, branch, state and category` : undefined),
       link("NEET PG cutoff, branch wise by category", "/neet-pg-cutoff", "All India Quota, from MCC's published round results"),
+      link("NEET PG marks vs rank", "/neet-pg-marks-vs-rank", "the rank range each score held in NBEMS's own result, and the branches that rank reached in MCC's latest round"),
       link("MD/MS branches", "/md-ms-india/branches", `${n(stats.pgBranches)} PG courses, each with its colleges, seat options and cutoff band`),
       link("PG by state", "/md-ms-india/states", "every state's MD/MS colleges and DNB hospitals, its counselling and its cutoff by quota"),
       link("PG stipend, state wise", "/md-ms-india/stipend", stipends.colleges ? `first-year stipends published by ${n(stipends.colleges)} colleges and DNB hospitals, with a page per state` : undefined),
