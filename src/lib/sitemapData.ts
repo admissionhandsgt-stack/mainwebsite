@@ -4,7 +4,7 @@ import { getPgStates } from "@/lib/pgStateQueries";
 import { getStipends } from "@/lib/cutoffHubQueries";
 import { getSsCourses } from "@/lib/ssQueries";
 import { getMdsSlugs } from "@/lib/mdsQueries";
-import { ROUNDS, getCounsellingYear, getCounsellingYears, getRoundState, roundPath } from "@/lib/mccResults";
+import { ROUNDS, getCounsellingYear, getCounsellingYears, getLatestLiveRound, getRoundState, roundPath } from "@/lib/mccResults";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 
@@ -88,25 +88,31 @@ const rows = <T,>(r: unknown) => r as unknown as T[];
  */
 const loadSitemapData = unstable_cache(
   async () => {
-    const [hidden, pg, st] = await Promise.all([
+    const [hidden, pg, st, terms] = await Promise.all([
       db.execute(sql`SELECT route FROM page_seo WHERE no_index = true`),
       // Both levels serve a page per college, so both belong here. Only
       // colleges with published rounds are listed — a page with no cutoff
       // data is thin content and asking Google to index it does not help.
+      // A PG college page shows its bond / stipend / seat-leaving terms (pg_seat_terms, fetched_on):
+      // the page changed when they arrived, even though the institute row did not.
       db.execute(sql`
-        SELECT i.level::text AS level, i.slug, i.updated_at::date::text AS updated
+        SELECT i.level::text AS level, i.slug,
+               GREATEST(i.updated_at::date,
+                        COALESCE((SELECT MAX(t.fetched_on) FROM pg_seat_terms t WHERE t.institute_id = i.id), DATE '1970-01-01'))::text AS updated
         FROM institutes i
         WHERE i.is_active = true
           AND EXISTS (SELECT 1 FROM seat_options so WHERE so.institute_id = i.id)
         ORDER BY i.level, i.slug
       `),
       db.execute(sql`SELECT slug FROM mbbs_states WHERE is_active = true ORDER BY slug`),
+      db.execute(sql`SELECT MAX(fetched_on)::text AS d FROM pg_seat_terms`),
     ]);
 
     const result = {
       noIndex: rows<{ route: string }>(hidden).map((r) => r.route),
       colleges: rows<{ level: string; slug: string; updated: string }>(pg),
       states: rows<{ slug: string }>(st).map((r) => r.slug),
+      termsDate: rows<{ d: string | null }>(terms)[0]?.d ?? null,
     };
 
     // A sitemap with no colleges means the query silently returned nothing.
@@ -116,7 +122,7 @@ const loadSitemapData = unstable_cache(
     }
     return result;
   },
-  ["sitemap-routes-v2"],
+  ["sitemap-routes-v3"],
   { revalidate: 86400, tags: ["sitemap"] },
 );
 
@@ -134,11 +140,13 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
   let noIndex = new Set<string>();
   let colleges: { level: string; slug: string; updated: string }[] = [];
   let states: string[] = [];
+  let termsDate: string | undefined;
   try {
     const data = await loadSitemapData();
     noIndex = new Set(data.noIndex);
     colleges = data.colleges;
     states = data.states;
+    termsDate = data.termsDate ?? undefined;
   } catch (error) {
     // Degrade this one response rather than 500 — but loudly, because a
     // sitemap missing thousands of URLs is not a small problem.
@@ -149,9 +157,26 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
   const ugDate = newest(colleges.filter((c) => c.level === "ug").map((c) => c.updated)) || undefined;
   const pgDate = newest(colleges.filter((c) => c.level === "pg").map((c) => c.updated)) || undefined;
 
+  // The day MCC's latest live round reached the site: the branch pages, /neet-pg-cutoff and
+  // /neet-pg-marks-vs-rank print it, so that is when they last changed.
+  let live: Awaited<ReturnType<typeof getLatestLiveRound>> = null;
+  let liveDay: string | undefined;
+  try {
+    live = await getLatestLiveRound();
+    if (live) {
+      const st = await getRoundState(live.year, live.spec.round);
+      liveDay = (st?.updatedAt ?? st?.publishedAt ?? "").slice(0, 10) || undefined;
+    }
+  } catch (error) {
+    console.error("[sitemap] latest round could not be read", error);
+  }
+  const ROUND_HUBS = new Set(["/neet-pg-cutoff", "/neet-pg-marks-vs-rank"]);
+  const TERMS_HUBS = new Set(["/md-ms-india/bond"]);
+
   for (const s of STATIC) {
     if (noIndex.has(s.path)) continue;
-    out.hubs.push({ url: BASE + s.path, changeFrequency: s.freq, priority: s.priority });
+    const lastModified = ROUND_HUBS.has(s.path) ? liveDay : TERMS_HUBS.has(s.path) ? termsDate : undefined;
+    out.hubs.push({ url: BASE + s.path, lastModified, changeFrequency: s.freq, priority: s.priority });
   }
 
   // NEET PG counselling, year by year and round by round (2026-10-21): every round that is out, and
@@ -196,7 +221,8 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
     const slugOf = new Map((await getPgStates()).map((s) => [s.name, s.slug]));
     for (const s of (await getStipends()).states) {
       const slug = slugOf.get(s.state);
-      if (slug) out.states.push({ url: `${BASE}/md-ms-india/stipend/${seg(slug)}`, lastModified: pgDate, changeFrequency: "monthly", priority: 0.7 });
+      // Each carries the state's bond box from pg_seat_terms.
+      if (slug) out.states.push({ url: `${BASE}/md-ms-india/stipend/${seg(slug)}`, lastModified: newest([pgDate ?? "", termsDate ?? ""]) || undefined, changeFrequency: "monthly", priority: 0.7 });
     }
   } catch (error) {
     console.error("[sitemap] stipend states could not be listed", error);
@@ -205,7 +231,10 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
   // One page per PG branch — "MD Radiology cutoff", "rank required for MD Dermatology".
   try {
     for (const b of await getBranches()) {
-      out.branches.push({ url: `${BASE}/md-ms-india/branches/${seg(b.slug)}`, lastModified: pgDate, changeFrequency: "monthly", priority: 0.7 });
+      // A branch the latest live round has a cut for shows that round's box (liveFor in the page; it is
+      // hidden only when the branch's own data is that year, which PG closing ranks — 2024–25 — never are).
+      const shown = live?.byCourse.has(b.name) ? liveDay : undefined;
+      out.branches.push({ url: `${BASE}/md-ms-india/branches/${seg(b.slug)}`, lastModified: newest([pgDate ?? "", shown ?? ""]) || undefined, changeFrequency: "monthly", priority: 0.7 });
     }
   } catch (error) {
     console.error("[sitemap] branches could not be listed", error);

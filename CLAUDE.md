@@ -1982,6 +1982,16 @@ for 8–9 Oct (root-only). Remedy: Request indexing for the affected URLs.
 - **`lastmod` is the date the data changed**, never "now". It used to be the second the sitemap was
   generated on every URL, which teaches Google to ignore it. College pages use `institutes.updated_at`;
   state and branch pages their level's newest; static pages send none.
+  **Since 2026-10-26 the date follows what the page shows, not only the institute row** (every PG page had sat
+  at 2026-09-17 through the seat matrix, seat terms, round 1 and the official fees): a PG college page takes
+  `MAX(pg_seat_terms.fetched_on)`; a branch page the latest live MCC round's day when it shows that round's box;
+  `/neet-pg-cutoff` and `/neet-pg-marks-vs-rank` the round's day; stipend state pages and `/md-ms-india/bond` the
+  seat terms' date. **`fees` has no timestamp column** (the 2026-27 fee passes left no date anywhere), so a fee
+  change cannot move `lastmod` until one is added — add `fees.updated_at` (nullable, no default, or every row
+  claims today) and stamp it in `apply_state_fees.mjs` / `apply_official_fees.mjs` if that matters.
+  An inspection of 2026-10-26 (branches + hubs sitemaps, 233 URLs): branches 80 indexed, 66 "unknown to Google",
+  35 "discovered – not indexed" (General Medicine, Dermatology, General Surgery among them); hubs 30 / 11 / 9.
+  Pages answer in 0.2–0.7 s to a Googlebot UA and are linked in the server HTML — it is crawl priority, not access.
 - **The 33 state pages were invisible.** `/mbbs-india/[state]` was a client component fetching from
   `/api/content/*`, which robots.txt blocked — Google saw "Study MBBS in" and nothing else. They were
   also linked from nowhere and any slug rendered 200. Now server-rendered from `lib/stateQueries.ts`
