@@ -55,10 +55,15 @@ export async function generateMetadata({ params }: { params: { state: string } }
   const page = await load(params.state);
   if (!page) return { title: "State not found", robots: { index: false } };
   const { data: s } = page;
+  // The page carries the state's government-seat bond too; "neet pg bond and stipend state wise", "neet pg
+  // bond in rajasthan" are searched (autocomplete, Oct 2026). The title names it, never its figures — those are
+  // a compilation's and stay on the page with their caveat.
+  const hasBond = !!(await getBondByState())?.states.some((b) => b.state === s.state);
   return resolveMetadata(`/md-ms-india/stipend/${page.slug}`, {
     // "rajasthan pg stipend", "pg stipend in rajasthan", "rajasthan neet pg stipend". No year:
     // the figures are each college's latest published stipend, not one year's.
     title: fitTitle(
+      ...(hasBond ? [`${s.state} PG Stipend & Bond: ${rupees(s.median)} a Month, College Wise`, `${s.state} PG Stipend & Bond: MD/MS College Wise`] : []),
       `${s.state} PG Stipend: ${rupees(s.median)} a Month, College Wise`,
       `${s.state} PG Stipend: MD/MS Stipend College Wise`,
       `${s.state} PG Stipend`,

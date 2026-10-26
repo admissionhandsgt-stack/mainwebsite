@@ -15,7 +15,7 @@ import HeroBars from "@/components/hero/HeroBars";
 import SectionHead from "@/components/ui/SectionHead";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
-import { ROUNDS, getCounsellingYear, getRoundResult, getRoundState, roundPath, type CutCat } from "@/lib/mccResults";
+import { getLatestLiveRound, roundPath, type CutCat } from "@/lib/mccResults";
 
 /**
  * "NEET PG cutoff branch wise", "NEET PG cutoff 2025 OBC", "MD radiology
@@ -41,23 +41,9 @@ async function chosen(searchParams: Props["searchParams"]) {
 // Our closing-rank data says GEN where MCC's allotment lists say Open; the other codes are the same.
 const MCC_CAT: Record<string, CutCat> = { GEN: "Open", OBC: "OBC", EWS: "EWS", SC: "SC", ST: "ST" };
 
-/**
- * The running counselling's latest MCC round with a result ("neet pg 2026 cutoff" is searched from the day
- * round 1 is out): its All India Quota last rank admitted per branch, by category — only where three or more
- * colleges took part (the round pages' rule, so no figure is one college's cut).
- */
-async function latestRound() {
-  const cy = await getCounsellingYear();
-  for (const spec of [...ROUNDS].reverse()) {
-    const state = await getRoundState(cy, spec.round);
-    if (state.status !== "live") continue;
-    const result = await getRoundResult(cy, spec.round);
-    if (!result) continue;
-    const byCourse = new Map(result.cuts.aiq.map((b) => [b.course, b.last]));
-    return { year: cy, spec, final: state.kind === "final", total: result.total, byCourse };
-  }
-  return null;
-}
+// The running counselling's latest MCC round with a result: its All India Quota last rank admitted per branch,
+// by category — only where three or more colleges took part (the round pages' rule, so no figure is one college's cut).
+const latestRound = getLatestLiveRound;
 
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
   const [{ year, category }, live] = await Promise.all([chosen(searchParams), latestRound()]);
@@ -382,7 +368,8 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
           ))}
         </div>
         <p className="mt-6 text-sm text-muted-foreground">
-          Also: <Link href="/md-ms-india/stipend" className="font-semibold text-primary-strong hover:underline">NEET PG stipend, state by state</Link> ·{" "}
+          Also: <Link href="/neet-pg-marks-vs-rank" className="font-semibold text-primary-strong hover:underline">NEET PG marks vs rank</Link> ·{" "}
+          <Link href="/md-ms-india/stipend" className="font-semibold text-primary-strong hover:underline">NEET PG stipend, state by state</Link> ·{" "}
           <Link href="/management-quota" className="font-semibold text-primary-strong hover:underline">management quota fees</Link> ·{" "}
           <Link href="/nri-quota/fees" className="font-semibold text-primary-strong hover:underline">NRI quota fees</Link>
         </p>

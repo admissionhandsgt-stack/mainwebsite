@@ -98,6 +98,49 @@ export async function scoreRange(exam: ScoreExam, score: number): Promise<ScoreL
   return range ? { ok: true, range } : { ok: false, reason: "no-candidate", ...meta };
 }
 
+export interface ScoreTable {
+  year: number;
+  outOf: number;
+  maxScore: number;
+  minScore: number;
+  /** Candidates with a published rank. */
+  ranked: number;
+  source: string;
+  sourceUrl: string | null;
+  /** Highest score first. */
+  rows: { score: number; rankMin: number; rankMax: number; candidates: number | null }[];
+}
+
+/** Every year's whole list, newest first — the marks-vs-rank page prints them. */
+export const getScoreTables = (exam: ScoreExam) =>
+  unstable_cache(
+    async (): Promise<ScoreTable[]> => {
+      try {
+        const r = (await db.execute(sql`
+          SELECT year, score, score_out_of, rank_min, rank_max, candidates_at_score, source_title, source_url
+            FROM score_ranks WHERE exam = ${exam} ORDER BY year DESC, score DESC`)) as unknown as {
+          year: number; score: number; score_out_of: number; rank_min: number; rank_max: number;
+          candidates_at_score: number | null; source_title: string; source_url: string | null;
+        }[];
+        const years = new Map<number, ScoreTable>();
+        for (const x of r) {
+          const t = years.get(x.year) ?? { year: x.year, outOf: x.score_out_of, maxScore: x.score, minScore: x.score, ranked: 0,
+            source: x.source_title, sourceUrl: x.source_url, rows: [] };
+          t.rows.push({ score: x.score, rankMin: x.rank_min, rankMax: x.rank_max, candidates: x.candidates_at_score });
+          t.minScore = x.score;
+          t.ranked = Math.max(t.ranked, x.rank_max);
+          years.set(x.year, t);
+        }
+        return [...years.values()];
+      } catch (error) {
+        logError(error, { route: `scoreRank:tables:${exam}` });
+        return [];
+      }
+    },
+    ["score-tables-v1", exam],
+    { revalidate: 86_400, tags: ["score-ranks"] },
+  )();
+
 /** Which exams have a table, and its year — the form shows the score field only for these. */
 export async function scoreExams(): Promise<{ exam: ScoreExam; year: number; outOf: number }[]> {
   const t = await load("pg");

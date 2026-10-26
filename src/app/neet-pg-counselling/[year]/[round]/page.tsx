@@ -143,7 +143,14 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   } else {
     const expected = when?.expected ? DAY.format(when.expected) : null;
     meta = await resolveMetadata(path, {
-      title: fitTitle(`NEET PG ${year} ${T} Result: Date & Seat Allotment`, `NEET PG ${year} ${T} Result`),
+      // "neet pg round 2 result 2026", "neet pg round 2 date", "neet pg round 2 cut off 2025" (autocomplete,
+      // Oct 2026): before the result, the page shows MCC's dates and last year's same round — its cut off.
+      title: fitTitle(
+        ...(prev ? [`NEET PG ${T} Result ${year}: Date, Seat Allotment & Cut Off`] : []),
+        `NEET PG ${T} Result ${year}: Date & Seat Allotment`,
+        `NEET PG ${year} ${T} Result: Date & Seat Allotment`,
+        `NEET PG ${year} ${T} Result`,
+      ),
       description: fitDescription(
         `NEET PG ${year} ${lc} result${expected ? `, expected around ${expected} as per MCC's schedule` : ""}: MCC's PDF, seat allotment and branch-wise last rank, here the moment it is out${prev ? `. ${prev.year}'s figures meanwhile` : ""}.`,
       ),

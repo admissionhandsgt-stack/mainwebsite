@@ -17,6 +17,8 @@ import SeatOverview from "@/components/seats/SeatOverview";
 import BranchBands from "@/components/seats/BranchBands";
 import { summariseSeats } from "@/lib/seatSummary";
 import { getBranchSeatMatrix, MATRIX_LABEL } from "@/lib/pgSeatData";
+import { CUT_CATS, getLatestLiveRound, roundPath } from "@/lib/mccResults";
+import { getScoreTables } from "@/lib/scoreRank";
 
 /**
  * Rendered per request, deliberately.
@@ -64,19 +66,44 @@ const money = (v: number | null | undefined) => {
   return `₹${v.toLocaleString("en-IN")}`;
 };
 
+/**
+ * This branch in the running counselling's latest MCC round: the All India Quota last rank admitted per category
+ * (only where three or more colleges took the branch — the round pages' rule), and the NEET PG score each rank
+ * held in NBEMS's list ("how many marks for MD radiology"). Null when the round is the data's own year or absent.
+ */
+async function liveFor(course: string, dataYear: number | null | undefined) {
+  const live = await getLatestLiveRound();
+  const cut = live?.byCourse.get(course);
+  if (!live || !cut || live.year === dataYear || !Object.keys(cut).length) return null;
+  const table = (await getScoreTables("pg")).find((t) => t.year === live.year) ?? null;
+  const scoreAt = (rank: number) => table?.rows.find((r) => r.rankMin <= rank && rank <= r.rankMax)?.score ?? null;
+  return { ...live, cut, scoreAt, outOf: table?.outOf ?? null };
+}
+
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const b = await getBranch(params.slug);
   if (!b) return { title: "Branch not found | AdmissionHands" };
 
   // Searched as "dnb obstetrics and gynaecology closing rank", "dnb ent",
-  // "md radiology cutoff 2025". The year is the data's own, never a default.
+  // "md radiology cutoff 2025" — and, once a round of the running counselling is out, "neet pg rank for
+  // radiology", "md radiology cutoff 2026". The year is the data's own, never a default.
   const y = b.year ? ` ${b.year}` : "";
+  const live = await liveFor(b.name, b.year);
+  const lead = live ? ` ${live.year} ${live.spec.label} &` : "";
+  const open = live?.cut.Open;
   const title = fitTitle(
+    ...(live ? [`${b.name} Cutoff${lead}${y}: Closing Rank`, `${b.name} Cutoff${lead}${y}`] : []),
     `${b.name} Cutoff${y}: Closing Rank, Seats & Colleges`,
     `${b.name} Cutoff${y}: Closing Rank & Seats`,
     `${b.name} Cutoff${y}`,
   );
   const description = fitDescription(
+    ...(live && open
+      ? [
+          `${b.name} cutoff: in NEET PG ${live.year} ${live.spec.label.toLowerCase()} the last Open AIQ seat went to AIR ${inr(open)}. ${y.trim()} closing ranks in ${inr(b.colleges)} colleges, by quota and category, with fees.`,
+          `${b.name}: NEET PG ${live.year} ${live.spec.label.toLowerCase()} AIQ last rank AIR ${inr(open)} (Open), and ${y.trim()} closing ranks in ${inr(b.colleges)} colleges.`,
+        ]
+      : []),
     // "Seats" here used to print the number of seat options (college × quota × category),
     // which is not a count of seats. Colleges and states are.
     `${b.name} closing rank${y}: ${inr(b.colleges)} colleges across ${b.states} states — quota by quota and category by category, with fees and stipend. Published counselling results.`,
@@ -111,6 +138,7 @@ export default async function BranchPage({
 
   // Aggregates only — the per-college rows stay on the server (lib/depth.ts).
   const summary = summariseSeats(b.rowsList);
+  const live = await liveFor(b.name, b.year);
   // Words from Admin → Content → Text & numbers ("Page: PG branch pages"); photo from Admin → Media.
   const [where, copy, heroImage, mcc] = await Promise.all([
     getBranchStates(b.name),
@@ -237,6 +265,48 @@ export default async function BranchPage({
             to two lakh — at many times the fee. A large rank here does not mean a cheap seat.
           </span>
         </p>
+
+        {/* ------------- the running counselling's latest round (AIQ, 3+ colleges) ------------- */}
+        {live && (
+          <section className="mt-7 rounded-2xl border border-primary/25 bg-primary-soft p-5 md:p-6" aria-labelledby="live-round">
+            <h2 id="live-round" className="font-heading text-lg font-bold text-foreground md:text-xl">
+              {b.name}: NEET PG {live.year} {live.spec.label}, All India Quota
+            </h2>
+            <p className="mt-1.5 max-w-[72ch] text-[14px] leading-relaxed text-muted-foreground">
+              The last rank admitted in MCC&apos;s {live.final ? "final " : ""}{live.spec.label.toLowerCase()} result, by category, and the
+              score that rank held in NBEMS&apos;s NEET PG {live.year} result. Over every college that took the branch in the round.
+            </p>
+            <div className="mt-4 overflow-x-auto">
+              <table className="dt w-full min-w-[420px] text-left text-sm">
+                <thead className="text-[12px] uppercase tracking-wide text-muted-foreground">
+                  <tr>
+                    <th scope="col" className="py-2 pr-4 font-semibold">Category</th>
+                    <th scope="col" className="py-2 pr-4 text-right font-semibold">Last rank admitted</th>
+                    <th scope="col" className="py-2 text-right font-semibold">≈ Score{live.outOf ? ` / ${live.outOf}` : ""}</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {CUT_CATS.filter((c) => live.cut[c] != null).map((c) => (
+                    <tr key={c}>
+                      <th scope="row" className="py-2 pr-4 font-medium text-foreground">{c}</th>
+                      <td className="tnum py-2 pr-4 text-right font-semibold text-foreground">AIR {inr(live.cut[c]!)}</td>
+                      <td className="tnum py-2 text-right text-muted-foreground">{live.scoreAt(live.cut[c]!) ?? "—"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="mt-3 text-[13.5px] text-muted-foreground">
+              <Link href={roundPath(live.year, live.spec.slug)} className="font-semibold text-primary-strong hover:underline">
+                NEET PG {live.year} {live.spec.label} result, every branch
+              </Link>{" "}
+              ·{" "}
+              <Link href="/neet-pg-marks-vs-rank" className="font-semibold text-primary-strong hover:underline">
+                NEET PG marks vs rank
+              </Link>
+            </p>
+          </section>
+        )}
 
         {/* --------------------------- categories --------------------------- */}
         {b.categories.length > 1 && (

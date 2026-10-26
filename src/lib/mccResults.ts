@@ -583,6 +583,31 @@ export const getTelegramCue = unstable_cache(
   { revalidate: 300, tags: ["mcc-results"] },
 );
 
+export interface LatestRound {
+  year: number;
+  spec: RoundSpec;
+  final: boolean;
+  total: number;
+  /** Our course name -> All India Quota last rank admitted per category (only branches over 3+ colleges). */
+  byCourse: Map<string, Partial<Record<CutCat, number>>>;
+}
+
+/**
+ * The running counselling's latest MCC round with a result — "neet pg 2026 cutoff" is searched from the day
+ * round 1 is out. The cutoff and marks-vs-rank pages print its AIQ branch figures beside the complete year.
+ */
+export async function getLatestLiveRound(): Promise<LatestRound | null> {
+  const year = await getCounsellingYear();
+  for (const spec of [...ROUNDS].reverse()) {
+    const state = await getRoundState(year, spec.round);
+    if (state.status !== "live") continue;
+    const result = await getRoundResult(year, spec.round);
+    if (!result) continue;
+    return { year, spec, final: state.kind === "final", total: result.total, byCourse: new Map(result.cuts.aiq.map((b) => [b.course, b.last])) };
+  }
+  return null;
+}
+
 /** Every year we hold any round for, newest first, with each round's state — for the hub and the sitemap. */
 export const getCounsellingYears = unstable_cache(
   async (): Promise<number[]> => {

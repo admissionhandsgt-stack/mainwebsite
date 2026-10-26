@@ -243,6 +243,69 @@ export const PAGE_COPY = {
       visual_title: { label: "Chart title — {year}", value: "Last AIR admitted, {year}" },
     }),
   },
+  "page.neet_pg_marks_rank.hero": {
+    group: "Page: NEET PG marks vs rank",
+    fields: hero({
+      eyebrow: { label: "Hero eyebrow", value: "NEET PG · score and rank" },
+      title: { label: "Hero title — {year}", value: "NEET PG marks vs rank {year}:" },
+      accent: { label: "Hero title, coloured part", value: "every score, from NBEMS's result" },
+      subtitle: {
+        label: "Hero line — {year}, {ranked}, {prev}",
+        value: "The All India Rank every NEET PG score held in NBEMS's published result — all {ranked} ranked candidates of {year}, with {prev} beside it — and the MD/MS branches those ranks reached.",
+        long: true,
+      },
+      cta: { label: "Hero button", value: "Have your rank? See every college it reaches" },
+      source: {
+        label: "Source line — {year}, {prev}",
+        value: "From NBEMS's published NEET-PG {year} and {prev} results (the score and rank of every candidate), and MCC's {year} round results for the branches.",
+        long: true,
+      },
+      visual_title: { label: "Chart title — {year}", value: "Rank at each score, {year}" },
+    }),
+  },
+  "page.neet_pg_marks_rank.body": {
+    group: "Page: NEET PG marks vs rank — body",
+    fields: {
+      lookup_title: { label: "Lookup heading — {year}", value: "Find your NEET PG {year} rank from your score" },
+      lookup_intro: {
+        label: "Lookup line",
+        value: "Type the score on your scorecard. Everyone with the same score shares a range of ranks — your exact rank is printed on your scorecard.",
+        long: true,
+      },
+      lookup_score: { label: "Lookup: score field — {year}, {outof}", value: "Your NEET PG {year} score (out of {outof})" },
+      lookup_category: { label: "Lookup: category field", value: "Category" },
+      lookup_button: { label: "Lookup: button", value: "Show my rank" },
+      lookup_result: {
+        label: "Lookup: result — {score}, {year}, {min}, {max}, {cand}",
+        value: "Score {score} in NEET PG {year} = rank {min} – {max}. {cand} candidates had this score.",
+        long: true,
+      },
+      lookup_branches: {
+        label: "Lookup: branches reached — {n}, {cat}, {round}, {max}",
+        value: "In {round}, {cat} All India Quota seats in these {n} branches went to ranks at or beyond {max} in at least one college:",
+        long: true,
+      },
+      lookup_none: {
+        label: "Lookup: no branch reached — {cat}, {round}, {max}",
+        value: "No branch's {cat} All India Quota seat in {round} went as far as rank {max}. State quota, deemed and DNB seats close differently — a counsellor can check those for you.",
+        long: true,
+      },
+      lookup_cta: { label: "Lookup: button to the predictor — {rank}", value: "See every college rank {rank} reaches" },
+      table_title: { label: "Table heading — {year}, {outof}", value: "NEET PG {year} marks vs rank (out of {outof})" },
+      table_intro: {
+        label: "Table line",
+        value: "Every 10 marks from the top score down. The rank is the All India Rank range NBEMS gave that exact score.",
+        long: true,
+      },
+      branch_title: { label: "Branch table heading — {year}, {round}", value: "Marks vs rank vs branch — NEET PG {year}, {round}" },
+      branch_intro: {
+        label: "Branch table line — {round}",
+        value: "At each score, the MD/MS branches whose All India Quota seats in MCC's {round} result went to a rank at least that far down — in at least one college, and only branches taken in three or more colleges. A branch listed means some seat in it was reached, not every college's.",
+        long: true,
+      },
+      faq_title: { label: "FAQ heading", value: "NEET PG marks vs rank: common questions" },
+    },
+  },
   "page.neet_ug_cutoff.hero": {
     group: "Page: NEET UG cutoff",
     fields: hero({

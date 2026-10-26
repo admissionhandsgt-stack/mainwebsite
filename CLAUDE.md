@@ -1519,6 +1519,24 @@ that is actually cut) and `node scripts/layout_scan.mjs <base> <width> <paths…
 that wrap, uppercase labels that wrap, text under 11px, controls spilling out of their box). Both block
 analytics. Two-line "buttons" in layout_scan are often cards by design (name + title, label + count).
 
+## NEET PG marks vs rank, and the live round on search pages (2026-10-26)
+
+Autocomplete's biggest cluster with no page ("neet pg 450 marks rank", "marks vs rank 2026", "neet pg rank for
+radiology") — answered from data we hold, nothing typed:
+
+- **`/neet-pg-marks-vs-rank`** — `score_ranks` (NBEMS's own result PDFs, `getScoreTables()` in `lib/scoreRank.ts`,
+  newest year first): the score → rank lookup (`components/marks/MarksRankLookup.tsx`; analytics get `rank_band`
+  only, the result is `data-aa-mask`), the same year's latest live MCC round per branch × category
+  (`getLatestLiveRound()` in `lib/mccResults.ts` — the round page's own `cuts.aiq`, so ≥3 colleges), both years every
+  10 marks. Copy `page.neet_pg_marks_rank.*`; menu row `scripts/sql/nav_marks_rank_2026_10_26.sql` (after the deploy).
+  The year comparison is score → rank within a year only: 2025 was out of 800, 2026 out of 720.
+- **Branch pages** carry a "NEET PG <year> <round>, All India Quota" box (last rank admitted per category + the score
+  that rank held) and lead the title/description with it once a round of a newer year than the branch's data is live
+  (`liveFor()` in the branch page). `/neet-pg-cutoff` takes the same function for its 2026 column.
+- Titles as searched: PG college pages with a stipend say "Fees, Stipend & Seats"; stipend state pages with a bond
+  say "<State> PG Stipend & Bond"; a round page still awaited says "Round N Result <year>: Date, Seat Allotment &
+  Cut Off". Judge them on GSC after 3–4 weeks.
+
 ## Per-state PG stipend pages (2026-10-20)
 
 `/md-ms-india/stipend/[state]` for every state with three or more colleges publishing a monthly stipend
@@ -2039,8 +2057,8 @@ linked from the header dropdowns and footer (`scripts/sql/nav_search_pages_2026_
 - The AIQ filter is the quota label (`All India%` / `AIQ%`): the same counselling also allots ESI, DU,
   NRI and management seats that close at entirely different ranks.
 - Stipend: `per_month` rows only, latest year per college. No bond data exists (`fees.bond_years` empty).
-- **Not built, and why:** marks-vs-rank and NEET SS need data we do not hold (NTA/NBEMS score–rank
-  tables; MCC SS allotment lists). Counselling news needs someone to write it — the biggest cluster.
+- **Not built, and why:** UG marks-vs-rank needs a score–rank table NTA does not publish (PG's is
+  built since 2026-10-26, see "NEET PG marks vs rank"). Counselling news needs someone to write it — the biggest cluster.
 
 ### Live alerts update themselves (2026-10-08) — `lib/alertFeed.ts`
 

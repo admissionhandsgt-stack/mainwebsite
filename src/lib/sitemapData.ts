@@ -47,6 +47,8 @@ const STATIC: { path: string; priority: number; freq: SitemapEntry["changeFreque
   // admission searches, answered from the same data as the predictor.
   { path: "/neet-ug-cutoff", priority: 0.9, freq: "weekly" },
   { path: "/neet-pg-cutoff", priority: 0.9, freq: "weekly" },
+  // NBEMS's score and rank of every candidate (2026-10-26): "neet pg marks vs rank".
+  { path: "/neet-pg-marks-vs-rank", priority: 0.9, freq: "weekly" },
   { path: "/md-ms-india/stipend", priority: 0.8, freq: "monthly" },
   { path: "/bds-india", priority: 0.8, freq: "weekly" },
   { path: "/ayush-colleges", priority: 0.6, freq: "monthly" },

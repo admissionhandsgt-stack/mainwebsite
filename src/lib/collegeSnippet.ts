@@ -191,9 +191,18 @@ export function collegeTitle(s: CollegeSummary): string {
         : s.stipend
           ? [`: DNB Seats & Stipend${y}`, `: DNB Seats${y}`]
           : [`: DNB Seats${y}`, ` DNB Seats`]
-      : s.band
-        ? [`: ${s.course} Cutoff${y}, Fees & Seats`, `: ${s.course} Cutoff${y} & Fees`, `: ${s.course} Cutoff${y}`]
-        : [`: ${s.course} Admission${y}, Fees & Seats`, `: ${s.course} Fees & Seats`, `: ${s.course} Admission`];
+      : [
+          // "sms jaipur pg stipend", "pg stipend in vmmc" (Search Console and autocomplete, Oct 2026): an MD/MS
+          // page that publishes a stipend says so first, when it fits.
+          ...(s.kind === "pg" && s.stipend
+            ? s.band
+              ? [`: ${s.course} Cutoff${y}, Fees, Stipend & Seats`, `: ${s.course} Cutoff${y}, Fees & Stipend`]
+              : [`: ${s.course} Admission${y}, Fees & Stipend`, `: ${s.course} Fees & Stipend`]
+            : []),
+          ...(s.band
+            ? [`: ${s.course} Cutoff${y}, Fees & Seats`, `: ${s.course} Cutoff${y} & Fees`, `: ${s.course} Cutoff${y}`]
+            : [`: ${s.course} Admission${y}, Fees & Seats`, `: ${s.course} Fees & Seats`, `: ${s.course} Admission`]),
+        ];
   const whole = fit(TITLE, [...tails.map((t) => where + t), ...(s.place ? tails.map((t) => s.short + t) : [])]);
   if (whole) return whole;
   // A long name is shortened from the middle, keeping its end and the city.
