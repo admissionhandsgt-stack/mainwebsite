@@ -90,7 +90,7 @@ export interface BranchStateQuota {
   colleges: number;
   bestR1: number | null;
   widest: number | null;
-  /** True when the counselling publishes its own merit rank, not the All India Rank (closing_ranks.rank_basis). */
+  /** True while the figure is the state's own merit number, not an AIR (migration 0045 turns these into AIRs). */
   stateRank: boolean;
   /** One fee per college for the quota: median and the middle 80%, only over three or more colleges. */
   feeColleges: number;
@@ -160,7 +160,7 @@ async function load(courseSlug: string, stateSlug: string): Promise<BranchState 
                  COUNT(DISTINCT cr.institute_id)::int AS colleges,
                  MIN(cr.closing_rank) FILTER (WHERE cr.round_label = 'R1')::int AS best_r1,
                  MAX(cr.closing_rank)::int AS widest,
-                 mode() WITHIN GROUP (ORDER BY cr.rank_basis) AS basis
+                 bool_or(cr.rank_basis = 'State/Counselling rank' AND cr.closing_rank = cr.counselling_rank) AS state_rank
             FROM closing_ranks cr
             JOIN institutes i ON i.id = cr.institute_id
             JOIN counsellings c ON c.id = cr.counselling_id
@@ -211,7 +211,7 @@ async function load(courseSlug: string, stateSlug: string): Promise<BranchState 
         colleges: Number(x.colleges),
         bestR1: groupRank(num(x.best_r1), Number(x.colleges)),
         widest: groupRank(num(x.widest), Number(x.colleges)),
-        stateRank: /state|counselling/i.test(String(x.basis ?? "")),
+        stateRank: Boolean(x.state_rank),
         feeColleges: fc,
         feeMedian: money(f?.median),
         feeP10: money(f?.p10),
@@ -265,7 +265,7 @@ async function loadRound(combo: BranchStateCombo, stateId: number): Promise<Bran
 }
 
 export const getBranchState = (courseSlug: string, stateSlug: string) =>
-  unstable_cache(() => load(courseSlug, stateSlug), ["branch-state-v2", courseSlug, stateSlug], {
+  unstable_cache(() => load(courseSlug, stateSlug), ["branch-state-v3", courseSlug, stateSlug], {
     revalidate: DAY,
     tags: ["seat-data", "mcc"],
   })();

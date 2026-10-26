@@ -288,7 +288,10 @@ export default async function PgStatePage({ params }: Props) {
           <SectionHead
             icon="chart"
             title={<>NEET PG {p.year} cutoff in {p.name}, by quota</>}
-            intro={<>Open / general merit, in each counselling&apos;s own category code. The rank range and the fee range are separate: each is the lowest and highest across the quota&apos;s colleges, so the cheapest fee is not the seat with the furthest rank. &ldquo;State rank&rdquo; is a place in the state&apos;s own merit list, not an All India Rank.</>}
+            intro={<>Open / general merit, in each counselling&apos;s own category code. The rank range and the fee range are separate: each is the lowest and highest across the quota&apos;s colleges, so the cheapest fee is not the seat with the furthest rank.{" "}
+              {p.quotas.some((q) => q.stateRank)
+                ? "“State rank” is a place in the state's own merit list, not an All India Rank."
+                : "For the state's own quotas the rank is the All India Rank of the last candidate the state admitted."}</>}
           />
           <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
             <table className="w-full min-w-[680px] text-left text-sm">

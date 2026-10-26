@@ -327,7 +327,11 @@ try {
       year: int(r.year),
       round: roundNumber(r.round_label ?? r.round),
       round_label: r.round_label ? String(r.round_label).slice(0, 24) : null,
-      closing_rank: int(r.closing_rank),
+      // A state counselling's rows carry its own merit number in closing_rank and the AIR of that candidate
+      // in ai_rank; PG closing ranks are All India Ranks everywhere (migration 0045, verified against
+      // Gujarat's published closures), and the state number stays in counselling_rank.
+      closing_rank:
+        LEVEL === "pg" && r.rank_basis === "State/Counselling rank" && int(r.ai_rank) > 0 ? int(r.ai_rank) : int(r.closing_rank),
       ai_rank: int(r.ai_rank),
       counselling_rank: int(r.counselling_rank),
       seats_allotted: int(r.seats_allotted),

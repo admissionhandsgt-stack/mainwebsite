@@ -1556,13 +1556,19 @@ same branch in other states and other branches in the state.
   have 3+ colleges). Widen the list in that one constant; sitemap, links and the 404 follow it.
 - Linked from the branch page ("<branch> by state" chips) and the PG state page (its branch list links the state page).
   `SEARCH_NAME` gives titles the words people type ("MD Radiology", "MS OBG"). Copy: `page.pg_branch_state.*`.
-- **`closing_ranks.closing_rank` is the state's own merit rank for almost every state counselling** (`rank_basis =
-  'State/Counselling rank'`, 111,302 of 230,484 PG rows: Maharashtra, Gujarat, TN, UP, Rajasthan, Telangana, AP, WB,
-  Kerala, MP, Bihar, Haryana…; median 250–3,300) — only All India PG and KEA are AIRs. Those rows also carry `ai_rank`
-  (median 30k–87k, always ≥ closing_rank), not yet checked against an official merit list. This page and the PG state
-  page now label such figures "state rank" (`stateRank` from the quota's modal `rank_basis`). **Nothing else reads
-  `rank_basis`: `seat_options`, the predictor, branch pages and college bands compare a candidate's AIR with these state
-  ranks.** Open decision for the owner (2026-10-26) — verify `ai_rank` on one state's official PG merit list first.
+- **PG closing ranks are All India Ranks everywhere since migration 0045 (2026-10-27).** Every state counselling's
+  rows (`rank_basis = 'State/Counselling rank'`, 111,302 of 230,484 PG rows) had carried the state's merit number in
+  `closing_rank` — which the predictor, `seat_options`, branch/state ranges and college bands compared with a
+  candidate's AIR (a Maharashtra seat closing at merit no. 3,332, AIR 41,327, read as out of reach for AIR 30,000).
+  Verified first against Gujarat's own "Institutewise Last Rank of PG-2025" (Compiled_Closure_PG_2025-26_PGMDMS.pdf,
+  medadmgujarat.ncode.in): over 1,579 matched cells `ai_rank` = the official NEET rank in 99.6% and `closing_rank` =
+  the official general merit no. in 99.7%. So `closing_rank` := `ai_rank` for those rows; the state number stays in
+  `counselling_rank`; `rank_basis` still says the state allotted it; UG untouched (no UG state row has an AIR).
+  `import_neetpg.mjs` applies the same rule. In bonus-mark states (AP Govt, Odisha, Haryana, UP, Rajasthan, Punjab,
+  Bihar — Spearman 0.37–0.77 between state order and AIR) the last admitted may have held an in-service bonus; the
+  pages' footnote says so. Undo: `closing_rank = counselling_rank` for those rows, then refresh `seat_options`.
+  The "state rank" labels on the state and branch × state pages show only while a figure is still a state number
+  (`closing_rank = counselling_rank`), i.e. never after 0045.
 
 ## Per-state PG stipend pages (2026-10-20)
 

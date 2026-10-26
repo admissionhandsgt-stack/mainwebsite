@@ -325,9 +325,11 @@ export default async function BranchStatePage({ params }: Props) {
             </table>
           </div>
           <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
-            &ldquo;State rank&rdquo; is a place in the state&apos;s own merit list, which most state counsellings publish instead of the All
-            India Rank — it is not comparable with an AIR. A dash means fewer than three colleges stand behind the figure, so it is not
-            shown. Confirm the fee, hostel and deposit with the college before you pay.
+            {p.quotas.some((q) => q.stateRank)
+              ? "“State rank” is a place in the state's own merit list, which most state counsellings publish instead of the All India Rank — it is not comparable with an AIR."
+              : "For the state's own quotas the rank is the All India Rank of the last candidate the state admitted; a state that adds marks for in-service doctors admits in its own merit order, so a better AIR is not always enough."}{" "}
+            A dash means fewer than three colleges stand behind the figure, so it is not shown. Confirm the fee, hostel and deposit with
+            the college before you pay.
           </p>
         </section>
       )}
