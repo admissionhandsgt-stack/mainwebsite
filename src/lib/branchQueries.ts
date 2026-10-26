@@ -36,6 +36,7 @@ import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { logError } from "@/lib/logger";
 import { branchSlug } from "@/lib/branchSlug";
+import { MIN_GROUP } from "@/lib/chance";
 
 const rows = <T,>(r: unknown) => r as unknown as T[];
 
@@ -67,6 +68,7 @@ async function loadBranches(): Promise<BranchSummary[]> {
                COUNT(*)::int                        AS seats,
                MIN(so.r1_latest) FILTER (WHERE cat.code = ${DEFAULT_CATEGORY})::int     AS best_rank,
                MAX(so.widest_latest) FILTER (WHERE cat.code = ${DEFAULT_CATEGORY})::int AS widest_rank
+               , COUNT(DISTINCT so.institute_id) FILTER (WHERE cat.code = ${DEFAULT_CATEGORY})::int AS gen_colleges
           FROM seat_options so
           JOIN courses c ON c.id = so.course_id
           LEFT JOIN categories cat ON cat.id = so.category_id
@@ -81,8 +83,9 @@ async function loadBranches(): Promise<BranchSummary[]> {
       slug: branchSlug(x.name as string),
       colleges: x.colleges as number,
       seats: x.seats as number,
-      bestRank: (x.best_rank as number) ?? null,
-      widestRank: (x.widest_rank as number) ?? null,
+      // A range over fewer than three colleges is one college's cut under another name (lib/chance.ts).
+      bestRank: Number(x.gen_colleges) >= MIN_GROUP ? ((x.best_rank as number) ?? null) : null,
+      widestRank: Number(x.gen_colleges) >= MIN_GROUP ? ((x.widest_rank as number) ?? null) : null,
     }));
   } catch (error) {
     logError(error, { route: "branchQueries:list" });

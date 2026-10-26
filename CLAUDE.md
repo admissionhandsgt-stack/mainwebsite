@@ -1533,6 +1533,9 @@ radiology") — answered from data we hold, nothing typed:
 - **Branch pages** carry a "NEET PG <year> <round>, All India Quota" box (last rank admitted per category + the score
   that rank held) and lead the title/description with it once a round of a newer year than the branch's data is live
   (`liveFor()` in the branch page). `/neet-pg-cutoff` takes the same function for its 2026 column.
+- The branch FAQ "What rank is needed" no longer quotes "the most competitive college's" round-1 close; it gives the
+  live round's last Open rank (≥3 colleges). The branch index's round-1/last-admitted columns are blank ("—") for a
+  branch with fewer than 3 general-category colleges (16 branches, mostly diplomas, were printing one college's cut).
 - Titles as searched: PG college pages with a stipend say "Fees, Stipend & Seats"; stipend state pages with a bond
   say "<State> PG Stipend & Bond"; a round page still awaited says "Round N Result <year>: Date, Seat Allotment &
   Cut Off". Judge them on GSC after 3–4 weeks.

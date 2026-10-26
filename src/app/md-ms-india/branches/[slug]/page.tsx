@@ -160,12 +160,16 @@ export default async function BranchPage({
   const faqs = [
     {
       q: `What rank is needed for ${b.name}?`,
+      // A figure over every college that took the branch (≥3), never one college's cut (the chance-view rule).
       a:
-        `It depends on the quota as much as on the rank. In the ${b.category} category, round 1 closed ` +
-        `from rank ${inr(b.bestRank)} at the most competitive college. Management and NRI seats at the ` +
-        `same colleges stay open to far larger ranks, but cost several times more — so a large rank ` +
-        `does not mean a cheap seat. Sign in to see your own chance at each college in plain words; ` +
-        `your counsellor takes you through the seat-by-seat detail.`,
+        (live?.cut.Open
+          ? `In MCC's NEET PG ${live.year} ${live.spec.label.toLowerCase()} result, the last Open All India Quota seat in ` +
+            `${b.name} went to AIR ${inr(live.cut.Open)}, across every college that took the branch in the round. `
+          : "") +
+        `It depends on the quota as much as on the rank: management and NRI seats at the same colleges ` +
+        `stay open to far larger ranks, but cost several times more — so a large rank does not mean a cheap ` +
+        `seat. Sign in to see your own chance at each college in plain words; your counsellor takes you ` +
+        `through the seat-by-seat detail.`,
     },
     // "neet pg score for radiology" — the score the last rank admitted held, from NBEMS's own table.
     ...(live?.cut.Open && live.scoreAt(live.cut.Open) != null
