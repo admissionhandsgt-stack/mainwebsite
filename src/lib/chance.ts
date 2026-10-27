@@ -1,14 +1,17 @@
 /**
  * How a seat is described to a student: words, never ranks.
  *
- * No imports, so client components can use it (see the note at the top of
- * counsellingOptions.ts for why that matters in this codebase).
+ * No server imports, so client components can use it (see the note at the top of
+ * counsellingOptions.ts for why that matters in this codebase). Its one import,
+ * categoryScope.ts, is import-free too.
  *
  * The bands themselves are decided on the server from the published closing
  * ranks (lib/predictor.ts). What leaves the server is only the word and an
  * approximate fee bracket — the rank behind the word is the counsellor's to
  * talk through, which is the product.
  */
+
+import { OPEN_CODES } from "@/lib/categoryScope";
 
 export type ChanceBand = "safe" | "likely" | "possible" | "stretch";
 
@@ -138,11 +141,14 @@ export function rankBand(rank: number | null | undefined): string | null {
 export const BAND_FOOTNOTE =
   "*A band, not the exact rank — where the last general-category seat on that quota was taken across all rounds of that year. Your counsellor has the round-by-round detail, and your own chance is shown after a free sign-in.";
 
-/** The open / general category, as each counselling spells it. Not NRI or management, which are quotas. */
-export const GENERAL_CODES = new Set([
-  "GEN", "UR", "OPEN", "OPEN-GEN", "GM", "OM", "OC Open", "SM", "GQ-OP", "UQ-OP", "IQ-OP",
-  "Group 1 - GEN", "OPN", "North East Open Quota", "CMC-General Merit",
-]);
+/**
+ * The open / general category, as each counselling spells it — the predictor's lists
+ * (lib/categoryScope.ts) for both levels, plus Gujarat's institutional and in-service open
+ * codes, whose quotas isMeritQuota judges. Not NRI or management, which are quotas.
+ * TN's OC, Odisha's OP, Punjab's GQ-GEN, Delhi's Open and Karnataka's GMP joined on 2026-10-27,
+ * which gave about 120 MBBS colleges their first general band.
+ */
+export const GENERAL_CODES = new Set([...OPEN_CODES.pg, ...OPEN_CODES.ug, "UQ-OP", "IQ-OP"]);
 
 /** A merit quota — All India or a state's own — not a paid, NRI, management or institutional one. */
 export function isMeritQuota(quota: string): boolean {

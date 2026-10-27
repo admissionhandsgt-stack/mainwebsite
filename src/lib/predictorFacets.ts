@@ -22,6 +22,7 @@ import { unstable_cache } from "next/cache";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { logError } from "@/lib/logger";
+import { categoryKey, GENERAL_DEFAULT, isOpenCode, isPaidCode, pickerOffers } from "@/lib/categoryScope";
 
 export type Stream = "mbbs" | "bds" | "pg";
 
@@ -96,6 +97,15 @@ const EMPTY: Facets = {
 
 const rows = <T,>(r: unknown) => r as unknown as T[];
 
+/** Where a code sits among the national categories (UR/GEN, OBC, EWS, SC, ST, then their PwD lists). */
+function nationalOrder(level: "ug" | "pg", code: string): number {
+  const key = categoryKey(code);
+  const general = GENERAL_DEFAULT[level];
+  const order = [general, "OBC", "EWS", "SC", "ST", `${general}PWD`, "OBCPWD", "EWSPWD", "SCPWD", "STPWD"];
+  const at = order.indexOf(key);
+  return at === -1 ? order.length : at;
+}
+
 async function load(id: Stream): Promise<Facets> {
   const spec = streamSpec(id);
   const courseFilter = spec.course ? sql`AND c.name ILIKE ${spec.course}` : sql``;
@@ -117,7 +127,7 @@ async function load(id: Stream): Promise<Facets> {
         JOIN categories cat ON cat.id = so.category_id
         JOIN courses c ON c.id = so.course_id
         WHERE so.level = ${spec.level} ${courseFilter}
-        GROUP BY cat.code ORDER BY n DESC LIMIT 14
+        GROUP BY cat.code ORDER BY n DESC
       `),
       // Ordered by how many seats carry them, so the branches a candidate is
       // most likely to want sit at the top of a hundred-item list.
@@ -164,10 +174,29 @@ async function load(id: Stream): Promise<Facets> {
 
     return {
       states: rows<{ name: string }>(states).map((r) => r.name),
-      categories: rows<{ code: string; n: number }>(cats).map((r) => ({
-        code: r.code,
-        seats: r.n,
-      })),
+      // The open codes (GM, OPEN, SM, "OC Open"…) fold into GEN / UR, and the paid and NRI
+      // ones are seat types — lib/categoryScope.ts. The general code counts all of them.
+      // The national categories lead, in the order a scorecard prints them; then the rest
+      // by seats — a state's own lists (BCD-GEN, 2AG…) used to come before EWS.
+      categories: rows<{ code: string; n: number }>(cats)
+        .filter((r) => pickerOffers(spec.level, r.code))
+        // One entry per category however it is spelt — the commonest spelling, which comes first.
+        .filter((r, i, all) => all.findIndex((x) => categoryKey(x.code) === categoryKey(r.code)) === i)
+        .map((r, i) => ({ r, i, p: nationalOrder(spec.level, r.code) }))
+        .sort((a, b) => a.p - b.p || a.i - b.i)
+        .map((x) => x.r)
+        .slice(0, 14)
+        .map((r) => ({
+          code: r.code,
+          seats:
+            r.code === GENERAL_DEFAULT[spec.level]
+              ? rows<{ code: string; n: number }>(cats)
+                  .filter((x) => isOpenCode(spec.level, x.code) || isPaidCode(spec.level, x.code))
+                  .reduce((a, x) => a + x.n, 0)
+              : rows<{ code: string; n: number }>(cats)
+                  .filter((x) => categoryKey(x.code) === categoryKey(r.code))
+                  .reduce((a, x) => a + x.n, 0),
+        })),
       branches: rows<{ name: string }>(branches).map((r) => r.name),
       ownerships: rows<{ name: string }>(owners).map((r) => r.name),
       seatTypes: [
@@ -188,9 +217,9 @@ async function load(id: Stream): Promise<Facets> {
 }
 
 const cached: Record<Stream, () => Promise<Facets>> = {
-  mbbs: unstable_cache(() => load("mbbs"), ["facets-mbbs"], { revalidate: 86400, tags: ["closing-ranks"] }),
-  bds: unstable_cache(() => load("bds"), ["facets-bds"], { revalidate: 86400, tags: ["closing-ranks"] }),
-  pg: unstable_cache(() => load("pg"), ["facets-pg"], { revalidate: 86400, tags: ["closing-ranks"] }),
+  mbbs: unstable_cache(() => load("mbbs"), ["facets-mbbs-v4"], { revalidate: 86400, tags: ["closing-ranks"] }),
+  bds: unstable_cache(() => load("bds"), ["facets-bds-v4"], { revalidate: 86400, tags: ["closing-ranks"] }),
+  pg: unstable_cache(() => load("pg"), ["facets-pg-v4"], { revalidate: 86400, tags: ["closing-ranks"] }),
 };
 
 export async function getPredictorFacets(id: Stream): Promise<Facets> {

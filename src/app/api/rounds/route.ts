@@ -40,7 +40,7 @@ export async function GET(request: Request) {
   if (!checked.ok) return NextResponse.json({ error: checked.error }, { status: 400 });
   const rank = checked.value;
   const category =
-    (params.get("category") || "").toUpperCase().slice(0, 48) ||
+    (params.get("category") || "").trim().slice(0, 48) ||
     (spec.level === "ug" ? "UR" : "GEN");
 
   try {

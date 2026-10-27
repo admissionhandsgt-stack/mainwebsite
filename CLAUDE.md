@@ -796,6 +796,20 @@ It affects 7.4% of seats and always hides options from the candidate, so the ban
 - **The general category is `GEN` in PG data and `UR` in UG data.** `PredictorClient` picks its default
   from the categories the level actually publishes; hardcoding `GEN` made the UG predictor open on a
   category it has almost no rows for.
+- **A category is the seats that category can take, not one code (2026-10-27) — `lib/categoryScope.ts`
+  (import-free lists) + `lib/categoryScopeSql.ts` (`categoryScope()`), used by `/api/predict`, `/api/rounds`
+  and `/api/college-bands`.** Exact matching had hidden every state that spells its open category its own way
+  (GM, GQ-OP, SM, "OC Open"/OC, OM, MBBS OPEN, OPEN-GEN — MBBS UR at rank 25,000 showed no college in
+  Telangana, Karnataka, Maharashtra, TN, Gujarat, AP or Kerala), every open seat from a reserved candidate,
+  and — because the route upper-cased the code — every mixed-case code ("GEN-PwD" returned 0). Now: own code ∪
+  each counselling's open code (`OPEN_CODES`, per level) ∪ paid category codes (`PAID_CODES`: MGT, MNG, MQ-MQ,
+  MQ1-3, S1A/S1B, CAT B…), compared by `categoryKey` (upper-cased, spaces and hyphens dropped, so "UR PwD" =
+  "UR - PwD"); in-service/sponsored, minority and NRI quotas only for a category (or seat type) that names
+  them. Left out on purpose: female, rural and regional lists (OPEN-FEM, GMR, GMH, UR-GL) and institutional-
+  preference / in-service open lists (UQ-OP, IQ-OP, GEN-IP, IP-GEN). The picker folds the open, paid and NRI
+  codes into GEN/UR and the seat types, one entry per spelling, national categories first. `GENERAL_CODES`
+  (college-page bands) is built from the same lists — TN's OC, Odisha's OP, Punjab's GQ-GEN gave ~120 MBBS
+  colleges their first general band. **Domicile is still not applied:** state-quota seats show to everyone.
 - Drizzle expands a JS array in a `sql` template into `$1, $2, …`, so `= ANY(${arr})` is invalid.
   Use `IN (${sql.join(arr.map((v) => sql`${v}`), sql`, `)})`.
 - `PageHero` is a client component: pass `eyebrowIcon` as a **name** (`"target"`), never a Lucide component —

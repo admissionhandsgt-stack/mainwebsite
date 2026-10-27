@@ -8,6 +8,7 @@ import { sql } from "drizzle-orm";
 import { chanceFor, BAND_ORDER, type ChanceBand, type SeatOptionRow } from "@/lib/predictor";
 import { checkRank, NEET_LIMITS } from "@/lib/neetLimits";
 import { approxFee } from "@/lib/chance";
+import { categoryScope } from "@/lib/categoryScopeSql";
 import { optionsUser, allowQuery, logQuery, toOptions, DISTINCT_PER_DAY } from "@/lib/chanceView";
 
 export const dynamic = "force-dynamic";
@@ -44,7 +45,9 @@ function parse(searchParams: URLSearchParams): PredictQuery | { error: string } 
   const checked = checkRank(searchParams.get("rank"), spec.level);
   if (!checked.ok) return { error: checked.error };
   const rank = checked.value;
-  const category = (searchParams.get("category") || "").toUpperCase().slice(0, 48);
+  // Not upper-cased: codes are compared upper-cased on both sides (lib/categoryScopeSql.ts),
+  // and upper-casing here alone made "GEN-PwD" and "UR PwD" match nothing.
+  const category = (searchParams.get("category") || "").trim().slice(0, 48);
 
   // NRI and management are quotas, not categories — see predictorFacets.ts.
   const seatTypeRaw = searchParams.get("seatType");
@@ -160,7 +163,7 @@ export async function GET(request: Request) {
       LEFT JOIN states       st ON st.id = i.state_id
       LEFT JOIN counsellings cn ON cn.id = so.counselling_id
       WHERE so.level = ${level}
-        AND cat.code = ${category}
+        AND ${categoryScope({ level, category, seatType, code: sql`cat.code`, quota: sql`q.label` })}
         AND COALESCE(so.furthest_ever, so.widest_latest) >= ${rank}
         ${states.length ? sql`AND st.name IN (${sql.join(states.map((s) => sql`${s}`), sql`, `)})` : sql``}
         ${ownership.length ? sql`AND i.ownership::text IN (${sql.join(ownership.map((o) => sql`${o}`), sql`, `)})` : sql``}

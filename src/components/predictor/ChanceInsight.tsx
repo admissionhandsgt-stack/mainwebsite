@@ -162,8 +162,8 @@ export default function ChanceInsight({
             </h2>
             <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
               in <b className="tnum text-foreground">{inr(data.shape.colleges)} colleges</b> across{" "}
-              <b className="tnum text-foreground">{inr(data.shape.states)} states</b> for the {category} category, judged
-              against where the published cuts actually landed.
+              <b className="tnum text-foreground">{inr(data.shape.states)} states</b> for a {category} candidate, open-category
+              seats included, judged against where the published cuts actually landed.
             </p>
           </div>
           <div className="flex items-center gap-4 md:flex-col md:items-center md:justify-center">

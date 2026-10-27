@@ -4,6 +4,7 @@ import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
 import { checkRank } from "@/lib/neetLimits";
+import { categoryScope } from "@/lib/categoryScopeSql";
 import { optionsUser, allowQuery, logQuery, DISTINCT_PER_DAY } from "@/lib/chanceView";
 
 export const dynamic = "force-dynamic";
@@ -43,9 +44,7 @@ export async function GET(request: Request) {
   const checked = checkRank(params.get("rank"), level);
   if (!checked.ok) return NextResponse.json({ error: checked.error }, { status: 400 });
   const rank = checked.value;
-  const category = (params.get("category") || (level === "ug" ? "UR" : "GEN"))
-    .toUpperCase()
-    .slice(0, 48);
+  const category = (params.get("category") || (level === "ug" ? "UR" : "GEN")).trim().slice(0, 48);
 
   const user = await optionsUser(request);
   if (user) {
@@ -71,7 +70,10 @@ export async function GET(request: Request) {
       JOIN institutes i  ON i.id = so.institute_id
       JOIN categories ct ON ct.id = so.category_id
       JOIN courses cs    ON cs.id = so.course_id
-      WHERE so.level = ${level} AND ct.code = ${category}
+      JOIN quotas q      ON q.id = so.quota_id
+      -- Every seat this category can take, open seats included (lib/categoryScope.ts).
+      WHERE so.level = ${level}
+        AND ${categoryScope({ level, category, code: sql`ct.code`, quota: sql`q.label` })}
         -- The UG extract covers every stream NEET feeds. Without this the
         -- tally counts dental and ayurveda colleges that the MBBS directory
         -- does not list, and the two numbers disagree on screen.

@@ -23,6 +23,7 @@
 import { unstable_cache } from "next/cache";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
+import { categoryScope } from "@/lib/categoryScopeSql";
 
 const rows = <T,>(r: unknown) => r as unknown as T[];
 
@@ -124,13 +125,15 @@ const toMove = (r: Record<string, unknown>): RoundMove => ({
 /**
  * What round 1 did not give you, and what came after it.
  *
- * `category` is matched exactly because a category code is an identity, not a
- * description — GEN and UR are different schemes, not synonyms.
+ * `category` covers every seat that category can take — its own, and each counselling's
+ * open category however it is spelt (lib/categoryScope.ts). GEN and UR are still different
+ * schemes: the open codes are per level.
  */
 const loadRoundMoves = unstable_cache(
   _getRoundMoves,
   // v2: "later" stopped counting the mock rounds (AFTER_R1, 2026-10-18).
-  ["round-moves-v2"],
+  // v3: the category covers open seats and every counselling's spelling (2026-10-27).
+  ["round-moves-v3"],
   { revalidate: 3600, tags: ["closing-ranks"] },
 );
 
@@ -180,6 +183,7 @@ async function _getRoundMoves(opts: {
 }): Promise<RoundSummary> {
   const { level, rank, category } = opts;
   const limit = Math.min(opts.limit ?? 60, 200);
+  const inScope = categoryScope({ level, category, code: sql`cat.code`, quota: sql`q.label` });
   const states = (opts.states ?? []).filter(Boolean);
 
   const stateFilter = states.length
@@ -197,7 +201,7 @@ async function _getRoundMoves(opts: {
         WITH p AS (${perSeat(level)})
         SELECT ${LABELLED}, p.year, p.r1, p.later, p.later_round
         FROM p ${JOINS}
-        WHERE cat.code = ${category}
+        WHERE ${inScope}
           AND p.r1 IS NOT NULL AND p.r1 < ${rank}
           AND p.later >= ${rank}
           ${stateFilter}
@@ -211,7 +215,7 @@ async function _getRoundMoves(opts: {
         WITH p AS (${perSeat(level)})
         SELECT ${LABELLED}, p.year, p.r1, p.later, p.later_round
         FROM p ${JOINS}
-        WHERE cat.code = ${category}
+        WHERE ${inScope}
           AND p.r1 IS NOT NULL AND p.r1 >= ${rank}
           AND p.later IS NOT NULL
           AND p.later < p.r1
@@ -226,7 +230,7 @@ async function _getRoundMoves(opts: {
           COUNT(*) FILTER (WHERE p.r1 < ${rank} AND p.later >= ${rank})::int AS opened,
           COUNT(*) FILTER (WHERE p.r1 >= ${rank} AND p.later IS NOT NULL AND p.later < p.r1)::int AS tightened
         FROM p ${JOINS}
-        WHERE cat.code = ${category} AND p.r1 IS NOT NULL ${stateFilter}
+        WHERE ${inScope} AND p.r1 IS NOT NULL ${stateFilter}
       `),
 
       db.execute(sql`
