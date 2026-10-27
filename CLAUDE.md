@@ -809,7 +809,17 @@ It affects 7.4% of seats and always hides options from the candidate, so the ban
   preference / in-service open lists (UQ-OP, IQ-OP, GEN-IP, IP-GEN). The picker folds the open, paid and NRI
   codes into GEN/UR and the seat types, one entry per spelling, national categories first. `GENERAL_CODES`
   (college-page bands) is built from the same lists — TN's OC, Odisha's OP, Punjab's GQ-GEN gave ~120 MBBS
-  colleges their first general band. **Domicile is still not applied:** state-quota seats show to everyone.
+  colleges their first general band.
+- **Domicile (same day, `homeStateScope()`, the `home` param, verified accounts and staff only):** the
+  predictor sends the domicile (and for MD/MS the MBBS state) and a state's own quota shows only in a home
+  state. Open to everybody: the national counsellings, every quota label the PG source files under "Open
+  States (Private Institute seats available for all candidates)" (matched by label at both levels), a quota
+  or category that says all India / non-domicile / other state / outside / North East, and management /
+  B-category / institutional-quota seats unless the label says Local, LOC or "Govt Seats". DU, IP, BHU, AMU
+  and Jamia quotas go with their state. **When in doubt a seat stays** — a wrongly hidden seat is an option
+  nobody hears of. Review every class before changing a pattern: `npx tsx --env-file=.env.local
+  scripts/tmp/domicile_review.ts pg|ug`. The service rule takes AP/Telangana "- Service" quotas but not
+  Chhattisgarh's "MBBS or Inservice" (its main state quota); minority includes "Min"/"MIN", JM and MM.
 - Drizzle expands a JS array in a `sql` template into `$1, $2, …`, so `= ANY(${arr})` is invalid.
   Use `IN (${sql.join(arr.map((v) => sql`${v}`), sql`, `)})`.
 - `PageHero` is a client component: pass `eyebrowIcon` as a **name** (`"target"`), never a Lucide component —

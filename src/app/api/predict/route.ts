@@ -8,7 +8,7 @@ import { sql } from "drizzle-orm";
 import { chanceFor, BAND_ORDER, type ChanceBand, type SeatOptionRow } from "@/lib/predictor";
 import { checkRank, NEET_LIMITS } from "@/lib/neetLimits";
 import { approxFee } from "@/lib/chance";
-import { categoryScope } from "@/lib/categoryScopeSql";
+import { categoryScope, homeStateScope } from "@/lib/categoryScopeSql";
 import { optionsUser, allowQuery, logQuery, toOptions, DISTINCT_PER_DAY } from "@/lib/chanceView";
 
 export const dynamic = "force-dynamic";
@@ -32,6 +32,8 @@ interface PredictQuery {
   seatType: "all" | "nri" | "management";
   branches: string[];
   maxFee: number | null;
+  /** Home states — the domicile, and for MD/MS the MBBS state: other states' own quotas are not theirs. */
+  home: string[];
 }
 
 function parse(searchParams: URLSearchParams): PredictQuery | { error: string } {
@@ -76,6 +78,7 @@ function parse(searchParams: URLSearchParams): PredictQuery | { error: string } 
     ownership: list("ownership"),
     seatType,
     branches: list("branches"),
+    home: list("home").slice(0, 2),
     maxFee: Number.isFinite(maxFee as number) && (maxFee as number) > 0 ? (maxFee as number) : null,
   };
 }
@@ -115,7 +118,7 @@ export async function GET(request: Request) {
   const open = staff || Boolean(user);
 
   const { rank, stream, level, courseOnly, category } = parsed;
-  const { states, ownership, branches, maxFee, seatType } = open
+  const { states, ownership, branches, maxFee, seatType, home } = open
     ? parsed
     : {
         states: [] as string[],
@@ -123,6 +126,7 @@ export async function GET(request: Request) {
         branches: [] as string[],
         maxFee: null as number | null,
         seatType: "all" as const,
+        home: [] as string[],
       };
 
   if (user && !staff) {
@@ -179,6 +183,11 @@ export async function GET(request: Request) {
         ${branches.length ? sql`AND c.name IN (${sql.join(branches.map((b) => sql`${b}`), sql`, `)})` : sql``}
         ${maxFee ? sql`AND (so.fee_inr IS NULL OR so.fee_inr <= ${maxFee})` : sql``}
         ${seatTypeFilter}
+        ${
+          home.length
+            ? sql`AND ${homeStateScope({ home, counselling: sql`cn.name`, quota: sql`q.label`, code: sql`cat.code`, state: sql`st.name` })}`
+            : sql``
+        }
     `;
 
     // The counts and the spread are counted over every matching seat, not
@@ -337,7 +346,7 @@ export async function GET(request: Request) {
     }
 
     return NextResponse.json({
-      query: { rank, stream, level, category, states, ownership, branches, maxFee, seatType },
+      query: { rank, stream, level, category, states, ownership, branches, maxFee, seatType, home },
       counts,
       total: tn("total"),
       shape,

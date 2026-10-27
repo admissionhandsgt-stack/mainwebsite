@@ -30,6 +30,8 @@ export interface PredictData {
   };
   access: { signedIn: boolean; verified: boolean; staff: boolean };
   options: CollegeOptionView[] | null;
+  /** What the answer was narrowed by; `home` is the home states the domicile rule used. */
+  query?: { home?: string[] };
 }
 
 export interface RoundsData {

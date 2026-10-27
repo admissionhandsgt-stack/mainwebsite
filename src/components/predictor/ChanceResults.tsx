@@ -107,6 +107,7 @@ export default function ChanceResults({
 }) {
   const [open, setOpen] = useState<Record<ChanceBand, boolean>>({ safe: false, likely: false, possible: false, stretch: false });
   const options = data.options ?? [];
+  const home = Array.from(new Set(data.query?.home ?? []));
   const base = level === "pg" ? "/md-ms-india/colleges" : "/mbbs-india/colleges";
   const byBand = CHANCE_ORDER.map((b) => ({ band: b, list: options.filter((o) => o.best === b) })).filter((g) => g.list.length);
 
@@ -125,6 +126,12 @@ export default function ChanceResults({
               {inr(data.total)} seat options in {inr(data.shape.states)} states
               {preferencesOn ? ", matched to your preferences" : ", all of India"}.
             </p>
+            {preferencesOn && home.length > 0 && (
+              <p className="mt-1.5 max-w-[60ch] text-[13px] leading-relaxed text-muted-foreground">
+                State-quota seats are shown for {home.join(" and ")} only. All India, deemed and central seats, management
+                seats and every seat a state opens to all of India are shown wherever they are.
+              </p>
+            )}
           </div>
           <div className="flex flex-wrap gap-2">
             <button

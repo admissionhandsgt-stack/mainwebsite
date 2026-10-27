@@ -75,9 +75,52 @@ export const isServiceCategory = (code: string) => /serv|govt.?doctor|sponsor/i.
 export const isMinorityCategory = (code: string) => /minority/i.test(code);
 
 /** Quota labels (Postgres regex, case-insensitive) whose seats need a status. */
-export const SERVICE_QUOTA_RE = "(in.?service|sponsor|govt\\.? ?doctor)";
-export const MINORITY_QUOTA_RE = "minority";
+export const SERVICE_QUOTA_RE = "(in.?service|\\mservice\\M|sponsor|govt\\.? ?doctor)";
+/**
+ * …except Chhattisgarh's main PG quota, "MBBS or Inservice": a Chhattisgarh MBBS graduate is in it
+ * without serving anywhere. ("NonService" is one word, so `\mservice\M` leaves AP's and Telangana's
+ * non-service quotas alone and takes their "- Service" ones.)
+ */
+export const SERVICE_EXCEPT_RE = "MBBS or";
+/** "Min" / "MIN" is how Karnataka, TN and AP shorten it; JM and MM are the deemed universities' Jain and Muslim minority quotas. */
+export const MINORITY_QUOTA_RE = "(minority|\\mmin\\M|^JM$|^MM$)";
 export const NRI_QUOTA_RE = "NRI";
+
+/*
+ * Domicile (2026-10-27). A state's own quota is for its own candidates; a seat the state opens to
+ * all of India is not. Hidden only where the data says a seat is the state's own — when in doubt the
+ * seat stays, because a seat wrongly hidden is an option the student never hears of:
+ *
+ * - **Open to everybody:** the national counsellings (MCC's All India, deemed, central, ESI, Open
+ *   Seat Quota); every quota the PG source itself files under "Open States (Private Institute seats
+ *   available for all candidates)" — matched by label, so Karnataka's private Open Quota counts at
+ *   both levels; a quota or category that says all India, non-domicile, other state, outside or North
+ *   East; and management / B-category / institutional-quota seats unless the label says Local or LOC
+ *   or that they are a government college's seats ("Rajasthan Govt Seats - Management Quota", which
+ *   the source does not open). NRI seats only show for the NRI seat type, where domicile is moot.
+ * - **A university's own quota inside the national counselling** (DU, IP, BHU, AMU, Jamia) goes with
+ *   its state — the nearest the data comes to "its own graduates".
+ * - **Everything else in a state counselling** — government quota, a private college's state-quota
+ *   seats, AP's "unreserved" and Telangana's local seats, institutional preference — shows only when the
+ *   college is in a home state: the domicile, and for MD/MS the state of the MBBS too (Karnataka,
+ *   Gujarat and Tamil Nadu decide PG eligibility by where the MBBS was done).
+ */
+export const NATIONAL_COUNSELLING_RE = "^(All India|Open Seat|Deemed|Central|ESI|Delhi Children|Open States|DNB Sponsored)";
+export const OPEN_STATES_COUNSELLING = "Open States%";
+export const UNIVERSITY_QUOTA_RE = "^(DU|IP|BHU|AMU|Delhi University Quota|IP University Quota|AMU Quota|Jamia Internal)$";
+export const OPEN_TO_ALL_RE = "(all india|non.?domicile|other state|outside|north east|NRI|mgmt.*\\mUNR\\M)";
+export const PAID_QUOTA_RE = "(manag|mgmt|\\mmgt\\M|^MNG$|institutional quota|others \\(q\\)|other seats|\\mcat ?b|private mq|\\mMQ\\M)";
+export const LOCAL_QUOTA_RE = "(\\mlocal\\M|\\mLOC\\M|govt seats)";
+
+/** A state name compared across spellings ("Pondicherry" / "Puducherry", "Dadra Nagar Havelli"). Mirrored in SQL. */
+export const stateKey = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/\band\b|&/g, "")
+    .replace(/[^a-z]/g, "")
+    .replace("islands", "island")
+    .replace("havelli", "haveli")
+    .replace("pondicherry", "puducherry");
 
 /**
  * The category keys (`categoryKey`) whose seats a candidate of `category` can take:

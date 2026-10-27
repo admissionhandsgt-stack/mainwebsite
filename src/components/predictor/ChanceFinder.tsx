@@ -132,6 +132,9 @@ export default function ChanceFinder({
       const q = new URLSearchParams();
       if (!on) return q;
       if (!d.anywhere && d.preferredStates.length) q.set("states", d.preferredStates.join(","));
+      // Home states: another state's own quota is not this student's (lib/categoryScope.ts).
+      const home = [d.domicileState, spec.level === "pg" ? d.mbbsState : ""].filter(Boolean);
+      if (home.length) q.set("home", home.join(","));
       if (spec.level === "pg") {
         const own = d.collegeTypes.filter((t) => FILTERABLE_OWNERSHIP.includes(t));
         if (own.length) q.set("ownership", own.join(","));
