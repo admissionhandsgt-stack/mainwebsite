@@ -1,4 +1,4 @@
-import { fitTitle, count } from "@/lib/seoTitle";
+import { fitTitle, fitDescription, count } from "@/lib/seoTitle";
 import { getStateAuthority } from "@/lib/stateAuthorities";
 import StateAuthority from "@/components/states/StateAuthority";
 import type { Metadata } from "next";
@@ -53,15 +53,33 @@ function bodiesOf(p: StatePage) {
 /** The search snippet: under ~155 characters, where Google cuts. */
 function snippet(p: StatePage) {
   // College pages show a cutoff band, fees and seats since 2026-10-12 — never "closing ranks by quota".
-  return `${p.colleges.length} MBBS colleges in ${p.state.name}: fees, seats and the NEET UG cutoff band for each, and which counselling fills each seat.`;
+  const plain = `${p.colleges.length} MBBS colleges in ${p.state.name}: fees, seats and the NEET UG cutoff band for each, and which counselling fills each seat.`;
+  if (!p.nmc) return plain;
+  const { seats, colleges, govtSeats } = p.nmc;
+  const where = count(colleges, "college", "colleges");
+  return fitDescription(
+    `${p.state.name} has ${inr(seats)} MBBS seats in ${where} (NMC), ${inr(govtSeats)} of them government. Fees, cutoff band and counselling for each college.`,
+    `${p.state.name}: ${inr(seats)} MBBS seats in ${where} (NMC). Fees, cutoff band and counselling for each college.`,
+    plain,
+  );
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const slug = slugOf(params.stateName);
   const p = await getStatePage(slug);
   if (!p) return { title: "State not found", robots: { index: false } };
+  // Searched as "mbbs seats in karnataka 2026" (2026-11-04 keyword study): the
+  // seat total is the regulator's, the same figure the page prints.
+  const seatTitles = p.nmc
+    ? [
+        `MBBS Seats in ${p.state.name} 2026: ${inr(p.nmc.seats)} in ${count(p.nmc.colleges, "College", "Colleges")}, Counselling & Cutoff`,
+        `MBBS Seats in ${p.state.name} 2026: ${inr(p.nmc.seats)} in ${count(p.nmc.colleges, "College", "Colleges")} & Cutoff`,
+        `MBBS Seats in ${p.state.name} 2026: ${inr(p.nmc.seats)} in ${count(p.nmc.colleges, "College", "Colleges")}`,
+      ]
+    : [];
   return resolveMetadata(`/mbbs-india/${slug}`, {
     title: fitTitle(
+      ...seatTitles,
       `MBBS in ${p.state.name} 2026: ${count(p.colleges.length, "College", "Colleges")}, Counselling & Cutoffs`,
       `MBBS in ${p.state.name} 2026: ${count(p.colleges.length, "College", "Colleges")} & Cutoffs`,
       `MBBS in ${p.state.name} 2026: Colleges & Cutoffs`,
@@ -107,7 +125,22 @@ export default async function MBBSStatePage({ params }: Props) {
   const yearSpan =
     p.years.length > 1 ? `${p.years[0]}–${String(p.years[p.years.length - 1]).slice(2)}` : p.years[0] ? String(p.years[0]) : null;
 
+  const nmc = p.nmc;
   const faqs = [
+    ...(nmc
+      ? [
+          {
+            question: `How many MBBS seats are there in ${name}?`,
+            answer:
+              `The National Medical Commission's register lists ${inr(nmc.seats)} MBBS seats at ${nmc.colleges} ${nmc.colleges === 1 ? "college" : "colleges"} in ${name}: ` +
+              `${inr(nmc.govtSeats)} at ${nmc.govtColleges} government ${nmc.govtColleges === 1 ? "college" : "colleges"}` +
+              (nmc.colleges > nmc.govtColleges
+                ? ` and ${inr(nmc.seats - nmc.govtSeats)} at ${nmc.colleges - nmc.govtColleges} private ${nmc.colleges - nmc.govtColleges === 1 ? "college or deemed university" : "colleges and deemed universities"}.`
+                : ".") +
+              ` These are approved seats; how they split between the All India Quota, the state quota and management seats depends on the college.`,
+          },
+        ]
+      : []),
     {
       question: `How many MBBS colleges are there in ${name}?`,
       answer:
@@ -193,6 +226,36 @@ export default async function MBBSStatePage({ params }: Props) {
           ) : undefined
         }
       />
+
+      {/* ------------------ the regulator's seat count, and MD/MS here ------------------ */}
+      {(nmc || p.pgSlug) && (
+        <div className="container-custom pt-10 md:pt-14">
+          <div className="rounded-2xl border border-border bg-card p-5 md:p-6">
+            {nmc && (
+              <p className="leading-relaxed text-foreground">
+                <span className="font-semibold">MBBS seats in {name}:</span>{" "}
+                <span className="tnum font-semibold text-primary-strong">{inr(nmc.seats)}</span> at{" "}
+                <span className="tnum">{nmc.colleges}</span> {nmc.colleges === 1 ? "college" : "colleges"} — <span className="tnum">{inr(nmc.govtSeats)}</span> at{" "}
+                <span className="tnum">{nmc.govtColleges}</span> government {nmc.govtColleges === 1 ? "college" : "colleges"}
+                {nmc.colleges > nmc.govtColleges && (
+                  <>
+                    , <span className="tnum">{inr(nmc.seats - nmc.govtSeats)}</span> at <span className="tnum">{nmc.colleges - nmc.govtColleges}</span> private{" "}
+                    {nmc.colleges - nmc.govtColleges === 1 ? "college or deemed university" : "colleges and deemed universities"}
+                  </>
+                )}
+                . <span className="text-sm text-muted-foreground">Approved seats, from the National Medical Commission&apos;s college and course register.</span>
+              </p>
+            )}
+            {p.pgSlug && (
+              <p className={nmc ? "mt-3 text-sm" : "text-sm"}>
+                <Link href={`/md-ms-india/states/${p.pgSlug}`} className="font-semibold text-primary-strong hover:underline">
+                  MD/MS in {name}: NEET PG cutoff, seats and fees →
+                </Link>
+              </p>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* -------------------- the state's counselling authority -------------------- */}
       {authority && (

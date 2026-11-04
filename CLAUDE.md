@@ -1619,6 +1619,43 @@ same branch in other states and other branches in the state.
   The "state rank" labels on the state and branch × state pages show only while a figure is still a state number
   (`closing_rank = counselling_rank`), i.e. never after 0045.
 
+## The SEO audit and keyword pass (2026-11-04)
+
+Technical audit first (robots, sitemaps, canonicals, one H1, alt text, OG image, HTTPS, broken links, mobile and PSI
+93–99 all checked fine). What it fixed (commit 5e7da59):
+- College titles keep the **whole name up to 80 characters** (`LONG_TITLE` in `collegeSnippet.ts`) rather than "…" mid-name.
+  `decodeEntities()` in `collegeName.ts` turns the source's `&#039;` into `'`. A 2–4-letter acronym before a comma stays
+  upper case ("Prasad IMS").
+- **A UG college page with no rounds, no fee above 0 and no NMC record is `noindex, follow`**. The sitemap lists a
+  college only when it has one of the three (`sitemapData.ts`), so the two rules agree.
+- The same college's MBBS and MD/MS pages link each other (`getOtherLevelPage`, paired by NMC code, 568 pairs). In GSC,
+  32% of "<college> MBBS fees" impressions were landing on the PG page.
+- The NEET SS spelling "reconstructr-uctive" is folded into its course (`SS_SLUG_FIX`), and the old URL 308s.
+- `/md-ms-india/colleges?page=N` canonicalises to itself.
+- og:site_name and og:locale on college and branch pages.
+
+Then the industry keyword study: 3,120 Google and Bing autocomplete queries, 7,827 phrases after noise, clustered, and
+set against each page's own 28-day GSC queries. The files are in that session's scratchpad `kw/`. What changed:
+- **`/mbbs-india/<state>` is titled "MBBS Seats in <State> 2026: N in M Colleges & Cutoff"**, using NMC's register:
+  `stateQueries.ts` `nmc`, all 33 states matched through `stateKey`. The page prints the same figure (government vs
+  private and deemed) plus a "How many MBBS seats" FAQ, and links the state's MD/MS page (`pgSlug`).
+- PG state titles add "Seats". `/neet-pg-marks-vs-rank` adds "Rank Predictor by Score", because "neet pg rank predictor"
+  was the strongest phrase and the page had no impressions for it. `/neet-mds-cutoff` names the running year's
+  latest round. `/neet-pg-process` says "Choice Filling"; **its `page_seo` row held the old title, so apply
+  `scripts/sql/seo_titles_2026_11_04.sql` after that deploy.**
+- `/neet-pg-cutoff`, the strongest PG page (16k impressions in 28 days), had **no link to any PG state page**. It now
+  lists every state.
+- **Not indexed on 2026-11-04:** `/md-ms-india/states/uttar-pradesh`, `rajasthan` and `odisha` were "unknown to Google";
+  `gujarat`, `bihar` and `haryana` were "discovered – not indexed". All six are in the sitemap, so they go first in the
+  Request indexing queue.
+- **Gaps left open, and why:**
+  - A choice-filling / upgradation / free-exit page: about 210 phrases, and round 2 choice filling opens around
+    6–7 Nov. It needs copy someone writes.
+  - An MBBS fees hub: the UG fee rows carry no quota and include junk values.
+  - NEET SS 2026 and NEET UG / PG 2027 news: dates are typed content, not data.
+  - AIIMS, JIPMER and PGIMER stipend: these are INI-CET institutes and we hold no data for them.
+  - Judge the NRI and management titles on GSC around 11-17 before touching them.
+
 ## Per-state PG stipend pages (2026-10-20)
 
 `/md-ms-india/stipend/[state]` for every state with three or more colleges publishing a monthly stipend

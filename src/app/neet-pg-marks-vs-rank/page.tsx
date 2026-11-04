@@ -52,7 +52,11 @@ export async function generateMetadata(): Promise<Metadata> {
   const p = prev ? ` & ${prev.year}` : "";
   const s450 = at(cur, 450), s500 = at(cur, 500);
   return resolveMetadata(PATH, {
+    // "neet pg rank predictor" is the single most suggested phrase in the 2026-11-04
+    // keyword study, and this page never showed for it: the lookup is exactly that,
+    // read from NBEMS's own result rather than estimated.
     title: fitTitle(
+      `NEET PG Marks vs Rank ${cur.year}${p}: Rank Predictor by Score`,
       `NEET PG Marks vs Rank ${cur.year}${p}: Score to Rank, Branch Wise`,
       `NEET PG Marks vs Rank ${cur.year}${p}: Score to Rank`,
       `NEET PG Marks vs Rank ${cur.year}`,
@@ -61,7 +65,7 @@ export async function generateMetadata(): Promise<Metadata> {
       `NEET PG ${cur.year} marks vs rank from NBEMS's result: 500 marks = AIR ${n(s500?.rankMin)}–${n(s500?.rankMax)}, 450 = ${n(s450?.rankMin)}–${n(s450?.rankMax)}. Every score${prev ? `, ${prev.year} beside it,` : ""} and the branches each rank reached.`,
       `NEET PG ${cur.year} marks vs rank from NBEMS's result: 450 marks = AIR ${n(s450?.rankMin)}–${n(s450?.rankMax)}. Every score, and the branches each rank reached.`,
     ),
-    keywords: `NEET PG marks vs rank, NEET PG marks vs rank ${cur.year}, NEET PG score vs rank, NEET PG rank at 450 marks, NEET PG marks vs rank vs branch${prev ? `, NEET PG marks vs rank ${prev.year}` : ""}`,
+    keywords: `NEET PG marks vs rank, NEET PG rank predictor, NEET PG marks vs rank ${cur.year}, NEET PG score vs rank, NEET PG rank at 450 marks, NEET PG marks vs rank vs branch${prev ? `, NEET PG marks vs rank ${prev.year}` : ""}`,
   });
 }
 

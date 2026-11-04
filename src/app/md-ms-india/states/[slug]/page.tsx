@@ -48,7 +48,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const st = stipends.states.find((x) => x.state === p.name);
   const stipend = st ? `, stipend (median ₹${st.median.toLocaleString("en-IN")} a month)` : ", stipend";
   return resolveMetadata(`/md-ms-india/states/${p.slug}`, {
+    // "Seats" since 2026-11-04: "neet pg seats in maharashtra branch wise", "md medicine
+    // seats in maharashtra", "pg seats in tamilnadu" reach these pages without the word.
     title: fitTitle(
+      `${p.name} NEET PG Cutoff${y} Branch Wise, Seats & Fees`,
       `NEET PG Cutoff ${p.name}${y}: Branch Wise, Fees & ${count(p.mdmsCount, "MD/MS College", "MD/MS Colleges")}`,
       `${p.name} NEET PG Cutoff${y} Branch Wise & Fees`,
       `MD/MS in ${p.name}: NEET PG Cutoff & Fees`,

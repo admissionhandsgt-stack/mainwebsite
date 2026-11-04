@@ -1,5 +1,6 @@
 import CiteThis from "@/components/seo/CiteThis";
 import type { Metadata } from "next";
+import { fitTitle, fitDescription } from "@/lib/seoTitle";
 import Link from "@/components/ui/Link";
 import { getMdsOverview } from "@/lib/mdsQueries";
 import { resolveMetadata } from "@/lib/content";
@@ -16,13 +17,31 @@ import SectionHead from "@/components/ui/SectionHead";
 const PATH = "/neet-mds-cutoff";
 const n = (v: unknown) => (v == null ? "—" : Number(v).toLocaleString("en-IN"));
 
+/** "R2" → "Round 2", "STRAY" → "Stray Round" — the newest round a year in progress has reached. */
+function lastRound(rounds: string[]): string | null {
+  const r = [...rounds].sort().pop();
+  if (!r) return null;
+  const m = r.match(/^R(\d)$/);
+  return m ? `Round ${m[1]}` : /stray/i.test(r) ? "Stray Round" : null;
+}
+
 export async function generateMetadata(): Promise<Metadata> {
   const o = await getMdsOverview();
+  // The page has carried the running year's rounds beside the complete year since
+  // 2026-10-08, but the title named only the complete year (2026-11-04 keyword study:
+  // "neet mds 2026", "neet mds counselling 2026" are what is searched).
+  const cur = o.current;
+  const round = cur ? lastRound(cur.rounds) : null;
   return resolveMetadata(PATH, {
-    title: `NEET MDS Cutoff ${o.year ?? ""}: Speciality-wise Closing Rank`,
-    description: `NEET MDS ${o.year ?? ""} closing ranks for all ${o.courses.length} specialities — All India Quota by category and deemed seats, round 1 and the last rank admitted.`,
-    keywords:
-      "NEET MDS cutoff, NEET MDS cutoff 2025, MDS orthodontics cutoff, MDS cutoff rank, NEET MDS deemed university cutoff, MDS seats in India, NEET MDS closing rank",
+    title: fitTitle(
+      ...(cur ? [`NEET MDS Cutoff ${cur.year}${round ? ` ${round}` : ""} & ${o.year}: Speciality-wise Closing Rank`, `NEET MDS Cutoff ${cur.year} & ${o.year}: Speciality-wise Closing Rank`] : []),
+      `NEET MDS Cutoff ${o.year ?? ""}: Speciality-wise Closing Rank`,
+    ),
+    description: fitDescription(
+      `NEET MDS ${o.year ?? ""} closing ranks for all ${o.courses.length} specialities — All India Quota by category and deemed seats, round 1 and the last rank admitted${cur ? `, with ${cur.year}'s rounds so far` : ""}.`,
+      `NEET MDS ${o.year ?? ""} closing ranks for all ${o.courses.length} specialities — All India Quota by category and deemed seats, round 1 and the last rank admitted.`,
+    ),
+    keywords: `NEET MDS cutoff, NEET MDS cutoff ${o.year ?? ""}${cur ? `, NEET MDS cutoff ${cur.year}, NEET MDS counselling ${cur.year}` : ""}, MDS orthodontics cutoff, MDS cutoff rank, NEET MDS deemed university cutoff, MDS seats in India, NEET MDS closing rank`,
   });
 }
 

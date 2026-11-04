@@ -19,6 +19,8 @@ import { sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { getMbbsStates, getUgColleges, type MbbsState, type UgCollege } from "@/lib/content";
 import { logError } from "@/lib/logger";
+import { stateKey } from "@/lib/nmcSync";
+import { getPgStates } from "@/lib/pgStateQueries";
 
 /**
  * The CMS (`mbbs_states`) and the counselling extract (`states`) spell some
@@ -47,7 +49,48 @@ export interface StatePage {
   seatOptions: number;
   years: number[];
   others: { name: string; slug: string }[];
+  /** NMC's register for the state: every permitted MBBS college and its approved seats. */
+  nmc: NmcStateMbbs | null;
+  /** The same state's MD/MS page, when it has one. */
+  pgSlug: string | null;
 }
+
+export interface NmcStateMbbs {
+  colleges: number;
+  seats: number;
+  govtColleges: number;
+  govtSeats: number;
+}
+
+/**
+ * "mbbs seats in karnataka 2026" is how a state is searched (2026-11-04 keyword
+ * study). The regulator's register answers it for every state; our own college
+ * list does not, because it holds only colleges a counselling has allotted.
+ * NMC files deemed universities as Private, so "private" below includes them.
+ */
+const loadNmcByState = unstable_cache(
+  async (): Promise<Record<string, NmcStateMbbs>> => {
+    const r = (await db.execute(sql`
+      SELECT state_name AS state, COUNT(DISTINCT college_code)::int AS colleges,
+             COALESCE(SUM(approved_seat), 0)::int AS seats,
+             COUNT(DISTINCT college_code) FILTER (WHERE management_type = 'Government')::int AS govt_colleges,
+             COALESCE(SUM(approved_seat) FILTER (WHERE management_type = 'Government'), 0)::int AS govt_seats
+        FROM nmc_courses WHERE course_type = 'M.B.B.S.' GROUP BY state_name
+    `)) as unknown as { state: string; colleges: number; seats: number; govt_colleges: number; govt_seats: number }[];
+    const out: Record<string, NmcStateMbbs> = {};
+    for (const x of r) {
+      out[stateKey(x.state)] = {
+        colleges: Number(x.colleges),
+        seats: Number(x.seats),
+        govtColleges: Number(x.govt_colleges),
+        govtSeats: Number(x.govt_seats),
+      };
+    }
+    return out;
+  },
+  ["state-page-nmc-mbbs-v1"],
+  { revalidate: 86400, tags: ["nmc"] },
+);
 
 const loadCounsellings = unstable_cache(
   async (stateName: string) => {
@@ -110,6 +153,17 @@ export async function getStatePage(slug: string): Promise<StatePage | null> {
     logError(error, { route: "stateQueries" });
   }
 
+  const keys = [stateKey(name), stateKey(state.name)];
+  let nmc: NmcStateMbbs | null = null;
+  let pgSlug: string | null = null;
+  try {
+    const [byState, pgStates] = await Promise.all([loadNmcByState(), getPgStates()]);
+    nmc = keys.map((k) => byState[k]).find(Boolean) ?? null;
+    pgSlug = pgStates.find((s) => s.mdms > 0 && keys.includes(stateKey(s.name)))?.slug ?? null;
+  } catch (error) {
+    logError(error, { route: "stateQueries:nmc" });
+  }
+
   return {
     state,
     colleges,
@@ -117,5 +171,7 @@ export async function getStatePage(slug: string): Promise<StatePage | null> {
     seatOptions,
     years,
     others: states.filter((s) => s.slug !== slug).map((s) => ({ name: s.name, slug: s.slug })),
+    nmc,
+    pgSlug,
   };
 }

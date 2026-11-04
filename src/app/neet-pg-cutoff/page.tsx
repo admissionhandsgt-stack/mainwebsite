@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { fitTitle, fitDescription } from "@/lib/seoTitle";
 import Link from "@/components/ui/Link";
 import { getPgAiqBranches, getPgAiqCuts, type YearCuts } from "@/lib/cutoffHubQueries";
+import { getPgStates } from "@/lib/pgStateQueries";
 import { resolveMetadata } from "@/lib/content";
 import CategoryCutTable from "@/components/cutoffs/CategoryCutTable";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
@@ -104,10 +105,14 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
 
   const latestQ = NEET_PG_QUALIFYING[0];
   // Words from Admin → Content → Text & numbers ("Page: NEET PG cutoff"); photo from Admin → Media.
-  const [copy, heroImage] = await Promise.all([
+  const [copy, heroImage, pgStates] = await Promise.all([
     pageCopy("page.neet_pg_cutoff.hero", { year: year?.year ?? "" }),
     pageHeroImage("page.neet_pg_cutoff.hero"),
+    // "neet pg cut off branch wise maharashtra" is searched as often as the national
+    // table; this page is the strongest PG page we have and linked no state at all.
+    getPgStates().catch(() => []),
   ]);
+  const statesWithMdms = pgStates.filter((s) => s.mdms > 0);
   const lowered2025 = NEET_PG_QUALIFYING.find((n) => n.year === 2025 && n.label.includes("lowered"))!;
   const faqs = [
     ...(live && liveRadio && liveLast(liveRadio.branch)
@@ -349,6 +354,24 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
           </div>
         </div>
       </section>
+
+      {statesWithMdms.length > 0 && (
+        <section className="container-custom pt-10 md:pt-14">
+          <SectionHead icon="map" eyebrow="By state" title="NEET PG cutoff branch wise, state by state" intro="Each state's own counselling: closing ranks by branch and quota, seats, fees and stipend." />
+          <ul className="mt-6 flex flex-wrap gap-2">
+            {statesWithMdms.map((s) => (
+              <li key={s.slug}>
+                <Link
+                  href={`/md-ms-india/states/${s.slug}`}
+                  className="inline-flex min-h-[44px] items-center rounded-full border border-border bg-card px-4 text-sm font-medium text-foreground hover:border-primary hover:text-primary"
+                >
+                  {s.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* The next MCC result is the strongest reason a cutoff reader has to join the channel. */}
       <TelegramRoundAlert placement="round_alert_neet_pg_cutoff" className="pt-10 md:pt-14" />

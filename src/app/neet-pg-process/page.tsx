@@ -41,7 +41,10 @@ export const dynamic = "force-dynamic";
  */
 export async function generateMetadata(): Promise<Metadata> {
   return resolveMetadata("/neet-pg-process", {
-    title: "NEET PG Counselling Process 2026 — MCC & State, Round by Round",
+    // "Choice filling" since 2026-11-04: "neet pg counselling choice filling" and "mcc neet pg
+    // choice filling" are among the most suggested phrases of the season, and the page
+    // already explains it. page_seo held the old title — see scripts/sql/seo_titles_2026_11_04.sql.
+    title: "NEET PG Counselling 2026: Process, Choice Filling & Rounds",
     description:
       "How NEET PG counselling works: what MCC runs, what your state runs, every round in order, and when floating costs you the seat you already hold.",
     keywords: [
