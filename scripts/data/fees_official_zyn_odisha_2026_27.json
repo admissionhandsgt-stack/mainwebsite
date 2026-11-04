@@ -1,0 +1,1155 @@
+{
+ "state": "Odisha",
+ "classes": [
+  [
+   "^MNG$",
+   "DPaid"
+  ],
+  [
+   "^NRI$",
+   "DNRI"
+  ],
+  [
+   ".",
+   "Other"
+  ]
+ ],
+ "null_class": {},
+ "source_file": "scripts/data/fees_extract_2026_27/zyn_2026_11_04/website_fees_2026-27.json",
+ "entries": [
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "noseat": true,
+   "reason": "No tuition fee (the 2026-27 notice prints nil)"
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure",
+   "period": "per year",
+   "label": "Fee (as printed) - IMS & SUM prints 'Fees (per annum)'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2280000,
+   "fee_usd": null
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "noseat": true,
+   "reason": "No tuition fee (the 2026-27 notice prints nil)"
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure",
+   "period": "per year",
+   "label": "Fee (as printed) - IMS & SUM prints 'Fees (per annum)'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3480000,
+   "fee_usd": null
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure",
+   "period": "per year",
+   "label": "Fee (as printed) - IMS & SUM prints 'Fees (per annum)'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2280000,
+   "fee_usd": null
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS ENT"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure",
+   "period": "per year",
+   "label": "Fee (as printed) - IMS & SUM prints 'Fees (per annum)'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2280000,
+   "fee_usd": null
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Forensic Medicine"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "noseat": true,
+   "reason": "No tuition fee (the 2026-27 notice prints nil)"
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure",
+   "period": "per year",
+   "label": "Fee (as printed) - IMS & SUM prints 'Fees (per annum)'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3280000,
+   "fee_usd": null
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure",
+   "period": "per year",
+   "label": "Fee (as printed) - IMS & SUM prints 'Fees (per annum)'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2480000,
+   "fee_usd": null
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure",
+   "period": "per year",
+   "label": "Fee (as printed) - IMS & SUM prints 'Fees (per annum)'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 580000,
+   "fee_usd": null
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure",
+   "period": "per year",
+   "label": "Fee (as printed) - IMS & SUM prints 'Fees (per annum)'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3280000,
+   "fee_usd": null
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure",
+   "period": "per year",
+   "label": "Fee (as printed) - IMS & SUM prints 'Fees (per annum)'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2280000,
+   "fee_usd": null
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure",
+   "period": "per year",
+   "label": "Fee (as printed) - IMS & SUM prints 'Fees (per annum)'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3080000,
+   "fee_usd": null
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure",
+   "period": "per year",
+   "label": "Fee (as printed) - IMS & SUM prints 'Fees (per annum)'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 580000,
+   "fee_usd": null
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure",
+   "period": "per year",
+   "label": "Fee (as printed) - IMS & SUM prints 'Fees (per annum)'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3280000,
+   "fee_usd": null
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pathology"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure",
+   "period": "per year",
+   "label": "Fee (as printed) - IMS & SUM prints 'Fees (per annum)'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1280000,
+   "fee_usd": null
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "noseat": true,
+   "reason": "No tuition fee (the 2026-27 notice prints nil)"
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Physiology"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "noseat": true,
+   "reason": "No tuition fee (the 2026-27 notice prints nil)"
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure",
+   "period": "per year",
+   "label": "Fee (as printed) - IMS & SUM prints 'Fees (per annum)'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2280000,
+   "fee_usd": null
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure",
+   "period": "per year",
+   "label": "Fee (as printed) - IMS & SUM prints 'Fees (per annum)'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3480000,
+   "fee_usd": null
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Immuno Haematology & Blood Transfusion"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure",
+   "period": "per year",
+   "label": "Fee (as printed) - IMS & SUM prints 'Fees (per annum)'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1080000,
+   "fee_usd": null
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure",
+   "period": "per year",
+   "label": "Fee (as printed) - IMS & SUM prints 'Fees (per annum)'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2280000,
+   "fee_usd": null
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure — Charged in dollars.",
+   "period": "per year",
+   "label": "Fee (as printed) - IMS & SUM prints 'Fees (per annum)'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 75000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure — Charged in dollars.",
+   "period": "per year",
+   "label": "Fee (as printed) - IMS & SUM prints 'Fees (per annum)'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 74000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure — Charged in dollars.",
+   "period": "per year",
+   "label": "Fee (as printed) - IMS & SUM prints 'Fees (per annum)'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 53000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure — Charged in dollars.",
+   "period": "per year",
+   "label": "Fee (as printed) - IMS & SUM prints 'Fees (per annum)'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 74000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure — Charged in dollars.",
+   "period": "per year",
+   "label": "Fee (as printed) - IMS & SUM prints 'Fees (per annum)'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 74000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Institute of Medical Sciences & SUM Hospital, Bhubaneswar",
+   "ids": [
+    1198
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "IMS & SUM Hospital (SOA) - 'Details of Fees Structure Post Graduate programme (MS/MD) (Academic Session 2026-27)', per annum (2026-11-04) — https://www.ims.ac.in/ims-sh-fee-structure — Charged in dollars.",
+   "period": "per year",
+   "label": "Fee (as printed) - IMS & SUM prints 'Fees (per annum)'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 75000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 750000,
+   "fee_usd": null
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2300000,
+   "fee_usd": null
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 900000,
+   "fee_usd": null
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2300000,
+   "fee_usd": null
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS ENT"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2300000,
+   "fee_usd": null
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Forensic Medicine"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2300000,
+   "fee_usd": null
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 900000,
+   "fee_usd": null
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2300000,
+   "fee_usd": null
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2300000,
+   "fee_usd": null
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pathology"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1100000,
+   "fee_usd": null
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 750000,
+   "fee_usd": null
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Physiology"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 750000,
+   "fee_usd": null
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2300000,
+   "fee_usd": null
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Immuno Haematology & Blood Transfusion"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2300000,
+   "fee_usd": null
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 50000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS ENT"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 50000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 70000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 50000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 50000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 60000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 60000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Kalinga Institute of Medical Sciences, Bhubaneswar",
+   "ids": [
+    851
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "year": "2026-27",
+   "source": "KIMS Bhubaneswar (KIIT) - 'Fee Structure (2026-2027)' / reporting schedule (24-10-2026), fees per annum (2026-11-04) — https://kims.kiit.ac.in/courses/md/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Fee (as printed) - KIMS prints 'Fees per annum'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 50000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  }
+ ]
+}

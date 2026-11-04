@@ -42,7 +42,7 @@ export default async function PrivateFeesPage() {
       ? [
           {
             question: "What is the MD/MS fee in a private medical college?",
-            answer: `It depends on the quota more than the college. In ${f.year}, management-quota seats in private colleges had a median fee of ${lakh(mng.median)} a year, and most cost between ${lakh(mng.p10)} and ${lakh(mng.p90)}.${sq ? ` State-quota seats in the same colleges are far cheaper: median ${lakh(sq.median)}.` : ""}`,
+            answer: `It depends on the quota more than the college. For the ${f.year} counselling, management-quota seats in private colleges have a median fee of ${lakh(mng.median)} a year, and most cost between ${lakh(mng.p10)} and ${lakh(mng.p90)}.${sq ? ` State-quota seats in the same colleges are far cheaper: median ${lakh(sq.median)}.` : ""}`,
           },
         ]
       : []),
@@ -50,7 +50,7 @@ export default async function PrivateFeesPage() {
       ? [
           {
             question: "What is the NRI quota fee for MD/MS?",
-            answer: `NRI-quota PG seats in private colleges had a median fee of ${lakh(nri.median)} a year in ${f.year}; most fell between ${lakh(nri.p10)} and ${lakh(nri.p90)}.`,
+            answer: `NRI-quota PG seats in private colleges have a median fee of ${lakh(nri.median)} a year for the ${f.year} counselling; most fall between ${lakh(nri.p10)} and ${lakh(nri.p90)}.`,
           },
         ]
       : []),

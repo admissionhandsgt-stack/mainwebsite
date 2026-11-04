@@ -31,6 +31,19 @@ END`;
 
 const LATEST_YEAR = sql`(SELECT MAX(year) FROM closing_ranks WHERE level = 'pg' AND round_label = 'R3')`;
 
+/**
+ * One fee per seat — institute × course × quota — from `seat_options`, where an official 2026-27 fee wins and a
+ * whole-course or period-not-stated figure is left out (migrations 0043, 0046). These pages used to read the cutoff
+ * rows' own fee (`closing_ranks.fee_inr`, one per round), so no official fee ever reached them and a seat counted
+ * once per round it was allotted in.
+ */
+const SEAT_FEES = sql`(
+  SELECT DISTINCT so.institute_id, so.course_id, so.quota_id, NULLIF(so.fee_inr, 0) AS fee_inr
+    FROM seat_options so WHERE so.level = 'pg'
+)`;
+/** The counselling the fees are for: the newest year an official fee carries, else the newest results. */
+const FEE_YEAR = sql`COALESCE((SELECT MAX(year) FROM fees WHERE level = 'pg' AND fee_source IS NOT NULL), ${LATEST_YEAR})`;
+
 export interface FeeBand {
   family: string;
   colleges: number;
@@ -50,29 +63,29 @@ export const getPrivatePgFees = unstable_cache(
     const [byState, national, year] = await Promise.all([
       db.execute(sql`
         SELECT st.name AS state, ${FAMILY} AS family,
-               COUNT(DISTINCT cr.institute_id)::int AS colleges,
-               percentile_cont(0.1) WITHIN GROUP (ORDER BY cr.fee_inr) AS p10,
-               percentile_cont(0.5) WITHIN GROUP (ORDER BY cr.fee_inr) AS median,
-               percentile_cont(0.9) WITHIN GROUP (ORDER BY cr.fee_inr) AS p90
-          FROM closing_ranks cr
-          JOIN institutes i ON i.id = cr.institute_id
+               COUNT(DISTINCT sf.institute_id)::int AS colleges,
+               percentile_cont(0.1) WITHIN GROUP (ORDER BY sf.fee_inr) AS p10,
+               percentile_cont(0.5) WITHIN GROUP (ORDER BY sf.fee_inr) AS median,
+               percentile_cont(0.9) WITHIN GROUP (ORDER BY sf.fee_inr) AS p90
+          FROM ${SEAT_FEES} sf
+          JOIN institutes i ON i.id = sf.institute_id
           JOIN states st ON st.id = i.state_id
-          LEFT JOIN quotas q ON q.id = cr.quota_id
-         WHERE cr.level = 'pg' AND i.ownership = 'private' AND cr.year = ${LATEST_YEAR} AND cr.fee_inr > 0
+          LEFT JOIN quotas q ON q.id = sf.quota_id
+         WHERE i.ownership = 'private' AND sf.fee_inr > 0
          GROUP BY st.name, ${FAMILY}
       `),
       db.execute(sql`
-        SELECT ${FAMILY} AS family, COUNT(DISTINCT cr.institute_id)::int AS colleges,
-               percentile_cont(0.1) WITHIN GROUP (ORDER BY cr.fee_inr) AS p10,
-               percentile_cont(0.5) WITHIN GROUP (ORDER BY cr.fee_inr) AS median,
-               percentile_cont(0.9) WITHIN GROUP (ORDER BY cr.fee_inr) AS p90
-          FROM closing_ranks cr
-          JOIN institutes i ON i.id = cr.institute_id
-          LEFT JOIN quotas q ON q.id = cr.quota_id
-         WHERE cr.level = 'pg' AND i.ownership = 'private' AND cr.year = ${LATEST_YEAR} AND cr.fee_inr > 0
+        SELECT ${FAMILY} AS family, COUNT(DISTINCT sf.institute_id)::int AS colleges,
+               percentile_cont(0.1) WITHIN GROUP (ORDER BY sf.fee_inr) AS p10,
+               percentile_cont(0.5) WITHIN GROUP (ORDER BY sf.fee_inr) AS median,
+               percentile_cont(0.9) WITHIN GROUP (ORDER BY sf.fee_inr) AS p90
+          FROM ${SEAT_FEES} sf
+          JOIN institutes i ON i.id = sf.institute_id
+          LEFT JOIN quotas q ON q.id = sf.quota_id
+         WHERE i.ownership = 'private' AND sf.fee_inr > 0
          GROUP BY ${FAMILY}
       `),
-      db.execute(sql`SELECT ${LATEST_YEAR}::int AS y`),
+      db.execute(sql`SELECT ${FEE_YEAR}::int AS y`),
     ]);
     const band = (x: Record<string, unknown>): FeeBand => ({
       family: String(x.family),
@@ -96,7 +109,8 @@ export const getPrivatePgFees = unstable_cache(
       national: sortBands(rows<Record<string, unknown>>(national).map(band)),
     };
   },
-  ["pg-private-fees-v1"],
+  // v2: one official-first fee per seat from seat_options (2026-11-04).
+  ["pg-private-fees-v2"],
   { revalidate: 86400, tags: ["seat-data"] },
 );
 
@@ -112,7 +126,10 @@ export interface DeemedCollege {
 }
 
 export interface DeemedSummary {
+  /** The counselling the fees are for. */
   year: number | null;
+  /** The newest complete year of results, for where the seats closed. */
+  rankYear: number | null;
   colleges: DeemedCollege[];
   /** Management seats across all deemed universities: where they closed, open category. */
   mngRanks: { bestR1: number | null; widest: number | null } | null;
@@ -121,19 +138,19 @@ export interface DeemedSummary {
 
 export const getDeemedPg = unstable_cache(
   async (): Promise<DeemedSummary> => {
-    const [colleges, ranks, national, year] = await Promise.all([
+    const [colleges, ranks, national, year, rankYear] = await Promise.all([
       db.execute(sql`
         SELECT i.name, i.slug, st.name AS state,
-               COUNT(DISTINCT cr.course_id)::int AS branches,
-               percentile_cont(0.5) WITHIN GROUP (ORDER BY cr.fee_inr) FILTER (WHERE ${FAMILY} = 'Management' AND cr.fee_inr > 0) AS mng_median,
-               percentile_cont(0.1) WITHIN GROUP (ORDER BY cr.fee_inr) FILTER (WHERE ${FAMILY} = 'Management' AND cr.fee_inr > 0) AS mng_low,
-               percentile_cont(0.9) WITHIN GROUP (ORDER BY cr.fee_inr) FILTER (WHERE ${FAMILY} = 'Management' AND cr.fee_inr > 0) AS mng_high,
-               percentile_cont(0.5) WITHIN GROUP (ORDER BY cr.fee_inr) FILTER (WHERE ${FAMILY} = 'NRI' AND cr.fee_inr > 0) AS nri_median
-          FROM closing_ranks cr
-          JOIN institutes i ON i.id = cr.institute_id
+               COUNT(DISTINCT sf.course_id)::int AS branches,
+               percentile_cont(0.5) WITHIN GROUP (ORDER BY sf.fee_inr) FILTER (WHERE ${FAMILY} = 'Management' AND sf.fee_inr > 0) AS mng_median,
+               percentile_cont(0.1) WITHIN GROUP (ORDER BY sf.fee_inr) FILTER (WHERE ${FAMILY} = 'Management' AND sf.fee_inr > 0) AS mng_low,
+               percentile_cont(0.9) WITHIN GROUP (ORDER BY sf.fee_inr) FILTER (WHERE ${FAMILY} = 'Management' AND sf.fee_inr > 0) AS mng_high,
+               percentile_cont(0.5) WITHIN GROUP (ORDER BY sf.fee_inr) FILTER (WHERE ${FAMILY} = 'NRI' AND sf.fee_inr > 0) AS nri_median
+          FROM ${SEAT_FEES} sf
+          JOIN institutes i ON i.id = sf.institute_id
           LEFT JOIN states st ON st.id = i.state_id
-          LEFT JOIN quotas q ON q.id = cr.quota_id
-         WHERE cr.level = 'pg' AND i.ownership = 'deemed' AND cr.year = ${LATEST_YEAR}
+          LEFT JOIN quotas q ON q.id = sf.quota_id
+         WHERE i.ownership = 'deemed'
          GROUP BY i.name, i.slug, st.name
          ORDER BY mng_median ASC NULLS LAST, i.name
       `),
@@ -146,21 +163,23 @@ export const getDeemedPg = unstable_cache(
            AND ${FAMILY} = 'Management' AND cr.closing_rank > 0
       `),
       db.execute(sql`
-        SELECT ${FAMILY} AS family, COUNT(DISTINCT cr.institute_id)::int AS colleges,
-               percentile_cont(0.1) WITHIN GROUP (ORDER BY cr.fee_inr) AS p10,
-               percentile_cont(0.5) WITHIN GROUP (ORDER BY cr.fee_inr) AS median,
-               percentile_cont(0.9) WITHIN GROUP (ORDER BY cr.fee_inr) AS p90
-          FROM closing_ranks cr
-          JOIN institutes i ON i.id = cr.institute_id
-          LEFT JOIN quotas q ON q.id = cr.quota_id
-         WHERE cr.level = 'pg' AND i.ownership = 'deemed' AND cr.year = ${LATEST_YEAR} AND cr.fee_inr > 0
+        SELECT ${FAMILY} AS family, COUNT(DISTINCT sf.institute_id)::int AS colleges,
+               percentile_cont(0.1) WITHIN GROUP (ORDER BY sf.fee_inr) AS p10,
+               percentile_cont(0.5) WITHIN GROUP (ORDER BY sf.fee_inr) AS median,
+               percentile_cont(0.9) WITHIN GROUP (ORDER BY sf.fee_inr) AS p90
+          FROM ${SEAT_FEES} sf
+          JOIN institutes i ON i.id = sf.institute_id
+          LEFT JOIN quotas q ON q.id = sf.quota_id
+         WHERE i.ownership = 'deemed' AND sf.fee_inr > 0
          GROUP BY ${FAMILY}
       `),
+      db.execute(sql`SELECT ${FEE_YEAR}::int AS y`),
       db.execute(sql`SELECT ${LATEST_YEAR}::int AS y`),
     ]);
     const r = rows<Record<string, unknown>>(ranks)[0];
     return {
       year: int(rows<Record<string, unknown>>(year)[0]?.y),
+      rankYear: int(rows<Record<string, unknown>>(rankYear)[0]?.y),
       colleges: rows<Record<string, unknown>>(colleges).map((x) => ({
         name: String(x.name),
         slug: String(x.slug),
@@ -177,6 +196,7 @@ export const getDeemedPg = unstable_cache(
         .sort((a, b) => b.colleges - a.colleges),
     };
   },
-  ["pg-deemed-v1"],
+  // v2: one official-first fee per seat from seat_options; ranks keep the results' year (2026-11-04).
+  ["pg-deemed-v2"],
   { revalidate: 86400, tags: ["seat-data"] },
 );

@@ -14,7 +14,10 @@
 // `ids` is the college's institute ids, or "*" (with an optional `ownership`) for one fee every such college charges —
 // the state's government fee, NBEMS's DNB fee. `branches` is "*" (every branch the college has in that column) or
 // course names exactly as `courses.name` spells them, and a named branch beats "*", a college's "*" beats the
-// state's. `period` defaults to "per year"; null keeps the row's own. Hostel entries ({ seat: "Hostel", min, max,
+// state's. `period` defaults to "per year"; null keeps the row's own. Since migration 0046 an entry may also say what
+// the figure is — `label` ("Tuition fee" / "Fee (as printed) - …"), `currency` (the one the college charges in),
+// `components` (items printed beside it, never added in) and `rate_note` (where the dollar rate comes from); an entry
+// without `label` leaves the row's own. Hostel entries ({ seat: "Hostel", min, max,
 // text, source }) go on every row of the college. The rules are apply_official_fees.mjs's: the source is the
 // college's own notice, or the state counselling authority's official fee list where the college publishes none —
 // never a compiled listing; rows are updated in place and never inserted; a `noseat` entry blanks the row with a
@@ -40,7 +43,8 @@ const sql = postgres(process.env.DATABASE_URL, { max: 1, prepare: false });
 const current = await sql`
   SELECT f.id, f.institute_id, i.name AS institute, i.ownership::text AS ownership, co.name AS course, q.code AS quota,
          cs.name AS counselling, f.fee_inr, f.fee_usd, f.fee_periodicity, f.fee_session, f.year, f.is_carried_forward,
-         f.fee_null_reason, f.hostel_min_inr, f.hostel_max_inr, f.hostel_note, f.fee_source
+         f.fee_null_reason, f.hostel_min_inr, f.hostel_max_inr, f.hostel_note, f.fee_source,
+         f.fee_label, f.fee_currency, f.fee_components
     FROM fees f
     JOIN institutes i ON i.id = f.institute_id
     JOIN states s ON s.id = i.state_id
@@ -95,6 +99,17 @@ for (const e of OFF.entries) {
   }
 }
 
+// What the figure is (migration 0046): an entry that says so sets the label, the currency the college charges in
+// and the items printed beside it; an entry that does not (the earlier passes) leaves the row's own.
+const labelled = (e, r) =>
+  e.label === undefined
+    ? { fee_label: r.fee_label, fee_currency: r.fee_currency, fee_components: r.fee_components }
+    : {
+        fee_label: e.label,
+        fee_currency: e.currency ?? (e.fee_usd != null && e.fee_inr == null ? "USD" : "INR"),
+        fee_components: e.components && Object.keys(e.components).length ? e.components : null,
+      };
+
 const updates = [];
 const changed = new Map(); // institute -> [lines]
 const note = (who, line) => changed.set(who, [...(changed.get(who) ?? []), line]);
@@ -102,17 +117,17 @@ for (const [id, { row: r, entry: e }] of plan) {
   if (e.noseat) {
     updates.push({ id, set: { fee_inr: null, fee_usd: null, fee_periodicity: r.fee_periodicity, fee_session: "2026", year: 2026,
       is_carried_forward: false, fee_null_reason: e.reason ?? `No ${LABEL[e.seat] ?? e.seat} seat in the college's 2026-27 fee notice`,
-      fee_source: e.source } });
+      fee_source: e.source, ...labelled(e, r) } });
     note(r.institute, `${r.course} ${e.seat}: ${r.fee_inr ?? "—"} → no seat`);
     continue;
   }
   const feeInr = e.fee_inr ?? Math.round(e.fee_usd * RATE);
   const feeUsd = e.fee_usd ?? (e.seat === "NRI" ? Math.round(feeInr / RATE) : null);
   const source = `${e.source}${e.max ? " — up to this figure" : ""}` +
-    `${e.fee_usd ? ` — US$${e.fee_usd.toLocaleString("en-US")}, ₹ at ${RATE} a dollar` : ""}`;
+    `${e.fee_usd ? ` — US$${e.fee_usd.toLocaleString("en-US")}, ₹ at ${RATE} a dollar${e.rate_note ? ` (${e.rate_note})` : ""}` : ""}`;
   updates.push({ id, set: { fee_inr: feeInr, fee_usd: feeUsd,
     fee_periodicity: e.period === undefined ? "per year" : e.period ?? r.fee_periodicity,
-    fee_session: "2026", year: 2026, is_carried_forward: false, fee_null_reason: null, fee_source: source } });
+    fee_session: "2026", year: 2026, is_carried_forward: false, fee_null_reason: null, fee_source: source, ...labelled(e, r) } });
   if (Number(r.fee_inr) !== feeInr) note(r.institute, `${r.course} ${e.seat}: ${r.fee_inr ?? "—"} → ${feeInr}`);
 }
 const hostelUpdates = [];
@@ -187,7 +202,9 @@ await sql.begin(async (tx) => {
     const s = u.set;
     await tx`UPDATE fees SET fee_inr = ${s.fee_inr}, fee_usd = ${s.fee_usd}, fee_periodicity = ${s.fee_periodicity},
       fee_session = ${s.fee_session}, year = ${s.year}, is_carried_forward = ${s.is_carried_forward},
-      fee_null_reason = ${s.fee_null_reason}, fee_source = ${s.fee_source}, updated_at = now() WHERE id = ${u.id}`;
+      fee_null_reason = ${s.fee_null_reason}, fee_source = ${s.fee_source}, fee_label = ${s.fee_label},
+      fee_currency = ${s.fee_currency}, fee_components = ${s.fee_components == null ? null : tx.json(s.fee_components)},
+      updated_at = now() WHERE id = ${u.id}`;
   }
   for (const u of hostelUpdates) {
     const s = u.set;

@@ -1,0 +1,4924 @@
+{
+ "state": "Tamil Nadu",
+ "classes": [
+  [
+   "^MNG$",
+   "DPaid"
+  ],
+  [
+   "^NRI$",
+   "DNRI"
+  ],
+  [
+   ".",
+   "Other"
+  ]
+ ],
+ "null_class": {},
+ "source_file": "scripts/data/fees_extract_2026_27/zyn_2026_11_04/website_fees_2026-27.json",
+ "entries": [
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS ENT"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Forensic Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 750000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Geriatrics"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Lab Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 750000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MCh Neurosurgery (6 years)"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 900000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pathology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 700000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Physiology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Radiation Oncology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Sports Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Immuno Haematology & Blood Transfusion"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 900000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - SRIHER's NRI figure covers the whole course and includes registration, form fee, insurance and log book",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 225000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - SRIHER's NRI figure covers the whole course and includes registration, form fee, insurance and log book",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 225000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS ENT"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - SRIHER's NRI figure covers the whole course and includes registration, form fee, insurance and log book",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 225000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - SRIHER's NRI figure covers the whole course and includes registration, form fee, insurance and log book",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 225000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - SRIHER's NRI figure covers the whole course and includes registration, form fee, insurance and log book",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 225000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MCh Neurosurgery (6 years)"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - SRIHER's NRI figure covers the whole course and includes registration, form fee, insurance and log book",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 225000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - SRIHER's NRI figure covers the whole course and includes registration, form fee, insurance and log book",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 225000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - SRIHER's NRI figure covers the whole course and includes registration, form fee, insurance and log book",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 225000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - SRIHER's NRI figure covers the whole course and includes registration, form fee, insurance and log book",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 225000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - SRIHER's NRI figure covers the whole course and includes registration, form fee, insurance and log book",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 90000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - SRIHER's NRI figure covers the whole course and includes registration, form fee, insurance and log book",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 225000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Pathology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - SRIHER's NRI figure covers the whole course and includes registration, form fee, insurance and log book",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 110000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - SRIHER's NRI figure covers the whole course and includes registration, form fee, insurance and log book",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 225000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - SRIHER's NRI figure covers the whole course and includes registration, form fee, insurance and log book",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 225000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Sports Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - SRIHER's NRI figure covers the whole course and includes registration, form fee, insurance and log book",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 225000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Ramachandra Medical College & Research Institute, Chennai",
+   "ids": [
+    911
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "year": "2026-27",
+   "source": "Sri Ramachandra (SRIHER) - 'Prospectus - Admission to M.D./M.S. ... for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://media.sriramachandra.edu/ms/storage/2026/10/M.D.M.S-Prospectus-2026-27.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - SRIHER's NRI figure covers the whole course and includes registration, form fee, insurance and log book",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 225000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 300000,
+   "fee_usd": null
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3300000,
+   "fee_usd": null
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 300000,
+   "fee_usd": null
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4800000,
+   "fee_usd": null
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS ENT"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Forensic Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 400000,
+   "fee_usd": null
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4300000,
+   "fee_usd": null
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 900000,
+   "fee_usd": null
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pathology"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1250000,
+   "fee_usd": null
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Physiology"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 300000,
+   "fee_usd": null
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Sports Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 90000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 90000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 90000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 90000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Chettinad Hospital & Research Institute, Kanchipuram",
+   "ids": [
+    1673
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "year": "2026-27",
+   "source": "Chettinad (CARE) - 'Information Bulletin/Prospectus - M.D./M.S. Degree Course 2026-27', tuition per year (2026-11-04) — https://care.edu.in/wp-content/uploads/2026/10/MD_MS_Information_Bulletin_2026_27.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 90000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "noseat": true,
+   "reason": "No tuition fee (the 2026-27 notice prints nil)"
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3800000,
+   "fee_usd": null
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "noseat": true,
+   "reason": "No tuition fee (the 2026-27 notice prints nil)"
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5000000,
+   "fee_usd": null
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4000000,
+   "fee_usd": null
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS ENT"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3800000,
+   "fee_usd": null
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Forensic Medicine"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 500000,
+   "fee_usd": null
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4300000,
+   "fee_usd": null
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4200000,
+   "fee_usd": null
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 500000,
+   "fee_usd": null
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5000000,
+   "fee_usd": null
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3800000,
+   "fee_usd": null
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4500000,
+   "fee_usd": null
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1000000,
+   "fee_usd": null
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4200000,
+   "fee_usd": null
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pathology"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1200000,
+   "fee_usd": null
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 500000,
+   "fee_usd": null
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Physiology"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "noseat": true,
+   "reason": "No tuition fee (the 2026-27 notice prints nil)"
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3000000,
+   "fee_usd": null
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5000000,
+   "fee_usd": null
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Immuno Haematology & Blood Transfusion"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1000000,
+   "fee_usd": null
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3800000,
+   "fee_usd": null
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 120000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 120000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "SRM Medical College Hospital & Research Centre, Kancheepuram",
+   "ids": [
+    1523
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "SRM (SRMIST) - 'NEET PG (MD/MS) Admissions 2026-27 - Instructions to Candidates', tuition per annum (2026-11-04) — https://medical.srmist.edu.in/campaign/mbbs-md-ms-2026-27/images/MD_MS-Bulletin-2026-27.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 120000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sree Balaji Medical College and Hospital, Chennai",
+   "ids": [
+    1834
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "year": "2026-27",
+   "source": "Sree Balaji MC (BIHER) - 'MD/MS courses offered and annual tuition fee for the academic year 2026-27' (2026-11-04) — https://sbmch.ac.in/wp-content/uploads/2026/10/MD-MS.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 100000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sree Balaji Medical College and Hospital, Chennai",
+   "ids": [
+    1834
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "year": "2026-27",
+   "source": "Sree Balaji MC (BIHER) - 'MD/MS courses offered and annual tuition fee for the academic year 2026-27' (2026-11-04) — https://sbmch.ac.in/wp-content/uploads/2026/10/MD-MS.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sree Balaji Medical College and Hospital, Chennai",
+   "ids": [
+    1834
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "year": "2026-27",
+   "source": "Sree Balaji MC (BIHER) - 'MD/MS courses offered and annual tuition fee for the academic year 2026-27' (2026-11-04) — https://sbmch.ac.in/wp-content/uploads/2026/10/MD-MS.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 100000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sree Balaji Medical College and Hospital, Chennai",
+   "ids": [
+    1834
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "Sree Balaji MC (BIHER) - 'MD/MS courses offered and annual tuition fee for the academic year 2026-27' (2026-11-04) — https://sbmch.ac.in/wp-content/uploads/2026/10/MD-MS.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 7500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sree Balaji Medical College and Hospital, Chennai",
+   "ids": [
+    1834
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS ENT"
+   ],
+   "year": "2026-27",
+   "source": "Sree Balaji MC (BIHER) - 'MD/MS courses offered and annual tuition fee for the academic year 2026-27' (2026-11-04) — https://sbmch.ac.in/wp-content/uploads/2026/10/MD-MS.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sree Balaji Medical College and Hospital, Chennai",
+   "ids": [
+    1834
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Sree Balaji MC (BIHER) - 'MD/MS courses offered and annual tuition fee for the academic year 2026-27' (2026-11-04) — https://sbmch.ac.in/wp-content/uploads/2026/10/MD-MS.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sree Balaji Medical College and Hospital, Chennai",
+   "ids": [
+    1834
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "Sree Balaji MC (BIHER) - 'MD/MS courses offered and annual tuition fee for the academic year 2026-27' (2026-11-04) — https://sbmch.ac.in/wp-content/uploads/2026/10/MD-MS.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sree Balaji Medical College and Hospital, Chennai",
+   "ids": [
+    1834
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "year": "2026-27",
+   "source": "Sree Balaji MC (BIHER) - 'MD/MS courses offered and annual tuition fee for the academic year 2026-27' (2026-11-04) — https://sbmch.ac.in/wp-content/uploads/2026/10/MD-MS.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 100000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sree Balaji Medical College and Hospital, Chennai",
+   "ids": [
+    1834
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "Sree Balaji MC (BIHER) - 'MD/MS courses offered and annual tuition fee for the academic year 2026-27' (2026-11-04) — https://sbmch.ac.in/wp-content/uploads/2026/10/MD-MS.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 6000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sree Balaji Medical College and Hospital, Chennai",
+   "ids": [
+    1834
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "year": "2026-27",
+   "source": "Sree Balaji MC (BIHER) - 'MD/MS courses offered and annual tuition fee for the academic year 2026-27' (2026-11-04) — https://sbmch.ac.in/wp-content/uploads/2026/10/MD-MS.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sree Balaji Medical College and Hospital, Chennai",
+   "ids": [
+    1834
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "Sree Balaji MC (BIHER) - 'MD/MS courses offered and annual tuition fee for the academic year 2026-27' (2026-11-04) — https://sbmch.ac.in/wp-content/uploads/2026/10/MD-MS.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sree Balaji Medical College and Hospital, Chennai",
+   "ids": [
+    1834
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Sree Balaji MC (BIHER) - 'MD/MS courses offered and annual tuition fee for the academic year 2026-27' (2026-11-04) — https://sbmch.ac.in/wp-content/uploads/2026/10/MD-MS.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 800000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sree Balaji Medical College and Hospital, Chennai",
+   "ids": [
+    1834
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "Sree Balaji MC (BIHER) - 'MD/MS courses offered and annual tuition fee for the academic year 2026-27' (2026-11-04) — https://sbmch.ac.in/wp-content/uploads/2026/10/MD-MS.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sree Balaji Medical College and Hospital, Chennai",
+   "ids": [
+    1834
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pathology"
+   ],
+   "year": "2026-27",
+   "source": "Sree Balaji MC (BIHER) - 'MD/MS courses offered and annual tuition fee for the academic year 2026-27' (2026-11-04) — https://sbmch.ac.in/wp-content/uploads/2026/10/MD-MS.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sree Balaji Medical College and Hospital, Chennai",
+   "ids": [
+    1834
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "year": "2026-27",
+   "source": "Sree Balaji MC (BIHER) - 'MD/MS courses offered and annual tuition fee for the academic year 2026-27' (2026-11-04) — https://sbmch.ac.in/wp-content/uploads/2026/10/MD-MS.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sree Balaji Medical College and Hospital, Chennai",
+   "ids": [
+    1834
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Physiology"
+   ],
+   "year": "2026-27",
+   "source": "Sree Balaji MC (BIHER) - 'MD/MS courses offered and annual tuition fee for the academic year 2026-27' (2026-11-04) — https://sbmch.ac.in/wp-content/uploads/2026/10/MD-MS.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 100000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sree Balaji Medical College and Hospital, Chennai",
+   "ids": [
+    1834
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "year": "2026-27",
+   "source": "Sree Balaji MC (BIHER) - 'MD/MS courses offered and annual tuition fee for the academic year 2026-27' (2026-11-04) — https://sbmch.ac.in/wp-content/uploads/2026/10/MD-MS.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sree Balaji Medical College and Hospital, Chennai",
+   "ids": [
+    1834
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "Sree Balaji MC (BIHER) - 'MD/MS courses offered and annual tuition fee for the academic year 2026-27' (2026-11-04) — https://sbmch.ac.in/wp-content/uploads/2026/10/MD-MS.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 7500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sree Balaji Medical College and Hospital, Chennai",
+   "ids": [
+    1834
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "year": "2026-27",
+   "source": "Sree Balaji MC (BIHER) - 'MD/MS courses offered and annual tuition fee for the academic year 2026-27' (2026-11-04) — https://sbmch.ac.in/wp-content/uploads/2026/10/MD-MS.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf — After the university's fee concession (annual fee Rs 400,000).",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 268000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf — After the university's fee concession (annual fee Rs 400,000).",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 268000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4300000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS ENT"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2812000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3812000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf — After the university's fee concession (annual fee Rs 500,000).",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 335000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4100000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3012000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4012000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pathology"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1312000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf — After the university's fee concession (annual fee Rs 500,000).",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 335000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Physiology"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf — After the university's fee concession (annual fee Rs 400,000).",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 268000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4300000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Immuno Haematology & Blood Transfusion"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf — After the university's fee concession (annual fee Rs 1,512,000).",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1050000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf — Year-1 instalment; the notice prints the whole course and each year separately. Charged in dollars.",
+   "period": "first year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 75000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf — Year-1 instalment; the notice prints the whole course and each year separately. Charged in dollars.",
+   "period": "first year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 74000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf — Year-1 instalment; the notice prints the whole course and each year separately. Charged in dollars.",
+   "period": "first year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 67000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf — Year-1 instalment; the notice prints the whole course and each year separately. Charged in dollars.",
+   "period": "first year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 50000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf — Year-1 instalment; the notice prints the whole course and each year separately. Charged in dollars.",
+   "period": "first year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 70000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf — Year-1 instalment; the notice prints the whole course and each year separately. Charged in dollars.",
+   "period": "first year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 67000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Vinayaka Missions Kirupananda Variyar Medical College, Salem",
+   "ids": [
+    1528
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "VMKVMC Salem (VMRF) - 'Information for candidates ... MD/MS ... academic year 2026-2027'; non-clinical fees after the university's concession; NRI year-1 instalment (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/94009811130c166146f0d11cb3338f03.pdf — Year-1 instalment; the notice prints the whole course and each year separately. Charged in dollars.",
+   "period": "first year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 75000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS ENT"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Forensic Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 700000,
+   "fee_usd": null
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 700000,
+   "fee_usd": null
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pathology"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 700000,
+   "fee_usd": null
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS ENT"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 60000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 75000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 75000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 75000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Shri Satya Sai Medical College and Research Institute, Kancheepuram",
+   "ids": [
+    1826
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "year": "2026-27",
+   "source": "Shri Sathya Sai MC (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://sssmcri.ac.in/admissionmdms/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 75000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Srinivasan Medical College and Hospital, Samayapuram, Trichy",
+   "ids": [
+    2066
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "year": "2026-27",
+   "source": "Srinivasan MC, Samayapuram - 'Fee Structure for M.D/M.S - Academic Year 2026-2027', tuition per year (2026-11-04) — https://www.srinivasanmedicalcollege.org/pdf/PG_Final.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Srinivasan Medical College and Hospital, Samayapuram, Trichy",
+   "ids": [
+    2066
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "Srinivasan MC, Samayapuram - 'Fee Structure for M.D/M.S - Academic Year 2026-2027', tuition per year (2026-11-04) — https://www.srinivasanmedicalcollege.org/pdf/PG_Final.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Srinivasan Medical College and Hospital, Samayapuram, Trichy",
+   "ids": [
+    2066
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Srinivasan MC, Samayapuram - 'Fee Structure for M.D/M.S - Academic Year 2026-2027', tuition per year (2026-11-04) — https://www.srinivasanmedicalcollege.org/pdf/PG_Final.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Srinivasan Medical College and Hospital, Samayapuram, Trichy",
+   "ids": [
+    2066
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS ENT"
+   ],
+   "year": "2026-27",
+   "source": "Srinivasan MC, Samayapuram - 'Fee Structure for M.D/M.S - Academic Year 2026-2027', tuition per year (2026-11-04) — https://www.srinivasanmedicalcollege.org/pdf/PG_Final.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Srinivasan Medical College and Hospital, Samayapuram, Trichy",
+   "ids": [
+    2066
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Forensic Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Srinivasan MC, Samayapuram - 'Fee Structure for M.D/M.S - Academic Year 2026-2027', tuition per year (2026-11-04) — https://www.srinivasanmedicalcollege.org/pdf/PG_Final.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 300000,
+   "fee_usd": null
+  },
+  {
+   "college": "Srinivasan Medical College and Hospital, Samayapuram, Trichy",
+   "ids": [
+    2066
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Srinivasan MC, Samayapuram - 'Fee Structure for M.D/M.S - Academic Year 2026-2027', tuition per year (2026-11-04) — https://www.srinivasanmedicalcollege.org/pdf/PG_Final.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Srinivasan Medical College and Hospital, Samayapuram, Trichy",
+   "ids": [
+    2066
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "Srinivasan MC, Samayapuram - 'Fee Structure for M.D/M.S - Academic Year 2026-2027', tuition per year (2026-11-04) — https://www.srinivasanmedicalcollege.org/pdf/PG_Final.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Srinivasan Medical College and Hospital, Samayapuram, Trichy",
+   "ids": [
+    2066
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "year": "2026-27",
+   "source": "Srinivasan MC, Samayapuram - 'Fee Structure for M.D/M.S - Academic Year 2026-2027', tuition per year (2026-11-04) — https://www.srinivasanmedicalcollege.org/pdf/PG_Final.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 300000,
+   "fee_usd": null
+  },
+  {
+   "college": "Srinivasan Medical College and Hospital, Samayapuram, Trichy",
+   "ids": [
+    2066
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "Srinivasan MC, Samayapuram - 'Fee Structure for M.D/M.S - Academic Year 2026-2027', tuition per year (2026-11-04) — https://www.srinivasanmedicalcollege.org/pdf/PG_Final.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Srinivasan Medical College and Hospital, Samayapuram, Trichy",
+   "ids": [
+    2066
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "year": "2026-27",
+   "source": "Srinivasan MC, Samayapuram - 'Fee Structure for M.D/M.S - Academic Year 2026-2027', tuition per year (2026-11-04) — https://www.srinivasanmedicalcollege.org/pdf/PG_Final.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Srinivasan Medical College and Hospital, Samayapuram, Trichy",
+   "ids": [
+    2066
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "Srinivasan MC, Samayapuram - 'Fee Structure for M.D/M.S - Academic Year 2026-2027', tuition per year (2026-11-04) — https://www.srinivasanmedicalcollege.org/pdf/PG_Final.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Srinivasan Medical College and Hospital, Samayapuram, Trichy",
+   "ids": [
+    2066
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Srinivasan MC, Samayapuram - 'Fee Structure for M.D/M.S - Academic Year 2026-2027', tuition per year (2026-11-04) — https://www.srinivasanmedicalcollege.org/pdf/PG_Final.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Srinivasan Medical College and Hospital, Samayapuram, Trichy",
+   "ids": [
+    2066
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "Srinivasan MC, Samayapuram - 'Fee Structure for M.D/M.S - Academic Year 2026-2027', tuition per year (2026-11-04) — https://www.srinivasanmedicalcollege.org/pdf/PG_Final.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Srinivasan Medical College and Hospital, Samayapuram, Trichy",
+   "ids": [
+    2066
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pathology"
+   ],
+   "year": "2026-27",
+   "source": "Srinivasan MC, Samayapuram - 'Fee Structure for M.D/M.S - Academic Year 2026-2027', tuition per year (2026-11-04) — https://www.srinivasanmedicalcollege.org/pdf/PG_Final.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Srinivasan Medical College and Hospital, Samayapuram, Trichy",
+   "ids": [
+    2066
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "year": "2026-27",
+   "source": "Srinivasan MC, Samayapuram - 'Fee Structure for M.D/M.S - Academic Year 2026-2027', tuition per year (2026-11-04) — https://www.srinivasanmedicalcollege.org/pdf/PG_Final.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 300000,
+   "fee_usd": null
+  },
+  {
+   "college": "Srinivasan Medical College and Hospital, Samayapuram, Trichy",
+   "ids": [
+    2066
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "year": "2026-27",
+   "source": "Srinivasan MC, Samayapuram - 'Fee Structure for M.D/M.S - Academic Year 2026-2027', tuition per year (2026-11-04) — https://www.srinivasanmedicalcollege.org/pdf/PG_Final.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Srinivasan Medical College and Hospital, Samayapuram, Trichy",
+   "ids": [
+    2066
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "Srinivasan MC, Samayapuram - 'Fee Structure for M.D/M.S - Academic Year 2026-2027', tuition per year (2026-11-04) — https://www.srinivasanmedicalcollege.org/pdf/PG_Final.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Srinivasan Medical College and Hospital, Samayapuram, Trichy",
+   "ids": [
+    2066
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "year": "2026-27",
+   "source": "Srinivasan MC, Samayapuram - 'Fee Structure for M.D/M.S - Academic Year 2026-2027', tuition per year (2026-11-04) — https://www.srinivasanmedicalcollege.org/pdf/PG_Final.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Srinivasan Medical College and Hospital, Samayapuram, Trichy",
+   "ids": [
+    2066
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "Srinivasan MC, Samayapuram - 'Fee Structure for M.D/M.S - Academic Year 2026-2027', tuition per year (2026-11-04) — https://www.srinivasanmedicalcollege.org/pdf/PG_Final.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Srinivasan Medical College and Hospital, Samayapuram, Trichy",
+   "ids": [
+    2066
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Srinivasan MC, Samayapuram - 'Fee Structure for M.D/M.S - Academic Year 2026-2027', tuition per year (2026-11-04) — https://www.srinivasanmedicalcollege.org/pdf/PG_Final.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 70000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Srinivasan Medical College and Hospital, Samayapuram, Trichy",
+   "ids": [
+    2066
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "Srinivasan MC, Samayapuram - 'Fee Structure for M.D/M.S - Academic Year 2026-2027', tuition per year (2026-11-04) — https://www.srinivasanmedicalcollege.org/pdf/PG_Final.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 70000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Srinivasan Medical College and Hospital, Samayapuram, Trichy",
+   "ids": [
+    2066
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "Srinivasan MC, Samayapuram - 'Fee Structure for M.D/M.S - Academic Year 2026-2027', tuition per year (2026-11-04) — https://www.srinivasanmedicalcollege.org/pdf/PG_Final.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 70000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Srinivasan Medical College and Hospital, Samayapuram, Trichy",
+   "ids": [
+    2066
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "Srinivasan MC, Samayapuram - 'Fee Structure for M.D/M.S - Academic Year 2026-2027', tuition per year (2026-11-04) — https://www.srinivasanmedicalcollege.org/pdf/PG_Final.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Karpaga Vinayaga Institute of Medical Sciences and Research Centre",
+   "ids": [
+    2059
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "year": "2026-27",
+   "source": "Karpaga Vinayaga IMS - 'MD/MS Instructions Manual 2026-2027', tuition (annual) (2026-11-04) — https://kims.edu.in/wp-content/uploads/KIMS-MD-MS-INSTRUCTIONS-MANUAL-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Karpaga Vinayaga Institute of Medical Sciences and Research Centre",
+   "ids": [
+    2059
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "year": "2026-27",
+   "source": "Karpaga Vinayaga IMS - 'MD/MS Instructions Manual 2026-2027', tuition (annual) (2026-11-04) — https://kims.edu.in/wp-content/uploads/KIMS-MD-MS-INSTRUCTIONS-MANUAL-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2800000,
+   "fee_usd": null
+  },
+  {
+   "college": "Karpaga Vinayaga Institute of Medical Sciences and Research Centre",
+   "ids": [
+    2059
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "year": "2026-27",
+   "source": "Karpaga Vinayaga IMS - 'MD/MS Instructions Manual 2026-2027', tuition (annual) (2026-11-04) — https://kims.edu.in/wp-content/uploads/KIMS-MD-MS-INSTRUCTIONS-MANUAL-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Karpaga Vinayaga Institute of Medical Sciences and Research Centre",
+   "ids": [
+    2059
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "Karpaga Vinayaga IMS - 'MD/MS Instructions Manual 2026-2027', tuition (annual) (2026-11-04) — https://kims.edu.in/wp-content/uploads/KIMS-MD-MS-INSTRUCTIONS-MANUAL-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Karpaga Vinayaga Institute of Medical Sciences and Research Centre",
+   "ids": [
+    2059
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Karpaga Vinayaga IMS - 'MD/MS Instructions Manual 2026-2027', tuition (annual) (2026-11-04) — https://kims.edu.in/wp-content/uploads/KIMS-MD-MS-INSTRUCTIONS-MANUAL-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Karpaga Vinayaga Institute of Medical Sciences and Research Centre",
+   "ids": [
+    2059
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS ENT"
+   ],
+   "year": "2026-27",
+   "source": "Karpaga Vinayaga IMS - 'MD/MS Instructions Manual 2026-2027', tuition (annual) (2026-11-04) — https://kims.edu.in/wp-content/uploads/KIMS-MD-MS-INSTRUCTIONS-MANUAL-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Karpaga Vinayaga Institute of Medical Sciences and Research Centre",
+   "ids": [
+    2059
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Karpaga Vinayaga IMS - 'MD/MS Instructions Manual 2026-2027', tuition (annual) (2026-11-04) — https://kims.edu.in/wp-content/uploads/KIMS-MD-MS-INSTRUCTIONS-MANUAL-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Karpaga Vinayaga Institute of Medical Sciences and Research Centre",
+   "ids": [
+    2059
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "Karpaga Vinayaga IMS - 'MD/MS Instructions Manual 2026-2027', tuition (annual) (2026-11-04) — https://kims.edu.in/wp-content/uploads/KIMS-MD-MS-INSTRUCTIONS-MANUAL-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Karpaga Vinayaga Institute of Medical Sciences and Research Centre",
+   "ids": [
+    2059
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "year": "2026-27",
+   "source": "Karpaga Vinayaga IMS - 'MD/MS Instructions Manual 2026-2027', tuition (annual) (2026-11-04) — https://kims.edu.in/wp-content/uploads/KIMS-MD-MS-INSTRUCTIONS-MANUAL-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Karpaga Vinayaga Institute of Medical Sciences and Research Centre",
+   "ids": [
+    2059
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "Karpaga Vinayaga IMS - 'MD/MS Instructions Manual 2026-2027', tuition (annual) (2026-11-04) — https://kims.edu.in/wp-content/uploads/KIMS-MD-MS-INSTRUCTIONS-MANUAL-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Karpaga Vinayaga Institute of Medical Sciences and Research Centre",
+   "ids": [
+    2059
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "year": "2026-27",
+   "source": "Karpaga Vinayaga IMS - 'MD/MS Instructions Manual 2026-2027', tuition (annual) (2026-11-04) — https://kims.edu.in/wp-content/uploads/KIMS-MD-MS-INSTRUCTIONS-MANUAL-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2800000,
+   "fee_usd": null
+  },
+  {
+   "college": "Karpaga Vinayaga Institute of Medical Sciences and Research Centre",
+   "ids": [
+    2059
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "Karpaga Vinayaga IMS - 'MD/MS Instructions Manual 2026-2027', tuition (annual) (2026-11-04) — https://kims.edu.in/wp-content/uploads/KIMS-MD-MS-INSTRUCTIONS-MANUAL-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3800000,
+   "fee_usd": null
+  },
+  {
+   "college": "Karpaga Vinayaga Institute of Medical Sciences and Research Centre",
+   "ids": [
+    2059
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Karpaga Vinayaga IMS - 'MD/MS Instructions Manual 2026-2027', tuition (annual) (2026-11-04) — https://kims.edu.in/wp-content/uploads/KIMS-MD-MS-INSTRUCTIONS-MANUAL-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 800000,
+   "fee_usd": null
+  },
+  {
+   "college": "Karpaga Vinayaga Institute of Medical Sciences and Research Centre",
+   "ids": [
+    2059
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pathology"
+   ],
+   "year": "2026-27",
+   "source": "Karpaga Vinayaga IMS - 'MD/MS Instructions Manual 2026-2027', tuition (annual) (2026-11-04) — https://kims.edu.in/wp-content/uploads/KIMS-MD-MS-INSTRUCTIONS-MANUAL-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Karpaga Vinayaga Institute of Medical Sciences and Research Centre",
+   "ids": [
+    2059
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "year": "2026-27",
+   "source": "Karpaga Vinayaga IMS - 'MD/MS Instructions Manual 2026-2027', tuition (annual) (2026-11-04) — https://kims.edu.in/wp-content/uploads/KIMS-MD-MS-INSTRUCTIONS-MANUAL-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Karpaga Vinayaga Institute of Medical Sciences and Research Centre",
+   "ids": [
+    2059
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Physiology"
+   ],
+   "year": "2026-27",
+   "source": "Karpaga Vinayaga IMS - 'MD/MS Instructions Manual 2026-2027', tuition (annual) (2026-11-04) — https://kims.edu.in/wp-content/uploads/KIMS-MD-MS-INSTRUCTIONS-MANUAL-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Karpaga Vinayaga Institute of Medical Sciences and Research Centre",
+   "ids": [
+    2059
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "year": "2026-27",
+   "source": "Karpaga Vinayaga IMS - 'MD/MS Instructions Manual 2026-2027', tuition (annual) (2026-11-04) — https://kims.edu.in/wp-content/uploads/KIMS-MD-MS-INSTRUCTIONS-MANUAL-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Karpaga Vinayaga Institute of Medical Sciences and Research Centre",
+   "ids": [
+    2059
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "Karpaga Vinayaga IMS - 'MD/MS Instructions Manual 2026-2027', tuition (annual) (2026-11-04) — https://kims.edu.in/wp-content/uploads/KIMS-MD-MS-INSTRUCTIONS-MANUAL-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Karpaga Vinayaga Institute of Medical Sciences and Research Centre",
+   "ids": [
+    2059
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "year": "2026-27",
+   "source": "Karpaga Vinayaga IMS - 'MD/MS Instructions Manual 2026-2027', tuition (annual) (2026-11-04) — https://kims.edu.in/wp-content/uploads/KIMS-MD-MS-INSTRUCTIONS-MANUAL-2026-27.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lalithambigai Medical College and Hospital, Chennai",
+   "ids": [
+    1821
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lalithambigai MC (Dr MGR ERI) - 2026 MCC Annexure-C fee and seat sheet (09-10-2026), posted by the college; per year or whole course not stated (2026-11-04) — https://slmch.ac.in/wp-content/uploads/2020/07/NEET-PG-Submission-of-information.pdf",
+   "period": "not stated",
+   "label": "Fee (as printed) - MCC Annexure-C form: 'Fees'; per year or whole course not stated",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lalithambigai Medical College and Hospital, Chennai",
+   "ids": [
+    1821
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lalithambigai MC (Dr MGR ERI) - 2026 MCC Annexure-C fee and seat sheet (09-10-2026), posted by the college; per year or whole course not stated (2026-11-04) — https://slmch.ac.in/wp-content/uploads/2020/07/NEET-PG-Submission-of-information.pdf",
+   "period": "not stated",
+   "label": "Fee (as printed) - MCC Annexure-C form: 'Fees'; per year or whole course not stated",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lalithambigai Medical College and Hospital, Chennai",
+   "ids": [
+    1821
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lalithambigai MC (Dr MGR ERI) - 2026 MCC Annexure-C fee and seat sheet (09-10-2026), posted by the college; per year or whole course not stated (2026-11-04) — https://slmch.ac.in/wp-content/uploads/2020/07/NEET-PG-Submission-of-information.pdf",
+   "period": "not stated",
+   "label": "Fee (as printed) - MCC Annexure-C form: 'Fees'; per year or whole course not stated",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lalithambigai Medical College and Hospital, Chennai",
+   "ids": [
+    1821
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lalithambigai MC (Dr MGR ERI) - 2026 MCC Annexure-C fee and seat sheet (09-10-2026), posted by the college; per year or whole course not stated (2026-11-04) — https://slmch.ac.in/wp-content/uploads/2020/07/NEET-PG-Submission-of-information.pdf",
+   "period": "not stated",
+   "label": "Fee (as printed) - MCC Annexure-C form: 'Fees'; per year or whole course not stated",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 6800000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lalithambigai Medical College and Hospital, Chennai",
+   "ids": [
+    1821
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS ENT"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lalithambigai MC (Dr MGR ERI) - 2026 MCC Annexure-C fee and seat sheet (09-10-2026), posted by the college; per year or whole course not stated (2026-11-04) — https://slmch.ac.in/wp-content/uploads/2020/07/NEET-PG-Submission-of-information.pdf",
+   "period": "not stated",
+   "label": "Fee (as printed) - MCC Annexure-C form: 'Fees'; per year or whole course not stated",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lalithambigai Medical College and Hospital, Chennai",
+   "ids": [
+    1821
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Forensic Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lalithambigai MC (Dr MGR ERI) - 2026 MCC Annexure-C fee and seat sheet (09-10-2026), posted by the college; per year or whole course not stated (2026-11-04) — https://slmch.ac.in/wp-content/uploads/2020/07/NEET-PG-Submission-of-information.pdf",
+   "period": "not stated",
+   "label": "Fee (as printed) - MCC Annexure-C form: 'Fees'; per year or whole course not stated",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lalithambigai Medical College and Hospital, Chennai",
+   "ids": [
+    1821
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lalithambigai MC (Dr MGR ERI) - 2026 MCC Annexure-C fee and seat sheet (09-10-2026), posted by the college; per year or whole course not stated (2026-11-04) — https://slmch.ac.in/wp-content/uploads/2020/07/NEET-PG-Submission-of-information.pdf",
+   "period": "not stated",
+   "label": "Fee (as printed) - MCC Annexure-C form: 'Fees'; per year or whole course not stated",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lalithambigai Medical College and Hospital, Chennai",
+   "ids": [
+    1821
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lalithambigai MC (Dr MGR ERI) - 2026 MCC Annexure-C fee and seat sheet (09-10-2026), posted by the college; per year or whole course not stated (2026-11-04) — https://slmch.ac.in/wp-content/uploads/2020/07/NEET-PG-Submission-of-information.pdf",
+   "period": "not stated",
+   "label": "Fee (as printed) - MCC Annexure-C form: 'Fees'; per year or whole course not stated",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lalithambigai Medical College and Hospital, Chennai",
+   "ids": [
+    1821
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lalithambigai MC (Dr MGR ERI) - 2026 MCC Annexure-C fee and seat sheet (09-10-2026), posted by the college; per year or whole course not stated (2026-11-04) — https://slmch.ac.in/wp-content/uploads/2020/07/NEET-PG-Submission-of-information.pdf",
+   "period": "not stated",
+   "label": "Fee (as printed) - MCC Annexure-C form: 'Fees'; per year or whole course not stated",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lalithambigai Medical College and Hospital, Chennai",
+   "ids": [
+    1821
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lalithambigai MC (Dr MGR ERI) - 2026 MCC Annexure-C fee and seat sheet (09-10-2026), posted by the college; per year or whole course not stated (2026-11-04) — https://slmch.ac.in/wp-content/uploads/2020/07/NEET-PG-Submission-of-information.pdf",
+   "period": "not stated",
+   "label": "Fee (as printed) - MCC Annexure-C form: 'Fees'; per year or whole course not stated",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lalithambigai Medical College and Hospital, Chennai",
+   "ids": [
+    1821
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lalithambigai MC (Dr MGR ERI) - 2026 MCC Annexure-C fee and seat sheet (09-10-2026), posted by the college; per year or whole course not stated (2026-11-04) — https://slmch.ac.in/wp-content/uploads/2020/07/NEET-PG-Submission-of-information.pdf",
+   "period": "not stated",
+   "label": "Fee (as printed) - MCC Annexure-C form: 'Fees'; per year or whole course not stated",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lalithambigai Medical College and Hospital, Chennai",
+   "ids": [
+    1821
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lalithambigai MC (Dr MGR ERI) - 2026 MCC Annexure-C fee and seat sheet (09-10-2026), posted by the college; per year or whole course not stated (2026-11-04) — https://slmch.ac.in/wp-content/uploads/2020/07/NEET-PG-Submission-of-information.pdf",
+   "period": "not stated",
+   "label": "Fee (as printed) - MCC Annexure-C form: 'Fees'; per year or whole course not stated",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lalithambigai Medical College and Hospital, Chennai",
+   "ids": [
+    1821
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lalithambigai MC (Dr MGR ERI) - 2026 MCC Annexure-C fee and seat sheet (09-10-2026), posted by the college; per year or whole course not stated (2026-11-04) — https://slmch.ac.in/wp-content/uploads/2020/07/NEET-PG-Submission-of-information.pdf",
+   "period": "not stated",
+   "label": "Fee (as printed) - MCC Annexure-C form: 'Fees'; per year or whole course not stated",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lalithambigai Medical College and Hospital, Chennai",
+   "ids": [
+    1821
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lalithambigai MC (Dr MGR ERI) - 2026 MCC Annexure-C fee and seat sheet (09-10-2026), posted by the college; per year or whole course not stated (2026-11-04) — https://slmch.ac.in/wp-content/uploads/2020/07/NEET-PG-Submission-of-information.pdf",
+   "period": "not stated",
+   "label": "Fee (as printed) - MCC Annexure-C form: 'Fees'; per year or whole course not stated",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lalithambigai Medical College and Hospital, Chennai",
+   "ids": [
+    1821
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pathology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lalithambigai MC (Dr MGR ERI) - 2026 MCC Annexure-C fee and seat sheet (09-10-2026), posted by the college; per year or whole course not stated (2026-11-04) — https://slmch.ac.in/wp-content/uploads/2020/07/NEET-PG-Submission-of-information.pdf",
+   "period": "not stated",
+   "label": "Fee (as printed) - MCC Annexure-C form: 'Fees'; per year or whole course not stated",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lalithambigai Medical College and Hospital, Chennai",
+   "ids": [
+    1821
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lalithambigai MC (Dr MGR ERI) - 2026 MCC Annexure-C fee and seat sheet (09-10-2026), posted by the college; per year or whole course not stated (2026-11-04) — https://slmch.ac.in/wp-content/uploads/2020/07/NEET-PG-Submission-of-information.pdf",
+   "period": "not stated",
+   "label": "Fee (as printed) - MCC Annexure-C form: 'Fees'; per year or whole course not stated",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lalithambigai Medical College and Hospital, Chennai",
+   "ids": [
+    1821
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Physiology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lalithambigai MC (Dr MGR ERI) - 2026 MCC Annexure-C fee and seat sheet (09-10-2026), posted by the college; per year or whole course not stated (2026-11-04) — https://slmch.ac.in/wp-content/uploads/2020/07/NEET-PG-Submission-of-information.pdf",
+   "period": "not stated",
+   "label": "Fee (as printed) - MCC Annexure-C form: 'Fees'; per year or whole course not stated",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lalithambigai Medical College and Hospital, Chennai",
+   "ids": [
+    1821
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lalithambigai MC (Dr MGR ERI) - 2026 MCC Annexure-C fee and seat sheet (09-10-2026), posted by the college; per year or whole course not stated (2026-11-04) — https://slmch.ac.in/wp-content/uploads/2020/07/NEET-PG-Submission-of-information.pdf",
+   "period": "not stated",
+   "label": "Fee (as printed) - MCC Annexure-C form: 'Fees'; per year or whole course not stated",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lalithambigai Medical College and Hospital, Chennai",
+   "ids": [
+    1821
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lalithambigai MC (Dr MGR ERI) - 2026 MCC Annexure-C fee and seat sheet (09-10-2026), posted by the college; per year or whole course not stated (2026-11-04) — https://slmch.ac.in/wp-content/uploads/2020/07/NEET-PG-Submission-of-information.pdf",
+   "period": "not stated",
+   "label": "Fee (as printed) - MCC Annexure-C form: 'Fees'; per year or whole course not stated",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 6250000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lalithambigai Medical College and Hospital, Chennai",
+   "ids": [
+    1821
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lalithambigai MC (Dr MGR ERI) - 2026 MCC Annexure-C fee and seat sheet (09-10-2026), posted by the college; per year or whole course not stated (2026-11-04) — https://slmch.ac.in/wp-content/uploads/2020/07/NEET-PG-Submission-of-information.pdf — Charged in dollars.",
+   "period": "not stated",
+   "label": "Fee (as printed) - MCC Annexure-C form: 'Fees'; per year or whole course not stated",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 112000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Lalithambigai Medical College and Hospital, Chennai",
+   "ids": [
+    1821
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lalithambigai MC (Dr MGR ERI) - 2026 MCC Annexure-C fee and seat sheet (09-10-2026), posted by the college; per year or whole course not stated (2026-11-04) — https://slmch.ac.in/wp-content/uploads/2020/07/NEET-PG-Submission-of-information.pdf — Charged in dollars.",
+   "period": "not stated",
+   "label": "Fee (as printed) - MCC Annexure-C form: 'Fees'; per year or whole course not stated",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Lalithambigai Medical College and Hospital, Chennai",
+   "ids": [
+    1821
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lalithambigai MC (Dr MGR ERI) - 2026 MCC Annexure-C fee and seat sheet (09-10-2026), posted by the college; per year or whole course not stated (2026-11-04) — https://slmch.ac.in/wp-content/uploads/2020/07/NEET-PG-Submission-of-information.pdf — Charged in dollars.",
+   "period": "not stated",
+   "label": "Fee (as printed) - MCC Annexure-C form: 'Fees'; per year or whole course not stated",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Lalithambigai Medical College and Hospital, Chennai",
+   "ids": [
+    1821
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lalithambigai MC (Dr MGR ERI) - 2026 MCC Annexure-C fee and seat sheet (09-10-2026), posted by the college; per year or whole course not stated (2026-11-04) — https://slmch.ac.in/wp-content/uploads/2020/07/NEET-PG-Submission-of-information.pdf — Charged in dollars.",
+   "period": "not stated",
+   "label": "Fee (as printed) - MCC Annexure-C form: 'Fees'; per year or whole course not stated",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 110000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Bhaarat Medical College & Hospital, Chennai",
+   "ids": [
+    1841
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "year": "2026-27",
+   "source": "Bhaarath MC (BIHER) - 'PG course offered, sanctioned seats and annual tuition fee for the academic year 2026-27' (bmch.ac.in) (2026-11-04) — https://www.bmch.ac.in/pg-admission.php",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Bhaarat Medical College & Hospital, Chennai",
+   "ids": [
+    1841
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "Bhaarath MC (BIHER) - 'PG course offered, sanctioned seats and annual tuition fee for the academic year 2026-27' (bmch.ac.in) (2026-11-04) — https://www.bmch.ac.in/pg-admission.php",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 7500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Bhaarat Medical College & Hospital, Chennai",
+   "ids": [
+    1841
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Bhaarath MC (BIHER) - 'PG course offered, sanctioned seats and annual tuition fee for the academic year 2026-27' (bmch.ac.in) (2026-11-04) — https://www.bmch.ac.in/pg-admission.php",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Bhaarat Medical College & Hospital, Chennai",
+   "ids": [
+    1841
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS ENT"
+   ],
+   "year": "2026-27",
+   "source": "Bhaarath MC (BIHER) - 'PG course offered, sanctioned seats and annual tuition fee for the academic year 2026-27' (bmch.ac.in) (2026-11-04) — https://www.bmch.ac.in/pg-admission.php",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Bhaarat Medical College & Hospital, Chennai",
+   "ids": [
+    1841
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Bhaarath MC (BIHER) - 'PG course offered, sanctioned seats and annual tuition fee for the academic year 2026-27' (bmch.ac.in) (2026-11-04) — https://www.bmch.ac.in/pg-admission.php",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 6000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Bhaarat Medical College & Hospital, Chennai",
+   "ids": [
+    1841
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "Bhaarath MC (BIHER) - 'PG course offered, sanctioned seats and annual tuition fee for the academic year 2026-27' (bmch.ac.in) (2026-11-04) — https://www.bmch.ac.in/pg-admission.php",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Bhaarat Medical College & Hospital, Chennai",
+   "ids": [
+    1841
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "Bhaarath MC (BIHER) - 'PG course offered, sanctioned seats and annual tuition fee for the academic year 2026-27' (bmch.ac.in) (2026-11-04) — https://www.bmch.ac.in/pg-admission.php",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 6500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Bhaarat Medical College & Hospital, Chennai",
+   "ids": [
+    1841
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "year": "2026-27",
+   "source": "Bhaarath MC (BIHER) - 'PG course offered, sanctioned seats and annual tuition fee for the academic year 2026-27' (bmch.ac.in) (2026-11-04) — https://www.bmch.ac.in/pg-admission.php",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Bhaarat Medical College & Hospital, Chennai",
+   "ids": [
+    1841
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "Bhaarath MC (BIHER) - 'PG course offered, sanctioned seats and annual tuition fee for the academic year 2026-27' (bmch.ac.in) (2026-11-04) — https://www.bmch.ac.in/pg-admission.php",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 6000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Bhaarat Medical College & Hospital, Chennai",
+   "ids": [
+    1841
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "Bhaarath MC (BIHER) - 'PG course offered, sanctioned seats and annual tuition fee for the academic year 2026-27' (bmch.ac.in) (2026-11-04) — https://www.bmch.ac.in/pg-admission.php",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Bhaarat Medical College & Hospital, Chennai",
+   "ids": [
+    1841
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "year": "2026-27",
+   "source": "Bhaarath MC (BIHER) - 'PG course offered, sanctioned seats and annual tuition fee for the academic year 2026-27' (bmch.ac.in) (2026-11-04) — https://www.bmch.ac.in/pg-admission.php",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Bhaarat Medical College & Hospital, Chennai",
+   "ids": [
+    1841
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "Bhaarath MC (BIHER) - 'PG course offered, sanctioned seats and annual tuition fee for the academic year 2026-27' (bmch.ac.in) (2026-11-04) — https://www.bmch.ac.in/pg-admission.php",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 7500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Bhaarat Medical College & Hospital, Chennai",
+   "ids": [
+    1841
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "year": "2026-27",
+   "source": "Bhaarath MC (BIHER) - 'PG course offered, sanctioned seats and annual tuition fee for the academic year 2026-27' (bmch.ac.in) (2026-11-04) — https://www.bmch.ac.in/pg-admission.php",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Bhaarat Medical College & Hospital, Chennai",
+   "ids": [
+    1841
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "Bhaarath MC (BIHER) - 'PG course offered, sanctioned seats and annual tuition fee for the academic year 2026-27' (bmch.ac.in) (2026-11-04) — https://www.bmch.ac.in/pg-admission.php — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 100000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Vels Medical College & Hospital, Tiruvallur",
+   "ids": [
+    1846
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "year": "2026-27",
+   "source": "Vels MC (VISTAS) - 'Prospectus for admission to M.D./M.S. degree programs - Academic year 2026-27'; NRI fee is for the whole 3-year programme (2026-11-04) — https://www.velsmedicalcollege.com/pdf/pg-prospectus.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vels Medical College & Hospital, Tiruvallur",
+   "ids": [
+    1846
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "Vels MC (VISTAS) - 'Prospectus for admission to M.D./M.S. degree programs - Academic year 2026-27'; NRI fee is for the whole 3-year programme (2026-11-04) — https://www.velsmedicalcollege.com/pdf/pg-prospectus.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 7000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vels Medical College & Hospital, Tiruvallur",
+   "ids": [
+    1846
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS ENT"
+   ],
+   "year": "2026-27",
+   "source": "Vels MC (VISTAS) - 'Prospectus for admission to M.D./M.S. degree programs - Academic year 2026-27'; NRI fee is for the whole 3-year programme (2026-11-04) — https://www.velsmedicalcollege.com/pdf/pg-prospectus.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vels Medical College & Hospital, Tiruvallur",
+   "ids": [
+    1846
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Vels MC (VISTAS) - 'Prospectus for admission to M.D./M.S. degree programs - Academic year 2026-27'; NRI fee is for the whole 3-year programme (2026-11-04) — https://www.velsmedicalcollege.com/pdf/pg-prospectus.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vels Medical College & Hospital, Tiruvallur",
+   "ids": [
+    1846
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "Vels MC (VISTAS) - 'Prospectus for admission to M.D./M.S. degree programs - Academic year 2026-27'; NRI fee is for the whole 3-year programme (2026-11-04) — https://www.velsmedicalcollege.com/pdf/pg-prospectus.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vels Medical College & Hospital, Tiruvallur",
+   "ids": [
+    1846
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "Vels MC (VISTAS) - 'Prospectus for admission to M.D./M.S. degree programs - Academic year 2026-27'; NRI fee is for the whole 3-year programme (2026-11-04) — https://www.velsmedicalcollege.com/pdf/pg-prospectus.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vels Medical College & Hospital, Tiruvallur",
+   "ids": [
+    1846
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "year": "2026-27",
+   "source": "Vels MC (VISTAS) - 'Prospectus for admission to M.D./M.S. degree programs - Academic year 2026-27'; NRI fee is for the whole 3-year programme (2026-11-04) — https://www.velsmedicalcollege.com/pdf/pg-prospectus.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vels Medical College & Hospital, Tiruvallur",
+   "ids": [
+    1846
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "Vels MC (VISTAS) - 'Prospectus for admission to M.D./M.S. degree programs - Academic year 2026-27'; NRI fee is for the whole 3-year programme (2026-11-04) — https://www.velsmedicalcollege.com/pdf/pg-prospectus.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vels Medical College & Hospital, Tiruvallur",
+   "ids": [
+    1846
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Vels MC (VISTAS) - 'Prospectus for admission to M.D./M.S. degree programs - Academic year 2026-27'; NRI fee is for the whole 3-year programme (2026-11-04) — https://www.velsmedicalcollege.com/pdf/pg-prospectus.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vels Medical College & Hospital, Tiruvallur",
+   "ids": [
+    1846
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "Vels MC (VISTAS) - 'Prospectus for admission to M.D./M.S. degree programs - Academic year 2026-27'; NRI fee is for the whole 3-year programme (2026-11-04) — https://www.velsmedicalcollege.com/pdf/pg-prospectus.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vels Medical College & Hospital, Tiruvallur",
+   "ids": [
+    1846
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pathology"
+   ],
+   "year": "2026-27",
+   "source": "Vels MC (VISTAS) - 'Prospectus for admission to M.D./M.S. degree programs - Academic year 2026-27'; NRI fee is for the whole 3-year programme (2026-11-04) — https://www.velsmedicalcollege.com/pdf/pg-prospectus.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vels Medical College & Hospital, Tiruvallur",
+   "ids": [
+    1846
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "year": "2026-27",
+   "source": "Vels MC (VISTAS) - 'Prospectus for admission to M.D./M.S. degree programs - Academic year 2026-27'; NRI fee is for the whole 3-year programme (2026-11-04) — https://www.velsmedicalcollege.com/pdf/pg-prospectus.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vels Medical College & Hospital, Tiruvallur",
+   "ids": [
+    1846
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "Vels MC (VISTAS) - 'Prospectus for admission to M.D./M.S. degree programs - Academic year 2026-27'; NRI fee is for the whole 3-year programme (2026-11-04) — https://www.velsmedicalcollege.com/pdf/pg-prospectus.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 7000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vels Medical College & Hospital, Tiruvallur",
+   "ids": [
+    1846
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "Vels MC (VISTAS) - 'Prospectus for admission to M.D./M.S. degree programs - Academic year 2026-27'; NRI fee is for the whole 3-year programme (2026-11-04) — https://www.velsmedicalcollege.com/pdf/pg-prospectus.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - Vels prints a 'Program Fee for NRI' for the 3-year course",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 330000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Vels Medical College & Hospital, Tiruvallur",
+   "ids": [
+    1846
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "Vels MC (VISTAS) - 'Prospectus for admission to M.D./M.S. degree programs - Academic year 2026-27'; NRI fee is for the whole 3-year programme (2026-11-04) — https://www.velsmedicalcollege.com/pdf/pg-prospectus.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - Vels prints a 'Program Fee for NRI' for the 3-year course",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 330000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  }
+ ]
+}

@@ -22,8 +22,8 @@ const PATH = "/md-ms-india/deemed-universities";
 export async function generateMetadata(): Promise<Metadata> {
   const d = await getDeemedPg();
   return resolveMetadata(PATH, {
-    title: `Deemed University MD/MS Fees & NEET PG Cutoff ${d.year ?? ""}`,
-    description: `PG fee structure at ${d.colleges.length} deemed universities — management and NRI quota, college by college — and where deemed seats closed in NEET PG ${d.year ?? ""} counselling.`,
+    title: `Deemed University MD/MS Fees ${d.year ?? ""} & NEET PG Cutoff ${d.rankYear ?? ""}`,
+    description: `PG fee structure at ${d.colleges.length} deemed universities — management and NRI quota, college by college — and where deemed seats closed in NEET PG ${d.rankYear ?? ""} counselling.`,
     keywords:
       "deemed university PG fees, deemed university MD fees, NEET PG deemed university cutoff, deemed university fee structure PG, deemed NRI quota PG fees",
   });
@@ -35,7 +35,8 @@ export default async function DeemedPgPage() {
   const nri = d.national.find((b) => b.family === "NRI");
   // Words from Admin → Content → Text & numbers ("Page: Deemed universities PG"); photo from Admin → Media.
   const [copy, heroImage] = await Promise.all([
-    pageCopy("page.deemed_pg.hero", { count: d.colleges.length, year: d.year ?? "" }),
+    // {year} in this copy is where the seats closed — the results year, not the fee year.
+    pageCopy("page.deemed_pg.hero", { count: d.colleges.length, year: d.rankYear ?? "" }),
     pageHeroImage("page.deemed_pg.hero"),
   ]);
 
@@ -44,7 +45,7 @@ export default async function DeemedPgPage() {
       ? [
           {
             question: "What is the MD/MS fee at a deemed university?",
-            answer: `In ${d.year}, management-quota PG seats at deemed universities had a median fee of ${lakh(mng.median)} a year; most cost between ${lakh(mng.p10)} and ${lakh(mng.p90)}. Clinical branches cost more than non-clinical ones at the same university.`,
+            answer: `For the ${d.year} counselling, management-quota PG seats at deemed universities have a median fee of ${lakh(mng.median)} a year; most cost between ${lakh(mng.p10)} and ${lakh(mng.p90)}. Clinical branches cost more than non-clinical ones at the same university.`,
           },
         ]
       : []),
@@ -52,7 +53,7 @@ export default async function DeemedPgPage() {
       ? [
           {
             question: "What is the NRI quota fee at deemed universities?",
-            answer: `NRI-quota PG seats at deemed universities had a median fee of ${lakh(nri.median)} a year in ${d.year}; most were between ${lakh(nri.p10)} and ${lakh(nri.p90)}.`,
+            answer: `NRI-quota PG seats at deemed universities have a median fee of ${lakh(nri.median)} a year for the ${d.year} counselling; most are between ${lakh(nri.p10)} and ${lakh(nri.p90)}.`,
           },
         ]
       : []),
@@ -60,7 +61,7 @@ export default async function DeemedPgPage() {
       ? [
           {
             question: "What NEET PG rank is needed for a deemed university?",
-            answer: `Deemed management seats are filled by MCC and open to every state. In ${d.year} they closed from rank ${d.mngRanks.bestR1?.toLocaleString("en-IN") ?? "—"} in round 1 to ${d.mngRanks.widest?.toLocaleString("en-IN") ?? "—"} at the furthest — for the right fee, a deemed seat stays open far down the list.`,
+            answer: `Deemed management seats are filled by MCC and open to every state. In ${d.rankYear} they closed from rank ${d.mngRanks.bestR1?.toLocaleString("en-IN") ?? "—"} in round 1 to ${d.mngRanks.widest?.toLocaleString("en-IN") ?? "—"} at the furthest — for the right fee, a deemed seat stays open far down the list.`,
           },
         ]
       : []),
@@ -89,7 +90,7 @@ export default async function DeemedPgPage() {
           { label: "Deemed universities", value: String(d.colleges.length) },
           ...(mng ? [{ label: "Management, median", value: lakh(mng.median), note: "a year" }] : []),
           ...(nri ? [{ label: "NRI, median", value: lakh(nri.median), note: "a year" }] : []),
-          ...(d.mngRanks?.widest ? [{ label: `Last rank, ${d.year}`, value: d.mngRanks.widest.toLocaleString("en-IN"), note: "management, any round" }] : []),
+          ...(d.mngRanks?.widest ? [{ label: `Last rank, ${d.rankYear}`, value: d.mngRanks.widest.toLocaleString("en-IN"), note: "management, any round" }] : []),
         ]}
         cta={{ label: copy.cta, href: "/neet-college-predictor?course=pg" }}
         telegram="hero_deemed_pg"

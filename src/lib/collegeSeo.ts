@@ -29,7 +29,7 @@
  */
 
 import type { CollegeDetail, CourseCutoff, CollegeFee } from "@/lib/collegeQueries";
-import { approxFee } from "@/lib/chance";
+import { approxFee, feeKind, isYearlyFee } from "@/lib/chance";
 import { generalBands } from "@/lib/cutoffBands";
 
 const SITE = "https://www.admissionhands.com";
@@ -133,15 +133,18 @@ export function collegeFaqs(
   }
 
   /* ---- the money, as a bracket ---- */
-  const priced = fees.filter((f) => f.feeInr != null && f.feeInr > 0);
+  // A year's figures only — a whole-course or period-not-stated fee is never read as a year's (owner, 2026-11-04) —
+  // and "tuition" only when every figure is the tuition alone.
+  const priced = fees.filter((f) => f.feeInr != null && f.feeInr > 0 && isYearlyFee(f.feePeriodicity));
   if (priced.length) {
     const values = priced.map((f) => f.feeInr!);
     const bracket = approxFee(Math.min(...values), Math.max(...values));
+    const tuitionOnly = priced.every((f) => feeKind(f.feeLabel).kind === "tuition");
     if (bracket) {
       faqs.push({
         q: `What are the fees at ${college.name}?`,
         a:
-          `Approximately ${bracket.replace(/^≈ /, "").replace(/\*$/, "")} in tuition, depending on the course ` +
+          `Approximately ${bracket.replace(/^≈ /, "").replace(/\*$/, "")} ${tuitionOnly ? "in tuition" : "in fees"}, depending on the course ` +
           `and quota. This is a bracket from the published fee schedule, not a quote — hostel, deposit, bond and ` +
           `later-year changes vary by seat, and your counsellor confirms the exact figure for your quota.`,
       });

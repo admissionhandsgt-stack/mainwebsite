@@ -1,0 +1,1757 @@
+{
+ "state": "Pondicherry",
+ "classes": [
+  [
+   "^MNG$",
+   "DPaid"
+  ],
+  [
+   "^NRI$",
+   "DNRI"
+  ],
+  [
+   ".",
+   "Other"
+  ]
+ ],
+ "null_class": {},
+ "source_file": "scripts/data/fees_extract_2026_27/zyn_2026_11_04/website_fees_2026-27.json",
+ "entries": [
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS ENT"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 700000,
+   "fee_usd": null
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pathology"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 700000,
+   "fee_usd": null
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Physiology"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 75000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 75000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 60000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 75000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 80000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Mahatma Gandhi Medical College & Research Institute, Pondicherry",
+   "ids": [
+    1783
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "year": "2026-27",
+   "source": "MGMCRI (Sri Balaji Vidyapeeth) - 'Information Brochure - Admission to MD/MS Programmes 2026-27 AY', annual fee (same all three years) (2026-11-04) — https://mgmcri.ac.in/admissionsmdms/ — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 75000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anatomy"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf — After the university's fee concession (annual fee Rs 300,000).",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 150000,
+   "fee_usd": null
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf — After the university's fee concession (annual fee Rs 300,000).",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 150000,
+   "fee_usd": null
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5100000,
+   "fee_usd": null
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS ENT"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Microbiology"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf — After the university's fee concession (annual fee Rs 300,000).",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 150000,
+   "fee_usd": null
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4850000,
+   "fee_usd": null
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4300000,
+   "fee_usd": null
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pathology"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pharmacology"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5050000,
+   "fee_usd": null
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Tuberculosis & Respiratory Diseases"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4300000,
+   "fee_usd": null
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 236000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 232000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 234000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 230000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Aarupadai Veedu Medical College, Pondicherry",
+   "ids": [
+    1769
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "Aarupadai Veedu MC (VMRF) - 'Information to the candidates ... M.D/M.S ... academic year 2026-2027'; non-clinical fees after concession; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/96908c5669f616259fcda533b1cd3177.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 236000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Lakshmi Narayana Institute of Medical Sciences, Pondicherry",
+   "ids": [
+    1851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lakshmi Narayana IMS (BIHER) - 'MD/MS courses ... annual tuition fee for the academic year 2026-27' (2026-11-04) — https://www.slims.ac.in/downloads/SLIMS%20PG%20Admission%202025-26%20Instruction%20UPDATED%20-2.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lakshmi Narayana Institute of Medical Sciences, Pondicherry",
+   "ids": [
+    1851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lakshmi Narayana IMS (BIHER) - 'MD/MS courses ... annual tuition fee for the academic year 2026-27' (2026-11-04) — https://www.slims.ac.in/downloads/SLIMS%20PG%20Admission%202025-26%20Instruction%20UPDATED%20-2.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 7500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lakshmi Narayana Institute of Medical Sciences, Pondicherry",
+   "ids": [
+    1851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lakshmi Narayana IMS (BIHER) - 'MD/MS courses ... annual tuition fee for the academic year 2026-27' (2026-11-04) — https://www.slims.ac.in/downloads/SLIMS%20PG%20Admission%202025-26%20Instruction%20UPDATED%20-2.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lakshmi Narayana Institute of Medical Sciences, Pondicherry",
+   "ids": [
+    1851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS ENT"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lakshmi Narayana IMS (BIHER) - 'MD/MS courses ... annual tuition fee for the academic year 2026-27' (2026-11-04) — https://www.slims.ac.in/downloads/SLIMS%20PG%20Admission%202025-26%20Instruction%20UPDATED%20-2.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lakshmi Narayana Institute of Medical Sciences, Pondicherry",
+   "ids": [
+    1851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lakshmi Narayana IMS (BIHER) - 'MD/MS courses ... annual tuition fee for the academic year 2026-27' (2026-11-04) — https://www.slims.ac.in/downloads/SLIMS%20PG%20Admission%202025-26%20Instruction%20UPDATED%20-2.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lakshmi Narayana Institute of Medical Sciences, Pondicherry",
+   "ids": [
+    1851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lakshmi Narayana IMS (BIHER) - 'MD/MS courses ... annual tuition fee for the academic year 2026-27' (2026-11-04) — https://www.slims.ac.in/downloads/SLIMS%20PG%20Admission%202025-26%20Instruction%20UPDATED%20-2.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4800000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lakshmi Narayana Institute of Medical Sciences, Pondicherry",
+   "ids": [
+    1851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lakshmi Narayana IMS (BIHER) - 'MD/MS courses ... annual tuition fee for the academic year 2026-27' (2026-11-04) — https://www.slims.ac.in/downloads/SLIMS%20PG%20Admission%202025-26%20Instruction%20UPDATED%20-2.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 6500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lakshmi Narayana Institute of Medical Sciences, Pondicherry",
+   "ids": [
+    1851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lakshmi Narayana IMS (BIHER) - 'MD/MS courses ... annual tuition fee for the academic year 2026-27' (2026-11-04) — https://www.slims.ac.in/downloads/SLIMS%20PG%20Admission%202025-26%20Instruction%20UPDATED%20-2.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3800000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lakshmi Narayana Institute of Medical Sciences, Pondicherry",
+   "ids": [
+    1851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lakshmi Narayana IMS (BIHER) - 'MD/MS courses ... annual tuition fee for the academic year 2026-27' (2026-11-04) — https://www.slims.ac.in/downloads/SLIMS%20PG%20Admission%202025-26%20Instruction%20UPDATED%20-2.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lakshmi Narayana Institute of Medical Sciences, Pondicherry",
+   "ids": [
+    1851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lakshmi Narayana IMS (BIHER) - 'MD/MS courses ... annual tuition fee for the academic year 2026-27' (2026-11-04) — https://www.slims.ac.in/downloads/SLIMS%20PG%20Admission%202025-26%20Instruction%20UPDATED%20-2.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 800000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lakshmi Narayana Institute of Medical Sciences, Pondicherry",
+   "ids": [
+    1851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lakshmi Narayana IMS (BIHER) - 'MD/MS courses ... annual tuition fee for the academic year 2026-27' (2026-11-04) — https://www.slims.ac.in/downloads/SLIMS%20PG%20Admission%202025-26%20Instruction%20UPDATED%20-2.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 5000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lakshmi Narayana Institute of Medical Sciences, Pondicherry",
+   "ids": [
+    1851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lakshmi Narayana IMS (BIHER) - 'MD/MS courses ... annual tuition fee for the academic year 2026-27' (2026-11-04) — https://www.slims.ac.in/downloads/SLIMS%20PG%20Admission%202025-26%20Instruction%20UPDATED%20-2.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lakshmi Narayana Institute of Medical Sciences, Pondicherry",
+   "ids": [
+    1851
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lakshmi Narayana IMS (BIHER) - 'MD/MS courses ... annual tuition fee for the academic year 2026-27' (2026-11-04) — https://www.slims.ac.in/downloads/SLIMS%20PG%20Admission%202025-26%20Instruction%20UPDATED%20-2.pdf",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 7000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Sri Lakshmi Narayana Institute of Medical Sciences, Pondicherry",
+   "ids": [
+    1851
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lakshmi Narayana IMS (BIHER) - 'MD/MS courses ... annual tuition fee for the academic year 2026-27' (2026-11-04) — https://www.slims.ac.in/downloads/SLIMS%20PG%20Admission%202025-26%20Instruction%20UPDATED%20-2.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 175000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Lakshmi Narayana Institute of Medical Sciences, Pondicherry",
+   "ids": [
+    1851
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lakshmi Narayana IMS (BIHER) - 'MD/MS courses ... annual tuition fee for the academic year 2026-27' (2026-11-04) — https://www.slims.ac.in/downloads/SLIMS%20PG%20Admission%202025-26%20Instruction%20UPDATED%20-2.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 125000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Lakshmi Narayana Institute of Medical Sciences, Pondicherry",
+   "ids": [
+    1851
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lakshmi Narayana IMS (BIHER) - 'MD/MS courses ... annual tuition fee for the academic year 2026-27' (2026-11-04) — https://www.slims.ac.in/downloads/SLIMS%20PG%20Admission%202025-26%20Instruction%20UPDATED%20-2.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 145000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Lakshmi Narayana Institute of Medical Sciences, Pondicherry",
+   "ids": [
+    1851
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lakshmi Narayana IMS (BIHER) - 'MD/MS courses ... annual tuition fee for the academic year 2026-27' (2026-11-04) — https://www.slims.ac.in/downloads/SLIMS%20PG%20Admission%202025-26%20Instruction%20UPDATED%20-2.pdf — Printed as US$50,000 (the college's other NRI fees are US$1.25-1.75 lakh) - confirm with the college. Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 50000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Lakshmi Narayana Institute of Medical Sciences, Pondicherry",
+   "ids": [
+    1851
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lakshmi Narayana IMS (BIHER) - 'MD/MS courses ... annual tuition fee for the academic year 2026-27' (2026-11-04) — https://www.slims.ac.in/downloads/SLIMS%20PG%20Admission%202025-26%20Instruction%20UPDATED%20-2.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 125000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Sri Lakshmi Narayana Institute of Medical Sciences, Pondicherry",
+   "ids": [
+    1851
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "Sri Lakshmi Narayana IMS (BIHER) - 'MD/MS courses ... annual tuition fee for the academic year 2026-27' (2026-11-04) — https://www.slims.ac.in/downloads/SLIMS%20PG%20Admission%202025-26%20Instruction%20UPDATED%20-2.pdf — Charged in dollars.",
+   "period": "per year",
+   "label": "Tuition fee",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 175000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Vinayaka Missions Medical College, Karaikal, Pondicherry",
+   "ids": [
+    1710
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Anaesthesiology"
+   ],
+   "year": "2026-27",
+   "source": "Vinayaka Missions MC Karaikal (VMRF) - 'Admission to the MD/MS degree programmes for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Medical College, Karaikal, Pondicherry",
+   "ids": [
+    1710
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Bio-Chemistry"
+   ],
+   "year": "2026-27",
+   "source": "Vinayaka Missions MC Karaikal (VMRF) - 'Admission to the MD/MS degree programmes for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 350000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Medical College, Karaikal, Pondicherry",
+   "ids": [
+    1710
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "Vinayaka Missions MC Karaikal (VMRF) - 'Admission to the MD/MS degree programmes for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4300000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Medical College, Karaikal, Pondicherry",
+   "ids": [
+    1710
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Emergency Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Vinayaka Missions MC Karaikal (VMRF) - 'Admission to the MD/MS degree programmes for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3000000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Medical College, Karaikal, Pondicherry",
+   "ids": [
+    1710
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS ENT"
+   ],
+   "year": "2026-27",
+   "source": "Vinayaka Missions MC Karaikal (VMRF) - 'Admission to the MD/MS degree programmes for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2700000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Medical College, Karaikal, Pondicherry",
+   "ids": [
+    1710
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Forensic Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Vinayaka Missions MC Karaikal (VMRF) - 'Admission to the MD/MS degree programmes for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 550000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Medical College, Karaikal, Pondicherry",
+   "ids": [
+    1710
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Vinayaka Missions MC Karaikal (VMRF) - 'Admission to the MD/MS degree programmes for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3800000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Medical College, Karaikal, Pondicherry",
+   "ids": [
+    1710
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "Vinayaka Missions MC Karaikal (VMRF) - 'Admission to the MD/MS degree programmes for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3500000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Medical College, Karaikal, Pondicherry",
+   "ids": [
+    1710
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "Vinayaka Missions MC Karaikal (VMRF) - 'Admission to the MD/MS degree programmes for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3900000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Medical College, Karaikal, Pondicherry",
+   "ids": [
+    1710
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Ophthalmology"
+   ],
+   "year": "2026-27",
+   "source": "Vinayaka Missions MC Karaikal (VMRF) - 'Admission to the MD/MS degree programmes for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2800000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Medical College, Karaikal, Pondicherry",
+   "ids": [
+    1710
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MS Orthopaedics"
+   ],
+   "year": "2026-27",
+   "source": "Vinayaka Missions MC Karaikal (VMRF) - 'Admission to the MD/MS degree programmes for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3800000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Medical College, Karaikal, Pondicherry",
+   "ids": [
+    1710
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Social & Preventive Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Vinayaka Missions MC Karaikal (VMRF) - 'Admission to the MD/MS degree programmes for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 550000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Medical College, Karaikal, Pondicherry",
+   "ids": [
+    1710
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "Vinayaka Missions MC Karaikal (VMRF) - 'Admission to the MD/MS degree programmes for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 3600000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Medical College, Karaikal, Pondicherry",
+   "ids": [
+    1710
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Pathology"
+   ],
+   "year": "2026-27",
+   "source": "Vinayaka Missions MC Karaikal (VMRF) - 'Admission to the MD/MS degree programmes for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1150000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Medical College, Karaikal, Pondicherry",
+   "ids": [
+    1710
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Psychiatry"
+   ],
+   "year": "2026-27",
+   "source": "Vinayaka Missions MC Karaikal (VMRF) - 'Admission to the MD/MS degree programmes for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 2300000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Medical College, Karaikal, Pondicherry",
+   "ids": [
+    1710
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "Vinayaka Missions MC Karaikal (VMRF) - 'Admission to the MD/MS degree programmes for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 4200000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Medical College, Karaikal, Pondicherry",
+   "ids": [
+    1710
+   ],
+   "seat": "DPaid",
+   "branches": [
+    "MD Immuno Haematology & Blood Transfusion"
+   ],
+   "year": "2026-27",
+   "source": "Vinayaka Missions MC Karaikal (VMRF) - 'Admission to the MD/MS degree programmes for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf",
+   "period": "per year",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "INR",
+   "components": {},
+   "fee_inr": 1050000,
+   "fee_usd": null
+  },
+  {
+   "college": "Vinayaka Missions Medical College, Karaikal, Pondicherry",
+   "ids": [
+    1710
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Dermatology, Venereology & Leprosy"
+   ],
+   "year": "2026-27",
+   "source": "Vinayaka Missions MC Karaikal (VMRF) - 'Admission to the MD/MS degree programmes for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 220000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Vinayaka Missions Medical College, Karaikal, Pondicherry",
+   "ids": [
+    1710
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD General Medicine"
+   ],
+   "year": "2026-27",
+   "source": "Vinayaka Missions MC Karaikal (VMRF) - 'Admission to the MD/MS degree programmes for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 200000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Vinayaka Missions Medical College, Karaikal, Pondicherry",
+   "ids": [
+    1710
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS General Surgery"
+   ],
+   "year": "2026-27",
+   "source": "Vinayaka Missions MC Karaikal (VMRF) - 'Admission to the MD/MS degree programmes for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 190000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Vinayaka Missions Medical College, Karaikal, Pondicherry",
+   "ids": [
+    1710
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MS Obstetrics & Gynaecology"
+   ],
+   "year": "2026-27",
+   "source": "Vinayaka Missions MC Karaikal (VMRF) - 'Admission to the MD/MS degree programmes for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 200000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Vinayaka Missions Medical College, Karaikal, Pondicherry",
+   "ids": [
+    1710
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Paediatrics"
+   ],
+   "year": "2026-27",
+   "source": "Vinayaka Missions MC Karaikal (VMRF) - 'Admission to the MD/MS degree programmes for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 190000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  },
+  {
+   "college": "Vinayaka Missions Medical College, Karaikal, Pondicherry",
+   "ids": [
+    1710
+   ],
+   "seat": "DNRI",
+   "branches": [
+    "MD Radio Diagnosis"
+   ],
+   "year": "2026-27",
+   "source": "Vinayaka Missions MC Karaikal (VMRF) - 'Admission to the MD/MS degree programmes for the academic year 2026-27'; NRI fee is for the whole course (2026-11-04) — https://www.vmrfdu.edu.in/adminpanel/news/13da86c39e0ceae22ad81984d6f0ccbe.pdf — The notice prints this NRI fee for the whole course, paid in dollars. Charged in dollars.",
+   "period": "whole course",
+   "label": "Fee (as printed) - VMRF prints 'Annual fee'",
+   "currency": "USD",
+   "components": {},
+   "fee_inr": null,
+   "fee_usd": 220000,
+   "rate_note": "FBIL ₹95.9832 a dollar, 30.09.2026"
+  }
+ ]
+}

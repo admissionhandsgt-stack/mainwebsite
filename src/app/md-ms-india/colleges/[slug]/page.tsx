@@ -13,7 +13,8 @@ import { loadCollegePage, collegeTitle, collegeDescription } from "@/lib/college
 import CollegeGlance from "@/components/colleges/CollegeGlance";
 import NmcRecord from "@/components/colleges/NmcRecord";
 import CollegeRankCheck from "@/components/colleges/CollegeRankCheck";
-import { approxFee, FEE_FOOTNOTE } from "@/lib/chance";
+import { approxFee, approxFeeFor, feeKind, FEE_TABLE_NOTE } from "@/lib/chance";
+import type { CollegeFee } from "@/lib/collegeQueries";
 import { generalBands } from "@/lib/cutoffBands";
 import CutoffBands from "@/components/colleges/CutoffBands";
 import CounsellorEdge from "@/components/home/CounsellorEdge";
@@ -62,6 +63,28 @@ const money = (n: number | null) => {
   if (n >= 100000) return `₹${(n / 100000).toFixed(2)} L`;
   return `₹${n.toLocaleString("en-IN")}`;
 };
+
+/**
+ * Under a fee bracket: what the figure is (owner, 2026-11-04 — tuition is called tuition only when it is the
+ * tuition alone), the currency the college charges in, and "2025-26" for a fee not yet published for 2026-27.
+ */
+function FeeWhat({ fee }: { fee: CollegeFee }) {
+  const { short, detail } = feeKind(fee.feeLabel);
+  const earlier = !fee.official && (fee.carried || (fee.year ?? 0) <= 2025);
+  const bits = [
+    short,
+    fee.feePeriodicity === "not stated" ? "per year or whole course not stated" : null,
+    fee.feeCurrency === "USD" ? "charged in US$" : null,
+    earlier ? "2025-26" : null,
+  ].filter(Boolean);
+  if (!bits.length && !detail) return null;
+  return (
+    <span className="mt-0.5 block text-[11.5px] font-normal leading-snug text-muted-foreground">
+      {bits.join(" · ")}
+      {detail ? <span className="block">{detail}</span> : null}
+    </span>
+  );
+}
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const data = await loadCollegePage(params.slug, "pg");
@@ -337,7 +360,10 @@ export default async function CollegePage({ params }: { params: { slug: string }
                           <td className="px-4 py-3 text-[13px] text-muted-foreground">{f.quota}</td>
                           <td className="tnum px-4 py-3 text-right text-[14px] text-foreground">
                             {f.feeInr != null && f.feeInr > 0 ? (
-                              approxFee(f.feeInr)
+                              <>
+                                {approxFeeFor(f.feeInr, f.feePeriodicity)}
+                                <FeeWhat fee={f} />
+                              </>
                             ) : (
                               <span className="text-muted-foreground">{f.feeNullReason ?? "Not published"}</span>
                             )}
@@ -351,7 +377,7 @@ export default async function CollegePage({ params }: { params: { slug: string }
                     </tbody>
                   </table>
                 </div>
-                <p className="mt-2 text-[11.5px] text-muted-foreground">{FEE_FOOTNOTE}</p>
+                <p className="mt-2 text-[11.5px] text-muted-foreground">{FEE_TABLE_NOTE}</p>
               </section>
             )}
 

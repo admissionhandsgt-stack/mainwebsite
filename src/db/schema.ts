@@ -25,6 +25,7 @@ import {
   index,
   uniqueIndex,
   pgEnum,
+  jsonb,
 } from "drizzle-orm/pg-core";
 
 export const levelEnum = pgEnum("level", ["ug", "pg"]);
@@ -227,6 +228,12 @@ export const fees = pgTable(
     feeNullReason: text("fee_null_reason"),
     /** The notice an official fee came from (migration 0043); null = as imported. seat_options prefers it. */
     feeSource: text("fee_source"),
+    /** "Tuition fee" or "Fee (as printed) - …" (migration 0046); null = no labelled pass has reached the row. */
+    feeLabel: text("fee_label"),
+    /** INR or USD — the currency the college charges in (0046). */
+    feeCurrency: text("fee_currency"),
+    /** What the notice itemises beside the figure, never added into it (0046). */
+    feeComponents: jsonb("fee_components"),
 
     hostelMinInr: real("hostel_min_inr"),
     hostelMaxInr: real("hostel_max_inr"),

@@ -619,6 +619,26 @@ MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within mi
   colleges, Assam, Goa (only 2025-26), and **DNB** (no 2026 amount is printed by NBEMS or MCC — DNB rows untouched).
   Odd but as printed: Malla Reddy heads its fees "Annual" yet says "entire course in 3 instalments"; Bhaarath and Sree
   Balaji print ₹75 L a year for Radiology and DVL; GAIMS's management fee for Anatomy/Physiology is below its GQ fee.
+  **Tuition alone, labelled (owner, 2026-11-04, via zyn-c9 and confirmed here: "jo discrepancy hai tik karke update karle
+  and jaha par tution fees hai sirf tution fees hi mention ho fees mention na ho").** The own-notice-only rule is
+  superseded for zyn-c9's verified file (`scripts/data/fees_extract_2026_27/zyn_2026_11_04/`, 4,259 records, 131 colleges
+  in Karnataka, Maharashtra, Rajasthan and the MCC deemed universities of TN, Odisha and Puducherry): KEA's fee structure of
+  02-11-2026, FRA's 2026-27 approvals, the Rajasthan board's sheet of 22-10-2026 and MCC's Annexure-C forms count where
+  zyn-c9 checked them. Migration 0046 adds `fees.fee_label` ("Tuition fee" = the tuition alone — RGUHS fees, development,
+  MAHE's "other fee" live in `fee_components`, never added in; "Fee (as printed) - …" / "Fee (as KEA lists it - …)" = the
+  notice's own figure where it prints no tuition alone), `fee_currency` (what the college charges in; dollar figures are
+  its own, rupees at FBIL ₹95.9832, approx) and `fee_components`; `fee_periodicity` is per year / first year / whole course /
+  not stated. **A whole-course or period-not-stated figure is never a year's fee**: `seat_options` gives such a seat no fee
+  (nor does an official row blanked "no seat"/"no tuition" fall back to the listing any more), `isYearlyFee()` keeps it out
+  of the FAQ and the summary bracket, and the college table says "for the whole course" (`approxFeeFor`, `feeKind`,
+  `FEE_TABLE_NOTE` in `lib/chance.ts`). The college table marks a listing figure "2025-26". Pipeline:
+  `node --env-file=.env.local scripts/data/make_fees_zyn_2026_27.mjs` (college_id_ah_tool = `institutes.source_id`) →
+  `scripts/apply_state_fees.mjs scripts/data/fees_official_zyn_<state>_2026_27.json --rate 95.9832` (entries carry `label`,
+  `currency`, `components`). **Applied 2026-11-04:** 5,680 rows (Karnataka 4,029, Maharashtra 842, Rajasthan 431, TN 222,
+  Puducherry 94, Odisha 62); backups `D:/Admisson Hands/fee_backups/fees_before_zyn_2026_11_04_<state>.json`. Not placed:
+  records whose college × branch × seat has no `fees` row (no inserts — 113 in Karnataka, 47 in TN incl. Srinivasan and
+  Karpaga Vinayaga, whose only rows are TN Govt Quota). `/md-ms-india/private-college-fees` and `/deemed-universities`
+  read the cutoff rows' own fee until this day — they now take one official-first fee per seat from `seat_options`.
 
 ## Site structure the admin owns
 

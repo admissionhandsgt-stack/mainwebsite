@@ -91,7 +91,53 @@ export function approxFee(min: number | null | undefined, max?: number | null): 
 }
 
 export const FEE_FOOTNOTE =
-  "*Approximate yearly tuition bracket from published fee schedules. The exact fee, hostel, deposit and bond for your quota are confirmed with your counsellor.";
+  "*Approximate yearly fee bracket from published fee schedules — the tuition alone wherever the notice prints it. The exact fee, hostel, deposit and bond for your quota are confirmed with your counsellor.";
+
+/**
+ * A fee row's figure counts as a year's fee: per year, the first year, or as imported (no period).
+ * A whole-course or period-not-stated figure is never a year's fee and never divided into one
+ * (owner, 2026-11-04) — seat_options leaves it out of every per-year bracket (migration 0046).
+ */
+export const isYearlyFee = (period: string | null | undefined) =>
+  !period || period === "per year" || period === "first year";
+
+/** One figure's bracket, said for its own period: "/yr", "in year 1", "for the whole course", or no period at all. */
+export function approxFeeFor(inr: number | null | undefined, period: string | null | undefined): string | null {
+  const b = approxFee(inr);
+  if (!b) return null;
+  if (period === "first year") return b.replace(" /yr*", " in year 1*");
+  if (period === "whole course") return b.replace(" /yr*", " for the whole course*");
+  if (period === "not stated") return b.replace(" /yr*", "*");
+  return b;
+}
+
+/**
+ * What a labelled figure is (migration 0046). "Tuition fee" is the tuition alone; "Fee (as printed) - …" /
+ * "Fee (as KEA lists it - …)" is the notice's own figure where it prints no tuition alone — never called tuition.
+ */
+export function feeKind(label: string | null | undefined): {
+  kind: "tuition" | "printed" | null;
+  /** "Tuition fee", "Fee as printed", "Fee as KEA lists it". */
+  short: string | null;
+  /** What the notice says the figure covers, when it says. */
+  detail: string | null;
+} {
+  if (!label) return { kind: null, short: null, detail: null };
+  if (/^Tuition fee/i.test(label)) return { kind: "tuition", short: "Tuition fee", detail: null };
+  const printed = label.match(/^Fee \(as printed\)\s*-\s*(.+)$/i);
+  if (printed) return { kind: "printed", short: "Fee as printed", detail: printed[1].trim() };
+  // "Fee (as KEA lists it - includes the university's registration / admission fees, not itemised)"
+  const inner = label.match(/^Fee \(([^)]+?)(?:\s+-\s+(.+))?\)$/i);
+  if (inner) return { kind: "printed", short: `Fee ${inner[1].trim()}`, detail: inner[2]?.trim() ?? null };
+  return { kind: "printed", short: "Fee as printed", detail: null };
+}
+
+/** Under a college's fee table: what each kind of figure is. */
+export const FEE_TABLE_NOTE =
+  "*Approximate brackets. \"Tuition fee\" is the tuition alone — development, university and other charges are extra. " +
+  "\"Fee as printed\" is the notice's own figure where it prints no tuition alone. A dollar fee is shown in rupees " +
+  "at ₹95.98 a dollar, approximately. \"2025-26\" marks a fee the college has not yet published for 2026-27. " +
+  "The exact fee, hostel, deposit and bond for your quota are confirmed with your counsellor.";
 
 /**
  * A rank range is published only over a group of at least this many colleges.

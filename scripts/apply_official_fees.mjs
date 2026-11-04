@@ -31,6 +31,11 @@ if (opt("restore")) {
         fee_session = ${r.fee_session}, year = ${r.year}, is_carried_forward = ${r.is_carried_forward},
         fee_null_reason = ${r.fee_null_reason}, hostel_min_inr = ${r.hostel_min_inr}, hostel_max_inr = ${r.hostel_max_inr},
         hostel_note = ${r.hostel_note}, fee_source = ${r.fee_source}, updated_at = now() WHERE id = ${r.id}`;
+      // A backup taken since migration 0046 also holds what each figure was (label, currency, components).
+      if ("fee_label" in r) {
+        await tx`UPDATE fees SET fee_label = ${r.fee_label}, fee_currency = ${r.fee_currency},
+          fee_components = ${r.fee_components == null ? null : tx.json(r.fee_components)} WHERE id = ${r.id}`;
+      }
     }
   });
   await sql`REFRESH MATERIALIZED VIEW CONCURRENTLY seat_options`;

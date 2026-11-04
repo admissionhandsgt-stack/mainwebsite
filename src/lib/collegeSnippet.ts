@@ -16,7 +16,7 @@ import { sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { collegeName, isDnbOnly } from "@/lib/collegeName";
 import { generalBands } from "@/lib/cutoffBands";
-import { approxFee } from "@/lib/chance";
+import { approxFee, isYearlyFee } from "@/lib/chance";
 import { clipMiddle, ugCourseLabel } from "@/lib/seoTitle";
 import {
   getCollege,
@@ -131,7 +131,11 @@ function summarise(
 
   const year = cutoffs.reduce<number | null>((m, c) => (c.latestYear != null && (m == null || c.latestYear > m) ? c.latestYear : m), null);
   const first = generalBands(cutoffs, 1)[0];
-  const feeValues = fees.map((f) => f.feeInr).filter((v): v is number => v != null && v > 0);
+  // A year's figures only: a whole-course or period-not-stated fee is never a year's (migration 0046).
+  const feeValues = fees
+    .filter((f) => isYearlyFee(f.feePeriodicity))
+    .map((f) => f.feeInr)
+    .filter((v): v is number => v != null && v > 0);
   const stipend = fees.reduce<number | null>((m, f) => (f.stipendY1Inr != null && f.stipendY1Inr > 0 && (m == null || f.stipendY1Inr > m) ? f.stipendY1Inr : m), null);
 
   const curated =
