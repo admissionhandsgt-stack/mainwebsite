@@ -123,6 +123,9 @@ export function feeKind(label: string | null | undefined): {
   detail: string | null;
 } {
   if (!label) return { kind: null, short: null, detail: null };
+  // "Tuition fee - as printed in the board's 2026-27 fee sheet - confirm with the college before paying"
+  const tuition = label.match(/^Tuition fee(?:\s+-\s+(.+))?$/i);
+  if (tuition) return { kind: "tuition", short: "Tuition fee", detail: tuition[1]?.trim() ?? null };
   if (/^Tuition fee/i.test(label)) return { kind: "tuition", short: "Tuition fee", detail: null };
   const printed = label.match(/^Fee \(as printed\)\s*-\s*(.+)$/i);
   if (printed) return { kind: "printed", short: "Fee as printed", detail: printed[1].trim() };
