@@ -1659,6 +1659,67 @@ set against each page's own 28-day GSC queries. The files are in that session's 
   - AIIMS, JIPMER and PGIMER stipend: these are INI-CET institutes and we hold no data for them.
   - Judge the NRI and management titles on GSC around 11-17 before touching them.
 
+## State counselling rounds of the year in progress (2026-11-04) — never in the predictor
+
+Owner's rule, 2026-11-04: *"Predictor mai 2026 round 1 ka data use mat karo bas feed karke rakho"*.
+
+**Why they are kept out of `closing_ranks`.** `seat_options` keeps each seat's *latest* year. A 2026 Round 1
+stored there would replace the seat's whole 2025 counselling (rounds 1–4) with that one round, and the predictor's
+"Good chance" band would shrink to the round 1 close.
+
+So a state's rounds for the running year live in their own tables (migrations 0047 and 0048, raw SQL, not in
+`schema.ts`):
+
+- `state_round_cuts`: one closing line per college × course × quota × category, with the AIR and the state
+  rank, and `note` / `note_url` for the board's own word on the round.
+- `state_round_allotments`: the allotments behind those lines (state rank, AIR, NEET score where printed).
+  No names, roll numbers or ids.
+
+Nothing that reads `closing_ranks` sees these rows.
+
+**Loaded:** NEET PG 2026 Round 1 for UP, Rajasthan, West Bengal, Chhattisgarh, Uttarakhand and Madhya Pradesh,
+3,973 lines and 6,825 allotments. MP's Round 1 is on hold under a High Court interim order; its rows carry that
+note and the page prints it.
+
+**Where the files come from.** The PG data session (pg-a7, with zyn-c9 for UP) extracts them from each board's
+allotment PDF into `D:/Gulshan/PG/Website/extracted-data/official-states/<state>/`. The import:
+
+```
+npx tsx --env-file=.env.local scripts/import_state_round.ts <up|rajasthan|west-bengal|chhattisgarh|uttarakhand|madhya-pradesh> [--show] [--apply]
+```
+
+It is a dry run by default. It prints every college match and every course and category mapping. `--apply`
+replaces that state's year × round in one transaction.
+
+**Each state has its own adapter**, mapping the board's seat type onto 2025's quota label. One exception: MP's
+INST and NON_INST seats are separate merit pools, so they stay separate quotas.
+
+**Hand decisions** are in `scripts/data/state_round_decisions.json`, each with its reason under `_notes`. A key can
+name the seat kind (`"<college>|dnb"`).
+
+**Three matcher traps, all found on this data:**
+
+1. **Initials.** "Raiganj Government" and "Rampurhat Government" both became "RG", which matched RG Kar, Kolkata.
+   Only proper names become initials.
+2. **Names that shrink to one word.** Once generic words are dropped, "DH Bhopal" and "Bhopal Memorial Hospital
+   & Research Centre" both read "Bhopal". So a district, civil or general hospital never matches a medical
+   college, institute or research centre.
+3. **Twin entries.** A college's MD/MS entry and its PIN-code DNB twin compete with each other. So MD/MS seats
+   match only among non-PIN entries, and DNB seats take the twin when one wins clearly.
+
+Re-run `--show` after any matcher change and read every match.
+
+**The read side** is `getStateRound(slug)` in `lib/stateRoundQueries.ts`, which the PG state page shows above
+MCC's seats:
+
+- Open-merit figures only. In-service, PwD and sub-category seats are left out (in-service candidates carry a
+  bonus in Rajasthan and elsewhere).
+- Three tables: by quota (tightest close and last admitted), by category in the main quota, and by branch.
+- Each figure is shown only over 3+ colleges (`groupRank`).
+
+The page title leads with "2026 Round 1 & 2025". Copy is the `page.pg_state.round` group in Admin → Content.
+When a year's rounds are complete, move them into `closing_ranks` and empty these tables for that year.
+
 ## Per-state PG stipend pages (2026-10-20)
 
 `/md-ms-india/stipend/[state]` for every state with three or more colleges publishing a monthly stipend

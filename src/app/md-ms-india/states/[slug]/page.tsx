@@ -17,6 +17,7 @@ import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import { getStateSeatMatrix, MATRIX_LABEL } from "@/lib/pgSeatData";
 import { getBranches } from "@/lib/branchQueries";
 import { getBranchStateCombos } from "@/lib/branchStateQueries";
+import { getStateRound, CATEGORY_LABEL } from "@/lib/stateRoundQueries";
 
 import SectionHead from "@/components/ui/SectionHead";
 /** One state's PG picture. See lib/pgStateQueries.ts for what it will and will not state. */
@@ -36,8 +37,18 @@ const OWN: Record<string, string> = { government: "Government", private: "Privat
 const OWN_SHORT: Record<string, string> = { government: "Govt", private: "Private", deemed: "Deemed", other: "Other" };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const [p, stipends] = await Promise.all([getPgStatePage(params.slug), getStipends()]);
+  const [p, stipends, live] = await Promise.all([getPgStatePage(params.slug), getStipends(), getStateRound(params.slug).catch(() => null)]);
   if (!p) return { title: "State not found", robots: { index: false } };
+  // The state's own round of the year in progress leads the title once it is out ("up neet pg 2026",
+  // "rajasthan neet pg counselling 2026 round 1 cutoff"); the complete year stays beside it.
+  const round = live && (p.year == null || live.year > p.year) ? live : null;
+  const roundTitles = round
+    ? [
+        `${p.name} NEET PG Cutoff ${round.year} ${round.round} & ${p.year ?? ""} Branch Wise, Fees`,
+        `${p.name} NEET PG Cutoff ${round.year} ${round.round} & ${p.year ?? ""} Branch Wise`,
+        `${p.name} NEET PG ${round.year} ${round.round} Cutoff, Seats & Fees`,
+      ].map((t) => t.replace(/ & (?= Branch)/, " "))
+    : [];
   // Searched as "neet pg cut off branch wise maharashtra", "md fees in
   // maharashtra", "pg medical colleges in maharashtra", "md ms stipend in …".
   const y = p.year ? ` ${p.year}` : "";
@@ -51,6 +62,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     // "Seats" since 2026-11-04: "neet pg seats in maharashtra branch wise", "md medicine
     // seats in maharashtra", "pg seats in tamilnadu" reach these pages without the word.
     title: fitTitle(
+      ...roundTitles,
       `${p.name} NEET PG Cutoff${y} Branch Wise, Seats & Fees`,
       `NEET PG Cutoff ${p.name}${y}: Branch Wise, Fees & ${count(p.mdmsCount, "MD/MS College", "MD/MS Colleges")}`,
       `${p.name} NEET PG Cutoff${y} Branch Wise & Fees`,
@@ -129,7 +141,7 @@ export default async function PgStatePage({ params }: Props) {
     )
     .sort((a, b) => Number(/state|govt|government|open|general/i.test(b.quota)) - Number(/state|govt|government|open|general/i.test(a.quota)) || b.colleges - a.colleges)[0];
   // Words from Admin → Content → Text & numbers ("Page: PG state pages"); photo from Admin → Media.
-  const [copy, heroImage, authority, mcc, branchPages, combos] = await Promise.all([
+  const [copy, heroImage, authority, mcc, branchPages, combos, live] = await Promise.all([
     pageCopy("page.pg_state.hero", { state: p.name, year: p.year ?? "the latest" }),
     pageHeroImage(`page.pg_state.${p.slug}.hero`, "page.pg_state.hero"),
     getStateAuthority(p.name),
@@ -137,7 +149,22 @@ export default async function PgStatePage({ params }: Props) {
     getStateSeatMatrix(p.name),
     getBranches(),
     getBranchStateCombos(),
+    // The state's own round of the year in progress (lib/stateRoundQueries.ts) — never read by the predictor.
+    getStateRound(p.slug).catch(() => null),
   ]);
+  const round = live && (p.year == null || live.year > p.year) ? live : null;
+  const roundCopy = round
+    ? await pageCopy("page.pg_state.round", {
+        state: p.name,
+        year: round.year,
+        round: round.round,
+        counselling: round.counselling,
+        colleges: n(round.colleges),
+        quota: round.mainQuota ?? "",
+        round_printed: round.roundPrinted,
+        prev: p.year ?? "",
+      })
+    : null;
   // Branches with their own page for this state ("MD Radiology in Rajasthan") link there, not to all India.
   const inState = new Set(combos.filter((c) => c.stateSlug === p.slug).map((c) => c.courseSlug));
   const MCC_SHOWN = 12;
@@ -150,7 +177,16 @@ export default async function PgStatePage({ params }: Props) {
   });
   const hasBranch = new Set(branchPages.map((b) => b.slug));
 
+  const roundGen = round?.byCategory.find((c) => c.category === "GEN");
   const faqs = [
+    ...(round && roundGen && round.mainQuota
+      ? [
+          {
+            question: `What is the ${p.name} NEET PG ${round.year} ${round.round.toLowerCase()} cutoff?`,
+            answer: `In ${round.counselling}'s ${round.round.toLowerCase()} allotment, the last general-category seat in ${round.mainQuota} went to AIR ${n(roundGen.last)}, across ${roundGen.colleges} colleges (open merit, in-service seats left out).${round.note ? ` ${round.note}` : ""} Each category and branch is in the table on this page.`,
+          },
+        ]
+      : []),
     {
       question: `How many PG medical colleges are there in ${p.name}?`,
       answer: `${count(p.mdmsCount, "MD/MS college", "MD/MS colleges")} in ${p.name} have published NEET PG closing ranks${own.length ? `: ${own.map(([k, v]) => `${v} ${OWN[k]?.toLowerCase() ?? k}`).join(", ")}` : ""}.${p.dnbCount ? ` ${count(p.dnbCount, "DNB hospital", "DNB hospitals")} also offer National Board seats.` : ""}`,
@@ -245,6 +281,117 @@ export default async function PgStatePage({ params }: Props) {
         // The state's counselling authority sits under the words, in the space the taller column left.
         aside={authority?.scope === "UG and PG" ? <StateAuthority a={authority} state={p.name} level="pg" /> : undefined}
       />
+
+      {/* ------------- the state's own round of the year in progress (not read by the predictor) ------------- */}
+      {round && roundCopy && (round.byQuota.length > 0 || round.byBranch.length > 0) && (
+        <section className="container-custom pt-10 md:pt-14">
+          <SectionHead icon="chart" eyebrow={roundCopy.eyebrow} title={roundCopy.title} intro={roundCopy.intro} />
+          {round.note && (
+            <p className="mt-4 rounded-xl border border-primary/30 bg-primary-soft px-4 py-3 text-[14px] leading-relaxed text-foreground">
+              {round.note}{" "}
+              {round.noteUrl && (
+                <a href={round.noteUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary-strong hover:underline">
+                  The notice →
+                </a>
+              )}
+            </p>
+          )}
+          <div className="mt-5 grid gap-5 lg:grid-cols-2">
+            {round.byQuota.length > 0 && (
+              <div className="overflow-x-auto rounded-2xl border border-border bg-card">
+                <table className="w-full min-w-[420px] text-left text-sm">
+                  <caption className="px-4 pt-3 text-left text-[13px] font-semibold text-foreground">{roundCopy.quota_title}</caption>
+                  <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
+                    <tr>
+                      <th scope="col" className="px-4 py-3 font-semibold">Quota</th>
+                      <th scope="col" className="px-4 py-3 text-right font-semibold">Colleges</th>
+                      <th scope="col" className="px-4 py-3 text-right font-semibold">Tightest close</th>
+                      <th scope="col" className="px-4 py-3 text-right font-semibold">Last admitted</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    {round.byQuota.map((q) => (
+                      <tr key={q.quota}>
+                        <th scope="row" className="px-4 py-3 font-medium text-foreground">{q.quota}</th>
+                        <td className="tnum px-4 py-3 text-right text-muted-foreground">{n(q.colleges)}</td>
+                        <td className="tnum px-4 py-3 text-right">{n(q.tightest)}</td>
+                        <td className="tnum px-4 py-3 text-right font-semibold">{n(q.last)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+            {round.byCategory.length > 0 && (
+              <div className="overflow-x-auto rounded-2xl border border-border bg-card">
+                <table className="w-full min-w-[320px] text-left text-sm">
+                  <caption className="px-4 pt-3 text-left text-[13px] font-semibold text-foreground">{roundCopy.category_title}</caption>
+                  <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
+                    <tr>
+                      <th scope="col" className="px-4 py-3 font-semibold">Category</th>
+                      <th scope="col" className="px-4 py-3 text-right font-semibold">Colleges</th>
+                      <th scope="col" className="px-4 py-3 text-right font-semibold">Last admitted</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    {round.byCategory.map((c) => (
+                      <tr key={c.category}>
+                        <th scope="row" className="px-4 py-3 font-medium text-foreground">{CATEGORY_LABEL[c.category] ?? c.category}</th>
+                        <td className="tnum px-4 py-3 text-right text-muted-foreground">{n(c.colleges)}</td>
+                        <td className="tnum px-4 py-3 text-right font-semibold">{n(c.last)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+          {round.byBranch.length > 0 && (
+            <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
+              <table className="w-full min-w-[420px] text-left text-sm">
+                <caption className="px-4 pt-3 text-left text-[13px] font-semibold text-foreground">{roundCopy.branch_title}</caption>
+                <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
+                  <tr>
+                    <th scope="col" className="px-4 py-3 font-semibold">Branch</th>
+                    <th scope="col" className="px-4 py-3 text-right font-semibold">Colleges</th>
+                    <th scope="col" className="px-4 py-3 text-right font-semibold">Last admitted (AIR)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {round.byBranch.map((b) => (
+                    <tr key={b.course}>
+                      <th scope="row" className="px-4 py-2.5 font-medium">
+                        {b.slug && hasBranch.has(b.slug) ? (
+                          <Link
+                            href={inState.has(b.slug) ? `/md-ms-india/branches/${b.slug}/${p.slug}` : `/md-ms-india/branches/${b.slug}`}
+                            className="text-foreground hover:text-primary hover:underline"
+                          >
+                            {b.course}
+                          </Link>
+                        ) : (
+                          b.course
+                        )}
+                      </th>
+                      <td className="tnum px-4 py-2.5 text-right text-muted-foreground">{n(b.colleges)}</td>
+                      <td className="tnum px-4 py-2.5 text-right font-semibold">{n(b.last)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+          <p className="mt-3 text-[12px] leading-relaxed text-muted-foreground">
+            {round.sourceUrl ? (
+              <a href={round.sourceUrl} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                {roundCopy.source}
+              </a>
+            ) : (
+              roundCopy.source
+            )}{" "}
+            {p.year ? roundCopy.prev_note : ""}
+          </p>
+        </section>
+      )}
 
       {/* -------------------- MCC's seats in the state, 2026 -------------------- */}
       {mcc && (

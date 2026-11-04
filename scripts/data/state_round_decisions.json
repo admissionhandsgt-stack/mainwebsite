@@ -1,0 +1,98 @@
+{
+  "up": {
+    "(001) AUTONOMOUS MEDICAL COLLEGE, AYODHYA [Govt.] Co-Education": 403,
+    "(010) AUTONOMOUS MEDICAL COLLEGE, SHAHJAHANPUR [Govt.] Co-Education": 670,
+    "(015) GOVERNMENT INSTITUTE OF MEDICAL SCIENCES, GREATER NOIDA [Govt.] Co-Education": 306,
+    "(016) GOVERNMENT MEDICAL COLLEGE, AMBEDKAR NAGAR [Govt.] Co-Education": 660,
+    "(046) K.M. MEDICAL COLLEGE, MATHURA [Private] Co-Education": 2136,
+    "(047) MAYO INSTITUTE OF MEDICAL SCIENCE, BARABANKI [Private] Co-Education": 2143,
+    "(061) T.S. MISHRA MEDICAL COLLEGE & HOSPITAL, LUCKNOW [Private] Co-Education": 2149,
+    "(064) UNITED MEDICAL COLLEGE, PRAYAGRAJ [Private] Co-Education": 2132,
+    "(066) VENKATESHWARA MEDICAL COLLEGE, AMROHA [Private] Co-Education": 2139
+  },
+  "_notes": {
+    "up": {
+      "(001) AUTONOMOUS MEDICAL COLLEGE, AYODHYA [Govt.] Co-Education": "NMC lists one government MD/MS college in Faizabad district (renamed Ayodhya, 2018): Government Medical College, Faizabad",
+      "(010) AUTONOMOUS MEDICAL COLLEGE, SHAHJAHANPUR [Govt.] Co-Education": "our only Shahjahanpur government entry; NMC: Government Medical College, Shahjahanpur",
+      "(015) GOVERNMENT INSTITUTE OF MEDICAL SCIENCES, GREATER NOIDA [Govt.] Co-Education": "GIMS's MD/MS entry (Kasna, Greater Noida); 174 is its DNB twin",
+      "(016) GOVERNMENT MEDICAL COLLEGE, AMBEDKAR NAGAR [Govt.] Co-Education": "NMC: Mahamaya Rajkiya Allopathic Medical College, Ambedkarnagar = our MRA Medical College",
+      "(046) K.M. MEDICAL COLLEGE, MATHURA [Private] Co-Education": "K.M. = Krishna Mohan Medical College & Hospital, Mathura (NMC)",
+      "(047) MAYO INSTITUTE OF MEDICAL SCIENCE, BARABANKI [Private] Co-Education": "Dr KNS Memorial Institute, formerly Mayo Institute of Medical Sciences (NMC's own bracket)",
+      "(061) T.S. MISHRA MEDICAL COLLEGE & HOSPITAL, LUCKNOW [Private] Co-Education": "T S Misra Medical College & Hospital, Amusi, Lucknow (NMC)",
+      "(064) UNITED MEDICAL COLLEGE, PRAYAGRAJ [Private] Co-Education": "NMC lists one 'United' college in UP: United Institute of Medical Sciences, Allahabad (Prayagraj)",
+      "(066) VENKATESHWARA MEDICAL COLLEGE, AMROHA [Private] Co-Education": "NMC's only Venkateshwara college in UP: Venkateshwara Institute of Medical Sciences, Gajraula (Amroha district)"
+    },
+    "rajasthan": {
+      "Jaipur National University Institute of Medical Sciences and Research Centre, Jaipur": "NMC: Jaipur National University Institute for Medical Sciences and Research Centre, Jagatpura. The scorer picked NIMS: with generic words dropped both read 'Jaipur National'",
+      "GMC Bharatpur": "its rows are Post MBBS (NBEMS) diplomas: GMC Bharatpur's diploma entry (Rampura, 321001); 313 is its MD/MS entry",
+      "Govt DH Kekri": "Government District Hospital, Ajmer, PIN 305404 = Kekri",
+      "MGH Govt DH Hanumangarh Town": "our only Hanumangarh entry: MGM Government District Hospital, Hanumangarh",
+      "Mahatma Gandhi Medical College and Hospital, Sitapura, Jaipur": "our 'Sitapur, Jaipur' is the same college (Sitapura is right)"
+    },
+    "west-bengal": {
+      "BARASAT GOVERNMENT MEDICAL COLLEGE AND HOSPITAL": "no Barasat college in our PG list; kept, unmatched",
+      "CHITTARANJAN SEVA SADAN COLLEGE OF OBS. GYNAE AND CHILD HEALTH,KOLKATA|mdms": "NMC: Chittaranjan Seva Sadan Hospital, Kolkata (its MD/MS entry)",
+      "CHITTARANJAN SEVA SADAN COLLEGE OF OBS. GYNAE AND CHILD HEALTH,KOLKATA|dnb": "the same college's National Board entry, under the name the board prints",
+      "COMMAND HOSPITAL EC, ALIPORE, KOLKATA": "NMC: Command Hospital, Kolkata (Eastern Command, Alipore)",
+      "INSTITUTE OF POST GRADUATE MEDICAL EDUCATION AND RESEARCH KOLKATA": "NMC: Institute of Postgraduate Medical Education & Research, Kolkata",
+      "MAHARAJA JITENDRA NARAYAN MEDICAL COLLEGE AND HOSPITAL": "MJN Medical College & Hospital is Cooch Behar's government medical college; our only entry: Coochbehar Government Medical College and Hospital",
+      "NIL RATAN SIRCAR MEDICAL COLLEGE|mdms": "NRS's MD/MS entry: Nilratan Sircar Medical College, Kolkata",
+      "RAMAKRISHNA MISSION SEVA PRATISHTHAN VIVEKANANDA INSTITUTE OF MEDICAL SCIENCES, KOLKATA": "NMC: Vivekananda Institute of Medical Sciences, Kolkata (run by the Ramakrishna Mission Seva Pratishthan)",
+      "RAIGANJ GOVERNMENT MEDICAL COLLEGE AND HOSPITAL": "our only Raiganj college entry; the initials rule had sent it to RG Kar, Kolkata",
+      "RAMPURHAT GOVT. MEDICAL COLLEGE AND HOSPITAL": "our only Rampurhat entry (NMC: Rampurhat Government Medical College & Hospital); the initials rule had sent it to RG Kar"
+    },
+    "chhattisgarh": {
+      "PT.JAWAHAR LAL NEHRU MEMORIAL MEDICAL COLLEGE, RAIPUR": "NMC: Pt. J N M Medical College, Raipur; the scorer had picked RIMS Raipur"
+    },
+    "uttarakhand": {
+      "SOBHAN SINGH JEENA GOVT, INSTITUTE OF MEDICAL SCIENNCE & RESEARCH ALMORA": "NMC: Soban Singh Jeena Government Institute of Medical Science & Research, Almora (the PDF misspells it)"
+    },
+    "madhya-pradesh": {
+      "CHIRAYU MEDICAL COLLEGE AND HOSPITAL BHOPAL": "Chirayu Medical College and Hospital, Bairagarh, Bhopal; lost the margin to Bhopal Memorial Hospital on the shared 'Bhopal'",
+      "PEOPLES COLLEGE OF MEDICAL SCIENCE BHOPAL": "Peoples College of Medical Sciences & Research Centre, Bhanpur, Bhopal",
+      "RKDF MEDICAL COLLEGE HOSPITAL AND RESEARCH CENTRE BHOPAL": "RKDF Medical College Hospital & Research Centre, Jatkhedi, Bhopal",
+      "RD GARDI MEDICAL COLLEGE UJJAIN": "RD = Ruxmaniben Deepchand: Ruxmaniben Deepchand Gardi Medical College, Ujjain",
+      "GWALIOR MANSIK AROGYSHALA GWALIOR": "Gwalior Mansik Arogyashala, Gwalior (the PDF drops an 'a')",
+      "Civil Hospital Jabalpur": "the government civil hospital: Civil Hospital (Government) Rani Durgawati Hospital, Jabalpur; not the private Jabalpur Hospital and Research Centre",
+      "DH Bhopal": "Bhopal's district hospital: Jai Prakash District Government Hospital (not BHEL Kasturba, not BMHRC)",
+      "District Hospital Bhopal": "the same district hospital, printed in full",
+      "DH Satna": "Satna's district hospital: Sardar Vallabh Bhai Patel District Hospital (not Sadguru Nethra Chikitsalaya, an eye hospital)"
+    }
+  },
+  "rajasthan": {
+    "Jaipur National University Institute of Medical Sciences and Research Centre, Jaipur": 2047,
+    "GMC Bharatpur": 1285,
+    "Govt DH Kekri": 1653,
+    "MGH Govt DH Hanumangarh Town": 1578,
+    "Mahatma Gandhi Medical College and Hospital, Sitapura, Jaipur": 2046
+  },
+  "west-bengal": {
+    "BARASAT GOVERNMENT MEDICAL COLLEGE AND HOSPITAL": null,
+    "CHITTARANJAN SEVA SADAN COLLEGE OF OBS. GYNAE AND CHILD HEALTH,KOLKATA|mdms": 599,
+    "CHITTARANJAN SEVA SADAN COLLEGE OF OBS. GYNAE AND CHILD HEALTH,KOLKATA|dnb": 1448,
+    "COMMAND HOSPITAL EC, ALIPORE, KOLKATA": 1095,
+    "INSTITUTE OF POST GRADUATE MEDICAL EDUCATION AND RESEARCH KOLKATA": 17,
+    "MAHARAJA JITENDRA NARAYAN MEDICAL COLLEGE AND HOSPITAL": 867,
+    "NIL RATAN SIRCAR MEDICAL COLLEGE|mdms": 60,
+    "RAMAKRISHNA MISSION SEVA PRATISHTHAN VIVEKANANDA INSTITUTE OF MEDICAL SCIENCES, KOLKATA": 2157,
+    "RAIGANJ GOVERNMENT MEDICAL COLLEGE AND HOSPITAL": 755,
+    "RAMPURHAT GOVT. MEDICAL COLLEGE AND HOSPITAL": 934
+  },
+  "chhattisgarh": {
+    "PT.JAWAHAR LAL NEHRU MEMORIAL MEDICAL COLLEGE, RAIPUR": 78
+  },
+  "uttarakhand": {
+    "SOBHAN SINGH JEENA GOVT, INSTITUTE OF MEDICAL SCIENNCE & RESEARCH ALMORA": 368
+  },
+  "madhya-pradesh": {
+    "CHIRAYU MEDICAL COLLEGE AND HOSPITAL BHOPAL": 1997,
+    "PEOPLES COLLEGE OF MEDICAL SCIENCE BHOPAL": 1996,
+    "RKDF MEDICAL COLLEGE HOSPITAL AND RESEARCH CENTRE BHOPAL": 2003,
+    "RD GARDI MEDICAL COLLEGE UJJAIN": 1994,
+    "GWALIOR MANSIK AROGYSHALA GWALIOR": 735,
+    "Civil Hospital Jabalpur": 1441,
+    "DH Bhopal": 1207,
+    "District Hospital Bhopal": 1207,
+    "DH Satna": 1575
+  }
+}

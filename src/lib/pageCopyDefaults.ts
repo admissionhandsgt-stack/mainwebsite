@@ -177,6 +177,28 @@ export const PAGE_COPY = {
       stipend_link: { label: "Link to the state's stipend page — {state}, {median}", value: "PG stipend in {state}: {median} a month in the middle — every college's figure" },
     },
   },
+  "page.pg_state.round": {
+    group: "Page: PG state pages — this year's state round",
+    fields: {
+      eyebrow: { label: "Eyebrow — {year}, {round}", value: "NEET PG {year} · {round}" },
+      title: { label: "Heading — {state}, {year}, {round}", value: "{state} NEET PG {year} {round} cutoff, state quota" },
+      intro: {
+        label: "Line — {state}, {counselling}, {colleges}, {round}",
+        value:
+          "From the allotment list of {counselling}: {colleges} colleges, open merit, All India Rank. A figure is shown only where three or more colleges filled seats, and in-service seats are left out — those candidates are ranked with a bonus.",
+        long: true,
+      },
+      quota_title: { label: "Table heading: by quota", value: "By quota, general category" },
+      category_title: { label: "Table heading: by category — {quota}", value: "By category — {quota}" },
+      branch_title: { label: "Table heading: by branch — {quota}", value: "By branch, general category — {quota}" },
+      source: { label: "Source line — {round_printed}", value: "Source: the board's own allotment list ({round_printed}).", long: true },
+      prev_note: {
+        label: "Line under the table — {prev}",
+        value: "{prev}'s complete counselling, every round, is in the table below.",
+        long: true,
+      },
+    },
+  },
   "page.quota_management.mcc": {
     group: "Page: Management quota — MCC 2026 seats",
     fields: {
