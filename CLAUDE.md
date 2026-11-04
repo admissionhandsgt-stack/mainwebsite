@@ -639,6 +639,11 @@ MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within mi
   records whose college × branch × seat has no `fees` row (no inserts — 113 in Karnataka, 47 in TN incl. Srinivasan and
   Karpaga Vinayaga, whose only rows are TN Govt Quota). `/md-ms-india/private-college-fees` and `/deemed-universities`
   read the cutoff rows' own fee until this day — they now take one official-first fee per seat from `seat_options`.
+  **The PG college fee table is branch × quota (`components/colleges/FeeTable.tsx`, owner's choice the same day):** one
+  row per branch, a column per quota code, columns whose cells match on every branch merged ("KAR Govt Quota-InS / KAR
+  Govt Quota-Open"). The old one-row-per-seat table, cheapest first, stopped at 40 rows — 274 colleges' dearest fees
+  (11,135 rows, mostly NRI and management) never reached the page. "As printed — confirm" notes ride on `fee_label` after
+  " - " (`scripts/sql/fee_confirm_notes_2026_11_04.sql`: Tantia ₹4,650, Yenepoya Pharmacology ₹10,000, Basaveshwara 45.65 L).
 
 ## Site structure the admin owns
 
