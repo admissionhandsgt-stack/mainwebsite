@@ -18,6 +18,14 @@ export const SITE = "https://www.admissionhands.com";
 
 export type Cell = string | number | null;
 
+/**
+ * The formal licence (owner's choice, 2026-11-04): CC BY 4.0 on the tables built from MCC's and NBEMS's
+ * published results — reuse with credit and a link, which is what journalists, Wikipedia and Google Dataset
+ * Search look for. The three fee and stipend tables carry no formal licence: they are compiled from figures in
+ * data we imported, and we do not grant rights we may not hold. They stay "free to use with a link".
+ */
+export const CC_BY = { name: "CC BY 4.0", url: "https://creativecommons.org/licenses/by/4.0/" } as const;
+
 export interface Dataset {
   id: string;
   title: string;
@@ -29,6 +37,8 @@ export interface Dataset {
   rows: Cell[][];
   /** Rows shown in the embeddable widget before "see all". */
   embedRows: number;
+  /** Only on the official-results tables; see CC_BY. */
+  license?: typeof CC_BY;
 }
 
 const complete = (years: YearCuts[]) => years.find((y) => y.rounds.includes("R3")) ?? years[0];
@@ -44,6 +54,7 @@ async function ugCut(course: "MBBS" | "BDS"): Promise<Dataset> {
     columns: ["Category", "Colleges", "Round 1 close (AIR)", "Last admitted (AIR)"],
     rows: (y?.categories ?? []).map((c) => [c.category, c.colleges, c.bestR1, c.widest]),
     embedRows: 12,
+    license: CC_BY,
   };
 }
 
@@ -61,6 +72,7 @@ const LOADERS: Record<string, () => Promise<Dataset>> = {
       columns: ["Category", "Colleges", "Round 1 close (AIR)", "Last admitted (AIR)"],
       rows: (y?.categories ?? []).map((c) => [c.category, c.colleges, c.bestR1, c.widest]),
       embedRows: 12,
+      license: CC_BY,
     };
   },
   "neet-pg-cutoff-branch": async () => {
@@ -75,6 +87,7 @@ const LOADERS: Record<string, () => Promise<Dataset>> = {
       columns: ["Branch", "Colleges", "Round 1 close (AIR)", "Last admitted (AIR)"],
       rows: b.map((x) => [x.branch, x.colleges, x.bestR1, x.widest]),
       embedRows: 15,
+      license: CC_BY,
     };
   },
   "neet-pg-marks-vs-rank": async () => {
@@ -88,6 +101,7 @@ const LOADERS: Record<string, () => Promise<Dataset>> = {
       columns: [`Score (out of ${t?.outOf ?? ""})`, "Rank from (AIR)", "Rank to (AIR)", "Candidates at this score"],
       rows: (t?.rows ?? []).map((r) => [r.score, r.rankMin, r.rankMax, r.candidates]),
       embedRows: 15,
+      license: CC_BY,
     };
   },
   "pg-stipend-by-state": async () => {
@@ -140,6 +154,7 @@ const LOADERS: Record<string, () => Promise<Dataset>> = {
       columns: ["Course", "Group", "Seats (round 1)", "Round 1 close (group rank)", "Last admitted (group rank)", `${s.prevYear ?? "Previous"} last admitted`],
       rows: s.courses.map((c) => [c.course, c.grp, c.seats, c.r1Close, c.widest, c.prevWidest]),
       embedRows: 15,
+      license: CC_BY,
     };
   },
   "neet-mds-cutoff": async () => {
@@ -153,6 +168,7 @@ const LOADERS: Record<string, () => Promise<Dataset>> = {
       columns: ["Speciality", "AIQ round 1 close (AIR)", "AIQ last admitted (AIR)", "Deemed last admitted (AIR)"],
       rows: o.courses.map((c) => [`MDS ${c.course}`, c.aiqR1, c.aiqLast, c.deemedLast]),
       embedRows: 9,
+      license: CC_BY,
     };
   },
 };

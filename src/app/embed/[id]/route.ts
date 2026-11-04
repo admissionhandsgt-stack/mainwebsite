@@ -45,7 +45,7 @@ tr:last-child td{border-bottom:0}.src{margin-top:10px;font-size:12px;color:#4755
 <div class="t"><table><thead><tr>${d.columns.map((c) => `<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>
 ${rows.map((r) => `<tr>${r.map((v, i) => `<td>${fmt(v, d.columns[i])}</td>`).join("")}</tr>`).join("\n")}
 </tbody></table></div>
-<p class="src">${more > 0 ? `${more} more on <a href="${page}" target="_blank" rel="noopener">AdmissionHands</a>. ` : ""}Source: ${esc(d.source)} · <a href="${page}" target="_blank" rel="noopener">AdmissionHands</a></p>
+<p class="src">${more > 0 ? `${more} more on <a href="${page}" target="_blank" rel="noopener">AdmissionHands</a>. ` : ""}Source: ${esc(d.source)} · <a href="${page}" target="_blank" rel="noopener">AdmissionHands</a>${d.license ? ` · <a href="${d.license.url}" target="_blank" rel="license noopener">${d.license.name}</a>` : ""}</p>
 </div></body></html>`;
 
   return new Response(html, {

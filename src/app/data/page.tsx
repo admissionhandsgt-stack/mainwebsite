@@ -49,6 +49,7 @@ export default async function OpenDataPage() {
             description: d.description,
             url: `${SITE}${d.page}`,
             isAccessibleForFree: true,
+            ...(d.license ? { license: d.license.url } : {}),
             creator: { "@type": "Organization", name: "AdmissionHands", url: SITE },
             spatialCoverage: "India",
             variableMeasured: d.columns,
@@ -66,7 +67,7 @@ export default async function OpenDataPage() {
         stats={[
           { label: "Datasets", value: String(datasets.length) },
           { label: "Formats", value: "CSV · embed", note: "and a citation" },
-          { label: "Licence", value: "Free", note: "with a link back" },
+          { label: "Licence", value: "CC BY 4.0", note: `${datasets.filter((d) => d.license).length} cutoff and rank tables; the rest free with a link` },
         ]}
         telegram="hero_open_data"
         source={
@@ -96,7 +97,18 @@ export default async function OpenDataPage() {
               <h2 className="font-heading text-xl font-bold text-foreground">{d.title}</h2>
               <p className="mt-1 max-w-[72ch] text-sm text-muted-foreground">{d.description}</p>
               <p className="mt-1 text-[12px] text-muted-foreground">
-                Source: {d.source} · {d.rows.length.toLocaleString("en-IN")} rows
+                Source: {d.source} · {d.rows.length.toLocaleString("en-IN")} rows ·{" "}
+                {d.license ? (
+                  <>
+                    Licence:{" "}
+                    <a href={d.license.url} rel="license noopener" target="_blank" className="font-semibold text-primary-strong hover:underline">
+                      {d.license.name}
+                    </a>{" "}
+                    — reuse freely, credit AdmissionHands with a link
+                  </>
+                ) : (
+                  <>Free to use with a link to AdmissionHands as the source</>
+                )}
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
                 <a

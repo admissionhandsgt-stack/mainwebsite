@@ -1645,6 +1645,9 @@ set against each page's own 28-day GSC queries. The files are in that session's 
   `scripts/sql/seo_titles_2026_11_04.sql` after that deploy.**
 - `/neet-pg-cutoff`, the strongest PG page (16k impressions in 28 days), had **no link to any PG state page**. It now
   lists every state.
+- **`/mbbs-india/sikkim` was a 404** because Sikkim was never in `mbbs_states`. NMC lists 2 colleges and 200 seats
+  there, and both colleges are in our data. The row was added with the owner's OK
+  (`scripts/sql/mbbs_state_sikkim_2026_11_04.sql`), so there are 34 MBBS state pages now.
 - **Not indexed on 2026-11-04:** `/md-ms-india/states/uttar-pradesh`, `rajasthan` and `odisha` were "unknown to Google";
   `gujarat`, `bihar` and `haryana` were "discovered – not indexed". All six are in the sitemap, so they go first in the
   Request indexing queue.
@@ -2293,7 +2296,7 @@ site the thing worth citing:
 
 | Piece | Where | Note |
 |---|---|---|
-| Open data | `/data`, `lib/openData.ts` | 9 summary datasets (never seat rows), each with CSV, embed code, schema.org `Dataset` (Google Dataset Search). "Free to use with a link" — no formal licence claimed; that is the owner's call |
+| Open data | `/data`, `lib/openData.ts` | 10 summary datasets (never seat rows), each with CSV, embed code, schema.org `Dataset` (Google Dataset Search). **Licence (owner, 2026-11-04): CC BY 4.0 on the 7 tables built from MCC/NBEMS results** (UG MBBS + BDS, PG by category, PG branch-wise, marks vs rank, SS, MDS — `license: CC_BY`, in the markup, the page, the CSV `Link` header and the embed); the 3 fee/stipend tables are compiled from imported figures, so no formal licence — "free to use with a link". Never add `license` to those without the owner confirming the rights |
 | CSV | `/data/<id>.csv` | noindex, `Link: rel=canonical` to the page; formula-safe cells |
 | Widget | `/embed/<id>` | Script-free HTML table. **The only framable path**: `EMBED_HEADERS` in next.config (`frame-ancestors *`, `default-src 'none'`); every other path keeps `frame-ancestors 'none'` + DENY. The embed code pairs the iframe with a plain source link outside it — that link is the one that counts |
 | Cite box | `components/seo/CiteThis.tsx` | One-click HTML link + citation on the 8 data pages |

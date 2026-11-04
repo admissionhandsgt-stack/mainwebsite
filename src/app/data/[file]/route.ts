@@ -18,7 +18,7 @@ export async function GET(_request: Request, { params }: { params: { file: strin
       "content-disposition": `attachment; filename="admissionhands-${d.id}.csv"`,
       "cache-control": "public, max-age=3600, s-maxage=3600",
       "x-robots-tag": "noindex",
-      link: `<${SITE}${d.page}>; rel="canonical"`,
+      link: d.license ? `<${SITE}${d.page}>; rel="canonical", <${d.license.url}>; rel="license"` : `<${SITE}${d.page}>; rel="canonical"`,
     },
   });
 }
