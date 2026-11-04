@@ -239,7 +239,9 @@ export default async function StipendPage() {
           ))}
         </div>
         <p className="mt-6 text-sm text-muted-foreground">
-          Also: <Link href="/neet-pg-cutoff" className="font-semibold text-primary-strong hover:underline">NEET PG cutoff, branch wise</Link> ·{" "}
+          Also: <Link href="/reports/neet-pg-stipend-2026" className="font-semibold text-primary-strong hover:underline">NEET PG stipend report 2026</Link> ·{" "}
+          <Link href="/md-ms-india/bond" className="font-semibold text-primary-strong hover:underline">service bond by state</Link> ·{" "}
+          <Link href="/neet-pg-cutoff" className="font-semibold text-primary-strong hover:underline">NEET PG cutoff, branch wise</Link> ·{" "}
           <Link href="/management-quota" className="font-semibold text-primary-strong hover:underline">management quota fees</Link>
         </p>
       </section>

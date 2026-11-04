@@ -16,11 +16,19 @@ export const dynamic = "force-dynamic";
  * Metadata the admin can override per route (Admin -> Search & sharing).
  * Blank admin values fall through to the defaults below.
  */
-export async function generateMetadata(): Promise<Metadata> {
-  return resolveMetadata('/md-ms-india/colleges', {
+export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
+  const meta = await resolveMetadata('/md-ms-india/colleges', {
     title: "MD/MS Colleges in India — Seats, Fees, Stipend & Cutoffs | AdmissionHands",
     description: "Every MD/MS college and DNB hospital in India with seat counts, approximate fees and stipends. Filter by state, ownership and fee, and see your chance by rank.",
   });
+  // Page 2, 3… of the plain list is its own set of colleges, so it is its own canonical (it pointed at page 1, and
+  // Google was told every later page was a copy of the first). A filtered view still canonicalises to the list.
+  const page = Number(searchParams?.page) || 1;
+  const filtered = Boolean(searchParams?.q || searchParams?.states || searchParams?.ownership || searchParams?.maxFee || searchParams?.sort);
+  if (page > 1 && !filtered) {
+    return { ...meta, alternates: { ...meta.alternates, canonical: `/md-ms-india/colleges?page=${page}` } };
+  }
+  return meta;
 }
 
 const money = (n: number | null) => {

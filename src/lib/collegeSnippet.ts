@@ -32,6 +32,8 @@ import { getNmcFacts, type NmcFacts } from "@/lib/nmcData";
 
 /** Google shows about 60 characters of a title. */
 const TITLE = 62;
+/** The most a title runs to rather than cutting a college's name in the middle. */
+const LONG_TITLE = 80;
 const DESCRIPTION = 158;
 
 /* ------------------------------------------------------------- loading */
@@ -209,8 +211,13 @@ export function collegeTitle(s: CollegeSummary): string {
         ];
   const whole = fit(TITLE, [...tails.map((t) => where + t), ...(s.place ? tails.map((t) => s.short + t) : [])]);
   if (whole) return whole;
-  // A long name is shortened from the middle, keeping its end and the city.
+  // Too long for every tail: keep the whole name with the shortest tail, up to LONG_TITLE. A "…" cut in the middle
+  // ("Sri Aurobindo Medical College and… Indore", 36 of 231 sampled pages on 2026-11-04) reads as a fault, drops the
+  // words people search, and sometimes kept a name's last word in place of the city; Google trims a long title at
+  // its end instead, where the tail is. Only a name too long even for that is still shortened from the middle.
   const tail = tails[tails.length - 1];
+  const kept = fit(LONG_TITLE, [where + tail, s.short + tail]);
+  if (kept) return kept;
   return `${clipMiddle(where, TITLE - tail.length)}${tail}`;
 }
 

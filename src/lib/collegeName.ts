@@ -54,7 +54,8 @@ function titleCase(s: string): string {
       if (/^\s+$|^-$/.test(w) || !w) return w;
       const lower = w.toLowerCase();
       if (i > 0 && SMALL.has(lower)) return lower;
-      if (/^[A-Z]{2,4}$/.test(w) && !SMALL.has(lower)) return w; // an acronym
+      // An acronym, a comma or full stop after it included: "PRASAD IMS," was "Prasad Ims," (2026-11-04).
+      if (/^[A-Z]{2,4}[,.;:)]*$/.test(w) && !SMALL.has(lower.replace(/[^a-z]+$/, ""))) return w;
       if (/\./.test(w)) return w; // initials: R.V., D.A.
       return lower.charAt(0).toUpperCase() + lower.slice(1);
     })
@@ -62,8 +63,16 @@ function titleCase(s: string): string {
 }
 
 /** Spacing and casing fixed; nothing removed. The official name as it should read. */
+/** HTML entities the scrape left in six names ("Era&#039;s Lucknow Medical College" printed as "Era&#039;s"). */
+export function decodeEntities(s: string): string {
+  return s
+    .replace(/&#0*39;|&apos;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, "&");
+}
+
 export function tidyName(raw: string): string {
-  let s = (raw ?? "").replace(/\s+/g, " ").trim();
+  let s = decodeEntities(raw ?? "").replace(/\s+/g, " ").trim();
   s = s.replace(/\s*,\s*/g, ", ").replace(/,\s*$/, "");
   s = s.replace(/\bof(?=[A-Z])/g, "of ").replace(/([a-z])(College|Hospital|Institute|Medical|Dental)\b/g, "$1 $2");
   const letters = s.replace(/[^A-Za-z]/g, "");

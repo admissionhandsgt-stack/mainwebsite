@@ -27,7 +27,8 @@ function pretty(phone: string) {
 export async function generateMetadata(): Promise<Metadata> {
   return resolveMetadata(PATH, {
     title: "Contact AdmissionHands: Noida Office, Phone & WhatsApp",
-    description: `Call, WhatsApp or visit AdmissionHands for NEET UG and PG counselling. Office: ${OFFICE.street}, ${OFFICE.locality}. ${OFFICE.hoursLabel}.`,
+    // Under 160 characters: the street address in full ran to 194 and was cut in the result.
+    description: `Call, WhatsApp or visit AdmissionHands for NEET UG and PG counselling — Bhutani City Centre, Sector 32, ${OFFICE.locality}. Open every day, 10 AM–10 PM.`,
     keywords: "admission hands contact, admissionhands noida, NEET counselling Noida, medical admission consultant Noida, NEET counselling phone number",
   });
 }

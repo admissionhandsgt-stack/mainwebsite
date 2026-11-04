@@ -305,7 +305,8 @@ const NeetUgProcessClient = ({
       {/* 7. DISCLAIMER */}
       <section className="py-8 bg-slate-50 dark:bg-slate-950 border-t border-slate-100 dark:border-slate-900">
         <div className="container-custom text-center">
-          <h5 className="text-[11.5px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-3">Disclaimer</h5>
+          {/* An H2 like the other sections — it was an H5 straight under an H2, the one skipped level on the site. */}
+          <h2 className="text-[11.5px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-3">Disclaimer</h2>
           <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed italic max-w-4xl mx-auto">
             {copy.disclaimer}
           </p>

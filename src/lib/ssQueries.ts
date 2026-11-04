@@ -33,6 +33,21 @@ export interface SsCourseSummary {
 }
 
 /** The newest session, and per course its size and both ends of its cutoff, with last year's for comparison. */
+/**
+ * MCC's PDF wrapped one course name across a line ("MCh Plastic and Reconstructr uctive Surgery") and the import kept
+ * both spellings — two pages, both indexable (technical audit, 2026-11-04). Read through this, the wrapped spelling is
+ * the course it is; the old URL 308s to the right one (next.config.mjs).
+ */
+const SS_SLUG_FIX = { from: "mch-plastic-and-reconstructr-uctive-surgery", to: "mch-plastic-and-reconstructive-surgery" };
+const SS = sql`(
+  SELECT a.year, a.round, a.rank, a.institute, a.state, a.grp,
+         CASE WHEN a.course_slug = ${SS_SLUG_FIX.from}
+              THEN (SELECT b.course FROM ss_allotments b WHERE b.course_slug = ${SS_SLUG_FIX.to} LIMIT 1)
+              ELSE a.course END AS course,
+         CASE WHEN a.course_slug = ${SS_SLUG_FIX.from} THEN ${SS_SLUG_FIX.to} ELSE a.course_slug END AS course_slug
+    FROM ss_allotments a
+)`;
+
 export const getSsCourses = unstable_cache(
   async (): Promise<{ year: number | null; prevYear: number | null; courses: SsCourseSummary[] }> => {
     const years = rows<{ year: number }>(await db.execute(sql`SELECT DISTINCT year FROM ss_allotments ORDER BY year DESC`)).map(
@@ -49,7 +64,7 @@ export const getSsCourses = unstable_cache(
                MAX(a.rank) FILTER (WHERE a.year = ${year} AND a.round = 'R1')::int AS r1_close,
                MAX(a.rank) FILTER (WHERE a.year = ${year})::int AS widest,
                MAX(a.rank) FILTER (WHERE a.year = ${prevYear ?? -1})::int AS prev_widest
-          FROM ss_allotments a
+          FROM ${SS} a
          GROUP BY a.course, a.course_slug
         HAVING COUNT(*) FILTER (WHERE a.year = ${year}) > 0
          ORDER BY MIN(a.grp), COUNT(*) FILTER (WHERE a.year = ${year} AND a.round = 'R1') DESC
@@ -71,7 +86,7 @@ export const getSsCourses = unstable_cache(
       })),
     };
   },
-  ["ss-courses-v2"],
+  ["ss-courses-v3"],
   { revalidate: 86400, tags: ["ss-data"] },
 );
 
@@ -87,7 +102,7 @@ export interface SsCoursePage {
 export const getSsCourse = unstable_cache(
   async (slug: string): Promise<SsCoursePage | null> => {
     const head = rows<Record<string, unknown>>(
-      await db.execute(sql`SELECT course, MIN(grp) AS grp FROM ss_allotments WHERE course_slug = ${slug} GROUP BY course LIMIT 1`),
+      await db.execute(sql`SELECT course, MIN(grp) AS grp FROM ${SS} ss WHERE course_slug = ${slug} GROUP BY course LIMIT 1`),
     )[0];
     if (!head) return null;
     const [years, institutes] = await Promise.all([
@@ -97,13 +112,13 @@ export const getSsCourse = unstable_cache(
                MAX(rank) FILTER (WHERE round = 'R1')::int AS r1_close,
                MAX(rank)::int AS widest,
                string_agg(DISTINCT round, ',') AS rounds
-          FROM ss_allotments WHERE course_slug = ${slug}
+          FROM ${SS} ss WHERE course_slug = ${slug}
          GROUP BY year ORDER BY year DESC
       `),
       db.execute(sql`
         SELECT institute, MIN(state) AS state, COUNT(*) FILTER (WHERE round = 'R1')::int AS seats
-          FROM ss_allotments
-         WHERE course_slug = ${slug} AND year = (SELECT MAX(year) FROM ss_allotments WHERE course_slug = ${slug})
+          FROM ${SS} ss
+         WHERE course_slug = ${slug} AND year = (SELECT MAX(year) FROM ${SS} s2 WHERE course_slug = ${slug})
          GROUP BY institute ORDER BY MIN(state) NULLS LAST, institute
       `),
     ]);
@@ -130,6 +145,6 @@ export const getSsCourse = unstable_cache(
       states: [...byState.entries()].map(([state, colleges]) => ({ state, colleges })).sort((a, b) => b.colleges - a.colleges),
     };
   },
-  ["ss-course-v2"],
+  ["ss-course-v3"],
   { revalidate: 86400, tags: ["ss-data"] },
 );

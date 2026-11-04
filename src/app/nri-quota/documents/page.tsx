@@ -26,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return resolveMetadata(PATH, {
     title: "NRI Quota Documents Checklist for MBBS, BDS & MD/MS (MCC)",
     description:
-      "The documents MCC asks NRI-quota candidates for — NRI certificate, the sponsor's passport and visa, relationship certificate, sponsorship affidavit with NRE passbook — and who may sponsor you.",
+      "Documents MCC asks NRI-quota candidates for: NRI certificate, sponsor's passport and visa, relationship proof, sponsorship affidavit with NRE passbook.",
     keywords:
       "NRI quota documents, NRI quota documents required for MBBS, NRI sponsored candidate documents, NRI certificate embassy MBBS, NRI quota affidavit, MCC NRI documents, NRI quota MD MS documents",
   });

@@ -140,6 +140,12 @@ const nextConfig = {
       // already on every college's own page — where someone is standing when
       // they actually ask what a seat costs.
       { source: "/md-ms-india/fees", destination: "/md-ms-india/colleges", permanent: true },
+      // One NEET SS course was two pages: MCC's PDF wrapped "Reconstructive" across a line (lib/ssQueries.ts).
+      {
+        source: "/neet-ss/mch-plastic-and-reconstructr-uctive-surgery",
+        destination: "/neet-ss/mch-plastic-and-reconstructive-surgery",
+        permanent: true,
+      },
     ];
   },
 

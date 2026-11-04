@@ -116,7 +116,10 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     title,
     description,
     alternates: { canonical: `/md-ms-india/branches/${b.slug}` },
+    // A page-level openGraph replaces the layout's whole object, so the site name and locale are said again here.
     openGraph: {
+      siteName: "AdmissionHands",
+      locale: "en_IN",
       title,
       description,
       url: `/md-ms-india/branches/${b.slug}`,

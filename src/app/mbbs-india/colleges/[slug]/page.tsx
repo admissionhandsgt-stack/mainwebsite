@@ -6,7 +6,7 @@ import CollegeFaq from "@/components/colleges/CollegeFaq";
 import Link from "@/components/ui/Link";
 import Image from "next/image";
 import PhotoCredit from "@/components/ui/PhotoCredit";
-import { getSimilarColleges } from "@/lib/collegeQueries";
+import { getOtherLevelPage, getSimilarColleges } from "@/lib/collegeQueries";
 import { getMbbsStates } from "@/lib/content";
 import { loadCollegePage, collegeTitle, collegeDescription } from "@/lib/collegeSnippet";
 import CollegeGlance from "@/components/colleges/CollegeGlance";
@@ -62,11 +62,18 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   // No brand suffix: the college's own name is what is searched.
   const title = collegeTitle(data.summary);
   const description = collegeDescription(data.summary);
+  // Nothing on the page beyond the name — no published round, no published fee, no NMC record: not indexed, and
+  // left out of the sitemap by the same test (lib/sitemapData.ts), so the two never disagree.
+  const thin = data.cutoffs.length === 0 && !data.fees.some((f) => (f.feeInr ?? 0) > 0) && !data.nmc;
   return {
     title,
     description,
+    ...(thin ? { robots: { index: false, follow: true } } : {}),
     alternates: { canonical: `/mbbs-india/colleges/${data.college.slug}` },
+    // A page-level openGraph replaces the layout's whole object, so the site name and locale are said again here.
     openGraph: {
+      siteName: "AdmissionHands",
+      locale: "en_IN",
       title,
       description,
       url: `/mbbs-india/colleges/${data.college.slug}`,
@@ -81,7 +88,12 @@ export default async function UgCollegePage({ params }: { params: { slug: string
   if (!data) notFound();
   const { college, cutoffs, fees, extras, nmc, summary: s } = data;
   // The state page, linked from the breadcrumb (see the PG college page).
-  const [states, similar] = await Promise.all([getMbbsStates(), getSimilarColleges(params.slug, "ug", 5)]);
+  const [states, similar, pgPage] = await Promise.all([
+    getMbbsStates(),
+    getSimilarColleges(params.slug, "ug", 5),
+    // The same college's MD/MS page, when NMC pairs the two (lib/collegeQueries.ts).
+    getOtherLevelPage(params.slug, "ug"),
+  ]);
   const stateSlug = states.find((st) => extractStateName(st) === college.state)?.slug ?? null;
 
   const where = [extras?.city, college.state].filter(Boolean).join(", ");
@@ -150,6 +162,13 @@ export default async function UgCollegePage({ params }: { params: { slug: string
               </h1>
               {s.official !== s.short && <p className="mt-2.5 max-w-[70ch] text-[14px] text-muted-foreground">{s.official}</p>}
               {where && <p className="mt-2 text-[15px] font-medium text-foreground">{where}</p>}
+              {pgPage && (
+                <p className="mt-2 text-[14px]">
+                  <Link href={`/md-ms-india/colleges/${pgPage.slug}`} className="font-semibold text-primary-strong hover:underline">
+                    MD/MS at {s.short}: seats, fees and stipend →
+                  </Link>
+                </p>
+              )}
             </div>
 
             {extras?.imageUrl && (

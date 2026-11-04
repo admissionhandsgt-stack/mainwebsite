@@ -8,7 +8,7 @@ import { branchSlug } from "@/lib/branchSlug";
 import Link from "@/components/ui/Link";
 import Image from "next/image";
 import { MapPin } from "lucide-react";
-import { getSimilarColleges } from "@/lib/collegeQueries";
+import { getOtherLevelPage, getSimilarColleges } from "@/lib/collegeQueries";
 import { loadCollegePage, collegeTitle, collegeDescription } from "@/lib/collegeSnippet";
 import CollegeGlance from "@/components/colleges/CollegeGlance";
 import NmcRecord from "@/components/colleges/NmcRecord";
@@ -72,7 +72,10 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     alternates: { canonical: `/md-ms-india/colleges/${data.college.slug}` },
     // These links get shared into WhatsApp groups constantly, and without
     // these tags they unfurl as a bare URL.
+    // A page-level openGraph replaces the layout's whole object, so the site name and locale are said again here.
     openGraph: {
+      siteName: "AdmissionHands",
+      locale: "en_IN",
       title,
       description,
       url: `/md-ms-india/colleges/${data.college.slug}`,
@@ -87,7 +90,7 @@ export default async function CollegePage({ params }: { params: { slug: string }
   if (!data) notFound();
   const { college, cutoffs, fees, nmc, summary: s } = data;
 
-  const [pgStates, similar, photo, matrix, terms] = await Promise.all([
+  const [pgStates, similar, photo, matrix, terms, mbbsPage] = await Promise.all([
     getPgStates(),
     getSimilarColleges(params.slug, "pg", 5),
     getPgCollegePhoto(params.slug),
@@ -95,6 +98,8 @@ export default async function CollegePage({ params }: { params: { slug: string }
     // shown with its caveat) — lib/pgSeatData.ts.
     getCollegeSeatMatrix(college.slug),
     getCollegeSeatTerms(college.slug),
+    // The same college's MBBS page, when NMC pairs the two (lib/collegeQueries.ts).
+    getOtherLevelPage(params.slug, "pg"),
   ]);
   // Words from Admin → Content ("Page: PG college pages — MCC seats, bond and stipend").
   const [seatsCopy, termsCopy] = await Promise.all([
@@ -179,6 +184,13 @@ export default async function CollegePage({ params }: { params: { slug: string }
                 {s.short}
               </h1>
               {s.official !== s.short && <p className="mt-3 max-w-[70ch] text-[14px] text-muted-foreground">{s.official}</p>}
+              {mbbsPage && (
+                <p className="mt-2 text-[14px]">
+                  <Link href={`/mbbs-india/colleges/${mbbsPage.slug}`} className="font-semibold text-primary-strong hover:underline">
+                    MBBS at {s.short}: cutoff, fees and seats →
+                  </Link>
+                </p>
+              )}
               {(where || college.university) && (
                 <p className="mt-4 max-w-[68ch] text-[15px] leading-relaxed text-muted-foreground">
                   {where && (

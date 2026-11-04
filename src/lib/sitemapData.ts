@@ -104,7 +104,12 @@ const loadSitemapData = unstable_cache(
                         COALESCE((SELECT MAX(f.updated_at)::date FROM fees f WHERE f.institute_id = i.id), DATE '1970-01-01'))::text AS updated
         FROM institutes i
         WHERE i.is_active = true
-          AND EXISTS (SELECT 1 FROM seat_options so WHERE so.institute_id = i.id)
+          -- A page with something on it beyond the name: published rounds, a published fee, or the NMC's record.
+          -- The same test sends the rest noindex (the college pages' generateMetadata, 2026-11-04) — before, 418
+          -- such UG pages were indexable, linked from state pages, and left out of here: two signals at once.
+          AND (EXISTS (SELECT 1 FROM seat_options so WHERE so.institute_id = i.id)
+               OR EXISTS (SELECT 1 FROM fees f WHERE f.institute_id = i.id AND f.fee_inr > 0)
+               OR EXISTS (SELECT 1 FROM nmc_institutes n WHERE n.institute_id = i.id))
         ORDER BY i.level, i.slug
       `),
       db.execute(sql`SELECT slug FROM mbbs_states WHERE is_active = true ORDER BY slug`),
@@ -125,7 +130,7 @@ const loadSitemapData = unstable_cache(
     }
     return result;
   },
-  ["sitemap-routes-v4"],
+  ["sitemap-routes-v5"],
   { revalidate: 86400, tags: ["sitemap"] },
 );
 

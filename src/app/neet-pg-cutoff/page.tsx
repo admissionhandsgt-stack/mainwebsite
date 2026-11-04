@@ -369,6 +369,7 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
         </div>
         <p className="mt-6 text-sm text-muted-foreground">
           Also: <Link href="/neet-pg-marks-vs-rank" className="font-semibold text-primary-strong hover:underline">NEET PG marks vs rank</Link> ·{" "}
+          <Link href="/neet-pg-seat-matrix" className="font-semibold text-primary-strong hover:underline">NEET PG seat matrix 2026 (MD/MS &amp; DNB)</Link> ·{" "}
           <Link href="/md-ms-india/stipend" className="font-semibold text-primary-strong hover:underline">NEET PG stipend, state by state</Link> ·{" "}
           <Link href="/management-quota" className="font-semibold text-primary-strong hover:underline">management quota fees</Link> ·{" "}
           <Link href="/nri-quota/fees" className="font-semibold text-primary-strong hover:underline">NRI quota fees</Link>

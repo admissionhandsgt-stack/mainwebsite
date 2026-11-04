@@ -8,6 +8,7 @@
 
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
+import { decodeEntities } from "@/lib/collegeName";
 
 const rows = <T,>(r: unknown) => r as unknown as T[];
 
@@ -150,7 +151,8 @@ export async function getCollege(slug: string, level: Level): Promise<CollegeDet
   if (!r) return null;
   return {
     slug: r.slug as string,
-    name: r.name as string,
+    // The scrape left "&#039;" in six names; decoded here so the H1, the title and the JSON-LD read "Era's".
+    name: decodeEntities(r.name as string),
     ownership: r.ownership as string,
     state: (r.state as string) ?? null,
     district: (r.district as string) ?? null,
@@ -275,6 +277,29 @@ export async function getCollegeFees(slug: string, level: Level): Promise<Colleg
 /** Colleges a visitor is likely to weigh against this one: same state, similar size. */
 /** Names that mark a non-MBBS UG college (the MBBS directory uses the same test). */
 const STREAM_NAME = "(dental|ayurved|homoeopath|homeopath|nursing|physiothe|veterinar|unani|siddha)";
+
+/**
+ * The same college's page at the other level — its MBBS page from its MD/MS page and back — when the NMC register
+ * pairs both of our entries with one NMC college code (nmc_institutes). Search Console, 19 Oct – 2 Nov 2026: a third
+ * of "<college> MBBS fees" impressions landed on the PG page, with no way across.
+ */
+export async function getOtherLevelPage(slug: string, level: Level): Promise<{ slug: string; level: Level } | null> {
+  const other: Level = level === "ug" ? "pg" : "ug";
+  const r = rows<{ slug: string }>(
+    await db.execute(sql`
+      SELECT o.slug
+        FROM institutes i
+        JOIN nmc_institutes m  ON m.institute_id = i.id AND m.college_code IS NOT NULL
+        JOIN nmc_institutes m2 ON m2.college_code = m.college_code AND m2.institute_id <> i.id
+        JOIN institutes o      ON o.id = m2.institute_id AND o.level = ${other} AND o.is_active = true
+       WHERE i.slug = ${slug} AND i.level = ${level}
+       -- One NMC college can hold an MD/MS entry and a DNB twin; the MD/MS one is listed first by name length.
+       ORDER BY length(o.name), o.slug
+       LIMIT 1
+    `),
+  )[0];
+  return r ? { slug: r.slug, level: other } : null;
+}
 
 export async function getSimilarColleges(slug: string, level: Level, limit = 6) {
   return rows<Record<string, unknown>>(
