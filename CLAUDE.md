@@ -1719,7 +1719,15 @@ Nothing that reads `closing_ranks` sees these rows.
 
 **Loaded:** NEET PG 2026 Round 1 for UP, Rajasthan, West Bengal, Chhattisgarh, Uttarakhand and Madhya Pradesh,
 3,973 lines and 6,825 allotments. MP's Round 1 is on hold under a High Court interim order; its rows carry that
-note and the page prints it.
+note and the page prints it. **2026-11-05 (owner's OK):** Gujarat (1,785 lines / 2,329 allotments; ACPPGMEC's
+GQ/UQ/MQ/NQ/IQ onto 2025's labels, a management seat's own merit list counted as open) and Kerala (826 / 1,082; CEE
+prints no seat type, so the allotted category code is the quota — SM state merit, community codes inside the state
+quota, NR/NC/NM the NRI seats; "Govt Quota" or "Self Financing Seats" by the college's ownership). Goa's adapter is
+written but holds one college, so it shows nothing (`getStateRound` returns null when no figure clears 3 colleges,
+so the title never promises a round the page cannot show).
+**A round must be in AIR (owner, 2026-11-05).** Punjab (BFUHS) and Odisha (DMET) print only state merit numbers.
+Their AIR comes from the state's own merit list (state merit rank beside NEET AIR), as UP's did — pg-a7 extracts
+it; the import joins it before they go in. Never show a state merit number as a cutoff on these pages.
 
 **Where the files come from.** The PG data session (pg-a7, with zyn-c9 for UP) extracts them from each board's
 allotment PDF into `D:/Gulshan/PG/Website/extracted-data/official-states/<state>/`. The import:

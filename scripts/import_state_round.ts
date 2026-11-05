@@ -342,6 +342,129 @@ function madhyaPradeshSource(): Source {
   };
 }
 
+/* ------------------------------------------------------------------ Gujarat (ACPPGMEC) */
+
+function gujaratSource(): Source {
+  const dir = `${ROOT}/gujarat`;
+  const cutsRaw = readCsv(`${dir}/guj_pg_2026_r1_closing_ranks.csv`);
+  const allotRaw = readCsv(`${dir}/guj_pg_2026_r1_allotments.csv`);
+  // ACPPGMEC's seat-type codes, onto 2025's quota labels (closing_ranks, "Gujarat PG").
+  const QUOTA: Record<string, { quota: string; inService: boolean }> = {
+    GQ: { quota: "All Gujarat Students Quota", inService: false },
+    UQ: { quota: "Gujarat Institutional Preference Quota", inService: false },
+    MQ: { quota: "Gujarat Management Quota", inService: false },
+    NQ: { quota: "Gujarat NRI Quota", inService: false },
+    IQ: { quota: "Gujarat Inservice Quota", inService: true },
+  };
+  const q = (t: string) => {
+    const v = QUOTA[t];
+    if (!v) throw new Error(`Gujarat: unknown seat type "${t}"`);
+    return v;
+  };
+  // OP open, SE SEBC, EW EWS; a management seat's category is the management merit list itself (open).
+  const CAT: Record<string, string> = { OP: "GEN", SE: "OBC", EW: "EWS", SC: "SC", ST: "ST", MQ: "GEN", NRI: "NRI" };
+  const cat = (r: Row) => {
+    const base = r.category || r.allotted_category.replace(/PH$/, "");
+    return { category: CAT[base] ?? base, pwd: /^PH$/i.test(r.pwd) || /PH$/.test(r.allotted_category), additional: null };
+  };
+  // Branch alone ("Anaesthesiology"); the one National Board seat is "Radio Diagnosis (DNB)".
+  const course = (c: string) => {
+    const dnb = c.match(/^(.*?)\s*\(DNB\)$/i);
+    return dnb ? `Post MBBS DNB ${dnb[1]}` : c;
+  };
+  const first = cutsRaw[0];
+  return {
+    state: "Gujarat", year: 2026, round: "R1", roundPrinted: first.round, counselling: first.counselling, sourceUrl: null,
+    cuts: cutsRaw.map((r) => ({
+      college: r.college, instCode: r.institute_code || null, seatType: r.seat_type_name, ...q(r.seat_type), course: course(r.course),
+      categoryPrinted: r.allotted_category, ...cat(r),
+      seats: int(r.seats_allotted), openAir: null, closeAir: int(r.closing_all_india_rank), openSr: null, closeSr: int(r.closing_state_merit_rank),
+    })),
+    allots: allotRaw.map((r) => ({
+      college: r.college, instCode: r.institute_code || null, seatType: r.seat_type_name, ...q(r.seat_type), course: course(r.course),
+      categoryPrinted: r.allotted_category, ...cat(r), ownCategory: r.candidate_category || null, domicile: null,
+      stateRank: int(r.state_merit_rank), air: int(r.all_india_rank), score: null,
+    })),
+  };
+}
+
+/* ------------------------------------------------------------------ Kerala (CEE) */
+
+function keralaSource(): Source {
+  const dir = `${ROOT}/kerala`;
+  const cutsRaw = readCsv(`${dir}/kl_pg_2026_r1_closing_ranks.csv`);
+  const allotRaw = readCsv(`${dir}/kl_pg_2026_r1_allotments.csv`);
+  // CEE prints no seat type: the allotted category code is the quota. SM is state merit; the community codes
+  // are reservations inside the same state quota; AC/MM are the minority seats of self-financing colleges;
+  // NR/NC/NM are NRI seats (NC/NM have no printed legend and occur only where a college has NRI minority seats).
+  const NRI = new Set(["NR", "NC", "NM"]);
+  const q = (code: string) =>
+    NRI.has(code) ? { quota: "Kerala Self Financing - NRI Seats", inService: false } : { quota: "Kerala State Quota", inService: false };
+  const CAT: Record<string, string> = { SM: "GEN", EW: "EWS", SC: "SC", ST: "ST" };
+  const cat = (code: string) => ({
+    category: NRI.has(code) ? "NRI" : CAT[code] ?? code,
+    pwd: false,
+    additional: null,
+  });
+  // "M D Anaesthesia" → "MD Anaesthesia".
+  const course = (c: string) => c.replace(/^M\s+D\b/i, "MD").replace(/^M\s+S\b/i, "MS").replace(/\s+/g, " ").trim();
+  const first = cutsRaw[0];
+  return {
+    state: "Kerala", year: 2026, round: "R1", roundPrinted: first.round, counselling: first.counselling, sourceUrl: null,
+    cuts: cutsRaw.map((r) => ({
+      college: r.college, instCode: r.college_code || null, seatType: r.allotted_category_decoded || r.allotted_category_code,
+      ...q(r.allotted_category_code), course: course(r.course),
+      categoryPrinted: r.allotted_category_code, ...cat(r.allotted_category_code),
+      seats: int(r.seats_allotted), openAir: null, closeAir: int(r.closing_all_india_rank), openSr: null, closeSr: null,
+    })),
+    allots: allotRaw.map((r) => ({
+      college: r.college, instCode: r.college_code || null, seatType: r.allotted_category_decoded || r.allotted_category_code,
+      ...q(r.allotted_category_code), course: course(r.course),
+      categoryPrinted: r.allotted_category_code, ...cat(r.allotted_category_code), ownCategory: r.candidate_category || null,
+      domicile: null, stateRank: int(r.state_merit_rank), air: int(r.all_india_rank), score: null,
+    })),
+    // State-quota seats are "Govt Quota" at a government college and "Self Financing Seats" at a private one
+    // (2025's labels), resolved once the college is matched.
+    ownershipQuota: (quota, government) =>
+      quota !== "Kerala State Quota" ? quota
+        : government === true ? "Kerala Govt Quota"
+          : government === false ? "Kerala Self Financing Seats" : quota,
+  };
+}
+
+/* ------------------------------------------------------------------ Goa (DTE) */
+
+function goaSource(): Source {
+  const dir = `${ROOT}/goa`;
+  const cutsRaw = readCsv(`${dir}/goa_pg_2026_r1_closing_ranks.csv`);
+  const allotRaw = readCsv(`${dir}/goa_pg_2026_r1_allotments.csv`);
+  // DTE does not print the category of the seat allotted, only the candidate's own: never presented as a seat's
+  // category, so these lines carry "Not printed" and stay out of every category figure.
+  const course = (c: string) =>
+    c.replace(/^RADIOLOGY \(RADIO DIAGNOSIS\)$/i, "Radio Diagnosis")
+      .replace(/^PSM \(COMMUNITY MEDICINE\)$/i, "Community Medicine")
+      .replace(/^TB \(RESPIRATORY MEDICINE\)$/i, "Respiratory Medicine")
+      .replace(/^OTORHINOLARYNGOLOGY \(ENT\)$/i, "ENT")
+      .replace(/^TRANSFUSION MEDICINE \(IHBT\)$/i, "Immuno Haematology and Blood Transfusion")
+      .replace(/^DERMATOLOGY$/i, "Dermatology Venereology and Leprosy");
+  const first = cutsRaw[0];
+  return {
+    state: "Goa", year: 2026, round: "R1", roundPrinted: first.round, counselling: first.counselling, sourceUrl: null,
+    cuts: cutsRaw.map((r) => ({
+      college: r.college, instCode: null, seatType: `${r.seat_type} · ${r.group}`, quota: "Goa Govt Quota", inService: false,
+      course: course(r.course), categoryPrinted: `${r.group}${r.category_2 ? ` · candidate ${r.category_2}` : ""}`,
+      category: "Not printed", pwd: false, additional: null,
+      seats: int(r.seats_allotted), openAir: null, closeAir: int(r.closing_all_india_rank), openSr: null, closeSr: int(r.closing_state_merit_rank),
+    })),
+    allots: allotRaw.map((r) => ({
+      college: r.college, instCode: null, seatType: `${r.seat_type} · ${r.group}`, quota: "Goa Govt Quota", inService: false,
+      course: course(r.course), categoryPrinted: r.group, category: "Not printed", ownCategory: r.category_2 || r.category_1 || null,
+      pwd: false, additional: null, domicile: null,
+      stateRank: int(r.state_merit_rank), air: int(r.all_india_rank), score: null,
+    })),
+  };
+}
+
 const SOURCES: Record<string, () => Source> = {
   up: upSource,
   "madhya-pradesh": madhyaPradeshSource,
@@ -349,6 +472,9 @@ const SOURCES: Record<string, () => Source> = {
   "west-bengal": westBengalSource,
   chhattisgarh: chhattisgarhSource,
   uttarakhand: uttarakhandSource,
+  gujarat: gujaratSource,
+  kerala: keralaSource,
+  goa: goaSource,
 };
 
 /* ------------------------------------------------------------------ matching */
@@ -541,6 +667,7 @@ async function main() {
   }
   const unmapped = [...courseOf.entries()].filter(([, c]) => c.id == null).map(([p]) => p);
   console.log(`courses: ${courseOf.size} as printed, unmapped kept as printed: ${unmapped.join("; ") || "none"}`);
+  if (SHOW) for (const [p, c] of [...courseOf.entries()].sort()) console.log(`  course: ${p}  →  ${c.name ?? "—"}`);
   const by = (xs: string[]) => Object.entries(xs.reduce<Record<string, number>>((a, x) => ((a[x] = (a[x] ?? 0) + 1), a), {})).sort((a, b) => b[1] - a[1]);
   console.log("quotas:", by(cuts.map((x) => x.quota)));
   console.log("categories:", by(cuts.map((x) => `${x.r.category}${x.r.pwd ? "-PwD" : ""}${x.r.additional ? `+${x.r.additional}` : ""}${x.r.inService ? " (in-service)" : ""}`)));

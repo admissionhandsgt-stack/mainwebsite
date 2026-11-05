@@ -57,6 +57,30 @@
       "DH Bhopal": "Bhopal's district hospital: Jai Prakash District Government Hospital (not BHEL Kasturba, not BMHRC)",
       "District Hospital Bhopal": "the same district hospital, printed in full",
       "DH Satna": "Satna's district hospital: Sardar Vallabh Bhai Patel District Hospital (not Sadguru Nethra Chikitsalaya, an eye hospital)"
+    },
+    "gujarat": {
+      "Ananya Colege of Medicine and Research": "ACPPGMEC's typo of Ananya College of Medicine & Research, Kalol",
+      "C.U. Shah Medical College, Surendranagar": "same college; our list spells the town 'Surendra Nagar'",
+      "Nootan Medical College & Research Centre Visnagar": "Nootan is at Visnagar, Mehsana district; our list names the district",
+      "P. D. U. Govt. Medical College, Rajkot": "PDU = Pandit Deendayal Upadhyay Medical College, Rajkot (government)",
+      "Pramukh Swami Medical College, Karamsad, Dist. Anand": "our 'Pramukhswami Medical College, Karmsad' — one word, short spelling",
+      "Swaminarayan Institute of Medical Sciences and Research": "our list's 'Swaminayaran' is a misspelling of the same institute at Kalol"
+    },
+    "kerala": {
+      "Academy of Medical Sciences, Pariyaram": "now Government Medical College, Pariyaram, Kannur (our name says 'Prev. Academy of Medical Sciences')",
+      "Azeezia Institute of Medical Sciences & Research, Meyyannoor P O, Kollam.": "same institute; spelt 'Meeyannoor' in our list",
+      "Dr. Somervell Memorial CSI Medical College, Karakonam, Thiruvananthapuram": "same college; our list spells 'Somervel'",
+      "Government Medical College, Palakkad": "the government college at Palakkad is IIMS Yakkara; PK Das (the other Palakkad name) is private",
+      "Govt. Medical College, Alappuzha": "Government TD Medical College, Alappuzha (our 'TD Medical College, Alleppey')",
+      "Govt. Medical College, Kollam": "Kollam's government medical college is at Parippally; Travancore is private",
+      "Govt. Medical College, Kozhikkode": "Government Medical College, Kozhikode (Calicut)",
+      "KMCT Medical College, Mukkom, Kozikkode.": "KMCT is at Mukkom, Kozhikode district",
+      "Malabar Medical College Hospital & Research Centre, Kozhikkode": "same college, Kozhikode",
+      "Pushpagiri Institute of Medical Sciences & Research Centre, Thiruvalla": "same institute; 'Tiruvalla' in our list",
+      "Regional Cancer Centre, Thiruvananthapuram": "same centre; our list spells 'Thiruvanthapuram'; not the Medical College in the same city",
+      "Sree Gokulam Medical College & Research Foundation, Venjaramoodu P O, TVPM.": "Sree Gokulam is at Venjaramoodu, Thiruvananthapuram (TVPM)",
+      "Sree Narayana Institute of Medical Sciences, Ernakulam": "same institute (Chalakka, Ernakulam), private; not Government Medical College, Ernakulam",
+      "SUT Academy of Medical Science, Thiruvananthapuram": "SUT = Sree Uthradom Thirunal Academy of Medical Sciences (private); the matcher had picked the government Medical College in the same city"
     }
   },
   "rajasthan": {
@@ -94,5 +118,29 @@
     "DH Bhopal": 1207,
     "District Hospital Bhopal": 1207,
     "DH Satna": 1575
+  },
+  "gujarat": {
+    "Ananya Colege of Medicine and Research": 1924,
+    "C.U. Shah Medical College, Surendranagar": 1915,
+    "Nootan Medical College & Research Centre Visnagar": 1920,
+    "P. D. U. Govt. Medical College, Rajkot": 116,
+    "Pramukh Swami Medical College, Karamsad, Dist. Anand": 1916,
+    "Swaminarayan Institute of Medical Sciences and Research": 1922
+  },
+  "kerala": {
+    "Academy of Medical Sciences, Pariyaram": 77,
+    "Azeezia Institute of Medical Sciences & Research, Meyyannoor P O, Kollam.": 1990,
+    "Dr. Somervell Memorial CSI Medical College, Karakonam, Thiruvananthapuram": 1983,
+    "Government Medical College, Palakkad": 1582,
+    "Govt. Medical College, Alappuzha": 32,
+    "Govt. Medical College, Kollam": 172,
+    "Govt. Medical College, Kozhikkode": 1,
+    "KMCT Medical College, Mukkom, Kozikkode.": 1981,
+    "Malabar Medical College Hospital & Research Centre, Kozhikkode": 1982,
+    "Pushpagiri Institute of Medical Sciences & Research Centre, Thiruvalla": 1978,
+    "Regional Cancer Centre, Thiruvananthapuram": 787,
+    "Sree Gokulam Medical College & Research Foundation, Venjaramoodu P O, TVPM.": 1988,
+    "Sree Narayana Institute of Medical Sciences, Ernakulam": 1992,
+    "SUT Academy of Medical Science, Thiruvananthapuram": 1989
   }
 }

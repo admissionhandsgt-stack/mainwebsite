@@ -109,6 +109,11 @@ export const getStateRound = unstable_cache(
       .filter((x) => x.last != null)
       .sort((a, b) => (a.last ?? 0) - (b.last ?? 0));
 
+    // Nothing to show — one college (Goa), or no All India Rank printed (Punjab, Odisha until their merit
+    // lists are joined): no round at all, so the page's title does not promise a round it cannot show.
+    const shownQuota = byQuota.filter((q) => q.last != null);
+    if (shownQuota.length === 0 && byBranch.length === 0) return null;
+
     return {
       year,
       round: /^R(\d+)$/.test(round) ? `Round ${round.slice(1)}` : round,
@@ -118,7 +123,7 @@ export const getStateRound = unstable_cache(
       note: (head.note as string) ?? null,
       noteUrl: (head.note_url as string) ?? null,
       colleges: Number(head.colleges),
-      byQuota: byQuota.filter((q) => q.last != null),
+      byQuota: shownQuota,
       mainQuota,
       byCategory: byCategory.filter((c) => c.last != null),
       byBranch,
