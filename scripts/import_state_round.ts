@@ -579,7 +579,37 @@ function odishaSource(): Source {
   };
 }
 
+/* ------------------------------------------------------------------ Jammu & Kashmir (JKBOPEE) */
+
+function jammuKashmirSource(): Source {
+  const dir = `${ROOT}/jammu-kashmir`;
+  // Closing lines only: BOPEE's provisional selection list was read to the line, with no allotments file. The
+  // closing AIR is the AIR of the last selected in UT merit order (pg-a7).
+  const cutsRaw = readCsv(`${dir}/jk_pg_2026_r1_closing_ranks.csv`);
+  // OM open merit; MQ the management merit list (open); J&K's own reservations (RBA, ALC/IB, ST-I, ST-II, STK, STL,
+  // HM) stay as printed — they are separate pools, not the national ones; SP is the sports seat.
+  const CAT: Record<string, string> = { OM: "GEN", MQ: "GEN", OBC: "OBC", SC: "SC", EWS: "EWS", NRI: "NRI" };
+  const cat = (r: Row) => ({
+    category: CAT[r.allotted_category] ?? r.allotted_category,
+    pwd: false,
+    // Children of defence personnel, J&K police martyrs, sportspersons: their own merit lists.
+    additional: r.sub_categories || null,
+  });
+  const first = cutsRaw[0];
+  return {
+    state: "Jammu and Kashmir", year: 2026, round: "R1", roundPrinted: first.round, counselling: first.counselling, sourceUrl: null,
+    cuts: cutsRaw.map((r) => ({
+      college: r.college_full_name || r.college, instCode: r.college || null, seatType: r.jk_categories || r.seat_type,
+      quota: r.seat_type, inService: false, course: r.course,
+      categoryPrinted: r.allotted_category, ...cat(r),
+      seats: int(r.seats_allotted), openAir: null, closeAir: int(r.closing_all_india_rank), openSr: null, closeSr: int(r.closing_state_merit_rank),
+    })),
+    allots: [],
+  };
+}
+
 const SOURCES: Record<string, () => Source> = {
+  "jammu-kashmir": jammuKashmirSource,
   punjab: punjabSource,
   odisha: odishaSource,
   up: upSource,

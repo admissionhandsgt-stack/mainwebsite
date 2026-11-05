@@ -1754,7 +1754,7 @@ List of 30 Oct. Never show a state merit number as a cutoff on these pages. Load
 585 allotments; Ultrasonography training left out; Institutional Preference is part of the quota name, because at
 the government colleges the general seats *are* IP seats; post-MBBS DNB/diploma seats in-service, 47 of 51 went to
 PCMS doctors) and Odisha (324 / 374; "-MGT" marks management seats; the in-service list's own numbering stays out).
-J&K's file is waiting for the owner's OK.
+J&K (owner's OK, 2026-11-05): 206 closing lines from BOPEE's Round 1 selection list, no allotments file; OM and MQ open, J&K's own reservations (RBA, ALC/IB, ST-I/II, STK, STL, HM) as printed, JKPM/CDP/SP sub-categories out of the figures.
 
 **Where the files come from.** The PG data session (pg-a7, with zyn-c9 for UP) extracts them from each board's
 allotment PDF into `D:/Gulshan/PG/Website/extracted-data/official-states/<state>/`. The import:
