@@ -104,6 +104,14 @@
       "SCB MCH KATAKA": "SCB Medical College, Cuttack (Kataka)",
       "SLN MCH KORAPUT": "Saheed Laxman Nayak Medical College, Koraput; DNB rows, its own entry",
       "VIMSAR BURLA": "VIMSAR = Veer Surendra Sai Institute of Medical Sciences and Research, Burla"
+    },
+    "tamil-nadu": {
+      "ARUNAI MEDICAL COLLEGE, TIRUVANNAMALAI": "Tiruvannamalai = Thiruvannamalai; our only Arunai entry",
+      "CANCER INSTITUTE, ADAYAR": "Cancer Institute (WIA), Adyar is the Regional Centre for Cancer Research and Treatment; 2065 is its MD/MS entry, 552 its PIN-code DNB twin",
+      "GOVERNMENT MEDICAL COLLEGE & ESIC HOSPITAL, COIMBATORE": "same name, ours adds 'TamilNadu'; lost only on the margin against Coimbatore Medical College",
+      "JOSEPH EYE HOSPITAL, TRICHY": "Institute of Ophthalmology, Joseph Eye Hospital, Tiruchirappalli (Trichy)",
+      "MELMARUVATHUR ADIPARASAKTHI INSTT. MEDICAL SCIENCES AND RESEARCH": "Adiparasakthi = Adhiparasakthi, Instt. = Institute of",
+      "SANKARA NETHRALAYA, CHENNAI": "Sankara Nethralaya's MD/MS entry is the Medical Research Foundation (2070); 642 is its PIN-code DNB twin"
     }
   },
   "rajasthan": {
@@ -188,5 +196,13 @@
     "SCB MCH KATAKA": 36,
     "SLN MCH KORAPUT": 1433,
     "VIMSAR BURLA": 181
+  },
+  "tamil-nadu": {
+    "ARUNAI MEDICAL COLLEGE, TIRUVANNAMALAI": 2074,
+    "CANCER INSTITUTE, ADAYAR": 2065,
+    "GOVERNMENT MEDICAL COLLEGE & ESIC HOSPITAL, COIMBATORE": 1680,
+    "JOSEPH EYE HOSPITAL, TRICHY": 2077,
+    "MELMARUVATHUR ADIPARASAKTHI INSTT. MEDICAL SCIENCES AND RESEARCH": 2064,
+    "SANKARA NETHRALAYA, CHENNAI": 2070
   }
 }

@@ -579,6 +579,70 @@ function odishaSource(): Source {
   };
 }
 
+/* ------------------------------------------------------------------ Tamil Nadu (Selection Committee, DME) */
+
+function tamilNaduSource(): Source {
+  const dir = `${ROOT}/tamil-nadu`;
+  const cutsRaw = readCsv(`${dir}/tn_pg_2026_r1_closing_ranks.csv`);
+  const allotRaw = readCsv(`${dir}/tn_pg_2026_r1_allotments.csv`);
+  // Each seat type onto 2025's quota label and category (closing_ranks, "TN Govt PG" / "TN Mgmt PG").
+  const SEAT: Record<string, { quota: string; category: string; inService?: boolean; pwd?: boolean }> = {
+    "Management Quota": { quota: "TN Mgmt Quota", category: "GEN" },
+    NRI: { quota: "TN NRI Quota", category: "NRI" },
+    "Telugu Minority": { quota: "TN Mgmt-Telugu Min", category: "Telugu Minority" },
+    "Malayalam Minority": { quota: "TN Mgmt-Malayalam Min", category: "Malayalam Minority" },
+    "Christian Minority": { quota: "TN Mgmt-Christian Min", category: "Christian Minority" },
+    "Minority Network": { quota: "TN CMC-Minority Network", category: "CMC-Minority Network" },
+    "CMC Service": { quota: "TN CMC-Service", category: "CMC-Service", inService: true },
+    "CMC General": { quota: "TN CMC-General Merit", category: "CMC-General Merit" },
+    "Inst. Preference": { quota: "TN CMC-Inst Preference", category: "CMC-Institutional Preference" },
+    "Government Quota - CMC 20%": { quota: "TN-CMC Minority 20", category: "CMC 20% Minority" },
+    "Government Quota - PwD": { quota: "TN Govt-PwD", category: "Not printed", pwd: true },
+  };
+  // Government Quota seats carry the seat's own category (pg-a7 works it out from the vacancy matrix), written as
+  // 2025's codes ("OC Open", "BC Serv", "SC-In-Service"…). TN prints only the candidate's community, which is never
+  // a seat's category: a Government Quota row without seat_category is "Not printed" and stays out of every figure.
+  const seat = (r: Row) => {
+    const s = SEAT[r.seat_type];
+    if (s) return { quota: s.quota, inService: Boolean(s.inService), category: s.category, pwd: Boolean(s.pwd) };
+    if (r.seat_type !== "Government Quota") throw new Error(`Tamil Nadu: unknown seat type "${r.seat_type}"`);
+    const c = r.seat_category?.trim() || "Not printed";
+    return { quota: "TN Govt Quota", inService: /Serv|In-Service/i.test(c), category: c, pwd: false };
+  };
+  // TN's short forms for diplomas and two MD subjects, written out as our course names spell them.
+  const SHORT: Record<string, string> = {
+    "D.A.": "Diploma in Anaesthesia", "D.C.H.": "Diploma in Child Health", "D.C.P.": "Diploma in Clinical Pathology",
+    "D.D.V.L.": "Diploma in Dermatology, Venereology and Leprosy", "D.G.O": "Diploma in Obstetrics and Gynaecology",
+    "D.O.": "Diploma in Ophthalmology", "D.ORTHO": "Diploma in Orthopaedics", "Dip. in Diabetology": "Diploma in Diabetology",
+    "M. D. (P.M.R)": "MD Physical Medicine and Rehabilitation", "M.D. D.V.L": "MD Dermatology Venereology and Leprosy",
+  };
+  const course = (c: string) => SHORT[c.trim()] ?? c;
+  const first = cutsRaw[0];
+  return {
+    state: "Tamil Nadu", year: 2026, round: "R1", roundPrinted: "Round 1", counselling: first.counselling, sourceUrl: null,
+    cuts: cutsRaw.map((r) => {
+      const s = seat(r);
+      return {
+        college: r.college, instCode: null, seatType: r.seat_pool ? `${r.seat_type} · ${r.seat_pool}` : r.seat_type,
+        quota: s.quota, inService: s.inService, course: course(r.course),
+        categoryPrinted: r.seat_category || r.seat_type, category: s.category, pwd: s.pwd, additional: null,
+        seats: int(r.seats_allotted), openAir: null, closeAir: int(r.closing_all_india_rank), openSr: null,
+        closeSr: int(r.closing_state_merit_rank),
+      };
+    }),
+    allots: allotRaw.map((r) => {
+      const s = seat(r);
+      return {
+        college: r.college, instCode: null, seatType: r.seat_pool ? `${r.seat_type} · ${r.seat_pool}` : r.seat_type,
+        quota: s.quota, inService: s.inService, course: course(r.course),
+        categoryPrinted: r.seat_category || r.seat_type, category: s.category, ownCategory: r.candidate_community || null,
+        pwd: s.pwd, additional: null, domicile: null,
+        stateRank: int(r.state_merit_rank), air: int(r.all_india_rank), score: null,
+      };
+    }),
+  };
+}
+
 /* ------------------------------------------------------------------ Jammu & Kashmir (JKBOPEE) */
 
 function jammuKashmirSource(): Source {
@@ -610,6 +674,7 @@ function jammuKashmirSource(): Source {
 
 const SOURCES: Record<string, () => Source> = {
   "jammu-kashmir": jammuKashmirSource,
+  "tamil-nadu": tamilNaduSource,
   punjab: punjabSource,
   odisha: odishaSource,
   up: upSource,
