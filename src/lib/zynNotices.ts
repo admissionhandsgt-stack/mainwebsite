@@ -31,6 +31,8 @@ export interface ZynNotice {
   id: string;
   title: string;
   url: string | null;
+  /** The authority's own home page, as Zyn curates it — its host is official for that authority. */
+  page: string | null;
   authority: string | null;
   state: string | null;
   kind: string | null;
@@ -38,6 +40,8 @@ export interface ZynNotice {
   publishedOn: string | null;
   approvedAt: string | null;
   dates: Partial<Record<StepKey, Step>>;
+  /** The schedule exactly as the approver saw it, "activity: when" per line (Zyn's `schedule_lines`). */
+  lines: string[];
   text: string;
   raw: unknown;
 }
@@ -60,6 +64,7 @@ export function normalise(r: Record<string, unknown>): ZynNotice | null {
     id,
     title,
     url: str(r.url),
+    page: str(r.page),
     authority: str(r.authority) ?? str(r.source),
     state: str(r.state),
     kind: str(r.kind)?.toLowerCase() ?? null,
@@ -67,7 +72,11 @@ export function normalise(r: Record<string, unknown>): ZynNotice | null {
     publishedOn: str(r.published_on) ?? str(r.publishedOn),
     approvedAt: str(r.approved_at) ?? str(r.approvedAt),
     dates,
-    text: str(r.pdf_text_excerpt) ?? str(r.text) ?? "",
+    lines: Array.isArray(r.schedule_lines) ? r.schedule_lines.filter((l): l is string => typeof l === "string" && !!l.trim()) : [],
+    text:
+      str(r.pdf_text_excerpt) ??
+      str(r.text) ??
+      (Array.isArray(r.schedule_lines) ? (r.schedule_lines as unknown[]).filter((l) => typeof l === "string").join(" \n ") : ""),
     raw: r,
   };
 }
@@ -84,8 +93,23 @@ const BOARD_HOSTS = new Set(
     }
   }).filter(Boolean),
 );
-export function officialLink(url: string | null): boolean {
+const hostOf = (u: string | null) => {
+  try {
+    return u ? new URL(u).hostname.toLowerCase().replace(/^www\./, "") : null;
+  } catch {
+    return null;
+  }
+};
+
+/** "Rajasthan NEET PG Counselling Board 2026 (pg.neetrajasthan.com)" → "Rajasthan NEET PG Counselling Board 2026". */
+const authorityName = (a: string | null) => (a ? a.replace(/\s*\([^)]*\)\s*$/, "").trim() : null);
+
+/** Official: a government or board host, or the same site as the authority's own home page that Zyn curates. */
+export function officialLink(url: string | null, page?: string | null): boolean {
   if (!url) return false;
+  const h = hostOf(url);
+  const p = hostOf(page ?? null);
+  if (h && p && (h === p || h.endsWith(`.${p}`) || p.endsWith(`.${h}`))) return true;
   let host: string;
   try {
     const u = new URL(url);
@@ -137,6 +161,16 @@ function printedUnder(hay: string, t: string, k: StepKey): boolean {
   return false;
 }
 
+/** A schedule line "activity: when" holds `t`, and its activity names step `k` (a line may name two: "filling / locking"). */
+function labelledLine(line: string, t: string, k: StepKey): boolean {
+  const l = squash(line);
+  const at = l.indexOf(t);
+  if (at < 0) return false;
+  const colon = l.indexOf(":");
+  const label = colon >= 0 && colon < at ? l.slice(0, colon) : l.slice(0, at);
+  return new RegExp(STEP_WORDS[k].source).test(label);
+}
+
 /** "17.11.2026", "17/11/2026", "17-11-2026", "17 Nov" or "17 November" in `text` for the ISO day `isoDate`. */
 function sameDay(text: string, isoDate: string): boolean {
   const m = isoDate.match(/^\d{4}-(\d{2})-(\d{2})/);
@@ -177,7 +211,10 @@ export function scheduleUpdate(n: ZynNotice): { ok: true; title: string; data: R
   //    date of "18.11.2026" that the notice prints after "Reporting" is not the result date.
   const misplaced = steps.filter((k) => {
     const t = n.dates[k]?.text;
-    return !t || !printedUnder(hay, squash(t), k);
+    if (!t) return true;
+    // Zyn's schedule lines ("Choice filling / locking: 9 – 14 Nov"): a line carrying the date whose label names the step.
+    if (n.lines.length) return !n.lines.some((line) => labelledLine(line, squash(t), k));
+    return !printedUnder(hay, squash(t), k);
   });
   if (misplaced.length) return { ok: false, reason: `dates not found under their step in the notice text: ${misplaced.join(", ")}` };
   // 2. The machine-readable date says the same day as the printed one.
@@ -230,10 +267,13 @@ async function publishAlert(n: ZynNotice): Promise<number | null> {
     const after = new Date(new Date(last).getTime() + 2 * 86_400_000);
     if (after.getTime() > Date.now()) expires = after;
   }
-  const title = n.authority && !n.title.toLowerCase().startsWith(n.authority.toLowerCase()) ? `${n.authority}: ${n.title}` : n.title;
+  const who = authorityName(n.authority);
+  const title = who && !n.title.toLowerCase().startsWith(who.toLowerCase()) ? `${who}: ${n.title}` : n.title;
+  // One source per authority: the alerts bar shows at most three per source, so MCC never crowds out a state board.
+  const source = `zyn:${who ?? "notice"}`.slice(0, 60);
   const rows = (await db.execute(sql`
     INSERT INTO live_alerts (title, link, is_active, order_index, source, source_key, auto, published_at, expires_at)
-    VALUES (${title.slice(0, 300)}, ${n.url}, true, 90, 'zyn', ${`zyn:${n.id}`}, true, ${published.toISOString()}, ${expires.toISOString()})
+    VALUES (${title.slice(0, 300)}, ${n.url}, true, 90, ${source}, ${`zyn:${n.id}`}, true, ${published.toISOString()}, ${expires.toISOString()})
     ON CONFLICT (source_key) WHERE source_key IS NOT NULL DO NOTHING
     RETURNING id`)) as unknown as { id: number }[];
   return rows[0] ? Number(rows[0].id) : null;
@@ -253,7 +293,7 @@ async function take(n: ZynNotice): Promise<"published" | "held" | "seen"> {
   let status: "published" | "held" = "published";
   let reason: string | null = null;
   if (!n.approvedAt) [status, reason] = ["held", "not marked approved"];
-  else if (!officialLink(n.url)) [status, reason] = ["held", "link is not on an official domain"];
+  else if (!officialLink(n.url, n.page)) [status, reason] = ["held", "link is not on an official domain"];
 
   const alertId = status === "published" ? await publishAlert(n) : null;
 
@@ -286,6 +326,11 @@ async function take(n: ZynNotice): Promise<"published" | "held" | "seen"> {
 
 /* ------------------------------------------------------------------ the run */
 
+/** The notice key: its own if one is saved, else the AH Counselor lead-sync key — Zyn uses the same key for both (2026-11-05). */
+export async function noticeKey(): Promise<string | null> {
+  return (await getIntegration("zyn.notices.key")) ?? (await getIntegration("counselor.sync_key"));
+}
+
 export interface RunSummary {
   at: string;
   ok: boolean;
@@ -314,7 +359,7 @@ export async function runZynNotices(opts: { force?: boolean } = {}): Promise<Run
   const summary: RunSummary = { at, ok: true, received: 0, published: 0, held: 0, cursor: null };
   const [url, key, enabled, cursor] = await Promise.all([
     getIntegration("zyn.notices.url"),
-    getIntegration("zyn.notices.key"),
+    noticeKey(),
     getIntegrationFlag("zyn.notices.enabled"),
     getIntegration("zyn.notices.cursor"),
   ]);
@@ -347,7 +392,7 @@ export async function runZynNotices(opts: { force?: boolean } = {}): Promise<Run
 
 /** The admin's "Test" button: one record, nothing written. */
 export async function testZynEndpoint(): Promise<{ ok: boolean; message: string }> {
-  const [url, key] = await Promise.all([getIntegration("zyn.notices.url"), getIntegration("zyn.notices.key")]);
+  const [url, key] = await Promise.all([getIntegration("zyn.notices.url"), noticeKey()]);
   if (!url || !key) return { ok: false, message: "Save the endpoint and the key first." };
   try {
     const { list } = await fetchApproved(url, key, null, 1);

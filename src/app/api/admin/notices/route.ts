@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth";
 import { getIntegration, getIntegrationFlag, maskSecret, setIntegration } from "@/lib/integrations";
-import { decideNotice, noticeList, runZynNotices, testZynEndpoint } from "@/lib/zynNotices";
+import { decideNotice, noticeKey, noticeList, runZynNotices, testZynEndpoint } from "@/lib/zynNotices";
 import { logError } from "@/lib/logger";
 
 /**
@@ -15,13 +15,14 @@ export const runtime = "nodejs";
 export async function GET() {
   const auth = await requireAdmin();
   if (auth instanceof Response) return auth;
-  const [url, key, enabled, cursor, last, notices] = await Promise.all([
+  const [url, key, enabled, cursor, last, notices, ownKey] = await Promise.all([
     getIntegration("zyn.notices.url"),
-    getIntegration("zyn.notices.key"),
+    noticeKey(),
     getIntegrationFlag("zyn.notices.enabled"),
     getIntegration("zyn.notices.cursor"),
     getIntegration("zyn.notices.last"),
     noticeList(),
+    getIntegration("zyn.notices.key"),
   ]);
   let lastRun: unknown = null;
   try {
@@ -30,7 +31,7 @@ export async function GET() {
     lastRun = null;
   }
   return NextResponse.json(
-    { url: url ?? "", keySet: Boolean(key), keyMasked: maskSecret(key), enabled, cursor, lastRun, notices },
+    { url: url ?? "", keySet: Boolean(key), keyMasked: maskSecret(key), keyShared: Boolean(key && !ownKey), enabled, cursor, lastRun, notices },
     { headers: { "cache-control": "no-store" } },
   );
 }

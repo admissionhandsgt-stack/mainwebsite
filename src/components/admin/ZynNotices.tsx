@@ -27,6 +27,8 @@ type State = {
   url: string;
   keySet: boolean;
   keyMasked: string;
+  /** No key of its own: the AH Counselor lead-sync key is used (Zyn shares it). */
+  keyShared: boolean;
   enabled: boolean;
   cursor: string | null;
   lastRun: { at: string; ok: boolean; skipped?: string; error?: string; received: number; published: number; held: number } | null;
@@ -114,7 +116,13 @@ export default function ZynNotices() {
               </span>
             }
             htmlFor="zyn-key"
-            hint={s.keySet ? `Saved: ${s.keyMasked}. Paste a new one only to replace it.` : "Not saved yet."}
+            hint={
+              s.keyShared
+                ? `Using the AH Counselor sync key (${s.keyMasked}) — Zyn shares it. Paste one here only if Zyn gives a separate key.`
+                : s.keySet
+                  ? `Saved: ${s.keyMasked}. Paste a new one only to replace it.`
+                  : "Not saved yet."
+            }
           >
             <input
               id="zyn-key"
