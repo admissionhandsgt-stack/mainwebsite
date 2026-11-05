@@ -567,20 +567,35 @@ MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within mi
 - **The college-wise poster** (`scripts/poster/college_cuts_poster.mjs [--category Open|EWS|OBC|SC|ST]`, owner
   2026-10-24): one row per college, the 8 most competitive clinical branches, this year's Round 1 closing rank over
   last year's, grouped by state and paged by measuring every row (8 PNG pages + one PDF for 2026 R1, Open). The
-  frame both posters share is `scripts/poster/kit.mjs`. **`mcc_allotments` splits 12 colleges across two institute
-  ids between the years**: in one year MCC's All India rows went to the hospital's DNB/NBEMS twin (the entry named
-  with a PIN code), and 2025's "GOVERNMENT MEDICAL COLLEGE - KANNUR" went to Kannur Medical College (private, no
-  AIQ seats); six more 2025 names are unmatched. The poster corrects them read-only (`ALIAS`, `SAME_AS`, each
-  checked against MCC's wording in both years); the table still holds them, and a college-level comparison across
-  years anywhere else needs the same care. The script lists colleges with figures in the earlier year only — the
-  shape a split leaves.
+  frame both posters share is `scripts/poster/kit.mjs`. The college mismatches it used to correct read-only are fixed in
+  the tables since 2026-11-05 (see "MCC college matches, audited" below); its one remaining `ALIAS` is SKMC Muzaffarpur.
+  The script lists colleges with figures in the earlier year only — the shape a split leaves.
+  **The poster of 24 Oct is affected:** its `SAME_AS [705 → 406]` read GMC Chhindwara's id as Vidisha's, so the Vidisha
+  row carried Chhindwara's, Khandwa's and Shahdol's Round 1 ranks too, and those three colleges were missing.
 - **The deemed universities' college-wise poster** (`scripts/poster/deemed_college_poster.mjs`, owner 2026-10-24: "sirf
   Deemed universities only college wise… better visualise"): the 54 deemed colleges ranked by the median of their 2026
   paid ranks; per branch a **G** box (General / Paid — MCC's "Self-Financed Merit Seat") and, where the college has one, an
   **N** box (NRI), each with this year's closing rank, last year's and the change — plain cells, the change in green or red
   (the owner turned down the shaded heatmap: "jyada colorful"). 2025's
-  SRM Kattankulathur paid seats sit on Trichy SRM (2061) in `mcc_allotments`; the poster joins them to 1523. MCC's final
+  SRM Kattankulathur paid seats, once on Trichy SRM (2061), sit on 1523 in `mcc_allotments` since 2026-11-05. MCC's final
   Round 1 result (24.10.2026, ingested 18:40 IST) changed none of the figures on any of the four posters — only the label.
+- **MCC college matches, audited (2026-11-05, owner's OK: "aise aur bhi chije identify karo and tik karo").** A student
+  poster showed GMC Vidisha's Round 1 rows filed under GMC Chhindwara: pg-4f's handoff had matched "Government Medical
+  College, <city>, MP" for Vidisha, Khandwa and Shahdol to Chhindwara at **0.805** (generic words alone clear the 0.80
+  bar), and the round ingest copies the seat matrix's matches by exact name. `scripts/fix_mcc_matches_2026_11_05.mjs`
+  (dry run by default; backups in `D:/Admisson Hands/match_backups/`, `--restore` each pass, last first) fixed 4,071
+  rows of `mcc_allotments` and `mcc_seat_matrix` in three passes: wrong cities (Vidisha, Khandwa, Shahdol, Azamgarh on
+  the Kannauj twin, Rajouri on GMC Jammu, GMC Kannur on Kannur Medical College, SRM Kattankulathur on Trichy SRM);
+  MD/MS and college-diploma rows on a hospital's DNB twin, which holds no MD/MS seats (19 colleges — Medical College
+  Kolkata, MP Shah Jamnagar, NRS, GGS Faridkot, Kannauj, Firozabad, Bhagalpur, Yavatmal, Dhule, GIMS Greater Noida…);
+  and names never matched (HBT Mumbai, PCMC Pune, RGMC Kalwa, Shivpuri, Bharatpur, Jagdalpur, GB Pant, PGICH Noida…):
+  unmatched MD/MS rows 979 → 40. Each fixed name is a decision in `mcc_name_decisions.json`, so a re-import keeps it.
+  **Left on purpose:** SKMC Muzaffarpur (our PG list holds it twice, 435 and 984, both with MD/MS seats — a merge, not a
+  match); NBE diplomas at private hospitals ("Diploma-Emergency Medicine") stay on their DNB entries; NSNIS Patiala,
+  INMAS and Hindu Rao have one entry each. `pg_seat_terms` was checked and is clean.
+  **Re-check after each import:** `node --env-file=.env.local scripts/audit_mcc_matches.mjs` lists every source name
+  whose matched institute shares no distinctive word with it (cities spelt two ways and state-named cities —
+  Chandigarh, Jammu, Goa — are the expected noise).
 - **A state's PG fee document** (`node --env-file=.env.local scripts/poster/state_fees_doc.mjs --state Maharashtra --out
   <dir>`, owner 2026-10-24): an A4 PDF from `pg_seat_terms` — every college × seat type (state govt quota, AIQ,
   management, NRI, minority, deemed paid/NRI, DNB, NBE diploma) with the branches each fee applies to; government and

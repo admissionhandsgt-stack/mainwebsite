@@ -54,44 +54,15 @@ const catOf = (c) => {
   return CATS.find((k) => k.toUpperCase() === code) ?? null;
 };
 
-// 2025 rows MCC worded differently from every other round, which the import left without a college. Each is the
-// 2026 college named here — checked by hand on 2026-10-24: MCC's 2026 wording carries both names (e.g. 2026's
-// "Government Medical College, Bharatpur" reads "…SJP MEDICAL COLLEGE BHARATPUR…"), and the id is the MD/MS
-// entry, not the hospital's DNB twin.
+// The import's mismatches these posters once corrected here read-only (2025 names left without a college, MCC rows on
+// a hospital's DNB twin, GMC Kannur on Kannur Medical College, GMC Vidisha and Khandwa on GMC Chhindwara) are fixed in
+// mcc_allotments itself since 2026-11-05 (scripts/fix_mcc_matches_2026_11_05.mjs). The one left: SKMC Muzaffarpur's
+// 2024–25 wording, unmatched because our PG list holds that college twice (435 and 984), both with MD/MS seats.
 const ALIAS = [
-  [/^govt\.? medical college,? shivpuri/i, 917], // Shrimant Rajmata Vijayaraje Scindia GMC, Shivpuri
-  [/^hinduhridayasamrat balasaheb thackeray medical college/i, 82], // HBT Medical College & Dr RN Cooper Hospital
-  [/^pimpri chi?n?chwad municipal corporation post ?graduate institute/i, 59], // PCMC PG Institute, YCM Hospital
-  [/^post ?graduate institute of medical sciences \(pgims\),\s*navi mumbai/i, 273],
   [/^shri? ?krishna medical college (?:&|and) hospital,\s*muzaffarpur/i, 435],
-  [/^sjp medical college,\s*bharatpur/i, 313],
-  // MCC's 2025 "GOVERNMENT MEDICAL COLLEGE - KANNUR" was attached to Kannur Medical College (a private college,
-  // no All India seats); it is GMC Kannur at Pariyaram, where MCC's 2026 rows sit.
-  [/^government medical college\s*-\s*kannur/i, 77],
 ];
-
-// One college, two ids: our PG list holds many hospitals twice — the MD/MS entry and a DNB/NBEMS entry named
-// with a PIN code — and in one of the two years the import put MCC's All India rows on the second. Split, a
-// college shows as two rows with one year each. Each pair checked by hand on 2026-10-24: MCC's own wording in
-// the two years names the same college. The id kept is the MD/MS entry.
-const SAME_AS = new Map([
-  [425, 424], // Jawaharlal Nehru Medical College, Bhagalpur
-  [1833, 83], // MP Shah Medical College, Jamnagar
-  [407, 263], // Shri Vasantrao Naik GMC, Yavatmal
-  [1157, 326], // Shri Bhausaheb Hire GMC, Dhule
-  [1861, 188], // Guru Gobind Singh Medical College, Faridkot
-  [174, 306], // Government Institute of Medical Sciences, Greater Noida
-  [1225, 956], // Maharaja Suheldev ASMC (MCC 2026: Rajkiya Allopathic Medical College), Bahraich
-  [1884, 701], // Dr Bhimrao Ramji Ambedkar GMC, Kannauj
-  [1262, 60], // Nilratan Sircar Medical College, Kolkata
-  [1832, 66], // Medical College, Kolkata (MCC 2026: "Govt. Medical College, Kolkata, MEDICAL COLLEGE, KOLKATA")
-  [705, 406], // Atal Bihari Vajpayee GMC, Vidisha (MCC 2026: "Government Medical College, Vidisha", same NH-86 campus)
-]);
-/** The college a row belongs to: a named correction first, then the import's id, then its MD/MS twin. */
-const placeOf = (r) => {
-  const id = ALIAS.find(([re]) => re.test(r.mcc ?? ""))?.[1] ?? r.institute_id ?? null;
-  return id == null ? null : SAME_AS.get(id) ?? id;
-};
+/** The college a row belongs to: the named correction, else the import's id. */
+const placeOf = (r) => ALIAS.find(([re]) => re.test(r.mcc ?? ""))?.[1] ?? r.institute_id ?? null;
 
 // One spelling per state, as the site's own counts fold them.
 const STATE_FOLD = { pondicherry: "Puducherry", orissa: "Odisha", chattisgarh: "Chhattisgarh", "jammu & kashmir": "Jammu and Kashmir" };

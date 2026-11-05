@@ -41,11 +41,8 @@ const BRANCHES = [
 ];
 
 const isPaid = (q) => /self.?financed|paid seat|management/i.test(q ?? "");
-// MCC's 2025 "SRM MEDICAL COLLEGE HOSPITAL AND RESEARCH CENTRE, SRM IST, KATTANKULATHUR, CHENGALPATTU DIST" was
-// attached to Trichy SRM (2061, not a deemed university); it is SRM Kattankulathur (1523), where 2026's rows sit.
-// Checked by hand on 2026-10-24 against MCC's full wording in both years.
-const SAME_AS = new Map([[2061, 1523]]);
-const placeOf = (r) => (r.institute_id == null ? null : SAME_AS.get(r.institute_id) ?? r.institute_id);
+// MCC's 2025 SRM Kattankulathur rows (once on Trichy SRM, 2061) sit on 1523 in mcc_allotments since 2026-11-05.
+const placeOf = (r) => r.institute_id ?? null;
 
 const STATE_FOLD = { pondicherry: "Puducherry", orissa: "Odisha", chattisgarh: "Chhattisgarh" };
 const foldState = (s) => (s ? STATE_FOLD[s.trim().toLowerCase()] ?? s.trim() : "");
@@ -86,7 +83,7 @@ for (const r of rows) {
     continue;
   }
   const c = colleges.get(id) ?? { id, name: "", state: "", cut: BRANCHES.map(() => ({})), nriCut: BRANCHES.map(() => ({})), nri: false, minority: new Set(), paid: false };
-  // The name and state are the college's own record, never a row placed on it by SAME_AS.
+  // The name and state are the college's own record.
   if (r.institute_id === id && r.name && !c.name) {
     c.name = cleanName(r.name);
     c.state = foldState(r.state);
