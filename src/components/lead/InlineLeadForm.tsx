@@ -247,14 +247,14 @@ export const InlineLeadForm = ({
 
   if (status === 'success') {
     return (
-      <div className="bg-slate-900/60 dark:bg-slate-950/60 backdrop-blur-xl rounded-2xl p-6 border border-emerald-500/20 max-w-md mx-auto w-full shadow-2xl text-center flex flex-col items-center justify-center py-10 space-y-4">
-        <div className="w-14 h-14 bg-emerald-500/10 text-emerald-400 rounded-full flex items-center justify-center border border-emerald-500/20 shadow-lg shadow-emerald-950/50">
+      <div className="bg-card rounded-2xl p-6 border border-emerald-500/20 max-w-md mx-auto w-full shadow-sm text-center flex flex-col items-center justify-center py-10 space-y-4">
+        <div className="w-14 h-14 bg-emerald-500/10 text-accent rounded-full flex items-center justify-center border border-emerald-500/20 ">
           <CheckCircle2 className="w-7 h-7 animate-bounce" />
         </div>
         
         <div>
-          <h3 className="text-base font-black text-emerald-400 mb-1">Submitted Successfully!</h3>
-          <p className="text-xs text-slate-300 font-bold max-w-xs mx-auto">
+          <h3 className="text-base font-black text-accent mb-1">Submitted Successfully!</h3>
+          <p className="text-xs text-foreground font-bold max-w-xs mx-auto">
             Opening your prefilled advice strategy chat on WhatsApp...
           </p>
         </div>
@@ -272,35 +272,35 @@ export const InlineLeadForm = ({
   }
 
   return (
-    <div className="bg-slate-900/60 dark:bg-slate-950/60 backdrop-blur-xl rounded-2xl p-5 md:p-6 shadow-2xl border border-white/10 max-w-md mx-auto w-full relative overflow-hidden text-left">
+    <div className="bg-card rounded-2xl p-5 md:p-6 shadow-sm border border-border max-w-md mx-auto w-full relative overflow-hidden text-left">
       {/* 1. Elite Operational Header */}
-      <div className="border-b border-white/10 pb-4 mb-4">
+      <div className="border-b border-border pb-4 mb-4">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
-            <span className="text-[11.5px] font-black uppercase tracking-wider text-emerald-400">
+            <span className="text-[11.5px] font-black uppercase tracking-wider text-accent">
               {copy.desk}
             </span>
           </div>
-          <div className="flex items-center gap-1 text-slate-400 text-[11.5px] font-bold">
-            <Clock className="w-3 h-3 text-slate-400" />
+          <div className="flex items-center gap-1 text-muted-foreground text-[11.5px] font-bold">
+            <Clock className="w-3 h-3 text-muted-foreground" />
             <span>Open daily 10 AM – 10 PM</span>
           </div>
         </div>
-        <div className="flex items-center justify-between text-[11px] text-slate-400 font-bold uppercase tracking-wider">
+        <div className="flex items-center justify-between text-[11px] text-muted-foreground font-bold uppercase tracking-wider">
           <span><TeamFigure k="students" /> {copy.guided.toLowerCase()}</span>
           <span>🎯 AIQ • STATE • DEEMED • NRI</span>
         </div>
       </div>
 
       <div className="mb-5">
-        <h3 className="text-base font-black text-white tracking-tight mb-1">
+        <h3 className="text-base font-black text-foreground tracking-tight mb-1">
           {copy.title}
         </h3>
-        <p className="text-[11px] text-slate-400 font-bold leading-normal">
+        <p className="text-[11px] text-muted-foreground font-bold leading-normal">
           {copy.intro}
         </p>
       </div>
@@ -310,15 +310,15 @@ export const InlineLeadForm = ({
         <form onSubmit={handleNextStep} className="space-y-4">
           {/* Rank Field */}
           <div>
-            <label className="block text-[11.5px] font-black text-slate-300 uppercase tracking-wider mb-1.5 ml-0.5">
+            <label className="block text-[11.5px] font-black text-foreground uppercase tracking-wider mb-1.5 ml-0.5">
               {copy.rankLabel}
             </label>
             <div className="relative">
-              <Award className="absolute left-3 top-2.5 w-4 h-4 text-slate-500" />
+              <Award className="absolute left-3 top-2.5 w-4 h-4 text-muted-foreground" />
               <input
                 type="text"
                 required
-                className="w-full pl-9 pr-3 py-3 md:py-2 bg-slate-950/40 border border-white/10 focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-base md:text-xs text-white placeholder-slate-600 outline-none"
+                className="w-full pl-9 pr-3 py-3 md:py-2 bg-background border border-border focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-base md:text-xs text-foreground placeholder:text-muted-foreground outline-none"
                 inputMode="numeric"
                 aria-label={copy.rankLabel}
                 placeholder="e.g. 4500"
@@ -326,7 +326,7 @@ export const InlineLeadForm = ({
                 onChange={e => setFormData({ ...formData, rank: e.target.value.replace(/\D/g, '') })}
               />
             </div>
-            <p className="text-[11.5px] text-slate-500 font-bold mt-1 ml-0.5">
+            <p className="text-[11.5px] text-muted-foreground font-bold mt-1 ml-0.5">
               {rankCheck && !rankCheck.ok ? rankCheck.error : copy.rankHint}
             </p>
           </div>
@@ -336,7 +336,7 @@ export const InlineLeadForm = ({
             <a
               data-aa-mask
               href={`/neet-college-predictor?course=${copy.course}&rank=${rankCheck.value}`}
-              className="flex items-center justify-between gap-2 rounded-xl border border-cyan-500/20 bg-cyan-500/5 px-3.5 py-3 text-[11px] font-bold text-cyan-300 transition-colors hover:bg-cyan-500/10"
+              className="flex items-center justify-between gap-2 rounded-xl border border-cyan-500/20 bg-cyan-500/5 px-3.5 py-3 text-[11px] font-bold text-primary-strong transition-colors hover:bg-cyan-500/10"
             >
               <span className="flex items-center gap-1.5">
                 <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
@@ -353,23 +353,23 @@ export const InlineLeadForm = ({
             </label>
             <select
               id="lead-branch"
-              className="w-full px-3 py-3 md:py-2 bg-slate-950/40 border border-white/10 focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-base md:text-xs text-white outline-none cursor-pointer"
+              className="w-full px-3 py-3 md:py-2 bg-background border border-border focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-base md:text-xs text-foreground outline-none cursor-pointer"
               value={formData.preferred_branch}
               onChange={e => setFormData({ ...formData, preferred_branch: e.target.value })}
             >
-              <option className="bg-slate-950" value="">
+              <option className="bg-card" value="">
                 {level === 'ug' ? 'Select a course' : 'Select a specialty'}
               </option>
               {level === 'ug'
                 ? UG_COURSE_SUGGESTIONS.map((course) => (
-                    <option key={course} className="bg-slate-950" value={course}>
+                    <option key={course} className="bg-card" value={course}>
                       {course}
                     </option>
                   ))
                 : branchGroups.map((g) => (
-                    <optgroup key={g.key} label={g.key} className="bg-slate-950">
+                    <optgroup key={g.key} label={g.key} className="bg-card">
                       {g.variants.map((v) => (
-                        <option key={v} className="bg-slate-950" value={v}>
+                        <option key={v} className="bg-card" value={v}>
                           {v}
                         </option>
                       ))}
@@ -393,8 +393,8 @@ export const InlineLeadForm = ({
                     onClick={() => handleStateToggle(state)}
                     className={`text-xs md:text-[11.5px] px-3 md:px-2 py-2.5 md:py-1 min-h-11 md:min-h-0 rounded-lg border font-bold transition-all cursor-pointer ${
                       isSelected 
-                        ? 'bg-cyan-600/25 border-cyan-500 text-cyan-300' 
-                        : 'bg-slate-950/20 border-white/10 text-slate-400 hover:border-white/20'
+                        ? 'bg-primary-soft border-primary text-primary-strong' 
+                        : 'bg-background border-border text-muted-foreground hover:border-primary/40'
                     }`}
                   >
                     {state} {isSelected && '✓'}
@@ -412,7 +412,7 @@ export const InlineLeadForm = ({
               <label className="block text-[11.5px] font-black text-slate-355 uppercase tracking-wider mb-1.5 ml-0.5">
                 Quota Focus
               </label>
-              <div className="flex gap-1 bg-slate-950/40 p-1 border border-white/5 rounded-xl">
+              <div className="flex gap-1 bg-background p-1 border border-border rounded-xl">
                 {['AIQ', 'State', 'Deemed'].map((quota) => {
                   const isActive = formData.quota_interest === quota;
                   return (
@@ -422,8 +422,8 @@ export const InlineLeadForm = ({
                       onClick={() => setFormData({ ...formData, quota_interest: quota })}
                       className={`flex-1 text-xs md:text-[11.5px] py-2.5 md:py-1 min-h-11 md:min-h-0 rounded-lg font-black transition-all cursor-pointer ${
                         isActive 
-                          ? 'bg-cyan-600/30 text-cyan-300 border border-cyan-500/20' 
-                          : 'text-slate-400 hover:text-white border border-transparent'
+                          ? 'bg-primary-soft text-primary-strong border border-primary/30' 
+                          : 'text-muted-foreground hover:text-foreground border border-transparent'
                       }`}
                     >
                       {quota}
@@ -439,7 +439,7 @@ export const InlineLeadForm = ({
               <label className="block text-[11.5px] font-black text-slate-355 uppercase tracking-wider mb-1.5 ml-0.5">
                 Internship Status
               </label>
-              <div className="flex gap-1 bg-slate-950/40 p-1 border border-white/5 rounded-xl">
+              <div className="flex gap-1 bg-background p-1 border border-border rounded-xl">
                 {['Completed', 'Ongoing'].map((statusOption) => {
                   const isActive = formData.internship_status === statusOption;
                   return (
@@ -449,8 +449,8 @@ export const InlineLeadForm = ({
                       onClick={() => setFormData({ ...formData, internship_status: statusOption })}
                       className={`flex-1 text-xs md:text-[11.5px] py-2.5 md:py-1 min-h-11 md:min-h-0 rounded-lg font-black transition-all cursor-pointer ${
                         isActive 
-                          ? 'bg-cyan-600/30 text-cyan-300 border border-cyan-500/20' 
-                          : 'text-slate-400 hover:text-white border border-transparent'
+                          ? 'bg-primary-soft text-primary-strong border border-primary/30' 
+                          : 'text-muted-foreground hover:text-foreground border border-transparent'
                       }`}
                     >
                       {statusOption === 'Completed' ? 'Done' : 'Ongoing'}
@@ -496,11 +496,11 @@ export const InlineLeadForm = ({
               Full Name
             </label>
             <div className="relative">
-              <User className="absolute left-3 top-2.5 w-4 h-4 text-slate-500" />
+              <User className="absolute left-3 top-2.5 w-4 h-4 text-muted-foreground" />
               <input
                 type="text"
                 required
-                className="w-full pl-9 pr-3 py-3 md:py-2 bg-slate-950/40 border border-white/10 focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-base md:text-xs text-white placeholder-slate-600 outline-none"
+                className="w-full pl-9 pr-3 py-3 md:py-2 bg-background border border-border focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-base md:text-xs text-foreground placeholder:text-muted-foreground outline-none"
                 aria-label="Your name"
                 placeholder={copy.namePlaceholder}
                 value={formData.name}
@@ -515,11 +515,11 @@ export const InlineLeadForm = ({
               Mobile Number
             </label>
             <div className="relative">
-              <Phone className="absolute left-3 top-2.5 w-4 h-4 text-slate-500" />
+              <Phone className="absolute left-3 top-2.5 w-4 h-4 text-muted-foreground" />
               <input
                 type="tel"
                 required
-                className="w-full pl-9 pr-3 py-3 md:py-2 bg-slate-950/40 border border-white/10 focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-base md:text-xs text-white placeholder-slate-600 outline-none"
+                className="w-full pl-9 pr-3 py-3 md:py-2 bg-background border border-border focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/20 rounded-xl transition-all text-base md:text-xs text-foreground placeholder:text-muted-foreground outline-none"
                 aria-label="Your mobile number"
                 inputMode="tel"
                 autoComplete="tel"
@@ -531,29 +531,29 @@ export const InlineLeadForm = ({
           </div>
 
           {/* Summary Panel */}
-          <div className="bg-slate-950/30 border border-white/5 rounded-xl p-3 text-[11.5px] space-y-1.5">
-            <span className="text-slate-400 font-bold block uppercase tracking-wider text-[11px] mb-1">
+          <div className="bg-surface-2 border border-border rounded-xl p-3 text-[11.5px] space-y-1.5">
+            <span className="text-muted-foreground font-bold block uppercase tracking-wider text-[11px] mb-1">
               Intake Summary:
             </span>
             <div data-aa-mask className="flex justify-between">
-              <span className="text-slate-500">{copy.rankShort}:</span>
-              <span className="text-white font-bold">AIR {formData.rank}</span>
+              <span className="text-muted-foreground">{copy.rankShort}:</span>
+              <span className="text-foreground font-bold">AIR {formData.rank}</span>
             </div>
             {formData.preferred_branch && (
               <div className="flex justify-between">
-                <span className="text-slate-500">{level === 'ug' ? 'Course' : 'Specialty'}:</span>
-                <span className="text-white font-bold">{formData.preferred_branch}</span>
+                <span className="text-muted-foreground">{level === 'ug' ? 'Course' : 'Specialty'}:</span>
+                <span className="text-foreground font-bold">{formData.preferred_branch}</span>
               </div>
             )}
             {formData.preferred_state.length > 0 && (
               <div className="flex justify-between">
-                <span className="text-slate-500">States:</span>
-                <span className="text-white font-bold max-w-[150px] truncate text-right">{formData.preferred_state.join(', ')}</span>
+                <span className="text-muted-foreground">States:</span>
+                <span className="text-foreground font-bold max-w-[150px] truncate text-right">{formData.preferred_state.join(', ')}</span>
               </div>
             )}
             <div className="flex justify-between">
-              <span className="text-slate-500">Target Pathway:</span>
-              <span className="text-white font-bold">{formData.quota_interest} Quota</span>
+              <span className="text-muted-foreground">Target Pathway:</span>
+              <span className="text-foreground font-bold">{formData.quota_interest} Quota</span>
             </div>
           </div>
 
@@ -568,7 +568,7 @@ export const InlineLeadForm = ({
             <button
               type="button"
               onClick={() => setStep(1)}
-              className="flex-1 flex items-center justify-center gap-1.5 border border-white/10 hover:border-white/20 active:scale-[0.98] text-white py-3.5 md:py-2.5 rounded-xl font-bold text-xs transition-all cursor-pointer"
+              className="flex-1 flex items-center justify-center gap-1.5 border border-border hover:border-primary/40 active:scale-[0.98] text-foreground py-3.5 md:py-2.5 rounded-xl font-bold text-xs transition-all cursor-pointer"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Back</span>
@@ -593,7 +593,7 @@ export const InlineLeadForm = ({
       )}
 
       {/* Trust Reminder */}
-      <p className="text-[11px] text-center text-slate-500 mt-4 font-bold flex items-center justify-center gap-1.5">
+      <p className="text-[11px] text-center text-muted-foreground mt-4 font-bold flex items-center justify-center gap-1.5">
         <Heart className="w-3 h-3 text-red-500/80" />
         <span>🔒 Your details go only to your counsellor.</span>
       </p>

@@ -52,13 +52,13 @@ const NRIFAQ = ({ items: fromCms, copy }: { items?: NriFaq[]; copy?: NriFaqCopy 
 
   return (
     <section id="faq" className="py-24 relative overflow-hidden">
-      <div className="absolute inset-0 bg-slate-900 -z-10" />
+      <div className="absolute inset-0 bg-surface-2 -z-10" />
       <div className="container-custom">
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <h2 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight">
+          <h2 className="text-3xl md:text-5xl font-black text-foreground mb-6 tracking-tight">
             {text.title}
           </h2>
-          <p className="text-cyan-100/70 text-lg font-medium">
+          <p className="text-muted-foreground text-lg font-medium">
             {text.subtitle}
           </p>
         </div>
@@ -66,11 +66,11 @@ const NRIFAQ = ({ items: fromCms, copy }: { items?: NriFaq[]; copy?: NriFaqCopy 
         <div className="max-w-4xl mx-auto">
           <Accordion type="single" collapsible className="space-y-6">
             {items.map((faq, idx) => (
-              <AccordionItem key={idx} value={`item-${idx}`} className="glass-dark rounded-3xl border border-white/10 overflow-hidden shadow-2xl group">
-                <AccordionTrigger className="px-8 py-6 text-xl font-bold text-white hover:text-cyan-400 text-left transition-all no-underline hover:no-underline">
+              <AccordionItem key={idx} value={`item-${idx}`} className="bg-card rounded-3xl border border-border overflow-hidden shadow-sm group">
+                <AccordionTrigger className="px-8 py-6 text-xl font-bold text-foreground hover:text-primary-strong text-left transition-all no-underline hover:no-underline">
                   {faq.q}
                 </AccordionTrigger>
-                <AccordionContent className="px-8 pb-8 text-cyan-100/70 text-lg leading-relaxed font-medium border-t border-white/5 pt-6">
+                <AccordionContent className="px-8 pb-8 text-muted-foreground text-lg leading-relaxed font-medium border-t border-border pt-6">
                   {faq.a}
                 </AccordionContent>
               </AccordionItem>

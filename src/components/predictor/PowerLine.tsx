@@ -25,14 +25,14 @@ export default function PowerLine({
   const target = href ?? wa;
   const external = !href;
   const cls =
-    "inline-flex min-h-11 shrink-0 items-center gap-2 rounded-xl bg-white px-4 text-[14px] font-bold text-slate-900 shadow-sm transition-transform hover:-translate-y-0.5";
+    "inline-flex min-h-11 shrink-0 items-center gap-2 rounded-xl bg-primary-strong px-4 text-[14px] font-bold text-primary-foreground shadow-sm transition-transform hover:-translate-y-0.5";
   return (
-    <div className="flex flex-col gap-4 rounded-2xl bg-gradient-to-r from-slate-900 via-cyan-950 to-slate-900 p-5 text-white shadow-lift sm:flex-row sm:items-center sm:justify-between md:px-7">
+    <div className="flex flex-col gap-4 rounded-2xl border border-primary/25 bg-primary-soft p-5 text-foreground sm:flex-row sm:items-center sm:justify-between md:px-7">
       <p className="flex items-start gap-3 text-[15px] leading-snug">
-        <Sparkles className="mt-0.5 h-5 w-5 shrink-0 text-cyan-300" aria-hidden="true" />
+        <Sparkles className="mt-0.5 h-5 w-5 shrink-0 text-primary-strong dark:text-primary" aria-hidden="true" />
         <span>
-          <span className="text-cyan-50/85">{lead} </span>
-          <span className="font-heading font-extrabold text-transparent bg-gradient-to-r from-cyan-300 to-emerald-300 bg-clip-text">
+          <span className="text-muted-foreground">{lead} </span>
+          <span className="font-heading font-extrabold text-primary-strong dark:text-primary">
             {punch}
           </span>
         </span>

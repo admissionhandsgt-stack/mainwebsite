@@ -55,57 +55,57 @@ export default function LeadCapture({
   const wa = CONTACT_INFO.whatsapp.replace(/\D/g, "");
   const predictor = `/neet-college-predictor?course=${level === "ug" ? "mbbs" : "pg"}`;
 
+  // Light, like every section since 2026-10-21 (owner: no dark blocks): a primary-soft wash, words on the left, the
+  // counsellors and the buttons on a white card. Tokens only, so dark mode still works.
   return (
     <section id="enquiry" className="container-custom mb-16 mt-4 scroll-mt-24" aria-labelledby="enquiry-heading">
-      <div className="relative overflow-hidden rounded-2xl border border-transparent bg-gradient-to-br from-slate-900 to-cyan-950 p-6 text-white shadow-2xl dark:border-slate-800 dark:from-slate-950 dark:to-cyan-950/80 md:p-10">
-        <div className="pointer-events-none absolute right-0 top-0 h-64 w-64 rounded-full bg-cyan-500 opacity-20 mix-blend-multiply blur-3xl" />
+      <div className="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-br from-primary-soft to-background p-6 md:p-10">
+        <div className="bg-grid pointer-events-none absolute inset-0 opacity-[0.05]" aria-hidden="true" />
 
         <div className="relative z-10 grid items-center gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-12">
           <div>
-            <h2 id="enquiry-heading" className="text-[1.65rem] font-black leading-[1.15] tracking-tight md:text-[2.15rem]">
+            <h2 id="enquiry-heading" className="font-heading text-[1.65rem] font-black leading-[1.15] tracking-tight text-foreground md:text-[2.15rem]">
               {customTitle ?? (
                 <>
                   Same rank — or even better — and still a lower seat?{" "}
-                  <span className="bg-gradient-to-r from-cyan-300 to-emerald-300 bg-clip-text text-transparent">
-                    The difference is your counsellor.
-                  </span>
+                  <span className="text-primary-strong dark:text-primary">The difference is your counsellor.</span>
                 </>
               )}
             </h2>
-            <p className="mb-6 mt-3 text-[15px] font-medium leading-relaxed text-cyan-100/80 md:text-base">{blurb}</p>
+            <p className="mb-6 mt-3 text-[15px] leading-relaxed text-muted-foreground md:text-base">{blurb}</p>
 
             {bullets.length > 0 ? (
               <ul className="space-y-2">
                 {bullets.map((item, i) => (
                   <li key={i} className="flex items-center gap-2">
-                    <span aria-hidden="true" className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-500">
-                      <svg className="h-2.5 w-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <span aria-hidden="true" className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-accent">
+                      <svg className="h-2.5 w-2.5 text-accent-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                       </svg>
                     </span>
-                    <span className="text-sm font-bold text-cyan-50">{item}</span>
+                    <span className="text-sm font-bold text-foreground">{item}</span>
                   </li>
                 ))}
               </ul>
             ) : (
               <ul className="grid grid-cols-2 gap-3">
                 {TILES.map((t) => (
-                  <li key={t.title} className="rounded-xl border border-white/10 bg-white/[0.06] p-3 backdrop-blur-sm sm:p-4">
-                    <t.icon className="h-5 w-5 text-cyan-300" aria-hidden="true" />
-                    <p className="mt-2 text-[15px] font-bold text-white">{t.title}</p>
-                    <p className="mt-0.5 text-[12.5px] leading-snug text-cyan-100/70 sm:text-[13px]">{t.body}</p>
+                  <li key={t.title} className="rounded-xl border border-border bg-card p-3 shadow-sm sm:p-4">
+                    <t.icon className="h-5 w-5 text-primary-strong dark:text-primary" aria-hidden="true" />
+                    <p className="mt-2 text-[15px] font-bold text-foreground">{t.title}</p>
+                    <p className="mt-0.5 text-[12.5px] leading-snug text-muted-foreground sm:text-[13px]">{t.body}</p>
                   </li>
                 ))}
               </ul>
             )}
 
             {withForm && (
-              <div className="mt-6 flex items-center gap-3 border-t border-white/10 pt-5">
-                <CounsellorFaces tone="dark" />
-                <p className="text-[13.5px] leading-snug text-cyan-100/80">
+              <div className="mt-6 flex items-center gap-3 border-t border-border pt-5">
+                <CounsellorFaces tone="light" />
+                <p className="text-[13.5px] leading-snug text-muted-foreground">
                   <TeamFigure k="years" /> years of NEET counselling.
                   <br />
-                  <span className="font-semibold text-white">Expert counsellors, open daily 10 AM – 10 PM.</span>
+                  <span className="font-semibold text-foreground">Expert counsellors, open daily 10 AM – 10 PM.</span>
                 </p>
               </div>
             )}
@@ -115,36 +115,36 @@ export default function LeadCapture({
             {withForm ? (
               <InlineLeadForm source={source} level={level} />
             ) : (
-              <div className="rounded-2xl border border-white/10 bg-slate-950/60 p-6 backdrop-blur md:p-7">
-                <p className="flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.12em] text-emerald-300">
-                  <span className="h-2 w-2 rounded-full bg-emerald-400" aria-hidden="true" /> Expert counsellors · open daily 10 AM – 10 PM
+              <div className="rounded-2xl border border-border bg-card p-6 shadow-sm md:p-7">
+                <p className="flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.12em] text-accent">
+                  <span className="h-2 w-2 rounded-full bg-accent" aria-hidden="true" /> Expert counsellors · open daily 10 AM – 10 PM
                 </p>
-                <p className="font-heading mt-3 text-[1.35rem] font-extrabold leading-tight text-white">
+                <p className="font-heading mt-3 text-[1.35rem] font-extrabold leading-tight text-foreground">
                   Talk to the people who make these calls
                 </p>
-                <p className="mt-1 text-[13.5px] text-cyan-100/70"><TeamFigure k="years" /> years of NEET counselling. Tap a counsellor to see their card.</p>
+                <p className="mt-1 text-[13.5px] text-muted-foreground"><TeamFigure k="years" /> years of NEET counselling. Tap a counsellor to see their card.</p>
                 <div className="mt-5">
-                  <CounsellorFaces tone="dark" withNames />
+                  <CounsellorFaces tone="light" withNames />
                 </div>
                 <div className="mt-5 grid gap-2.5 sm:grid-cols-2">
                   <a
                     href={`https://wa.me/${wa}?text=${encodeURIComponent("Hello AdmissionHands, I would like to talk to an expert counsellor about my NEET admission.")}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#25D366] px-4 text-[15px] font-bold text-white hover:bg-[#1fbf5b]"
+                    className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-accent px-4 text-[15px] font-bold text-accent-foreground hover:bg-accent/90"
                   >
                     <WhatsAppIcon className="h-5 w-5" /> WhatsApp
                   </a>
                   <a
                     href={`tel:${CONTACT_INFO.phone}`}
-                    className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.06] px-4 text-[15px] font-bold text-white hover:border-cyan-300/50"
+                    className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 text-[15px] font-bold text-foreground hover:border-primary/40"
                   >
                     <Phone className="h-4 w-4" aria-hidden="true" /> Call now
                   </a>
                 </div>
                 <Link
                   href={predictor}
-                  className="mt-3 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 px-4 text-[15px] font-bold text-white shadow-lg"
+                  className="mt-3 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary-strong px-4 text-[15px] font-bold text-primary-foreground shadow-sm hover:bg-primary-strong/90"
                 >
                   Check my chances first <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Link>

@@ -323,13 +323,13 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
       </section>
 
       {/* ═══════════════ OUR PHILOSOPHY ═══════════════ */}
-      <section className="py-10 md:py-14 bg-slate-950 text-white">
+      <section className="py-10 md:py-14 bg-primary-soft text-foreground">
         <div className="container-custom max-w-4xl text-center">
           <motion.div 
             initial={mounted ? { opacity: 0, scale: 0.95 } : false}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-block px-3 py-1 mb-4 text-[11px] font-black tracking-widest text-cyan-300 uppercase bg-white/10 rounded-full border border-white/20"
+            className="inline-block px-3 py-1 mb-4 text-[11px] font-black tracking-widest text-primary-strong uppercase bg-card rounded-full border border-primary/30"
           >
             OUR PHILOSOPHY
           </motion.div>
@@ -338,16 +338,16 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
             initial={mounted ? { opacity: 0, y: 10 } : false}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-2xl md:text-4xl font-black text-white tracking-tight mb-4"
+            className="text-2xl md:text-4xl font-black text-foreground tracking-tight mb-4"
           >
-            We Measure Success in <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-teal-300">Seats Secured</span>, Not Promises Made
+            We Measure Success in <span className="text-primary-strong">Seats Secured</span>, Not Promises Made
           </motion.h2>
           
           <motion.p 
             initial={mounted ? { opacity: 0 } : false}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-cyan-100/80 text-sm md:text-base font-medium leading-relaxed max-w-3xl mx-auto mb-8"
+            className="text-muted-foreground text-sm md:text-base font-medium leading-relaxed max-w-3xl mx-auto mb-8"
           >
             Our belief is simple: the NEET counselling system rewards preparation, precision, and speed. Families who enter the process armed with data, expert strategy, and airtight documentation consistently outperform those who rely on luck. We exist to deliver that unfair advantage — ethically, transparently, and relentlessly.
           </motion.p>
@@ -366,13 +366,13 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
             ].map((item, idx) => (
               <div 
                 key={idx}
-                className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-5 text-center transition-all duration-300 hover:bg-white/10"
+                className="bg-card backdrop-blur-sm border border-border rounded-xl p-5 text-center transition-all duration-300 hover:bg-card"
               >
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-teal-600 flex items-center justify-center text-white mb-3 mx-auto shadow-md">
                   <item.icon className="w-5 h-5" />
                 </div>
-                <h3 className="text-base font-black text-white mb-1.5">{item.title}</h3>
-                <p className="text-cyan-100/70 text-xs font-medium leading-relaxed">{item.desc}</p>
+                <h3 className="text-base font-black text-foreground mb-1.5">{item.title}</h3>
+                <p className="text-muted-foreground text-xs font-medium leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </motion.div>
