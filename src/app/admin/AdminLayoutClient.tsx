@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   ArrowUpRight, Users, Bell, Video, School, LogOut, ImageIcon, GitBranch, Inbox, LayoutDashboard,
-  SlidersHorizontal, MapPin, Menu, Search, AlertTriangle, FileText, Megaphone, X, Settings2, MessageCircle, Database,
+  SlidersHorizontal, MapPin, Menu, Search, AlertTriangle, FileText, Megaphone, X, Settings2, MessageCircle, Database, BellRing,
 } from 'lucide-react';
 import { AuthProvider, useAuth } from '@/hooks/useAuth';
 import { ProtectedRoute } from '@/components/admin/ProtectedRoute';
@@ -50,6 +50,7 @@ const NAV: { label: string; items: NavItem[] }[] = [
       { name: 'Navigation', href: '/admin/navigation', icon: Menu },
       { name: 'Search & sharing', href: '/admin/seo', icon: Search },
       { name: 'Live alerts', href: '/admin/live-alerts', icon: Bell },
+      { name: 'Notices (Zyn)', href: '/admin/notices', icon: BellRing },
       { name: 'Videos', href: '/admin/videos', icon: Video },
       { name: 'Media', href: '/admin/media', icon: ImageIcon },
       { name: 'Contacts', href: '/admin/contacts', icon: Users },

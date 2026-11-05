@@ -48,7 +48,14 @@ export type IntegrationKey =
   | "counselor.branches"
   | "counselor.branches_at"
   // Who gets reminders and the morning digest: JSON [{ "name", "phone" }].
-  | "alerts.staff";
+  | "alerts.staff"
+  // Counselling notices approved by the owner in Zyn's Telegram flow (lib/zynNotices.ts): the endpoint, its key
+  // (a secret), the switch, the cursor (last approved_at taken) and the last run's summary (JSON).
+  | "zyn.notices.url"
+  | "zyn.notices.key"
+  | "zyn.notices.enabled"
+  | "zyn.notices.cursor"
+  | "zyn.notices.last";
 
 /**
  * The environment variable that overrides each key, where one exists.
