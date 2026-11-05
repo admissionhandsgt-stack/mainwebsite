@@ -6,6 +6,23 @@
 
 import type { CourseCutoff } from "@/lib/collegeQueries";
 import { GENERAL_CODES, isMeritQuota, rankBand } from "@/lib/chance";
+import { categoryKey } from "@/lib/categoryScope";
+
+/**
+ * The reserved categories a college page shows as bands too (owner, 2026-11-05) — EWS, OBC, SC and ST, matched by
+ * the authority's own code only: the national spelling, and Gujarat's government-quota "GQ-" form of the same list.
+ * A state's own groups (Karnataka 2A, Telangana BC-B, Gujarat's SEBC, sub-categorised SC lists) are not folded into
+ * OBC or SC — a central-list candidate is not on them. PwD, NRI and management stay with the chance view.
+ */
+export const BAND_CATEGORIES = ["EWS", "OBC", "SC", "ST"] as const;
+export type BandCategory = (typeof BAND_CATEGORIES)[number];
+const FAMILY = new Map<string, BandCategory>(
+  BAND_CATEGORIES.flatMap((c) => [[categoryKey(c), c] as [string, BandCategory]]).concat([
+    [categoryKey("GQ-EW"), "EWS"],
+    [categoryKey("GQ-SC"), "SC"],
+    [categoryKey("GQ-ST"), "ST"],
+  ]),
+);
 
 export interface BandRow {
   course: string;
@@ -15,6 +32,8 @@ export interface BandRow {
   /** Year on year, in words only: was the last seat taken at a later rank, an earlier one, or about the same? */
   trend: "easier" | "tighter" | "steady" | null;
   seats: number | null;
+  /** The same course and quota in the same year, per reserved category — a band each, never a rank. */
+  byCategory: Partial<Record<BandCategory, string>>;
 }
 
 const trendOf = (latest: number | null, previous: number | null): BandRow["trend"] => {
@@ -34,6 +53,15 @@ const allIndia = (q: string) => /all india|aiq/i.test(q);
  */
 export function generalBands(cutoffs: CourseCutoff[], max = 12): BandRow[] {
   const best = new Map<string, CourseCutoff>();
+  // course | quota | category -> the seat, for the reserved columns (more seats wins, as for general).
+  const reserved = new Map<string, CourseCutoff>();
+  for (const c of cutoffs) {
+    const fam = FAMILY.get(categoryKey(c.category));
+    if (!fam || !isMeritQuota(c.quota) || !(c.widestLatest ?? c.r1Latest)) continue;
+    const key = `${c.course}|${c.quota}|${fam}`;
+    const prev = reserved.get(key);
+    if (!prev || (c.seats ?? 0) > (prev.seats ?? 0)) reserved.set(key, c);
+  }
   for (const c of cutoffs) {
     if (!GENERAL_CODES.has(c.category) || !isMeritQuota(c.quota)) continue;
     const reach = c.widestLatest ?? c.r1Latest;
@@ -58,6 +86,15 @@ export function generalBands(cutoffs: CourseCutoff[], max = 12): BandRow[] {
       year: c.latestYear,
       trend: trendOf(c.widestLatest, c.widestPrevious),
       seats: c.seats,
+      byCategory: Object.fromEntries(
+        BAND_CATEGORIES.flatMap((fam) => {
+          const r = reserved.get(`${c.course}|${c.quota}|${fam}`);
+          // Only the general row's own year: seat_options keeps each seat's latest year, which can differ.
+          if (!r || r.latestYear !== c.latestYear) return [];
+          const band = rankBand(r.widestLatest ?? r.r1Latest);
+          return band ? [[fam, band]] : [];
+        }),
+      ) as BandRow["byCategory"],
     }));
 }
 

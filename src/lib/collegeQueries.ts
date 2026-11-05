@@ -223,6 +223,8 @@ export interface CollegeFee {
   course: string;
   quota: string;
   feeInr: number | null;
+  /** The dollar figure, where the college charges in dollars (feeCurrency "USD") — the exact one; feeInr converts it. */
+  feeUsd: number | null;
   /** "per year", "first year", "whole course", "not stated" — or null (as imported; read as a year's fee). */
   feePeriodicity: string | null;
   /** "Tuition fee" or "Fee (as printed) - …" (migration 0046); null where no labelled pass has reached the row. */
@@ -245,7 +247,7 @@ export interface CollegeFee {
 export async function getCollegeFees(slug: string, level: Level): Promise<CollegeFee[]> {
   return rows<Record<string, unknown>>(
     await db.execute(sql`
-      SELECT c.name AS course, q.code AS quota, f.fee_inr, f.fee_periodicity, f.fee_label, f.fee_currency,
+      SELECT c.name AS course, q.code AS quota, f.fee_inr, f.fee_usd, f.fee_periodicity, f.fee_label, f.fee_currency,
              (f.fee_source IS NOT NULL) AS official, f.is_carried_forward AS carried, f.year,
              f.hostel_min_inr, f.stipend_y1_inr, f.stipend_y2_inr, f.stipend_y3_inr,
              f.fee_null_reason
@@ -260,6 +262,7 @@ export async function getCollegeFees(slug: string, level: Level): Promise<Colleg
     course: (r.course as string) ?? "—",
     quota: (r.quota as string) ?? "—",
     feeInr: (r.fee_inr as number) ?? null,
+    feeUsd: (r.fee_usd as number) ?? null,
     feePeriodicity: (r.fee_periodicity as string) ?? null,
     feeLabel: (r.fee_label as string) ?? null,
     feeCurrency: (r.fee_currency as string) ?? null,

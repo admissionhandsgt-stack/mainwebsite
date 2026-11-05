@@ -111,6 +111,29 @@ export function approxFeeFor(inr: number | null | undefined, period: string | nu
   return b;
 }
 
+/** A rupee figure written out exactly, Indian grouping: "₹1,67,300", "₹1,20,00,000". */
+export const exactInr = (v: number) => `₹${Math.round(v).toLocaleString("en-IN")}`;
+
+/**
+ * An official 2026-27 figure (fees.fee_source set), exact rather than bracketed (owner, 2026-11-05): the notice printed it,
+ * so the page prints it. A college that charges in dollars is quoted in dollars — the rupee figure is a conversion.
+ * Said for its own period, like approxFeeFor. Null when nothing is published (0 is not a fee).
+ */
+export function exactFeeFor(
+  inr: number | null | undefined,
+  period: string | null | undefined,
+  usd?: number | null,
+  currency?: string | null,
+): string | null {
+  const dollars = currency === "USD" && typeof usd === "number" && usd > 0;
+  if (!dollars && !(typeof inr === "number" && inr > 0)) return null;
+  const figure = dollars ? `US$ ${Math.round(usd!).toLocaleString("en-IN")}` : exactInr(inr!);
+  if (period === "first year") return `${figure} in year 1`;
+  if (period === "whole course") return `${figure} for the whole course`;
+  if (period === "not stated") return figure;
+  return `${figure} /yr`;
+}
+
 /**
  * What a labelled figure is (migration 0046). "Tuition fee" is the tuition alone; "Fee (as printed) - …" /
  * "Fee (as KEA lists it - …)" is the notice's own figure where it prints no tuition alone — never called tuition.
@@ -137,10 +160,16 @@ export function feeKind(label: string | null | undefined): {
 
 /** Under a college's fee table: what each kind of figure is. */
 export const FEE_TABLE_NOTE =
-  "*Approximate brackets. \"Tuition fee\" is the tuition alone — development, university and other charges are extra. " +
-  "\"Fee as printed\" is the notice's own figure where it prints no tuition alone. A dollar fee is shown in rupees " +
-  "at ₹95.98 a dollar, approximately. \"2025-26\" marks a fee the college has not yet published for 2026-27. " +
-  "The exact fee, hostel, deposit and bond for your quota are confirmed with your counsellor.";
+  "Fees marked 2026-27 are printed exactly as the college's or the counselling authority's 2026-27 notice gives them; " +
+  "a figure with * is an approximate bracket from a fee not yet published for 2026-27 (\"2025-26\" where it is last year's). " +
+  "\"Tuition fee\" is the tuition alone — development, university and other charges are extra. \"Fee as printed\" is the " +
+  "notice's own figure where it prints no tuition alone. A college that charges in dollars is quoted in dollars; the rupee " +
+  "figure beside it is at ₹95.98 a dollar, approximately. Confirm the fee, hostel, deposit and bond for your seat with the " +
+  "college or your counsellor before you pay.";
+
+/** Under the summary box when its fee comes from 2026-27 notices. */
+export const FEE_FOOTNOTE_OFFICIAL =
+  "Fees as printed in the colleges' and counselling authorities' 2026-27 notices — the tuition alone wherever the notice prints it; hostel, deposit and bond are extra. Confirm the fee for your seat before you pay.";
 
 /**
  * A rank range is published only over a group of at least this many colleges.
@@ -188,7 +217,7 @@ export function rankBand(rank: number | null | undefined): string | null {
 }
 
 export const BAND_FOOTNOTE =
-  "*A band, not the exact rank — where the last general-category seat on that quota was taken across all rounds of that year. Your counsellor has the round-by-round detail, and your own chance is shown after a free sign-in.";
+  "*A band, not the exact rank — where the last seat of that category on that quota was taken across all rounds of that year. Your counsellor has the round-by-round detail, and your own chance is shown after a free sign-in.";
 
 /**
  * The open / general category, as each counselling spells it — the predictor's lists
@@ -206,5 +235,7 @@ export function isMeritQuota(quota: string): boolean {
   // seat's band as its "general cutoff"; minority and sponsored seats are not
   // open merit seats either. Private colleges' state-merit seats ("Private",
   // "Pvt Govt Quota") are merit and stay.
-  return !/NRI|manag|MNG|Mgmt|Mgt\b|minority|sponsor|paid|deemed|institut|Others|ESI|\bSF-|Open Seat|NQ|MQ/i.test(quota);
+  // Wards' quotas (Delhi's Children/Widows of armed-forces personnel, TN's IRT wards) are open only to those
+  // families and close far down the list — out since 2026-11-05.
+  return !/NRI|manag|MNG|Mgmt|Mgt\b|minority|sponsor|paid|deemed|institut|Others|ESI|\bSF-|Open Seat|NQ|MQ|Widow|IRTWard/i.test(quota);
 }

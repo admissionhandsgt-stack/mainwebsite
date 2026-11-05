@@ -29,7 +29,7 @@
  */
 
 import type { CollegeDetail, CourseCutoff, CollegeFee } from "@/lib/collegeQueries";
-import { approxFee, feeKind, isYearlyFee } from "@/lib/chance";
+import { approxFee, exactInr, feeKind, isYearlyFee } from "@/lib/chance";
 import { generalBands } from "@/lib/cutoffBands";
 
 const SITE = "https://www.admissionhands.com";
@@ -158,13 +158,20 @@ export function collegeFaqs(
       const said = bands
         .map((b) => `${b.band.replace(/\*$/, "")} on the ${b.quota} ${level === "pg" ? b.course + " " : ""}seat`)
         .join(", ");
+      // The first row's reserved categories, each a band on that same seat (owner, 2026-11-05).
+      const first = bands[0];
+      const cats = Object.entries(first.byCategory).map(([c, band]) => `${c} ${band!.replace(/\*$/, "")}`);
       faqs.push({
         q: `What is the ${level === "pg" ? "NEET PG" : "NEET UG"} cutoff for ${college.name}?`,
         a:
-          `For the general category${bands[0].year ? ` in ${bands[0].year}` : ""}, the last seat was taken in the ` +
-          `${said} — these are rank bands across all rounds, not exact ranks. OBC, SC, ST, EWS and PwD seats, ` +
-          `NRI and management close at very different ranks; sign in free on AdmissionHands to see your own ` +
-          `chance at this college, and your counsellor takes you through the round-by-round detail.`,
+          `For the general category${first.year ? ` in ${first.year}` : ""}, the last seat was taken in the ` +
+          `${said} — these are rank bands across all rounds, not exact ranks. ` +
+          (cats.length
+            ? `On the ${first.quota} ${level === "pg" ? first.course + " " : ""}seat the other categories closed at ${cats.join(", ")}. ` +
+              `PwD, NRI and management seats close at very different ranks; `
+            : `OBC, SC, ST, EWS and PwD seats, NRI and management close at very different ranks; `) +
+          `sign in free on AdmissionHands to see your own chance at this college, and your counsellor takes you ` +
+          `through the round-by-round detail.`,
       });
     }
 
@@ -190,7 +197,27 @@ export function collegeFaqs(
   // A year's figures only — a whole-course or period-not-stated fee is never read as a year's (owner, 2026-11-04) —
   // and "tuition" only when every figure is the tuition alone.
   const priced = fees.filter((f) => f.feeInr != null && f.feeInr > 0 && isYearlyFee(f.feePeriodicity));
-  if (priced.length) {
+  // 2026-27 notices' own figures are quoted exactly (owner, 2026-11-05), each end with its seat — a low fee and a high
+  // one from different seats, said without their quotas, read as one seat's range.
+  const official = priced.filter((f) => f.official && f.feeCurrency !== "USD");
+  if (official.length) {
+    const lo = official.reduce((a, b) => (b.feeInr! < a.feeInr! ? b : a));
+    const hi = official.reduce((a, b) => (b.feeInr! > a.feeInr! ? b : a));
+    const tuition = official.every((f) => feeKind(f.feeLabel).kind === "tuition");
+    const what = tuition ? "tuition" : "fee";
+    const seat = (f: CollegeFee) => `a ${f.quota} seat in ${f.course}`;
+    const rest = priced.length > official.length || fees.some((f) => f.feeCurrency === "USD" || !isYearlyFee(f.feePeriodicity));
+    faqs.push({
+      q: `What is the ${level === "pg" ? "PG" : course} fee structure at ${college.name}?`,
+      a:
+        (lo.feeInr === hi.feeInr
+          ? `The 2026-27 ${what} is ${exactInr(lo.feeInr!)} a year on ${seat(lo)}.`
+          : `The 2026-27 ${what} runs from ${exactInr(lo.feeInr!)} a year on ${seat(lo)} to ${exactInr(hi.feeInr!)} a year on ${seat(hi)}.`) +
+        ` These are the figures the 2026-27 notices print${tuition ? " — the tuition alone; development, university and hostel charges are extra" : ""}. ` +
+        (rest ? "The fee table on this page gives every branch and quota, including fees charged in dollars or for the whole course. " : "") +
+        `Confirm the fee, deposit and bond for your seat with the college or your counsellor before you pay.`,
+    });
+  } else if (priced.length) {
     const values = priced.map((f) => f.feeInr!);
     const bracket = approxFee(Math.min(...values), Math.max(...values));
     const tuitionOnly = priced.every((f) => feeKind(f.feeLabel).kind === "tuition");

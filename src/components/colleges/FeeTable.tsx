@@ -1,5 +1,5 @@
 import type { CollegeFee } from "@/lib/collegeQueries";
-import { approxFee, approxFeeFor, feeKind, FEE_TABLE_NOTE } from "@/lib/chance";
+import { approxFee, approxFeeFor, exactFeeFor, exactInr, feeKind, FEE_TABLE_NOTE } from "@/lib/chance";
 
 /**
  * A PG college's fees, one row per branch and one column per quota (owner, 2026-11-04). The old table listed one
@@ -39,7 +39,7 @@ function mode(values: (number | null)[]): number | null {
 /** What a fee cell shows, as one comparable string — two columns merge only when every branch reads the same. */
 const cellKey = (f: CollegeFee | undefined) =>
   f
-    ? JSON.stringify([f.feeInr, f.feePeriodicity, f.feeLabel, f.feeCurrency, f.feeNullReason, f.official, f.carried, f.year])
+    ? JSON.stringify([f.feeInr, f.feeUsd, f.feePeriodicity, f.feeLabel, f.feeCurrency, f.feeNullReason, f.official, f.carried, f.year])
     : "";
 
 /**
@@ -49,11 +49,14 @@ const cellKey = (f: CollegeFee | undefined) =>
 function FeeWhat({ fee }: { fee: CollegeFee }) {
   const { short, detail } = feeKind(fee.feeLabel);
   const earlier = !fee.official && (fee.carried || (fee.year ?? 0) <= 2025);
+  // A dollar fee printed exactly carries its rupee conversion here; a bracketed one says it is charged in dollars.
+  const dollars = fee.feeCurrency === "USD";
+  const rupees = dollars && fee.official && fee.feeUsd != null && fee.feeUsd > 0 && fee.feeInr != null && fee.feeInr > 0;
   const bits = [
     short,
     fee.feePeriodicity === "not stated" ? "per year or whole course not stated" : null,
-    fee.feeCurrency === "USD" ? "charged in US$" : null,
-    earlier ? "2025-26" : null,
+    rupees ? `≈ ${exactInr(fee.feeInr!)}` : dollars ? "charged in US$" : null,
+    fee.official ? "2026-27" : earlier ? "2025-26" : null,
   ].filter(Boolean);
   if (!bits.length && !detail) return null;
   return (
@@ -67,9 +70,11 @@ function FeeWhat({ fee }: { fee: CollegeFee }) {
 function FeeCell({ fee }: { fee: CollegeFee | undefined }) {
   if (!fee) return <span className="text-muted-foreground">—</span>;
   if (fee.feeInr != null && fee.feeInr > 0) {
+    // A 2026-27 notice's figure is printed as the notice gives it; anything else stays an approximate bracket.
+    const exact = fee.official ? exactFeeFor(fee.feeInr, fee.feePeriodicity, fee.feeUsd, fee.feeCurrency) : null;
     return (
       <>
-        {approxFeeFor(fee.feeInr, fee.feePeriodicity)}
+        {exact ?? approxFeeFor(fee.feeInr, fee.feePeriodicity)}
         <FeeWhat fee={fee} />
       </>
     );

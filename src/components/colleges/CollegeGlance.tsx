@@ -1,4 +1,4 @@
-import { BAND_FOOTNOTE, FEE_FOOTNOTE } from "@/lib/chance";
+import { BAND_FOOTNOTE, FEE_FOOTNOTE, FEE_FOOTNOTE_OFFICIAL } from "@/lib/chance";
 import { money, type CollegeSummary } from "@/lib/collegeSnippet";
 
 /**
@@ -15,7 +15,16 @@ export default function CollegeGlance({ s }: { s: CollegeSummary }) {
       value: s.band.text,
       sub: s.kind === "ug" ? (/quota|\baiq\b/i.test(s.band.quota) ? s.band.quota : `${s.band.quota} quota`) : `${s.band.course} · ${s.band.quota}`,
     });
-  if (s.fee) tiles.push({ label: "Tuition / year*", value: s.fee });
+  if (s.fee && s.feeOfficial) {
+    // Exact figures from 2026-27 notices: both ends name their seat, so the low fee is never read against another seat.
+    const { lo, hi, tuition } = s.feeOfficial;
+    const seat = (e: { quota: string; course: string }) => `${e.quota}, ${e.course}`;
+    tiles.push({
+      label: `${tuition ? "Tuition" : "Fee"} / year, 2026-27`,
+      value: s.fee,
+      sub: s.fee.includes("–") ? `From ${seat(lo)} to ${seat(hi)}` : seat(lo),
+    });
+  } else if (s.fee) tiles.push({ label: "Tuition / year*", value: s.fee });
   if (s.seats)
     tiles.push({
       label: s.kind === "ug" ? `${s.course} seats` : s.kind === "dnb" ? "DNB seats" : "PG seats",
@@ -44,7 +53,8 @@ export default function CollegeGlance({ s }: { s: CollegeSummary }) {
       </dl>
       {(s.band || s.fee) && (
         <p className="mt-3 max-w-[90ch] text-[12px] leading-relaxed text-muted-foreground">
-          {s.band ? BAND_FOOTNOTE : ""} {s.fee ? FEE_FOOTNOTE.replace(/^\*/, "") : ""}
+          {s.band ? BAND_FOOTNOTE : ""}{" "}
+          {s.fee ? (s.feeOfficial ? FEE_FOOTNOTE_OFFICIAL : FEE_FOOTNOTE.replace(/^\*/, "")) : ""}
         </p>
       )}
     </div>

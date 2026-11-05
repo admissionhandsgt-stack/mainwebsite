@@ -1,14 +1,14 @@
 import Link from "@/components/ui/Link";
 import { ArrowRight, Lock, TrendingDown, TrendingUp, Minus } from "lucide-react";
 import { BAND_FOOTNOTE } from "@/lib/chance";
-import { TREND_LABEL, type BandRow } from "@/lib/cutoffBands";
+import { BAND_CATEGORIES, TREND_LABEL, type BandRow } from "@/lib/cutoffBands";
 import PowerLine from "@/components/predictor/PowerLine";
 
 /**
  * "What is the cutoff here?", answered for search without giving the rank
- * away: general category, merit quotas, as a band (2026-10-12). Every other
- * category, NRI and management, and the round-by-round detail are the chance
- * view after sign-in, and the counsellor.
+ * away: merit quotas, as a band (2026-10-12) — general, and since 2026-11-05
+ * EWS, OBC, SC and ST beside it (owner's call). PwD, NRI and management, and
+ * the round-by-round detail, are the chance view after sign-in, and the counsellor.
  */
 export default function CutoffBands({
   rows,
@@ -25,6 +25,9 @@ export default function CutoffBands({
   const year = rows.find((r) => r.year)?.year;
   const courseHead = level === "pg" ? "Branch" : "Course";
   const hub = level === "pg" ? "/neet-pg-cutoff" : "/neet-ug-cutoff";
+  // A reserved column only where some row has a band in it.
+  const cats = BAND_CATEGORIES.filter((c) => rows.some((r) => r.byCategory[c]));
+  const heads = [courseHead, "Quota", "General", ...cats, "Trend (general)"];
 
   return (
     <section aria-labelledby="bands-h">
@@ -32,15 +35,15 @@ export default function CutoffBands({
         {collegeName} cutoff{year ? ` ${year}` : ""} — approximate band
       </h2>
       <p className="mt-1.5 max-w-[72ch] text-[14.5px] leading-relaxed text-muted-foreground">
-        Where the last general-category seat was taken across all rounds, shown as a band. Other categories, NRI and
-        management seats, and your own chance, are a free sign-in away.
+        Where the last seat of each category was taken across all rounds, shown as a band.{" "}
+        {cats.length ? "" : "Other categories, "}PwD, NRI and management seats, and your own chance, are a free sign-in away.
       </p>
 
       <div className="mt-4 overflow-x-auto rounded-2xl border border-border bg-card">
-        <table className="w-full min-w-[560px] border-collapse">
+        <table className="w-full border-collapse" style={{ minWidth: `${560 + cats.length * 96}px` }}>
           <thead>
             <tr className="bg-surface-2">
-              {[courseHead, "Quota", "General closing band", "Trend"].map((h, i) => (
+              {heads.map((h, i) => (
                 <th
                   key={h}
                   scope="col"
@@ -59,6 +62,11 @@ export default function CutoffBands({
                 <td className="px-4 py-3 text-[14px] font-medium text-foreground">{r.course}</td>
                 <td className="px-4 py-3 text-[13px] text-muted-foreground">{r.quota}</td>
                 <td className="tnum px-4 py-3 text-right text-[14.5px] font-bold text-foreground">{r.band}</td>
+                {cats.map((c) => (
+                  <td key={c} className="tnum px-4 py-3 text-right text-[14px] text-foreground">
+                    {r.byCategory[c] ?? <span className="text-muted-foreground">—</span>}
+                  </td>
+                ))}
                 <td className="px-4 py-3 text-right text-[12.5px] text-muted-foreground">
                   {r.trend ? (
                     <span className="inline-flex items-center gap-1">
@@ -78,13 +86,13 @@ export default function CutoffBands({
               </tr>
             ))}
             <tr className="border-t border-border bg-primary-soft/40">
-              <td colSpan={4} className="px-4 py-3.5">
+              <td colSpan={heads.length} className="px-4 py-3.5">
                 <Link
                   href={ctaHref}
                   className="inline-flex items-center gap-2 text-[13.5px] font-semibold text-primary-strong hover:underline dark:text-primary"
                 >
                   <Lock className="h-4 w-4" aria-hidden="true" />
-                  OBC, SC, ST, EWS, PwD, NRI and management — see your own chance, free
+                  {cats.length ? "PwD, NRI and management" : "OBC, SC, ST, EWS, PwD, NRI and management"} — see your own chance, free
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Link>
               </td>

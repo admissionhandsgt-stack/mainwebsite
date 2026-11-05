@@ -1324,7 +1324,8 @@ words like "possibility", never closing ranks.* So:
   words. `lib/cutoffBands.ts` builds the rows, `CutoffBands` (college pages) and `BranchBands` (branch pages,
   general category only — any other category gets the sign-in prompt) render them, and `collegeFaqs` answers
   "What is the NEET UG/PG cutoff for X?" with the bands. Titles say "Cutoff 2026, Fees & Seats" again. OBC/
-  SC/ST/EWS/PwD, NRI and management stay behind sign-in as chance words. Never print the rank behind a band.
+  SC/ST/EWS/PwD, NRI and management stay behind sign-in as chance words (since 2026-11-05 EWS/OBC/SC/ST are bands too —
+  see "Decided by the owner, 2026-11-05"). Never print the rank behind a band.
 - **The case for a counsellor:** `components/home/CounsellorEdge.tsx` (homepage, predictor, compact on
   college pages) — five facts counted live by `lib/counsellingFacts.ts` (share of seats that moved after
   round 1, number of counsellings, last-round-tighter seats, category and quota codes, 5×-fee colleges),
@@ -1734,11 +1735,22 @@ set against each page's own 28-day GSC queries. The files are in that session's 
     "the Rajasthan state counselling", MCC's UG quotas by name).
   - **llms.txt / llms-full.txt** (`lib/llmsText.ts`): sources and how to cite, every state with NMC's MBBS seats,
     every PG state and branch, the state rounds out, and (full) every MBBS and MD/MS college.
-  - **Left for the owner** (they change a standing rule): exact official fees instead of brackets on college pages
-    (11,700 rows carry an official 2026-27 source; the 2026-10-12 rule brackets every fee); OBC/SC/ST cutoff bands on
-    college pages; a named reviewer on data pages; UG fee brackets whose floor is a junk row ("under ₹1 L – 30 L" at
-    a private college); round dates beyond MCC's window and join-by (registration, choice filling, locking) — the
-    admin's `pg_schedule` holds only the window.
+  - **Decided by the owner, 2026-11-05 ("kardo inko set"):**
+    - **Official fees are printed exactly** on PG college pages: a `fees` row with `fee_source` (a 2026-27 notice) shows
+      its figure as printed (`exactFeeFor` / `exactInr` in `lib/chance.ts`; a dollar-charging college in US$ with the
+      rupee conversion under it), marked "2026-27"; a listing figure stays a bracket with `*`. The summary tile, the meta
+      description and the fee FAQ give the lowest and highest official yearly figure **each with its quota and branch**
+      (one row is one seat). UG has no official fees, so MBBS pages are unchanged.
+    - **EWS, OBC, SC and ST bands sit beside the general band** on both college templates (`BAND_CATEGORIES` in
+      `lib/cutoffBands.ts`): the authority's own code only (EWS/OBC/SC/ST and Gujarat's GQ-EW/GQ-SC/GQ-ST), same course,
+      quota and year as the general row, a band each. State groups (2A, BC-B, SEBC, SC sub-lists) are not folded in.
+      PwD, NRI and management stay with the chance view.
+    - **MCC's step dates** (registration, choice filling, locking, result, reporting) are fields of `pg_schedule`
+      (`scripts/sql/pg_schedule_steps_2026_11_05.sql`, from MCC's tentative schedule posted 29 Oct 2026); the round page
+      prints them as a table with the PDF linked and leads its title and FAQ with them while the round is awaited.
+      Re-check against MCC each round — MCC revises the schedule.
+  - **Still the owner's call:** a named reviewer on data pages; UG fee brackets whose floor is a junk row ("under ₹1 L –
+    30 L" at a private college).
 - **Gaps left open, and why:**
   - A choice-filling / upgradation / free-exit page: about 210 phrases, and round 2 choice filling opens around
     6–7 Nov. It needs copy someone writes.

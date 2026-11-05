@@ -16,7 +16,7 @@ import { sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { collegeName, isDnbOnly } from "@/lib/collegeName";
 import { generalBands } from "@/lib/cutoffBands";
-import { approxFee, isYearlyFee } from "@/lib/chance";
+import { approxFee, exactInr, feeKind, isYearlyFee } from "@/lib/chance";
 import { clipMiddle, ugCourseLabel } from "@/lib/seoTitle";
 import {
   getCollege,
@@ -92,8 +92,17 @@ export interface CollegeSummary {
   year: number | null;
   /** General category, merit quota — the first row of the bands table. */
   band: { text: string; quota: string; course: string; year: number | null } | null;
-  /** "≈ ₹5–10 L" — a bracket across this college's published fees. */
+  /**
+   * "≈ ₹5–10 L" — a bracket across this college's published fees; or, where 2026-27 notices print them (feeOfficial),
+   * the exact lowest and highest yearly figures, "₹1,67,300 – ₹54,75,000".
+   */
   fee: string | null;
+  /** Set when `fee` is exact: the seats at each end (one row is one seat), and whether every figure is tuition alone. */
+  feeOfficial: {
+    lo: { quota: string; course: string; inr: number };
+    hi: { quota: string; course: string; inr: number };
+    tuition: boolean;
+  } | null;
   seats: number | null;
   branches: number | null;
   /** "Government", "Private" or "Deemed" — only when the data says so. */
@@ -138,10 +147,13 @@ function summarise(
   const year = cutoffs.reduce<number | null>((m, c) => (c.latestYear != null && (m == null || c.latestYear > m) ? c.latestYear : m), null);
   const first = generalBands(cutoffs, 1)[0];
   // A year's figures only: a whole-course or period-not-stated fee is never a year's (migration 0046).
-  const feeValues = fees
-    .filter((f) => isYearlyFee(f.feePeriodicity))
-    .map((f) => f.feeInr)
-    .filter((v): v is number => v != null && v > 0);
+  const yearly = fees.filter((f) => isYearlyFee(f.feePeriodicity) && f.feeInr != null && f.feeInr > 0);
+  const feeValues = yearly.map((f) => f.feeInr!);
+  // 2026-27 notices' own figures, exact (owner, 2026-11-05) — a year's figures only, in rupees as charged
+  // (a dollar fee's rupee figure is a conversion, so it does not set an exact end).
+  const official = yearly.filter((f) => f.official && f.feeCurrency !== "USD");
+  const lo = official.length ? official.reduce((a, b) => (b.feeInr! < a.feeInr! ? b : a)) : null;
+  const hi = official.length ? official.reduce((a, b) => (b.feeInr! > a.feeInr! ? b : a)) : null;
   const stipend = fees.reduce<number | null>((m, f) => (f.stipendY1Inr != null && f.stipendY1Inr > 0 && (m == null || f.stipendY1Inr > m) ? f.stipendY1Inr : m), null);
 
   const curated =
@@ -165,7 +177,22 @@ function summarise(
     kind,
     year,
     band: first ? { text: plain(first.band)!, quota: first.quota, course: first.course, year: first.year } : null,
-    fee: feeValues.length ? plain(approxFee(Math.min(...feeValues), Math.max(...feeValues))) : null,
+    fee:
+      lo && hi
+        ? lo.feeInr === hi.feeInr
+          ? exactInr(lo.feeInr!)
+          : `${exactInr(lo.feeInr!)} – ${exactInr(hi.feeInr!)}`
+        : feeValues.length
+          ? plain(approxFee(Math.min(...feeValues), Math.max(...feeValues)))
+          : null,
+    feeOfficial:
+      lo && hi
+        ? {
+            lo: { quota: lo.quota, course: lo.course, inr: lo.feeInr! },
+            hi: { quota: hi.quota, course: hi.course, inr: hi.feeInr! },
+            tuition: official.every((f) => feeKind(f.feeLabel).kind === "tuition"),
+          }
+        : null,
     seats: nmcSeats ?? (level === "ug" ? extras?.intake ?? null : college.seatsTotal ?? null),
     branches: level === "pg" ? (nmcSeats && nmc ? nmc.pg.length : college.branchCount ?? null) : null,
     type,
@@ -185,6 +212,11 @@ export const money = (v: number) => {
   return `₹${v.toLocaleString("en-IN")}`;
 };
 const inr = (v: number) => v.toLocaleString("en-IN");
+/** Mid-sentence: only the first letter lowered — "Tuition ₹1 L" must not become "₹1 l". */
+const lcFirst = (v: string | null) => (v ? v.charAt(0).toLowerCase() + v.slice(1) : null);
+/** "₹1 L", "₹61.55 L", "₹1.2 Cr" — a snippet's room, to the nearest thousand. */
+const lakh = (v: number) =>
+  v >= 10000000 ? `₹${+(v / 10000000).toFixed(2)} Cr` : v >= 100000 ? `₹${+(v / 100000).toFixed(2)} L` : `₹${inr(v)}`;
 const fit = (max: number, candidates: (string | null | false | undefined)[]) => {
   const clean = candidates.filter((c): c is string => Boolean(c)).map((c) => c.replace(/\s+/g, " ").trim());
   return clean.find((c) => c.length <= max) ?? null;
@@ -258,7 +290,12 @@ export function collegeDescription(s: CollegeSummary): string {
   const where = s.place ? `${s.short}, ${s.place}` : s.short;
   const b = s.band;
   const by = b?.year ?? s.year;
-  const fee = s.fee ? `Tuition ${s.fee} a year` : null;
+  // A 2026-27 notice's figures in lakh for the snippet ("₹1 L – ₹61.55 L"; the page itself prints them in full), called
+  // tuition only when every figure is the tuition alone. `feeShort` drops the year when the sentence runs long.
+  const o = s.feeOfficial;
+  const range = o ? (o.lo.inr === o.hi.inr ? lakh(o.lo.inr) : `${lakh(o.lo.inr)} – ${lakh(o.hi.inr)}`) : null;
+  const fee = s.fee ? (o ? `${o.tuition ? "Tuition" : "Fees"} ${range} a year (2026-27)` : `Tuition ${s.fee} a year`) : null;
+  const feeShort = s.fee ? (o ? `${o.tuition ? "Tuition" : "Fees"} ${range} a year` : fee) : null;
   const type = s.type ? `${s.type.toLowerCase()}${s.kind === "dnb" ? "" : " college"}` : null;
 
   if (s.kind === "dnb") {
@@ -280,13 +317,17 @@ export function collegeDescription(s: CollegeSummary): string {
     const cut = b ? `MD/MS cutoff${by ? ` ${by}` : ""}: ${b.text} (general, ${b.quota}, ${b.course})` : null;
     const cutShort = b ? `MD/MS cutoff${by ? ` ${by}` : ""}: ${b.text} (general, ${b.course})` : null;
     const seats = s.seats ? `${inr(s.seats)} PG seats${s.branches ? ` in ${s.branches} branches` : ""}` : null;
+    const seatsShort = s.seats ? `${inr(s.seats)} PG seats` : null;
     const stipend = s.stipend ? `stipend ${money(s.stipend)} a month` : null;
     const facts = (...xs: (string | null)[]) => xs.filter(Boolean).join(", ");
     return (
       fit(DESCRIPTION, [
-        `${where} — ${cut ?? "MD/MS admission"}. ${facts(seats, fee?.toLowerCase() ?? null, stipend, type)}.`,
-        `${where} — ${cutShort ?? "MD/MS admission"}. ${facts(seats, fee?.toLowerCase() ?? null, stipend, type)}.`,
-        `${where} — ${cutShort ?? "MD/MS admission"}. ${facts(seats, fee?.toLowerCase() ?? null, stipend)}.`,
+        `${where} — ${cut ?? "MD/MS admission"}. ${facts(seats, lcFirst(fee), stipend, type)}.`,
+        `${where} — ${cutShort ?? "MD/MS admission"}. ${facts(seats, lcFirst(fee), stipend, type)}.`,
+        `${where} — ${cutShort ?? "MD/MS admission"}. ${facts(seats, lcFirst(fee), stipend)}.`,
+        `${where} — ${cutShort ?? "MD/MS admission"}. ${facts(seats, lcFirst(feeShort))}.`,
+        `${where} — ${cutShort ?? "MD/MS admission"}. ${facts(seatsShort, lcFirst(feeShort))}.`,
+        `${s.short} — ${cutShort ?? "MD/MS admission"}. ${facts(seatsShort, lcFirst(feeShort))}.`,
         `${where} — ${cutShort ?? "MD/MS admission"}. ${facts(seats, stipend)}.`,
         `${s.short} — ${cutShort ?? "MD/MS admission"}. ${facts(seats)}.`,
         `${s.short}: MD/MS seats, fees and stipend.`,
