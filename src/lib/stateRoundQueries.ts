@@ -36,8 +36,12 @@ export interface StateRound {
   byBranch: { course: string; slug: string | null; colleges: number; last: number | null }[];
 }
 
-const CATEGORY_ORDER = ["GEN", "EWS", "OBC", "MBC", "SC", "ST"];
-export const CATEGORY_LABEL: Record<string, string> = { GEN: "General (UR)", EWS: "EWS", OBC: "OBC", MBC: "MBC", SC: "SC", ST: "ST" };
+// BC, BCM and SCA are Tamil Nadu's own reserved groups (2026-11-05; used by no other state loaded): Backward Classes,
+// Backward Class Muslims and Scheduled Caste (Arunthathiyar). Rajasthan and TN both have an MBC list.
+const CATEGORY_ORDER = ["GEN", "EWS", "OBC", "BC", "BCM", "MBC", "SC", "SCA", "ST"];
+export const CATEGORY_LABEL: Record<string, string> = {
+  GEN: "General (UR)", EWS: "EWS", OBC: "OBC", BC: "BC", BCM: "BC (Muslim)", MBC: "MBC", SC: "SC", SCA: "SC (Arunthathiyar)", ST: "ST",
+};
 
 /** A college is its institute when we matched one, else its name as printed. */
 const COLLEGE = sql`COALESCE(c.institute_id::text, c.college_printed)`;
