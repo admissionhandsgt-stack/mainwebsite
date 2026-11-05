@@ -68,19 +68,22 @@ export async function getLiveAlerts(): Promise<LiveAlert[]> {
     async () =>
       rows<Record<string, unknown>>(
         await db.execute(sql`
-          -- Expired alerts never show, even before the feed's next run switches
-          -- them off. Hand-written ones lead (an admin placed them); then the
-          -- newest notices, at most three from any one board so a busy state
-          -- cannot fill the bar. See lib/alertFeed.ts.
+          -- Owner, 2026-11-05: the latest on top, only this counselling year's (2026-27), and nothing whose
+          -- dates have passed. So: expired alerts never show, even before the feed's next run switches them
+          -- off; an automatic notice older than 14 days does not show either (undated ones go stale);
+          -- a title naming only an earlier year (2025 or before, and not 2026/2027) is left out; newest first,
+          -- at most three from any one board so a busy state cannot fill the bar. See lib/alertFeed.ts.
           SELECT id, title, link, image_url FROM (
-            SELECT a.*, row_number() OVER (
+            SELECT a.*, coalesce(a.published_at, a.created_at) AS shown_at, row_number() OVER (
                      PARTITION BY coalesce(a.source, 'manual-' || a.id)
-                     ORDER BY a.published_at DESC NULLS LAST, a.id DESC) AS nth
+                     ORDER BY coalesce(a.published_at, a.created_at) DESC NULLS LAST, a.id DESC) AS nth
               FROM live_alerts a
              WHERE a.is_active = true AND (a.expires_at IS NULL OR a.expires_at > now())
+               AND (a.auto = false OR coalesce(a.published_at, a.created_at) > now() - interval '14 days')
+               AND NOT (a.title ~ '(19|20)(0[0-9]|1[0-9]|2[0-5])' AND a.title !~ '202[67]')
           ) x
           WHERE x.nth <= 3
-          ORDER BY x.auto ASC, x.order_index ASC, x.published_at DESC NULLS LAST, x.id DESC
+          ORDER BY x.shown_at DESC NULLS LAST, x.id DESC
           LIMIT 12
         `),
       ).map((r) => ({

@@ -259,10 +259,10 @@ async function publishAlert(n: ZynNotice): Promise<number | null> {
       SELECT id FROM live_alerts WHERE link = ${n.url} AND is_active AND (expires_at IS NULL OR expires_at > now()) LIMIT 1`)) as unknown as { id: number }[];
     if (live[0]) return Number(live[0].id);
   }
-  // Expires 30 days on, or the day after the last date the notice gives.
+  // Expires 14 days on (as the site's own feed), or two days after the last date the notice gives.
   const last = STEPS.map((k) => n.dates[k]?.to ?? n.dates[k]?.from).filter((v): v is string => !!v && /^\d{4}-\d{2}-\d{2}/.test(v)).sort().pop();
   const published = n.publishedOn && /^\d{4}-\d{2}-\d{2}/.test(n.publishedOn) ? new Date(n.publishedOn) : new Date();
-  let expires = new Date(Date.now() + 30 * 86_400_000);
+  let expires = new Date(Date.now() + 14 * 86_400_000);
   if (last) {
     const after = new Date(new Date(last).getTime() + 2 * 86_400_000);
     if (after.getTime() > Date.now()) expires = after;

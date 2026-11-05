@@ -33,7 +33,9 @@ const DAY = 86_400_000;
 const MAX_NEW_PER_SOURCE = 5;
 /** Live alerts one board may hold at once — Puducherry alone posts a dozen notices a week. */
 const MAX_ACTIVE_PER_SOURCE = 4;
-const LIFETIME_DAYS = 30;
+// 14 days (was 30 until 2026-11-05): an undated counselling notice is stale within two weeks — the owner wants
+// "jinki dates nikal jaye wo hat jaye". A notice that names its dates still goes the day after the last one.
+const LIFETIME_DAYS = 14;
 
 export interface AlertSource {
   id: string;
