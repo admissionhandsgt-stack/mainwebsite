@@ -221,6 +221,16 @@ a deploy). Each keeps an import-free shipped fallback (`servicesDefaults.ts`, `u
 The NRI page's eligibility (four groups, once tabs) is admin-driven too since 2026-10-21: "Page: NRI quota —
 eligibility" in Text & numbers, lists one item per line.
 
+**Free check vs Expert Counselling (owner, 2026-11-05: "service package ka defined fees nhi dena hai — Get Expert
+Counselling … features highlight").** `components/lead/ExpertCompare.tsx` (Admin → Content "Free check vs Expert
+Counselling", lists one item per line) sits right after the predictor tool and first on `/services`: the free rank check
+beside Expert Counselling's features, "Get Expert Counselling" on WhatsApp and a call. **No package or fee on the site** —
+the note says the counsellor tells the fee before anything starts — and **no promise of a seat** ("No one can promise a seat:
+counselling allots it"). The free side never includes the preference order or the round-by-round call; those are the paid
+service. Service and Know Us steps read: free rank check & call → Expert Counselling → round by round → joining your
+college. Words that are gone and stay gone: "cutoff predictions", "Seat Secured", "zero last-mile", a free call of a stated
+length that differs between pages.
+
 **"Direct Fee Negotiation with Colleges" (owner's request, 2026-10-20)** is the eleventh `services_page` card
 (`scripts/sql/services_fee_negotiation_2026_10_20.sql`, icon `handshake`) and a hero point. It is worded as
 what the team does with college offices — instalments, a lump-sum or early-payment discount *where the
@@ -479,6 +489,25 @@ Two datasets from the PG data session (`pg-4f`), handed over as CSV in `D:/Admis
   `/md-ms-india/bond` (government bond by state, private/deemed by state, every government college under its
   state). Copy: `page.college_pg.mcc`, `page.pg_branch.mcc`, `page.pg_seat_matrix.*`, `page.pg_bond.*`.
   Menu rows: `scripts/sql/nav_seat_matrix_bond_2026_10_20.sql` (run after the deploy).
+
+## The admin's round schedule follows MCC's latest word (2026-11-05)
+
+`pg_schedule` (Admin → Content) drives the round pages' dates, titles, FAQ and the MCC worker's 2-minute window. On 4 Nov MCC
+rescheduled Round 2 (new NMC seats of 3 Nov verified till 6 Nov; the schedule "rescheduled from 07/11/2026 onwards"), so the
+29 Oct tentative steps came off Rounds 2, 3 and stray (`scripts/sql/pg_schedule_round2_rescheduled_2026_11_05.sql`): their
+`aiq` reads "later than planned — MCC is rescheduling it (new dates awaited)" — worded to sit in "Round 2 of MCC's counselling
+runs {window}." and in tables, and with no date-shaped text, so nothing reads a false expected date (the worker drops to
+30-minute checks). **When MCC posts the revised schedule, put the dates and steps back the same day.** A round whose
+reporting date has passed now says so on its page (`joinPassed`: "Round 1 reporting is over. Plan round 2 now.").
+
+**Notices bot (planned, 2026-11-05):** the owner wants every counselling notice verified, approved by him on Telegram, then
+on the site by itself. Zyn (zyn-c9, AH Counselor) already watches MCC PG, NMC, NBEMS and 36 state authorities every 15 min
+(4 on result days), drafts each notice and sends it to the owner's Telegram for approval — rules, no LLM (owner: no paid AI
+spend before Dec 2026). Plan: Zyn exposes approved notices (`GET /api/integrations/website/notices?since=`, X-AH-Sync-Key,
+needs the owner's OK in zyn-c9's session); the site polls it, checks the link is official and every date is in the PDF text,
+puts the notice on the alerts bar, and for an MCC schedule notice updates that round's `pg_schedule` dates; anything failing
+a check is held for the admin. UG stays on the site's own feed (`lib/alertFeed.ts`). The key is pasted by the owner in the
+admin, never in chat.
 
 ## NEET PG round results, published by themselves (2026-10-21)
 
