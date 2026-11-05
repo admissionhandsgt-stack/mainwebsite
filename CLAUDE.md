@@ -500,14 +500,18 @@ runs {window}." and in tables, and with no date-shaped text, so nothing reads a 
 30-minute checks). **When MCC posts the revised schedule, put the dates and steps back the same day.** A round whose
 reporting date has passed now says so on its page (`joinPassed`: "Round 1 reporting is over. Plan round 2 now.").
 
-**Notices bot (planned, 2026-11-05):** the owner wants every counselling notice verified, approved by him on Telegram, then
-on the site by itself. Zyn (zyn-c9, AH Counselor) already watches MCC PG, NMC, NBEMS and 36 state authorities every 15 min
-(4 on result days), drafts each notice and sends it to the owner's Telegram for approval — rules, no LLM (owner: no paid AI
-spend before Dec 2026). Plan: Zyn exposes approved notices (`GET /api/integrations/website/notices?since=`, X-AH-Sync-Key,
-needs the owner's OK in zyn-c9's session); the site polls it, checks the link is official and every date is in the PDF text,
-puts the notice on the alerts bar, and for an MCC schedule notice updates that round's `pg_schedule` dates; anything failing
-a check is held for the admin. UG stays on the site's own feed (`lib/alertFeed.ts`). The key is pasted by the owner in the
-admin, never in chat.
+**Notices from Zyn (built 2026-11-05, waits on Zyn's endpoint):** the owner approves each counselling notice in Zyn's
+Telegram flow (Zyn — zyn-c9, AH Counselor — watches MCC PG, NMC, NBEMS and 36 state authorities every 15 min, 4 on result
+days; rules, no LLM; owner: no paid AI spend before Dec 2026). `lib/zynNotices.ts` takes the approved ones every 5 min
+(`POST /api/cron/notices`, server crontab) from the endpoint saved in **Admin → Notices (Zyn)** (`zyn.notices.url`, the key
+`zyn.notices.key` write-only and pasted by the owner, the switch `zyn.notices.enabled`, cursor `zyn.notices.cursor`), records
+each in `zyn_notices` (migration 0049) and: puts it on the alerts bar (`live_alerts`, source `zyn`) when its link is on an
+official domain (`*.gov.in`, `*.nic.in`, NBEMS, NMC, every board in `ALERT_SOURCES`); for an MCC schedule notice with a round,
+writes the round's `pg_schedule` dates **only when every date is printed in the notice text under its own step label (the
+nearest label before it) and its machine date is the same day** — a result date of "18.11" printed after "Reporting" is
+held. Held notices wait in the admin (publish, dismiss, apply dates); the team gets one WhatsApp line when a round's dates
+change. Zyn's endpoint (`GET /api/integrations/website/notices?since=`, X-AH-Sync-Key, approved only; record shape in the
+2026-11-05 message to zyn-c9) needs the owner's OK in zyn-c9's session. UG stays on the site's own feed (`lib/alertFeed.ts`).
 
 ## NEET PG round results, published by themselves (2026-10-21)
 
