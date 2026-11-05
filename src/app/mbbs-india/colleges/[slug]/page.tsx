@@ -112,7 +112,7 @@ export default async function UgCollegePage({ params }: { params: { slug: string
   // Answered from this college's own numbers, and rendered on the page as
   // well as in the markup — see the note in `lib/collegeSeo.ts` about what
   // FAQ schema does and does not buy since Google restricted it.
-  const faqs = collegeFaqs(college, cutoffs, fees, "ug");
+  const faqs = collegeFaqs(college, cutoffs, fees, "ug", { course: s.course, type: s.type, seats: s.seats, fromNmc: s.fromNmc });
   const jsonLd = collegeJsonLd({
     college,
     level: "ug",

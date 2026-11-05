@@ -21,11 +21,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!c) return { title: "Course not found", robots: { index: false } };
   const y = c.years[0];
   return resolveMetadata(`/neet-ss/${c.slug}`, {
+    // "<course> seats in india" is 76% of the NEET SS searches we show for (Search Console, Oct–Nov 2026); NEET SS
+    // counselling allots every DM/MCh seat in the country, so the seats this page counts are India's.
     title: fitTitle(
-      `${c.course} Cutoff ${y?.year ?? ""}: NEET SS Rank, Seats & Colleges`,
-      `${c.course} Cutoff ${y?.year ?? ""}: NEET SS Rank & Seats`,
-      `${c.course} Cutoff ${y?.year ?? ""}`,
-      `${c.course} NEET SS Cutoff`,
+      `${c.course} Seats in India & NEET SS Cut Off ${y?.year ?? ""}`,
+      `${c.course} Seats & NEET SS Cut Off ${y?.year ?? ""}`,
+      `${c.course} NEET SS Cut Off ${y?.year ?? ""}: Rank & Seats`,
+      `${c.course} Cut Off ${y?.year ?? ""}`,
+      `${c.course} NEET SS Cut Off`,
     ),
     description: `${c.course}: NEET SS ${y?.year ?? ""} round 1 closed at group rank ${n(y?.r1Close)}, last admitted ${n(y?.widest)}. ${y?.seats ?? ""} seats at ${c.institutes.length} institutes, state by state.`,
     keywords: `${c.course} cutoff, ${c.course} seats in India, ${c.course} colleges, NEET SS ${c.course}, ${c.course} rank`,

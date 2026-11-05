@@ -19,7 +19,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const f = await getPrivatePgFees();
   const mng = f.national.find((b) => b.family === "Management");
   return resolveMetadata(PATH, {
-    title: `MD/MS Fees in Private Medical Colleges ${f.year ?? ""}: State-wise`,
+    // "md fees in private medical colleges in india" — the phrase as typed (Search Console, Oct–Nov 2026).
+    title: `MD Fees in Private Medical Colleges in India ${f.year ?? ""}: State-wise`,
     description: `MD/MS fees in private medical colleges, state by state, for state quota, management and NRI seats${mng ? ` — management mostly ${lakh(mng.p10)}–${lakh(mng.p90)} a year` : ""}.`,
     keywords:
       "MD fees in private colleges, MS fees in private medical colleges, PG fees private medical college, management quota PG fees, NRI quota PG fees, private medical college fees state wise",

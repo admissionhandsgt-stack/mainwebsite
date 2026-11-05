@@ -44,6 +44,10 @@ export const SEARCH_NAME: Record<string, string> = {
   "MD Radio Diagnosis": "MD Radiology",
   "MD Dermatology, Venereology & Leprosy": "MD Dermatology",
   "MS Obstetrics & Gynaecology": "MS OBG",
+  // Search Console, 7 Oct – 4 Nov 2026: "pediatrics" 272 impressions to "paediatrics" 118; "anesthesia" 178 to
+  // "anaesthesia" 56.
+  "MD Paediatrics": "MD Pediatrics",
+  "MD Anaesthesiology": "MD Anesthesia",
 };
 
 export const MIN_STATE_COLLEGES = 5;

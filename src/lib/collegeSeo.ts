@@ -74,14 +74,27 @@ export function collegePlace(college: CollegeDetail): string {
  * Ordered by how often they are the reason somebody arrives: the rank question
  * first, then the money, then the shape of the place.
  */
+/**
+ * What the page's summary knows that the college row does not: the course the page is about ("MBBS", "BDS"),
+ * and NMC's own seat count and ownership (lib/nmcData.ts). Passed by the college pages; optional so any
+ * other caller keeps working.
+ */
+export interface FaqFacts {
+  course?: string;
+  type?: string | null;
+  seats?: number | null;
+  fromNmc?: boolean;
+}
+
 export function collegeFaqs(
   college: CollegeDetail,
   cutoffs: CourseCutoff[],
   fees: CollegeFee[],
   level: "ug" | "pg",
+  facts: FaqFacts = {},
 ): Faq[] {
   const faqs: Faq[] = [];
-  const course = level === "pg" ? "MD/MS" : "MBBS";
+  const course = level === "pg" ? "MD/MS" : facts.course && facts.course !== "DNB" ? facts.course : "MBBS";
   const year = cutoffs.find((c) => c.latestYear)?.latestYear;
 
   /* ---- the rank question, answered without a college's rank ----
@@ -142,7 +155,8 @@ export function collegeFaqs(
     const tuitionOnly = priced.every((f) => feeKind(f.feeLabel).kind === "tuition");
     if (bracket) {
       faqs.push({
-        q: `What are the fees at ${college.name}?`,
+        // "<college> pg fee structure", "<college> mbbs fees structure" — the fee intent as people type it.
+        q: `What is the ${level === "pg" ? "PG" : course} fee structure at ${college.name}?`,
         a:
           `Approximately ${bracket.replace(/^≈ /, "").replace(/\*$/, "")} ${tuitionOnly ? "in tuition" : "in fees"}, depending on the course ` +
           `and quota. This is a bracket from the published fee schedule, not a quote — hostel, deposit, bond and ` +
@@ -166,15 +180,23 @@ export function collegeFaqs(
       q: `How many ${course} seats does ${college.name} have?`,
       a: `${inr(college.seatsTotal)} seats across ${college.branchCount} ${level === "pg" ? "branches" : "courses"}, counted from the published seat matrix.`,
     });
+  } else if (level === "ug" && course === "MBBS" && facts.fromNmc && facts.seats) {
+    // The UG list carries no seat matrix; NMC's register does ("how many mbbs seats in <college>").
+    faqs.push({
+      q: `How many MBBS seats does ${college.name} have?`,
+      a: `${inr(facts.seats)} MBBS seats a year, as approved in the National Medical Commission's register.`,
+    });
   }
 
   // `other` is what the UG import has for every row — saying it would be a
-  // claim we cannot back. See the note in CLAUDE.md on UG ownership.
-  if (college.ownership && college.ownership !== "other") {
+  // claim we cannot back. See the note in CLAUDE.md on UG ownership. NMC's register does say, so a UG page
+  // whose college NMC lists answers "<college> government or private" (883 impressions a month) from it.
+  const ownership = college.ownership && college.ownership !== "other" ? college.ownership : facts.fromNmc && facts.type ? facts.type.toLowerCase() : null;
+  if (ownership) {
     faqs.push({
       q: `Is ${college.name} a government or private college?`,
       a:
-        `It is a ${college.ownership} institution` +
+        `It is a ${ownership} ${college.ownership && college.ownership !== "other" ? "institution" : "college in the National Medical Commission's register"}` +
         (college.establishedYear ? `, established in ${college.establishedYear}` : "") +
         (college.university ? `, affiliated to ${college.university}` : "") +
         ".",

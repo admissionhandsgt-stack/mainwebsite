@@ -34,6 +34,8 @@ import { getNmcFacts, type NmcFacts } from "@/lib/nmcData";
 const TITLE = 62;
 /** The most a title runs to rather than cutting a college's name in the middle. */
 const LONG_TITLE = 80;
+/** How long a title may run to keep both the city and the tail's words ("Fees", "Seats"). */
+const CITY_TITLE = 72;
 const DESCRIPTION = 158;
 
 /* ------------------------------------------------------------- loading */
@@ -187,29 +189,56 @@ const fit = (max: number, candidates: (string | null | false | undefined)[]) => 
 
 /** "Madha Medical College, Chennai: MBBS Cutoff 2025, Fees & Seats". */
 export function collegeTitle(s: CollegeSummary): string {
+  // A place the name already says, spaces aside ("Muzaffarnagar Medical College, Muzaffarna gar"), is not added.
+  const squash = (v: string) => v.toLowerCase().replace(/[^a-z]/g, "");
+  const place = s.place && !squash(s.short).includes(squash(s.place)) ? s.place : null;
+  s = { ...s, place };
   const where = s.place ? `${s.short}, ${s.place}` : s.short;
   const y = s.year ? ` ${s.year}` : "";
-  // "Cutoff" only when the page shows a cutoff band; otherwise what it does show.
-  const tails =
+  // "Cut Off" only when the page shows a cutoff band; otherwise what it does show.
+  // Worded as India searches (Search Console 7 Oct – 4 Nov 2026): "cut off" in two words 18,033 impressions against
+  // "cutoff" 5,240 (UG college pages 10,331 to 2,523); and on MD/MS college pages the course word people type is
+  // "pg" (6,227) — "<college> pg fees", "<college> pg stipend" — not "md"/"ms" (1,241). The description still opens
+  // with "MD/MS cutoff".
+  const c = s.kind === "pg" ? "PG" : s.course;
+  const worded: string[] =
     s.kind === "dnb"
       ? s.band
-        ? [`: DNB Seats, Stipend & Cutoff${y}`, `: DNB Seats & Cutoff${y}`, `: DNB Cutoff${y}`]
+        ? [`: DNB Seats, Stipend & Cut Off${y}`, `: DNB Seats & Cut Off${y}`, `: DNB Cut Off${y}`]
         : s.stipend
           ? [`: DNB Seats & Stipend${y}`, `: DNB Seats${y}`]
           : [`: DNB Seats${y}`, ` DNB Seats`]
       : [
-          // "sms jaipur pg stipend", "pg stipend in vmmc" (Search Console and autocomplete, Oct 2026): an MD/MS
-          // page that publishes a stipend says so first, when it fits.
+          // "sms jaipur pg stipend", "pg stipend in vmmc": an MD/MS page that publishes a stipend says so first.
           ...(s.kind === "pg" && s.stipend
             ? s.band
-              ? [`: ${s.course} Cutoff${y}, Fees, Stipend & Seats`, `: ${s.course} Cutoff${y}, Fees & Stipend`]
-              : [`: ${s.course} Admission${y}, Fees & Stipend`, `: ${s.course} Fees & Stipend`]
+              ? [`: ${c} Fees, Stipend & Cut Off${y}`, `: ${c} Cut Off${y}, Fees & Stipend`]
+              : [`: ${c} Fees, Stipend & Seats`, `: ${c} Admission${y}, Fees & Stipend`]
             : []),
           ...(s.band
-            ? [`: ${s.course} Cutoff${y}, Fees & Seats`, `: ${s.course} Cutoff${y} & Fees`, `: ${s.course} Cutoff${y}`]
-            : [`: ${s.course} Admission${y}, Fees & Seats`, `: ${s.course} Fees & Seats`, `: ${s.course} Admission`]),
+            ? [`: ${c} Cut Off${y}, Fees & Seats`, `: ${c} Cut Off${y} & Fees`, `: ${c} Cut Off${y}`]
+            : [`: ${c} Admission${y}, Fees & Seats`, `: ${c} Fees & Seats`, `: ${c} Admission`]),
         ];
-  const whole = fit(TITLE, [...tails.map((t) => where + t), ...(s.place ? tails.map((t) => s.short + t) : [])]);
+  // "Cut Off" is one character longer than "Cutoff": where that character is all that stops a tail fitting, the
+  // one-word spelling keeps the tail's other words ("Fees", "Stipend", "Seats") rather than losing them.
+  const tails = worded.flatMap((t) => (t.includes("Cut Off") ? [t, t.replace("Cut Off", "Cutoff")] : [t]));
+  const withPlace = fit(TITLE, tails.map((t) => where + t));
+  if (withPlace) return withPlace;
+  // The city before the tail's words: "<college> <city>" is how a long-named college is searched ("ahmednagar
+  // medical college", "port blair medical college" — about 630 impressions a month were landing on titles that had
+  // dropped the city, 2026-11-05). So the shortest tail, then the same without its year, with the city kept — up to
+  // LONG_TITLE — before giving up the city.
+  if (s.place) {
+    // First every tail with the city up to CITY_TITLE, so "Fees" and "Seats" stay where they fit; then the shortest
+    // tail in both spellings ("Cut Off" first), then both without the year, up to LONG_TITLE.
+    const last = tails[tails.length - 1];
+    const shortest = tails.filter((t) => t.replace("Cut Off", "Cutoff") === last);
+    const compact =
+      fit(CITY_TITLE, tails.map((t) => where + t)) ??
+      fit(LONG_TITLE, [...shortest, ...shortest.map((t) => t.replace(/\s\d{4}$/, ""))].map((t) => where + t));
+    if (compact) return compact;
+  }
+  const whole = fit(TITLE, s.place ? tails.map((t) => s.short + t) : []);
   if (whole) return whole;
   // Too long for every tail: keep the whole name with the shortest tail, up to LONG_TITLE. A "…" cut in the middle
   // ("Sri Aurobindo Medical College and… Indore", 36 of 231 sampled pages on 2026-11-04) reads as a fault, drops the

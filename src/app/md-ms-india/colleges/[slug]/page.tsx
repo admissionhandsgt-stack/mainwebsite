@@ -125,7 +125,7 @@ export default async function CollegePage({ params }: { params: { slug: string }
   const counsellings = Array.from(new Set(cutoffs.map((c) => c.counselling).filter(Boolean))) as string[];
   const bands = generalBands(cutoffs, 20);
 
-  const faqs = collegeFaqs(college, cutoffs, fees, "pg");
+  const faqs = collegeFaqs(college, cutoffs, fees, "pg", { course: s.course, type: s.type, seats: s.seats, fromNmc: s.fromNmc });
   const jsonLd = collegeJsonLd({
     college,
     level: "pg",
@@ -320,7 +320,7 @@ export default async function CollegePage({ params }: { params: { slug: string }
             {/* -------- Fees -------- */}
             {fees.length > 0 && (
               <section className="mt-12">
-                <h2 className="font-heading text-xl font-bold text-foreground md:text-2xl">Fees, hostel and stipend</h2>
+                <h2 className="font-heading text-xl font-bold text-foreground md:text-2xl">PG fee structure, hostel and stipend</h2>
                 <p className="mt-1.5 text-[15px] text-muted-foreground">
                   Approximate brackets from the published fee schedule; stipend as published. Where a figure is
                   missing the authority did not publish it.

@@ -22,7 +22,8 @@ const PATH = "/md-ms-india/deemed-universities";
 export async function generateMetadata(): Promise<Metadata> {
   const d = await getDeemedPg();
   return resolveMetadata(PATH, {
-    title: `Deemed University MD/MS Fees ${d.year ?? ""} & NEET PG Cutoff ${d.rankYear ?? ""}`,
+    // "deemed university pg fees / fee structure", "neet pg cut off" — as searched (Search Console, Oct–Nov 2026).
+    title: `Deemed University PG Fees ${d.year ?? ""} & NEET PG Cut Off ${d.rankYear ?? ""}`,
     description: `PG fee structure at ${d.colleges.length} deemed universities — management and NRI quota, college by college — and where deemed seats closed in NEET PG ${d.rankYear ?? ""} counselling.`,
     keywords:
       "deemed university PG fees, deemed university MD fees, NEET PG deemed university cutoff, deemed university fee structure PG, deemed NRI quota PG fees",

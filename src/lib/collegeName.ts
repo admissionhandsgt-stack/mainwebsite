@@ -47,15 +47,28 @@ function isPlace(s: string): boolean {
 }
 
 /** "PRAGJYOTISHPUR MEDICAL COLLEGE" → "Pragjyotishpur Medical College"; short acronyms (ESIC, SMS, KIMS) stay. */
+/** Acronyms longer than four letters that are names in their own right ("JIPMER Karaikal" read "Jipmer", 2026-11-05). */
+const LONG_ACRONYMS = new Set(["JIPMER", "PGIMER", "SGPGIMS", "NIMHANS", "SMIMER", "SCTIMST", "GMERS", "AIIMS", "VIMSAR", "DRIEMS", "RIPANS", "NEIGRIHMS", "IGIMS", "RIMS", "IPGMER", "LTMMC", "BJGMC"]);
+
+/** Short acronyms that contain a vowel, as they occur in the institute names we hold. */
+const SHORT_ACRONYMS = new Set(["UP", "ESI", "ESIC", "IMS", "ITM", "VPO", "LNCT", "JIS", "IIMT", "ODM", "MGU", "KEM", "AIMS", "IGMC", "IPGM", "ICMR", "AIIH", "UCMS", "IMS", "KIMS", "SUM", "MIMS", "AMC", "GIMS", "DMC", "PO"]);
+
 function titleCase(s: string): string {
   return s
     .split(/(\s+|-)/)
     .map((w, i) => {
       if (/^\s+$|^-$/.test(w) || !w) return w;
+      if (w === w.toUpperCase() && LONG_ACRONYMS.has(w.replace(/[^A-Z]/g, ""))) return w;
       const lower = w.toLowerCase();
       if (i > 0 && SMALL.has(lower)) return lower;
       // An acronym, a comma or full stop after it included: "PRASAD IMS," was "Prasad Ims," (2026-11-04).
-      if (/^[A-Z]{2,4}[,.;:)]*$/.test(w) && !SMALL.has(lower.replace(/[^a-z]+$/, ""))) return w;
+      // A short all-capital word is an acronym when it has no vowel (GMC, SMS, KMC, RK) or is a known one (UP, ESIC,
+      // IMS); otherwise it is an ordinary word written in capitals ("SHRI RAM", "BABA", "ROAD", "NEW" stayed
+      // capitalised until 2026-11-05).
+      if (/^[A-Z]{2,4}[,.;:)]*$/.test(w) && !SMALL.has(lower.replace(/[^a-z]+$/, ""))) {
+        const core = w.replace(/[^A-Z]/g, "");
+        if (!/[AEIOU]/.test(core) || SHORT_ACRONYMS.has(core)) return w;
+      }
       if (/\./.test(w)) return w; // initials: R.V., D.A.
       return lower.charAt(0).toUpperCase() + lower.slice(1);
     })
@@ -133,7 +146,12 @@ export function collegeName(raw: string): CollegeName {
   // The place: the last town named before the state (or an address) begins.
   const places: string[] = [];
   for (const raw of rest.slice(0, 5)) {
-    const seg = raw.replace(/[\s.-]*\b\d{6}\b/g, "").replace(/^(dist\.?|district|p\.?o\.?-?|vill\.?-?)\s*/i, "").trim();
+    // "Dist.", "District", "P.O.", "PO-", "Vill." prefixes go — but only as whole words: the old pattern ate the
+    // "Po" of Pondicherry, Porbandar, Pollachi and Port Blair ("…, ndicherry" in live titles until 2026-11-05).
+    const seg = raw
+      .replace(/[\s.-]*\b\d{6}\b/g, "")
+      .replace(/^(?:district|dist|p\.?\s?o|vill(?:age)?)(?:\.|-|\s)[\s.:-]*/i, "")
+      .trim();
     if (!seg) continue;
     if (isCityState(seg)) {
       if (!places.length) places.push(seg);

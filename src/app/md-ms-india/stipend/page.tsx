@@ -163,8 +163,10 @@ export default async function StipendPage() {
                   <th scope="row" className="px-4 py-3 font-semibold text-foreground">
                     {/* Each state's own page lists every college in it (2026-10-20). */}
                     {stateSlug.get(r.state) ? (
+                      // The words people search ("rajasthan pg stipend": 2,953 impressions a month landed on this
+                      // hub rather than the state's own page) are the link's words.
                       <Link href={`/md-ms-india/stipend/${stateSlug.get(r.state)}`} className="hover:text-primary hover:underline">
-                        {r.state}
+                        {r.state} PG stipend
                       </Link>
                     ) : (
                       r.state

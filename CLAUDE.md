@@ -1691,6 +1691,28 @@ set against each page's own 28-day GSC queries. The files are in that session's 
 - **Not indexed on 2026-11-04:** `/md-ms-india/states/uttar-pradesh`, `rajasthan` and `odisha` were "unknown to Google";
   `gujarat`, `bihar` and `haryana` were "discovered – not indexed". All six are in the sitemap, so they go first in the
   Request indexing queue.
+- **How India phrases it — the 2026-11-05 pass** (Search Console 7 Oct–4 Nov, every visible query; files in that
+  session's scratchpad `kw2/`). Order: name → course → want → year ("sms jaipur pg stipend", "<college> mbbs fees
+  structure"). What the titles now follow, all in code:
+  - **"PG", not "MD/MS", on MD/MS college titles** (`collegeTitle`: ": PG Fees, Stipend & Cut Off 2025"): "pg" 6,227
+    impressions against 1,241 for "md"/"ms". The description still opens with "MD/MS cutoff".
+  - **"Cut Off" in two words** (18,033 vs 5,240) on college, branch, branch × state and NEET SS titles — and wherever
+    the extra character alone would cost a tail word, the one-word "Cutoff" variant is tried next, so no title loses
+    "Fees", "Stipend" or "Seats" for a space.
+  - **The city stays**: a long name keeps its city with a shorter tail (up to `CITY_TITLE` 72, then `LONG_TITLE` 80)
+    before the city is dropped; a place the name already says (spaces aside) is never added.
+  - **Searched course names** in `SEARCH_NAME` (branch and branch × state titles): MD Radiology, MD Dermatology,
+    MS OBG, MD Pediatrics (272 vs 118), MD Anesthesia (178 vs 56). Descriptions keep the course's own name.
+  - NEET SS titles lead with "<course> Seats in India" (76% of SS queries; NEET SS counselling allots every DM/MCh seat).
+  - College FAQ "What is the PG/MBBS fee structure at …?"; on MBBS pages "How many MBBS seats" and "government or
+    private" are answered from NMC's register (`FaqFacts`), since the UG list has no ownership.
+  - Stipend hub links read "<State> PG stipend". Deemed: "Deemed University PG Fees". Private: "MD Fees in Private
+    Medical Colleges in India".
+  - Fixed on the way: `collegeName` stripped "Po"/"Dist" as prefixes inside words ("…, ndicherry", "rbandar"); short
+    all-caps words with a vowel are no longer kept as acronyms ("SHRI RAM" → "Shri Ram") unless listed (UP, ESIC,
+    IMS, ITM…); JIPMER, PGIMER, NIMHANS and other long acronyms keep their capitals.
+  - Not done, on purpose: Hinglish wording (0.1% of impressions); /neet-pg-cutoff and the NRI/management titles
+    (best page / judge ~11-17); "seats in India" on branch pages (needs NMC's seats joined by course).
 - **Gaps left open, and why:**
   - A choice-filling / upgradation / free-exit page: about 210 phrases, and round 2 choice filling opens around
     6–7 Nov. It needs copy someone writes.

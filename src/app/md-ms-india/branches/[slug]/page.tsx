@@ -19,7 +19,7 @@ import { summariseSeats } from "@/lib/seatSummary";
 import { getBranchSeatMatrix, MATRIX_LABEL } from "@/lib/pgSeatData";
 import { CUT_CATS, getLatestLiveRound, roundPath } from "@/lib/mccResults";
 import { getScoreTables } from "@/lib/scoreRank";
-import { getBranchStateCombos } from "@/lib/branchStateQueries";
+import { getBranchStateCombos, SEARCH_NAME } from "@/lib/branchStateQueries";
 
 /**
  * Rendered per request, deliberately.
@@ -92,11 +92,15 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const live = await liveFor(b.name, b.year);
   const lead = live ? ` ${live.year} ${live.spec.label} &` : "";
   const open = live?.cut.Open;
+  // The name as it is searched ("md radiology cut off", Search Console Oct–Nov 2026: "radiology" in 47 autocomplete
+  // rank/seat/fee phrases, "radio diagnosis" in none; "cut off" in two words 3.4× "cutoff"). The description keeps
+  // the course's own name.
+  const nm = SEARCH_NAME[b.name] ?? b.name;
   const title = fitTitle(
-    ...(live ? [`${b.name} Cutoff${lead}${y}: Closing Rank`, `${b.name} Cutoff${lead}${y}`] : []),
-    `${b.name} Cutoff${y}: Closing Rank, Seats & Colleges`,
-    `${b.name} Cutoff${y}: Closing Rank & Seats`,
-    `${b.name} Cutoff${y}`,
+    ...(live ? [`${nm} Cut Off${lead}${y}: Closing Rank`, `${nm} Cut Off${lead}${y}`] : []),
+    `${nm} Cut Off${y}: Closing Rank, Seats & Colleges`,
+    `${nm} Cut Off${y}: Closing Rank & Seats`,
+    `${nm} Cut Off${y}`,
   );
   const description = fitDescription(
     ...(live && open

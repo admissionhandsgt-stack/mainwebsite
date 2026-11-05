@@ -68,9 +68,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const sq = mainStateQuota(p.quotas);
   return resolveMetadata(`/md-ms-india/branches/${p.courseSlug}/${p.stateSlug}`, {
     title: fitTitle(
-      ...(r ? [`${name} Cutoff ${p.state} ${r.year} &${y}: Seats & Fees`, `${name} Cutoff ${p.state} ${r.year} &${y}`] : []),
-      `${name} Cutoff ${p.state}${y}: Closing Rank, Seats & Fees`,
-      `${name} Cutoff ${p.state}${y}`,
+      ...(r ? [`${name} Cut Off ${p.state} ${r.year} &${y}: Seats & Fees`, `${name} Cut Off ${p.state} ${r.year} &${y}`] : []),
+      `${name} Cut Off ${p.state}${y}: Closing Rank, Seats & Fees`,
+      `${name} Cut Off ${p.state}${y}`,
       `${name} in ${p.state}`,
     ),
     description: fitDescription(
