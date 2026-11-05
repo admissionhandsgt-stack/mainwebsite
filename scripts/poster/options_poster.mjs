@@ -126,7 +126,7 @@ h1.ch span{color:var(--teal)}
 .dates .t{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
 .dates .t b{font:900 22px/1 Figtree,sans-serif}
 .dates .t span{font:600 12.5px/1 Inter,sans-serif;color:#bccbe0}
-.dg{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}
+.dg{display:grid;grid-template-columns:repeat(${spec.round2.length},1fr);gap:8px;margin-top:14px}
 .d{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:10px 10px 11px}
 .d span{display:block;font:700 11.5px/1.2 Inter,sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#a6efdc}
 .d b{display:block;margin-top:6px;font:800 15.5px/1.25 Figtree,sans-serif}
@@ -206,9 +206,9 @@ ${tips.map(([h, p], i) => `    <div class="tip"><span class="k">${i + 1}</span><
   </div>
 
   <div class="dates">
-    <div class="t"><b>MCC Round 2 dates, NEET PG ${spec.year}</b><span>MCC's tentative schedule — confirm on mcc.nic.in</span></div>
+    <div class="t"><b>${esc(spec.round2Title ?? `MCC Round 2 dates, NEET PG ${spec.year}`)}</b><span>${esc(spec.round2Note ?? "MCC's tentative schedule — confirm on mcc.nic.in")}</span></div>
     <div class="dg">
-${spec.round2.map(([k, v], i) => `      <div class="d${i === 1 ? " hl" : ""}"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join("\n")}
+${spec.round2.map(([k, v], i) => `      <div class="d${i === (spec.round2Highlight ?? 1) ? " hl" : ""}"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join("\n")}
     </div>
   </div>
 

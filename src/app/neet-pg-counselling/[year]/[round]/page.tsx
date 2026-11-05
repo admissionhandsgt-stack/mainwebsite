@@ -245,6 +245,14 @@ export default async function RoundResultPage({ params }: { params: Params }) {
 
   const live = !!result;
   const out = !live && (state.status === "detected" || state.status === "failed");
+  // A reporting date that has passed is history (2026-11-05: Round 1's page still said "closes 2 Nov" on 5 Nov).
+  // "2 Nov" is the counselling year's (a January date the next year's); it is over at midnight IST that night.
+  const joinPassed = (() => {
+    const m = when?.joinBy?.match(/(\d{1,2})\s+([A-Za-z]{3})/);
+    const mon = m ? ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"].indexOf(m[2].toLowerCase()) : -1;
+    if (!m || mon < 0) return false;
+    return Date.now() > Date.UTC(mon < 6 ? year + 1 : year, mon, Number(m[1]), 18, 30); // 24:00 IST
+  })();
   const accent = live ? copy.accent_live : out ? copy.accent_out : expected ? copy.accent_pending : copy.accent_pending_nodate;
   const subtitle = live
     ? copy.subtitle_live
@@ -321,7 +329,10 @@ export default async function RoundResultPage({ params }: { params: Params }) {
     { question: body.faq4_q, answer: body.faq4_a },
     ...(result && prev ? [{ question: body.faq5_q, answer: body.faq5_a }] : []),
   ];
-  const nextSteps = (when?.joinBy ? body.next_items : body.next_items_nodate).split("\n").map((s) => s.trim()).filter(Boolean);
+  const nextSteps = (when?.joinBy ? (joinPassed ? body.next_items_closed : body.next_items) : body.next_items_nodate)
+    .split("\n")
+    .map((s) => s.trim())
+    .filter(Boolean);
   const otherRounds = await Promise.all(
     ROUNDS.filter((r) => r.slug !== spec.slug).map(async (r) => ({ r, s: await getRoundState(year, r.round) })),
   );
@@ -457,10 +468,10 @@ export default async function RoundResultPage({ params }: { params: Params }) {
           <CounselCard
             id="round-decision"
             eyebrow={body.decide_eyebrow}
-            title={live || out ? body.decide_title_live : body.decide_title_pending}
-            body={live || out ? body.decide_body_live : body.decide_body_pending}
+            title={joinPassed ? body.decide_title_closed : live || out ? body.decide_title_live : body.decide_title_pending}
+            body={joinPassed ? body.decide_body_closed : live || out ? body.decide_body_live : body.decide_body_pending}
             fact={nextSpec && nextLastYear?.upgraded ? body.decide_fact : undefined}
-            join={when?.joinBy ? body.decide_join : undefined}
+            join={when?.joinBy ? (joinPassed ? body.decide_join_past : body.decide_join) : undefined}
             waLabel={body.decide_wa}
             waText={body.decide_wa_text}
             callLabel={body.decide_call}

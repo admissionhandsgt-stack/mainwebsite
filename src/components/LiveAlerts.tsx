@@ -69,6 +69,8 @@ export default function LiveAlerts({ alerts }: { alerts: BarAlert[] }) {
                   key={`${alert.id}-${copy}`}
                   className="flex items-center mx-3 md:mx-4 group"
                   aria-hidden={copy > 0 ? true : undefined}
+                  // The two loop copies are not content: no search snippet quotes them (data-nosnippet).
+                  {...(copy > 0 ? { "data-nosnippet": "" } : {})}
                 >
                   <span className="text-white/60 mr-1.5 md:mr-2">⚲</span>
                   {/* A board's notice opens in a new tab; one of our own pages (a round result) opens here. */}

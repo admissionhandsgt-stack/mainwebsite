@@ -1842,6 +1842,15 @@ export const PAGE_COPY = {
         long: true,
       },
       decide_join: { label: "Result-day card: reporting date — {join_by}", value: "Reporting closes {join_by}, as MCC's schedule says." },
+      // Once the round's reporting date has passed (2026-11-05: the Round 1 page still said "closes 2 Nov" on 5 Nov).
+      decide_title_closed: { label: "Result-day card heading, reporting over — {round_lc}, {next_round}", value: "{round} reporting is over. Plan {next_round} now." },
+      decide_body_closed: {
+        label: "Result-day card line, reporting over — {next_round}",
+        value:
+          "Fresh seats and upgrades come in {next_round}. Whether you joined a seat or not, a counsellor plans your choices and whether to take part before MCC's dates open.",
+        long: true,
+      },
+      decide_join_past: { label: "Result-day card: reporting date, passed — {join_by}, {round}", value: "{round} reporting closed on {join_by}." },
       decide_wa: { label: "Result-day card: WhatsApp button", value: "Talk to a counsellor on WhatsApp" },
       decide_wa_text: { label: "Result-day card: the WhatsApp message — {year}, {round}", value: "Hi Admission Hands, I need help with my NEET PG {year} {round} result." },
       decide_call: { label: "Result-day card: call button", value: "Call a counsellor" },
@@ -1858,6 +1867,12 @@ export const PAGE_COPY = {
         label: "Next steps, one per line — {join_by}",
         value:
           "Check your allotment in your MCC login: the allotment letter names the college, course, quota and category.\nReport to the allotted college with your original documents by {join_by}, as MCC's schedule says.\nDecide before reporting whether you will take part in the next round. What you can do with this round's seat is set by MCC's rules for the year; our counselling process page goes round by round.\nIf you are unsure, talk to a counsellor first. A seat given up cannot be taken back.",
+        long: true,
+      },
+      next_items_closed: {
+        label: "Next steps once the round's reporting date has passed, one per line — {round_lc}, {join_by}, {next_round}",
+        value:
+          "Reporting for {round_lc} closed on {join_by}.\nIf you joined a seat, what you can do with it in {next_round} is set by MCC's rules for the year; our counselling process page goes round by round.\nThe dates for {next_round} are on this site and MCC's the moment MCC announces them.",
         long: true,
       },
       next_items_nodate: {
