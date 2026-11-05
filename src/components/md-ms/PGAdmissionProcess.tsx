@@ -110,7 +110,7 @@ const SHIPPED_STEPS = [
     icon: Building2, 
     phase: "Phase 07",
     title: "College Reporting", 
-    desc: "From allotment letter to physically walking into your college — we ensure zero last-mile failures.", 
+    desc: "From allotment letter to physically walking into your college — so nothing is missed at the last step.", 
     bullets: [
       "Allotment letter verification", 
       "Fee payment guidance and receipt management", 

@@ -6,6 +6,7 @@ import PredictorHero from "@/components/predictor/PredictorHero";
 import TrustShield from "@/components/home/TrustShield";
 import CounsellorEdge from "@/components/home/CounsellorEdge";
 import TelegramJoin from "@/components/engage/TelegramJoin";
+import ExpertCompare from "@/components/lead/ExpertCompare";
 import StructuredData, { webPage, breadcrumb, faqPage } from "@/components/seo/StructuredData";
 import { getLiveFigures } from "@/lib/liveFigures";
 import { getDataStats, approxLakh, inr, yearSpan } from "@/lib/dataStats";
@@ -104,6 +105,9 @@ export default async function NeetCollegePredictorPage() {
       />
         </div>
       </section>
+
+      {/* Right after the free report: what it is, and what Expert Counselling adds (owner, 2026-11-05). */}
+      <ExpertCompare placement="predictor" />
 
       <HowItWorks stats={stats} faqs={faqs} nmcColleges={live.nmc_colleges} />
 

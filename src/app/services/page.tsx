@@ -5,6 +5,7 @@ import { creditOf } from '@/components/ui/PhotoCredit';
 import { getServicesPage } from '@/lib/servicesContent';
 import { Metadata } from 'next';
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
+import ExpertCompare from "@/components/lead/ExpertCompare";
 
 export const revalidate = 0;
 
@@ -41,7 +42,7 @@ export default async function ServicesPage() {
           breadcrumb([{ name: "Home", path: "/" }, { name: "Services", path: "/services" }]),
         ]}
       />
-      <ServicesClient heroImages={heroImages} heroCredit={creditOf(serviceHero)} data={data} />
+      <ServicesClient heroImages={heroImages} heroCredit={creditOf(serviceHero)} data={data} compare={<ExpertCompare placement="services" freeLink />} />
     </>
   );
 }

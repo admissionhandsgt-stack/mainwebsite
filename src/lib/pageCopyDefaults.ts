@@ -1129,22 +1129,48 @@ export const PAGE_COPY = {
       details_hide: { label: "Service card: hide details", value: "Hide" },
       how_title: { label: "How it works — heading", value: "How It" },
       how_accent: { label: "How it works — heading, coloured part", value: "Works" },
-      how_intro: { label: "How it works — intro", value: "From first call to final admission — a streamlined, expert-guided process." },
-      step_1_title: { label: "Step 1", value: "Free Consultation" },
-      step_1_desc: { label: "Step 1 text", value: "Share your NEET score, category, and preferences. We assess your options in a free call.", long: true },
-      step_2_title: { label: "Step 2", value: "Strategy Blueprint" },
-      step_2_desc: { label: "Step 2 text", value: "Receive a personalized admission strategy with target colleges, timelines, and budget breakdown.", long: true },
-      step_3_title: { label: "Step 3", value: "Active Counselling" },
-      step_3_desc: { label: "Step 3 text", value: "We manage your MCC/State registrations, choice filling, and real-time decision-making across all rounds.", long: true },
-      step_4_title: { label: "Step 4", value: "Seat Secured" },
-      step_4_desc: { label: "Step 4 text", value: "From allotment letter to physical reporting — we make sure no formality is missed.", long: true },
-      cta_title: { label: "Closing band — heading", value: "Start with the free call" },
+      how_intro: {
+        label: "How it works — intro",
+        value: "From a free first call to the day you join — your counsellor with you at every step.",
+        was: ["From first call to final admission — a streamlined, expert-guided process."],
+      },
+      step_1_title: { label: "Step 1", value: "Free rank check & call", was: ["Free Consultation"] },
+      step_1_desc: {
+        label: "Step 1 text",
+        value: "Check your chances on the predictor, then a short free call: where your rank stands and which counselling routes are open to you.",
+        long: true,
+        was: ["Share your NEET score, category, and preferences. We assess your options in a free call."],
+      },
+      step_2_title: { label: "Step 2", value: "Expert Counselling", was: ["Strategy Blueprint"] },
+      step_2_desc: {
+        label: "Step 2 text",
+        value: "Your counsellor checks every quota you qualify for and builds your preference list — which colleges, in which order — within your budget.",
+        long: true,
+        was: ["Receive a personalized admission strategy with target colleges, timelines, and budget breakdown."],
+      },
+      step_3_title: { label: "Step 3", value: "Round by round", was: ["Active Counselling"] },
+      step_3_desc: {
+        label: "Step 3 text",
+        value: "Registrations, choice filling, and the float, freeze or upgrade call in every MCC and state round — made with you, on time.",
+        long: true,
+        was: ["We manage your MCC/State registrations, choice filling, and real-time decision-making across all rounds."],
+      },
+      step_4_title: { label: "Step 4", value: "Joining your college", was: ["Seat Secured"] },
+      step_4_desc: {
+        label: "Step 4 text",
+        value: "From allotment letter to reporting — documents, fee and hostel terms — so nothing is missed at the last step.",
+        long: true,
+        was: ["From allotment letter to physical reporting — we make sure no formality is missed."],
+      },
+      cta_title: { label: "Closing band — heading", value: "Get Expert Counselling", was: ["Start with the free call"] },
       cta_body: {
         label: "Closing band — text",
-        value: "Twenty minutes, your actual rank and budget, and a straight read on what is reachable. No obligation after it.",
+        value:
+          "Start with a short free call — your rank, category and budget, and a straight read on what is reachable. Fees depend on your course and counselling; your counsellor tells you before anything starts.",
         long: true,
+        was: ["Twenty minutes, your actual rank and budget, and a straight read on what is reachable. No obligation after it."],
       },
-      cta_button: { label: "Closing band — button", value: "Book my free call" },
+      cta_button: { label: "Closing band — button", value: "Get Expert Counselling", was: ["Book my free call"] },
     },
   },
   "page.bds.hero": {
@@ -2016,6 +2042,48 @@ export const PAGE_COPY = {
   // The counsellor card after the main table of the data pages (2026-10-21) — components/lead/DataPageCounsel.
   // Google and AI assistants send people straight to these pages with one question; the card is where a
   // reader who has the answer can talk to a counsellor. Before it, the only block sat under the FAQs.
+  // What the free rank check gives and what Expert Counselling adds (owner, 2026-11-05: no package fees on the site —
+  // "Get Expert Counselling", the features, what a counsellor can get you). On the predictor after the tool and on /services.
+  // Never a promise of a seat: counselling allots it (the note says so, as TrustShield does).
+  "page.expert": {
+    group: "Free check vs Expert Counselling",
+    fields: {
+      eyebrow: { label: "Small heading", value: "Free check · Expert Counselling" },
+      title: { label: "Heading", value: "Your rank opens the door. Expert Counselling takes it to the best seat it can reach." },
+      intro: {
+        label: "Intro line",
+        value:
+          "The free check shows what your rank reached last year. Expert Counselling works out what you should do this year — which seats to fill, in what order, when to move — and stays with you until you join.",
+        long: true,
+      },
+      free_badge: { label: "Free card — badge", value: "Free" },
+      free_title: { label: "Free card — heading", value: "Rank check" },
+      free_link: { label: "Free card — link to the predictor (services page)", value: "Check your chances free" },
+      free_items: {
+        label: "Free card — what it gives, one per line",
+        value:
+          "Your chances at colleges, in plain words — high, good, possible or reach\nCut-off bands, fees, seats and stipend on every college page\nRound results, seat matrices and dates as soon as they are out\nA short free call to see where you stand",
+        long: true,
+      },
+      expert_badge: { label: "Expert card — badge", value: "Personal" },
+      expert_title: { label: "Expert card — heading", value: "Expert Counselling" },
+      expert_items: {
+        label: "Expert card — what it adds, one per line",
+        value:
+          "A dedicated counsellor from registration to joining\nEvery route you qualify for — All India, state, deemed, management, NRI and in-service quotas — checked against your profile\nYour preference list — which colleges, in which order — built and reviewed before every round\nThe float, freeze or upgrade call in every round, made with you, on time\nFee, bond, stipend and seat-leaving terms checked before you lock a choice\nDocuments audited and every deadline tracked\nFee terms agreed with college offices in writing — instalments, hostel, deposits — where the college offers them\nReporting support until you have joined",
+        long: true,
+      },
+      cta: { label: "Button — WhatsApp", value: "Get Expert Counselling" },
+      wa_text: { label: "The WhatsApp message", value: "Hi Admission Hands, I want Expert Counselling for my NEET admission." },
+      call: { label: "Button — call", value: "Talk to a counsellor" },
+      note: {
+        label: "Small print under the buttons",
+        value:
+          "Fees depend on your course and counselling — your counsellor tells you before anything starts. No one can promise a seat: counselling allots it. We make sure your rank goes as far as it can.",
+        long: true,
+      },
+    },
+  },
   "page.counsel_card": {
     group: "Counsellor card on data pages",
     fields: {

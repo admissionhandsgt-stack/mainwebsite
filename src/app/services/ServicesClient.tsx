@@ -141,9 +141,11 @@ interface ServicesClientProps {
   /** The credit for whichever photograph `heroImages[0]` turned out to be. */
   heroCredit?: PhotoCreditInfo;
   data: ServicesPageData;
+  /** Free check vs Expert Counselling, rendered on the server (components/lead/ExpertCompare). */
+  compare?: React.ReactNode;
 }
 
-export default function ServicesClient({ heroImages, heroCredit, data }: ServicesClientProps) {
+export default function ServicesClient({ heroImages, heroCredit, data, compare }: ServicesClientProps) {
   const { copy } = data;
   const cards: Card[] = data.services.map((sv, i) => ({
     icon: ICONS[sv.icon] ?? Target,
@@ -266,6 +268,9 @@ export default function ServicesClient({ heroImages, heroCredit, data }: Service
           </div>
         </div>
       </section>
+
+      {/* What is free and what Expert Counselling adds — first, so the boundary is clear before the services. */}
+      {compare}
 
       {/* Why Students Choose Us - Reduced spacing and margins by 50%, high contrast text */}
       <section className="py-6 md:py-8">

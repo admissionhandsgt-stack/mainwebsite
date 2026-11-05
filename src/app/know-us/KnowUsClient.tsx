@@ -229,7 +229,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
               {
                 icon: GraduationCap,
                 title: "Post-Allotment & College Reporting",
-                desc: "From allotment letter verification to physical reporting logistics, anti-ragging compliance, hostel allotment, and fee payment — we ensure zero last-mile failures.",
+                desc: "From allotment letter verification to physical reporting logistics, anti-ragging compliance, hostel allotment, and fee payment — so nothing is missed at the last step.",
                 color: "from-cyan-600 to-cyan-600"
               }
             ].map((item, idx) => (
@@ -404,10 +404,10 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
           >
             {[
-              { step: "01", title: "Free Expert Consultation", desc: "Share your NEET score, category, domicile, and budget. In a free 15-minute call, we map your realistic college options and outline a strategy." },
-              { step: "02", title: "Personalized Strategy Blueprint", desc: "Receive a detailed playbook with target college lists, cutoff predictions, fee breakdowns, bond clauses, and a timeline for every counselling round." },
-              { step: "03", title: "Active Counselling Management", desc: "We manage your MCC/State registrations, build optimized choice-filling lists, handle documentation, and provide real-time support during every round." },
-              { step: "04", title: "Seat Secured & College Reporting", desc: "From allotment letter to physical reporting — fee payment, document verification, hostel allotment, anti-ragging compliance — we ensure zero last-mile issues." },
+              { step: "01", title: "Free rank check & call", desc: "Check your chances on the predictor, then a short free call: where your rank stands and which counselling routes are open to you." },
+              { step: "02", title: "Expert Counselling", desc: "Your counsellor checks every quota you qualify for and builds your preference list — which colleges, in which order — with fees, bonds and stipends checked, within your budget." },
+              { step: "03", title: "Round by round", desc: "Registrations, choice filling, documents, and the float, freeze or upgrade call in every MCC and state round — made with you, on time." },
+              { step: "04", title: "Joining your college", desc: "From allotment letter to reporting — fee payment, document verification, hostel and anti-ragging formalities — so nothing is missed at the last step." },
             ].map((item, idx) => (
               <div 
                 key={idx}
