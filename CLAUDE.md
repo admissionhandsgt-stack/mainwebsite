@@ -98,11 +98,51 @@ Counselling data as of 2026-09-22: `closing_ranks` 274,483 (PG 230,484 + UG 43,9
 `seat_options` 76,297 (PG 58,204 + UG 18,093) since migration 0036 dropped KEA's mock rounds, `institutes` 3,895 (PG 2,168 + UG 1,727).
 **Empty by design:** `pg_recommended_colleges`, `pg_deemed_colleges` (created by migration `0005`, curated by hand).
 
+## Security review of 2026-11-05 — the rules it left (read before adding a route, a page or a form)
+
+The whole deployed codebase was reviewed (the repo on GitHub is **public**, so assume an attacker has read
+every file, CLAUDE.md included). What was wrong, and the rule each fix left:
+
+- **`/api/unlock` gave anyone a signed-in session for any phone number** — typed, never proved — and with it
+  that student's documents (Aadhaar, scorecard) and profile. Nothing on the site called it any more. Deleted.
+  **A session is minted only after proof:** a code (`/api/auth/verify`), an inbound WhatsApp
+  (`/api/verify/status`) or the password (`/api/auth/login`). Never add a fourth way.
+- **`/admin/logs` rendered for anybody with any `ah_admin_session` cookie value** (or a forged
+  `x-ah-admin-rewritten: 1` header): the middleware only checks a cookie is *present*, and a server page's
+  output is in the HTML before `ProtectedRoute` runs. **Every server page under `src/app/admin` calls
+  `getSessionUser()` and redirects** (logs, documents, data-sync, outreach, whatsapp-log). A client page is
+  safe only because its data comes from `/api/admin/*`, which calls `requireAdmin()`.
+- **Counsellors' Google Sheet:** student-typed values starting `= + - @` became live formulas (rows are written
+  USER_ENTERED) — an anonymous enquiry could plant a HYPERLINK carrying other students' phones.
+  `sheetText()` in `lib/leadSheet.ts` keeps every student value as text; only our own `=HYPERLINK` cells skip it.
+- **`/login?next=/\evil.com`** redirected off-site. `lib/safeNext.ts` is the one check (server page and `LoginFlow`).
+- **JSON-LD** goes through `lib/jsonLd.ts` (escapes `<`, `>`, `&`), never bare `JSON.stringify`.
+- **Error log:** `redactForLog()` in `lib/logger.ts` drops a failed query's `params:` line, a duplicate key's
+  value, and keeps only the last four digits of any Indian mobile — before it is stored or printed.
+- **Password set or reset ends every other session** of that student (`revokeOtherSessions`).
+- **Rate limits on every public route that touches the database** (`limitOr429` in `lib/rateLimit.ts` for the
+  ones that had none). Not on webhooks (signed), sitemaps/robots/llms.txt (crawlers) or static files.
+- **Meta webhook (`/api/whatsapp/cloud`) checks Meta's signature only once `whatsapp.cloud.app_secret` is
+  saved** (Admin → WhatsApp Official API). Until then anyone who knows our phone_number_id can add fake
+  student messages to the permanent `wa_messages` table. The owner pastes it; Claude never handles it.
+- **Dependencies:** Next 14.2.35 (the last 14.x). Still open and needing a project of their own: Next 15.5/16
+  (several advisories, incl. image-optimizer RCE only fixed there — we only optimise our own files and YouTube
+  thumbnails, so an attacker cannot feed it an image) and sharp ≥0.35.5 (libheif/libvips/librsvg; ship alone and
+  let `check_sharp_decode.cjs` judge the ARM AVIF decode, see the sharp note below).
+- Checked and sound: every `/api/admin/*` route calls `requireAdmin()`; SQL is parameterised everywhere (identifiers
+  only from constants); no CORS header anywhere; cookies HttpOnly + Secure + SameSite=Lax; no token in browser
+  storage; no `NEXT_PUBLIC_` secret; uploads judged by magic bytes; document vault owner-or-staff with 404;
+  WAHA and cron secrets constant-time and fail closed; `poweredByHeader: false`, no browser source maps.
+- No `.env`, key or `.pem` was ever committed. Old Supabase keys are in history (May–Sep 2026); that project no
+  longer resolves. `.gitignore` now refuses every `.env*` except `.env.example`, keys and service-account JSON.
+
 ## Admin CMS
 
 - **Auth:** scrypt + server-side sessions (`src/lib/auth.ts`, `admin_users` / `admin_sessions`).
   `useAuth` asks `/api/admin/auth` who is signed in; `ProtectedRoute` guards the pages and
-  `middleware.ts` bounces a signed-out visitor from `/admin/*` to the login page.
+  `middleware.ts` bounces a signed-out visitor from `/admin/*` to the login page. **Neither is the access
+  control** — every admin API route calls `requireAdmin()` and every server page under `/admin` calls
+  `getSessionUser()` itself (see the security review above).
 - **Every admin write goes through `/api/admin/[resource]`**, and `src/lib/adminResources.ts` is the
   security boundary: table and column names come from `RESOURCE_SPECS`, never from the request. Adding a
   new editable table means adding a spec, not a route. `pickColumns` drops anything not listed and

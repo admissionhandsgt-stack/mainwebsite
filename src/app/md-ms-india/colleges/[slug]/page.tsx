@@ -27,6 +27,7 @@ import { pageCopy } from "@/lib/pageCopy";
 import MccSeats from "@/components/colleges/MccSeats";
 import SeatTerms from "@/components/colleges/SeatTerms";
 import TelegramStrip from "@/components/engage/TelegramStrip";
+import { jsonLd as toJsonLd } from "@/lib/jsonLd";
 
 // The busiest pages are built at deploy time; the long tail is generated on
 // first request and then cached, so a 2,168-page build stays quick.
@@ -140,7 +141,7 @@ export default async function CollegePage({ params }: { params: { slug: string }
         <script
           key={i}
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          dangerouslySetInnerHTML={{ __html: toJsonLd(schema) }}
         />
       ))}
 

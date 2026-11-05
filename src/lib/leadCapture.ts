@@ -1,10 +1,15 @@
 /**
  * Recording the enquiry behind a sign-up.
  *
- * Both ways in create the same lead — the gate at `/api/unlock` and the
- * verified sign-up at `/api/auth/verify` — and the team's dashboard should not
- * be able to tell them apart by accident. Written once here so the two cannot
- * drift into recording different things about the same person.
+ * Every way in creates the same lead, and the team's dashboard should not be
+ * able to tell them apart by accident. Written once here so they cannot drift
+ * into recording different things about the same person.
+ *
+ * `/api/unlock` used to be one of them. It was removed on 2026-11-05: it gave
+ * anybody who typed a phone number a signed-in session for that number's
+ * account, documents included. A session is minted only after proof — a code
+ * (`/api/auth/verify`), an inbound WhatsApp (`/api/verify/status`) or the
+ * password (`/api/auth/login`). Never add a fourth way that skips the proof.
  *
  * Deliberately never throws: a failure to alert or to log the lead must not
  * cost the visitor the access they just proved they were entitled to.

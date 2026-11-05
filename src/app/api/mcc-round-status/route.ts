@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getRoundState, roundByName } from "@/lib/mccResults";
+import { limitOr429 } from "@/lib/rateLimit";
 
 /**
  * Where a round's result stands — for components/mcc/RoundWatch, which reloads an open round page
@@ -9,6 +10,8 @@ import { getRoundState, roundByName } from "@/lib/mccResults";
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
+  const limited = limitOr429(request, "round-status", 60);
+  if (limited) return limited;
   const p = new URL(request.url).searchParams;
   const year = Number(p.get("year"));
   const round = p.get("round") ?? "";

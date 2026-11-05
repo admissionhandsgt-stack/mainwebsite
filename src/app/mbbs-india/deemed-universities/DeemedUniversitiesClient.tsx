@@ -6,6 +6,7 @@ import { University, GraduationCap, Award, Phone, ArrowRight, Sparkles } from 'l
 import { motion } from 'framer-motion';
 import { useCTA } from '@/hooks/useCTA';
 import PhotoCredit from '@/components/ui/PhotoCredit';
+import { jsonLd } from "@/lib/jsonLd";
 
 const DeemedCollegesListing = dynamic(
   () => import('@/components/mbbs/DeemedCollegesListing').then(mod => ({ default: mod.DeemedCollegesListing })),
@@ -91,7 +92,7 @@ export default function DeemedUniversitiesClient({ heroImages, phoneNumber = "+9
 
   return (
     <div className="flex flex-col flex-grow">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }} />
 
       <div className="flex-grow">
         {/* ─── Hero — light since 2026-10-21 ─── */}

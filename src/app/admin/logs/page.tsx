@@ -1,4 +1,6 @@
 import { CheckCircle2 } from "lucide-react";
+import { redirect } from "next/navigation";
+import { getSessionUser } from "@/lib/auth";
 import { recentErrors } from "@/lib/logger";
 import { Badge, Card, EmptyState, PageHeader, Stats, TABLE } from "@/components/admin/ui";
 
@@ -13,6 +15,12 @@ export const dynamic = "force-dynamic";
  * somebody is hitting right now.
  */
 export default async function LogsPage() {
+  // A server page renders into the HTML before any client-side guard runs, so
+  // it checks the session itself. The middleware only bounces a request with no
+  // cookie at all; it is not the access control (found open on 2026-11-05).
+  const user = await getSessionUser();
+  if (!user) redirect("/admin");
+
   const groups = await recentErrors(60);
   const total = groups.reduce((n, g) => n + g.occurrences, 0);
 

@@ -34,7 +34,8 @@ export const runtime = "nodejs";
  * would not. This limiter is the cheaper guard in front of them.
  */
 /**
- * Per address, and deliberately loose — see the note in /api/unlock.
+ * Per address, and deliberately loose: a hostel, coaching centre or family
+ * connection puts dozens of candidates behind one address in an evening.
  *
  * Eight an hour blocked the ninth person on a shared connection from signing in
  * at all. The control that actually protects the WhatsApp number is per-number

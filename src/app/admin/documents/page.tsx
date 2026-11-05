@@ -1,4 +1,6 @@
 import { ShieldCheck } from "lucide-react";
+import { redirect } from "next/navigation";
+import { getSessionUser } from "@/lib/auth";
 import { PageHeader, Card } from "@/components/admin/ui";
 import DocumentsClient from "./DocumentsClient";
 
@@ -11,7 +13,11 @@ export const dynamic = "force-dynamic";
  * could tell whose set was complete without scrolling back through a
  * conversation. This is the same documents, in one place, with a state on each.
  */
-export default function AdminDocumentsPage() {
+export default async function AdminDocumentsPage() {
+  // Every server page under /admin checks the session itself (see logs/page.tsx).
+  const user = await getSessionUser();
+  if (!user) redirect("/admin");
+
   return (
     <div>
       <PageHeader

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getMediaAsset } from "@/lib/content";
+import { limitOr429 } from "@/lib/rateLimit";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -11,7 +12,9 @@ export const runtime = "nodejs";
  * so it resolves its key here. Server components import `getMediaAsset` from
  * `lib/content` directly and never touch this route.
  */
-export async function GET(_request: Request, { params }: { params: { key: string } }) {
+export async function GET(request: Request, { params }: { params: { key: string } }) {
+  const limited = limitOr429(request, "media", 300);
+  if (limited) return limited;
   try {
     const asset = await getMediaAsset(params.key);
     if (!asset) {

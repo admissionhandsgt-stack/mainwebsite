@@ -16,9 +16,9 @@
  * messages us themselves, which is free because it is inbound and
  * user-initiated, and it arrives from their real number.
  *
- * If a paid provider is added later, `POST /api/unlock` is the only place that
- * has to change — it already mints the cookie at exactly the point where a
- * verified callback would.
+ * `POST /api/unlock`, which minted this cookie for a typed number, was removed
+ * on 2026-11-05 because it also started a session for that number's account
+ * without any proof. The cookie is now minted only after a proof path.
  */
 
 import { checkIndianMobile } from "@/lib/phone";

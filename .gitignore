@@ -31,6 +31,16 @@ dist-ssr
 test-results/
 .env*.local
 
+# Secrets never go to GitHub (the repository is public). Every env file, keys
+# and service-account JSON; only a template ending in .example may be committed.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*service-account*.json
+*-sa-key*.json
+
 
 .vercel
 .open-next

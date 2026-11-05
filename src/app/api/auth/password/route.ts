@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
-import { userFromRequest, setUserPassword } from "@/lib/userAuth";
+import { userFromRequest, setUserPassword, revokeOtherSessions } from "@/lib/userAuth";
 import { logError } from "@/lib/logger";
 
 export const dynamic = "force-dynamic";
@@ -67,6 +67,8 @@ export async function POST(request: Request) {
   try {
     const ok = await setUserPassword(user.id, password);
     if (!ok) return NextResponse.json({ error: "Could not save that password." }, { status: 500 });
+    // A new password ends every other session on the account.
+    await revokeOtherSessions(user.id, request);
     return NextResponse.json({ ok: true }, { headers: rateLimitHeaders(limit, LIMIT) });
   } catch (error) {
     logError(error, { route: "/api/auth/password", request });

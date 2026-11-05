@@ -1,4 +1,5 @@
 import { getDataset, SITE, type Cell } from "@/lib/openData";
+import { limitOr429 } from "@/lib/rateLimit";
 
 /**
  * /embed/<id> — an open dataset as a small, script-free HTML table that any
@@ -21,6 +22,8 @@ const fmt = (v: Cell, column: string) => {
 };
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
+  const limited = limitOr429(request, "embed", 120);
+  if (limited) return limited;
   const d = await getDataset(params.id);
   if (!d) return new Response("Not found", { status: 404 });
   const limitParam = Number(new URL(request.url).searchParams.get("rows"));

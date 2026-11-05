@@ -20,6 +20,7 @@ import TelegramJoin from "@/components/engage/TelegramJoin";
 import CtaBand from "@/components/ui/CtaBand";
 import TrackView from "@/components/analytics/TrackView";
 import TelegramStrip from "@/components/engage/TelegramStrip";
+import { jsonLd as toJsonLd } from "@/lib/jsonLd";
 
 /**
  * Rendered per request. Since 2026-10-12 the page is the same for everybody —
@@ -129,7 +130,7 @@ export default async function UgCollegePage({ params }: { params: { slug: string
         <script
           key={i}
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          dangerouslySetInnerHTML={{ __html: toJsonLd(schema) }}
         />
       ))}
 

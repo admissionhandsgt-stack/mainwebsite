@@ -5,6 +5,7 @@ import { logError } from "@/lib/logger";
 import { userFromRequest } from "@/lib/userAuth";
 import { getSessionUser } from "@/lib/auth";
 import { openDocument } from "@/lib/documentCrypto";
+import { limitOr429 } from "@/lib/rateLimit";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -23,6 +24,8 @@ export const runtime = "nodejs";
  */
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
+  const limited = limitOr429(request, "docs-file", 120);
+  if (limited) return limited;
   const id = Number(params.id);
   if (!Number.isInteger(id) || id < 1) {
     return NextResponse.json({ error: "Not found." }, { status: 404 });
@@ -89,6 +92,8 @@ export async function GET(request: Request, { params }: { params: { id: string }
  * no second copy anywhere to forget about.
  */
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+  const limited = limitOr429(request, "docs-delete", 30);
+  if (limited) return limited;
   const id = Number(params.id);
   if (!Number.isInteger(id) || id < 1) {
     return NextResponse.json({ error: "Not found." }, { status: 404 });

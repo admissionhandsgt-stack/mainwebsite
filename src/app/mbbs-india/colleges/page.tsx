@@ -4,6 +4,7 @@ import { getMbbsStates, getUgColleges, getMediaAssets, resolveMetadata } from '@
 import { getNmcUgIndex } from '@/lib/nmcData';
 import { getLiveFigures } from '@/lib/liveFigures';
 import StructuredData, { breadcrumb } from "@/components/seo/StructuredData";
+import { jsonLd as toJsonLd } from "@/lib/jsonLd";
 
 /**
  * Metadata the admin can override per route (Admin -> Search & sharing).
@@ -160,7 +161,7 @@ export default async function CollegesPage() {
       <main className="min-h-screen bg-background text-foreground transition-colors duration-200">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: toJsonLd(jsonLd) }}
         />
         <StructuredData data={breadcrumb([{ name: "Home", path: "/" }, { name: "MBBS in India", path: "/mbbs-india" }, { name: "MBBS colleges", path: "/mbbs-india/colleges" }])} />
 

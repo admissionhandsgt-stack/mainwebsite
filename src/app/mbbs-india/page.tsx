@@ -1,4 +1,5 @@
 import React from "react";
+import { jsonLd } from "@/lib/jsonLd";
 export const revalidate = 0;
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
@@ -64,7 +65,7 @@ export default async function MBBSIndiaPage() {
       <StructuredData data={breadcrumb([{ name: "Home", path: "/" }, { name: "MBBS in India", path: "/mbbs-india" }])} />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        dangerouslySetInnerHTML={{ __html: jsonLd(faqSchema) }}
       />
 
       {/* Hero (Critical Path) */}

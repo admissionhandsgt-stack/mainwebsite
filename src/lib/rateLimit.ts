@@ -84,6 +84,24 @@ export function clientKey(request: Request): string {
   return clientIp(request) ?? "unknown";
 }
 
+/**
+ * The common case in one line: count this request against its visitor and
+ * scope, and hand back a ready 429 when they are over, else null.
+ *
+ * For the endpoints that had no limit until 2026-11-05. The numbers given are
+ * well above what a person or a page does (a college page asks for a few media
+ * keys; an open tab polls round status every ~90 s) — this is a ceiling for
+ * scripts, not a quota for students.
+ */
+export function limitOr429(request: Request, scope: string, limit: number, windowMs = 60_000): Response | null {
+  const r = rateLimit(`${scope}:${clientKey(request)}`, limit, windowMs);
+  if (r.ok) return null;
+  return new Response(JSON.stringify({ error: "Too many requests. Try again in a little while." }), {
+    status: 429,
+    headers: { "Content-Type": "application/json", "Cache-Control": "no-store", ...rateLimitHeaders(r, limit) },
+  });
+}
+
 /** The headers a well-behaved client needs to back off on its own. */
 export function rateLimitHeaders(r: RateLimitResult, limit: number): Record<string, string> {
   const h: Record<string, string> = {

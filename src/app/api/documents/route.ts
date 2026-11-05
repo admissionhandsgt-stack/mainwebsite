@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { logError } from "@/lib/logger";
-import { rateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
+import { rateLimit, clientKey, rateLimitHeaders, limitOr429 } from "@/lib/rateLimit";
 import { userFromRequest } from "@/lib/userAuth";
 import { documentType } from "@/lib/documentCatalogue";
 import { MAX_BYTES, ACCEPTED_LABEL, detectFormat, safeDisplayName } from "@/lib/documents";
@@ -37,6 +37,8 @@ const LIMIT = 40;
 const WINDOW_MS = 60 * 60 * 1000;
 
 export async function GET(request: Request) {
+  const limited = limitOr429(request, "docs-list", 120);
+  if (limited) return limited;
   const user = await userFromRequest(request);
   if (!user) return NextResponse.json({ error: "Sign in first." }, { status: 401 });
 

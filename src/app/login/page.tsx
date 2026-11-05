@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { getMediaAsset } from "@/lib/content";
 import { KeyRound, ShieldCheck, Smartphone } from "lucide-react";
 import { currentUser } from "@/lib/userAuth";
+import { safeNext } from "@/lib/safeNext";
 import PageHero from "@/components/ui/PageHero";
 import LoginFlow from "@/components/auth/LoginFlow";
 
@@ -51,10 +52,8 @@ export default async function LoginPage({
   searchParams: { next?: string };
 }) {
   if (await currentUser()) {
-    // Only ever bounce to our own paths. `next` comes from the URL, and a
-    // value like `//evil.com` would make this an open redirect.
-    const next = searchParams.next;
-    redirect(next && /^\/[^/]/.test(next) ? next : "/account");
+    // Only ever bounce to our own paths. `next` comes from the URL — see safeNext.
+    redirect(safeNext(searchParams.next));
   }
 
   const hero = await getMediaAsset("neet_hero");

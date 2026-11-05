@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import AuthFlow from "@/components/auth/AuthFlow";
+import { safeNext } from "@/lib/safeNext";
 
 /**
  * `AuthFlow` on its own page, where finishing means going somewhere.
@@ -19,9 +20,8 @@ import AuthFlow from "@/components/auth/AuthFlow";
 export default function LoginFlow({ next }: { next?: string }) {
   const router = useRouter();
 
-  // Only our own paths. `next` comes from the URL, and `//evil.com` would make
-  // this an open redirect — the same check the page itself applies.
-  const target = next && /^\/[^/]/.test(next) ? next : "/account";
+  // Only our own paths. `next` comes from the URL — the same helper the page uses.
+  const target = safeNext(next);
 
   return (
     <AuthFlow

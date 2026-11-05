@@ -71,14 +71,32 @@ async function hashIp(ip: string | null): Promise<string | null> {
 // that names nobody.
 const requestIp = (request?: Request): string | null => (request ? clientIp(request) : null);
 
+/**
+ * Takes students' details out of an error before it is stored or printed.
+ *
+ * A failed query's message is `Failed query: <sql>\nparams: <values>`, and the
+ * values of a lead or sign-up insert are a name, a phone number and a rank;
+ * Postgres's own detail repeats a duplicate key's value. None of that helps fix
+ * the bug, and the error log was readable from outside until 2026-11-05. So the
+ * parameter list goes, a duplicate key's value goes, and any Indian mobile
+ * number keeps only its last four digits.
+ */
+export function redactForLog(text: string): string {
+  return text
+    .replace(/(\n|^)\s*params:[^\n]*/g, "$1params: [redacted]")
+    .replace(/(Key \([^)]*\)=\()[^)]*(\))/g, "$1[redacted]$2")
+    .replace(/(?<!\d)(?:\+?91[\s-]?)?[6-9]\d{5}(\d{4})(?!\d)/g, "…$1");
+}
+
 async function write(level: LogLevel, error: unknown, context: LogContext) {
   const err = error instanceof Error ? error : null;
-  const message = (err?.message ?? String(error)).slice(0, 2000);
-  const stack = err?.stack?.slice(0, 8000) ?? null;
+  const message = redactForLog(err?.message ?? String(error)).slice(0, 2000);
+  const stack = err?.stack ? redactForLog(err.stack).slice(0, 8000) : null;
+  const cause = err && err.cause instanceof Error ? redactForLog(err.cause.message).slice(0, 1000) : null;
 
   // The console line stays. It is what you read while developing, and it is
-  // the only thing left if the database write below fails.
-  console.error(`[${level}]${context.route ? ` ${context.route}` : ""}`, error);
+  // the only thing left if the database write below fails. Redacted like the row.
+  console.error(`[${level}]${context.route ? ` ${context.route}` : ""}`, stack ?? message, cause ? `\ncause: ${cause}` : "");
 
   try {
     const [fp, ip] = await Promise.all([

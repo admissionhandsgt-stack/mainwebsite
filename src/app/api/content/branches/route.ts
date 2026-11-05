@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getBranchCatalogue } from "@/lib/branchCatalogue";
 import { logError } from "@/lib/logger";
+import { limitOr429 } from "@/lib/rateLimit";
 
 /**
  * The NEET PG branch list every form offers (lib/branchCatalogue.ts): names
@@ -8,7 +9,9 @@ import { logError } from "@/lib/logger";
  */
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(request: Request) {
+  const limited = limitOr429(request, "branches", 60);
+  if (limited) return limited;
   try {
     return NextResponse.json(
       { groups: await getBranchCatalogue() },

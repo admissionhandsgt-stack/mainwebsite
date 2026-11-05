@@ -191,6 +191,19 @@ export async function currentUser(): Promise<SiteUser | null> {
   }
 }
 
+/**
+ * Signs the account out everywhere except the browser making this request.
+ *
+ * Called when the password is set or reset: whoever set it has just proved who
+ * they are, and any other session — an old phone, a shared laptop, somebody who
+ * should not have had one — must not outlive that (2026-11-05).
+ */
+export async function revokeOtherSessions(userId: number, request: Request): Promise<void> {
+  const raw = request.headers.get("cookie") ?? "";
+  const keep = raw.match(new RegExp(`(?:^|;\\s*)${USER_COOKIE}=([^;]+)`))?.[1] ?? "";
+  await db.execute(sql`DELETE FROM user_sessions WHERE user_id = ${userId} AND id <> ${keep}`);
+}
+
 /** Reads the session straight off a request, for route handlers. */
 export async function userFromRequest(request: Request): Promise<SiteUser | null> {
   const raw = request.headers.get("cookie") ?? "";

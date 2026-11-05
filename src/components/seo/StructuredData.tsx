@@ -1,4 +1,5 @@
 import { OFFICE } from "@/lib/constants";
+import { jsonLd } from "@/lib/jsonLd";
 const SITE = "https://www.admissionhands.com";
 
 /**
@@ -17,7 +18,7 @@ export default function StructuredData({ data }: { data: object | object[] }) {
           key={i}
           type="application/ld+json"
           // Built in our own code, never from user input.
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(d) }}
+          dangerouslySetInnerHTML={{ __html: jsonLd(d) }}
         />
       ))}
     </>

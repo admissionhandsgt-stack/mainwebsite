@@ -1,4 +1,5 @@
 import React from 'react';
+import { jsonLd } from "@/lib/jsonLd";
 
 interface SEOProps {
   /**
@@ -34,7 +35,7 @@ const SEO: React.FC<SEOProps> = ({ structuredData }) => {
     <script
       type="application/ld+json"
       // The object is built in our own code, never from user input.
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }}
     />
   );
 };

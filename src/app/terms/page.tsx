@@ -6,6 +6,7 @@ import { extractHeadings } from '@/lib/legalService';
 import { LEGAL_DOCUMENTS_FALLBACK } from '@/lib/legalFallback';
 import LegalLayout from '@/components/legal/LegalLayout';
 import StructuredData, { breadcrumb } from "@/components/seo/StructuredData";
+import { jsonLd } from "@/lib/jsonLd";
 
 /**
  * Metadata the admin can override per route (Admin -> Search & sharing).
@@ -61,7 +62,7 @@ export default async function TermsPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+          __html: jsonLd({
             '@context': 'https://schema.org',
             '@type': 'WebPage',
             name: 'Legal Information – AdmissionHands',
