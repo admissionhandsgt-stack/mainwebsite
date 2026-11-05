@@ -171,7 +171,7 @@ export default function Hero({
             The headline and subtitle are painted with the server HTML rather
             than faded in. Framer Motion writes `initial` into the HTML, so an
             opacity-0 start kept the words invisible until the JavaScript had
-            crossed from Montreal and hydrated — the visitor saw an empty hero
+            arrived and hydrated — the visitor saw an empty hero
             for most of a second with the text already delivered. The badges,
             buttons and trust row keep the staggered entrance.
           */}

@@ -1,7 +1,7 @@
 # WhatsApp verification — setup
 
 Reverse verification: the visitor messages **us**, we never message them. This document is the
-half that runs on the VPS. The application half is `src/lib/waVerify.ts` and the three routes under
+half that runs on the server. The application half is `src/lib/waVerify.ts` and the three routes under
 `/api/verify/*` and `/api/whatsapp/inbound`.
 
 ## Why it is built backwards
@@ -35,7 +35,7 @@ screen is four numbered steps and ticks each one off as it is done.
 
 Only step 2 leaves the browser, and the screen writes the command for you with the secret already
 in it. That step cannot be a button: the site runs on Cloudflare Workers and has no shell on the
-VPS, and an admin screen that could run commands on the server would be a remote shell with a login
+server, and an admin screen that could run commands on the server would be a remote shell with a login
 form in front of it.
 
 **Use a separate number.** Not the one on the Contacts page. If this one is ever restricted, the
@@ -58,7 +58,7 @@ the one to use: it speaks the protocol over a WebSocket from Go (the `whatsmeow`
 is no headless Chromium to keep alive on a box that is also serving the database.
 
 Press **Generate the key** in step 2 of the admin screen, then copy the command it builds and run it
-on the VPS. It looks like this, with your own values already substituted:
+on the server. It looks like this, with your own values already substituted:
 
 ```bash
 docker run -d --name waha --restart unless-stopped \
@@ -86,7 +86,7 @@ cannot reach. To pair the phone from the admin screen, put it behind Caddy on a 
 
 **This is optional.** Skip it and verification still works end to end; you just pair the phone on
 the server (WAHA's own dashboard on `localhost:3001` through an SSH tunnel) instead of from the
-admin. The webhook is outbound from the VPS, so it never needed the gateway to be reachable.
+admin. The webhook is outbound from the server, so it never needed the gateway to be reachable.
 
 ## 4. Pair the phone
 
@@ -98,7 +98,7 @@ turns green on `WORKING`.
 ## The flow
 
 ```
-browser                     site (Workers)              VPS
+browser                     site (Workers)              server
   │                              │                       │
   ├─ POST /api/verify/start ────►│  row in                │
   │◄── { code, waLink } ─────────┤  verification_attempts │

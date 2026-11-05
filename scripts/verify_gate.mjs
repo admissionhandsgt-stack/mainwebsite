@@ -26,7 +26,7 @@ import { config } from "dotenv";
 
 config({ path: ".env.local" });
 
-const base = (process.argv[2] ?? "http://localhost:8120").replace(/\/$/, "");
+const base = (process.argv[2] ?? "http://localhost:8150").replace(/\/$/, "");
 
 /** Pages that once carried a gated seat table. */
 const PAGES = [

@@ -307,7 +307,7 @@ async function auditRoute(browser, route, width, height, label) {
     // Wall-clock from *this machine*, minus the settle wait — so it is a
     // relative number for comparing pages, not a claim about production. TTFB
     // on the box itself is tens of milliseconds; most of what is measured here
-    // is the distance between here and the VPS.
+    // is the distance between here and the server.
     const rendered = ms - 1200;
     if (rendered > 4000) {
       add("LOW", route, label, "slower than its siblings", `${(rendered / 1000).toFixed(1)}s from this machine`);

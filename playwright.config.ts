@@ -11,7 +11,7 @@ import { defineConfig, devices } from "@playwright/test";
  * the target *is* the dev server.
  *
  *   npx playwright test                                   # production
- *   BASE_URL=http://localhost:8120 npx playwright test    # the box, via the tunnel
+ *   BASE_URL=http://localhost:8150 npx playwright test    # the server's app, via a tunnel
  *   BASE_URL=http://localhost:3000 npx playwright test    # local dev, started for you
  *
  * **What it does not run.** The specs under `tests/legacy/` were written in May
@@ -41,7 +41,7 @@ export default defineConfig({
    * none reproduced alone, so the server was measured directly: 35 ms warm, and
    * 120–254 ms under eight concurrent requests at a load average of 0.17 on
    * eight cores. The application is not the problem — the long-haul link from a
-   * dev machine to the VPS is, and a retry is the honest way to test over one.
+   * dev machine to the server is, and a retry is the honest way to test over one.
    * A test that fails twice is still a failure.
    */
   retries: process.env.CI ? 2 : isLocalDev ? 0 : 1,

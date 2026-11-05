@@ -71,7 +71,7 @@ async function readAll() {
  * Calls the gateway.
  *
  * Times out rather than hanging: the usual reason this fails is that WAHA is
- * bound to localhost on the VPS and simply is not reachable from here, and the
+ * bound to localhost on the server and simply is not reachable from here, and the
  * screen needs to say that quickly rather than spin.
  */
 async function waha(

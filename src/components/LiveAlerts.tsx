@@ -17,7 +17,7 @@ export interface BarAlert {
  * It used to fetch its own alerts after hydration and set `--alerts-height`
  * from an effect, so on every page the content arrived at 72px, dropped to 112px
  * when the bar mounted, and went back up if nothing was active — a layout shift
- * on every visit, and a second round trip to Montreal for a few lines of text.
+ * on every visit, and a second round trip to the server for a few lines of text.
  * The layout now reads the alerts with the menus and passes them in; this
  * component only draws them, and SiteShell reserves the space from the same
  * data. The admin screen still uses useLiveAlerts for editing.

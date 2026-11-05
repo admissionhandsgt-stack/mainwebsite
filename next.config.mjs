@@ -73,11 +73,11 @@ const SECURITY_HEADERS = [
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   /**
-   * Built to run as a plain Node server on the VPS, beside Postgres.
+   * Built to run as a plain Node server on our server, beside Postgres.
    *
    * Cloudflare Workers were the original target and the build still succeeds
    * for them, but they cannot reach this database: Postgres is bound to
-   * localhost on the VPS and should stay that way, and an edge worker has no
+   * localhost on the server and should stay that way, and an edge worker has no
    * route to it. (Workers also cannot hold a connection pool across requests —
    * the preview served one page and then hung on every request after it.)
    *
@@ -201,7 +201,7 @@ const nextConfig = {
     // would be cached in Mumbai and handed to an iPhone on iOS 15, which cannot
     // draw it — a broken image with nothing in any log. Every browser this
     // audience carries draws WebP. AVIF was about 20% smaller; an image served
-    // from an Indian edge instead of Montreal is worth far more than that.
+    // from an Indian edge instead of one abroad is worth far more than that.
     formats: ['image/webp'],
     // How long a browser may keep an optimised image. Next's default is 60
     // seconds, so a visitor moving between two pages that share a college

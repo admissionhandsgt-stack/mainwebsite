@@ -106,7 +106,7 @@ export default function PageHero({
   // The headline and the line under it are not animated in, and that is the
   // point. Framer Motion writes `initial` into the server HTML, so a fade from
   // opacity 0 meant the text arrived in the first response and stayed
-  // invisible until the JavaScript had crossed from Montreal and hydrated.
+  // invisible until the JavaScript had arrived and hydrated.
   // On /neet-college-predictor the subtitle is the Largest Contentful Paint,
   // and Lighthouse measured 1.0 s of render delay after the text had already
   // arrived. Everything else here keeps its staggered entrance; the words a

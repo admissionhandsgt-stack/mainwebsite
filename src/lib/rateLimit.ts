@@ -10,7 +10,7 @@
  * **In memory, and that is now enough.** This was written for Cloudflare
  * Workers, where every isolate kept its own counter and the real ceiling was
  * therefore unknowable — a speed bump rather than a boundary. The app has
- * since moved to a single Node process behind Caddy on the VPS, so one map
+ * since moved to a single Node process behind Caddy on our server, so one map
  * sees every request and the configured number is the actual limit.
  *
  * Two things that follow: it resets on deploy, which is acceptable for a

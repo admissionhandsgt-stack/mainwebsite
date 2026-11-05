@@ -24,7 +24,7 @@ const SESSION_COOKIE = 'ah_admin_session';
  * An absolute URL on the host the visitor actually used.
  *
  * `req.nextUrl` carries the address this process was reached on — behind the
- * reverse proxy that is `localhost:8120`, so a redirect built from it sent
+ * reverse proxy that is `localhost:8150`, so a redirect built from it sent
  * people to a host that only exists inside the server.
  */
 function externalUrl(hostname: string, pathname: string) {
@@ -96,7 +96,7 @@ export function middleware(req: NextRequest) {
      * Rewrite internally to the /admin route structure.
      *
      * Caddy is told not to forward `X-Forwarded-Proto` to this app. With it,
-     * Next builds request URLs as `https://localhost:8120/...` while the
+     * Next builds request URLs as `https://localhost:8150/...` while the
      * server listens on plain HTTP, decides the rewrite is cross-origin, and
      * tries to proxy it over TLS to a port that speaks none — EPROTO, and a
      * 500 on every admin page. The proto is not lost: `externalUrl` defaults

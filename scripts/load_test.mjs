@@ -5,11 +5,11 @@
  *   scp scripts/load_test.mjs root@<box>:/tmp/ && ssh root@<box> 'cd /tmp && node load_test.mjs'
  *   STAGES=10,25,50 SECONDS=20 node load_test.mjs
  *
- * ## Why on the box, against 127.0.0.1:8120
+ * ## Why on the server, against the app at 127.0.0.1:8150
  *
- * From India every request spends ~0.9 s crossing to Montreal, so a load test
- * from here measures the ocean, not the server: each connection manages about
- * one request a second however fast the app is. Run beside the app, it measures
+ * From a dev machine every request also pays the network, so a load test from
+ * here measures the distance, not the server: each connection manages only a
+ * few requests a second however fast the app is. Run beside the app, it measures
  * what the server itself can take. The cost of distance is measured separately.
  *
  * ## Why bounded, and why it stops itself
@@ -30,7 +30,7 @@ import http from "node:http";
 import os from "node:os";
 import { execSync } from "node:child_process";
 
-const TARGET = process.env.TARGET || "http://127.0.0.1:8120";
+const TARGET = process.env.TARGET || "http://127.0.0.1:8150";
 const STAGES = (process.env.STAGES || "5,10,25,50,100").split(",").map(Number);
 const SECONDS = Number(process.env.SECONDS) || 20;
 const NEIGHBOUR = process.env.NEIGHBOUR || "https://kosmae.in/";

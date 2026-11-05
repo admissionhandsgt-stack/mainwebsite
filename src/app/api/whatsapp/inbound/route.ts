@@ -11,7 +11,7 @@ export const runtime = "nodejs";
 /**
  * Where the self-hosted WhatsApp gateway delivers inbound messages.
  *
- * WAHA on the VPS holds the session and POSTs here for every message the
+ * WAHA on the server holds the session and POSTs here for every message the
  * verification number receives. If the body carries a live code, the number
  * that sent it is verified.
  *

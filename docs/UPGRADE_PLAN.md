@@ -42,19 +42,7 @@ Plus `serve/app.py` — 1,870 lines ka **working FastAPI tool** jisme:
 - `relaxations()` — filter dheela karne ke suggestions
 - `cheapest_reachable()`, `spread()`, `desirability()` — ranking logic
 
-**Aur sabse badi baat: VPS already chal raha hai.**
-
-| | |
-|---|---|
-| Server | `38.49.209.165`, Ubuntu 26.04 |
-| Live URL | https://ah.aismartscan.in |
-| Front door | Caddy + Let's Encrypt (auto-renew) |
-| **PostgreSQL** | **Already installed** — `pg-backup.sh` roz saari DB dump karta hai |
-| Backups | Daily, verified, 7-day retention, Windows pe pull hote hain |
-| Disk | 84 GB used / 37% — jagah hai |
-| Aur kya chal raha | TradeOS, MarketScalper, SmartScanner, CryptoWay, CryptoMinerX, UPI Collect |
-
-Matlab **VPS kharidne ki zarurat nahi**, Postgres setup karne ki zarurat nahi. Wo already hai.
+**Server:** production 2026-10-05 se Oracle Cloud Mumbai (`137.23.39.214`) par hai — app, PostgreSQL aur WhatsApp gateway Docker Compose mein (`deploy/oracle/`). Details CLAUDE.md mein.
 
 ### C. `D:\Gulshan\PG\Website` — competitor ka mirror
 
@@ -73,7 +61,7 @@ Matlab **VPS kharidne ki zarurat nahi**, Postgres setup karne ki zarurat nahi. W
 | # | Decision | Final |
 |---|---|---|
 | 1 | Data | **Website scrape + ZyNerd extract dono use karenge.** Risk bata diya gaya, user ne confirm kiya. Aage discuss nahi karna. |
-| 2 | VPS | **Purana box (38.49.209.165).** MarketScalper hata diya gaya — ~6 GB free hua. |
+| 2 | Server | **Oracle Cloud Mumbai** (2026-10-05 se). |
 | 3 | Scope | **UG + PG dono** |
 | 4 | Mobile | **Web + mWeb + Android app** (Play Store) |
 | 5 | Repo | **Turborepo monorepo** (Section 9 dekho) |
@@ -157,7 +145,7 @@ Isse data **100% tumhara** ho jayega, koi legal risk nahi, aur quality bhi verif
                         └──────────────┬──────────────┘
                                        │
                         ┌──────────────▼──────────────┐
-                        │  PostgreSQL 16 (apna VPS)   │
+                        │  PostgreSQL (apna server)   │
                         │  + full-text search         │
                         │  + materialized views       │
                         └─────────────────────────────┘
@@ -170,7 +158,7 @@ Isse data **100% tumhara** ho jayega, koi legal risk nahi, aur quality bhi verif
 
 | Abhi (Supabase) | Baad mein (apna) |
 |---|---|
-| Postgres (hosted) | Postgres on VPS — **already chal raha hai** |
+| Postgres (hosted) | Postgres apne server par (Oracle Mumbai) |
 | Supabase Auth | better-auth (email + OTP) |
 | Supabase Storage | Cloudflare R2 (sasta, CDN free) ya MinIO |
 | `supabase-js` client | Drizzle ORM (type-safe, no `as any`) |
@@ -248,10 +236,10 @@ Har phase ka apna deliverable hai. Ek phase khatam → dikhaunga → tab agla sh
 ### Phase 0 — Decisions & setup (2-3 din)
 
 - [ ] Data ka faisla (Section 1 wala) — official re-source ya ZyNerd extract?
-- [ ] VPS ka faisla: purana shared box vs naya dedicated (neeche Section 5 padho)
+- [x] Server: Oracle Cloud Mumbai (Section 5)
 - [ ] Domain plan: `admissionhands.com` (main), `api.` , `admin.`
-- [ ] Naya Postgres database + user banao VPS pe
-- [ ] Backup script mein naya DB add karo (`pg-backup.sh` khud hi utha lega)
+- [ ] Naya Postgres database + user banao server pe
+- [ ] Backup: `deploy/oracle/backup.sh` (raat ko, encrypted)
 - [ ] Staging environment khada karo
 
 **Deliverable:** likhit decisions + khaali DB ready
@@ -287,7 +275,7 @@ Ye sabse important phase hai. Yahan galti hui to aage sab kharab.
   - `net_cost()` → cost calculator
   - `home_state_report()` → state advantage
 - [ ] Response caching (Redis ya Next cache)
-- [ ] Rate limiting — abhi wala in-memory hai, wo VPS pe theek kaam karega
+- [ ] Rate limiting — abhi wala in-memory hai, ek Node process par theek kaam karta hai
 
 **Deliverable:** saari API working, Postman/curl se testable
 
@@ -383,64 +371,10 @@ Yahi wo hai jo AdmissionHands ko brochure se **tool** banayega:
 
 ---
 
-## 5. ✅ VPS — MarketScalper hata diya gaya (17 Sep 2026)
+## 5. ✅ Server
 
-**Status: DONE.** Backup lekar, verify karke, safely remove kiya gaya.
-
-**Backup pehle liya gaya** — `/var/backups/marketscalper-removal-20260917/` (788 MB):
-
-| File | Size |
-|---|---|
-| `marketscalper.dump` | 728 MB — `pg_restore --list` se **verified readable** |
-| `opt-marketscalper.tar.gz` | 43 MB — pura app folder |
-| `home-deploy-ms.tar.gz` | 18 MB — deploy user ka home |
-| `marketscalper.service` | systemd unit |
-| `etc-marketscalper/` | env files |
-| `Caddyfile.before-removal` | pura Caddy config |
-
-**Jo hataya gaya:**
-
-- `marketscalper.service` — stop, disable, unit file delete
-- Caddy block `scalper.aismartscan.in` (lines 14-38) — `caddy validate` pass, phir **reload** (restart nahi, taaki koi connection na toote)
-- Postgres DB `marketscalper` (2.6 GB) + role `marketscalper`
-- `/opt/marketscalper` (145 MB), `/etc/marketscalper/`
-- Users `deploy-ms` + `marketscalper`, dono groups, `/home/deploy-ms`
-- Purana backup folder `/var/backups/postgres/marketscalper/`
-
-**Safety verification:**
-
-- `smartscanner.service` mein "marketscalper" ka zikr mila tha — check kiya, wo sirf ek **comment** tha, koi dependency nahi ✅
-- Saari 8 doosri sites ka HTTP status **before aur after bilkul same** raha (302/302/404/404/200/200/302/303) ✅
-- Koi failed unit nahi ✅
-- Baaki 11 services chal rahe hain: tradeos, smartscanner, cryptoway (×4), mining-app (×2), upi-collect, ah-counselor, caddy, postgres ✅
-- `scalper.aismartscan.in` ab koi response nahi deta (expected) ✅
-
-**Disk: 90 GB → 84 GB used. ~6 GB free hua** (estimate 2.8 GB tha, WAL + indexes ki wajah se zyada mila). Ab 149 GB available.
-
-> ⚠️ Backup abhi server pe hai. Jab tum 100% sure ho jao ki MarketScalper dobara nahi chahiye, tab
-> `rm -rf /var/backups/marketscalper-removal-20260917` chala dena. Ya bolo to main local pe pull kar dunga.
-> DNS se `scalper.aismartscan.in` ka A record bhi hata dena (wo tumhare domain panel mein hai).
-
----
-
-## 5b. Purani salah (record ke liye — decision ho chuka hai)
-
-Tumhara VPS pe **already 8 apps chal rahe hain**: TradeOS, MarketScalper, SmartScanner, CryptoWay, CryptoMinerX, UPI Collect, ah-counselor.
-
-Aur uska track record dekho (`ops/README.md` se):
-- Logs 49 GB kha gaye the — logrotate 3 hafte se chup-chaap fail ho raha tha
-- TradeOS ka watchdog 3 hafte tak kabhi chala hi nahi (execute bit missing tha)
-- `serial-getty` 1,51,737 baar restart hua tha
-
-**Ye box already thoda bhara hua hai.** AdmissionHands ka public traffic + 2.3 lakh rows ki queries usi box pe daalna risky hai — agar counselling season mein traffic aayi to tumhare trading apps bhi affected ho sakte hain.
-
-**Meri recommendation:** AdmissionHands ke liye **alag dedicated VPS** lo. ₹1,500-2,500/mahina (Hetzner CX32 ya DigitalOcean 4GB). Isse:
-- Dono cheezein ek doosre ko nahi girayengi
-- AdmissionHands ko apna full CPU/RAM milega
-- Scale karna aasan (traffic badhe to bas upgrade)
-- Security bhi alag (public website + trading apps alag rehne chahiye)
-
-Purane box ka setup (Caddy config, backup scripts, systemd patterns) **copy kar lenge** — wo already achhe se likha hua hai, dobara sochna nahi padega.
+Production 2026-10-05 se Oracle Cloud Mumbai par hai (Docker Compose: app, PostgreSQL, WhatsApp gateway).
+Purana server retire ho chuka hai (2026-11-05) — uske saare notes is doc aur repo se hata diye gaye.
 
 ---
 
@@ -536,7 +470,7 @@ Purani site chalti rahe, nayi saath mein bane. Traffic dheere-dheere shift karo 
 
 ### ✅ FINAL DECISION (17 Sep 2026): Big bang — local pe develop, seedha deploy
 
-User ka faisla: **poora naya site local machine pe banega**, koi beta subdomain nahi. Jab ready ho jaye, ek baar mein VPS pe deploy.
+User ka faisla: **poora naya site local machine pe banega**, koi beta subdomain nahi. Jab ready ho jaye, ek baar mein server pe deploy.
 
 Practically ye neeche wale "parallel build → big bang switch" ka hi simple version hai — farq sirf itna ki naya site beta URL ke bajaye **local pe** banega. Safety wahi hai: jab tak deploy nahi karte, purani site chalti rahegi aur uspe koi asar nahi.
 

@@ -94,7 +94,7 @@ export default async function RootLayout({
   // down as plain data. An admin host skips the fetch entirely.
   //
   // The notice bar's alerts come with them. They used to be fetched by the
-  // browser after hydration, which cost a second round trip to Montreal and
+  // browser after hydration, which cost a second round trip to the server and
   // moved the whole page: the bar appeared, the content dropped 40px, and if
   // nothing was active it went back up — Lighthouse's CLS on the homepage was
   // 0.105, over Google's 0.1, from exactly that. Read here, the bar and the

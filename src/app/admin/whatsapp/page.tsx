@@ -423,7 +423,7 @@ export default function WhatsAppAdminPage() {
           <Step n={2} title="Start the gateway on your server (once)" done={Boolean(config?.webhookSecretSet)}>
             <p className="text-sm text-slate-600">
               This is the only step that needs someone with server access, and it is one command. Press
-              Generate, copy the command, and run it on the VPS.
+              Generate, copy the command, and run it on the server.
             </p>
 
             <div className="mt-3 flex flex-wrap items-center gap-3">

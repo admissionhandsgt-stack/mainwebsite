@@ -3,7 +3,7 @@
  *
  * We do not send anything. The visitor taps a `wa.me` link that opens their
  * own WhatsApp with a one-line message already written, they hit send, and a
- * self-hosted gateway on the VPS posts that inbound message to us as a
+ * self-hosted gateway on the server posts that inbound message to us as a
  * webhook. Matching the code in it verifies the number it came from.
  *
  * Why not send an OTP, which is what everyone does: WhatsApp's ban models

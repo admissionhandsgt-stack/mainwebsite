@@ -9,7 +9,7 @@ plus a password-protected admin CMS. Read this file first; it replaces exploring
 |---|---|
 | Framework | Next.js 14 App Router (`src/app`), React 18, TypeScript (`strict: false`, `strictNullChecks: true`) |
 | Styling | Tailwind + shadcn/ui (Radix), `class-variance-authority`, `next-themes` (class dark mode) |
-| Data | PostgreSQL on the VPS + Drizzle (`src/db/`). Reads via `src/lib/content.ts`, writes via `/api/admin/*` |
+| Data | PostgreSQL on the Oracle server + Drizzle (`src/db/`). Reads via `src/lib/content.ts`, writes via `/api/admin/*` |
 | Animation | framer-motion |
 | Hosting | Cloudflare Workers via OpenNext (`@opennextjs/cloudflare` + `wrangler.jsonc`) |
 | Tests | Playwright specs in `tests/` |
@@ -752,20 +752,20 @@ at runtime would pull the whole icon set into the bundle.
 
 ## PostgreSQL (Phase 1 — live as of 2026-09-17)
 
-The new data layer, replacing Supabase. Postgres 18.6 on the VPS `38.49.209.165`,
-**bound to localhost only** — it is not and should not be exposed to the internet.
+The data layer, replacing Supabase. Postgres 18 in Docker on the Oracle server (`admissionhands-db-1`,
+see "Oracle Cloud Mumbai" below), **bound to localhost only** — it is not and should not be exposed to the internet.
 
 ```bash
 # Reach it from a dev machine through an SSH tunnel:
-ssh -i D:/Gulshan/Keys/ServoRica_TradeOS -N -L 55432:localhost:5432 root@38.49.209.165
-# DATABASE_URL in .env.local already points at 127.0.0.1:55432
+ssh -i C:/Users/91971/.ssh/admissionhands_oracle -N -L 55443:127.0.0.1:5442 admissionhands@137.23.39.214
+# DATABASE_URL in .env.local already points at 127.0.0.1:55443
 npx drizzle-kit generate   # schema change -> SQL migration
 npx drizzle-kit migrate    # apply
 ```
 
 - Schema: `src/db/schema.ts` (Drizzle). Client: `src/db/client.ts`. Migrations: `src/db/migrations/`.
-- Database `admissionhands`, role `admissionhands`. The existing `pg-backup.sh` on the box picks it up
-  automatically — no backup wiring needed.
+- Database `admissionhands`, role `admissionhands`. Backed up nightly by `deploy/oracle/backup.sh` (encrypted
+  copies leave the machine — see "Oracle Cloud Mumbai").
 - **Design:** UG and PG share one set of tables, separated by a `level` enum (`'ug' | 'pg'`), because every
   query the product runs is identical for both apart from that filter. Masters (`states`, `institutes`,
   `courses`, `counsellings`, `quotas`, `categories`) + two fact tables (`closing_ranks`, `fees`).
@@ -773,7 +773,7 @@ npx drizzle-kit migrate    # apply
   (`level, year, category_id, closing_rank`), explorer facets, and a college's own trend.
 
 **Loaded:** `closing_ranks` 230,484 (PG, 2024+2025) · `fees` 35,564 · `institutes` 2,168 · 45 MB.
-Predictor query benchmarks at ~324 ms *through the SSH tunnel*; single-digit ms on the box itself.
+Predictor query benchmarks at ~324 ms *through the SSH tunnel*; single-digit ms on the server itself.
 
 ```bash
 # Re-import after a source refresh (idempotent — masters upsert, facts for that level are replaced):
@@ -957,7 +957,7 @@ restart — degraded, but a hardcoded fallback secret would let anyone mint thei
 The gate above asks for a number. This proves it, for nothing, without ever sending a message.
 
 The visitor taps a `wa.me` link that opens **their** WhatsApp with a code already written; they send
-it; a self-hosted gateway on the VPS posts that inbound message to `/api/whatsapp/inbound`; the code
+it; a self-hosted gateway on our server posts that inbound message to `/api/whatsapp/inbound`; the code
 matches and the number it came from is verified.
 
 **Why not just send an OTP.** WhatsApp's ban models weight reply-ratio, contact-graph distance and
@@ -979,8 +979,8 @@ business runs on WhatsApp. And it costs nothing on any tier, because nothing is 
   home, but the root layout hands every setting to `SiteShell` as props — an API key there would be
   published on every page load. Never add `integrations` to the allow-list in
   `/api/content/[resource]`, and never import `integrations.ts` from a client component.
-- The admin screen **cannot start the container**, and deliberately so: the site runs on Workers with
-  no shell on the VPS, and a button that ran commands there would be a remote shell behind a login
+- The admin screen **cannot start the container**, and deliberately so: the app has no shell on the
+  server, and a button that ran commands there would be a remote shell behind a login
   form. It composes the `docker run` line with the secret filled in instead. Everything after that —
   pairing by QR or phone code, status, disconnect — is in the screen via WAHA's REST API.
 - **The HMAC check on the webhook is the entire security model.** The endpoint is public; without it
@@ -1975,9 +1975,9 @@ are answering "can this one report?", which a flat list of everybody's files can
 
 **The bytes are a `bytea` column, not a file** (migration `0015`). The first version wrote to
 `/opt/admissionhands/uploads/documents`, which was covered by no backup at all — so a lost disk meant
-every candidate's certificates were gone while the rows describing them survived. `pg-backup.timer`
-already dumps this database nightly, so one store means one backup, and it is the one that already
-exists and is already tested.
+every candidate's certificates were gone while the rows describing them survived. The nightly backup
+(`deploy/oracle/backup.sh`) already dumps this database, so one store means one backup, and it is the one
+that already exists and is already tested.
 
 Three things fall out of that and each was a thing to get wrong: a row and its file can no longer
 disagree (no orphan holding an identity document with nothing to say whose); there is no path, so
@@ -2033,7 +2033,7 @@ Three suites, all runnable against production:
 | `scripts/verify_gate.mjs` | That no seat row reaches an anonymous visitor on six page families, that a spoofed crawler user-agent and a forged `X-Forwarded-For` both stay locked, that every gated page declares `isAccessibleForFree: false`, and that a verified session does get the rows |
 | `scripts/perf_lab.mjs` | Lighthouse from this machine for us and four competitors, median of `RUNS`. `MODE=observed` turns the simulation off — run from India, that is the real experience including the distance to each server |
 | `scripts/perf_field.mjs` | Google's real-user Core Web Vitals (CrUX) for the same five sites. Needs `PSI_KEY` — the keyless quota is shared worldwide and runs out |
-| `scripts/load_test.mjs` | Run **on the box** against 127.0.0.1:8120. Ramps 5→100 concurrent and stops itself on errors, p95 > 3 s, load > 75% of cores, or a neighbouring site failing. It never hunts for the breaking point — there is no staging |
+| `scripts/load_test.mjs` | Run **on the server** against the app at 127.0.0.1:8150. Ramps 5→100 concurrent and stops itself on errors, p95 > 3 s, load > 75% of cores, or a neighbouring site failing. It never hunts for the breaking point — there is no staging |
 | `scripts/verify_ipranges.mjs` | The other direction, which fails silently: that `inRanges()` matches **all 617** prefixes Google and Bing publish, and no ordinary address. A matcher that wrongly rejects serves Googlebot the locked page, logs nothing, and stops 3,600 pages ranking weeks later |
 
 ### The Playwright suite, rebuilt 2026-09-27
@@ -2044,7 +2044,7 @@ against `next dev` is not the gate. A dev server is started only when the target
 
 ```bash
 npm run test:e2e                                        # everything, against production
-BASE_URL=http://localhost:8120 npm run test:e2e         # the box, through the tunnel
+BASE_URL=http://localhost:8150 npm run test:e2e         # the server, through a tunnel to its 8150
 BASE_URL=http://localhost:3000 npm run test:e2e         # local dev, started for you
 LEGACY=1 npx playwright test --project=legacy           # the 42 May specs, deliberately
 ```
@@ -2083,7 +2083,7 @@ file fails fast with a message saying so rather than silently skipping.
 
 **Do not run the audit across a deploy.** It reported two branch pages as broken internal links
 (HTTP 502); both answer 200, the logs are clean, and a sweep of all 101 passes. The service
-restarts when `deploy.sh` switches the symlink, and the crawl was in flight. Finish deploying, then
+restarts when `deploy_oracle.sh` switches the release, and the crawl was in flight. Finish deploying, then
 audit.
 
 **Two traps the audit harness fell into first, both worth remembering:**
@@ -2607,7 +2607,7 @@ Measured against the production build, not guessed at.
    `/api/content/college-list` would fix it, but that is a redesign of a working component.
 3. **Building through the SSH tunnel is fragile.** Two runs in this pass logged a handful of
    "Failed query" lines from a momentary tunnel drop. `safe()` catches them, so the build succeeds with
-   an empty section baked into a page that is then cached for 24h. On the VPS the app and Postgres share
+   an empty section baked into a page that is then cached for 24h. On the server the app and Postgres share
    a box, so this is a dev-environment hazard — but a build that can silently ship a blank section is
    worth a guard.
 4. **Core Web Vitals are fine** — mobile LCP 1.1–2.5s, CLS under 0.05, no horizontal overflow at 390px.
@@ -2633,65 +2633,44 @@ PG page's description came from there.
 Outcome claims that cannot be derived (2,100+ students guided, 12+ years) are the team's to state
 and were left alone. Anything that describes the data must come from `getDataStats()`.
 
-## Deployment (2026-09-23)
+## Deployment
 
-**The app runs as a plain Node server on the VPS, beside Postgres.** Not on Cloudflare Workers.
-
-The Workers build succeeds and the worker boots, but it cannot serve this site: the OpenNext preview
-answered one page in 9.7s and then returned 500 on every request after it, because a connection pool
-held at module scope cannot be reused across Workers requests. That is fixable. What is not, is that
-**Postgres is bound to localhost on the VPS and should stay that way** — an edge worker has no route
-to it, and the only reason any of this ever worked locally is the SSH tunnel on the dev machine.
-`wrangler.jsonc` and `open-next.config.ts` are kept, but nothing uses them.
-
-On the box the difference is decisive: **TTFB is 44–59 ms** across every page, against ~14 s measured
-through the tunnel. The tunnel was always the slowness, never the queries.
+**The app runs as a plain Node server (Next `standalone`) on the Oracle server, beside Postgres.** Not on
+Cloudflare Workers: the OpenNext preview answered one page in 9.7 s and then returned 500 on every request
+after it (a connection pool held at module scope cannot be reused across Workers requests), and Postgres is
+bound to localhost and should stay that way — an edge worker has no route to it. `wrangler.jsonc` and
+`open-next.config.ts` are kept, but nothing uses them. On the server **TTFB is tens of milliseconds**; the SSH
+tunnel on a dev machine was always the slowness, never the queries.
 
 ```bash
-./scripts/deploy.sh              # build, package, upload, switch, verify
-./scripts/deploy.sh --no-build   # ship what is already built
-npm run smoke -- http://localhost:8120   # 54 checks, through an SSH tunnel
+bash scripts/deploy_oracle.sh [--fresh-cache]   # commit + push first; builds on the server (ARM64)
+npm run smoke -- https://www.admissionhands.com
 ```
 
-- `output: 'standalone'` in `next.config.mjs`. The deploy is a directory copy, not an npm install
-  on the box — `.next/static` and `public/` are copied in separately because standalone omits them.
-- Releases are timestamped under `/opt/admissionhands/releases/` and `current` is a symlink, so a
-  switch is atomic and the previous five releases stay for rollback.
-- Runs as the unprivileged `admissionhands` user, `ProtectSystem=strict`, bound to **127.0.0.1:8120**.
-  Only Caddy should ever reach it. Secrets are in `/opt/admissionhands/.env`, mode 600.
-- **This box is shared.** mining-app, cryptoway, smartscanner, tradeos and upi-collect run here, plus
-  `/opt/ah-counselor` (a separate Python app on `ah.aismartscan.in`). Ports 8080 and 8090–8110 are
-  taken; this app uses 8120. Do not restart anything you did not deploy.
-- **Docker is installed and the WAHA container is running**, `--network host`, paired and `WORKING` on
-  919220626002. It has **no volume**, so its session lives in the container's own layer: a `docker
-  restart` or a reboot keeps the pairing (`--restart unless-stopped`), but `docker rm` loses it and the
-  phone has to be paired again.
-- **`sharp` must be linked on the box.** The build runs on Windows, so the standalone output's
-  `node_modules/@img` holds `sharp-win32-x64` only and Node cannot load sharp on linux-x64 — every
-  `/_next/image` answered 500 for days without anything failing loudly. `scripts/deploy.sh` installs the
-  linux binaries once into `/opt/admissionhands/shared/native` and symlinks them into each release, and
-  the deploy aborts if `require('sharp')` throws.
+- Releases are timestamped under `/opt/admissionhands/releases/` and `current` is a symlink, so a switch is
+  atomic; the last five stay, and the deploy prints the rollback command.
+- The app is bound to **127.0.0.1:8150**; only Caddy reaches it. Secrets are in `/opt/admissionhands/.env`, mode 600.
+- **The server is shared.** KÓSMAE, The AutoLoom store and AutoLoom analytics (`aa-*`) run their own containers
+  here. Do not restart anything you did not deploy.
 
-### Live (cutover done — verified 2026-09-26)
+### Live
 
-**This is a live business site.** `admissionhands.com` and `www.admissionhands.com` both resolve to
-**38.49.209.165**, Caddy serves them, the apex 301s to www. The old Hostinger address
-(93.127.173.119) is no longer in DNS. Every deploy now goes straight to production, in front of real
-candidates mid-counselling — there is no staging.
+**This is a live business site.** The apex, www and admin are proxied by Cloudflare to the Oracle server (www
+through the in-country edge, see below); the apex 301s to www. Every deploy goes straight to production, in
+front of real candidates mid-counselling — there is no staging.
 
-Caddy's block for the site is in `/etc/caddy/Caddyfile` (`www.admissionhands.com`), proxying to
-`127.0.0.1:8120`. Two things in it matter to the app:
+The site's Caddy block is `deploy/oracle/admissionhands.caddy`, proxying to `127.0.0.1:8150`. Two things in it
+matter to the app:
 
 - `header_up -X-Forwarded-Proto` — Next sets its own.
-- **`header_up X-Forwarded-For {remote_host}`** — added 2026-09-26. Caddy *appends* by default, which
-  left a client-supplied value in front of the real address; the crawler check reads that header, so a
-  forged one was enough to be handed the gated seat data. This replaces it outright. `src/lib/crawler.ts`
-  additionally reads the right-most hop, so either behaviour is safe — but do not remove this line
-  thinking the app handles it, because both halves exist on purpose.
+- **`X-Forwarded-For` is replaced, never appended.** Caddy *appends* by default, which leaves a client-supplied
+  value in front of the real address; the crawler check and the rate limits read that header, so a forged one
+  was enough to be handed gated data. `src/lib/clientIp.ts` additionally reads the right-most hop, so either
+  behaviour is safe — but do not remove the Caddy rule thinking the app handles it, because both halves exist
+  on purpose.
 
-`caddy validate --config /etc/caddy/Caddyfile` before `systemctl reload caddy`; the box serves five
-other sites from the same file (16 addresses). Record every site's status before a change and compare
-after — that is how the 2026-10-04 change was checked.
+Validate before reloading Caddy; other sites on the box share it — record every site's status before a change
+and compare after.
 
 ### Images: served by Caddy, encoded once (2026-10-04)
 
@@ -2717,29 +2696,20 @@ stale-while-revalidate. **If you overwrite an upload in place, browsers keep the
 `images.minimumCacheTTL: 86400` (Next's default was 60 seconds) and negotiates AVIF.
 
 **Next's optimised-image cache survives deploys.** It lived in the release's `.next/cache/images`, so
-every deploy threw away what had been encoded (32 MB after a day). `deploy.sh` now symlinks it to
-`/opt/admissionhands/shared/next-image-cache`, seeded from the outgoing release. Since 2026-10-09
+every deploy threw away what had been encoded (32 MB after a day). The deploy keeps it in
+`/opt/admissionhands/next-cache` across releases. Since 2026-10-09
 `fetch-cache` persists too (`/opt/admissionhands/fetch-cache`): Next keys an `unstable_cache` entry on the
 function's own compiled source, so changed code misses instead of reading an old shape (68 of 78 entries
 carried over between two releases). A change that text does not show — a helper the cached function
 calls — needs `deploy_oracle.sh --fresh-cache`.
 
-**What this does not fix: the first visit from India.** The box is in **Montréal**, 280–480 ms round
-trip from India; `robots.txt` takes ~0.87 s to its first byte, all of it TCP + TLS + request crossing the
-world, none of it the server. Caching makes every *repeat* view of an image free; only an edge near India
-(a CDN in front of the site) makes the *first* view faster. That is Cloudflare now — see "Cloudflare in
-front" below.
+**Measured 2026-10-04 against Shiksha, Collegedunia, Careers360 and CollegeDekho:** on Lighthouse's standard
+simulated phone we were 2nd on the homepage (85) and 1st on the predictor (85), at a quarter of their page weight
+and a fifth of their third-party scripts. Every competitor answers from an Indian edge, which is why the site is
+served from Mumbai and the in-country edge (see "Oracle Cloud Mumbai" and "In-country edge").
 
-**Measured 2026-10-04, from India, against Shiksha, Collegedunia, Careers360 and CollegeDekho.**
-On Lighthouse's standard simulated phone we were 2nd on the homepage (85) and 1st on the predictor (85),
-at a quarter of their page weight and a fifth of their third-party scripts. On a real Indian connection
-we were last or near last (predictor LCP 2.2 s against their 0.3–1.3 s): every competitor answers from an
-Indian edge (TCP ~15 ms, first byte 0.05–0.28 s); we answer from Montréal (TCP 285 ms, first byte 0.9 s).
-
-**Capacity: ~35 pages a second, flat, whatever the concurrency** — p95 202 ms at 5 concurrent, 2.5 s at 50,
-5.2 s at 100, while the box's load never passed 2.4 of 8. One Node process renders every page on one
-core. More processes would multiply it, but the in-memory rate limiters would then become per-process
-(see the note on `POST /api/leads`) — move them to Postgres first.
+**One Node process renders every page on one core.** More processes would multiply capacity, but the in-memory
+rate limiters would then become per-process (see the note on `POST /api/leads`) — move them to Postgres first.
 
 **Two hero mistakes that cost Core Web Vitals, fixed the same day.** The headline and subtitle were
 framer-motion children starting at `opacity: 0`, which framer writes into the server HTML — the text
@@ -2749,8 +2719,8 @@ the LCP element, and do not let anything above the fold change height after firs
 a `flex-wrap` row whose line count depends on which font has loaded: the homepage trust chips wrapped to
 two rows in the fallback font and three in Inter, and the hero grew 54 px a round trip after paint.
 
-**The uploads directory is in no backup.** Images in git are safe; an image uploaded through the admin
-exists only on the VPS disk until somebody commits it (the nightly job dumps Postgres only).
+**Uploads are backed up nightly with the database** — `deploy/oracle/backup.sh` writes `uploads/<date>.tar.gz`
+(images and the private documents folder) beside the Postgres dump.
 
 ### Cloudflare in front (2026-10-04)
 
@@ -2813,10 +2783,9 @@ from the server's own image cache.
 varies by ISP):** homepage HTML first byte 0.57–0.74 s through Cloudflare against 0.89–1.21 s direct, the
 whole page 0.60–0.80 s against 1.31–2.76 s; cached CSS and images ~0.44–0.56 s from the edge. But
 **Lighthouse's real-network LCP through Cloudflare (2.2–4.0 s) overlaps the direct runs (2.2–4.8 s)** —
-within run-to-run noise. The HTML is still fetched from Montréal on every visit (it cannot be cached
-while the gate decides per visitor), and from this ISP it now goes India → Marseille → Montréal. Edge
-caching made the *assets* fast; it has not made the *page* fast. What would: caching the anonymous HTML
-at the edge with a bypass for sessions and crawlers, Argo Smart Routing, or a server in India.
+within run-to-run noise: the HTML was still fetched from a server abroad on every visit. Edge caching made
+the *assets* fast, not the *page* — which is why the site moved to a server in India and the anonymous HTML is
+now cached at an in-country edge (see the next two sections).
 
 **Testing through Cloudflare before local DNS has caught up:** a `.com` delegation can sit in an ISP's
 resolver for up to 48 h, and while it does, scripts on this machine silently test the *direct* route —
@@ -2826,37 +2795,23 @@ believing a result is from the new route. `--import ./scripts/lib/via_cloudflare
 
 ### Oracle Cloud Mumbai — LIVE since 2026-10-05 (cut over 00:33 IST)
 
-**Production runs here now:** `137.23.39.214` (ARM64, Docker Compose project `admissionhands`), behind
-Cloudflare for the apex, www and admin (all proxied). The old VPS's `admissionhands` service is stopped
-and disabled; its port 8120 is the SSH forward to Oracle (keep 7 days, then `systemctl disable --now
-ah-forward` there). Cutover took 72 s of holding page; all 41 tables matched; smoke 59/59, gate 31/31,
-documents 19/19, lead alert delivered through Oracle's WAHA. Oracle's WAHA is a second linked device of
-**917023081792** (the old box's WAHA is the other). The pre-cutover staging database is kept on Oracle as
-`admissionhands_before_20261004_190307`. **The "Deployment (2026-09-23)" section below describes the old
-box** — `deploy.sh` now refuses; `.env.local`'s `DATABASE_URL` points at the Oracle tunnel (port 55443).
-Files: `deploy/oracle/` (compose, Caddy site, backup), `deploy/oldbox/` (forward unit, holding page).
+**Production runs here:** `137.23.39.214` (ARM64, Docker Compose project `admissionhands`), behind
+Cloudflare for the apex, www and admin (all proxied). Cutover took 72 s; all 41 tables matched; smoke 59/59,
+gate 31/31, documents 19/19, lead alert delivered through Oracle's WAHA. The pre-cutover staging database is
+kept on Oracle as `admissionhands_before_20261004_190307`. `.env.local`'s `DATABASE_URL` points at the Oracle
+tunnel (port 55443). Files: `deploy/oracle/` (compose, Caddy site, backup). The previous server is retired
+(2026-11-05): nothing of ours runs there and every script and note about it is gone.
 
 | | |
 |---|---|
 | Deploy | `./scripts/deploy_oracle.sh` — builds **on the server** (ARM64), purges Cloudflare after the switch. **Commit and push first** (owner's rule, 2026-10-18): it refuses a dirty tree or a HEAD that is not on origin, and logs `<release> <commit>` to `/opt/admissionhands/deploys.log`. `--allow-dirty` is for emergencies only |
-| Move / undo | `./scripts/cutover_oracle.sh [--go]`, `./scripts/rollback_oracle.sh [--go]`. Without `--go` both only preflight and **rehearse a real restore into a scratch database** |
 | Edge HTML cache | `node scripts/cf_html_cache.mjs <hosts…>` / `--off` |
 | Origin switch | `node scripts/cf_dns_origin.mjs --show \| <ip>` — apex, www, admin; nothing else in the zone |
 | DB from a dev machine | `ssh -i …/admissionhands_oracle -N -L 55443:127.0.0.1:5442 admissionhands@137.23.39.214` |
 
-**The move does not wait on DNS.** At cutover the old box's app port 8120 is taken over by an SSH
-forward to Oracle (`ah-forward.service`, `Conflicts=admissionhands.service`). Caddy there proxies to
-8120 and the old WAHA posts its webhook to 8120, so every request still reaching the old IP — a stale
-resolver, Cloudflare, an inbound WhatsApp — lands on Oracle's app and database. Nothing on that shared
-box's Caddyfile or WAHA container is edited. The forward key is authorised on Oracle as
-`restrict,port-forwarding,permitopen="127.0.0.1:8150"`: no shell, no other port. Leave it running 7 days.
-
 **`deploy_oracle.sh` deploys only a committed, pushed tree** (`--allow-dirty` is the emergency exit). Run it as
 `bash scripts/deploy_oracle.sh > log 2>&1; echo $?` — piped through `tail`, a failure reports tail's 0; that is how
 a silent `set -e` exit in its own guard went unseen on 2026-10-18.
-
-**After the cutover `scripts/deploy.sh` refuses** (it would restart the old app, which stops the forward
-and serves a stale database to anyone still reaching that box). Deploy with `deploy_oracle.sh`.
 
 **`public/` was 404 on Oracle from 2026-10-04 to 10-06** — logo, favicon, share image, every hero under
 `/assets/images/hero`. The standalone build already contains a `public/` (the uploads route traces
@@ -2913,10 +2868,9 @@ Videos went under Know Us: six items, 60px spare at 1280–1535 (`scripts/sql/na
 Measure before adding anything: `node scripts/tmp/header_budget.mjs <base> "<label>"` simulates one more item in the
 browser; `--real` measures the bar as served.
 
-**Copies are proven before they are used.** Both directions restore into a new database beside the live
-one, compare every table's row count (`scripts/sql/table_counts.sql`) with writes stopped, and only then
-swap by `ALTER DATABASE … RENAME`; the replaced copy is kept. Any failure before traffic moves puts the
-previous server back automatically. Rehearsed: 41/41 tables identical each way; about 40 s end to end.
+**A copy is proven before it is used.** Restore into a new database beside the live one, compare every
+table's row count (`scripts/sql/table_counts.sql`) with writes stopped, and only then swap by
+`ALTER DATABASE … RENAME`, keeping the replaced copy — how the move to Oracle was done (41/41 tables identical).
 
 **Edge HTML cache — what keeps it from leaking seat rows.** Logged-out HTML is cached for 5 minutes on
 the hosts named. Any session cookie, `/api`, `/admin`, `/account`, `/login`, RSC requests and **every
@@ -2981,30 +2935,12 @@ Style & Layout up ~190 ms of real CPU on a mid phone, after first paint; TBT unc
 Next levers, not taken: the homepage HTML is 200 KB raw (33 KB gzip) — 58 KB of it inline SVG icons and
 39 KB RSC payload; and the ₹ sign pulls Inter's 85 KB latin-ext file onto every page.
 
-### The perimeter, measured from outside (2026-09-26)
+### What is gated, and what deliberately is not
 
-Checked from a machine on the internet, not from the box — a connection made on the box to its own
-public IP takes the loopback path and proves nothing.
+The server binds everything to 127.0.0.1 — Postgres (5442), the app (8150), both WAHA gateways (3001, 3002) —
+and its firewall admits 80/443 from Cloudflare only (see `deploy/oracle/compose.yml` and the Caddy file).
 
-| Port | What | From the internet |
-|---|---|---|
-| 22, 80, 443 | ssh, Caddy | open, by design |
-| 5432 | Postgres | **blocked**, and bound to `127.0.0.1`/`::1` besides |
-| 8120 | this app | **blocked**, bound to `127.0.0.1` |
-| 2019 | Caddy's admin API | **blocked**, bound to `127.0.0.1` |
-| 3001 | WAHA | **blocked** |
-
-Nothing but sshd binds `0.0.0.0`. WAHA is the exception worth knowing about: it runs `--network host`
-and so listens on `*:3001`, meaning **ufw is the only thing standing between the internet and a
-WhatsApp API that can send as the business's number.** An explicit `ufw deny 3001/tcp` now sits ahead
-of the allow rules, so a later `ufw allow 3001` is a no-op rather than an exposure. Binding it properly
-means recreating the container with `-p 127.0.0.1:3001:3001`, which loses the pairing — worth doing at
-the next re-pair, not before.
-
-Docker publishes nothing (`iptables -t nat -L DOCKER` is empty), which matters because a published
-Docker port bypasses ufw entirely.
-
-**What is gated, and what deliberately is not.** Every API that returns seat-level depth
+Every API that returns seat-level depth
 (`/api/college-cutoffs`, `/api/seat-rows`, `/api/documents`, all of `/api/admin/*`) answers 401 without
 a session. `/api/college-bands` stays open on purpose: four buckets per college cannot be turned back
 into a cutoff table, and it is what makes the directory worth landing on.
@@ -3073,6 +3009,4 @@ Ordered by what would hurt first.
 
 ### Waiting on the user
 
-- Delete `/var/backups/marketscalper-removal-20260917/` on the VPS (788 MB).
-- Remove the `scalper.aismartscan.in` DNS A record.
 - Change the admin password (currently a generated one from setup).

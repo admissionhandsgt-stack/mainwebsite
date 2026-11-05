@@ -30,26 +30,20 @@ services:
       retries: 12
 
   # The WhatsApp gateway. It has to live beside the app: the app sends OTPs and
-  # lead alerts to it, and it delivers incoming messages back to the app. Left
-  # on the old box, a moved site could neither send a code nor see a reply.
+  # lead alerts to it, and it delivers incoming messages back to the app.
   #
-  # Linked to the same number as the old gateway as an *additional* device
-  # (WhatsApp allows several), so both work side by side during the move. The
-  # app never replies to an inbound message, so two gateways cannot double-send.
-  #
-  # The session lives in a volume. The old box kept it inside the container,
-  # so removing the container meant pairing the phone again.
+  # The session lives in a volume, so removing the container does not mean
+  # pairing the phone again.
   waha:
     image: devlikeapro/waha:gows-arm
     restart: unless-stopped
-    # WAHA_API_KEY and WHATSAPP_HOOK_HMAC_KEY are the old gateway's own values,
-    # matching the integrations rows the app already holds.
+    # WAHA_API_KEY and WHATSAPP_HOOK_HMAC_KEY match the integrations rows the app holds.
     env_file: ./waha.env
     volumes:
       - /opt/admissionhands/waha-sessions:/app/.sessions
     # Localhost only, for pairing from this box. The app reaches it as
     # waha:3000 (WAHA_GATEWAY_URL in .env overrides the database value, which
-    # still names the old box's 127.0.0.1:3001).
+    # says 127.0.0.1:3001 — not reachable from inside the app container).
     ports:
       - "127.0.0.1:3001:3000"
     mem_limit: 512m

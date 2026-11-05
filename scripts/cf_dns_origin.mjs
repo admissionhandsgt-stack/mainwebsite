@@ -4,15 +4,13 @@
  *
  *   node scripts/cf_dns_origin.mjs --show
  *   node scripts/cf_dns_origin.mjs 137.23.39.214            # Oracle Mumbai
- *   node scripts/cf_dns_origin.mjs 38.49.209.165            # the old VPS (rollback)
  *
  * Touches exactly three records — the apex, www and admin — and nothing else in
  * the zone. The mail records (MX, SPF, DKIM, autodiscover) are never read for
  * writing, let alone changed.
  *
  * All three are set proxied. Oracle's firewall admits 80/443 from Cloudflare
- * only, so a grey-clouded record pointing there would simply time out. The old
- * box accepts both, so proxied is right for a rollback too.
+ * only, so a grey-clouded record pointing there would simply time out.
  *
  * For visitors this is not a DNS change at all: a proxied record answers with
  * Cloudflare's addresses whatever the origin is, so nothing has to propagate —
@@ -21,11 +19,12 @@
 import { cf, zone } from "./lib/cloudflare.mjs";
 
 const NAMES = ["admissionhands.com", "www.admissionhands.com", "admin.admissionhands.com"];
-const ALLOWED = ["137.23.39.214", "38.49.209.165"];
+// A new origin is added here deliberately, after its firewall and Caddy are ready.
+const ALLOWED = ["137.23.39.214"];
 
 const arg = process.argv[2];
 if (!arg || (arg !== "--show" && !ALLOWED.includes(arg))) {
-  console.error(`Pass --show, or one of the two origins: ${ALLOWED.join(", ")}`);
+  console.error(`Pass --show, or an allowed origin: ${ALLOWED.join(", ")}`);
   process.exit(1);
 }
 

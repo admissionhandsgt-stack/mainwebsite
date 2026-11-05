@@ -10,9 +10,8 @@
 
 # ---------------------------------------------------------------------------
 # One definition, imported by every hostname that serves the app, so www,
-# admin and the mumbai test host cannot drift apart. Copied from the
-# www.admissionhands.com block on the old VPS (38.49.209.165) with only the
-# paths, the upstream (127.0.0.1:8150) and the certificate changed.
+# admin and the mumbai test host cannot drift apart. Upstream: the app on
+# 127.0.0.1:8150.
 # ---------------------------------------------------------------------------
 (admissionhands_site) {
 	encode gzip zstd
@@ -127,9 +126,9 @@ www.admissionhands.com {
 
 # The admin CMS is the same app on its own hostname (the app rewrites it to
 # /admin/*). It has to move with the site: on this box only Cloudflare can
-# reach port 443, so it is proxied too, and gets the same visitor-address rule
-# - which also fixes the old box, where the admin block appended
-# X-Forwarded-For and so let a forged header reach the login rate limit.
+# reach port 443, so it is proxied too, and gets the same visitor-address rule:
+# X-Forwarded-For is replaced, never appended, so a forged header cannot reach
+# the login rate limit.
 admin.admissionhands.com {
 	import admissionhands_site
 }
