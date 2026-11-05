@@ -5,7 +5,8 @@
  *   pg_process_rounds    title = round, subtitle = its tag (R1, R2…), body = the one-line
  *                        summary, data.detail = one point per line, data.watch = the trap
  *   pg_process_mistakes  title, body
- *   pg_schedule          title = round, data.aiq, data.aiq_join_by, data.state, data.state_join_by
+ *   pg_schedule          title = round, data.aiq, data.aiq_join_by, data.state, data.state_join_by, and MCC's steps:
+ *                        data.registration, .choice_filling, .choice_locking, .result, .reporting, .source, .source_url
  *                        — MCC's dates; replace the rows each cycle, revise them when MCC does
  */
 
@@ -48,6 +49,13 @@ export async function getPgProcessContent(): Promise<{
             aiqJoinBy: str(b.data?.aiq_join_by) || "—",
             state: str(b.data?.state) || "—",
             stateJoinBy: str(b.data?.state_join_by) || "—",
+            registration: str(b.data?.registration) || undefined,
+            choiceFilling: str(b.data?.choice_filling) || undefined,
+            choiceLocking: str(b.data?.choice_locking) || undefined,
+            result: str(b.data?.result) || undefined,
+            reporting: str(b.data?.reporting) || undefined,
+            source: str(b.data?.source) || undefined,
+            sourceUrl: str(b.data?.source_url) || undefined,
           }))
       : NEET_PG_SCHEDULE.rounds,
   };

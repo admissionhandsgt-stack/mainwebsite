@@ -14,6 +14,18 @@ export type ScheduleRound = {
   aiqJoinBy: string;
   state: string;
   stateJoinBy: string;
+  /**
+   * MCC's own steps for the round, as its schedule prints them (admin's pg_schedule, 2026-11-05): "neet pg round 2
+   * choice filling date" is the largest cluster of searches the site had no answer for. Optional — a round without
+   * them shows only the window and the joining date.
+   */
+  registration?: string;
+  choiceFilling?: string;
+  choiceLocking?: string;
+  result?: string;
+  reporting?: string;
+  source?: string;
+  sourceUrl?: string;
 };
 
 export const NEET_PG_SCHEDULE = {

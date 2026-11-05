@@ -86,6 +86,10 @@ async function load(params: Params) {
     year === current ? getPgProcessContent().then((c) => c.schedule) : Promise.resolve([]),
   ]);
   const when = roundSchedule(spec, year, schedule);
+  // MCC's own steps for the round (registration, choice filling, locking, result, reporting), when the admin's
+  // schedule carries them — "neet pg round 2 choice filling date" (2026-11-05).
+  const row = spec.schedule ? schedule.find((r) => r.round.trim().toLowerCase() === spec.schedule) : undefined;
+  const steps = row && (row.choiceFilling || row.registration) ? row : null;
   // Of the rounds still awaited this year, only the next one is worth a search engine's time.
   let indexable = state.status !== "pending";
   if (!indexable) {
@@ -93,7 +97,7 @@ async function load(params: Params) {
     const next = ROUNDS.find((r, i) => r.order <= 4 && states[i]?.status === "pending");
     indexable = next?.slug === spec.slug;
   }
-  return { year, spec, current, state, result: result && result.total ? result : null, prev, when, indexable };
+  return { year, spec, current, state, result: result && result.total ? result : null, prev, when, steps, indexable };
 }
 
 function kindOf(state: RoundState, body: { status_final: string; status_provisional: string; status_result: string; status_out: string; status_pending: string }) {
@@ -142,16 +146,21 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     });
   } else {
     const expected = when?.expected ? DAY.format(when.expected) : null;
+    const steps = d.steps;
     meta = await resolveMetadata(path, {
       // "neet pg round 2 result 2026", "neet pg round 2 date", "neet pg round 2 cut off 2025" (autocomplete,
       // Oct 2026): before the result, the page shows MCC's dates and last year's same round — its cut off.
       title: fitTitle(
+        ...(steps?.choiceFilling ? [`NEET PG ${T} Result ${year}: Dates, Choice Filling & Cut Off`, `NEET PG ${year} ${T}: Choice Filling Dates & Result`] : []),
         ...(prev ? [`NEET PG ${T} Result ${year}: Date, Seat Allotment & Cut Off`] : []),
         `NEET PG ${T} Result ${year}: Date & Seat Allotment`,
         `NEET PG ${year} ${T} Result: Date & Seat Allotment`,
         `NEET PG ${year} ${T} Result`,
       ),
       description: fitDescription(
+        ...(steps?.choiceFilling && steps.result
+          ? [`NEET PG ${year} ${lc}: choice filling ${steps.choiceFilling}, result ${steps.result} as per MCC's tentative schedule. MCC's PDF, seat allotment and branch-wise last rank here the moment it is out.`]
+          : []),
         `NEET PG ${year} ${lc} result${expected ? `, expected around ${expected} as per MCC's schedule` : ""}: MCC's PDF, seat allotment and branch-wise last rank, here the moment it is out${prev ? `. ${prev.year}'s figures meanwhile` : ""}.`,
       ),
       keywords,
@@ -171,7 +180,7 @@ function prevCuts(r: RoundResult | null) {
 export default async function RoundResultPage({ params }: { params: Params }) {
   const d = await load(params);
   if (!d) notFound();
-  const { year, spec, current, state, result, prev, when } = d;
+  const { year, spec, current, state, result, prev, when, steps } = d;
   const path = roundPath(year, spec.slug);
   const [branchPages, pgStates, matrix] = await Promise.all([
     getBranches(),
@@ -219,6 +228,11 @@ export default async function RoundResultPage({ params }: { params: Params }) {
     source_title: (result?.sourceTitle ?? state.sourceTitle ?? "").trim(),
     next_round: nextSpec ? nextSpec.label.toLowerCase() : "the next round",
     next_upgrades: nextLastYear?.upgraded ? n(nextLastYear.upgraded) : undefined,
+    registration: steps?.registration,
+    choice_filling: steps?.choiceFilling,
+    choice_locking: steps?.choiceLocking,
+    result_date: steps?.result,
+    reporting: steps?.reporting,
   };
   const [copy, body, heroImage, shownBody] = await Promise.all([
     pageCopy("page.pg_round.hero", tokens),
@@ -297,6 +311,9 @@ export default async function RoundResultPage({ params }: { params: Params }) {
     : [];
 
   const faqs = [
+    ...(!result && steps?.choiceFilling && steps.choiceLocking && steps.registration && steps.result && steps.reporting
+      ? [{ question: body.faq_dates_q, answer: body.faq_dates_a }]
+      : []),
     ...(result ? [{ question: body.faq1_q, answer: body.faq1_a }] : []),
     ...(result?.aiqOpenLast ? [{ question: body.faq2_q, answer: body.faq2_a }] : []),
     ...(result && state.detectedAt ? [{ question: body.faq3_live_q, answer: body.faq3_live_a }] : []),
@@ -396,6 +413,43 @@ export default async function RoundResultPage({ params }: { params: Params }) {
       )}
 
       {awaited && roundAlert(true)}
+
+      {/* ------------------------------ the round's dates, MCC's own steps ------------------------------ */}
+      {year === current && steps && (
+        <section className={`container-custom ${awaited ? "pt-6" : "pt-10"}`} id="dates">
+          <SectionHead icon="route" title={body.dates_title} intro={body.dates_intro} />
+          <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
+            <table className="dt w-full min-w-[420px] text-left text-sm">
+              <tbody className="divide-y divide-border">
+                {(
+                  [
+                    [body.dates_registration, steps.registration],
+                    [body.dates_choice_filling, steps.choiceFilling],
+                    [body.dates_choice_locking, steps.choiceLocking],
+                    [body.dates_result, steps.result],
+                    [body.dates_reporting, steps.reporting],
+                  ] as const
+                )
+                  .filter(([, v]) => v)
+                  .map(([label, v]) => (
+                    <tr key={label}>
+                      <th scope="row" className="w-[40%] px-4 py-3 font-medium text-foreground">{label}</th>
+                      <td className="px-4 py-3">{v}</td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+          {steps.sourceUrl && (
+            <p className="mt-2 text-[13px] text-muted-foreground">
+              <a href={steps.sourceUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary-strong hover:underline">
+                {body.dates_source}
+              </a>
+              {steps.source ? ` — ${steps.source}` : ""}
+            </p>
+          )}
+        </section>
+      )}
 
       {/* ------------------------------ what to do now (this year's counselling) ------------------------------ */}
       {year === current && (
