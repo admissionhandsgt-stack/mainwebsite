@@ -586,7 +586,7 @@ function tamilNaduSource(): Source {
   const cutsRaw = readCsv(`${dir}/tn_pg_2026_r1_closing_ranks.csv`);
   const allotRaw = readCsv(`${dir}/tn_pg_2026_r1_allotments.csv`);
   // Each seat type onto 2025's quota label and category (closing_ranks, "TN Govt PG" / "TN Mgmt PG").
-  const SEAT: Record<string, { quota: string; category: string; inService?: boolean; pwd?: boolean }> = {
+  const SEAT: Record<string, { quota: string; category: string; inService?: boolean }> = {
     "Management Quota": { quota: "TN Mgmt Quota", category: "GEN" },
     NRI: { quota: "TN NRI Quota", category: "NRI" },
     "Telugu Minority": { quota: "TN Mgmt-Telugu Min", category: "Telugu Minority" },
@@ -597,17 +597,32 @@ function tamilNaduSource(): Source {
     "CMC General": { quota: "TN CMC-General Merit", category: "CMC-General Merit" },
     "Inst. Preference": { quota: "TN CMC-Inst Preference", category: "CMC-Institutional Preference" },
     "Government Quota - CMC 20%": { quota: "TN-CMC Minority 20", category: "CMC 20% Minority" },
-    "Government Quota - PwD": { quota: "TN Govt-PwD", category: "Not printed", pwd: true },
   };
-  // Government Quota seats carry the seat's own category (pg-a7 works it out from the vacancy matrix), written as
-  // 2025's codes ("OC Open", "BC Serv", "SC-In-Service"…). TN prints only the candidate's community, which is never
-  // a seat's category: a Government Quota row without seat_category is "Not printed" and stays out of every figure.
+  // Government Quota seats carry the seat's own pool and category, worked out by pg-a7 from TN's vacancy matrix
+  // (seat_pool Open | Service, seat_category OC | BC | BCM | MBC&DNC | SC | SCA | ST). TN prints only the candidate's
+  // community, which is never a seat's category: a row whose pool or category is unresolved is "Not printed" and stays
+  // out of every figure. PwD seats (list "GQ PwD", 31-10) are their own quota.
+  // Open seats are stored as the read side's codes (OC, Open Competition, is the unreserved seat: GEN — as Kerala's SM
+  // and Odisha's UR are; MBC&DNC is MBC); service seats as 2025's codes (OC Serv, SC-In-Service…), in-service and so
+  // out of the figures. TN's own words stay in categoryPrinted.
+  const GQ_CAT: Record<string, [string, string]> = {
+    OC: ["GEN", "OC Serv"], BC: ["BC", "BC Serv"], BCM: ["BCM", "BCM Serv"],
+    "MBC&DNC": ["MBC", "MBC Serv"], SCA: ["SCA", "SCA Serv"], SC: ["SC", "SC-In-Service"], ST: ["ST", "ST-In-Service"],
+  };
+  const gqCategory = (r: Row) => {
+    const pair = GQ_CAT[r.seat_category?.trim() ?? ""];
+    const pool = r.seat_pool?.trim();
+    if (!pair || (pool !== "Open" && pool !== "Service")) return { category: "Not printed", inService: false };
+    return { category: pool === "Open" ? pair[0] : pair[1], inService: pool === "Service" };
+  };
+  const printed = (r: Row) =>
+    r.seat_category ? `${r.seat_pool ? `${r.seat_pool} · ` : ""}${r.seat_category}` : r.seat_pool || r.seat_type;
   const seat = (r: Row) => {
     const s = SEAT[r.seat_type];
-    if (s) return { quota: s.quota, inService: Boolean(s.inService), category: s.category, pwd: Boolean(s.pwd) };
-    if (r.seat_type !== "Government Quota") throw new Error(`Tamil Nadu: unknown seat type "${r.seat_type}"`);
-    const c = r.seat_category?.trim() || "Not printed";
-    return { quota: "TN Govt Quota", inService: /Serv|In-Service/i.test(c), category: c, pwd: false };
+    if (s) return { quota: s.quota, inService: Boolean(s.inService), category: s.category, pwd: false };
+    if (r.seat_type === "Government Quota") return { quota: "TN Govt Quota", ...gqCategory(r), pwd: false };
+    if (r.seat_type === "Government Quota - PwD") return { quota: "TN Govt-PwD", ...gqCategory(r), pwd: true };
+    throw new Error(`Tamil Nadu: unknown seat type "${r.seat_type}"`);
   };
   // TN's short forms for diplomas and two MD subjects, written out as our course names spell them.
   const SHORT: Record<string, string> = {
@@ -625,7 +640,7 @@ function tamilNaduSource(): Source {
       return {
         college: r.college, instCode: null, seatType: r.seat_pool ? `${r.seat_type} · ${r.seat_pool}` : r.seat_type,
         quota: s.quota, inService: s.inService, course: course(r.course),
-        categoryPrinted: r.seat_category || r.seat_type, category: s.category, pwd: s.pwd, additional: null,
+        categoryPrinted: printed(r), category: s.category, pwd: s.pwd, additional: null,
         seats: int(r.seats_allotted), openAir: null, closeAir: int(r.closing_all_india_rank), openSr: null,
         closeSr: int(r.closing_state_merit_rank),
       };
@@ -635,7 +650,7 @@ function tamilNaduSource(): Source {
       return {
         college: r.college, instCode: null, seatType: r.seat_pool ? `${r.seat_type} · ${r.seat_pool}` : r.seat_type,
         quota: s.quota, inService: s.inService, course: course(r.course),
-        categoryPrinted: r.seat_category || r.seat_type, category: s.category, ownCategory: r.candidate_community || null,
+        categoryPrinted: printed(r), category: s.category, ownCategory: r.candidate_community || null,
         pwd: s.pwd, additional: null, domicile: null,
         stateRank: int(r.state_merit_rank), air: int(r.all_india_rank), score: null,
       };
