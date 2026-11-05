@@ -95,6 +95,9 @@ const FIXES = [
   // SRM Institute of Science and Technology is the deemed university at Kattankulathur (Kancheepuram district); its
   // 2024–25 paid and NRI seats sat on Trichy SRM (a state-counselling college). 2026's rows are already on 1523.
   ["SRM Medical College, Kattankulathur (was Trichy SRM)", "SRM MEDICAL COLLEGE HOSPITAL AND RESEARCH CENTRE, SRM INSTITUTE OF SCIENCE%", null, 1523, "wrong"],
+  // SKMC Muzaffarpur: 435 is its MD/MS entry, 984 (named with its PIN code) its DNB entry — the usual pair, not a
+  // duplicate. MCC's 2024–25 wording "Shrikrishna Medical College & Hospital, Muzaffarpur" was never matched.
+  ["SKMC Muzaffarpur", "Shrikrishna Medical College & Hospital, Muzaffarpur%", null, 435, "null"],
   // Rampurhat GMC is one entry in our list (its other MCC rows are already on it), so it holds no MD/MS seat_options.
   ["Rampurhat GMC", "Rampurhat Government Medical College & Hospital%", null, 934, "null", { only: true }],
 ];

@@ -568,7 +568,7 @@ MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within mi
   2026-10-24): one row per college, the 8 most competitive clinical branches, this year's Round 1 closing rank over
   last year's, grouped by state and paged by measuring every row (8 PNG pages + one PDF for 2026 R1, Open). The
   frame both posters share is `scripts/poster/kit.mjs`. The college mismatches it used to correct read-only are fixed in
-  the tables since 2026-11-05 (see "MCC college matches, audited" below); its one remaining `ALIAS` is SKMC Muzaffarpur.
+  the tables since 2026-11-05 (see "MCC college matches, audited" below), so it reads `institute_id` as stored.
   The script lists colleges with figures in the earlier year only — the shape a split leaves.
   **The poster of 24 Oct is affected:** its `SAME_AS [705 → 406]` read GMC Chhindwara's id as Vidisha's, so the Vidisha
   row carried Chhindwara's, Khandwa's and Shahdol's Round 1 ranks too, and those three colleges were missing.
@@ -589,10 +589,12 @@ MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within mi
   MD/MS and college-diploma rows on a hospital's DNB twin, which holds no MD/MS seats (19 colleges — Medical College
   Kolkata, MP Shah Jamnagar, NRS, GGS Faridkot, Kannauj, Firozabad, Bhagalpur, Yavatmal, Dhule, GIMS Greater Noida…);
   and names never matched (HBT Mumbai, PCMC Pune, RGMC Kalwa, Shivpuri, Bharatpur, Jagdalpur, GB Pant, PGICH Noida…):
-  unmatched MD/MS rows 979 → 40. Each fixed name is a decision in `mcc_name_decisions.json`, so a re-import keeps it.
-  **Left on purpose:** SKMC Muzaffarpur (our PG list holds it twice, 435 and 984, both with MD/MS seats — a merge, not a
-  match); NBE diplomas at private hospitals ("Diploma-Emergency Medicine") stay on their DNB entries; NSNIS Patiala,
-  INMAS and Hindu Rao have one entry each. `pg_seat_terms` was checked and is clean.
+  unmatched MD/MS rows 979 → 0 (SKMC Muzaffarpur's last: 435 is its MD/MS entry, 984 its DNB entry — the usual pair,
+  not a duplicate). Each fixed name is a decision in `mcc_name_decisions.json`, so a re-import keeps it. NBE diplomas at
+  private hospitals ("Diploma-Emergency Medicine") stay on their DNB entries; NSNIS Patiala, INMAS and Hindu Rao have one
+  entry each. `pg_seat_terms` was checked and is clean. The 2026 state rounds had one of the same kind — UP's "(010)
+  Autonomous Medical College, Shahjahanpur" on the DNB twin 670 (our MD/MS entry 614 is spelt "Shahjhanpur"); the UP
+  decision now says 614 and UP was re-imported.
   **Re-check after each import:** `node --env-file=.env.local scripts/audit_mcc_matches.mjs` lists every source name
   whose matched institute shares no distinctive word with it (cities spelt two ways and state-named cities —
   Chandigarh, Jammu, Goa — are the expected noise).

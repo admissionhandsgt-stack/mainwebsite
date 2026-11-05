@@ -1,7 +1,7 @@
 {
   "up": {
     "(001) AUTONOMOUS MEDICAL COLLEGE, AYODHYA [Govt.] Co-Education": 403,
-    "(010) AUTONOMOUS MEDICAL COLLEGE, SHAHJAHANPUR [Govt.] Co-Education": 670,
+    "(010) AUTONOMOUS MEDICAL COLLEGE, SHAHJAHANPUR [Govt.] Co-Education": 614,
     "(015) GOVERNMENT INSTITUTE OF MEDICAL SCIENCES, GREATER NOIDA [Govt.] Co-Education": 306,
     "(016) GOVERNMENT MEDICAL COLLEGE, AMBEDKAR NAGAR [Govt.] Co-Education": 660,
     "(046) K.M. MEDICAL COLLEGE, MATHURA [Private] Co-Education": 2136,
@@ -13,7 +13,7 @@
   "_notes": {
     "up": {
       "(001) AUTONOMOUS MEDICAL COLLEGE, AYODHYA [Govt.] Co-Education": "NMC lists one government MD/MS college in Faizabad district (renamed Ayodhya, 2018): Government Medical College, Faizabad",
-      "(010) AUTONOMOUS MEDICAL COLLEGE, SHAHJAHANPUR [Govt.] Co-Education": "our only Shahjahanpur government entry; NMC: Government Medical College, Shahjahanpur",
+      "(010) AUTONOMOUS MEDICAL COLLEGE, SHAHJAHANPUR [Govt.] Co-Education": "GMC Shahjahanpur's MD/MS entry is 614 (our name drops a letter: \"Shahjhanpur\"); 670 is its DNB twin. Was 670 until 2026-11-05",
       "(015) GOVERNMENT INSTITUTE OF MEDICAL SCIENCES, GREATER NOIDA [Govt.] Co-Education": "GIMS's MD/MS entry (Kasna, Greater Noida); 174 is its DNB twin",
       "(016) GOVERNMENT MEDICAL COLLEGE, AMBEDKAR NAGAR [Govt.] Co-Education": "NMC: Mahamaya Rajkiya Allopathic Medical College, Ambedkarnagar = our MRA Medical College",
       "(046) K.M. MEDICAL COLLEGE, MATHURA [Private] Co-Education": "K.M. = Krishna Mohan Medical College & Hospital, Mathura (NMC)",
