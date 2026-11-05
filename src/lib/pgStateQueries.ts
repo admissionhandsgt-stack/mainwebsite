@@ -15,7 +15,7 @@ import { unstable_cache } from "next/cache";
 import { sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { branchSlug } from "@/lib/branchSlug";
-import { groupRank } from "@/lib/chance";
+import { groupRank, isMeritQuota } from "@/lib/chance";
 
 const rows = <T,>(r: unknown) => r as unknown as T[];
 
@@ -104,6 +104,12 @@ export interface PgStatePage {
   counsellings: { name: string; colleges: number }[];
   quotas: QuotaRange[];
   branches: { name: string; slug: string; colleges: number; seats: number }[];
+  /**
+   * "neet pg cut off branch wise <state>": the state's main merit quota (its own counselling, not MCC, management,
+   * NRI or in-service), general category, `year`: per branch the last rank admitted across every round — only where
+   * three or more colleges admitted (`groupRank`), never one college's cut. AIR (migration 0045).
+   */
+  branchCut: { quota: string; rows: { name: string; slug: string; colleges: number; last: number }[] } | null;
 }
 
 export const getPgStatePage = unstable_cache(
@@ -184,6 +190,39 @@ export const getPgStatePage = unstable_cache(
     for (const c of list) if (!c.dnb) ownership[c.ownership] = (ownership[c.ownership] ?? 0) + 1;
     const branchRows = rows<Record<string, unknown>>(branches);
 
+    // The state's own main merit quota: the one most colleges fill, from its own counselling.
+    const quotaRows = rows<Record<string, unknown>>(quotas);
+    const main = quotaRows.find(
+      (q) =>
+        q.quota != null &&
+        !/^(all india|open states|dnb sponsored)/i.test(String(q.counselling)) &&
+        isMeritQuota(String(q.quota)) &&
+        !/in-?serv|service|sponsor|AIQ|all india/i.test(String(q.quota)) &&
+        Number(q.colleges) >= 3,
+    );
+    let branchCut: PgStatePage["branchCut"] = null;
+    if (main && y != null) {
+      const cut = rows<Record<string, unknown>>(
+        await db.execute(sql`
+          SELECT co.name, COUNT(DISTINCT cr.institute_id)::int AS colleges, MAX(cr.closing_rank)::int AS last
+            FROM closing_ranks cr
+            JOIN institutes i ON i.id = cr.institute_id
+            JOIN courses co ON co.id = cr.course_id
+            JOIN categories cat ON cat.id = cr.category_id
+            JOIN quotas q ON q.id = cr.quota_id
+           WHERE cr.level = 'pg' AND i.state_id = ${stateId} AND cr.year = ${y}
+             AND q.label = ${String(main.quota)} AND cat.code IN (${openCodes}) AND cr.closing_rank > 0
+           GROUP BY co.name
+          HAVING COUNT(DISTINCT cr.institute_id) >= 3
+           ORDER BY MAX(cr.closing_rank)
+        `),
+      );
+      const rowsCut = cut
+        .map((x) => ({ name: String(x.name), slug: branchSlug(String(x.name)), colleges: Number(x.colleges), last: groupRank(num(x.last), Number(x.colleges)) }))
+        .filter((x): x is { name: string; slug: string; colleges: number; last: number } => x.last != null);
+      if (rowsCut.length) branchCut = { quota: String(main.quota), rows: rowsCut };
+    }
+
     return {
       name: String(st.name),
       slug: String(st.slug),
@@ -210,8 +249,9 @@ export const getPgStatePage = unstable_cache(
         colleges: Number(x.colleges),
         seats: Number(x.seats),
       })),
+      branchCut,
     };
   },
-  ["pg-state-page-v5"],
+  ["pg-state-page-v6"],
   { revalidate: 86400, tags: ["seat-data"] },
 );

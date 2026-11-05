@@ -84,6 +84,47 @@ export interface FaqFacts {
   type?: string | null;
   seats?: number | null;
   fromNmc?: boolean;
+  /** `seats` is NMC's own figure — then it is the one the FAQ quotes, the same as the page's NMC card. */
+  seatsFromNmc?: boolean;
+}
+
+/**
+ * A counselling's database name as a reader says it: "RJSTHN PG" is Rajasthan's state counselling, "All India PG"
+ * is MCC's. The prose of an FAQ printed the codes until 2026-11-05.
+ */
+const STATE_CODE: Record<string, string> = {
+  RJSTHN: "Rajasthan", CHHTSGRH: "Chhattisgarh", CHNDGH: "Chandigarh", PNDCHRY: "Puducherry", UK: "Uttarakhand",
+  HP: "Himachal Pradesh", MP: "Madhya Pradesh", UP: "Uttar Pradesh", WB: "West Bengal", TN: "Tamil Nadu",
+  AP: "Andhra Pradesh", TEL: "Telangana", KAR: "Karnataka", "J&K": "Jammu and Kashmir",
+};
+/** Quotas MCC itself runs beside the All India Quota (UG), by their database names. */
+const MCC_QUOTA: Record<string, string> = {
+  "Central UG": "MCC's central universities counselling",
+  "Deemed UG": "MCC's deemed universities counselling",
+  "AMU Quota UG": "MCC's AMU quota",
+  "Delhi University Quota UG": "MCC's Delhi University quota",
+  "IP University Quota UG": "MCC's IP University quota",
+  "Jamia Internal UG": "MCC's Jamia internal quota",
+  "ESI Scheme UG": "MCC's ESI quota",
+  "Delhi Children/Widows UG": "MCC's Delhi children/widows quota",
+  "Open Seat Quota UG": "MCC's open seat quota",
+};
+/** Institutes that run their own PG counselling. */
+const OWN_COUNSELLING = /^(JNIMS|RIMS|NEIGRIHMS)\b/i;
+
+export function readableCounselling(name: string): string {
+  const n = name.trim();
+  if (MCC_QUOTA[n]) return MCC_QUOTA[n];
+  if (/^all india/i.test(n) || /^mcc\b/i.test(n)) return "MCC's All India counselling";
+  if (/^open states/i.test(n)) return "the private seats open to every state";
+  if (/^dnb sponsored/i.test(n)) return "the DNB sponsored seats";
+  if (OWN_COUNSELLING.test(n)) return `${n.replace(/\s+(PG|UG)$/i, "")}'s own counselling`;
+  const m = n.match(/^(.+?)\s+(?:(Govt|Mgmt)\s+)?(?:PG|UG)(?:\s*\(([^)]+)\))?$/i) ?? n.match(/^(.+?)\s*-\s*PG Medical$/i);
+  if (!m) return n;
+  const state = STATE_CODE[m[1].trim()] ?? m[1].trim().replace(/&/g, " and ").replace(/\s+/g, " ");
+  const kind = m[2] ? (/mgmt/i.test(m[2]) ? " (management seats)" : " (government seats)") : "";
+  const body = m[3] ? ` (${m[3]})` : "";
+  return `the ${state} state counselling${kind}${body}`;
 }
 
 export function collegeFaqs(
@@ -104,7 +145,7 @@ export function collegeFaqs(
    * with what genuinely decides it — which counselling, which quotas — and
    * where the student's own chance is shown. */
   if (cutoffs.length) {
-    const counsellings = [...new Set(cutoffs.map((c) => c.counselling).filter(Boolean))] as string[];
+    const counsellings = [...new Set(cutoffs.map((c) => c.counselling).filter(Boolean).map((c) => readableCounselling(c as string)))];
     const quotas = [...new Set(cutoffs.map((c) => c.quota).filter(Boolean))];
     const categories = new Set(cutoffs.map((c) => c.category)).size;
     const list = (xs: string[], n: number) =>
@@ -168,23 +209,29 @@ export function collegeFaqs(
   const stipends = fees.filter((f) => f.stipendY1Inr != null && f.stipendY1Inr > 0);
   if (stipends.length && level === "pg") {
     const top = stipends.reduce((a, b) => (b.stipendY1Inr! > a.stipendY1Inr! ? b : a));
+    // "sms jaipur pg stipend" (234 impressions a month) — the question as it is searched, all three years when published.
+    const later = [top.stipendY2Inr, top.stipendY3Inr].every((v) => v != null && v > 0)
+      ? ` ${money(top.stipendY2Inr!)} in the second and ${money(top.stipendY3Inr!)} in the third,`
+      : "";
     faqs.push({
-      q: `Does ${college.name} pay a stipend?`,
-      a: `Yes — ${money(top.stipendY1Inr!)} a month in the first year, which is worth ${money(top.stipendY1Inr! * 12)} over that year against the fees above.`,
+      q: `What is the PG stipend at ${college.name}?`,
+      a: `${money(top.stipendY1Inr!)} a month in the first year,${later} as published — worth ${money(top.stipendY1Inr! * 12)} over the first year against the fees above.`,
     });
   }
 
   /* ---- the shape of the place ---- */
-  if (college.seatsTotal && college.branchCount) {
+  if (facts.seatsFromNmc && facts.seats && (level === "pg" || course === "MBBS")) {
+    // NMC's figure first, the same one the page's "Official record" card shows — the FAQ quoting our seat-matrix
+    // count beside it (646 against NMC's 643 at SMS Jaipur) read as a mistake (2026-11-05). "how many mbbs seats in
+    // <college>": the UG list carries no seat matrix, NMC's register does.
+    faqs.push({
+      q: `How many ${course} seats does ${college.name} have?`,
+      a: `${inr(facts.seats)} ${course} seats a year, as approved in the National Medical Commission's register.`,
+    });
+  } else if (college.seatsTotal && college.branchCount) {
     faqs.push({
       q: `How many ${course} seats does ${college.name} have?`,
       a: `${inr(college.seatsTotal)} seats across ${college.branchCount} ${level === "pg" ? "branches" : "courses"}, counted from the published seat matrix.`,
-    });
-  } else if (level === "ug" && course === "MBBS" && facts.fromNmc && facts.seats) {
-    // The UG list carries no seat matrix; NMC's register does ("how many mbbs seats in <college>").
-    faqs.push({
-      q: `How many MBBS seats does ${college.name} have?`,
-      a: `${inr(facts.seats)} MBBS seats a year, as approved in the National Medical Commission's register.`,
     });
   }
 

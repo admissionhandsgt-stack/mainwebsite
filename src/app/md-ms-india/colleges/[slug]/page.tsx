@@ -125,7 +125,7 @@ export default async function CollegePage({ params }: { params: { slug: string }
   const counsellings = Array.from(new Set(cutoffs.map((c) => c.counselling).filter(Boolean))) as string[];
   const bands = generalBands(cutoffs, 20);
 
-  const faqs = collegeFaqs(college, cutoffs, fees, "pg", { course: s.course, type: s.type, seats: s.seats, fromNmc: s.fromNmc });
+  const faqs = collegeFaqs(college, cutoffs, fees, "pg", { course: s.course, type: s.type, seats: s.seats, fromNmc: s.fromNmc, seatsFromNmc: s.seatsFromNmc });
   const jsonLd = collegeJsonLd({
     college,
     level: "pg",

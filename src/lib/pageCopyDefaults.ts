@@ -1199,8 +1199,9 @@ export const PAGE_COPY = {
     group: "Page: MBBS state pages",
     fields: hero({
       eyebrow: { label: "Hero eyebrow — {state}", value: "MBBS · {state}" },
-      title: { label: "Hero title — {state}", value: "MBBS in {state}:" },
-      accent: { label: "Hero title, coloured part", value: "colleges and counselling" },
+      // The H1 in the words of the title and the search ("mbbs seats in gujarat", 2026-11-05).
+      title: { label: "Hero title — {state}", value: "MBBS seats in {state}:", was: ["MBBS in {state}:"] },
+      accent: { label: "Hero title, coloured part", value: "colleges, cut off and counselling", was: ["colleges and counselling"] },
       subtitle: {
         label: "Hero line — {count}, {state}, {counsellings}",
         value: "{count} MBBS colleges in {state}, each with its own page of courses, fees, seats and its cutoff band. Seats here are filled through {counsellings} counselling — published results, not estimates.",

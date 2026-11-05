@@ -122,6 +122,57 @@ export const getNmcUgIndex = unstable_cache(
   { revalidate: 86400, tags: ["nmc"] },
 );
 
+/**
+ * NMC's approved MD/MS seats for one of our branch names, across India — "md nuclear medicine seats in india" is how
+ * a branch is searched (Search Console, Oct–Nov 2026: 4,365 impressions for "<branch> seats in india"). NMC names a
+ * course with its alternates ("M.D. Radio-diagnosis /Radiology"), so every alternate is a key; ours may carry one too
+ * ("MD Aviation Medicine/Aerospace Medicine"). MD/MS only: NMC's diplomas are named too differently to match safely.
+ */
+const nmcKey = (s: string) =>
+  s.toLowerCase().replace(/m\.\s?d\.?/g, "md").replace(/m\.\s?s\.?/g, "ms").replace(/&/g, "and").replace(/[^a-z0-9]/g, "");
+const NMC_ALIAS: Record<string, string> = { mdlabmedicine: "mdlaboratorymedicine" };
+
+const loadNmcBranchSeats = unstable_cache(
+  async (): Promise<Record<string, { seats: number; colleges: number }>> => {
+    try {
+      const r = rowsOf<{ type: string; name: string; seats: number; colleges: number }>(
+        await db.execute(sql`
+          SELECT course_type AS type, course_name AS name, SUM(approved_seat)::int AS seats,
+                 COUNT(DISTINCT college_code)::int AS colleges
+            FROM nmc_courses WHERE course_type IN ('MD', 'MS') AND approved_seat > 0
+           GROUP BY course_type, course_name`),
+      );
+      const out: Record<string, { seats: number; colleges: number }> = {};
+      for (const x of r) {
+        const prefix = x.type === "MS" ? "MS " : "MD ";
+        const parts = String(x.name).replace(/^M\.\s?[DS]\.?\s*-?\s*/i, "").split("/").map((p) => p.trim()).filter(Boolean);
+        for (const p of [String(x.name), ...parts.map((p) => prefix + p)]) {
+          const k = nmcKey(p);
+          if (!out[k]) out[k] = { seats: Number(x.seats), colleges: Number(x.colleges) };
+        }
+      }
+      return out;
+    } catch (error) {
+      logError(error, { route: "nmcData:branchSeats" });
+      return {};
+    }
+  },
+  ["nmc-branch-seats-v1"],
+  { revalidate: 86400, tags: ["nmc"] },
+);
+
+/** NMC's seats for an MD/MS branch name of ours, or null when NMC's register has no such course. */
+export async function getNmcBranchSeats(name: string): Promise<{ seats: number; colleges: number } | null> {
+  if (!/^(MD|MS)\s/.test(name)) return null;
+  const all = await loadNmcBranchSeats();
+  for (const variant of [name, ...name.split("/").slice(0, 1)]) {
+    const k = nmcKey(variant);
+    const hit = all[NMC_ALIAS[k] ?? k];
+    if (hit) return hit;
+  }
+  return null;
+}
+
 /** "29 September 2026". */
 export const nmcDate = (iso: string | null) =>
   iso ? new Date(`${iso.slice(0, 10)}T00:00:00Z`).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }) : null;

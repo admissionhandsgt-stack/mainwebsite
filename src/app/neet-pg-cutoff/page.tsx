@@ -41,6 +41,8 @@ async function chosen(searchParams: Props["searchParams"]) {
 
 // Our closing-rank data says GEN where MCC's allotment lists say Open; the other codes are the same.
 const MCC_CAT: Record<string, CutCat> = { GEN: "Open", OBC: "OBC", EWS: "EWS", SC: "SC", ST: "ST" };
+/** The categories of the all-category table, in MCC's order. */
+const ALL_CATS = ["GEN", "EWS", "OBC", "SC", "ST"] as const;
 
 // The running counselling's latest MCC round with a result: its All India Quota last rank admitted per branch,
 // by category — only where three or more colleges took part (the round pages' rule, so no figure is one college's cut).
@@ -106,13 +108,28 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
   const latestQ = NEET_PG_QUALIFYING[0];
   // Words from Admin → Content → Text & numbers ("Page: NEET PG cutoff"); photo from Admin → Media.
   const [copy, heroImage, pgStates] = await Promise.all([
-    pageCopy("page.neet_pg_cutoff.hero", { year: year?.year ?? "" }),
+    // The H1 names the running year's round beside the complete year, as the title does ("NEET PG cutoff 2026 Round 1
+    // & 2025") — it said 2025 alone under a 2026 title.
+    pageCopy("page.neet_pg_cutoff.hero", { year: live && year ? `${live.year} ${live.spec.label} & ${year.year}` : year?.year ?? "" }),
     pageHeroImage("page.neet_pg_cutoff.hero"),
     // "neet pg cut off branch wise maharashtra" is searched as often as the national
     // table; this page is the strongest PG page we have and linked no state at all.
     getPgStates().catch((): Awaited<ReturnType<typeof getPgStates>> => []),
   ]);
   const statesWithMdms = pgStates.filter((s) => s.mdms > 0);
+  // Every category side by side for the complete year (each list is already a group figure over 3+ colleges).
+  const perCat = year ? await Promise.all(ALL_CATS.map((c) => getPgAiqBranches(c, year.year).catch((): Awaited<ReturnType<typeof getPgAiqBranches>> => []))) : [];
+  const byBranch = new Map<string, { branch: string; slug: string; cut: Partial<Record<(typeof ALL_CATS)[number], number | null>> }>();
+  perCat.forEach((list, i) => {
+    for (const b of list) {
+      const row = byBranch.get(b.branch) ?? { branch: b.branch, slug: b.slug, cut: {} };
+      row.cut[ALL_CATS[i]] = b.widest;
+      byBranch.set(b.branch, row);
+    }
+  });
+  const allCats = [...byBranch.values()]
+    .filter((r) => r.cut.GEN != null)
+    .sort((a, b) => (a.cut.GEN ?? 0) - (b.cut.GEN ?? 0));
   const lowered2025 = NEET_PG_QUALIFYING.find((n) => n.year === 2025 && n.label.includes("lowered"))!;
   const faqs = [
     ...(live && liveRadio && liveLast(liveRadio.branch)
@@ -354,6 +371,45 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
           </div>
         </div>
       </section>
+
+      {/* Every category in one table ("neet pg cut off rank branch wise", 657 impressions a month — the leading pages
+          print all five categories side by side). AIQ, the last rank admitted, each cell over 3+ colleges. */}
+      {year && allCats.length > 0 && (
+        <section className="container-custom pt-10 md:pt-14" id="all-categories">
+          <SectionHead
+            icon="list"
+            eyebrow="All categories"
+            title={`NEET PG cut off ${year.year} branch wise, every category`}
+            intro={`All India Quota, ${year.year}: the All India Rank of the last candidate MCC admitted to each branch, by category. A cell is shown only where three or more colleges admitted; "—" means fewer.`}
+          />
+          <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
+            <table className="dt w-full min-w-[640px] text-left text-sm">
+              <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
+                <tr>
+                  <th scope="col" className="px-4 py-3 font-semibold">Branch</th>
+                  {ALL_CATS.map((c) => (
+                    <th key={c} scope="col" className="px-3 py-3 text-right font-semibold">{c}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {allCats.map((r) => (
+                  <tr key={r.branch}>
+                    <th scope="row" className="px-4 py-2.5 font-medium">
+                      <Link href={`/md-ms-india/branches/${r.slug}`} className="text-foreground hover:text-primary hover:underline">
+                        {r.branch}
+                      </Link>
+                    </th>
+                    {ALL_CATS.map((c) => (
+                      <td key={c} className="tnum px-3 py-2.5 text-right">{r.cut[c] != null ? r.cut[c]!.toLocaleString("en-IN") : "—"}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
 
       {statesWithMdms.length > 0 && (
         <section className="container-custom pt-10 md:pt-14">

@@ -100,6 +100,8 @@ export interface CollegeSummary {
   type: string | null;
   /** Seats, type and founding year are NMC's own (its register, lib/nmcData.ts). */
   fromNmc: boolean;
+  /** The seat figure itself is NMC's (not a curated intake or our seat-matrix count). */
+  seatsFromNmc: boolean;
   /** Highest published first-year stipend, a month (PG). */
   stipend: number | null;
   established: number | null;
@@ -168,6 +170,7 @@ function summarise(
     branches: level === "pg" ? (nmcSeats && nmc ? nmc.pg.length : college.branchCount ?? null) : null,
     type,
     fromNmc: Boolean(nmc && (nmcSeats || nmcType)),
+    seatsFromNmc: nmcSeats != null,
     stipend: level === "pg" ? stipend : null,
     established: nmc?.inceptionYear ?? college.establishedYear,
     beds: college.beds,

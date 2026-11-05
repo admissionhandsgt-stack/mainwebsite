@@ -58,6 +58,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const split = govt || pvt ? ` (${govt} government, ${pvt} private or deemed)` : "";
   const st = stipends.states.find((x) => x.state === p.name);
   const stipend = st ? `, stipend (median ₹${st.median.toLocaleString("en-IN")} a month)` : ", stipend";
+  const roundGen = round?.byCategory.find((c) => c.category === "GEN");
   return resolveMetadata(`/md-ms-india/states/${p.slug}`, {
     // "Seats" since 2026-11-04: "neet pg seats in maharashtra branch wise", "md medicine
     // seats in maharashtra", "pg seats in tamilnadu" reach these pages without the word.
@@ -70,6 +71,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       `PG Seats in ${p.name}`,
     ),
     description: fitDescription(
+      // "rajasthan neet pg counselling 2026", "up pg allotment result": the round of the running year leads, in the
+      // words searched, once it is on the page (a group figure over 3+ colleges, never one college's).
+      ...(round && roundGen && round.mainQuota
+        ? [
+            `${p.name} NEET PG counselling ${round.year}: ${round.round.toLowerCase()} allotment out — last general seat in ${round.mainQuota} at AIR ${n(roundGen.last)} across ${roundGen.colleges} colleges. ${p.year ?? ""} cut off branch wise, seats and fees.`,
+            `${p.name} NEET PG counselling ${round.year}: ${round.round.toLowerCase()} allotment, last general seat at AIR ${n(roundGen.last)}. ${p.year ?? ""} cut off branch wise, seats and fees.`,
+          ]
+        : []),
       `${count(p.mdmsCount, "MD/MS college", "MD/MS colleges")}${split}${dnbPart} in ${p.name}: NEET PG${y} closing ranks branch wise and by quota, fees${stipend}, and the counselling for each seat.`,
       `${count(p.mdmsCount, "MD/MS college", "MD/MS colleges")}${dnbPart} in ${p.name}: NEET PG${y} closing ranks branch wise and by quota, fees${stipend}.`,
       `${p.mdmsCount} MD/MS colleges in ${p.name} — NEET PG closing ranks and fees by quota, counsellings, branches and stipend.`,
@@ -480,6 +489,54 @@ export default async function PgStatePage({ params }: Props) {
             Each college&apos;s own page has its seats, fees and cutoff band.{" "}
             <Link href="/neet-pg-cutoff" className="font-semibold text-primary-strong hover:underline">All-India cutoff, branch wise →</Link>
           </p>
+        </section>
+      )}
+
+      {/* "neet pg cut off branch wise <state>" — the state's main merit quota, general category, per branch over 3+
+          colleges (lib/pgStateQueries.ts branchCut). A group figure, never one college's cut. */}
+      {p.branchCut && p.year && (
+        <section className="container-custom pb-10 md:pb-14">
+          <SectionHead
+            icon="list"
+            title={<>{p.name} NEET PG cut off {p.year}, branch wise</>}
+            intro={
+              <>
+                {p.branchCut.quota}, general category: the All India Rank of the last candidate the state admitted to each
+                branch across every round of {p.year}. A branch is listed only where three or more colleges admitted.
+              </>
+            }
+          />
+          <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
+            <table className="w-full min-w-[460px] text-left text-sm">
+              <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
+                <tr>
+                  <th scope="col" className="px-4 py-3 font-semibold">Branch</th>
+                  <th scope="col" className="px-4 py-3 text-right font-semibold">Colleges</th>
+                  <th scope="col" className="px-4 py-3 text-right font-semibold">Last admitted (AIR)</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {p.branchCut.rows.map((r) => (
+                  <tr key={r.name}>
+                    <th scope="row" className="px-4 py-2.5 font-medium">
+                      {hasBranch.has(r.slug) ? (
+                        <Link
+                          href={inState.has(r.slug) ? `/md-ms-india/branches/${r.slug}/${p.slug}` : `/md-ms-india/branches/${r.slug}`}
+                          className="text-foreground hover:text-primary hover:underline"
+                        >
+                          {r.name}
+                        </Link>
+                      ) : (
+                        r.name
+                      )}
+                    </th>
+                    <td className="tnum px-4 py-2.5 text-right text-muted-foreground">{n(r.colleges)}</td>
+                    <td className="tnum px-4 py-2.5 text-right font-semibold">{n(r.last)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </section>
       )}
 

@@ -6,6 +6,7 @@ import Link from "@/components/ui/Link";
 import { notFound, permanentRedirect } from "next/navigation";
 import { Landmark } from "lucide-react";
 import { getStatePage, type StatePage } from "@/lib/stateQueries";
+import { getNmcUgIndex } from "@/lib/nmcData";
 import { resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import LeadCapture from "@/components/lead/LeadCapture";
@@ -115,10 +116,12 @@ export default async function MBBSStatePage({ params }: Props) {
   const name = p.state.name;
   const path = `/mbbs-india/${p.state.slug}`;
   // Words from Admin → Content → Text & numbers ("Page: MBBS state pages"); photo from Admin → Media.
-  const [copy, heroImage, authority] = await Promise.all([
+  const [copy, heroImage, authority, nmcUg] = await Promise.all([
     pageCopy("page.ug_state.hero", { state: name, count: inr(p.colleges.length), counsellings: bodiesOf(p) }),
     pageHeroImage(`page.ug_state.${p.state.slug}.hero`, "page.ug_state.hero"),
     getStateAuthority(name),
+    // NMC's MBBS seats and ownership per college (lib/nmcData.ts), for the college table.
+    getNmcUgIndex().catch((): Awaited<ReturnType<typeof getNmcUgIndex>> => ({})),
   ]);
   const withRanks = p.colleges.filter((c) => c.rankRows > 0).length;
   const years = p.years.length ? p.years.join(" and ") : null;
@@ -296,35 +299,52 @@ export default async function MBBSStatePage({ params }: Props) {
         <div className="container-custom">
           <SectionHead
             icon="college"
-            title={<>MBBS colleges in {name}</>}
-            intro={<>Open a college for its courses, fees, seat options and its general-category cutoff band.</>}
+            title={<>MBBS colleges in {name}: seats and type</>}
+            intro={
+              <>
+                Every MBBS college in {name} we hold, with its MBBS seats and ownership from the National Medical Commission's
+                register where NMC lists it. Open a college for its fees, quotas and general-category cutoff band.
+              </>
+            }
           />
           {p.colleges.length === 0 ? (
             <p className="mt-6 text-muted-foreground">No MBBS college in {name} has published closing ranks in our data yet.</p>
           ) : (
-            <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {p.colleges.map((c) => (
-                <li key={c.slug}>
-                  <Link
-                    href={`/mbbs-india/colleges/${c.slug}`}
-                    className="group flex h-full flex-col rounded-2xl border border-border bg-card p-4 transition-colors hover:border-primary"
-                  >
-                    {/* No icons on these cards: three inline SVGs a card, repeated in
-                        the RSC payload, made Uttar Pradesh's page 555 KB. */}
-                    <span className="font-semibold leading-snug text-foreground group-hover:text-primary">{c.name}</span>
-                    <span className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[13px] text-muted-foreground">
-                      {c.city && <span>{c.city}</span>}
-                      {c.collegeType && <span>{c.collegeType}</span>}
-                      {c.establishedYear && <span>Est. {c.establishedYear}</span>}
-                      {c.intake ? <span className="tnum">{c.intake} seats</span> : null}
-                    </span>
-                    <span className="mt-auto pt-3 text-[13px] font-semibold text-primary-strong">
-                      {c.rankRows > 0 ? "Closing ranks" : "College details"} <span aria-hidden="true">→</span>
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            // A table, as "mbbs colleges in <state> list with seats" is searched and as the leading pages show it
+            // (2026-11-05); the cards it replaced carried the same facts less scannably.
+            <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
+              <table className="dt w-full min-w-[600px] text-left text-sm">
+                <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
+                  <tr>
+                    <th scope="col" className="px-4 py-3 font-semibold">College</th>
+                    <th scope="col" className="px-4 py-3 font-semibold">City</th>
+                    <th scope="col" className="px-4 py-3 font-semibold">Type</th>
+                    <th scope="col" className="px-4 py-3 text-right font-semibold">MBBS seats</th>
+                    <th scope="col" className="px-4 py-3 text-right font-semibold">Est.</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {p.colleges.map((c) => {
+                    const f = nmcUg[c.slug];
+                    const type = f?.management ? f.management : c.collegeType;
+                    const seats = f?.seats ?? c.intake ?? null;
+                    return (
+                      <tr key={c.slug}>
+                        <th scope="row" className="px-4 py-2.5 font-medium">
+                          <Link href={`/mbbs-india/colleges/${c.slug}`} className="text-foreground hover:text-primary hover:underline">
+                            {c.name}
+                          </Link>
+                        </th>
+                        <td className="px-4 py-2.5 text-muted-foreground">{c.city ?? "—"}</td>
+                        <td className="px-4 py-2.5 text-muted-foreground">{type ?? "—"}</td>
+                        <td className="tnum px-4 py-2.5 text-right font-semibold">{seats ? inr(seats) : "—"}</td>
+                        <td className="tnum px-4 py-2.5 text-right text-muted-foreground">{c.establishedYear ?? "—"}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       </section>

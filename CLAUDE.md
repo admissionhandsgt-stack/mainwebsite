@@ -1712,7 +1712,33 @@ set against each page's own 28-day GSC queries. The files are in that session's 
     all-caps words with a vowel are no longer kept as acronyms ("SHRI RAM" → "Shri Ram") unless listed (UP, ESIC,
     IMS, ITM…); JIPMER, PGIMER, NIMHANS and other long acronyms keep their capitals.
   - Not done, on purpose: Hinglish wording (0.1% of impressions); /neet-pg-cutoff and the NRI/management titles
-    (best page / judge ~11-17); "seats in India" on branch pages (needs NMC's seats joined by course).
+    (best page / judge ~11-17).
+- **Why competitors rank above us, and the content pass of 2026-11-05** (SERP study, that session's `serp2/`).
+  Careers360 is in 26 of 27 SERPs; Sartha and formity are the data-led ones. We sit at position 6–8 on every template:
+  page 1, not top 3. The first cause is authority (property verified 2026-10-08, ~zero referring domains, the brand
+  searched ~67 times a month) — only time and links fix that. The second is intent: they print the thing searched
+  (a fee table, a branch × category table, "3,224 MD Radiology seats per NMC", round dates) where we printed less.
+  What this pass added, all group figures or registers, nothing that names one college's closing rank:
+  - **Branch pages:** NMC's seats in India per MD/MS branch (`getNmcBranchSeats` in `lib/nmcData.ts` — NMC's
+    "M.D. Radio-diagnosis /Radiology" alternates are each a key; all 35 MD/MS branches match), as a hero tile, an FAQ
+    in the searched words and in the description; H1 "<searched name>: cut off, seats and fees".
+  - **PG state pages:** a branch-wise table for the state's main merit quota (`branchCut` in `getPgStatePage`:
+    its own counselling, not MCC/management/NRI/in-service; general category; last admitted over every round, 3+
+    colleges); the description leads with the running year's state round ("counselling 2026: round 1 allotment").
+  - **/neet-pg-cutoff:** one table, every branch × GEN/EWS/OBC/SC/ST, AIQ, 3+ colleges per cell; H1 names the live
+    round beside the complete year.
+  - **MBBS state pages:** the college list is a table (city, NMC type, NMC MBBS seats, founding year); H1 "MBBS seats
+    in <state>: colleges, cut off and counselling" (copy `page.ug_state.hero`, `was` kept — re-run the seed).
+  - **College FAQs:** seats from NMC when the page's card is NMC's (no more 646 beside 643); "What is the PG stipend
+    at …" with years 2–3 when published; counselling codes read as names (`readableCounselling`: "RJSTHN PG" →
+    "the Rajasthan state counselling", MCC's UG quotas by name).
+  - **llms.txt / llms-full.txt** (`lib/llmsText.ts`): sources and how to cite, every state with NMC's MBBS seats,
+    every PG state and branch, the state rounds out, and (full) every MBBS and MD/MS college.
+  - **Left for the owner** (they change a standing rule): exact official fees instead of brackets on college pages
+    (11,700 rows carry an official 2026-27 source; the 2026-10-12 rule brackets every fee); OBC/SC/ST cutoff bands on
+    college pages; a named reviewer on data pages; UG fee brackets whose floor is a junk row ("under ₹1 L – 30 L" at
+    a private college); round dates beyond MCC's window and join-by (registration, choice filling, locking) — the
+    admin's `pg_schedule` holds only the window.
 - **Gaps left open, and why:**
   - A choice-filling / upgradation / free-exit page: about 210 phrases, and round 2 choice filling opens around
     6–7 Nov. It needs copy someone writes.

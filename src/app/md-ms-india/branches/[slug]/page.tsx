@@ -20,6 +20,7 @@ import { getBranchSeatMatrix, MATRIX_LABEL } from "@/lib/pgSeatData";
 import { CUT_CATS, getLatestLiveRound, roundPath } from "@/lib/mccResults";
 import { getScoreTables } from "@/lib/scoreRank";
 import { getBranchStateCombos, SEARCH_NAME } from "@/lib/branchStateQueries";
+import { getNmcBranchSeats } from "@/lib/nmcData";
 
 /**
  * Rendered per request, deliberately.
@@ -89,15 +90,18 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   // "md radiology cutoff 2025" — and, once a round of the running counselling is out, "neet pg rank for
   // radiology", "md radiology cutoff 2026". The year is the data's own, never a default.
   const y = b.year ? ` ${b.year}` : "";
-  const live = await liveFor(b.name, b.year);
+  const [live, nmc] = await Promise.all([liveFor(b.name, b.year), getNmcBranchSeats(b.name).catch(() => null)]);
   const lead = live ? ` ${live.year} ${live.spec.label} &` : "";
   const open = live?.cut.Open;
+  // "md nuclear medicine seats in india" (4,365 impressions a month across branches): NMC's approved seats, all India.
+  const seatsLine = nmc ? `${inr(nmc.seats)} ${b.name} seats in India at ${inr(nmc.colleges)} colleges (NMC). ` : "";
   // The name as it is searched ("md radiology cut off", Search Console Oct–Nov 2026: "radiology" in 47 autocomplete
   // rank/seat/fee phrases, "radio diagnosis" in none; "cut off" in two words 3.4× "cutoff"). The description keeps
   // the course's own name.
   const nm = SEARCH_NAME[b.name] ?? b.name;
   const title = fitTitle(
     ...(live ? [`${nm} Cut Off${lead}${y}: Closing Rank`, `${nm} Cut Off${lead}${y}`] : []),
+    ...(nmc ? [`${nm} Cut Off${y}: Closing Rank & ${inr(nmc.seats)} Seats in India`, `${nm} Cut Off${y} & Seats in India`] : []),
     `${nm} Cut Off${y}: Closing Rank, Seats & Colleges`,
     `${nm} Cut Off${y}: Closing Rank & Seats`,
     `${nm} Cut Off${y}`,
@@ -105,10 +109,12 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const description = fitDescription(
     ...(live && open
       ? [
+          `${b.name} cutoff: in NEET PG ${live.year} ${live.spec.label.toLowerCase()} the last Open AIQ seat went to AIR ${inr(open)}. ${seatsLine}${y.trim()} closing ranks by quota and category, with fees.`,
           `${b.name} cutoff: in NEET PG ${live.year} ${live.spec.label.toLowerCase()} the last Open AIQ seat went to AIR ${inr(open)}. ${y.trim()} closing ranks in ${inr(b.colleges)} colleges, by quota and category, with fees.`,
           `${b.name}: NEET PG ${live.year} ${live.spec.label.toLowerCase()} AIQ last rank AIR ${inr(open)} (Open), and ${y.trim()} closing ranks in ${inr(b.colleges)} colleges.`,
         ]
       : []),
+    ...(seatsLine ? [`${seatsLine}${b.name} closing rank${y} by quota and category, with fees and stipend.`] : []),
     // "Seats" here used to print the number of seat options (college × quota × category),
     // which is not a count of seats. Colleges and states are.
     `${b.name} closing rank${y}: ${inr(b.colleges)} colleges across ${b.states} states — quota by quota and category by category, with fees and stipend. Published counselling results.`,
@@ -150,13 +156,15 @@ export default async function BranchPage({
   // The branch in each state with five or more colleges offering it (lib/branchStateQueries.ts).
   const byState = (await getBranchStateCombos()).filter((c) => c.course === b.name);
   // Words from Admin → Content → Text & numbers ("Page: PG branch pages"); photo from Admin → Media.
-  const [where, copy, heroImage, mcc] = await Promise.all([
+  const [where, copy, heroImage, mcc, nmcSeats] = await Promise.all([
     getBranchStates(b.name),
     pageCopy("page.pg_branch.hero", { branch: b.name, year: b.year ?? "the latest" }),
     // The admin's photo for this branch, else the specialty's picture from Admin → PG branches.
     pageHeroImage(`page.pg_branch.${b.slug}.hero`).then((img) => img ?? branchImage(b.name)),
     // MCC's own seat matrix for this course — seat counts, never a rank (lib/pgSeatData.ts).
     getBranchSeatMatrix(b.name),
+    // NMC's approved seats for the course across India (MD/MS only).
+    getNmcBranchSeats(b.name).catch(() => null),
   ]);
   const mccCopy = mcc
     ? await pageCopy("page.pg_branch.mcc", {
@@ -195,6 +203,19 @@ export default async function BranchPage({
                 .join(", ")
                 .replace(/^(.+)$/, "$1. ") +
               `Later rounds can move either way, and state-quota seats close at their own ranks.`,
+          },
+        ]
+      : []),
+    // "md nuclear medicine seats in india": NMC's register, and how many of them MCC's own counselling fills.
+    ...(nmcSeats
+      ? [
+          {
+            q: `How many ${SEARCH_NAME[b.name] ?? b.name} seats are there in India?`,
+            a:
+              `${inr(nmcSeats.seats)} ${b.name} seats a year at ${inr(nmcSeats.colleges)} colleges, as approved in the National Medical Commission's register.` +
+              (mcc
+                ? ` In MCC's NEET PG ${mcc.year} counselling ${inr(mcc.total)} ${b.name} seats at ${inr(mcc.colleges)} colleges are on offer — the All India Quota, deemed universities and central institutes; the other seats are filled by each state's own counselling.`
+                : ""),
           },
         ]
       : []),
@@ -254,12 +275,15 @@ export default async function BranchPage({
       <DataHero
         crumbs={[{ label: "Home", href: "/" }, { label: "MD/MS branches", href: "/md-ms-india/branches" }, { label: b.name }]}
         eyebrow={copy.eyebrow}
-        title={b.name}
+        // The H1 says what the page answers, in the words searched ("md radiology cut off", "… seats in india").
+        title={`${SEARCH_NAME[b.name] ?? b.name}: cut off, seats and fees`}
         subtitle={copy.subtitle}
         stats={[
+          // NMC's approved seats across India, where the register lists the course (MD/MS).
+          ...(nmcSeats ? [{ label: "Seats in India", value: inr(nmcSeats.seats), note: "NMC register" }] : []),
           { label: "Colleges", value: inr(b.colleges) },
           // A seat option is one college + quota + category in the published results — not a count of seats.
-          { label: "Seat options", value: inr(b.seats), note: "college × quota × category" },
+          ...(nmcSeats ? [] : [{ label: "Seat options", value: inr(b.seats), note: "college × quota × category" }]),
           { label: "States", value: inr(b.states) },
           // MCC's own count for this course (its seat matrix), where it has one.
           ...(mcc ? [{ label: `MCC seats, ${mcc.year}`, value: inr(mcc.total), note: "All India, deemed and DNB" }] : []),
