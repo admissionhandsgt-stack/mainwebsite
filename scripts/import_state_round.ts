@@ -635,6 +635,8 @@ function tamilNaduSource(): Source {
   const first = cutsRaw[0];
   return {
     state: "Tamil Nadu", year: 2026, round: "R1", roundPrinted: "Round 1", counselling: first.counselling, sourceUrl: null,
+    // Owner's OK, 2026-11-05: the derived Government Quota categories go in with this line on the page.
+    note: "Tamil Nadu prints each candidate's community, not the category of the seat allotted; the Government Quota categories here follow its seat matrix of 31 Oct 2026.",
     cuts: cutsRaw.map((r) => {
       const s = seat(r);
       return {
