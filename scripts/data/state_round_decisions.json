@@ -81,6 +81,29 @@
       "Sree Gokulam Medical College & Research Foundation, Venjaramoodu P O, TVPM.": "Sree Gokulam is at Venjaramoodu, Thiruvananthapuram (TVPM)",
       "Sree Narayana Institute of Medical Sciences, Ernakulam": "same institute (Chalakka, Ernakulam), private; not Government Medical College, Ernakulam",
       "SUT Academy of Medical Science, Thiruvananthapuram": "SUT = Sree Uthradom Thirunal Academy of Medical Sciences (private); the matcher had picked the government Medical College in the same city"
+    },
+    "punjab": {
+      "Adesh Institute of Medical Sciences & Research, Bathinda": "same institute; our list spells 'Bhatinda'",
+      "CIVIL HOSPITAL MALERKOTLA, RAILWAY ROAD, PUNJAB": "Civil Hospital, Malerkotla (our DNB entry, PIN 148023)",
+      "DISRICT HOSPITAL TARNTARAN": "District Hospital, Tarn Taran (BFUHS misspells 'District')",
+      "DISTRICT HOSPITAL NAWANSHAHAR VPO BARNALA KALAN, CHANDIGARH ROAD, SBS NAGAR, PUNJAB": "District Hospital, SBS Nagar (Nawanshahr); Barnala Kalan is the village it stands in, not Civil Hospital Barnala",
+      "SDH RAJPURA, RAJPURA TOWN PUNJAB": "Sub-Divisional Hospital, Rajpura (our DNB entry)",
+      "MATA KAUSHALYA GOVT. HOSPITAL, NEAR COURT COMPLEX LAHORI GATE, PATIALA": "a government district hospital with DNB seats; the matcher had put it on Government Medical College, Patiala"
+    },
+    "odisha": {
+      "AHRCC KATAKA": "AHRCC = Acharya Harihar Regional Cancer Centre; Kataka is Odia for Cuttack",
+      "DRIEMS KATAKA": "DRIEMS Institute of Health Sciences, Kairapari, Cuttack district (its -MGT seats too)",
+      "FM MCH BALESWAR": "Fakir Mohan Medical College & Hospital, Balasore (Baleswar), its MD/MS entry",
+      "HI TECH MCH BBSR": "Hi-Tech Medical College & Hospital, Bhubaneswar (BBSR)",
+      "HITECH BBSR": "Hi-Tech Bhubaneswar's management seats (printed HITECH-BBSR-MGT)",
+      "HI TECH MCH RKL": "Hi-Tech Medical College & Hospital, Rourkela (RKL)",
+      "HITECH RKL": "Hi-Tech Rourkela's management seats (printed HITECH-RKL-MGT)",
+      "PGIMER BBSR": "PGIMER & Capital Hospital, Bhubaneswar",
+      "PRM MCH BARIPADA": "Pandit Raghunath Murmu Medical College, Baripada, its MD/MS entry",
+      "S J MCH PURI": "Shri Jagannath Medical College & Hospital, Puri; its rows here are DNB, so its own DNB entry, not the District HQ Hospital",
+      "SCB MCH KATAKA": "SCB Medical College, Cuttack (Kataka)",
+      "SLN MCH KORAPUT": "Saheed Laxman Nayak Medical College, Koraput; DNB rows, its own entry",
+      "VIMSAR BURLA": "VIMSAR = Veer Surendra Sai Institute of Medical Sciences and Research, Burla"
     }
   },
   "rajasthan": {
@@ -142,5 +165,28 @@
     "Sree Gokulam Medical College & Research Foundation, Venjaramoodu P O, TVPM.": 1988,
     "Sree Narayana Institute of Medical Sciences, Ernakulam": 1992,
     "SUT Academy of Medical Science, Thiruvananthapuram": 1989
+  },
+  "punjab": {
+    "Adesh Institute of Medical Sciences & Research, Bathinda": 2040,
+    "CIVIL HOSPITAL MALERKOTLA, RAILWAY ROAD, PUNJAB": 1421,
+    "DISRICT HOSPITAL TARNTARAN": 2043,
+    "DISTRICT HOSPITAL NAWANSHAHAR VPO BARNALA KALAN, CHANDIGARH ROAD, SBS NAGAR, PUNJAB": 1667,
+    "SDH RAJPURA, RAJPURA TOWN PUNJAB": 1564,
+    "MATA KAUSHALYA GOVT. HOSPITAL, NEAR COURT COMPLEX LAHORI GATE, PATIALA": 916
+  },
+  "odisha": {
+    "AHRCC KATAKA": 1415,
+    "DRIEMS KATAKA": 2031,
+    "FM MCH BALESWAR": 603,
+    "HI TECH MCH BBSR": 2030,
+    "HITECH BBSR": 2030,
+    "HI TECH MCH RKL": 2032,
+    "HITECH RKL": 2032,
+    "PGIMER BBSR": 301,
+    "PRM MCH BARIPADA": 187,
+    "S J MCH PURI": 276,
+    "SCB MCH KATAKA": 36,
+    "SLN MCH KORAPUT": 1433,
+    "VIMSAR BURLA": 181
   }
 }

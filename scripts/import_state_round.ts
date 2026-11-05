@@ -465,7 +465,123 @@ function goaSource(): Source {
   };
 }
 
+/* ------------------------------------------------------------------ Punjab (BFUHS) */
+
+function punjabSource(): Source {
+  const dir = `${ROOT}/punjab`;
+  // BFUHS prints state merit numbers only; pg-a7 filled the AIR from BFUHS's own merit lists (22 and 23 Oct
+  // 2026; the NRI list for NRI lines), so closing_all_india_rank is the AIR of the last admitted in merit order.
+  // Six-month Ultrasonography training is not a PG seat and stays out.
+  const keep = (r: Row) => r.course_type !== "Ultrasonography";
+  const cutsRaw = readCsv(`${dir}/pb_pg_2026_r1_closing_ranks.csv`).filter(keep);
+  const allotRaw = readCsv(`${dir}/pb_pg_2026_r1_allotments.csv`).filter(keep);
+  const SEAT: Record<string, string> = {
+    "Government Quota": "Punjab Govt Quota",
+    "Management Quota": "Punjab Management Quota",
+    "General Quota as per Punjab Govt. Notification": "Punjab Private Seats - Govt Notification Quota",
+    "Open Merit (All India Basis)": "Punjab Open Quota (All India Basis)",
+    "General Merit (50%)": "Punjab Private Seats - General Merit (50%)",
+    "State Quota (50%)": "Punjab Private Seats - State Quota (50%)",
+    "Sikh Minority Seats": "Punjab Sikh Minority Quota",
+    A: "Punjab CMC Ludhiana - Group A",
+    B: "Punjab CMC Minority Quota (Category B)",
+    C: "Punjab CMC Ludhiana - NRI (Group C)",
+  };
+  // At Punjab's government colleges the general seats are Institutional Preference seats (MBBS from a Punjab
+  // university); 2025 filed them as their own quota, and so does this. Post-MBBS DNB and diploma seats went to
+  // PCMS (in-service) doctors — 47 of 51 allotments — as 2025's "DNB Inservice Seats" did.
+  const q = (r: Row) => {
+    const base = SEAT[r.seat_type];
+    if (!base) throw new Error(`Punjab: unknown seat type "${r.seat_type}"`);
+    if (/^Post_MBBS_(DNB|Diploma)$/.test(r.course_type)) return { quota: "Punjab DNB Inservice Seats", inService: true };
+    const ip = /^IP$|\(IP\)/.test(r.allotted_category);
+    return { quota: ip ? `${base} - Institutional Preference` : base, inService: false };
+  };
+  const CAT: Record<string, string> = {
+    IP: "GEN", "General Category": "GEN", "EWS (IP)": "EWS", "Scheduled Caste": "SC", "Backward Classes": "OBC",
+    Christian: "Christian minority", NRI: "NRI", "Persons with Disability": "GEN",
+  };
+  const cat = (r: Row) => {
+    const c = CAT[r.allotted_category];
+    if (!c) throw new Error(`Punjab: unknown category "${r.allotted_category}"`);
+    return { category: c, pwd: r.allotted_category === "Persons with Disability", additional: null };
+  };
+  // BFUHS's "Opthalmology"; NIS Patiala's university diploma, which must not read as MD Sports Medicine.
+  const name = (r: Row) =>
+    r.course_name.replace(/\bOpthalmology\b/i, "Ophthalmology").replace(/^Post Graduation Diploma in\s+/i, "Diploma in ");
+  const course = (r: Row) =>
+    r.course_type === "Post_MBBS_DNB" ? `Post MBBS DNB ${name(r)}`
+      : r.course_type === "Post_MBBS_Diploma" ? `Post MBBS PG Dip ${name(r)}`
+        : name(r);
+  const first = cutsRaw[0];
+  return {
+    state: "Punjab", year: 2026, round: "R1", roundPrinted: first.round, counselling: first.counselling, sourceUrl: null,
+    cuts: cutsRaw.map((r) => ({
+      college: r.college, instCode: null, seatType: r.seat_type_decoded || r.seat_type, ...q(r), course: course(r),
+      categoryPrinted: r.allotted_category, ...cat(r),
+      seats: int(r.seats_allotted), openAir: null, closeAir: int(r.closing_all_india_rank), openSr: null, closeSr: int(r.closing_state_merit_rank),
+    })),
+    allots: allotRaw.map((r) => ({
+      college: r.college, instCode: null, seatType: r.seat_type_decoded || r.seat_type, ...q(r), course: course(r),
+      categoryPrinted: r.allotted_category, ...cat(r), ownCategory: r.candidate_category || null,
+      domicile: r.mbbs_university ? `MBBS: ${r.mbbs_university}` : null,
+      stateRank: int(r.state_merit_rank), air: int(r.all_india_rank), score: null,
+    })),
+  };
+}
+
+/* ------------------------------------------------------------------ Odisha (DMET) */
+
+function odishaSource(): Source {
+  const dir = `${ROOT}/odisha`;
+  const cutsRaw = readCsv(`${dir}/od_pg_2026_r1_closing_ranks.csv`);
+  const allotRaw = readCsv(`${dir}/od_pg_2026_r1_allotments.csv`);
+  // DMET prints state merit numbers (CMR-UR) only; pg-a7 filled the AIR from DMET's Final Common Merit List
+  // (30-10-2026). The in-service list has its own numbering and its seats stay out of the figures anyway.
+  // "-MGT" after a college's short name marks its management seats.
+  const q = (r: Row) => {
+    const inService = /^INSERVICE$/i.test(r.seat_type);
+    if (/^DNB$/i.test(r.course)) return { quota: "Odisha DNB Inservice Seats - Inservice", inService: true };
+    const mgt = /-MGT$/i.test(r.college);
+    return { quota: `Odisha ${mgt ? "Management Quota" : "Govt Quota"} - ${inService ? "Inservice" : "Direct"}`, inService };
+  };
+  const CAT: Record<string, string> = { UR: "GEN", SEBC: "OBC", SC: "SC", ST: "ST", EWS: "EWS" };
+  const cat = (r: Row) => ({
+    category: CAT[r.category] ?? r.category,
+    pwd: /^PWD$/i.test(r.sub_category),
+    additional: r.sub_category && !/^PWD$/i.test(r.sub_category) ? r.sub_category : null,
+  });
+  const SUBJECT: Record<string, string> = {
+    "GEN SURGERY": "General Surgery", "GEN MEDICINE": "General Medicine", ANESTHESIOLOGY: "Anaesthesia",
+    PEDIATRICS: "Paediatrics", "OBST & GYN": "Obstetrics and Gynaecology", "COMM MEDICINE": "Community Medicine",
+    "RESP MEDICINE": "Respiratory Medicine", RADIODIAGNOSIS: "Radio Diagnosis", "SKIN VD (DVL)": "Dermatology Venereology and Leprosy",
+    FMT: "Forensic Medicine", "TRANSF MEDICINE": "Immuno Haematology and Blood Transfusion", RADIOTHERAPY: "Radiation Oncology",
+  };
+  const course = (r: Row) => {
+    const s = SUBJECT[r.subject.trim()] ?? r.subject.trim().toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
+    return /^DNB$/i.test(r.course) ? `Post MBBS DNB ${s}` : s;
+  };
+  // The college's short name without the management marker; the matcher and the hand decisions read this.
+  const college = (r: Row) => r.college.replace(/-MGT$/i, "").replace(/-/g, " ").replace(/\s+/g, " ").trim();
+  const first = cutsRaw[0];
+  return {
+    state: "Odisha", year: 2026, round: "R1", roundPrinted: first.round, counselling: first.counselling, sourceUrl: null,
+    cuts: cutsRaw.map((r) => ({
+      college: college(r), instCode: null, seatType: `${r.seat_type}${/-MGT$/i.test(r.college) ? " · management" : ""}`, ...q(r), course: course(r),
+      categoryPrinted: r.allotted_category, ...cat(r),
+      seats: int(r.seats_allotted), openAir: null, closeAir: int(r.closing_all_india_rank), openSr: null, closeSr: int(r.closing_state_merit_rank),
+    })),
+    allots: allotRaw.map((r) => ({
+      college: college(r), instCode: null, seatType: `${r.seat_type}${/-MGT$/i.test(r.college) ? " · management" : ""}`, ...q(r), course: course(r),
+      categoryPrinted: r.allotted_category, ...cat(r), ownCategory: null, domicile: null,
+      stateRank: int(r.state_merit_rank), air: int(r.all_india_rank), score: null,
+    })),
+  };
+}
+
 const SOURCES: Record<string, () => Source> = {
+  punjab: punjabSource,
+  odisha: odishaSource,
   up: upSource,
   "madhya-pradesh": madhyaPradeshSource,
   rajasthan: rajasthanSource,

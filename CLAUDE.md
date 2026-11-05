@@ -1726,8 +1726,13 @@ quota, NR/NC/NM the NRI seats; "Govt Quota" or "Self Financing Seats" by the col
 written but holds one college, so it shows nothing (`getStateRound` returns null when no figure clears 3 colleges,
 so the title never promises a round the page cannot show).
 **A round must be in AIR (owner, 2026-11-05).** Punjab (BFUHS) and Odisha (DMET) print only state merit numbers.
-Their AIR comes from the state's own merit list (state merit rank beside NEET AIR), as UP's did — pg-a7 extracts
-it; the import joins it before they go in. Never show a state merit number as a cutoff on these pages.
+Their AIR comes from the state's own merit list (state merit rank beside NEET AIR), as UP's did — pg-a7 filled it
+into the round files from BFUHS's merit lists of 22–23 Oct (NRI list for NRI lines) and DMET's Final Common Merit
+List of 30 Oct. Never show a state merit number as a cutoff on these pages. Loaded the same day: Punjab (365 lines /
+585 allotments; Ultrasonography training left out; Institutional Preference is part of the quota name, because at
+the government colleges the general seats *are* IP seats; post-MBBS DNB/diploma seats in-service, 47 of 51 went to
+PCMS doctors) and Odisha (324 / 374; "-MGT" marks management seats; the in-service list's own numbering stays out).
+J&K's file is waiting for the owner's OK.
 
 **Where the files come from.** The PG data session (pg-a7, with zyn-c9 for UP) extracts them from each board's
 allotment PDF into `D:/Gulshan/PG/Website/extracted-data/official-states/<state>/`. The import:
