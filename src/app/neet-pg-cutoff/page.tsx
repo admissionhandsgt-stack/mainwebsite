@@ -110,7 +110,7 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
     pageHeroImage("page.neet_pg_cutoff.hero"),
     // "neet pg cut off branch wise maharashtra" is searched as often as the national
     // table; this page is the strongest PG page we have and linked no state at all.
-    getPgStates().catch(() => []),
+    getPgStates().catch((): Awaited<ReturnType<typeof getPgStates>> => []),
   ]);
   const statesWithMdms = pgStates.filter((s) => s.mdms > 0);
   const lowered2025 = NEET_PG_QUALIFYING.find((n) => n.year === 2025 && n.label.includes("lowered"))!;

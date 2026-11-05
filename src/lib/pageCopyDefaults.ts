@@ -2068,6 +2068,18 @@ export const PAGE_COPY = {
         value: "WhatsApp {whatsapp} or call {phone}, 10 AM to 10 PM IST, every day. Email {email}. Office: {address}.",
         long: true,
       },
+      sources: {
+        label: "Where the figures come from, one per line",
+        value:
+          "Medical Counselling Committee (MCC): NEET PG seat matrices and every round's allotment result.\nNational Board of Examinations (NBEMS): the NEET PG result, for the rank each score held.\nNational Medical Commission (NMC): the register of colleges and courses — approved seats, ownership, founding year.\nState counselling authorities: their allotment lists, merit lists and selection lists, round by round.\nColleges and state authorities: their 2026-27 fee notices; fees are labelled tuition or as printed.",
+        long: true,
+      },
+      cite: {
+        label: "How to cite",
+        value:
+          "Name Admission Hands and link the page the figure appears on. The cutoff and rank tables in Open data (/data) are licensed CC BY 4.0.",
+        long: true,
+      },
     },
   },
 } satisfies Record<string, CopyGroup>;

@@ -135,6 +135,18 @@ const loadCounsellings = unstable_cache(
   { revalidate: 3600, tags: ["seat-data"] },
 );
 
+/**
+ * Every MBBS state page with NMC's figures for it — for /llms.txt, where an assistant answering "mbbs seats in
+ * karnataka" finds the number and the page it comes from.
+ */
+export async function getMbbsStateSeats(): Promise<{ name: string; slug: string; nmc: NmcStateMbbs | null }[]> {
+  const [states, byState] = await Promise.all([getMbbsStates(), loadNmcByState()]);
+  return states.map((s) => {
+    const keys = [stateKey(extractStateName(s)), stateKey(s.name)];
+    return { name: s.name, slug: s.slug, nmc: keys.map((k) => byState[k]).find(Boolean) ?? null };
+  });
+}
+
 /** null means there is no such state — the page should 404, not render an empty shell. */
 export async function getStatePage(slug: string): Promise<StatePage | null> {
   const states = await getMbbsStates();
