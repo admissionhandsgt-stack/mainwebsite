@@ -1793,6 +1793,13 @@ List of 30 Oct. Never show a state merit number as a cutoff on these pages. Load
 the government colleges the general seats *are* IP seats; post-MBBS DNB/diploma seats in-service, 47 of 51 went to
 PCMS doctors) and Odisha (324 / 374; "-MGT" marks management seats; the in-service list's own numbering stays out).
 J&K (owner's OK, 2026-11-05): 206 closing lines from BOPEE's Round 1 selection list, no allotments file; OM and MQ open, J&K's own reservations (RBA, ALC/IB, ST-I/II, STK, STL, HM) as printed, JKPM/CDP/SP sub-categories out of the figures.
+Tamil Nadu (owner's OK, 2026-11-05): 1,558 closing lines / 1,889 allotments, 48 colleges. **TN prints the candidate's
+community, never the seat's category**, so pg-a7 derived each Government Quota seat's pool (Open / Service) and category
+(OC, BC, BCM, MBC&DNC, SC, SCA, ST) from the 31-10 vacancy matrix (merit order, an OC seat first, else the candidate's own
+community — the only order that fit every course). The owner accepted that knowing it is derived, and the page says so
+(the round's `note`). Open OC is stored as GEN and MBC&DNC as MBC; service seats keep 2025's codes and are in-service;
+an unresolved row is "Not printed". BC, BCM ("BC (Muslim)") and SCA ("SC (Arunthathiyar)") are labelled in
+`CATEGORY_LABEL` — TN's alone. Management, NRI, CMC and minority seat types map onto 2025's TN Mgmt PG quota labels.
 
 **Where the files come from.** The PG data session (pg-a7, with zyn-c9 for UP) extracts them from each board's
 allotment PDF into `D:/Gulshan/PG/Website/extracted-data/official-states/<state>/`. The import:
