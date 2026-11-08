@@ -1703,6 +1703,9 @@ same branch in other states and other branches in the state.
   branch — 143 pages. Any other pair is a 404. Owner's choice: ~150 first, then more once Google indexes them (492 pairs
   have 3+ colleges). Widen the list in that one constant; sitemap, links and the 404 follow it.
 - Linked from the branch page ("<branch> by state" chips) and the PG state page (its branch list links the state page).
+  Since 2026-11-09 also from `components/cutoffs/BranchStateIndex` on `/neet-pg-cutoff` and `/md-ms-india/branches`
+  (all 143, running comma-separated links — 1,727px on a 390px phone, 778px on a laptop; as pills it was 2,337px):
+  the index map of 8 Nov had 68 of the 143 not indexed (22 never discovered) while the strongest PG pages linked none.
   `SEARCH_NAME` gives titles the words people type ("MD Radiology", "MS OBG"). Copy: `page.pg_branch_state.*`.
 - **PG closing ranks are All India Ranks everywhere since migration 0045 (2026-10-27).** Every state counselling's
   rows (`rank_basis = 'State/Counselling rank'`, 111,302 of 230,484 PG rows) had carried the state's merit number in

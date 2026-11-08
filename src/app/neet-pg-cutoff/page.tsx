@@ -16,6 +16,7 @@ import HeroBars from "@/components/hero/HeroBars";
 import SectionHead from "@/components/ui/SectionHead";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
+import BranchStateIndex from "@/components/cutoffs/BranchStateIndex";
 import { getLatestLiveRound, roundPath, type CutCat } from "@/lib/mccResults";
 
 /**
@@ -428,6 +429,8 @@ export default async function NeetPgCutoffPage({ searchParams }: Props) {
           </ul>
         </section>
       )}
+
+      <BranchStateIndex className="pt-10 md:pt-14" />
 
       {/* The next MCC result is the strongest reason a cutoff reader has to join the channel. */}
       <TelegramRoundAlert placement="round_alert_neet_pg_cutoff" className="pt-10 md:pt-14" />

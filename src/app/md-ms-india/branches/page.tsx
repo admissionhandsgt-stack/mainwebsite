@@ -4,6 +4,7 @@ import { getBranches } from "@/lib/branchQueries";
 import { resolveMetadata } from "@/lib/content";
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
 import CtaBand from "@/components/ui/CtaBand";
+import BranchStateIndex from "@/components/cutoffs/BranchStateIndex";
 import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
@@ -136,6 +137,8 @@ export default async function BranchesPage() {
           beside its rank.
         </p>
       </div>
+
+      <BranchStateIndex className="pb-10 md:pb-14" />
 
       <CtaBand
         title="Not sure which branch your rank can reach?"
