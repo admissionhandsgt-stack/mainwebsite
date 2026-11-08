@@ -73,18 +73,29 @@ export async function getLiveAlerts(): Promise<LiveAlert[]> {
           -- off; an automatic notice older than 14 days does not show either (undated ones go stale);
           -- a title naming only an earlier year (2025 or before, and not 2026/2027) is left out; newest first,
           -- at most three from any one board so a busy state cannot fill the bar. See lib/alertFeed.ts.
+          -- Which twelve: a hand-written alert and the national authorities' notices of the last 7 days (MCC, NMC,
+          -- NBEMS, NTA) are always among them — on 8 Nov 2026 a day of state merit lists pushed MCC's Round 2 schedule
+          -- off the bar. The twelve are then shown newest first, as before.
           SELECT id, title, link, image_url FROM (
-            SELECT a.*, coalesce(a.published_at, a.created_at) AS shown_at, row_number() OVER (
-                     PARTITION BY coalesce(a.source, 'manual-' || a.id)
-                     ORDER BY coalesce(a.published_at, a.created_at) DESC NULLS LAST, a.id DESC) AS nth
-              FROM live_alerts a
-             WHERE a.is_active = true AND (a.expires_at IS NULL OR a.expires_at > now())
-               AND (a.auto = false OR coalesce(a.published_at, a.created_at) > now() - interval '14 days')
-               AND NOT (a.title ~ '(19|20)(0[0-9]|1[0-9]|2[0-5])' AND a.title !~ '202[67]')
+            SELECT y.*, row_number() OVER (ORDER BY y.national DESC, y.shown_at DESC NULLS LAST, y.id DESC) AS pick
+              FROM (
+                SELECT a.*, coalesce(a.published_at, a.created_at) AS shown_at,
+                       row_number() OVER (
+                         PARTITION BY coalesce(a.source, 'manual-' || a.id)
+                         ORDER BY coalesce(a.published_at, a.created_at) DESC NULLS LAST, a.id DESC) AS nth,
+                       (a.auto = false OR (
+                         (a.source IN ('mcc-ug', 'mcc-pg', 'mcc-ss', 'nbems', 'nta-neet')
+                          OR a.source ~ '^zyn:(MCC|NMC|NBEMS|NTA)( |$)')
+                         AND coalesce(a.published_at, a.created_at) > now() - interval '7 days')) AS national
+                  FROM live_alerts a
+                 WHERE a.is_active = true AND (a.expires_at IS NULL OR a.expires_at > now())
+                   AND (a.auto = false OR coalesce(a.published_at, a.created_at) > now() - interval '14 days')
+                   AND NOT (a.title ~ '(19|20)(0[0-9]|1[0-9]|2[0-5])' AND a.title !~ '202[67]')
+              ) y
+             WHERE y.nth <= 3
           ) x
-          WHERE x.nth <= 3
+          WHERE x.pick <= 12
           ORDER BY x.shown_at DESC NULLS LAST, x.id DESC
-          LIMIT 12
         `),
       ).map((r) => ({
         id: r.id as number,

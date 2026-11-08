@@ -142,7 +142,23 @@ export interface FeedItem {
 
 /** Never medical-counselling news, whatever else the title mentions. */
 const NEVER =
-  /(non[\s-]*neet|ayurved|homoeo|homeopath|unani|siddha|naturopathy|\byoga\b|date[\s-]*sheet|semester|supplementary|re-?appear|practical exam|professional exam|held in the month|university exam|annual exam|(exam|examination)s? held|final year exam|\bbatch\b)/i;
+  /(non[\s-]*neet|ayurved|homoeo|homeopath|unani|siddha|naturopathy|\byoga\b|date[\s-]*sheet|semester|supplementary|re-?appear|practical exam|professional exam|held in the month|university exam|annual exam|(exam|examination)s? held|final year exam|\bbatch\b|re-?total(l)?ing|re-?evaluation|revaluation)/i;
+
+/**
+ * Not news for this site's readers (MBBS, BDS, NEET PG/MDS/SS counselling) — the same rule the feed applies to the
+ * boards' pages, for notices that reach the bar another way (Zyn). The link's own words count too: AMRU's
+ * "MD-MS-Retotalling-notification.pdf" was titled "Atal Medical H.P. 6967 --".
+ */
+export function offTopic(title: string, url?: string | null): boolean {
+  let path = "";
+  try {
+    path = url ? decodeURIComponent(new URL(url).pathname).replace(/[-_/.]+/g, " ") : "";
+  } catch {
+    path = "";
+  }
+  if (NEVER.test(title) || NEVER.test(path)) return true;
+  return EXCLUDE.test(title) && !CORE.test(title);
+}
 
 /** Notices on one page, deduplicated, with whatever dates the page gives them. */
 export function extractItems(html: string, base: string, source: AlertSource): FeedItem[] {

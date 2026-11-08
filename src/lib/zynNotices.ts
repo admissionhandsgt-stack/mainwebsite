@@ -18,7 +18,7 @@
 import { sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { getIntegration, getIntegrationFlag, setIntegration } from "@/lib/integrations";
-import { ALERT_SOURCES, datesIn } from "@/lib/alertFeed";
+import { ALERT_SOURCES, datesIn, offTopic } from "@/lib/alertFeed";
 import { staffList } from "@/lib/staffList";
 import { sendText } from "@/lib/waGateway";
 import { logError } from "@/lib/logger";
@@ -321,6 +321,9 @@ async function take(n: ZynNotice): Promise<"published" | "held" | "seen"> {
   let reason: string | null = null;
   if (!n.approvedAt) [status, reason] = ["held", "not marked approved"];
   else if (!officialLink(n.url, n.page)) [status, reason] = ["held", "link is not on an official domain"];
+  else if (offTopic(n.title, n.url)) [status, reason] = ["held", "not MBBS/BDS/NEET PG counselling (AYUSH, a university exam or similar)"];
+  else if (barTitle(n.title).split(/[^A-Za-z]+/).filter((w) => w.length >= 3).length < 3)
+    [status, reason] = ["held", "the title does not say what the notice is"];
 
   const alertId = status === "published" ? await publishAlert(n) : null;
 
