@@ -314,12 +314,17 @@ async function runSource(source: AlertSource, now: Date): Promise<SourceReport> 
     let expires = new Date(published.getTime() + LIFETIME_DAYS * DAY);
     if (item.due && item.due.getTime() + DAY < expires.getTime()) expires = new Date(item.due.getTime() + DAY);
     const title = `${source.label}: ${item.title}`;
-    await db.execute(sql`
+    // Not when the same notice is already live from another source — the owner's approved copy from Zyn
+    // (lib/zynNotices.ts) usually arrives first, and MCC's Round 2 schedule was on the bar twice (7 Nov 2026).
+    const inserted = (await db.execute(sql`
       INSERT INTO live_alerts (title, link, is_active, order_index, source, source_key, auto, published_at, expires_at)
-      VALUES (${title}, ${item.url}, true, 100, ${source.id}, ${key}, true, ${published.toISOString()}, ${expires.toISOString()})
+      SELECT ${title}, ${item.url}, true, 100, ${source.id}, ${key}, true, ${published.toISOString()}::timestamptz, ${expires.toISOString()}::timestamptz
+       WHERE NOT EXISTS (SELECT 1 FROM live_alerts
+                          WHERE link = ${item.url} AND is_active AND (expires_at IS NULL OR expires_at > now()))
       ON CONFLICT (source_key) WHERE source_key IS NOT NULL DO NOTHING
-    `);
-    report.published.push(title);
+      RETURNING id
+    `)) as unknown as unknown[];
+    if (inserted.length) report.published.push(title);
   }
   return report;
 }

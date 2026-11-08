@@ -499,6 +499,10 @@ rescheduled Round 2 (new NMC seats of 3 Nov verified till 6 Nov; the schedule "r
 runs {window}." and in tables, and with no date-shaped text, so nothing reads a false expected date (the worker drops to
 30-minute checks). **When MCC posts the revised schedule, put the dates and steps back the same day.** A round whose
 reporting date has passed now says so on its page (`joinPassed`: "Round 1 reporting is over. Plan round 2 now.").
+**Done 2026-11-08** from MCC's Notice No. 5 of 7 Nov (`scripts/sql/pg_schedule_round2_revised_2026_11_08.sql`: 7 – 16 Nov,
+choice filling 10–15 Nov, result 16 Nov provisional / 17 final, reporting 18–24 Nov). Zyn had delivered it approved on 7 Nov,
+but the dates were held a day because MCC writes "Round-2" and `scheduleTitle` matched only "Round 2" (fixed). MCC's PG
+schedule PDFs are scanned images — read the pages, never trust a text extract of them. Round 3 and stray are still awaited.
 
 **Notices from Zyn (built 2026-11-05, waits on Zyn's endpoint):** the owner approves each counselling notice in Zyn's
 Telegram flow (Zyn — zyn-c9, AH Counselor — watches MCC PG, NMC, NBEMS and 36 state authorities every 15 min, 4 on result

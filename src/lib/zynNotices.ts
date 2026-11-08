@@ -18,7 +18,7 @@
 import { sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { getIntegration, getIntegrationFlag, setIntegration } from "@/lib/integrations";
-import { ALERT_SOURCES } from "@/lib/alertFeed";
+import { ALERT_SOURCES, datesIn } from "@/lib/alertFeed";
 import { staffList } from "@/lib/staffList";
 import { sendText } from "@/lib/waGateway";
 import { logError } from "@/lib/logger";
@@ -185,12 +185,15 @@ function sameDay(text: string, isoDate: string): boolean {
   );
 }
 
-/** The admin's schedule row a notice's round names ("Round 2", "Stray Vacancy Round" → "Stray vacancy"). */
-const scheduleTitle = (round: string | null) => {
+/**
+ * The admin's schedule row a notice's round names ("Round 2", "Round-2", "R2", "Stray Vacancy Round" → "Stray vacancy").
+ * MCC writes "Round-2" (its notice no. 5 of 7 Nov 2026): matched only with a space, that notice's dates were held.
+ */
+export const scheduleTitle = (round: string | null) => {
   if (!round) return null;
   const r = round.toLowerCase();
   if (/stray/.test(r)) return "Stray vacancy";
-  const n = r.match(/round\s*([1-3])\b|\br([1-3])\b/);
+  const n = r.match(/round[\s._-]*(?:no\.?\s*)?([1-3])\b|\br[\s-]?([1-3])\b/);
   return n ? `Round ${n[1] ?? n[2]}` : null;
 };
 
@@ -252,6 +255,17 @@ async function tellTeam(text: string) {
   }
 }
 
+/**
+ * A board's page furniture that comes along with a notice's title: Odisha's "… Software Solution Provided By - View PDF"
+ * (8 Nov 2026), "Click here", "New". Only trailing boilerplate goes — the words the board wrote stay as written.
+ */
+export const barTitle = (t: string) =>
+  t
+    .replace(/\s*software solution provided by\b.*$/i, "")
+    .replace(/(\s*[-–|:]?\s*(view|download)\s*(the\s*)?(pdf|file|notice)|\s*[-–|:]?\s*click here(\s+to\s+(view|download))?|\s*\bnew!?)+\s*$/i, "")
+    .replace(/\s+/g, " ")
+    .trim() || t;
+
 /** On the alerts bar, unless the same link is already live (the site's own feed may have it). */
 async function publishAlert(n: ZynNotice): Promise<number | null> {
   if (n.url) {
@@ -259,16 +273,29 @@ async function publishAlert(n: ZynNotice): Promise<number | null> {
       SELECT id FROM live_alerts WHERE link = ${n.url} AND is_active AND (expires_at IS NULL OR expires_at > now()) LIMIT 1`)) as unknown as { id: number }[];
     if (live[0]) return Number(live[0].id);
   }
-  // Expires 14 days on (as the site's own feed), or two days after the last date the notice gives.
-  const last = STEPS.map((k) => n.dates[k]?.to ?? n.dates[k]?.from).filter((v): v is string => !!v && /^\d{4}-\d{2}-\d{2}/.test(v)).sort().pop();
-  const published = n.publishedOn && /^\d{4}-\d{2}-\d{2}/.test(n.publishedOn) ? new Date(n.publishedOn) : new Date();
+  // Published on the notice's own date — never after its approval: Zyn has given a deadline as the publication date
+  // ("Resignation … upto 5:00 pm of 09/11/2026", approved on the 6th, dated the 9th), which put it at the top of the bar.
+  const approved = n.approvedAt && !Number.isNaN(Date.parse(n.approvedAt)) ? new Date(n.approvedAt) : new Date();
+  const printed = n.publishedOn && /^\d{4}-\d{2}-\d{2}/.test(n.publishedOn) ? new Date(n.publishedOn) : null;
+  const published = printed && printed.getTime() <= approved.getTime() ? printed : approved;
+  // Expires 14 days on (as the site's own feed), or two days after the last date the notice gives — its steps, or a
+  // date its words name after the day it was published (a deadline; "dated 07.11.2026" is not one).
+  const stepDates = STEPS.map((k) => n.dates[k]?.to ?? n.dates[k]?.from)
+    .filter((v): v is string => !!v && /^\d{4}-\d{2}-\d{2}/.test(v))
+    .map((v) => new Date(v).getTime());
+  const named = datesIn(`${n.title} ${n.text}`)
+    .map((d) => d.getTime())
+    .filter((t) => t > published.getTime() + 86_400_000);
+  const last = [...stepDates, ...named].sort((a, b) => a - b).pop();
   let expires = new Date(Date.now() + 14 * 86_400_000);
   if (last) {
-    const after = new Date(new Date(last).getTime() + 2 * 86_400_000);
-    if (after.getTime() > Date.now()) expires = after;
+    const after = last + 2 * 86_400_000;
+    // A notice whose last date has passed is history: a day on the bar at most.
+    expires = new Date(Math.max(after, Date.now() + 86_400_000));
   }
   const who = authorityName(n.authority);
-  const title = who && !n.title.toLowerCase().startsWith(who.toLowerCase()) ? `${who}: ${n.title}` : n.title;
+  const words = barTitle(n.title);
+  const title = who && !words.toLowerCase().startsWith(who.toLowerCase()) ? `${who}: ${words}` : words;
   // One source per authority: the alerts bar shows at most three per source, so MCC never crowds out a state board.
   const source = `zyn:${who ?? "notice"}`.slice(0, 60);
   const rows = (await db.execute(sql`
