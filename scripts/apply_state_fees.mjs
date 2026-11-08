@@ -115,10 +115,12 @@ const changed = new Map(); // institute -> [lines]
 const note = (who, line) => changed.set(who, [...(changed.get(who) ?? []), line]);
 for (const [id, { row: r, entry: e }] of plan) {
   if (e.noseat) {
+    const why = e.reason ?? `No ${LABEL[e.seat] ?? e.seat} seat in the college's 2026-27 fee notice`;
     updates.push({ id, set: { fee_inr: null, fee_usd: null, fee_periodicity: r.fee_periodicity, fee_session: "2026", year: 2026,
-      is_carried_forward: false, fee_null_reason: e.reason ?? `No ${LABEL[e.seat] ?? e.seat} seat in the college's 2026-27 fee notice`,
-      fee_source: e.source, ...labelled(e, r) } });
-    note(r.institute, `${r.course} ${e.seat}: ${r.fee_inr ?? "—"} → no seat`);
+      is_carried_forward: false, fee_null_reason: why, fee_source: e.source, ...labelled(e, r) } });
+    // A blank with its reason — "no seat" or "no tuition fee" — and a change only when the row is not already that
+    // blank (8 Nov 2026: Sri Devaraj Urs's nil-tuition rows, blank since 4 Nov, were listed as "→ no seat").
+    if (r.fee_inr != null || r.fee_null_reason !== why) note(r.institute, `${r.course} ${e.seat}: ${r.fee_inr ?? "—"} → blank (${why})`);
     continue;
   }
   const feeInr = e.fee_inr ?? Math.round(e.fee_usd * RATE);
@@ -179,7 +181,7 @@ if (argv.includes("--detail")) {
     if (g.inst !== last) console.log(`\n${g.inst}`);
     last = g.inst;
     const old = [...g.old].map(([v, n]) => `${lakh(v)}${n > 1 ? ` ×${n}` : ""}`).join(", ");
-    const now = g.fee == null ? `no seat (${g.why})` : `${lakh(g.fee)}${g.usd ? ` ($${g.usd.toLocaleString("en-US")})` : ""}`;
+    const now = g.fee == null ? `blank (${g.why})` : `${lakh(g.fee)}${g.usd ? ` ($${g.usd.toLocaleString("en-US")})` : ""}`;
     const br = g.branches.size > 4 ? `${g.branches.size} branches` : [...g.branches].join(", ");
     console.log(`  ${g.col.padEnd(5)} ${old} → ${now}   [${br}]`);
   }
