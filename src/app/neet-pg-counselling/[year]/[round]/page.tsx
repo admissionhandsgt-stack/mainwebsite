@@ -157,9 +157,20 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
         `NEET PG ${year} ${T} Result: Date & Seat Allotment`,
         `NEET PG ${year} ${T} Result`,
       ),
+      // The steps as the page prints them can run long ("10 – 15 Nov, from 1 PM of 10 Nov till 11:55 PM of 15 Nov");
+      // a snippet takes the dates alone ("10 – 15 Nov", "16 Nov"), or it never fits and the dates never reach Google.
       description: fitDescription(
         ...(steps?.choiceFilling && steps.result
-          ? [`NEET PG ${year} ${lc}: choice filling ${steps.choiceFilling}, result ${steps.result} as per MCC's tentative schedule. MCC's PDF, seat allotment and branch-wise last rank here the moment it is out.`]
+          ? (() => {
+              const cf = steps.choiceFilling.split(",")[0].trim();
+              const res = steps.result.split(/[,(]/)[0].trim();
+              const reg = steps.registration?.split(",")[0].trim();
+              return [
+                `NEET PG ${year} ${lc}: ${reg ? `registration ${reg}, ` : ""}choice filling ${cf}, result ${res} as per MCC's schedule. MCC's PDF, seat allotment and branch-wise last rank here the moment it is out.`,
+                `NEET PG ${year} ${lc}: choice filling ${cf}, result ${res} as per MCC's schedule. Seat allotment and branch-wise last rank here the moment it is out.`,
+                `NEET PG ${year} ${lc}: choice filling ${cf}, result ${res} (MCC). Seat allotment and branch-wise last rank here when it is out.`,
+              ];
+            })()
           : []),
         `NEET PG ${year} ${lc} result${expected ? `, expected around ${expected} as per MCC's schedule` : ""}: MCC's PDF, seat allotment and branch-wise last rank, here the moment it is out${prev ? `. ${prev.year}'s figures meanwhile` : ""}.`,
       ),

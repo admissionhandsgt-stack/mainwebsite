@@ -1765,7 +1765,8 @@ export const PAGE_COPY = {
       dates_title: { label: "Dates table heading — {round}, {year}", value: "NEET PG {year} {round} dates" },
       dates_intro: {
         label: "Dates table line",
-        value: "Every step of the round as MCC's tentative schedule prints it. MCC revises its schedule in most years — check its notice before a deadline.",
+        value: "Every step of the round as MCC's latest schedule prints it. MCC revises its schedule in most years — check its notice before a deadline.",
+        was: ["Every step of the round as MCC's tentative schedule prints it. MCC revises its schedule in most years — check its notice before a deadline."],
         long: true,
       },
       dates_registration: { label: "Dates row: registration", value: "Registration and fee payment" },
@@ -1778,7 +1779,10 @@ export const PAGE_COPY = {
       faq_dates_a: {
         label: "Answer — {choice_filling}, {choice_locking}, {registration}, {result_date}, {reporting}",
         value:
+          "As per MCC's latest schedule, choice filling runs {choice_filling} and choice locking {choice_locking}. Registration and fee payment: {registration}. The result is due on {result_date}, and reporting is {reporting}.",
+        was: [
           "As per MCC's tentative schedule, choice filling runs {choice_filling} and choice locking {choice_locking}. Registration and fee payment: {registration}. The result is due on {result_date}, and reporting is {reporting}.",
+        ],
         long: true,
       },
       fact_matrix: { label: "Card fact: seats in MCC's matrix — {year}", value: "Seats in MCC's {year} matrix" },
