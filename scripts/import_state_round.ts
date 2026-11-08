@@ -827,19 +827,23 @@ function biharSource(): Source {
   const cutsRaw = readCsv(`${dir}/br_pg_2026_r1_closing_ranks.csv`);
   const allotRaw = readCsv(`${dir}/br_pg_2026_r1_allotments.csv`);
   // UR/BC/EBC/SC/ST/EWS on 2025's "Bihar Govt Quota" (a private college's UR seats become its Open Quota through
-  // ownershipQuota); MM/SM minority, NRI. Female seats, RCG and DQ are their own lists and stay out of the figures
-  // (meanings not decoded here); the one remote-area diploma too. DNB degree and diploma seats: "Bihar DNB Seats".
+  // ownershipQuota); MM/SM minority, NRI. DNB degree and diploma seats: "Bihar DNB Seats". From BCECEB's PGMAC-2026
+  // prospectus (pg-a7, 8 Nov): RCG is "Reserved Category Girls (RCG) 03%" (para 7(A)) — its own reservation, out of the
+  // figures; DQ is the "Disabled Quota", 5% for PwBD candidates (para 7(B)) — PwD, out of the figures as every PwD seat
+  // is; female seats are the one-third horizontal reservation for women domiciled in Bihar (note (b)) — out too; and
+  // the one remote-area diploma.
   const CAT: Record<string, string> = { UR: "GEN", BC: "BC", EBC: "EBC", SC: "SC", ST: "ST", EWS: "EWS" };
-  const seat = (r: Row): { quota: string; category: string; additional: string | null } => {
+  const seat = (r: Row): { quota: string; category: string; pwd: boolean; additional: string | null } => {
     const c = r.allotted_category.trim();
     const female = /female/i.test(r.seat_type) ? "Female seat" : null;
     const remote = /REMOTE/i.test(r.course_type) || /REMOTE/i.test(r.state_merit_list) ? "Remote area diploma" : null;
     const dnb = /^DNB/i.test(r.course_type);
-    if (c === "NRI") return { quota: "Bihar Private Seats - NRI Quota", category: "NRI", additional: null };
-    if (c === "MM" || c === "SM") return { quota: "Bihar Private Seats - Minority Quota", category: c, additional: female };
+    if (c === "NRI") return { quota: "Bihar Private Seats - NRI Quota", category: "NRI", pwd: false, additional: null };
+    if (c === "MM" || c === "SM") return { quota: "Bihar Private Seats - Minority Quota", category: c, pwd: false, additional: female };
     const quota = dnb ? "Bihar DNB Seats" : "Bihar Govt Quota";
-    if (c === "RCG" || c === "DQ") return { quota, category: c, additional: c };
-    if (CAT[c]) return { quota, category: CAT[c], additional: female ?? remote };
+    if (c === "RCG") return { quota, category: "RCG", pwd: false, additional: "Reserved Category Girls (RCG)" };
+    if (c === "DQ") return { quota, category: "DQ", pwd: true, additional: female };
+    if (CAT[c]) return { quota, category: CAT[c], pwd: false, additional: female ?? remote };
     throw new Error(`Bihar: unknown category "${c}"`);
   };
   const course = (r: Row) => {
@@ -854,13 +858,13 @@ function biharSource(): Source {
     sourceUrl: first.opening_closing_source_url || null,
     cuts: cutsRaw.map((r) => ({
       college: r.institute, instCode: null, seatType: `${r.course_type} · ${r.seat_type}`, ...seat(r), inService: false, course: course(r),
-      categoryPrinted: `${r.allotted_category}${/female/i.test(r.seat_type) ? " (Female)" : ""}`, pwd: false,
+      categoryPrinted: `${r.allotted_category}${/female/i.test(r.seat_type) ? " (Female)" : ""}`,
       seats: int(r.seats_allotted), openAir: int(r.opening_all_india_rank), closeAir: int(r.closing_all_india_rank),
       openSr: int(r.opening_state_merit_rank), closeSr: int(r.closing_state_merit_rank),
     })),
     allots: allotRaw.map((r) => ({
       college: r.institute, instCode: null, seatType: `${r.course_type} · ${r.seat_type}`, ...seat(r), inService: false, course: course(r),
-      categoryPrinted: `${r.allotted_category}${/female/i.test(r.seat_type) ? " (Female)" : ""}`, pwd: false,
+      categoryPrinted: `${r.allotted_category}${/female/i.test(r.seat_type) ? " (Female)" : ""}`,
       ownCategory: r.candidate_category || null, domicile: null,
       stateRank: int(r.state_merit_rank), air: int(r.all_india_rank), score: null,
     })),
