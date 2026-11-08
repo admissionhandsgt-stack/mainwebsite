@@ -28,6 +28,10 @@ npm run smoke -- <url>                   # 57 black-box checks: routes, gate, re
 npm run verify:gate -- <url>             # the seat gate, from outside: nothing public, crawler spoofing refused
 node scripts/audit_site.mjs <url>        # in-browser QA: a11y, tap targets, metadata, links
 node scripts/verify_auth_flow.mjs <url>  # 21 checks: sends a real code, redeems it, signs in
+bash scripts/seo_drift.sh compare        # after every deploy: title/description/canonical/robots/H1/JSON-LD/OG of 12 key
+                                         # templates vs the last baseline (seo-drift skill); `baseline` after a wanted change
+node --env-file=.env.local scripts/gsc_coverage.mjs run|report   # URL Inspection API over the whole sitemap, resumable,
+                                         # ≤2,000/day (D:/Admisson Hands/seo_data/); report = indexed by page family
 npm run build:cf     # OpenNext build for Cloudflare
 npm run deploy:cf    # deploy worker
 ```
