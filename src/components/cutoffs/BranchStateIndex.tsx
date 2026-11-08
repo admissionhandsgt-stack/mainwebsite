@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import Link from "@/components/ui/Link";
 import SectionHead from "@/components/ui/SectionHead";
-import { BRANCH_STATE_COURSES, SEARCH_NAME, getBranchStateCombos } from "@/lib/branchStateQueries";
+import { BRANCH_STATE_COURSES, SEARCH_NAME, getBranchStateCombos, type BranchStateCombo } from "@/lib/branchStateQueries";
 
 /**
  * The seven clinical branches, state by state (2026-11-09): every `/md-ms-india/branches/<branch>/<state>` page
@@ -11,7 +11,7 @@ import { BRANCH_STATE_COURSES, SEARCH_NAME, getBranchStateCombos } from "@/lib/b
  * pills the block was 2,337px tall on a 390px phone.
  */
 export default async function BranchStateIndex({ className = "" }: { className?: string }) {
-  const combos = await getBranchStateCombos().catch(() => []);
+  const combos = await getBranchStateCombos().catch((): BranchStateCombo[] => []);
   if (combos.length === 0) return null;
   const groups = BRANCH_STATE_COURSES.map((course) => ({
     course,
