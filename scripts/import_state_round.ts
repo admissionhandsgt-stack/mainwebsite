@@ -783,10 +783,10 @@ function maharashtraSource(): Source {
     if (m && CAT[m[1]]) return { ...base, quota, category: CAT[m[1]], pwd: true };
     m = q.match(/^EM(\w+)$/);
     if (m && CAT[m[1]]) return { ...base, quota, category: CAT[m[1]], additional: `Earmarked ${r.quota_flag || "(EM)"}` };
-    // "OPEN (EMD)" — 32 lines flagged earmarked, meaning not printed: kept, out of the figures.
-    // (The one "IS OPEN (EMD)" line is in-service, already out of the figures.)
-    const emd = r.quota_flag === "(EMD)" ? "Earmarked (EMD)" : null;
-    if (CAT[q]) return { ...base, quota, category: CAT[q], additional: emd };
+    // The list's legend: "EMD: EarMarking Donor, EMR: EarMarking Receiver". An (EMD) line is an OPEN seat printed as
+    // OPEN, held on open merit by a reserved-category candidate (whose category seat goes to the next of that category —
+    // the EM<cat> (EMR) line above, kept out). The EMD seats count in OPEN, as zyn-c9's tool counts them (pg-a7, 8 Nov).
+    if (CAT[q]) return { ...base, quota, category: CAT[q] };
     throw new Error(`Maharashtra: unknown quota "${q}" (${r.seat_letter}, ${r.quota_flag})`);
   };
   const course = (c: string) => MH_COURSE[c.trim()] ?? c.trim();
