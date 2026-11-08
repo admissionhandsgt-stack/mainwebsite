@@ -15,7 +15,7 @@ for p in / /neet-college-predictor /neet-pg-cutoff /md-ms-india /neet-pg-counsel
   /mbbs-india/uttar-pradesh /neet-pg-marks-vs-rank; do
   out=$("$R" run "$S" "$B$p" --skip-cwv 2>&1)
   if [ "$CMD" = compare ]; then
-    echo "$out" | python -I -c "
+    echo "$out" | PYTHONIOENCODING=utf-8 python -I -c "
 import sys, json
 t = sys.stdin.read()
 try:
