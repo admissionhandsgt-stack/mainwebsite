@@ -1854,6 +1854,21 @@ community — the only order that fit every course). The owner accepted that kno
 (the round's `note`). Open OC is stored as GEN and MBC&DNC as MBC; service seats keep 2025's codes and are in-service;
 an unresolved row is "Not printed". BC, BCM ("BC (Muslim)") and SCA ("SC (Arunthathiyar)") are labelled in
 `CATEGORY_LABEL` — TN's alone. Management, NRI, CMC and minority seat types map onto 2025's TN Mgmt PG quota labels.
+Karnataka, Maharashtra and Bihar (owner's OK, 2026-11-08; pg-a7's files, line for line equal to zyn-c9's tool):
+**Karnataka** KEA final list 07-11 (the 05-11 provisional one is not read): 2,479 lines / 3,268 allotments, 65/65 colleges.
+KEA allots in AIR order and prints no state rank and no legend, so only the certain codes are read — GM (GEN), its own
+groups 1/2A/2B/3A/3B (`KA-1`… "Category 2A"), ST; the H-suffix list, S1–S4 and PGM/PGMH stay as printed, out of every
+figure. Seat letter G = "Karnataka Govt Quota - Open" (government and private colleges, one merit list), P = GMP / Open /
+Minority, Q = Institutional, N = NRI. **Maharashtra** CET Cell's provisional selection list 05-11: 1,761 / 2,112, 54
+colleges — short names only ("GMC MUMBAI" = Grant, "GSMC" = KEM, "PCMC PGM I" = YCM), all decided by hand (the matcher
+took IGMC, MIMSR and UPMC for their cities' GMCs). I.Q. = Management, letter A = "Private University Seats - All India
+Quota" (NKP Salve, Vikhe Patil), IS in-service, PH PwD; SEBC and VJ/NT groups labelled. The list's legend: "EMD:
+EarMarking Donor, EMR: EarMarking Receiver" — EMD lines are OPEN seats and count in OPEN; EM<cat> (EMR) lines stay out.
+**Bihar** BCECEB PGMAC Round 1, 06-11: 487 / 765; three hospitals not in our list (GGS Sadar Patna, Homi Bhabha
+Muzaffarpur, Rajendra Nagar Eye) kept by name, 7 lines. Matcher had IGIMS, Nalanda MC and LNJP on Patna Medical College —
+decided by hand. From the PGMAC-2026 prospectus: DQ = "Disabled Quota" (PwD, para 7(B)), RCG = "Reserved Category Girls
+(RCG) 03%" (para 7(A)), female seats = one-third horizontal for Bihar women — all out of the figures; EBC labelled.
+Private colleges' state seats are UR only → "Bihar Private Seats - Open Quota", as in 2025.
 
 **Where the files come from.** The PG data session (pg-a7, with zyn-c9 for UP) extracts them from each board's
 allotment PDF into `D:/Gulshan/PG/Website/extracted-data/official-states/<state>/`. The import:
