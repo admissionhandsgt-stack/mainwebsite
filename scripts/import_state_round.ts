@@ -689,7 +689,189 @@ function jammuKashmirSource(): Source {
   };
 }
 
+/* ------------------------------------------------------------------ Karnataka (KEA) */
+
+function karnatakaSource(): Source {
+  const dir = `${ROOT}/karnataka`;
+  // KEA's final list of 07-11-2026 (the 05-11 provisional list beside it is superseded and stays out). KEA allots in AIR
+  // order and prints no state rank. The seat type is the course code's letter: G government quota (at government and
+  // private colleges alike, one merit list), P private quota, Q others (OTH, institutional), N NRI.
+  const cutsRaw = readCsv(`${dir}/ka_pg_2026_r1_closing_ranks.csv`);
+  const allotRaw = readCsv(`${dir}/ka_pg_2026_r1_allotments.csv`);
+  // KEA prints no legend. Read only what is certain: GM general merit; Karnataka's own backward-class groups 1, 2A, 2B,
+  // 3A, 3B; ST. A trailing H marks a separate (regional) list and stays out of the figures; G is the general list.
+  // The S1–S4 groups, PGM and the minority codes stay as printed — not in any figure.
+  const MINORITY = /^(ME|MEH|MM|MMH|MU|MC|MA|RC[123])$/;
+  const seat = (r: Row): { quota: string; category: string; additional: string | null } => {
+    const c = r.allotted_category.trim();
+    const h = /H$/.test(c) && c !== "MMH" && c !== "MEH" ? "H (KEA's H-suffix list)" : null;
+    switch (r.quota_letter) {
+      case "G": {
+        const base = c.replace(/[GH]$/, "");
+        const KA: Record<string, string> = { GM: "GEN", "1": "KA-1", "2A": "KA-2A", "2B": "KA-2B", "3A": "KA-3A", "3B": "KA-3B", ST: "ST" };
+        return { quota: "Karnataka Govt Quota - Open", category: KA[base] ?? c, additional: h };
+      }
+      case "P":
+        if (/^GMPH?$/.test(c)) return { quota: "Karnataka Private Seats - GMP Quota", category: "GEN", additional: c === "GMPH" ? "H (KEA's H-suffix list)" : null };
+        if (c === "OPN") return { quota: "Karnataka Private Seats - Open Quota", category: "GEN", additional: null };
+        if (MINORITY.test(c)) return { quota: "Karnataka Private Seats - Minority Quota", category: c, additional: null };
+        break;
+      case "Q":
+        if (c === "MNG") return { quota: "Karnataka Other Seats (Institutional Quota)", category: "GEN", additional: null };
+        break;
+      case "N":
+        if (c === "NRI") return { quota: "Karnataka NRI Quota", category: "NRI", additional: null };
+        break;
+    }
+    throw new Error(`Karnataka: unknown seat ${r.quota_letter} / ${c}`);
+  };
+  // KEA's two misspellings.
+  const courseFix = (c: string) => c.replace(/Opthalamology/i, "Ophthalmology").replace(/^M\.D Geritrics$/i, "M.D. Geriatrics");
+  const first = cutsRaw[0];
+  return {
+    state: "Karnataka", year: 2026, round: "R1", roundPrinted: first.round, counselling: first.counselling,
+    sourceUrl: allotRaw[0]?.source_pdf_url || null,
+    cuts: cutsRaw.map((r) => ({
+      college: r.college, instCode: r.college_code || null, seatType: r.seat_type, ...seat(r), inService: false, course: courseFix(r.course),
+      categoryPrinted: r.allotted_category, pwd: false,
+      seats: int(r.seats_allotted), openAir: null, closeAir: int(r.closing_all_india_rank), openSr: null, closeSr: null,
+    })),
+    allots: allotRaw.map((r) => ({
+      college: r.college, instCode: r.college_code || null, seatType: r.seat_type, ...seat(r), inService: false, course: courseFix(r.course),
+      categoryPrinted: r.allotted_category, pwd: false, ownCategory: null, domicile: null,
+      stateRank: null, air: int(r.all_india_rank), score: null,
+    })),
+  };
+}
+
+/* ------------------------------------------------------------------ Maharashtra (State CET Cell) */
+
+/** The CET Cell's short subject names, as our course names spell them (MD/MS added by courseLabel). */
+const MH_COURSE: Record<string, string> = {
+  ANAESTHESIA: "Anaesthesia", MEDICINE: "General Medicine", SURGERY: "General Surgery", OBGY: "Obstetrics and Gynaecology",
+  PAEDIATRIC: "Paediatrics", ORTHOPEDICS: "Orthopaedics", OPTHALMOLOGY: "Ophthalmology", "E.N.T.": "ENT",
+  "P.S.M.": "Community Medicine", "SKIN & VD": "Dermatology Venereology and Leprosy", RADIOLOGY: "Radio Diagnosis",
+  RADIOTHERAPY: "Radiation Oncology", "CHEST & TB": "Respiratory Medicine", "IMMUNOLOGY HAEMATOLO": "Immuno Haematology and Blood Transfusion",
+  "EMERGENCY & CRITICAL": "Emergency Medicine", "PHYSICAL MEDICINE &": "Physical Medicine and Rehabilitation", GERIATRIC: "Geriatrics",
+  "PALLIATIVE MEDICINE": "Palliative Medicine", "NUCLEAR MEDICINE": "Nuclear Medicine", "FORENSIC MEDICINE": "Forensic Medicine",
+  PSYCHIATRY: "Psychiatry", PATHOLOGY: "Pathology", MICROBIOLOGY: "Microbiology", PHARMACOLOGY: "Pharmacology",
+  PHYSIOLOGY: "Physiology", ANATOMY: "Anatomy", BIOCHEMISTRY: "Biochemistry",
+  "D.A.": "Diploma in Anaesthesia", "D.C.H.": "Diploma in Child Health", "D.G.O.": "Diploma in Obstetrics and Gynaecology",
+  "D.M.R.D.": "Diploma in Medical Radio Diagnosis", "D.O.R.L.": "Diploma in Otorhinolaryngology", "D.P.M.": "Diploma in Psychological Medicine",
+};
+
+function maharashtraSource(): Source {
+  const dir = `${ROOT}/maharashtra`;
+  // The CET Cell's Round 1 provisional selection list (05-11-2026). The closing AIR is the AIR of the last selected in
+  // state merit order (in-service seats: in-service merit order). Seat letter: S state quota, I institutional quota
+  // (private colleges), A the 45% all-India seats of the two private universities (NKP Salve, Vikhe Patil), N NRI.
+  const cutsRaw = readCsv(`${dir}/mh_pg_2026_r1_closing_ranks.csv`);
+  const allotRaw = readCsv(`${dir}/mh_pg_2026_r1_allotments.csv`);
+  const CAT: Record<string, string> = { OPEN: "GEN", OBC: "OBC", SC: "SC", ST: "ST", EWS: "EWS", SEBC: "SEBC", VJA: "VJA", NTB: "NTB", NTC: "NTC", NTD: "NTD" };
+  const seat = (r: Row): { quota: string; category: string; pwd: boolean; additional: string | null; inService: boolean } => {
+    const q = r.quota.trim();
+    const base = { pwd: false, additional: null as string | null, inService: false };
+    if (r.seat_letter === "N" || q === "NRI") return { ...base, quota: "Maharashtra NRI Quota", category: "NRI" };
+    if (r.seat_letter === "A") return { ...base, quota: "Maharashtra Private University Seats - All India Quota", category: "GEN" };
+    if (q === "I.Q.") return { ...base, quota: "Maharashtra Management Quota", category: "GEN" };
+    if (q === "MINORITY") return { ...base, quota: "Maharashtra Minority Quota", category: "Minority" };
+    const quota = "Maharashtra Govt Quota";
+    if (/^ORPHAN/.test(q)) return { ...base, quota, category: "GEN", additional: "Orphan" };
+    let m = q.match(/^IS (\w+)$/);
+    if (m && CAT[m[1]]) return { ...base, quota, category: CAT[m[1]], inService: true };
+    m = q.match(/^PH (\w+)$/);
+    if (m && CAT[m[1]]) return { ...base, quota, category: CAT[m[1]], pwd: true };
+    m = q.match(/^EM(\w+)$/);
+    if (m && CAT[m[1]]) return { ...base, quota, category: CAT[m[1]], additional: `Earmarked ${r.quota_flag || "(EM)"}` };
+    // "OPEN (EMD)" — 32 lines flagged earmarked, meaning not printed: kept, out of the figures.
+    // (The one "IS OPEN (EMD)" line is in-service, already out of the figures.)
+    const emd = r.quota_flag === "(EMD)" ? "Earmarked (EMD)" : null;
+    if (CAT[q]) return { ...base, quota, category: CAT[q], additional: emd };
+    throw new Error(`Maharashtra: unknown quota "${q}" (${r.seat_letter}, ${r.quota_flag})`);
+  };
+  const course = (c: string) => MH_COURSE[c.trim()] ?? c.trim();
+  const first = cutsRaw[0];
+  return {
+    state: "Maharashtra", year: 2026, round: "R1", roundPrinted: first.round, counselling: first.counselling,
+    sourceUrl: allotRaw[0]?.source_pdf_url || null,
+    cuts: cutsRaw.map((r) => ({
+      college: r.college, instCode: r.course_code ? r.course_code.slice(0, 2) : null, seatType: `${r.seat_letter} · ${r.quota}${r.quota_flag ? ` ${r.quota_flag}` : ""}`,
+      ...seat(r), course: course(r.course), categoryPrinted: r.quota,
+      seats: int(r.seats_allotted), openAir: null, closeAir: int(r.closing_all_india_rank), openSr: null, closeSr: int(r.closing_state_merit_rank),
+    })),
+    allots: allotRaw.map((r) => ({
+      college: r.college, instCode: r.course_code ? r.course_code.slice(0, 2) : null, seatType: `${r.seat_letter} · ${r.quota}${r.quota_flag ? ` ${r.quota_flag}` : ""}`,
+      ...seat(r), course: course(r.course), categoryPrinted: r.quota, ownCategory: r.candidate_category || null, domicile: null,
+      stateRank: int(r.state_merit_rank), air: int(r.all_india_rank), score: null,
+    })),
+  };
+}
+
+/* ------------------------------------------------------------------ Bihar (BCECEB, PGMAC) */
+
+/** BCECEB's branch names, as our course names spell them (MD/MS added by courseLabel). */
+const BR_COURSE: Record<string, string> = {
+  Anaesthesiology: "Anaesthesia", "COMMUNITY MEDICINE": "Community Medicine", DERMATOLOGY: "Dermatology Venereology and Leprosy",
+  "E.N.T.": "ENT", "EMERGENCY MEDICINE": "Emergency Medicine", "F.M.T.": "Forensic Medicine", "OBS & GYNAE": "Obstetrics and Gynaecology",
+  OPHTHALMOLOGY: "Ophthalmology", "PHY.MED.& REHAB.": "Physical Medicine and Rehabilitation", "RADIATION ONCOLOGY": "Radiation Oncology",
+  "RESPIRATORY MEDICINE": "Respiratory Medicine", Radiodiagnosis: "Radio Diagnosis",
+  "D.A.": "Diploma in Anaesthesia", "D.C.H.": "Diploma in Child Health", "D.G.O.": "Diploma in Obstetrics and Gynaecology",
+  "D.M.R.D.": "Diploma in Medical Radio Diagnosis", "D.O./D.O.M.S.": "Diploma in Ophthalmology",
+  "DIP. P.M.R.": "Diploma in Physical Medicine and Rehabilitation",
+  "Diploma in Tuborculosis and Chest Disease": "Diploma in Tuberculosis and Chest Diseases",
+};
+
+function biharSource(): Source {
+  const dir = `${ROOT}/bihar`;
+  // BCECEB's Round-1 allotment of 06-11-2026; every closing line equals BCECEB's own opening/closing rank list.
+  const cutsRaw = readCsv(`${dir}/br_pg_2026_r1_closing_ranks.csv`);
+  const allotRaw = readCsv(`${dir}/br_pg_2026_r1_allotments.csv`);
+  // UR/BC/EBC/SC/ST/EWS on 2025's "Bihar Govt Quota" (a private college's UR seats become its Open Quota through
+  // ownershipQuota); MM/SM minority, NRI. Female seats, RCG and DQ are their own lists and stay out of the figures
+  // (meanings not decoded here); the one remote-area diploma too. DNB degree and diploma seats: "Bihar DNB Seats".
+  const CAT: Record<string, string> = { UR: "GEN", BC: "BC", EBC: "EBC", SC: "SC", ST: "ST", EWS: "EWS" };
+  const seat = (r: Row): { quota: string; category: string; additional: string | null } => {
+    const c = r.allotted_category.trim();
+    const female = /female/i.test(r.seat_type) ? "Female seat" : null;
+    const remote = /REMOTE/i.test(r.course_type) || /REMOTE/i.test(r.state_merit_list) ? "Remote area diploma" : null;
+    const dnb = /^DNB/i.test(r.course_type);
+    if (c === "NRI") return { quota: "Bihar Private Seats - NRI Quota", category: "NRI", additional: null };
+    if (c === "MM" || c === "SM") return { quota: "Bihar Private Seats - Minority Quota", category: c, additional: female };
+    const quota = dnb ? "Bihar DNB Seats" : "Bihar Govt Quota";
+    if (c === "RCG" || c === "DQ") return { quota, category: c, additional: c };
+    if (CAT[c]) return { quota, category: CAT[c], additional: female ?? remote };
+    throw new Error(`Bihar: unknown category "${c}"`);
+  };
+  const course = (r: Row) => {
+    const b = BR_COURSE[r.branch.trim()] ?? r.branch.trim();
+    if (/^DNB DEGREE/i.test(r.course_type)) return `Post MBBS DNB ${b}`;
+    if (/^DNB DIPLOMA/i.test(r.course_type)) return `Post MBBS PG Dip ${b.replace(/^Diploma in\s+/i, "")}`;
+    return b;
+  };
+  const first = cutsRaw[0];
+  return {
+    state: "Bihar", year: 2026, round: "R1", roundPrinted: first.round, counselling: first.counselling,
+    sourceUrl: first.opening_closing_source_url || null,
+    cuts: cutsRaw.map((r) => ({
+      college: r.institute, instCode: null, seatType: `${r.course_type} · ${r.seat_type}`, ...seat(r), inService: false, course: course(r),
+      categoryPrinted: `${r.allotted_category}${/female/i.test(r.seat_type) ? " (Female)" : ""}`, pwd: false,
+      seats: int(r.seats_allotted), openAir: int(r.opening_all_india_rank), closeAir: int(r.closing_all_india_rank),
+      openSr: int(r.opening_state_merit_rank), closeSr: int(r.closing_state_merit_rank),
+    })),
+    allots: allotRaw.map((r) => ({
+      college: r.institute, instCode: null, seatType: `${r.course_type} · ${r.seat_type}`, ...seat(r), inService: false, course: course(r),
+      categoryPrinted: `${r.allotted_category}${/female/i.test(r.seat_type) ? " (Female)" : ""}`, pwd: false,
+      ownCategory: r.candidate_category || null, domicile: null,
+      stateRank: int(r.state_merit_rank), air: int(r.all_india_rank), score: null,
+    })),
+    ownershipQuota: (q, government) => (q === "Bihar Govt Quota" && government === false ? "Bihar Private Seats - Open Quota" : q),
+  };
+}
+
 const SOURCES: Record<string, () => Source> = {
+  karnataka: karnatakaSource,
+  maharashtra: maharashtraSource,
+  bihar: biharSource,
   "jammu-kashmir": jammuKashmirSource,
   "tamil-nadu": tamilNaduSource,
   punjab: punjabSource,

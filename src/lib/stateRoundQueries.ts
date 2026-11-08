@@ -38,9 +38,15 @@ export interface StateRound {
 
 // BC, BCM and SCA are Tamil Nadu's own reserved groups (2026-11-05; used by no other state loaded): Backward Classes,
 // Backward Class Muslims and Scheduled Caste (Arunthathiyar). Rajasthan and TN both have an MBC list.
-const CATEGORY_ORDER = ["GEN", "EWS", "OBC", "BC", "BCM", "MBC", "SC", "SCA", "ST"];
+// 2026-11-08: Karnataka's own backward-class groups (KEA's 1, 2A, 2B, 3A, 3B), Maharashtra's SEBC and VJ/NT groups,
+// Bihar's EBC. Each is one state's list, labelled as that state prints it.
+const CATEGORY_ORDER = [
+  "GEN", "EWS", "OBC", "SEBC", "BC", "EBC", "BCM", "MBC", "KA-1", "KA-2A", "KA-2B", "KA-3A", "KA-3B", "VJA", "NTB", "NTC", "NTD", "SC", "SCA", "ST",
+];
 export const CATEGORY_LABEL: Record<string, string> = {
   GEN: "General (UR)", EWS: "EWS", OBC: "OBC", BC: "BC", BCM: "BC (Muslim)", MBC: "MBC", SC: "SC", SCA: "SC (Arunthathiyar)", ST: "ST",
+  SEBC: "SEBC", EBC: "EBC", "KA-1": "Category 1", "KA-2A": "Category 2A", "KA-2B": "Category 2B", "KA-3A": "Category 3A", "KA-3B": "Category 3B",
+  VJA: "VJ (A)", NTB: "NT (B)", NTC: "NT (C)", NTD: "NT (D)",
 };
 
 /** A college is its institute when we matched one, else its name as printed. */
