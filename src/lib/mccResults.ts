@@ -590,6 +590,8 @@ export interface LatestRound {
   total: number;
   /** Our course name -> All India Quota last rank admitted per category (only branches over 3+ colleges). */
   byCourse: Map<string, Partial<Record<CutCat, number>>>;
+  /** The same for DNB and NBE-diploma seats (MCC's "DNB Quota"), whose branches are their own pages. */
+  byCourseDnb: Map<string, Partial<Record<CutCat, number>>>;
 }
 
 /**
@@ -603,7 +605,14 @@ export async function getLatestLiveRound(): Promise<LatestRound | null> {
     if (state.status !== "live") continue;
     const result = await getRoundResult(year, spec.round);
     if (!result) continue;
-    return { year, spec, final: state.kind === "final", total: result.total, byCourse: new Map(result.cuts.aiq.map((b) => [b.course, b.last])) };
+    return {
+      year,
+      spec,
+      final: state.kind === "final",
+      total: result.total,
+      byCourse: new Map(result.cuts.aiq.map((b) => [b.course, b.last])),
+      byCourseDnb: new Map(result.cuts.dnb.map((b) => [b.course, b.last])),
+    };
   }
   return null;
 }

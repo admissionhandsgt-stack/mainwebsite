@@ -29,6 +29,7 @@ import {
 } from "@/lib/collegeQueries";
 import { getUgCollegeExtras } from "@/lib/content";
 import { getNmcFacts, type NmcFacts } from "@/lib/nmcData";
+import { getCollegeLiveBands, type LiveBands } from "@/lib/collegeLiveBands";
 
 /** Google shows about 60 characters of a title. */
 const TITLE = 62;
@@ -51,7 +52,11 @@ export const loadCollegePage = cache(async (slug: string, level: Level) => {
     nameIndex(level),
     getNmcFacts(slug, level),
   ]);
-  return { college, cutoffs, fees, extras, nmc, summary: summarise(level, college, cutoffs, fees, extras, index, nmc) };
+  // MCC's results for the counselling year in progress (PG), when that year is newer than the page's own data.
+  const ownYear = cutoffs.reduce<number | null>((m, c) => (c.latestYear != null && (m == null || c.latestYear > m) ? c.latestYear : m), null);
+  const liveAll = level === "pg" ? await getCollegeLiveBands(slug, cutoffs) : null;
+  const live = liveAll && (ownYear == null || liveAll.year > ownYear) ? liveAll : null;
+  return { college, cutoffs, fees, extras, nmc, live, summary: summarise(level, college, cutoffs, fees, extras, index, nmc, live) };
 });
 
 /**
@@ -90,8 +95,8 @@ export interface CollegeSummary {
   kind: "ug" | "pg" | "dnb";
   /** The latest year in this page's own counselling data. */
   year: number | null;
-  /** General category, merit quota — the first row of the bands table. */
-  band: { text: string; quota: string; course: string; year: number | null } | null;
+  /** General category, merit quota — the first row of the bands table (the year in progress's, when MCC has one). */
+  band: { text: string; quota: string; course: string; year: number | null; rounds?: string } | null;
   /**
    * "≈ ₹5–10 L" — a bracket across this college's published fees; or, where 2026-27 notices print them (feeOfficial),
    * the exact lowest and highest yearly figures, "₹1,67,300 – ₹54,75,000".
@@ -129,6 +134,7 @@ function summarise(
   extras: Extras,
   index: Record<string, number>,
   nmc: NmcFacts | null,
+  live: LiveBands | null = null,
 ): CollegeSummary {
   const n = collegeName(college.name);
   let place = n.place;
@@ -144,7 +150,10 @@ function summarise(
   const kind: CollegeSummary["kind"] = level === "ug" ? "ug" : isDnbOnly(courses) ? "dnb" : "pg";
   const course = level === "ug" ? ugCourseLabel(college.name, courses) : kind === "dnb" ? "DNB" : "MD/MS";
 
-  const year = cutoffs.reduce<number | null>((m, c) => (c.latestYear != null && (m == null || c.latestYear > m) ? c.latestYear : m), null);
+  const ownYear = cutoffs.reduce<number | null>((m, c) => (c.latestYear != null && (m == null || c.latestYear > m) ? c.latestYear : m), null);
+  // The counselling year in progress leads the title and snippet where MCC has allotted here ("Cut Off 2026").
+  const year = live ? live.year : ownYear;
+  const liveFirst = live?.rows[0];
   const first = generalBands(cutoffs, 1)[0];
   // A year's figures only: a whole-course or period-not-stated fee is never a year's (migration 0046).
   const yearly = fees.filter((f) => isYearlyFee(f.feePeriodicity) && f.feeInr != null && f.feeInr > 0);
@@ -176,7 +185,11 @@ function summarise(
     course,
     kind,
     year,
-    band: first ? { text: plain(first.band)!, quota: first.quota, course: first.course, year: first.year } : null,
+    band: liveFirst
+      ? { text: plain(liveFirst.band)!, quota: liveFirst.quota, course: liveFirst.course, year: live!.year, rounds: live!.label }
+      : first
+        ? { text: plain(first.band)!, quota: first.quota, course: first.course, year: first.year }
+        : null,
     fee:
       lo && hi
         ? lo.feeInr === hi.feeInr
@@ -229,7 +242,10 @@ export function collegeTitle(s: CollegeSummary): string {
   const place = s.place && !squash(s.short).includes(squash(s.place)) ? s.place : null;
   s = { ...s, place };
   const where = s.place ? `${s.short}, ${s.place}` : s.short;
-  const y = s.year ? ` ${s.year}` : "";
+  // The band's own year when the title promises a cut off: a page whose general band is 2025's but which holds a few
+  // 2026 rows elsewhere said "Cut Off 2026" over a 2025 band (AIIMS Bilaspur, found 2026-11-09).
+  const yr = s.band?.year ?? s.year;
+  const y = yr ? ` ${yr}` : "";
   // "Cut Off" only when the page shows a cutoff band; otherwise what it does show.
   // Worded as India searches (Search Console 7 Oct – 4 Nov 2026): "cut off" in two words 18,033 impressions against
   // "cutoff" 5,240 (UG college pages 10,331 to 2,523); and on MD/MS college pages the course word people type is
@@ -301,7 +317,7 @@ export function collegeDescription(s: CollegeSummary): string {
   if (s.kind === "dnb") {
     const seats = s.seats ? `${inr(s.seats)} DNB seat${s.seats === 1 ? "" : "s"}${s.branches ? ` in ${s.branches} ${s.branches === 1 ? "speciality" : "specialities"}` : ""}` : null;
     const stipend = s.stipend ? `stipend ${money(s.stipend)} a month` : null;
-    const cut = b ? `General-category cutoff${by ? ` ${by}` : ""}: ${b.text} (${b.course})` : null;
+    const cut = b ? `General-category cut off${by ? ` ${by}` : ""}${b.rounds ? ` (${b.rounds})` : ""}: ${b.text} (${b.course})` : null;
     const lead = [seats, stipend].filter(Boolean).join(", ");
     return (
       fit(DESCRIPTION, [
@@ -314,8 +330,9 @@ export function collegeDescription(s: CollegeSummary): string {
   }
 
   if (s.kind === "pg") {
-    const cut = b ? `MD/MS cutoff${by ? ` ${by}` : ""}: ${b.text} (general, ${b.quota}, ${b.course})` : null;
-    const cutShort = b ? `MD/MS cutoff${by ? ` ${by}` : ""}: ${b.text} (general, ${b.course})` : null;
+    const r = b?.rounds ? ` ${b.rounds}` : "";
+    const cut = b ? `MD/MS cut off${by ? ` ${by}` : ""}${r}: ${b.text} (general, ${b.quota}, ${b.course})` : null;
+    const cutShort = b ? `MD/MS cut off${by ? ` ${by}` : ""}${r}: ${b.text} (general, ${b.course})` : null;
     const seats = s.seats ? `${inr(s.seats)} PG seats${s.branches ? ` in ${s.branches} branches` : ""}` : null;
     const seatsShort = s.seats ? `${inr(s.seats)} PG seats` : null;
     const stipend = s.stipend ? `stipend ${money(s.stipend)} a month` : null;

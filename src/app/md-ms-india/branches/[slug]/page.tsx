@@ -75,11 +75,14 @@ const money = (v: number | null | undefined) => {
  */
 async function liveFor(course: string, dataYear: number | null | undefined) {
   const live = await getLatestLiveRound();
-  const cut = live?.byCourse.get(course);
+  // A DNB or NBE-diploma branch is read in MCC's DNB quota ("dnb ent cut off 2026" had no 2026 box until 2026-11-09).
+  const aiqCut = live?.byCourse.get(course);
+  const cut = aiqCut ?? live?.byCourseDnb.get(course);
   if (!live || !cut || live.year === dataYear || !Object.keys(cut).length) return null;
   const table = (await getScoreTables("pg")).find((t) => t.year === live.year) ?? null;
   const scoreAt = (rank: number) => table?.rows.find((r) => r.rankMin <= rank && rank <= r.rankMax)?.score ?? null;
-  return { ...live, cut, scoreAt, outOf: table?.outOf ?? null };
+  const dnb = !aiqCut;
+  return { ...live, cut, scoreAt, outOf: table?.outOf ?? null, quotaName: dnb ? "DNB quota" : "All India Quota", quotaShort: dnb ? "DNB" : "AIQ" };
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
@@ -109,9 +112,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const description = fitDescription(
     ...(live && open
       ? [
-          `${b.name} cutoff: in NEET PG ${live.year} ${live.spec.label.toLowerCase()} the last Open AIQ seat went to AIR ${inr(open)}. ${seatsLine}${y.trim()} closing ranks by quota and category, with fees.`,
-          `${b.name} cutoff: in NEET PG ${live.year} ${live.spec.label.toLowerCase()} the last Open AIQ seat went to AIR ${inr(open)}. ${y.trim()} closing ranks in ${inr(b.colleges)} colleges, by quota and category, with fees.`,
-          `${b.name}: NEET PG ${live.year} ${live.spec.label.toLowerCase()} AIQ last rank AIR ${inr(open)} (Open), and ${y.trim()} closing ranks in ${inr(b.colleges)} colleges.`,
+          `${b.name} cutoff: in NEET PG ${live.year} ${live.spec.label.toLowerCase()} the last Open ${live.quotaShort} seat went to AIR ${inr(open)}. ${seatsLine}${y.trim()} closing ranks by quota and category, with fees.`,
+          `${b.name} cutoff: in NEET PG ${live.year} ${live.spec.label.toLowerCase()} the last Open ${live.quotaShort} seat went to AIR ${inr(open)}. ${y.trim()} closing ranks in ${inr(b.colleges)} colleges, by quota and category, with fees.`,
+          `${b.name}: NEET PG ${live.year} ${live.spec.label.toLowerCase()} ${live.quotaShort} last rank AIR ${inr(open)} (Open), and ${y.trim()} closing ranks in ${inr(b.colleges)} colleges.`,
         ]
       : []),
     ...(seatsLine ? [`${seatsLine}${b.name} closing rank${y} by quota and category, with fees and stipend.`] : []),
@@ -181,7 +184,7 @@ export default async function BranchPage({
       // A figure over every college that took the branch (≥3), never one college's cut (the chance-view rule).
       a:
         (live?.cut.Open
-          ? `In MCC's NEET PG ${live.year} ${live.spec.label.toLowerCase()} result, the last Open All India Quota seat in ` +
+          ? `In MCC's NEET PG ${live.year} ${live.spec.label.toLowerCase()} result, the last Open ${live.quotaName} seat in ` +
             `${b.name} went to AIR ${inr(live.cut.Open)}, across every college that took the branch in the round. `
           : "") +
         `It depends on the quota as much as on the rank: management and NRI seats at the same colleges ` +
@@ -195,7 +198,7 @@ export default async function BranchPage({
           {
             q: `What NEET PG score is needed for ${b.name}?`,
             a:
-              `In MCC's NEET PG ${live.year} ${live.spec.label.toLowerCase()} result (All India Quota), the last Open seat in ` +
+              `In MCC's NEET PG ${live.year} ${live.spec.label.toLowerCase()} result (${live.quotaName}), the last Open seat in ` +
               `${b.name} went to AIR ${inr(live.cut.Open)} — a score of about ${live.scoreAt(live.cut.Open)}` +
               `${live.outOf ? ` out of ${live.outOf}` : ""} in NBEMS's ${live.year} result. ` +
               CUT_CATS.filter((c) => c !== "Open" && live.cut[c] != null && live.scoreAt(live.cut[c]!) != null)
@@ -325,7 +328,7 @@ export default async function BranchPage({
         {live && (
           <section className="mt-7 rounded-2xl border border-primary/25 bg-primary-soft p-5 md:p-6" aria-labelledby="live-round">
             <h2 id="live-round" className="font-heading text-lg font-bold text-foreground md:text-xl">
-              {b.name}: NEET PG {live.year} {live.spec.label}, All India Quota
+              {b.name}: NEET PG {live.year} {live.spec.label}, {live.quotaName}
             </h2>
             <p className="mt-1.5 max-w-[72ch] text-[14px] leading-relaxed text-muted-foreground">
               The last rank admitted in MCC&apos;s {live.final ? "final " : ""}{live.spec.label.toLowerCase()} result, by category, and the

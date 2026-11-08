@@ -6,9 +6,10 @@
  * every page shows the same numbers for the same seat.
  */
 
+import { unstable_cache } from "next/cache";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
-import { decodeEntities } from "@/lib/collegeName";
+import { collegeName, decodeEntities } from "@/lib/collegeName";
 
 const rows = <T,>(r: unknown) => r as unknown as T[];
 
@@ -302,6 +303,43 @@ export async function getOtherLevelPage(slug: string, level: Level): Promise<{ s
     `),
   )[0];
   return r ? { slug: r.slug, level: other } : null;
+}
+
+/**
+ * The same hospital's other PG page (2026-11-09): our PG list holds many hospitals twice — the MD/MS entry (MCC's
+ * name) and a DNB / NBE-diploma entry (NBEMS's name, ending in a PIN code). Search sends "<college> pg fees" to
+ * whichever ranks, so each links the other. Paired only when, within one state, exactly two entries share the short
+ * name and place and exactly one of them carries a PIN code — 46 pairs on 2026-11-09; an ambiguous group gets none.
+ */
+const pgTwinMap = unstable_cache(
+  async (): Promise<Record<string, { slug: string; dnb: boolean }>> => {
+    const all = rows<{ slug: string; name: string; state_id: number | null }>(
+      await db.execute(sql`SELECT slug, name, state_id FROM institutes WHERE level = 'pg' AND is_active = true`),
+    );
+    const pin = (n: string) => /\b\d{6}\b/.test(n);
+    const groups = new Map<string, { slug: string; name: string }[]>();
+    for (const r of all) {
+      const c = collegeName(r.name);
+      const k = `${r.state_id}|${c.short}|${c.place ?? ""}`.toLowerCase();
+      groups.set(k, [...(groups.get(k) ?? []), r]);
+    }
+    const out: Record<string, { slug: string; dnb: boolean }> = {};
+    for (const g of groups.values()) {
+      if (g.length !== 2) continue;
+      const dnb = g.find((x) => pin(x.name));
+      const mdms = g.find((x) => !pin(x.name));
+      if (!dnb || !mdms) continue;
+      out[mdms.slug] = { slug: dnb.slug, dnb: true };
+      out[dnb.slug] = { slug: mdms.slug, dnb: false };
+    }
+    return out;
+  },
+  ["pg-twin-map-v1"],
+  { revalidate: 86400, tags: ["seat-data"] },
+);
+
+export async function getPgTwin(slug: string): Promise<{ slug: string; dnb: boolean } | null> {
+  return (await pgTwinMap().catch(() => ({}) as Record<string, { slug: string; dnb: boolean }>))[slug] ?? null;
 }
 
 export async function getSimilarColleges(slug: string, level: Level, limit = 6) {

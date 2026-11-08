@@ -31,6 +31,7 @@
 import type { CollegeDetail, CourseCutoff, CollegeFee } from "@/lib/collegeQueries";
 import { approxFee, exactInr, feeKind, isYearlyFee } from "@/lib/chance";
 import { generalBands } from "@/lib/cutoffBands";
+import type { LiveBands } from "@/lib/collegeLiveBands";
 
 const SITE = "https://www.admissionhands.com";
 
@@ -86,6 +87,8 @@ export interface FaqFacts {
   fromNmc?: boolean;
   /** `seats` is NMC's own figure — then it is the one the FAQ quotes, the same as the page's NMC card. */
   seatsFromNmc?: boolean;
+  /** MCC's results for the counselling year in progress (PG), as bands — answered first ("<college> cut off 2026"). */
+  live?: LiveBands | null;
 }
 
 /**
@@ -144,6 +147,22 @@ export function collegeFaqs(
    * lib/depth.ts). The question is still what people search, so it is answered
    * with what genuinely decides it — which counselling, which quotas — and
    * where the student's own chance is shown. */
+  // The year in progress first: "<college> neet pg cut off 2026" is what is searched while it runs.
+  if (facts.live?.rows.length) {
+    const L = facts.live;
+    const top = L.rows.slice(0, 3);
+    const said = top.map((b) => `${b.band.replace(/\*$/, "")} on the ${b.quota} ${b.course} seat`).join(", ");
+    const cats = Object.entries(top[0].byCategory).map(([c, band]) => `${c} ${band!.replace(/\*$/, "")}`);
+    faqs.push({
+      q: `What is the NEET PG ${L.year} cut off for ${college.name}?`,
+      a:
+        `In MCC's ${L.year} ${L.label} result, the last general-category seat was taken at ${said} — rank bands, not ` +
+        `exact ranks. ` +
+        (cats.length ? `On the ${top[0].quota} ${top[0].course} seat the other categories closed at ${cats.join(", ")}. ` : "") +
+        `Later rounds usually reach further down the list. Sign in free on AdmissionHands to see your own chance here.`,
+    });
+  }
+
   if (cutoffs.length) {
     const counsellings = [...new Set(cutoffs.map((c) => c.counselling).filter(Boolean).map((c) => readableCounselling(c as string)))];
     const quotas = [...new Set(cutoffs.map((c) => c.quota).filter(Boolean))];

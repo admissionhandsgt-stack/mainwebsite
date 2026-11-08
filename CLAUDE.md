@@ -1820,6 +1820,23 @@ set against each page's own 28-day GSC queries. The files are in that session's 
   - AIIMS, JIPMER and PGIMER stipend: these are INI-CET institutes and we hold no data for them.
   - Judge the NRI and management titles on GSC around 11-17 before touching them.
 
+## The counselling year in progress on college and branch pages (2026-11-09)
+
+Search Console, 12 Oct – 8 Nov: college pages carry 94k of the site's impressions at position 9–10 (MBBS CTR 0.23%),
+"cut off" and "fees" lead, and "2026" is typed — while PG college titles said "Cut Off 2025". What changed:
+- **PG college pages show MCC's results for the year in progress** (`lib/collegeLiveBands.ts`, from `mcc_allotments`):
+  a band per branch × quota, general plus EWS/OBC/SC/ST, merit quotas only (deemed "Self-Financed Merit Seat" stays out,
+  like the paid quotas in `isMeritQuota`), the widest rank admitted so far with the rounds named ("round 1", "rounds
+  1–2"), and a trend against last year's same round. A second `CutoffBands` table above last year's; it leads the title
+  ("Cut Off 2026"), the description and an FAQ ("What is the NEET PG 2026 cut off for …?"). Shown only when MCC's year
+  is newer than the page's own data, so it steps aside once that year reaches `closing_ranks`. Never the rank itself.
+- **DNB and NBE-diploma branch pages** read the round's DNB family (`LatestRound.byCourseDnb`); they had no 2026 box.
+- **MCC's "Open Seat Quota" is merit** (`isMeritQuota`): it is every AIIMS and JIPMER MBBS seat, and BHU/AMU/Jamia's open
+  seats. Excluded until now, so no AIIMS page had a cut off.
+- **A college title's year is its band's year** (`collegeTitle`), not the page's newest row's.
+- **DNB ↔ MD/MS twin pages link each other** (`getPgTwin` in `collegeQueries.ts`): within a state, exactly two entries
+  with one short name + place, one ending in a PIN code — 46 pairs; ambiguous groups get no link.
+
 ## State counselling rounds of the year in progress (2026-11-04) — never in the predictor
 
 Owner's rule, 2026-11-04: *"Predictor mai 2026 round 1 ka data use mat karo bas feed karke rakho"*.

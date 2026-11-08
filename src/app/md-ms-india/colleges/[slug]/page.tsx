@@ -8,7 +8,7 @@ import { branchSlug } from "@/lib/branchSlug";
 import Link from "@/components/ui/Link";
 import Image from "next/image";
 import { MapPin } from "lucide-react";
-import { getOtherLevelPage, getSimilarColleges } from "@/lib/collegeQueries";
+import { getOtherLevelPage, getPgTwin, getSimilarColleges } from "@/lib/collegeQueries";
 import { loadCollegePage, collegeTitle, collegeDescription } from "@/lib/collegeSnippet";
 import CollegeGlance from "@/components/colleges/CollegeGlance";
 import NmcRecord from "@/components/colleges/NmcRecord";
@@ -89,9 +89,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 export default async function CollegePage({ params }: { params: { slug: string } }) {
   const data = await loadCollegePage(params.slug, "pg");
   if (!data) notFound();
-  const { college, cutoffs, fees, nmc, summary: s } = data;
+  const { college, cutoffs, fees, nmc, live, summary: s } = data;
 
-  const [pgStates, similar, photo, matrix, terms, mbbsPage] = await Promise.all([
+  const [pgStates, similar, photo, matrix, terms, mbbsPage, twin] = await Promise.all([
     getPgStates(),
     getSimilarColleges(params.slug, "pg", 5),
     getPgCollegePhoto(params.slug),
@@ -101,6 +101,8 @@ export default async function CollegePage({ params }: { params: { slug: string }
     getCollegeSeatTerms(college.slug),
     // The same college's MBBS page, when NMC pairs the two (lib/collegeQueries.ts).
     getOtherLevelPage(params.slug, "pg"),
+    // The same hospital's DNB entry, or its MD/MS entry (lib/collegeQueries.ts).
+    getPgTwin(params.slug),
   ]);
   // Words from Admin → Content ("Page: PG college pages — MCC seats, bond and stipend").
   const [seatsCopy, termsCopy] = await Promise.all([
@@ -125,7 +127,8 @@ export default async function CollegePage({ params }: { params: { slug: string }
   const counsellings = Array.from(new Set(cutoffs.map((c) => c.counselling).filter(Boolean))) as string[];
   const bands = generalBands(cutoffs, 20);
 
-  const faqs = collegeFaqs(college, cutoffs, fees, "pg", { course: s.course, type: s.type, seats: s.seats, fromNmc: s.fromNmc, seatsFromNmc: s.seatsFromNmc });
+  const faqs = collegeFaqs(college, cutoffs, fees, "pg", { course: s.course, type: s.type, seats: s.seats, fromNmc: s.fromNmc, seatsFromNmc: s.seatsFromNmc, live });
+  const liveR1 = live ? live.rounds.length === 1 && live.rounds[0] === "Round 1" : false;
   const jsonLd = collegeJsonLd({
     college,
     level: "pg",
@@ -185,6 +188,13 @@ export default async function CollegePage({ params }: { params: { slug: string }
                 {s.short}
               </h1>
               {s.official !== s.short && <p className="mt-3 max-w-[70ch] text-[14px] text-muted-foreground">{s.official}</p>}
+              {twin && (
+                <p className="mt-2 text-[14px]">
+                  <Link href={`/md-ms-india/colleges/${twin.slug}`} className="font-semibold text-primary-strong hover:underline">
+                    {twin.dnb ? `DNB and NBE diploma seats at ${s.short} →` : `MD/MS at ${s.short}: PG fees, stipend and cut off →`}
+                  </Link>
+                </p>
+              )}
               {mbbsPage && (
                 <p className="mt-2 text-[14px]">
                   <Link href={`/mbbs-india/colleges/${mbbsPage.slug}`} className="font-semibold text-primary-strong hover:underline">
@@ -291,6 +301,23 @@ export default async function CollegePage({ params }: { params: { slug: string }
                 </>
               )}
             </section>
+
+            {/* The counselling year in progress, from MCC's own results — above last year's complete figures. */}
+            {live && (
+              <div className="mt-12">
+                <CutoffBands
+                  id="live-bands-h"
+                  rows={live.rows.slice(0, 20)}
+                  collegeName={college.name}
+                  level="pg"
+                  ctaHref="/neet-college-predictor?course=pg"
+                  heading={`${s.short} cut off ${live.year}: NEET PG ${live.label} (MCC)`}
+                  intro={`MCC's ${live.year} ${live.label} result: where the last seat of each category was taken, shown as a band.`}
+                  footnote={`*A band, not the exact rank — the last seat of that category on that quota in MCC's ${live.year} ${live.label} result. Later rounds usually reach further down the list.`}
+                  trendLabel={liveR1 ? `vs ${live.year - 1} round 1` : `vs ${live.year - 1}`}
+                />
+              </div>
+            )}
 
             {bands.length > 0 && (
               <div className="mt-12">

@@ -237,5 +237,8 @@ export function isMeritQuota(quota: string): boolean {
   // "Pvt Govt Quota") are merit and stay.
   // Wards' quotas (Delhi's Children/Widows of armed-forces personnel, TN's IRT wards) are open only to those
   // families and close far down the list — out since 2026-11-05.
-  return !/NRI|manag|MNG|Mgmt|Mgt\b|minority|sponsor|paid|deemed|institut|Others|ESI|\bSF-|Open Seat|NQ|MQ|Widow|IRTWard/i.test(quota);
+  // MCC's "Open Seat Quota" is merit: it is how MCC allots every AIIMS and JIPMER MBBS seat, and the open seats at BHU,
+  // AMU and Jamia (AIIMS New Delhi's general seat closed at AIR 48 in 2025). It was excluded until 2026-11-09, which
+  // left every AIIMS and JIPMER MBBS page without a cut off ("aiims bilaspur cutoff" landed on "Fees & Seats").
+  return !/NRI|manag|MNG|Mgmt|Mgt\b|minority|sponsor|paid|deemed|institut|Others|ESI|\bSF-|NQ|MQ|Widow|IRTWard/i.test(quota);
 }

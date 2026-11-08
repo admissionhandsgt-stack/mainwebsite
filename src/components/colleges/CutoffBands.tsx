@@ -15,11 +15,22 @@ export default function CutoffBands({
   collegeName,
   level,
   ctaHref,
+  heading,
+  intro,
+  footnote,
+  trendLabel,
+  id = "bands-h",
 }: {
   rows: BandRow[];
   collegeName: string;
   level: "ug" | "pg";
   ctaHref: string;
+  /** For a second table (the counselling year in progress): its own heading, line under it and footnote. */
+  heading?: string;
+  intro?: string;
+  footnote?: string;
+  trendLabel?: string;
+  id?: string;
 }) {
   if (!rows.length) return null;
   const year = rows.find((r) => r.year)?.year;
@@ -27,15 +38,15 @@ export default function CutoffBands({
   const hub = level === "pg" ? "/neet-pg-cutoff" : "/neet-ug-cutoff";
   // A reserved column only where some row has a band in it.
   const cats = BAND_CATEGORIES.filter((c) => rows.some((r) => r.byCategory[c]));
-  const heads = [courseHead, "Quota", "General", ...cats, "Trend (general)"];
+  const heads = [courseHead, "Quota", "General", ...cats, trendLabel ?? "Trend (general)"];
 
   return (
-    <section aria-labelledby="bands-h">
-      <h2 id="bands-h" className="font-heading text-xl font-bold text-foreground md:text-2xl">
-        {collegeName} cutoff{year ? ` ${year}` : ""} — approximate band
+    <section aria-labelledby={id}>
+      <h2 id={id} className="font-heading text-xl font-bold text-foreground md:text-2xl">
+        {heading ?? `${collegeName} cutoff${year ? ` ${year}` : ""} — approximate band`}
       </h2>
       <p className="mt-1.5 max-w-[72ch] text-[14.5px] leading-relaxed text-muted-foreground">
-        Where the last seat of each category was taken across all rounds, shown as a band.{" "}
+        {intro ?? "Where the last seat of each category was taken across all rounds, shown as a band."}{" "}
         {cats.length ? "" : "Other categories, "}PwD, NRI and management seats, and your own chance, are a free sign-in away.
       </p>
 
@@ -101,7 +112,7 @@ export default function CutoffBands({
         </table>
       </div>
       <p className="mt-2 text-[11.5px] leading-relaxed text-muted-foreground">
-        {BAND_FOOTNOTE} National category-wise cutoffs are on the{" "}
+        {footnote ?? BAND_FOOTNOTE} National category-wise cutoffs are on the{" "}
         <Link href={hub} className="text-primary hover:underline">
           {level === "pg" ? "NEET PG" : "NEET UG"} cutoff page
         </Link>
