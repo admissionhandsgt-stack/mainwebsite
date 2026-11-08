@@ -840,6 +840,22 @@ Loaded: 1,727 institutes · 43,999 closing ranks (2025 and 2026) · 18,093 seat 
 3,457 fee rows · 8 courses (MBBS 33,855 rank rows, BDS 9,326, then BAMS/BHMS/B.Sc. Nursing/BVSc/BUMS/BSMS) ·
 41 counsellings · 34 states.
 
+**MCC's NEET UG 2026 results replace the scrape's 2026 MCC rows (applied 2026-11-09, owner's OK).** The five result PDFs
+(Round 1–3, stray, special stray; raw files in `D:/Admisson Hands/ug_data/mcc_2026`, outside the repo). Pipeline:
+`python -E -P scripts/ug/extract_ug_pdf.py <pdf> 2026 <round> <csv>` (R1/stray print SNo + Rank; the special stray adds a
+roll number, which is skipped and never stored; R2/R3 repeat earlier rounds, and the last seven cells are this round's) →
+`node --env-file=.env.local scripts/ug/match_ug_institutes.mjs <dir>` (616 MCC names: prefix, then a trigram score with
+stream/place/marker guards, then `scripts/data/ug_mcc_decisions.json` — 119 by hand, renamed colleges and twins in its
+`_notes`) → `node --env-file=.env.local scripts/ug/import_mcc_ug.mjs <dir> [--apply --backup <f>] | --restore <f>`.
+Only "Allotted" / "Fresh Allotted" / "Upgraded" rows count (not "Retained"); nursing is out; MCC's counsellings map onto
+2025's (AIQ 123, Open Seat 135, Deemed 137, ESI 126, DU 150, IP 154, AMU 146, CW 151, Jamia 147), R4 = stray,
+R5 = special stray, as in 2025. AMU's self-finance and NRI seats, Jamia's Muslim quotas, JIPMER's Puducherry-domicile
+seats and the foreign-country quota have no 2025 home and are skipped (~150 rows).
+Result: 1,156 old rows → 9,635 (MBBS 8,521, BDS 1,114, 602 colleges), fees carried onto the new rows from the old
+ones; R1 general AIQ against 2025 median ratio 1.05. Backup `D:/Admisson Hands/ug_data/backups/closing_ranks_ug_2026_mcc_before_2026_11_09.json`.
+MCC's UG counselling was complete (special stray 6 Nov), so it is not a year in progress — the state counsellings' 2026
+rows (~400, R1/R2 only, from the September scrape) still are.
+
 **Parse the saved HTML, never the CSV or JSON the scraper also wrote.** Those were keyed from the
 header row, but the body rows carry two extra cells of HTML-comment debris, so every column after the
 first is shifted by one in them — `institute` holds the quota, `course` holds the institute, `fees`
