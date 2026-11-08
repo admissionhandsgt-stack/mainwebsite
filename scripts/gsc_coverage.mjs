@@ -1,6 +1,6 @@
 // Search Console URL Inspection for every sitemap URL — the honest index map (read-only, 2026-11-08).
 //
-//   node --env-file=.env.local scripts/gsc_coverage.mjs run [out.jsonl] [limit=1900]
+//   node --env-file=.env.local scripts/gsc_coverage.mjs run [out.jsonl] [limit=1400]
 //   node --env-file=.env.local scripts/gsc_coverage.mjs report [out.jsonl]
 //
 // `run` reads the sitemap index, skips URLs already in out.jsonl (so it resumes day after day) and inspects the rest,
@@ -9,12 +9,15 @@
 // pages Google knows. `report` groups the file by page family and lists the not-indexed pages with fewest referrers —
 // the ones internal links help most. Needs GSC_SA_KEY (the service account's key file, outside the repo).
 // This never requests indexing: the Indexing API is not for these pages, and the UI's "Request indexing" is by hand.
+// The 2,000 a day is the property's whole URL-inspection quota, shared with the Search Console screen: a run that
+// spends it leaves Request indexing stuck on "Retrieving data" until the reset (Pacific midnight, 13:30 IST), as on
+// 2026-11-09. So the default leaves 600 for the screen — do the day's Request indexing first, then this.
 import { readFileSync, appendFileSync, existsSync } from "node:fs";
 import { createSign } from "node:crypto";
 
 const [cmd = "report", outArg, limitArg] = process.argv.slice(2);
 const OUT = outArg ?? "D:/Admisson Hands/seo_data/gsc_coverage_2026-11.jsonl";
-const LIMIT = Number(limitArg ?? 1900);
+const LIMIT = Number(limitArg ?? 1400);
 const SITE = "sc-domain:admissionhands.com";
 
 const family = (u) => {

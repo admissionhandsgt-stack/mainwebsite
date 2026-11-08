@@ -31,7 +31,9 @@ node scripts/verify_auth_flow.mjs <url>  # 21 checks: sends a real code, redeems
 bash scripts/seo_drift.sh compare        # after every deploy: title/description/canonical/robots/H1/JSON-LD/OG of 12 key
                                          # templates vs the last baseline (seo-drift skill); `baseline` after a wanted change
 node --env-file=.env.local scripts/gsc_coverage.mjs run|report   # URL Inspection API over the whole sitemap, resumable,
-                                         # ≤2,000/day (D:/Admisson Hands/seo_data/); report = indexed by page family
+                                         # 1,400/day by default (D:/Admisson Hands/seo_data/); report = indexed by page family.
+                                         # The property's 2,000 inspections a day are shared with GSC's Request indexing —
+                                         # request first, run this after
 npm run build:cf     # OpenNext build for Cloudflare
 npm run deploy:cf    # deploy worker
 ```
