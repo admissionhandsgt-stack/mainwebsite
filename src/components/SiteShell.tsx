@@ -12,6 +12,7 @@ import type { NavItem } from '@/lib/content';
 import LiveAlerts, { type BarAlert } from '@/components/LiveAlerts';
 import EngagementLayer from '@/components/engage/EngagementLayer';
 import ClickTracker from '@/components/analytics/ClickTracker';
+import WebVitals from '@/components/analytics/WebVitals';
 import SiteSearch from '@/components/SiteSearch';
 import { TeamFiguresProvider, type TeamFigures } from '@/components/engage/TeamFigures';
 import { TelegramProvider, type TelegramCopy } from '@/components/engage/TelegramLink';
@@ -108,6 +109,7 @@ export default function SiteShell({
         social={social}
       />
       <ClickTracker />
+      <WebVitals />
       <EngagementLayer
         signedIn={Boolean(accountName)}
         firstName={accountName && accountName !== 'Account' ? accountName : null}

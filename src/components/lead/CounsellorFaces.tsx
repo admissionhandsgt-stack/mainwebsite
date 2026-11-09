@@ -45,7 +45,7 @@ export default function CounsellorFaces({
               }`}
             >
               {c.photo ? (
-                <Image src={`/card/${c.photo}`} alt="" width={44} height={44} loading="eager" className="h-11 w-11 shrink-0 rounded-full object-cover" />
+                <Image src={`/card/${c.photo}`} alt="" width={44} height={44} className="h-11 w-11 shrink-0 rounded-full object-cover" />
               ) : (
                 <span className="font-heading inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-brand text-[14px] font-extrabold text-white">
                   {initials(c.name)}
@@ -82,7 +82,6 @@ export default function CounsellorFaces({
               alt=""
               width={size}
               height={size}
-              loading="eager"
               className={`rounded-full border-2 object-cover ${ring}`}
               style={{ width: size, height: size }}
             />
