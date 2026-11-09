@@ -1889,9 +1889,11 @@ kept page (`src/lib/collegeMerges.ts`, read by the UG college page). MCC's names
   `call_click` (the last two sent to GA4 from `ClickTracker` since this release, with `placement` and `source_page`);
   event-scoped custom dimensions `placement`, `form`, `course`, `rank_band`, `source_page`, `lead_source`, `type`. No
   default key-event value (it offered $1). Account 391567417, property 533251003.
-- **Zyn notices:** the first read takes only the last week (`since` = 7 days ago), so switching the feed on does not
-  put weeks of notices on the bar. zyn-c9 gave the owner's OK for the endpoint on 9 Nov; the owner switches it on in
-  Admin → Notices (Zyn).
+- **Zyn notices are live since 2026-11-05** (endpoint saved and switched on in Admin → Notices (Zyn); 31 notices by
+  9 Nov, 25 on the bar, MCC's Round 2 dates applied on 8 Nov). A first read with no cursor takes only the last week.
+  A notice whose file sits on Google Drive but comes from an official board's page (CENTAC Puducherry posts that way —
+  three of its PG Medical notices were held on 6 Nov as "not an official domain") now links the board's page instead
+  of the Drive file. AYUSH and exam-result notices stay held, as they should.
 
 ## The counselling year in progress on college and branch pages (2026-11-09)
 

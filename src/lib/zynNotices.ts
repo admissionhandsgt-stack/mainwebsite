@@ -316,6 +316,9 @@ async function applySchedule(title: string, data: Record<string, string>) {
 async function take(n: ZynNotice): Promise<"published" | "held" | "seen"> {
   const seen = (await db.execute(sql`SELECT 1 FROM zyn_notices WHERE id = ${n.id}`)) as unknown as unknown[];
   if (seen.length) return "seen";
+  // CENTAC Puducherry posts its notices as Google Drive files linked from its own site (three PG Medical notices
+  // were held on 6 Nov 2026 for it). A Drive file is anybody's, so the alert links the authority's own page instead.
+  if (n.url && /^(drive|docs)\.google\.com$/.test(hostOf(n.url) ?? "") && n.page && officialLink(n.page)) n = { ...n, url: n.page };
 
   let status: "published" | "held" = "published";
   let reason: string | null = null;
