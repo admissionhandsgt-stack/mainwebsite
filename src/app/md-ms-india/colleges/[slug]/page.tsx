@@ -9,7 +9,7 @@ import Link from "@/components/ui/Link";
 import Image from "next/image";
 import { MapPin } from "lucide-react";
 import { getOtherLevelPage, getPgTwin, getSimilarColleges } from "@/lib/collegeQueries";
-import { loadCollegePage, collegeTitle, collegeDescription } from "@/lib/collegeSnippet";
+import { loadCollegePage, collegeTitle, collegeDescription, collegeHeadline } from "@/lib/collegeSnippet";
 import CollegeGlance from "@/components/colleges/CollegeGlance";
 import NmcRecord from "@/components/colleges/NmcRecord";
 import CollegeRankCheck from "@/components/colleges/CollegeRankCheck";
@@ -185,7 +185,7 @@ export default async function CollegePage({ params }: { params: { slug: string }
               )}
 
               <h1 className="font-heading max-w-[22ch] text-[clamp(1.9rem,4.2vw,3.1rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-foreground [text-wrap:balance]">
-                {s.short}
+                {collegeHeadline(s)}
               </h1>
               {s.official !== s.short && <p className="mt-3 max-w-[70ch] text-[14px] text-muted-foreground">{s.official}</p>}
               {twin && (

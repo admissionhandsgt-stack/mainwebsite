@@ -2,7 +2,7 @@
   "_notes": {
     "what": "MCC NEET UG 2026 allotment names (normalised name + town, or its start) -> our UG institute id; null = none of ours. Read by scripts/ug/match_ug_institutes.mjs.",
     "renamed": "GMC Cuddalore is the former Rajah Muthiah Medical College (4447); K.H. Patil IMS is the former Gadag IMS (4403); Dharanidhar MC is the former GMC Keonjhar (3450); Mahraja Jajati Keshari MC is the former GMC Jajpur (3877); Rajmata Devendra Kumari Singhdeo GMC is GMC Ambikapur (4516); Shri Atal Bihari Vajpayee MC&RI, Shivajinagar is the former Bowring & Lady Curzon (4382).",
-    "twins": "Two entries for one college: the one MCC allotted before wins (Bijnor 3879 over 4301, Banda 4310 over 3406).",
+    "twins": "Two entries for one college: the one MCC allotted before won on the first import (Bijnor 3879 over 4301). On 2026-11-09 scripts/ug/merge_ug_twins.mjs merged 20 twins onto the entry NMC is paired with and switched the other off, so these names now point at the kept entry: Banda 3406 (was 4310), Coochbehar 3434, Purulia 3322, Thiruvannamalai 4477, Akbarpur = ASMC Kanpur Dehat 3885, Shivpuri 3680, GMC Mumbai (L.T. Marg) 3910.",
     "none": "Not in our UG list on 2026-11-09: GMC Porbandar, GMC Karauli, Bongaigaon MC, GMC Pithoragarh, GMC Chapra, Shri Ram Janki MC Samastipur, GMC Ahilyanagar, GMC Khammam (Mamata MC Khammam is a different, private college), Bagalkote MC&RI (government; S Nijalingappa and S R Patil are other colleges), Datta Meghe Dental College."
   },
   "meenakshi medical college and research institute enathur": 4584,
@@ -53,7 +53,7 @@
   "tamralipto government medical college and hospital": 3424,
   "government dental college and hosp mumbai": 3071,
   "dr r ahmed dent college and hosp kolkata": 3048,
-  "purulia government medical college and hospital": 4552,
+  "purulia government medical college and hospital": 3322,
   "government medical college ramagundam": 3718,
   "government medical college and hospital cuddalore": 4447,
   "tamil government d c and hosp chennai": 3290,
@@ -86,7 +86,7 @@
   "government medical college washim": 4062,
   "kalyan singh government medical college": 3871,
   "government medical college karauli": null,
-  "government allopathic medical college banda": 4310,
+  "government allopathic medical college banda": 3406,
   "rajkiya medical college jalaun orai": 3352,
   "autonomous state society medical college mirzapur": 3889,
   "nagaon medical college": 3689,
@@ -96,7 +96,7 @@
   "government dental college kannur": 3202,
   "s c b medical college dental cuttack": 3349,
   "government medical college udhampur": 3729,
-  "government medical college l t marg": 3957,
+  "government medical college l t marg": 3910,
   "dc rims": 3042,
   "government d c and research inst bangalore": 3079,
   "government dental college dibrugarh": 3080,
@@ -121,5 +121,9 @@
   "government medical college dantewada": 4290,
   "late jagjivan ram government medical college pithoragarh": null,
   "punyashlok ahilyadevi holkar government medical college ahilyanagar": null,
-  "j r medical college and hospital villupuram": 4032
+  "j r medical college and hospital villupuram": 4032,
+  "coochbehar government medical college and hospital coochbehar": 3434,
+  "government thiruvannamalai medical college thiruvannamalai": 4477,
+  "autonomous state medical college akbarpur": 3885,
+  "government medical college shivpuri": 3680
 }

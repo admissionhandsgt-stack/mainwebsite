@@ -570,6 +570,10 @@ export default async function RoundResultPage({ params }: { params: Params }) {
               {body.process_link}
             </Link>{" "}
             ·{" "}
+            <Link href="/neet-pg-choice-filling" className="font-semibold text-primary-strong hover:underline dark:text-primary">
+              Choice filling, upgradation and free exit rules
+            </Link>{" "}
+            ·{" "}
             <Link href="/neet-college-predictor?course=pg" className="font-semibold text-primary-strong hover:underline dark:text-primary">
               {copy.cta}
             </Link>

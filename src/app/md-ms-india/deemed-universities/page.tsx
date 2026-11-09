@@ -181,7 +181,8 @@ export default async function DeemedPgPage() {
           ))}
         </div>
         <p className="mt-6 text-sm text-muted-foreground">
-          Also: <Link href="/md-ms-india/private-college-fees" className="font-semibold text-primary-strong hover:underline">private college PG fees</Link> ·{" "}
+          Also: <Link href="/md-ms-india/fees" className="font-semibold text-primary-strong hover:underline">PG fees in every state, college by college</Link> ·{" "}
+          <Link href="/md-ms-india/private-college-fees" className="font-semibold text-primary-strong hover:underline">private college PG fees</Link> ·{" "}
           <Link href="/nri-quota/fees" className="font-semibold text-primary-strong hover:underline">NRI quota fees</Link> ·{" "}
           <Link href="/mbbs-india/deemed-universities" className="font-semibold text-primary-strong hover:underline">deemed universities for MBBS</Link>
         </p>

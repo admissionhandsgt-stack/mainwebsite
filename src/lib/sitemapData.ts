@@ -3,6 +3,7 @@ import { getBranches } from "@/lib/branchQueries";
 import { getBranchStateCombos } from "@/lib/branchStateQueries";
 import { getPgStates } from "@/lib/pgStateQueries";
 import { getStipends } from "@/lib/cutoffHubQueries";
+import { getFeeStates } from "@/lib/pgFeeMatrix";
 import { getSsCourses } from "@/lib/ssQueries";
 import { getMdsSlugs } from "@/lib/mdsQueries";
 import { ROUNDS, getCounsellingYear, getCounsellingYears, getLatestLiveRound, getRoundState, roundPath } from "@/lib/mccResults";
@@ -65,6 +66,9 @@ const STATIC: { path: string; priority: number; freq: SitemapEntry["changeFreque
   { path: "/md-ms-india/bond", priority: 0.8, freq: "monthly" },
   { path: "/md-ms-india/private-college-fees", priority: 0.8, freq: "monthly" },
   { path: "/md-ms-india/deemed-universities", priority: 0.8, freq: "monthly" },
+  // The PG fee matrix, state by state (2026-11-09), and MCC's choice filling / upgrade / free exit rules.
+  { path: "/md-ms-india/fees", priority: 0.9, freq: "weekly" },
+  { path: "/neet-pg-choice-filling", priority: 0.9, freq: "weekly" },
   { path: "/nri-quota", priority: 0.7, freq: "monthly" },
   { path: "/nri-quota/colleges", priority: 0.6, freq: "monthly" },
   // The two highest-value quota queries in this market: what an NRI or a
@@ -277,6 +281,15 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
     }
   } catch (error) {
     console.error("[sitemap] stipend states could not be listed", error);
+  }
+  // One fee-matrix page per state with three or more colleges publishing a yearly PG fee (2026-11-09); dated by
+  // the newest fee change in the state (fees.updated_at).
+  try {
+    for (const s of (await getFeeStates()).states) {
+      out.states.push({ url: `${BASE}/md-ms-india/fees/${seg(s.slug)}`, lastModified: s.updated ?? undefined, changeFrequency: "monthly", priority: 0.8 });
+    }
+  } catch (error) {
+    console.error("[sitemap] fee states could not be listed", error);
   }
 
   // One page per PG branch — "MD Radiology cutoff", "rank required for MD Dermatology".

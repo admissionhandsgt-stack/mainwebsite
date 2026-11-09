@@ -269,6 +269,11 @@ export default async function NeetPgProcessPage() {
                 <p className="mt-4 max-w-[60ch] text-[15px] leading-relaxed text-muted-foreground md:text-base">
                   {copy.float_p2}
                 </p>
+                <p className="mt-4 text-[15px]">
+                  <Link href="/neet-pg-choice-filling" className="font-semibold text-primary-strong hover:underline dark:text-primary">
+                    Choice filling, Freeze vs Float, upgradation and free exit — MCC&apos;s rules, round by round →
+                  </Link>
+                </p>
 
                 <Link
                   href="/neet-college-predictor?course=pg"

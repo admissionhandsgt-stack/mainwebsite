@@ -29,6 +29,257 @@ export interface CopyGroup {
 const hero = (fields: Record<string, CopyField>): Record<string, CopyField> => fields;
 
 export const PAGE_COPY = {
+  "page.pg_choice_filling.hero": {
+    group: "Page: NEET PG choice filling, upgrade & free exit",
+    fields: hero({
+      eyebrow: { label: "Hero eyebrow — {year}", value: "NEET PG {year} · MCC counselling" },
+      title: { label: "Hero title", value: "Choice filling, upgradation" },
+      accent: { label: "Hero title, coloured part", value: "and free exit" },
+      subtitle: {
+        label: "Hero line",
+        value:
+          "What you can change before locking, what Freeze and Float mean, when leaving a seat is free and when it costs your deposit — round by round, from MCC's own bulletin and notices.",
+        long: true,
+      },
+      cta: { label: "Hero button", value: "See your round 2 chances" },
+      source: {
+        label: "Source line",
+        value:
+          "From MCC's NEET PG 2026 Information Bulletin & Counselling Scheme and its notices, each named below. MCC revises its rules and dates; its latest notice always wins.",
+        long: true,
+      },
+    }),
+  },
+  "page.pg_choice_filling.body": {
+    group: "Page: NEET PG choice filling — FAQ",
+    fields: {
+      faq1_q: { label: "Question 1", value: "Can I change my NEET PG choices after locking?" },
+      faq1_a: {
+        label: "Answer 1",
+        value:
+          "No. You can add, delete and reorder choices until you lock them; once locked they cannot be changed, and MCC will not unlock them on request. If you do not lock, what you saved is locked automatically at the time MCC notifies.",
+        long: true,
+      },
+      faq2_q: { label: "Question 2", value: "How many choices should I fill in NEET PG counselling?" },
+      faq2_a: {
+        label: "Answer 2",
+        value: "There is no limit. MCC's bulletin suggests filling 30 to 40 choices — every seat you would actually join, in the order you would prefer it.",
+        long: true,
+      },
+      faq3_q: { label: "Question 3", value: "What is free exit in NEET PG counselling?" },
+      faq3_a: {
+        label: "Answer 3",
+        value:
+          "Free exit is leaving a round 1 seat without losing your security deposit — by not reporting, or by resigning within MCC's window. You stay eligible for round 2 without registering again. It is available only in round 1.",
+        long: true,
+      },
+      faq4_q: { label: "Question 4", value: "Is there free exit in NEET PG round 2?" },
+      faq4_a: {
+        label: "Answer 4",
+        value:
+          "No. If you are allotted a seat in round 2 and do not join it, or surrender it, your security deposit is forfeited. You can still take part in round 3, paying the fee again.",
+        long: true,
+      },
+      faq5_q: { label: "Question 5", value: "What happens to my round 1 seat if I am upgraded in round 2?" },
+      faq5_a: {
+        label: "Answer 5",
+        value:
+          "It is cancelled at once and allotted to the next candidate on merit. You take relieving online and join the round 2 seat; you have no claim on the round 1 seat any more.",
+        long: true,
+      },
+      faq6_q: { label: "Question 6", value: "What is the difference between Freeze and Float?" },
+      faq6_a: {
+        label: "Answer 6",
+        value:
+          "Freeze means you keep the seat and want no upgrade: you join it in person at the college. Float means you want an upgrade: your documents are verified online by the allotted college and you give your willingness online, without visiting. The willingness can be submitted only once.",
+        long: true,
+      },
+      faq7_q: { label: "Question 7", value: "Can I resign a NEET PG round 3 seat?" },
+      faq7_a: {
+        label: "Answer 7",
+        value:
+          "No. Once you join a round 3 seat you cannot resign it or upgrade from it. If you do not join it, the deposit is forfeited and you cannot take part in any further MCC round.",
+        long: true,
+      },
+      faq8_q: { label: "Question 8", value: "How much is the NEET PG counselling security deposit?" },
+      faq8_a: {
+        label: "Answer 8",
+        value:
+          "₹25,000 for unreserved and EWS candidates on the All India Quota (registration ₹1,000), ₹10,000 for SC, ST, OBC and PwD (registration ₹500), and ₹2,00,000 for deemed universities in every category (registration ₹5,000). It is refunded after the counselling ends unless it is forfeited.",
+        long: true,
+      },
+      faq9_q: { label: "Question 9", value: "Will leaving a seat bar me from next year's NEET PG?" },
+      faq9_a: {
+        label: "Answer 9",
+        value:
+          "MCC's 2026 bulletin names no such bar: what it names is forfeiture of the deposit and, after round 3, being out of further MCC rounds. In the 2024 counselling MCC did announce a year's bar for not joining a stray-round seat, so read each year's notices; the Delhi High Court held in March 2026 that only forfeiture applied in the 2025 cycle.",
+        long: true,
+      },
+      lead_title: { label: "Enquiry form heading", value: "Float or freeze? Talk it through first" },
+      lead_body: {
+        label: "Enquiry form line",
+        value:
+          "A seat given up cannot be taken back. Tell us your rank and the seat you hold; a counsellor will look at what moved last year and help you decide before the window closes.",
+        long: true,
+      },
+    },
+  },
+  "page.pg_fees.hero": {
+    group: "Page: NEET PG fees (fee matrix)",
+    fields: hero({
+      eyebrow: { label: "Hero eyebrow", value: "NEET PG fees · {year}" },
+      title: { label: "Hero title", value: "MD/MS fees in India," },
+      accent: { label: "Hero title, coloured part", value: "state by state" },
+      subtitle: {
+        label: "Hero line — {colleges}, {states}, {official}",
+        value:
+          "The yearly MD/MS fee at {colleges} colleges in {states} states — government, private and deemed — quota by quota, with each college's own 2026-27 notice wherever one is out ({official} colleges so far).",
+        long: true,
+      },
+      cta: { label: "Hero button", value: "Check your PG chances" },
+      source: {
+        label: "Source line",
+        value:
+          "Fees marked 2026-27 are as printed in the college's or the counselling authority's 2026-27 notice; the rest are as listed for the counselling (*). Tuition only where the notice prints it; hostel, deposit and bond are extra. DNB seats are left out: NBEMS has not published a 2026 fee.",
+        long: true,
+      },
+    }),
+  },
+  "page.pg_fees.body": {
+    group: "Page: NEET PG fees (fee matrix) — body",
+    fields: {
+      table_title: { label: "Table heading", value: "PG fees in every state" },
+      table_intro: {
+        label: "Table line",
+        value:
+          "The middle fee a year for each kind of seat, one figure per college. Open a state for every college, quota and branch.",
+        long: true,
+      },
+      faq_title: { label: "FAQ heading", value: "NEET PG fees: common questions" },
+      faq1_q: { label: "Question 1", value: "What is the MD/MS fee in government medical colleges in India?" },
+      faq1_a: {
+        label: "Answer 1 — {govt_median}, {govt_colleges}",
+        value:
+          "On the state government quota the middle fee is {govt_median} a year across {govt_colleges} government colleges. It differs a great deal by state, from a few thousand rupees to over a lakh; the state table shows each.",
+        long: true,
+      },
+      faq2_q: { label: "Question 2", value: "What is the MD/MS fee in private medical colleges?" },
+      faq2_a: {
+        label: "Answer 2 — {private_state_median}, {private_mgmt_median}, {private_colleges}",
+        value:
+          "At {private_colleges} private colleges, a seat filled by the state's merit list costs a middle {private_state_median} a year, and a management seat {private_mgmt_median}. The fee is per seat type, so the same college charges both.",
+        long: true,
+      },
+      faq3_q: { label: "Question 3", value: "What is the PG fee at deemed universities?" },
+      faq3_a: {
+        label: "Answer 3 — {deemed_median}, {deemed_colleges}",
+        value:
+          "A deemed university's paid (management) seat, allotted by MCC, costs a middle {deemed_median} a year across {deemed_colleges} deemed universities. Several charge NRI seats in US dollars.",
+        long: true,
+      },
+      faq4_q: { label: "Question 4", value: "What is the NRI quota fee for MD/MS?" },
+      faq4_a: {
+        label: "Answer 4 — {nri_median}",
+        value: "The middle NRI-quota fee is {nri_median} a year, one figure per college across private colleges and deemed universities.",
+        long: true,
+      },
+      faq5_q: { label: "Question 5", value: "Are these the 2026-27 fees?" },
+      faq5_a: {
+        label: "Answer 5 — {official}, {colleges}",
+        value:
+          "{official} of the {colleges} colleges have their fee from their own or the counselling authority's 2026-27 notice, printed exactly. The rest are as listed for the counselling and shown as an approximate bracket marked *. Confirm your seat's fee with the college before you pay.",
+        long: true,
+      },
+      lead_title: { label: "Enquiry form heading", value: "Want the fee for your exact seat?" },
+      lead_body: {
+        label: "Enquiry form line",
+        value: "Tell us your rank and budget. A counsellor will tell you which seats fit, what each costs a year, and the bond that comes with it.",
+        long: true,
+      },
+    },
+  },
+  "page.pg_fees_state.hero": {
+    group: "Page: NEET PG fees, one state",
+    fields: hero({
+      eyebrow: { label: "Hero eyebrow — {state}", value: "NEET PG fees · {state} · {year}" },
+      title: { label: "Hero title — {state}", value: "{state} MD/MS fees," },
+      accent: { label: "Hero title, coloured part", value: "college by college" },
+      subtitle: {
+        label: "Hero line — {state}, {colleges}, {official}",
+        value:
+          "Every government, private and deemed PG college in {state} with a published fee — {colleges} of them — quota by quota, the cheapest and dearest branch on each. {official} carry their 2026-27 notice.",
+        long: true,
+      },
+      cta: { label: "Hero button — {state}", value: "Check your PG chances in {state}" },
+      source: {
+        label: "Source line",
+        value:
+          "Fees marked 2026-27 are as printed in the college's or the counselling authority's 2026-27 notice; the rest are as listed for the counselling (*). Tuition only where the notice prints it; hostel, deposit and bond are extra. Confirm the fee for your seat before you pay.",
+        long: true,
+      },
+    }),
+  },
+  "page.pg_fees_state.body": {
+    group: "Page: NEET PG fees, one state — body",
+    fields: {
+      govt_title: { label: "Government table heading — {state}", value: "Government medical colleges in {state}" },
+      private_title: { label: "Private table heading — {state}", value: "Private medical colleges in {state}" },
+      deemed_title: { label: "Deemed table heading — {state}", value: "Deemed universities in {state}" },
+      table_intro: {
+        label: "Table line",
+        value:
+          "A row per college and quota: the fee a year on its cheapest branch and on its dearest, with both branches named. Quotas whose fee is the same on every branch share a row.",
+        long: true,
+      },
+      city_title: { label: "Cities heading — {state}", value: "PG colleges in {state} by city" },
+      faq_title: { label: "FAQ heading — {state}", value: "PG fees in {state}: common questions" },
+      faq1_q: { label: "Question 1 — {state}", value: "What is the MD/MS fee in government medical colleges in {state}?" },
+      faq1_a: {
+        label: "Answer 1 — {state}, {govt_median}, {govt_colleges}",
+        value:
+          "On the state quota, the middle fee at {state}'s {govt_colleges} government colleges is {govt_median} a year. The table lists every college's own figure, branch by branch where it differs.",
+        long: true,
+      },
+      faq2_q: { label: "Question 2 — {state}", value: "What is the MD/MS fee in private medical colleges in {state}?" },
+      faq2_a: {
+        label: "Answer 2 — {state}, {private_colleges}, {private_state_median}, {private_mgmt_median}",
+        value:
+          "Across {private_colleges} private colleges in {state}: a state-quota seat costs a middle {private_state_median} a year and a management seat {private_mgmt_median}. Each college's quotas are listed separately.",
+        long: true,
+      },
+      faq3_q: { label: "Question 3 — {state}", value: "What are the deemed university PG fees in {state}?" },
+      faq3_a: {
+        label: "Answer 3 — {state}, {deemed_colleges}, {deemed_median}",
+        value: "The middle paid-seat fee at {state}'s {deemed_colleges} deemed universities is {deemed_median} a year; MCC allots these seats.",
+        long: true,
+      },
+      faq4_q: { label: "Question 4 — {state}", value: "Which private college in {state} has the lowest MD/MS management fee?" },
+      faq4_a: {
+        label: "Answer 4 — {cheapest_mgmt}, {dearest_mgmt}",
+        value: "The lowest management fee listed is {cheapest_mgmt}; the highest, {dearest_mgmt}.",
+        long: true,
+      },
+      faq5_q: { label: "Question 5 — {state}", value: "What is the NRI quota PG fee in {state}?" },
+      faq5_a: {
+        label: "Answer 5 — {state}, {nri_median}",
+        value: "The middle NRI-quota fee in {state} is {nri_median} a year, one figure per college. The tables show each college's own.",
+        long: true,
+      },
+      faq6_q: { label: "Question 6 — {state}", value: "Are these {state}'s 2026-27 PG fees?" },
+      faq6_a: {
+        label: "Answer 6 — {state}, {official}, {colleges}",
+        value:
+          "{official} of the {colleges} colleges here have their fee from their own or the counselling authority's 2026-27 notice, printed exactly and marked 2026-27. The rest are as listed for the counselling, shown as a bracket marked *. Confirm the fee for your seat before you pay.",
+        long: true,
+      },
+      lead_title: { label: "Enquiry form heading — {state}", value: "Which {state} seat fits your budget?" },
+      lead_body: {
+        label: "Enquiry form line",
+        value: "Tell us your rank and what you can pay a year. A counsellor will shortlist the seats that fit, with the bond and stipend that come with each.",
+        long: true,
+      },
+    },
+  },
   "page.pg_stipend.hero": {
     group: "Page: PG stipend",
     fields: hero({

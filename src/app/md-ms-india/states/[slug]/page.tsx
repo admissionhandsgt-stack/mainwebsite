@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { notFound } from "next/navigation";
 import { getPgStatePage, getPgStates } from "@/lib/pgStateQueries";
+import { getFeeStates } from "@/lib/pgFeeMatrix";
 import { getStipends } from "@/lib/cutoffHubQueries";
 import { resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
@@ -133,10 +134,12 @@ function SeatsTable({
 }
 
 export default async function PgStatePage({ params }: Props) {
-  const [p, stipends, all] = await Promise.all([getPgStatePage(params.slug), getStipends(), getPgStates()]);
+  const [p, stipends, all, feeStates] = await Promise.all([getPgStatePage(params.slug), getStipends(), getPgStates(), getFeeStates()]);
   if (!p) notFound();
   const path = `/md-ms-india/states/${p.slug}`;
   const stipend = stipends.states.find((s) => s.state === p.name);
+  // The state's PG fee matrix (2026-11-09) exists for states with three or more colleges publishing a yearly fee.
+  const feePage = feeStates.states.some((s) => s.slug === p.slug);
   const own = Object.entries(p.ownership).sort((a, b) => b[1] - a[1]);
   // The state's own government quota — the one most of its candidates are in. Not in-service,
   // sponsored, DNB, management, NRI or institutional seats, which close at different ranks
@@ -437,6 +440,14 @@ export default async function PgStatePage({ params }: Props) {
               className="mt-4 inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-3 text-[14px] font-semibold text-primary-strong hover:border-primary/40 dark:text-primary"
             >
               {mccCopy.stipend_link} →
+            </Link>
+          )}
+          {feePage && (
+            <Link
+              href={`/md-ms-india/fees/${p.slug}`}
+              className="ml-0 mt-4 inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-3 text-[14px] font-semibold text-primary-strong hover:border-primary/40 sm:ml-3 dark:text-primary"
+            >
+              {p.name} PG fees, college by college →
             </Link>
           )}
         </section>

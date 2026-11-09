@@ -85,6 +85,15 @@ const nameIndex = unstable_cache(
 
 type Extras = Awaited<ReturnType<typeof getUgCollegeExtras>>;
 
+/**
+ * The H1: the short name with its town when the name does not already say it (2026-11-09). "Government Medical
+ * College" alone was the H1 of dozens of pages whose titles said "…, Firozabad"; the town is what tells them apart.
+ */
+export const collegeHeadline = (s: { short: string; place: string | null }) => {
+  const flat = (x: string) => x.toLowerCase().replace(/[^a-z]/g, "");
+  return s.place && !flat(s.short).includes(flat(s.place)) ? `${s.short}, ${s.place}` : s.short;
+};
+
 export interface CollegeSummary {
   short: string;
   place: string | null;

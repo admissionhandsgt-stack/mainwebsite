@@ -136,10 +136,8 @@ const nextConfig = {
       { source: "/md-ms-india/rounds", destination: `${tool}?course=pg`, permanent: true },
       { source: "/mbbs-india/cutoffs", destination: `${tool}?course=mbbs`, permanent: true },
       { source: "/md-ms-india/cutoffs", destination: `${tool}?course=pg`, permanent: true },
-      // Fees vs stipend was a whole page for one number, and that number is
-      // already on every college's own page — where someone is standing when
-      // they actually ask what a seat costs.
-      { source: "/md-ms-india/fees", destination: "/md-ms-india/colleges", permanent: true },
+      // /md-ms-india/fees 308ed to the college list from 2026-09-25 (it was one net-cost figure); since 2026-11-09 it
+      // is the PG fee matrix, state by state, so the redirect is gone.
       // One NEET SS course was two pages: MCC's PDF wrapped "Reconstructive" across a line (lib/ssQueries.ts).
       {
         source: "/neet-ss/mch-plastic-and-reconstructr-uctive-surgery",

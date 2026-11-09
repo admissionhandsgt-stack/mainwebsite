@@ -35,7 +35,8 @@ const LADDER: Step[] = [
   { width: 1800, expected: "1640px" },
   { width: 2100, expected: "1840px" },
   { width: 2560, expected: "2040px" },
-  { width: 3440, expected: "2040px" }, // capped: prose 3000px wide is unreadable
+  { width: 2800, expected: "2280px" },
+  { width: 3440, expected: "2520px" }, // with the root font at ~20px, so this is a scaled laptop layout, not a wider one
 ];
 
 const PAGES = ["/", "/md-ms-india/branches/md-general-medicine", "/neet-college-predictor"];
@@ -84,16 +85,16 @@ test.describe("The width ladder", () => {
     await page.setViewportSize({ width: 5000, height: 900 });
     await page.waitForTimeout(150);
     const { pageMax } = await measure(page);
-    // If this ever grows, somebody added a step above 2500px without deciding
-    // whether a line that wide is still readable.
-    expect(pageMax).toBe("2040px");
+    // If this ever grows, somebody added a step above 3600px without deciding
+    // whether a line that wide is still readable (2026-11-09: the root font scales to 20px from 1920px up).
+    expect(pageMax).toBe("2760px");
   });
 });
 
 test.describe("Nothing overflows sideways", () => {
   for (const path of PAGES) {
     test(`${path} has no horizontal scroll`, async ({ page, isMobile }) => {
-      const widths = isMobile ? [null] : [390, 768, 1280, 1920, 2560];
+      const widths = isMobile ? [null] : [390, 768, 1280, 1920, 2560, 3440];
 
       await page.goto(path);
       await page.waitForLoadState("load");

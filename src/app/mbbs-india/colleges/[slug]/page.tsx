@@ -1,6 +1,7 @@
 import { OG_IMAGE } from "@/lib/ogImage";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
+import { MERGED_UG_COLLEGES } from "@/lib/collegeMerges";
 import { collegeFaqs, collegeJsonLd } from "@/lib/collegeSeo";
 import CollegeFaq from "@/components/colleges/CollegeFaq";
 import Link from "@/components/ui/Link";
@@ -8,7 +9,7 @@ import Image from "next/image";
 import PhotoCredit from "@/components/ui/PhotoCredit";
 import { getOtherLevelPage, getSimilarColleges } from "@/lib/collegeQueries";
 import { getMbbsStates } from "@/lib/content";
-import { loadCollegePage, collegeTitle, collegeDescription } from "@/lib/collegeSnippet";
+import { loadCollegePage, collegeTitle, collegeDescription, collegeHeadline } from "@/lib/collegeSnippet";
 import CollegeGlance from "@/components/colleges/CollegeGlance";
 import NmcRecord from "@/components/colleges/NmcRecord";
 import { extractStateName } from "@/lib/stateQueries";
@@ -56,6 +57,8 @@ export const dynamic = "force-dynamic";
 const num = (n: number | null) => (n == null ? "—" : n.toLocaleString("en-IN"));
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  // One college once held twice: the old URL answers 308 to the kept page (lib/collegeMerges.ts).
+  if (MERGED_UG_COLLEGES[params.slug]) permanentRedirect(`/mbbs-india/colleges/${MERGED_UG_COLLEGES[params.slug]}`);
   const data = await loadCollegePage(params.slug, "ug");
   if (!data) return { title: "College not found | AdmissionHands" };
   // Short name + city + "<course> Cutoff <year>, Fees & Seats", and a
@@ -85,6 +88,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export default async function UgCollegePage({ params }: { params: { slug: string } }) {
+  if (MERGED_UG_COLLEGES[params.slug]) permanentRedirect(`/mbbs-india/colleges/${MERGED_UG_COLLEGES[params.slug]}`);
   const data = await loadCollegePage(params.slug, "ug");
   if (!data) notFound();
   const { college, cutoffs, fees, extras, nmc, summary: s } = data;
@@ -159,7 +163,7 @@ export default async function UgCollegePage({ params }: { params: { slug: string
               </nav>
 
               <h1 className="font-heading max-w-[22ch] text-[clamp(1.8rem,4vw,2.9rem)] font-extrabold leading-[1.07] tracking-[-0.03em] text-foreground [text-wrap:balance]">
-                {s.short}
+                {collegeHeadline(s)}
               </h1>
               {s.official !== s.short && <p className="mt-2.5 max-w-[70ch] text-[14px] text-muted-foreground">{s.official}</p>}
               {where && <p className="mt-2 text-[15px] font-medium text-foreground">{where}</p>}

@@ -14,6 +14,9 @@ import { rememberNudge } from "@/components/engage/EngagementLayer";
  *   pdf_download             a link to a .pdf
  *   telegram_click           t.me / telegram.me — to GA4 as well, with the link's data-placement
  *
+ * whatsapp_click and call_click go to GA4 too (2026-11-09): content pages convert through WhatsApp taps and calls,
+ * which the leads table never sees, so both are GA4 key events. `placement` is the link's data-placement or "other".
+ *
  * Only the page the click happened on is sent — never the number dialled or messaged.
  * Mounted in SiteShell, so the admin is never counted.
  */
@@ -24,8 +27,13 @@ export default function ClickTracker() {
       if (!a) return;
       const raw = a.getAttribute("href") ?? "";
       const source_page = window.location.pathname;
-      if (/^tel:/i.test(raw)) return aaTrack("call_click", { source_page });
-      if (/^whatsapp:/i.test(raw)) return aaTrack("whatsapp_click", { source_page });
+      const placement = a.dataset.placement || "other";
+      const both = (name: string) => {
+        aaTrack(name, { source_page });
+        trackEvent(name, { placement, source_page });
+      };
+      if (/^tel:/i.test(raw)) return both("call_click");
+      if (/^whatsapp:/i.test(raw)) return both("whatsapp_click");
       let url: URL;
       try {
         url = new URL(raw, window.location.href);
@@ -35,14 +43,13 @@ export default function ClickTracker() {
       const host = url.hostname.toLowerCase();
       if (host === "ah.aismartscan.in") return aaTrack("counsellor_chat_opened", { source_page });
       if (host === "t.me" || host === "telegram.me") {
-        const placement = a.dataset.placement || "other";
         // Somebody who has gone to the channel is not invited to it again.
         rememberNudge("telegram");
         aaTrack("telegram_click", { placement, source_page });
         return trackEvent("telegram_click", { placement, source_page });
       }
       if (host === "wa.me" || host.endsWith("whatsapp.com") || (host === window.location.hostname && url.pathname.startsWith("/chat/"))) {
-        return aaTrack("whatsapp_click", { source_page });
+        return both("whatsapp_click");
       }
       if (/\.pdf$/i.test(url.pathname)) {
         return aaTrack("pdf_download", { file: decodeURIComponent(url.pathname.split("/").pop() ?? "").slice(0, 120), source_page });

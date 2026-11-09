@@ -29,6 +29,18 @@
 @media (min-width: 1800px) { :root { --page-max: 1640px; } }
 @media (min-width: 2100px) { :root { --page-max: 1840px; } }
 @media (min-width: 2500px) { :root { --page-max: 2040px; } }
+/*
+ * Large displays (2026-11-09, owner: "screen size ke hisab se dynamically adjust kyu nhi hoti"). Past 1920px the
+ * whole layout scales a little, not just the column: the root font grows from 16px at 1920 to 20px at ~3500, so
+ * everything sized in rem (type, spacing, cards, buttons) grows with the screen, and the column keeps stepping.
+ * A 27" QHD at 100% or a 4K screen zoomed out to 80% (a ~3200px CSS viewport) reads like a laptop rather than a
+ * narrow strip of small print. In rem, so a visitor's own default font size still counts. Prose keeps its
+ * `max-w-[..ch]`, which grows with the font, so lines stay readable.
+ */
+@media (min-width: 1920px) { html { font-size: clamp(1rem, calc(0.7rem + 0.25vw), 1.25rem); } }
+@media (min-width: 2800px) { :root { --page-max: 2280px; } }
+@media (min-width: 3200px) { :root { --page-max: 2520px; } }
+@media (min-width: 3600px) { :root { --page-max: 2760px; } }
 
 .container,
 .container-custom {

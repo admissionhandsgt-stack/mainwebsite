@@ -417,6 +417,12 @@ Private), university, founding year and recognition status. Source: NMC's public
   Srinivasan Institute (their MBBS side), and MES Medical College — our UG source files its MBBS rows
   under "MES Dental College" and its BDS rows under "MES Medical College" (known gaps, #1). Undo them in
   Admin → Data sync → Decided by hand once the data holds them.
+  **2026-11-09 (owner's OK): MBBS 834/834 again.** Seven of them are in MCC's NEET UG 2026 results and are paired
+  (`scripts/data/nmc_decisions_2026_11_09.json`: GMC Piduguralla, the five 2026 Chhattisgarh GMCs, Chettinad
+  Karnataka), plus Raja Rajeshwari (Girls), Telangana, which NMC added later; MES Medical College is paired by the
+  twin merge below. `apply_nmc_decisions.ts` now removes the code's earlier admin-none row when it pairs it.
+  **AIIMS, JIPMER and CAPFIMS are not in NMC's register** (institutes under their own Acts) — their pages have no
+  NMC card by design.
 - **Read side:** `lib/nmcData.ts` (`getNmcFacts(slug, level)`, `getNmcUgIndex()`, tag `nmc`).
   `components/colleges/NmcRecord.tsx` is the "Official record" card on both college templates, and
   `collegeSnippet.ts` takes seats, type and founding year from NMC (`summary.fromNmc`), so the summary
@@ -788,8 +794,12 @@ at runtime would pull the whole icon set into the bundle.
   dark mode working.
 - **Page width is one variable, `--page-max` in `src/styles/layout.css`.** Tailwind's ladder stops at
   1536px, so the site used to sit in a 1400px column with a third of a 2560px monitor empty. The
-  variable steps past it — 1440 at 1536px, then 1640, 1840, 2040 at 1800/2100/2500 — and caps at 2040,
-  because the answer to a very wide display is a wider page, not an unbounded line of prose. Anything
+  variable steps past it — 1440 at 1536px, then 1640, 1840, 2040, 2280, 2520, 2760 at
+  1800/2100/2500/2800/3200/3600 — and caps at 2760, because the answer to a very wide display is a wider page,
+  not an unbounded line of prose. **Since 2026-11-09 the root font scales from 1920px up** (owner: "screen size ke
+  hisab se dynamically adjust kyu nhi hoti"; their 4K screen zoomed to ~80% is a ~3200px CSS viewport):
+  `clamp(1rem, 0.7rem + 0.25vw, 1.25rem)` — 16px at 1920, 17.6 at 2560, ~20 at 3500 — so type, spacing and cards
+  grow with the screen and the column keeps stepping; in rem, so a visitor's default font size still counts. Anything
   that needs to be wider than the container reads `calc(var(--page-max) + 220px)`. **Do not add a new
   `max-w-7xl`** — it will not grow with the rest. Verified 390 → 3440px with zero horizontal overflow.
 
@@ -1841,6 +1851,47 @@ set against each page's own 28-day GSC queries. The files are in that session's 
   - NEET SS 2026 and NEET UG / PG 2027 news: dates are typed content, not data.
   - AIIMS, JIPMER and PGIMER stipend: these are INI-CET institutes and we hold no data for them.
   - Judge the NRI and management titles on GSC around 11-17 before touching them.
+
+## One college, two UG entries — merged (2026-11-09, owner: "sab DB wale kam ache se verify karke sahi kardo")
+
+The UG scrape listed some colleges under one name on its list pages and another on its detail pages, so the 2025
+state rounds sat on one institute and the AIQ (and, from 2026-11-09, MCC's 2026 results) on another: each page showed
+half a college, the predictor named it twice, the sitemap listed both. `scripts/ug/merge_ug_twins.mjs` (dry run by
+default; `--apply --backup`, `--restore`) moved 416 rank rows and 34 fee rows of 20 twins onto the entry NMC is paired
+with, dropped exact duplicate fees, switched the twin off, and renamed two kept entries to their current names (MJN →
+Coochbehar GMC; "Deben Mahato (Sadar) Hospital" → Purulia GMC). It refuses a pair with any rank row on both entries —
+SVIMS Tirupati (4609 vs 3419) overlaps on all 15 with different ranks, so it is not a twin. The old URLs 308 to the
+kept page (`src/lib/collegeMerges.ts`, read by the UG college page). MCC's names for the kept colleges are in
+`scripts/data/ug_mcc_decisions.json`, so a re-import keeps them there. Backup:
+`D:/Admisson Hands/ug_data/backups/ug_twins_before_2026_11_09.json`. **After a fresh UG scrape import, run it again**
+(the import recreates rows on a twin by source id).
+
+## Big screens, PG fees, choice filling, GA4 (2026-11-09)
+
+- **`/md-ms-india/fees` + `/md-ms-india/fees/[state]` — the NEET PG fee matrix** (owner: "updated neet pg fees with
+  college name, city name, state name, government colleges, private colleges, deemed universities"). `lib/pgFeeMatrix.ts`:
+  per college × branch × quota an official 2026-27 fee wins over the listing (a blank official row too); whole-course
+  and period-not-stated figures and DNB/NBE seats are left out. **A row is one college on one quota**, the range only
+  across its branches with both branches named; quotas whose fee matches on every branch share a row. Official figures
+  exact and marked "2026-27 notice", listing figures a bracket with *. Government / private / deemed tables, colleges
+  by city (for "pg fees in pune"), FAQs naming the cheapest and dearest management seat in full. A state needs 3
+  colleges with a yearly fee. Hub: one row per state, medians of one figure per college. The URL 308'd to the college
+  list before. Copy: `page.pg_fees.*`, `page.pg_fees_state.*`; menu `scripts/sql/nav_fees_choice_filling_2026_11_09.sql`.
+  Linked from PG state pages, the private/deemed fee pages and each other.
+- **`/neet-pg-choice-filling`** — choice filling and locking, Freeze vs Float (new in 2026), upgradation, free exit
+  (round 1 only), forfeiture from round 2, no resignation after joining round 3, the stray round, the security deposit,
+  AIQ vs state, and the next-year-ban question. Every rule is from an MCC document, cited on the page
+  (`lib/choiceFillingRules.ts`, `SOURCES`); dates from the admin's `pg_schedule`; upgrade counts from `mcc_allotments`.
+  **The 2026 bulletin as posted says "DRAFT – V10 05102026"; re-check the rules when MCC revises it.** Never write that
+  leaving a seat bars a candidate from next year's NEET PG unless that year's MCC notice says so (2026's does not;
+  2024's did; the Delhi High Court held only forfeiture applied in 2025). Copy: `page.pg_choice_filling.*`.
+- **GA4 (done in the property by browser, 2026-11-09):** key events `generate_lead`, `sign_up`, `whatsapp_click`,
+  `call_click` (the last two sent to GA4 from `ClickTracker` since this release, with `placement` and `source_page`);
+  event-scoped custom dimensions `placement`, `form`, `course`, `rank_band`, `source_page`, `lead_source`, `type`. No
+  default key-event value (it offered $1). Account 391567417, property 533251003.
+- **Zyn notices:** the first read takes only the last week (`since` = 7 days ago), so switching the feed on does not
+  put weeks of notices on the bar. zyn-c9 gave the owner's OK for the endpoint on 9 Nov; the owner switches it on in
+  Admin → Notices (Zyn).
 
 ## The counselling year in progress on college and branch pages (2026-11-09)
 
@@ -3063,7 +3114,9 @@ Ordered by what would hurt first.
 
 1. **The UG source misfiles some cutoffs, and the import reproduces it faithfully.** Verified on
    2026-09-22 by reading the saved HTML: `details/1434.html` is titled "MES Dental College, Malappuram"
-   and its own cutoff table carries MBBS rows. Four colleges are affected — MES Dental (27 MBBS rows),
+   and its own cutoff table carries MBBS rows. **MES is fixed since 2026-11-09** (`scripts/ug/merge_ug_twins.mjs`):
+   its 27 MBBS rows are on MES Medical College (4668, NMC KL/024/P/4) and the 30 BDS rows on MES Dental (3181).
+   Durgaji, North Bengal Dental and Nimra are still open. Four colleges are affected — MES Dental (27 MBBS rows),
    State Shri Durgaji Homoeopathic (24), The North Bengal Dental College (20), Nimra Institute of Dental
    Sciences (8) — **79 rank rows in total**.
 
