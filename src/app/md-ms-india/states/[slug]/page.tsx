@@ -23,7 +23,7 @@ import { getStateRound, CATEGORY_LABEL } from "@/lib/stateRoundQueries";
 import SectionHead from "@/components/ui/SectionHead";
 /** One state's PG picture. See lib/pgStateQueries.ts for what it will and will not state. */
 
-type Props = { params: { slug: string } };
+type Props = { params: Promise<{ slug: string }> };
 const SITE = "https://www.admissionhands.com";
 const n = (v: number | null | undefined) => (v == null ? "—" : v.toLocaleString("en-IN"));
 const money = (v: number | null) => {
@@ -37,7 +37,8 @@ const span = (a: number | null, b: number | null, f: (v: number | null) => strin
 const OWN: Record<string, string> = { government: "Government", private: "Private", deemed: "Deemed", other: "Other" };
 const OWN_SHORT: Record<string, string> = { government: "Govt", private: "Private", deemed: "Deemed", other: "Other" };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const [p, stipends, live] = await Promise.all([getPgStatePage(params.slug), getStipends(), getStateRound(params.slug).catch(() => null)]);
   if (!p) return { title: "State not found", robots: { index: false } };
   // The state's own round of the year in progress leads the title once it is out ("up neet pg 2026",
@@ -133,7 +134,8 @@ function SeatsTable({
   );
 }
 
-export default async function PgStatePage({ params }: Props) {
+export default async function PgStatePage(props: Props) {
+  const params = await props.params;
   const [p, stipends, all, feeStates] = await Promise.all([getPgStatePage(params.slug), getStipends(), getPgStates(), getFeeStates()]);
   if (!p) notFound();
   const path = `/md-ms-india/states/${p.slug}`;

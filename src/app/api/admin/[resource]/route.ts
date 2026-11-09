@@ -15,7 +15,8 @@ export const runtime = "nodejs";
  * from there, never from the request.
  */
 
-export async function GET(_request: Request, { params }: { params: { resource: string } }) {
+export async function GET(_request: Request, props: { params: Promise<{ resource: string }> }) {
+  const params = await props.params;
   const auth = await requireAdmin();
   if (auth instanceof Response) return auth;
 
@@ -33,7 +34,8 @@ export async function GET(_request: Request, { params }: { params: { resource: s
   }
 }
 
-export async function POST(request: Request, { params }: { params: { resource: string } }) {
+export async function POST(request: Request, props: { params: Promise<{ resource: string }> }) {
+  const params = await props.params;
   const auth = await requireAdmin();
   if (auth instanceof Response) return auth;
 
@@ -64,7 +66,8 @@ export async function POST(request: Request, { params }: { params: { resource: s
 }
 
 /** Singleton tables (contact details) are edited without an id. */
-export async function PATCH(request: Request, { params }: { params: { resource: string } }) {
+export async function PATCH(request: Request, props: { params: Promise<{ resource: string }> }) {
+  const params = await props.params;
   const auth = await requireAdmin();
   if (auth instanceof Response) return auth;
 

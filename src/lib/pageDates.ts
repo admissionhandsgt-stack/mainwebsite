@@ -24,7 +24,7 @@ export const getPageDates = unstable_cache(
 );
 
 /** The current request's path, as the middleware passes it (`x-ah-path`). */
-export const currentPath = () => headers().get("x-ah-path") ?? null;
+export const currentPath = async () => (await headers()).get("x-ah-path") ?? null;
 
 /** "2026-11-09" → "9 Nov 2026". */
 export const readableDate = (iso: string) =>

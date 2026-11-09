@@ -23,7 +23,8 @@ export const runtime = "nodejs";
  * cannot be used to discover that a document exists.
  */
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const limited = limitOr429(request, "docs-file", 120);
   if (limited) return limited;
   const id = Number(params.id);
@@ -91,7 +92,8 @@ export async function GET(request: Request, { params }: { params: { id: string }
  * One statement, and the bytes go with the row — "remove" means removed, with
  * no second copy anywhere to forget about.
  */
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const limited = limitOr429(request, "docs-delete", 30);
   if (limited) return limited;
   const id = Number(params.id);

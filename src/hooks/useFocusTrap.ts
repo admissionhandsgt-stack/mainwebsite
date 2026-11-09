@@ -8,7 +8,7 @@ const FOCUSABLE =
  * back where it was — usually the button that opened it. Without it, Tab walked out of the open
  * menu into the page underneath, and closing it left focus on nothing.
  */
-export function useFocusTrap(ref: RefObject<HTMLElement>, active: boolean) {
+export function useFocusTrap(ref: RefObject<HTMLElement | null>, active: boolean) {
   useEffect(() => {
     if (!active) return;
     const before = document.activeElement as HTMLElement | null;

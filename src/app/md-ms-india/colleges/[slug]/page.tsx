@@ -58,7 +58,8 @@ export const dynamic = "force-dynamic";
  * The rule is `CollegeVisual`'s: a photograph somebody has verified is this
  * college, or nothing. The gradients below were always doing most of the work.
  */
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const data = await loadCollegePage(params.slug, "pg");
   if (!data) return { title: "College not found | AdmissionHands" };
   // Short name + city + "MD/MS Cutoff <year>, Fees & Seats" — or, for a
@@ -87,7 +88,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function CollegePage({ params }: { params: { slug: string } }) {
+export default async function CollegePage(props0: { params: Promise<{ slug: string }> }) {
+  const params = await props0.params;
   const data = await loadCollegePage(params.slug, "pg");
   if (!data) notFound();
   const { college, cutoffs, fees, nmc, live, summary: s } = data;

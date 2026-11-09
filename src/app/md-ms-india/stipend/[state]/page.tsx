@@ -51,7 +51,8 @@ async function load(slug: string) {
   return data ? { slug: state.slug, data } : null;
 }
 
-export async function generateMetadata({ params }: { params: { state: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ state: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const page = await load(params.state);
   if (!page) return { title: "State not found", robots: { index: false } };
   const { data: s } = page;
@@ -78,7 +79,8 @@ export async function generateMetadata({ params }: { params: { state: string } }
   });
 }
 
-export default async function StateStipendPage({ params }: { params: { state: string } }) {
+export default async function StateStipendPage(props: { params: Promise<{ state: string }> }) {
+  const params = await props.params;
   const page = await load(params.state);
   if (!page) notFound();
   const { slug, data: s } = page;

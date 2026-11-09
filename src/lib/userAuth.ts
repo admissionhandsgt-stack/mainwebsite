@@ -152,7 +152,7 @@ export function sessionCookie(session: { id: string; expires: Date }) {
 
 /** The signed-in visitor, or null. Safe to call anywhere on the server. */
 export async function currentUser(): Promise<SiteUser | null> {
-  const id = cookies().get(USER_COOKIE)?.value;
+  const id = (await cookies()).get(USER_COOKIE)?.value;
   if (!id || !/^[0-9a-f]{64}$/.test(id)) return null;
 
   try {
@@ -346,7 +346,7 @@ export async function authenticateUser(
 
 /** Revokes the session server-side, then clears the cookie. */
 export async function signOut(): Promise<void> {
-  const id = cookies().get(USER_COOKIE)?.value;
+  const id = (await cookies()).get(USER_COOKIE)?.value;
   if (id) {
     try {
       await db.execute(sql`DELETE FROM user_sessions WHERE id = ${id}`);
@@ -354,7 +354,7 @@ export async function signOut(): Promise<void> {
       console.error("[userAuth] signOut:", error);
     }
   }
-  cookies().delete(USER_COOKIE);
+  (await cookies()).delete(USER_COOKIE);
 }
 
 /** Remembers what the visitor last searched, so the tools open where they left off. */
@@ -426,7 +426,7 @@ export async function hasAccessServer(): Promise<boolean> {
   const user = await currentUser();
   if (user) return strict ? user.verified : true;
   if (strict) return false;
-  return Boolean(await verifyUnlock(cookies().get(UNLOCK_COOKIE)?.value));
+  return Boolean(await verifyUnlock((await cookies()).get(UNLOCK_COOKIE)?.value));
 }
 
 /** What the UI should ask for: nothing, a number, or a verified number. */

@@ -107,7 +107,8 @@ function kindOf(state: RoundState, body: { status_final: string; status_provisio
   return { word: k === "result" ? "" : k, label: k === "final" ? body.status_final : k === "provisional" ? body.status_provisional : body.status_result };
 }
 
-export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<Params> }): Promise<Metadata> {
+  const params = await props.params;
   const d = await load(params);
   if (!d) return { title: "Not found", robots: { index: false, follow: false } };
   const { year, spec, state, result, prev, when } = d;
@@ -188,7 +189,8 @@ function prevCuts(r: RoundResult | null) {
   return out;
 }
 
-export default async function RoundResultPage({ params }: { params: Params }) {
+export default async function RoundResultPage(props: { params: Promise<Params> }) {
+  const params = await props.params;
   const d = await load(params);
   if (!d) notFound();
   const { year, spec, current, state, result, prev, when, steps } = d;

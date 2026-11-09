@@ -7,7 +7,8 @@ import { getDataset, SITE, toCsv } from "@/lib/openData";
  */
 export const revalidate = 3600;
 
-export async function GET(_request: Request, { params }: { params: { file: string } }) {
+export async function GET(_request: Request, props: { params: Promise<{ file: string }> }) {
+  const params = await props.params;
   const id = params.file.replace(/\.csv$/i, "");
   if (!params.file.toLowerCase().endsWith(".csv")) return new Response("Not found", { status: 404 });
   const d = await getDataset(id);

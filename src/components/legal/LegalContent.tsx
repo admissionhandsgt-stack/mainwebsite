@@ -53,7 +53,7 @@ function CopyableHeading({
   }, [id]);
 
   const Tag = `h${level}` as keyof Pick<
-    JSX.IntrinsicElements,
+    React.JSX.IntrinsicElements,
     "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
   >;
 

@@ -62,10 +62,8 @@ const UPLOADS = path.join(process.cwd(), "public", "assets", "images", "uploads"
  */
 const IMMUTABLE_NAME = /-\d{13}-[0-9a-f]{8}\.[a-z0-9]+$/;
 
-export async function GET(
-  request: Request,
-  { params }: { params: { path: string[] } },
-) {
+export async function GET(request: Request, props: { params: Promise<{ path: string[] }> }) {
+  const params = await props.params;
   const segments = params.path ?? [];
 
   // Reject anything that could step outside the directory before touching the

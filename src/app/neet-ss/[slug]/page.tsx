@@ -13,10 +13,11 @@ import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import SectionHead from "@/components/ui/SectionHead";
 /** One DM / MCh / DrNB course: its cutoff over the years, and where it is taught. */
 
-type Props = { params: { slug: string } };
+type Props = { params: Promise<{ slug: string }> };
 const n = (v: number | null | undefined) => (v == null ? "—" : v.toLocaleString("en-IN"));
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const c = await getSsCourse(params.slug);
   if (!c) return { title: "Course not found", robots: { index: false } };
   const y = c.years[0];
@@ -35,7 +36,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
-export default async function SsCoursePage({ params }: Props) {
+export default async function SsCoursePage(props: Props) {
+  const params = await props.params;
   const c = await getSsCourse(params.slug);
   if (!c) notFound();
   // Every course page links its group's other courses: a page linked only

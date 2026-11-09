@@ -21,7 +21,8 @@ const fmt = (v: Cell, column: string) => {
   return esc(String(v));
 };
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const limited = limitOr429(request, "embed", 120);
   if (limited) return limited;
   const d = await getDataset(params.id);

@@ -87,12 +87,17 @@ const nextConfig = {
    */
   output: 'standalone',
 
-  // src/instrumentation.ts — starts lib/serverWatch.ts, the memory and slow-request log.
-  experimental: { instrumentationHook: true },
+  // src/instrumentation.ts (lib/serverWatch.ts, the memory and slow-request log) is picked up by itself since
+  // Next 15; the experimental.instrumentationHook flag is gone.
 
   // Announcing the framework and its version only helps someone choosing an
   // exploit to try.
   poweredByHeader: false,
+
+  // Next 15 lints during `next build`; the repo's ESLint config is the Vite-era flat config (CLAUDE.md, known gaps),
+  // which errors on a typescript-eslint rule there. Next 14 never ran it in the build, so the build stays as it was;
+  // `npm run lint` is unchanged.
+  eslint: { ignoreDuringBuilds: true },
 
   /**
    * Five URLs collapsed into one tool.

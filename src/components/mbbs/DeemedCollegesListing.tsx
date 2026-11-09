@@ -32,7 +32,7 @@ export function DeemedCollegesListing() {
   }, [searchParams]);
 
   const [filters, setFilters] = useState<DeemedCollegeFilters>(getFiltersFromURL);
-  const debounceRef = useRef<NodeJS.Timeout>();
+  const debounceRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   const {
     colleges,

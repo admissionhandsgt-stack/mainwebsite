@@ -60,7 +60,8 @@ async function load(slug: string) {
   return getStateFeeMatrix(slug);
 }
 
-export async function generateMetadata({ params }: { params: { state: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ state: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const m = await load(params.state);
   if (!m) return { title: "State not found", robots: { index: false } };
   const g = m.bands.government.state?.median;
@@ -139,7 +140,8 @@ function FeeTable({ colleges, caption }: { colleges: MatrixCollege[]; caption: s
   );
 }
 
-export default async function StateFeesPage({ params }: { params: { state: string } }) {
+export default async function StateFeesPage(props: { params: Promise<{ state: string }> }) {
+  const params = await props.params;
   const m = await load(params.state);
   if (!m) notFound();
   const path = `/md-ms-india/fees/${m.slug}`;

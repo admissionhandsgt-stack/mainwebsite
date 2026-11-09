@@ -24,7 +24,8 @@ const DataInsights = dynamic(() => import('@/components/home/DataInsights'), { l
 const WhyAdmissionHands = dynamic(() => import('@/components/home/WhyAdmissionHands'), { loading: () => <SectionLoader /> });
 const TopMedicalInstitutes = dynamic(() => import('@/components/home/TopMedicalInstitutes'), { loading: () => <SectionLoader /> });
 const Testimonials = dynamic(() => import('@/components/home/Testimonials'), { loading: () => <SectionLoader /> });
-const FeaturedVideos = dynamic(() => import('@/components/home/FeaturedVideos'), { ssr: false, loading: () => null });
+// Browser-only; Next 15 allows ssr:false only in a client component (components/lazy/ClientOnly).
+import { FeaturedVideos } from '@/components/lazy/ClientOnly';
 
 // Loading placeholder
 const SectionLoader = () => (

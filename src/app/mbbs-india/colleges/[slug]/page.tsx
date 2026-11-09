@@ -57,7 +57,8 @@ export const dynamic = "force-dynamic";
 
 const num = (n: number | null) => (n == null ? "—" : n.toLocaleString("en-IN"));
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await props.params;
   // One college once held twice: the old URL answers 308 to the kept page (lib/collegeMerges.ts).
   if (MERGED_UG_COLLEGES[params.slug]) permanentRedirect(`/mbbs-india/colleges/${MERGED_UG_COLLEGES[params.slug]}`);
   const data = await loadCollegePage(params.slug, "ug");
@@ -88,7 +89,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function UgCollegePage({ params }: { params: { slug: string } }) {
+export default async function UgCollegePage(props0: { params: Promise<{ slug: string }> }) {
+  const params = await props0.params;
   if (MERGED_UG_COLLEGES[params.slug]) permanentRedirect(`/mbbs-india/colleges/${MERGED_UG_COLLEGES[params.slug]}`);
   const data = await loadCollegePage(params.slug, "ug");
   if (!data) notFound();

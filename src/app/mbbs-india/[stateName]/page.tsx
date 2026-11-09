@@ -27,7 +27,7 @@ import SectionHead from "@/components/ui/SectionHead";
 
 const SITE = "https://www.admissionhands.com";
 
-type Props = { params: { stateName: string } };
+type Props = { params: Promise<{ stateName: string }> };
 
 /** Old slug -> current slug, for states whose address changed. */
 const RENAMED: Record<string, string> = { chattisgarh: "chhattisgarh" };
@@ -65,7 +65,8 @@ function snippet(p: StatePage) {
   );
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const slug = slugOf(params.stateName);
   const p = await getStatePage(slug);
   if (!p) return { title: "State not found", robots: { index: false } };
@@ -102,7 +103,8 @@ function explain(counselling: string, state: string): string {
   return "A separate quota with its own eligibility.";
 }
 
-export default async function MBBSStatePage({ params }: Props) {
+export default async function MBBSStatePage(props: Props) {
+  const params = await props.params;
   const raw = slugOf(params.stateName);
   // Two states used to carry "&" in their slug, which also made the sitemap
   // invalid XML. They are "-and-" now; the old address redirects.

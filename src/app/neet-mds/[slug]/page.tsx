@@ -13,7 +13,7 @@ import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import SectionHead from "@/components/ui/SectionHead";
 /** One MDS speciality: its cutoff by quota and category, and where it is taught. */
 
-type Props = { params: { slug: string } };
+type Props = { params: Promise<{ slug: string }> };
 const n = (v: number | null | undefined) => (v == null ? "—" : v.toLocaleString("en-IN"));
 
 function CutTable({ cuts }: { cuts: MdsCut[] }) {
@@ -43,7 +43,8 @@ function CutTable({ cuts }: { cuts: MdsCut[] }) {
   );
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const c = await getMdsCourse(params.slug);
   if (!c) return { title: "Speciality not found", robots: { index: false } };
   const aiq = c.cuts.find((x) => x.quota === "All India" && x.category === "Open");
@@ -58,7 +59,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
-export default async function MdsCoursePage({ params }: Props) {
+export default async function MdsCoursePage(props: Props) {
+  const params = await props.params;
   const c = await getMdsCourse(params.slug);
   if (!c) notFound();
   const siblings = (await getMdsOverview()).courses

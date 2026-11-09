@@ -13,10 +13,11 @@ export const dynamic = "force-dynamic";
 type Counsellor = { slug: string; name: string; phone: string };
 
 
-export function GET(_request: Request, { params }: { params: { slug: string } }) {
-  const c = (counsellors as Counsellor[]).find((x) => x.slug === params.slug);
-  if (!c) return NextResponse.redirect("https://www.admissionhands.com/team", 302);
-  const first = c.name.split(" ")[0];
-  const text = `Hello ${first}, I would like your help with my NEET admission.`;
-  return NextResponse.redirect(`https://wa.me/${c.phone.replace(/\D/g, "")}?text=${encodeURIComponent(text)}`, 302);
+export async function GET(_request: Request, props: { params: Promise<{ slug: string }> }) {
+ const params = await props.params;
+ const c = (counsellors as Counsellor[]).find((x) => x.slug === params.slug);
+ if (!c) return NextResponse.redirect("https://www.admissionhands.com/team", 302);
+ const first = c.name.split(" ")[0];
+ const text = `Hello ${first}, I would like your help with my NEET admission.`;
+ return NextResponse.redirect(`https://wa.me/${c.phone.replace(/\D/g, "")}?text=${encodeURIComponent(text)}`, 302);
 }

@@ -36,7 +36,8 @@ const RESOURCES = {
 
 type Resource = keyof typeof RESOURCES;
 
-export async function GET(request: Request, { params }: { params: { resource: string } }) {
+export async function GET(request: Request, props: { params: Promise<{ resource: string }> }) {
+  const params = await props.params;
   const LIMIT = 120;
   const limit = rateLimit(`content:${clientKey(request)}`, LIMIT, 60_000);
   if (!limit.ok) {

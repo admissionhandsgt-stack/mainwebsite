@@ -71,7 +71,7 @@ export async function createSession(userId: number): Promise<string> {
     console.error("[auth] could not clear expired sessions", e),
   );
 
-  cookies().set(SESSION_COOKIE, id, {
+  (await cookies()).set(SESSION_COOKIE, id, {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
@@ -84,7 +84,7 @@ export async function createSession(userId: number): Promise<string> {
 
 /** The signed-in admin, or null. Expired rows are deleted as they are found. */
 export async function getSessionUser(): Promise<AdminUser | null> {
-  const id = cookies().get(SESSION_COOKIE)?.value;
+  const id = (await cookies()).get(SESSION_COOKIE)?.value;
   if (!id) return null;
 
   try {
@@ -113,7 +113,7 @@ export async function getSessionUser(): Promise<AdminUser | null> {
 }
 
 export async function destroySession(): Promise<void> {
-  const id = cookies().get(SESSION_COOKIE)?.value;
+  const id = (await cookies()).get(SESSION_COOKIE)?.value;
   if (id) {
     try {
       await db.execute(sql`DELETE FROM admin_sessions WHERE id = ${id}`);
@@ -121,7 +121,7 @@ export async function destroySession(): Promise<void> {
       console.error("[auth:destroySession]", error);
     }
   }
-  cookies().delete(SESSION_COOKIE);
+  (await cookies()).delete(SESSION_COOKIE);
 }
 
 /* ------------------------------ login ------------------------------ */

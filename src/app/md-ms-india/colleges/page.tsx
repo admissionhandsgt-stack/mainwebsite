@@ -16,7 +16,8 @@ export const dynamic = "force-dynamic";
  * Metadata the admin can override per route (Admin -> Search & sharing).
  * Blank admin values fall through to the defaults below.
  */
-export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+  const searchParams = await props.searchParams;
   const meta = await resolveMetadata('/md-ms-india/colleges', {
     title: "MD/MS Colleges in India — Seats, Fees, Stipend & Cutoffs | AdmissionHands",
     description: "Every MD/MS college and DNB hospital in India with seat counts, approximate fees and stipends. Filter by state, ownership and fee, and see your chance by rank.",
@@ -39,17 +40,18 @@ const money = (n: number | null) => {
 };
 
 interface PageProps {
-  searchParams: {
+  searchParams: Promise<{
     q?: string;
     states?: string;
     ownership?: string;
     maxFee?: string;
     sort?: string;
     page?: string;
-  };
+  }>;
 }
 
-export default async function PGCollegesPage({ searchParams }: PageProps) {
+export default async function PGCollegesPage(props: PageProps) {
+  const searchParams = await props.searchParams;
   const filters: CollegeFilters = {
     level: "pg",
     search: searchParams.q,

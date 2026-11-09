@@ -12,7 +12,8 @@ export const runtime = "nodejs";
  * so it resolves its key here. Server components import `getMediaAsset` from
  * `lib/content` directly and never touch this route.
  */
-export async function GET(request: Request, { params }: { params: { key: string } }) {
+export async function GET(request: Request, props: { params: Promise<{ key: string }> }) {
+  const params = await props.params;
   const limited = limitOr429(request, "media", 300);
   if (limited) return limited;
   try {

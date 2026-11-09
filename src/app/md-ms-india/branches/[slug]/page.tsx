@@ -85,7 +85,8 @@ async function liveFor(course: string, dataYear: number | null | undefined) {
   return { ...live, cut, scoreAt, outOf: table?.outOf ?? null, quotaName: dnb ? "DNB quota" : "All India Quota", quotaShort: dnb ? "DNB" : "AIQ" };
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const b = await getBranch(params.slug);
   if (!b) return { title: "Branch not found | AdmissionHands" };
 
@@ -142,13 +143,14 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function BranchPage({
-  params,
-  searchParams,
-}: {
-  params: { slug: string };
-  searchParams: { category?: string };
-}) {
+export default async function BranchPage(
+  props: {
+    params: Promise<{ slug: string }>;
+    searchParams: Promise<{ category?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const category = (searchParams.category ?? DEFAULT_CATEGORY).toUpperCase().slice(0, 24);
   const b = await getBranch(params.slug, category);
   if (!b) notFound();

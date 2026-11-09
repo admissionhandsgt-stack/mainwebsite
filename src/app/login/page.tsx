@@ -46,11 +46,12 @@ const POINTS = [
   },
 ];
 
-export default async function LoginPage({
-  searchParams,
-}: {
-  searchParams: { next?: string };
-}) {
+export default async function LoginPage(
+  props: {
+    searchParams: Promise<{ next?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   if (await currentUser()) {
     // Only ever bounce to our own paths. `next` comes from the URL — see safeNext.
     redirect(safeNext(searchParams.next));

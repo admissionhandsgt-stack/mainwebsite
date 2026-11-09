@@ -33,7 +33,7 @@ const STREAM: Record<NriStream, { label: string; noun: string; predictor: string
   pg: { label: "MD/MS", noun: "MD/MS", predictor: "pg", level: "pg" },
 };
 
-type Props = { searchParams: { course?: string } };
+type Props = { searchParams: Promise<{ course?: string }> };
 
 const pick = (v?: string): NriStream => (v === "bds" || v === "pg" ? v : "mbbs");
 const n = (v: number | null | undefined) => (v == null ? "—" : v.toLocaleString("en-IN"));
@@ -46,7 +46,8 @@ const money = (v: number | null | undefined) => {
 const list = (xs: string[]) => (xs.length <= 1 ? xs[0] ?? "" : `${xs.slice(0, -1).join(", ")} and ${xs[xs.length - 1]}`);
 const hrefOf = (s: NriStream) => (s === "mbbs" ? PATH : `${PATH}?course=${s}`);
 
-export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const searchParams = await props.searchParams;
   const stream = pick(searchParams.course);
   const data = await getNriColleges();
   const y = data?.year ? ` ${data.year}` : "";
@@ -88,7 +89,8 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   return { ...base, title, description, alternates: { canonical: hrefOf(stream) } };
 }
 
-export default async function NriCollegesPage({ searchParams }: Props) {
+export default async function NriCollegesPage(props: Props) {
+  const searchParams = await props.searchParams;
   const stream = pick(searchParams.course);
   const data = await getNriColleges();
   if (!data) return <Unavailable />;

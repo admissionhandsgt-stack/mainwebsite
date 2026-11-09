@@ -11,8 +11,9 @@ export const runtime = "nodejs";
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { resource: string; id: string } },
+  props: { params: Promise<{ resource: string; id: string }> }
 ) {
+  const params = await props.params;
   const auth = await requireAdmin();
   if (auth instanceof Response) return auth;
 
@@ -50,8 +51,9 @@ export async function PATCH(
 
 export async function DELETE(
   _request: Request,
-  { params }: { params: { resource: string; id: string } },
+  props: { params: Promise<{ resource: string; id: string }> }
 ) {
+  const params = await props.params;
   const auth = await requireAdmin();
   if (auth instanceof Response) return auth;
 

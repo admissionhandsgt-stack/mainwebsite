@@ -25,7 +25,7 @@ import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
  * the middle 80%, colleges by name without a rank.
  */
 
-type Props = { params: { slug: string; state: string } };
+type Props = { params: Promise<{ slug: string; state: string }> };
 const SITE = "https://www.admissionhands.com";
 const n = (v: number | null | undefined) => (v == null ? "—" : v.toLocaleString("en-IN"));
 const money = (v: number | null | undefined) => {
@@ -58,7 +58,8 @@ async function scoreFor(year: number | undefined) {
   };
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const p = await getBranchState(params.slug, params.state);
   if (!p) return { title: "Not found", robots: { index: false } };
   const name = SEARCH_NAME[p.course] ?? p.course;
@@ -88,7 +89,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
-export default async function BranchStatePage({ params }: Props) {
+export default async function BranchStatePage(props: Props) {
+  const params = await props.params;
   const p = await getBranchState(params.slug, params.state);
   if (!p) notFound();
   const name = SEARCH_NAME[p.course] ?? p.course;

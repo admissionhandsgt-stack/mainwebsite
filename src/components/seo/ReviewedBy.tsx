@@ -14,7 +14,7 @@ const SITE = "https://www.admissionhands.com";
  * and when it last changed. Words: Admin → Content → "Site: reviewer on data pages".
  */
 export default async function ReviewedBy() {
-  const path = currentPath();
+  const path = await currentPath();
   const [copy, dates] = await Promise.all([pageCopy("site.reviewer", {}), getPageDates().catch(() => ({}) as Record<string, string>)]);
   const date = path ? (dates as Record<string, string>)[path] ?? null : null;
   if (!copy.name) return null;

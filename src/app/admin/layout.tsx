@@ -7,8 +7,8 @@ interface AdminLayoutProps {
   children: ReactNode;
 }
 
-export default function AdminLayout({ children }: AdminLayoutProps) {
-  const host = headers().get('host') || '';
+export default async function AdminLayout({ children }: AdminLayoutProps) {
+  const host = (await headers()).get('host') || '';
   const isAdmin = isAdminSubdomain(host);
 
   return (

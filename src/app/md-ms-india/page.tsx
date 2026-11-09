@@ -48,13 +48,10 @@ const PGHeroWrapper = async () => {
 const PGWhyUs = dynamic(() => import('@/components/md-ms/PGWhyUs').then(m => m.PGWhyUs));
 const PGAdmissionProcess = dynamic(() => import('@/components/md-ms/PGAdmissionProcess').then(m => m.PGAdmissionProcess));
 const PGSpecializations = dynamic(() => import('@/components/md-ms/PGSpecializations').then(m => m.PGSpecializations));
-const PGCollegesList = dynamic(() => import('@/components/md-ms/PGCollegesList').then(m => m.PGCollegesList), {
-  loading: () => <div className="animate-pulse h-[500px] bg-slate-100 dark:bg-slate-900 rounded-xl container-custom my-12" />,
-  ssr: false,
-});
+// Browser-only; Next 15 allows ssr:false only in a client component (components/lazy/ClientOnly).
+import { PGCollegesList, PGStickyMobileBar } from '@/components/lazy/ClientOnly';
 const PGDocumentChecklist = dynamic(() => import('@/components/md-ms/PGDocumentChecklist').then(m => m.PGDocumentChecklist));
 const PGFAQ = dynamic(() => import('@/components/md-ms/PGFAQ').then(m => m.PGFAQ));
-const PGStickyMobileBar = dynamic(() => import('@/components/md-ms/PGStickyMobileBar').then(m => m.PGStickyMobileBar), { ssr: false });
 
 /**
  * Metadata the admin can override per route (Admin -> Search & sharing).

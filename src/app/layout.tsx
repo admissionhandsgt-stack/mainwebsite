@@ -87,7 +87,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const host = headers().get('host') || ''
+  const host = (await headers()).get('host') || ''
   const isAdmin = isAdminSubdomain(host)
 
   // The shell is a client component, so its menus are fetched here and passed
@@ -235,5 +235,5 @@ export default async function RootLayout({
         <SonnerToaster />
       </body>
     </html>
-  )
+  );
 }

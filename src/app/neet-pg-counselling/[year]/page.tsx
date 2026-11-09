@@ -45,7 +45,8 @@ async function load(params: Params) {
   return { year, current, years, schedule, rounds };
 }
 
-export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<Params> }): Promise<Metadata> {
+  const params = await props.params;
   const d = await load(params);
   if (!d) return { title: "Not found", robots: { index: false, follow: false } };
   const live = d.rounds.filter((r) => r.result);
@@ -68,7 +69,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   });
 }
 
-export default async function CounsellingYearPage({ params }: { params: Params }) {
+export default async function CounsellingYearPage(props: { params: Promise<Params> }) {
+  const params = await props.params;
   const d = await load(params);
   if (!d) notFound();
   const { year, current, years, schedule, rounds } = d;

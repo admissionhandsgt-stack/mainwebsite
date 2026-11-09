@@ -31,9 +31,9 @@ const PATH = "/neet-pg-cutoff";
 const n = (v: number | null | undefined) => (v == null ? "—" : v.toLocaleString("en-IN"));
 const complete = (years: YearCuts[]) => years.find((y) => y.rounds.includes("R3")) ?? years[0];
 
-type Props = { searchParams: { category?: string } };
+type Props = { searchParams: Promise<{ category?: string }> };
 
-async function chosen(searchParams: Props["searchParams"]) {
+async function chosen(searchParams: Awaited<Props["searchParams"]>) {
   const year = complete(await getPgAiqCuts());
   const codes = year?.categories.map((c) => c.category) ?? [];
   const category = codes.includes(String(searchParams.category ?? "")) ? String(searchParams.category) : "GEN";
@@ -49,7 +49,8 @@ const ALL_CATS = ["GEN", "EWS", "OBC", "SC", "ST"] as const;
 // by category — only where three or more colleges took part (the round pages' rule, so no figure is one college's cut).
 const latestRound = getLatestLiveRound;
 
-export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const searchParams = await props.searchParams;
   const [{ year, category }, live] = await Promise.all([chosen(searchParams), latestRound()]);
   // How it is searched (Search Console, Oct 2026): "neet pg cut off rank branch
   // wise", "neet pg 2025 cut off branch wise", "neet pg closing rank 2025" — and,
@@ -94,7 +95,8 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   };
 }
 
-export default async function NeetPgCutoffPage({ searchParams }: Props) {
+export default async function NeetPgCutoffPage(props: Props) {
+  const searchParams = await props.searchParams;
   const [{ year, codes, category }, latest] = await Promise.all([chosen(searchParams), latestRound()]);
   const branches = year ? await getPgAiqBranches(category, year.year) : [];
   // The running year's round beside the complete year — only when it is a different year.
