@@ -64,7 +64,12 @@ console.log("all checks pass");
 if (apply) {
   // Pairs first, so a "none" never lands on a code that one of these pairs is about to claim.
   for (const level of ["ug", "pg"] as const)
-    for (const [code, [id]] of Object.entries(decisions[level])) if (id != null) await mapNmc(code, id);
+    for (const [code, [id]] of Object.entries(decisions[level]))
+      if (id != null) {
+        // A pair replaces an earlier "none" for the same code at this level (mapNmc only clears paired rows).
+        await db.execute(sql`DELETE FROM nmc_institutes WHERE college_code = ${code} AND method = 'admin-none' AND level = ${level}`);
+        await mapNmc(code, id);
+      }
   for (const level of ["ug", "pg"] as const)
     for (const [code, [id]] of Object.entries(decisions[level])) if (id == null) await markNmcNone(code, level);
   const st = await nmcStatus();

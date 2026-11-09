@@ -1,0 +1,13 @@
+{
+  "_about": "Seven of the 38 MBBS 'none' decisions of 2026-10-20 that the data now holds: colleges NMC permitted in 2026 whose MBBS seats were in no counselling list then, and are in MCC's NEET UG 2026 results imported on 2026-11-09 (scripts/ug/import_mcc_ug.mjs). Each pair checked by name, place and state against the NMC register entry (all seven: inception 2026). The 'admin-none' ug row for each code is removed when the pair is applied. AIIMS and JIPMER are not in NMC's register (they are institutes under their own Acts), so their pages stay without an NMC record by design.",
+  "ug": {
+    "AP/039/G/1": [4296, "Government Medical College, Piduguralla (NMC, 2026, 50 seats) = our 'Government Medical College & General Hospital, Piduguralla', Andhra Pradesh"],
+    "CG/016/G/1": [4290, "Government Medical College Dantewada (NMC, 2026, 50 seats) = our 'Government Medical College, Dantewada (GMC Dantewada)', Chhattisgarh"],
+    "CG/017/G/1": [4294, "Government Medical College Janjgir - Champa (NMC, 2026, 50 seats) = our 'Government Medical College, Janjgir-Champa', Chhattisgarh"],
+    "CG/018/G/1": [4295, "Government medical college, jashpur-kunkuri (NMC, 2026, 50 seats) = our 'Government Medical College, Jashpur-Kunkuri', Chhattisgarh"],
+    "CG/019/G/1": [4298, "Govt. Medical College Kabirdham (NMC, 2026, 50 seats) = our 'Government Medical College, Kabirdham (Kawardha)', Chhattisgarh"],
+    "CG/020/G/1": [4299, "Govt.Medical Collage Manendragarh (NMC, 2026, 50 seats) = our 'Government Medical College, Manendragarh', Chhattisgarh"],
+    "KA/074/P/2": [4270, "Chettinad Institute of Medical Education and Research (NMC, Karnataka, 2026, 100 seats) = our 'Chettinad Institute of Medical Education & Research', Karnataka"]
+  },
+  "pg": {}
+}

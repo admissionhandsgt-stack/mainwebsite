@@ -149,7 +149,7 @@ export default async function MBBSStatePage({ params }: Props) {
       answer:
         `We list ${p.colleges.length} MBBS colleges in ${name}` +
         (withRanks ? `, ${withRanks} of them with published NEET UG closing ranks` : "") +
-        `. Each has its own page with the ranks it closed at, round by round.`,
+        `. Each has its own page with its cut off band, fees, seats and the counselling that fills them.`,
     },
     ...(p.counsellings.length
       ? [

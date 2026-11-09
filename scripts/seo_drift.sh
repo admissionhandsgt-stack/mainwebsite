@@ -17,6 +17,7 @@ for p in / /neet-college-predictor /neet-pg-cutoff /md-ms-india /neet-pg-counsel
   if [ "$CMD" = compare ]; then
     echo "$out" | PYTHONIOENCODING=utf-8 python -I -c "
 import sys, json
+sys.stdout.reconfigure(encoding='utf-8')  # -I ignores PYTHONIOENCODING, and a cp1252 console cannot print the arrow
 t = sys.stdin.read()
 try:
     j = json.loads(t[t.index('{'):])
