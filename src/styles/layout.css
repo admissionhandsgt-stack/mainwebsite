@@ -27,8 +27,7 @@
 @media (min-width: 1536px) { :root { --page-max: 1440px; } }
 /* Beyond here the old ladder simply stopped. */
 @media (min-width: 1800px) { :root { --page-max: 1640px; } }
-@media (min-width: 2100px) { :root { --page-max: 1840px; } }
-@media (min-width: 2500px) { :root { --page-max: 2040px; } }
+
 /*
  * Large displays (2026-11-09, owner: "screen size ke hisab se dynamically adjust kyu nhi hoti"). Past 1920px the
  * whole layout scales a little, not just the column: the root font grows from 16px at 1920 to 20px at ~3500, so
@@ -38,9 +37,13 @@
  * `max-w-[..ch]`, which grows with the font, so lines stay readable.
  */
 @media (min-width: 1920px) { html { font-size: clamp(1rem, calc(0.7rem + 0.25vw), 1.25rem); } }
-@media (min-width: 2800px) { :root { --page-max: 2280px; } }
-@media (min-width: 3200px) { :root { --page-max: 2520px; } }
-@media (min-width: 3600px) { :root { --page-max: 2760px; } }
+/*
+ * And from 1920px the column fills the screen, less a 3rem margin each side (owner, 2026-11-09, on a ~3200px-wide
+ * view: "abhi bhi complete width nhi pakad rhi"). It used to step 1840/2040/2280/2520/2760 and left ~23% of such a
+ * screen empty. Paragraphs keep their own max-w in ch, so lines stay readable; grids, tables, cards and the header
+ * take the width. Capped at 3700px, beyond any common display.
+ */
+@media (min-width: 1920px) { :root { --page-max: min(calc(100vw - 6rem), 3700px); } }
 
 .container,
 .container-custom {

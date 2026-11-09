@@ -33,10 +33,10 @@ const LADDER: Step[] = [
   { width: 1440, expected: "1280px" }, // still the 1280 step until 1536
   { width: 1536, expected: "1440px" },
   { width: 1800, expected: "1640px" },
-  { width: 2100, expected: "1840px" },
-  { width: 2560, expected: "2040px" },
-  { width: 2800, expected: "2280px" },
-  { width: 3440, expected: "2520px" }, // with the root font at ~20px, so this is a scaled laptop layout, not a wider one
+  // From 1920px the column fills the screen less 3rem each side (2026-11-09), so the check is on the width itself.
+  { width: 1920, expected: "fluid" },
+  { width: 2560, expected: "fluid" },
+  { width: 3440, expected: "fluid" },
 ];
 
 const PAGES = ["/", "/md-ms-india/branches/md-general-medicine", "/neet-college-predictor"];
@@ -45,6 +45,8 @@ async function measure(page: import("@playwright/test").Page) {
   return page.evaluate(() => {
     const px = (el: Element | null) => (el ? Math.round(el.getBoundingClientRect().width) : null);
     return {
+      rootFont: parseFloat(getComputedStyle(document.documentElement).fontSize),
+      inner: document.documentElement.clientWidth,
       pageMax: getComputedStyle(document.documentElement).getPropertyValue("--page-max").trim(),
       container: px(document.querySelector(".container, .container-custom")),
       overflow: Math.max(0, document.documentElement.scrollWidth - window.innerWidth),
@@ -64,7 +66,13 @@ test.describe("The width ladder", () => {
       // Give the media queries a frame to apply.
       await page.waitForTimeout(150);
 
-      const { pageMax, container } = await measure(page);
+      const { pageMax, container, rootFont, inner } = await measure(page);
+      if (step.expected === "fluid") {
+        // min(100vw - 6rem, 3700px); 100vw counts a scrollbar the container cannot use, so allow its width.
+        const target = Math.min(step.width - 6 * rootFont, 3700, inner);
+        expect(Math.abs((container ?? 0) - target), `container width at ${step.width}px`).toBeLessThanOrEqual(20);
+        continue;
+      }
       expect(pageMax, `--page-max at ${step.width}px`).toBe(step.expected);
 
       if (step.expected !== "100%") {
@@ -84,10 +92,10 @@ test.describe("The width ladder", () => {
 
     await page.setViewportSize({ width: 5000, height: 900 });
     await page.waitForTimeout(150);
-    const { pageMax } = await measure(page);
-    // If this ever grows, somebody added a step above 3600px without deciding
-    // whether a line that wide is still readable (2026-11-09: the root font scales to 20px from 1920px up).
-    expect(pageMax).toBe("2760px");
+    const { container } = await measure(page);
+    // The fluid column stops at 3700px (2026-11-09): wider than any common display, so a 5K screen is not one line
+    // of prose. If this grows, decide first whether that is still readable.
+    expect(container).toBe(3700);
   });
 });
 

@@ -798,7 +798,8 @@ at runtime would pull the whole icon set into the bundle.
   1536px, so the site used to sit in a 1400px column with a third of a 2560px monitor empty. The
   variable steps past it — 1440 at 1536px, then 1640, 1840, 2040, 2280, 2520, 2760 at
   1800/2100/2500/2800/3200/3600 — and caps at 2760, because the answer to a very wide display is a wider page,
-  not an unbounded line of prose. **Since 2026-11-09 the root font scales from 1920px up** (owner: "screen size ke
+  not an unbounded line of prose. **Superseded the same day (owner: "abhi bhi complete width nhi pakad rhi"): from 1920px
+  the column is `min(100vw - 6rem, 3700px)` — 95–96% of the screen — and the ladder above 1800px is gone.** **Since 2026-11-09 the root font scales from 1920px up** (owner: "screen size ke
   hisab se dynamically adjust kyu nhi hoti"; their 4K screen zoomed to ~80% is a ~3200px CSS viewport):
   `clamp(1rem, 0.7rem + 0.25vw, 1.25rem)` — 16px at 1920, 17.6 at 2560, ~20 at 3500 — so type, spacing and cards
   grow with the screen and the column keeps stepping; in rem, so a visitor's default font size still counts. Anything
