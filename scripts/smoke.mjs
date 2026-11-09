@@ -66,6 +66,8 @@ async function checkRoutes() {
     "/neet-college-predictor?course=mbbs", "/neet-college-predictor?course=bds",
     "/mbbs-india", "/mbbs-india/colleges", "/mbbs-india/deemed-universities",
     "/md-ms-india", "/md-ms-india/colleges",
+    // The PG fee matrix and MCC's choice filling rules (2026-11-09).
+    "/md-ms-india/fees", "/md-ms-india/fees/maharashtra", "/neet-pg-choice-filling",
     "/nri-quota", "/nri-quota/colleges", "/nri-quota/documents",
     "/services", "/know-us", "/videos", "/neet-ug-process", "/terms",
     "/sitemap.xml", "/robots.txt",
@@ -84,8 +86,9 @@ async function checkRoutes() {
 
 async function checkRedirects() {
   section("Removed pages redirect rather than 404");
-  // The five routes the one tool replaced, plus the fees page. Each has to
-  // land on the tool rather than 404, because they are what is in the index.
+  // The five routes the one tool replaced, plus a merged college (one college once held twice, 2026-11-09:
+  // lib/collegeMerges.ts). Each has to land on its page rather than 404, because they are what is in the index.
+  // /md-ms-india/fees redirected until 2026-11-09; it is the PG fee matrix now (checked under "Pages answer").
   const pairs = [
     ["/mbbs-india/predictor", "/neet-college-predictor?course=mbbs"],
     ["/md-ms-india/predictor", "/neet-college-predictor?course=pg"],
@@ -93,7 +96,10 @@ async function checkRedirects() {
     ["/md-ms-india/rounds", "/neet-college-predictor?course=pg"],
     ["/mbbs-india/cutoffs", "/neet-college-predictor?course=mbbs"],
     ["/md-ms-india/cutoffs", "/neet-college-predictor?course=pg"],
-    ["/md-ms-india/fees", "/md-ms-india/colleges"],
+    [
+      "/mbbs-india/colleges/coochbehar-government-medical-college-hospital-coochbehar-west-bengal-ug",
+      "/mbbs-india/colleges/maharaja-jitendra-narayan-medical-college-and-hospital-coochbehar-ug",
+    ],
   ];
   for (const [from, to] of pairs) {
     const res = await get(from);
@@ -202,7 +208,7 @@ async function checkSitemap() {
   if (count > 1000) ok("sitemap is populated", `${count.toLocaleString("en-IN")} URLs`);
   else bad("sitemap is populated", `only ${count} URLs — it may have been built against an empty database`);
 
-  for (const dead of ["/cutoffs", "/md-ms-india/fees", "/login", "/account", "/admin"]) {
+  for (const dead of ["/cutoffs", "/login", "/account", "/admin"]) {
     if (xml.includes(dead)) bad("sitemap excludes " + dead, "it is listed");
     else ok("sitemap excludes " + dead);
   }
