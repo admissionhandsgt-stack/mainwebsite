@@ -397,7 +397,10 @@ export async function runZynNotices(opts: { force?: boolean } = {}): Promise<Run
   if (!url || !key) return { ...summary, skipped: "no endpoint or key yet" };
   if (!enabled && !opts.force) return { ...summary, skipped: "switched off" };
   try {
-    const { list, next } = await fetchApproved(url, key, cursor);
+    // The first read takes only the last week (as the site's own feed): with no cursor, weeks of approved notices would
+    // otherwise land on the alerts bar at once, each for 14 days.
+    const since = cursor ?? new Date(Date.now() - 7 * 86_400_000).toISOString();
+    const { list, next } = await fetchApproved(url, key, since);
     summary.received = list.length;
     let newest = cursor;
     for (const r of list) {
