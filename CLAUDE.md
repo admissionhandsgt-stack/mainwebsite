@@ -7,7 +7,7 @@ plus a password-protected admin CMS. Read this file first; it replaces exploring
 
 | Layer | Choice |
 |---|---|
-| Framework | Next.js 14 App Router (`src/app`), React 18, TypeScript (`strict: false`, `strictNullChecks: true`) |
+| Framework | Next.js 15.5 App Router (`src/app`), React 19, TypeScript (`strict: false`, `strictNullChecks: true`) |
 | Styling | Tailwind + shadcn/ui (Radix), `class-variance-authority`, `next-themes` (class dark mode) |
 | Data | PostgreSQL on the Oracle server + Drizzle (`src/db/`). Reads via `src/lib/content.ts`, writes via `/api/admin/*` |
 | Animation | framer-motion |
@@ -131,10 +131,12 @@ every file, CLAUDE.md included). What was wrong, and the rule each fix left:
 - **Meta webhook (`/api/whatsapp/cloud`) checks Meta's signature only once `whatsapp.cloud.app_secret` is
   saved** (Admin → WhatsApp Official API). Until then anyone who knows our phone_number_id can add fake
   student messages to the permanent `wa_messages` table. The owner pastes it; Claude never handles it.
-- **Dependencies:** Next 14.2.35 (the last 14.x). Still open and needing a project of their own: Next 15.5/16
-  (several advisories, incl. image-optimizer RCE only fixed there — we only optimise our own files and YouTube
-  thumbnails, so an attacker cannot feed it an image) and sharp ≥0.35.5 (libheif/libvips/librsvg; ship alone and
-  let `check_sharp_decode.cjs` judge the ARM AVIF decode, see the sharp note below).
+- **Dependencies (upgraded 2026-11-09, owner: "Next.js 15/16 aur sharp ka upgrade … kardo"):** Next 15.5.29 (the
+  `backport` line that gets security fixes), React 19.2.9, sharp 0.35.5. `params`, `searchParams`, `headers()` and
+  `cookies()` are async (official codemod); `ssr: false` lives only in client modules (`components/lazy/ClientOnly`);
+  `eslint.ignoreDuringBuilds` (Next 15 lints in the build and the Vite-era config errors there); nine unused UI
+  packages that pinned React 18 were removed. `check_sharp_decode.cjs` still judges sharp's ARM AVIF decode on the
+  server before a release goes live. Next 16 (middleware → proxy, Turbopack builds) is a later step.
 - Checked and sound: every `/api/admin/*` route calls `requireAdmin()`; SQL is parameterised everywhere (identifiers
   only from constants); no CORS header anywhere; cookies HttpOnly + Secure + SameSite=Lax; no token in browser
   storage; no `NEXT_PUBLIC_` secret; uploads judged by magic bytes; document vault owner-or-staff with 404;
@@ -3003,7 +3005,7 @@ a silent `set -e` exit in its own guard went unseen on 2026-10-18.
 the logo, and checks both answer 200 after the switch, and `smoke.mjs` has a "Static files answer"
 section. Every page check had passed throughout, because pages render without their images.
 
-**sharp is pinned to 0.33.5 — do not let it float to 0.34 on this box.** sharp 0.34.x on linux-arm64
+**sharp was pinned to 0.33.5 — never 0.34 on this box; 0.35.5 since 2026-11-09, exact, released only through `check_sharp_decode.cjs`.** sharp 0.34.x on linux-arm64
 (libaom 3.12+) decodes AVIF with bright-green blocks through the picture; the identical version on x86
 is clean, and 0.33.5 (libaom 3.9.1) is clean on both. On Oracle it hit 39 of the 42 AVIF uploads, so
 every hero, college and branch photograph optimised by `/_next/image` went out green-blotched from the
