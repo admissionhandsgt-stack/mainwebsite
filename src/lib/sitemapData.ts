@@ -6,6 +6,7 @@ import { getStipends } from "@/lib/cutoffHubQueries";
 import { getSsCourses } from "@/lib/ssQueries";
 import { getMdsSlugs } from "@/lib/mdsQueries";
 import { ROUNDS, getCounsellingYear, getCounsellingYears, getLatestLiveRound, getRoundState, roundPath } from "@/lib/mccResults";
+import { isMeritQuota } from "@/lib/chance";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 
@@ -89,19 +90,24 @@ const rows = <T,>(r: unknown) => r as unknown as T[];
  */
 const loadSitemapData = unstable_cache(
   async () => {
-    const [hidden, pg, st, terms] = await Promise.all([
+    const [hidden, pg, st, terms, mccLive, ugRanks] = await Promise.all([
       db.execute(sql`SELECT route FROM page_seo WHERE no_index = true`),
       // Both levels serve a page per college, so both belong here. Only
       // colleges with published rounds are listed — a page with no cutoff
       // data is thin content and asking Google to index it does not help.
       // A PG college page shows its bond / stipend / seat-leaving terms (pg_seat_terms, fetched_on) and
       // its fees (fees.updated_at, migration 0044): the page changed when either did, even though the
-      // institute row did not.
+      // institute row did not. Likewise its closing ranks (extracted_at — MCC's NEET UG 2026 results reached 602
+      // MBBS/BDS pages on 2026-11-09 while every UG lastmod still said 2026-09-22), and for a UG college the state
+      // rounds of the year in progress moved off its page into state_round_cuts the same day (imported_at).
       db.execute(sql`
         SELECT i.level::text AS level, i.slug,
                GREATEST(i.updated_at::date,
                         COALESCE((SELECT MAX(t.fetched_on) FROM pg_seat_terms t WHERE t.institute_id = i.id), DATE '1970-01-01'),
-                        COALESCE((SELECT MAX(f.updated_at)::date FROM fees f WHERE f.institute_id = i.id), DATE '1970-01-01'))::text AS updated
+                        COALESCE((SELECT MAX(f.updated_at)::date FROM fees f WHERE f.institute_id = i.id), DATE '1970-01-01'),
+                        COALESCE((SELECT MAX(cr.extracted_at AT TIME ZONE 'Asia/Kolkata')::date FROM closing_ranks cr WHERE cr.institute_id = i.id), DATE '1970-01-01'),
+                        COALESCE((SELECT MAX(sc.imported_at AT TIME ZONE 'Asia/Kolkata')::date FROM state_round_cuts sc
+                                  WHERE sc.institute_id = i.id AND sc.level = 'ug'), DATE '1970-01-01'))::text AS updated
         FROM institutes i
         WHERE i.is_active = true
           -- A page with something on it beyond the name: published rounds, a published fee, or the NMC's record.
@@ -114,6 +120,15 @@ const loadSitemapData = unstable_cache(
       `),
       db.execute(sql`SELECT slug FROM mbbs_states WHERE is_active = true ORDER BY slug`),
       db.execute(sql`SELECT MAX(fetched_on)::text AS d FROM pg_seat_terms`),
+      // The PG colleges MCC has allotted in its latest counselling year, with the quota: a college page prints that
+      // year's bands for its merit quotas (lib/collegeLiveBands.ts), so it changes when a round goes live.
+      db.execute(sql`
+        SELECT DISTINCT i.slug, a.year, a.quota
+        FROM mcc_allotments a JOIN institutes i ON i.id = a.institute_id
+        WHERE a.year = (SELECT MAX(year) FROM mcc_allotments)
+      `),
+      // The day the newest UG closing ranks arrived: /neet-ug-cutoff and /bds-india print MCC's AIQ figures.
+      db.execute(sql`SELECT (MAX(extracted_at) AT TIME ZONE 'Asia/Kolkata')::date::text AS d FROM closing_ranks WHERE level = 'ug'`),
     ]);
 
     const result = {
@@ -121,6 +136,8 @@ const loadSitemapData = unstable_cache(
       colleges: rows<{ level: string; slug: string; updated: string }>(pg),
       states: rows<{ slug: string }>(st).map((r) => r.slug),
       termsDate: rows<{ d: string | null }>(terms)[0]?.d ?? null,
+      mccLive: rows<{ slug: string; year: number; quota: string }>(mccLive),
+      ugRanksDate: rows<{ d: string | null }>(ugRanks)[0]?.d ?? null,
     };
 
     // A sitemap with no colleges means the query silently returned nothing.
@@ -130,7 +147,7 @@ const loadSitemapData = unstable_cache(
     }
     return result;
   },
-  ["sitemap-routes-v5"],
+  ["sitemap-routes-v6"],
   { revalidate: 86400, tags: ["sitemap"] },
 );
 
@@ -141,6 +158,13 @@ const loadSitemapData = unstable_cache(
  */
 const newest = (dates: string[]) => dates.reduce((a, b) => (b > a ? b : a), "");
 
+/**
+ * The day PG college pages began printing MCC's bands for the counselling year in progress (commit 2372e12,
+ * deployed 2026-11-09). Before it their lastmod stayed where the data left it (most at 2026-10-18), so Google
+ * had no reason to re-read 1,400 pages that now say "Cut Off 2026".
+ */
+const LIVE_BANDS_FROM = "2026-11-09";
+
 /** A slug as a URL path segment. A raw "&" in two state slugs once made the whole file invalid XML. */
 const seg = (slug: string) => encodeURIComponent(slug);
 
@@ -149,12 +173,16 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
   let colleges: { level: string; slug: string; updated: string }[] = [];
   let states: string[] = [];
   let termsDate: string | undefined;
+  let mccLive: { slug: string; year: number; quota: string }[] = [];
+  let ugRanksDate: string | undefined;
   try {
     const data = await loadSitemapData();
     noIndex = new Set(data.noIndex);
     colleges = data.colleges;
     states = data.states;
     termsDate = data.termsDate ?? undefined;
+    mccLive = data.mccLive;
+    ugRanksDate = data.ugRanksDate ?? undefined;
   } catch (error) {
     // Degrade this one response rather than 500 — but loudly, because a
     // sitemap missing thousands of URLs is not a small problem.
@@ -180,10 +208,25 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
   }
   const ROUND_HUBS = new Set(["/neet-pg-cutoff", "/neet-pg-marks-vs-rank"]);
   const TERMS_HUBS = new Set(["/md-ms-india/bond"]);
+  const UG_RANK_HUBS = new Set(["/neet-ug-cutoff", "/bds-india"]);
+
+  // PG college pages that print MCC's bands for the counselling year in progress: a merit-quota allotment
+  // (collegeLiveBands' own test — a deemed university's paid seat is not a band) in the latest live round's year.
+  const liveColleges = new Set(
+    mccLive
+      .filter((r) => live && Number(r.year) === live.year && isMeritQuota(r.quota) && !/self.?financed/i.test(r.quota))
+      .map((r) => r.slug),
+  );
 
   for (const s of STATIC) {
     if (noIndex.has(s.path)) continue;
-    const lastModified = ROUND_HUBS.has(s.path) ? liveDay : TERMS_HUBS.has(s.path) ? termsDate : undefined;
+    const lastModified = ROUND_HUBS.has(s.path)
+      ? liveDay
+      : TERMS_HUBS.has(s.path)
+        ? termsDate
+        : UG_RANK_HUBS.has(s.path)
+          ? ugRanksDate
+          : undefined;
     out.hubs.push({ url: BASE + s.path, lastModified, changeFrequency: s.freq, priority: s.priority });
   }
 
@@ -280,9 +323,12 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
 
   for (const c of colleges) {
     const pg = c.level === "pg";
+    // A page showing the year in progress changed when the latest round went live, and no earlier than the day
+    // the template began printing it.
+    const shown = pg && liveColleges.has(c.slug) ? newest([liveDay ?? "", LIVE_BANDS_FROM]) : "";
     (pg ? out["pg-colleges"] : out["ug-colleges"]).push({
       url: `${BASE}${pg ? "/md-ms-india/colleges" : "/mbbs-india/colleges"}/${seg(c.slug)}`,
-      lastModified: c.updated || undefined,
+      lastModified: newest([c.updated ?? "", shown]) || undefined,
       changeFrequency: "monthly",
       priority: 0.6,
     });

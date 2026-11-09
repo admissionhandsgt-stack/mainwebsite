@@ -11,6 +11,7 @@
 //                  that person's own Search Console
 //   add            add sc-domain:admissionhands.com to Search Console
 //   sitemap        submit https://www.admissionhands.com/sitemap.xml
+//   sitemaps       the index and every file in it as Google last read them (spends no inspection quota)
 //   status         sitemaps as Google sees them, plus an inspection of key URLs
 //   inspect <url>  one URL: indexed or not, last crawl, the canonical Google chose
 //
@@ -145,8 +146,9 @@ async function inspect(url) {
   );
 }
 
-async function status() {
-  const s = await google("GET", `${WM}/sites/${encodeURIComponent(SITE)}/sitemaps`);
+async function listSitemaps(index) {
+  const q = index ? `?sitemapIndex=${encodeURIComponent(index)}` : "";
+  const s = await google("GET", `${WM}/sites/${encodeURIComponent(SITE)}/sitemaps${q}`);
   for (const m of s.sitemap ?? []) {
     const c = (m.contents ?? []).map((x) => `${x.type} ${x.submitted} submitted / ${x.indexed ?? "?"} indexed`).join(", ");
     console.log(
@@ -154,6 +156,17 @@ async function status() {
         `${m.isPending ? "pending" : "processed"} · errors ${m.errors ?? 0} warnings ${m.warnings ?? 0}${c ? ` · ${c}` : ""}`,
     );
   }
+}
+
+// The sitemap index and every file in it, as Google last read them. No URL inspection, so it spends none of
+// the property's 2,000 inspections a day (which Request indexing in the Search Console screen needs too).
+async function sitemaps() {
+  await listSitemaps();
+  await listSitemaps(SITEMAP);
+}
+
+async function status() {
+  await listSitemaps();
   for (const u of [
     "https://www.admissionhands.com/",
     "https://www.admissionhands.com/neet-college-predictor",
@@ -163,9 +176,9 @@ async function status() {
 }
 
 const [cmd, arg] = process.argv.slice(2);
-const run = { verify, owner: () => addOwner(arg), add, sitemap, status, inspect: () => inspect(arg) }[cmd];
+const run = { verify, owner: () => addOwner(arg), add, sitemap, sitemaps, status, inspect: () => inspect(arg) }[cmd];
 if (!run) {
-  console.log("usage: node --env-file=.env.local scripts/gsc.mjs verify|owner <email>|add|sitemap|status|inspect <url>");
+  console.log("usage: node --env-file=.env.local scripts/gsc.mjs verify|owner <email>|add|sitemap|sitemaps|status|inspect <url>");
   process.exit(1);
 }
 await run();

@@ -856,7 +856,11 @@ seats and the foreign-country quota have no 2025 home and are skipped (~150 rows
 Result: 1,156 old rows → 9,635 (MBBS 8,521, BDS 1,114, 602 colleges), fees carried onto the new rows from the old
 ones; R1 general AIQ against 2025 median ratio 1.05. Backup `D:/Admisson Hands/ug_data/backups/closing_ranks_ug_2026_mcc_before_2026_11_09.json`.
 MCC's UG counselling was complete (special stray 6 Nov), so it is not a year in progress — the state counsellings' 2026
-rows (~400, R1/R2 only, from the September scrape) still are.
+rows still are: R1/R2 of 19 state counsellings from the September scrape, 300 rows. **Moved out of closing_ranks into
+`state_round_cuts` (level `ug`) on 2026-11-09 (owner's OK, the 2026-11-04 rule)** by `scripts/ug/move_ug_state_rounds.mjs
+[--apply --backup <f>] | --restore <f>` (backup `D:/Admisson Hands/ug_data/backups/closing_ranks_ug_2026_state_before_2026_11_09.json`,
+every row with its id). They had not hidden 2025: the scrape labels 2026's seats "State" where 2025's say "Government",
+so they sat in `seat_options` as 249 extra seats read from round 1/2 alone. Nothing reads `state_round_cuts` at level `ug`.
 
 **Parse the saved HTML, never the CSV or JSON the scraper also wrote.** Those were keyed from the
 header row, but the body rows carry two extra cells of HTML-comment debris, so every column after the
@@ -2403,6 +2407,14 @@ for 8–9 Oct (root-only). Remedy: Request indexing for the affected URLs.
   An inspection of 2026-10-26 (branches + hubs sitemaps, 233 URLs): branches 80 indexed, 66 "unknown to Google",
   35 "discovered – not indexed" (General Medicine, Dermatology, General Surgery among them); hubs 30 / 11 / 9.
   Pages answer in 0.2–0.7 s to a Googlebot UA and are linked in the server HTML — it is crawl priority, not access.
+  **2026-11-09:** every UG college lastmod still said 2026-09-22 after MCC's NEET UG 2026 results reached 602 pages,
+  and PG college pages sat at 2026-10-18 after they began printing MCC's 2026 bands. Now a college page also takes
+  `MAX(closing_ranks.extracted_at)` (IST date) and, for UG, the day its state rounds moved to `state_round_cuts`; a PG
+  college with a merit-quota allotment in the latest live MCC year takes that round's day, no earlier than
+  `LIVE_BANDS_FROM` (the template's ship date — bump it when a template change alters every such page);
+  `/neet-ug-cutoff` and `/bds-india` the newest UG rank import. A change made only in code moves nothing by itself.
+  Google's view: `node --env-file=.env.local scripts/gsc.mjs sitemaps` (last read per file, spends no inspection
+  quota); `gsc.mjs sitemap` resubmits the index after a deploy that moves many dates.
 - **The 33 state pages were invisible.** `/mbbs-india/[state]` was a client component fetching from
   `/api/content/*`, which robots.txt blocked — Google saw "Study MBBS in" and nothing else. They were
   also linked from nowhere and any slug rendered 200. Now server-rendered from `lib/stateQueries.ts`
