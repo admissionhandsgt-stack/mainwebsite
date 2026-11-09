@@ -122,7 +122,11 @@ export function middleware(req: NextRequest) {
     }
   }
 
-  return NextResponse.next();
+  // The page's own path, for server components that need it without a prop (2026-11-09: the reviewer line in
+  // DataHero reads the page's data date by path). A request header, so it never reaches the browser.
+  const pathHeaders = new Headers(req.headers);
+  pathHeaders.set('x-ah-path', url.pathname);
+  return NextResponse.next({ request: { headers: pathHeaders } });
 }
 
 /**

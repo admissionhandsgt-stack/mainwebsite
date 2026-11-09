@@ -17,6 +17,7 @@ import TelegramLink from "@/components/engage/TelegramLink";
 import PulseLine from "@/components/graphics/PulseLine";
 import type { HeroImage } from "@/lib/pageCopy";
 import InsightCards, { type Insight } from "@/components/ui/InsightCards";
+import ReviewedBy from "@/components/seo/ReviewedBy";
 
 /**
  * The hero for every data page — cutoffs, stipends, fees, states, branches.
@@ -181,6 +182,8 @@ export default function DataHero({
             </div>
           )}
           {source && <p className="mt-5 max-w-[62ch] text-[12.5px] leading-relaxed text-muted-foreground">{source}</p>}
+          {/* Who reviewed the page and when its data last changed (2026-11-09). */}
+          <ReviewedBy />
         </div>
 
         {side && (

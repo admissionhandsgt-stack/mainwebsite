@@ -209,7 +209,7 @@ For any questions regarding these legal documents, our services, or your data, p
 
 **Email:** info@admissionhands.com
 
-**Phone:** +91 93103 01949
+**Phone:** +91 92206 26002
 
 **Office Hours:** Monday to Sunday, 10:00 AM – 10:00 PM IST
 

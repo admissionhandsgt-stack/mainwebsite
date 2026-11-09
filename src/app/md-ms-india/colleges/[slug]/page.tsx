@@ -12,6 +12,7 @@ import { getOtherLevelPage, getPgTwin, getSimilarColleges } from "@/lib/collegeQ
 import { loadCollegePage, collegeTitle, collegeDescription, collegeHeadline } from "@/lib/collegeSnippet";
 import CollegeGlance from "@/components/colleges/CollegeGlance";
 import NmcRecord from "@/components/colleges/NmcRecord";
+import ReviewedBy from "@/components/seo/ReviewedBy";
 import CollegeRankCheck from "@/components/colleges/CollegeRankCheck";
 import FeeTable from "@/components/colleges/FeeTable";
 import { generalBands } from "@/lib/cutoffBands";
@@ -188,6 +189,7 @@ export default async function CollegePage({ params }: { params: { slug: string }
                 {collegeHeadline(s)}
               </h1>
               {s.official !== s.short && <p className="mt-3 max-w-[70ch] text-[14px] text-muted-foreground">{s.official}</p>}
+              <ReviewedBy />
               {twin && (
                 <p className="mt-2 text-[14px]">
                   <Link href={`/md-ms-india/colleges/${twin.slug}`} className="font-semibold text-primary-strong hover:underline">

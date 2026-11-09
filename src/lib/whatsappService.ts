@@ -84,7 +84,7 @@ async function getRecipientNumbers(): Promise<string[]> {
 
   // If empty, fall back to default number
   if (!recipientString.trim()) {
-    return ['919310301949'];
+    return ['919220626002'];
   }
 
   // Split by comma and normalize each number, then add the staff list (Gulshan

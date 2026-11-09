@@ -30,7 +30,7 @@ import { CONTACT_INFO } from "@/lib/constants";
 
 export const SITE = "https://www.admissionhands.com";
 const n = (v: number) => v.toLocaleString("en-IN");
-/** +91 93103 01949, as people write it. */
+/** +91 92206 26002, as people write it. */
 const phone = (raw: string) => {
   const d = raw.replace(/\D/g, "");
   const ten = d.length === 12 && d.startsWith("91") ? d.slice(2) : d.length === 10 ? d : null;
@@ -163,11 +163,13 @@ export async function llmsText(full: boolean): Promise<string> {
     link("PG by state", "/md-ms-india/states", "every state's MD/MS colleges and DNB hospitals, its counselling and its cutoff by quota"),
     link("PG stipend, state wise", "/md-ms-india/stipend", stipends.colleges ? `first-year stipends published by ${n(stipends.colleges)} colleges and DNB hospitals, with a page per state` : undefined),
     link("PG service bond by state", "/md-ms-india/bond", "bond years and penalties on government seats, as listed for the counselling; confirm with the state's notice before signing"),
+    link("NEET PG fees 2026-27, state by state", "/md-ms-india/fees", "every government, private and deemed MD/MS college's yearly fee, quota by quota, with the cheapest and dearest branch named; 2026-27 notices printed exactly, with a page per state"),
     link("MD fees in private medical colleges", "/md-ms-india/private-college-fees", "state by state, as the median and the middle 80%"),
     link("Deemed university PG fees", "/md-ms-india/deemed-universities"),
     link("Management quota", "/management-quota"),
     link("NRI quota fees", "/nri-quota/fees"),
     link("NEET PG counselling process and choice filling", "/neet-pg-process", "round by round, with MCC's schedule"),
+    link("NEET PG choice filling, upgradation and free exit", "/neet-pg-choice-filling", "MCC's rules round by round: locking, Freeze vs Float, free exit in round 1 only, forfeiture of the security deposit from round 2, no resignation after joining round 3; each rule cited to MCC's 2026 bulletin or notice"),
     ...years
       .filter((y) => y !== current)
       .sort((a, b) => b - a)

@@ -59,6 +59,8 @@ export function webPage(opts: { name: string; description: string; path: string;
   return {
     "@context": "https://schema.org",
     "@type": "WebPage",
+    // The same @id as the reviewer node DataHero adds (components/seo/ReviewedBy), so search engines read one page.
+    "@id": SITE + opts.path,
     name: opts.name,
     description: opts.description,
     url: SITE + opts.path,

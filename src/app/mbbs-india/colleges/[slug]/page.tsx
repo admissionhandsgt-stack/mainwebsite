@@ -12,6 +12,7 @@ import { getMbbsStates } from "@/lib/content";
 import { loadCollegePage, collegeTitle, collegeDescription, collegeHeadline } from "@/lib/collegeSnippet";
 import CollegeGlance from "@/components/colleges/CollegeGlance";
 import NmcRecord from "@/components/colleges/NmcRecord";
+import ReviewedBy from "@/components/seo/ReviewedBy";
 import { extractStateName } from "@/lib/stateQueries";
 import CollegeRankCheck from "@/components/colleges/CollegeRankCheck";
 import { generalBands } from "@/lib/cutoffBands";
@@ -166,6 +167,7 @@ export default async function UgCollegePage({ params }: { params: { slug: string
                 {collegeHeadline(s)}
               </h1>
               {s.official !== s.short && <p className="mt-2.5 max-w-[70ch] text-[14px] text-muted-foreground">{s.official}</p>}
+              <ReviewedBy />
               {where && <p className="mt-2 text-[15px] font-medium text-foreground">{where}</p>}
               {pgPage && (
                 <p className="mt-2 text-[14px]">

@@ -3,8 +3,8 @@ import { useContactInfo } from './useContactInfo';
 export const useCTA = () => {
   const { contactInfo } = useContactInfo();
   
-  const getPhone = () => contactInfo?.phone_number || "+919310301949";
-  const getWhatsapp = () => contactInfo?.whatsapp_number || "+919310301949";
+  const getPhone = () => contactInfo?.phone_number || "+919220626002";
+  const getWhatsapp = () => contactInfo?.whatsapp_number || "+919220626002";
 
   return {
     whatsapp: (message?: string) => {

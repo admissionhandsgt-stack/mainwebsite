@@ -1895,6 +1895,30 @@ kept page (`src/lib/collegeMerges.ts`, read by the UG college page). MCC's names
   three of its PG Medical notices were held on 6 Nov as "not an official domain") now links the board's page instead
   of the Drive file. AYUSH and exam-result notices stay held, as they should.
 
+## Reviewer, "updated", the phone number, UG fee floors (2026-11-09, owner's decisions)
+
+- **"Reviewed by Gulshan Tomar, Admission Counselor · Updated <date>"** under every data page's hero (DataHero) and on
+  both college templates (`components/seo/ReviewedBy.tsx`). Owner: "Gulshan Tomar Admission Counselor dikhado", and
+  "log updated ya 2026-2027 year se bhi search karte hai". **This lifts the 2026-10-26 "no Updated on <date>" rule for
+  this line only**: the date is the page's own data date — its sitemap lastmod (`lib/pageDates.ts`, by path from the
+  `x-ah-path` request header the middleware now sets) — never the day of the visit, and a page without one shows the
+  reviewer alone. The JSON-LD carries `reviewedBy` (Person) and `dateModified`/`lastReviewed` on the page's WebPage
+  `@id` (webPage() now sets the same @id). Words: Admin → Content → "Site: reviewer on data pages".
+- **PG college titles try "PG Fees 2026-27"** first when the page prints a 2026-27 notice's fee (`collegeTitle`);
+  a long name falls through to the older tails.
+- **Public phone and WhatsApp are +91 92206 26002** (owner, 2026-11-09). `contact_info` (Admin → Contacts) is the
+  source for every CTA; the code's fallbacks (`constants.ts`, `useContactInfo`, `useCTA`, …) say the same. The
+  inline lead form already sent students to `lead_notification_phone` (the same number).
+- **UG fee floors are verified on read (`getCollegeFees`)** — owner: "kachre wali row … verify karke sahi wali
+  dikhani hai". Never a fee under ₹1,000 (116 rows read ₹5). At a college NMC does not list as Government that also
+  lists a fee of ₹3 lakh or more, a figure under ₹1 lakh counts only when 3+ colleges NMC lists as private/trust in
+  the state list the same amount for the course — a state-fixed fee (AP Category A ₹16,500/₹25,250, Telangana
+  Category A ₹60,000, Puducherry ₹73,700) — not a lone figure (TN's government ₹18,073 at Srinivasan, RIMS Raipur's
+  ₹10,050, Geetanjali's ₹87,100). A college whose every fee is low (CMC Vellore ₹51,345) keeps it. 207 rows are left
+  out; the rows themselves are untouched.
+- **Canonicals audited the same day:** 878 sitemap URLs (every hub, state and branch page, 200 UG and 200 PG college
+  pages) — every one 200, self-canonical, indexable, one H1.
+
 ## The counselling year in progress on college and branch pages (2026-11-09)
 
 Search Console, 12 Oct – 8 Nov: college pages carry 94k of the site's impressions at position 9–10 (MBBS CTR 0.23%),

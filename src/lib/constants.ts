@@ -1,7 +1,7 @@
 export const CONTACT_INFO = {
   address: "Office #915, 9th Floor, Bhutani City Centre, Sector 32, Noida, UP 201301",
-  phone: "+919310301949",
-  whatsapp: "919310301949",
+  phone: "+919220626002",
+  whatsapp: "919220626002",
   email: "info@admissionhands.com",
   /**
    * The public Telegram channel (counselling notices, rounds, cutoffs). Linked

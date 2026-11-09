@@ -132,7 +132,7 @@ export const InlineLeadForm = ({
     if (status === 'success') {
       const timer = setTimeout(() => {
         try {
-          const recipientNumber = (contactInfo?.lead_notification_phone || contactInfo?.whatsapp_number || '919310301949')
+          const recipientNumber = (contactInfo?.lead_notification_phone || contactInfo?.whatsapp_number || '919220626002')
             .replace(/[+\s-]/g, '');
 
           const baseText = [

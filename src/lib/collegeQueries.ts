@@ -257,6 +257,22 @@ export async function getCollegeFees(slug: string, level: Level): Promise<Colleg
       LEFT JOIN courses c ON c.id = f.course_id
       LEFT JOIN quotas  q ON q.id = f.quota_id
       WHERE i.slug = ${slug} AND f.level = ${level}
+        -- UG fee rows carry no quota and some are slips (owner, 2026-11-09: "kachre wali row … verify karke sahi wali
+        -- dikhani hai"). Never a fee under ₹1,000 (116 rows read ₹5). At a college NMC does not list as Government
+        -- that also lists a fee of ₹3 lakh or more, a figure under ₹1 lakh counts only when the same amount is listed
+        -- at 3+ colleges NMC lists as private or trust in the state, for the course — a fee the state fixes (AP Category A ₹16,500 / ₹25,250,
+        -- Telangana Category A ₹60,000, Puducherry ₹73,700) — not a lone figure (TN's government fee ₹18,073 at a
+        -- private college, ₹60,100 at PES). A college whose every fee is low (CMC Vellore) keeps it.
+        AND NOT (${level} = 'ug' AND f.fee_inr IS NOT NULL AND (
+          f.fee_inr < 1000
+          OR (f.fee_inr < 100000
+              AND NOT EXISTS (SELECT 1 FROM nmc_institutes m JOIN nmc_courses nc ON nc.college_code = m.college_code
+                               WHERE m.institute_id = i.id AND nc.management_type = 'Government')
+              AND EXISTS (SELECT 1 FROM fees g WHERE g.institute_id = f.institute_id AND g.course_id = f.course_id AND g.fee_inr >= 300000)
+              AND (SELECT COUNT(DISTINCT g2.institute_id) FROM fees g2 JOIN institutes i2 ON i2.id = g2.institute_id
+                    WHERE g2.level = 'ug' AND g2.course_id = f.course_id AND g2.fee_inr = f.fee_inr AND i2.state_id = i.state_id
+                      AND EXISTS (SELECT 1 FROM nmc_institutes m2 JOIN nmc_courses n2 ON n2.college_code = m2.college_code
+                                   WHERE m2.institute_id = i2.id AND n2.management_type <> 'Government')) < 3)))
       ORDER BY f.fee_inr ASC NULLS LAST
     `),
   ).map((r) => ({

@@ -21,9 +21,9 @@ export interface ContactInfo {
  */
 const FALLBACK: ContactInfo = {
   email: "info@admissionhands.com",
-  phone_number: "+919310301949",
-  whatsapp_number: "+919310301949",
-  lead_notification_phone: "+919310301949",
+  phone_number: "+919220626002",
+  whatsapp_number: "+919220626002",
+  lead_notification_phone: "+919220626002",
 };
 
 /**

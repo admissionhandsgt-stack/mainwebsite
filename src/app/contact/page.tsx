@@ -18,7 +18,7 @@ const ADDRESS = `${OFFICE.street}, ${OFFICE.locality}, ${OFFICE.region} ${OFFICE
 // A search link needs no API key and no map embed (which the CSP does not allow).
 const DIRECTIONS = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`AdmissionHands, ${ADDRESS}`)}`;
 
-/** "+919310301949" -> "+91 93103 01949" */
+/** "+919220626002" -> "+91 92206 26002" */
 function pretty(phone: string) {
   const d = phone.replace(/\D/g, "").replace(/^91/, "");
   return d.length === 10 ? `+91 ${d.slice(0, 5)} ${d.slice(5)}` : phone;

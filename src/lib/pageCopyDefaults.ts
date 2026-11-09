@@ -29,6 +29,16 @@ export interface CopyGroup {
 const hero = (fields: Record<string, CopyField>): Record<string, CopyField> => fields;
 
 export const PAGE_COPY = {
+  "site.reviewer": {
+    group: "Site: reviewer on data pages",
+    fields: {
+      label: { label: "Words before the name", value: "Reviewed by" },
+      name: { label: "Reviewer's name", value: "Gulshan Tomar" },
+      role: { label: "Reviewer's role", value: "Admission Counselor" },
+      link: { label: "Link on the name (a page of this site)", value: "/team" },
+      updated: { label: "Words before the date", value: "Updated" },
+    },
+  },
   "page.pg_choice_filling.hero": {
     group: "Page: NEET PG choice filling, upgrade & free exit",
     fields: hero({

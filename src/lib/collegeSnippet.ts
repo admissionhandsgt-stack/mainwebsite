@@ -269,6 +269,18 @@ export function collegeTitle(s: CollegeSummary): string {
           ? [`: DNB Seats & Stipend${y}`, `: DNB Seats${y}`]
           : [`: DNB Seats${y}`, ` DNB Seats`]
       : [
+          // A fee from the college's own 2026-27 notice is named with its year, as it is searched ("<college> pg fees
+          // 2026-27", owner 2026-11-09: "log updated ya 2026-2027 year se bhi search karte hai"). Tried first; a long
+          // name falls through to the tails below.
+          ...(s.kind === "pg" && s.feeOfficial
+            ? s.band
+              ? s.stipend
+                ? [`: PG Fees 2026-27, Stipend & Cut Off${y}`, `: PG Fees 2026-27 & Cut Off${y}`]
+                : [`: PG Fees 2026-27 & Cut Off${y}`]
+              : s.stipend
+                ? [`: PG Fees 2026-27, Stipend & Seats`, `: PG Fees 2026-27 & Stipend`]
+                : [`: PG Fees 2026-27 & Seats`]
+            : []),
           // "sms jaipur pg stipend", "pg stipend in vmmc": an MD/MS page that publishes a stipend says so first.
           ...(s.kind === "pg" && s.stipend
             ? s.band

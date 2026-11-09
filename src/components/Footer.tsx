@@ -76,7 +76,7 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
   const { contactInfo } = useContactInfo();
   const telegram = useTelegram();
   const phoneNumber = contactInfo?.phone_number || CONTACT_INFO.phone;
-  // "+919310301949" reads as "+91 93103 01949"; anything else is shown as it was entered.
+  // "+919220626002" reads as "+91 92206 26002"; anything else is shown as it was entered.
   const phoneShown = /^\+91\d{10}$/.test(phoneNumber.replace(/\s/g, ''))
     ? phoneNumber.replace(/\s/g, '').replace(/^\+91(\d{5})(\d{5})$/, '+91 $1 $2')
     : phoneNumber;
