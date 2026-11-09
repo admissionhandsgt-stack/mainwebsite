@@ -246,6 +246,37 @@ export function scheduleUpdate(n: ZynNotice): { ok: true; title: string; data: R
   return { ok: true, title, data };
 }
 
+/**
+ * An MCC notice that changes a round's dates but could not be read into them — "rescheduled", "postponed", "revised",
+ * "extended" (for a step the schedule shows), or any schedule notice whose dates did not check out. Its words go on the
+ * round's schedule row (`revision`), and every page showing that round's dates says they may change and links MCC's
+ * notice, until a schedule for the round is applied (owner, 2026-11-09: "MCC reschedule kardeta hai … kahi galat info
+ * dikhate na rahe"). Null for anything else — an MCC result or a seat matrix leaves the dates alone.
+ */
+const CHANGE_WORDS = /re-?sched|postpon|revis|defer|modif\w*\s+(the\s+)?schedule|change\s+in\s+(the\s+)?schedule|extend|extension/i;
+const DATE_STEP_WORDS = /choice|regist|locking|reporting|joining|schedule|date|counsel+ing/i;
+// A revised seat matrix, merit list or result moves no date.
+const NOT_DATES = /seat\s*matrix|merit|result|allot|vacan/i;
+const STRONG_CHANGE = /re-?sched|postpon|defer|extend|extension|change\s+in\s+(the\s+)?schedule/i;
+const DATES_NAMED = /schedule|date|choice|regist|locking|reporting|joining/i;
+export function scheduleRevision(n: ZynNotice): { title: string; data: Record<string, string> } | null {
+  if (!/\bMCC\b|medical counselling committee/i.test(n.authority ?? "")) return null;
+  const title = scheduleTitle(n.round) ?? scheduleTitle(n.title);
+  if (!title) return null;
+  const words = barTitle(n.title);
+  if (n.kind === "result" || n.kind === "seat_matrix") return null;
+  if (n.kind !== "schedule") {
+    if (!CHANGE_WORDS.test(words) || !DATE_STEP_WORDS.test(words)) return null;
+    // "Postponed", "rescheduled", "extended" move a date whatever they name; "revised" may be a seat matrix or a list.
+    if (!STRONG_CHANGE.test(words) && NOT_DATES.test(words) && !DATES_NAMED.test(words)) return null;
+  }
+  const on = [n.publishedOn, n.approvedAt].find((d) => d && /^\d{4}-\d{2}-\d{2}/.test(d))?.slice(0, 10) ?? "";
+  return { title, data: { revision: words.slice(0, 240), revision_url: n.url ?? "", revision_on: on } };
+}
+
+/** Applying a round's dates clears any "may change" note on it: the new dates are MCC's latest word. */
+const CLEAR_REVISION = { revision: "", revision_url: "", revision_on: "" };
+
 /* ------------------------------------------------------------------ writing */
 
 async function tellTeam(text: string) {
@@ -336,7 +367,7 @@ async function take(n: ZynNotice): Promise<"published" | "held" | "seen"> {
   if (upd) {
     if (status !== "published") [scheduleStatus, scheduleReason] = ["held", "notice held"];
     else if (upd.ok) {
-      await applySchedule(upd.title, upd.data);
+      await applySchedule(upd.title, { ...upd.data, ...CLEAR_REVISION });
       scheduleStatus = "applied";
       await tellTeam(
         `📅 Website updated from MCC's notice: ${upd.title} — ${upd.data.aiq}` +
@@ -345,6 +376,21 @@ async function take(n: ZynNotice): Promise<"published" | "held" | "seen"> {
           `.\n${n.url ?? ""}`,
       );
     } else [scheduleStatus, scheduleReason] = ["held", upd.reason];
+  }
+  // A notice that moves a round's dates but could not be applied: the pages say the dates may change, with MCC's link.
+  if (status === "published" && scheduleStatus !== "applied") {
+    const rev = scheduleRevision(n);
+    if (rev) {
+      await applySchedule(rev.title, rev.data);
+      scheduleStatus ??= "flagged";
+      scheduleReason = [scheduleReason, "pages now say the dates may change and link MCC's notice"].filter(Boolean).join("; ");
+      await tellTeam(
+        `⚠️ MCC notice for ${rev.title} could not be read into dates: "${rev.data.revision}".\n` +
+          `The website now says the dates may change and links MCC's notice. Put the new dates in Admin → Content → ` +
+          `NEET PG · MCC schedule and empty its "MCC notice: dates may change" line (or approve MCC's revised schedule ` +
+          `in Zyn, which clears it).\n${n.url ?? ""}`,
+      );
+    }
   }
 
   await db.execute(sql`
@@ -470,7 +516,7 @@ export async function decideNotice(id: string, action: "publish" | "dismiss" | "
   const upd = scheduleUpdate(n);
   if (!upd) return { ok: false, message: "Not an MCC schedule notice." };
   if (!upd.ok) return { ok: false, message: `Not applied: ${upd.reason}. Change the dates in Admin → Page content → MCC schedule.` };
-  await applySchedule(upd.title, upd.data);
+  await applySchedule(upd.title, { ...upd.data, ...CLEAR_REVISION });
   await db.execute(sql`UPDATE zyn_notices SET schedule_status = 'applied', schedule_reason = NULL WHERE id = ${id}`);
   return { ok: true, message: `${upd.title} dates updated.` };
 }

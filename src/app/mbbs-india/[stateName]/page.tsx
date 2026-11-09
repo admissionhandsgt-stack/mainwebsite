@@ -1,3 +1,4 @@
+import StateNotices from "@/components/states/StateNotices";
 import { fitTitle, fitDescription, count } from "@/lib/seoTitle";
 import { getStateAuthority } from "@/lib/stateAuthorities";
 import StateAuthority from "@/components/states/StateAuthority";
@@ -231,6 +232,9 @@ export default async function MBBSStatePage(props: Props) {
           ) : undefined
         }
       />
+
+      {/* ------------- the counselling authority's latest notices (owner-approved Zyn notices + the state board feed) ------------- */}
+      <StateNotices state={name} level="ug" />
 
       {/* ------------------ the regulator's seat count, and MD/MS here ------------------ */}
       {(nmc || p.pgSlug) && (

@@ -26,6 +26,13 @@ export type ScheduleRound = {
   reporting?: string;
   source?: string;
   sourceUrl?: string;
+  /**
+   * An MCC notice about this round that could not be read into dates (a reschedule, a postponement, an extension, a
+   * schedule whose dates did not check out) — set by lib/zynNotices.ts, cleared when a schedule is applied. While it is
+   * set, every page showing the round's dates says they may change and links MCC's notice (owner, 2026-11-09: "kahi
+   * galat info dikhate na rahe").
+   */
+  revision?: { title: string; url?: string; on?: string };
 };
 
 export const NEET_PG_SCHEDULE = {

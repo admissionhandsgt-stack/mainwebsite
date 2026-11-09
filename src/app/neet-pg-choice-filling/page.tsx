@@ -8,6 +8,7 @@ import { fitDescription, fitTitle } from "@/lib/seoTitle";
 import { resolveMetadata } from "@/lib/content";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import { getPgProcessContent } from "@/lib/pgProcessContent";
+import { getTelegramCue } from "@/lib/mccResults";
 import { DEPOSITS, DEPOSIT_NOTES, LOCKING_FACTS, ROUND_RULES, SOURCES, STATE_FACTS, type SourceKey } from "@/lib/choiceFillingRules";
 import { exactInr } from "@/lib/chance";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
@@ -18,6 +19,8 @@ import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
 import DataPageCounsel from "@/components/lead/DataPageCounsel";
+import ScheduleRevisionNote from "@/components/mcc/ScheduleRevisionNote";
+import ChoiceStrategy from "@/components/lead/ChoiceStrategy";
 
 /**
  * NEET PG choice filling, locking, upgradation, free exit and resignation (2026-11-09; the keyword study's biggest
@@ -42,19 +45,49 @@ const getUpgrades = unstable_cache(
 
 const n = (v: number) => v.toLocaleString("en-IN");
 
+/**
+ * The round whose choices are being filled now (Search Console, 11 Oct – 7 Nov: "neet pg round 2 choice filling",
+ * "round 2 counselling 2026" are what people type, and the title named no round). It is the round the Telegram cue
+ * names — the first of the running counselling's rounds 1–4 whose result is not out — with its own steps from the
+ * admin's pg_schedule. Null between counsellings, and the page says its everyday words.
+ */
+async function liveRound(): Promise<{ label: string; filling?: string; locking?: string } | null> {
+  const [cue, { schedule }] = await Promise.all([getTelegramCue(), getPgProcessContent()]);
+  if (!cue || cue.year !== YEAR) return null;
+  const label = cue.label.replace(/\b\w/g, (c) => c.toUpperCase()); // "Round 2", "Stray Round"
+  const key = label.toLowerCase().startsWith("stray") ? "stray" : label.toLowerCase();
+  const row = schedule.find((s) => s.round.trim().toLowerCase().startsWith(key));
+  return { label, filling: row?.choiceFilling, locking: row?.choiceLocking };
+}
+
 export async function generateMetadata(): Promise<Metadata> {
+  const live = await liveRound().catch(() => null);
+  const r = live?.label;
   return resolveMetadata(PATH, {
-    title: fitTitle(
-      `NEET PG Choice Filling ${YEAR}: Locking, Upgradation & Free Exit Rules`,
-      `NEET PG Choice Filling ${YEAR}: Locking, Upgradation & Free Exit`,
-      `NEET PG Choice Filling ${YEAR}: Upgradation & Free Exit`,
-      `NEET PG Choice Filling ${YEAR}`,
-    ),
+    title: r
+      ? fitTitle(
+          `NEET PG ${r} Choice Filling ${YEAR}: Dates, Locking, Upgradation & Free Exit`,
+          `NEET PG ${r} Choice Filling ${YEAR}: Dates, Locking & Upgradation`,
+          `NEET PG ${r} Choice Filling ${YEAR}: Dates & Locking`,
+          `NEET PG ${r} Choice Filling ${YEAR}`,
+        )
+      : fitTitle(
+          `NEET PG Choice Filling ${YEAR}: Locking, Upgradation & Free Exit Rules`,
+          `NEET PG Choice Filling ${YEAR}: Locking, Upgradation & Free Exit`,
+          `NEET PG Choice Filling ${YEAR}: Upgradation & Free Exit`,
+          `NEET PG Choice Filling ${YEAR}`,
+        ),
     description: fitDescription(
+      ...(r && live?.filling
+        ? [
+            `NEET PG ${YEAR} ${r} choice filling: ${live.filling}${live.locking ? `; locking ${live.locking}` : ""}. Freeze vs Float, upgradation, free exit and forfeiture — from MCC's notices.`,
+            `NEET PG ${YEAR} ${r} choice filling: ${live.filling}. Locking, upgradation and free exit rules from MCC.`,
+          ]
+        : []),
       `NEET PG ${YEAR} choice filling and locking, Freeze vs Float, upgradation, free exit in round 1, forfeiture from round 2, and the security deposit — from MCC's bulletin.`,
       `NEET PG ${YEAR} choice filling, upgradation and free exit rules, round by round, from MCC's bulletin.`,
     ),
-    keywords: `NEET PG choice filling ${YEAR}, NEET PG choice locking, NEET PG upgradation, NEET PG free exit, NEET PG round 2 free exit, NEET PG resignation, NEET PG freeze float, NEET PG security deposit, MCC PG counselling rules`,
+    keywords: `NEET PG choice filling ${YEAR}, NEET PG round 2 choice filling, NEET PG round 2 choice filling date, NEET PG choice locking, NEET PG upgradation, NEET PG free exit, NEET PG round 2 free exit, NEET PG resignation, NEET PG freeze float, NEET PG security deposit, MCC PG counselling rules`,
   });
 }
 
@@ -75,9 +108,9 @@ function Cite({ keys }: { keys: SourceKey[] }) {
 }
 
 export default async function ChoiceFillingPage() {
-  const [{ schedule }, upgrades] = await Promise.all([getPgProcessContent(), getUpgrades()]);
+  const [{ schedule }, upgrades, live] = await Promise.all([getPgProcessContent(), getUpgrades(), liveRound().catch(() => null)]);
   const [copy, body, heroImage] = await Promise.all([
-    pageCopy("page.pg_choice_filling.hero", { year: YEAR }),
+    pageCopy("page.pg_choice_filling.hero", { year: YEAR, round: live?.label ?? "" }),
     pageCopy("page.pg_choice_filling.body", { year: YEAR }),
     pageHeroImage("page.pg_choice_filling.hero", "page.pg_process.hero"),
   ]);
@@ -107,7 +140,7 @@ export default async function ChoiceFillingPage() {
       <DataHero
         crumbs={[{ label: "Home", href: "/" }, { label: "NEET PG process", href: "/neet-pg-process" }, { label: "Choice filling & free exit" }]}
         eyebrow={copy.eyebrow}
-        title={copy.title}
+        title={live && copy.title_live ? copy.title_live : copy.title}
         accent={copy.accent}
         subtitle={copy.subtitle}
         image={heroImage}
@@ -173,6 +206,7 @@ export default async function ChoiceFillingPage() {
       {steps.length > 0 && (
         <section className="container-custom pb-10 md:pb-14">
           <SectionHead icon="list" eyebrow={`MCC · ${YEAR}`} title="Choice filling and locking dates" intro="MCC's dates for the All India, deemed, central university and DNB rounds. MCC revises them; its notice wins." />
+          <ScheduleRevisionNote rows={schedule} className="mt-5" />
           <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
             <table className="dt w-full min-w-[760px] text-left text-sm">
               <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
@@ -208,6 +242,12 @@ export default async function ChoiceFillingPage() {
       )}
 
       <TelegramRoundAlert placement="round_alert_pg_choice_filling" className="pb-10 md:pb-14" />
+
+      {/* -------------------- the order is the strategy (Expert Counselling) -------------------- */}
+      <ChoiceStrategy
+        placement="pg_choice_filling"
+        tokens={{ year: YEAR, round: live?.label, upgraded: r2 ? n(r2.upgraded) : undefined, last_year: r2 ? String(r2.year) : undefined }}
+      />
 
       {/* -------------------- locking -------------------- */}
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">

@@ -56,6 +56,9 @@ export async function getPgProcessContent(): Promise<{
             reporting: str(b.data?.reporting) || undefined,
             source: str(b.data?.source) || undefined,
             sourceUrl: str(b.data?.source_url) || undefined,
+            revision: str(b.data?.revision)
+              ? { title: str(b.data?.revision), url: str(b.data?.revision_url) || undefined, on: str(b.data?.revision_on) || undefined }
+              : undefined,
           }))
       : NEET_PG_SCHEDULE.rounds,
   };

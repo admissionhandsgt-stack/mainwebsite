@@ -35,6 +35,7 @@ import TelegramJoin from "@/components/engage/TelegramJoin";
 import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
 import RoundCuts from "@/components/mcc/RoundCuts";
 import RoundWatch from "@/components/mcc/RoundWatch";
+import ScheduleRevisionNote from "@/components/mcc/ScheduleRevisionNote";
 import CounselCard from "@/components/lead/CounselCard";
 import { getSeatMatrixOverview } from "@/lib/pgSeatData";
 
@@ -97,7 +98,7 @@ async function load(params: Params) {
     const next = ROUNDS.find((r, i) => r.order <= 4 && states[i]?.status === "pending");
     indexable = next?.slug === spec.slug;
   }
-  return { year, spec, current, state, result: result && result.total ? result : null, prev, when, steps, indexable };
+  return { year, spec, current, state, result: result && result.total ? result : null, prev, when, steps, row, indexable };
 }
 
 function kindOf(state: RoundState, body: { status_final: string; status_provisional: string; status_result: string; status_out: string; status_pending: string }) {
@@ -193,7 +194,7 @@ export default async function RoundResultPage(props: { params: Promise<Params> }
   const params = await props.params;
   const d = await load(params);
   if (!d) notFound();
-  const { year, spec, current, state, result, prev, when, steps } = d;
+  const { year, spec, current, state, result, prev, when, steps, row } = d;
   const path = roundPath(year, spec.slug);
   const [branchPages, pgStates, matrix] = await Promise.all([
     getBranches(),
@@ -437,6 +438,13 @@ export default async function RoundResultPage(props: { params: Promise<Params> }
       )}
 
       {awaited && roundAlert(true)}
+
+      {/* MCC posted a notice moving this round's dates that is not read in yet: the dates below may change. */}
+      {year === current && row?.revision && (
+        <section className="container-custom pt-6">
+          <ScheduleRevisionNote rows={[row]} />
+        </section>
+      )}
 
       {/* ------------------------------ the round's dates, MCC's own steps ------------------------------ */}
       {year === current && steps && (

@@ -23,6 +23,7 @@ import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
 import RoundTimeline from "@/components/neet-pg-process/RoundTimeline";
+import ScheduleRevisionNote from "@/components/mcc/ScheduleRevisionNote";
 
 export const dynamic = "force-dynamic";
 
@@ -191,6 +192,7 @@ export default async function NeetPgProcessPage() {
                 cycle — the notice is the authority, not this table. Academic session begins{" "}
                 {copy.schedule_session}.
               </p>
+              <ScheduleRevisionNote rows={content.schedule} className="mt-3" />
               <p className="mt-3 text-[12px] text-muted-foreground sm:hidden" aria-hidden="true">
                 Swipe the table sideways for every column →
               </p>

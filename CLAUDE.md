@@ -518,6 +518,31 @@ choice filling 10–15 Nov, result 16 Nov provisional / 17 final, reporting 18�
 but the dates were held a day because MCC writes "Round-2" and `scheduleTitle` matched only "Round 2" (fixed). MCC's PG
 schedule PDFs are scanned images — read the pages, never trust a text extract of them. Round 3 and stray are still awaited.
 
+**MCC moves a date we cannot read → the pages say so (2026-11-09, owner: "MCC reschedule kardeta hai … kahi galat info
+dikhate na rahe").** `scheduleRevision()` in `lib/zynNotices.ts`: an approved MCC notice that is a schedule we could not
+apply, or whose title says rescheduled / postponed / deferred / extended (any step) or "revised" + a date word (not a revised
+seat matrix, merit list or result), writes `data.revision`, `.revision_url`, `.revision_on` on that round's `pg_schedule` row
+and WhatsApps the team. `components/mcc/ScheduleRevisionNote` then shows "MCC posted a notice for Round 2 on <date>: '…'.
+The dates shown here may change — MCC's notice is the final word" with the link, above every table of MCC dates (choice
+filling, process, year hub, round page). Applying a schedule (Zyn or Admin → Notices "apply") clears it; by hand, empty the
+three fields in Admin → Content → "NEET PG · MCC schedule" (`scripts/sql/pg_schedule_revision_fields_2026_11_09.sql` adds
+them to the form — run after the release). Words: "Site: MCC dates may change".
+
+**The choice-filling page follows the running round** (same day): title/H1/description name the round the Telegram cue names
+(`getTelegramCue`, the first round 1–4 whose result is not out) with its choice-filling and locking dates —
+"NEET PG Round 2 Choice Filling 2026: Dates, Locking & Upgradation". `components/lead/ChoiceStrategy` ("Filling choices is the
+form. The order is the strategy.") sits after its dates: five facts about how MCC allots, each checked against
+`lib/choiceFillingRules.ts` (fresh list each round, upgrade cancels the old seat at once, Freeze = join and no upgrade), the
+live round-2 upgrade count, what a counsellor does, Expert Counselling on WhatsApp/call, and the no-promise note. Words:
+"Page: NEET PG choice filling — strategy" (a line whose token has no value is dropped).
+
+**State pages carry the authority's latest notices** (`lib/stateNotices.ts`, `components/states/StateNotices`, both MBBS and
+MD/MS state pages, after the hero): owner-approved Zyn notices by `zyn_notices.state` + the site's own state-board feed by
+`FEED_STATE` (source id → state), last 75 days, newest first, six, linked to the authority's file. A notice an admin switched
+off stays off; an expired one is still listed. Level from Zyn's `level` or the title's words ("post MBBS" counts as PG);
+dental PG (MDS, PGDAC) is off both pages; other courses (optometry, OT, nursing, pharmacy, AYUSH, B.Sc/M.Sc, veterinary)
+never show. Words: "Site: latest notices on state pages".
+
 **Notices from Zyn (built 2026-11-05, waits on Zyn's endpoint):** the owner approves each counselling notice in Zyn's
 Telegram flow (Zyn — zyn-c9, AH Counselor — watches MCC PG, NMC, NBEMS and 36 state authorities every 15 min, 4 on result
 days; rules, no LLM; owner: no paid AI spend before Dec 2026). `lib/zynNotices.ts` takes the approved ones every 5 min
@@ -2946,6 +2971,16 @@ working through the proxy; email obfuscation, automatic HTTPS rewrites and serve
 (all three rewrite our HTML; obfuscation injects a script the CSP blocks); browser cache TTL **respect
 origin**; security level **essentially off** (Indian mobile carriers put thousands of students behind one
 CGNAT address — "medium" shows them challenges); browser integrity check off; minimum TLS 1.2.
+
+**WAF custom rule "Block scanner probes" (2026-11-09, owner's OK; 1 of the free plan's 5).** Zone analytics showed bots
+from South Africa, the US, Belgium and Israel asking the apex for `/.env`, `/laravel/.env`, `/.amplifyrc`, `/index.php`.
+The rule blocks a lower-cased path ending `.php`/`.env`, starting `/wp-`, or containing `/.env`, `/.git`, `/.aws`,
+`/.amplifyrc`, `/.ds_store`, `/.vscode`, `/.svn`, `/.ht`, `/xmlrpc`, `/phpmyadmin`, `/cgi-bin`, `/vendor/phpunit`,
+`/actuator` (403). None of these exists on the site; `/.well-known` (Caddy's ACME renewals) is deliberately not in it. It
+covers the proxied hosts only (apex, admin, origin, mumbai) — www is DNS-only on Pages and never reaches zone rules. In
+Cloudflare's language `contains` is an infix operator (`lower(http.request.uri.path) contains "/.env"`), not a function;
+`starts_with()` / `ends_with()` are functions. The API token cannot edit WAF rules (403): the rule was made in the
+dashboard, in the Admissionhands.gt Chrome profile. Smoke 72/72 after it went live.
 
 **Cache rules (three, since 2026-10-06), plus Smart Tiered Cache on:**
 1. `/_next/static/*`, `/_next/image*`, `/assets/*` → edge, lifetime from the origin's `Cache-Control`.

@@ -1,3 +1,4 @@
+import StateNotices from "@/components/states/StateNotices";
 import { fitTitle, fitDescription, count } from "@/lib/seoTitle";
 import { getStateAuthority } from "@/lib/stateAuthorities";
 import StateAuthority from "@/components/states/StateAuthority";
@@ -295,6 +296,9 @@ export default async function PgStatePage(props: Props) {
         // The state's counselling authority sits under the words, in the space the taller column left.
         aside={authority?.scope === "UG and PG" ? <StateAuthority a={authority} state={p.name} level="pg" /> : undefined}
       />
+
+      {/* ------------- the counselling authority's latest notices (owner-approved Zyn notices + the state board feed) ------------- */}
+      <StateNotices state={p.name} level="pg" />
 
       {/* ------------- the state's own round of the year in progress (not read by the predictor) ------------- */}
       {round && roundCopy && (round.byQuota.length > 0 || round.byBranch.length > 0) && (

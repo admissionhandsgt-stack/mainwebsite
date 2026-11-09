@@ -29,6 +29,34 @@ export interface CopyGroup {
 const hero = (fields: Record<string, CopyField>): Record<string, CopyField> => fields;
 
 export const PAGE_COPY = {
+  "site.state_notices": {
+    group: "Site: latest notices on state pages",
+    fields: {
+      eyebrow: { label: "Eyebrow — {state}, {exam}, {year}", value: "{state} · {exam} {year}" },
+      title: { label: "Heading — {state}, {exam}, {year}", value: "{state} counselling {year}: latest notices" },
+      intro: {
+        label: "Line under the heading",
+        value: "Newest first, each linked to the counselling authority's own notice — schedules, merit lists, seat matrices and allotments.",
+        long: true,
+      },
+      note: {
+        label: "Small print under the list",
+        value: "Dates in a notice can change. The authority's latest notice is the final word.",
+      },
+    },
+  },
+  "site.schedule_revision": {
+    group: "Site: MCC dates may change",
+    fields: {
+      lead: { label: "Opening words — {round}, {date}", value: "MCC posted a notice for {round} on {date}:" },
+      note: {
+        label: "What it means",
+        value: "The dates shown here may change. MCC's notice is the final word — check it before you register, fill or lock choices.",
+        long: true,
+      },
+      link: { label: "Link to MCC's notice", value: "Read MCC's notice" },
+    },
+  },
   "site.reviewer": {
     group: "Site: reviewer on data pages",
     fields: {
@@ -39,11 +67,63 @@ export const PAGE_COPY = {
       updated: { label: "Words before the date", value: "Updated" },
     },
   },
+  "page.pg_choice_filling.strategy": {
+    group: "Page: NEET PG choice filling — strategy",
+    fields: {
+      eyebrow: { label: "Eyebrow — {round}", value: "Before you lock {round}" },
+      title: { label: "Heading", value: "Your rank decides what you can get. Your strategy decides what you actually get." },
+      intro: {
+        label: "Opening line",
+        value:
+          "Every round, candidates with almost the same rank end up in very different seats — one in a government college they wanted, another paying lakhs more for a seat they did not. The difference is rarely luck. It is the order of the list, the Freeze-or-Float call, and the deadlines nobody missed.",
+        long: true,
+      },
+      facts_title: { label: "Heading over the list", value: "Where candidates lose the seat their rank could have got" },
+      points: {
+        label: "Where seats are lost — one per line; the first sentence shows in bold ({upgraded}, {last_year}: a line is left out when there is no figure)",
+        value: [
+          "Wrong order, wrong seat. MCC gives you the first seat on your list that your rank still reaches. Put a better college below a weaker one and the better seat goes to someone else — even when your rank was enough for it.",
+          "No plan for the upgrade. Each round takes a fresh list, and an upgrade can only go to a seat on it. {upgraded} candidates moved to a better seat in round 2 of {last_year} — the ones whose list was ready for it.",
+          "One wrong click. Float, and the moment you are upgraded your old seat is cancelled for good. From round 2 on, a seat you do not join costs your security deposit.",
+          "Surprises after allotment. Two seats that close at similar ranks can differ by lakhs in fees, by years of service bond and by thousands a month in stipend — most families find out after they have locked.",
+          "Last-minute problems. A document your state stops you on, a reporting window of a few days, an All India seat and a state seat to juggle — miss one step and the seat is gone.",
+          "Last year's numbers read wrong. Closing ranks move between rounds, wider or tighter, so a list built only on round 1 cut-offs leaves real options out.",
+        ].join("\n"),
+        long: true,
+      },
+      expert_title: { label: "Counsellor card — heading", value: "How our counsellors take you to the best seat your rank can reach" },
+      expert_points: {
+        label: "Counsellor card — one point per line",
+        value: [
+          "Informed decisions: every college checked for its round-by-round closing ranks in your category, fees, bond and stipend before it goes on your list",
+          "A disciplined order: dream, target and safe seats placed so an upgrade can only take you up",
+          "A plan for every round: when to Freeze, when to Float, and what to do in your state counselling at the same time",
+          "No surprises: the full cost, the bond and the documents known before you lock, not after you report",
+          "No last-minute rush: deadlines, documents and reporting tracked for you, round by round",
+          "Your final list gone through with you before you lock it",
+        ].join("\n"),
+        long: true,
+      },
+      cta: { label: "Button — WhatsApp", value: "Get Expert Counselling" },
+      wa_text: { label: "The WhatsApp message — {round}", value: "Hi Admission Hands, I need help with my NEET PG {round} choice filling." },
+      call: { label: "Button — call", value: "Call a counsellor" },
+      note: {
+        label: "Small print under the buttons",
+        value:
+          "Counselling allots the seat, and no one can honestly promise one. What a counsellor gives you is a list and a plan built so that your rank gets the best seat it can. The fee is told before anything starts.",
+        long: true,
+      },
+    },
+  },
   "page.pg_choice_filling.hero": {
     group: "Page: NEET PG choice filling, upgrade & free exit",
     fields: hero({
       eyebrow: { label: "Hero eyebrow — {year}", value: "NEET PG {year} · MCC counselling" },
       title: { label: "Hero title", value: "Choice filling, upgradation" },
+      title_live: {
+        label: "Hero title while a round's choices are being filled — {round} (e.g. Round 2)",
+        value: "NEET PG {round} choice filling, upgradation",
+      },
       accent: { label: "Hero title, coloured part", value: "and free exit" },
       subtitle: {
         label: "Hero line",

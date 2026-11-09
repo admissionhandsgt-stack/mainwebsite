@@ -14,6 +14,7 @@ import SectionHead from "@/components/ui/SectionHead";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
+import ScheduleRevisionNote from "@/components/mcc/ScheduleRevisionNote";
 
 /**
  * /neet-pg-counselling/<year> (2026-10-21) — the year's NEET PG rounds, each with its state (awaited,
@@ -211,6 +212,7 @@ export default async function CounsellingYearPage(props: { params: Promise<Param
         <section className="border-t border-border bg-surface-1 py-10 md:py-14">
           <div className="container-custom">
             <SectionHead icon="list" eyebrow={`MCC · ${year}`} title={body.schedule_title} intro={body.schedule_intro} />
+            <ScheduleRevisionNote rows={scheduled} className="mt-5" />
             <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card">
               <table className="dt w-full min-w-[560px] text-left text-sm">
                 <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
