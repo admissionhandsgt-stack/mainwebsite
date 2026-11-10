@@ -15,6 +15,7 @@ import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/S
 import DataHero from "@/components/hero/DataHero";
 import SectionHead from "@/components/ui/SectionHead";
 import ExpertCompare from "@/components/lead/ExpertCompare";
+import { getCounsellingFacts } from "@/lib/counsellingFacts";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 
@@ -147,11 +148,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function LowScoreClinicalPage() {
-  const [p, round, cases, s300] = await Promise.all([
+  const [p, round, cases, s300, facts] = await Promise.all([
     load(),
     liveRound().catch(() => null),
     getBlocks("low_rank_cases").catch((): ContentBlock[] => []),
     scoreRange("pg", 300).catch(() => null),
+    getCounsellingFacts().catch(() => null),
   ]);
   const medDeemed = p ? p.cut(p.med, p.year, "deemed") : undefined;
   const medAiq = p ? p.cut(p.med, p.year, "aiq") : undefined;
@@ -170,6 +172,7 @@ export default async function LowScoreClinicalPage() {
     ranked: n(p?.d.ranked[p?.year ?? 0]),
     deemed_fee: p?.fee?.p10 && p.fee.p90 ? `${lakh(p.fee.p10)} – ${lakh(p.fee.p90)}` : "more than a government seat",
     stray: n(p?.stray),
+    moved_pct: facts?.movedAfterR1.pg,
     round: round?.label,
     filling: round?.filling,
     locking: round?.locking ?? "see MCC's schedule",
@@ -183,6 +186,8 @@ export default async function LowScoreClinicalPage() {
   const lines = (t: string) => t.split("\n").map((l) => l.split("|").map((x) => x.trim())).filter((x) => x[0] && x[1]);
   const routes = lines(body.routes);
   const steps = lines(body.strategy);
+  // A case whose figure is missing ("AIR —") reads wrong: dropped.
+  const caseTypes = lines(body.case_types).filter((x) => x[2] && !/AIR —|(^|\s)%/.test(x[2]));
   const points = body.counsel_points.split("\n").map((x) => x.trim()).filter(Boolean);
   const eligiblePoints = body.eligible_points.split("\n").map((x) => x.trim()).filter(Boolean);
   const deepestFor = (cat: (typeof CATEGORIES)[number]) =>
@@ -376,6 +381,32 @@ export default async function LowScoreClinicalPage() {
                 </article>
               );
             })}
+          </div>
+        </section>
+      )}
+
+      {caseTypes.length > 0 && (
+        <section className="container-custom py-10 md:py-14">
+          <SectionHead icon="people" eyebrow="Our work" title={body.cases_types_title} intro={body.cases_types_intro} />
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            {caseTypes.map(([who, what, where]) => (
+              <article key={who} className="flex flex-col rounded-2xl border border-accent/25 bg-card p-5 shadow-sm">
+                <p className="font-heading text-lg font-bold text-foreground">{who}</p>
+                <p className="mt-2 flex-1 text-[15px] leading-relaxed text-muted-foreground">{what}</p>
+                <p className="mt-4 rounded-xl bg-accent-soft px-3 py-2 text-[14px] font-medium text-foreground">
+                  <span className="font-semibold text-accent">Where it lands: </span>
+                  {where}
+                </p>
+              </article>
+            ))}
+          </div>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <a href={wa(body.wa_text)} target="_blank" rel="noopener noreferrer" data-placement="low_clinical_cases_wa" className="inline-flex min-h-12 items-center gap-2 rounded-full bg-accent px-5 font-semibold text-white">
+              <MessageCircle className="h-4 w-4" aria-hidden /> Tell us your case
+            </a>
+            <a href={`tel:${CONTACT_INFO.phone}`} data-placement="low_clinical_cases_call" className="inline-flex min-h-12 items-center gap-2 rounded-full border border-border bg-card px-5 font-semibold text-foreground">
+              <Phone className="h-4 w-4" aria-hidden /> Call a counsellor
+            </a>
           </div>
         </section>
       )}

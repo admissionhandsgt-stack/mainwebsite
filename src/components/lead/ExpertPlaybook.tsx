@@ -2,6 +2,7 @@ import { MessageCircle, Phone, Sparkles } from "lucide-react";
 import { pageCopy } from "@/lib/pageCopy";
 import { getCounsellingFacts } from "@/lib/counsellingFacts";
 import { CONTACT_INFO } from "@/lib/constants";
+import { getLiveFigures } from "@/lib/liveFigures";
 
 /**
  * The counsellor's playbook (2026-11-10; owner: "hamari strategy ko sirf history allotment ranks par mat based banao,
@@ -27,7 +28,7 @@ export default async function ExpertPlaybook({
   /** Inside a column that already has its own container: no container, no vertical padding. */
   bare?: boolean;
 }) {
-  const [facts, team] = await Promise.all([getCounsellingFacts().catch(() => null), pageCopy("page.services.figures")]);
+  const [facts, team, live] = await Promise.all([getCounsellingFacts().catch(() => null), pageCopy("page.services.figures"), getLiveFigures()]);
   const ug = kind === "mbbs_state" || kind === "college_ug";
   const tokens = {
     name: name ?? (ug ? "MBBS" : "MD/MS"),
@@ -39,8 +40,15 @@ export default async function ExpertPlaybook({
     tighter: facts?.lastRoundTighter.seats ? facts.lastRoundTighter.seats.toLocaleString("en-IN") : undefined,
     years: team.years,
     students: team.students,
+    colleges: /^\d/.test(live.nmc_colleges ?? "") ? live.nmc_colleges : undefined,
+    counsellings_all: facts ? facts.counsellings.pg + facts.counsellings.ug : undefined,
   };
-  const c = await pageCopy("site.playbook", tokens);
+  const c = await pageCopy("site.playbook", { ...tokens, counsellings: tokens.counsellings_all });
+  // A badge whose figure is missing is left out rather than shown half-empty.
+  const badges = c.badges
+    .split("\n")
+    .map((l) => l.split("|").map((x) => x.trim()))
+    .filter((x) => x[0] && x[1]);
   const title = c[`${kind}_title` as keyof typeof c] ?? c.cutoff_title;
   const raw = c[`${kind}_points` as keyof typeof c] ?? "";
   // A line whose figure is missing ("…% of seats") reads wrong without it: drop lines with an empty token's tell-tale gap.
@@ -59,6 +67,17 @@ export default async function ExpertPlaybook({
         <h2 id={`playbook-${kind}`} className="mt-2 font-heading text-2xl font-bold text-foreground md:text-[1.7rem]">
           {title}
         </h2>
+        {badges.length > 0 && (
+          <dl className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
+            {badges.map(([v, w]) => (
+              <div key={w} className="rounded-2xl border border-primary/15 bg-card px-4 py-3">
+                <dt className="sr-only">{w}</dt>
+                <dd className="tnum font-heading text-2xl font-extrabold text-primary-strong">{v}</dd>
+                <dd className="text-[13px] leading-snug text-muted-foreground">{w}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
         <ol className="mt-6 grid gap-4 md:grid-cols-2">
           {points.map(([t, d], i) => (
             <li key={t} className="flex gap-3 rounded-2xl border border-border bg-card p-4">

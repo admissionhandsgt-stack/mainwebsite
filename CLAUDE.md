@@ -2349,6 +2349,13 @@ On: PG branch and branch × state, PG state, MBBS state, stipend hub and state, 
 pages, management and NRI quota, /neet-pg-cutoff, marks vs rank, seat matrix, statistics, bond, both college templates
 (`bare` inside a column). Not on /neet-ug-cutoff (no UG-wide variant yet). Ways of working and counted facts only —
 never a promised seat, never an invented student.
+**Showcase (same night, owner: "experts counselling karte hai, 15+ years… all over India colleges knowledge… marketing
+techniques, showcasing"):** the playbook carries four expertise badges — the team's years and students (its own figures),
+NMC's college count ("known seat by seat") and the counsellings followed (counted) — Admin field `badges`. The low rank page
+has "Cases we work on every season" (`case_types`: who | what we do | where it lands, figures as tokens): the kinds of
+cases families bring and how the team works them, each with a counted "where it lands". Written as typical cases, never
+as one named or unnamed student's result — a specific invented outcome is a misleading-advertisement risk under India's
+consumer-protection rules, and one exposed fake undoes the trust the page is built for.
 - **`/neet-pg-statistics`** (`lib/pgStatistics.ts`): candidates ranked and the score at milestone ranks per year, PG seats on
   NMC's register by course and ownership, clinical / para-clinical / pre-clinical MD/MS split (NMC course names by regex),
   top branches with NMC and MCC seats, MCC's matrix and rounds, stipend and fee middles, FAQs, CiteThis. Made to be cited.

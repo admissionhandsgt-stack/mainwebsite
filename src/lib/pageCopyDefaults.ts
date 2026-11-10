@@ -180,6 +180,22 @@ export const PAGE_COPY = {
       },
       band_button: { label: "Rank band button", value: "Get colleges for my rank" },
       band_wa: { label: "Rank band WhatsApp message — {rank}", value: "Hi, my NEET PG rank is around {rank}. Which clinical branches and colleges are possible for me?" },
+      cases_types_title: { label: "Cases we work on — title", value: "Cases we work on every season" },
+      cases_types_intro: {
+        label: "Cases we work on — intro",
+        value: "The cases families bring us when the rank looks low, and how our counsellors turn them into a plan. Every case is different; the method is the same — every quota, the right order, every round.",
+        long: true,
+      },
+      case_types: {
+        label: "Cases, one per line: who | what we do | where it lands — {med_rank}, {surg_rank}, {deep_rank}, {moved_pct}, {year}",
+        value: [
+          "AIR 1.2 lakh · wanted MD Medicine | The family had written off a clinical branch. We mapped every deemed university's paid seat in Medicine, matched each fee to their budget and set the order for the later rounds. | MD General Medicine went to AIR {med_rank} on deemed paid seats in {year}.",
+          "Just qualified · AIR around 1.6 lakh | Everyone around them said drop a year. We built a last-rounds plan for ENT, Surgery and Orthopaedics on paid seats, with documents and fee ready before the stray round opened. | Clinical paid seats went as far as AIR {deep_rank} in {year}.",
+          "AIR 40,000 · government fee only | We kept All India ENT, Ophthalmology and Anaesthesiology high for the later rounds, added DNB Anaesthesiology and Emergency Medicine, and ran the state quota alongside. | A government-fee clinical seat in a later round, or DNB with a stipend.",
+          "Holding a non-clinical seat after round 1 | Float or freeze? We worked out which clinical seats round 2 could free at their rank, and what leaving the seat would cost. | {moved_pct}% of PG seat options went to a later rank after round 1 — that is where upgrades come from.",
+        ].join("\n"),
+        long: true,
+      },
       plans_title: { label: "Example plans title", value: "What a counsellor's plan looks like at your rank" },
       plans_intro: {
         label: "Example plans intro — {year}",
@@ -257,6 +273,16 @@ export const PAGE_COPY = {
       claim: {
         label: "The team's line under the points — {years}, {students}",
         value: "{years} years of NEET counselling and {students} students guided. Every strategy we make is for one student — your rank, category, domicile, budget and the career you want after the course.",
+        long: true,
+      },
+      badges: {
+        label: "Expertise badges, one per line: figure | words — {years}, {students}, {colleges}, {counsellings}",
+        value: [
+          "{years} | years of NEET counselling",
+          "{students} | students guided to their seats",
+          "{colleges} | colleges across India, known seat by seat",
+          "{counsellings} | counsellings followed — MCC and every state",
+        ].join("\n"),
         long: true,
       },
       cta: { label: "WhatsApp button", value: "Get my personal strategy" },
