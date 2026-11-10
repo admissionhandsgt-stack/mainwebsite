@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { timingSafeEqual } from "node:crypto";
 import { runZynNotices } from "@/lib/zynNotices";
 import { logError } from "@/lib/logger";
+import { beat } from "@/lib/heartbeat";
 
 /**
  * Notices approved by the owner in Zyn's Telegram flow, onto the site (lib/zynNotices.ts).
@@ -23,9 +24,12 @@ function authorised(request: Request): boolean {
 export async function POST(request: Request) {
   if (!authorised(request)) return NextResponse.json({ error: "Not found" }, { status: 404 });
   try {
-    return NextResponse.json(await runZynNotices(), { headers: { "cache-control": "no-store" } });
+    const result = await runZynNotices();
+    await beat("notices", true);
+    return NextResponse.json(result, { headers: { "cache-control": "no-store" } });
   } catch (error) {
     logError(error, { route: "cron/notices" });
+    await beat("notices", false, error instanceof Error ? error.message : String(error));
     return NextResponse.json({ error: "notices failed" }, { status: 500 });
   }
 }

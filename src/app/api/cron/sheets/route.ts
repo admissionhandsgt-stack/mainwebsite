@@ -4,6 +4,7 @@ import { syncCounselor, syncSheet } from "@/lib/leadSheet";
 import { refreshBranchCatalogue } from "@/lib/branchCatalogue";
 import { sendDueReminders } from "@/lib/staffAlerts";
 import { logError } from "@/lib/logger";
+import { beat } from "@/lib/heartbeat";
 
 /**
  * Every 2 minutes: the counsellors' Google Sheet both ways (lib/leadSheet.ts),
@@ -28,9 +29,11 @@ export async function POST(request: Request) {
     const counselor = await syncCounselor();
     const reminders = await sendDueReminders();
     const branches = await refreshBranchCatalogue();
+    await beat("sheets", true);
     return NextResponse.json({ sheet, counselor, reminders, branches }, { headers: { "cache-control": "no-store" } });
   } catch (error) {
     logError(error, { route: "cron/sheets" });
+    await beat("sheets", false, error instanceof Error ? error.message : String(error));
     return NextResponse.json({ error: "sheet sync failed" }, { status: 500 });
   }
 }

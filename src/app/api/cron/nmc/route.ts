@@ -3,6 +3,7 @@ import { revalidateTag } from "next/cache";
 import { timingSafeEqual } from "node:crypto";
 import { syncNmc } from "@/lib/nmcSync";
 import { logError } from "@/lib/logger";
+import { beat } from "@/lib/heartbeat";
 
 /**
  * Re-read the NMC college-and-course register (lib/nmcSync.ts). Weekly, from the
@@ -28,9 +29,11 @@ export async function POST(request: Request) {
   try {
     const result = await syncNmc("cron");
     revalidateTag("nmc");
+    await beat("nmc", (result as { ok?: boolean }).ok !== false);
     return NextResponse.json(result, { headers: { "cache-control": "no-store" } });
   } catch (error) {
     logError(error, { route: "cron/nmc" });
+    await beat("nmc", false, error instanceof Error ? error.message : String(error));
     return NextResponse.json({ error: "sync failed" }, { status: 500 });
   }
 }

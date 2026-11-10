@@ -43,6 +43,27 @@
 # The Always Free tier gives 20 GB of Object Storage, shared with AutoLoom
 # Analytics. One night is ~35 MB today, so 30 nights is ~1 GB; the script
 # warns past 8 GB rather than letting it creep.
+#
+# ## A second copy at another company (since 2026-11-10)
+#
+# The same .enc files also go to Google Cloud Storage, bucket
+# `admissionhands-backup-delhi` (asia-south2, project admissionhands-seo-1008):
+# another provider and another city, so losing the Oracle account does not lose
+# the backups with the server. The key, /opt/admissionhands/.gcs-backup.json
+# (0600), belongs to ah-backup-writer, which may only *create* objects in that
+# bucket — it cannot list, read or delete them — and the bucket's 30-day
+# retention policy refuses any delete or overwrite before then, from anyone. So
+# whoever takes this server cannot wipe that copy. Objects expire at 32 days.
+# A failed second copy does not fail the backup; it is recorded in the heartbeat
+# (gcs: failed), and /api/health turns it into an email.
+#
+# Restore from Google (a project owner's login, e.g. on the dev machine):
+#   gcloud storage cp gs://admissionhands-backup-delhi/db/2026-11-10.dump.enc x.enc
+#   then the openssl line above.
+#
+# The last step writes integrations.heartbeat.backup through psql; /api/health
+# alarms when it is more than 26 hours old, i.e. when this script stopped
+# running or stopped part-way (set -e).
 set -euo pipefail
 
 export PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin"
@@ -55,10 +76,40 @@ LOCAL_DAYS=14
 BUCKET_DAYS=30
 WARN_BYTES=$((8 * 1024 * 1024 * 1024))
 PASS_FILE=$APP/.backup-pass
+GCS_KEY=$APP/.gcs-backup.json
+GCS_BUCKET=admissionhands-backup-delhi
+GCS_STATUS=off
 
 D=$(date -u +%F)
 log() { printf '%s  %s\n' "$(date -u +%FT%TZ)" "$*"; }
 oci_() { oci --auth instance_principal "$@"; }
+
+# Google access token for the write-only service account, signed with openssl
+# (there is no gcloud on this box). The key never leaves this file.
+b64url() { openssl base64 -A | tr '+/' '-_' | tr -d '='; }
+gcs_token() {
+  local email now hdr clm sig
+  email=$(jq -r .client_email "$GCS_KEY")
+  now=$(date +%s)
+  hdr=$(printf '{"alg":"RS256","typ":"JWT"}' | b64url)
+  clm=$(printf '{"iss":"%s","scope":"https://www.googleapis.com/auth/devstorage.read_write","aud":"https://oauth2.googleapis.com/token","iat":%d,"exp":%d}' \
+          "$email" "$now" $((now + 3600)) | b64url)
+  sig=$(printf '%s.%s' "$hdr" "$clm" | openssl dgst -sha256 -sign <(jq -r .private_key "$GCS_KEY") | b64url)
+  curl -fsS -m 30 https://oauth2.googleapis.com/token \
+    --data-urlencode 'grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer' \
+    --data-urlencode "assertion=$hdr.$clm.$sig" | jq -er .access_token
+}
+# Create-only upload (ifGenerationMatch=0). A re-run on the same day finds the
+# object already there (412) and counts that as done: retention would refuse an
+# overwrite anyway.
+gcs_put() { # <local file> <object name>
+  local code
+  code=$(curl -sS -m 900 -o /dev/null -w '%{http_code}' -X POST \
+    -H "Authorization: Bearer $GCS_TOKEN" -H 'Content-Type: application/octet-stream' \
+    --data-binary @"$1" \
+    "https://storage.googleapis.com/upload/storage/v1/b/$GCS_BUCKET/o?uploadType=media&ifGenerationMatch=0&name=${2//\//%2F}") || code=000
+  [[ "$code" == 200 || "$code" == 412 ]]
+}
 
 umask 077
 mkdir -p "$DIR/db" "$DIR/uploads" "$DIR/env"
@@ -102,6 +153,11 @@ unseal() {
   openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 -md sha256 \
     -pass "file:$PASS_FILE" -in "$1"
 }
+GCS_TOKEN=""
+if [[ -s "$GCS_KEY" ]]; then
+  if GCS_TOKEN=$(gcs_token 2>/dev/null); then GCS_STATUS=ok
+  else GCS_STATUS=failed; log "WARNING: no Google token — second copy skipped"; fi
+fi
 for f in "db/$D.dump" "uploads/$D.tar.gz" "env/$D.env"; do
   enc="$DIR/.$(basename "$f").enc"
   seal "$DIR/$f" "$enc"
@@ -113,8 +169,12 @@ for f in "db/$D.dump" "uploads/$D.tar.gz" "env/$D.env"; do
   fi
   oci_ os object put --namespace "$NS" --bucket-name "$BUCKET" \
     --name "$f.enc" --file "$enc" --force >/dev/null
-  rm -f "$enc"
   log "uploaded $f.enc"
+  if [[ "$GCS_STATUS" == ok ]]; then
+    if gcs_put "$enc" "$f.enc"; then log "google   $f.enc"
+    else GCS_STATUS=failed; log "WARNING: second copy of $f.enc to Google failed"; fi
+  fi
+  rm -f "$enc"
 done
 
 # ---- 5. prune locally (14 days) ----------------------------------------------
@@ -147,4 +207,13 @@ if (( ${TOTAL:-0} > WARN_BYTES )); then
   log "WARNING: bucket is over 8 GB — the free tier is 20 GB, shared with analytics"
 fi
 
-log "backup $D done"
+# ---- 8. heartbeat for /api/health ----------------------------------------------------
+# Reached only when everything above worked (set -e). The second copy's state
+# rides along: anything but "ok" makes the health check fail.
+docker exec -i "$DB_CONTAINER" sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -qAt -v ON_ERROR_STOP=1' >/dev/null <<SQL || log "WARNING: heartbeat not recorded"
+INSERT INTO integrations (key, value, is_secret, updated_at)
+VALUES ('heartbeat.backup', '{"ok":true,"gcs":"$GCS_STATUS","date":"$D"}', false, now())
+ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_at = now();
+SQL
+
+log "backup $D done (google: $GCS_STATUS)"

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { timingSafeEqual } from "node:crypto";
 import { runAlertFeed } from "@/lib/alertFeed";
 import { logError } from "@/lib/logger";
+import { beat } from "@/lib/heartbeat";
 
 /**
  * Refresh the live alerts from the official notice boards (lib/alertFeed.ts).
@@ -31,9 +32,11 @@ export async function POST(request: Request) {
     if (failed.length === result.reports.length) {
       logError(new Error("alert feed: every source failed"), { route: "cron/alerts" });
     }
+    await beat("alerts", failed.length < result.reports.length, failed.length ? `${failed.length} sources failed` : undefined);
     return NextResponse.json(result, { headers: { "cache-control": "no-store" } });
   } catch (error) {
     logError(error, { route: "cron/alerts" });
+    await beat("alerts", false, error instanceof Error ? error.message : String(error));
     return NextResponse.json({ error: "feed failed" }, { status: 500 });
   }
 }

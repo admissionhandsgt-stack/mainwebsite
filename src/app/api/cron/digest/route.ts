@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { timingSafeEqual } from "node:crypto";
 import { sendMorningDigest } from "@/lib/staffAlerts";
 import { logError } from "@/lib/logger";
+import { beat } from "@/lib/heartbeat";
 
 /**
  * 10:00 AM IST: the day's calls to each counsellor on WhatsApp
@@ -21,9 +22,12 @@ export async function POST(request: Request) {
   if (!authorised(request)) return NextResponse.json({ error: "Not found" }, { status: 404 });
   try {
     const force = new URL(request.url).searchParams.get("force") === "1";
-    return NextResponse.json(await sendMorningDigest({ force }), { headers: { "cache-control": "no-store" } });
+    const result = await sendMorningDigest({ force });
+    await beat("digest", true);
+    return NextResponse.json(result, { headers: { "cache-control": "no-store" } });
   } catch (error) {
     logError(error, { route: "cron/digest" });
+    await beat("digest", false, error instanceof Error ? error.message : String(error));
     return NextResponse.json({ error: "digest failed" }, { status: 500 });
   }
 }

@@ -2222,6 +2222,35 @@ again, the commit is in the history — the reason it went is not that it did no
 Verified by `node scripts/verify_documents.mjs <url>`: 19 checks, most of them about who *cannot*
 read a document.
 
+## Google Cloud: alarms, the second backup, billing (2026-11-10)
+
+Owner: "existing [billing] use karenge, kardo sab setup". Project **admissionhands-seo-1008** (number 956182544169, owner
+gulshantomar.1493@gmail.com) is now billed to the **tridev** account's billing account `01B0B6-F42F8B-230B47` (INR,
+tridevsamania@gmail.com — a free trial, credits valid to **31 Jan 2027**). That account holds `roles/billing.projectManager`,
+`serviceUsageConsumer` and `monitoring.viewer` on the project, for the link and the budget. **Before 31 Jan 2027** the trial
+must be upgraded or the project moved to another billing account — otherwise the alarms and the Google backup copy stop
+silently. Budget "AdmissionHands website": ₹500 a month, gross of credits (`EXCLUDE_ALL_CREDITS`, or a trial shows ₹0
+forever), alerts at 50/90/100% and forecast 100%, to the billing admins and Gulshan's email channel. A budget never caps
+spend; it only emails.
+
+- **`/api/health`** (`x-health-key` = `HEALTH_SECRET` in the server's `.env`; anything else is a 404 before the database):
+  each scheduled job's heartbeat (`lib/heartbeat.ts`, `integrations` rows `heartbeat.<job>` — sheets 10 min, notices 20,
+  followups 75, alerts 150, digest and backup 26 h, nmc 8 days), the MCC worker's last check (45 min), official WhatsApp
+  sends "accepted" with no receipt after 30 minutes (3+ fails — the 13–16 Oct outage looked like this) and the app's
+  memory. 200 when all pass, 503 otherwise. A job never recorded is "pending", not a failure — a new job must be seen
+  beating within its period. Every cron route calls `beat()` on success and failure; a new cron route must too.
+- **Uptime checks** (Cloud Monitoring, same project): `/api/health` with the header, the homepage, the apex (its 301 comes
+  from Caddy through Cloudflare, so an origin or Caddy-certificate failure shows as 52x there) and admin. One alert
+  policy, email to Gulshan (channel "Gulshan (email)"). Alerting is billed per condition (~$0.10 a month each), so one
+  condition covers every check.
+- **The second backup copy:** bucket `admissionhands-backup-delhi` (asia-south2, Delhi — another provider and city than
+  Oracle Mumbai), uniform access, public access prevented, soft delete off, **30-day retention (not locked yet — lock it
+  with `gcloud storage buckets update --lock-retention-period` once a few nights look right; a lock cannot be undone)**,
+  objects deleted at 32 days. `backup.sh` uploads the same `.enc` files with the key of `ah-backup-writer`
+  (`/opt/admissionhands/.gcs-backup.json`, 0600), which has only `storage.objectCreator` on that bucket: it cannot list,
+  read or delete (a delete as the writer answers 403, tested). A failed Google copy does not fail the backup; the heartbeat
+  carries `gcs: failed` and `/api/health` fails on it. The previous script is `/opt/admissionhands/bin/backup.sh.prev`.
+
 ## Checking the work (2026-09-23)
 
 Three suites, all runnable against production:

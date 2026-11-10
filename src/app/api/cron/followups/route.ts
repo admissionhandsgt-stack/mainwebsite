@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { timingSafeEqual } from "node:crypto";
 import { runFollowups } from "@/lib/followups";
 import { logError } from "@/lib/logger";
+import { beat } from "@/lib/heartbeat";
 
 /**
  * Hourly: WhatsApp follow-ups to students who signed in and stopped
@@ -21,9 +22,12 @@ export async function POST(request: Request) {
   if (!authorised(request)) return NextResponse.json({ error: "Not found" }, { status: 404 });
   const dry = new URL(request.url).searchParams.get("dry") === "1";
   try {
-    return NextResponse.json(await runFollowups({ dry }), { headers: { "cache-control": "no-store" } });
+    const result = await runFollowups({ dry });
+    if (!dry) await beat("followups", true);
+    return NextResponse.json(result, { headers: { "cache-control": "no-store" } });
   } catch (error) {
     logError(error, { route: "cron/followups" });
+    await beat("followups", false, error instanceof Error ? error.message : String(error));
     return NextResponse.json({ error: "follow-ups failed" }, { status: 500 });
   }
 }
