@@ -22,6 +22,7 @@ import { getBranchStateCombos } from "@/lib/branchStateQueries";
 import { getStateRound, CATEGORY_LABEL } from "@/lib/stateRoundQueries";
 
 import SectionHead from "@/components/ui/SectionHead";
+import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 /** One state's PG picture. See lib/pgStateQueries.ts for what it will and will not state. */
 
 type Props = { params: Promise<{ slug: string }> };
@@ -558,6 +559,7 @@ export default async function PgStatePage(props: Props) {
       )}
 
       <section className="container-custom pb-10 md:pb-14">
+        <ExpertPlaybook bare kind="state" name={p.name} placement="pg_state" />
         <DataPageCounsel kind="state" name={p.name} placement="counsel_pg_state" />
       </section>
 

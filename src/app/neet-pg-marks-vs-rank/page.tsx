@@ -14,6 +14,7 @@ import MarksRankLookup from "@/components/marks/MarksRankLookup";
 import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
 import DataPageCounsel from "@/components/lead/DataPageCounsel";
 import LeadCapture from "@/components/lead/LeadCapture";
+import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 
 /**
  * "neet pg marks vs rank 2026", "neet pg rank at 450 marks", "neet pg score vs rank", "neet pg marks vs rank vs
@@ -321,6 +322,7 @@ export default async function NeetPgMarksVsRankPage() {
       <TelegramRoundAlert placement="round_alert_marks_rank" className="pt-10 md:pt-14" />
 
       <section className="container-custom pt-10 md:pt-14">
+        <ExpertPlaybook bare kind="marks" name="NEET PG marks vs rank" placement="marks_rank" />
         <DataPageCounsel kind="cutoff" placement="counsel_marks_rank" />
       </section>
 

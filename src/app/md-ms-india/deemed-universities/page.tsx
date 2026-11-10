@@ -11,6 +11,7 @@ import HeroBars from "@/components/hero/HeroBars";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
 import SectionHead from "@/components/ui/SectionHead";
+import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 /**
  * "Deemed university PG fee structure", "NEET PG deemed cutoff". Per-college
  * fees are free on every college page, so listing them here gives nothing away;
@@ -191,6 +192,8 @@ export default async function DeemedPgPage() {
       <section className="container-custom pb-10">
         <CiteThis title={`Deemed university MD/MS fees ${d.year ?? ""}`} path="/md-ms-india/deemed-universities" source={"fees published with MCC's deemed counselling"} />
       </section>
+
+      <ExpertPlaybook kind="quota" name="deemed university seats" placement="deemed" />
 
       <LeadCapture
         level="pg"

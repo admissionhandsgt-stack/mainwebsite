@@ -13,6 +13,7 @@ import SectionHead from "@/components/ui/SectionHead";
 import CiteThis from "@/components/seo/CiteThis";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
+import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 
 /**
  * "NEET PG seat matrix 2026" (2026-10-20) — every seat MCC fills, from MCC's own published
@@ -413,6 +414,8 @@ export default async function SeatMatrixPage() {
           </section>
         </>
       )}
+
+      <ExpertPlaybook kind="cutoff" name="NEET PG seats" placement="seat_matrix" />
 
       <LeadCapture level="pg" source="NEET PG seat matrix page" title={body.lead_title} body={body.lead_body} />
       <TelegramJoin placement="pg_seat_matrix" />

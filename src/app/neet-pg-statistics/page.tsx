@@ -15,6 +15,7 @@ import SectionHead from "@/components/ui/SectionHead";
 import CiteThis from "@/components/seo/CiteThis";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
+import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 
 /**
  * /neet-pg-statistics (2026-11-10; owner: "NEET PG / medical seats statistics 2026 banado"). A statistics page is what
@@ -446,6 +447,8 @@ export default async function PgStatisticsPage() {
           </section>
         </>
       )}
+
+      <ExpertPlaybook kind="cutoff" name="NEET PG" placement="pg_statistics" />
 
       <LeadCapture level="pg" source="NEET PG statistics page" title={body.lead_title} body={body.lead_body} />
       <TelegramJoin placement="pg_statistics" />

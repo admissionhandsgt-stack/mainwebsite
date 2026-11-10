@@ -29,6 +29,7 @@ import MccSeats from "@/components/colleges/MccSeats";
 import SeatTerms from "@/components/colleges/SeatTerms";
 import TelegramStrip from "@/components/engage/TelegramStrip";
 import { jsonLd as toJsonLd } from "@/lib/jsonLd";
+import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 
 // The busiest pages are built at deploy time; the long tail is generated on
 // first request and then cached, so a 2,168-page build stays quick.
@@ -441,6 +442,10 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
               </div>
             )}
           </aside>
+        </div>
+
+        <div className="mt-12">
+          <ExpertPlaybook bare kind="college_pg" name={s.short} placement="college_pg" />
         </div>
 
         <div className="mt-12">

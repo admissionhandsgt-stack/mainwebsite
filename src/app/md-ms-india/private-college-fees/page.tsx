@@ -11,6 +11,7 @@ import HeroBars from "@/components/hero/HeroBars";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
 import SectionHead from "@/components/ui/SectionHead";
+import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 /** "MD fees in private colleges" — by quota family, nationally and per state. See lib/pgFeeQueries.ts. */
 
 const PATH = "/md-ms-india/private-college-fees";
@@ -166,6 +167,8 @@ export default async function PrivateFeesPage() {
       <section className="container-custom pb-10">
         <CiteThis title={`MD/MS fees in private medical colleges ${f.year ?? ""}`} path="/md-ms-india/private-college-fees" source={"fees published with the PG counselling"} />
       </section>
+
+      <ExpertPlaybook kind="fees" name="private college PG fees" placement="private_fees" />
 
       <LeadCapture
         level="pg"

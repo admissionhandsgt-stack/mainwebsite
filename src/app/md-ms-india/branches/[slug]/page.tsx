@@ -21,6 +21,7 @@ import { CUT_CATS, getLatestLiveRound, roundPath } from "@/lib/mccResults";
 import { getScoreTables } from "@/lib/scoreRank";
 import { getBranchStateCombos, SEARCH_NAME } from "@/lib/branchStateQueries";
 import { getNmcBranchSeats } from "@/lib/nmcData";
+import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 
 /**
  * Rendered per request, deliberately.
@@ -460,6 +461,7 @@ export default async function BranchPage(
 
         {/* The reader has the cut-off now: the moment to offer a counsellor (ChatGPT sends people here). */}
         <section className="mt-12">
+          <ExpertPlaybook bare kind="branch" name={b.name} placement="branch" />
           <DataPageCounsel kind="branch" name={b.name} placement="counsel_branch" />
         </section>
 

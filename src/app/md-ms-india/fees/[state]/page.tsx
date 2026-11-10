@@ -15,6 +15,7 @@ import SectionHead from "@/components/ui/SectionHead";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import DataPageCounsel from "@/components/lead/DataPageCounsel";
+import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 
 /**
  * One state's NEET PG fee matrix (2026-11-09): "maharashtra pg fees", "karnataka md ms fees 2026", "pg fees in
@@ -246,6 +247,7 @@ export default async function StateFeesPage(props: { params: Promise<{ state: st
       </section>
 
       <section className="container-custom pb-10 md:pb-14">
+        <ExpertPlaybook bare kind="fees" name={m.state} placement="pg_fees_state" />
         <DataPageCounsel kind="state" name={m.state} placement="counsel_pg_fees_state" />
       </section>
 

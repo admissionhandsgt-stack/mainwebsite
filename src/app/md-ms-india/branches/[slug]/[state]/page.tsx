@@ -18,6 +18,7 @@ import SectionHead from "@/components/ui/SectionHead";
 import DataPageCounsel from "@/components/lead/DataPageCounsel";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
+import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 
 /**
  * One PG branch in one state — "MD Radiology cutoff Rajasthan" (2026-10-26). What it states and what it
@@ -337,6 +338,7 @@ export default async function BranchStatePage(props: Props) {
       )}
 
       <section className="container-custom pb-10 md:pb-14">
+        <ExpertPlaybook bare kind="branch" name={`${name} in ${p.state}`} placement="branch_state" />
         <DataPageCounsel kind="branch" name={`${name} in ${p.state}`} placement="counsel_branch_state" />
       </section>
 

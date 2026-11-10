@@ -40,6 +40,12 @@ const lakh = (v: number | null | undefined) => (v == null ? "—" : `₹${(v / 1
 const said = (r: number) => (r >= 1_00_000 ? `${+(r / 1_00_000).toFixed(2)} lakh` : `${r / 1000}K`);
 /** "MD General Medicine", "MS Orthopaedics" — the degree from the branch page's slug. */
 const degree = (r: ClinicalRow) => `${r.slug?.startsWith("ms-") ? "MS" : "MD"} ${r.branch}`;
+/** Example students for the plans section: a rank, who they are, and what they can pay. */
+const PROFILES = [
+  { rank: 40_000, who: "Open category · wants a government-fee seat", paid: false },
+  { rank: 1_00_000, who: "Open category · family can fund a paid seat", paid: true },
+  { rank: 1_60_000, who: "Just qualified · ready for a paid seat", paid: true },
+];
 /** The NEET PG scores people search with: "neet pg 250 marks clinical branch". */
 const SCORE_MILESTONES = [400, 350, 300, 250, 200];
 const FAMILY_LABEL: Record<Family, string> = { aiq: "Government seats, All India Quota (open)", dnb: "DNB in hospitals (open)", deemed: "Deemed universities' paid seats" };
@@ -91,7 +97,16 @@ async function load() {
       }),
     )
   ).filter((x): x is NonNullable<typeof x> => !!x);
-  return { d, year, nowYear, med, surg, deep, deepAiq, deepNow, cut, fee, bands, stray, dnbFee, scores };
+  // Example plans: what a counsellor would put first, next and last for a student at each example rank.
+  const plans = PROFILES.filter((x) => x.rank <= (d.ranked[year] ?? 0)).map((x) => {
+    const at = (f: Family) => d.rows.filter((r) => (cut(r, year, f)?.rank ?? 0) >= x.rank).map((r) => r.branch);
+    const near = d.rows.filter((r) => {
+      const c = cut(r, year, "aiq")?.rank ?? 0;
+      return c < x.rank && c >= x.rank * 0.75;
+    });
+    return { ...x, aiq: at("aiq"), dnb: at("dnb"), deemed: at("deemed"), near: near.map((r) => r.branch), score: d.milestones[year]?.find((m) => m.rank === x.rank) ?? null };
+  });
+  return { d, year, nowYear, med, surg, deep, deepAiq, deepNow, cut, fee, bands, stray, dnbFee, scores, plans };
 }
 
 /** The round whose choice filling is next, with its dates from the admin's schedule; null between rounds. */
@@ -438,6 +453,57 @@ export default async function LowScoreClinicalPage() {
               </a>
             </div>
           </div>
+        </section>
+      )}
+
+      {p && p.plans.length > 0 && (
+        <section className="container-custom py-10 md:py-14">
+          <SectionHead icon="route" eyebrow="Example plans" title={body.plans_title} intro={body.plans_intro} />
+          <div className="mt-6 grid gap-4 lg:grid-cols-3">
+            {p.plans.map((x) => {
+              const list = (xs: string[], none: string) => (xs.length ? xs.join(", ") : none);
+              const steps = [
+                x.near.length || x.aiq.length
+                  ? `Round 1 — government seats first: ${list(x.aiq, "")}${x.aiq.length && x.near.length ? "; " : ""}${x.near.length ? `${x.near.join(", ")} closed just above this rank last year, so they stay high in the list for the later rounds` : ""}.`
+                  : "Round 1 — government All India seats in clinical branches closed before this rank last year; your state's own quota is the government route here.",
+                x.dnb.length ? `Next, DNB in hospitals: ${x.dnb.join(", ")} went this far last year — a stipend and a far lower fee than a paid seat.` : "DNB clinical seats closed before this rank last year, so the list leans on paid seats.",
+                !x.paid
+                  ? `Your state's own quota at its government colleges, and only if the budget can stretch, a paid seat — ${x.deemed.length === p.d.rows.length ? "every clinical branch" : `${x.deemed.length} clinical branches`} went past this rank on deemed paid seats last year. We work out the three-year cost before adding one.`
+                  : x.deemed.length
+                    ? `Paid seats, ordered by fee and college: ${x.deemed.slice(0, 6).join(", ")}${x.deemed.length > 6 ? ` and ${x.deemed.length - 6} more` : ""} went this far on deemed universities' paid seats.`
+                    : "Deemed universities' paid clinical seats closed before this rank last year — state management and NRI seats are the route.",
+                "Your state's counselling in parallel, then float or freeze after every result — and the stray round ready with documents and fee.",
+              ];
+              return (
+                <article key={x.rank} className="flex flex-col rounded-2xl border border-border bg-card p-5">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-primary-strong">Example plan</p>
+                  <h3 className="mt-1 font-heading text-lg font-bold text-foreground">AIR around {n(x.rank)}</h3>
+                  <p className="text-sm text-muted-foreground">
+                    {x.who}
+                    {x.score?.score != null ? ` · score ≈ ${scoreText(x.score)} in ${p.year}` : ""}
+                  </p>
+                  <ol className="mt-4 flex-1 space-y-3">
+                    {steps.map((st, i) => (
+                      <li key={i} className="flex gap-2.5 text-[14px] leading-relaxed text-foreground">
+                        <span className="tnum mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-soft text-xs font-bold text-primary-strong">{i + 1}</span>
+                        <span>{st}</span>
+                      </li>
+                    ))}
+                  </ol>
+                  <a
+                    href={wa(`Hi, my NEET PG rank is around ${n(x.rank)}. Please make my clinical seat plan.`)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-placement={`low_clinical_plan_${x.rank}`}
+                    className="mt-5 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-accent px-4 text-sm font-semibold text-white"
+                  >
+                    <MessageCircle className="h-4 w-4" aria-hidden /> Make my plan
+                  </a>
+                </article>
+              );
+            })}
+          </div>
+          <p className="mt-3 text-xs text-muted-foreground">{body.plans_note}</p>
         </section>
       )}
 

@@ -17,6 +17,7 @@ import TelegramJoin from "@/components/engage/TelegramJoin";
 import DataPageCounsel from "@/components/lead/DataPageCounsel";
 import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
 import { collegeName } from "@/lib/collegeName";
+import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 
 /** The hero chart has room for a name, not an address: "ESIC Medical College, Alwar". The table below keeps the full one. */
 const barName = (raw: string) => {
@@ -237,6 +238,7 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
       <TelegramRoundAlert placement="round_alert_pg_stipend_state" className="pb-10 md:pb-14" />
 
       <section className="container-custom pb-10 md:pb-14">
+        <ExpertPlaybook bare kind="stipend" name={s.state} placement="stipend_state" />
         <DataPageCounsel kind="stipend" name={s.state} placement="counsel_stipend_state" />
       </section>
 

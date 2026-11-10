@@ -18,6 +18,7 @@ import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
 import BranchStateIndex from "@/components/cutoffs/BranchStateIndex";
 import { getLatestLiveRound, roundPath, type CutCat } from "@/lib/mccResults";
+import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 
 /**
  * "NEET PG cutoff branch wise", "NEET PG cutoff 2025 OBC", "MD radiology
@@ -438,6 +439,7 @@ export default async function NeetPgCutoffPage(props: Props) {
       <TelegramRoundAlert placement="round_alert_neet_pg_cutoff" className="pt-10 md:pt-14" />
 
       <section className="container-custom pt-10 md:pt-14">
+        <ExpertPlaybook bare kind="cutoff" name="NEET PG cut off" placement="neet_pg_cutoff" />
         <DataPageCounsel kind="cutoff" placement="counsel_neet_pg_cutoff" />
       </section>
 

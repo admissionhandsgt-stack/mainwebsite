@@ -23,6 +23,7 @@ import CtaBand from "@/components/ui/CtaBand";
 import TrackView from "@/components/analytics/TrackView";
 import TelegramStrip from "@/components/engage/TelegramStrip";
 import { jsonLd as toJsonLd } from "@/lib/jsonLd";
+import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 
 /**
  * Rendered per request. Since 2026-10-12 the page is the same for everybody —
@@ -268,6 +269,10 @@ export default async function UgCollegePage(props0: { params: Promise<{ slug: st
             </ul>
           </div>
         </section>
+
+        <div className="mt-12">
+          <ExpertPlaybook bare kind="college_ug" name={s.short} placement="college_ug" />
+        </div>
 
         <div className="mt-12">
           <CounsellorEdge compact />

@@ -17,6 +17,7 @@ import HeroBars from "@/components/hero/HeroBars";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
 import SectionHead from "@/components/ui/SectionHead";
+import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 /**
  * One page per state, read on the server.
  *
@@ -370,6 +371,8 @@ export default async function MBBSStatePage(props: Props) {
           ))}
         </div>
       </section>
+
+      <ExpertPlaybook kind="mbbs_state" name={name} placement="ug_state" />
 
       <LeadCapture
         level="ug"

@@ -130,9 +130,11 @@ export const getLowRankClinical = unstable_cache(
       if (!prev || cut.rank > prev.rank) cell[r.fam] = cut;
     }
     const milestones: LowRankClinical["milestones"] = {};
-    for (const y of years) milestones[y] = RANK_MILESTONES.filter((m) => m <= (ranked[y] ?? 0)).map((m) => ({ rank: m, ...scoreAt(y, m) }));
+    // The milestones, and the example students' ranks on the page (40K, 1.6 lakh).
+    const scoreRanks = [...new Set([...RANK_MILESTONES, 40_000, 1_60_000])].sort((x, z) => x - z);
+    for (const y of years) milestones[y] = scoreRanks.filter((m) => m <= (ranked[y] ?? 0)).map((m) => ({ rank: m, ...scoreAt(y, m) }));
     return { years, runningRound, ranked, rows: out.filter((r) => Object.keys(r.cuts).length), milestones };
   },
-  ["low-rank-clinical-v3"],
+  ["low-rank-clinical-v4"],
   { revalidate: 3600, tags: ["mcc"] },
 );

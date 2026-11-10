@@ -14,6 +14,7 @@ import OpenOnHash from "@/components/ui/OpenOnHash";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
+import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 
 /**
  * "PG medical bond state wise" (2026-10-20): the service bond and seat-leaving terms on MD/MS
@@ -331,6 +332,8 @@ export default async function BondPage() {
           )}
         </>
       )}
+
+      <ExpertPlaybook kind="fees" name="PG bond" placement="bond" />
 
       <LeadCapture level="pg" source="PG bond page" title={body.lead_title} body={body.lead_body} />
       <TelegramJoin placement="pg_bond" />

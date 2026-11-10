@@ -14,6 +14,7 @@ import SectionHead from "@/components/ui/SectionHead";
 import HeroBars from "@/components/hero/HeroBars";
 import { getPgStates } from "@/lib/pgStateQueries";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
+import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 
 /**
  * "NEET PG stipend state wise" — one of the most-searched PG money questions,
@@ -207,6 +208,7 @@ export default async function StipendPage() {
       <TelegramRoundAlert placement="round_alert_pg_stipend" className="pb-10 md:pb-14" />
 
       <section className="container-custom pb-10 md:pb-14">
+        <ExpertPlaybook bare kind="stipend" placement="stipend" />
         <DataPageCounsel kind="stipend" placement="counsel_stipend" />
       </section>
 

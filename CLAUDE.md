@@ -2328,6 +2328,27 @@ candidate ko counselor par depend karana hai… Just Eligible ko bhi badi clinic
   (`#get-plan`). **Students' seats come only from Admin → Content → "Low rank clinical: students' seats"
   (`low_rank_cases`, `scripts/sql/low_rank_cases_collection_2026_11_10.sql`): real students, with permission; no rows → no
   section. Never write one in code or copy.** Re-run `seed_page_copy.mjs` after the deploy (the hero fields carry `was`).
+  Later the same night: "Just eligible or just qualified" block (deepest clinical seat, MCC's stray count, checklist),
+  marks cards (400/350/300/250/200 → rank → branches last year), AIQ last rank per category (Open/EWS/OBC/SC/ST,
+  `aiqByCategory`), "Lowest NEET PG rank for <branch>" ×13, and **example plans** (AIR ~40K govt-fee, ~1 lakh paid,
+  ~1.6 lakh just qualified — each a round-by-round plan built from the data, labelled "Example plan", never a student).
+  The owner asked for invented "we got this seat at this rank" stories; the answer was the example plans plus the
+  real-cases slot — a made-up student outcome stays out.
+
+## The counsellor's playbook on every data page (2026-11-10)
+
+Owner: *"hamari strategy ko sirf history allotment ranks par mat based banao, experience and insights ke sath dalo…
+personalised strategy, expert strategy… complete website ko is hisab se audit karke upgrade karo"*. The audit: data pages
+showed what happened (tables, bands) and at most one counsellor card; none said what a counsellor does with it.
+`components/lead/ExpertPlaybook.tsx` — four insights per page type (`branch`, `state`, `mbbs_state`, `stipend`, `fees`,
+`quota`, `cutoff`, `marks`, `college_pg`, `college_ug`), live counts where a count makes the point (`getCounsellingFacts`:
+share of seats that moved after round 1, last-round-tighter seats, quota and category codes, 5×-fee colleges), the team's
+own figures ("15+ years… 2100+ students"), "Get my personal strategy" on WhatsApp and a call. Words in Admin → Content →
+"Site: counsellor's playbook" (four lines per type, "title | text"; a line whose figure is missing is dropped).
+On: PG branch and branch × state, PG state, MBBS state, stipend hub and state, PG fee hub and state, private and deemed fee
+pages, management and NRI quota, /neet-pg-cutoff, marks vs rank, seat matrix, statistics, bond, both college templates
+(`bare` inside a column). Not on /neet-ug-cutoff (no UG-wide variant yet). Ways of working and counted facts only —
+never a promised seat, never an invented student.
 - **`/neet-pg-statistics`** (`lib/pgStatistics.ts`): candidates ranked and the score at milestone ranks per year, PG seats on
   NMC's register by course and ownership, clinical / para-clinical / pre-clinical MD/MS split (NMC course names by regex),
   top branches with NMC and MCC seats, MCC's matrix and rounds, stipend and fee middles, FAQs, CiteThis. Made to be cited.

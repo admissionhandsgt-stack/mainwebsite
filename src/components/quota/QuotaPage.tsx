@@ -11,6 +11,7 @@ import CtaBand from "@/components/ui/CtaBand";
 import SeatOverview from "@/components/seats/SeatOverview";
 import { summariseSeats } from "@/lib/seatSummary";
 import { getDeemedQuotaSeats } from "@/lib/pgSeatData";
+import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 
 const SITE = "https://www.admissionhands.com";
 
@@ -264,6 +265,10 @@ export default async function QuotaPage({
             </p>
           </section>
         )}
+
+        <div className="mt-12">
+          <ExpertPlaybook bare kind="quota" name={family.label} placement={`quota_${family.id}`} />
+        </div>
 
         {/* -------------------------------- faq -------------------------------- */}
         <section className="mt-12">
