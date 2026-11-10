@@ -44,6 +44,9 @@ export type IntegrationKey =
   // The AH Counselor app's website-sync endpoint and its key (a secret).
   | "counselor.sync_url"
   | "counselor.sync_key"
+  // MBBS/BDS students into the counsellor app as NEET UG (2026-11-11): "true" to send; how many a run (1 for the first).
+  | "counselor.ug_enabled"
+  | "counselor.ug_batch"
   // Its branch guide (JSON), and when it was last fetched (ms).
   | "counselor.branches"
   | "counselor.branches_at"

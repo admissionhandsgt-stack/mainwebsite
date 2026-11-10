@@ -73,7 +73,9 @@ const BASE: Col[] = [
   { key: "followTime", header: "Follow-up time ✎", width: 112, kind: "time" },
   { key: "outcome", header: "Call outcome ✎", width: 160, kind: "team" },
   { key: "notes", header: "Notes ✎", width: 280, kind: "team" },
-  { key: "seatFinder", header: "Seat finder", width: 96, pgOnly: true },
+  // Every course tab since 2026-11-11 (the counsellor app takes MBBS/BDS students too). An MBBS/BDS tab laid out
+  // before that gets the column inserted first (syncSheet), or every row would be read from the wrong column.
+  { key: "seatFinder", header: "Seat finder", width: 96 },
   { key: "first", header: "First query", width: 150 },
   { key: "last", header: "Last query", width: 150 },
   { key: "queries", header: "Queries", width: 66 },
@@ -653,7 +655,21 @@ export async function syncSheet(): Promise<SheetReport> {
       const read = await sheets<{ valueRanges: { values?: unknown[][] }[] }>(
         `${id}/values:batchGet?ranges=${encodeURIComponent(`${q(tab.title)}!A1:${last}`)}&valueRenderOption=UNFORMATTED_VALUE&dateTimeRenderOption=SERIAL_NUMBER`,
       );
-      const grid = read.valueRanges[0]?.values ?? [];
+      let grid = read.valueRanges[0]?.values ?? [];
+      // An MBBS/BDS tab from before the seat-finder column: insert it where it now belongs, so the counsellors'
+      // columns and every row move with it, then read again. Without this the phone (the last column) would be read
+      // from an empty cell and every student written a second time.
+      const sf = ci("seatFinder");
+      if (tab.key !== "PG" && sf >= 0 && grid[0] && String(grid[0][sf] ?? "") !== cols[sf].header && String(grid[0][sf] ?? "") === cols[sf + 1]?.header) {
+        await sheets(`${id}:batchUpdate`, {
+          method: "POST",
+          body: { requests: [{ insertDimension: { range: { sheetId: tab.props.sheetId, dimension: "COLUMNS", startIndex: sf, endIndex: sf + 1 }, inheritFromBefore: false } }] },
+        });
+        const again = await sheets<{ valueRanges: { values?: unknown[][] }[] }>(
+          `${id}/values:batchGet?ranges=${encodeURIComponent(`${q(tab.title)}!A1:${last}`)}&valueRenderOption=UNFORMATTED_VALUE&dateTimeRenderOption=SERIAL_NUMBER`,
+        );
+        grid = again.valueRanges[0]?.values ?? [];
+      }
       const headerOk = cols.every((c, i) => (grid[0]?.[i] ?? "") === c.header);
       const rowOf = new Map<string, { row: number; team: Team }>();
       grid.slice(1).forEach((r, i) => {
@@ -969,9 +985,13 @@ const inRange = (v: unknown, lo: number, hi: number) => {
 function counselorPayload(p: Person) {
   const L = p.latest;
   const attempt = inRange(String(L.attempt ?? "").match(/\d+/)?.[0], 1, 10);
+  const pg = p.tab === "PG";
   const body: Record<string, unknown> = {
-    // The app is the NEET PG seat finder and refuses anything else (zyn-4a, 2026-10-16).
-    exam: "NEET PG",
+    // PG students go as NEET PG; MBBS and BDS students as NEET UG, which the app keeps on its MBBS side only, apart
+    // from its PG list (zyn-3c, 2026-11-11; owner: "UG leads PG se alag jani chaiye, mix nhi"). A UG lead never
+    // carries a PG course, branch or MBBS-college field — the app refuses that combination.
+    exam: pg ? "NEET PG" : "NEET UG",
+    ...(pg ? {} : { stream: p.tab === "BDS" ? "bds" : "mbbs" }),
     phone: p.phone,
     name: L.name,
     guardian_phone: L.guardian,
@@ -979,19 +999,19 @@ function counselorPayload(p: Person) {
     sex: L.gender,
     category: L.category,
     is_pwd: L.pwd === true ? true : undefined,
-    neet_air: inRange(L.rank, 1, 300000),
-    neet_score: inRange(L.score, -200, 800),
+    neet_air: pg ? inRange(L.rank, 1, 300000) : inRange(L.rank, 1, 2500000),
+    neet_score: pg ? inRange(L.score, -200, 800) : inRange(L.score, -180, 720),
     attempt,
     domicile_state: L.domicile,
-    mbbs_state: L.mbbsState,
-    mbbs_college: L.mbbsCollege,
-    internship_done: L.internship,
-    is_inservice: L.serviceQuota === true ? true : undefined,
-    branch_prefs: list(L.branches),
+    mbbs_state: pg ? L.mbbsState : undefined,
+    mbbs_college: pg ? L.mbbsCollege : undefined,
+    internship_done: pg ? L.internship : undefined,
+    is_inservice: pg && L.serviceQuota === true ? true : undefined,
+    branch_prefs: pg ? list(L.branches) : undefined,
     state_prefs: list(L.states),
     budget_max: inRange(L.budgetYear, 1, 1e10),
     budget_total: inRange(L.budgetTotal, 1, 1e11),
-    bond_ok: L.bond,
+    bond_ok: pg ? L.bond : undefined,
     status: COUNSELOR_STATUS[p.team.status] ?? "new",
     counsellor: p.team.counsellor || null,
     first_query_at: p.rows[0].created_at,
@@ -1007,28 +1027,33 @@ function counselorPayload(p: Person) {
 }
 
 /**
- * Every NEET PG student into the AH Counselor app (ah.aismartscan.in) as a
- * client, kept in step: details sparse (a blank never overwrites what a
- * counsellor typed there), status always. The id and Find-seats link it
- * returns become the sheet's "Seat finder" column. MBBS and BDS are not sent —
- * that app is the PG seat finder. At most 50 calls a run; the rest follow.
+ * Every student into the AH Counselor app (ah.aismartscan.in) as a client, kept
+ * in step: details sparse (a blank never overwrites what a counsellor typed
+ * there), status always. The id and link it returns become the sheet's "Seat
+ * finder" column. PG students go as NEET PG; MBBS and BDS students as NEET UG,
+ * which the app keeps on its MBBS side, apart from its PG list (2026-11-11).
+ * UG sends wait for `counselor.ug_enabled` = "true" and go `counselor.ug_batch`
+ * a run (default 50) — set to 1 for the first real lead. At most 50 calls a run.
  */
 export async function syncCounselor(): Promise<{ sent: number; failed: number; skipped?: string }> {
   const [url, key] = await Promise.all([getIntegration("counselor.sync_url"), getIntegration("counselor.sync_key")]);
   if (!url || !key) return { sent: 0, failed: 0, skipped: "counselor sync not configured" };
 
+  const [ugOn, ugBatchRaw] = await Promise.all([getIntegration("counselor.ug_enabled"), getIntegration("counselor.ug_batch")]);
+  const ugBatch = Math.max(0, Math.min(50, Number(ugBatchRaw ?? 50) || 0));
+  const tabsSent: TabKey[] = ugOn === "true" && ugBatch > 0 ? ["PG", "MBBS", "BDS"] : ["PG"];
   const known = (await db.execute(sql`
-    SELECT phone, counselor_hash FROM sheet_people WHERE tab = 'PG'
-  `)) as unknown as { phone: string; counselor_hash: string | null }[];
-  const seen = new Map(known.map((k) => [k.phone, k.counselor_hash]));
+    SELECT tab, phone, counselor_hash FROM sheet_people
+  `)) as unknown as { tab: TabKey; phone: string; counselor_hash: string | null }[];
+  const seen = new Map(known.map((k) => [`${k.tab}|${k.phone}`, k.counselor_hash]));
 
   const out = { sent: 0, failed: 0 };
   // Only students the sheet already has a row for, so the link has somewhere to go.
-  const due = (await loadPeople())
-    .filter((p) => p.tab === "PG" && seen.has(p.phone))
+  const all = (await loadPeople())
+    .filter((p) => tabsSent.includes(p.tab) && seen.has(`${p.tab}|${p.phone}`))
     .map((p) => ({ p, body: counselorPayload(p) }))
-    .filter(({ p, body }) => seen.get(p.phone) !== hash(body))
-    .slice(0, 50);
+    .filter(({ p, body }) => seen.get(`${p.tab}|${p.phone}`) !== hash(body));
+  const due = [...all.filter(({ p }) => p.tab === "PG"), ...all.filter(({ p }) => p.tab !== "PG").slice(0, ugBatch)].slice(0, 50);
 
   for (const { p, body } of due) {
     try {
@@ -1050,13 +1075,14 @@ export async function syncCounselor(): Promise<{ sent: number; failed: number; s
         out.failed++;
         logError(new Error(`Counselor sync refused ${p.phone.slice(-4)}: ${r.status} ${j.detail ?? ""}`), { route: "leadSheet.counselor" });
         // Remember the refusal so a bad record is not retried every two minutes.
-        await db.execute(sql`UPDATE sheet_people SET counselor_hash = ${hash(body)} WHERE tab = 'PG' AND phone = ${p.phone}`);
+        await db.execute(sql`UPDATE sheet_people SET counselor_hash = ${hash(body)} WHERE tab = ${p.tab} AND phone = ${p.phone}`);
         continue;
       }
       await db.execute(sql`
         UPDATE sheet_people SET counselor_id = ${j.id}, counselor_url = ${j.url ?? null}, counselor_hash = ${hash(body)}
-         WHERE tab = 'PG' AND phone = ${p.phone}
+         WHERE tab = ${p.tab} AND phone = ${p.phone}
       `);
+      if (p.tab !== "PG") console.log(`[counselor] ${p.tab} lead ${p.phone.slice(-4)} -> ${r.status} id ${j.id}`);
       out.sent++;
     } catch (error) {
       out.failed++;
@@ -1082,7 +1108,7 @@ const GUIDE = [
   ["Colours", "Red priority = Hot · Yellow = Warm · Grey = Cold. Yellow status = not contacted yet. Yellow follow-up date = today, red = overdue. Green row = converted, grey row = closed."],
   ["Today tab", "Who to call now: due follow-ups first, then hot and warm students not yet contacted. Rewritten every 2 minutes — do the work in the course tabs."],
   ["All enquiries tab", "Every form a student submitted, one line each, newest first. Nothing to edit there."],
-  ["Seat finder (PG tab)", "Opens the student in the AH Counselor seat finder with their profile filled in. New students there belong to the AdmissionHands admin login."],
+  ["Seat finder", "Opens the student in the AH Counselor app with their profile filled in — PG students on its PG side, MBBS and BDS students on its MBBS side. New students there belong to the AdmissionHands admin login."],
   ["Sorting and filters", "Sort or filter freely — rows are matched by phone, not by position. To remove a lead, do it in the admin panel; a row deleted here comes back."],
   ["Privacy", "This sheet holds students' phone numbers. Share it only with the team, by email — never 'Anyone with the link'."],
 ];
