@@ -2240,7 +2240,9 @@ spend; it only emails.
   memory. 200 when all pass, 503 otherwise. A job never recorded is "pending", not a failure — a new job must be seen
   beating within its period. Every cron route calls `beat()` on success and failure; a new cron route must too.
 - **Uptime checks** (Cloud Monitoring, same project): `/api/health` with the header, the homepage, the apex (its 301 comes
-  from Caddy through Cloudflare, so an origin or Caddy-certificate failure shows as 52x there) and admin. One alert
+  from Caddy through Cloudflare, so an origin or Caddy-certificate failure shows as 52x there) and admin. **Google's
+  checker follows redirects** — the apex check sees www's 200, not the 301; accepting only 3xx failed it from every
+  location for the first half hour (and sent the first alert email). One alert
   policy, email to Gulshan (channel "Gulshan (email)"). Alerting is billed per condition (~$0.10 a month each), so one
   condition covers every check.
 - **The second backup copy:** bucket `admissionhands-backup-delhi` (asia-south2, Delhi — another provider and city than
