@@ -4,6 +4,7 @@ import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
+  Telescope,
   ArrowUpRight, Users, Bell, Video, School, LogOut, ImageIcon, GitBranch, Inbox, LayoutDashboard,
   SlidersHorizontal, MapPin, Menu, Search, AlertTriangle, FileText, Megaphone, X, Settings2, MessageCircle, Database, BellRing,
 } from 'lucide-react';
@@ -42,6 +43,7 @@ const NAV: { label: string; items: NavItem[] }[] = [
       { name: 'WhatsApp Inbox', href: '/admin/whatsapp-log', icon: MessageCircle, badge: 'whatsapp' },
       { name: 'Documents', href: '/admin/documents', icon: FileText, badge: 'documents' },
       { name: 'Outreach & hunt', href: '/admin/outreach', icon: Megaphone },
+      { name: 'Search research', href: '/admin/serp', icon: Telescope },
     ],
   },
   {

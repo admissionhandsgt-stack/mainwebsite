@@ -90,6 +90,20 @@ export default async function NeetCollegePredictorPage() {
             { name: "NEET College Predictor", path: "/neet-college-predictor" },
           ]),
           faqPage(faqs),
+          // A free tool, said as one (competitive review, 2026-11-11: peers mark their predictors up this way).
+          {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            name: "NEET College Predictor",
+            url: "https://www.admissionhands.com/neet-college-predictor",
+            applicationCategory: "EducationalApplication",
+            operatingSystem: "Any (web browser)",
+            isAccessibleForFree: true,
+            offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
+            description:
+              "Enter a NEET UG or NEET PG rank and category to see the MBBS, BDS and MD/MS colleges it reached, in chance words, from official counselling results.",
+            provider: { "@id": "https://www.admissionhands.com/#organization" },
+          },
         ]}
       />
 

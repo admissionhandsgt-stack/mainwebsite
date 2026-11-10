@@ -25,6 +25,13 @@ export default function robots(): MetadataRoute.Robots {
         allow: ["/", "/api/content/"],
         disallow: ["/admin", "/admin/", "/api/", "/account", "/account/"],
       },
+      // The AI assistants' crawlers, named (2026-11-11, competitive review: assistants sent 227 sessions in October). The
+      // rules are the same as everyone's; naming them says plainly that they are welcome to read and cite the pages.
+      {
+        userAgent: ["GPTBot", "OAI-SearchBot", "ChatGPT-User", "PerplexityBot", "Perplexity-User", "ClaudeBot", "Claude-SearchBot", "Claude-User", "Google-Extended", "Applebot-Extended", "Bingbot"],
+        allow: ["/", "/api/content/"],
+        disallow: ["/admin", "/admin/", "/api/", "/account", "/account/"],
+      },
     ],
     sitemap: `${BASE}/sitemap.xml`,
     host: BASE,

@@ -1137,6 +1137,14 @@ export const PAGE_COPY = {
   "page.pg_stipend_state.body": {
     group: "Page: PG stipend, one state — body",
     fields: {
+      // "Jaipur neet pg colleges stipend" (Google, 2026-11-11): the same colleges, grouped by the city they are in.
+      city_title: { label: "By-city section heading — {state}", value: "PG stipend by city in {state}" },
+      city_intro: {
+        label: "By-city section line — {state}",
+        value: "First-year stipend a month at each college, grouped by city — for every city in {state} with two or more colleges that publish one.",
+        long: true,
+      },
+      city_card: { label: "One city's heading — {city}", value: "PG stipend in {city} colleges" },
       table_title: { label: "Table heading — {state}", value: "Every PG college in {state} with a published stipend" },
       table_intro: {
         label: "Table line",

@@ -85,3 +85,35 @@ export async function webSearch(
     .filter((x) => x.url && /^https:\/\//.test(x.url))
     .map((x) => ({ title: (x.title ?? "").slice(0, 300), url: x.url!, content: (x.content ?? "").slice(0, 600), published: x.published_date }));
 }
+
+/**
+ * One search with Tavily's own short answer, from India — for lib/serpResearch.ts, which studies what the web answers
+ * for the searches we are shown for. Same budget as webSearch (one credit).
+ */
+export async function webSearchAnswer(query: string, maxResults = 10): Promise<{ answer: string; results: WebResult[] } | null> {
+  const key = await takeCredit();
+  if (!key) return null;
+  const r = await fetch("https://api.tavily.com/search", {
+    method: "POST",
+    headers: { authorization: `Bearer ${key}`, "content-type": "application/json" },
+    body: JSON.stringify({
+      query: query.slice(0, 380),
+      search_depth: "basic",
+      max_results: Math.min(maxResults, 20),
+      topic: "general",
+      country: "india",
+      include_answer: "basic",
+      include_raw_content: false,
+    }),
+    cache: "no-store",
+    signal: AbortSignal.timeout(30_000),
+  });
+  if (!r.ok) throw new Error(`Tavily ${r.status}`);
+  const j = (await r.json()) as { answer?: string; results?: { title?: string; url?: string; content?: string; published_date?: string }[] };
+  return {
+    answer: (j.answer ?? "").slice(0, 2000),
+    results: (j.results ?? [])
+      .filter((x) => x.url && /^https?:\/\//.test(x.url))
+      .map((x) => ({ title: (x.title ?? "").slice(0, 300), url: x.url!, content: (x.content ?? "").slice(0, 600), published: x.published_date })),
+  };
+}

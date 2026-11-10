@@ -131,6 +131,14 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
   ]);
 
   const showBond = !!bond && bond.govt.colleges > 0;
+  // The colleges grouped by the city their name gives, for every city with two or more (highest first within a city).
+  const byCity = new Map<string, typeof s.list>();
+  for (const c of s.list) {
+    const city = collegeName(c.name).place;
+    if (!city) continue;
+    byCity.set(city, [...(byCity.get(city) ?? []), c]);
+  }
+  const cities = [...byCity].filter(([, l]) => l.length >= 2).sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]));
   const faqs = [
     { question: body.faq1_q, answer: body.faq1_a },
     ...(s.govtMedian && s.privateMedian && s.govtMedian !== s.privateMedian ? [{ question: body.faq2_q, answer: body.faq2_a }] : []),
@@ -234,6 +242,31 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
           </table>
         </div>
       </section>
+
+      {/* -------------------------- by city ("jaipur neet pg colleges stipend") -------------------------- */}
+      {cities.length > 0 && (
+        <section className="container-custom pb-10 md:pb-14">
+          <SectionHead icon="map" eyebrow={s.state} title={body.city_title} intro={body.city_intro} />
+          <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {cities.map(([city, list]) => (
+              <div key={city} className="rounded-2xl border border-border bg-card p-5">
+                <h3 className="font-heading text-[16px] font-bold text-foreground">{body.city_card.replace("{city}", city)}</h3>
+                <ul className="mt-3 divide-y divide-border text-sm">
+                  {list.map((c) => (
+                    <li key={c.slug} className="flex items-baseline justify-between gap-3 py-2">
+                      <Link href={`/md-ms-india/colleges/${c.slug}`} className="min-w-0 text-foreground hover:text-primary hover:underline">
+                        {collegeName(c.name).short}
+                        <span className="ml-1.5 text-[12px] text-muted-foreground">{OWN[c.ownership] ?? c.ownership}</span>
+                      </Link>
+                      <span className="tnum shrink-0 font-semibold">{rupees(c.y1)}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <TelegramRoundAlert placement="round_alert_pg_stipend_state" className="pb-10 md:pb-14" />
 

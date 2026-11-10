@@ -142,6 +142,7 @@ export default async function ContactPage() {
         title="Prefer a call back?"
         body="Leave your number and NEET rank, and an expert counsellor will call you."
         withForm
+        chooseLevel
       />
     </main>
   );

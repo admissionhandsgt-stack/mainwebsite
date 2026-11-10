@@ -88,13 +88,18 @@ const COPY = {
 
 export const InlineLeadForm = ({
   source = 'PG Page',
-  level = 'pg',
+  level: initialLevel = 'pg',
+  chooseLevel = false,
 }: {
   source?: string;
   /** Which counselling this enquiry is about. Without it every lead lands in
    *  the admin as PG, because that is what the API defaults to. */
   level?: 'ug' | 'pg';
+  /** Let the student pick NEET UG or NEET PG first (the contact page, which serves both — competitive review,
+   *  2026-11-11: it asked a PG student for a NEET UG rank). */
+  chooseLevel?: boolean;
 }) => {
+  const [level, setLevel] = useState<'ug' | 'pg'>(initialLevel);
   const { contactInfo } = useContactInfo();
   const copy = COPY[level];
   // Form steps: 1 = Clinical Profile, 2 = Contact Information
@@ -295,6 +300,33 @@ export const InlineLeadForm = ({
           <span>🎯 AIQ • STATE • DEEMED • NRI</span>
         </div>
       </div>
+
+      {chooseLevel && step === 1 && (
+        <div role="tablist" aria-label="Which counselling" className="mb-4 flex gap-1 rounded-xl bg-surface-2 p-1">
+          {(
+            [
+              ['ug', 'NEET UG · MBBS/BDS'],
+              ['pg', 'NEET PG · MD/MS'],
+            ] as const
+          ).map(([v, label]) => (
+            <button
+              key={v}
+              type="button"
+              role="tab"
+              aria-selected={level === v}
+              onClick={() => {
+                setLevel(v);
+                setFormData((f) => ({ ...f, preferred_branch: '' }));
+              }}
+              className={`flex-1 whitespace-nowrap rounded-lg px-2 py-2 text-[12.5px] font-bold transition-colors ${
+                level === v ? 'bg-card text-foreground shadow-sm ring-1 ring-border' : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
 
       <div className="mb-5">
         <h3 className="text-base font-black text-foreground tracking-tight mb-1">

@@ -30,6 +30,7 @@ export default function LeadCapture({
   body,
   points,
   withForm = false,
+  chooseLevel = false,
 }: {
   level?: "ug" | "pg";
   source: string;
@@ -37,6 +38,8 @@ export default function LeadCapture({
   body?: string;
   points?: string[];
   withForm?: boolean;
+  /** With the form: let the student pick NEET UG or NEET PG (the contact page). */
+  chooseLevel?: boolean;
 }) {
   /**
    * Blank is absent, which `??` does not believe: an unset CMS setting arrives
@@ -113,7 +116,7 @@ export default function LeadCapture({
 
           <div className="relative z-10 mx-auto w-full max-w-md lg:max-w-none">
             {withForm ? (
-              <InlineLeadForm source={source} level={level} />
+              <InlineLeadForm source={source} level={level} chooseLevel={chooseLevel} />
             ) : (
               <div className="rounded-2xl border border-border bg-card p-6 shadow-sm md:p-7">
                 <p className="flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.12em] text-accent">
