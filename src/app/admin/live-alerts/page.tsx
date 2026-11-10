@@ -5,10 +5,12 @@ import AlertForm from '@/components/admin/alerts/AlertForm';
 import AlertList from '@/components/admin/alerts/AlertList';
 import { useLiveAlerts } from '@/hooks/useLiveAlerts';
 import { Loader2, Bell, Plus, RefreshCw, AlertTriangle } from 'lucide-react';
-import { Badge, Button, Card, Drawer, EmptyState, Notice, PageHeader } from '@/components/admin/ui';
+import { Button, Card, Drawer, EmptyState, Notice, PageHeader, Tabs } from '@/components/admin/ui';
 
 const LiveAlertsManager = () => {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  // Live and hidden apart (2026-11-10: 97 alerts in one list was a long scroll).
+  const [show, setShow] = useState<'live' | 'hidden'>('live');
   const {
     alerts,
     newAlert,
@@ -97,23 +99,24 @@ const LiveAlertsManager = () => {
           </Card>
         )
       ) : (
-        <Card
-          flush
-          title="On the site"
-          actions={
-            <>
-              <Badge tone="success">{activeCount} live</Badge>
-              {hiddenCount > 0 && <Badge>{hiddenCount} hidden</Badge>}
-            </>
-          }
-        >
+        <div className="space-y-4">
+        <Tabs
+          items={[
+            { id: 'live' as const, label: 'On the site', count: activeCount },
+            { id: 'hidden' as const, label: 'Hidden', count: hiddenCount },
+          ]}
+          value={show}
+          onChange={setShow}
+        />
+        <Card flush>
           <AlertList
-            alerts={alerts}
+            alerts={alerts.filter((a) => (show === 'live' ? a.is_active : !a.is_active))}
             onToggleActive={toggleActive}
             onEdit={startEdit}
             onDelete={deleteAlert}
           />
         </Card>
+        </div>
       )}
 
       {/* New alert */}

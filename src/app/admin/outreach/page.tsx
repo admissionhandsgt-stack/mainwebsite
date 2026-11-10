@@ -29,12 +29,10 @@ export default async function OutreachPage() {
     else groups.push({ channel: it.channel, items: [it] });
   }
 
-  return (
-    <div>
-      <PageHeader
-        title="Outreach kit"
-        description="Ready-to-send messages with today's numbers. Every link someone else publishes to these pages is a backlink."
-      >
+  // The share kit is one of the screen's tabs (2026-11-10: the page had grown into one long scroll).
+  const kit = (
+    <div className="space-y-6">
+      <div className="grid gap-3 lg:grid-cols-2">
         <Notice tone="warning" icon={AlertTriangle} title="Send them by hand, one at a time">
           To people and groups where they help. Never mass-post or auto-post: search engines penalise the whole site for
           link spam.
@@ -60,13 +58,7 @@ export default async function OutreachPage() {
             </li>
           </ul>
         </Notice>
-      </PageHeader>
-
-      {/* Email with the owner's approval on Telegram (2026-11-10, lib/outreach.ts). */}
-      <div className="mb-8">
-        <OutreachEmail />
       </div>
-
       <div className="space-y-8">
         {groups.map((g, i) => (
           <section key={g.channel} aria-labelledby={`outreach-ch-${i}`}>
@@ -87,6 +79,13 @@ export default async function OutreachPage() {
           </section>
         ))}
       </div>
+    </div>
+  );
+
+  return (
+    <div>
+      <PageHeader title="Outreach" description="Emails approved on Telegram, the daily hunt of questions to answer, the sites we read for contacts, and the share kit." />
+      <OutreachEmail kit={kit} />
     </div>
   );
 }

@@ -281,7 +281,7 @@ export default function LeadsManager() {
 
       <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
         {/* Views */}
-        <div className="flex gap-1 overflow-x-auto border-b border-slate-100 px-3 pt-2">
+        <div className="flex flex-wrap gap-x-1 border-b border-slate-100 px-3 pt-2">
           {tabs.map((t) => {
             const active = view === t.id;
             const count = counts[t.id] ?? 0;
@@ -409,8 +409,9 @@ export default function LeadsManager() {
                         {l.rank != null ? l.rank.toLocaleString('en-IN') : '—'}
                         {l.category && <div className="text-xs text-slate-400">{l.category}</div>}
                       </td>
-                      <td className="max-w-[15rem] px-3 py-3">
-                        <div className="truncate text-slate-700" title={want ?? ''}>{want || '—'}</div>
+                      <td className="min-w-[14rem] max-w-[22rem] px-3 py-3">
+                        {/* Two lines, the rest on hover: a list of five branches cut after the first word was unreadable. */}
+                        <div className="line-clamp-2 text-slate-700" title={want ?? ''}>{want || '—'}</div>
                         {l.source_page && <div className="truncate text-xs text-slate-400" title={l.source_page}>{l.source_page}</div>}
                       </td>
                       <td className="px-3 py-3 text-slate-600">{l.assigned_to || <span className="text-slate-400">—</span>}</td>

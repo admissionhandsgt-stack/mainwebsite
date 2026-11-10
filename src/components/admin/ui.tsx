@@ -112,7 +112,9 @@ export function Tabs<T extends string>({
 }) {
   const change = onChange as (id: T) => void;
   return (
-    <div className="flex gap-1 overflow-x-auto border-b border-slate-200" role="tablist">
+    // Wraps onto a second line instead of scrolling sideways (2026-11-10: the scroll arrows Windows draws for an
+    // overflow-x bar showed on every tabbed screen, and the leads' nine tabs scrolled left-right).
+    <div className="flex flex-wrap gap-x-1 border-b border-slate-200" role="tablist">
       {items.map((t) => {
         const active = t.id === value;
         return (

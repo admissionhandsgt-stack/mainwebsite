@@ -41,6 +41,7 @@ const NAV: { label: string; items: NavItem[] }[] = [
       { name: 'Leads', href: '/admin/leads', icon: Inbox, badge: 'leads' },
       { name: 'WhatsApp Inbox', href: '/admin/whatsapp-log', icon: MessageCircle, badge: 'whatsapp' },
       { name: 'Documents', href: '/admin/documents', icon: FileText, badge: 'documents' },
+      { name: 'Outreach & hunt', href: '/admin/outreach', icon: Megaphone },
     ],
   },
   {
@@ -54,7 +55,6 @@ const NAV: { label: string; items: NavItem[] }[] = [
       { name: 'Videos', href: '/admin/videos', icon: Video },
       { name: 'Media', href: '/admin/media', icon: ImageIcon },
       { name: 'Contacts', href: '/admin/contacts', icon: Users },
-      { name: 'Outreach kit', href: '/admin/outreach', icon: Megaphone },
     ],
   },
   {
@@ -129,10 +129,10 @@ function Sidebar({
         </Link>
       </div>
 
-      <nav className="flex-1 space-y-6 overflow-y-auto px-3 py-5" aria-label="Admin">
+      <nav className="flex-1 space-y-4 overflow-y-auto px-3 py-3" aria-label="Admin">
         {NAV.map((group) => (
           <div key={group.label}>
-            <div className="mb-1.5 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+            <div className="mb-1 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
               {group.label}
             </div>
             <ul className="space-y-0.5">
@@ -145,7 +145,7 @@ function Sidebar({
                       href={target(item.href)}
                       onClick={onNavigate}
                       aria-current={active ? 'page' : undefined}
-                      className={`flex items-center gap-3 rounded-lg px-3 py-2 text-[14px] font-medium transition-colors ${
+                      className={`flex items-center gap-3 rounded-lg px-3 py-1.5 text-[13.5px] font-medium transition-colors ${
                         active ? 'bg-cyan-50 text-cyan-800' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                       }`}
                     >
@@ -168,7 +168,7 @@ function Sidebar({
       </nav>
 
       <div className="shrink-0 border-t border-slate-100 p-3">
-        <div className="mb-2 flex items-center gap-3 rounded-lg px-3 py-2">
+        <div className="mb-1.5 flex items-center gap-3 rounded-lg px-3 py-1">
           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-cyan-600 text-xs font-bold text-white">
             {(user?.name || user?.email || 'A').charAt(0).toUpperCase()}
           </span>

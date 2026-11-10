@@ -37,6 +37,9 @@ export default function SettingsEditor() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
+  // One group at a time, picked from a list, or every match for a search (2026-11-10: 957 fields in one scroll).
+  const [active, setActive] = useState<string | null>(null);
+  const [q, setQ] = useState("");
 
   const load = async () => {
     setLoading(true);
@@ -111,6 +114,13 @@ export default function SettingsEditor() {
   }
 
   const isDirty = (s: Setting) => s.id in draft && draft[s.id] !== (s.value ?? "");
+  const needle = q.trim().toLowerCase();
+  const matches = (s: Setting) =>
+    [s.label, s.key, s.help ?? "", current(s), groupTitle(s.group_name)].some((t) => t.toLowerCase().includes(needle));
+  const activeGroup = active && grouped.some(([g]) => g === active) ? active : grouped[0]?.[0] ?? null;
+  const shown = needle
+    ? grouped.map(([g, items]) => [g, items.filter(matches)] as [string, Setting[]]).filter(([, items]) => items.length > 0)
+    : grouped.filter(([g]) => g === activeGroup);
 
   return (
     <div className="space-y-5">
@@ -169,8 +179,59 @@ export default function SettingsEditor() {
 
           {/* Locked while a reload is in flight: the reload clears the draft, so
               anything typed during it would be thrown away. */}
+          <div className="grid items-start gap-5 lg:grid-cols-[17rem_minmax(0,1fr)]">
+            {/* The groups: a list beside the fields on a laptop, a menu above them on a phone. */}
+            <aside className="space-y-2 rounded-2xl border border-slate-200 bg-white p-3 lg:sticky lg:top-36 lg:max-h-[calc(100vh-10rem)] lg:overflow-y-auto">
+              <input
+                type="search"
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
+                placeholder="Search every field…"
+                aria-label="Search every field"
+                className={`${INPUT} ${INPUT_H}`}
+              />
+              <select
+                className={`${INPUT} ${INPUT_H} lg:hidden`}
+                value={activeGroup ?? ""}
+                onChange={(e) => {
+                  setQ("");
+                  setActive(e.target.value);
+                }}
+                aria-label="Group"
+              >
+                {grouped.map(([g, items]) => (
+                  <option key={g} value={g}>
+                    {groupTitle(g)} ({items.length})
+                  </option>
+                ))}
+              </select>
+              <ul className="hidden space-y-0.5 lg:block">
+                {grouped.map(([g, items]) => {
+                  const edits = items.filter(isDirty).length;
+                  const on = !needle && g === activeGroup;
+                  return (
+                    <li key={g}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setQ("");
+                          setActive(g);
+                        }}
+                        className={`flex w-full items-start justify-between gap-2 rounded-lg px-2.5 py-1.5 text-left text-[13px] leading-snug ${
+                          on ? "bg-cyan-50 font-semibold text-cyan-800" : "text-slate-600 hover:bg-slate-50"
+                        }`}
+                      >
+                        <span>{groupTitle(g)}</span>
+                        {edits > 0 ? <Badge tone="warning">{edits}</Badge> : <span className="shrink-0 text-[11px] text-slate-400">{items.length}</span>}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </aside>
           <fieldset disabled={loading} className="min-w-0 space-y-5">
-          {grouped.map(([group, items]) => {
+          {needle && shown.length === 0 && <Card><p className="text-sm text-slate-500">No field matches “{q}”.</p></Card>}
+          {shown.map(([group, items]) => {
             const editedHere = items.filter(isDirty).length;
             return (
               <Card
@@ -268,6 +329,7 @@ export default function SettingsEditor() {
             );
           })}
           </fieldset>
+          </div>
         </>
       )}
     </div>

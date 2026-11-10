@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Mail, Send, Plus, Trash2, Link2 } from "lucide-react";
-import { Badge, Button, Card, EmptyState, Field, INPUT, INPUT_H, Notice, TABLE, Toggle, type Tone } from "@/components/admin/ui";
+import { Badge, Button, Card, EmptyState, Field, INPUT, INPUT_H, Notice, TABLE, Tabs, Toggle, type Tone } from "@/components/admin/ui";
 
 /**
  * Admin → Outreach email (2026-11-10). The mailbox the emails go from, the Telegram bot the owner approves each one in,
@@ -147,7 +147,24 @@ const TONE: Record<string, Tone> = {
 const when = (v: string | null) =>
   v ? new Date(v).toLocaleString("en-IN", { timeZone: "Asia/Kolkata", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "—";
 
-export default function OutreachEmail() {
+type TabId = "emails" | "hunt" | "sites" | "settings" | "kit";
+const TAB_IDS: TabId[] = ["emails", "hunt", "sites", "settings", "kit"];
+
+/**
+ * One screen, five tabs (2026-11-10, owner: "lamba lamba scroll hai, chije unorganised"): the day's work first (emails,
+ * the hunt), then the sites list, the settings and the share kit. The tab is in the address (#hunt), so a Telegram link
+ * opens the right one.
+ */
+export default function OutreachEmail({ kit }: { kit?: React.ReactNode }) {
+  const [tab, setTabState] = useState<TabId>("emails");
+  useEffect(() => {
+    const h = window.location.hash.slice(1) as TabId;
+    if (TAB_IDS.includes(h)) setTabState(h);
+  }, []);
+  const setTab = (t: TabId) => {
+    setTabState(t);
+    history.replaceState(null, "", `#${t}`);
+  };
   const [s, setS] = useState<State | null>(null);
   const [form, setForm] = useState({ host: "", port: "", user: "", pass: "", fromName: "", token: "", cap: "", tavilyKey: "", tavilyKey2: "" });
   const [target, setTarget] = useState({ email: "", name: "", org: "", kind: "journalist", why: "", sourceUrl: "" });
@@ -202,9 +219,38 @@ export default function OutreachEmail() {
         </Notice>
       )}
 
+      <div className="flex flex-wrap items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3">
+        <Badge tone={s.passSet ? "success" : "warning"}>{s.passSet ? "Mailbox ready" : "Mailbox not set"}</Badge>
+        <Badge tone={s.linked ? "success" : "warning"}>{s.linked ? "Telegram linked" : "Telegram not linked"}</Badge>
+        <Badge tone={s.tavilySet ? "success" : "warning"}>
+          {s.tavilySet ? `Search ${s.tavilyUsage.used}/${s.tavilyUsage.budget} this month` : "Search key not set"}
+        </Badge>
+        <div className="ml-auto">
+          <Toggle
+            checked={s.enabled}
+            onChange={(v) => post({ action: "save", enabled: v }, "toggle")}
+            label={s.enabled ? "Daily emails on" : "Daily emails off"}
+            disabled={!s.passSet || !s.linked}
+          />
+        </div>
+      </div>
+
+      <Tabs
+        items={[
+          { id: "emails" as TabId, label: "Emails", count: s.rows.length },
+          { id: "hunt" as TabId, label: "Daily hunt", count: s.hunt.filter((h) => h.status === "new").length },
+          { id: "sites" as TabId, label: "Websites", count: s.sources.length },
+          { id: "settings" as TabId, label: "Settings" },
+          ...(kit ? [{ id: "kit" as TabId, label: "Share kit" }] : []),
+        ]}
+        value={tab}
+        onChange={setTab}
+      />
+
+      {tab === "settings" && (
       <Card
-        title="Outreach email — approve on Telegram"
-        description="Every day at 11 AM the drafts come to your Telegram with Send · Skip buttons. Reply to a preview to change it. Nothing goes without your Send."
+        title="Mailbox, Telegram and search keys"
+        description="Every day at 11 AM the email drafts come to your Telegram with Send · Skip buttons. Reply to a preview to change it. Nothing goes without your Send."
         actions={
           <Toggle
             checked={s.enabled}
@@ -282,7 +328,10 @@ export default function OutreachEmail() {
           </Button>
         </div>
       </Card>
+      )}
 
+      {tab === "emails" && (
+      <>
       <Card title="Add someone to write to" description="An address you found on their own public page (contact, press, team). The draft is written from today's figures; you see it on Telegram before anything goes.">
         <div className="grid gap-4 md:grid-cols-3">
           <Field label="Email">
@@ -360,13 +409,16 @@ export default function OutreachEmail() {
           </div>
         )}
       </Card>
+      </>
+      )}
 
-      <SourcesCard sources={s.sources} busy={!!busy} post={post} onMsg={setMsg} />
+      {tab === "sites" && <SourcesCard sources={s.sources} busy={!!busy} post={post} onMsg={setMsg} />}
 
+      {tab === "hunt" && (
       <div id="hunt" className="scroll-mt-24">
         <Card
           title={`Daily hunt — ${s.hunt.filter((h) => h.status === "new").length} questions to answer`}
-          description="Questions people searched this week that land on our pages, each with an answer from the page's own figures. Open a search, find the thread, paste the answer from your own account, and save its link. Follow each forum's rules: say you are a counsellor, and link only when the page answers the question. Reddit and Quora links are nofollow — the gain is readers and mentions, not link strength."
+          description="Open the thread (or a search), paste the answer from your own account, then save its link. Say you are a counsellor; link only when the page answers the question."
           actions={
             <Button size="sm" disabled={!!busy} onClick={async () => {
               const j = await post({ action: "hunt-run" }, "hunt");
@@ -399,6 +451,9 @@ export default function OutreachEmail() {
           )}
         </Card>
       </div>
+      )}
+
+      {tab === "kit" && kit}
     </div>
   );
 }
