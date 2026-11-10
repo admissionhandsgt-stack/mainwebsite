@@ -246,10 +246,11 @@ export default function Hero({
         </div>
 
         {/* ---------------- Right: the people, and the way in ---------------- */}
-        <div className="animate-settle relative hidden lg:flex w-full lg:w-[42%] justify-end items-end h-[clamp(430px,62svh,620px)]"
+        {/* The card sits under the photo, never over it (owner, 2026-11-10: the card on the doctors "bilkul b acha nhi hai"). */}
+        <div className="animate-settle relative hidden lg:flex w-full lg:w-[42%] flex-col items-end justify-end gap-3 h-[clamp(430px,62svh,620px)]"
         >
           {doctorsImageUrl && doctorsImageUrl !== "none" && (
-            <div className="relative h-full w-full max-w-[520px]">
+            <div className="relative min-h-0 w-full max-w-[520px] flex-1">
               <Image
                 src={doctorsImageUrl}
                 alt="AdmissionHands counselling team"
@@ -267,9 +268,9 @@ export default function Hero({
 
           <div
             style={{ animationDelay: "500ms", animationDuration: "600ms" }}
-            className="animate-rise panel-glass card-lift absolute bottom-10 -right-2 z-20 w-[320px] rounded-2xl p-4 shadow-lift"
+            className="animate-rise panel-glass card-lift relative z-20 flex w-full max-w-[520px] items-center gap-3 rounded-2xl p-3 shadow-lift"
           >
-            <div className="flex items-center gap-3">
+            <div className="flex min-w-0 flex-1 items-center gap-3">
               <button
                 onClick={() => CTA.whatsapp()}
                 aria-label="Message an expert on WhatsApp"
@@ -288,7 +289,7 @@ export default function Hero({
             </div>
             <button
               onClick={() => CTA.call()}
-              className="mt-3 flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-gradient-brand text-xs font-bold text-white shadow-glow transition-all hover:shadow-glow-lg active:scale-[.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              className="flex h-11 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-gradient-brand px-4 text-xs font-bold text-white shadow-glow transition-all hover:shadow-glow-lg active:scale-[.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               <Phone size={14} />
               Call now — free
