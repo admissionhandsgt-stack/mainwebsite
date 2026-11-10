@@ -2247,6 +2247,14 @@ Owner shared SEO reels and said "1-5 done karo" (paid tools skipped). What was b
   "closing rank" query. Result on that data: 9 new links, 62 already on the pages — the site's own linking was already
   dense. `suggestTarget()` is pure, so it can be tested offline against a GSC export.
 
+**Question queries (same day, from the owner's second reel — GSC regex `^(what|how|why|who|when)\s`, grouped by topic):**
+795 question queries in 90 days, 1,383 impressions, 11 clicks. Answered where we sat at 6–10 with no clicks: PG state pages
+"How many PG seats are there in <state>?" (NMC MD/MS/diploma by state, `getNmcPgForState`), MBBS state pages "How many medical
+colleges are there in <state>?", the bond page "Which states have no service bond after PG?", and an FAQ on /md-ms-india/branches
+("How many branches are there in NEET PG?"). Also seen: one-word follow-ups ("stipend?", "fees?", "round 3?", "are you sure?")
+landing on college pages at position 2–4 — conversational follow-ups that read our college pages; keep the facts those ask for
+in the first screen of a college page. Re-run: `scripts/tmp/harness/qtopics.ts` (git-excluded harness).
+
 ## Outreach email, approved on Telegram (2026-11-10)
 
 Owner: "email bhi auto bhejne ka banao… telegram ke through approval and preview and send and changes… I permit you".
