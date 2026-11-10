@@ -9,7 +9,9 @@ import { pageCopy } from "@/lib/pageCopy";
 import { getLiveFigures } from "@/lib/liveFigures";
 import LoginFlow from "@/components/auth/LoginFlow";
 import LoginShowcase from "@/components/auth/LoginShowcase";
-import { getLiveAlerts } from "@/lib/content";
+import { getContactInfo, getLiveAlerts, type LiveAlert } from "@/lib/content";
+import { CONTACT_INFO } from "@/lib/constants";
+import { DOCUMENT_TYPES } from "@/lib/documentCatalogue";
 import counsellors from "@/data/counsellors.json";
 
 export const dynamic = "force-dynamic";
@@ -40,7 +42,7 @@ export const metadata: Metadata = {
  * second tab.
  */
 const ICONS = [ListChecks, Bell, PhoneCall, UserRound, FileText, Briefcase, KeyRound];
-type Counsellor = { slug: string; name: string; photo?: string };
+type Counsellor = { slug: string; name: string; title: string; photo?: string };
 const initials = (name: string) =>
   name
     .split(/\s+/)
@@ -55,21 +57,29 @@ export default async function LoginPage(props: { searchParams: Promise<{ next?: 
     // Only ever bounce to our own paths. `next` comes from the URL — see safeNext.
     redirect(safeNext(searchParams.next));
   }
-  const [team, live, alerts] = await Promise.all([pageCopy("page.services.figures"), getLiveFigures(), getLiveAlerts().catch(() => [])]);
-  const c = await pageCopy("page.login", { years: team.years, students: team.students });
+  const [team, live, alerts, contact] = await Promise.all([
+    pageCopy("page.services.figures"),
+    getLiveFigures(),
+    getLiveAlerts().catch((): LiveAlert[] => []),
+    getContactInfo().catch(() => null),
+  ]);
+  const c = await pageCopy("page.login", { years: team.years, students: team.students, docs: String(DOCUMENT_TYPES.length) });
   const lines = (t: string) => t.split("\n").map((l) => l.split("|").map((x) => x.trim())).filter((x) => x[0]);
   const benefits = lines(c.benefits).filter((x) => x[1]);
   const steps = c.steps.split("\n").map((x) => x.trim()).filter(Boolean);
   const stats = [
-    { v: team.years, w: "years of NEET counselling" },
-    { v: team.students, w: "students guided" },
-    ...(/^\d/.test(live.nmc_colleges ?? "") ? [{ v: live.nmc_colleges, w: "medical colleges known seat by seat" }] : []),
-  ];
+    { v: team.years, w: c.stat_years },
+    { v: team.students, w: c.stat_students },
+    ...(/^\d/.test(live.nmc_colleges ?? "") ? [{ v: live.nmc_colleges, w: c.stat_colleges }] : []),
+  ].filter((x) => x.v && x.w);
   // The newest national notice if there is one (MCC, NBEMS, NMC, NTA), else the newest of all.
   const national = alerts.find((a) => /\b(MCC|NBEMS|NMC|NTA|NEET)\b/i.test(a.title)) ?? alerts[0] ?? null;
   const team4 = counsellors as Counsellor[];
   const names = team4.map((x) => x.name.split(" ")[0]);
   const nameLine = `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
+  // The counsellor on the panel's card: Admin picks one by their card-page address; the title can be the admin's own.
+  const pick = team4.find((x) => x.slug === c.card_counsellor.trim().toLowerCase()) ?? team4[0] ?? null;
+  const counsellor = pick ? { name: pick.name, title: c.card_counsellor_title || pick.title, photo: pick.photo } : null;
 
   return (
     <main className="relative bg-background">
@@ -78,9 +88,23 @@ export default async function LoginPage(props: { searchParams: Promise<{ next?: 
         <div className="px-1 pb-4 pt-4 sm:px-6 lg:px-10 lg:pt-14">
           <div className="mx-auto w-full max-w-[27rem] lg:sticky lg:top-[calc(var(--site-top,112px)_+_2rem)]">
             <p className="mb-5 inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-accent-soft px-2.5 py-1 text-[11.5px] font-semibold text-accent">
-              <Lock className="h-3 w-3" aria-hidden="true" /> Secure · verified by a WhatsApp code
+              <Lock className="h-3 w-3" aria-hidden="true" /> {c.secure_chip}
             </p>
-            <LoginFlow next={searchParams.next} initialMode={searchParams.mode === "signup" ? "signup" : "signin"} />
+            <LoginFlow
+              next={searchParams.next}
+              initialMode={searchParams.mode === "signup" ? "signup" : "signin"}
+              tabs={{ signin: c.tab_signin, signup: c.tab_signup, signupShort: c.tab_signup_short }}
+              copy={{
+                signinTitle: c.signin_title,
+                signinText: c.signin_text,
+                signinButton: c.signin_button,
+                signupTitle: c.signup_title,
+                signupText: c.signup_text,
+                signupButton: c.signup_button,
+                noAccount: c.no_account,
+                privacy: c.privacy,
+              }}
+            />
 
             {/* The people behind the account, as a face stack (the pattern of every big sign-up page). */}
             <div className="mt-7 flex items-center gap-3 border-t border-border pt-5">
@@ -101,7 +125,7 @@ export default async function LoginPage(props: { searchParams: Promise<{ next?: 
                 ))}
               </ul>
               <p className="text-[13px] leading-snug text-muted-foreground">
-                <span className="font-semibold text-foreground">{nameLine}</span> — expert admission strategists, on WhatsApp every day, 10 AM – 10 PM.
+                <span className="font-semibold text-foreground">{nameLine}</span> {c.team_line}
               </p>
             </div>
           </div>
@@ -109,13 +133,13 @@ export default async function LoginPage(props: { searchParams: Promise<{ next?: 
 
         {/* ------------------------------ the brand panel ------------------------------ */}
         <LoginShowcase
-          eyebrow={c.eyebrow}
-          title={c.title}
-          accent={c.accent}
-          subtitle={c.subtitle}
+          copy={c}
           stats={stats}
           steps={steps}
           notice={national ? { title: national.title, link: national.link } : null}
+          counsellor={counsellor}
+          phone={contact?.phoneNumber || CONTACT_INFO.phone}
+          whatsapp={contact?.whatsappNumber || CONTACT_INFO.whatsapp}
         />
       </section>
 

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import AuthFlow from "@/components/auth/AuthFlow";
+import AuthFlow, { type AuthCopy } from "@/components/auth/AuthFlow";
 import { safeNext } from "@/lib/safeNext";
 
 /**
@@ -14,7 +14,18 @@ import { safeNext } from "@/lib/safeNext";
  * `router.refresh()` before the push is what makes the destination render as signed in. The session cookie was set on
  * the sign-in response, but the server components already in the router cache were rendered for somebody signed out.
  */
-export default function LoginFlow({ next, initialMode = "signin" }: { next?: string; initialMode?: "signin" | "signup" }) {
+export default function LoginFlow({
+  next,
+  initialMode = "signin",
+  copy,
+  tabs = {},
+}: {
+  next?: string;
+  initialMode?: "signin" | "signup";
+  /** The words, from Admin → Content ("Page: sign in / create account"); blank → the defaults. */
+  copy?: Partial<AuthCopy>;
+  tabs?: { signin?: string; signup?: string; signupShort?: string };
+}) {
   const router = useRouter();
   const [mode, setMode] = useState<"signin" | "signup">(initialMode);
 
@@ -38,12 +49,12 @@ export default function LoginFlow({ next, initialMode = "signin" }: { next?: str
   return (
     <div>
       <div role="tablist" aria-label="Sign in or create an account" className="mb-4 flex gap-1 rounded-2xl bg-surface-2 p-1">
-        {tab("signin", "Sign in")}
+        {tab("signin", tabs.signin || "Sign in")}
         {tab(
           "signup",
           <>
-            <span className="sm:hidden">Create account</span>
-            <span className="hidden sm:inline">Create free account</span>
+            <span className="sm:hidden">{tabs.signupShort || tabs.signup || "Create account"}</span>
+            <span className="hidden sm:inline">{tabs.signup || "Create free account"}</span>
           </>,
         )}
       </div>
@@ -52,6 +63,7 @@ export default function LoginFlow({ next, initialMode = "signin" }: { next?: str
         plain
         mode={mode}
         onSwitchMode={setMode}
+        copy={copy}
         onDone={() => {
           router.refresh();
           router.push(target);

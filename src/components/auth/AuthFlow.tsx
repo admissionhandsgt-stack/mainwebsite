@@ -85,6 +85,19 @@ export interface AuthFlowProps {
   plain?: boolean;
   /** On /login: offer the other tab when the number says the visitor is on the wrong one. */
   onSwitchMode?: (mode: "signin" | "signup") => void;
+  /** On /login: the words of the first screen, from Admin → Content ("Page: sign in / create account"). Blank → the defaults here. */
+  copy?: Partial<AuthCopy>;
+}
+
+export interface AuthCopy {
+  signinTitle: string;
+  signinText: string;
+  signinButton: string;
+  signupTitle: string;
+  signupText: string;
+  signupButton: string;
+  noAccount: string;
+  privacy: string;
 }
 
 const POLL_MS = 2500;
@@ -111,7 +124,9 @@ export default function AuthFlow({
   mode = "auto",
   onSwitchMode,
   plain = false,
+  copy,
 }: AuthFlowProps) {
+  const w = (k: keyof AuthCopy, fallback: string) => copy?.[k]?.trim() || fallback;
   const signin = mode === "signin";
   const [step, setStep] = useState<Step>("phone");
   const [busy, setBusy] = useState(false);
@@ -300,7 +315,7 @@ export default function AuthFlow({
       setKnown({ exists: Boolean(found.exists), firstName: (found.firstName as string) ?? null });
       // The sign-in tab with a number we have never seen: say so and offer the other tab, rather than a code to a stranger.
       if (signin && !found.exists) {
-        setNotice("There is no account with this number yet. Create a free one — it takes a minute.");
+        setNotice(w("noAccount", "There is no account with this number yet. Create a free one — it takes a minute."));
         if (onSwitchMode) onSwitchMode("signup");
         return;
       }
@@ -499,13 +514,13 @@ export default function AuthFlow({
           }}
         >
           <h2 id="auth-flow-title" className="font-heading text-2xl font-extrabold tracking-tight text-foreground">
-            {signin ? "Welcome back" : mode === "signup" ? "Create your free account" : "Sign in to continue"}
+            {signin ? w("signinTitle", "Welcome back") : mode === "signup" ? w("signupTitle", "Create your free account") : "Sign in to continue"}
           </h2>
           <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
             {signin ? (
-              <>Your mobile number, then your password — or a code on WhatsApp if you have not set one.</>
+              <>{w("signinText", "Your mobile number, then your password — or a code on WhatsApp if you have not set one.")}</>
             ) : mode === "signup" ? (
-              <>Your number, your name, your rank. We send a code on WhatsApp to confirm the number is yours.</>
+              <>{w("signupText", "Your number, your name, your rank. We send a code on WhatsApp to confirm the number is yours.")}</>
             ) : lockedCount > 0 ? (
               <>
                 Your <span className="tnum font-semibold text-foreground">{lockedCount}</span>{" "}
@@ -609,13 +624,12 @@ export default function AuthFlow({
 
           <FormError message={error} />
           <Submit busy={busy} disabled={!phoneValid}>
-            {signin ? "Sign in" : mode === "signup" ? "Create my account" : "Continue"}
+            {signin ? w("signinButton", "Sign in") : mode === "signup" ? w("signupButton", "Create my account") : "Continue"}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Submit>
 
           <p className="mt-4 text-center text-[12.5px] leading-relaxed text-muted-foreground">
-            Your number is how we reach you about counselling, and nothing else. It is never sold or
-            passed on.
+            {w("privacy", "Your number is how we reach you about counselling, and nothing else. It is never sold or passed on.")}
           </p>
         </form>
       )}
