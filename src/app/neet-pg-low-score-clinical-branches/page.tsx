@@ -337,8 +337,31 @@ export default async function LowScoreClinicalPage() {
         </div>
       )}
 
+      {p && (
+        <nav aria-label="On this page" className="border-b border-border bg-background">
+          <div className="container-custom flex flex-wrap items-center gap-x-1 gap-y-2 py-3 text-[13px]">
+            <span className="mr-1 font-semibold text-foreground">On this page:</span>
+            {[
+              ["#rank-vs-branch", "Rank vs clinical branch (25K–2 lakh)"],
+              ["#just-eligible", "Just eligible / just qualified"],
+              ["#marks-vs-branch", "Marks vs branch (200–400)"],
+              ["#cases", "Cases we work on"],
+              ["#strategy", "Counsellor strategy"],
+              ["#example-plans", "Example plans"],
+              ["#by-category", "OBC, SC, ST, EWS"],
+              ["#lowest-rank", "Lowest rank per branch"],
+              ["#faq", "FAQs"],
+            ].map(([href, label]) => (
+              <a key={href} href={href} className="rounded-full border border-border bg-card px-3 py-1 text-muted-foreground hover:border-primary/40 hover:text-primary-strong">
+                {label}
+              </a>
+            ))}
+          </div>
+        </nav>
+      )}
+
       {p && p.bands.length > 0 && (
-        <section className="container-custom py-10 md:py-14">
+        <section id="rank-vs-branch" className="scroll-mt-28 container-custom py-10 md:py-14">
           <SectionHead icon="route" eyebrow="Rank vs branch" title={body.bands_title} intro={body.bands_intro} />
           <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {p.bands.map((b) => {
@@ -386,7 +409,7 @@ export default async function LowScoreClinicalPage() {
       )}
 
       {caseTypes.length > 0 && (
-        <section className="container-custom py-10 md:py-14">
+        <section id="cases" className="scroll-mt-28 container-custom py-10 md:py-14">
           <SectionHead icon="people" eyebrow="Our work" title={body.cases_types_title} intro={body.cases_types_intro} />
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             {caseTypes.map(([who, what, where]) => (
@@ -412,7 +435,7 @@ export default async function LowScoreClinicalPage() {
       )}
 
       {p && top && (
-        <section id="just-eligible" className="border-t border-border bg-surface-1 py-10 md:py-14">
+        <section id="just-eligible" className="scroll-mt-28 border-t border-border bg-surface-1 py-10 md:py-14">
           <div className="container-custom grid gap-8 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:items-start">
             <div>
               <SectionHead icon="people" eyebrow="Just eligible" title={body.eligible_title} />
@@ -434,7 +457,7 @@ export default async function LowScoreClinicalPage() {
       )}
 
       {p && p.scores.length > 0 && (
-        <section className="container-custom py-10 md:py-14">
+        <section id="marks-vs-branch" className="scroll-mt-28 container-custom py-10 md:py-14">
           <SectionHead icon="trend" eyebrow="Marks vs branch" title={body.scores_title} intro={body.scores_intro} />
           <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
             {p.scores.map((x) => (
@@ -463,7 +486,7 @@ export default async function LowScoreClinicalPage() {
       )}
 
       {steps.length > 0 && (
-        <section className="border-t border-border bg-surface-1 py-10 md:py-14">
+        <section id="strategy" className="scroll-mt-28 border-t border-border bg-surface-1 py-10 md:py-14">
           <div className="container-custom">
             <SectionHead icon="people" eyebrow="Our strategy" title={body.strategy_title} />
             <ol className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -488,7 +511,7 @@ export default async function LowScoreClinicalPage() {
       )}
 
       {p && p.plans.length > 0 && (
-        <section className="container-custom py-10 md:py-14">
+        <section id="example-plans" className="scroll-mt-28 container-custom py-10 md:py-14">
           <SectionHead icon="route" eyebrow="Example plans" title={body.plans_title} intro={body.plans_intro} />
           <div className="mt-6 grid gap-4 lg:grid-cols-3">
             {p.plans.map((x) => {
@@ -539,7 +562,7 @@ export default async function LowScoreClinicalPage() {
       )}
 
       {realCases.length > 0 && (
-        <section className="container-custom py-10 md:py-14">
+        <section id="students-seats" className="scroll-mt-28 container-custom py-10 md:py-14">
           <SectionHead icon="college" eyebrow="Students' seats" title={body.cases_title} intro={body.cases_intro} />
           <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {realCases.map((c) => (
@@ -558,7 +581,7 @@ export default async function LowScoreClinicalPage() {
       )}
 
       {p && (
-        <section className={`${realCases.length ? "border-t border-border bg-surface-1" : ""} py-10 md:py-14`}>
+        <section id="last-rank-table" className={`scroll-mt-28 ${realCases.length ? "border-t border-border bg-surface-1" : ""} py-10 md:py-14`}>
           <div className="container-custom">
             <SectionHead icon="list" eyebrow={`${p.d.rows.length} clinical branches`} title={body.table_title} intro={body.table_intro} />
             <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card">
@@ -613,7 +636,7 @@ export default async function LowScoreClinicalPage() {
       )}
 
       {p && p.d.rows.some((r) => r.aiqByCategory[p.year]) && (
-        <section className="container-custom pb-10 md:pb-14">
+        <section id="by-category" className="scroll-mt-28 container-custom pb-10 md:pb-14">
           <SectionHead icon="people" eyebrow="By category" title={body.category_title} intro={body.category_intro} />
           <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card">
             <table className="dt w-full text-sm">
@@ -646,7 +669,7 @@ export default async function LowScoreClinicalPage() {
       )}
 
       {p && (
-        <section className="border-t border-border bg-surface-1 py-10 md:py-14">
+        <section id="lowest-rank" className="scroll-mt-28 border-t border-border bg-surface-1 py-10 md:py-14">
           <div className="container-custom">
             <SectionHead icon="branch" eyebrow="Branch by branch" title={body.lowest_title} />
             <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
@@ -655,7 +678,7 @@ export default async function LowScoreClinicalPage() {
                 const dm = p.cut(r, p.year, "deemed");
                 const dn = p.cut(r, p.year, "dnb");
                 return (
-                  <article key={r.branch} className="rounded-2xl border border-border bg-card p-4">
+                  <article key={r.branch} id={r.slug ? `lowest-${r.slug}` : undefined} className="scroll-mt-28 rounded-2xl border border-border bg-card p-4">
                     <h3 className="font-semibold text-foreground">
                       {r.slug ? (
                         <Link href={`/md-ms-india/branches/${r.slug}`} className="hover:underline">
@@ -679,7 +702,7 @@ export default async function LowScoreClinicalPage() {
       )}
 
       {routes.length > 0 && (
-        <section className="container-custom py-10 md:py-14">
+        <section id="routes" className="scroll-mt-28 container-custom py-10 md:py-14">
           <SectionHead icon="branch" eyebrow="Four routes" title={body.routes_title} />
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             {routes.map(([t, d]) => (
@@ -721,7 +744,7 @@ export default async function LowScoreClinicalPage() {
       <ExpertCompare placement="low_clinical" />
 
       {faqs.length > 0 && (
-        <section className="border-t border-border bg-surface-1 py-10 md:py-14">
+        <section id="faq" className="scroll-mt-28 border-t border-border bg-surface-1 py-10 md:py-14">
           <div className="container-custom">
             <SectionHead icon="help" eyebrow="FAQ" title={body.faq_title} />
             <div className="mt-6 space-y-3">

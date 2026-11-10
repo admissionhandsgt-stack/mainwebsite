@@ -22,6 +22,7 @@ import { getScoreTables } from "@/lib/scoreRank";
 import { getBranchStateCombos, SEARCH_NAME } from "@/lib/branchStateQueries";
 import { getNmcBranchSeats } from "@/lib/nmcData";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import { CLINICAL, getLowRankClinical } from "@/lib/lowRankClinical";
 
 /**
  * Rendered per request, deliberately.
@@ -162,6 +163,11 @@ export default async function BranchPage(
   // The branch in each state with five or more colleges offering it (lib/branchStateQueries.ts).
   const byState = (await getBranchStateCombos()).filter((c) => c.course === b.name);
   // Words from Admin → Content → Text & numbers ("Page: PG branch pages"); photo from Admin → Media.
+  // A clinical branch links to where it went at a low rank (2026-11-10): "MD General Medicine at a low rank".
+  const clinical = CLINICAL.find((c) => c.slug === b.slug) ?? null;
+  const lowRank = clinical ? await getLowRankClinical().catch(() => null) : null;
+  const lowYear = lowRank ? (lowRank.runningRound ? lowRank.years[0] : lowRank.years[lowRank.years.length - 1]) : null;
+  const lowCut = lowRank && clinical && lowYear ? lowRank.rows.find((r) => r.branch === clinical.branch)?.cuts[lowYear]?.deemed ?? null : null;
   const [where, heroImage, mcc, nmcSeats] = await Promise.all([
     getBranchStates(b.name),
     // The admin's photo for this branch, else the specialty's picture from Admin → PG branches.
@@ -461,6 +467,19 @@ export default async function BranchPage(
 
         {/* The reader has the cut-off now: the moment to offer a counsellor (ChatGPT sends people here). */}
         <section className="mt-12">
+          {lowCut && (
+            <p className="mb-6 rounded-2xl border border-accent/25 bg-accent-soft px-4 py-3 text-[15px] leading-relaxed text-foreground">
+              <strong>Low NEET PG rank?</strong> {b.name} on deemed universities&apos; paid seats went to AIR {lowCut.rank.toLocaleString("en-IN")}
+              {lowCut.score != null ? ` (score ${lowCut.score}/${lowCut.outOf})` : ""} in {lowYear}, over {lowCut.colleges} colleges.{" "}
+              <Link href={`/neet-pg-low-score-clinical-branches#lowest-${b.slug}`} className="font-semibold text-primary-strong hover:underline">
+                {b.name} at a low rank: lowest rank and score
+              </Link>
+              {" · "}
+              <Link href="/neet-pg-low-score-clinical-branches#rank-vs-branch" className="font-semibold text-primary-strong hover:underline">
+                NEET PG rank vs clinical branch
+              </Link>
+            </p>
+          )}
           <ExpertPlaybook bare kind="branch" name={b.name} placement="branch" />
           <DataPageCounsel kind="branch" name={b.name} placement="counsel_branch" />
         </section>
