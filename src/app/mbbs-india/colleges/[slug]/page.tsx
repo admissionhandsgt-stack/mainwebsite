@@ -1,3 +1,4 @@
+import { getNirf } from "@/lib/nirf";
 import { OG_IMAGE } from "@/lib/ogImage";
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
@@ -120,7 +121,8 @@ export default async function UgCollegePage(props0: { params: Promise<{ slug: st
   // Answered from this college's own numbers, and rendered on the page as
   // well as in the markup — see the note in `lib/collegeSeo.ts` about what
   // FAQ schema does and does not buy since Google restricted it.
-  const faqs = collegeFaqs(college, cutoffs, fees, "ug", { course: s.course, type: s.type, seats: s.seats, fromNmc: s.fromNmc, seatsFromNmc: s.seatsFromNmc });
+  const nirf = getNirf(college.slug, "ug");
+  const faqs = collegeFaqs(college, cutoffs, fees, "ug", { course: s.course, type: s.type, seats: s.seats, fromNmc: s.fromNmc, seatsFromNmc: s.seatsFromNmc, nirf });
   const jsonLd = collegeJsonLd({
     college,
     level: "ug",

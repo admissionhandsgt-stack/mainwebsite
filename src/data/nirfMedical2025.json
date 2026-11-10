@@ -1,0 +1,931 @@
+{
+ "source": "https://www.nirfindia.org/Rankings/2025/MedicalRanking.html",
+ "list": "Medical",
+ "year": 2025,
+ "fetched": "2026-11-11",
+ "note": "NIRF 2025, Ministry of Education. Parameters: TLR teaching-learning & resources, RPC research & professional practice, GO graduation outcomes, OI outreach & inclusivity, PERCEPTION.",
+ "rows": [
+  {
+   "nirf_id": "IR-D-N-15",
+   "name": "All India Institute of Medical Sciences, Delhi",
+   "city": "New Delhi",
+   "state": "Delhi",
+   "score": 91.8,
+   "rank": 1,
+   "tlr": 93.51,
+   "rpc": 91.87,
+   "go": 98.28,
+   "oi": 65.34,
+   "perception": 100,
+   "ug": [
+    "all-india-institute-of-medical-sciences-new-delhi-ug"
+   ],
+   "pg": []
+  },
+  {
+   "nirf_id": "IR-D-U-0079",
+   "name": "Post Graduate Institute of Medical Education and Research",
+   "city": "Chandigarh",
+   "state": "Chandigarh",
+   "score": 82.58,
+   "rank": 2,
+   "tlr": 91.33,
+   "rpc": 82.92,
+   "go": 82.93,
+   "oi": 67.42,
+   "perception": 69.72,
+   "ug": [],
+   "pg": []
+  },
+  {
+   "nirf_id": "IR-D-C-45654",
+   "name": "Christian Medical College",
+   "city": "Vellore",
+   "state": "Tamil Nadu",
+   "score": 76.48,
+   "rank": 3,
+   "tlr": 94.51,
+   "rpc": 50.81,
+   "go": 92.34,
+   "oi": 60.51,
+   "perception": 83.74,
+   "ug": [
+    "christian-medical-college-vellore-ug"
+   ],
+   "pg": [
+    "christian-medical-college-vellore",
+    "christian-medical-college-vellore-tamil-nadu-632002"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-U-0368",
+   "name": "Jawaharlal Institute of Post Graduate Medical Education & Research",
+   "city": "Puducherry",
+   "state": "Pondicherry",
+   "score": 73.3,
+   "rank": 4,
+   "tlr": 84.95,
+   "rpc": 53.79,
+   "go": 89.26,
+   "oi": 68.28,
+   "perception": 69.92,
+   "ug": [
+    "jipmer-puducherry-ug"
+   ],
+   "pg": []
+  },
+  {
+   "nirf_id": "IR-D-N-33",
+   "name": "Sanjay Gandhi Postgraduate Institute of Medical Sciences",
+   "city": "Lucknow",
+   "state": "Uttar Pradesh",
+   "score": 70.09,
+   "rank": 5,
+   "tlr": 89.97,
+   "rpc": 53.41,
+   "go": 84.29,
+   "oi": 57.18,
+   "perception": 45.05,
+   "ug": [],
+   "pg": [
+    "sanjay-gandhi-postgraduate-institute-of-medical-sciences-lucknow"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-U-0500",
+   "name": "Banaras Hindu University",
+   "city": "Varanasi",
+   "state": "Uttar Pradesh",
+   "score": 70.05,
+   "rank": 6,
+   "tlr": 81.54,
+   "rpc": 58.16,
+   "go": 86.84,
+   "oi": 62.5,
+   "perception": 45.23,
+   "ug": [
+    "institute-of-medical-sciences-bhu-varanasi-ug"
+   ],
+   "pg": [
+    "institute-of-medical-sciences-bhu-varanasi"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-U-0236",
+   "name": "National Institute of Mental Health & Neuro Sciences, Bangalore",
+   "city": "Bengaluru",
+   "state": "Karnataka",
+   "score": 69.77,
+   "rank": 7,
+   "tlr": 78.96,
+   "rpc": 55.86,
+   "go": 88.87,
+   "oi": 59.21,
+   "perception": 56.32,
+   "ug": [
+    "national-institute-of-mental-health-neuro-sciences-bangalore-ug"
+   ],
+   "pg": []
+  },
+  {
+   "nirf_id": "IR-D-U-0523",
+   "name": "King George`s Medical University",
+   "city": "Lucknow",
+   "state": "Uttar Pradesh",
+   "score": 68.77,
+   "rank": 8,
+   "tlr": 84.93,
+   "rpc": 51.27,
+   "go": 90.3,
+   "oi": 60.53,
+   "perception": 38.02,
+   "ug": [
+    "king-george-medical-university-lucknow-ug"
+   ],
+   "pg": [
+    "king-george-medical-university-lucknow"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-U-0436",
+   "name": "Amrita Vishwa Vidyapeetham",
+   "city": "Coimbatore",
+   "state": "Tamil Nadu",
+   "score": 68.52,
+   "rank": 9,
+   "tlr": 80.06,
+   "rpc": 49.86,
+   "go": 88.06,
+   "oi": 75.39,
+   "perception": 43.92,
+   "ug": [
+    "amrita-school-of-medicine-kochi-ug"
+   ],
+   "pg": [
+    "amrita-school-of-medicine-elamkara-kochi"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-C-7242",
+   "name": "Kasturba Medical College, Manipal",
+   "city": "Manipal",
+   "state": "Karnataka",
+   "score": 68.05,
+   "rank": 10,
+   "tlr": 79.78,
+   "rpc": 52.84,
+   "go": 83.99,
+   "oi": 73.4,
+   "perception": 41.18,
+   "ug": [
+    "kasturba-medical-college-manipal-ug"
+   ],
+   "pg": [
+    "kasturba-medical-college-manipal"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-I-1441",
+   "name": "Saveetha Institute of Medical and Technical Sciences",
+   "city": "Chennai",
+   "state": "Tamil Nadu",
+   "score": 66.5,
+   "rank": 11,
+   "tlr": 75.45,
+   "rpc": 74.27,
+   "go": 67.55,
+   "oi": 68.07,
+   "perception": 12.59,
+   "ug": [
+    "saveetha-medical-college-and-hospital-kanchipuram-ug"
+   ],
+   "pg": [
+    "saveetha-medical-college-and-hospital-kanchipuram"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-I-1110",
+   "name": "Dr. D. Y. Patil Vidyapeeth",
+   "city": "Pune",
+   "state": "Maharashtra",
+   "score": 65.17,
+   "rank": 12,
+   "tlr": 77,
+   "rpc": 51.75,
+   "go": 80.14,
+   "oi": 69.41,
+   "perception": 35.77,
+   "ug": [
+    "dr-d-y-patil-medical-college-pune-ug"
+   ],
+   "pg": [
+    "dr-dy-patil-medical-college-hospital-and-research-centre-pimpri-pune"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-U-0691",
+   "name": "All India Institute of Medical Sciences Rishikesh",
+   "city": "Rishikesh",
+   "state": "Uttarakhand",
+   "score": 65.02,
+   "rank": 13,
+   "tlr": 76.44,
+   "rpc": 51.67,
+   "go": 81.44,
+   "oi": 67.89,
+   "perception": 35.07,
+   "ug": [
+    "all-india-institute-of-medical-sciences-rishikesh-ug"
+   ],
+   "pg": []
+  },
+  {
+   "nirf_id": "IR-D-U-0688",
+   "name": "All India Institute of Medical Sciences Bhubaneswar",
+   "city": "Khordha",
+   "state": "Odisha",
+   "score": 64.31,
+   "rank": 14,
+   "tlr": 81.27,
+   "rpc": 39.6,
+   "go": 81.61,
+   "oi": 66.72,
+   "perception": 50.58,
+   "ug": [
+    "all-india-institute-of-medical-sciences-bhubaneswar-ug"
+   ],
+   "pg": []
+  },
+  {
+   "nirf_id": "IR-D-U-0363",
+   "name": "Siksha `O` Anusandhan",
+   "city": "Bhubaneswar",
+   "state": "Odisha",
+   "score": 63.73,
+   "rank": 15,
+   "tlr": 79.45,
+   "rpc": 44.04,
+   "go": 83.37,
+   "oi": 72.24,
+   "perception": 27.92,
+   "ug": [
+    "instt-of-medical-sciences-sum-hospital-bhubaneswar-ug"
+   ],
+   "pg": [
+    "institute-of-medical-sciences-sum-hospital-bhubaneswar"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-C-49008",
+   "name": "Madras Medical College & Government General Hospital, Chennai",
+   "city": "Chennai",
+   "state": "Tamil Nadu",
+   "score": 63.71,
+   "rank": 16,
+   "tlr": 88.71,
+   "rpc": 13.11,
+   "go": 96.87,
+   "oi": 76.4,
+   "perception": 61.61,
+   "ug": [
+    "madras-medical-college-chennai-ug"
+   ],
+   "pg": [
+    "madras-medical-college-chennai"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-U-0266",
+   "name": "Sree Chitra Tirunal Institute for Medical Sciences and Technology, Thiruvananthapuram",
+   "city": "Thiruvananthapuram",
+   "state": "Kerala",
+   "score": 63.36,
+   "rank": 17,
+   "tlr": 80.92,
+   "rpc": 50.23,
+   "go": 76.08,
+   "oi": 59.39,
+   "perception": 28.47,
+   "ug": [],
+   "pg": []
+  },
+  {
+   "nirf_id": "IR-D-U-0473",
+   "name": "S.R.M. Institute of Science and Technology",
+   "city": "Chennai",
+   "state": "Tamil Nadu",
+   "score": 63.22,
+   "rank": 18,
+   "tlr": 76.84,
+   "rpc": 52.34,
+   "go": 77.41,
+   "oi": 72.72,
+   "perception": 17.16,
+   "ug": [
+    "srm-medical-college-hospital-chennai-ug"
+   ],
+   "pg": [
+    "srm-medical-college-hospital-research-centre-kancheepuram"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-U-0689",
+   "name": "All India Institute of Medical Sciences Jodhpur",
+   "city": "Jodhpur",
+   "state": "Rajasthan",
+   "score": 63.18,
+   "rank": 19,
+   "tlr": 79.04,
+   "rpc": 52.93,
+   "go": 75.04,
+   "oi": 60.17,
+   "perception": 25.62,
+   "ug": [
+    "all-india-institute-of-medical-sciences-jodhpur-ug"
+   ],
+   "pg": []
+  },
+  {
+   "nirf_id": "IR-D-U-0295",
+   "name": "Datta Meghe Institute of Higher Education and Research",
+   "city": "Wardha",
+   "state": "Maharashtra",
+   "score": 62.37,
+   "rank": 20,
+   "tlr": 73.37,
+   "rpc": 60.81,
+   "go": 72.42,
+   "oi": 71.29,
+   "perception": 5.12,
+   "ug": [
+    "jawaharlal-nehru-medical-college-dmims-wardha-ug"
+   ],
+   "pg": [
+    "jawaharlal-nehru-medical-college-sawangi-meghe-wardha"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-I-1486",
+   "name": "Sri Ramachandra Institute of Higher Education and Research",
+   "city": "Chennai",
+   "state": "Tamil Nadu",
+   "score": 61.54,
+   "rank": 21,
+   "tlr": 77.17,
+   "rpc": 39.19,
+   "go": 88.84,
+   "oi": 64.79,
+   "perception": 23.82,
+   "ug": [
+    "sri-ramachandra-medical-college-research-institute-chennai-ug"
+   ],
+   "pg": [
+    "sri-ramachandra-medical-college-research-institute-chennai"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-C-32922",
+   "name": "Vardhman Mahavir Medical College & Safdarjung Hospital",
+   "city": "New Delhi",
+   "state": "Delhi",
+   "score": 61.5,
+   "rank": 22,
+   "tlr": 85.85,
+   "rpc": 35.96,
+   "go": 86.39,
+   "oi": 53.34,
+   "perception": 23.51,
+   "ug": [
+    "vardhman-mahavir-medical-college-safdarjung-hospital-delhi-ug"
+   ],
+   "pg": [
+    "vardhman-mahavir-medical-college-safdarjung-hospital-delhi",
+    "safdarjung-hospital-and-vardhman-mahavir-medical-college-delhi-110029"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-C-16428",
+   "name": "Institute of Post Graduate Medical Education & Research",
+   "city": "Kolkata",
+   "state": "West Bengal",
+   "score": 61.07,
+   "rank": 23,
+   "tlr": 80.41,
+   "rpc": 29.92,
+   "go": 92.61,
+   "oi": 49.82,
+   "perception": 44.68,
+   "ug": [
+    "institute-of-postgraduate-medical-education-research-kolkata-ug"
+   ],
+   "pg": [
+    "institute-of-postgraduate-medical-education-research-kolkata"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-U-0356",
+   "name": "Kalinga Institute of Industrial Technology",
+   "city": "Bhubaneswar",
+   "state": "Odisha",
+   "score": 61,
+   "rank": 24,
+   "tlr": 78.25,
+   "rpc": 46.79,
+   "go": 71.82,
+   "oi": 72.04,
+   "perception": 19.27,
+   "ug": [
+    "kalinga-institute-of-medical-sciences-bhubaneshwar-ug"
+   ],
+   "pg": [
+    "kalinga-institute-of-medical-sciences-bhubaneswar"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-U-0687",
+   "name": "All India Institute of Medical Sciences Bhopal",
+   "city": "Bhopal",
+   "state": "Madhya Pradesh",
+   "score": 60.15,
+   "rank": 25,
+   "tlr": 81,
+   "rpc": 34.14,
+   "go": 77.58,
+   "oi": 70.03,
+   "perception": 30.87,
+   "ug": [
+    "all-india-institute-of-medical-sciences-bhopal-ug"
+   ],
+   "pg": []
+  },
+  {
+   "nirf_id": "IR-D-C-6414",
+   "name": "Maulana Azad Medical College",
+   "city": "Delhi",
+   "state": "Delhi",
+   "score": 59.47,
+   "rank": 26,
+   "tlr": 81.85,
+   "rpc": 33.15,
+   "go": 80.51,
+   "oi": 54.2,
+   "perception": 34.36,
+   "ug": [
+    "maulana-azad-medical-college-new-delhi-ug"
+   ],
+   "pg": [
+    "maulana-azad-medical-college-new-delhi"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-U-0686",
+   "name": "All India Institute of Medical Sciences Patna",
+   "city": "Patna",
+   "state": "Bihar",
+   "score": 59.24,
+   "rank": 27,
+   "tlr": 79.83,
+   "rpc": 30.95,
+   "go": 77.03,
+   "oi": 60.29,
+   "perception": 45.6,
+   "ug": [
+    "all-india-institute-of-medical-sciences-patna-ug"
+   ],
+   "pg": []
+  },
+  {
+   "nirf_id": "IR-D-U-0106",
+   "name": "Institute of Liver and Biliary Sciences",
+   "city": "New Delhi",
+   "state": "Delhi",
+   "score": 59.22,
+   "rank": 28,
+   "tlr": 85.08,
+   "rpc": 44.9,
+   "go": 54.95,
+   "oi": 59.7,
+   "perception": 32.65,
+   "ug": [],
+   "pg": [
+    "institute-of-liver-and-biliary-sciences-delhi-110070"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-U-0496",
+   "name": "Aligarh Muslim University",
+   "city": "Aligarh",
+   "state": "Uttar Pradesh",
+   "score": 58.82,
+   "rank": 29,
+   "tlr": 74.03,
+   "rpc": 39.46,
+   "go": 81.8,
+   "oi": 57.61,
+   "perception": 26.5,
+   "ug": [
+    "jawaharlal-nehru-medical-college-aligarh-ug"
+   ],
+   "pg": [
+    "jawaharlal-nehru-medical-college-aligarh"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-C-40453",
+   "name": "St. John's Medical College",
+   "city": "Bengaluru",
+   "state": "Karnataka",
+   "score": 58.74,
+   "rank": 30,
+   "tlr": 79.85,
+   "rpc": 33.92,
+   "go": 76.01,
+   "oi": 67.86,
+   "perception": 26.21,
+   "ug": [
+    "st-johns-medical-college-bangalore-ug"
+   ],
+   "pg": [
+    "st-johns-medical-college-bangalore",
+    "st-johns-medical-college-hospital-bangalore-karnataka-560034"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-U-0690",
+   "name": "All India Institute of Medical Sciences Raipur",
+   "city": "Raipur",
+   "state": "Chhattisgarh",
+   "score": 58.44,
+   "rank": 31,
+   "tlr": 81.58,
+   "rpc": 32.38,
+   "go": 74.8,
+   "oi": 72.37,
+   "perception": 20.62,
+   "ug": [
+    "all-india-institute-of-medical-sciences-raipur-ug"
+   ],
+   "pg": []
+  },
+  {
+   "nirf_id": "IR-D-C-22461",
+   "name": "Lady Hardinge Medical College",
+   "city": "New Delhi",
+   "state": "Delhi",
+   "score": 57.98,
+   "rank": 32,
+   "tlr": 79.98,
+   "rpc": 28.49,
+   "go": 77.76,
+   "oi": 64.79,
+   "perception": 34.12,
+   "ug": [
+    "lady-hardinge-medical-college-new-delhi-ug"
+   ],
+   "pg": [
+    "lady-hardinge-medical-college-new-delhi",
+    "lady-hardinge-medical-college-new-delhi-110001"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-U-0168",
+   "name": "Maharishi Markandeshwar",
+   "city": "Ambala",
+   "state": "Haryana",
+   "score": 56.68,
+   "rank": 33,
+   "tlr": 73.15,
+   "rpc": 40.73,
+   "go": 76.08,
+   "oi": 68.37,
+   "perception": 4.63,
+   "ug": [
+    "maharishi-markandeshwar-ims-ambala-ug"
+   ],
+   "pg": [
+    "maharishi-markandeshwar-institute-of-medical-sciences-research-mullana-ambala"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-C-29442",
+   "name": "Govt. Medical College & Hospital",
+   "city": "Chandigarh",
+   "state": "Chandigarh",
+   "score": 56.67,
+   "rank": 34,
+   "tlr": 77.8,
+   "rpc": 31.17,
+   "go": 80.31,
+   "oi": 58.58,
+   "perception": 20.62,
+   "ug": [
+    "government-medical-college-chandigarh-ug"
+   ],
+   "pg": [
+    "government-medical-college-chandigarh"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-C-7251",
+   "name": "Kasturba Medical College, Mangalore",
+   "city": "Mangaluru",
+   "state": "Karnataka",
+   "score": 56.45,
+   "rank": 35,
+   "tlr": 75.97,
+   "rpc": 29.13,
+   "go": 75.87,
+   "oi": 71.89,
+   "perception": 25.62,
+   "ug": [
+    "kasturba-medical-college-mangalore-ug"
+   ],
+   "pg": [
+    "kasturba-medical-college-mangalore",
+    "kasturba-medical-college-hospital-kmc-hospital-mangalore-karnataka-575001"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-C-29255",
+   "name": "Dayanand Medical College",
+   "city": "Ludhiana",
+   "state": "Punjab",
+   "score": 55.65,
+   "rank": 36,
+   "tlr": 84.65,
+   "rpc": 25.11,
+   "go": 79.35,
+   "oi": 53.87,
+   "perception": 14.56,
+   "ug": [
+    "dayanand-medical-college-hospital-ludhiana-ug"
+   ],
+   "pg": [
+    "dayanand-medical-college-hospital-ludhiana"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-C-35009",
+   "name": "JSS Medical College, Mysore",
+   "city": "Mysuru",
+   "state": "Karnataka",
+   "score": 55.51,
+   "rank": 37,
+   "tlr": 75.69,
+   "rpc": 23.25,
+   "go": 78.43,
+   "oi": 70.75,
+   "perception": 30.61,
+   "ug": [
+    "jss-medical-college-mysore-ug"
+   ],
+   "pg": [
+    "jss-medical-college-mysore"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-I-1409",
+   "name": "University College of Medical Sciences",
+   "city": "Delhi",
+   "state": "Delhi",
+   "score": 54.21,
+   "rank": 38,
+   "tlr": 74.91,
+   "rpc": 29.74,
+   "go": 77.67,
+   "oi": 54.65,
+   "perception": 18.23,
+   "ug": [
+    "university-college-of-medical-sciences-gtb-hospital-new-delhi-ug"
+   ],
+   "pg": [
+    "university-college-of-medical-sciences-gtb-hospital-new-delhi"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-N-17",
+   "name": "Sawai Man Singh Medical College",
+   "city": "Jaipur",
+   "state": "Rajasthan",
+   "score": 52.69,
+   "rank": 39,
+   "tlr": 75.12,
+   "rpc": 17.57,
+   "go": 92.32,
+   "oi": 55.36,
+   "perception": 8.8,
+   "ug": [
+    "sawai-man-singh-medical-college-jaipur-ug"
+   ],
+   "pg": [
+    "sms-medical-college-jaipur"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-U-0107",
+   "name": "Jamia Hamdard",
+   "city": "New Delhi",
+   "state": "Delhi",
+   "score": 52.57,
+   "rank": 40,
+   "tlr": 72.31,
+   "rpc": 39.93,
+   "go": 52.91,
+   "oi": 63.59,
+   "perception": 19.61,
+   "ug": [
+    "hamdard-institute-of-medical-sciences-research-new-delhi-ug"
+   ],
+   "pg": [
+    "hamdard-institute-of-medical-sciences-research-new-delhi"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-C-16424",
+   "name": "Medical College",
+   "city": "Kolkata",
+   "state": "West Bengal",
+   "score": 52.54,
+   "rank": 41,
+   "tlr": 69.46,
+   "rpc": 19.53,
+   "go": 85.07,
+   "oi": 53.53,
+   "perception": 34.84,
+   "ug": [
+    "medical-college-kolkata-ug"
+   ],
+   "pg": [
+    "medical-college-kolkata-west-bengal-700073"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-C-47762",
+   "name": "Mahatma Gandhi Medical College and Research Institute",
+   "city": "Puducherry",
+   "state": "Pondicherry",
+   "score": 52.42,
+   "rank": 42,
+   "tlr": 71.92,
+   "rpc": 22.23,
+   "go": 75.91,
+   "oi": 80.33,
+   "perception": 9.68,
+   "ug": [
+    "mahatma-gandhi-medical-college-research-institute-pondicherry-ug"
+   ],
+   "pg": [
+    "mahatma-gandhi-medical-college-research-institute-pondicherry"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-C-45515",
+   "name": "PSG Institute of Medical Sciences and Research",
+   "city": "Coimbatore",
+   "state": "Tamil Nadu",
+   "score": 52.41,
+   "rank": 43,
+   "tlr": 77.54,
+   "rpc": 12.89,
+   "go": 74.47,
+   "oi": 61.08,
+   "perception": 42.77,
+   "ug": [
+    "psg-institute-of-medical-sciences-coimbatore-ug"
+   ],
+   "pg": [
+    "psg-institute-of-medical-sciences-coimbatore"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-C-5838",
+   "name": "Gujarat Cancer & Research Institute",
+   "city": "Ahmadabad",
+   "state": "Gujarat",
+   "score": 52.15,
+   "rank": 44,
+   "tlr": 88.71,
+   "rpc": 14.3,
+   "go": 75.36,
+   "oi": 54.81,
+   "perception": 7,
+   "ug": [],
+   "pg": []
+  },
+  {
+   "nirf_id": "IR-D-C-6051",
+   "name": "B. J. Medical College",
+   "city": "Ahmadabad",
+   "state": "Gujarat",
+   "score": 51.84,
+   "rank": 45,
+   "tlr": 74.21,
+   "rpc": 12.42,
+   "go": 91.29,
+   "oi": 59.85,
+   "perception": 16.07,
+   "ug": [
+    "b-j-medical-college-ahmedabad-ug"
+   ],
+   "pg": [
+    "bj-medical-college-ahmedabad"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-C-24503",
+   "name": "Jawaharlal Nehru Medical College",
+   "city": "Belagavi",
+   "state": "Karnataka",
+   "score": 51.7,
+   "rank": 46,
+   "tlr": 77.68,
+   "rpc": 16.63,
+   "go": 72.78,
+   "oi": 70.51,
+   "perception": 17.88,
+   "ug": [
+    "jawahar-lal-nehru-mc-kle-university-belagavi-ug"
+   ],
+   "pg": [
+    "jawaharlal-nehru-medical-college-belgaum"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-C-29209",
+   "name": "Christian Medical College, Brown Road, Ludhiana",
+   "city": "Ludhiana",
+   "state": "Punjab",
+   "score": 51.47,
+   "rank": 47,
+   "tlr": 75.09,
+   "rpc": 16.22,
+   "go": 74.21,
+   "oi": 66.82,
+   "perception": 25.62,
+   "ug": [
+    "christian-medical-college-ludhiana-ug"
+   ],
+   "pg": [
+    "christian-medical-college-ludhiana"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-C-30588",
+   "name": "Osmania Medical College",
+   "city": "HYDERABAD",
+   "state": "Telangana",
+   "score": 51.46,
+   "rank": 48,
+   "tlr": 76.28,
+   "rpc": 8.17,
+   "go": 89.14,
+   "oi": 59.76,
+   "perception": 23.2,
+   "ug": [
+    "osmania-medical-college-hyderabad-ug"
+   ],
+   "pg": [
+    "osmania-medical-college-hyderabad"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-U-0451",
+   "name": "Chettinad Academy of Research and Education",
+   "city": "Kelambakkam, Chengalpattu District",
+   "state": "Tamil Nadu",
+   "score": 51.41,
+   "rank": 49,
+   "tlr": 74.76,
+   "rpc": 28.44,
+   "go": 64.45,
+   "oi": 64.63,
+   "perception": 10.95,
+   "ug": [
+    "chettinad-hospital-research-institute-kanchipuran-ug"
+   ],
+   "pg": [
+    "chettinad-hospital-research-institute-kanchipuram"
+   ]
+  },
+  {
+   "nirf_id": "IR-D-C-40345",
+   "name": "M. S. Ramaiah Medical College",
+   "city": "Bengaluru",
+   "state": "Karnataka",
+   "score": 50.91,
+   "rank": 50,
+   "tlr": 78.53,
+   "rpc": 13.32,
+   "go": 76.32,
+   "oi": 56.91,
+   "perception": 24.12,
+   "ug": [
+    "ms-ramaiah-medical-college-bangalore-ug"
+   ],
+   "pg": [
+    "ms-ramaiah-medical-college-bangalore"
+   ]
+  }
+ ],
+ "matched": "2026-11-11, by hand: a university is mapped to its medical college (Amrita → Amrita School of Medicine, Kochi; SRM → SRM Medical College, Kattankulathur; Siksha O Anusandhan → IMS & SUM; KIIT → KIMS; Datta Meghe → JNMC Wardha; AMU → JNMC Aligarh; BHU → IMS BHU; Jamia Hamdard → HIMSR; Chettinad Academy → Chettinad Hospital & RI). Not in our lists: PGIMER Chandigarh, AIIMS/JIPMER/NIMHANS PG (INI-CET), Sree Chitra, GCRI."
+}

@@ -1,3 +1,4 @@
+import { getNirf } from "@/lib/nirf";
 import { getPgStates } from "@/lib/pgStateQueries";
 import { OG_IMAGE } from "@/lib/ogImage";
 import type { Metadata } from "next";
@@ -131,7 +132,8 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
   const counsellings = Array.from(new Set(cutoffs.map((c) => c.counselling).filter(Boolean))) as string[];
   const bands = generalBands(cutoffs, 20);
 
-  const faqs = collegeFaqs(college, cutoffs, fees, "pg", { course: s.course, type: s.type, seats: s.seats, fromNmc: s.fromNmc, seatsFromNmc: s.seatsFromNmc, live });
+  const nirf = getNirf(college.slug, "pg");
+  const faqs = collegeFaqs(college, cutoffs, fees, "pg", { course: s.course, type: s.type, seats: s.seats, fromNmc: s.fromNmc, seatsFromNmc: s.seatsFromNmc, live, nirf });
   const liveR1 = live ? live.rounds.length === 1 && live.rounds[0] === "Round 1" : false;
   const jsonLd = collegeJsonLd({
     college,
