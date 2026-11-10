@@ -180,6 +180,37 @@ export const PAGE_COPY = {
       },
       band_button: { label: "Rank band button", value: "Get colleges for my rank" },
       band_wa: { label: "Rank band WhatsApp message — {rank}", value: "Hi, my NEET PG rank is around {rank}. Which clinical branches and colleges are possible for me?" },
+      eligible_title: { label: "Just eligible title", value: "Just eligible or just qualified in NEET PG? What a low rank can still get" },
+      eligible_intro: {
+        label: "Just eligible text — {year}, {deep_branch}, {deep_rank}, {deep_score}, {ranked}, {stray}",
+        value:
+          "Qualified with a low score? In {year}, the deepest clinical seat on deemed universities' paid seats went to AIR {deep_rank} ({deep_branch}, score {deep_score}), out of {ranked} ranked. Past that rank, the clinical seats left are in the states' own management and NRI quotas and in the last rounds — MCC's stray vacancy round alone allotted {stray} seats in {year}. They go to whoever is registered, has a budget ready and is watching the day the list opens.",
+        long: true,
+      },
+      eligible_points: {
+        label: "Just eligible checklist, one per line",
+        value: [
+          "Register in your state's counselling as well as MCC's — a just-eligible rank needs every list",
+          "Fix your budget before choice filling: the seats at this rank are paid seats",
+          "Keep every document ready for the stray round, which runs on short notice",
+          "Never resign a seat you hold without a plan for the next round",
+        ].join("\n"),
+        long: true,
+      },
+      eligible_wa: { label: "Just eligible WhatsApp message", value: "Hi, I just qualified NEET PG with a low score (rank ___, category ___). Which clinical seats can I still try for?" },
+      scores_title: { label: "Score cards title", value: "NEET PG marks vs clinical branch" },
+      scores_intro: {
+        label: "Score cards intro — {now_year}, {year}",
+        value: "Your NEET PG {now_year} score, the rank it held, and the clinical branches whose seats went that far last year ({year}).",
+        long: true,
+      },
+      category_title: { label: "Category table title", value: "Clinical branch at a low rank for OBC, SC, ST and EWS" },
+      category_intro: {
+        label: "Category table intro — {year}",
+        value: "Government seats in MCC's All India Quota, {year}: the last rank admitted in each category, over three or more colleges. Each state's own quota reserves its seats differently — ask us for yours.",
+        long: true,
+      },
+      lowest_title: { label: "Lowest rank cards title", value: "Lowest NEET PG rank for each clinical branch" },
       strategy_title: { label: "Strategy title", value: "How our counsellors find a clinical seat at a low rank" },
       strategy: {
         label: "Strategy steps, one per line: title | text",

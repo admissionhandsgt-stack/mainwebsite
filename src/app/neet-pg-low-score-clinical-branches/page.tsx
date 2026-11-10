@@ -3,8 +3,9 @@ import { CalendarClock, MessageCircle, Phone, Search } from "lucide-react";
 import Link from "@/components/ui/Link";
 import { fitDescription, fitTitle } from "@/lib/seoTitle";
 import { getBlocks, resolveMetadata, type ContentBlock } from "@/lib/content";
-import { getLowRankClinical, RANK_MILESTONES, type ClinicalRow, type Cut, type Family } from "@/lib/lowRankClinical";
-import { getDeemedPg } from "@/lib/pgFeeQueries";
+import { getLowRankClinical, RANK_MILESTONES, CATEGORIES, type ClinicalRow, type Cut, type Family } from "@/lib/lowRankClinical";
+import { getDeemedPg, getPrivatePgFees } from "@/lib/pgFeeQueries";
+import { getSeatMatrixOverview } from "@/lib/pgSeatData";
 import { getTelegramCue } from "@/lib/mccResults";
 import { getPgProcessContent } from "@/lib/pgProcessContent";
 import { scoreRange } from "@/lib/scoreRank";
@@ -37,10 +38,19 @@ const n = (v: number | null | undefined) => (v == null ? "—" : v.toLocaleStrin
 const lakh = (v: number | null | undefined) => (v == null ? "—" : `₹${(v / 1e5).toFixed(v >= 1e7 ? 0 : 1).replace(/\.0$/, "")} L`);
 /** "50K", "1 lakh", "1.25 lakh" — how a rank is said in a search. */
 const said = (r: number) => (r >= 1_00_000 ? `${+(r / 1_00_000).toFixed(2)} lakh` : `${r / 1000}K`);
+/** "MD General Medicine", "MS Orthopaedics" — the degree from the branch page's slug. */
+const degree = (r: ClinicalRow) => `${r.slug?.startsWith("ms-") ? "MS" : "MD"} ${r.branch}`;
+/** The NEET PG scores people search with: "neet pg 250 marks clinical branch". */
+const SCORE_MILESTONES = [400, 350, 300, 250, 200];
 const FAMILY_LABEL: Record<Family, string> = { aiq: "Government seats, All India Quota (open)", dnb: "DNB in hospitals (open)", deemed: "Deemed universities' paid seats" };
 
 async function load() {
-  const [d, deemed] = await Promise.all([getLowRankClinical().catch(() => null), getDeemedPg().catch(() => null)]);
+  const [d, deemed, overview, privateFees] = await Promise.all([
+    getLowRankClinical().catch(() => null),
+    getDeemedPg().catch(() => null),
+    getSeatMatrixOverview().catch(() => null),
+    getPrivatePgFees().catch(() => null),
+  ]);
   if (!d || !d.years.length) return null;
   const nowYear = d.years[d.years.length - 1];
   const year = d.runningRound ? d.years[0] : nowYear;
@@ -64,7 +74,24 @@ async function load() {
     reach: (["aiq", "dnb", "deemed"] as Family[]).map((f) => ({ family: f, branches: d.rows.filter((r) => (cut(r, year, f)?.rank ?? 0) >= m).map((r) => r.branch) })),
   }));
   const fee = deemed?.national.find((b) => /management/i.test(b.family));
-  return { d, year, nowYear, med, surg, deep, deepAiq, deepNow, cut, fee, bands };
+  const stray = overview?.rounds.find((r) => r.year === year && /^stray/i.test(r.round))?.allotted ?? null;
+  const dnbFee = privateFees?.national.find((b) => /DNB/i.test(b.family)) ?? null;
+  // Score cards: the rank each score held in the newest year, and the branches whose seats went that far in `year`.
+  const scores = (
+    await Promise.all(
+      SCORE_MILESTONES.map(async (sc) => {
+        const r = await scoreRange("pg", sc).catch(() => null);
+        if (!r?.ok) return null;
+        const at = r.range.rankMax;
+        return {
+          score: sc,
+          range: r.range,
+          reach: (["aiq", "dnb", "deemed"] as Family[]).map((f) => ({ family: f, branches: d.rows.filter((x) => (cut(x, year, f)?.rank ?? 0) >= at).map((x) => x.branch) })),
+        };
+      }),
+    )
+  ).filter((x): x is NonNullable<typeof x> => !!x);
+  return { d, year, nowYear, med, surg, deep, deepAiq, deepNow, cut, fee, bands, stray, dnbFee, scores };
 }
 
 /** The round whose choice filling is next, with its dates from the admin's schedule; null between rounds. */
@@ -100,7 +127,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "Which clinical branch a low NEET PG rank reached — MD Medicine, Surgery, Ortho and the rest — rank by rank, from MCC's own results.",
     ),
     keywords:
-      "NEET PG low rank clinical branch, NEET PG rank vs branch, low score clinical branches NEET PG, 50k rank in NEET PG, 1 lakh rank NEET PG clinical branch, NEET PG 300 marks clinical branch, MD medicine at low rank, rank required for MD medicine, clinical branches in NEET PG, deemed university MD medicine rank",
+      "NEET PG low rank clinical branch, NEET PG rank vs branch, low score clinical branches NEET PG, just eligible NEET PG clinical branch, NEET PG just qualified clinical branch, 50k rank in NEET PG, 1 lakh rank NEET PG clinical branch, NEET PG 250 marks clinical branch, NEET PG 300 marks clinical branch, lowest rank for MD medicine, lowest rank for MS orthopaedics, rank required for MD medicine, clinical branches in NEET PG, NEET PG SC rank clinical branch, OBC rank MD medicine, DNB at low rank, stray round clinical branch, deemed university MD medicine rank",
   });
 }
 
@@ -127,6 +154,7 @@ export default async function LowScoreClinicalPage() {
     deep_score: scoreText(top?.c),
     ranked: n(p?.d.ranked[p?.year ?? 0]),
     deemed_fee: p?.fee?.p10 && p.fee.p90 ? `${lakh(p.fee.p10)} – ${lakh(p.fee.p90)}` : "more than a government seat",
+    stray: n(p?.stray),
     round: round?.label,
     filling: round?.filling,
     locking: round?.locking ?? "see MCC's schedule",
@@ -141,6 +169,14 @@ export default async function LowScoreClinicalPage() {
   const routes = lines(body.routes);
   const steps = lines(body.strategy);
   const points = body.counsel_points.split("\n").map((x) => x.trim()).filter(Boolean);
+  const eligiblePoints = body.eligible_points.split("\n").map((x) => x.trim()).filter(Boolean);
+  const deepestFor = (cat: (typeof CATEGORIES)[number]) =>
+    p
+      ? p.d.rows
+          .map((r) => ({ r, c: r.aiqByCategory[p.year]?.[cat] }))
+          .filter((x): x is { r: ClinicalRow; c: Cut } => !!x.c)
+          .sort((a, b) => b.c.rank - a.c.rank)
+      : [];
   const answerReady = !!(medDeemed && surgDeemed);
   const realCases = cases.filter((c) => c.title && c.subtitle);
   const s300Rank = s300?.ok ? s300.range : null;
@@ -185,6 +221,32 @@ export default async function LowScoreClinicalPage() {
                 },
               ]
             : []),
+          {
+            question: "I am just eligible in NEET PG. Can I still get a clinical branch?",
+            answer: `Possibly, but only on paid seats and only in the later rounds. In ${p.year} the deepest clinical seat on deemed universities' paid seats went to AIR ${n(top.c.rank)} (${top.r.branch}, score ${scoreText(top.c)}) out of ${n(p.d.ranked[p.year])} ranked${p.stray ? `, and MCC's stray vacancy round allotted ${n(p.stray)} seats` : ""}. Past that rank, look at the states' own management and NRI quotas. Register in every counselling you are eligible for and keep your budget and documents ready.`,
+          },
+          ...(["SC", "ST", "OBC", "EWS"] as const)
+            .map((cat) => ({ cat, list: deepestFor(cat) }))
+            .filter((x) => x.list.length)
+            .map(({ cat, list }) => ({
+              question: `Which clinical branch can a ${cat} candidate get at a low rank in NEET PG?`,
+              answer: `On government seats in MCC's All India Quota, ${p.year}, ${cat} category: ${list
+                .slice(0, 4)
+                .map((x) => `${degree(x.r)} to AIR ${n(x.c.rank)}`)
+                .join(", ")}. Deemed universities' paid seats have no category reservation and went much further — MD General Medicine to AIR ${n(medDeemed.rank)}.`,
+            })),
+          ...(p.dnbFee?.median
+            ? [
+                {
+                  question: "Which is the cheapest clinical seat at a low rank?",
+                  answer: `DNB in hospitals: the fee is about ${lakh(p.dnbFee.median)} a year and the hospital pays a stipend. Clinical DNB seats close earlier than deemed paid seats — in ${p.year} the deepest open-category clinical DNB seat went to AIR ${n(p.d.rows.map((r) => p.cut(r, p.year, "dnb")?.rank ?? 0).reduce((a, b) => Math.max(a, b), 0))}.`,
+                },
+              ]
+            : []),
+          {
+            question: "Is it worth waiting for round 3 and the stray round with a low rank?",
+            answer: `For a clinical branch at a low rank, the last rounds are where most such seats are filled: upgrades free seats every round and the widest ranks come at the end${p.stray ? ` (MCC's stray round alone allotted ${n(p.stray)} seats in ${p.year})` : ""}. Waiting pays only if you know which seat to hold meanwhile and what leaving it costs in that round.`,
+          },
           {
             question: "Which is the easiest clinical branch to get at a low rank?",
             answer: `By how far its seats went in ${p.year}: on deemed paid seats, ${p.deep
@@ -303,6 +365,57 @@ export default async function LowScoreClinicalPage() {
         </section>
       )}
 
+      {p && top && (
+        <section id="just-eligible" className="border-t border-border bg-surface-1 py-10 md:py-14">
+          <div className="container-custom grid gap-8 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:items-start">
+            <div>
+              <SectionHead icon="people" eyebrow="Just eligible" title={body.eligible_title} />
+              <p className="mt-4 max-w-[70ch] text-[15px] leading-relaxed text-foreground">{body.eligible_intro}</p>
+              <a href={wa(body.eligible_wa)} target="_blank" rel="noopener noreferrer" data-placement="low_clinical_eligible_wa" className="mt-5 inline-flex min-h-12 items-center gap-2 rounded-full bg-accent px-5 font-semibold text-white">
+                <MessageCircle className="h-4 w-4" aria-hidden /> Ask what is left for my rank
+              </a>
+            </div>
+            <ul className="space-y-2 rounded-2xl border border-border bg-card p-5">
+              {eligiblePoints.map((x) => (
+                <li key={x} className="flex gap-2 text-[15px] leading-relaxed text-foreground">
+                  <span aria-hidden className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                  {x}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
+      {p && p.scores.length > 0 && (
+        <section className="container-custom py-10 md:py-14">
+          <SectionHead icon="trend" eyebrow="Marks vs branch" title={body.scores_title} intro={body.scores_intro} />
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+            {p.scores.map((x) => (
+              <article key={x.score} id={`marks-${x.score}`} className="flex flex-col rounded-2xl border border-border bg-card p-4">
+                <h3 className="font-heading text-base font-bold text-foreground">NEET PG {x.score} marks: clinical branch?</h3>
+                <p className="tnum mt-1 text-[13px] text-muted-foreground">
+                  {x.score}/{x.range.outOf} in {x.range.year} = AIR {n(x.range.rankMin)}
+                  {x.range.rankMax !== x.range.rankMin ? `–${n(x.range.rankMax)}` : ""}
+                </p>
+                <div className="mt-3 flex-1 space-y-2 text-[13px]">
+                  {x.reach.map((r) => (
+                    <p key={r.family}>
+                      <span className="font-semibold text-foreground">{r.family === "aiq" ? "Govt AIQ" : r.family === "dnb" ? "DNB" : "Deemed paid"}: </span>
+                      <span className="text-muted-foreground">{r.branches.length ? r.branches.join(", ") : "closed before this rank"}</span>
+                    </p>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+          <p className="mt-3 text-xs text-muted-foreground">
+            Score and rank from NBEMS&apos;s result; branches from MCC&apos;s {p.year} results (last rank admitted over three or more colleges).{" "}
+            <Link href="/neet-pg-marks-vs-rank" className="font-semibold text-primary-strong hover:underline">Any score&apos;s rank</Link>
+          </p>
+        </section>
+      )}
+
       {steps.length > 0 && (
         <section className="border-t border-border bg-surface-1 py-10 md:py-14">
           <div className="container-custom">
@@ -398,6 +511,72 @@ export default async function LowScoreClinicalPage() {
               The last rank admitted in each seat family over three or more colleges, from MCC&apos;s results; deemed paid seats have no category
               reservation. State counselling quotas are not in this table — ask a counsellor for your state&apos;s.
             </p>
+          </div>
+        </section>
+      )}
+
+      {p && p.d.rows.some((r) => r.aiqByCategory[p.year]) && (
+        <section className="container-custom pb-10 md:pb-14">
+          <SectionHead icon="people" eyebrow="By category" title={body.category_title} intro={body.category_intro} />
+          <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card">
+            <table className="dt w-full text-sm">
+              <thead>
+                <tr>
+                  <th className="text-left">Branch · {p.year}</th>
+                  {CATEGORIES.map((c) => (
+                    <th key={c} className="text-right">{c}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {p.d.rows.map((r) => (
+                  <tr key={r.branch}>
+                    <td className="font-medium">{degree(r)}</td>
+                    {CATEGORIES.map((c) => {
+                      const x = r.aiqByCategory[p.year]?.[c];
+                      return (
+                        <td key={c} className="tnum text-right">
+                          {x ? `AIR ${n(x.rank)}` : <span className="text-muted-foreground">—</span>}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
+
+      {p && (
+        <section className="border-t border-border bg-surface-1 py-10 md:py-14">
+          <div className="container-custom">
+            <SectionHead icon="branch" eyebrow="Branch by branch" title={body.lowest_title} />
+            <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              {p.d.rows.map((r) => {
+                const a = p.cut(r, p.year, "aiq");
+                const dm = p.cut(r, p.year, "deemed");
+                const dn = p.cut(r, p.year, "dnb");
+                return (
+                  <article key={r.branch} className="rounded-2xl border border-border bg-card p-4">
+                    <h3 className="font-semibold text-foreground">
+                      {r.slug ? (
+                        <Link href={`/md-ms-india/branches/${r.slug}`} className="hover:underline">
+                          Lowest NEET PG rank for {degree(r)}
+                        </Link>
+                      ) : (
+                        `Lowest NEET PG rank for ${degree(r)}`
+                      )}
+                    </h3>
+                    <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+                      In {p.year}: {dm ? `deemed paid seats to AIR ${n(dm.rank)} (score ${scoreText(dm)})` : "no deemed paid figure"}
+                      {a ? `; government AIQ seats, open, to AIR ${n(a.rank)}` : ""}
+                      {dn ? `; DNB, open, to AIR ${n(dn.rank)}` : ""}.
+                    </p>
+                  </article>
+                );
+              })}
+            </div>
           </div>
         </section>
       )}

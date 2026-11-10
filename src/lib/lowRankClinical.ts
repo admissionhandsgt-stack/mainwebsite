@@ -26,7 +26,11 @@ export interface ClinicalRow {
   /** The MD/MS branch page, when there is one. */
   slug: string | null;
   cuts: Record<number, Partial<Record<Family, Cut>>>;
+  /** Government seats in MCC's All India Quota, by allotted category (PwD lists left out). */
+  aiqByCategory: Record<number, Partial<Record<Category, Cut>>>;
 }
+export type Category = "Open" | "EWS" | "OBC" | "SC" | "ST";
+export const CATEGORIES: Category[] = ["Open", "EWS", "OBC", "SC", "ST"];
 export interface LowRankClinical {
   years: number[];
   /** The newest year's latest round, e.g. "Round 1" (null when that year is complete). */
@@ -78,19 +82,23 @@ export const getLowRankClinical = unstable_cache(
                     WHEN m.quota ~* '^DNB' THEN 'dnb'
                     WHEN m.quota ~* 'self.?financed|paid|management' THEN 'deemed' END AS fam,
                CASE WHEN coalesce(m.allotted_category, '') ~* 'pwd|disab' THEN 'PwD'
-                    WHEN m.allotted_category ~* '\\mST\\M|tribe|\\mSC\\M|schedule caste|OBC|EWS' THEN 'reserved'
-                    ELSE 'open' END AS cat
+                    WHEN m.allotted_category ~* '^ST\\M|tribe' THEN 'ST'
+                    WHEN m.allotted_category ~* '^SC\\M|caste' THEN 'SC'
+                    WHEN m.allotted_category ~* 'OBC|backward' THEN 'OBC'
+                    WHEN m.allotted_category ~* 'EWS|economically' THEN 'EWS'
+                    ELSE 'Open' END AS cat
           FROM mcc_allotments m JOIN courses c ON c.id = m.course_id
          WHERE m.year IN (${sql.join(years.map((y) => sql`${y}`), sql`, `)})
            AND m.rank IS NOT NULL
            AND (m.status IS NULL OR m.status !~* 'retain|not allotted')
            AND c.name !~* '^diploma'
       )
-      SELECT year, course, fam, count(DISTINCT institute_id)::int AS colleges, max(rank)::int AS last_rank
+      SELECT year, course, fam, CASE WHEN fam = 'deemed' THEN 'any' ELSE cat END AS cat,
+             count(DISTINCT institute_id)::int AS colleges, max(rank)::int AS last_rank
         FROM a
-       WHERE fam IS NOT NULL AND (fam = 'deemed' OR cat = 'open')
-       GROUP BY 1, 2, 3
-    `)) as unknown as { year: number; course: string; fam: Family; colleges: number; last_rank: number }[];
+       WHERE fam IS NOT NULL AND cat <> 'PwD'
+       GROUP BY 1, 2, 3, 4
+    `)) as unknown as { year: number; course: string; fam: Family; cat: string; colleges: number; last_rank: number }[];
 
     const scores = (await db.execute(sql`
       SELECT year, score, score_out_of, rank_min, rank_max FROM score_ranks WHERE exam = 'pg' AND year IN (${sql.join(years.map((y) => sql`${y}`), sql`, `)})
@@ -102,7 +110,7 @@ export const getLowRankClinical = unstable_cache(
       return s ? { score: Number(s.score), outOf: Number(s.score_out_of) } : { score: null, outOf: null };
     };
 
-    const out: ClinicalRow[] = CLINICAL.map((c) => ({ branch: c.branch, slug: c.slug, cuts: {} }));
+    const out: ClinicalRow[] = CLINICAL.map((c) => ({ branch: c.branch, slug: c.slug, cuts: {}, aiqByCategory: {} }));
     for (const r of rows) {
       const i = CLINICAL.findIndex((c) => c.re.test(r.course));
       if (i < 0 || r.colleges < MIN_COLLEGES) continue;
@@ -110,14 +118,21 @@ export const getLowRankClinical = unstable_cache(
       const isDnbCourse = /^dnb|nbe/i.test(r.course);
       if ((r.fam === "dnb") !== isDnbCourse) continue;
       const year = Number(r.year);
+      const cut = { rank: Number(r.last_rank), colleges: Number(r.colleges), ...scoreAt(year, Number(r.last_rank)) };
+      if (r.fam === "aiq") {
+        const byCat = (out[i].aiqByCategory[year] ??= {});
+        const c = r.cat as Category;
+        if (CATEGORIES.includes(c) && (!byCat[c] || cut.rank > byCat[c]!.rank)) byCat[c] = cut;
+      }
+      if (r.fam !== "deemed" && r.cat !== "Open") continue;
       const cell = (out[i].cuts[year] ??= {});
       const prev = cell[r.fam];
-      if (!prev || r.last_rank > prev.rank) cell[r.fam] = { rank: Number(r.last_rank), colleges: Number(r.colleges), ...scoreAt(year, Number(r.last_rank)) };
+      if (!prev || cut.rank > prev.rank) cell[r.fam] = cut;
     }
     const milestones: LowRankClinical["milestones"] = {};
     for (const y of years) milestones[y] = RANK_MILESTONES.filter((m) => m <= (ranked[y] ?? 0)).map((m) => ({ rank: m, ...scoreAt(y, m) }));
     return { years, runningRound, ranked, rows: out.filter((r) => Object.keys(r.cuts).length), milestones };
   },
-  ["low-rank-clinical-v2"],
+  ["low-rank-clinical-v3"],
   { revalidate: 3600, tags: ["mcc"] },
 );
