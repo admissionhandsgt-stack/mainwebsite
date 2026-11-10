@@ -1,3 +1,4 @@
+import { pageOgImage } from "@/lib/ogImage";
 import StateNotices from "@/components/states/StateNotices";
 import { fitTitle, fitDescription, count } from "@/lib/seoTitle";
 import { getStateAuthority } from "@/lib/stateAuthorities";
@@ -82,6 +83,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       ]
     : [];
   return resolveMetadata(`/mbbs-india/${slug}`, {
+    image: pageOgImage(`/mbbs-india/${slug}`, `MBBS seats and colleges in ${p.state.name}`),
     title: fitTitle(
       ...seatTitles,
       `MBBS in ${p.state.name} 2026: ${count(p.colleges.length, "College", "Colleges")}, Counselling & Cutoffs`,

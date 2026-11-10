@@ -1,3 +1,4 @@
+import { pageOgImage } from "@/lib/ogImage";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getStatePage } from "@/lib/stateQueries";
@@ -63,6 +64,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const d = await load(state);
   if (!d) return { title: "State not found", robots: { index: false } };
   return resolveMetadata(`/counselling/mbbs/${d.p.state.slug}`, {
+    image: pageOgImage(`/counselling/mbbs/${d.p.state.slug}`, `MBBS counselling in ${d.name}`),
     title: fitTitle(d.c.seo_title, d.c.seo_title_short, `MBBS Counselling in ${d.name}`),
     description: fitDescription(d.c.seo_description),
     keywords: `MBBS counselling ${d.name}, best NEET counsellor in ${d.name}, NEET UG counselling ${d.name} ${d.year}, MBBS admission consultant ${d.name}, ${d.name} MBBS counselling guidance`,

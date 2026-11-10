@@ -1,6 +1,6 @@
 import { getNirf } from "@/lib/nirf";
 import { getPgStates } from "@/lib/pgStateQueries";
-import { OG_IMAGE } from "@/lib/ogImage";
+import { OG_IMAGE, pageOgImage } from "@/lib/ogImage";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { collegeFaqs, collegeJsonLd, collegePlace } from "@/lib/collegeSeo";
@@ -85,7 +85,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
       description,
       url: `/md-ms-india/colleges/${data.college.slug}`,
       type: "article",
-      images: [OG_IMAGE],
+      images: [pageOgImage(`/md-ms-india/colleges/${data.college.slug}`, `${title}`)],
     },
   };
 }

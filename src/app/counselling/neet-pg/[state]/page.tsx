@@ -1,3 +1,4 @@
+import { pageOgImage } from "@/lib/ogImage";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "@/components/ui/Link";
@@ -110,6 +111,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const d = await load(state);
   if (!d) return { title: "State not found", robots: { index: false } };
   return resolveMetadata(`/counselling/neet-pg/${d.p.slug}`, {
+    image: pageOgImage(`/counselling/neet-pg/${d.p.slug}`, `NEET PG counselling in ${d.p.name}`),
     title: fitTitle(d.c.seo_title, d.c.seo_title_short, `NEET PG Counselling in ${d.p.name}`),
     description: fitDescription(d.c.seo_description),
     keywords: `NEET PG counselling ${d.p.name}, best NEET PG counsellor in ${d.p.name}, NEET PG counselling guidance ${d.p.name}, ${d.p.name} PG admission consultant, ${d.p.name} NEET PG counselling ${d.year}`,

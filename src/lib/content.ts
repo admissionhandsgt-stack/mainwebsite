@@ -707,9 +707,11 @@ export async function getPageSeo(route: string): Promise<PageSeo | null> {
  */
 export async function resolveMetadata(
   route: string,
-  defaults: { title: string; description: string; keywords?: string },
+  defaults: { title: string; description: string; keywords?: string; image?: { url: string; width: number; height: number; alt: string } },
 ) {
   const seo = await getPageSeo(route);
+  // The admin's share image first, then the page's own drawn one (lib/ogCard.tsx), then the site's.
+  const image = seo?.ogImageUrl || defaults.image || OG_IMAGE;
   const title = seo?.title || defaults.title;
   const description = seo?.description || defaults.description;
   const keywords = seo?.keywords || defaults.keywords;
@@ -731,13 +733,13 @@ export async function resolveMetadata(
       siteName: "AdmissionHands",
       type: "website",
       locale: "en_IN",
-      images: [seo?.ogImageUrl || OG_IMAGE],
+      images: [image],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [seo?.ogImageUrl || OG_IMAGE],
+      images: [image],
     },
   };
 }

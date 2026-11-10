@@ -1,3 +1,4 @@
+import { pageOgImage } from "@/lib/ogImage";
 import { getNmcPgForState } from "@/lib/nmcData";
 import StateNotices from "@/components/states/StateNotices";
 import { fitTitle, fitDescription, count } from "@/lib/seoTitle";
@@ -66,6 +67,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const stipend = st ? `, stipend (median ₹${st.median.toLocaleString("en-IN")} a month)` : ", stipend";
   const roundGen = round?.byCategory.find((c) => c.category === "GEN");
   return resolveMetadata(`/md-ms-india/states/${p.slug}`, {
+    image: pageOgImage(`/md-ms-india/states/${p.slug}`, `NEET PG in ${p.name}: MD/MS colleges, seats, MCC seats and stipend`),
     // "Seats" since 2026-11-04: "neet pg seats in maharashtra branch wise", "md medicine
     // seats in maharashtra", "pg seats in tamilnadu" reach these pages without the word.
     title: fitTitle(

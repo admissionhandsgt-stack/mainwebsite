@@ -1,5 +1,5 @@
 import { getNirf } from "@/lib/nirf";
-import { OG_IMAGE } from "@/lib/ogImage";
+import { OG_IMAGE, pageOgImage } from "@/lib/ogImage";
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import { MERGED_UG_COLLEGES } from "@/lib/collegeMerges";
@@ -86,7 +86,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
       description,
       url: `/mbbs-india/colleges/${data.college.slug}`,
       type: "article",
-      images: [OG_IMAGE],
+      images: [pageOgImage(`/mbbs-india/colleges/${data.college.slug}`, `${title}`)],
     },
   };
 }

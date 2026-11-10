@@ -12,3 +12,9 @@ export const OG_IMAGE = {
   height: 630,
   alt: "AdmissionHands — NEET counselling built on published closing ranks",
 };
+
+/**
+ * A page's own share image (its opengraph-image route, lib/ogCard.tsx) as an Open Graph entry. Pages that draw one say
+ * so in their metadata: an explicit openGraph.images would otherwise win over the file convention (2026-11-11).
+ */
+export const pageOgImage = (path: string, alt: string) => ({ url: `${path}/opengraph-image`, width: 1200, height: 630, alt });
