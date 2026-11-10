@@ -6,14 +6,16 @@ import { mailConfig, sendMail, verifyMail } from "@/lib/mailer";
 import { tellOwner, tg } from "@/lib/telegramBot";
 import { addOutreach, deleteOutreach, listOutreach, runOutreach, type Kind } from "@/lib/outreach";
 import { logError } from "@/lib/logger";
-import { buildHunt, listHunt, markHunt } from "@/lib/hunt";
+import { askHunt, buildHunt, listHunt, markHunt, rebuildHunt } from "@/lib/hunt";
+import { deleteLibrary, listLibrary, saveLibrary } from "@/lib/huntAnswers";
 import { addSource, deleteSource, listSources, runDiscover } from "@/lib/outreachDiscover";
 import { webSearchUsage } from "@/lib/webSearch";
 
 /**
  * Admin → Outreach email (2026-11-10). GET: the mailbox and bot settings (secrets masked), the switch, the cap and every
  * target, and the daily hunt. POST { action }: "save" · "test-mail" · "link-telegram" · "test-telegram" · "add" · "delete" ·
- * "preview-now" · "hunt-run" · "hunt-posted" { id, url } · "hunt-dismiss" { id }.
+ * "preview-now" · "hunt-run" · "hunt-posted" { id, url } · "hunt-dismiss" { id } · "hunt-ask" { question } ·
+ * "hunt-rebuild" { id } · "library-save" { id?, match, answer, page, checkedOn, active } · "library-delete" { id }.
  * The SMTP password and the bot token are write-only: saved, never sent back.
  */
 export const dynamic = "force-dynamic";
@@ -48,6 +50,7 @@ export async function GET() {
   ]);
   const hunt = await listHunt().catch(() => []);
   const sources = await listSources().catch(() => []);
+  const library = await listLibrary().catch(() => []);
   const [tavily, tavily2, usage] = await Promise.all([getIntegration("search.tavily.key"), getIntegration("search.tavily.key2"), webSearchUsage()]);
   return NextResponse.json(
     {
@@ -65,6 +68,7 @@ export async function GET() {
       rows,
       hunt,
       sources,
+      library,
       tavilySet: Boolean(tavily),
       tavily2Set: Boolean(tavily2),
       tavilyUsage: usage,
@@ -174,6 +178,25 @@ export async function POST(request: Request) {
       case "hunt-posted":
       case "hunt-dismiss":
         await markHunt(Number(b.id), b.action === "hunt-posted" ? "posted" : "dismissed", str(b.url, 500));
+        return NextResponse.json({ ok: true });
+      case "hunt-ask": {
+        const item = await askHunt(str(b.question, 300));
+        return item ? NextResponse.json({ ok: true, item }) : NextResponse.json({ error: "No answer could be written for that — add it to Saved answers." }, { status: 404 });
+      }
+      case "hunt-rebuild":
+        return NextResponse.json({ ok: await rebuildHunt(Number(b.id)) });
+      case "library-save":
+        await saveLibrary({
+          id: Number(b.id) || undefined,
+          match: str(b.match, 300),
+          answer: typeof b.answer === "string" ? b.answer.slice(0, 8000) : "",
+          page: str(b.page, 300) || "/",
+          checkedOn: str(b.checkedOn, 10) || null,
+          active: b.active !== false,
+        });
+        return NextResponse.json({ ok: true });
+      case "library-delete":
+        await deleteLibrary(Number(b.id));
         return NextResponse.json({ ok: true });
       case "preview-now":
         return NextResponse.json(await runOutreach({ force: true }));

@@ -57,6 +57,145 @@ export const PAGE_COPY = {
       link: { label: "Link to MCC's notice", value: "Read MCC's notice" },
     },
   },
+  "page.pg_low_clinical.hero": {
+    group: "Page: low score clinical branches",
+    fields: {
+      eyebrow: { label: "Hero eyebrow", value: "NEET PG · clinical branch at a low rank" },
+      title: { label: "Hero title", value: "Low score," },
+      accent: { label: "Hero title, coloured part", value: "clinical branch" },
+      subtitle: {
+        label: "Hero line (when the figures are missing)",
+        value: "Where MD Medicine, Surgery, Orthopaedics and the other clinical branches still went at a low NEET PG rank — read from MCC's own results.",
+        long: true,
+      },
+      answer: {
+        label: "Quick answer under the title — {year}, {med_rank}, {med_score}, {deep_branch}, {deep_rank}, {deep_score}, {ranked}",
+        value:
+          "Yes. In {year}, MD General Medicine went to AIR {med_rank} (score {med_score}) on deemed universities' paid seats, and {deep_branch} to AIR {deep_rank} (score {deep_score}) — out of {ranked} ranked. Government seats close far earlier; the low-rank clinical seats are paid seats, DNB and the later rounds.",
+        long: true,
+      },
+      cta: { label: "Hero button", value: "Check my clinical chances" },
+      source: {
+        label: "Source line — {year}, {now_year}",
+        value:
+          "From MCC's published allotment results for {year} and {now_year} so far. Each figure is the last rank admitted over three or more colleges; the score is from NBEMS's own result.",
+        long: true,
+      },
+    },
+  },
+  "page.pg_statistics.hero": {
+    group: "Page: NEET PG & medical seats statistics",
+    fields: {
+      eyebrow: { label: "Hero eyebrow", value: "NEET PG · in numbers" },
+      title: { label: "Hero title", value: "NEET PG & medical seats" },
+      accent: { label: "Hero title, coloured part", value: "statistics" },
+      subtitle: {
+        label: "Hero line (when the figures are missing)",
+        value: "How many sat NEET PG, how many MD/MS seats India has, how many MCC allots in each round — counted from NBEMS's results, NMC's register and MCC's own files.",
+        long: true,
+      },
+      answer: {
+        label: "Quick answer under the title — {now_year}, {ranked}, {md_ms_seats}, {per_seat}, {mcc_seats}, {round1}",
+        value:
+          "NEET PG {now_year} ranked {ranked} candidates for {md_ms_seats} MD/MS seats on NMC's register — about {per_seat} for every seat. MCC's {now_year} matrix lists {mcc_seats} seats, and its round 1 allotted {round1}.",
+        long: true,
+      },
+      cta: { label: "Hero button", value: "Check what my rank gets" },
+      source: {
+        label: "Source line — {nmc_date}",
+        value: "From NBEMS's NEET PG result, NMC's college and course register (as of {nmc_date}) and MCC's seat matrix and allotment results. Updated when any of them changes.",
+        long: true,
+      },
+    },
+  },
+  "page.pg_statistics.body": {
+    group: "Page: NEET PG & medical seats statistics",
+    fields: {
+      scores_title: { label: "Scores section title", value: "Candidates and the score at each rank" },
+      seats_title: { label: "Seats section title", value: "PG seats on NMC's register" },
+      kinds_title: { label: "Clinical split title", value: "How many of them are clinical" },
+      branches_title: { label: "Branches section title", value: "Seats by branch" },
+      matrix_title: { label: "MCC matrix title", value: "What MCC's counselling fills" },
+      rounds_title: { label: "Rounds title", value: "Seats allotted, round by round" },
+      money_title: { label: "Stipend and fees title", value: "Stipend and fees" },
+      counsel_title: { label: "Counsellor block title", value: "Numbers tell you the market. Your list is personal." },
+      counsel_body: {
+        label: "Counsellor block text",
+        value:
+          "Which of these seats your rank, category and domicile can actually reach — and in which round — is a list we make with you, college by college, with the fee, bond and stipend beside each.",
+        long: true,
+      },
+      faq_title: { label: "FAQ title", value: "NEET PG statistics: questions" },
+      lead_title: { label: "Enquiry form title", value: "Get your own seat list" },
+      lead_body: { label: "Enquiry form line", value: "Tell us your rank and category. A counsellor calls with the colleges your rank reached last year." },
+    },
+  },
+  "page.pg_low_clinical.body": {
+    group: "Page: low score clinical branches",
+    fields: {
+      table_title: { label: "Table title", value: "Clinical branches: the last rank admitted" },
+      table_intro: {
+        label: "Table intro — {year}, {now_year}",
+        value:
+          "Government seats in MCC's All India Quota (open category), deemed universities' paid seats, and DNB (open), for {year} and {now_year} so far. Which colleges took these ranks, at what fee and bond, is what a counsellor works out with you.",
+        long: true,
+      },
+      routes_title: { label: "Routes title", value: "Where a low-rank clinical seat comes from" },
+      routes: {
+        label: "Four routes, one per line: title | text — {year}, {deemed_fee}",
+        value: [
+          "Deemed universities' paid seats | MCC fills them with no category reservation, and in {year} clinical branches went past AIR 1 lakh. They cost more — {deemed_fee} a year for the middle of them.",
+          "State management and NRI quotas | Each state fills its private colleges' management and NRI seats in its own counselling, often far below the government seats. Domicile rules decide who may apply.",
+          "DNB in hospitals | Clinical DNB seats in private and trust hospitals closed later than government MD/MS seats, and the hospital pays a stipend.",
+          "Round 3 and the stray round | Upgrades free seats every round; the widest ranks come at the end. Waiting pays only with a plan for which seat to hold.",
+        ].join("\n"),
+        long: true,
+      },
+      counsel_title: { label: "Counsellor block title", value: "What this table cannot tell you" },
+      counsel_points: {
+        label: "Counsellor block points, one per line",
+        value: [
+          "Which colleges took a clinical seat at your rank last year — and their fee, bond and stipend",
+          "Whether a state's management or NRI quota is open to you, and its deadline",
+          "Which round to aim for, and whether to hold a seat or keep upgrading",
+          "What three years really cost, and where a college gives instalments",
+        ].join("\n"),
+        long: true,
+      },
+      wa_text: { label: "WhatsApp message", value: "Hi, I want a clinical branch in NEET PG. My rank is ___ and category ___. Which colleges are possible?" },
+      faq_title: { label: "FAQ title", value: "Questions about clinical branches at a low rank" },
+      lead_title: { label: "Enquiry form title", value: "Tell us your rank — we will tell you the clinical seats" },
+      lead_body: {
+        label: "Enquiry form text",
+        value: "A counsellor calls with the colleges that took your rank for a clinical branch last year, their fees and bonds, and the round to aim for.",
+        long: true,
+      },
+    },
+  },
+  "site.hunt_answer": {
+    group: "Outreach: answers the daily hunt writes",
+    fields: {
+      check_title: { label: "Heading over the things to check", value: "Check these before you accept the seat:" },
+      free_line: {
+        label: "Link line — {what}, {url}",
+        value: "The full {what} is free and needs no sign-up: {url}",
+      },
+      predictor_line: {
+        label: "Predictor line (it needs a phone number, so it never says no sign-up) — {url}",
+        value: "To see which colleges your own rank reached last year: {url}",
+      },
+      disclosure: {
+        label: "Disclosure (always shown)",
+        value: "(I'm an admission counsellor at Admission Hands. Happy to answer follow-up questions in the comments.)",
+        long: true,
+      },
+      signature: {
+        label: "Signature, one line each",
+        value: ["Gulshan Tomar", "Expert Admission Counsellor, Admission Hands", "+91 92206 26002", "gulshantomar@admissionhands.com | www.admissionhands.com"].join("\n"),
+        long: true,
+      },
+    },
+  },
   "site.search_links": {
     group: "Site: related searches (above the footer)",
     fields: {

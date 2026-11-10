@@ -4,7 +4,7 @@ import { gscRows } from "@/lib/searchLinks";
 import { tellOwner } from "@/lib/telegramBot";
 import { getIntegration } from "@/lib/integrations";
 import { webSearch, webSearchUsage } from "@/lib/webSearch";
-import { getPgStates, type PgState } from "@/lib/pgStateQueries";
+import { answerFor, type Answer } from "@/lib/huntAnswers";
 
 /**
  * Daily hunt (2026-11-10). Owner: "daily hunt karke de do details… admin open karke same url par jake… answer create
@@ -33,6 +33,7 @@ export type HuntItem = {
   answer: string;
   status: string;
   posted_url: string | null;
+  kind: string | null;
   created_at: string;
 };
 
@@ -52,21 +53,6 @@ async function pageAnswer(path: string, base: string): Promise<string | null> {
   } catch {
     return null;
   }
-}
-
-function compose(query: string, fact: string, path: string): string {
-  const url = `${SITE}${path}`;
-  return [
-    fact,
-    "",
-    `The full table, from the counselling authorities' published data (free, no sign-up): ${url}`,
-    "",
-    "(I'm a counsellor at AdmissionHands; happy to answer follow-up questions here.)",
-    "",
-    "— Hinglish —",
-    `Short mein: ${fact}`,
-    `Poori list yahan hai (free): ${url}`,
-  ].join("\n");
 }
 
 export async function buildHunt(
@@ -95,13 +81,14 @@ export async function buildHunt(
   let added = 0;
   for (const [query, e] of ranked) {
     if (added >= PER_DAY) break;
-    const page = [...e.pages.entries()].sort((a, b) => b[1] - a[1])[0][0];
-    if (usedPages.has(page)) continue;
-    const fact = await pageAnswer(page, base);
-    if (!fact) continue;
-    usedPages.add(page);
+    const landing = [...e.pages.entries()].sort((a, b) => b[1] - a[1])[0][0];
+    // An answer written for this question (lib/huntAnswers.ts): the owner's saved answer, else one built from the data
+    // the question asks about, else the landing page's own first line.
+    const a = await answerFor(query, { fallback: landing, pageLine: (p) => pageAnswer(p, base) }).catch(() => null);
+    if (!a || usedPages.has(a.page)) continue;
+    usedPages.add(a.page);
     await db.execute(sql`
-      INSERT INTO hunt_items (query, impressions, page, answer) VALUES (${query}, ${e.imp}, ${page}, ${compose(query, fact, page)})
+      INSERT INTO hunt_items (query, impressions, page, answer, kind) VALUES (${query}, ${e.imp}, ${a.page}, ${a.answer}, ${a.kind})
       ON CONFLICT ((lower(query))) DO NOTHING`);
     added++;
   }
@@ -114,9 +101,36 @@ export async function buildHunt(
   return { added, considered: byQuery.size, web };
 }
 
+/**
+ * A question the owner types (Admin → Daily hunt, or "/answer …" to the Telegram bot): the answer, written the same way,
+ * saved as a hunt item so it can be copied, posted and recorded like the rest.
+ */
+export async function askHunt(question: string, base = `http://127.0.0.1:${process.env.PORT ?? 8150}`): Promise<HuntItem | null> {
+  const q = question.trim().slice(0, 300);
+  if (q.length < 6) throw new Error("Type the question.");
+  const fallback = TOPICS.find((t) => t.re.test(q))?.path ?? "/neet-pg-cutoff";
+  const a = await answerFor(q, { fallback, pageLine: (p) => pageAnswer(p, base) });
+  if (!a) return null;
+  const rows = (await db.execute(sql`
+    INSERT INTO hunt_items (query, impressions, page, answer, source, kind) VALUES (${q}, 0, ${a.page}, ${a.answer}, 'manual', ${a.kind})
+    ON CONFLICT ((lower(query))) DO UPDATE SET answer = EXCLUDED.answer, page = EXCLUDED.page, kind = EXCLUDED.kind, status = 'new', updated_at = now()
+    RETURNING id, query, source, thread_url, impressions, page, answer, status, posted_url, kind, to_json(created_at)#>>'{}' AS created_at`)) as unknown as HuntItem[];
+  return rows[0] ?? null;
+}
+
+/** Writes an item's answer again (after a saved answer was added, or the figures changed). */
+export async function rebuildHunt(id: number, base = `http://127.0.0.1:${process.env.PORT ?? 8150}`): Promise<boolean> {
+  const it = ((await db.execute(sql`SELECT query, thread_title, page FROM hunt_items WHERE id = ${id}`)) as unknown as { query: string; thread_title: string | null; page: string }[])[0];
+  if (!it) return false;
+  const a = await answerFor(it.thread_title || it.query, { fallback: it.page, pageLine: (p) => pageAnswer(p, base) });
+  if (!a) return false;
+  await db.execute(sql`UPDATE hunt_items SET answer = ${a.answer}, page = ${a.page}, kind = ${a.kind}, updated_at = now() WHERE id = ${id}`);
+  return true;
+}
+
 export async function listHunt(): Promise<HuntItem[]> {
   return (await db.execute(sql`
-    SELECT id, query, source, thread_url, impressions, page, answer, status, posted_url, to_json(created_at)#>>'{}' AS created_at
+    SELECT id, query, source, thread_url, impressions, page, answer, status, posted_url, kind, to_json(created_at)#>>'{}' AS created_at
       FROM hunt_items ORDER BY (status = 'new') DESC, created_at DESC LIMIT 200`)) as unknown as HuntItem[];
 }
 
@@ -184,8 +198,11 @@ export async function buildWebHunt(base = `http://127.0.0.1:${process.env.PORT ?
     ...Array.from({ length: perDay - inside }, (_, i) => WEB_QUERIES[(day * perDay + i) % WEB_QUERIES.length]),
     ...Array.from({ length: inside }, (_, i) => ({ ...WEB_QUERIES[(day * inside + i + 7) % WEB_QUERIES.length], forums: false, range: "month" as const, inside: forums })),
   ];
-  const states = await getPgStates().catch((): PgState[] => []);
-  const answers = new Map<string, string | null>();
+  const lines = new Map<string, string | null>();
+  const pageLine = async (p: string) => {
+    if (!lines.has(p)) lines.set(p, await pageAnswer(p, base));
+    return lines.get(p) ?? null;
+  };
   let searched = 0;
   let added = 0;
   for (const wq of todays) {
@@ -203,18 +220,13 @@ export async function buildWebHunt(base = `http://127.0.0.1:${process.env.PORT ?
       if (NOT_FORUMS.some((d) => host === d || host.endsWith(`.${d}`)) || /\.(gov|nic)\.in$/.test(host)) continue;
       const text = `${r.title} ${r.content}`;
       if (!/reddit\.com|quora\.com/.test(host) && !wq.inside && !looksLikeAQuestion(r.title)) continue;
-      let path = TOPICS.find((t) => t.re.test(text))?.path;
-      if (!path) continue;
-      if (path === "/md-ms-india/stipend") {
-        const st = states.find((s) => new RegExp(`\\b${s.name.replace(/[^a-z ]/gi, "")}\\b`, "i").test(text));
-        if (st) path = `/md-ms-india/stipend/${st.slug}`;
-      }
-      if (!answers.has(path)) answers.set(path, await pageAnswer(path, base));
-      const fact = answers.get(path) ?? (path.startsWith("/md-ms-india/stipend/") ? await pageAnswer("/md-ms-india/stipend", base) : null);
-      if (!fact) continue;
+      const fallback = TOPICS.find((t) => t.re.test(text))?.path ?? null;
+      // Written for this thread: its title is the question, its text says more (a state, a score, a round).
+      const a: Answer | null = await answerFor(r.title || wq.q, { text: r.content, fallback, pageLine }).catch(() => null);
+      if (!a) continue;
       const ins = (await db.execute(sql`
-        INSERT INTO hunt_items (query, impressions, page, answer, source, thread_url, thread_title)
-        VALUES (${r.title.slice(0, 200) || r.url}, 0, ${path}, ${compose(r.title, fact, path)}, 'web', ${r.url}, ${r.title.slice(0, 300)})
+        INSERT INTO hunt_items (query, impressions, page, answer, source, thread_url, thread_title, kind)
+        VALUES (${r.title.slice(0, 200) || r.url}, 0, ${a.page}, ${a.answer}, 'web', ${r.url}, ${r.title.slice(0, 300)}, ${a.kind})
         ON CONFLICT DO NOTHING RETURNING id`)) as unknown as { id: number }[];
       if (ins.length) added++;
     }

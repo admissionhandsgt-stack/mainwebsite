@@ -4,6 +4,7 @@ import { getIntegration, setIntegration } from "@/lib/integrations";
 import { tg } from "@/lib/telegramBot";
 import { onOutreachButton, onOutreachEdit } from "@/lib/outreach";
 import { logError } from "@/lib/logger";
+import { askHunt } from "@/lib/hunt";
 
 /**
  * The site's Telegram bot webhook (2026-11-10), set from Admin → Outreach email. Telegram sends every update with the
@@ -54,6 +55,18 @@ export async function POST(request: Request) {
       const m = cq.data?.match(/^o:(send|skip|out|replied):(\d+)$/);
       const reply = m && cq.message ? await onOutreachButton(m[1], Number(m[2]), cq.message.message_id) : "Unknown button.";
       await tg("answerCallbackQuery", { callback_query_id: cq.id, text: reply.slice(0, 190) }).catch(() => undefined);
+      return NextResponse.json({ ok: true });
+    }
+
+    // "/answer <question>": the answer the daily hunt would write for it (lib/huntAnswers.ts), sent back here and kept in
+    // Admin → Outreach → Daily hunt like the rest.
+    const ask = text.match(/^\/answer(?:@\w+)?\s+([\s\S]{6,300})$/i);
+    if (u.message && chat && String(u.message.chat.id) === chat && ask) {
+      const item = await askHunt(ask[1]).catch(() => null);
+      const body = item?.answer ?? "No answer could be written for that. Add one in Admin → Outreach → Daily hunt → Saved answers.";
+      for (let i = 0; i < body.length; i += 3900) {
+        await tg("sendMessage", { chat_id: chat, text: body.slice(i, i + 3900), disable_web_page_preview: true }).catch(() => undefined);
+      }
       return NextResponse.json({ ok: true });
     }
 

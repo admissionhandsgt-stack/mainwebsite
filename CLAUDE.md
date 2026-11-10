@@ -2295,6 +2295,35 @@ table `outreach_emails` (migration 0050, raw SQL), Admin → Outreach (the card 
 - **Sent folder:** SMTP sends do not land in the mailbox's Sent on this server, so `sendMail` builds the message once
   (nodemailer MailComposer), sends those bytes and appends the same bytes over IMAP to the folder flagged `Sent`.
 - **Never:** send without the owner's Send, ask for a link in exchange for anything, or add addresses scraped in bulk.
+- **Answers the hunt writes (`lib/huntAnswers.ts`, same day — owner's model answer: AIIMS New Delhi's resident pay, "aise
+  detailed answers… signup wala etc bhi rehna chaiye").** Shape: the answer first, the figures that make it, "Check these before
+  you accept the seat", Source, one comparison, "The full … is free and needs no sign-up: <url>" (said only of open pages; the
+  predictor gets its own line), the disclosure and the signature — all wording in Admin → Content "Outreach: answers the daily
+  hunt writes". Order: the owner's **Saved answers** (`hunt_library`, migration 0053; "aiims, stipend | salary" = commas AND,
+  `|` OR; matched word for word) → a builder for what the question asks (a PG college's stipend/fee/bond, a state's stipend,
+  India's stipend, bond by state, marks → rank, a clinical branch's cut, low score clinical, seats/statistics, choice-filling
+  rules, deemed/private fees) → the landing page's first line. No LLM. A bond / seat-leaving figure carries the
+  `pg_seat_terms` caveat once, in the Source line; rank figures are group figures (3+ colleges); never a college's closing
+  rank. Admin → Outreach → Daily hunt: "Write an answer for a question", Rewrite, Save as my answer, and the Saved answers
+  list; the Telegram bot answers `/answer <question>` in the owner's chat. Test offline:
+  `npx tsx --tsconfig scripts/tmp/harness/tsconfig.json --env-file=.env.local scripts/tmp/harness/ask.ts "<question>"`
+  (the harness shims `next/cache`; scripts/tmp is git-excluded).
+
+## Low score clinical branches and the statistics page (2026-11-10)
+
+Owner: *"NEET PG / medical seats statistics 2026 banado + Low Score Clinical Branches… sab cheej khullam khulla nhi likhni,
+candidate ko counselor par depend karana hai… Just Eligible ko bhi badi clinical branch jaise MD medicine"*.
+
+- **`/neet-pg-low-score-clinical-branches`** (`lib/lowRankClinical.ts`): 13 clinical branches × the last rank admitted in
+  MCC's AIQ (open), deemed universities' paid seats and DNB (open), last complete year and the running year so far, each with
+  the score it held (`score_ranks`) — over 3+ colleges, no college named. A "What this table cannot tell you" block (which
+  colleges, fee, bond, round) sends the reader to WhatsApp / call / predictor. Copy `page.pg_low_clinical.*`.
+- **`/neet-pg-statistics`** (`lib/pgStatistics.ts`): candidates ranked and the score at milestone ranks per year, PG seats on
+  NMC's register by course and ownership, clinical / para-clinical / pre-clinical MD/MS split (NMC course names by regex),
+  top branches with NMC and MCC seats, MCC's matrix and rounds, stipend and fee middles, FAQs, CiteThis. Made to be cited.
+  No bond figures (a compilation — those stay on /md-ms-india/bond). Copy `page.pg_statistics.*`.
+- Both in the hubs sitemap (lastmod = the latest live round's day) and linked from /neet-pg-cutoff; menu rows
+  `scripts/sql/nav_low_clinical_statistics_2026_11_10.sql` (after the deploy).
 
 ## Google Cloud: alarms, the second backup, billing (2026-11-10)
 

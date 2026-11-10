@@ -37,12 +37,111 @@ type State = {
   rows: Row[];
   hunt: Hunt[];
   sources: Source[];
+  library: Saved[];
   tavilySet: boolean;
   tavily2Set: boolean;
   tavilyUsage: { month: string; used: number; budget: number; keys: number };
 };
 type Source = { id: number; url: string; org: string; kind: string; last_crawled_at: string | null; found: number; last_note: string | null };
-type Hunt = { id: number; query: string; source: string; thread_url: string | null; impressions: number; page: string; answer: string; status: string; posted_url: string | null; created_at: string };
+type Hunt = { id: number; query: string; source: string; thread_url: string | null; impressions: number; page: string; answer: string; status: string; posted_url: string | null; kind: string | null; created_at: string };
+type Saved = { id: number; match: string; answer: string; page: string; checked_on: string | null; is_active: boolean };
+type Post = (body: Record<string, unknown>, label: string) => Promise<Record<string, unknown> | null>;
+/** What wrote an answer, in words. */
+const KIND_LABEL: Record<string, string> = {
+  saved: "Your saved answer",
+  college: "College's fee, stipend & bond",
+  "state-stipend": "State stipend",
+  stipend: "Stipend, India",
+  bond: "Bond, India",
+  "bond-state": "State bond",
+  marks: "Marks → rank",
+  branch: "Branch cut off",
+  "low-score": "Low score clinical",
+  seats: "Seats & statistics",
+  choice: "Choice filling rules",
+  page: "Page's first line",
+};
+/** The question's own words, minus the ones every question has: a start for "words to match". */
+const suggestMatch = (query: string) =>
+  query
+    .toLowerCase()
+    .replace(/[^a-z0-9 ]+/g, " ")
+    .split(/\s+/)
+    .filter((w) => w.length > 2 && !/^(what|which|how|much|the|for|and|with|from|neet|does|kitna|kitni|kya|hai|milta|year|month)$/.test(w))
+    .slice(0, 3)
+    .join(", ");
+
+/** Type a question, get the answer written the way the hunt writes it (lib/huntAnswers.ts). */
+function AskCard({ busy, post, onMsg }: { busy: boolean; post: Post; onMsg: (m: { tone: "success" | "danger" | "info"; text: string }) => void }) {
+  const [question, setQuestion] = useState("");
+  return (
+    <Card title="Write an answer for a question" description="Paste the question from a thread (Quora, Reddit, a forum, a WhatsApp group). The answer is written from the site's own figures, or from your saved answer if its words match, and added to the list below. The Telegram bot does the same: send it /answer followed by the question.">
+      <div className="flex flex-wrap gap-2">
+        <input className={`${INPUT} ${INPUT_H} min-w-[16rem] flex-1`} placeholder="e.g. What is the PG stipend at SMS Jaipur?" value={question} onChange={(e) => setQuestion(e.target.value)} />
+        <Button variant="primary" disabled={busy || question.trim().length < 6} onClick={async () => {
+          const j = await post({ action: "hunt-ask", question }, "ask");
+          if (j) {
+            setQuestion("");
+            onMsg({ tone: "success", text: "Answer written. It is first in the list below." });
+          }
+        }}>
+          Write answer
+        </Button>
+      </div>
+    </Card>
+  );
+}
+
+/** Your own answers: a question whose words match one gets it as you wrote it. */
+function LibraryCard({ items, busy, post, draft, setDraft }: { items: Saved[]; busy: boolean; post: Post; draft: Partial<Saved> | null; setDraft: (d: Partial<Saved> | null) => void }) {
+  const d = draft;
+  return (
+    <Card
+      title={`Saved answers (${items.length})`}
+      description="Answers you wrote, like the AIIMS one. Words to match: commas mean all of these, | means any one of these. “aiims, stipend | salary” matches a question with AIIMS and stipend or salary. A matched question gets your answer word for word; your signature is added only if it has none."
+      actions={!d && <Button size="sm" onClick={() => setDraft({ match: "", answer: "", page: "/", checked_on: new Date().toISOString().slice(0, 10), is_active: true })}>Add an answer</Button>}
+    >
+      {d && (
+        <div className="mb-4 space-y-2 rounded-xl border border-cyan-200 bg-cyan-50/40 p-3">
+          <div className="grid gap-2 md:grid-cols-[2fr_1fr_10rem]">
+            <Field label="Words to match"><input className={`${INPUT} ${INPUT_H}`} value={d.match ?? ""} onChange={(e) => setDraft({ ...d, match: e.target.value })} placeholder="aiims, stipend | salary" /></Field>
+            <Field label="Page it links to"><input className={`${INPUT} ${INPUT_H}`} value={d.page ?? "/"} onChange={(e) => setDraft({ ...d, page: e.target.value })} placeholder="/md-ms-india/stipend" /></Field>
+            <Field label="Facts checked on"><input type="date" className={`${INPUT} ${INPUT_H}`} value={d.checked_on ?? ""} onChange={(e) => setDraft({ ...d, checked_on: e.target.value })} /></Field>
+          </div>
+          <Field label="The answer"><textarea className={`${INPUT} min-h-[14rem] py-2 text-[13px] leading-relaxed`} value={d.answer ?? ""} onChange={(e) => setDraft({ ...d, answer: e.target.value })} /></Field>
+          <div className="flex flex-wrap gap-2">
+            <Button variant="primary" disabled={busy || !d.match?.trim() || !d.answer?.trim()} onClick={async () => {
+              const j = await post({ action: "library-save", id: d.id, match: d.match, answer: d.answer, page: d.page, checkedOn: d.checked_on, active: d.is_active !== false }, "lib");
+              if (j) setDraft(null);
+            }}>
+              Save answer
+            </Button>
+            <Button variant="ghost" onClick={() => setDraft(null)}>Cancel</Button>
+          </div>
+        </div>
+      )}
+      {items.length === 0 ? (
+        <p className="text-sm text-slate-500">None yet.</p>
+      ) : (
+        <ul className="divide-y divide-slate-100 text-[13px]">
+          {items.map((it) => (
+            <li key={it.id} className="flex flex-wrap items-center justify-between gap-2 py-2">
+              <span className="min-w-0 flex-1">
+                <span className="font-medium text-slate-900">{it.match}</span>
+                <span className="text-slate-500"> · {it.page}{it.checked_on ? ` · checked ${it.checked_on}` : ""}</span>
+                <span className="block line-clamp-2 text-slate-500">{it.answer.split("\n")[0]}</span>
+              </span>
+              <span className="flex gap-1">
+                <Button size="sm" onClick={() => setDraft(it)}>Edit</Button>
+                <Button size="sm" variant="ghost" onClick={() => post({ action: "library-delete", id: it.id }, "lib-del")}>Remove</Button>
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </Card>
+  );
+}
 const SITE = "https://www.admissionhands.com";
 const q = encodeURIComponent;
 
@@ -105,23 +204,37 @@ function SourcesCard({
 }
 
 /** One question to answer by hand: open a search, find the thread, paste the answer, record where it went. */
-function HuntCard({ h, onDone }: { h: Hunt; onDone: (action: "hunt-posted" | "hunt-dismiss", url?: string) => void }) {
+function HuntCard({
+  h,
+  onDone,
+  onRewrite,
+  onKeep,
+}: {
+  h: Hunt;
+  onDone: (action: "hunt-posted" | "hunt-dismiss", url?: string) => void;
+  onRewrite: () => void;
+  onKeep: (answer: string) => void;
+}) {
   const [url, setUrl] = useState("");
   const [copied, setCopied] = useState(false);
+  const [text, setText] = useState(h.answer);
+  useEffect(() => setText(h.answer), [h.answer]);
   return (
     <div className="rounded-xl border border-slate-200 p-4">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <div className="font-semibold text-slate-900">{h.thread_url ? <a className="underline" href={h.thread_url} target="_blank" rel="noreferrer">{h.query}</a> : `“${h.query}”`} {h.thread_url && <span className="ml-1 rounded bg-cyan-50 px-1.5 py-0.5 text-[11px] font-medium text-cyan-700">{new URL(h.thread_url).hostname.replace("www.", "")}</span>}</div>
-        <div className="text-xs text-slate-500">{h.source === "web" ? "Open the thread above" : `${h.impressions} searches this week`} · answers it: <a className="underline" href={`${SITE}${h.page}`} target="_blank" rel="noreferrer">{h.page}</a></div>
+        <div className="text-xs text-slate-500">{h.source === "web" ? "Open the thread above" : h.source === "manual" ? "Your question" : `${h.impressions} searches this week`} · answers it: <a className="underline" href={`${SITE}${h.page}`} target="_blank" rel="noreferrer">{h.page}</a>{h.kind && <> · <Badge tone={h.kind === "saved" ? "success" : h.kind === "page" ? "neutral" : "info"}>{KIND_LABEL[h.kind] ?? h.kind}</Badge></>}</div>
       </div>
       <div className="mt-2 flex flex-wrap gap-2 text-[13px]">
         <a className="rounded-full border border-slate-200 px-3 py-1 hover:bg-slate-50" href={`https://www.quora.com/search?q=${q(h.query)}`} target="_blank" rel="noreferrer">Find on Quora</a>
         <a className="rounded-full border border-slate-200 px-3 py-1 hover:bg-slate-50" href={`https://www.reddit.com/search/?q=${q(h.query)}`} target="_blank" rel="noreferrer">Find on Reddit</a>
         <a className="rounded-full border border-slate-200 px-3 py-1 hover:bg-slate-50" href={`https://www.google.com/search?q=${q(`${h.query} site:quora.com OR site:reddit.com`)}`} target="_blank" rel="noreferrer">Find on Google</a>
       </div>
-      <textarea readOnly className={`${INPUT} mt-3 min-h-[9rem] py-2 text-[13px] leading-relaxed`} value={h.answer} />
+      <textarea className={`${INPUT} mt-3 min-h-[16rem] py-2 text-[13px] leading-relaxed`} value={text} onChange={(e) => { setText(e.target.value); setCopied(false); }} />
       <div className="mt-2 flex flex-wrap items-center gap-2">
-        <Button size="sm" onClick={async () => { await navigator.clipboard.writeText(h.answer).catch(() => undefined); setCopied(true); }}>{copied ? "Copied" : "Copy answer"}</Button>
+        <Button size="sm" onClick={async () => { await navigator.clipboard.writeText(text).catch(() => undefined); setCopied(true); }}>{copied ? "Copied" : "Copy answer"}</Button>
+        <Button size="sm" variant="ghost" onClick={onRewrite}>Rewrite</Button>
+        <Button size="sm" variant="ghost" onClick={() => onKeep(text)}>Save as my answer</Button>
         <input className={`${INPUT} h-8 max-w-sm`} placeholder="Link of your posted answer" value={url} onChange={(e) => setUrl(e.target.value)} />
         <Button size="sm" variant="primary" onClick={() => onDone("hunt-posted", url)}>Posted</Button>
         <Button size="sm" variant="ghost" onClick={() => onDone("hunt-dismiss")}>Not useful</Button>
@@ -169,6 +282,7 @@ export default function OutreachEmail({ kit }: { kit?: React.ReactNode }) {
   const [form, setForm] = useState({ host: "", port: "", user: "", pass: "", fromName: "", token: "", cap: "", tavilyKey: "", tavilyKey2: "" });
   const [target, setTarget] = useState({ email: "", name: "", org: "", kind: "journalist", why: "", sourceUrl: "" });
   const [busy, setBusy] = useState<string | null>(null);
+  const [libDraft, setLibDraft] = useState<Partial<Saved> | null>(null);
   const [msg, setMsg] = useState<{ tone: "success" | "danger" | "info"; text: string; link?: string } | null>(null);
 
   const load = useCallback(async () => {
@@ -415,7 +529,8 @@ export default function OutreachEmail({ kit }: { kit?: React.ReactNode }) {
       {tab === "sites" && <SourcesCard sources={s.sources} busy={!!busy} post={post} onMsg={setMsg} />}
 
       {tab === "hunt" && (
-      <div id="hunt" className="scroll-mt-24">
+      <div id="hunt" className="scroll-mt-24 space-y-5">
+        <AskCard busy={!!busy} post={post} onMsg={setMsg} />
         <Card
           title={`Daily hunt — ${s.hunt.filter((h) => h.status === "new").length} questions to answer`}
           description="Open the thread (or a search), paste the answer from your own account, then save its link. Say you are a counsellor; link only when the page answers the question."
@@ -433,7 +548,16 @@ export default function OutreachEmail({ kit }: { kit?: React.ReactNode }) {
           ) : (
             <div className="space-y-3">
               {s.hunt.filter((h) => h.status === "new").map((h) => (
-                <HuntCard key={h.id} h={h} onDone={(action, url) => post({ action, id: h.id, url }, "hunt-mark")} />
+                <HuntCard
+                  key={h.id}
+                  h={h}
+                  onDone={(action, url) => post({ action, id: h.id, url }, "hunt-mark")}
+                  onRewrite={() => post({ action: "hunt-rebuild", id: h.id }, "hunt-rebuild")}
+                  onKeep={(answer) => {
+                    setLibDraft({ match: suggestMatch(h.query), answer, page: h.page, checked_on: new Date().toISOString().slice(0, 10), is_active: true });
+                    document.getElementById("saved-answers")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                />
               ))}
             </div>
           )}
@@ -450,6 +574,9 @@ export default function OutreachEmail({ kit }: { kit?: React.ReactNode }) {
             </div>
           )}
         </Card>
+        <div id="saved-answers" className="scroll-mt-24">
+          <LibraryCard items={s.library ?? []} busy={!!busy} post={post} draft={libDraft} setDraft={setLibDraft} />
+        </div>
       </div>
       )}
 

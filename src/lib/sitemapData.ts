@@ -69,6 +69,9 @@ const STATIC: { path: string; priority: number; freq: SitemapEntry["changeFreque
   // The PG fee matrix, state by state (2026-11-09), and MCC's choice filling / upgrade / free exit rules.
   { path: "/md-ms-india/fees", priority: 0.9, freq: "weekly" },
   { path: "/neet-pg-choice-filling", priority: 0.9, freq: "weekly" },
+  // Clinical branches at a low rank, and the statistics page made to be cited (2026-11-10).
+  { path: "/neet-pg-low-score-clinical-branches", priority: 0.8, freq: "weekly" },
+  { path: "/neet-pg-statistics", priority: 0.8, freq: "weekly" },
   { path: "/nri-quota", priority: 0.7, freq: "monthly" },
   { path: "/nri-quota/colleges", priority: 0.6, freq: "monthly" },
   // The two highest-value quota queries in this market: what an NRI or a
@@ -210,7 +213,7 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
   } catch (error) {
     console.error("[sitemap] latest round could not be read", error);
   }
-  const ROUND_HUBS = new Set(["/neet-pg-cutoff", "/neet-pg-marks-vs-rank"]);
+  const ROUND_HUBS = new Set(["/neet-pg-cutoff", "/neet-pg-marks-vs-rank", "/neet-pg-low-score-clinical-branches", "/neet-pg-statistics"]);
   const TERMS_HUBS = new Set(["/md-ms-india/bond"]);
   const UG_RANK_HUBS = new Set(["/neet-ug-cutoff", "/bds-india"]);
 
