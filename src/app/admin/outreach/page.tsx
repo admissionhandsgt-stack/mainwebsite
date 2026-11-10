@@ -3,6 +3,7 @@ import { AlertTriangle, ExternalLink } from "lucide-react";
 import { getSessionUser } from "@/lib/auth";
 import { buildOutreachKit, type KitItem } from "@/lib/outreachKit";
 import CopyCode from "@/components/seo/CopyCode";
+import OutreachEmail from "@/components/admin/OutreachEmail";
 import { Badge, Card, Notice, PageHeader } from "@/components/admin/ui";
 
 /**
@@ -60,6 +61,11 @@ export default async function OutreachPage() {
           </ul>
         </Notice>
       </PageHeader>
+
+      {/* Email with the owner's approval on Telegram (2026-11-10, lib/outreach.ts). */}
+      <div className="mb-8">
+        <OutreachEmail />
+      </div>
 
       <div className="space-y-8">
         {groups.map((g, i) => (

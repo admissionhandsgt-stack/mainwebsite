@@ -55,7 +55,19 @@ export type IntegrationKey =
   | "zyn.notices.key"
   | "zyn.notices.enabled"
   | "zyn.notices.cursor"
-  | "zyn.notices.last";
+  | "zyn.notices.last"
+  // Outreach email (2026-11-10): the mailbox it is sent from, and the Telegram bot the owner approves each one in.
+  | "email.smtp.host"
+  | "email.smtp.port"
+  | "email.smtp.user"
+  | "email.smtp.pass"
+  | "email.from_name"
+  | "telegram.bot.token"
+  | "telegram.bot.chat_id"
+  | "telegram.bot.secret"
+  | "telegram.bot.link_code"
+  | "outreach.enabled"
+  | "outreach.daily_cap";
 
 /**
  * The environment variable that overrides each key, where one exists.

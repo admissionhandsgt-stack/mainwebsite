@@ -1,0 +1,261 @@
+"use client";
+
+import { useCallback, useEffect, useState } from "react";
+import { Mail, Send, Plus, Trash2, Link2 } from "lucide-react";
+import { Badge, Button, Card, EmptyState, Field, INPUT, INPUT_H, Notice, TABLE, Toggle, type Tone } from "@/components/admin/ui";
+
+/**
+ * Admin → Outreach email (2026-11-10). The mailbox the emails go from, the Telegram bot the owner approves each one in,
+ * the daily switch and cap, and the list of people written to (lib/outreach.ts). Secrets are write-only.
+ */
+type Row = {
+  id: number;
+  email: string;
+  name: string | null;
+  org: string;
+  kind: string;
+  why: string | null;
+  subject: string;
+  status: string;
+  sent_at: string | null;
+  followed_up_at: string | null;
+  last_error: string | null;
+  created_at: string;
+};
+type State = {
+  host: string;
+  port: string;
+  user: string;
+  passSet: boolean;
+  fromName: string;
+  tokenSet: boolean;
+  tokenMasked: string;
+  bot: string | null;
+  linked: boolean;
+  enabled: boolean;
+  cap: string;
+  rows: Row[];
+};
+
+const TONE: Record<string, Tone> = {
+  draft: "neutral",
+  previewed: "info",
+  followup_previewed: "info",
+  sending: "info",
+  sent: "success",
+  followed_up: "success",
+  replied: "success",
+  skipped: "neutral",
+  opted_out: "warning",
+  failed: "danger",
+};
+const when = (v: string | null) =>
+  v ? new Date(v).toLocaleString("en-IN", { timeZone: "Asia/Kolkata", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "—";
+
+export default function OutreachEmail() {
+  const [s, setS] = useState<State | null>(null);
+  const [form, setForm] = useState({ host: "", port: "", user: "", pass: "", fromName: "", token: "", cap: "" });
+  const [target, setTarget] = useState({ email: "", name: "", org: "", kind: "journalist", why: "", sourceUrl: "" });
+  const [busy, setBusy] = useState<string | null>(null);
+  const [msg, setMsg] = useState<{ tone: "success" | "danger" | "info"; text: string; link?: string } | null>(null);
+
+  const load = useCallback(async () => {
+    const r = await fetch("/api/admin/outreach-email", { cache: "no-store" });
+    if (!r.ok) return setMsg({ tone: "danger", text: "Could not load the settings." });
+    const j = (await r.json()) as State;
+    setS(j);
+    setForm((f) => ({ ...f, host: j.host, port: j.port, user: j.user, fromName: j.fromName, cap: j.cap, pass: "", token: "" }));
+  }, []);
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  const post = async (body: Record<string, unknown>, label: string) => {
+    setBusy(label);
+    setMsg(null);
+    try {
+      const r = await fetch("/api/admin/outreach-email", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+      const j = (await r.json()) as Record<string, unknown>;
+      if (!r.ok || j.ok === false) setMsg({ tone: "danger", text: String(j.error ?? "Failed") });
+      else return j;
+    } catch {
+      setMsg({ tone: "danger", text: "Failed" });
+    } finally {
+      setBusy(null);
+      load();
+    }
+    return null;
+  };
+
+  if (!s) return <Card title="Outreach email">Loading…</Card>;
+  const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) => setForm({ ...form, [k]: e.target.value });
+  const setT = (k: keyof typeof target) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setTarget({ ...target, [k]: e.target.value });
+
+  return (
+    <div className="space-y-5">
+      {msg && (
+        <Notice tone={msg.tone}>
+          {msg.text}
+          {msg.link && (
+            <>
+              {" "}
+              <a href={msg.link} target="_blank" rel="noreferrer" className="font-semibold underline">
+                Open the bot and press Start
+              </a>
+            </>
+          )}
+        </Notice>
+      )}
+
+      <Card
+        title="Outreach email — approve on Telegram"
+        description="Every day at 11 AM the drafts come to your Telegram with Send · Skip buttons. Reply to a preview to change it. Nothing goes without your Send."
+        actions={
+          <Toggle
+            checked={s.enabled}
+            onChange={(v) => post({ action: "save", enabled: v }, "toggle")}
+            label={s.enabled ? "On" : "Off"}
+            disabled={!s.passSet || !s.linked}
+          />
+        }
+      >
+        <div className="grid gap-4 md:grid-cols-2">
+          <Field label="SMTP server" hint="smtp.nevtan.com (the webmail at mail.nevtan.com does not take SMTP).">
+            <input className={`${INPUT} ${INPUT_H}`} value={form.host} onChange={set("host")} />
+          </Field>
+          <Field label="Port" hint="465 (SSL) or 587.">
+            <input className={`${INPUT} ${INPUT_H}`} value={form.port} onChange={set("port")} />
+          </Field>
+          <Field label="Login (the email address)">
+            <input className={`${INPUT} ${INPUT_H}`} value={form.user} onChange={set("user")} />
+          </Field>
+          <Field label="Password" hint={s.passSet ? "Saved. Type only to change it." : "Not saved yet."}>
+            <input className={`${INPUT} ${INPUT_H}`} type="password" autoComplete="new-password" value={form.pass} onChange={set("pass")} />
+          </Field>
+          <Field label="Sender name">
+            <input className={`${INPUT} ${INPUT_H}`} value={form.fromName} onChange={set("fromName")} />
+          </Field>
+          <Field label="Most emails a day" hint="Sends and follow-ups together; up to 20.">
+            <input className={`${INPUT} ${INPUT_H}`} inputMode="numeric" value={form.cap} onChange={set("cap")} />
+          </Field>
+          <Field
+            label="Telegram bot token"
+            hint={s.tokenSet ? `Saved (${s.tokenMasked})${s.bot ? ` — @${s.bot}` : ""}. Type only to change it.` : "Make a bot with @BotFather in Telegram (/newbot) and paste its token here."}
+          >
+            <input className={`${INPUT} ${INPUT_H}`} type="password" autoComplete="off" value={form.token} onChange={set("token")} />
+          </Field>
+          <div className="flex items-end gap-2">
+            <Badge tone={s.linked ? "success" : "warning"}>{s.linked ? "Telegram linked" : "Telegram not linked"}</Badge>
+          </div>
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <Button variant="primary" disabled={!!busy} onClick={() => post({ action: "save", ...form }, "save")}>
+            Save
+          </Button>
+          <Button disabled={!!busy || !s.passSet} onClick={async () => {
+            const j = await post({ action: "test-mail" }, "test-mail");
+            if (j) setMsg({ tone: "success", text: `Test email sent to ${String(j.sentTo)}.` });
+          }}>
+            <Mail className="mr-1.5 h-4 w-4" /> Test the mailbox
+          </Button>
+          <Button disabled={!!busy || !s.tokenSet} onClick={async () => {
+            const j = await post({ action: "link-telegram" }, "link");
+            if (j) setMsg({ tone: "info", text: j.link ? "Open this link on your phone and press Start:" : `Send /start ${String(j.code)} to your bot.`, link: (j.link as string) ?? undefined });
+          }}>
+            <Link2 className="mr-1.5 h-4 w-4" /> Link Telegram
+          </Button>
+          <Button disabled={!!busy || !s.linked} onClick={async () => {
+            const j = await post({ action: "test-telegram" }, "tg");
+            if (j) setMsg({ tone: "success", text: "Test message sent to Telegram." });
+          }}>
+            Test Telegram
+          </Button>
+          <Button disabled={!!busy || !s.linked || !s.passSet} onClick={async () => {
+            const j = await post({ action: "preview-now" }, "preview");
+            if (j) setMsg({ tone: "success", text: `${Number(j.previewed ?? 0)} previews and ${Number(j.followups ?? 0)} follow-ups sent to Telegram.` });
+          }}>
+            <Send className="mr-1.5 h-4 w-4" /> Send previews now
+          </Button>
+        </div>
+      </Card>
+
+      <Card title="Add someone to write to" description="An address you found on their own public page (contact, press, team). The draft is written from today's figures; you see it on Telegram before anything goes.">
+        <div className="grid gap-4 md:grid-cols-3">
+          <Field label="Email">
+            <input className={`${INPUT} ${INPUT_H}`} value={target.email} onChange={setT("email")} />
+          </Field>
+          <Field label="Name (optional)">
+            <input className={`${INPUT} ${INPUT_H}`} value={target.name} onChange={setT("name")} />
+          </Field>
+          <Field label="Organisation">
+            <input className={`${INPUT} ${INPUT_H}`} value={target.org} onChange={setT("org")} />
+          </Field>
+          <Field label="Kind">
+            <select className={`${INPUT} ${INPUT_H}`} value={target.kind} onChange={setT("kind")}>
+              <option value="journalist">Journalist / news desk</option>
+              <option value="association">Doctors' association</option>
+              <option value="other">Other</option>
+            </select>
+          </Field>
+          <Field label="Why them (optional)">
+            <input className={`${INPUT} ${INPUT_H}`} value={target.why} onChange={setT("why")} />
+          </Field>
+          <Field label="Where the address was found">
+            <input className={`${INPUT} ${INPUT_H}`} value={target.sourceUrl} onChange={setT("sourceUrl")} />
+          </Field>
+        </div>
+        <div className="mt-4">
+          <Button variant="primary" disabled={!!busy || !target.email || !target.org} onClick={async () => {
+            const j = await post({ action: "add", ...target }, "add");
+            if (j) {
+              setTarget({ email: "", name: "", org: "", kind: target.kind, why: "", sourceUrl: "" });
+              setMsg({ tone: "success", text: "Added. Its draft goes to Telegram with the next previews." });
+            }
+          }}>
+            <Plus className="mr-1.5 h-4 w-4" /> Add
+          </Button>
+        </div>
+      </Card>
+
+      <Card title={`Written to (${s.rows.length})`} flush>
+        {s.rows.length === 0 ? (
+          <EmptyState icon={Mail} title="Nobody yet" hint="Add someone above." />
+        ) : (
+          <div className={TABLE.wrap}>
+            <table className={TABLE.table}>
+              <thead className={TABLE.head}>
+                <tr>
+                  <th className={TABLE.th}>Who</th>
+                  <th className={TABLE.th}>Subject</th>
+                  <th className={TABLE.th}>Status</th>
+                  <th className={TABLE.th}>Sent</th>
+                  <th className={TABLE.th} />
+                </tr>
+              </thead>
+              <tbody>
+                {s.rows.map((r) => (
+                  <tr key={r.id} className={TABLE.row}>
+                    <td className={TABLE.td}>
+                      <div className="font-medium text-slate-900">{r.org}</div>
+                      <div className="text-xs text-slate-500">{r.name ? `${r.name} · ` : ""}{r.email}</div>
+                    </td>
+                    <td className={`${TABLE.td} max-w-[28rem] text-xs`}>{r.subject}{r.last_error && <div className="mt-1 text-red-600">{r.last_error}</div>}</td>
+                    <td className={TABLE.td}><Badge tone={TONE[r.status] ?? "neutral"}>{r.status.replace("_", " ")}</Badge></td>
+                    <td className={`${TABLE.td} text-xs`}>{when(r.sent_at)}{r.followed_up_at ? ` · follow-up ${when(r.followed_up_at)}` : ""}</td>
+                    <td className={TABLE.td}>
+                      {!r.sent_at && (
+                        <Button size="icon" variant="ghost" aria-label={`Remove ${r.email}`} onClick={() => post({ action: "delete", id: r.id }, "delete")}>
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </Card>
+    </div>
+  );
+}

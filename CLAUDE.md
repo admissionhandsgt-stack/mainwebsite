@@ -2247,6 +2247,26 @@ Owner shared SEO reels and said "1-5 done karo" (paid tools skipped). What was b
   "closing rank" query. Result on that data: 9 new links, 62 already on the pages — the site's own linking was already
   dense. `suggestTarget()` is pure, so it can be tested offline against a GSC export.
 
+## Outreach email, approved on Telegram (2026-11-10)
+
+Owner: "email bhi auto bhejne ka banao… telegram ke through approval and preview and send and changes… I permit you".
+`lib/outreach.ts` + `lib/mailer.ts` (nodemailer 10.2.1 — ≤10.1.3 has SMTP-injection advisories) + `lib/telegramBot.ts`,
+table `outreach_emails` (migration 0050, raw SQL), Admin → Outreach (the card above the kit).
+
+- **Mailbox:** gulshantomar@admissionhands.com through **smtp.nevtan.com:465** (the domain's MX; `mail.nevtan.com` is only
+  the webmail and answers 443 alone — tested from this PC and the server). Password write-only in `integrations`
+  (`email.smtp.pass`), pasted by the owner.
+- **The site's own Telegram bot** (made by the owner with @BotFather; token write-only). "Link Telegram" sets the webhook
+  `/api/telegram/webhook` with a secret header and shows a one-time `t.me/<bot>?start=<code>` link; only the chat that
+  sends that code counts, every other chat is ignored.
+- **Flow:** a person adds a target (an address from the organisation's own public page). Its draft is written from live
+  figures (stipend by state, the bond with its "as listed" caveat), never typed numbers. Daily 05:35 UTC
+  (`/api/cron/outreach`, heartbeat `outreach`), drafts and due follow-ups go to Telegram up to the daily cap (default 10,
+  max 20) less today's sends. Send / Skip / Opted out; a reply to a preview replaces its text ("Subject: …" first line
+  replaces the subject). Send claims the row atomically (`status = 'sending'`), so a double tap sends once. One
+  follow-up after 7 days unless "They replied". One row per address ever (unique on lower(email)).
+- **Never:** send without the owner's Send, ask for a link in exchange for anything, or add addresses scraped in bulk.
+
 ## Google Cloud: alarms, the second backup, billing (2026-11-10)
 
 Owner: "existing [billing] use karenge, kardo sab setup". Project **admissionhands-seo-1008** (number 956182544169, owner
