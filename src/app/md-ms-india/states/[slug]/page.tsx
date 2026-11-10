@@ -1,3 +1,4 @@
+import { getNmcPgForState } from "@/lib/nmcData";
 import StateNotices from "@/components/states/StateNotices";
 import { fitTitle, fitDescription, count } from "@/lib/seoTitle";
 import { getStateAuthority } from "@/lib/stateAuthorities";
@@ -157,7 +158,7 @@ export default async function PgStatePage(props: Props) {
     )
     .sort((a, b) => Number(/state|govt|government|open|general/i.test(b.quota)) - Number(/state|govt|government|open|general/i.test(a.quota)) || b.colleges - a.colleges)[0];
   // Words from Admin → Content → Text & numbers ("Page: PG state pages"); photo from Admin → Media.
-  const [copy, heroImage, authority, mcc, branchPages, combos, live] = await Promise.all([
+  const [copy, heroImage, authority, mcc, branchPages, combos, live, nmcPg] = await Promise.all([
     pageCopy("page.pg_state.hero", { state: p.name, year: p.year ?? "the latest" }),
     pageHeroImage(`page.pg_state.${p.slug}.hero`, "page.pg_state.hero"),
     getStateAuthority(p.name),
@@ -167,6 +168,8 @@ export default async function PgStatePage(props: Props) {
     getBranchStateCombos(),
     // The state's own round of the year in progress (lib/stateRoundQueries.ts) — never read by the predictor.
     getStateRound(p.slug).catch(() => null),
+    // NMC's MD/MS/Diploma seats in the state — "how many pg seats in <state>" (2026-11-10).
+    getNmcPgForState(p.name),
   ]);
   const round = live && (p.year == null || live.year > p.year) ? live : null;
   const roundCopy = round
@@ -200,6 +203,14 @@ export default async function PgStatePage(props: Props) {
           {
             question: `What is the ${p.name} NEET PG ${round.year} ${round.round.toLowerCase()} cutoff?`,
             answer: `In ${round.counselling}'s ${round.round.toLowerCase()} allotment, the last general-category seat in ${round.mainQuota} went to AIR ${n(roundGen.last)}, across ${roundGen.colleges} colleges (open merit, in-service seats left out).${round.note ? ` ${round.note}` : ""} Each category and branch is in the table on this page.`,
+          },
+        ]
+      : []),
+    ...(nmcPg && nmcPg.md + nmcPg.ms > 0
+      ? [
+          {
+            question: `How many PG seats are there in ${p.name}?`,
+            answer: `NMC's register lists ${n(nmcPg.md + nmcPg.ms)} MD/MS seats in ${p.name} (${n(nmcPg.md)} MD and ${n(nmcPg.ms)} MS)${nmcPg.diploma ? ` and ${n(nmcPg.diploma)} PG diploma seats` : ""}, at ${n(nmcPg.colleges)} colleges — ${n(nmcPg.govt)} of the seats at ${n(nmcPg.govtColleges)} government colleges. DNB seats in hospitals are counted separately by NBEMS.${mcc ? ` MCC's ${mcc.year} seat matrix lists ${n(mcc.total)} seats in ${p.name}, DNB included.` : ""}`,
           },
         ]
       : []),

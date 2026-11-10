@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { getBranches } from "@/lib/branchQueries";
 import { resolveMetadata } from "@/lib/content";
-import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
+import StructuredData, { webPage, breadcrumb, faqPage } from "@/components/seo/StructuredData";
+import SectionHead from "@/components/ui/SectionHead";
 import CtaBand from "@/components/ui/CtaBand";
 import BranchStateIndex from "@/components/cutoffs/BranchStateIndex";
 import DataHero from "@/components/hero/DataHero";
@@ -38,6 +39,20 @@ export default async function BranchesPage() {
     pageCopy("page.pg_branches.hero", { count: branches.length }),
     pageHeroImage("page.pg_branches.hero"),
   ]);
+  // "how many branches in neet pg" (GSC, position ~7, no clicks): counted from the branches on this page.
+  const kind = (n: string) => (/^MD\s/.test(n) ? "MD" : /^MS\s/.test(n) ? "MS" : /^(DNB|DrNB)\s/.test(n) ? "DNB" : /diploma/i.test(n) ? "Diploma" : "Other");
+  const byKind = branches.reduce<Record<string, number>>((a, b) => ((a[kind(b.name)] = (a[kind(b.name)] ?? 0) + 1), a), {});
+  const kindsText = ["MD", "MS", "Diploma", "DNB"].filter((k) => byKind[k]).map((k) => `${byKind[k]} ${k === "Diploma" ? "diploma" : k}`).join(", ");
+  const faqs = [
+    {
+      question: "How many branches are there in NEET PG?",
+      answer: `${branches.length} branches have published NEET PG closing ranks: ${kindsText}. Each opens to its own page with seats, colleges and the cut off by category.`,
+    },
+    {
+      question: "Which branches are clinical in NEET PG?",
+      answer: "General Medicine, General Surgery, Orthopaedics, Obstetrics & Gynaecology, Paediatrics, Radio Diagnosis, Dermatology, ENT, Ophthalmology, Psychiatry, Anaesthesiology, Respiratory Medicine and Emergency Medicine are the ones asked about most. Pathology, Microbiology, Pharmacology, Forensic and Community Medicine are para-clinical; Anatomy, Physiology and Biochemistry pre-clinical.",
+    },
+  ];
 
   return (
     <main className="min-h-screen bg-background">
@@ -53,6 +68,7 @@ export default async function BranchesPage() {
             { name: "MD/MS", path: "/md-ms-india" },
             { name: "Branches", path: "/md-ms-india/branches" },
           ]),
+          faqPage(faqs),
         ]}
       />
 
@@ -139,6 +155,24 @@ export default async function BranchesPage() {
       </div>
 
       <BranchStateIndex className="pb-10 md:pb-14" />
+
+      <section className="border-t border-border bg-surface-1 py-10 md:py-14">
+        <div className="container-custom">
+          <SectionHead icon="help" eyebrow="FAQ" title="NEET PG branches: questions" />
+          <div className="mt-6 space-y-3">
+            {faqs.map((f) => (
+              <details key={f.question} className="rounded-2xl border border-border bg-card p-5">
+                <summary className="cursor-pointer font-semibold text-foreground">{f.question}</summary>
+                <p className="mt-3 leading-relaxed text-muted-foreground">{f.answer}</p>
+              </details>
+            ))}
+          </div>
+          <p className="mt-6 text-sm text-muted-foreground">
+            A clinical branch at a low rank:{" "}
+            <Link href="/neet-pg-low-score-clinical-branches" className="font-semibold text-primary-strong hover:underline">rank vs clinical branch</Link>.
+          </p>
+        </div>
+      </section>
 
       <CtaBand
         title="Not sure which branch your rank can reach?"

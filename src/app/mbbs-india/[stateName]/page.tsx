@@ -149,8 +149,12 @@ export default async function MBBSStatePage(props: Props) {
         ]
       : []),
     {
-      question: `How many MBBS colleges are there in ${name}?`,
+      // "how many medical colleges in manipur / telangana" (GSC, position 6–10, no clicks): NMC's own count first.
+      question: `How many medical colleges are there in ${name}?`,
       answer:
+        (nmc && nmc.colleges
+          ? `NMC's register lists ${inr(nmc.colleges)} MBBS colleges in ${name}: ${inr(nmc.govtColleges)} government and ${inr(nmc.colleges - nmc.govtColleges)} private or deemed. `
+          : "") +
         `We list ${p.colleges.length} MBBS colleges in ${name}` +
         (withRanks ? `, ${withRanks} of them with published NEET UG closing ranks` : "") +
         `. Each has its own page with its cut off band, fees, seats and the counselling that fills them.`,

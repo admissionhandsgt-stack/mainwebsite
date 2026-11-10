@@ -105,6 +105,18 @@ export default async function BondPage() {
         ...(b.penaltyMedian ? [{ question: body.faq3_q, answer: body.faq3_a }] : []),
         ...(b.exitMedian ? [{ question: body.faq4_q, answer: body.faq4_a }] : []),
         ...(b.otherBondStates.length ? [{ question: body.faq5_q, answer: body.faq5_a }] : []),
+        // "which state has no bond after pg" (GSC, position ~9, no clicks): answered from the same terms.
+        ...(() => {
+          const none = govtStates.filter((s) => s.govt.colleges >= 2 && s.govt.withBond === 0).map((s) => s.state);
+          const few = govtStates.filter((s) => s.govt.colleges >= 3 && s.govt.withBond > 0 && s.govt.withBond / s.govt.colleges <= 0.34).map((s) => s.state);
+          if (!none.length && !few.length) return [];
+          return [
+            {
+              question: "Which states have no service bond after PG?",
+              answer: `${none.length ? `As listed for the ${b.year ?? "latest"} counselling, no government PG college lists a service bond in ${list(none)}.` : "Every state lists a service bond at some of its government PG colleges."}${few.length ? ` In ${list(few)}, only a few government colleges list one.` : ""} These terms change every year — confirm with the state's own notice before you choose.`,
+            },
+          ];
+        })(),
       ]
     : [];
   const byPenalty = govtStates.filter((s) => s.govt.penaltyMedian).sort((x, y) => (y.govt.penaltyMedian ?? 0) - (x.govt.penaltyMedian ?? 0));

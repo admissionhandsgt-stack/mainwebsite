@@ -13,6 +13,7 @@ import { unstable_cache } from "next/cache";
 import { sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { logError } from "@/lib/logger";
+import { stateKey } from "@/lib/nmcSync";
 import type { Level } from "@/lib/collegeQueries";
 
 export interface NmcCourse {
@@ -176,3 +177,54 @@ export async function getNmcBranchSeats(name: string): Promise<{ seats: number; 
 /** "29 September 2026". */
 export const nmcDate = (iso: string | null) =>
   iso ? new Date(`${iso.slice(0, 10)}T00:00:00Z`).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }) : null;
+
+/**
+ * NMC's PG seats in one state (2026-11-10): "how many pg seats in maharashtra / andhra pradesh / kerala" sat at position
+ * 8–10 with no clicks while the PG state page never said the number. MD, MS and Diploma seats, government against
+ * private (NMC files deemed universities as private), and how many colleges hold them. Matched by `stateKey`, which folds
+ * the two spellings of a state.
+ */
+export interface NmcStatePg {
+  md: number;
+  ms: number;
+  diploma: number;
+  govt: number;
+  colleges: number;
+  govtColleges: number;
+}
+const loadNmcPgByState = unstable_cache(
+  async (): Promise<Record<string, NmcStatePg>> => {
+    const rows = (await db.execute(sql`
+      SELECT state_name AS s,
+             COALESCE(SUM(approved_seat) FILTER (WHERE course_type = 'MD'), 0)::int AS md,
+             COALESCE(SUM(approved_seat) FILTER (WHERE course_type = 'MS'), 0)::int AS ms,
+             COALESCE(SUM(approved_seat) FILTER (WHERE course_type = 'Diploma'), 0)::int AS diploma,
+             COALESCE(SUM(approved_seat) FILTER (WHERE management_type = 'Government'), 0)::int AS govt,
+             COUNT(DISTINCT college_code)::int AS colleges,
+             COUNT(DISTINCT college_code) FILTER (WHERE management_type = 'Government')::int AS govt_colleges
+        FROM nmc_courses WHERE course_type IN ('MD', 'MS', 'Diploma') GROUP BY state_name`)) as unknown as {
+      s: string; md: number; ms: number; diploma: number; govt: number; colleges: number; govt_colleges: number;
+    }[];
+    const out: Record<string, NmcStatePg> = {};
+    for (const r of rows) {
+      const k = stateKey(r.s);
+      const prev = out[k];
+      const add = { md: r.md, ms: r.ms, diploma: r.diploma, govt: r.govt, colleges: r.colleges, govtColleges: r.govt_colleges };
+      out[k] = prev
+        ? { md: prev.md + add.md, ms: prev.ms + add.ms, diploma: prev.diploma + add.diploma, govt: prev.govt + add.govt, colleges: prev.colleges + add.colleges, govtColleges: prev.govtColleges + add.govtColleges }
+        : add;
+    }
+    return out;
+  },
+  ["nmc-pg-by-state-v1"],
+  { revalidate: 86400, tags: ["nmc"] },
+);
+
+export async function getNmcPgForState(state: string): Promise<NmcStatePg | null> {
+  try {
+    return (await loadNmcPgByState())[stateKey(state)] ?? null;
+  } catch (error) {
+    logError(error, { route: "nmcData:pgByState" });
+    return null;
+  }
+}
