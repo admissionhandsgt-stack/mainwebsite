@@ -34,9 +34,10 @@ const STALE_MS = 7 * 24 * 60 * 60 * 1000;
 
 const NEVER_PREFIX = ["/api", "/admin", "/account", "/login", "/cdn-cgi"];
 const SESSION_COOKIES = ["ah_user=", "ah_unlock=", "ah_admin_session="];
-// Kept in step with CRAWLER_UA in src/lib/crawler.ts: a verified crawler is
-// served the gated rows, so nothing it receives may ever be stored.
-const CRAWLER_UA = /(googlebot|google-inspectiontool|storebot-google|bingbot|adidxbot)/i;
+// Since 2026-10-12 a crawler is served exactly what a visitor is (no gated rows exist any more), so search crawlers take
+// the same cached pages — Googlebot gets a page in ~0.16 s instead of ~0.7 s, which lets it crawl more of the site
+// (2026-11-11). Only Search Console's live test is passed through, so "Test live URL" always sees the origin.
+const CRAWLER_UA = /(google-inspectiontool)/i;
 
 function isImage(p) {
   return p === "/_next/image" || p.startsWith("/assets/images/uploads/");
