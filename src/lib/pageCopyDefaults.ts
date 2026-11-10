@@ -401,6 +401,46 @@ export const PAGE_COPY = {
       },
     },
   },
+  "page.login": {
+    group: "Page: sign in / create account",
+    fields: {
+      eyebrow: { label: "Hero eyebrow", value: "Your free AdmissionHands account" },
+      title: { label: "Hero title", value: "Your NEET seat plan," },
+      accent: { label: "Hero title, coloured part", value: "in one account." },
+      subtitle: {
+        label: "Hero line — {years}, {students}",
+        value: "MBBS or MD/MS: the colleges your rank reached, your chance at each, fees, your documents, and an expert counsellor who already knows your profile. {years} years, {students} students guided.",
+        long: true,
+      },
+      benefits_title: { label: "Benefits heading", value: "What your free account gives you" },
+      benefits: {
+        label: "Benefits, one per line: title | text",
+        value: [
+          "Your colleges, with your chance | Every college your NEET rank reached last year, marked High, Good, Possible or Reach, with an approximate fee — for MBBS, BDS and MD/MS.",
+          "Your profile, remembered | Rank, category, state and budget saved once; the predictor and every page open where you left off.",
+          "A counsellor who already knows you | One tap asks for a call, and the counsellor has your rank, budget and branches before saying hello.",
+          "Your documents in one place | Upload the counselling documents once; our team checks the set before reporting day.",
+          "Sign in from any device | Your number and a password, or a code on WhatsApp — no app to install.",
+        ].join("\n"),
+        long: true,
+      },
+      steps_title: { label: "How-to heading", value: "How to use it" },
+      steps: {
+        label: "Steps, one per line",
+        value: [
+          "Create the account with your mobile number — a code on WhatsApp confirms it.",
+          "Add your rank, category and budget — about a minute.",
+          "See your colleges with your chance, then talk to an expert about the order and the rounds.",
+        ].join("\n"),
+        long: true,
+      },
+      trust: {
+        label: "Small line under the steps",
+        value: "Free. Your number is how we reach you about counselling and nothing else — never sold or passed on.",
+        long: true,
+      },
+    },
+  },
   "site.hunt_answer": {
     group: "Outreach: answers the daily hunt writes",
     fields: {

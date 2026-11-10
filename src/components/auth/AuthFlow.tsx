@@ -76,6 +76,13 @@ export interface AuthFlowProps {
    * (the Admission Chance flow does, course by course).
    */
   skipProfile?: boolean;
+  /**
+   * "signin": the number alone, then password or code (owner, 2026-11-10: "Sign Up & login alag sa hona chaiye").
+   * "signup": number, name, rank and category. "auto" (default, every other caller): the one screen as before.
+   */
+  mode?: "auto" | "signin" | "signup";
+  /** On /login: offer the other tab when the number says the visitor is on the wrong one. */
+  onSwitchMode?: (mode: "signin" | "signup") => void;
 }
 
 const POLL_MS = 2500;
@@ -99,7 +106,10 @@ export default function AuthFlow({
   onDone,
   bare = false,
   skipProfile = false,
+  mode = "auto",
+  onSwitchMode,
 }: AuthFlowProps) {
+  const signin = mode === "signin";
   const [step, setStep] = useState<Step>("phone");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -271,7 +281,7 @@ export default function AuthFlow({
     // Required for somebody we have not met. Four of the first six enquiries
     // reached the counsellors as "Not given", so every call opened by asking a
     // stranger their name — one field here is cheaper than that, every time.
-    if (!known?.exists) {
+    if (!signin && !known?.exists) {
       const n = checkName(name);
       if (!n.ok) return setError(n.error);
     }
@@ -285,6 +295,12 @@ export default function AuthFlow({
     try {
       const found = await post("/api/auth/lookup", { phone: digits });
       setKnown({ exists: Boolean(found.exists), firstName: (found.firstName as string) ?? null });
+      // The sign-in tab with a number we have never seen: say so and offer the other tab, rather than a code to a stranger.
+      if (signin && !found.exists) {
+        setNotice("There is no account with this number yet. Create a free one — it takes a minute.");
+        if (onSwitchMode) onSwitchMode("signup");
+        return;
+      }
       if (found.hasPassword) {
         setStep("password");
       } else {
@@ -478,10 +494,14 @@ export default function AuthFlow({
           }}
         >
           <h2 id="auth-flow-title" className="font-heading text-2xl font-extrabold tracking-tight text-foreground">
-            Sign in to continue
+            {signin ? "Welcome back" : mode === "signup" ? "Create your free account" : "Sign in to continue"}
           </h2>
           <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
-            {lockedCount > 0 ? (
+            {signin ? (
+              <>Your mobile number, then your password — or a code on WhatsApp if you have not set one.</>
+            ) : mode === "signup" ? (
+              <>Your number, your name, your rank. We send a code on WhatsApp to confirm the number is yours.</>
+            ) : lockedCount > 0 ? (
               <>
                 Your <span className="tnum font-semibold text-foreground">{lockedCount}</span>{" "}
                 {noun} are ready. New here or coming back, it starts with your number.
@@ -508,7 +528,14 @@ export default function AuthFlow({
             />
           </Field>
 
-          {/* Only asked of somebody we have never met, and never asked twice. */}
+          {notice && step === "phone" && (
+            <p className="mt-4 rounded-xl border border-primary/25 bg-primary-soft px-3 py-2 text-[14px] text-foreground" role="status">
+              {notice}
+            </p>
+          )}
+
+          {/* Only asked of somebody we have never met, and never asked twice — and never on the sign-in tab. */}
+          {!signin && (
           <Field label="Your name" htmlFor="auth-name" icon={User} hint="So a counsellor knows who they are speaking to.">
             <input
               id="auth-name"
@@ -521,13 +548,14 @@ export default function AuthFlow({
               className="h-14 w-full rounded-xl border-2 border-border bg-background pl-11 pr-4 text-[16px] text-foreground outline-none transition-colors focus:border-primary"
             />
           </Field>
+          )}
 
           {/*
             Only when the page has not already told us. On the predictor these
             were typed into the tool itself, and asking twice is how a useful
             step starts to feel like a form.
           */}
-          {(needsRank || needsCategory) && (
+          {!signin && (needsRank || needsCategory) && (
             <div className={needsRank && needsCategory ? "grid gap-3 sm:grid-cols-2" : ""}>
               {needsRank && (
                 <Field label="Your NEET rank" htmlFor="auth-rank" icon={Award}>
@@ -576,7 +604,7 @@ export default function AuthFlow({
 
           <FormError message={error} />
           <Submit busy={busy} disabled={!phoneValid}>
-            Continue
+            {signin ? "Sign in" : mode === "signup" ? "Create my account" : "Continue"}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Submit>
 
