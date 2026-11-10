@@ -2222,6 +2222,31 @@ again, the commit is in the history — the reason it went is not that it did no
 Verified by `node scripts/verify_documents.mjs <url>`: 19 checks, most of them about who *cannot*
 read a document.
 
+## Search Console tactics from the owner's reels (2026-11-10)
+
+Owner shared SEO reels and said "1-5 done karo" (paid tools skipped). What was built, from 28 days of GSC (11 Oct – 7 Nov):
+
+- **Low CTR at page-1 positions.** Titles changed only where the template had not changed in the last two weeks (college,
+  branch and state templates changed 5 and 9 Nov — judge them ~25 Nov, do not churn): `/md-ms-india/stipend` leads with
+  "Highest PG Stipend in India" (20.5k impressions, position 6.3, CTR 1.25%); stipend state pages lead with the
+  government-college figure and name the best-paying college; `/md-ms-india/bond` leads with "NEET PG Bond & Seat
+  Leaving Penalty State Wise". PG college descriptions put fee and stipend before seats (`collegeDescription`): stipend
+  had been the first fact to fall off while "<college> pg stipend" was a top query.
+- **Quick answer under the title** (the hero's first line) on the stipend hub, stipend state pages, the bond page and PG
+  branch pages: field `answer` (branch: `answer_live` / `answer`) in each group's copy, every figure a live token, used
+  only when every figure exists — `pageCopy` turns a missing token into an empty string.
+- **"Related searches"** (`lib/searchLinks.ts`, `components/seo/SearchLinks.tsx` in the root layout above the footer,
+  heading in Admin → Content → "Site: related searches", blank hides it): weekly `POST /api/cron/search-links` (Mondays
+  05:17 UTC, heartbeat `search-links`) links a page to the page that answers a query Google shows it for, when that page
+  names everything the query names and the first page does not, and the first page does not already link it (its HTML is
+  read from 127.0.0.1:8150, minus this block). Rules learnt on the real data — a plain overlap score made 122 links, many
+  wrong (Banda's ayurvedic college → Varanasi's, "dy patil mbbs" → a dental college): every name word must be in the
+  target's address, spellings folded (Bengaluru/Bangalore, Sri/Shri, Ayurved/Ayurvedic), a dental/AYUSH/nursing target
+  only when the query says so, college → college only across levels when the query asks for the other level, a state's
+  page only to that state's colleges, MD/MS never to DNB, two equal college matches → no link, never a college for a
+  "closing rank" query. Result on that data: 9 new links, 62 already on the pages — the site's own linking was already
+  dense. `suggestTarget()` is pure, so it can be tested offline against a GSC export.
+
 ## Google Cloud: alarms, the second backup, billing (2026-11-10)
 
 Owner: "existing [billing] use karenge, kardo sab setup". Project **admissionhands-seo-1008** (number 956182544169, owner

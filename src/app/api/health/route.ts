@@ -27,6 +27,7 @@ const MAX_AGE: Record<string, number> = {
   digest: 26 * 60 * MIN, // daily 04:30 UTC
   backup: 26 * 60 * MIN, // daily 21:15 UTC, written by the host's backup.sh
   nmc: 8 * 24 * 60 * MIN, // Mondays 03:41 UTC
+  "search-links": 8 * 24 * 60 * MIN, // Mondays 05:17 UTC
 };
 /** The MCC result worker checks every 2 minutes near a round, every 30 otherwise. */
 const WORKER_MAX_AGE = 45 * MIN;

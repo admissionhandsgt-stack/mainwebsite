@@ -357,17 +357,25 @@ export function collegeDescription(s: CollegeSummary): string {
     const seats = s.seats ? `${inr(s.seats)} PG seats${s.branches ? ` in ${s.branches} branches` : ""}` : null;
     const seatsShort = s.seats ? `${inr(s.seats)} PG seats` : null;
     const stipend = s.stipend ? `stipend ${money(s.stipend)} a month` : null;
-    const facts = (...xs: (string | null)[]) => xs.filter(Boolean).join(", ");
+    // The facts as one sentence: capitalised (it may now open with "tuition"), empty when there are none.
+    const facts = (...xs: (string | null)[]) => {
+      const f = xs.filter(Boolean).join(", ");
+      return f ? ` ${f.charAt(0).toUpperCase()}${f.slice(1)}.` : "";
+    };
+    // Fee and stipend before seats (2026-11-10): on these pages "<college> pg fees" and "<college> pg stipend" are
+    // asked far more than seats (GSC, 1–7 Nov: fees 23%, stipend 15%, seats 2% of the named queries), and with the
+    // year-in-progress cut off leading the sentence the stipend was the first fact to fall off ("SMS Medical
+    // College, Jaipur" showed no stipend while "sms jaipur pg stipend" was its top query).
     return (
       fit(DESCRIPTION, [
-        `${where} — ${cut ?? "MD/MS admission"}. ${facts(seats, lcFirst(fee), stipend, type)}.`,
-        `${where} — ${cutShort ?? "MD/MS admission"}. ${facts(seats, lcFirst(fee), stipend, type)}.`,
-        `${where} — ${cutShort ?? "MD/MS admission"}. ${facts(seats, lcFirst(fee), stipend)}.`,
-        `${where} — ${cutShort ?? "MD/MS admission"}. ${facts(seats, lcFirst(feeShort))}.`,
-        `${where} — ${cutShort ?? "MD/MS admission"}. ${facts(seatsShort, lcFirst(feeShort))}.`,
-        `${s.short} — ${cutShort ?? "MD/MS admission"}. ${facts(seatsShort, lcFirst(feeShort))}.`,
-        `${where} — ${cutShort ?? "MD/MS admission"}. ${facts(seats, stipend)}.`,
-        `${s.short} — ${cutShort ?? "MD/MS admission"}. ${facts(seats)}.`,
+        `${where} — ${cut ?? "MD/MS admission"}.${facts(lcFirst(fee), stipend, seats, type)}`,
+        `${where} — ${cutShort ?? "MD/MS admission"}.${facts(lcFirst(fee), stipend, seats, type)}`,
+        `${where} — ${cutShort ?? "MD/MS admission"}.${facts(lcFirst(fee), stipend, seats)}`,
+        `${where} — ${cutShort ?? "MD/MS admission"}.${facts(lcFirst(feeShort), stipend, seatsShort)}`,
+        `${where} — ${cutShort ?? "MD/MS admission"}.${facts(lcFirst(feeShort), stipend)}`,
+        `${s.short} — ${cutShort ?? "MD/MS admission"}.${facts(lcFirst(feeShort), stipend)}`,
+        `${where} — ${cutShort ?? "MD/MS admission"}.${facts(stipend, seats)}`,
+        `${s.short} — ${cutShort ?? "MD/MS admission"}.${facts(stipend ?? seats)}`,
         `${s.short}: MD/MS seats, fees and stipend.`,
       ]) ?? `MD/MS seats, fees and stipend at ${s.short}.`
     );

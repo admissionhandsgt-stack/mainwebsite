@@ -15,7 +15,8 @@ import { readFileSync } from "node:fs";
 import { getIntegration } from "@/lib/integrations";
 
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
-let cached: { token: string; until: number } | null = null;
+/** One cached token per scope set: the sheet sync and the Search Console read ask for different scopes. */
+const cache = new Map<string, { token: string; until: number }>();
 
 async function serviceAccount(): Promise<{ client_email: string; private_key: string } | null> {
   const fromDb = await getIntegration("google.service_account");
@@ -24,14 +25,16 @@ async function serviceAccount(): Promise<{ client_email: string; private_key: st
   return null;
 }
 
-export async function googleToken(): Promise<string | null> {
+export async function googleToken(scopes: string[] = SCOPES): Promise<string | null> {
+  const scope = scopes.join(" ");
+  const cached = cache.get(scope);
   if (cached && cached.until > Date.now() + 60_000) return cached.token;
   const key = await serviceAccount();
   if (!key) return null;
   const b64 = (v: unknown) => Buffer.from(typeof v === "string" ? v : JSON.stringify(v)).toString("base64url");
   const now = Math.floor(Date.now() / 1000);
   const head = b64({ alg: "RS256", typ: "JWT" });
-  const claims = b64({ iss: key.client_email, scope: SCOPES.join(" "), aud: "https://oauth2.googleapis.com/token", iat: now, exp: now + 3600 });
+  const claims = b64({ iss: key.client_email, scope, aud: "https://oauth2.googleapis.com/token", iat: now, exp: now + 3600 });
   const sig = createSign("RSA-SHA256").update(`${head}.${claims}`).sign(key.private_key).toString("base64url");
   const r = await fetch("https://oauth2.googleapis.com/token", {
     method: "POST",
@@ -41,7 +44,7 @@ export async function googleToken(): Promise<string | null> {
   });
   const j = (await r.json()) as { access_token?: string; expires_in?: number };
   if (!j.access_token) throw new Error(`Google token refused: ${r.status}`);
-  cached = { token: j.access_token, until: Date.now() + (j.expires_in ?? 3600) * 1000 };
+  cache.set(scope, { token: j.access_token, until: Date.now() + (j.expires_in ?? 3600) * 1000 });
   return j.access_token;
 }
 

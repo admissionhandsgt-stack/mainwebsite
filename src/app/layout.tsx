@@ -3,6 +3,7 @@ import '../index.css'
 import { Toaster } from '@/components/ui/toaster'
 import { Toaster as SonnerToaster } from '@/components/ui/sonner'
 import SiteShell from '@/components/SiteShell'
+import SearchLinks from '@/components/seo/SearchLinks'
 import type { Metadata } from 'next'
 import Script from 'next/script'
 import { Plus_Jakarta_Sans, Inter, Figtree } from 'next/font/google'
@@ -228,6 +229,8 @@ export default async function RootLayout({
               alerts={liveAlerts.map((a) => ({ id: a.id, title: a.title, link: a.link }))}
             >
               {children}
+              {/* Internal links chosen from Search Console, weekly (lib/searchLinks.ts); nothing on most pages. */}
+              <SearchLinks />
             </SiteShell>
           )}
         </ThemeProvider>

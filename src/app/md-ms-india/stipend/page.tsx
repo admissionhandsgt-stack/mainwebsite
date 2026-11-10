@@ -29,17 +29,25 @@ const OWN: Record<string, string> = { government: "Govt", private: "Private", de
 
 export async function generateMetadata(): Promise<Metadata> {
   const s = await getStipends();
+  // The state whose government colleges pay most can differ from the highest median overall (Nov 2026: Gujarat
+  // ₹1,00,800 overall, Delhi ₹1,26,927 in government colleges). "Highest" queries mostly mean government seats.
+  const govtTop = [...s.states].filter((x) => x.govtMedian != null).sort((a, b) => (b.govtMedian ?? 0) - (a.govtMedian ?? 0))[0];
+  const govtLine = govtTop && govtTop.state !== s.states[0]?.state ? `; government colleges: ${govtTop.state} ${inr(govtTop.govtMedian)}` : "";
   return resolveMetadata(PATH, {
-    // Searched as "rajasthan pg stipend", "highest pg stipend in india", "stipend
-    // for pg medical students state wise". No year: the figures are each
-    // college's latest published stipend, not one year's.
+    // Searched as "highest pg stipend in india" (the page's top query, Oct–Nov 2026: ~20k impressions at position 6,
+    // CTR 1.25%), "stipend for pg medical students state wise", "rajasthan pg stipend". The title leads with the
+    // words of the top query (2026-11-10). No year: the figures are each college's latest published stipend.
     title: fitTitle(
+      "Highest PG Stipend in India: State Wise List, Govt vs Private",
+      "Highest PG Stipend in India: State Wise MD/MS Stipend",
       "NEET PG Stipend State Wise: Highest MD/MS Stipend in India",
       "PG Stipend State Wise: Highest MD/MS Stipend",
     ),
     description: fitDescription(
       ...(s.states[0]
         ? [
+            `Highest median PG stipend: ${s.states[0].state} ${inr(s.states[0].median)} a month${govtLine}. First-year MD/MS stipend state wise for ${s.states.length} states and ${s.colleges.toLocaleString("en-IN")} colleges.`,
+            `Highest median PG stipend: ${s.states[0].state} ${inr(s.states[0].median)} a month${govtLine}. MD/MS stipend state wise, government vs private.`,
             `Highest PG stipend: ${s.states[0].state}, median ${inr(s.states[0].median)} a month. First-year MD/MS stipend state wise for ${s.states.length} states and ${s.colleges.toLocaleString("en-IN")} colleges, government vs private.`,
             `Highest PG stipend: ${s.states[0].state}, median ${inr(s.states[0].median)} a month. MD/MS stipend state wise for ${s.states.length} states, government vs private.`,
           ]
@@ -57,8 +65,18 @@ export default async function StipendPage() {
   const top = s.states[0];
   const low = s.states[s.states.length - 1];
   // Words from Admin → Content → Text & numbers ("Page: PG stipend"); photo from Admin → Media.
+  // The state whose government colleges pay most (it can differ from the highest median overall).
+  const govtTop = [...s.states].filter((x) => x.govtMedian != null).sort((a, b) => (b.govtMedian ?? 0) - (a.govtMedian ?? 0))[0];
+  const answerReady = !!(top && low && govtTop);
   const [copy, heroImage] = await Promise.all([
-    pageCopy("page.pg_stipend.hero"),
+    pageCopy("page.pg_stipend.hero", {
+      top_state: top?.state,
+      top_median: inr(top?.median),
+      govt_top_state: govtTop?.state,
+      govt_top_median: inr(govtTop?.govtMedian),
+      low_state: low?.state,
+      low_median: inr(low?.median),
+    }),
     pageHeroImage("page.pg_stipend.hero"),
   ]);
 
@@ -101,7 +119,7 @@ export default async function StipendPage() {
         eyebrow={copy.eyebrow}
         title={copy.title}
         accent={copy.accent}
-        subtitle={copy.subtitle}
+        subtitle={answerReady && copy.answer ? copy.answer : copy.subtitle}
         image={heroImage}
         topic="money"
         // One block of numbers (2026-10-21): the stat tiles repeated the highest state, so the national median

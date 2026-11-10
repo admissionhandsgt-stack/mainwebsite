@@ -41,7 +41,12 @@ export async function generateMetadata(): Promise<Metadata> {
   return resolveMetadata(PATH, {
     // Searched as "pg bond state wise", "md ms bond in government medical colleges", "pg service
     // bond penalty", "neet pg bond". The year is the counselling the terms were listed for.
+    // Since 2026-11-10 the title leads with the searched words: "neet pg bond state wise", "seat leaving penalty neet
+    // pg state wise", "penalty for leaving neet pg seat in uttar pradesh" (GSC Oct–Nov 2026; ~6k impressions at
+    // position 7, CTR 1.4%).
     title: fitTitle(
+      `NEET PG Bond & Seat Leaving Penalty State Wise ${b?.year ?? ""}`.trim(),
+      "NEET PG Bond & Seat Leaving Penalty State Wise",
       `PG Medical Bond State Wise ${b?.year ?? ""}: MD/MS Service Bond & Penalty`.replace(/\s+:/, ":"),
       "PG Medical Bond State Wise: MD/MS Service Bond & Penalty",
       "PG Service Bond State Wise",
@@ -122,7 +127,7 @@ export default async function BondPage() {
         eyebrow={copy.eyebrow}
         title={copy.title}
         accent={copy.accent}
-        subtitle={copy.subtitle}
+        subtitle={b?.penaltyMedian && b?.exitMedian && b.govtBonded && copy.answer ? copy.answer : copy.subtitle}
         image={heroImage}
         topic="document"
         // No stat tiles: the four insight cards under the words carry the same figures with their context,

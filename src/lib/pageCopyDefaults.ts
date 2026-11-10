@@ -57,6 +57,12 @@ export const PAGE_COPY = {
       link: { label: "Link to MCC's notice", value: "Read MCC's notice" },
     },
   },
+  "site.search_links": {
+    group: "Site: related searches (above the footer)",
+    fields: {
+      heading: { label: "Heading (blank hides the block)", value: "Related searches" },
+    },
+  },
   "site.reviewer": {
     group: "Site: reviewer on data pages",
     fields: {
@@ -381,6 +387,14 @@ export const PAGE_COPY = {
         value: "The monthly first-year stipend MD/MS residents are paid, as each college publishes it — government against private, in every state.",
         long: true,
       },
+      // The line under the title answers the page's top query outright ("highest pg stipend in india"), for Google's
+      // snippet and AI answers (2026-11-10). Used when every figure is there; the line above otherwise.
+      answer: {
+        label: "Quick answer under the title — {top_state}, {top_median}, {govt_top_state}, {govt_top_median}, {low_state}, {low_median}",
+        value:
+          "{top_state} pays the highest median first-year MD/MS stipend, {top_median} a month; in government colleges {govt_top_state} leads at {govt_top_median}. The lowest is {low_state}, {low_median}. Every state is below, government against private, from each college's own published figure.",
+        long: true,
+      },
       cta: { label: "Hero button", value: "Check your PG chances" },
       source: {
         label: "Source line",
@@ -404,6 +418,12 @@ export const PAGE_COPY = {
         was: [
           "The middle first-year MD/MS stipend in {state} is {median} a month, across {colleges} PG colleges that publish one. Here is every college's own figure for years one, two and three, government against private.",
         ],
+      },
+      answer: {
+        label: "Quick answer under the title — {state}, {govt_median}, {private_median}, {top_college_short}, {top_stipend}",
+        value:
+          "Government colleges in {state} pay a median {govt_median} a month in the first MD/MS year; private and deemed colleges {private_median}. The highest is {top_college_short}, {top_stipend}. Every college's own figure for years one to three is below.",
+        long: true,
       },
       cta: { label: "Hero button — {state}", value: "Check your PG chances in {state}" },
       source: {
@@ -579,6 +599,18 @@ export const PAGE_COPY = {
       subtitle: {
         label: "Hero line — {branch}, {year}",
         value: "Every college that offers {branch}, quota by quota and category by category, read from the counselling authorities' published results for {year}.",
+        long: true,
+      },
+      answer_live: {
+        label: "Quick answer, while a round of the running counselling is out — {branch}, {seats}, {colleges}, {live_year}, {round}, {quota}, {open_rank}",
+        value:
+          "{branch} has {seats} seats a year in India at {colleges} colleges (NMC register). In NEET PG {live_year} {round}, the last {quota} seat in the open category went to AIR {open_rank}. Every college that offers it is below, quota by quota.",
+        long: true,
+      },
+      answer: {
+        label: "Quick answer — {branch}, {seats}, {colleges}, {year}",
+        value:
+          "{branch} has {seats} seats a year in India at {colleges} colleges (NMC register). Every college that offers it is below, quota by quota and category by category, from the {year} counselling results.",
         long: true,
       },
       cta: { label: "Hero button — {branch}", value: "Check {branch} against your rank" },
@@ -1892,6 +1924,12 @@ export const PAGE_COPY = {
         label: "Hero line — {colleges}, {states}",
         value:
           "How many years each state binds an MD/MS graduate to government service, what breaking that bond costs, and the penalty for leaving a seat once you have joined. Covers {colleges} colleges in {states} states.",
+        long: true,
+      },
+      answer: {
+        label: "Quick answer under the title — {govt_bonded}, {govt_colleges}, {penalty_median}, {exit_median}",
+        value:
+          "{govt_bonded} of {govt_colleges} government PG colleges bind MD/MS graduates to government service after the course, and not serving it costs a middle {penalty_median}. Leaving a seat once you have joined costs a middle {exit_median} where a penalty is listed. Every state is below.",
         long: true,
       },
       cta: { label: "Hero button", value: "Check your PG chances" },

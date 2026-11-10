@@ -161,9 +161,8 @@ export default async function BranchPage(
   // The branch in each state with five or more colleges offering it (lib/branchStateQueries.ts).
   const byState = (await getBranchStateCombos()).filter((c) => c.course === b.name);
   // Words from Admin → Content → Text & numbers ("Page: PG branch pages"); photo from Admin → Media.
-  const [where, copy, heroImage, mcc, nmcSeats] = await Promise.all([
+  const [where, heroImage, mcc, nmcSeats] = await Promise.all([
     getBranchStates(b.name),
-    pageCopy("page.pg_branch.hero", { branch: b.name, year: b.year ?? "the latest" }),
     // The admin's photo for this branch, else the specialty's picture from Admin → PG branches.
     pageHeroImage(`page.pg_branch.${b.slug}.hero`).then((img) => img ?? branchImage(b.name)),
     // MCC's own seat matrix for this course — seat counts, never a rank (lib/pgSeatData.ts).
@@ -171,6 +170,19 @@ export default async function BranchPage(
     // NMC's approved seats for the course across India (MD/MS only).
     getNmcBranchSeats(b.name).catch(() => null),
   ]);
+  // After NMC's figures, which the quick answer under the title quotes (2026-11-10): the branch's seats in India and,
+  // while a round of the running counselling is out, the last open seat's rank in it (3+ colleges, as in the box below).
+  const copy = await pageCopy("page.pg_branch.hero", {
+    branch: b.name,
+    year: b.year ?? "the latest",
+    seats: nmcSeats ? inr(nmcSeats.seats) : undefined,
+    colleges: nmcSeats ? inr(nmcSeats.colleges) : undefined,
+    live_year: live?.year,
+    round: live?.spec.label.toLowerCase(),
+    quota: live?.quotaName,
+    open_rank: live?.cut.Open ? inr(live.cut.Open) : undefined,
+  });
+  const answer = nmcSeats ? (live?.cut.Open && copy.answer_live ? copy.answer_live : copy.answer) : "";
   const mccCopy = mcc
     ? await pageCopy("page.pg_branch.mcc", {
         branch: b.name,
@@ -282,7 +294,7 @@ export default async function BranchPage(
         eyebrow={copy.eyebrow}
         // The H1 says what the page answers, in the words searched ("md radiology cut off", "… seats in india").
         title={`${SEARCH_NAME[b.name] ?? b.name}: cut off, seats and fees`}
-        subtitle={copy.subtitle}
+        subtitle={answer || copy.subtitle}
         stats={[
           // NMC's approved seats across India, where the register lists the course (MD/MS).
           ...(nmcSeats ? [{ label: "Seats in India", value: inr(nmcSeats.seats), note: "NMC register" }] : []),

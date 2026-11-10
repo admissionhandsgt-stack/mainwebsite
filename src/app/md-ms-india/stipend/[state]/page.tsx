@@ -60,16 +60,31 @@ export async function generateMetadata(props: { params: Promise<{ state: string 
   // bond in rajasthan" are searched (autocomplete, Oct 2026). The title names it, never its figures — those are
   // a compilation's and stay on the page with their caveat.
   const hasBond = !!(await getBondByState())?.states.some((b) => b.state === s.state);
+  // The government-college figure leads where there is one: "stipend for pg medical students in tamilnadu government
+  // colleges", "pg stipend in government medical colleges kerala" are among these pages' top queries (GSC, Oct–Nov
+  // 2026), and the pages sat at position ~6 with CTR under 1% (2026-11-10). The best-paying college is named in the
+  // description because college names are searched here too ("rml delhi pg stipend", "madras medical college pg stipend").
+  const govt = s.govtMedian ? rupees(s.govtMedian) : null;
+  const best = s.list[0] ? `${collegeName(s.list[0].name).short} ${rupees(s.list[0].y1)}` : null;
   return resolveMetadata(`/md-ms-india/stipend/${page.slug}`, {
     // "rajasthan pg stipend", "pg stipend in rajasthan", "rajasthan neet pg stipend". No year:
     // the figures are each college's latest published stipend, not one year's.
     title: fitTitle(
+      ...(govt && hasBond ? [`${s.state} PG Stipend: Govt ${govt} a Month, College Wise & Bond`] : []),
+      ...(govt ? [`${s.state} PG Stipend: Govt ${govt} a Month, College Wise`] : []),
       ...(hasBond ? [`${s.state} PG Stipend & Bond: ${rupees(s.median)} a Month, College Wise`, `${s.state} PG Stipend & Bond: MD/MS College Wise`] : []),
       `${s.state} PG Stipend: ${rupees(s.median)} a Month, College Wise`,
       `${s.state} PG Stipend: MD/MS Stipend College Wise`,
       `${s.state} PG Stipend`,
     ),
     description: fitDescription(
+      ...(best && s.govtMedian && s.privateMedian
+        ? [
+            `PG stipend in ${s.state}: government colleges ${rupees(s.govtMedian)}, private ${rupees(s.privateMedian)} a month (year 1, median). Highest: ${best}. All ${s.colleges} colleges${hasBond ? ", and the bond" : ""}.`,
+            `PG stipend in ${s.state}: govt ${rupees(s.govtMedian)}, private ${rupees(s.privateMedian)} a month (median). Highest: ${best}. All ${s.colleges} colleges.`,
+          ]
+        : []),
+      ...(best ? [`PG stipend in ${s.state}: median ${rupees(s.median)} a month in year 1 across ${s.colleges} colleges. Highest: ${best}. College wise${hasBond ? ", with the bond" : ""}.`] : []),
       `MD/MS stipend in ${s.state}: median ${rupees(s.median)} a month in year 1 across ${s.colleges} colleges${
         s.govtMedian && s.privateMedian ? ` (govt ${rupees(s.govtMedian)}, private ${rupees(s.privateMedian)})` : ""
       }. Year 1–3 stipend for every college, and the bond.`,
@@ -100,6 +115,7 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
     y2_median: rupees(s.y2Median),
     y3_median: rupees(s.y3Median),
     top_college: top?.name,
+    top_college_short: top ? collegeName(top.name).short : undefined,
     top_stipend: rupees(top?.y1),
     year: bondAll?.year,
     bond_bonded: bond?.govt.withBond,
@@ -147,7 +163,7 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
         eyebrow={copy.eyebrow}
         title={copy.title}
         accent={copy.accent}
-        subtitle={copy.subtitle}
+        subtitle={s.govtMedian && s.privateMedian && top && copy.answer ? copy.answer : copy.subtitle}
         image={heroImage}
         topic="money"
         // One block of numbers (2026-10-21): the government and private medians were a tile each and a card;
