@@ -2318,6 +2318,35 @@ table `outreach_emails` (migration 0050, raw SQL), Admin → Outreach (the card 
   `npx tsx --tsconfig scripts/tmp/harness/tsconfig.json --env-file=.env.local scripts/tmp/harness/ask.ts "<question>"`
   (the harness shims `next/cache`; scripts/tmp is git-excluded).
 
+## Counselling by state, NIRF ranks, the login page, UG leads (2026-11-11)
+
+- **`/counselling`, `/counselling/neet-pg/<state>`, `/counselling/mbbs/<state>`** (owner: "best NEET (PG) counsellor in
+  <state>… MBBS ke sath + PG alag"): service pages beside the state data pages, which keep the cut off intent. PG: states
+  with 3+ MD/MS colleges (24); MBBS: states on NMC's register (34). Each carries the state's own data — its authority
+  (used on PG pages only when its scope is "UG and PG") and latest notices, the two counsellings that fill its seats
+  (MCC's AIQ / deemed / DNB split for PG), fee middles, stipend and bond with the caveat (PG), the counsellings in our
+  results (MBBS) — then how the team works, the playbook, Expert Counselling, FAQs and the enquiry form. The FAQ "Who is
+  the best NEET PG counsellor in <state>?" answers with what to look for, never a self-awarded "best". Every word in
+  Admin → Content ("Page: NEET PG / MBBS counselling by state", "Page: counselling by state (the index)"); a FAQ whose
+  figures a state lacks is left out. `lib/counselStates.ts`, `components/counsel/CounselBlocks.tsx`. In the states
+  sitemap (dated by the state's newest notice); linked from both state data pages.
+- **NIRF** (`src/data/nirfMedical2025.json`, `lib/nirf.ts`): the official Medical list (top 50, parameter scores) from
+  nirfindia.org, each rank mapped by hand to our UG and PG pages — 47 of 50, 88 pages; a university goes to its medical
+  college (Amrita → Amrita School of Medicine Kochi, SRM → SRM Medical College, SOA → IMS & SUM, KIIT → KIMS, Datta
+  Meghe → JNMC Wardha, AMU → JNMC Aligarh, BHU → IMS BHU). College FAQs answer "<college> rankings" (3,011 impressions a
+  month on UG pages, 468 on PG) with the rank, else NMC's facts; and "<college> admissions" (995 + 307) with the
+  counsellings and quotas. Add the next year's list as its own file when NIRF publishes it.
+- **The login page** is a split screen (`components/auth/LoginShowcase.tsx`): a narrow form, and a panel of preview
+  cards — chance words with placeholder names, the newest official notice (live), a counsellor (chosen in Admin by card
+  address, default gulshan-tomar, "Admission Counsellor & Strategist") and the document list. Every word in "Page: sign in
+  / create account", the form's too (`AuthFlow` `copy`, `LoginFlow` `tabs`).
+- **UG leads to the AH Counselor app** — see "The counsellors' Google Sheet": MBBS/BDS students go as NEET UG, kept on
+  the app's MBBS side, behind `counselor.ug_enabled` / `counselor.ug_batch`.
+- **zyn-3c's complete NEET UG 2026 data** (MCC 70,476 and 34 state counsellings' 3,60,050 allotments; paths in the
+  ah-counselor-app memory) is to be imported after its special-stray rebuild (11–13 Nov). The owner's rule for it
+  (2026-11-11): never the exact college × seat × round rank in public — bands, group figures over 3+ colleges and counts
+  only, so pages rank and families still need a counsellor. Only NEET AIR lines may reach the predictor.
+
 ## Low score clinical branches and the statistics page (2026-11-10)
 
 Owner: *"NEET PG / medical seats statistics 2026 banado + Low Score Clinical Branches… sab cheej khullam khulla nhi likhni,
