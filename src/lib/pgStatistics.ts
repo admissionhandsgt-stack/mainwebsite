@@ -36,6 +36,8 @@ export interface PgStatistics {
   /** MD/MS seats by kind of branch. */
   kinds: { kind: "Clinical" | "Para-clinical" | "Pre-clinical"; seats: number; branches: number }[];
   nmcUpdated: string | null;
+  /** Seats MCC added to the year's matrix after round 1 (its "newly added seats" notices), when any were loaded. */
+  added: { seats: number; title: string; url: string | null } | null;
 }
 
 export const MILESTONES = [1_000, 10_000, 25_000, 50_000, 1_00_000, 1_50_000, 2_00_000];
@@ -72,6 +74,11 @@ export const getPgStatistics = unstable_cache(
             FROM nmc_courses WHERE course_type IN ('MD', 'MS') GROUP BY course_name`),
         db.execute(sql`SELECT MAX(nmc_updated)::text AS d FROM nmc_courses`),
       ]);
+      const addedRow = ((await db.execute(sql`
+        SELECT SUM(total_seats)::int AS seats, MAX(source_title) AS title, MAX(source_file) AS url
+          FROM mcc_seat_matrix WHERE source_title ILIKE '%newly added%' AND year = (SELECT MAX(year) FROM mcc_seat_matrix)`)) as unknown as {
+        seats: number | null; title: string | null; url: string | null;
+      }[])[0];
       const ys = yrs as unknown as { year: number; ranked: number; out_of: number; top: number }[];
       const ms = milestones as unknown as { year: number; rank: number; score: number }[];
       const scores: YearScores[] = ys.map((y) => ({
@@ -108,12 +115,13 @@ export const getPgStatistics = unstable_cache(
         mbbs: mbbsRow ? strip(mbbsRow) : null,
         kinds: (Object.keys(k) as (keyof typeof k)[]).map((kind) => ({ kind, ...k[kind] })),
         nmcUpdated: (updated as unknown as { d: string | null }[])[0]?.d ?? null,
+        added: addedRow?.seats ? { seats: Number(addedRow.seats), title: addedRow.title ?? "", url: addedRow.url } : null,
       };
     } catch (error) {
       logError(error, { route: "pgStatistics" });
       return null;
     }
   },
-  ["pg-statistics-v1"],
+  ["pg-statistics-v2"],
   { revalidate: 3600, tags: ["nmc", "mcc"] },
 );

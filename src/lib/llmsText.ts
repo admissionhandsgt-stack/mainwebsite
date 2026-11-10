@@ -154,6 +154,12 @@ export async function llmsText(full: boolean): Promise<string> {
     link(`NEET PG counselling ${current}`, `/neet-pg-counselling/${current}`, "every round of MCC's counselling, with MCC's dates and each round's result"),
     ...(roundLine ? [roundLine] : []),
     link("NEET PG marks vs rank", "/neet-pg-marks-vs-rank", "the rank range each score held in NBEMS's own result, and the branches that rank reached in MCC's latest round"),
+    link(
+      "NEET PG and medical seats statistics",
+      "/neet-pg-statistics",
+      "candidates ranked and the score at each rank (NBEMS), MD/MS/diploma/DM/M.Ch. seats on NMC's register, MCC's seat matrix with every seat it added after round 1, allotments by round — each figure with its source; free to quote with a link",
+    ),
+    link("Clinical branch at a low NEET PG rank", "/neet-pg-low-score-clinical-branches", "the last rank and score admitted in each clinical branch (government AIQ, DNB, deemed paid seats), rank by rank and by category"),
     ...(full ? [] : [link("Everything, college by college", "/llms-full.txt", "this file plus every MBBS and MD/MS college page")]),
     "",
     "## NEET PG — MD, MS, diploma, DNB",
