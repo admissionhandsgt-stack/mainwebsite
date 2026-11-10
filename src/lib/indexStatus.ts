@@ -4,7 +4,7 @@
  * (an owner of sc-domain:admissionhands.com), and stores each answer in index_status — which lib/indexBoost.ts reads to
  * link an indexed page's not-yet-indexed neighbours. Search Console allows 2,000 inspections a day for the property,
  * shared with "Request indexing" and scripts/gsc_coverage.mjs, so a run takes `INSPECT_PER_RUN` (the whole sitemap
- * cycles in about two weeks). Server only.
+ * cycles in about two weeks, twice a day). Server only.
  */
 import { revalidateTag } from "next/cache";
 import { sql } from "drizzle-orm";
@@ -12,7 +12,7 @@ import { db } from "@/db/client";
 import { googleToken } from "@/lib/google";
 import { sitemapGroups, BASE } from "@/lib/sitemapData";
 
-export const INSPECT_PER_RUN = 300;
+export const INSPECT_PER_RUN = 150;
 const SITE = "sc-domain:admissionhands.com";
 
 export async function inspectOldest(limit = INSPECT_PER_RUN): Promise<{ inspected: number; indexed: number; failed: number }> {
@@ -28,10 +28,10 @@ export async function inspectOldest(limit = INSPECT_PER_RUN): Promise<{ inspecte
   const pathOf = (u: string) => u.replace(BASE, "") || "/";
   const due = urls.sort((a, b) => (known.get(pathOf(a)) ?? 0) - (known.get(pathOf(b)) ?? 0)).slice(0, limit);
   const out = { inspected: 0, indexed: 0, failed: 0 };
-  // Four at a time keeps well inside the API's 600 a minute.
-  for (let i = 0; i < due.length; i += 4) {
+  // Six at a time: about 50 a minute, well inside the API's 600, and a run ends inside the route's 300 seconds.
+  for (let i = 0; i < due.length; i += 6) {
     await Promise.all(
-      due.slice(i, i + 4).map(async (url) => {
+      due.slice(i, i + 6).map(async (url) => {
         try {
           const r = await fetch("https://searchconsole.googleapis.com/v1/urlInspection/index:inspect", {
             method: "POST",

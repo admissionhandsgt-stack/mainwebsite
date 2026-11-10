@@ -5,7 +5,7 @@ import { logError } from "@/lib/logger";
 import { beat } from "@/lib/heartbeat";
 
 /**
- * Daily (server crontab, 03:35 UTC): Google's index status of the sitemap URLs inspected longest ago (lib/indexStatus.ts),
+ * Twice a day (server crontab, 03:35 and 15:35 UTC): Google's index status of the sitemap URLs inspected longest ago (lib/indexStatus.ts),
  * so the "More on …" links (lib/indexBoost.ts) follow what Google has and has not indexed without anyone running a script.
  *
  *   curl -fsS -X POST -H "x-cron-secret: $(cat /opt/admissionhands/.cron-secret)" http://127.0.0.1:8150/api/cron/index-status
