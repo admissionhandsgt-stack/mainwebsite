@@ -8,6 +8,7 @@ import { getSsCourses } from "@/lib/ssQueries";
 import { getMdsSlugs } from "@/lib/mdsQueries";
 import { ROUNDS, getCounsellingYear, getCounsellingYears, getLatestLiveRound, getRoundState, roundPath } from "@/lib/mccResults";
 import { isMeritQuota } from "@/lib/chance";
+import { getStateNotices } from "@/lib/stateNotices";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 
@@ -214,6 +215,33 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
     console.error("[sitemap] latest round could not be read", error);
   }
   const ROUND_HUBS = new Set(["/neet-pg-cutoff", "/neet-pg-marks-vs-rank", "/neet-pg-low-score-clinical-branches", "/neet-pg-statistics"]);
+  // More of what really changes a page (2026-11-10; owner: "Google latest updated date ka data pehle dekhta hai… daily
+  // update ho"). The date moves when the page's data moves — never the day of the request, which teaches Google to
+  // ignore every lastmod here. Seats MCC adds between rounds and NMC's register (the statistics and seat matrix pages),
+  // the admin's MCC schedule (the pages that print its dates), and a state's latest notices (its state pages, below).
+  let addedDay: string | undefined;
+  let nmcDay: string | undefined;
+  let scheduleDay: string | undefined;
+  try {
+    const [a, nmc, sch] = await Promise.all([
+      db.execute(sql`SELECT (MAX(updated_at) AT TIME ZONE 'Asia/Kolkata')::date::text AS d FROM mcc_added_seat_files WHERE status = 'live'`).catch(() => []),
+      db.execute(sql`SELECT MAX(nmc_updated)::text AS d FROM nmc_courses`),
+      // The schedule rows themselves, or MCC's dates applied from a notice (Zyn's apply does not touch updated_at).
+      db.execute(sql`
+        SELECT (GREATEST(
+                  (SELECT MAX(updated_at) FROM content_blocks WHERE collection = 'pg_schedule'),
+                  (SELECT MAX(decided_at) FROM zyn_notices WHERE schedule_status = 'applied')) AT TIME ZONE 'Asia/Kolkata')::date::text AS d`),
+    ]);
+    addedDay = rows<{ d: string | null }>(a)[0]?.d ?? undefined;
+    nmcDay = rows<{ d: string | null }>(nmc)[0]?.d?.slice(0, 10) ?? undefined;
+    scheduleDay = rows<{ d: string | null }>(sch)[0]?.d ?? undefined;
+  } catch (error) {
+    console.error("[sitemap] change dates could not be read", error);
+  }
+  const SEAT_HUBS = new Set(["/neet-pg-statistics", "/neet-pg-seat-matrix"]);
+  const SCHEDULE_HUBS = new Set(["/neet-pg-choice-filling", "/neet-pg-process"]);
+  /** The newest notice on a state's page — the page lists them, so a new one is a change to it. */
+  const noticeDay = async (state: string, level: "pg" | "ug") => (await getStateNotices(state, level, 1).catch(() => []))[0]?.on?.slice(0, 10) ?? "";
   const TERMS_HUBS = new Set(["/md-ms-india/bond"]);
   const UG_RANK_HUBS = new Set(["/neet-ug-cutoff", "/bds-india"]);
 
@@ -227,7 +255,11 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
 
   for (const s of STATIC) {
     if (noIndex.has(s.path)) continue;
-    const lastModified = ROUND_HUBS.has(s.path)
+    const lastModified = SEAT_HUBS.has(s.path)
+      ? newest([liveDay ?? "", addedDay ?? "", nmcDay ?? ""]) || undefined
+      : SCHEDULE_HUBS.has(s.path)
+        ? newest([liveDay ?? "", scheduleDay ?? ""]) || undefined
+      : ROUND_HUBS.has(s.path)
       ? liveDay
       : TERMS_HUBS.has(s.path)
         ? termsDate
@@ -264,12 +296,14 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
   }
 
   for (const slug of states) {
-    out.states.push({ url: `${BASE}/mbbs-india/${seg(slug)}`, lastModified: ugDate, changeFrequency: "monthly", priority: 0.6 });
+    const notice = await noticeDay(slug.replace(/-and-/g, " and ").replace(/-/g, " "), "ug");
+    out.states.push({ url: `${BASE}/mbbs-india/${seg(slug)}`, lastModified: newest([ugDate ?? "", notice]) || undefined, changeFrequency: "weekly", priority: 0.6 });
   }
   // One page per state with PG colleges: "PG seats in Karnataka", "NEET PG cutoff Tamil Nadu".
   try {
     for (const s of await getPgStates()) {
-      out.states.push({ url: `${BASE}/md-ms-india/states/${seg(s.slug)}`, lastModified: pgDate, changeFrequency: "monthly", priority: 0.7 });
+      const notice = await noticeDay(s.name, "pg");
+      out.states.push({ url: `${BASE}/md-ms-india/states/${seg(s.slug)}`, lastModified: newest([pgDate ?? "", notice]) || undefined, changeFrequency: "weekly", priority: 0.7 });
     }
   } catch (error) {
     console.error("[sitemap] PG states could not be listed", error);

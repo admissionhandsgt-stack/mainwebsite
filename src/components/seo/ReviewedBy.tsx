@@ -1,7 +1,7 @@
 import Link from "@/components/ui/Link";
 import { BadgeCheck } from "lucide-react";
 import { pageCopy } from "@/lib/pageCopy";
-import { currentPath, getPageDates } from "@/lib/pageDates";
+import { currentPath, getPageDates, readableDate } from "@/lib/pageDates";
 import { jsonLd } from "@/lib/jsonLd";
 
 const SITE = "https://www.admissionhands.com";
@@ -47,7 +47,16 @@ export default async function ReviewedBy() {
         <span className="font-semibold text-foreground">{copy.name}</span>
       )}
       {copy.role && <span>, {copy.role}</span>}
-      {/* The date is no longer printed (owner, 2026-11-10: "isme se ye date hatado"); search engines still get it below. */}
+      {/* The page's own latest change (lib/pageDates.ts) — shown again the same evening (owner: "latest date hi rakhna"),
+          now that it moves with notices, added seats, schedule changes and rounds; never the day of the visit. */}
+      {date && (
+        <>
+          <span aria-hidden="true">·</span>
+          <span>
+            {copy.updated} <time dateTime={date}>{readableDate(date)}</time>
+          </span>
+        </>
+      )}
       {node && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(node) }} />}
     </p>
   );

@@ -2717,6 +2717,11 @@ for 8–9 Oct (root-only). Remedy: Request indexing for the affected URLs.
   college with a merit-quota allotment in the latest live MCC year takes that round's day, no earlier than
   `LIVE_BANDS_FROM` (the template's ship date — bump it when a template change alters every such page);
   `/neet-ug-cutoff` and `/bds-india` the newest UG rank import. A change made only in code moves nothing by itself.
+  **2026-11-10 (owner: "Google latest updated date ka data pehle dekhta hai… daily update ho"):** more real change
+  sources, still never the day of the request — state pages (PG and MBBS) take their newest state notice (the page lists
+  them), /neet-pg-statistics and /neet-pg-seat-matrix MCC's added-seat files and NMC's register date, /neet-pg-choice-filling
+  and /neet-pg-process the schedule (pg_schedule rows or a Zyn notice's applied dates). On that day 97 of 120 state pages
+  were dated within three days. The reviewer line shows the date again (it had been taken off an hour earlier).
   Google's view: `node --env-file=.env.local scripts/gsc.mjs sitemaps` (last read per file, spends no inspection
   quota); `gsc.mjs sitemap` resubmits the index after a deploy that moves many dates.
 - **The 33 state pages were invisible.** `/mbbs-india/[state]` was a client component fetching from
