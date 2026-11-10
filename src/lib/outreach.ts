@@ -15,7 +15,10 @@ import { editOwnerMessage, tellOwner, type InlineButton } from "@/lib/telegramBo
  * - Every day (`POST /api/cron/outreach`, 05:35 UTC) drafts go to the owner's Telegram as previews, up to the daily cap
  *   less what was already sent today. Buttons: Send · Skip · Opted out. Replying to a preview with new text replaces the
  *   body (a first line "Subject: …" replaces the subject) and a fresh preview comes back.
- * - Seven days after a send, one follow-up is previewed the same way unless the owner marked "Replied". Never a second.
+ * - Follow-ups (owner, 2026-11-10: "same email id par email twice a week jaye max… jiska response aa jaye wo ruk jaye"): at
+ *   most three emails per address (the first and two follow-ups), at least three days apart (so never more than two in a
+ *   week), each previewed and sent only on the owner's Send. A reply or a bounce read from the mailbox
+ *   (lib/mailInbox.ts, hourly) stops everything for that address, as do "They replied" and "Opted out".
  * - One row per address, ever (unique index). Plain text, a real signature, and an opt-out line in every message.
  *
  * What it never does: ask for a link in exchange for anything, write to an address not added by a person, or send
@@ -41,11 +44,15 @@ export type OutreachRow = {
   tg_message_id: number | null;
   sent_at: string | null;
   followed_up_at: string | null;
+  emails_sent: number;
+  last_sent_at: string | null;
   last_error: string | null;
   created_at: string;
 };
 
-const SIGNATURE = `Gulshan Tomar\nAdmission Counselor, AdmissionHands\n${SITE.replace("https://", "")} · +91 92206 26002`;
+// One fact per line, labelled, the number written so a phone offers to call it (2026-11-10: a single line "site · number"
+// came out badly in mail apps).
+const SIGNATURE = `Gulshan Tomar\nAdmission Counselor, AdmissionHands\nPhone / WhatsApp: +91 92206 26002\nWebsite: ${SITE.replace("https://", "")}`;
 const OPT_OUT = `If you would rather not hear from me, reply "no" and I won't write again.`;
 
 /* ------------------------------------------------------------------ drafts ---- */
@@ -125,13 +132,20 @@ export async function draftFor(kind: Kind, name: string | null, org: string): Pr
   };
 }
 
+/** At most this many emails to one address, and at least this many days between two of them. */
+export const MAX_EMAILS = 3;
+export const GAP_DAYS = 3;
+
 function followupFor(r: OutreachRow): { subject: string; body: string } {
+  const last = r.emails_sent + 1 >= MAX_EMAILS;
   return {
     subject: r.subject.startsWith("Re:") ? r.subject : `Re: ${r.subject}`,
     body: [
       `Hi ${r.name?.trim() || "there"},`,
       "",
-      "Bringing my note below back to the top in case it is useful. No reply needed if not.",
+      last
+        ? "One last note from me, in case the data below is useful. I won't write again unless you reply."
+        : "Bringing my note below back to the top in case it is useful. No reply needed if not.",
       "",
       SIGNATURE,
       "",
@@ -236,8 +250,10 @@ export async function runOutreach(opts: { force?: boolean } = {}): Promise<{ pre
   // Follow-ups first: they are owed to people already written to.
   const due = await rows(sql`
     SELECT * FROM outreach_emails
-     WHERE status = 'sent' AND followed_up_at IS NULL AND followup_body IS NULL AND sent_at < now() - interval '7 days'
-     ORDER BY sent_at LIMIT 20`);
+     WHERE status IN ('sent', 'followed_up') AND replied_at IS NULL
+       AND emails_sent BETWEEN 1 AND ${MAX_EMAILS - 1}
+       AND last_sent_at < now() - make_interval(days => ${GAP_DAYS})
+     ORDER BY last_sent_at LIMIT 20`);
   for (const r of due) {
     if (room <= 0) break;
     const f = followupFor(r);
@@ -281,8 +297,19 @@ export async function onOutreachButton(action: string, id: number, messageId: nu
       await setRow(id, sql`status = ${r.status}, last_error = ${err}`);
       return `Not sent: ${err}`;
     }
-    await setRow(id, followup ? sql`status = 'followed_up', followed_up_at = now(), last_error = NULL` : sql`status = 'sent', sent_at = now(), last_error = NULL`);
-    await editOwnerMessage(messageId, `✅ SENT${followup ? " (follow-up)" : ""} #${id} — ${r.org} <${r.email}>\n${new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}`, followup ? [] : [[{ text: "💬 They replied — no follow-up", callback_data: `o:replied:${id}` }]]);
+    const n = (r as OutreachRow).emails_sent + 1;
+    const finished = n >= MAX_EMAILS;
+    await setRow(
+      id,
+      followup
+        ? sql`status = ${finished ? "done" : "followed_up"}, followed_up_at = now(), emails_sent = ${n}, last_sent_at = now(), last_error = NULL`
+        : sql`status = 'sent', sent_at = now(), emails_sent = ${n}, last_sent_at = now(), last_error = NULL`,
+    );
+    await editOwnerMessage(
+      messageId,
+      `✅ SENT ${n}/${MAX_EMAILS}${followup ? " (follow-up)" : ""} #${id} — ${r.org} <${r.email}>\n${new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}${finished ? "\nThat was the last one to this address." : ""}`,
+      finished ? [] : [[{ text: "💬 They replied — stop", callback_data: `o:replied:${id}` }]],
+    );
     return "Sent.";
   }
   if (action === "skip") {
@@ -296,7 +323,7 @@ export async function onOutreachButton(action: string, id: number, messageId: nu
     return "Marked — never written to again.";
   }
   if (action === "replied") {
-    await setRow(id, sql`status = 'replied'`);
+    await setRow(id, sql`status = 'replied', replied_at = coalesce(replied_at, now())`);
     await editOwnerMessage(messageId, `💬 Replied #${id} — ${r.org} <${r.email}>. No follow-up.`);
     return "Noted — no follow-up.";
   }

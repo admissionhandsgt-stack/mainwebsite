@@ -2263,8 +2263,18 @@ table `outreach_emails` (migration 0050, raw SQL), Admin → Outreach (the card 
   figures (stipend by state, the bond with its "as listed" caveat), never typed numbers. Daily 05:35 UTC
   (`/api/cron/outreach`, heartbeat `outreach`), drafts and due follow-ups go to Telegram up to the daily cap (default 10,
   max 20) less today's sends. Send / Skip / Opted out; a reply to a preview replaces its text ("Subject: …" first line
-  replaces the subject). Send claims the row atomically (`status = 'sending'`), so a double tap sends once. One
-  follow-up after 7 days unless "They replied". One row per address ever (unique on lower(email)).
+  replaces the subject). Send claims the row atomically (`status = 'sending'`), so a double tap sends once. One row per
+  address ever (unique on lower(email)).
+- **Cadence and replies (migration 0051, same day — owner: "twice a week max… jiska response aa jaye wo ruk jaye"):** at
+  most three emails per address (`MAX_EMAILS`), at least three days apart (`GAP_DAYS` — so never more than two a week),
+  each on the owner's Send. Hourly `/api/cron/outreach-inbox` (minute 47, heartbeat `outreach-inbox`, `lib/mailInbox.ts`)
+  reads the INBOX over IMAP (smtp.nevtan.com:993, same login; cursor `outreach.imap_uid`): a message from the address, or
+  from the same organisation's domain unless it is a free mail service, marks it `replied`; a delivery failure naming it
+  marks it `bounced`. Both stop it for good and tell the owner on Telegram. The signature puts "Phone / WhatsApp: +91 92206
+  26002" on its own line (one line "site · number" came out badly in mail apps).
+- **Asked for and not built:** auto-posting answers with links on Reddit, forums or other sites' article sections —
+  automated promotional posting is spam under Reddit's rules and a link scheme under Google's; drafts for a person to
+  post are the line.
 - **Never:** send without the owner's Send, ask for a link in exchange for anything, or add addresses scraped in bulk.
 
 ## Google Cloud: alarms, the second backup, billing (2026-11-10)

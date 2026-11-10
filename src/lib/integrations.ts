@@ -67,7 +67,9 @@ export type IntegrationKey =
   | "telegram.bot.secret"
   | "telegram.bot.link_code"
   | "outreach.enabled"
-  | "outreach.daily_cap";
+  | "outreach.daily_cap"
+  | "outreach.imap_uid"
+  | "email.imap.host";
 
 /**
  * The environment variable that overrides each key, where one exists.

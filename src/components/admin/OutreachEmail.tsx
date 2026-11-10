@@ -48,6 +48,8 @@ const TONE: Record<string, Tone> = {
   skipped: "neutral",
   opted_out: "warning",
   failed: "danger",
+  done: "success",
+  bounced: "danger",
 };
 const when = (v: string | null) =>
   v ? new Date(v).toLocaleString("en-IN", { timeZone: "Asia/Kolkata", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "—";
