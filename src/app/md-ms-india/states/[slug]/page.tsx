@@ -24,6 +24,7 @@ import { getStateRound, CATEGORY_LABEL } from "@/lib/stateRoundQueries";
 
 import SectionHead from "@/components/ui/SectionHead";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import { COUNSEL_PG_MIN_COLLEGES } from "@/lib/counselStates";
 /** One state's PG picture. See lib/pgStateQueries.ts for what it will and will not state. */
 
 type Props = { params: Promise<{ slug: string }> };
@@ -572,6 +573,14 @@ export default async function PgStatePage(props: Props) {
       <section className="container-custom pb-10 md:pb-14">
         <ExpertPlaybook bare kind="state" name={p.name} placement="pg_state" />
         <DataPageCounsel kind="state" name={p.name} placement="counsel_pg_state" />
+        {/* The service page for the same state (2026-11-11): how a counsellor plans NEET PG counselling here. */}
+        {p.mdmsCount >= COUNSEL_PG_MIN_COLLEGES && (
+          <p className="mt-5">
+            <Link href={`/counselling/neet-pg/${p.slug}`} className="font-semibold text-primary-strong hover:underline">
+              NEET PG counselling in {p.name}: how our counsellors plan the state and MCC rounds with you →
+            </Link>
+          </p>
+        )}
       </section>
 
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">

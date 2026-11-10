@@ -9,6 +9,7 @@ import { getMdsSlugs } from "@/lib/mdsQueries";
 import { ROUNDS, getCounsellingYear, getCounsellingYears, getLatestLiveRound, getRoundState, roundPath } from "@/lib/mccResults";
 import { isMeritQuota } from "@/lib/chance";
 import { getStateNotices } from "@/lib/stateNotices";
+import { getCounselPgStates, getCounselUgStates } from "@/lib/counselStates";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 
@@ -307,6 +308,25 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
     }
   } catch (error) {
     console.error("[sitemap] PG states could not be listed", error);
+  }
+  // The counselling-guidance pages by state (2026-11-11): dated like the state's data page — its newest notice or the
+  // level's data, never the day of the request.
+  try {
+    const [pgCounsel, ugCounsel] = await Promise.all([getCounselPgStates(), getCounselUgStates()]);
+    const dates: string[] = [];
+    for (const s of pgCounsel) {
+      const d = newest([pgDate ?? "", await noticeDay(s.name, "pg")]);
+      dates.push(d);
+      out.states.push({ url: `${BASE}/counselling/neet-pg/${seg(s.slug)}`, lastModified: d || undefined, changeFrequency: "weekly", priority: 0.6 });
+    }
+    for (const s of ugCounsel) {
+      const d = newest([ugDate ?? "", await noticeDay(s.name, "ug")]);
+      dates.push(d);
+      out.states.push({ url: `${BASE}/counselling/mbbs/${seg(s.slug)}`, lastModified: d || undefined, changeFrequency: "weekly", priority: 0.6 });
+    }
+    out.hubs.push({ url: `${BASE}/counselling`, lastModified: newest(dates) || undefined, changeFrequency: "weekly", priority: 0.6 });
+  } catch (error) {
+    console.error("[sitemap] counselling pages could not be listed", error);
   }
   // One stipend page per state with three or more colleges publishing one (2026-10-20).
   try {

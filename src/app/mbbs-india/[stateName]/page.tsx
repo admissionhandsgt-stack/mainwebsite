@@ -377,6 +377,14 @@ export default async function MBBSStatePage(props: Props) {
       </section>
 
       <ExpertPlaybook kind="mbbs_state" name={name} placement="ug_state" />
+      {/* The service page for the same state (2026-11-11): how a counsellor plans MBBS counselling here. */}
+      {p.nmc && (
+        <p className="container-custom -mt-4 pb-8">
+          <Link href={`/counselling/mbbs/${p.state.slug}`} className="font-semibold text-primary-strong hover:underline">
+            MBBS counselling in {name}: how our counsellors plan the state and MCC rounds with you →
+          </Link>
+        </p>
+      )}
 
       <LeadCapture
         level="ug"
