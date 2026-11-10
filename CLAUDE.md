@@ -2318,6 +2318,16 @@ candidate ko counselor par depend karana hai… Just Eligible ko bhi badi clinic
   MCC's AIQ (open), deemed universities' paid seats and DNB (open), last complete year and the running year so far, each with
   the score it held (`score_ranks`) — over 3+ colleges, no college named. A "What this table cannot tell you" block (which
   colleges, fee, bond, round) sends the reader to WhatsApp / call / predictor. Copy `page.pg_low_clinical.*`.
+  **Rewritten as a landing page the same evening** (owner: "marketing ads ki trh banana tha… keywords target kare…
+  counselors ne strategy ke sath ye seat dilwayi"): searched words from GSC ("neet pg rank vs branch", "50k rank in neet pg",
+  "1 lakh rank", "neet pg 300 marks", "rank required for md medicine", "clinical branches in neet pg"). Order: hero "NEET PG
+  low rank? A clinical branch is still possible." → the running round's choice-filling strip (dates from `pg_schedule`) → one
+  card per rank milestone (`RANK_MILESTONES` 25K…2L: branches whose last seat went at that rank or later, per family, with the
+  score, and a WhatsApp button prefilled with the rank) → "How our counsellors find a clinical seat" (six steps, the team's
+  own account of its work) → **students' seats** → the table → routes → counsellor block → `ExpertCompare` → FAQs → lead form
+  (`#get-plan`). **Students' seats come only from Admin → Content → "Low rank clinical: students' seats"
+  (`low_rank_cases`, `scripts/sql/low_rank_cases_collection_2026_11_10.sql`): real students, with permission; no rows → no
+  section. Never write one in code or copy.** Re-run `seed_page_copy.mjs` after the deploy (the hero fields carry `was`).
 - **`/neet-pg-statistics`** (`lib/pgStatistics.ts`): candidates ranked and the score at milestone ranks per year, PG seats on
   NMC's register by course and ownership, clinical / para-clinical / pre-clinical MD/MS split (NMC course names by regex),
   top branches with NMC and MCC seats, MCC's matrix and rounds, stipend and fee middles, FAQs, CiteThis. Made to be cited.

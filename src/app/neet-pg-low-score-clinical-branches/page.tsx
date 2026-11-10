@@ -1,31 +1,43 @@
 import type { Metadata } from "next";
-import { MessageCircle, Phone, Search } from "lucide-react";
+import { CalendarClock, MessageCircle, Phone, Search } from "lucide-react";
 import Link from "@/components/ui/Link";
 import { fitDescription, fitTitle } from "@/lib/seoTitle";
-import { resolveMetadata } from "@/lib/content";
-import { getLowRankClinical, type ClinicalRow, type Cut, type Family } from "@/lib/lowRankClinical";
+import { getBlocks, resolveMetadata, type ContentBlock } from "@/lib/content";
+import { getLowRankClinical, RANK_MILESTONES, type ClinicalRow, type Cut, type Family } from "@/lib/lowRankClinical";
 import { getDeemedPg } from "@/lib/pgFeeQueries";
+import { getTelegramCue } from "@/lib/mccResults";
+import { getPgProcessContent } from "@/lib/pgProcessContent";
+import { scoreRange } from "@/lib/scoreRank";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import { CONTACT_INFO } from "@/lib/constants";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import DataHero from "@/components/hero/DataHero";
 import SectionHead from "@/components/ui/SectionHead";
+import ExpertCompare from "@/components/lead/ExpertCompare";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 
 /**
- * /neet-pg-low-score-clinical-branches (2026-11-10). Searched as "low score clinical branches neet pg", "clinical branch
- * at low rank", "md medicine at low rank", "neet pg 300 marks clinical branch". Owner: "Just Eligible ko bhi badi clinical
- * branch jaise MD medicine… sab cheej khullam khulla nhi likhni, candidate ko counselor par depend karana hai".
+ * /neet-pg-low-score-clinical-branches (2026-11-10). Written as a landing page (owner, same day: "marketing ads ki trh
+ * banana tha… aise users ko target kare, keywords target kare… counselors ne strategy ke sath ye seat dilwayi"): it
+ * answers the searches people type — "neet pg rank vs branch", "50k rank in neet pg", "1 lakh rank", "neet pg 300 marks",
+ * "rank required for md medicine", "clinical branches in neet pg" — and sends every reader to a counsellor.
  *
  * Every figure is a group figure from MCC's own results (lib/lowRankClinical.ts): the last rank admitted in a seat family
- * over three or more colleges, with the score it held. No college is named and no single college's rank appears: which
- * colleges, what fee and bond, which round — that is the counsellor's, and the page sends the reader there.
+ * over three or more colleges, with the score that rank held. No college is named and no college's rank appears. Which
+ * colleges, at what fee and bond, in which round — that is the counsellor's, and every section says so.
+ *
+ * Students' seats ("our students got…") come only from Admin → Content → "Low rank clinical: students' seats"
+ * (`low_rank_cases`), real cases the team enters with the student's permission; with no rows the section is not shown.
+ * None is ever written here.
  */
 export const revalidate = 3600;
 const PATH = "/neet-pg-low-score-clinical-branches";
 const n = (v: number | null | undefined) => (v == null ? "—" : v.toLocaleString("en-IN"));
 const lakh = (v: number | null | undefined) => (v == null ? "—" : `₹${(v / 1e5).toFixed(v >= 1e7 ? 0 : 1).replace(/\.0$/, "")} L`);
+/** "50K", "1 lakh", "1.25 lakh" — how a rank is said in a search. */
+const said = (r: number) => (r >= 1_00_000 ? `${+(r / 1_00_000).toFixed(2)} lakh` : `${r / 1000}K`);
+const FAMILY_LABEL: Record<Family, string> = { aiq: "Government seats, All India Quota (open)", dnb: "DNB in hospitals (open)", deemed: "Deemed universities' paid seats" };
 
 async function load() {
   const [d, deemed] = await Promise.all([getLowRankClinical().catch(() => null), getDeemedPg().catch(() => null)]);
@@ -33,48 +45,75 @@ async function load() {
   const nowYear = d.years[d.years.length - 1];
   const year = d.runningRound ? d.years[0] : nowYear;
   const cut = (r: ClinicalRow | undefined, y: number, f: Family): Cut | undefined => r?.cuts[y]?.[f];
-  const med = d.rows.find((r) => r.branch === "General Medicine");
-  const deepest = (y: number) =>
+  const byName = (b: string) => d.rows.find((r) => r.branch === b);
+  const med = byName("General Medicine");
+  const surg = byName("General Surgery");
+  const deepest = (y: number, f: Family) =>
     d.rows
-      .map((r) => ({ r, c: cut(r, y, "deemed") }))
+      .map((r) => ({ r, c: cut(r, y, f) }))
       .filter((x): x is { r: ClinicalRow; c: Cut } => !!x.c)
       .sort((a, b) => b.c.rank - a.c.rank);
-  const deep = deepest(year);
-  const deepNow = nowYear !== year ? deepest(nowYear) : [];
+  const deep = deepest(year, "deemed");
+  const deepAiq = deepest(year, "aiq");
+  const deepNow = nowYear !== year ? deepest(nowYear, "deemed") : [];
+  // Each milestone rank: the branches whose last seat in `year` went at that rank or later, family by family.
+  const bands = RANK_MILESTONES.filter((m) => m <= (d.ranked[year] ?? 0)).map((m) => ({
+    rank: m,
+    score: d.milestones[year]?.find((x) => x.rank === m) ?? null,
+    scoreNow: nowYear !== year ? d.milestones[nowYear]?.find((x) => x.rank === m) ?? null : null,
+    reach: (["aiq", "dnb", "deemed"] as Family[]).map((f) => ({ family: f, branches: d.rows.filter((r) => (cut(r, year, f)?.rank ?? 0) >= m).map((r) => r.branch) })),
+  }));
   const fee = deemed?.national.find((b) => /management/i.test(b.family));
-  return { d, year, nowYear, med, deep, deepNow, cut, fee };
+  return { d, year, nowYear, med, surg, deep, deepAiq, deepNow, cut, fee, bands };
 }
 
-const scoreText = (c?: Cut) => (c?.score != null ? `${c.score}/${c.outOf}` : "—");
+/** The round whose choice filling is next, with its dates from the admin's schedule; null between rounds. */
+async function liveRound(): Promise<{ label: string; filling?: string; locking?: string } | null> {
+  const [cue, { schedule }] = await Promise.all([getTelegramCue(), getPgProcessContent()]);
+  if (!cue) return null;
+  const label = cue.label.replace(/\b\w/g, (c) => c.toUpperCase());
+  const key = label.toLowerCase().startsWith("stray") ? "stray" : label.toLowerCase();
+  const row = schedule.find((s) => s.round.trim().toLowerCase().startsWith(key));
+  return row?.choiceFilling ? { label, filling: row.choiceFilling, locking: row.choiceLocking } : null;
+}
+
+const scoreText = (c?: { score: number | null; outOf: number | null } | null) => (c?.score != null ? `${c.score}/${c.outOf}` : "—");
 
 export async function generateMetadata(): Promise<Metadata> {
   const p = await load();
   const medC = p ? p.cut(p.med, p.year, "deemed") : undefined;
-  const top = p?.deep[0];
+  const surgC = p ? p.cut(p.surg, p.year, "deemed") : undefined;
   return resolveMetadata(PATH, {
     title: fitTitle(
-      `Low Score Clinical Branches in NEET PG ${p?.nowYear ?? ""} (Rank & Marks)`.replace(" ()", ""),
-      `NEET PG Low Score Clinical Branches ${p?.nowYear ?? ""}`.trim(),
-      "NEET PG Low Score Clinical Branches",
+      `NEET PG Low Rank Clinical Branch ${p?.nowYear ?? ""}: Rank vs Branch (50K–2L)`.replace("  ", " "),
+      `NEET PG Low Rank Clinical Branch ${p?.nowYear ?? ""}: Rank vs Branch`.replace("  ", " "),
+      `Low Score Clinical Branches in NEET PG ${p?.nowYear ?? ""}`.trim(),
+      "NEET PG Low Rank Clinical Branch",
     ),
     description: fitDescription(
-      ...(p && medC && top
+      ...(p && medC
         ? [
-            `MD General Medicine went to AIR ${n(medC.rank)} (score ${scoreText(medC)}) on deemed paid seats in ${p.year}; ${top.r.branch} to AIR ${n(top.c.rank)}. Every clinical branch, last rank and score, ${p.year}–${p.nowYear}.`,
-            `MD General Medicine went to AIR ${n(medC.rank)} (score ${scoreText(medC)}) on deemed paid seats in ${p.year}. Every clinical branch with its last rank and score.`,
+            `Rank 50K, 1 lakh, 1.5 lakh? In ${p.year} MD Medicine went to AIR ${n(medC.rank)}${surgC ? ` and MS Surgery to AIR ${n(surgC.rank)}` : ""} on paid seats. Rank vs clinical branch, score, and how counsellors plan the seat.`,
+            `In ${p.year} MD Medicine went to AIR ${n(medC.rank)} (score ${scoreText(medC)}) on deemed paid seats. NEET PG rank vs clinical branch, from 25K to 2 lakh.`,
           ]
         : []),
-      "Where MD Medicine, Surgery, Orthopaedics and every clinical branch went at a low NEET PG rank, with the score — from MCC's own results.",
+      "Which clinical branch a low NEET PG rank reached — MD Medicine, Surgery, Ortho and the rest — rank by rank, from MCC's own results.",
     ),
     keywords:
-      "low score clinical branches NEET PG, clinical branch at low rank, MD medicine low rank, NEET PG low score MD MS, clinical branch deemed university paid seat, NEET PG just qualified clinical branch",
+      "NEET PG low rank clinical branch, NEET PG rank vs branch, low score clinical branches NEET PG, 50k rank in NEET PG, 1 lakh rank NEET PG clinical branch, NEET PG 300 marks clinical branch, MD medicine at low rank, rank required for MD medicine, clinical branches in NEET PG, deemed university MD medicine rank",
   });
 }
 
 export default async function LowScoreClinicalPage() {
-  const p = await load();
+  const [p, round, cases, s300] = await Promise.all([
+    load(),
+    liveRound().catch(() => null),
+    getBlocks("low_rank_cases").catch((): ContentBlock[] => []),
+    scoreRange("pg", 300).catch(() => null),
+  ]);
   const medDeemed = p ? p.cut(p.med, p.year, "deemed") : undefined;
   const medAiq = p ? p.cut(p.med, p.year, "aiq") : undefined;
+  const surgDeemed = p ? p.cut(p.surg, p.year, "deemed") : undefined;
   const top = p?.deep[0];
   const topNow = p?.deepNow[0];
   const tokens = {
@@ -82,50 +121,90 @@ export default async function LowScoreClinicalPage() {
     now_year: p?.nowYear,
     med_rank: n(medDeemed?.rank),
     med_score: scoreText(medDeemed),
+    surg_rank: n(surgDeemed?.rank),
     deep_branch: top?.r.branch,
     deep_rank: n(top?.c.rank),
     deep_score: scoreText(top?.c),
     ranked: n(p?.d.ranked[p?.year ?? 0]),
     deemed_fee: p?.fee?.p10 && p.fee.p90 ? `${lakh(p.fee.p10)} – ${lakh(p.fee.p90)}` : "more than a government seat",
+    round: round?.label,
+    filling: round?.filling,
+    locking: round?.locking ?? "see MCC's schedule",
   };
   const [copy, body, heroImage] = await Promise.all([
     pageCopy("page.pg_low_clinical.hero", tokens),
     pageCopy("page.pg_low_clinical.body", tokens),
     pageHeroImage("page.pg_low_clinical.hero", "page.pg_branch.hero"),
   ]);
-  const wa = `https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent(body.wa_text)}`;
-  const routes = body.routes
-    .split("\n")
-    .map((l) => l.split("|").map((x) => x.trim()))
-    .filter((x) => x[0] && x[1]);
+  const wa = (text: string) => `https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent(text)}`;
+  const lines = (t: string) => t.split("\n").map((l) => l.split("|").map((x) => x.trim())).filter((x) => x[0] && x[1]);
+  const routes = lines(body.routes);
+  const steps = lines(body.strategy);
   const points = body.counsel_points.split("\n").map((x) => x.trim()).filter(Boolean);
-  const answerReady = !!(medDeemed && top);
+  const answerReady = !!(medDeemed && surgDeemed);
+  const realCases = cases.filter((c) => c.title && c.subtitle);
+  const s300Rank = s300?.ok ? s300.range : null;
+  const band = (rank: number) => p?.bands.find((b) => b.rank === rank);
+  const reachAt = (rank: number) => {
+    const b = band(rank);
+    return b ? b.reach.filter((x) => x.branches.length).map((x) => `${FAMILY_LABEL[x.family].toLowerCase()}: ${x.branches.join(", ")}`).join("; ") : "";
+  };
 
-  const faqs = p && medDeemed && top
-    ? [
-        {
-          question: "Can I get MD General Medicine at a low rank in NEET PG?",
-          answer: `In ${p.year}, the last MD General Medicine seat in deemed universities' paid quota went to AIR ${n(medDeemed.rank)} (score ${scoreText(medDeemed)}), over ${medDeemed.colleges} colleges${
-            medAiq ? `; on government seats in the All India Quota (open category) it closed at AIR ${n(medAiq.rank)}` : ""
-          }. State management and NRI quotas, and the later rounds, add more seats. Which colleges, and at what fee, depends on your rank, category and state — a counsellor can list them for you.`,
-        },
-        {
-          question: "Which clinical branch goes to the lowest NEET PG rank?",
-          answer: `On deemed universities' paid seats in ${p.year}: ${p.deep
-            .slice(0, 4)
-            .map((x) => `${x.r.branch} (AIR ${n(x.c.rank)})`)
-            .join(", ")}. On government seats the order is different and every branch closes far earlier.`,
-        },
-        {
-          question: "Is a just-qualifying NEET PG score enough for a clinical branch?",
-          answer: `In ${p.year} the deepest clinical seat went at a score of ${scoreText(top.c)} (AIR ${n(top.c.rank)}, ${top.r.branch}, a deemed paid seat). Seats that deep are paid seats and come mostly in the later rounds, so it is possible — but it needs a budget, the right round and a list of colleges made for your rank.`,
-        },
-        {
-          question: "Why do paid seats go to such low ranks?",
-          answer: `Deemed universities' paid seats cost far more than government seats${p.fee?.median ? ` — ${lakh(p.fee.median)} a year in the middle` : ""} — so many higher-ranked candidates pass on them. As the rounds go on they fall to candidates further down the list who can pay.`,
-        },
-      ]
-    : [];
+  const faqs =
+    p && medDeemed && top
+      ? [
+          ...(band(1_00_000)
+            ? [
+                {
+                  question: "Which clinical branch can I get at 1 lakh rank in NEET PG?",
+                  answer: `In ${p.year}, at AIR 1,00,000 (score ${scoreText(band(1_00_000)?.score)}), these clinical branches still had seats going at that rank or later — ${reachAt(1_00_000) || "none"}. Which colleges, and at what fee, depends on your category and state; a counsellor lists them for you.`,
+                },
+              ]
+            : []),
+          ...(band(50_000) && medAiq
+            ? [
+                {
+                  question: "Can I get MD General Medicine at 50,000 rank?",
+                  answer: `Not on a government seat in the All India Quota: in ${p.year} that closed at AIR ${n(medAiq.rank)} for the open category. On deemed universities' paid seats MD General Medicine went to AIR ${n(medDeemed.rank)}, so yes — at a paid seat's fee. State quota and management seats close at their own ranks, and those depend on your domicile.`,
+                },
+              ]
+            : []),
+          ...(s300Rank
+            ? [
+                {
+                  question: "Is a clinical branch possible with 300 marks in NEET PG?",
+                  answer: `A score of 300 out of ${s300Rank.outOf} in NEET PG ${s300Rank.year} was rank ${n(s300Rank.rankMin)} – ${n(s300Rank.rankMax)}. In ${p.year}, deemed universities' paid seats went further than that in ${p.deep.filter((x) => x.c.rank >= s300Rank.rankMax).length} of ${p.deep.length} clinical branches. Those are paid seats, and most of them fill in the later rounds.`,
+                },
+              ]
+            : []),
+          ...(medAiq
+            ? [
+                {
+                  question: "What rank is required for MD Medicine in a government college?",
+                  answer: `In MCC's All India Quota, the last government MD General Medicine seat for the open category went to AIR ${n(medAiq.rank)} (score ${scoreText(medAiq)}) in ${p.year}, over ${medAiq.colleges} colleges. Reserved categories and each state's own quota close at other ranks.`,
+                },
+              ]
+            : []),
+          {
+            question: "Which is the easiest clinical branch to get at a low rank?",
+            answer: `By how far its seats went in ${p.year}: on deemed paid seats, ${p.deep
+              .slice(0, 3)
+              .map((x) => `${x.r.branch} (AIR ${n(x.c.rank)})`)
+              .join(", ")}; on government seats in the All India Quota, ${p.deepAiq
+              .slice(0, 3)
+              .map((x) => `${x.r.branch} (AIR ${n(x.c.rank)})`)
+              .join(", ")}.`,
+          },
+          {
+            question: "Which are the clinical branches in NEET PG?",
+            answer: `The ones asked about most: ${p.d.rows.map((r) => r.branch).join(", ")}. Others — such as Family Medicine, Geriatrics, Physical Medicine & Rehabilitation and Radiation Oncology — are clinical too, with fewer seats.`,
+          },
+          {
+            question: "Why do paid seats go to such low ranks?",
+            answer: `Deemed universities' paid seats cost far more than government seats${p.fee?.median ? ` — ${lakh(p.fee.median)} a year in the middle` : ""} — so many higher-ranked candidates pass on them. As the rounds go on they fall to candidates further down the list who can pay.`,
+          },
+        ]
+      : [];
 
   return (
     <main className="min-h-screen bg-background">
@@ -134,29 +213,29 @@ export default async function LowScoreClinicalPage() {
           breadcrumb([
             { name: "Home", path: "/" },
             { name: "MD/MS in India", path: "/md-ms-india" },
-            { name: "Low score clinical branches", path: PATH },
+            { name: "Low rank clinical branches", path: PATH },
           ]),
-          webPage({ name: "NEET PG low score clinical branches", description: answerReady ? copy.answer : copy.subtitle, path: PATH }),
+          webPage({ name: "NEET PG low rank clinical branches", description: answerReady ? copy.answer : copy.subtitle, path: PATH }),
           ...(faqs.length ? [faqPage(faqs)] : []),
         ]}
       />
 
       <DataHero
-        crumbs={[{ label: "Home", href: "/" }, { label: "MD/MS in India", href: "/md-ms-india" }, { label: "Low score clinical branches" }]}
+        crumbs={[{ label: "Home", href: "/" }, { label: "MD/MS in India", href: "/md-ms-india" }, { label: "Low rank clinical branches" }]}
         eyebrow={copy.eyebrow}
         title={copy.title}
         accent={copy.accent}
         subtitle={answerReady && copy.answer ? copy.answer : copy.subtitle}
         image={heroImage}
         topic="branch"
-        cta={{ label: copy.cta, href: "/neet-college-predictor?course=pg" }}
+        cta={{ label: copy.cta, href: "#get-plan" }}
         telegram="hero_pg_low_clinical"
         source={copy.source}
         insights={
           p && top
             ? [
+                ...(medDeemed ? [{ icon: "down" as const, label: `MD Medicine, deemed paid, ${p.year}`, value: `AIR ${n(medDeemed.rank)}`, note: `score ${scoreText(medDeemed)}` }] : []),
                 { icon: "down" as const, label: `Deepest clinical seat, ${p.year}`, value: `AIR ${n(top.c.rank)}`, note: `${top.r.branch} · score ${scoreText(top.c)}` },
-                ...(medAiq ? [{ icon: "college" as const, label: `Govt seats, MD Medicine (open), ${p.year}`, value: `AIR ${n(medAiq.rank)}`, note: "All India Quota" }] : []),
                 ...(topNow ? [{ icon: "up" as const, label: `${p.nowYear} ${p.d.runningRound ?? ""} so far`.replace("  ", " "), value: `AIR ${n(topNow.c.rank)}`, note: `${topNow.r.branch} · score ${scoreText(topNow.c)}` }] : []),
                 { icon: "people" as const, label: `Ranked in ${p.year}`, value: n(p.d.ranked[p.year]), note: "NBEMS result" },
               ]
@@ -164,76 +243,180 @@ export default async function LowScoreClinicalPage() {
         }
       />
 
-      {p && (
-        <section className="container-custom py-10 md:py-14">
-          <SectionHead icon="list" eyebrow={`${p.d.rows.length} clinical branches`} title={body.table_title} intro={body.table_intro} />
-          <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card">
-            <table className="dt w-full text-sm">
-              <thead>
-                <tr>
-                  <th className="text-left">Branch</th>
-                  <th className="text-right">Govt seats, open · {p.year}</th>
-                  <th className="text-right">Deemed paid · {p.year}</th>
-                  {p.nowYear !== p.year && <th className="text-right">Deemed paid · {p.nowYear} {p.d.runningRound ?? ""}</th>}
-                  <th className="text-right">DNB, open · {p.year}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {p.d.rows.map((r) => {
-                  const cell = (c?: Cut) =>
-                    c ? (
-                      <>
-                        <span className="tnum font-semibold text-foreground">AIR {n(c.rank)}</span>
-                        <span className="block text-xs text-muted-foreground">score {scoreText(c)}</span>
-                      </>
-                    ) : (
-                      <span className="text-muted-foreground">—</span>
-                    );
-                  return (
-                    <tr key={r.branch}>
-                      <td>
-                        {r.slug ? (
-                          <Link href={`/md-ms-india/branches/${r.slug}`} className="font-semibold text-primary-strong hover:underline">
-                            {r.branch}
-                          </Link>
-                        ) : (
-                          r.branch
-                        )}
-                      </td>
-                      <td className="text-right">{cell(p.cut(r, p.year, "aiq"))}</td>
-                      <td className="text-right">{cell(p.cut(r, p.year, "deemed"))}</td>
-                      {p.nowYear !== p.year && <td className="text-right">{cell(p.cut(r, p.nowYear, "deemed"))}</td>}
-                      <td className="text-right">{cell(p.cut(r, p.year, "dnb"))}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+      {round?.filling && (
+        <div className="border-b border-accent/20 bg-accent-soft">
+          <div className="container-custom flex flex-wrap items-center gap-3 py-3 text-[15px] text-foreground">
+            <CalendarClock className="h-5 w-5 shrink-0 text-accent" aria-hidden />
+            <p className="min-w-0 flex-1">{body.urgency}</p>
+            <a href={wa(`Hi, please check my NEET PG ${round.label} choice order. My rank is ___ and category ___.`)} target="_blank" rel="noopener noreferrer" data-placement="low_clinical_round" className="inline-flex min-h-11 items-center gap-2 rounded-full bg-accent px-4 text-sm font-semibold text-white">
+              <MessageCircle className="h-4 w-4" aria-hidden /> Check my order
+            </a>
           </div>
-          <p className="mt-3 text-xs text-muted-foreground">
-            The last rank admitted in each seat family over three or more colleges, from MCC&apos;s results; deemed paid seats have no
-            category reservation. State counselling quotas are not in this table — ask a counsellor for your state&apos;s.
-          </p>
+        </div>
+      )}
+
+      {p && p.bands.length > 0 && (
+        <section className="container-custom py-10 md:py-14">
+          <SectionHead icon="route" eyebrow="Rank vs branch" title={body.bands_title} intro={body.bands_intro} />
+          <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {p.bands.map((b) => {
+              const any = b.reach.some((x) => x.branches.length);
+              return (
+                <article key={b.rank} id={`rank-${b.rank}`} className="flex flex-col rounded-2xl border border-border bg-card p-5 shadow-sm">
+                  <h3 className="font-heading text-lg font-bold text-foreground">NEET PG {said(b.rank)} rank: which clinical branch?</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    AIR {n(b.rank)} · score {scoreText(b.score)} in {p.year}
+                    {b.scoreNow ? `, ${scoreText(b.scoreNow)} in ${p.nowYear}` : ""}
+                  </p>
+                  <div className="mt-4 flex-1 space-y-3">
+                    {b.reach.map((x) => (
+                      <div key={x.family}>
+                        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{FAMILY_LABEL[x.family]}</p>
+                        {x.branches.length ? (
+                          <p className="mt-1 flex flex-wrap gap-1.5">
+                            {x.branches.map((br) => (
+                              <span key={br} className="rounded-full bg-primary-soft px-2.5 py-0.5 text-[13px] font-medium text-primary-strong">
+                                {br}
+                              </span>
+                            ))}
+                          </p>
+                        ) : (
+                          <p className="mt-1 text-[13px] text-muted-foreground">Closed before this rank</p>
+                        )}
+                      </div>
+                    ))}
+                    {!any && <p className="text-[13px] text-muted-foreground">State management and NRI seats are the route here — ask us which are open to you.</p>}
+                  </div>
+                  <a
+                    href={wa(body.band_wa.replace("{rank}", n(b.rank)))}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-placement={`low_clinical_band_${b.rank}`}
+                    className="mt-5 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-primary-strong px-4 text-sm font-semibold text-primary-foreground"
+                  >
+                    <MessageCircle className="h-4 w-4" aria-hidden /> {body.band_button}
+                  </a>
+                </article>
+              );
+            })}
+          </div>
         </section>
       )}
 
-      {routes.length > 0 && (
+      {steps.length > 0 && (
         <section className="border-t border-border bg-surface-1 py-10 md:py-14">
           <div className="container-custom">
-            <SectionHead icon="branch" eyebrow="Four routes" title={body.routes_title} />
-            <div className="mt-6 grid gap-4 md:grid-cols-2">
-              {routes.map(([t, d]) => (
-                <div key={t} className="rounded-2xl border border-border bg-card p-5">
-                  <h3 className="font-semibold text-foreground">{t}</h3>
+            <SectionHead icon="people" eyebrow="Our strategy" title={body.strategy_title} />
+            <ol className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {steps.map(([t, d], i) => (
+                <li key={t} className="rounded-2xl border border-border bg-card p-5">
+                  <span className="tnum flex h-9 w-9 items-center justify-center rounded-full bg-primary-strong font-bold text-primary-foreground">{i + 1}</span>
+                  <h3 className="mt-3 font-semibold text-foreground">{t}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{d}</p>
-                </div>
+                </li>
               ))}
+            </ol>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a href={wa(body.wa_text)} target="_blank" rel="noopener noreferrer" data-placement="low_clinical_strategy_wa" className="inline-flex min-h-12 items-center gap-2 rounded-full bg-accent px-5 font-semibold text-white">
+                <MessageCircle className="h-4 w-4" aria-hidden /> Get my clinical seat plan
+              </a>
+              <a href={`tel:${CONTACT_INFO.phone}`} data-placement="low_clinical_strategy_call" className="inline-flex min-h-12 items-center gap-2 rounded-full border border-border bg-card px-5 font-semibold text-foreground">
+                <Phone className="h-4 w-4" aria-hidden /> Call a counsellor
+              </a>
             </div>
           </div>
         </section>
       )}
 
-      <section className="container-custom py-10 md:py-14">
+      {realCases.length > 0 && (
+        <section className="container-custom py-10 md:py-14">
+          <SectionHead icon="college" eyebrow="Students' seats" title={body.cases_title} intro={body.cases_intro} />
+          <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {realCases.map((c) => (
+              <article key={c.id} className="rounded-2xl border border-accent/30 bg-card p-5">
+                <p className="tnum text-sm font-semibold text-accent">{c.subtitle}</p>
+                <h3 className="mt-1 font-heading text-lg font-bold text-foreground">{c.title}</h3>
+                {c.body && <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{c.body}</p>}
+                {(typeof c.data?.round === "string" || typeof c.data?.student === "string") && (
+                  <p className="mt-3 text-xs text-muted-foreground">{[c.data?.student, c.data?.round].filter((x) => typeof x === "string" && x).join(" · ")}</p>
+                )}
+              </article>
+            ))}
+          </div>
+          <p className="mt-3 text-xs text-muted-foreground">No one can promise a seat: counselling allots it. These are the students&apos; own results, shared with their permission.</p>
+        </section>
+      )}
+
+      {p && (
+        <section className={`${realCases.length ? "border-t border-border bg-surface-1" : ""} py-10 md:py-14`}>
+          <div className="container-custom">
+            <SectionHead icon="list" eyebrow={`${p.d.rows.length} clinical branches`} title={body.table_title} intro={body.table_intro} />
+            <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card">
+              <table className="dt w-full text-sm">
+                <thead>
+                  <tr>
+                    <th className="text-left">Branch</th>
+                    <th className="text-right">Govt seats, open · {p.year}</th>
+                    <th className="text-right">Deemed paid · {p.year}</th>
+                    {p.nowYear !== p.year && <th className="text-right">Deemed paid · {p.nowYear} {p.d.runningRound ?? ""}</th>}
+                    <th className="text-right">DNB, open · {p.year}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {p.d.rows.map((r) => {
+                    const cell = (c?: Cut) =>
+                      c ? (
+                        <>
+                          <span className="tnum font-semibold text-foreground">AIR {n(c.rank)}</span>
+                          <span className="block text-xs text-muted-foreground">score {scoreText(c)}</span>
+                        </>
+                      ) : (
+                        <span className="text-muted-foreground">—</span>
+                      );
+                    return (
+                      <tr key={r.branch}>
+                        <td>
+                          {r.slug ? (
+                            <Link href={`/md-ms-india/branches/${r.slug}`} className="font-semibold text-primary-strong hover:underline">
+                              {r.branch}
+                            </Link>
+                          ) : (
+                            r.branch
+                          )}
+                        </td>
+                        <td className="text-right">{cell(p.cut(r, p.year, "aiq"))}</td>
+                        <td className="text-right">{cell(p.cut(r, p.year, "deemed"))}</td>
+                        {p.nowYear !== p.year && <td className="text-right">{cell(p.cut(r, p.nowYear, "deemed"))}</td>}
+                        <td className="text-right">{cell(p.cut(r, p.year, "dnb"))}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <p className="mt-3 text-xs text-muted-foreground">
+              The last rank admitted in each seat family over three or more colleges, from MCC&apos;s results; deemed paid seats have no category
+              reservation. State counselling quotas are not in this table — ask a counsellor for your state&apos;s.
+            </p>
+          </div>
+        </section>
+      )}
+
+      {routes.length > 0 && (
+        <section className="container-custom py-10 md:py-14">
+          <SectionHead icon="branch" eyebrow="Four routes" title={body.routes_title} />
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            {routes.map(([t, d]) => (
+              <div key={t} className="rounded-2xl border border-border bg-card p-5">
+                <h3 className="font-semibold text-foreground">{t}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{d}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section className="container-custom pb-10 md:pb-14">
         <div className="rounded-3xl border border-primary/20 bg-primary-soft p-6 md:p-8">
           <h2 className="font-heading text-2xl font-bold text-foreground">{body.counsel_title}</h2>
           <ul className="mt-4 grid gap-2 md:grid-cols-2">
@@ -245,7 +428,7 @@ export default async function LowScoreClinicalPage() {
             ))}
           </ul>
           <div className="mt-6 flex flex-wrap gap-3">
-            <a href={wa} target="_blank" rel="noopener noreferrer" data-placement="low_clinical_wa" className="inline-flex min-h-12 items-center gap-2 rounded-full bg-accent px-5 font-semibold text-white">
+            <a href={wa(body.wa_text)} target="_blank" rel="noopener noreferrer" data-placement="low_clinical_wa" className="inline-flex min-h-12 items-center gap-2 rounded-full bg-accent px-5 font-semibold text-white">
               <MessageCircle className="h-4 w-4" aria-hidden /> Ask on WhatsApp
             </a>
             <a href={`tel:${CONTACT_INFO.phone}`} data-placement="low_clinical_call" className="inline-flex min-h-12 items-center gap-2 rounded-full border border-border bg-card px-5 font-semibold text-foreground">
@@ -258,6 +441,8 @@ export default async function LowScoreClinicalPage() {
           <p className="mt-4 text-xs text-muted-foreground">No one can promise a seat: counselling allots it. We tell you where your rank stood last year and how to fill your choices.</p>
         </div>
       </section>
+
+      <ExpertCompare placement="low_clinical" />
 
       {faqs.length > 0 && (
         <section className="border-t border-border bg-surface-1 py-10 md:py-14">
@@ -275,6 +460,7 @@ export default async function LowScoreClinicalPage() {
               Also:{" "}
               <Link href="/neet-pg-cutoff" className="font-semibold text-primary-strong hover:underline">NEET PG cut off branch wise</Link> ·{" "}
               <Link href="/neet-pg-marks-vs-rank" className="font-semibold text-primary-strong hover:underline">marks vs rank</Link> ·{" "}
+              <Link href="/neet-pg-choice-filling" className="font-semibold text-primary-strong hover:underline">choice filling and upgrades</Link> ·{" "}
               <Link href="/md-ms-india/deemed-universities" className="font-semibold text-primary-strong hover:underline">deemed university PG fees</Link> ·{" "}
               <Link href="/management-quota" className="font-semibold text-primary-strong hover:underline">management quota</Link>
             </p>
@@ -282,7 +468,9 @@ export default async function LowScoreClinicalPage() {
         </section>
       )}
 
-      <LeadCapture level="pg" source="Low score clinical branches page" title={body.lead_title} body={body.lead_body} />
+      <div id="get-plan" className="scroll-mt-24">
+        <LeadCapture level="pg" source="Low score clinical branches page" title={body.lead_title} body={body.lead_body} />
+      </div>
       <TelegramJoin placement="pg_low_clinical" />
     </main>
   );

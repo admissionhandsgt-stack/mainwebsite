@@ -33,7 +33,12 @@ export interface LowRankClinical {
   runningRound: string | null;
   ranked: Record<number, number>;
   rows: ClinicalRow[];
+  /** The score that held each milestone rank, per year (NBEMS). */
+  milestones: Record<number, { rank: number; score: number | null; outOf: number | null }[]>;
 }
+
+/** The ranks people ask about: "50k rank in neet pg", "1 lakh rank". */
+export const RANK_MILESTONES = [25_000, 50_000, 75_000, 1_00_000, 1_25_000, 1_50_000, 2_00_000];
 
 /** The branches people mean by "clinical", in the order they are asked about; the pattern matches MD/MS and DNB names. */
 export const CLINICAL: { branch: string; re: RegExp; slug: string }[] = [
@@ -109,8 +114,10 @@ export const getLowRankClinical = unstable_cache(
       const prev = cell[r.fam];
       if (!prev || r.last_rank > prev.rank) cell[r.fam] = { rank: Number(r.last_rank), colleges: Number(r.colleges), ...scoreAt(year, Number(r.last_rank)) };
     }
-    return { years, runningRound, ranked, rows: out.filter((r) => Object.keys(r.cuts).length) };
+    const milestones: LowRankClinical["milestones"] = {};
+    for (const y of years) milestones[y] = RANK_MILESTONES.filter((m) => m <= (ranked[y] ?? 0)).map((m) => ({ rank: m, ...scoreAt(y, m) }));
+    return { years, runningRound, ranked, rows: out.filter((r) => Object.keys(r.cuts).length), milestones };
   },
-  ["low-rank-clinical-v1"],
+  ["low-rank-clinical-v2"],
   { revalidate: 3600, tags: ["mcc"] },
 );

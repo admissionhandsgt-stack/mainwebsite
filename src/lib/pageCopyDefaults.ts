@@ -60,21 +60,25 @@ export const PAGE_COPY = {
   "page.pg_low_clinical.hero": {
     group: "Page: low score clinical branches",
     fields: {
-      eyebrow: { label: "Hero eyebrow", value: "NEET PG · clinical branch at a low rank" },
-      title: { label: "Hero title", value: "Low score," },
-      accent: { label: "Hero title, coloured part", value: "clinical branch" },
+      // Ad-style since 2026-11-10 (owner: "marketing ads ki trh banana tha… users ko target kare, keywords target kare").
+      eyebrow: { label: "Hero eyebrow", value: "NEET PG {now_year} · low rank, clinical branch", was: ["NEET PG · clinical branch at a low rank"] },
+      title: { label: "Hero title", value: "NEET PG low rank?", was: ["Low score,"] },
+      accent: { label: "Hero title, coloured part", value: "A clinical branch is still possible.", was: ["clinical branch"] },
       subtitle: {
         label: "Hero line (when the figures are missing)",
         value: "Where MD Medicine, Surgery, Orthopaedics and the other clinical branches still went at a low NEET PG rank — read from MCC's own results.",
         long: true,
       },
       answer: {
-        label: "Quick answer under the title — {year}, {med_rank}, {med_score}, {deep_branch}, {deep_rank}, {deep_score}, {ranked}",
+        label: "Quick answer under the title — {year}, {med_rank}, {med_score}, {surg_rank}, {deep_branch}, {deep_rank}, {deep_score}, {ranked}",
         value:
-          "Yes. In {year}, MD General Medicine went to AIR {med_rank} (score {med_score}) on deemed universities' paid seats, and {deep_branch} to AIR {deep_rank} (score {deep_score}) — out of {ranked} ranked. Government seats close far earlier; the low-rank clinical seats are paid seats, DNB and the later rounds.",
+          "In {year}, MD General Medicine went to AIR {med_rank} (score {med_score}) and MS General Surgery to AIR {surg_rank} — on deemed universities' paid seats, out of {ranked} ranked. Which college, in which round, at what fee: that is the plan our counsellors make with you.",
         long: true,
+        was: [
+          "Yes. In {year}, MD General Medicine went to AIR {med_rank} (score {med_score}) on deemed universities' paid seats, and {deep_branch} to AIR {deep_rank} (score {deep_score}) — out of {ranked} ranked. Government seats close far earlier; the low-rank clinical seats are paid seats, DNB and the later rounds.",
+        ],
       },
-      cta: { label: "Hero button", value: "Check my clinical chances" },
+      cta: { label: "Hero button", value: "Get my clinical seat plan", was: ["Check my clinical chances"] },
       source: {
         label: "Source line — {year}, {now_year}",
         value:
@@ -163,6 +167,38 @@ export const PAGE_COPY = {
         long: true,
       },
       wa_text: { label: "WhatsApp message", value: "Hi, I want a clinical branch in NEET PG. My rank is ___ and category ___. Which colleges are possible?" },
+      urgency: {
+        label: "Round strip — {round}, {filling}, {locking} (hidden between rounds)",
+        value: "{round} choice filling: {filling}. Locking: {locking}. Get your clinical order checked before you lock — the order decides the seat.",
+        long: true,
+      },
+      bands_title: { label: "Rank bands title", value: "NEET PG rank vs clinical branch: what your rank reached" },
+      bands_intro: {
+        label: "Rank bands intro — {year}",
+        value: "Find your rank. Each card lists the clinical branches whose last seat in {year} went at that rank or later — government seats in the All India Quota, DNB, and deemed universities' paid seats. Which colleges, and at what fee, is the part we work out with you.",
+        long: true,
+      },
+      band_button: { label: "Rank band button", value: "Get colleges for my rank" },
+      band_wa: { label: "Rank band WhatsApp message — {rank}", value: "Hi, my NEET PG rank is around {rank}. Which clinical branches and colleges are possible for me?" },
+      strategy_title: { label: "Strategy title", value: "How our counsellors find a clinical seat at a low rank" },
+      strategy: {
+        label: "Strategy steps, one per line: title | text",
+        value: [
+          "Every quota you can use | All India Quota, your state's quota, deemed universities, state management and NRI seats where you are eligible — most students fill only one or two.",
+          "A seat list built for your rank | Every college that took a clinical branch near your rank last year, with its fee, bond and stipend beside it, so the list is one you can afford.",
+          "The order that decides the seat | Choices are filled in the order you would take them, round by round — a clinical seat lower in the list is never lost to a non-clinical one above it.",
+          "Freeze, float or upgrade | After every result we decide together whether to hold the seat or go for an upgrade, and what leaving it would cost.",
+          "Round 3 and the stray round | The deepest clinical seats come at the end. We track the vacancies and are ready the day the list opens.",
+          "Fees in writing | We speak to college offices about instalments and hostel terms, and get the terms in writing before you pay.",
+        ].join("\n"),
+        long: true,
+      },
+      cases_title: { label: "Students' seats title (shown only when Admin → Content → \"Low rank clinical: students' seats\" has rows)", value: "Clinical seats our students got at a low rank" },
+      cases_intro: {
+        label: "Students' seats intro",
+        value: "Real students, shared with their permission. Each one is a rank, the seat, and what we did differently.",
+        long: true,
+      },
       faq_title: { label: "FAQ title", value: "Questions about clinical branches at a low rank" },
       lead_title: { label: "Enquiry form title", value: "Tell us your rank — we will tell you the clinical seats" },
       lead_body: {
