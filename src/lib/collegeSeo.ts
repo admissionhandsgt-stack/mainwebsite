@@ -89,6 +89,8 @@ export interface FaqFacts {
   seatsFromNmc?: boolean;
   /** MCC's results for the counselling year in progress (PG), as bands — answered first ("<college> cut off 2026"). */
   live?: LiveBands | null;
+  /** The college's rank in NIRF's medical (or dental) list, once that list is loaded — the official ranking. */
+  nirf?: { rank: number; year: number; list: string } | null;
 }
 
 /**
@@ -204,6 +206,18 @@ export function collegeFaqs(
         `good chance, possible or reach — and your counsellor takes you through the round-by-round detail.`,
     });
 
+    // "<college> admissions" (995 impressions a month on UG pages, 307 on PG, Search Console Oct–Nov 2026).
+    faqs.push({
+      q: `How to get admission in ${college.name}?`,
+      a:
+        `Admission to ${level === "pg" ? "MD/MS" : course} at ${college.name} is through ${level === "pg" ? "NEET PG" : "NEET UG"} ` +
+        `and counselling — there is no direct admission. Seats here are allotted by ${list(counsellings, 3) || "counselling"}` +
+        (quotas.length ? `, under ${list(quotas, 3)}` : "") +
+        `. Register for each counselling you are eligible for, place the college in your choices, and if a seat is ` +
+        `allotted, report with your documents by the date given. A counsellor decides with you where it goes in your ` +
+        `order and what to do in each round.`,
+    });
+
     faqs.push({
       q: `How many seat options does ${college.name} offer in counselling?`,
       a:
@@ -285,6 +299,28 @@ export function collegeFaqs(
   // claim we cannot back. See the note in CLAUDE.md on UG ownership. NMC's register does say, so a UG page
   // whose college NMC lists answers "<college> government or private" (883 impressions a month) from it.
   const ownership = college.ownership && college.ownership !== "other" ? college.ownership : facts.fromNmc && facts.type ? facts.type.toLowerCase() : null;
+  // "<college> rankings" (3,011 impressions a month on UG pages, 468 on PG): the official ranking where the college is
+  // in it, else what the regulator's register says — never a ranking we made up.
+  {
+    const what = [
+      ownership ? `a ${ownership} college` : null,
+      college.establishedYear ? `founded in ${college.establishedYear}` : null,
+      facts.seats ? `with ${inr(facts.seats)} ${course} seats${facts.seatsFromNmc ? " on NMC's register" : ""}` : null,
+    ].filter(Boolean) as string[];
+    if (facts.nirf || what.length >= 2) {
+      faqs.push({
+        q: `What is the ranking of ${college.name}?`,
+        a: facts.nirf
+          ? `${college.name} is ranked ${facts.nirf.rank} in NIRF ${facts.nirf.year} (${facts.nirf.list}), the Ministry of Education's ` +
+            `national ranking.${what.length ? ` It is ${what.join(", ")}.` : ""} For your own seat, what decides it is the college's cut off at your ` +
+            `rank, its fee and its hospital — sign in free to see your chance here.`
+          : `The official ranking of medical colleges in India is NIRF, by the Ministry of Education, which lists the top ` +
+            `colleges each year. ${college.name} is ${what.join(", ")}. For your own seat, what decides it is the college's ` +
+            `cut off at your rank, its fee and its hospital — sign in free to see your chance here.`,
+      });
+    }
+  }
+
   if (ownership) {
     faqs.push({
       q: `Is ${college.name} a government or private college?`,
