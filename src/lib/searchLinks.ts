@@ -158,7 +158,8 @@ export { pageWords, SOFT };
 
 /* --------------------------------------------------------------- building ---- */
 
-async function gscRows(): Promise<{ page: string; query: string; impressions: number }[]> {
+/** Search Console page × query rows for the last `days` days of final data (ends 3 days ago). Also used by lib/hunt.ts. */
+export async function gscRows(days = 28): Promise<{ page: string; query: string; impressions: number }[]> {
   const token = await googleToken(["https://www.googleapis.com/auth/webmasters.readonly"]);
   if (!token) throw new Error("No Google service account is configured.");
   const day = (d: number) => new Date(Date.now() - d * 86_400_000).toISOString().slice(0, 10);
@@ -167,7 +168,7 @@ async function gscRows(): Promise<{ page: string; query: string; impressions: nu
     const r = await fetch(`https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(SITE)}/searchAnalytics/query`, {
       method: "POST",
       headers: { authorization: `Bearer ${token}`, "content-type": "application/json" },
-      body: JSON.stringify({ startDate: day(30), endDate: day(3), dimensions: ["page", "query"], type: "web", rowLimit: 25_000, startRow, dataState: "final" }),
+      body: JSON.stringify({ startDate: day(days + 2), endDate: day(3), dimensions: ["page", "query"], type: "web", rowLimit: 25_000, startRow, dataState: "final" }),
       cache: "no-store",
       signal: AbortSignal.timeout(60_000),
     });

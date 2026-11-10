@@ -35,7 +35,97 @@ type State = {
   enabled: boolean;
   cap: string;
   rows: Row[];
+  hunt: Hunt[];
+  sources: Source[];
 };
+type Source = { id: number; url: string; org: string; kind: string; last_crawled_at: string | null; found: number; last_note: string | null };
+type Hunt = { id: number; query: string; impressions: number; page: string; answer: string; status: string; posted_url: string | null; created_at: string };
+const SITE = "https://www.admissionhands.com";
+const q = encodeURIComponent;
+
+/** The websites whose own contact pages are read monthly for an address to write to (lib/outreachDiscover.ts). */
+function SourcesCard({
+  sources,
+  busy,
+  post,
+  onMsg,
+}: {
+  sources: Source[];
+  busy: boolean;
+  post: (body: Record<string, unknown>, label: string) => Promise<Record<string, unknown> | null>;
+  onMsg: (m: { tone: "success" | "danger" | "info"; text: string }) => void;
+}) {
+  const [f, setF] = useState({ url: "", org: "", kind: "journalist" });
+  return (
+    <Card
+      title={`Websites to find emails on (${sources.length})`}
+      description="Each site's own contact / about pages are read once a month (robots.txt respected). An address the organisation published there becomes a draft above — it still waits for your Send on Telegram."
+      actions={
+        <Button size="sm" disabled={busy || !sources.length} onClick={async () => {
+          const j = await post({ action: "discover-now" }, "discover");
+          if (j) onMsg({ tone: "success", text: `${Number(j.sites ?? 0)} sites read, ${Number(j.added ?? 0)} addresses added.` });
+        }}>
+          Look now
+        </Button>
+      }
+    >
+      <div className="grid gap-3 md:grid-cols-[2fr_2fr_1fr_auto]">
+        <input className={`${INPUT} ${INPUT_H}`} placeholder="https://site.in" value={f.url} onChange={(e) => setF({ ...f, url: e.target.value })} />
+        <input className={`${INPUT} ${INPUT_H}`} placeholder="Organisation" value={f.org} onChange={(e) => setF({ ...f, org: e.target.value })} />
+        <select className={`${INPUT} ${INPUT_H}`} value={f.kind} onChange={(e) => setF({ ...f, kind: e.target.value })}>
+          <option value="journalist">News / journalist</option>
+          <option value="association">Doctors' association</option>
+          <option value="other">Other</option>
+        </select>
+        <Button variant="primary" disabled={busy || !f.url || !f.org} onClick={async () => {
+          const j = await post({ action: "source-add", ...f }, "source");
+          if (j) setF({ url: "", org: "", kind: f.kind });
+        }}>
+          Add site
+        </Button>
+      </div>
+      {sources.length > 0 && (
+        <ul className="mt-4 divide-y divide-slate-100 text-[13px]">
+          {sources.map((s) => (
+            <li key={s.id} className="flex flex-wrap items-center justify-between gap-2 py-2">
+              <span>
+                <span className="font-medium text-slate-900">{s.org}</span> · <a className="underline" href={s.url} target="_blank" rel="noreferrer">{s.url}</a>
+                <span className="text-slate-500"> · {s.last_crawled_at ? `read ${when(s.last_crawled_at)}: ${s.last_note ?? ""}` : "not read yet"}</span>
+              </span>
+              <Button size="sm" variant="ghost" onClick={() => post({ action: "source-delete", id: s.id }, "source-del")}>Remove</Button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </Card>
+  );
+}
+
+/** One question to answer by hand: open a search, find the thread, paste the answer, record where it went. */
+function HuntCard({ h, onDone }: { h: Hunt; onDone: (action: "hunt-posted" | "hunt-dismiss", url?: string) => void }) {
+  const [url, setUrl] = useState("");
+  const [copied, setCopied] = useState(false);
+  return (
+    <div className="rounded-xl border border-slate-200 p-4">
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <div className="font-semibold text-slate-900">“{h.query}”</div>
+        <div className="text-xs text-slate-500">{h.impressions} searches this week · answers it: <a className="underline" href={`${SITE}${h.page}`} target="_blank" rel="noreferrer">{h.page}</a></div>
+      </div>
+      <div className="mt-2 flex flex-wrap gap-2 text-[13px]">
+        <a className="rounded-full border border-slate-200 px-3 py-1 hover:bg-slate-50" href={`https://www.quora.com/search?q=${q(h.query)}`} target="_blank" rel="noreferrer">Find on Quora</a>
+        <a className="rounded-full border border-slate-200 px-3 py-1 hover:bg-slate-50" href={`https://www.reddit.com/search/?q=${q(h.query)}`} target="_blank" rel="noreferrer">Find on Reddit</a>
+        <a className="rounded-full border border-slate-200 px-3 py-1 hover:bg-slate-50" href={`https://www.google.com/search?q=${q(`${h.query} site:quora.com OR site:reddit.com`)}`} target="_blank" rel="noreferrer">Find on Google</a>
+      </div>
+      <textarea readOnly className={`${INPUT} mt-3 min-h-[9rem] py-2 text-[13px] leading-relaxed`} value={h.answer} />
+      <div className="mt-2 flex flex-wrap items-center gap-2">
+        <Button size="sm" onClick={async () => { await navigator.clipboard.writeText(h.answer).catch(() => undefined); setCopied(true); }}>{copied ? "Copied" : "Copy answer"}</Button>
+        <input className={`${INPUT} h-8 max-w-sm`} placeholder="Link of your posted answer" value={url} onChange={(e) => setUrl(e.target.value)} />
+        <Button size="sm" variant="primary" onClick={() => onDone("hunt-posted", url)}>Posted</Button>
+        <Button size="sm" variant="ghost" onClick={() => onDone("hunt-dismiss")}>Not useful</Button>
+      </div>
+    </div>
+  );
+}
 
 const TONE: Record<string, Tone> = {
   draft: "neutral",
@@ -258,6 +348,45 @@ export default function OutreachEmail() {
           </div>
         )}
       </Card>
+
+      <SourcesCard sources={s.sources} busy={!!busy} post={post} onMsg={setMsg} />
+
+      <div id="hunt" className="scroll-mt-24">
+        <Card
+          title={`Daily hunt — ${s.hunt.filter((h) => h.status === "new").length} questions to answer`}
+          description="Questions people searched this week that land on our pages, each with an answer from the page's own figures. Open a search, find the thread, paste the answer from your own account, and save its link. Follow each forum's rules: say you are a counsellor, and link only when the page answers the question. Reddit and Quora links are nofollow — the gain is readers and mentions, not link strength."
+          actions={
+            <Button size="sm" disabled={!!busy} onClick={async () => {
+              const j = await post({ action: "hunt-run" }, "hunt");
+              if (j) setMsg({ tone: "success", text: `${Number(j.added ?? 0)} new questions added.` });
+            }}>
+              Find more now
+            </Button>
+          }
+        >
+          {s.hunt.filter((h) => h.status === "new").length === 0 ? (
+            <p className="text-sm text-slate-500">Nothing waiting. New questions come every day at 11:35 AM.</p>
+          ) : (
+            <div className="space-y-3">
+              {s.hunt.filter((h) => h.status === "new").map((h) => (
+                <HuntCard key={h.id} h={h} onDone={(action, url) => post({ action, id: h.id, url }, "hunt-mark")} />
+              ))}
+            </div>
+          )}
+          {s.hunt.some((h) => h.status === "posted") && (
+            <div className="mt-5">
+              <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">Posted ({s.hunt.filter((h) => h.status === "posted").length})</div>
+              <ul className="space-y-1 text-[13px]">
+                {s.hunt.filter((h) => h.status === "posted").map((h) => (
+                  <li key={h.id}>
+                    “{h.query}” → {h.posted_url ? <a className="underline" href={h.posted_url} target="_blank" rel="noreferrer">{h.posted_url}</a> : "posted"}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </Card>
+      </div>
     </div>
   );
 }

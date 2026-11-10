@@ -6,10 +6,13 @@ import { mailConfig, sendMail, verifyMail } from "@/lib/mailer";
 import { tellOwner, tg } from "@/lib/telegramBot";
 import { addOutreach, deleteOutreach, listOutreach, runOutreach, type Kind } from "@/lib/outreach";
 import { logError } from "@/lib/logger";
+import { buildHunt, listHunt, markHunt } from "@/lib/hunt";
+import { addSource, deleteSource, listSources, runDiscover } from "@/lib/outreachDiscover";
 
 /**
  * Admin → Outreach email (2026-11-10). GET: the mailbox and bot settings (secrets masked), the switch, the cap and every
- * target. POST { action }: "save" · "test-mail" · "link-telegram" · "test-telegram" · "add" · "delete" · "preview-now".
+ * target, and the daily hunt. POST { action }: "save" · "test-mail" · "link-telegram" · "test-telegram" · "add" · "delete" ·
+ * "preview-now" · "hunt-run" · "hunt-posted" { id, url } · "hunt-dismiss" { id }.
  * The SMTP password and the bot token are write-only: saved, never sent back.
  */
 export const dynamic = "force-dynamic";
@@ -42,6 +45,8 @@ export async function GET() {
     botName(),
     listOutreach(),
   ]);
+  const hunt = await listHunt().catch(() => []);
+  const sources = await listSources().catch(() => []);
   return NextResponse.json(
     {
       host: host ?? "smtp.nevtan.com",
@@ -56,6 +61,8 @@ export async function GET() {
       enabled,
       cap: cap ?? "10",
       rows,
+      hunt,
+      sources,
     },
     { headers: { "cache-control": "no-store" } },
   );
@@ -136,6 +143,22 @@ export async function POST(request: Request) {
       }
       case "delete":
         await deleteOutreach(Number(b.id));
+        return NextResponse.json({ ok: true });
+      case "source-add": {
+        const kind = (["journalist", "association", "other"].includes(String(b.kind)) ? b.kind : "other") as Kind;
+        await addSource(str(b.url, 300), str(b.org, 160), kind);
+        return NextResponse.json({ ok: true });
+      }
+      case "source-delete":
+        await deleteSource(Number(b.id));
+        return NextResponse.json({ ok: true });
+      case "discover-now":
+        return NextResponse.json(await runDiscover({ force: true }));
+      case "hunt-run":
+        return NextResponse.json(await buildHunt());
+      case "hunt-posted":
+      case "hunt-dismiss":
+        await markHunt(Number(b.id), b.action === "hunt-posted" ? "posted" : "dismissed", str(b.url, 500));
         return NextResponse.json({ ok: true });
       case "preview-now":
         return NextResponse.json(await runOutreach({ force: true }));

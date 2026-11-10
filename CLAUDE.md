@@ -2272,6 +2272,17 @@ table `outreach_emails` (migration 0050, raw SQL), Admin → Outreach (the card 
   from the same organisation's domain unless it is a free mail service, marks it `replied`; a delivery failure naming it
   marks it `bounced`. Both stop it for good and tell the owner on Telegram. The signature puts "Phone / WhatsApp: +91 92206
   26002" on its own line (one line "site · number" came out badly in mail apps).
+- **Finding addresses (migration 0052, `lib/outreachDiscover.ts`):** `outreach_sources` (Admin → Outreach "Websites to
+  find emails on"); weekly `/api/cron/outreach-discover` (Tuesdays 05:50 UTC) reads each site's own home + up to four
+  contact/about/team/editorial pages at most monthly, robots.txt respected, honest user agent, and adds at most two of the
+  organisation's own published addresses as drafts (never role addresses like privacy/careers/sales/no-reply). Drafts
+  still wait for Send.
+- **Daily hunt (migration 0052, `lib/hunt.ts`):** Reddit refuses automated reading from servers (403/429; its Data API
+  needs approval for commercial use) — and faking a browser to get past that is not done. So the questions come from
+  Search Console: daily `/api/cron/hunt` (06:05 UTC) takes the week's searched questions that land on our pages, one
+  item per page, each with an answer built from that page's own first line or meta description (live figures) plus its
+  link and a disclosure line, and Quora / Reddit / Google search links. The owner posts by hand and records the link
+  (Admin → Outreach → Daily hunt; Telegram ping). Reddit/Quora links are nofollow — the gain is readers and mentions.
 - **Asked for and not built:** auto-posting answers with links on Reddit, forums or other sites' article sections —
   automated promotional posting is spam under Reddit's rules and a link scheme under Google's; drafts for a person to
   post are the line.
