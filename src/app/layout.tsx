@@ -83,6 +83,13 @@ export const metadata: Metadata = {
     images: [OG_IMAGE],
   },
   twitter: { card: 'summary_large_image', images: [OG_IMAGE] },
+  // Google may show a page's image large — in Discover and in results (2026-11-11, owner: "Google Discover + images
+  // ka kardo"); full snippets and video previews too. A page that sets its own robots (a noindex page) replaces this.
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1, 'max-video-preview': -1 },
+  },
 }
 
 export default async function RootLayout({
