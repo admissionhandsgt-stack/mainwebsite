@@ -2776,6 +2776,8 @@ for 8–9 Oct (root-only). Remedy: Request indexing for the affected URLs.
   it to students. **A counsellor card after the main table** of branch, PG state, stipend (hub and state)
   and NEET PG cutoff pages (`components/lead/DataPageCounsel` → `CounselCard`; words in "Counsellor card on
   data pages") — those pages had their only counsellor block under the FAQs, and branch pages none.
+- **IndexNow daily since 2026-11-10:** `POST /api/cron/indexnow` (server crontab 06:25 UTC, heartbeat `indexnow`) sends every
+  sitemap URL whose lastmod is in the last two days (all 4,119 were sent by hand that day).
 - **IndexNow** (Bing, Yandex, Naver, Seznam): `node scripts/indexnow.mjs --since <date>` after a change,
   or with paths. The key file `public/<32 hex>.txt` is public by design. All 3,630 URLs submitted
   2026-10-08. Cloudflare's Crawler Hints would automate this but cannot be enabled by API token (10405).

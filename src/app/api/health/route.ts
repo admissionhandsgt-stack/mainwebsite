@@ -32,6 +32,7 @@ const MAX_AGE: Record<string, number> = {
   "outreach-inbox": 3 * 60 * MIN, // hourly at :47
   "outreach-discover": 8 * 24 * 60 * MIN, // Tuesdays 05:50 UTC
   hunt: 26 * 60 * MIN, // daily 06:05 UTC
+  indexnow: 26 * 60 * MIN, // daily 06:25 UTC: changed URLs to Bing (IndexNow)
 };
 /** The MCC result worker checks every 2 minutes near a round, every 30 otherwise. */
 const WORKER_MAX_AGE = 45 * MIN;
