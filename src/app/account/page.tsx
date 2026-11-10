@@ -7,6 +7,7 @@ import { currentUser } from "@/lib/userAuth";
 import PageHero from "@/components/ui/PageHero";
 import SignOutButton from "@/components/account/SignOutButton";
 import TelegramJoin from "@/components/engage/TelegramJoin";
+import AccountUpdates from "@/components/account/AccountUpdates";
 
 export const dynamic = "force-dynamic";
 
@@ -55,6 +56,8 @@ export default async function AccountPage() {
 
       <div className="container-custom py-10 md:py-14">
         <div className="mx-auto grid max-w-4xl gap-5 md:grid-cols-2">
+          {/* MCC's and the home state's newest notices for this student's level (2026-11-10). */}
+          <AccountUpdates userId={user.id} level={level} />
           {/* ---- who you are ---- */}
           <section className="rounded-2xl border border-border bg-card p-6">
             <h2 className="font-heading text-lg font-bold text-foreground">Your details</h2>

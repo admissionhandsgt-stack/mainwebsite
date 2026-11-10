@@ -21,13 +21,13 @@ export default function LoginFlow({ next, initialMode = "signin" }: { next?: str
   // Only our own paths. `next` comes from the URL — the same helper the page uses.
   const target = safeNext(next);
 
-  const tab = (m: "signin" | "signup", label: string) => (
+  const tab = (m: "signin" | "signup", label: React.ReactNode) => (
     <button
       type="button"
       role="tab"
       aria-selected={mode === m}
       onClick={() => setMode(m)}
-      className={`flex-1 rounded-xl px-4 py-2.5 text-sm font-bold transition-colors ${
+      className={`flex-1 whitespace-nowrap rounded-xl px-3 py-2.5 text-sm font-bold transition-colors ${
         mode === m ? "bg-card text-foreground shadow-sm ring-1 ring-border" : "text-muted-foreground hover:text-foreground"
       }`}
     >
@@ -39,10 +39,17 @@ export default function LoginFlow({ next, initialMode = "signin" }: { next?: str
     <div>
       <div role="tablist" aria-label="Sign in or create an account" className="mb-4 flex gap-1 rounded-2xl bg-surface-2 p-1">
         {tab("signin", "Sign in")}
-        {tab("signup", "Create free account")}
+        {tab(
+          "signup",
+          <>
+            <span className="sm:hidden">Create account</span>
+            <span className="hidden sm:inline">Create free account</span>
+          </>,
+        )}
       </div>
       <AuthFlow
         noun="account"
+        plain
         mode={mode}
         onSwitchMode={setMode}
         onDone={() => {

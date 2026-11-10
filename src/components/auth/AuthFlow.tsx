@@ -81,6 +81,8 @@ export interface AuthFlowProps {
    * "signup": number, name, rank and category. "auto" (default, every other caller): the one screen as before.
    */
   mode?: "auto" | "signin" | "signup";
+  /** Inside a card that already has its border and padding (/login): no wrapper styles at all. */
+  plain?: boolean;
   /** On /login: offer the other tab when the number says the visitor is on the wrong one. */
   onSwitchMode?: (mode: "signin" | "signup") => void;
 }
@@ -108,6 +110,7 @@ export default function AuthFlow({
   skipProfile = false,
   mode = "auto",
   onSwitchMode,
+  plain = false,
 }: AuthFlowProps) {
   const signin = mode === "signin";
   const [step, setStep] = useState<Step>("phone");
@@ -442,7 +445,9 @@ export default function AuthFlow({
 
   /* ------------------------------------------------------------------ UI */
 
-  const wrap = bare
+  const wrap = plain
+    ? ""
+    : bare
     ? "px-5 py-7 sm:px-8 sm:py-9"
     : "rounded-2xl border border-border bg-card p-6 shadow-lift md:p-8";
 
@@ -456,7 +461,7 @@ export default function AuthFlow({
         <ol className="mb-6 flex items-center gap-2" aria-label="Progress">
           {(
             // Only the steps this visitor will see: the predictor's sign-in is number + code.
-            (skipProfile
+            (skipProfile || signin
               ? ["phone", step === "password" ? "password" : "code"]
               : ["phone", step === "password" ? "password" : "code", "profile", "setpass"]) as Step[]
           ).map((s, i, rail) => {

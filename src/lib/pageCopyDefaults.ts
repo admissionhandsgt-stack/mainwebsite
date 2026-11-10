@@ -416,10 +416,12 @@ export const PAGE_COPY = {
       benefits: {
         label: "Benefits, one per line: title | text",
         value: [
-          "Your colleges, with your chance | Every college your NEET rank reached last year, marked High, Good, Possible or Reach, with an approximate fee — for MBBS, BDS and MD/MS.",
+          "Your colleges, with your chance | Every college your NEET rank reached last year, marked High, Good, Possible or Reach, with an approximate fee — MBBS, BDS and MD/MS.",
+          "Latest updates, picked for you | MCC's and your home state's newest notices — round dates, results, seat matrices — on your account as they come out, and the result alert on our Telegram channel.",
+          "A counsellor who already knows you | One tap asks for a call; the counsellor has your rank, budget and branches before saying hello.",
           "Your profile, remembered | Rank, category, state and budget saved once; the predictor and every page open where you left off.",
-          "A counsellor who already knows you | One tap asks for a call, and the counsellor has your rank, budget and branches before saying hello.",
           "Your documents in one place | Upload the counselling documents once; our team checks the set before reporting day.",
+          "Expert Counselling when you want it | The strategists who plan every round: choice order, float or freeze, fees in writing. You hear the fee before anything starts.",
           "Sign in from any device | Your number and a password, or a code on WhatsApp — no app to install.",
         ].join("\n"),
         long: true,
