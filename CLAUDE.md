@@ -1925,7 +1925,8 @@ kept page (`src/lib/collegeMerges.ts`, read by the UG college page). MCC's names
 
 ## Reviewer, "updated", the phone number, UG fee floors (2026-11-09, owner's decisions)
 
-- **"Reviewed by Gulshan Tomar, Admission Counselor · Updated <date>"** under every data page's hero (DataHero) and on
+- **"Reviewed by Gulshan Tomar, Admission Strategist & Data Lead"** (role changed and the visible date taken off on
+  2026-11-10, owner: "date hatado… designation… modern"; the JSON-LD keeps the date) under every data page's hero (DataHero) and on
   both college templates (`components/seo/ReviewedBy.tsx`). Owner: "Gulshan Tomar Admission Counselor dikhado", and
   "log updated ya 2026-2027 year se bhi search karte hai". **This lifts the 2026-10-26 "no Updated on <date>" rule for
   this line only**: the date is the page's own data date — its sitemap lastmod (`lib/pageDates.ts`, by path from the
@@ -2373,6 +2374,13 @@ consumer-protection rules, and one exposed fake undoes the trust the page is bui
   authorities and the latest notice included. **MCC's "newly added seats" notices go into `mcc_seat_matrix`** (round 2 on
   10 Nov 2026: +3,534, AFMS left out; 31,708 → 35,242) — pipeline in `scripts/mcc/README_added_seats.md`; deploy with
   `--fresh-cache` after an import. In llms.txt under "Start here".
+  **Read by themselves since the same night** (owner: "mostly data dynamic hona chaiye, static nhi"): the mcc-worker spots
+  any PG "newly added / additional seats" PDF on MCC's pages (`added_candidates`, MDS/SS/UG titles left out), reads it with
+  pdfplumber (`parse_added`), loads it **only when the rows add up to the total MCC prints**, stages it in
+  `mcc_added_seats_staging` (migration 0054, `mcc_added_seat_files` records each PDF), and the app
+  (`lib/mccAddedSeats.ts`, `POST /api/cron/mcc-results {"action":"added-seats"}`) maps it into `mcc_seat_matrix` with the
+  hand import's rules, refreshes the `mcc` tag, pings IndexNow and tells the owner on Telegram. A PDF that does not add up
+  is `parse_failed` and waits for a person. Test a PDF with `worker.py --parse-added <file>`.
 - Both in the hubs sitemap (lastmod = the latest live round's day) and linked from /neet-pg-cutoff; menu rows
   `scripts/sql/nav_low_clinical_statistics_2026_11_10.sql` (after the deploy).
 

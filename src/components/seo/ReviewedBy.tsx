@@ -1,13 +1,14 @@
 import Link from "@/components/ui/Link";
 import { BadgeCheck } from "lucide-react";
 import { pageCopy } from "@/lib/pageCopy";
-import { currentPath, getPageDates, readableDate } from "@/lib/pageDates";
+import { currentPath, getPageDates } from "@/lib/pageDates";
 import { jsonLd } from "@/lib/jsonLd";
 
 const SITE = "https://www.admissionhands.com";
 
 /**
- * "Reviewed by Gulshan Tomar, Admission Counselor · Updated 9 Nov 2026" under a data page's hero (owner, 2026-11-09:
+ * "Reviewed by Gulshan Tomar, Admission Strategist & Data Lead" under a data page's hero (the visible date was taken off
+ * on 2026-11-10 at the owner's word; the JSON-LD keeps lastReviewed/dateModified) (owner, 2026-11-09:
  * "Gulshan Tomar Admission Counselor dikhado", and "log updated ya 2026-2027 se bhi search karte hai"). The date is
  * the page's own data date — the sitemap's lastmod for this path — never the day of the visit; a page with none shows
  * the reviewer alone. Also tells search engines, on the page's WebPage node (same @id as webPage()), who reviewed it
@@ -46,14 +47,7 @@ export default async function ReviewedBy() {
         <span className="font-semibold text-foreground">{copy.name}</span>
       )}
       {copy.role && <span>, {copy.role}</span>}
-      {date && (
-        <>
-          <span aria-hidden="true">·</span>
-          <span>
-            {copy.updated} <time dateTime={date}>{readableDate(date)}</time>
-          </span>
-        </>
-      )}
+      {/* The date is no longer printed (owner, 2026-11-10: "isme se ye date hatado"); search engines still get it below. */}
       {node && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(node) }} />}
     </p>
   );

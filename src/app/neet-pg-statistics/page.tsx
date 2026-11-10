@@ -71,7 +71,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description: fitDescription(
       ...(p
         ? [
-            `NEET PG ${y} ranked ${n(p.now.ranked)} candidates for ${n(p.mdms)} MD/MS seats (NMC) — ${(p.now.ranked / p.mdms).toFixed(1)} per seat. MCC's ${n(p.m?.total)}-seat matrix${p.s.added ? `, ${n(p.s.added.seats)} added for round 2` : ""}, rounds, scores.`,
+            `NEET PG ${y} ranked ${n(p.now.ranked)} candidates for ${n(p.mdms)} MD/MS seats (NMC) — ${(p.now.ranked / p.mdms).toFixed(1)} per seat. MCC's ${n(p.m?.total)}-seat matrix${p.s.added ? `, ${n(p.s.added.seats)} added since round 1` : ""}, rounds, scores.`,
             `NEET PG ${y}: ${n(p.now.ranked)} ranked, ${n(p.mdms)} MD/MS seats on NMC's register, MCC's seat matrix and round-by-round allotments.`,
           ]
         : []),
@@ -158,15 +158,15 @@ export default async function PgStatisticsPage() {
           ? [
               {
                 question: `How many seats are in MCC's NEET PG ${p.m.year} counselling?`,
-                answer: `MCC's ${p.m.year} seat matrix lists ${n(p.m.total)} seats: ${p.m.byMatrix.map((b) => `${n(b.seats)} ${MATRIX_LABEL[b.seatMatrix] ?? b.seatMatrix}`).join(", ")}${p.s.added ? `, including ${n(p.s.added.seats)} seats MCC added for round 2` : ""}. The states' own quota and private colleges' state, management and NRI seats are filled by each state's counselling.`,
+                answer: `MCC's ${p.m.year} seat matrix lists ${n(p.m.total)} seats: ${p.m.byMatrix.map((b) => `${n(b.seats)} ${MATRIX_LABEL[b.seatMatrix] ?? b.seatMatrix}`).join(", ")}${p.s.added ? `, including ${n(p.s.added.seats)} seats MCC added after round 1` : ""}. The states' own quota and private colleges' state, management and NRI seats are filled by each state's counselling.`,
               },
             ]
           : []),
         ...(p.s.added
           ? [
               {
-                question: `How many new seats were added in NEET PG ${p.m?.year ?? p.now.year} round 2?`,
-                answer: `MCC's notice "Newly added seats, Round 2" adds ${n(p.s.added.seats)} MD/MS, DNB and deemed university seats to the counselling (the notice's total also counts Armed Forces Medical Services seats, which are filled separately).`,
+                question: `How many new seats were added in NEET PG ${p.m?.year ?? p.now.year} counselling?`,
+                answer: `MCC's "newly added seats" notices add ${n(p.s.added.seats)} MD/MS, DNB and deemed university seats after round 1 — the latest is ${p.s.added.title.replace(/^MCC PG Medical \d{4} - /, "")}. Armed Forces Medical Services seats in those notices are filled separately and are not counted here.`,
               },
             ]
           : []),
@@ -196,7 +196,7 @@ export default async function PgStatisticsPage() {
         "@context": "https://schema.org",
         "@type": "Dataset",
         name: `NEET PG ${p.now.year} and medical seats statistics (India)`,
-        description: `Candidates ranked in NEET PG and the score at each rank (NBEMS), MD/MS/diploma/DM/M.Ch. seats on NMC's register, MCC's seat matrix with round 2's added seats, and MCC's allotments by round.`,
+        description: `Candidates ranked in NEET PG and the score at each rank (NBEMS), MD/MS/diploma/DM/M.Ch. seats on NMC's register, MCC's seat matrix with the seats it added after round 1, and MCC's allotments by round.`,
         url: `https://www.admissionhands.com${PATH}`,
         creator: { "@type": "Organization", name: "AdmissionHands", url: "https://www.admissionhands.com" },
         isBasedOn: ["https://natboard.edu.in", "https://www.nmc.org.in", "https://mcc.nic.in", ...(p.s.added?.url ? [p.s.added.url] : [])],
@@ -237,7 +237,7 @@ export default async function PgStatisticsPage() {
             ? [
                 { icon: "people" as const, label: `Ranked, NEET PG ${p.now.year}`, value: `${n(p.now.ranked)}*`, note: p.prev ? `${n(p.prev.ranked)} in ${p.prev.year}` : "NBEMS result" },
                 { icon: "college" as const, label: "MD/MS seats (NMC)", value: `${n(p.mdms)}*`, note: perSeat ? `${perSeat} candidates a seat` : undefined },
-                ...(p.m ? [{ icon: "authority" as const, label: `MCC seat matrix ${p.m.year}`, value: `${n(p.m.total)}*`, note: p.s.added ? `incl. ${n(p.s.added.seats)} added for round 2` : "AIQ, deemed, central, DNB" }] : []),
+                ...(p.m ? [{ icon: "authority" as const, label: `MCC seat matrix ${p.m.year}`, value: `${n(p.m.total)}*`, note: p.s.added ? `incl. ${n(p.s.added.seats)} added after round 1` : "AIQ, deemed, central, DNB" }] : []),
                 ...(p.r1 ? [{ icon: "up" as const, label: `Round 1 allotted, ${p.r1.year}`, value: `${n(p.r1.allotted)}*`, note: "MCC's result" }] : []),
               ]
             : undefined
@@ -329,7 +329,7 @@ export default async function PgStatisticsPage() {
                     />
                     {p.s.added && (
                       <p className="mt-2 text-[12.5px] text-muted-foreground">
-                        Includes {n(p.s.added.seats)} seats MCC added for round 2
+                        Includes {n(p.s.added.seats)} seats MCC added after round 1
                         {p.s.added.url ? (
                           <>
                             {" "}

@@ -436,9 +436,9 @@ export const PAGE_COPY = {
     fields: {
       label: { label: "Words before the name", value: "Reviewed by" },
       name: { label: "Reviewer's name", value: "Gulshan Tomar" },
-      role: { label: "Reviewer's role", value: "Admission Counselor" },
+      role: { label: "Reviewer's role", value: "Admission Strategist & Data Lead", was: ["Admission Counselor"] },
       link: { label: "Link on the name (a page of this site)", value: "/team" },
-      updated: { label: "Words before the date", value: "Updated" },
+      updated: { label: "Words before the date (the date is not shown on pages since 2026-11-10)", value: "Updated" },
     },
   },
   "page.pg_choice_filling.strategy": {

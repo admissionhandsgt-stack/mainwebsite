@@ -75,7 +75,8 @@ export const getPgStatistics = unstable_cache(
         db.execute(sql`SELECT MAX(nmc_updated)::text AS d FROM nmc_courses`),
       ]);
       const addedRow = ((await db.execute(sql`
-        SELECT SUM(total_seats)::int AS seats, MAX(source_title) AS title, MAX(source_file) AS url
+        SELECT SUM(total_seats)::int AS seats,
+               (ARRAY_AGG(source_title ORDER BY id DESC))[1] AS title, (ARRAY_AGG(source_file ORDER BY id DESC))[1] AS url
           FROM mcc_seat_matrix WHERE source_title ILIKE '%newly added%' AND year = (SELECT MAX(year) FROM mcc_seat_matrix)`)) as unknown as {
         seats: number | null; title: string | null; url: string | null;
       }[])[0];
@@ -122,6 +123,6 @@ export const getPgStatistics = unstable_cache(
       return null;
     }
   },
-  ["pg-statistics-v2"],
+  ["pg-statistics-v3"],
   { revalidate: 3600, tags: ["nmc", "mcc"] },
 );

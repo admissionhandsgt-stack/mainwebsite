@@ -2,12 +2,14 @@ import { NextResponse } from "next/server";
 import { timingSafeEqual } from "node:crypto";
 import { ingestRound, onDetected, onFailed, roundByName } from "@/lib/mccResults";
 import { logError } from "@/lib/logger";
+import { ingestAddedSeats } from "@/lib/mccAddedSeats";
 
 /**
  * The mcc-worker container's half-way house into the app (lib/mccResults.ts):
  *   POST {"action":"detected","year":2026,"round":"Round 1"}   MCC posted a result PDF
  *   POST {"action":"failed",  …}                              it did not read as a result
  *   POST {"action":"ingest",  …, "dryRun": true?}             staged rows → mcc_allotments, page live
+ *   POST {"action":"added-seats","year":2026,"url":"…pdf"}     a "newly added seats" PDF's rows → mcc_seat_matrix
  * Header `x-cron-secret` = CRON_SECRET, as for every cron route; unset, everything 404s.
  * The worker reaches the app inside the compose network (http://app:8150), never through the edge.
  */
@@ -23,7 +25,7 @@ function authorised(request: Request): boolean {
 
 export async function POST(request: Request) {
   if (!authorised(request)) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  let body: { action?: string; year?: number; round?: string; dryRun?: boolean };
+  let body: { action?: string; year?: number; round?: string; dryRun?: boolean; url?: string };
   try {
     body = await request.json();
   } catch {
@@ -31,6 +33,18 @@ export async function POST(request: Request) {
   }
   const year = Number(body.year);
   const round = String(body.round ?? "");
+  if (body.action === "added-seats") {
+    const url = String(body.url ?? "");
+    if (!Number.isInteger(year) || year < 2020 || year > 2100 || !/^https:\/\/[^\s]+\.pdf$/i.test(url)) {
+      return NextResponse.json({ error: "year or url not recognised" }, { status: 400 });
+    }
+    try {
+      return NextResponse.json(await ingestAddedSeats(url, year), { headers: { "cache-control": "no-store" } });
+    } catch (error) {
+      logError(error, { route: `cron/mcc-results:added-seats:${year}` });
+      return NextResponse.json({ error: error instanceof Error ? error.message : "failed" }, { status: 500 });
+    }
+  }
   if (!Number.isInteger(year) || year < 2020 || year > 2100 || !roundByName(round)) {
     return NextResponse.json({ error: "year or round not recognised" }, { status: 400 });
   }

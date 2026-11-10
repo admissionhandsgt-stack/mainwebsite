@@ -19,6 +19,7 @@ fetch karta rahe… har 2-2 min… turant banade".
 Run in the compose project as service `mcc-worker`. For testing on a dev machine:
   python -P worker.py --parse <file.pdf>               # parse only, print counts, touch nothing
   python -P worker.py --once                           # one check against MCC, with the database
+  python -P worker.py --parse-added <file.pdf>         # read a "newly added seats" PDF, print counts, touch nothing
 """
 
 import datetime as dt
@@ -230,6 +231,119 @@ def candidates(links, year):
     return best
 
 
+# ------------------------------------------------------------- newly added seats
+
+# MCC's notices that add seats between rounds ("NEWLY ADDED SEATS ROUND 2 (MD/MS/DNB) – PG COUNSELLING 2026"). Read on
+# their own (2026-11-10; owner: "data dynamic hona chaiye") into mcc_seat_matrix through the app (lib/mccAddedSeats.ts).
+ADDED_RE = re.compile(r"(newly\s+added|additional|addition\s+of|added)\s+(pg\s+)?seats?", re.I)
+NOT_PG_ADDED = re.compile(r"\bmds\b|super\s*speciality|\bss\b|dm\s*/\s*m\.?\s*ch|\bug\b|mbbs|bds|nursing", re.I)
+
+
+def added_candidates(links, year):
+    """(title, url) of every PG "newly added seats" PDF of this counselling year, once each."""
+    out, seen = [], set()
+    for title, url in links:
+        if not ADDED_RE.search(title) or (NOT_PG_ADDED.search(title) and not re.search(r"md\s*/\s*ms|\bpg\b", title, re.I)):
+            continue
+        if not url.lower().split("?")[0].endswith(".pdf") or not of_year(title, url, year) or url in seen:
+            continue
+        seen.add(url)
+        out.append((title, url))
+    return out
+
+
+def parse_added(path):
+    """Rows (state, type, institute, code, quota, branch, category, seats) and the total MCC prints (the one row with a
+    seat count and no category), read with pdfplumber's table reader."""
+    rows, printed, last_state = [], None, ""
+    with pdfplumber.open(path) as pdf:
+        for pg in pdf.pages:
+            for tb in pg.extract_tables():
+                for r in tb:
+                    if not r or len(r) < 7:
+                        continue
+                    c = [clean(x) for x in r]
+                    if c[0].lower().startswith("statename") or c[-1].lower().startswith("totalseat"):
+                        continue
+                    digits = re.sub(r"\D", "", c[6])
+                    if not digits:
+                        continue
+                    n = int(digits)
+                    if not c[5]:
+                        printed = n
+                        continue
+                    state = c[0] or last_state
+                    last_state = state
+                    code = re.search(r"\((\d{6})\)", c[2])
+                    rows.append((state, c[1], c[2], code.group(1) if code else None, c[3], c[4], c[5], n))
+    return rows, printed
+
+
+def call_app_added(year, url):
+    r = requests.post(
+        os.environ.get("MCC_APP_URL", "http://app:8150") + "/api/cron/mcc-results",
+        headers={"x-cron-secret": os.environ["CRON_SECRET"], "content-type": "application/json"},
+        json={"action": "added-seats", "year": year, "url": url},
+        timeout=300,
+    )
+    return r.status_code, r.text[:500]
+
+
+def handle_added(conn, year, title, url):
+    cur = conn.execute(
+        "SELECT status, now() - updated_at < interval '30 minutes' FROM mcc_added_seat_files WHERE url = %s", (url,)
+    ).fetchone()
+    if cur and cur[0] in ("live", "parse_failed"):
+        return
+    if cur and cur[0] == "error" and cur[1]:
+        return
+    conn.execute(
+        """INSERT INTO mcc_added_seat_files (url, year, title, status) VALUES (%s, %s, %s, 'parsing')
+           ON CONFLICT (url) DO UPDATE SET status = 'parsing', title = EXCLUDED.title, updated_at = now(), error = NULL""",
+        (url, year, title),
+    )
+    conn.commit()
+    log(conn, "found", f"{year} added seats: {title} — {url}")
+    with tempfile.TemporaryDirectory() as tmp:
+        path = os.path.join(tmp, "added.pdf")
+        with requests.get(url, headers={"user-agent": UA}, stream=True, timeout=120) as r:
+            r.raise_for_status()
+            size = 0
+            with open(path, "wb") as f:
+                for chunk in r.iter_content(1 << 16):
+                    size += len(chunk)
+                    if size > 80 * 1024 * 1024:
+                        raise RuntimeError("PDF over 80 MB")
+                    f.write(chunk)
+        rows, printed = parse_added(path)
+    seats = sum(r[7] for r in rows)
+    # Only a PDF whose rows add up to MCC's own printed total goes in; anything else waits for a person.
+    if not rows or (printed is not None and seats != printed) or printed is None:
+        msg = f"{len(rows)} rows, {seats} seats, MCC's total {printed} — not loaded"
+        conn.execute(
+            "UPDATE mcc_added_seat_files SET status = 'parse_failed', rows = %s, seats = %s, printed_total = %s, error = %s, updated_at = now() WHERE url = %s",
+            (len(rows), seats, printed, msg, url),
+        )
+        conn.commit()
+        log(conn, "error", f"added seats {url}: {msg}")
+        return
+    with conn.cursor() as c:
+        c.execute("DELETE FROM mcc_added_seats_staging WHERE url = %s", (url,))
+        with c.copy("COPY mcc_added_seats_staging (url, state, inst_type, institute, code, quota, branch, category, seats) FROM STDIN") as copy:
+            for row in rows:
+                copy.write_row((url,) + row)
+    conn.execute(
+        "UPDATE mcc_added_seat_files SET status = 'staged', rows = %s, seats = %s, printed_total = %s, updated_at = now() WHERE url = %s",
+        (len(rows), seats, printed, url),
+    )
+    conn.commit()
+    log(conn, "parsed", f"added seats: {len(rows)} rows, {seats} seats = MCC's total")
+    code, text = call_app_added(year, url)
+    if code != 200:
+        raise RuntimeError(f"app added-seats answered {code}: {text}")
+    log(conn, "live", f"added seats: {text}")
+
+
 # ------------------------------------------------------------------ the database
 
 def log(conn, level, message):
@@ -377,6 +491,22 @@ def check(conn):
             )
             conn.commit()
             log(conn, "error", f"{year} {rnd}: {type(e).__name__}: {e}")
+    # Seats MCC adds between rounds — apart from the results, so a failure here never touches a result.
+    try:
+        for title, url in added_candidates(links, year):
+            try:
+                handle_added(conn, year, title, url)
+            except Exception as e:  # noqa: BLE001
+                conn.rollback()
+                conn.execute(
+                    "UPDATE mcc_added_seat_files SET status = 'error', error = %s, updated_at = now() WHERE url = %s",
+                    (f"{type(e).__name__}: {e}"[:1000], url),
+                )
+                conn.commit()
+                log(conn, "error", f"added seats {url}: {type(e).__name__}: {e}")
+    except Exception as e:  # noqa: BLE001
+        conn.rollback()
+        log(conn, "error", f"added seats check: {type(e).__name__}: {e}")
     return year, len(links), sorted(found)
 
 
@@ -388,6 +518,13 @@ def main():
         seats = [r for r in rows if r[2]]
         print(f"pages {pages}, rows {len(rows)}, with a seat {len(seats)}, {time.time() - t:.0f}s")
         for r in seats[:3]:
+            print(r)
+        return
+    if "--parse-added" in sys.argv:
+        path = sys.argv[sys.argv.index("--parse-added") + 1]
+        rows, printed = parse_added(path)
+        print(f"rows {len(rows)}, seats {sum(r[7] for r in rows)}, MCC's total {printed}")
+        for r in rows[:3]:
             print(r)
         return
     if "--test" in sys.argv:
