@@ -81,7 +81,8 @@ export async function discoverOne(s: Source): Promise<{ added: string[]; note: s
     if (!/contact|about|team|editorial|reach|press|write to us/i.test(`${m[1]} ${m[2]}`)) continue;
     try {
       const u = new URL(m[1], origin);
-      if (u.hostname === origin.hostname) links.add(u.pathname);
+      // Never a feed or a file: Express Healthcare's /feed/ gave a writer's own Gmail (2026-11-10), not the site's contact.
+      if (u.hostname === origin.hostname && !/\/(feed|rss)\b|\.(xml|json|pdf)$/i.test(u.pathname)) links.add(u.pathname);
     } catch {
       /* not a link */
     }
@@ -97,8 +98,15 @@ export async function discoverOne(s: Source): Promise<{ added: string[]; note: s
   const domain = origin.hostname.replace(/^www\./, "");
   const candidates = new Map<string, string>();
   for (const pg of pages) for (const e of emailsIn(pg.html)) if (!candidates.has(e)) candidates.set(e, pg.path);
+  // A free-mail address only from the site's own contact / about / team page, where it is the organisation's published
+  // address — not one that turns up elsewhere on the site (an author's, a commenter's).
+  const contactPage = (path: string) => /contact|about|team|reach|write/i.test(path);
   const picked = [...candidates.entries()]
-    .filter(([e]) => !SKIP.test(e.split("@")[0]) && (e.endsWith(`@${domain}`) || e.endsWith(`.${domain}`) || /@(gmail|yahoo|outlook|rediffmail)\./.test(e)))
+    .filter(
+      ([e, path]) =>
+        !SKIP.test(e.split("@")[0]) &&
+        (e.endsWith(`@${domain}`) || e.endsWith(`.${domain}`) || (/@(gmail|yahoo|outlook|rediffmail)\./.test(e) && contactPage(path))),
+    )
     .sort((a, b) => Number(PREFER.test(b[0].split("@")[0])) - Number(PREFER.test(a[0].split("@")[0])))
     .slice(0, 2);
 
