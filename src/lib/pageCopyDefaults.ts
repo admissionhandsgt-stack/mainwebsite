@@ -719,6 +719,15 @@ export const PAGE_COPY = {
       ug_title: { label: "MBBS list heading", value: "MBBS (NEET UG) counselling" },
     },
   },
+  "site.index_boost": {
+    group: "Site: more pages nearby",
+    fields: {
+      heading: {
+        label: "Heading above the links from an indexed page to its not-yet-indexed neighbours — {topic} (blank hides it)",
+        value: "More on {topic}",
+      },
+    },
+  },
   "site.hunt_answer": {
     group: "Outreach: answers the daily hunt writes",
     fields: {
@@ -3316,6 +3325,10 @@ export const SOCIAL_SETTINGS: { key: string; label: string; value: string }[] = 
  */
 export const VERIFY_SETTINGS: { key: string; label: string }[] = [
   { key: "seo.verify.bing", label: "Bing Webmaster Tools code (the content of the msvalidate.01 meta tag)" },
+  {
+    key: "analytics.clarity.id",
+    label: "Microsoft Clarity project ID (Clarity → Settings → Overview). Set Clarity's Masking to Strict first. Blank: Clarity is off.",
+  },
 ];
 
 export type CopyKey = keyof typeof PAGE_COPY;

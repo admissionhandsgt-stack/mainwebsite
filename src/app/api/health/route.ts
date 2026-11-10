@@ -33,6 +33,7 @@ const MAX_AGE: Record<string, number> = {
   "outreach-discover": 8 * 24 * 60 * MIN, // Tuesdays 05:50 UTC
   hunt: 26 * 60 * MIN, // daily 06:05 UTC
   indexnow: 26 * 60 * MIN, // daily 06:25 UTC: changed URLs to Bing (IndexNow)
+  "index-status": 26 * 60 * MIN, // daily 03:35 UTC: Google index status of the oldest-checked sitemap URLs
 };
 /** The MCC result worker checks every 2 minutes near a round, every 30 otherwise. */
 const WORKER_MAX_AGE = 45 * MIN;

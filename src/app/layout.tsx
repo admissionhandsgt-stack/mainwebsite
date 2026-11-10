@@ -4,6 +4,8 @@ import { Toaster } from '@/components/ui/toaster'
 import { Toaster as SonnerToaster } from '@/components/ui/sonner'
 import SiteShell from '@/components/SiteShell'
 import SearchLinks from '@/components/seo/SearchLinks'
+import IndexBoost from '@/components/seo/IndexBoost'
+import ClarityTag from '@/components/analytics/ClarityTag'
 import type { Metadata } from 'next'
 import Script from 'next/script'
 import { Plus_Jakarta_Sans, Inter, Figtree } from 'next/font/google'
@@ -231,9 +233,16 @@ export default async function RootLayout({
               {children}
               {/* Internal links chosen from Search Console, weekly (lib/searchLinks.ts); nothing on most pages. */}
               <SearchLinks />
+              {/* An indexed page's not-yet-indexed neighbours, rotating weekly (lib/indexBoost.ts). */}
+              <IndexBoost />
             </SiteShell>
           )}
         </ThemeProvider>
+        {/* Microsoft Clarity, only with a project ID in Admin → Content → "Site verification", never on the admin host;
+            the component keeps it off every page that can carry a student's rank or phone. */}
+        {!isAdmin && /^[a-z0-9]{6,16}$/i.test(setting(settings, 'analytics.clarity.id').trim()) && (
+          <ClarityTag id={setting(settings, 'analytics.clarity.id').trim()} />
+        )}
         <Toaster />
         <SonnerToaster />
       </body>
