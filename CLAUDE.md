@@ -2368,6 +2368,11 @@ consumer-protection rules, and one exposed fake undoes the trust the page is bui
   NMC's register by course and ownership, clinical / para-clinical / pre-clinical MD/MS split (NMC course names by regex),
   top branches with NMC and MCC seats, MCC's matrix and rounds, stipend and fee middles, FAQs, CiteThis. Made to be cited.
   No bond figures (a compilation — those stay on /md-ms-india/bond). Copy `page.pg_statistics.*`.
+  Redesigned compact the same night (two tables a row, tight rows, one counsellor block, FAQs in two columns, Dataset
+  JSON-LD), and every official figure carries an asterisk with a one-line footnote naming NBEMS, NMC, MCC and the state
+  authorities and the latest notice included. **MCC's "newly added seats" notices go into `mcc_seat_matrix`** (round 2 on
+  10 Nov 2026: +3,534, AFMS left out; 31,708 → 35,242) — pipeline in `scripts/mcc/README_added_seats.md`; deploy with
+  `--fresh-cache` after an import. In llms.txt under "Start here".
 - Both in the hubs sitemap (lastmod = the latest live round's day) and linked from /neet-pg-cutoff; menu rows
   `scripts/sql/nav_low_clinical_statistics_2026_11_10.sql` (after the deploy).
 
