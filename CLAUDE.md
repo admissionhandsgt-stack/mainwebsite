@@ -2252,6 +2252,12 @@ spend; it only emails.
   (`/opt/admissionhands/.gcs-backup.json`, 0600), which has only `storage.objectCreator` on that bucket: it cannot list,
   read or delete (a delete as the writer answers 403, tested). A failed Google copy does not fail the backup; the heartbeat
   carries `gcs: failed` and `/api/health` fails on it. The previous script is `/opt/admissionhands/bin/backup.sh.prev`.
+- **GA4 → BigQuery** (linked 2026-11-10 from the admissionhandss@gmail.com profile): property 533251003 exports **daily**
+  (no streaming, no user-data export) into dataset `analytics_533251003`, Mumbai (asia-south1). No backfill — data starts
+  the day after linking. The project is billed, so tables do not expire at 60 days as in the sandbox. Creating the link
+  needs project **Owner** in practice: the five permissions GA4's help lists were not enough ("An unexpected error
+  occurred" twice), and on a project with no organization an owner can only be *invited* from the console
+  (`SOLO_MUST_INVITE_OWNERS` from the CLI). Owners now: gulshantomar.1493@ and admissionhandss@gmail.com.
 
 ## Checking the work (2026-09-23)
 
