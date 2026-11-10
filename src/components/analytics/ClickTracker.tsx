@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { aaTrack, trackEvent } from "@/lib/analytics";
+import { aaTrack, trackEvent, metaTrack } from "@/lib/analytics";
 import { rememberNudge } from "@/components/engage/EngagementLayer";
 
 /**
@@ -31,6 +31,7 @@ export default function ClickTracker() {
       const both = (name: string) => {
         aaTrack(name, { source_page });
         trackEvent(name, { placement, source_page });
+        metaTrack("Contact", { content_category: name === "call_click" ? "call" : "whatsapp", content_name: placement });
       };
       if (/^tel:/i.test(raw)) return both("call_click");
       if (/^whatsapp:/i.test(raw)) return both("whatsapp_click");

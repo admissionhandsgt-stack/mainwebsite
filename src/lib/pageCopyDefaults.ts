@@ -719,6 +719,19 @@ export const PAGE_COPY = {
       ug_title: { label: "MBBS list heading", value: "MBBS (NEET UG) counselling" },
     },
   },
+  "site.consent": {
+    group: "Site: cookie choice (Meta pixel)",
+    fields: {
+      text: {
+        label: "The line shown once, before the Meta pixel may load",
+        value: "We use Meta's pixel to measure our ads and show you relevant ones. No name, phone or rank is ever shared.",
+        long: true,
+      },
+      accept: { label: "Accept button", value: "OK" },
+      decline: { label: "Decline button", value: "No thanks" },
+      privacy: { label: "Privacy link", value: "Privacy" },
+    },
+  },
   "site.index_boost": {
     group: "Site: more pages nearby",
     fields: {
@@ -3333,6 +3346,10 @@ export const SOCIAL_SETTINGS: { key: string; label: string; value: string }[] = 
  */
 export const VERIFY_SETTINGS: { key: string; label: string }[] = [
   { key: "seo.verify.bing", label: "Bing Webmaster Tools code (the content of the msvalidate.01 meta tag)" },
+  {
+    key: "analytics.meta_pixel.id",
+    label: "Meta pixel (dataset) ID, digits only (Events Manager → Datasets). Blank: the pixel is off.",
+  },
   {
     key: "analytics.clarity.id",
     label: "Microsoft Clarity project ID (Clarity → Settings → Overview). Set Clarity's Masking to Strict first. Blank: Clarity is off.",

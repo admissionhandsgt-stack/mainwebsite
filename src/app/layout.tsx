@@ -6,6 +6,8 @@ import SiteShell from '@/components/SiteShell'
 import SearchLinks from '@/components/seo/SearchLinks'
 import IndexBoost from '@/components/seo/IndexBoost'
 import ClarityTag from '@/components/analytics/ClarityTag'
+import MetaPixel from '@/components/analytics/MetaPixel'
+import { pageCopy } from '@/lib/pageCopy'
 import type { Metadata } from 'next'
 import Script from 'next/script'
 import { Plus_Jakarta_Sans, Inter, Figtree } from 'next/font/google'
@@ -249,6 +251,13 @@ export default async function RootLayout({
             the component keeps it off every page that can carry a student's rank or phone. */}
         {!isAdmin && /^[a-z0-9]{6,16}$/i.test(setting(settings, 'analytics.clarity.id').trim()) && (
           <ClarityTag id={setting(settings, 'analytics.clarity.id').trim()} />
+        )}
+        {/* The Meta pixel, only with a dataset ID in Admin → Content → "Site verification" and the visitor's OK. */}
+        {!isAdmin && /^\d{6,20}$/.test(setting(settings, 'analytics.meta_pixel.id').trim()) && (
+          <MetaPixel
+            id={setting(settings, 'analytics.meta_pixel.id').trim()}
+            copy={await pageCopy('site.consent').catch(() => ({ text: '', accept: 'OK', decline: 'No thanks', privacy: 'Privacy' }))}
+          />
         )}
         <Toaster />
         <SonnerToaster />

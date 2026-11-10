@@ -132,6 +132,19 @@ export function trackLead({ form, course, state, rank }: LeadProps) {
   };
   aaTrack("lead_form_submitted", common);
   trackEvent("generate_lead", { ...common, lead_source: form });
+  metaTrack("Lead", { content_category: form, content_name: common.course });
+}
+
+/**
+ * A Meta pixel event, when the pixel is loaded (components/analytics/MetaPixel: only after the visitor said OK, and
+ * never on a page that can carry a rank or phone). Standard events only, and never a name, phone, email or rank.
+ */
+export function metaTrack(event: "Lead" | "CompleteRegistration" | "Contact", props: Record<string, string | undefined> = {}) {
+  if (typeof window === "undefined") return;
+  const fbq = (window as unknown as { fbq?: (...a: unknown[]) => void }).fbq;
+  if (!fbq) return;
+  const clean = Object.fromEntries(Object.entries(props).filter(([, v]) => v != null && v !== "" && !/\d{6,}|@/.test(String(v))));
+  fbq("track", event, clean);
 }
 
 /**
@@ -143,4 +156,5 @@ export function trackSignUp({ course, rank }: { course?: string | null; rank?: u
   const common = { course: aaCourse(course ?? undefined), rank_band: rankBand(rank), source_page: window.location.pathname };
   aaTrack("lead_form_submitted", { form: "sign_up", ...common });
   trackEvent("sign_up", { method: "phone_code", ...common });
+  metaTrack("CompleteRegistration", { content_name: common.course });
 }
