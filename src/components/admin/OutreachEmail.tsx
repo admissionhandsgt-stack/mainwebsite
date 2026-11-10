@@ -37,9 +37,12 @@ type State = {
   rows: Row[];
   hunt: Hunt[];
   sources: Source[];
+  tavilySet: boolean;
+  tavily2Set: boolean;
+  tavilyUsage: { month: string; used: number; budget: number; keys: number };
 };
 type Source = { id: number; url: string; org: string; kind: string; last_crawled_at: string | null; found: number; last_note: string | null };
-type Hunt = { id: number; query: string; impressions: number; page: string; answer: string; status: string; posted_url: string | null; created_at: string };
+type Hunt = { id: number; query: string; source: string; thread_url: string | null; impressions: number; page: string; answer: string; status: string; posted_url: string | null; created_at: string };
 const SITE = "https://www.admissionhands.com";
 const q = encodeURIComponent;
 
@@ -108,8 +111,8 @@ function HuntCard({ h, onDone }: { h: Hunt; onDone: (action: "hunt-posted" | "hu
   return (
     <div className="rounded-xl border border-slate-200 p-4">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <div className="font-semibold text-slate-900">“{h.query}”</div>
-        <div className="text-xs text-slate-500">{h.impressions} searches this week · answers it: <a className="underline" href={`${SITE}${h.page}`} target="_blank" rel="noreferrer">{h.page}</a></div>
+        <div className="font-semibold text-slate-900">{h.thread_url ? <a className="underline" href={h.thread_url} target="_blank" rel="noreferrer">{h.query}</a> : `“${h.query}”`} {h.thread_url && <span className="ml-1 rounded bg-cyan-50 px-1.5 py-0.5 text-[11px] font-medium text-cyan-700">{new URL(h.thread_url).hostname.replace("www.", "")}</span>}</div>
+        <div className="text-xs text-slate-500">{h.source === "web" ? "Open the thread above" : `${h.impressions} searches this week`} · answers it: <a className="underline" href={`${SITE}${h.page}`} target="_blank" rel="noreferrer">{h.page}</a></div>
       </div>
       <div className="mt-2 flex flex-wrap gap-2 text-[13px]">
         <a className="rounded-full border border-slate-200 px-3 py-1 hover:bg-slate-50" href={`https://www.quora.com/search?q=${q(h.query)}`} target="_blank" rel="noreferrer">Find on Quora</a>
@@ -146,7 +149,7 @@ const when = (v: string | null) =>
 
 export default function OutreachEmail() {
   const [s, setS] = useState<State | null>(null);
-  const [form, setForm] = useState({ host: "", port: "", user: "", pass: "", fromName: "", token: "", cap: "" });
+  const [form, setForm] = useState({ host: "", port: "", user: "", pass: "", fromName: "", token: "", cap: "", tavilyKey: "", tavilyKey2: "" });
   const [target, setTarget] = useState({ email: "", name: "", org: "", kind: "journalist", why: "", sourceUrl: "" });
   const [busy, setBusy] = useState<string | null>(null);
   const [msg, setMsg] = useState<{ tone: "success" | "danger" | "info"; text: string; link?: string } | null>(null);
@@ -156,7 +159,7 @@ export default function OutreachEmail() {
     if (!r.ok) return setMsg({ tone: "danger", text: "Could not load the settings." });
     const j = (await r.json()) as State;
     setS(j);
-    setForm((f) => ({ ...f, host: j.host, port: j.port, user: j.user, fromName: j.fromName, cap: j.cap, pass: "", token: "" }));
+    setForm((f) => ({ ...f, host: j.host, port: j.port, user: j.user, fromName: j.fromName, cap: j.cap, pass: "", token: "", tavilyKey: "", tavilyKey2: "" }));
   }, []);
   useEffect(() => {
     load();
@@ -235,6 +238,15 @@ export default function OutreachEmail() {
             hint={s.tokenSet ? `Saved (${s.tokenMasked})${s.bot ? ` — @${s.bot}` : ""}. Type only to change it.` : "Make a bot with @BotFather in Telegram (/newbot) and paste its token here."}
           >
             <input className={`${INPUT} ${INPUT_H}`} type="password" autoComplete="off" value={form.token} onChange={set("token")} />
+          </Field>
+          <Field
+            label="Tavily search key (free, no card)"
+            hint={s.tavilySet ? `Saved. This month: ${s.tavilyUsage.used} of ${s.tavilyUsage.budget} searches across ${s.tavilyUsage.keys} key(s) (1,000 free each).` : "Sign up free at tavily.com and paste the key (tvly-…). It finds Reddit, Quora and forum threads for the daily hunt."}
+          >
+            <input className={`${INPUT} ${INPUT_H}`} type="password" autoComplete="off" value={form.tavilyKey} onChange={set("tavilyKey")} />
+          </Field>
+          <Field label="Second Tavily key (your other account)" hint={s.tavily2Set ? "Saved. Used when the first key has spent its month." : "Optional. With both keys the hunt searches twice as much."}>
+            <input className={`${INPUT} ${INPUT_H}`} type="password" autoComplete="off" value={form.tavilyKey2} onChange={set("tavilyKey2")} />
           </Field>
           <div className="flex items-end gap-2">
             <Badge tone={s.linked ? "success" : "warning"}>{s.linked ? "Telegram linked" : "Telegram not linked"}</Badge>

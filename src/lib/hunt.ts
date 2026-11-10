@@ -3,6 +3,8 @@ import { db } from "@/db/client";
 import { gscRows } from "@/lib/searchLinks";
 import { tellOwner } from "@/lib/telegramBot";
 import { getIntegration } from "@/lib/integrations";
+import { webSearch, webSearchUsage } from "@/lib/webSearch";
+import { getPgStates, type PgState } from "@/lib/pgStateQueries";
 
 /**
  * Daily hunt (2026-11-10). Owner: "daily hunt karke de do details… admin open karke same url par jake… answer create
@@ -24,6 +26,8 @@ const BAD = /site:|["@]|https?:|\b(login|result pdf|near me|phone|contact|addres
 export type HuntItem = {
   id: number;
   query: string;
+  source: string;
+  thread_url: string | null;
   impressions: number;
   page: string;
   answer: string;
@@ -65,7 +69,9 @@ function compose(query: string, fact: string, path: string): string {
   ].join("\n");
 }
 
-export async function buildHunt(base = `http://127.0.0.1:${process.env.PORT ?? 8150}`): Promise<{ added: number; considered: number }> {
+export async function buildHunt(
+  base = `http://127.0.0.1:${process.env.PORT ?? 8150}`,
+): Promise<{ added: number; considered: number; web: { added: number; searched: number; skipped?: string } }> {
   const rows = await gscRows(7);
   const byQuery = new Map<string, { imp: number; pages: Map<string, number> }>();
   for (const r of rows) {
@@ -99,19 +105,168 @@ export async function buildHunt(base = `http://127.0.0.1:${process.env.PORT ?? 8
       ON CONFLICT ((lower(query))) DO NOTHING`);
     added++;
   }
-  if (added && (await getIntegration("telegram.bot.chat_id"))) {
-    await tellOwner(`🔎 Daily hunt: ${added} questions people searched this week, each with an answer ready to post.\nOpen: https://admin.admissionhands.com/outreach#hunt`).catch(() => undefined);
+  const web = await buildWebHunt(base).catch((e) => ({ added: 0, searched: 0, skipped: e instanceof Error ? e.message : "web search failed" }));
+  if ((added || web.added) && (await getIntegration("telegram.bot.chat_id"))) {
+    await tellOwner(
+      `🔎 Daily hunt: ${web.added} threads on Reddit / Quora / forums and ${added} searched questions, each with an answer ready to post.\nOpen: https://admin.admissionhands.com/outreach#hunt`,
+    ).catch(() => undefined);
   }
-  return { added, considered: byQuery.size };
+  return { added, considered: byQuery.size, web };
 }
 
 export async function listHunt(): Promise<HuntItem[]> {
   return (await db.execute(sql`
-    SELECT id, query, impressions, page, answer, status, posted_url, to_json(created_at)#>>'{}' AS created_at
+    SELECT id, query, source, thread_url, impressions, page, answer, status, posted_url, to_json(created_at)#>>'{}' AS created_at
       FROM hunt_items ORDER BY (status = 'new') DESC, created_at DESC LIMIT 200`)) as unknown as HuntItem[];
 }
 
 export async function markHunt(id: number, status: "posted" | "dismissed", postedUrl?: string) {
   const url = postedUrl && /^https:\/\/[^\s]+$/.test(postedUrl) ? postedUrl.slice(0, 500) : null;
   await db.execute(sql`UPDATE hunt_items SET status = ${status}, posted_url = coalesce(${url}, posted_url), updated_at = now() WHERE id = ${id}`);
+}
+
+/* ------------------------------------------------- threads found on the web ---- */
+
+/** Big education portals (competitors) and our own site never come back as places to answer. */
+const NOT_FORUMS = ["admissionhands.com", "careers360.com", "shiksha.com", "collegedunia.com", "collegedekho.com", "getmyuni.com", "aglasem.com", "youtube.com", "facebook.com", "instagram.com", "x.com", "twitter.com", "linkedin.com"];
+/** Which of our pages answers a thread, from its title and text. First match wins; order matters. */
+const TOPICS: { re: RegExp; path: string }[] = [
+  { re: /stipend|salary/i, path: "/md-ms-india/stipend" },
+  { re: /\bbond\b|penalt|seat leaving|leav(e|ing) (the |my )?seat/i, path: "/md-ms-india/bond" },
+  { re: /upgrad|freeze|float|choice fill|lock(ing)? (my )?choices|choice (list|order)/i, path: "/neet-pg-choice-filling" },
+  { re: /marks? (vs|and|to|se) rank|score.{0,20}rank|rank.{0,20}score|kitne marks/i, path: "/neet-pg-marks-vs-rank" },
+  { re: /\bnri\b/i, path: "/nri-quota" },
+  { re: /deemed/i, path: "/md-ms-india/deemed-universities" },
+  { re: /(mbbs|neet ug|bds).{0,40}(cut ?off|closing rank)|(cut ?off|closing rank).{0,40}(mbbs|neet ug|bds)/i, path: "/neet-ug-cutoff" },
+  { re: /cut ?off|closing rank|which (college|branch)|kaunsa college|kaun sa college|college milega|branch milega/i, path: "/neet-pg-cutoff" },
+  { re: /(pg|md|ms|mbbs).{0,30}fee|fee.{0,30}(pg|md|ms|mbbs)/i, path: "/md-ms-india/fees" },
+];
+/** Rotated across days, about twelve searches a day (~360 of Tavily's 1,000 free credits a month). */
+const WEB_QUERIES: { q: string; forums?: boolean; range: "week" | "month" }[] = [
+  { q: "NEET PG stipend", forums: true, range: "week" },
+  { q: "NEET PG round 2 upgrade freeze float", forums: true, range: "week" },
+  { q: "NEET PG choice filling order advice", forums: true, range: "week" },
+  { q: "NEET PG rank which college branch", forums: true, range: "week" },
+  { q: "NEET PG bond penalty seat leaving", forums: true, range: "week" },
+  { q: "NEET PG marks vs rank", forums: true, range: "week" },
+  { q: "MBBS counselling state quota cut off", forums: true, range: "week" },
+  { q: "deemed university PG fees worth it", forums: true, range: "month" },
+  { q: "NRI quota MBBS PG", forums: true, range: "month" },
+  { q: "MD radiology seat rank", forums: true, range: "month" },
+  { q: "NEET PG counselling doubt forum", range: "month" },
+  { q: "NEET PG counselling guidance blog", range: "month" },
+  { q: "नीट पीजी काउंसलिंग सवाल", range: "month" },
+  { q: "NEET PG stipend kitna milta hai", range: "month" },
+  { q: "MBBS government college fees kitni hai", range: "month" },
+  { q: "NEET PG rank se kaunsa college milega", range: "month" },
+  { q: "medical students forum India PG admission", range: "month" },
+  { q: "resident doctors association stipend demand", range: "month" },
+  { q: "NEET UG counselling help forum", range: "month" },
+  { q: "PG medical admission advice India blog", range: "month" },
+  { q: "NEET PG cut off branch wise discussion", forums: true, range: "month" },
+  { q: "state quota vs all india quota PG", forums: true, range: "month" },
+  { q: "private medical college PG fees", forums: true, range: "month" },
+  { q: "MBBS admission doubts parents", range: "month" },
+];
+const PER_DAY_WEB = 12;
+const looksLikeAQuestion = (t: string) => /\?|\b(how|what|which|should|can|is|any|help|advice|doubt|kya|kaise|kitna|kaunsa)\b/i.test(t);
+
+export async function buildWebHunt(base = `http://127.0.0.1:${process.env.PORT ?? 8150}`): Promise<{ added: number; searched: number; skipped?: string }> {
+  const day = Math.floor(Date.now() / 86_400_000);
+  // Two Tavily accounts (owner's): twice the searches a day — about 720 of the 1,800 budgeted credits a month.
+  const perDay = (await webSearchUsage()).keys >= 2 ? PER_DAY_WEB * 2 : PER_DAY_WEB;
+  // Forums and communities found by findNewSites(): a quarter of the day's searches look inside them (owner, 2026-11-10:
+  // "new new doctors forums etc bhi hunt ho, platforms hunt ho").
+  const forums = ((await db.execute(sql`SELECT url FROM outreach_sources WHERE is_forum ORDER BY created_at DESC LIMIT 20`)) as unknown as { url: string }[])
+    .map((f) => f.url.replace(/^https:\/\//, "").replace(/^www\./, ""));
+  const inside = forums.length ? Math.ceil(perDay / 4) : 0;
+  const todays: { q: string; forums?: boolean; range: "week" | "month"; inside?: string[] }[] = [
+    ...Array.from({ length: perDay - inside }, (_, i) => WEB_QUERIES[(day * perDay + i) % WEB_QUERIES.length]),
+    ...Array.from({ length: inside }, (_, i) => ({ ...WEB_QUERIES[(day * inside + i + 7) % WEB_QUERIES.length], forums: false, range: "month" as const, inside: forums })),
+  ];
+  const states = await getPgStates().catch((): PgState[] => []);
+  const answers = new Map<string, string | null>();
+  let searched = 0;
+  let added = 0;
+  for (const wq of todays) {
+    const results = await webSearch(wq.q, {
+      includeDomains: wq.inside ?? (wq.forums ? ["reddit.com", "quora.com"] : undefined),
+      excludeDomains: wq.forums || wq.inside ? undefined : NOT_FORUMS,
+      timeRange: wq.range,
+      maxResults: 8,
+    });
+    if (results === null) return { added, searched, skipped: searched ? "monthly search budget reached" : "no Tavily key" };
+    searched++;
+    for (const r of results) {
+      if (added >= perDay) break;
+      const host = new URL(r.url).hostname.replace(/^www\./, "");
+      if (NOT_FORUMS.some((d) => host === d || host.endsWith(`.${d}`)) || /\.(gov|nic)\.in$/.test(host)) continue;
+      const text = `${r.title} ${r.content}`;
+      if (!/reddit\.com|quora\.com/.test(host) && !wq.inside && !looksLikeAQuestion(r.title)) continue;
+      let path = TOPICS.find((t) => t.re.test(text))?.path;
+      if (!path) continue;
+      if (path === "/md-ms-india/stipend") {
+        const st = states.find((s) => new RegExp(`\\b${s.name.replace(/[^a-z ]/gi, "")}\\b`, "i").test(text));
+        if (st) path = `/md-ms-india/stipend/${st.slug}`;
+      }
+      if (!answers.has(path)) answers.set(path, await pageAnswer(path, base));
+      const fact = answers.get(path) ?? (path.startsWith("/md-ms-india/stipend/") ? await pageAnswer("/md-ms-india/stipend", base) : null);
+      if (!fact) continue;
+      const ins = (await db.execute(sql`
+        INSERT INTO hunt_items (query, impressions, page, answer, source, thread_url, thread_title)
+        VALUES (${r.title.slice(0, 200) || r.url}, 0, ${path}, ${compose(r.title, fact, path)}, 'web', ${r.url}, ${r.title.slice(0, 300)})
+        ON CONFLICT DO NOTHING RETURNING id`)) as unknown as { id: number }[];
+      if (ins.length) added++;
+    }
+  }
+  return { added, searched };
+}
+
+/**
+ * Twice a week: new forums, doctors' communities, Q&A platforms, blogs and associations found on the web. Each becomes a
+ * site whose contact page is read for an address; a forum or community is also flagged `is_forum`, so the daily hunt
+ * searches inside it. Four searches a run, rotating through the list.
+ */
+const SITE_QUERIES = [
+  "doctors forum India discussion",
+  "medical students community India forum",
+  "MBBS students forum India discussion board",
+  "NEET PG aspirants community forum",
+  "resident doctors association India",
+  "medical PG aspirants discussion platform India",
+  "NEET PG counselling guidance blog India",
+  "MBBS admission guidance website Hindi",
+  "medical education blog India PG",
+  "doctors community app India discussion",
+  "NEET PG preparation forum questions",
+  "medical students association India contact",
+];
+const FORUM_WORDS = /forum|community|discuss|discussion|board|q&a|qna|answers|ask|threads?|groups?|club/i;
+
+export async function findNewSites(): Promise<{ added: number; forums: number; skipped?: string }> {
+  const run = Math.floor(Date.now() / (3.5 * 86_400_000));
+  let added = 0;
+  let forums = 0;
+  for (let i = 0; i < 4; i++) {
+    const q = SITE_QUERIES[(run * 4 + i) % SITE_QUERIES.length];
+    const results = await webSearch(q, { excludeDomains: [...NOT_FORUMS, "reddit.com", "quora.com", "wikipedia.org"], timeRange: "year", maxResults: 10 });
+    if (results === null) return { added, forums, skipped: "no Tavily key or budget" };
+    for (const r of results) {
+      if (added >= 10) break;
+      const u = new URL(r.url);
+      const host = u.hostname.replace(/^www\./, "");
+      if (/\.(gov|nic)\.in$|\.gov$/.test(host) || NOT_FORUMS.some((d) => host === d || host.endsWith(`.${d}`))) continue;
+      const isForum = FORUM_WORDS.test(`${r.title} ${u.hostname} ${u.pathname}`);
+      const kind = /association|federation|union|society/i.test(r.title) ? "association" : "other";
+      const org = r.title.split(/[|–—-]/)[0].trim().slice(0, 120) || host;
+      const ins = (await db.execute(sql`
+        INSERT INTO outreach_sources (url, org, kind, is_forum) VALUES (${`https://${u.hostname}`}, ${org}, ${kind}, ${isForum})
+        ON CONFLICT DO NOTHING RETURNING id`)) as unknown as { id: number }[];
+      if (ins.length) {
+        added++;
+        if (isForum) forums++;
+      }
+    }
+  }
+  return { added, forums };
 }

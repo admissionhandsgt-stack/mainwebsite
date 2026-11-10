@@ -11,6 +11,9 @@ CREATE TABLE IF NOT EXISTS hunt_items (
   answer       text NOT NULL,                 -- the draft to paste
   status       text NOT NULL DEFAULT 'new',   -- new | posted | dismissed
   posted_url   text,                          -- where the owner posted it
+  source       text NOT NULL DEFAULT 'gsc',   -- gsc (our searched questions) | web (a thread found by Tavily)
+  thread_url   text,                          -- the Reddit / Quora / forum page to answer on (web items)
+  thread_title text,
   created_at   timestamptz NOT NULL DEFAULT now(),
   updated_at   timestamptz NOT NULL DEFAULT now()
 );
@@ -18,6 +21,7 @@ CREATE TABLE IF NOT EXISTS hunt_items (
 -- A question comes back at most once: the same words are never offered twice.
 CREATE UNIQUE INDEX IF NOT EXISTS hunt_items_query ON hunt_items (lower(query));
 CREATE INDEX IF NOT EXISTS hunt_items_status ON hunt_items (status, created_at DESC);
+CREATE UNIQUE INDEX IF NOT EXISTS hunt_items_thread ON hunt_items (thread_url) WHERE thread_url IS NOT NULL;
 
 -- Websites to look for contact emails on (same day, owner: "email dhunde unko target karke email bheje automatic ye
 -- manually add na krna pade"). Weekly, lib/outreachDiscover.ts reads each site's own contact/about pages (robots.txt
@@ -30,6 +34,7 @@ CREATE TABLE IF NOT EXISTS outreach_sources (
   last_crawled_at  timestamptz,
   found            integer NOT NULL DEFAULT 0,    -- addresses added from it, ever
   last_note        text,                          -- what the last look found or why it found nothing
+  is_forum         boolean NOT NULL DEFAULT false, -- a forum / community / Q&A site: the daily hunt also searches inside it
   created_at       timestamptz NOT NULL DEFAULT now()
 );
 CREATE UNIQUE INDEX IF NOT EXISTS outreach_sources_url ON outreach_sources (lower(url));

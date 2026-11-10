@@ -8,6 +8,7 @@ import { addOutreach, deleteOutreach, listOutreach, runOutreach, type Kind } fro
 import { logError } from "@/lib/logger";
 import { buildHunt, listHunt, markHunt } from "@/lib/hunt";
 import { addSource, deleteSource, listSources, runDiscover } from "@/lib/outreachDiscover";
+import { webSearchUsage } from "@/lib/webSearch";
 
 /**
  * Admin → Outreach email (2026-11-10). GET: the mailbox and bot settings (secrets masked), the switch, the cap and every
@@ -47,6 +48,7 @@ export async function GET() {
   ]);
   const hunt = await listHunt().catch(() => []);
   const sources = await listSources().catch(() => []);
+  const [tavily, tavily2, usage] = await Promise.all([getIntegration("search.tavily.key"), getIntegration("search.tavily.key2"), webSearchUsage()]);
   return NextResponse.json(
     {
       host: host ?? "smtp.nevtan.com",
@@ -63,6 +65,9 @@ export async function GET() {
       rows,
       hunt,
       sources,
+      tavilySet: Boolean(tavily),
+      tavily2Set: Boolean(tavily2),
+      tavilyUsage: usage,
     },
     { headers: { "cache-control": "no-store" } },
   );
@@ -107,6 +112,16 @@ export async function POST(request: Request) {
           if (!/^\d{6,12}:[A-Za-z0-9_-]{30,}$/.test(token)) return NextResponse.json({ error: "That does not look like a bot token from @BotFather." }, { status: 400 });
           await setIntegration("telegram.bot.token", token, true);
           await setIntegration("telegram.bot.chat_id", ""); // a new bot is linked afresh
+        }
+        const tavilyKey = str(b.tavilyKey, 120);
+        if (tavilyKey) {
+          if (!/^tvly-[A-Za-z0-9_-]{10,}$/.test(tavilyKey)) return NextResponse.json({ error: "A Tavily key starts with tvly-." }, { status: 400 });
+          await setIntegration("search.tavily.key", tavilyKey, true);
+        }
+        const tavilyKey2 = str(b.tavilyKey2, 120);
+        if (tavilyKey2) {
+          if (!/^tvly-[A-Za-z0-9_-]{10,}$/.test(tavilyKey2)) return NextResponse.json({ error: "A Tavily key starts with tvly-." }, { status: 400 });
+          await setIntegration("search.tavily.key2", tavilyKey2, true);
         }
         if (typeof b.enabled === "boolean") await setIntegration("outreach.enabled", b.enabled ? "true" : "false");
         const cap = Number(b.cap);

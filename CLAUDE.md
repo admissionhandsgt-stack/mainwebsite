@@ -2283,6 +2283,12 @@ table `outreach_emails` (migration 0050, raw SQL), Admin → Outreach (the card 
   item per page, each with an answer built from that page's own first line or meta description (live figures) plus its
   link and a disclosure line, and Quora / Reddit / Google search links. The owner posts by hand and records the link
   (Admin → Outreach → Daily hunt; Telegram ping). Reddit/Quora links are nofollow — the gain is readers and mentions.
+- **Tavily web search (`lib/webSearch.ts`, owner's two accounts):** keys `search.tavily.key` and `search.tavily.key2`
+  (write-only, Admin → Outreach), each with a monthly budget of 900 basic searches (1,000 free each, no card) — the first
+  key with room is used, so neither reaches pay-as-you-go. With both keys the daily hunt runs 24 searches (Reddit/Quora
+  only, the open web minus competitors, Hindi and English queries, and a quarter inside forums found earlier) and
+  `findNewSites()` (twice a week, Tue/Fri 05:50 UTC with discovery) adds up to 10 new forums, communities and sites,
+  flagging forums `is_forum` so the hunt searches inside them.
 - **Asked for and not built:** auto-posting answers with links on Reddit, forums or other sites' article sections —
   automated promotional posting is spam under Reddit's rules and a link scheme under Google's; drafts for a person to
   post are the line.

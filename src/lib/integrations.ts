@@ -69,7 +69,11 @@ export type IntegrationKey =
   | "outreach.enabled"
   | "outreach.daily_cap"
   | "outreach.imap_uid"
-  | "email.imap.host";
+  | "email.imap.host"
+  | "search.tavily.key"
+  | "search.tavily.used"
+  | "search.tavily.key2"
+  | "search.tavily.used2";
 
 /**
  * The environment variable that overrides each key, where one exists.

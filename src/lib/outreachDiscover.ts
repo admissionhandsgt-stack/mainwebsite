@@ -1,6 +1,7 @@
 import { sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { addOutreach, type Kind } from "@/lib/outreach";
+import { findNewSites } from "@/lib/hunt";
 
 /**
  * Finding who to write to (2026-11-10; owner: "email dhunde unko target karke email bheje automatic ye manually add na krna
@@ -113,7 +114,9 @@ export async function discoverOne(s: Source): Promise<{ added: string[]; note: s
   return { added, note: added.length ? `added ${added.join(", ")}` : picked.length ? "already on the list" : `no suitable address on ${pages.length} pages` };
 }
 
-export async function runDiscover(opts: { force?: boolean } = {}): Promise<{ sites: number; added: number }> {
+export async function runDiscover(opts: { force?: boolean } = {}): Promise<{ sites: number; added: number; newSites: number }> {
+  // New sites first (Tavily, a few a week), so this week's reading already includes them.
+  const fresh = await findNewSites().catch(() => ({ added: 0 }));
   const due = (await db.execute(sql`
     SELECT id, url, org, kind, to_json(last_crawled_at)#>>'{}' AS last_crawled_at, found, last_note FROM outreach_sources
      WHERE ${opts.force ? sql`true` : sql`last_crawled_at IS NULL OR last_crawled_at < now() - interval '30 days'`}
@@ -124,7 +127,7 @@ export async function runDiscover(opts: { force?: boolean } = {}): Promise<{ sit
     added += r.added.length;
     await db.execute(sql`UPDATE outreach_sources SET last_crawled_at = now(), found = found + ${r.added.length}, last_note = ${r.note.slice(0, 300)} WHERE id = ${s.id}`);
   }
-  return { sites: due.length, added };
+  return { sites: due.length, added, newSites: fresh.added };
 }
 
 export async function listSources(): Promise<Source[]> {
