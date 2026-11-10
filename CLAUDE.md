@@ -2292,6 +2292,8 @@ table `outreach_emails` (migration 0050, raw SQL), Admin → Outreach (the card 
 - **Asked for and not built:** auto-posting answers with links on Reddit, forums or other sites' article sections —
   automated promotional posting is spam under Reddit's rules and a link scheme under Google's; drafts for a person to
   post are the line.
+- **Sent folder:** SMTP sends do not land in the mailbox's Sent on this server, so `sendMail` builds the message once
+  (nodemailer MailComposer), sends those bytes and appends the same bytes over IMAP to the folder flagged `Sent`.
 - **Never:** send without the owner's Send, ask for a link in exchange for anything, or add addresses scraped in bulk.
 
 ## Google Cloud: alarms, the second backup, billing (2026-11-10)
