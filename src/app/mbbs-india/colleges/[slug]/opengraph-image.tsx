@@ -14,8 +14,7 @@ export const revalidate = 86400;
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const d = await loadCollegePage(slug, "ug").catch((e) => {
-    console.error("[og college]", e instanceof Error ? e.message.split("
-")[0] : e);
+    console.error("[og college]", e instanceof Error ? e.message.split("\n")[0] : e);
     return null;
   });
   if (!d) return ogCard({ eyebrow: "MBBS colleges", title: "Seats, fees and cut off", stats: [] });
