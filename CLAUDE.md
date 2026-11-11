@@ -2286,6 +2286,12 @@ What changed:
   integration `serp.focus` ("pg" default, "all" for the NEET UG season): MBBS / NEET UG / BDS-only seeds, suggestions,
   Search Console picks and hunt searches rest; PG round-2 seeds and hunt searches added.
 - Re-check the report around 25 Nov; the 61 "Crawled" pages were fetched 5–8 Nov.
+- **The reels' long-tail regex (same day, owner's videos: `^([^ ]+ ){3,}[^ ]+$` in Search Console, answer each long
+  search on the page):** 12,983 searches of 4+ words in 28 days (91,216 impressions, 559 clicks), 11,210 at position 3–20,
+  3,809 NEET PG — the bot had studied 31 and answered 9. So data answers (free) go up to 25 an hour over up to 300 Search
+  Console searches within two minutes (`PER_RUN` in lib/searchFaq.ts), and `branchSeats` in lib/huntBranch.ts answers
+  "md nuclear medicine seats in india" (NMC's approved seats + MCC's matrix). The old national branch answer no longer
+  answers a search that names a state. Re-run: `scripts/tmp/harness/longtail.ts`.
 
 ## The OCR bridge for the AH tool (2026-11-11)
 

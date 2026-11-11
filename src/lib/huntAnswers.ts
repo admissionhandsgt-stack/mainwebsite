@@ -17,7 +17,7 @@ import { getStateNotices, getHubNotices, stateKey, FEED_STATE } from "@/lib/stat
 import { ALERT_SOURCES } from "@/lib/alertFeed";
 import { getCounselPgStates, getCounselUgStates } from "@/lib/counselStates";
 import { officialLink } from "@/lib/zynNotices";
-import { branchWord, branchRound, branchState, collegeBranch, roundIn, roundOverall, withoutBranchWords, INI_CET } from "@/lib/huntBranch";
+import { branchWord, branchRound, branchSeats, branchState, collegeBranch, roundIn, roundOverall, withoutBranchWords, INI_CET } from "@/lib/huntBranch";
 
 /**
  * Answers the daily hunt writes (2026-11-10; owner, with his own AIIMS New Delhi answer as the model: "aise detailed
@@ -750,12 +750,19 @@ async function pickDraft(q: string, all: string, hasText: boolean, states: PgSta
     const d = await lowScore();
     if (d) return d;
   }
+  // A branch's seats in India ("md nuclear medicine seats in india") — never under a state's name, which asks another question.
+  if (bw && /\bseats?\b/i.test(q) && !stateIn(q, states)) {
+    const d = await branchSeats(q);
+    if (d) return d;
+  }
   if (SEATS.test(q)) {
     const d = await seats();
     if (d) return d;
   }
   const br = branchIn(q);
-  if (br && (CUTOFF.test(q) || /seat|rank|marks|get/i.test(q))) {
+  // The older national branch answer: a cut-off question with no state named ("md radiology seats in maharashtra" asks
+  // for a state's seats — no national cut off answers it).
+  if (br && (CUTOFF.test(q) || /\b(rank|marks|get)\b/i.test(q)) && !stateIn(q, states)) {
     const d = await getLowRankClinical().catch(() => null);
     const row = d?.rows.find((r) => r.branch === br.branch);
     if (d && row) return branch(row, d);

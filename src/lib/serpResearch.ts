@@ -388,8 +388,11 @@ export async function runResearch(limit?: number): Promise<{ researched: number;
   }
   // Searches not studied this hour can still be answered where Google already shows us — Search Console names the page,
   // and our data answers it; no web search needed, so this costs no Tavily credit.
-  for (const o of opps.slice(0, 80)) {
-    if (published >= FAQ_PER_RUN) break;
+  // Up to 300 searches, 25 answers, and two minutes — the cron call waits at most five (2026-11-11: 12,983 searches of
+  // four words or more in 28 days; five answers an hour had covered 9).
+  const deadline = Date.now() + 120_000;
+  for (const o of opps.slice(0, 300)) {
+    if (published >= FAQ_PER_RUN || Date.now() > deadline) break;
     if (await offerSearchFaq({ query: o.query, page: o.page, impressions: o.impressions, position: o.position }).catch(() => false)) published++;
   }
   return { researched, ours, suggested: sug.added, published };

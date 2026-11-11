@@ -20,6 +20,12 @@ import { getBranchState, getBranchStateCombos, SEARCH_NAME } from "@/lib/branchS
 import { getStateRound } from "@/lib/stateRoundQueries";
 import { getCollegeLiveBands } from "@/lib/collegeLiveBands";
 import { getScoreTables } from "@/lib/scoreRank";
+import { unstable_cache } from "next/cache";
+import { sql } from "drizzle-orm";
+import { db } from "@/db/client";
+import { getNmcBranchSeats } from "@/lib/nmcData";
+import { getBranchSeatMatrix } from "@/lib/pgSeatData";
+import { branchSlug } from "@/lib/branchSlug";
 
 const n = (v: number | null | undefined) => (v == null ? "—" : Math.round(v).toLocaleString("en-IN"));
 
@@ -294,6 +300,46 @@ export async function collegeBranch(q: string, c: { slug: string; label: string 
     checks: CHECKS,
     source: `MCC's published allotment results for NEET PG ${live.year} (${live.label}). Each figure is a band of ranks, not the rank itself.`,
     what: `${c.label} fees, stipend and cut off page`,
+    predictor: true,
+  };
+}
+
+/* ------------------------------------------------------------- branch × seats --- */
+
+const pgCourses = unstable_cache(
+  async (): Promise<string[]> =>
+    ((await db.execute(sql`SELECT DISTINCT name FROM courses WHERE level = 'pg' AND name ~ '^(MD|MS) '`)) as unknown as { name: string }[]).map((r) => r.name),
+  ["hunt-pg-course-names-v1"],
+  { revalidate: 86_400, tags: ["seat-data"] },
+);
+
+/**
+ * "md nuclear medicine seats in india", "how many md radiology seats" (2026-11-11 — Search Console: 4+-word searches at
+ * position 3–20 that no answer covered): NMC's approved seats for the branch, and MCC's seats where its matrix lists them.
+ */
+export async function branchSeats(q: string): Promise<Draft | null> {
+  const b = branchWord(q);
+  if (!b || !/\bseats?\b/i.test(q) || /cut ?off|closing|rank/i.test(q)) return null;
+  const names = (await pgCourses().catch((): string[] => [])).filter((c) => b.course.test(c));
+  const course = names.sort((x, y) => x.length - y.length)[0];
+  if (!course) return null;
+  const nmc = await getNmcBranchSeats(course).catch(() => null);
+  if (!nmc?.seats) return null;
+  const mcc = await getBranchSeatMatrix(course).catch(() => null);
+  const points: string[] = [];
+  if (mcc?.total) {
+    points.push(`MCC's ${mcc.year} counselling lists ${n(mcc.total)} ${course} seats across ${n(mcc.colleges)} colleges and hospitals${mcc.byMatrix.length ? `: ${mcc.byMatrix.map((m) => `${m.seatMatrix} ${n(m.seats)}`).join(", ")}` : ""}.`);
+    if (mcc.topStates.length) points.push(`Most seats in MCC's list: ${mcc.topStates.slice(0, 4).map((s) => `${s.state} ${n(s.seats)}`).join(", ")}.`);
+  }
+  points.push("A state's own counselling fills its state-quota seats in government and private colleges; MCC fills the All India Quota, deemed and central universities.");
+  return {
+    page: `/md-ms-india/branches/${branchSlug(course)}`,
+    kind: `branch-seats:${branchSlug(course)}`,
+    lead: `India has ${n(nmc.seats)} ${course} seats a year in ${n(nmc.colleges)} ${nmc.colleges === 1 ? "college" : "colleges"}, as approved on the National Medical Commission's register.`,
+    points,
+    checks: CHECKS,
+    source: "The National Medical Commission's college-and-course register; MCC's seat matrix for its counselling.",
+    what: `${course} cut off, seats and colleges page`,
     predictor: true,
   };
 }

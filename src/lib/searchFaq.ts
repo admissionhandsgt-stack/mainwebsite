@@ -26,7 +26,7 @@ const OFFICIAL_DAYS = 45;
 const QUESTION = /^(what|which|how|why|when|where|who|is|are|can|does|do)\b|\b(kya|kaise|kab|kitn[aie]|kaun)\b|\?$/i;
 
 export const PER_PAGE = 6;
-export const PER_RUN = 5;
+export const PER_RUN = 25;
 
 /** "stipend for pg medical students state wise" → "Stipend for PG medical students state wise". */
 export function asHeading(q: string): string {
