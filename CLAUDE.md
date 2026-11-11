@@ -2373,12 +2373,14 @@ Words: Admin → Content → "Site: data tools" (`toolLabels(hint)` in lib/dataT
 PG fee state pages (seat type, city, fee), /neet-counselling-updates (exam, kind of notice from the title's words,
 authority, 7/30 days), the bond page (state table: bond listed or not, penalty, leaving, length; the college finder),
 /neet-pg-cutoff (both branch tables: clinical / para / pre-clinical by `lib/branchKinds.ts`, each category's column) and
-the branch index (MD/MS/Diploma/DNB, kind, colleges, seats). Shown only on lists of 8+ rows. `data-q` gives a row words
+the branch index (MD/MS/Diploma/DNB, kind, colleges, seats), MBBS state college tables (type, city, seats, founded),
+the seat matrix's branch and state tables, /mbbs-india/new-medical-colleges (type, state) and the deemed universities'
+list (state, management / NRI fee). Shown only on lists of 8+ rows. `data-q` gives a row words
 it answers to without printing them — a branch's short names ("obg", "ortho", "radio", "psm": `branchAliases()`).
 **A table that a client navigation re-renders** (/neet-pg-cutoff's category links) keys its toolbar by what changes
 (`key={category}`); the toolbar's layout-effect cleanup puts the DOM back as React rendered it (order, nothing hidden,
-span cells home) during the commit's deletion pass, before React moves rows. Phase 2 of the plan (city, MBBS state, seat
-matrix, new colleges, quota fee tables) is not built yet. Test: `scripts/tmp/harness/dt_test.mjs` and `dt_test2.mjs
+span cells home) during the commit's deletion pass, before React moves rows. Left without tools on purpose: city pages
+(3–20 rows) and the private / management / NRI fee band tables (a handful of rows each). Test: `scripts/tmp/harness/dt_test.mjs` and `dt_test2.mjs
 <base>` (git-excluded).
 
 ## The state PG fee PDF on WhatsApp (2026-11-11; spec `D:/Admisson Hands/seo_data/research_2026_11/lead_magnet_pdf.md`)

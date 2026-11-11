@@ -13,6 +13,8 @@ import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
 import SectionHead from "@/components/ui/SectionHead";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import DataTools from "@/components/ui/DataTools";
+import { toolLabels } from "@/lib/dataToolLabels";
 /**
  * "Deemed university PG fee structure", "NEET PG deemed cutoff". Per-college
  * fees are free on every college page, so listing them here gives nothing away;
@@ -37,11 +39,13 @@ export default async function DeemedPgPage() {
   const mng = d.national.find((b) => b.family === "Management");
   const nri = d.national.find((b) => b.family === "NRI");
   // Words from Admin → Content → Text & numbers ("Page: Deemed universities PG"); photo from Admin → Media.
-  const [copy, heroImage] = await Promise.all([
+  const [copy, heroImage, labels] = await Promise.all([
     // {year} in this copy is where the seats closed — the results year, not the fee year.
     pageCopy("page.deemed_pg.hero", { count: d.colleges.length, year: d.rankYear ?? "" }),
     pageHeroImage("page.deemed_pg.hero"),
+    toolLabels("fees_search"),
   ]);
+  const stateKey = (x: string | null | undefined) => (x ?? "").toLowerCase().replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "");
 
   const faqs = [
     ...(mng
@@ -136,8 +140,35 @@ export default async function DeemedPgPage() {
             title={<>Every deemed university</>}
             intro={<>Lowest median management fee first. The range is across the university&apos;s branches; open one for its fees and ranks branch by branch.</>}
           />
+          {d.colleges.length >= 8 && (
+            <DataTools
+              id="deemed-tools"
+              className="mt-5"
+              targets={["deemed-list"]}
+              total={d.colleges.length}
+              placement="deemed_universities"
+              labels={labels}
+              chips={[
+                {
+                  key: "state",
+                  label: "State",
+                  select: true,
+                  options: [...new Set(d.colleges.map((c) => c.state).filter((x): x is string => Boolean(x)))]
+                    .sort()
+                    .map((x) => ({ value: stateKey(x), label: x })),
+                },
+              ]}
+              sorts={[
+                { key: "mng", label: "Management fee, lowest first", dir: "asc" },
+                { key: "mng", label: "Management fee, highest first", dir: "desc" },
+                { key: "nri", label: "NRI fee, lowest first", dir: "asc" },
+                { key: "br", label: "Most branches first", dir: "desc" },
+                { key: "name", label: "University, A–Z", text: true },
+              ]}
+            />
+          )}
           <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
-            <table className="w-full min-w-[680px] text-left text-sm">
+            <table id="deemed-list" className="w-full min-w-[680px] text-left text-sm">
               <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
                 <tr>
                   <th scope="col" className="px-4 py-3 font-semibold">University</th>
@@ -149,7 +180,15 @@ export default async function DeemedPgPage() {
               </thead>
               <tbody className="divide-y divide-border">
                 {d.colleges.map((c) => (
-                  <tr key={c.slug}>
+                  <tr
+                    key={c.slug}
+                    data-row=""
+                    data-f-state={stateKey(c.state) || undefined}
+                    data-s-name={c.name.toLowerCase()}
+                    data-s-br={c.branches}
+                    {...(c.mngMedian ? { "data-s-mng": c.mngMedian } : {})}
+                    {...(c.nriMedian ? { "data-s-nri": c.nriMedian } : {})}
+                  >
                     <th scope="row" className="px-4 py-3 font-medium">
                       <Link href={`/md-ms-india/colleges/${c.slug}`} className="text-foreground hover:text-primary hover:underline">
                         {c.name}
