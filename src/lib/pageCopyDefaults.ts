@@ -917,7 +917,11 @@ export const PAGE_COPY = {
   "page.pg_open_states": {
     group: "Page: NEET PG open states",
     fields: {
-      seo_title: { label: "Search title — {season}, {year}, {states}", value: "Open States for NEET PG Counselling {season}: {states} States ({year} Results)" },
+      seo_title: {
+        label: "Search title — {season}, {year}, {states}",
+        value: "Open States for NEET PG Counselling {season}: {states} States",
+        was: ["Open States for NEET PG Counselling {season}: {states} States ({year} Results)"],
+      },
       seo_description: {
         label: "Search description — {year}, {states}, {colleges}",
         value: "Which states let candidates from other states take their PG seats: {states} state counsellings opened MD/MS seats to all-India candidates in {year} — {colleges} colleges, state by state, every college named.",

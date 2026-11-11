@@ -2354,8 +2354,65 @@ What changed:
   its release.**
 - **Search Console "Host status: problems last week" (owner's CSV export, 2026-11-11)** was one request: the apex
   `admissionhands.com` (82 crawls in 90 days, 99% the 301 to www) got a 5xx after 19.5 s around 7 Nov; www (26,448)
-  had none and the server was up. Optional: a Cloudflare Redirect Rule for apex → www would keep the origin out of it
-  (dashboard only; the API token cannot edit rules).
+  had none and the server was up. **Done 2026-11-12 (owner's OK):** Redirect Rule "Apex to www at the edge (keeps
+  /.well-known on origin)" — `(http.host eq "admissionhands.com" and not starts_with(http.request.uri.path, "/.well-known/"))`
+  → dynamic `concat("https://www.admissionhands.com", http.request.uri.path)`, 301, query string kept. 77k apex requests a
+  month (mostly bots) no longer reach the server; http apex is one hop to https www (was 308 then 301). The ACME path
+  still reaches Caddy, so certificate renewals are untouched. Made in the dashboard (Admissionhands.gt profile).
+
+## The NEET PG journey pages (2026-11-12, owner: "candidates unke guardians kin conditions se gujarte honge… target set karo")
+
+The journey study (90 days of GSC + ~4,500 autocomplete searches by stage, `D:/Admisson Hands/seo_data/research_2026_11/
+neet_pg_journey_keywords.md`, harness `scripts/tmp/harness/journey*.ts`): the site was seen where it holds data (stipend,
+cut off, DNB, fees) and absent where families look for help (counsellor/fraud 4 impressions in 90 days, documents 37,
+loans 14, what-next 74). Built the same day, every rule from the authority's own document (an agent's research file,
+`official_research.md` in that session's scratchpad; PDFs in `official_pdfs/`):
+- **/counselling** — `components/counsel/ExpertPromise.tsx` (copy "Counselling: why an expert counsellor"): not agents,
+  not tied to a few colleges, every counselling and seat type, how an expert works the case (profile → strategy → choice
+  list → round by round → reporting), "How to choose a NEET PG counsellor" (good signs / walk away if), "Direct admission
+  or seat booking: real or fraud?" citing **PGMER-2023 reg. 4.3** ("no medical college/ institution will admit any candidate
+  themselves") and **4.5** (₹1 crore per seat, student discharged), FAQ + FAQPage. The `state` variant (choosing + fraud)
+  is on every /counselling/neet-pg/<state>. Title "NEET PG Counsellor 2026: Expert Counselling Guidance, All India".
+  No self-awarded "best"; the FAQ tells a family how to judge any counsellor.
+- **/neet-pg-open-states** and **/neet-pg-in-service-quota** — `lib/pgEligibility.ts`: the PG source's "Open States (Private
+  Institute seats available for all candidates)" counselling by state, and every quota/category matching `SERVICE_QUOTA_RE`
+  by state (MCC's DNB sponsored seats apart). Counts are colleges and **college × branch options, never seats**. No
+  "domicile only" list: a state missing from the open list may still open its management seats (Maharashtra's private
+  universities do), so the page names only what the results show. In-service rules for six states (Maharashtra 20%, TN
+  50% of GQ, Kerala 10%, Gujarat 10% in ten subjects, Rajasthan bonus marks + 50% post-MBBS diploma/DNB, UP weightage +
+  DNB) are Admin lines "State | rule | source" with the clause; Karnataka and MP were not verified.
+- **/neet-pg-seat-increase** — `lib/seatIncrease.ts`: MCC's matrix as first published (31,708) and the seats its "newly
+  added seats" notices added (3,479 in round 2 → 35,187), by matrix, branch, state, college; NMC's approved seats beside.
+- **/neet-pg-documents** — MCC's list (bulletin Ch. 12.2 and FAQ 6, essentials marked) and Maharashtra, UP, Rajasthan, TN,
+  Kerala, Gujarat (Karnataka = KEA's procedure only; its bulletin was not posted). Admin collection
+  **`pg_documents_official`** (one row per authority; `[E] ` marks essential, `## ` a sub-heading), seeded by
+  `scripts/seed_pg_documents.mjs` from `lib/pgDocuments.ts`. **Not `pg_documents`** — that is the MD/MS page's own short
+  checklist (since Sept), which now links here. The MCC bulletin as posted is "DRAFT – V10 05102026": re-check when MCC revises it.
+- **/md-vs-dnb** — "Is DNB equal to MD? What the law says": NMC Act 2019 **s. 37(2)** quoted (equivalent in all respects when
+  trained in a medical institution with an attached hospital or a 500+ bed hospital; otherwise a year of senior residency
+  for teaching), NMC faculty regulations 2025 reg. 7, FNB not for teaching (NBEMS gazette 14 Nov 2022).
+- **/neet-pg-choice-filling#security-deposit-refund** — refunds only after every round, within 15/30 days of MCC's notice, to
+  the paying account, no interest; forfeited for an unjoined round 2+ seat or a cancelled admission.
+- **Low-score page "Drop karein ya seat lein?"** (copy "Page: NEET PG low score — drop or take the seat") — a way to decide,
+  MCC's round rules, never a verdict.
+- Menu rows `scripts/sql/nav_journey_pages_2026_11_12.sql` (applied). The bot's `JOURNEY_SEEDS` and `JOURNEY_HUBS`
+  (lib/serpSuggest.ts, lib/serpResearch.ts) target these pages.
+- **Research bot fixes the same day** (lib/huntAnswers.ts): a college answer must fit the city/state/kind the search names
+  (`fitsSearch` — "bj medical college pune" had been answered as BJ Ahmedabad, "bharath medical college" as Viswabharathi);
+  names match from the start of a word; a fee question gets a fee (last year's listing as a bracket with * when there is no
+  2026-27 notice: `college-fee-listed`), never the stipend; a search naming a college we cannot find gets no national figure.
+- **MCC's added-seat revisions replace each other** (lib/mccAddedSeats.ts): round 2's list came on 10 Nov and was revised
+  three times on 11 Nov, each a new URL — all four were added (45,679 seats in the matrix instead of 35,187) from about
+  16:00 IST on 11 Nov until the repair at ~01:45 IST on 12 Nov. Now a newer file of the same round deletes the older
+  files' rows; an older one read later is skipped. Superseded files keep status `live` (the worker skips live files)
+  with `error = 'superseded by …'` and `imported = 0`.
+- **Zyn notices sent again corrected** (lib/zynNotices.ts, zyn-3c's feed change): the same id with a new `updated_at`
+  replaces a held copy (re-checked, published if it passes, its old alert row switched back on with the new title); a
+  published one takes the new title; a dismissed one stays dismissed. The 00:29 IST run of 12 Nov took both re-sent notices
+  with the old code, so the cursor was rewound once by hand to bring DME Chhattisgarh's back.
+- **Indexing loop rhythm (owner):** on any quota limit wait 5 min, retry, twice, then a 30-minute break, and again —
+  5, 5, 30 — until the queue is done (scratchpad `ah_gsc_loop.js`); a half-hourly session watchdog re-injects it after a
+  frozen tab. The queue was rebuilt PG-first: new PG pages, branch × state, DNB/diploma branches, 401 MD/MS colleges.
 
 ## Sort and filter on data pages (2026-11-11, owner: "smart modern tarike se sort & filtering… user friendly")
 
