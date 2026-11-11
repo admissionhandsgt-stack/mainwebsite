@@ -101,8 +101,19 @@ function useBadges(pathname: string, enabled: boolean) {
   useEffect(() => {
     if (!enabled) return;
     load();
-    const i = setInterval(load, 60_000);
-    return () => clearInterval(i);
+    // Not while the tab is in the background (an admin tab left open all day polled all day — Cloudflare, 2026-11-12:
+    // the badges and the inbox were two of the three heaviest paths on the zone); at once when it comes back.
+    const i = setInterval(() => {
+      if (document.visibilityState === 'visible') load();
+    }, 60_000);
+    const back = () => {
+      if (document.visibilityState === 'visible') load();
+    };
+    document.addEventListener('visibilitychange', back);
+    return () => {
+      clearInterval(i);
+      document.removeEventListener('visibilitychange', back);
+    };
   }, [load, pathname, enabled]);
   return badges;
 }

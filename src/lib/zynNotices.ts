@@ -369,7 +369,8 @@ async function take(n: ZynNotice): Promise<"published" | "held" | "seen"> {
   }[])[0];
   if (prev) {
     const updated = str((n.raw as Record<string, unknown> | null)?.updated_at);
-    const changed = prev.title !== n.title || prev.url !== n.url || (updated !== null && updated !== prev.updated);
+    // A notice stored before Zyn sent `updated_at` counts as changed only if its words or link changed.
+    const changed = prev.title !== n.title || prev.url !== n.url || (updated !== null && prev.updated !== null && updated !== prev.updated);
     if (!changed) return "seen";
     if (prev.status !== "held") {
       // Published or dismissed: keep the decision, take the corrected words.
@@ -396,7 +397,15 @@ async function take(n: ZynNotice): Promise<"published" | "held" | "seen"> {
   // and link" reached the alerts bar and the notices page). Official titles are never Hinglish instructions.
   else if (INSTRUCTION.test(n.title)) [status, reason] = ["held", "the title reads like an instruction, not the notice's title"];
 
-  const alertId = status === "published" ? await publishAlert(n) : null;
+  // A held notice keeps the alert row it had before it was held (switched off by the hold, not by an admin): published
+  // again, that row comes back with the corrected words rather than a second one being refused by its source key.
+  let alertId: number | null = null;
+  if (status === "published" && prev?.alert_id) {
+    await db.execute(sql`
+      UPDATE live_alerts SET title = ${alertTitle(n).slice(0, 300)}, link = ${n.url}, is_active = true
+       WHERE id = ${prev.alert_id} AND source_key = ${`zyn:${n.id}`}`);
+    alertId = Number(prev.alert_id);
+  } else if (status === "published") alertId = await publishAlert(n);
 
   let scheduleStatus: string | null = null;
   let scheduleReason: string | null = null;

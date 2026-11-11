@@ -132,10 +132,19 @@ export default function WhatsAppInbox() {
 
   useEffect(() => {
     const t = setTimeout(loadList, q ? 250 : 0);
-    const i = setInterval(loadList, 15_000);
+    // Not while the tab is in the background (an inbox left open polled all day: one of the zone's heaviest paths,
+    // Cloudflare 2026-11-12); at once when it comes back.
+    const i = setInterval(() => {
+      if (document.visibilityState === "visible") loadList();
+    }, 15_000);
+    const back = () => {
+      if (document.visibilityState === "visible") loadList();
+    };
+    document.addEventListener("visibilitychange", back);
     return () => {
       clearTimeout(t);
       clearInterval(i);
+      document.removeEventListener("visibilitychange", back);
     };
   }, [loadList, q]);
 
@@ -144,8 +153,17 @@ export default function WhatsAppInbox() {
     setMessages(null);
     setError(null);
     loadThread(active).then(loadList);
-    const i = setInterval(() => loadThread(active), 8_000);
-    return () => clearInterval(i);
+    const i = setInterval(() => {
+      if (document.visibilityState === "visible") loadThread(active);
+    }, 8_000);
+    const back = () => {
+      if (document.visibilityState === "visible") loadThread(active);
+    };
+    document.addEventListener("visibilitychange", back);
+    return () => {
+      clearInterval(i);
+      document.removeEventListener("visibilitychange", back);
+    };
     // loadList is deliberately not a dependency: reloading the thread on every search keystroke is noise.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, loadThread]);
