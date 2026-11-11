@@ -186,7 +186,7 @@ export default async function UgCollegePage(props0: { params: Promise<{ slug: st
             {extras?.imageUrl && (
               <div className="relative min-w-0">
             <div className="relative aspect-[16/10] overflow-hidden rounded-[1.75rem] border border-border bg-surface-3 shadow-lift">
-              <Image src={extras.imageUrl} alt={`${college.name} campus`} fill priority sizes="(min-width: 1280px) 26rem, (min-width: 1024px) 24rem, 100vw" className="object-cover" />
+              <Image src={extras.imageUrl} alt={`${college.name} campus`} fill priority fetchPriority="high" sizes="(min-width: 1280px) 26rem, (min-width: 1024px) 24rem, 100vw" className="object-cover" />
               <PhotoCredit
                 subject={college.name}
                 attribution={extras?.imageAttribution}

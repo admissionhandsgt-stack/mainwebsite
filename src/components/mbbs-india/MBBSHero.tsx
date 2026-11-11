@@ -33,6 +33,7 @@ export const MBBSHero = ({ backgroundImageUrl, credit, data = mbbsData }: MBBSHe
             alt="Medical college campus in India"
             fill
             priority
+            fetchPriority="high"
             className="object-cover object-[75%_center] md:object-center opacity-30 md:opacity-45 dark:opacity-25"
             sizes="100vw"
           />

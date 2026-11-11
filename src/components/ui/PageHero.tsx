@@ -129,6 +129,7 @@ export default function PageHero({
             alt={imageAlt}
             fill
             priority
+            fetchPriority="high"
             sizes="100vw"
             className="object-cover object-center opacity-[0.05] sm:opacity-[0.08] dark:opacity-[0.10]"
           />
@@ -201,6 +202,7 @@ export default function PageHero({
                 alt={imageAlt}
                 fill
                 priority
+                fetchPriority="high"
                 sizes="(min-width: 1280px) 30rem, (min-width: 1024px) 27rem, 100vw"
                 className="object-cover"
               />

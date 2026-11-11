@@ -76,7 +76,10 @@ export type IntegrationKey =
   | "search.tavily.key"
   | "search.tavily.used"
   | "search.tavily.key2"
-  | "search.tavily.used2";
+  | "search.tavily.used2"
+  // Search research's review (lib/serpResearch.ts): "hourly" (default) or "weekly"; when the last one was sent.
+  | "serp.digest"
+  | "serp.digest.at";
 
 /**
  * The environment variable that overrides each key, where one exists.

@@ -64,6 +64,7 @@ export default async function NRIHero({ backgroundImageUrl, credit }: NRIHeroPro
                 alt="Medical college campus"
                 fill
                 priority
+                fetchPriority="high"
                 sizes="(min-width: 1024px) 30rem, 100vw"
                 className="object-cover"
               />

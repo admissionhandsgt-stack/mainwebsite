@@ -91,6 +91,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
                   alt={credit?.subject ?? "Medical college campus"}
                   fill
                   priority
+                  fetchPriority="high"
                   sizes="(min-width: 1024px) 30rem, 100vw"
                   className="object-cover"
                 />

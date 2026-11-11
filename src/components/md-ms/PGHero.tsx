@@ -128,6 +128,7 @@ export const PGHero = ({ copy, facts, imageUrl, imageAlt, credit }: PGHeroProps)
                 alt={imageAlt || "PG residents at work in a hospital"}
                 fill
                 priority
+                fetchPriority="high"
                 sizes="(min-width: 1280px) 32rem, (min-width: 1024px) 28rem, 100vw"
                 className="object-cover"
               />

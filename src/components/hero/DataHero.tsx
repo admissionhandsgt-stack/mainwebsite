@@ -197,6 +197,7 @@ export default function DataHero({
                     alt={image.alt}
                     fill
                     priority
+                    fetchPriority="high"
                     sizes="(min-width: 1280px) 30rem, (min-width: 1024px) 27rem, 100vw"
                     className="object-cover"
                   />
