@@ -220,7 +220,7 @@ export default async function StipendPage() {
         <div className="container-custom">
           <SectionHead icon="trend" eyebrow="Top 25" title="Highest PG stipends" />
           <p className="mt-2 max-w-[70ch] text-muted-foreground">
-            The 25 colleges paying the most in the first year, per month. Open one for its fee, seats and closing ranks.
+            The 25 colleges paying the most in the first year, per month. Open one for its fee, seats, bond and cut off band.
           </p>
           <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
             <table className="dt w-full min-w-[640px] text-left text-sm">

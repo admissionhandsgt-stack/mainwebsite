@@ -216,7 +216,43 @@ const COLLEGE_ACRONYM: Record<string, string> = {
   dmc: "dayanand medical college",
 };
 
+/**
+ * A college named in full ("bangalore medical college", "sri ramachandra medical college"): the words before "medical
+ * college" / "institute of medical sciences", one to three of them, as the start of a college's name. Tried before the
+ * word match, which drops "medical" and "college" and so cannot tell Bangalore Medical College from every college in
+ * Bangalore.
+ */
+async function collegeByPhrase(q: string): Promise<College | null> {
+  const m = fold(q).match(/ ((?:[a-z]+ ){1,4})(medical college|institute of medical sciences|medical sciences|medical university)(?: ([a-z]{3,}))?/);
+  if (!m) return null;
+  const before = m[1].trim().split(" ").filter((w) => !NOT_A_NAME.has(w) || w === "government");
+  // The word after the name, when it is a place ("government medical college nagpur"), narrows a common name.
+  const after = m[3] && !NOT_A_NAME.has(m[3]) ? m[3] : "";
+  const tries: string[] = [];
+  for (let take = 1; take <= Math.min(3, before.length); take++) {
+    const head = `${before.slice(-take).join(" ")} ${m[2]}`;
+    tries.push(`${head}%`);
+    if (after) tries.push(`${head}% ${after}%`);
+  }
+  for (const phrase of tries) {
+    const rows = (await db.execute(sql`
+      SELECT i.id, i.slug, i.name, s.name AS state, i.ownership::text AS ownership,
+             EXISTS (SELECT 1 FROM seat_options so JOIN courses co ON co.id = so.course_id
+                      WHERE so.institute_id = i.id AND co.name !~* '^(DNB|DrNB|FNB|Diploma|PG Diploma)') AS mdms
+        FROM institutes i LEFT JOIN states s ON s.id = i.state_id
+       WHERE i.level = 'pg' AND i.is_active AND i.slug IS NOT NULL
+         AND lower(regexp_replace(i.name, '[^A-Za-z]+', ' ', 'g')) LIKE ${phrase}
+       LIMIT 4`)) as unknown as (College & { mdms: boolean })[];
+    const mdms = rows.filter((r) => r.mdms);
+    const pick = mdms.length === 1 ? mdms[0] : rows.length === 1 ? rows[0] : null;
+    if (pick) return { id: Number(pick.id), slug: pick.slug, name: pick.name, state: pick.state, ownership: pick.ownership };
+  }
+  return null;
+}
+
 async function collegeIn(q: string, states: PgState[]): Promise<College | null> {
+  const byPhrase = await collegeByPhrase(q).catch(() => null);
+  if (byPhrase) return byPhrase;
   const st = stateIn(q, states);
   let words = fold(q).trim().split(" ").filter((w) => w.length >= 2 && !NOT_A_NAME.has(w) && !/^\d+$/.test(w));
   if (st) words = words.filter((w) => !fold(st.name).includes(` ${w} `));
@@ -733,7 +769,9 @@ async function pickDraft(q: string, all: string, hasText: boolean, states: PgSta
     const placeWord = (w: string) =>
       w.length < 2 || NOT_A_NAME.has(w) || /^\d+$/.test(w) || STATE_ALIAS[w] !== undefined || CITY_WORDS.has(w) || states.some((st) => fold(st.name).includes(` ${w} `));
     const onlyPlace = fold(rest).trim().split(" ").filter(Boolean).every(placeWord);
-    const c = onlyPlace ? null : await collegeIn(rest, states);
+    // A place word can be a college's own name ("Madras Medical College", "Bangalore Medical College"): when the search
+    // says college / institute / hospital, a single college that matches wins over the city.
+    const c = onlyPlace && !A_COLLEGE.test(q) ? null : await collegeIn(rest, states);
     const st = stateIn(q, states);
     let scope: MoneyScope;
     if (c) {
@@ -757,7 +795,13 @@ async function pickDraft(q: string, all: string, hasText: boolean, states: PgSta
       .split(" ")
       .filter(Boolean)
       .every((w) => w.length < 2 || NOT_A_NAME.has(w) || /^\d+$/.test(w) || STATE_ALIAS[w] !== undefined || CITY_WORDS.has(w) || states.some((st) => fold(st.name).includes(` ${w} `)));
-  if (placeOnly && !bw) {
+  // …unless the place word is a college's own name ("madras medical college pg stipend" is Madras Medical College).
+  const namedCollege = placeOnly && !bw && A_COLLEGE.test(q) ? await collegeIn(q, states) : null;
+  if (namedCollege) {
+    const d = await college(namedCollege, q);
+    if (d) return d;
+  }
+  if (placeOnly && !bw && !namedCollege) {
     const city = cityIn(q);
     if (city) return cityMoneyDraft(/fee|cost|tuition/i.test(q) ? "fees" : "stipend", city);
   }
