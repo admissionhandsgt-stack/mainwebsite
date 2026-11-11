@@ -730,7 +730,9 @@ async function pickDraft(q: string, all: string, hasText: boolean, states: PgSta
     const d = await bond(stateIn(q, states));
     if (d) return d;
   }
-  if (STIPEND.test(q)) {
+  // A state's or India's stipend — not for a search about one hospital or college we could not find ("batra hospital
+  // delhi dnb stipend" is not answered by Delhi's median).
+  if (STIPEND.test(q) && !/\b(hospital|college|institute|aiims|jipmer|pgimer)\b/i.test(q)) {
     const st = stateIn(q, states);
     const d = await (st ? stateStipend(st) : nationalStipend());
     if (d) return d;
@@ -755,7 +757,8 @@ async function pickDraft(q: string, all: string, hasText: boolean, states: PgSta
     const d = await branchSeats(q);
     if (d) return d;
   }
-  if (SEATS.test(q)) {
+  // India's seat totals — never for a search that names a branch or a super-speciality ("dnb dermatology seats").
+  if (SEATS.test(q) && !bw && !/\b(dnb|drnb|m\.?\s?ch|dm|diploma)\s+(in\s+)?[a-z]{3,}/i.test(q)) {
     const d = await seats();
     if (d) return d;
   }

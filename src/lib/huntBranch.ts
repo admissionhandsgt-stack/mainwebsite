@@ -74,6 +74,8 @@ export const BRANCH_WORDS: { q: RegExp; course: RegExp; name: string }[] = [
 export type BranchWord = (typeof BRANCH_WORDS)[number];
 /** The branch a search names, if any — never for a surgery or medicine qualified by a word we do not list. */
 export function branchWord(q: string): BranchWord | null {
+  // DM / MCh / DrNB are super-specialities (NEET SS): "mch head and neck surgery" is not general surgery.
+  if (/\b(m\.?\s?ch|dm|drnb|super ?speciality)\b/i.test(q)) return null;
   const b = BRANCH_WORDS.find((x) => x.q.test(q)) ?? null;
   if (!b) return null;
   if (b.course.source.includes("general surgery") && /\b(plastic|neuro|cardio\w*|paediatric|pediatric|uro\w*|vascular|oncolog\w*|gastro\w*|thoracic|oral|maxillo\w*)\s*surgery/i.test(q)) return null;
@@ -319,7 +321,8 @@ const pgCourses = unstable_cache(
  */
 export async function branchSeats(q: string): Promise<Draft | null> {
   const b = branchWord(q);
-  if (!b || !/\bseats?\b/i.test(q) || /cut ?off|closing|rank/i.test(q)) return null;
+  // NMC's register holds MD/MS (and their diplomas) only: a DNB search is not answered with MD/MS seats.
+  if (!b || !/\bseats?\b/i.test(q) || /cut ?off|closing|rank/i.test(q) || /\b(dnb|diploma|nbe)\b/i.test(q)) return null;
   const names = (await pgCourses().catch((): string[] => [])).filter((c) => b.course.test(c));
   const course = names.sort((x, y) => x.length - y.length)[0];
   if (!course) return null;
