@@ -296,6 +296,8 @@ export async function runResearch(limit?: number): Promise<{ researched: number;
   const today = new Date(Date.now() + 5.5 * 3600_000).toISOString().slice(0, 10);
   let researched = 0;
   let published = 0;
+  let officialTried = 0;
+  const OFFICIAL_PER_RUN = 2;
   let ours = 0;
   for (const item of plan) {
     const found = await webSearchAnswer(item.query, 10);
@@ -342,12 +344,21 @@ export async function runResearch(limit?: number): Promise<{ researched: number;
     // Implementation, not only advice (owner, same day): when a data builder answers the search, the landing page carries
     // it as a heading with the answer under it (lib/searchFaq.ts) — the H2 advice done by the site itself.
     if (landing && published < FAQ_PER_RUN) {
-      const live = await offerSearchFaq({ query: item.query, page: landing, impressions: item.gsc?.impressions, position: item.gsc?.position }).catch(() => false);
+      // When our data has no answer, an official page may: at most OFFICIAL_PER_RUN tries an hour (a Tavily credit and a
+      // Gemini call each), and only where Google shows the page or a search recurs.
+      const live = await offerSearchFaq(
+        { query: item.query, page: landing, impressions: item.gsc?.impressions, position: item.gsc?.position },
+        { official: officialTried < OFFICIAL_PER_RUN },
+      ).catch(() => false as const);
+      if (live === "official" || (!live && officialTried < OFFICIAL_PER_RUN)) officialTried++;
       if (live) {
         published++;
         // The H2 advice is now done: replace it rather than ask for it.
         for (let i = advice.length - 1; i >= 0; i--) if (advice[i].kind === "section") advice.splice(i, 1);
-        advice.unshift({ kind: "done", text: `Done: "${item.query}" is now answered on ${landing}, from live data.` });
+        advice.unshift({
+          kind: "done",
+          text: `Done: "${item.query}" is now answered on ${landing}, ${live === "official" ? "from an official page, every figure checked against it" : "from live data"}.`,
+        });
       }
     }
     // Priority: Search Console's impressions where we have them (more for page 1–2 positions), otherwise how often

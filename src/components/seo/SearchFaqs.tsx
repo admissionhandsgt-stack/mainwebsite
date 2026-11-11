@@ -45,6 +45,15 @@ export default async function SearchFaqs() {
               </p>
             )}
             {f.draft.source && <p className="mt-2 text-[12.5px] leading-relaxed text-muted-foreground">Source: {f.draft.source}</p>}
+            {f.official && (
+              <p className="mt-2 text-[12.5px] leading-relaxed text-muted-foreground">
+                Source:{" "}
+                <a href={f.official.url} target="_blank" rel="noopener" className="font-semibold text-primary-strong underline-offset-2 hover:underline dark:text-primary">
+                  {f.official.title}
+                </a>
+                {f.official.asOf ? ` (${f.official.asOf})` : ""}. Copied from the official page; its notice is the final word.
+              </p>
+            )}
             {f.draft.page !== path && copy.more && (
               <p className="mt-2 text-[13.5px]">
                 <Link href={f.draft.page} className="font-semibold text-primary-strong hover:underline dark:text-primary">

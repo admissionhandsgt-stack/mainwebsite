@@ -18,7 +18,7 @@ const KEYS: { key: IntegrationKey; used: IntegrationKey }[] = [
   { key: "search.tavily.key2", used: "search.tavily.used2" },
 ];
 
-export type WebResult = { title: string; url: string; content: string; published?: string };
+export type WebResult = { title: string; url: string; content: string; published?: string; raw?: string };
 
 const month = () => new Date().toISOString().slice(0, 7);
 
@@ -58,7 +58,7 @@ export async function webSearchUsage(): Promise<{ month: string; used: number; b
 
 export async function webSearch(
   query: string,
-  opts: { includeDomains?: string[]; excludeDomains?: string[]; timeRange?: "day" | "week" | "month" | "year"; maxResults?: number } = {},
+  opts: { includeDomains?: string[]; excludeDomains?: string[]; timeRange?: "day" | "week" | "month" | "year"; maxResults?: number; raw?: boolean } = {},
 ): Promise<WebResult[] | null> {
   const key = await takeCredit();
   if (!key) return null; // no key, or every key's budget is used up this month: stop rather than pay
@@ -74,16 +74,23 @@ export async function webSearch(
       ...(opts.includeDomains?.length ? { include_domains: opts.includeDomains } : {}),
       ...(opts.excludeDomains?.length ? { exclude_domains: opts.excludeDomains } : {}),
       include_answer: false,
-      include_raw_content: false,
+      // The page's own text, for an answer checked against it (lib/officialAnswer.ts); same credit.
+      include_raw_content: opts.raw ? "text" : false,
     }),
     cache: "no-store",
     signal: AbortSignal.timeout(30_000),
   });
   if (!r.ok) throw new Error(`Tavily ${r.status}`);
-  const j = (await r.json()) as { results?: { title?: string; url?: string; content?: string; published_date?: string }[] };
+  const j = (await r.json()) as { results?: { title?: string; url?: string; content?: string; raw_content?: string | null; published_date?: string }[] };
   return (j.results ?? [])
-    .filter((x) => x.url && /^https:\/\//.test(x.url))
-    .map((x) => ({ title: (x.title ?? "").slice(0, 300), url: x.url!, content: (x.content ?? "").slice(0, 600), published: x.published_date }));
+    .filter((x) => x.url && /^https?:\/\//.test(x.url))
+    .map((x) => ({
+      title: (x.title ?? "").slice(0, 300),
+      url: x.url!,
+      content: (x.content ?? "").slice(0, 600),
+      published: x.published_date,
+      ...(opts.raw && x.raw_content ? { raw: x.raw_content.slice(0, 40_000) } : {}),
+    }));
 }
 
 /**

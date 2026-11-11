@@ -79,7 +79,12 @@ export type IntegrationKey =
   | "search.tavily.used2"
   // Search research's review (lib/serpResearch.ts): "hourly" (default) or "weekly"; when the last one was sent.
   | "serp.digest"
-  | "serp.digest.at";
+  | "serp.digest.at"
+  // Gemini (lib/gemini.ts): the owner's AI Studio keys, up to four, comma-separated (write-only, rotated), an optional
+  // model name, and today's call count.
+  | "ai.gemini.keys"
+  | "ai.gemini.model"
+  | "ai.gemini.used";
 
 /**
  * The environment variable that overrides each key, where one exists.

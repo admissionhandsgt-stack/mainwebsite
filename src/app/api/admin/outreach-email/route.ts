@@ -51,7 +51,7 @@ export async function GET() {
   const hunt = await listHunt().catch(() => []);
   const sources = await listSources().catch(() => []);
   const library = await listLibrary().catch(() => []);
-  const [tavily, tavily2, usage] = await Promise.all([getIntegration("search.tavily.key"), getIntegration("search.tavily.key2"), webSearchUsage()]);
+  const [tavily, tavily2, usage, gemini] = await Promise.all([getIntegration("search.tavily.key"), getIntegration("search.tavily.key2"), webSearchUsage(), getIntegration("ai.gemini.keys")]);
   return NextResponse.json(
     {
       host: host ?? "smtp.nevtan.com",
@@ -71,6 +71,8 @@ export async function GET() {
       library,
       tavilySet: Boolean(tavily),
       tavily2Set: Boolean(tavily2),
+      geminiSet: Boolean(gemini),
+      geminiCount: gemini ? gemini.split(",").filter(Boolean).length : 0,
       tavilyUsage: usage,
     },
     { headers: { "cache-control": "no-store" } },
@@ -126,6 +128,13 @@ export async function POST(request: Request) {
         if (tavilyKey2) {
           if (!/^tvly-[A-Za-z0-9_-]{10,}$/.test(tavilyKey2)) return NextResponse.json({ error: "A Tavily key starts with tvly-." }, { status: 400 });
           await setIntegration("search.tavily.key2", tavilyKey2, true);
+        }
+        const geminiRaw = str(b.geminiKey, 600);
+        if (geminiRaw) {
+          const keys = [...new Set(geminiRaw.split(/[\s,]+/).filter(Boolean))].slice(0, 4);
+          if (!keys.length || keys.some((k) => !/^AIza[0-9A-Za-z_-]{30,}$/.test(k)))
+            return NextResponse.json({ error: "Gemini API keys from Google AI Studio start with AIza — paste up to four, separated by commas." }, { status: 400 });
+          await setIntegration("ai.gemini.keys", keys.join(","), true);
         }
         if (typeof b.enabled === "boolean") await setIntegration("outreach.enabled", b.enabled ? "true" : "false");
         const cap = Number(b.cap);

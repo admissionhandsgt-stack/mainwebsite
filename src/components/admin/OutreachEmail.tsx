@@ -40,6 +40,8 @@ type State = {
   library: Saved[];
   tavilySet: boolean;
   tavily2Set: boolean;
+  geminiSet: boolean;
+  geminiCount?: number;
   tavilyUsage: { month: string; used: number; budget: number; keys: number };
 };
 type Source = { id: number; url: string; org: string; kind: string; last_crawled_at: string | null; found: number; last_note: string | null };
@@ -279,7 +281,7 @@ export default function OutreachEmail({ kit }: { kit?: React.ReactNode }) {
     history.replaceState(null, "", `#${t}`);
   };
   const [s, setS] = useState<State | null>(null);
-  const [form, setForm] = useState({ host: "", port: "", user: "", pass: "", fromName: "", token: "", cap: "", tavilyKey: "", tavilyKey2: "" });
+  const [form, setForm] = useState({ host: "", port: "", user: "", pass: "", fromName: "", token: "", cap: "", tavilyKey: "", tavilyKey2: "", geminiKey: "" });
   const [target, setTarget] = useState({ email: "", name: "", org: "", kind: "journalist", why: "", sourceUrl: "" });
   const [busy, setBusy] = useState<string | null>(null);
   const [libDraft, setLibDraft] = useState<Partial<Saved> | null>(null);
@@ -290,7 +292,7 @@ export default function OutreachEmail({ kit }: { kit?: React.ReactNode }) {
     if (!r.ok) return setMsg({ tone: "danger", text: "Could not load the settings." });
     const j = (await r.json()) as State;
     setS(j);
-    setForm((f) => ({ ...f, host: j.host, port: j.port, user: j.user, fromName: j.fromName, cap: j.cap, pass: "", token: "", tavilyKey: "", tavilyKey2: "" }));
+    setForm((f) => ({ ...f, host: j.host, port: j.port, user: j.user, fromName: j.fromName, cap: j.cap, pass: "", token: "", tavilyKey: "", tavilyKey2: "", geminiKey: "" }));
   }, []);
   useEffect(() => {
     load();
@@ -407,6 +409,16 @@ export default function OutreachEmail({ kit }: { kit?: React.ReactNode }) {
           </Field>
           <Field label="Second Tavily key (your other account)" hint={s.tavily2Set ? "Saved. Used when the first key has spent its month." : "Optional. With both keys the hunt searches twice as much."}>
             <input className={`${INPUT} ${INPUT_H}`} type="password" autoComplete="off" value={form.tavilyKey2} onChange={set("tavilyKey2")} />
+          </Field>
+          <Field
+            label="Gemini API keys (Google AI Studio, up to 4, comma-separated)"
+            hint={
+              s.geminiSet
+                ? `Saved: ${s.geminiCount ?? 1} key(s), used in turn. Search research uses them to answer, from official MCC / NMC / NBEMS / state pages only, the searches our data cannot — each figure checked against the official text before it goes on a page. Paste again to replace all.`
+                : "Optional. Paste keys from aistudio.google.com (each starts with AIza), separated by commas. Without them, only searches our own data answers go on pages."
+            }
+          >
+            <input className={`${INPUT} ${INPUT_H}`} type="password" autoComplete="off" value={form.geminiKey} onChange={set("geminiKey")} />
           </Field>
           <div className="flex items-end gap-2">
             <Badge tone={s.linked ? "success" : "warning"}>{s.linked ? "Telegram linked" : "Telegram not linked"}</Badge>

@@ -2410,6 +2410,18 @@ Owner: "itne pending task complete karo" (Meta's Conversions API token comes lat
   sites, single), the long-search H2 advice (5+ words with a question word, from the owner's reels), priority. Telegram review
   each hour 08:00–23:00 IST (`digest()`, the night's wait for the morning); `serp.digest` = `weekly` (integrations) moves it to
   Monday 09:00, `off` stops it. Figures found are leads — verify against the official source before a page prints them.
+- **The bot implements, not only advises — search answers on our pages** (owner: "review to ara hai lekin usko hum
+  website mai kese implement + target karenge… implementation bhi to chaiye"). `lib/searchFaq.ts` + `search_faqs`
+  (migration 0059): a real search a page is shown for (Search Console's page) or the hub autocomplete points to goes on
+  that page as an H3 in the searcher's words under "Questions people ask" (`components/seo/SearchFaqs.tsx`, root layout),
+  answered in its first sentence by a data builder (`draftFor` in `lib/huntAnswers.ts` — the hunt's builders, without
+  the forum link and signature). **Only the question is stored; the answer is rebuilt from live data on render**, and a
+  question whose builder stops answering disappears. Guards learnt on the first batch: a search naming a state or a branch
+  only when the builder reads that state/branch (India's seat total was about to answer "md nuclear medicine seats in
+  india"); one answer per builder per page (three stipend searches gave the same text three times); ≤6 a page, ≤5 an
+  hour; no builder, no answer — never a page's first line. Each hour it answers studied searches and, without Tavily,
+  Search Console queries at #3–20. Telegram's review leads with "Done on the site"; Admin → Search research lists them
+  with Remove / Put back. No FAQPage markup (many pages carry one already). Wider coverage = more builders in huntAnswers.
 - **Research specs (Sonnet agents, 2026-11-11), in `D:/Admisson Hands/seo_data/research_2026_11/`:** `lead_magnet_pdf.md`
   (state PG fee & stipend PDF over WhatsApp: tap → prefilled message → free-form document reply inside the 24-hour window;
   Maharashtra first), `hinglish_pages.md` (no /hi/ section; a Hinglish FAQ block on 8 existing pages and two "kaise hoti hai"
