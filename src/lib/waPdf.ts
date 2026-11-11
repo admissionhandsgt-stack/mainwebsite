@@ -125,11 +125,30 @@ async function noteLead(phone: string, name: string | null, state: string, note:
 /**
  * Called for every inbound message to the official number, after it is recorded. True when the PDF flow answered it.
  */
-export async function handlePdfMessage(m: { id?: string; from?: string; text?: { body?: string } }, name: string | null): Promise<boolean> {
-  const body = (m.text?.body ?? "").trim();
+export async function handlePdfMessage(
+  m: { id?: string; from?: string; text?: { body?: string }; button?: { text?: string; payload?: string } },
+  name: string | null,
+): Promise<boolean> {
+  // A tap on a fee-update message's quick reply arrives as a button, its payload the state's ref or STOP
+  // (lib/waPdfUpdates.ts).
+  const body = (m.text?.body ?? m.button?.payload ?? m.button?.text ?? "").trim();
   if (!body || !m.id || !m.from || body.length > 300) return false;
   const phone = `+${m.from.replace(/\D/g, "")}`;
   const asks = REF.test(body) || /\bpdf\b/i.test(body);
+  // STOP from anyone still opted in, however long ago they took a PDF.
+  if (!asks && /^(stop|unsubscribe|band karo|stop updates)$/i.test(body.replace(/[^a-z ]+/gi, " ").trim())) {
+    const [live] = (await db.execute(sql`
+      SELECT count(*)::int AS n FROM wa_optins WHERE phone = ${phone} AND withdrawn_at IS NULL`)) as unknown as { n: number }[];
+    if ((live?.n ?? 0) > 0 && (await cloudReady())) {
+      const c = await cloudConfig();
+      if (!c?.phoneNumberId) return false;
+      if (!(await claim(m.id, phone, "stop", null))) return true;
+      await db.execute(sql`UPDATE wa_optins SET withdrawn_at = now() WHERE phone = ${phone} AND withdrawn_at IS NULL`);
+      const copy = await pageCopy("site.fee_pdf", { first: "", states: "", state: "" });
+      await text(c, phone, copy.on_stop);
+      return true;
+    }
+  }
   const recent = await lastPdf(phone);
   if (!asks && recent === null) return false;
   if (!(await cloudReady())) return false;

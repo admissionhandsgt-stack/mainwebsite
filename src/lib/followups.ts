@@ -221,6 +221,10 @@ export async function runFollowups({ dry }: { dry: boolean }): Promise<FollowupR
   await import("@/lib/staffAlerts")
     .then((m) => m.sendUnreachedCallList())
     .catch((error) => logError(error, { route: "followups.callList" }));
+  // Students who said YES to fee updates hear when their state's PDF gets newer figures (lib/waPdfUpdates.ts).
+  await import("@/lib/waPdfUpdates")
+    .then((m) => m.sendFeeUpdates())
+    .catch((error) => logError(error, { route: "followups.feeUpdates" }));
 
   for (const d of due) {
     // Claim the row first, so a second run in parallel cannot send it again. A slot

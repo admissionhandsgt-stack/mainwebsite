@@ -212,22 +212,22 @@ export async function sendTemplate(
   template: string,
   bodyParams: string[],
   kind: MessageKind = "other",
+  /** Quick-reply buttons' payloads, by the button's position in the template (what the webhook gets back on a tap). */
+  quickReplies: { index: number; payload: string }[] = [],
 ): Promise<{ ok: true; id: string | null } | { ok: false; error: string }> {
   const c = await cloudConfig();
   if (!c?.phoneNumberId) return { ok: false, error: "The official sender is not set up." };
+  const components: Record<string, unknown>[] = [];
+  if (bodyParams.length) components.push({ type: "body", parameters: bodyParams.map((text) => ({ type: "text", text })) });
+  for (const b of quickReplies)
+    components.push({ type: "button", sub_type: "quick_reply", index: String(b.index), parameters: [{ type: "payload", payload: b.payload }] });
   const r = await graph(c.token, `/${c.phoneNumberId}/messages`, {
     method: "POST",
     body: {
       messaging_product: "whatsapp",
       to: phone.replace(/\D/g, ""),
       type: "template",
-      template: {
-        name: template,
-        language: { code: "en" },
-        components: bodyParams.length
-          ? [{ type: "body", parameters: bodyParams.map((text) => ({ type: "text", text })) }]
-          : [],
-      },
+      template: { name: template, language: { code: "en" }, components },
     },
   });
   const id = r.ok ? ((r.body.messages as { id?: string }[] | undefined) ?? [])[0]?.id ?? null : null;

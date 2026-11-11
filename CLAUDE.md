@@ -2388,7 +2388,14 @@ Test: `scripts/tmp/harness/dt_test.mjs <base>` (git-excluded).
 - **Guard rails:** only a message asking for a PDF (ref code or the word "pdf"), or a menu reply / state name from someone
   sent a PDF in the last 7 days, is answered; each inbound message once (`wa_pdf_events`); 3 PDFs a number a day, 300
   site-wide; Cloud API only, never the WAHA gateway. No outbound message to anyone who has not written in the last 24
-  hours. A YES is stored but **nothing is sent on it yet** — fee-change updates would need an approved template.
+  hours. **A YES gets a fee update (same day, owner: "I permit you")**: when a state's PDF is rebuilt with a later
+  `data_date` than the copy a student took, the hourly follow-up run (`lib/waPdfUpdates.ts`, 10 AM–9 PM IST, once
+  per student per build in `wa_pdf_updates`, migration 0062, ≤200 a day) sends the MARKETING template
+  `ah_fee_pdf_update` (submitted 2026-11-11, id 1650239883271856; `node --env-file=.env.local
+  scripts/wa_fee_update_template.mjs --status`). Nothing goes until Meta approves it. It carries no file: its quick
+  replies come back as taps — "Send the new PDF" (payload `(ref MH-PDF)`) gets the PDF in the window the tap
+  opened, "Stop updates" withdraws the opt-in (STOP works for any live opt-in, however old). The 10 AM digest
+  carries the day's PDF tally (PDFs, numbers, states, calls asked, YES).
 - **The PDF is a 3-page brochure, not a data dump (v2, owner 2026-11-11: "kafi detailed information… logo sahi nhi… counsellor
   ke bare mai unchi baate… contact highlighted… marketing lines")**: the real logo (`public/logo.png`) and brand navy/mint;
   page 1 the team's own figures, why families choose us and a large contact box; page 2 the state at a glance (fee by kind

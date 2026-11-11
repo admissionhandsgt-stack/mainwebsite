@@ -108,6 +108,26 @@ export async function sendMorningDigest(opts: { force?: boolean } = {}) {
               AND right(regexp_replace(x.phone, '\\D', '', 'g'), 10) = right(regexp_replace(m.phone, '\\D', '', 'g'), 10))
     `)) as unknown as { phone: string }[]).map((r) => r.phone),
   );
+  // The state PG fee PDF on WhatsApp (2026-11-11): what the last 24 hours asked for — each PDF also alerted the team
+  // the moment it went, so this is the day's tally, not a new list to call.
+  const pdf = ((await db
+    .execute(sql`
+      SELECT COUNT(*) FILTER (WHERE e.action = 'pdf')::int AS pdfs,
+             COUNT(DISTINCT e.phone) FILTER (WHERE e.action = 'pdf')::int AS people,
+             COUNT(*) FILTER (WHERE e.action = 'menu-1')::int AS calls,
+             COUNT(*) FILTER (WHERE e.action = 'yes')::int AS optins,
+             string_agg(DISTINCT p.state, ', ') FILTER (WHERE e.action = 'pdf') AS states
+        FROM wa_pdf_events e
+        LEFT JOIN LATERAL (SELECT state FROM lead_pdfs WHERE slug = e.slug ORDER BY created_at DESC LIMIT 1) p ON true
+       WHERE e.created_at > now() - interval '1 day'`)
+    .catch(() => [])) as unknown as { pdfs: number; people: number; calls: number; optins: number; states: string | null }[])[0];
+  const pdfLine =
+    pdf && pdf.pdfs
+      ? `📄 Fee PDFs on WhatsApp, last 24 h: ${pdf.pdfs} to ${pdf.people} ${pdf.people === 1 ? "number" : "numbers"}` +
+        (pdf.states ? ` (${pdf.states})` : "") +
+        (pdf.calls ? ` · ${pdf.calls} asked for a call` : "") +
+        (pdf.optins ? ` · ${pdf.optins} said YES to fee updates` : "")
+      : "";
   const newCount: Record<string, number> = {};
   for (const p of people) {
     const lastAt = +new Date(p.rows[p.rows.length - 1].created_at);
@@ -139,6 +159,7 @@ export async function sendMorningDigest(opts: { force?: boolean } = {}) {
       Object.keys(newCount).length
         ? `New in the last 24 h: ${Object.entries(newCount).map(([k, v]) => `${k} ${v}`).join(" · ")}`
         : "No new enquiries in the last 24 h.",
+      pdfLine,
       today.length ? `\n*Follow-ups today (${today.length})*\n${list(today, (p) => (p.team.followTime ? ` — ${p.team.followTime}` : ""))}` : "\nNo follow-ups set for today.",
       overdue.length ? `\n*Overdue (${overdue.length})*\n${list(overdue, (p) => ` — was ${p.team.followDate.split("-").reverse().join("-")}`, 5)}` : "",
       hot.length ? `\n*Hot, not contacted yet (${hot.length})*\n${list(hot, () => "")}` : "",

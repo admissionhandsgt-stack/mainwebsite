@@ -47,7 +47,8 @@ async function load(slug: string) {
 }
 
 export async function generateStaticParams() {
-  return (await getCityIndex().catch(() => [])).filter((c) => c.indexable).map((c) => ({ city: c.slug }));
+  const all: Awaited<ReturnType<typeof getCityIndex>> = await getCityIndex().catch(() => []);
+  return all.filter((c) => c.indexable).map((c) => ({ city: c.slug }));
 }
 
 export async function generateMetadata(props: { params: Promise<{ city: string }> }): Promise<Metadata> {
@@ -138,6 +139,18 @@ export default async function CityPage(props: { params: Promise<{ city: string }
             { name: p.city.name, path },
           ]),
           webPage({ name: `Medical colleges in ${p.city.name}`, description: c.subtitle, path, dateModified: p.updated ?? undefined }),
+          {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            name: `MD/MS colleges in ${p.city.name}`,
+            numberOfItems: p.colleges.length,
+            itemListElement: p.colleges.map((col, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              name: col.short,
+              url: `https://www.admissionhands.com/md-ms-india/colleges/${col.slug}`,
+            })),
+          },
           ...(faqs.length ? [faqPage(faqs)] : []),
         ]}
       />
