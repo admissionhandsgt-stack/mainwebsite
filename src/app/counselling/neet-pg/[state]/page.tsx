@@ -23,6 +23,7 @@ import ExpertCompare from "@/components/lead/ExpertCompare";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
+import ExpertPromise from "@/components/counsel/ExpertPromise";
 import { FaqList, HowWeWork, LinkCards, RouteCards, StateChips, pairs } from "@/components/counsel/CounselBlocks";
 import FeePdfCta from "@/components/lead/FeePdfCta";
 
@@ -255,6 +256,7 @@ export default async function CounselPgStatePage(props: Props) {
 
       <ExpertPlaybook kind="state" name={p.name} placement="counsel_pg_state" />
       <ExpertCompare placement="counsel_pg_state" />
+      <ExpertPromise variant="state" placement="counsel_pg_state" stateName={p.name} />
 
       <FaqList title={c.faq_title} faqs={faqs} />
 

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { LinkCards } from "@/components/counsel/CounselBlocks";
 import { ExternalLink, Info } from "lucide-react";
 import Link from "@/components/ui/Link";
 import { fitDescription, fitTitle } from "@/lib/seoTitle";
@@ -343,6 +344,16 @@ export default async function NeetPgKaisePage() {
         </div>
       </section>
 
+      <LinkCards
+        title="Aur padhein"
+        links={[
+          { label: "Open states (doosre state ki counselling)", href: "/neet-pg-open-states", note: "Kaun se states doosre state ke candidates lete hain" },
+          { label: "In-service quota, state wise", href: "/neet-pg-in-service-quota", note: "Government doctors ke liye seats" },
+          { label: "Documents ki list (MCC aur states)", href: "/neet-pg-documents", note: "Reporting par kaun se original chahiye" },
+          { label: "Security deposit refund", href: "/neet-pg-choice-filling#security-deposit-refund", note: "Kab aur kaise wapas milta hai" },
+          { label: "Counsellor kaise chunein", href: "/counselling", note: "Fraud agent se kaise bachein" },
+        ]}
+      />
       <LeadCapture level="pg" source="NEET PG counselling kaise hoti hai" title={c.lead_title} body={c.lead_body} />
       <TelegramJoin placement="pg_kaise" />
     </main>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CalendarClock, MessageCircle, Phone, Search } from "lucide-react";
+import { AlertTriangle, CalendarClock, CheckCircle2, MessageCircle, Phone, RotateCcw, Search } from "lucide-react";
 import Link from "@/components/ui/Link";
 import { fitDescription, fitTitle } from "@/lib/seoTitle";
 import { getBlocks, resolveMetadata, type ContentBlock } from "@/lib/content";
@@ -178,11 +178,16 @@ export default async function LowScoreClinicalPage() {
     filling: round?.filling,
     locking: round?.locking ?? "see MCC's schedule",
   };
-  const [copy, body, heroImage] = await Promise.all([
+  const [copy, body, drop, heroImage] = await Promise.all([
     pageCopy("page.pg_low_clinical.hero", tokens),
     pageCopy("page.pg_low_clinical.body", tokens),
+    pageCopy("page.pg_low_clinical.drop", tokens),
     pageHeroImage("page.pg_low_clinical.hero", "page.pg_branch.hero"),
   ]);
+  const plain = (t: string) => t.split("\n").map((x) => x.trim()).filter(Boolean);
+  const dropTake = plain(drop.take);
+  const dropDrop = plain(drop.drop);
+  const dropBefore = plain(drop.before);
   const wa = (text: string) => `https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent(text)}`;
   const lines = (t: string) => t.split("\n").map((l) => l.split("|").map((x) => x.trim())).filter((x) => x[0] && x[1]);
   const routes = lines(body.routes);
@@ -720,6 +725,67 @@ export default async function LowScoreClinicalPage() {
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{d}</p>
               </div>
             ))}
+          </div>
+        </section>
+      )}
+
+      {/* "Drop karein ya seat lein?" (owner, 2026-11-12; searched as "should i take drop for neet pg", "neet pg drop year",
+          "neet pg ke baad kya kare"). A way to decide, with MCC's own round rules — never a verdict for the reader. */}
+      {dropTake.length > 0 && (
+        <section id="drop-or-seat" className="scroll-mt-28 border-y border-border bg-surface-1 py-10 md:py-14">
+          <div className="container-custom">
+            <SectionHead icon="route" eyebrow={drop.eyebrow} title={drop.title} intro={drop.intro} />
+            <p className="mt-2 pl-[3.75rem] text-[14px] font-semibold text-muted-foreground">{drop.subtitle}</p>
+            <div className="mt-6 grid gap-4 lg:grid-cols-2">
+              <div className="rounded-2xl border border-signal-safe/30 bg-card p-5">
+                <h3 className="font-heading text-[17px] font-extrabold text-foreground">{drop.take_title}</h3>
+                <ul className="mt-3 space-y-2.5">
+                  {dropTake.map((x) => (
+                    <li key={x} className="flex gap-2.5 text-[14.5px] leading-snug text-foreground">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-signal-safe" aria-hidden="true" />
+                      <span>{x}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="rounded-2xl border border-signal-borderline/30 bg-card p-5">
+                <h3 className="font-heading text-[17px] font-extrabold text-foreground">{drop.drop_title}</h3>
+                <ul className="mt-3 space-y-2.5">
+                  {dropDrop.map((x) => (
+                    <li key={x} className="flex gap-2.5 text-[14.5px] leading-snug text-foreground">
+                      <RotateCcw className="mt-0.5 h-4 w-4 shrink-0 text-signal-borderline" aria-hidden="true" />
+                      <span>{x}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            {dropBefore.length > 0 && (
+              <div className="mt-4 rounded-2xl border border-border bg-card p-5">
+                <h3 className="font-heading text-[16px] font-extrabold text-foreground">{drop.before_title}</h3>
+                <ul className="mt-3 grid gap-2.5 md:grid-cols-2">
+                  {dropBefore.map((x) => (
+                    <li key={x} className="flex gap-2.5 text-[14px] leading-snug text-foreground">
+                      <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-signal-borderline" aria-hidden="true" />
+                      <span>{x}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-3 text-[13px] text-muted-foreground">
+                  {drop.rules_note}{" "}
+                  <Link href="/neet-pg-choice-filling" className="font-semibold text-primary-strong hover:underline dark:text-primary">{drop.rules_link}</Link>
+                </p>
+              </div>
+            )}
+            <a
+              href={wa(drop.wa_text)}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-placement="low_clinical_drop"
+              className="mt-6 inline-flex min-h-12 items-center gap-2 rounded-full bg-accent px-5 font-semibold text-white"
+            >
+              <MessageCircle className="h-4 w-4" aria-hidden /> {drop.cta}
+            </a>
           </div>
         </section>
       )}

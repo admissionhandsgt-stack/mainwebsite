@@ -8,7 +8,9 @@ import DataHero from "@/components/hero/DataHero";
 import SectionHead from "@/components/ui/SectionHead";
 import ExpertCompare from "@/components/lead/ExpertCompare";
 import LeadCapture from "@/components/lead/LeadCapture";
-import StructuredData, { breadcrumb, webPage } from "@/components/seo/StructuredData";
+import ExpertPromise, { expertFaqs } from "@/components/counsel/ExpertPromise";
+import { FaqList } from "@/components/counsel/CounselBlocks";
+import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 
 /**
  * The index of the counselling-guidance pages by state (2026-11-11): every state with a NEET PG page and every state
@@ -32,7 +34,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function CounsellingHub() {
-  const [c, pg, ug, heroImage] = await Promise.all([copy(), getCounselPgStates(), getCounselUgStates(), pageHeroImage("page.counsel.hero", "page.pg_state.hero")]);
+  const [c, pg, ug, heroImage, faqs, expert] = await Promise.all([
+    copy(),
+    getCounselPgStates(),
+    getCounselUgStates(),
+    pageHeroImage("page.counsel.hero", "page.pg_state.hero"),
+    expertFaqs(),
+    pageCopy("page.counsel_expert"),
+  ]);
   return (
     <main className="min-h-screen bg-background">
       <StructuredData
@@ -42,6 +51,7 @@ export default async function CounsellingHub() {
             { name: "Counselling by state", path: "/counselling" },
           ]),
           webPage({ name: "NEET counselling guidance by state", description: c.seo_description, path: "/counselling" }),
+          ...(faqs.length ? [faqPage(faqs)] : []),
         ]}
       />
       <DataHero
@@ -60,7 +70,9 @@ export default async function CounsellingHub() {
         topic="map"
       />
 
-      <section className="container-custom py-10 md:py-14">
+      <ExpertPromise placement="counsel_hub" />
+
+      <section className="container-custom py-10 md:py-14" id="states">
         <div className="grid gap-10 lg:grid-cols-2">
           <div>
             <SectionHead icon="branch" title={c.pg_title} />
@@ -98,6 +110,7 @@ export default async function CounsellingHub() {
       </section>
 
       <ExpertCompare placement="counsel_hub" />
+      {faqs.length > 0 && <FaqList title={expert.faq_title} faqs={faqs} />}
       <LeadCapture level="pg" source="Counselling by state" />
     </main>
   );

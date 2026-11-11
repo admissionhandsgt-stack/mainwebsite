@@ -68,7 +68,12 @@ export default async function MdVsDnb() {
     {
       question: "Is DNB equal to MD/MS?",
       answer:
-        "Both are postgraduate qualifications in the same specialities, and both are allotted through the same NEET PG counselling. MD/MS is a university degree earned at an NMC-permitted medical college; DNB is awarded by NBEMS after training at an accredited hospital and an NBEMS exit exam. For a medical-college teaching post, NMC sets conditions for DNB holders — check its current teacher-eligibility rules if you aim to teach.",
+        "Yes, by law, when the DNB was trained in a medical institution with an attached hospital or in a hospital of 500 or more beds: section 37(2) of the National Medical Commission Act, 2019 makes it “equivalent in all respects” to the corresponding MD/MS. A DNB from a smaller hospital is still a recognised qualification, but needs one more year of senior residency in a medical college to count for teaching (NMC's faculty regulations, 2025, regulation 7).",
+    },
+    {
+      question: "DNB kya hota hai?",
+      answer:
+        "DNB (Diplomate of National Board) NBEMS ki PG qualification hai — accredited hospitals mein training aur NBEMS ka exit exam. NMC Act 2019 ke section 37(2) ke hisaab se medical college wale hospital ya 500+ bed hospital ka DNB MD/MS ke barabar hai; chhote hospital ke DNB ko teaching ke liye ek saal senior residency aur chahiye.",
     },
     ...(d.compared
       ? [
@@ -167,6 +172,51 @@ export default async function MdVsDnb() {
       />
 
       <div className="container-custom space-y-12 py-10 md:py-14">
+        {/* "is dnb equivalent to md", "is dnb equal to md", "dnb kya hota hai" (2026-11-12, the journey study): answered in
+            the law's own words, cited — the earlier answer only pointed at NMC's rules. */}
+        <section id="is-dnb-equal-to-md" aria-labelledby="dnb-equal" className="scroll-mt-28 rounded-2xl border border-primary/25 bg-card p-5 md:p-7">
+          <h2 id="dnb-equal" className="font-heading text-2xl font-bold text-foreground">Is DNB equal to MD? What the law says</h2>
+          <p className="mt-3 max-w-[78ch] text-[15.5px] leading-relaxed text-foreground">
+            <b>Yes — when the DNB was trained in a medical institution with an attached hospital, or in a hospital of 500 or more beds.</b> The
+            National Medical Commission Act makes it equivalent in all respects to the MD/MS (and a DrNB to the DM/M.Ch.). A DNB from a smaller
+            hospital is still a recognised qualification; to count for teaching it needs one more year of senior residency in a medical college.
+          </p>
+          <blockquote className="mt-5 border-l-4 border-primary bg-surface-1 px-4 py-3 text-[14.5px] leading-relaxed text-foreground">
+            “The Diplomate of National Board in broad-speciality qualifications and super-speciality qualifications when granted in a medical
+            institution with attached hospital or in a hospital with the strength of five hundred or more beds, by the National Board of
+            Examinations, shall be equivalent in all respects to the corresponding postgraduate qualification and the super-speciality
+            qualification granted under this Act, but in all other cases, senior residency in a medical college for an additional period of one
+            year shall be required for such qualification to be equivalent for the purposes of teaching also.”
+            <footer className="mt-2 text-[13px] text-muted-foreground">
+              —{" "}
+              <a href="https://egazette.gov.in/WriteReadData/2019/210357.pdf" target="_blank" rel="noopener" className="underline underline-offset-2 hover:text-primary">
+                The National Medical Commission Act, 2019, section 37(2)
+              </a>{" "}
+              (Gazette of India, 8 Aug 2019)
+            </footer>
+          </blockquote>
+          <ul className="mt-5 grid gap-3 md:grid-cols-3">
+            <li className="rounded-xl bg-surface-1 p-4 text-[14px] leading-relaxed text-foreground">
+              <b className="block text-[12px] uppercase tracking-[0.12em] text-primary-strong dark:text-primary">For teaching</b>
+              NMC&apos;s faculty regulations of 30 June 2025 (regulation 7) repeat it: a DNB from a hospital under 500 beds needs an extra year of
+              senior residency in a recognised medical institution in the same speciality.{" "}
+              <a href="https://egazette.gov.in/WriteReadData/2025/264399.pdf" target="_blank" rel="noopener" className="font-semibold text-primary-strong hover:underline dark:text-primary">
+                Gazette
+              </a>
+            </li>
+            <li className="rounded-xl bg-surface-1 p-4 text-[14px] leading-relaxed text-foreground">
+              <b className="block text-[12px] uppercase tracking-[0.12em] text-primary-strong dark:text-primary">Recognised</b>
+              Every qualification the National Board grants is a recognised medical qualification under the Act&apos;s Schedule; NBEMS&apos;s
+              gazette notification of 14 Nov 2022 lists each DNB and DrNB with the date it is recognised from.
+            </li>
+            <li className="rounded-xl bg-surface-1 p-4 text-[14px] leading-relaxed text-foreground">
+              <b className="block text-[12px] uppercase tracking-[0.12em] text-signal-borderline">Not the same</b>
+              FNB (fellowship) qualifications are not treated as recognised qualifications for teaching, per the same NBEMS notification. Ask a
+              DNB hospital its bed strength before you choose it if you want to teach.
+            </li>
+          </ul>
+        </section>
+
         {withCut.length > 0 && round && (
           <section aria-labelledby="by-branch">
             <h2 id="by-branch" className="font-heading text-2xl font-bold text-foreground">

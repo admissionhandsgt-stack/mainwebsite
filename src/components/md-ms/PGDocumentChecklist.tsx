@@ -75,7 +75,10 @@ export const PGDocumentChecklist = ({ items: fromCms }: { items?: PgDocument[] |
             </div>
             <p className="text-xs md:text-sm text-slate-700 dark:text-slate-300 font-bold">
               <span className="text-slate-900 dark:text-white font-extrabold">Need help preparing your documents?</span>{" "}
-              Our team pre-audits every paper before deadlines.
+              Our team pre-audits every paper before deadlines.{" "}
+              <a href="/neet-pg-documents" className="text-primary-strong underline underline-offset-2 dark:text-primary">
+                MCC&apos;s and each state&apos;s official list →
+              </a>
             </p>
           </div>
           <button onClick={() => CTA.whatsapp("Hi, I need help with document preparation for NEET PG counselling.")}

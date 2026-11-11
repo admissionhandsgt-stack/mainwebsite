@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { LinkCards } from "@/components/counsel/CounselBlocks";
 import Link from "@/components/ui/Link";
 import { fitDescription, fitTitle } from "@/lib/seoTitle";
 import { resolveMetadata } from "@/lib/content";
@@ -502,6 +503,14 @@ export default async function SeatMatrixPage() {
 
       <ExpertPlaybook kind="cutoff" name="NEET PG seats" placement="seat_matrix" />
 
+      <LinkCards
+        title="Related"
+        links={[
+          { label: "NEET PG seat increase", href: "/neet-pg-seat-increase", note: "The seats MCC added after the first matrix" },
+          { label: "Open states for NEET PG", href: "/neet-pg-open-states", note: "Which states take candidates from other states" },
+          { label: "Choice filling and upgrade rules", href: "/neet-pg-choice-filling", note: "Round by round, from MCC's bulletin" },
+        ]}
+      />
       <LeadCapture level="pg" source="NEET PG seat matrix page" title={body.lead_title} body={body.lead_body} />
       <TelegramJoin placement="pg_seat_matrix" />
     </main>

@@ -84,6 +84,11 @@ const STATIC: { path: string; priority: number; freq: SitemapEntry["changeFreque
   { path: "/neet-pg-low-score-clinical-branches", priority: 0.8, freq: "weekly" },
   { path: "/neet-pg-statistics", priority: 0.8, freq: "weekly" },
   { path: "/md-vs-dnb", priority: 0.8, freq: "weekly" },
+  // Who can sit which counselling, and the seats MCC added (2026-11-12, the journey study).
+  { path: "/neet-pg-open-states", priority: 0.8, freq: "weekly" },
+  { path: "/neet-pg-in-service-quota", priority: 0.8, freq: "weekly" },
+  { path: "/neet-pg-seat-increase", priority: 0.8, freq: "weekly" },
+  { path: "/neet-pg-documents", priority: 0.8, freq: "monthly" },
   { path: "/nri-quota", priority: 0.7, freq: "monthly" },
   { path: "/nri-quota/colleges", priority: 0.6, freq: "monthly" },
   // The two highest-value quota queries in this market: what an NRI or a
@@ -249,7 +254,7 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
   } catch (error) {
     console.error("[sitemap] change dates could not be read", error);
   }
-  const SEAT_HUBS = new Set(["/neet-pg-statistics", "/neet-pg-seat-matrix"]);
+  const SEAT_HUBS = new Set(["/neet-pg-statistics", "/neet-pg-seat-matrix", "/neet-pg-seat-increase"]);
   const SCHEDULE_HUBS = new Set(["/neet-pg-choice-filling", "/neet-pg-process", "/neet-pg-counselling-kaise-hoti-hai"]);
   /** The newest notice on a state's page — the page lists them, so a new one is a change to it. */
   const noticeDay = async (state: string, level: "pg" | "ug") => (await getStateNotices(state, level, 1).catch(() => []))[0]?.on?.slice(0, 10) ?? "";

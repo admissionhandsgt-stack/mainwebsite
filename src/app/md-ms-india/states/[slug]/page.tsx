@@ -602,6 +602,15 @@ export default async function PgStatePage(props: Props) {
             </Link>
           </p>
         )}
+        {/* Who may sit this state's counselling (2026-11-12): other-state candidates and in-service doctors. */}
+        <p className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-[14.5px]">
+          <Link href={`/neet-pg-open-states#${p.name.toLowerCase().replace(/&/g, "and").replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "")}`} className="font-semibold text-primary-strong hover:underline">
+            Can other-state candidates take {p.name}&apos;s PG seats? →
+          </Link>
+          <Link href={`/neet-pg-in-service-quota#${p.name.toLowerCase().replace(/&/g, "and").replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "")}`} className="font-semibold text-primary-strong hover:underline">
+            In-service quota in {p.name} →
+          </Link>
+        </p>
       </section>
 
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">

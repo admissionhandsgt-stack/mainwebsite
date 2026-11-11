@@ -294,6 +294,50 @@ export default async function ChoiceFillingPage() {
           ))}
         </ul>
         <p className="mt-2"><Cite keys={["bulletin"]} /></p>
+
+        {/* "neet pg security deposit refund (status, 2026, latest news)" — the journey study's most repeated money search
+            (2026-11-12). Answered in its own words from the same bulletin rules, nothing typed beyond them. */}
+        <div id="security-deposit-refund" className="mt-10 scroll-mt-32 rounded-2xl border border-primary/25 bg-card p-5 md:p-7">
+          <h2 className="font-heading text-[1.35rem] font-extrabold leading-tight text-foreground md:text-2xl">
+            NEET PG security deposit refund: when and how
+          </h2>
+          <p className="mt-3 max-w-[75ch] text-[15.5px] leading-relaxed text-foreground">
+            MCC refunds the security deposit only after every round of its counselling is over — not round by round — to the
+            same bank account you paid from, without interest. A deposit is lost if you are allotted a seat in round 2 or a
+            later round and do not join it, or if your admission is cancelled after allotment.
+          </p>
+          <div className="mt-5 grid gap-4 md:grid-cols-3">
+            <div className="rounded-xl bg-surface-1 p-4">
+              <p className="text-[12px] font-bold uppercase tracking-[0.12em] text-primary-strong dark:text-primary">When</p>
+              <p className="mt-1.5 text-[14px] leading-relaxed text-foreground">
+                After the last round. MCC posts a refund notice; its financial custodian (HLL Lifecare) starts the refunds within
+                15 days of it and completes them within 30.
+              </p>
+            </div>
+            <div className="rounded-xl bg-surface-1 p-4">
+              <p className="text-[12px] font-bold uppercase tracking-[0.12em] text-primary-strong dark:text-primary">Where</p>
+              <p className="mt-1.5 text-[14px] leading-relaxed text-foreground">
+                To the account the deposit came from — keep that account open and unchanged until the refund lands. No interest is paid.
+              </p>
+            </div>
+            <div className="rounded-xl bg-surface-1 p-4">
+              <p className="text-[12px] font-bold uppercase tracking-[0.12em] text-signal-stretch">Lost when</p>
+              <p className="mt-1.5 text-[14px] leading-relaxed text-foreground">
+                A round 2, round 3 or stray seat is not joined; the admission is cancelled after allotment. A round 1 seat left by
+                free exit keeps the deposit.
+              </p>
+            </div>
+          </div>
+          <p className="mt-4 text-[13.5px] leading-relaxed text-muted-foreground">
+            The amounts are in the table above: {exactInr(DEPOSITS[0].deposit)} for unreserved and EWS candidates,{" "}
+            {exactInr(DEPOSITS[1].deposit)} for SC, ST, OBC and PwD, {exactInr(DEPOSITS[2].deposit)} for deemed universities. MCC&apos;s
+            refund notice is posted on{" "}
+            <Link href="/neet-counselling-updates" className="font-semibold text-primary-strong hover:underline dark:text-primary">
+              the latest counselling notices
+            </Link>{" "}
+            the day it appears. <Cite keys={["bulletin"]} />
+          </p>
+        </div>
       </section>
 
       <section className="container-custom pb-10 md:pb-14">

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { LinkCards } from "@/components/counsel/CounselBlocks";
 import Link from "@/components/ui/Link";
 import { fitDescription, fitTitle } from "@/lib/seoTitle";
 import { resolveMetadata } from "@/lib/content";
@@ -411,6 +412,14 @@ export default async function PgStatisticsPage() {
         </>
       )}
 
+      <LinkCards
+        title="Related"
+        links={[
+          { label: "NEET PG seat increase", href: "/neet-pg-seat-increase", note: "Every seat MCC added, by branch, state and college" },
+          { label: "Open states for NEET PG", href: "/neet-pg-open-states", note: "Which states take candidates from other states" },
+          { label: "In-service quota, state wise", href: "/neet-pg-in-service-quota", note: "Seats kept for doctors in government service" },
+        ]}
+      />
       <LeadCapture level="pg" source="NEET PG statistics page" title={body.lead_title} body={body.lead_body} />
       <TelegramJoin placement="pg_statistics" />
     </main>

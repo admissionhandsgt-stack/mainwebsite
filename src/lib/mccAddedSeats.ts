@@ -50,8 +50,34 @@ export async function ingestAddedSeats(url: string, year: number): Promise<{ row
   if (file.printed_total == null || file.seats !== file.printed_total) throw new Error("Rows do not add up to MCC's total");
   const title = `MCC PG Medical ${year} - ${niceTitle(file.title, url)}`;
 
+  // A revised list for the same round replaces the earlier one (2026-11-12): MCC posted round 2's "newly added seats" on
+  // 10 Nov and revised it three times on 11 Nov; each revision had its own URL, so all four were added on top of each
+  // other (3,534 + 3 × 3,479 seats where 3,479 belonged). Earlier files of the same round lose their rows here and keep
+  // status "live" (the worker skips a live file, so it is not read again) with a note saying what superseded them.
+  const roundOf = (t: string) => niceTitle(t, "").match(/Round (\d)/)?.[1] ?? null;
+  const round = roundOf(file.title);
+  const others = round
+    ? ((await db.execute(sql`
+        SELECT url, title, detected_at FROM mcc_added_seat_files
+         WHERE year = ${year} AND url <> ${url} AND status = 'live' AND error IS NULL`)) as unknown as { url: string; title: string; detected_at: string }[]).filter(
+        (f) => roundOf(f.title) === round,
+      )
+    : [];
+  const mine = ((await db.execute(sql`SELECT detected_at FROM mcc_added_seat_files WHERE url = ${url}`)) as unknown as { detected_at: string }[])[0]?.detected_at;
+  if (mine && others.some((f) => new Date(f.detected_at) > new Date(mine))) {
+    // An older revision read after a newer one: the newer stands.
+    await db.execute(sql`UPDATE mcc_added_seat_files SET status = 'live', imported = 0, error = 'superseded by a later revision of the same round', updated_at = now() WHERE url = ${url}`);
+    await db.execute(sql`DELETE FROM mcc_added_seats_staging WHERE url = ${url}`);
+    return { rows: 0, seats: 0, skipped: 0, title };
+  }
+
   const result = await db.transaction(async (tx) => {
     await tx.execute(sql`DELETE FROM mcc_seat_matrix WHERE source_file = ${url}`);
+    for (const f of others) {
+      await tx.execute(sql`DELETE FROM mcc_seat_matrix WHERE source_file = ${f.url}`);
+      await tx.execute(sql`
+        UPDATE mcc_added_seat_files SET imported = 0, error = ${`superseded by ${url}`}, updated_at = now() WHERE url = ${f.url}`);
+    }
     const skipped = ((await tx.execute(sql`
       SELECT COALESCE(SUM(seats), 0)::int AS n FROM mcc_added_seats_staging s WHERE s.url = ${url} AND (${MATRIX}) IS NULL`)) as unknown as { n: number }[])[0]?.n ?? 0;
     const ins = (await tx.execute(sql`
