@@ -2434,7 +2434,9 @@ Owner: "itne pending task complete karo" (Meta's Conversions API token comes lat
   Claude never looks for or handles the keys — the owner pastes them. The Gemini box is a visible textarea (one key per
   line; commas, spaces or new lines all separate), Save says how many were saved, and **"Test Gemini keys"** reports each as
   works / refused from a free metadata request (`testGeminiKeys` in lib/gemini.ts) — never the key itself. On 2026-11-11 the
-  first attempt had saved nothing (`ai.gemini.keys` absent) and the screen had said so only in a hint.
+  first attempt had saved nothing (`ai.gemini.keys` absent) and the screen had said so only in a hint. The second refused the owner's keys at the old "AIza…" shape check, with the error at the top of a
+  long page: keys are now any one word of 30–200 letters/digits/._- (`lib/geminiKeys.ts`, form and route alike), Google's test
+  is the real check and runs by itself after a save, and the settings card's messages show under its buttons.
 - **"<state> neet pg website" searches** (owner: "jaise mai search karta hu JK neet pg website… city state college
   university etc"): `authoritySite` in lib/huntAnswers.ts names the state's counselling site — PG: the page the owner
   approved in Zyn for that state's notices (newest), else `state_authorities` with scope "UG and PG"; UG: `state_authorities`,

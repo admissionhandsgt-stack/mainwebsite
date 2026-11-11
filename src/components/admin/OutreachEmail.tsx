@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Mail, Send, Plus, Trash2, Link2 } from "lucide-react";
 import { Badge, Button, Card, EmptyState, Field, INPUT, INPUT_H, Notice, TABLE, Tabs, Toggle, type Tone } from "@/components/admin/ui";
+import { parseGeminiKeys } from "@/lib/geminiKeys";
 
 /**
  * Admin → Outreach email (2026-11-10). The mailbox the emails go from, the Telegram bot the owner approves each one in,
@@ -285,7 +286,7 @@ export default function OutreachEmail({ kit }: { kit?: React.ReactNode }) {
   const [target, setTarget] = useState({ email: "", name: "", org: "", kind: "journalist", why: "", sourceUrl: "" });
   const [busy, setBusy] = useState<string | null>(null);
   const [libDraft, setLibDraft] = useState<Partial<Saved> | null>(null);
-  const [msg, setMsg] = useState<{ tone: "success" | "danger" | "info"; text: string; link?: string } | null>(null);
+  const [msg, setMsg] = useState<{ tone: "success" | "danger" | "info"; text: string; link?: string; near?: boolean } | null>(null);
 
   const load = useCallback(async () => {
     const r = await fetch("/api/admin/outreach-email", { cache: "no-store" });
@@ -304,7 +305,8 @@ export default function OutreachEmail({ kit }: { kit?: React.ReactNode }) {
     try {
       const r = await fetch("/api/admin/outreach-email", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
       const j = (await r.json()) as Record<string, unknown>;
-      if (!r.ok || j.ok === false) setMsg({ tone: "danger", text: String(j.error ?? "Failed") });
+      // Shown under the button pressed for the settings card (a long form: the top of the page is out of sight).
+      if (!r.ok || j.ok === false) setMsg({ tone: "danger", text: String(j.error ?? "Failed"), near: label === "save" || label === "test-gemini" });
       else return j;
     } catch {
       setMsg({ tone: "danger", text: "Failed" });
@@ -321,7 +323,7 @@ export default function OutreachEmail({ kit }: { kit?: React.ReactNode }) {
 
   return (
     <div className="space-y-5">
-      {msg && (
+      {msg && !msg.near && (
         <Notice tone={msg.tone}>
           {msg.text}
           {msg.link && (
@@ -415,7 +417,7 @@ export default function OutreachEmail({ kit }: { kit?: React.ReactNode }) {
             hint={
               s.geminiSet
                 ? `Saved: ${s.geminiCount ?? 1} key(s), used in turn — press "Test Gemini keys" to see that each works. Search research uses them to answer, from official MCC / NMC / NBEMS / state pages only, the searches our data cannot — each figure checked against the official text before it goes on a page. Paste again to replace all.`
-                : "Not saved yet. Paste the keys from aistudio.google.com (each starts with AIza), one per line — commas or spaces between them work too — then press Save. The box empties after saving; the keys are never shown again."
+                : "Not saved yet. Paste the keys from aistudio.google.com → Get API key, one per line — commas or spaces between them work too — then press Save. The box empties after saving; the keys are never shown again."
             }
           >
             <textarea
@@ -429,9 +431,8 @@ export default function OutreachEmail({ kit }: { kit?: React.ReactNode }) {
             {form.geminiKey.trim() && (
               <span className="mt-1 block text-xs text-slate-500">
                 {(() => {
-                  const ks = form.geminiKey.split(/[\s,]+/).filter(Boolean);
-                  const bad = ks.filter((k) => !/^AIza[0-9A-Za-z_-]{30,}$/.test(k)).length;
-                  return `${ks.length} key(s) read${bad ? ` — ${bad} do not look like a Gemini key (AIza…)` : ", each looks right"}.`;
+                  const n = parseGeminiKeys(form.geminiKey).length;
+                  return n ? `${n} key(s) read — press Save, then the test runs by itself.` : "No key read yet: paste each key on its own line.";
                 })()}
               </span>
             )}
@@ -446,7 +447,15 @@ export default function OutreachEmail({ kit }: { kit?: React.ReactNode }) {
             disabled={!!busy}
             onClick={async () => {
               const j = await post({ action: "save", ...form }, "save");
-              if (j) setMsg({ tone: "success", text: j.geminiSaved ? `Saved. Gemini: ${String(j.geminiSaved)} key(s) saved — press "Test Gemini keys" to check them.` : "Saved." });
+              if (!j) return;
+              if (!j.geminiSaved) return setMsg({ tone: "success", text: "Saved.", near: true });
+              const t = await post({ action: "test-gemini" }, "test-gemini");
+              const rows = ((t?.keys as { n: number; ok: boolean; note: string }[]) ?? []);
+              setMsg({
+                tone: rows.length && rows.every((r) => r.ok) ? "success" : "danger",
+                text: `Saved ${String(j.geminiSaved)} Gemini key(s). Test: ${rows.map((r) => `Key ${r.n} ${r.ok ? "works" : r.note}`).join(" · ") || "no answer"}.`,
+                near: true,
+              });
             }}
           >
             Save
@@ -457,7 +466,7 @@ export default function OutreachEmail({ kit }: { kit?: React.ReactNode }) {
               const j = await post({ action: "test-gemini" }, "test-gemini");
               if (j) {
                 const rows = (j.keys as { n: number; ok: boolean; note: string }[]) ?? [];
-                setMsg({ tone: rows.length && rows.every((r) => r.ok) ? "success" : "danger", text: rows.map((r) => `Key ${r.n}: ${r.ok ? "works" : r.note}`).join(" · ") || "No keys saved." });
+                setMsg({ tone: rows.length && rows.every((r) => r.ok) ? "success" : "danger", text: rows.map((r) => `Key ${r.n}: ${r.ok ? "works" : r.note}`).join(" · ") || "No keys saved.", near: true });
               }
             }}
           >
@@ -488,6 +497,11 @@ export default function OutreachEmail({ kit }: { kit?: React.ReactNode }) {
             <Send className="mr-1.5 h-4 w-4" /> Send previews now
           </Button>
         </div>
+        {msg?.near && (
+          <div className="mt-3" role="status">
+            <Notice tone={msg.tone}>{msg.text}</Notice>
+          </div>
+        )}
       </Card>
       )}
 

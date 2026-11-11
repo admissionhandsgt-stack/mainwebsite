@@ -11,6 +11,7 @@ import { deleteLibrary, listLibrary, saveLibrary } from "@/lib/huntAnswers";
 import { addSource, deleteSource, listSources, runDiscover } from "@/lib/outreachDiscover";
 import { webSearchUsage } from "@/lib/webSearch";
 import { testGeminiKeys } from "@/lib/gemini";
+import { parseGeminiKeys } from "@/lib/geminiKeys";
 
 /**
  * Admin → Outreach email (2026-11-10). GET: the mailbox and bot settings (secrets masked), the switch, the cap and every
@@ -130,13 +131,12 @@ export async function POST(request: Request) {
           if (!/^tvly-[A-Za-z0-9_-]{10,}$/.test(tavilyKey2)) return NextResponse.json({ error: "A Tavily key starts with tvly-." }, { status: 400 });
           await setIntegration("search.tavily.key2", tavilyKey2, true);
         }
-        const geminiRaw = str(b.geminiKey, 600);
+        const geminiRaw = str(b.geminiKey, 1200);
         let geminiSaved = 0;
         if (geminiRaw) {
-          // Quotes and "key 1:" labels pasted with the keys are dropped; any separator works (comma, space, new line).
-          const keys = [...new Set(geminiRaw.replace(/["'`]/g, " ").split(/[\s,;|]+/).filter((k) => /^AIza/.test(k)))].slice(0, 4);
-          if (!keys.length || keys.some((k) => !/^AIza[0-9A-Za-z_-]{30,}$/.test(k)))
-            return NextResponse.json({ error: "Gemini keys not saved: each key from Google AI Studio starts with AIza and is 39 characters — paste up to four, one per line." }, { status: 400 });
+          const keys = parseGeminiKeys(geminiRaw);
+          if (!keys.length)
+            return NextResponse.json({ error: "Gemini keys not saved: no key could be read. Copy each key from aistudio.google.com → Get API key and paste them one per line." }, { status: 400 });
           await setIntegration("ai.gemini.keys", keys.join(","), true);
           geminiSaved = keys.length;
         }
