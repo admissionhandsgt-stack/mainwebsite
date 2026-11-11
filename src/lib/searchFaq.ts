@@ -29,12 +29,13 @@ export const PER_RUN = 5;
 
 /** "stipend for pg medical students state wise" → "Stipend for PG medical students state wise". */
 export function asHeading(q: string): string {
-  const up: Record<string, string> = { pg: "PG", ug: "UG", neet: "NEET", md: "MD", ms: "MS", mbbs: "MBBS", bds: "BDS", dnb: "DNB", aiq: "AIQ", mcc: "MCC", nmc: "NMC", nri: "NRI", obc: "OBC", ews: "EWS", sc: "SC", st: "ST", air: "AIR", mds: "MDS", ss: "SS", aiims: "AIIMS", jipmer: "JIPMER", obg: "OBG", ent: "ENT" };
+  const up: Record<string, string> = { pg: "PG", ug: "UG", neet: "NEET", md: "MD", ms: "MS", mbbs: "MBBS", bds: "BDS", dnb: "DNB", aiq: "AIQ", mcc: "MCC", nmc: "NMC", nri: "NRI", obc: "OBC", ews: "EWS", sc: "SC", st: "ST", air: "AIR", mds: "MDS", ss: "SS", aiims: "AIIMS", jipmer: "JIPMER", obg: "OBG", ent: "ENT", kgmu: "KGMU", bhu: "BHU", amu: "AMU", cmc: "CMC", kmc: "KMC", kem: "KEM", mgm: "MGM", pgimer: "PGIMER", esic: "ESIC", gmers: "GMERS" };
   const t = q
     .trim()
     .replace(/\s+/g, " ")
     .split(" ")
-    .map((w) => up[w.toLowerCase()] ?? w)
+    // Initials as searched ("sms jaipur", "kd medical college"): a short word with no vowel is an acronym.
+    .map((w) => up[w.toLowerCase()] ?? (/^[b-df-hj-np-tv-xz]{2,5}$/i.test(w) ? w.toUpperCase() : w))
     .join(" ");
   const s = t.charAt(0).toUpperCase() + t.slice(1);
   return /^(what|which|how|why|when|where|who|is|are|can|does|do|kya|kitn|kaise)\b/i.test(s) && !s.endsWith("?") ? `${s}?` : s;
@@ -42,6 +43,9 @@ export function asHeading(q: string): string {
 
 /** A search that names a branch ("md radiology", "ms obg", "dnb pediatrics"), not just the degree. */
 const BRANCH_NAMED = /\b(md|ms|dnb|dm|m\.?ch|diploma)\s+(?!seats?\b|fees?\b|stipend\b|cut|counsel|admission|in\b|vs\b|or\b|and\b|course|college|rank|marks)[a-z]{3,}/i;
+
+/** A speciality named on its own. "medicine" alone counts: "general medicine", "nuclear medicine", "emergency medicine". */
+const SPECIALTY = /\b(radiology|radio ?diagnosis|medicine|surgery|nuclear|patholog|dermatolog|derma|p(a)?ediatric|orthop|obstetric|gyn(a)?ecolog|obg|an(a)?esth|psychiatr|ophthalm|ent|pulmonar|respiratory|microbiolog|pharmacolog|anatomy|physiolog|biochem|forensic|community medicine|emergency|palliative|geriatric|tropical|aerospace|genetic|cardio|neuro|nephro|gastro|onco|urolog|endocrin|radiotherapy|immunohematolog|transfusion)\w*/i;
 
 /** Builders whose answer is about the state or college the search names (lib/huntAnswers.ts kinds). */
 const STATE_AWARE = new Set(["state-stipend", "bond-state", "college"]);
@@ -108,6 +112,10 @@ export async function offerSearchFaq(
   if (!STATE_AWARE.has(d.kind) && (await namesState(q))) return false;
   // Likewise a branch: "md nuclear medicine seats in india" is not answered by India's total PG seats.
   if (d.kind !== "branch" && BRANCH_NAMED.test(q)) return false;
+  // …also when it names the speciality without the degree ("nuclear medicine pg seats in india"), or the page is a
+  // branch page: only the branch builder answers there. A college's own name may hold such a word ("Institute of
+  // Aerospace Medicine"), so the college builder is let through.
+  if (d.kind !== "branch" && d.kind !== "college" && (SPECIALTY.test(q) || /^\/md-ms-india\/branches\//.test(item.page))) return false;
   await db.execute(sql`
     INSERT INTO search_faqs (page, question, kind, impressions, position)
     VALUES (${item.page}, ${q}, ${d.kind}, ${item.impressions ?? null}, ${item.position ?? null})
