@@ -2256,6 +2256,23 @@ colleges are there in <state>?", the bond page "Which states have no service bon
 landing on college pages at position 2–4 — conversational follow-ups that read our college pages; keep the facts those ask for
 in the first screen of a college page. Re-run: `scripts/tmp/harness/qtopics.ts` (git-excluded harness).
 
+## The OCR bridge for the AH tool (2026-11-11)
+
+zyn-3c asked for OCR on public notices (its poster bot checks every date against the notice's real text); the owner, here:
+"haan OCR de do lekin public url etc par expose na ho sirf secret tarike se encrypted bridge". `lib/ocrBridge.ts`,
+`POST /api/bridge/ocr`, reference client `scripts/ocr_bridge_client.mjs`.
+- **Google Cloud Vision** (enabled on admissionhands-seo-1008 that day), DOCUMENT_TEXT_DETECTION, called as the site's own
+  service account (`lib/google.ts`, scope cloud-vision) — no new key. **No language hint by default**: Vision detects the
+  script, and read Kannada, Tamil, Telugu, Gujarati, Marathi, Bengali, Malayalam, Punjabi, Hindi and English exactly in a
+  test (Odia: one look-alike letter, ୱ↔ଵ; dates exact); the caller may pass `langs`. PDF: `files:annotate`, ≤5 pages.
+- **Hidden:** every method, every address not in `ocr.bridge.allow_ips` (default the AH tool's server, 130.210.53.166 —
+  the address the edge vouches for) and every request not sealed with the key gets a bare 404. Request and answer are
+  AES-256-GCM under HKDF-SHA256(`counselor.sync_key`, salt "admissionhands-ocr-bridge", info "v1"); the key is never sent,
+  Cloudflare sees ciphertext; timestamp ±5 min and a one-time nonce stop replays. Wire format in the file's header.
+- **Limits:** 900 pages a calendar month (`ocr.bridge.used`; Vision's free tier is 1,000 units and the project is billed
+  to a trial — never spend), 10 calls a minute, 15 MB. The document and its text are never stored or logged.
+- Switch off: `ocr.bridge.enabled` = "false".
+
 ## Outreach email, approved on Telegram (2026-11-10)
 
 Owner: "email bhi auto bhejne ka banao… telegram ke through approval and preview and send and changes… I permit you".

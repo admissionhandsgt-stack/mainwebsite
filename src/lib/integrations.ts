@@ -84,7 +84,11 @@ export type IntegrationKey =
   // model name, and today's call count.
   | "ai.gemini.keys"
   | "ai.gemini.model"
-  | "ai.gemini.used";
+  | "ai.gemini.used"
+  // The OCR bridge for the AH tool (lib/ocrBridge.ts): the addresses allowed to call it, its switch, the month's pages.
+  | "ocr.bridge.allow_ips"
+  | "ocr.bridge.enabled"
+  | "ocr.bridge.used";
 
 /**
  * The environment variable that overrides each key, where one exists.
