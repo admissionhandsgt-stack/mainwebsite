@@ -584,6 +584,10 @@ export default async function RoundResultPage(props: { params: Promise<Params> }
               Choice filling, upgradation and free exit rules
             </Link>{" "}
             ·{" "}
+            <Link href="/neet-pg-counselling-kaise-hoti-hai" className="font-semibold text-primary-strong hover:underline dark:text-primary">
+              Counselling kaise hoti hai (Hinglish)
+            </Link>{" "}
+            ·{" "}
             <Link href="/neet-college-predictor?course=pg" className="font-semibold text-primary-strong hover:underline dark:text-primary">
               {copy.cta}
             </Link>

@@ -16,6 +16,9 @@ import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import DataPageCounsel from "@/components/lead/DataPageCounsel";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import { hinglishFaqs } from "@/lib/hinglishFaq";
+import { getCityIndex } from "@/lib/cityQueries";
+import { cityIn } from "@/lib/cityKey";
 
 /**
  * One state's NEET PG fee matrix (2026-11-09): "maharashtra pg fees", "karnataka md ms fees 2026", "pg fees in
@@ -181,7 +184,20 @@ export default async function StateFeesPage(props: { params: Promise<{ state: st
     { question: body.faq6_q, answer: body.faq6_a },
   ];
   const titles: Record<Ownership, string> = { government: body.govt_title, private: body.private_title, deemed: body.deemed_title };
+  // A city with its own indexed page (lib/cityQueries.ts) links it from its heading.
+  const cityPages = new Map((await getCityIndex().catch((): Awaited<ReturnType<typeof getCityIndex>> => [])).filter((c) => c.indexable && c.state === m.state).map((c) => [c.slug, `/medical-colleges/${c.slug}`]));
+  const cityLink = (place: string) => {
+    const c = cityIn(place);
+    return c && c.state === m.state ? cityPages.get(c.slug) ?? null : null;
+  };
 
+  faqs.push(
+    ...(await hinglishFaqs("fees_state", {
+      ...tokens,
+      // One management seat is both ends: the "dearest" question would repeat the "cheapest" one.
+      dearest_mgmt: tokens.dearest_mgmt !== tokens.cheapest_mgmt ? tokens.dearest_mgmt : undefined,
+    })),
+  );
   return (
     <main className="min-h-screen bg-background">
       <StructuredData
@@ -259,7 +275,14 @@ export default async function StateFeesPage(props: { params: Promise<{ state: st
               {m.cities.map((city) => (
                 <div key={city.city} className="mb-4 rounded-2xl border border-border bg-card px-5 py-4">
                   <h3 className="font-heading font-bold text-foreground">
-                    PG fees in {city.city} <span className="font-normal text-muted-foreground">· {city.colleges}</span>
+                    {cityLink(city.city) ? (
+                      <Link href={cityLink(city.city)!} className="hover:text-primary hover:underline">
+                        PG fees in {city.city}
+                      </Link>
+                    ) : (
+                      <>PG fees in {city.city}</>
+                    )}{" "}
+                    <span className="font-normal text-muted-foreground">· {city.colleges}</span>
                   </h3>
                   <ul className="mt-2 space-y-1 text-[14px]">
                     {m.colleges

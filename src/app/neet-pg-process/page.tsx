@@ -276,6 +276,11 @@ export default async function NeetPgProcessPage() {
                     Choice filling, Freeze vs Float, upgradation and free exit — MCC&apos;s rules, round by round →
                   </Link>
                 </p>
+                <p className="mt-2 text-[15px]">
+                  <Link href="/neet-pg-counselling-kaise-hoti-hai" className="font-semibold text-primary-strong hover:underline dark:text-primary">
+                    Hinglish me samjhein: NEET PG counselling kaise hoti hai →
+                  </Link>
+                </p>
 
                 <Link
                   href="/neet-college-predictor?course=pg"

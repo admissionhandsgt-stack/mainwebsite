@@ -18,6 +18,7 @@ import DataPageCounsel from "@/components/lead/DataPageCounsel";
 import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
 import { collegeName } from "@/lib/collegeName";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import { hinglishFaqs } from "@/lib/hinglishFaq";
 
 /** The hero chart has room for a name, not an address: "ESIC Medical College, Alwar". The table below keeps the full one. */
 const barName = (raw: string) => {
@@ -147,6 +148,15 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
     ...(showBond && bond!.govt.withBond > 0 && bond!.govt.penaltyMedian ? [{ question: body.faq5_q, answer: body.faq5_a }] : []),
   ];
 
+  faqs.push(
+    ...(await hinglishFaqs("stipend_state", {
+      ...tokens,
+      // The bond question only where the state's government colleges list one.
+      bond_years: bond && bond.govt.withBond > 0 ? years(bond.govt.typicalYears) : undefined,
+      bond_penalty: bond && bond.govt.withBond > 0 ? big(bond.govt.penaltyMedian) : undefined,
+      private_median: s.govtMedian !== s.privateMedian ? tokens.private_median : undefined,
+    })),
+  );
   return (
     <main className="min-h-screen bg-background">
       <StructuredData

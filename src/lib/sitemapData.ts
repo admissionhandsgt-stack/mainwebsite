@@ -13,6 +13,7 @@ import { getCounselPgStates, getCounselUgStates } from "@/lib/counselStates";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { getThinDnbSlugs } from "@/lib/thinPages";
+import { getCityIndex, getCityPage } from "@/lib/cityQueries";
 
 /**
  * The sitemap, split by page type (2026-10-17): /sitemap.xml is an index of
@@ -75,6 +76,8 @@ const STATIC: { path: string; priority: number; freq: SitemapEntry["changeFreque
   // The PG fee matrix, state by state (2026-11-09), and MCC's choice filling / upgrade / free exit rules.
   { path: "/md-ms-india/fees", priority: 0.9, freq: "weekly" },
   { path: "/neet-pg-choice-filling", priority: 0.9, freq: "weekly" },
+  // The Hinglish beginner's guide to the same rules (2026-11-11).
+  { path: "/neet-pg-counselling-kaise-hoti-hai", priority: 0.8, freq: "weekly" },
   // Clinical branches at a low rank, and the statistics page made to be cited (2026-11-10).
   { path: "/neet-pg-low-score-clinical-branches", priority: 0.8, freq: "weekly" },
   { path: "/neet-pg-statistics", priority: 0.8, freq: "weekly" },
@@ -245,7 +248,7 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
     console.error("[sitemap] change dates could not be read", error);
   }
   const SEAT_HUBS = new Set(["/neet-pg-statistics", "/neet-pg-seat-matrix"]);
-  const SCHEDULE_HUBS = new Set(["/neet-pg-choice-filling", "/neet-pg-process"]);
+  const SCHEDULE_HUBS = new Set(["/neet-pg-choice-filling", "/neet-pg-process", "/neet-pg-counselling-kaise-hoti-hai"]);
   /** The newest notice on a state's page — the page lists them, so a new one is a change to it. */
   const noticeDay = async (state: string, level: "pg" | "ug") => (await getStateNotices(state, level, 1).catch(() => []))[0]?.on?.slice(0, 10) ?? "";
   const TERMS_HUBS = new Set(["/md-ms-india/bond"]);
@@ -363,6 +366,20 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
     }
   } catch (error) {
     console.error("[sitemap] fee states could not be listed", error);
+  }
+  // Medical colleges by city (2026-11-11): indexed cities only (5+ MD/MS colleges, 3+ with a yearly fee), dated by the
+  // newest change to their colleges or fees; the index is dated by the newest of them.
+  try {
+    const cities = (await getCityIndex()).filter((c) => c.indexable);
+    const dates: string[] = [];
+    for (const c of cities) {
+      const d = (await getCityPage(c.slug).catch(() => null))?.updated ?? "";
+      dates.push(d);
+      out.states.push({ url: `${BASE}/medical-colleges/${seg(c.slug)}`, lastModified: d || undefined, changeFrequency: "monthly", priority: 0.7 });
+    }
+    if (cities.length) out.hubs.push({ url: `${BASE}/medical-colleges`, lastModified: newest(dates) || undefined, changeFrequency: "monthly", priority: 0.6 });
+  } catch (error) {
+    console.error("[sitemap] cities could not be listed", error);
   }
 
   // One page per PG branch — "MD Radiology cutoff", "rank required for MD Dermatology".

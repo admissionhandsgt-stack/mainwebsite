@@ -16,6 +16,7 @@ import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
 import DataPageCounsel from "@/components/lead/DataPageCounsel";
 import LeadCapture from "@/components/lead/LeadCapture";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import { hinglishFaqs } from "@/lib/hinglishFaq";
 
 /**
  * "neet pg marks vs rank 2026", "neet pg rank at 450 marks", "neet pg score vs rank", "neet pg marks vs rank vs
@@ -149,6 +150,28 @@ export default async function NeetPgMarksVsRankPage() {
     },
   ];
 
+  const rng = (s: number) => {
+    const r = at(cur, s);
+    return r ? `${n(r.rankMin)}–${n(r.rankMax)}` : undefined;
+  };
+  faqs.push(
+    ...(await hinglishFaqs("marks", {
+      year: cur.year,
+      out_of: cur.outOf,
+      s450: rng(450),
+      s400: rng(400),
+      s350: rng(350),
+      s300: rng(300),
+      radio_rank: radio && round ? n(radio[1]) : undefined,
+      radio_score: radio && round ? scoreForRank(cur, radio[1]) ?? undefined : undefined,
+      round: round?.spec.label,
+      qual_year: q.year,
+      qual_gen: q.rows[0]?.score,
+      qual_pwd: q.rows[1]?.score,
+      qual_res: q.rows[2]?.score,
+      qual_out: q.outOf,
+    })),
+  );
   return (
     <main className="min-h-screen bg-background">
       <PageDatasets path="/neet-pg-marks-vs-rank" />

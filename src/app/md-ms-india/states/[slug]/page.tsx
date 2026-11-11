@@ -26,6 +26,7 @@ import { getStateRound, CATEGORY_LABEL } from "@/lib/stateRoundQueries";
 import SectionHead from "@/components/ui/SectionHead";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 import { COUNSEL_PG_MIN_COLLEGES } from "@/lib/counselStates";
+import { getCityIndex } from "@/lib/cityQueries";
 /** One state's PG picture. See lib/pgStateQueries.ts for what it will and will not state. */
 
 type Props = { params: Promise<{ slug: string }> };
@@ -243,6 +244,8 @@ export default async function PgStatePage(props: Props) {
       : []),
   ];
 
+  // The state's cities with a page of their own (lib/cityQueries.ts).
+  const stateCities = (await getCityIndex().catch((): Awaited<ReturnType<typeof getCityIndex>> => [])).filter((c) => c.indexable && c.state === p.name);
   return (
     <main className="min-h-screen bg-background">
       <StructuredData
@@ -470,6 +473,20 @@ export default async function PgStatePage(props: Props) {
             >
               {p.name} PG fees, college by college →
             </Link>
+          )}
+          {/* The state's cities with a page of their own (lib/cityQueries.ts). */}
+          {stateCities.length > 0 && (
+            <p className="mt-4 text-[14px] text-muted-foreground">
+              By city:{" "}
+              {stateCities.map((c, i) => (
+                  <span key={c.slug}>
+                    {i > 0 && " · "}
+                    <Link href={`/medical-colleges/${c.slug}`} className="font-semibold text-primary-strong hover:underline dark:text-primary">
+                      medical colleges in {c.name}
+                    </Link>
+                  </span>
+                ))}
+            </p>
           )}
         </section>
       )}

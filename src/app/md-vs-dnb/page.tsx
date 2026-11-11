@@ -11,6 +11,7 @@ import CollegeFaq from "@/components/colleges/CollegeFaq";
 import DataPageCounsel from "@/components/lead/DataPageCounsel";
 import ExpertCompare from "@/components/lead/ExpertCompare";
 import TelegramJoin from "@/components/engage/TelegramJoin";
+import { hinglishFaqs } from "@/lib/hinglishFaq";
 
 /**
  * MD/MS vs DNB (2026-11-11): seats from MCC's matrix, the latest round's last rank per branch on each side (3+
@@ -109,6 +110,17 @@ export default async function MdVsDnb() {
       : []),
   ];
 
+  faqs.push(
+    ...(await hinglishFaqs("md_vs_dnb", {
+      year,
+      round,
+      compared: d.compared || undefined,
+      deeper: d.compared ? d.deeper : undefined,
+      mdms_seats: d.mdmsSeats ? inr(d.mdmsSeats) : undefined,
+      dnb_seats: d.dnbSeats ? inr(d.dnbSeats) : undefined,
+      dnb_y1: dnb?.y1 ? money(dnb.y1.median) : undefined,
+    })),
+  );
   return (
     <main className="min-h-screen bg-background">
       <StructuredData

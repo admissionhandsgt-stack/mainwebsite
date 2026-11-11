@@ -18,6 +18,9 @@ import { ALERT_SOURCES } from "@/lib/alertFeed";
 import { getCounselPgStates, getCounselUgStates } from "@/lib/counselStates";
 import { officialLink } from "@/lib/zynNotices";
 import { branchWord, branchRound, branchSeats, branchState, collegeBranch, roundIn, roundOverall, withoutBranchWords, INI_CET } from "@/lib/huntBranch";
+import { branchMoneyDraft, cityMoneyDraft, type MoneyScope } from "@/lib/branchMoney";
+import { cityIn, CITY_WORDS } from "@/lib/cityKey";
+import { cityPagePath } from "@/lib/cityQueries";
 
 /**
  * Answers the daily hunt writes (2026-11-10; owner, with his own AIIMS New Delhi answer as the model: "aise detailed
@@ -194,7 +197,7 @@ const NOT_A_NAME = new Set(
     "to kitna kitni kitne kya hai milta milti milega ka ki ke me mein se 2023 2024 2025 2026 2027 college colleges medical government govt " +
     "private deemed university india residents resident junior jr doctor doctors student students admission counselling counseling quota " +
     "management nri total details list branch branches wise state best highest lowest top compare vs hostel tuition first second third " +
-    "1st 2nd 3rd do does can i my get given gross net hand in-hand ctc amount new old structure institute sciences hospital"
+    "1st 2nd 3rd do does can i my get given gross net hand in-hand ctc amount new old structure institute sciences hospital cost costs charges"
   ).split(" "),
 );
 
@@ -719,7 +722,46 @@ async function pickDraft(q: string, all: string, hasText: boolean, states: PgSta
       if (d) return d;
     }
   }
-  if (STIPEND.test(q) || /fee|cost|tuition/i.test(q)) {
+  // A branch's fees, stipend or bond — in India, a state, a city or one college ("md radiology fees", "ms ortho fees in
+  // pune", "kmc manipal radiology fees", "md medicine stipend maharashtra", "md radiology bond") — lib/branchMoney.ts.
+  // Not DNB or diploma seats (no 2026 fee is published for them), not an INI-CET institute.
+  const FEE = /\bfees?\b|\bcost\b|tuition|fee structure/i;
+  if (bw && !/\b(dnb|drnb|diploma|nbe)\b/i.test(q) && !INI_CET.test(q) && (FEE.test(q) || STIPEND.test(q) || BOND.test(q))) {
+    const want = FEE.test(q) ? "fees" : STIPEND.test(q) ? "stipend" : "bond";
+    const rest = withoutBranchWords(q);
+    const city = cityIn(q);
+    const placeWord = (w: string) =>
+      w.length < 2 || NOT_A_NAME.has(w) || /^\d+$/.test(w) || STATE_ALIAS[w] !== undefined || CITY_WORDS.has(w) || states.some((st) => fold(st.name).includes(` ${w} `));
+    const onlyPlace = fold(rest).trim().split(" ").filter(Boolean).every(placeWord);
+    const c = onlyPlace ? null : await collegeIn(rest, states);
+    const st = stateIn(q, states);
+    let scope: MoneyScope;
+    if (c) {
+      const nm = collegeName(c.name);
+      scope = { kind: "college", slug: c.slug, label: nm.place && !nm.short.toLowerCase().includes(nm.place.toLowerCase()) ? `${nm.short}, ${nm.place}` : nm.short };
+    } else if (city) scope = { kind: "city", city, page: await cityPagePath(city.slug) };
+    else if (st) scope = { kind: "state", state: { name: st.name, slug: st.slug } };
+    else scope = { kind: "india" };
+    const d = await branchMoneyDraft(want, bw, scope);
+    if (d) return d;
+    // A college, city or state named is answered with its own figures or not at all — never India's under its name.
+    if (scope.kind !== "india") return null;
+  }
+  // "pg fees in pune": only place words left → a city's own figures, a state's further down, never one college's (a
+  // lone place word used to pick the one MD/MS college the name search happened to read).
+  const moneyAsked = STIPEND.test(q) || /fee|cost|tuition/i.test(q);
+  const placeOnly =
+    moneyAsked &&
+    fold(withoutBranchWords(q))
+      .trim()
+      .split(" ")
+      .filter(Boolean)
+      .every((w) => w.length < 2 || NOT_A_NAME.has(w) || /^\d+$/.test(w) || STATE_ALIAS[w] !== undefined || CITY_WORDS.has(w) || states.some((st) => fold(st.name).includes(` ${w} `)));
+  if (placeOnly && !bw) {
+    const city = cityIn(q);
+    if (city) return cityMoneyDraft(/fee|cost|tuition/i.test(q) ? "fees" : "stipend", city);
+  }
+  if (moneyAsked && !placeOnly) {
     const c = await collegeIn(q, states);
     if (c) {
       const d = await college(c, q);

@@ -2293,6 +2293,43 @@ What changed:
   "md nuclear medicine seats in india" (NMC's approved seats + MCC's matrix). The old national branch answer no longer
   answers a search that names a state. Re-run: `scripts/tmp/harness/longtail.ts`.
 
+## Hinglish questions, the Hinglish counselling guide, branch money, city pages (2026-11-11, owner: "bnao jo nhi bana hai")
+
+- **Hinglish FAQs on 10 page types** (`lib/hinglishFaq.ts`, words in Admin → Content → "Site: Hinglish questions on data
+  pages", one "Question | Answer" per line): bond, stipend hub and state, marks vs rank, NEET PG cutoff (general view
+  only), PG branches, fee hub and state, low score clinical, MD vs DNB, choice filling. Each line's `{tokens}` are the
+  page's live figures and **a line whose figure is missing on a page is dropped** (`faqLines`), so nothing prints a
+  gap. They join the page's own FAQ list and its FAQPage markup. Latin-script Hinglish, `en-IN`, no hreflang, no `/hi/`.
+- **`/neet-pg-counselling-kaise-hoti-hai`** — the beginner's guide in Hinglish (copy "Page: NEET PG counselling kaise
+  hoti hai (Hinglish)"): six steps, AIQ vs state with MCC's matrix, round-by-round rules, Freeze/Float, dates from
+  `pg_schedule`, deposits, FAQs. Rules only from `lib/choiceFillingRules.ts`; linked from /neet-pg-process, the choice
+  filling page and the round pages; in the hubs sitemap dated by the schedule. `lib/pgRoundNow.ts` holds the running
+  round and last year's upgrades for both pages. The UG guide waits for the UG 2026 import.
+- **A branch's fees, stipend and bond, as searched (owner, mid-task: "md radiology fees… har branch ka… city + state +
+  college ke sath jodke")** — `lib/branchMoney.ts`, routed from `pickDraft` before the old college/stipend/bond paths:
+  every branch in `BRANCH_WORDS` × fees / stipend / bond × India, a state, a city, one college. Kinds
+  `branch-fees[:-state|-city|-college]:<branch>[:<where>]` (the scoped ones are STATE_AWARE in `searchFaq.ts`). Fees: one
+  figure per college per kind of college and seat, spread over 3+ colleges, official 2026-27 notice first, whole-course
+  and DNB seats out, cheapest/dearest management seat named with its quota; a city or a small state lists each college
+  quota by quota. **Slips are never named**: a management/NRI fee under the same college's state-quota fee for the same
+  branch, or under a tenth of the branch's middle for that kind of seat. Government colleges show state and AIQ seats
+  only. Stipend and bond are `pg_seat_terms` (the caveat in every source line). A college, city or state named gets its
+  own figures or nothing. DNB/diploma and INI-CET searches are not answered. "pg fees in pune" (a city, no branch) →
+  `cityMoneyDraft`, never one college. Research seeds: branch × fees/stipend/bond, × 8 states, × 10 cities, × 20 colleges.
+  QA: `scripts/tmp/harness/money_try.ts "<search>" …`.
+- **"Institutional Preference" is a merit (state) quota** in `familyOf` / `FAMILY_SQL` (`lib/pgFeeMatrix.ts`): Gujarat's
+  government colleges charge it the government fee; it had been filed as management. The state fee pages' cheapest /
+  dearest seat now skips the same two kinds of slip (SDM's ₹25,000, Parul's ₹1,000).
+- **City pages — `/medical-colleges` and `/medical-colleges/<city>`** (`lib/cityKey.ts` the cities and their spellings,
+  `lib/cityQueries.ts` the data). A college is in a city when a city word is in its name or `institutes.city` and its
+  state matches. 3+ MD/MS colleges → a page; 5+ with 3+ publishing a yearly fee → indexed (17 cities on 2026-11-11),
+  else `noindex, follow`; under 3 → 404. Each page: every MD/MS college (type from NMC, NMC MD/MS and MBBS seats, fee by
+  kind of seat lowest–highest branch with * for a listing figure, stipend), fee bands, MCC's seats, the state authority,
+  stipend and bond, branches taught, MBBS colleges, DNB hospitals apart, FAQs (copy "Page: medical colleges in a city").
+  In the states sitemap (indexed cities only); linked from the PG state page ("By city") and the state fee page's city
+  headings. Menu rows: `scripts/sql/nav_city_kaise_2026_11_11.sql` (after the release). Add a city in `CITIES` when a
+  search or a new college needs one.
+
 ## The OCR bridge for the AH tool (2026-11-11)
 
 zyn-3c asked for OCR on public notices (its poster bot checks every date against the notice's real text); the owner, here:

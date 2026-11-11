@@ -101,6 +101,13 @@ export async function buildSeeds(): Promise<string[]> {
   for (const b of TOP_BRANCHES) for (const st of TOP_STATES) out.add(`${b} cut off ${st}`);
   for (const b of TOP_BRANCHES) for (const x of CATEGORY_SEEDS(b)) out.add(x);
   for (const c of COLLEGES.slice(0, 24)) for (const x of COLLEGE_CUT_SEEDS(c)) out.add(x);
+  // What a branch costs and pays, alone and with a state, a city or a college (owner, 2026-11-11: "'md radiology fees'
+  // … har branch ka … city + state + college ke sath jodke branches fees, stipend, bond") — lib/branchMoney.ts answers them.
+  for (const b of BRANCH_TYPED) for (const i of ["fees", "stipend", "bond"]) out.add(`${b} ${i}`);
+  for (const b of TOP_BRANCHES) for (const st of TOP_STATES.slice(0, 8)) out.add(`${b} fees ${st}`);
+  for (const b of TOP_BRANCHES) for (const c of CITIES.slice(0, 10)) out.add(`${b} fees in ${c}`);
+  for (const b of TOP_BRANCHES.slice(0, 4)) for (const c of COLLEGES.slice(0, 20)) out.add(`${c} ${b} fees`);
+  for (const c of CITIES) for (const i of ["pg stipend", "private medical college pg fees"]) out.add(`${c} ${i}`);
   // The NEET PG season in progress: rounds, results and the states' own PG rounds.
   for (const h of PG_SEASON) out.add(h);
   for (const st of states) for (const i of PG_STATE_SEASON) out.add(`${st} ${i}`);

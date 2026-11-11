@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
-import { unstable_cache } from "next/cache";
-import { sql } from "drizzle-orm";
 import { ExternalLink, Info } from "lucide-react";
-import { db } from "@/db/client";
 import Link from "@/components/ui/Link";
 import { fitDescription, fitTitle } from "@/lib/seoTitle";
 import { resolveMetadata } from "@/lib/content";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import { getPgProcessContent } from "@/lib/pgProcessContent";
-import { getTelegramCue } from "@/lib/mccResults";
+import { getUpgrades, liveChoiceRound as liveRound } from "@/lib/pgRoundNow";
 import { DEPOSITS, DEPOSIT_NOTES, LOCKING_FACTS, ROUND_RULES, SOURCES, STATE_FACTS, type SourceKey } from "@/lib/choiceFillingRules";
 import { exactInr } from "@/lib/chance";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
@@ -21,6 +18,7 @@ import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
 import DataPageCounsel from "@/components/lead/DataPageCounsel";
 import ScheduleRevisionNote from "@/components/mcc/ScheduleRevisionNote";
 import ChoiceStrategy from "@/components/lead/ChoiceStrategy";
+import { hinglishFaqs } from "@/lib/hinglishFaq";
 
 /**
  * NEET PG choice filling, locking, upgradation, free exit and resignation (2026-11-09; the keyword study's biggest
@@ -32,33 +30,7 @@ import ChoiceStrategy from "@/components/lead/ChoiceStrategy";
 const YEAR = 2026;
 const PATH = "/neet-pg-choice-filling";
 
-/** How many of each round's allotments were upgrades, per year — from MCC's result PDFs. */
-const getUpgrades = unstable_cache(
-  async () =>
-    (await db.execute(sql`
-      SELECT year, round, COUNT(*)::int AS allotted, COUNT(*) FILTER (WHERE status ILIKE 'Upgraded%')::int AS upgraded
-        FROM mcc_allotments WHERE round IN ('Round 2', 'Round 3')
-       GROUP BY year, round ORDER BY year DESC, round`)) as unknown as { year: number; round: string; allotted: number; upgraded: number }[],
-  ["pg-upgrades-v1"],
-  { revalidate: 3600, tags: ["mcc"] },
-);
-
 const n = (v: number) => v.toLocaleString("en-IN");
-
-/**
- * The round whose choices are being filled now (Search Console, 11 Oct – 7 Nov: "neet pg round 2 choice filling",
- * "round 2 counselling 2026" are what people type, and the title named no round). It is the round the Telegram cue
- * names — the first of the running counselling's rounds 1–4 whose result is not out — with its own steps from the
- * admin's pg_schedule. Null between counsellings, and the page says its everyday words.
- */
-async function liveRound(): Promise<{ label: string; filling?: string; locking?: string } | null> {
-  const [cue, { schedule }] = await Promise.all([getTelegramCue(), getPgProcessContent()]);
-  if (!cue || cue.year !== YEAR) return null;
-  const label = cue.label.replace(/\b\w/g, (c) => c.toUpperCase()); // "Round 2", "Stray Round"
-  const key = label.toLowerCase().startsWith("stray") ? "stray" : label.toLowerCase();
-  const row = schedule.find((s) => s.round.trim().toLowerCase().startsWith(key));
-  return { label, filling: row?.choiceFilling, locking: row?.choiceLocking };
-}
 
 export async function generateMetadata(): Promise<Metadata> {
   const live = await liveRound().catch(() => null);
@@ -123,6 +95,7 @@ export default async function ChoiceFillingPage() {
   }));
   const steps = schedule.filter((s) => s.choiceFilling || s.choiceLocking || s.result || s.reporting);
 
+  faqs.push(...(await hinglishFaqs("choice_filling")));
   return (
     <main className="min-h-screen bg-background">
       <StructuredData
@@ -387,6 +360,7 @@ export default async function ChoiceFillingPage() {
           <p className="mt-3 text-[13px] text-muted-foreground">
             Upgrade counts are from MCC&apos;s published round results. Also:{" "}
             <Link href="/neet-pg-process" className="font-semibold text-primary-strong hover:underline">the NEET PG counselling process</Link> ·{" "}
+            <Link href="/neet-pg-counselling-kaise-hoti-hai" className="font-semibold text-primary-strong hover:underline">the same in Hinglish</Link> ·{" "}
             <Link href={`/neet-pg-counselling/${YEAR}`} className="font-semibold text-primary-strong hover:underline">NEET PG {YEAR} round results</Link> ·{" "}
             <Link href="/md-ms-india/fees" className="font-semibold text-primary-strong hover:underline">PG fees by state</Link> ·{" "}
             <Link href="/md-ms-india/bond" className="font-semibold text-primary-strong hover:underline">PG bond and seat-leaving penalty by state</Link>

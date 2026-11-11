@@ -15,6 +15,7 @@ import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import { hinglishFaqs } from "@/lib/hinglishFaq";
 
 /**
  * "PG medical bond state wise" (2026-10-20): the service bond and seat-leaving terms on MD/MS
@@ -119,6 +120,9 @@ export default async function BondPage() {
         })(),
       ]
     : [];
+  // Hinglish questions (Admin → Content → "Site: Hinglish questions on data pages"), after the English ones.
+  const noBond = govtStates.filter((s) => s.govt.colleges >= 2 && s.govt.withBond === 0).map((s) => s.state);
+  if (b) faqs.push(...(await hinglishFaqs("bond", { ...tokens, no_bond_states: noBond.length ? list(noBond) : undefined })));
   const byPenalty = govtStates.filter((s) => s.govt.penaltyMedian).sort((x, y) => (y.govt.penaltyMedian ?? 0) - (x.govt.penaltyMedian ?? 0));
 
   return (

@@ -16,6 +16,7 @@ import HeroBars from "@/components/hero/HeroBars";
 import { getPgStates } from "@/lib/pgStateQueries";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import { hinglishFaqs } from "@/lib/hinglishFaq";
 
 /**
  * "NEET PG stipend state wise" — one of the most-searched PG money questions,
@@ -102,6 +103,7 @@ export default async function StipendPage() {
     },
   ];
 
+  faqs.push(...(await hinglishFaqs("stipend", { colleges: s.colleges.toLocaleString("en-IN"), median: inr(s.median), top_state: top?.state, top_median: inr(top?.median), low_state: low?.state, low_median: inr(low?.median), govt_top_state: govtTop?.state, govt_top_median: inr(govtTop?.govtMedian) })));
   return (
     <main className="min-h-screen bg-background">
       <PageDatasets path="/md-ms-india/stipend" />

@@ -18,6 +18,7 @@ import ExpertCompare from "@/components/lead/ExpertCompare";
 import { getCounsellingFacts } from "@/lib/counsellingFacts";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
+import { hinglishFaqs } from "@/lib/hinglishFaq";
 
 /**
  * /neet-pg-low-score-clinical-branches (2026-11-10). Written as a landing page (owner, same day: "marketing ads ki trh
@@ -288,6 +289,14 @@ export default async function LowScoreClinicalPage() {
         ]
       : [];
 
+  if (p)
+    faqs.push(
+      ...(await hinglishFaqs("low_clinical", {
+        ...tokens,
+        deemed_fee: p.fee?.p10 && p.fee.p90 ? tokens.deemed_fee : undefined,
+        stray: p.stray ? tokens.stray : undefined,
+      })),
+    );
   return (
     <main className="min-h-screen bg-background">
       <StructuredData

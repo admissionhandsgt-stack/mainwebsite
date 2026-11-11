@@ -23,6 +23,7 @@ import { getBranchStateCombos, SEARCH_NAME } from "@/lib/branchStateQueries";
 import { getNmcBranchSeats } from "@/lib/nmcData";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 import { CLINICAL, getLowRankClinical } from "@/lib/lowRankClinical";
+import { hinglishFaqs } from "@/lib/hinglishFaq";
 
 /**
  * Rendered per request, deliberately.
@@ -260,6 +261,26 @@ export default async function BranchPage(
       : []),
   ];
 
+  // Hinglish questions (Admin → Content → "Site: Hinglish questions on data pages"), after the English ones. The
+  // low-rank question speaks of deemed and management seats, so it is for MD/MS branches only.
+  const mdms = /^(MD|MS)\b/.test(b.name);
+  faqs.push(
+    ...(
+      await hinglishFaqs("branch", {
+        branch: SEARCH_NAME[b.name] ?? b.name,
+        live_year: live?.year,
+        round: live?.spec.label,
+        quota: live?.quotaName,
+        open_rank: live?.cut.Open ? inr(live.cut.Open) : undefined,
+        open_score: live?.cut.Open ? live.scoreAt(live.cut.Open) ?? undefined : undefined,
+        out_of: live?.outOf,
+        seats: nmcSeats ? inr(nmcSeats.seats) : undefined,
+        colleges: nmcSeats ? inr(nmcSeats.colleges) : undefined,
+      })
+    )
+      .filter((f) => mdms || !f.question.startsWith("Kam rank par"))
+      .map((f) => ({ q: f.question, a: f.answer })),
+  );
   return (
     <main className="min-h-screen bg-background">
       <StructuredData

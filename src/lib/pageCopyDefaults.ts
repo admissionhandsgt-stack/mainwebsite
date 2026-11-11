@@ -814,6 +814,322 @@ export const PAGE_COPY = {
       updated: { label: "Words before the date (the date is not shown on pages since 2026-11-10)", value: "Updated" },
     },
   },
+  // Hinglish questions (2026-11-11; owner: "Hinglish FAQ blocks… bnao jo nhi bana hai"). Latin-script Hinglish, the way
+  // students type and speak it, added to the page's own FAQ list (and its FAQPage markup). One "Question | Answer" per
+  // line; {tokens} are the page's live figures, and a line whose figure is missing on a page is left out there.
+  "site.faq_hinglish": {
+    group: "Site: Hinglish questions on data pages",
+    fields: {
+      bond: {
+        label:
+          "Bond page — {year}, {govt_bonded}, {govt_colleges}, {penalty_median}, {penalty_low}, {penalty_high}, {exit_median}, {exit_colleges}, {all_colleges}, {private_bonded}, {private_colleges}, {one_year}, {two_year}, {three_year}, {no_bond_states}",
+        long: true,
+        value: [
+          "PG me bond kya hota hai? | Government college ki PG seat ke saath aksar ek service bond hota hai: course poora hone ke baad tay saal tak state ke hospital me kaam karna, warna penalty bharna. {year} counselling ki listing me {govt_colleges} me se {govt_bonded} government PG colleges bond list karte hain.",
+          "Bond todne par kitni penalty lagti hai? | Government colleges me bond penalty ka middle figure {penalty_median} hai, zyadatar {penalty_low} se {penalty_high} ke beech. Har state ka alag hai, isliye upar ki state-wise table dekhein aur seat lene se pehle state ka notice confirm karein.",
+          "Seat leaving penalty kya hai, aur bond se kaise alag hai? | Service bond course ke baad ki service ki shart hai. Seat leaving penalty admission ke baad seat chhodne par lagti hai. {all_colleges} me se {exit_colleges} colleges ye penalty list karte hain; middle figure {exit_median}.",
+          "Kaun se state me PG bond nahi hai? | {year} ki listing ke hisaab se {no_bond_states} me kisi government PG college ne service bond list nahi kiya. Ye har saal badal sakta hai, state ka notice dekh kar hi faisla karein.",
+          "PG bond kitne saal ka hota hai? | Aam taur par 1 se 3 saal: listing me {one_year} government colleges 1 saal, {two_year} colleges 2 saal aur {three_year} colleges 3 saal ka bond rakhte hain.",
+          "Private college me bhi bond hota hai kya? | Kam colleges me: {private_colleges} private aur deemed colleges me se {private_bonded} bond list karte hain. Seat chhodne par fee ya penalty wahan bhi lag sakti hai, isliye college ki shartein pehle padhein.",
+        ].join("\n"),
+      },
+      stipend: {
+        label: "Stipend page — {colleges}, {median}, {top_state}, {top_median}, {low_state}, {low_median}, {govt_top_state}, {govt_top_median}",
+        long: true,
+        value: [
+          "NEET PG me stipend kitna milta hai? | Jo {colleges} colleges aur DNB hospitals stipend publish karte hain, unka first-year median {median} mahina hai. State aur college type (government ya private) ke hisaab se bahut farak hai.",
+          "Sabse zyada PG stipend kis state me milta hai? | Median ke hisaab se {top_state} sabse upar hai ({top_median} mahina) aur {low_state} sabse neeche ({low_median} mahina).",
+          "Government college me sabse zyada stipend kahan hai? | Sirf government colleges ka median dekhein to {govt_top_state} sabse aage hai: {govt_top_median} mahina.",
+          "Private college me stipend milta hai kya? | Kai private colleges dete hain, par government jitna regular nahi, aur kuch publish hi nahi karte. College ke page par stipend aur fee saath rakh kar dekhein.",
+        ].join("\n"),
+      },
+      stipend_state: {
+        label: "Stipend in a state — {state}, {colleges}, {median}, {govt_median}, {private_median}, {top_college_short}, {top_stipend}, {y2_median}, {y3_median}, {bond_years}, {bond_penalty}",
+        long: true,
+        value: [
+          "{state} me PG stipend kitna hai? | {state} ke {colleges} colleges ka first-year median stipend {median} mahina hai.",
+          "{state} me government aur private college ka stipend kitna hai? | Government colleges ka median {govt_median} aur private colleges ka {private_median} mahina hai.",
+          "{state} me sabse zyada stipend kis college me hai? | Is listing me {top_college_short} sabse upar hai: first year me {top_stipend} mahina.",
+          "{state} me 2nd aur 3rd year ka stipend kitna hota hai? | Median: 2nd year {y2_median} aur 3rd year {y3_median} mahina.",
+          "{state} me PG ke baad bond hai kya? | Government colleges me aam bond {bond_years} ka hai, aur todne ki penalty ka middle figure {bond_penalty} hai. Ye counselling ki listing hai; state ka notice confirm karein.",
+        ].join("\n"),
+      },
+      marks: {
+        label: "Marks vs rank — {year}, {out_of}, {s450}, {s400}, {s350}, {s300}, {radio_rank}, {radio_score}, {round}, {qual_year}, {qual_gen}, {qual_pwd}, {qual_res}, {qual_out}",
+        long: true,
+        value: [
+          "NEET PG me kitne marks par kitni rank aati hai? | NBEMS ke NEET PG {year} result me 450 marks (out of {out_of}) par AIR {s450} thi, 400 par {s400} aur 300 par {s300}. Har score ki poori list upar table me hai.",
+          "NEET PG {year} me 350 marks par rank kya hogi? | NBEMS ke result me 350 marks par AIR {s350} thi. Same score wale sab isi range me aate hain; aapki exact rank scorecard par hai.",
+          "NEET PG {year} kitne marks ka tha, 720 ya 800? | NEET PG {year} {out_of} marks ka tha. 2025 tak paper 800 marks (200 sawal) ka hota tha; 2026 se 180 sawal aur 720 marks.",
+          "NEET PG qualifying marks kitne hain? | NEET PG {qual_year} me qualifying score General/EWS ke liye {qual_gen}, General PwBD ke liye {qual_pwd} aur SC/ST/OBC ke liye {qual_res} tha (out of {qual_out}). Qualify karne se counselling ki eligibility milti hai; seat rank se milti hai.",
+          "MD Radiology ke liye kitne marks chahiye? | MCC ke NEET PG {year} {round} me Open All India Quota ki aakhri MD Radio Diagnosis seat AIR {radio_rank} par gayi, yaani lagbhag {radio_score} marks. Category, state quota aur deemed seats alag rank par band hoti hain.",
+          "Same marks par rank alag kyun hoti hai? | Ek hi score wale sab ek rank range share karte hain; NBEMS apne tie-break rules se exact rank deta hai. Range se check karein, counselling me exact rank hi lagti hai.",
+        ].join("\n"),
+      },
+      cutoff: {
+        label: "NEET PG cut off — {year}, {round}, {radio_rank}, {med_rank}, {qual_year}, {qual_gen}, {qual_res}, {qual_out}",
+        long: true,
+        value: [
+          "NEET PG {year} me MD Radiology kitni rank par milti hai? | MCC ke NEET PG {year} {round} me Open All India Quota ki aakhri MD Radio Diagnosis seat AIR {radio_rank} par gayi, sab colleges mila kar.",
+          "MD Medicine government college me kitni rank par milta hai? | MCC ke NEET PG {year} {round} me Open AIQ ki aakhri MD General Medicine seat AIR {med_rank} par gayi. State quota aur reserved categories alag rank par band hoti hain.",
+          "NEET PG ka cut off kya hota hai, qualifying ya rank? | Do alag cheezein hain. Qualifying score (NEET PG {qual_year} me General/EWS {qual_gen}, SC/ST/OBC {qual_res}, out of {qual_out}) sirf counselling ki eligibility deta hai. Seat ka cut off wo rank hai jahan us branch ki seats khatam hui.",
+        ].join("\n"),
+      },
+      branch: {
+        label: "PG branch pages — {branch}, {live_year}, {round}, {quota}, {open_rank}, {open_score}, {out_of}, {seats}, {colleges}",
+        long: true,
+        value: [
+          "{branch} ke liye kitni rank chahiye? | MCC ke NEET PG {live_year} {round} result me {branch} ki aakhri Open {quota} seat AIR {open_rank} par gayi, sab colleges mila kar. Category, state quota aur paid seats alag rank par band hoti hain.",
+          "{branch} ke liye kitne marks chahiye? | Us aakhri Open seat ki rank AIR {open_rank} thi, jo NBEMS ke NEET PG {live_year} result me lagbhag {open_score} marks (out of {out_of}) ke barabar hai.",
+          "India me {branch} ki kitni seats hain? | NMC ke register me {branch} ki {seats} seats {colleges} colleges me approved hain. Inme se kuch MCC ki All India aur deemed counselling bharti hai, baaki har state apni counselling me.",
+          "Kam rank par {branch} milegi kya? | Government seat ke liye upar wali rank chahiye. Deemed aur management seats aage tak jaati hain, par unki fees kai guna zyada hoti hai. Apni rank, category aur budget ke saath counsellor se plan banwayein.",
+        ].join("\n"),
+      },
+      fees: {
+        label: "PG fees (India) — {year}, {govt_median}, {private_state_median}, {private_mgmt_median}, {deemed_median}, {nri_median}",
+        long: true,
+        value: [
+          "Government college me MD ki fees kitni hai? | {year} ke figures me government colleges ki state quota seat ka median {govt_median} saal hai.",
+          "Private college me MD fees kitni hoti hai? | Private colleges me state quota seat ka median {private_state_median} aur management seat ka {private_mgmt_median} saal hai.",
+          "Deemed university me MD fees kitni hai? | Deemed universities ki paid seat ka median {deemed_median} saal hai.",
+          "NRI quota me PG fees kitni hai? | NRI seats ka median {nri_median} saal hai. Kai deemed universities NRI fee dollar me leti hain.",
+          "PG fees per year hai ya poore course ki? | Is page par sirf saal ki fees hai. Jo college poore course ka ek figure ya bina period ka figure deta hai, use yahan saal ki fees nahi maana gaya. Fee bharne se pehle college ka 2026-27 notice padhein.",
+          "Hostel fees alag hoti hai kya? | Aksar haan, aur mess alag. College ke fee notice me hostel aur mess ki line alag padhein.",
+        ].join("\n"),
+      },
+      fees_state: {
+        label: "PG fees in a state — {state}, {govt_median}, {private_state_median}, {private_mgmt_median}, {deemed_median}, {cheapest_mgmt}, {dearest_mgmt}",
+        long: true,
+        value: [
+          "{state} me government college ki MD fees kitni hai? | {state} ke government colleges me state quota seat ka median {govt_median} saal hai.",
+          "{state} me private college ki MD fees kitni hai? | State quota seat ka median {private_state_median} aur management seat ka {private_mgmt_median} saal hai.",
+          "{state} me sabse kam fees wali management seat kaun si hai? | Is list me: {cheapest_mgmt}.",
+          "{state} me sabse mehngi management seat kaun si hai? | Is list me: {dearest_mgmt}.",
+          "{state} me deemed university ki MD fees kitni hai? | Deemed universities ki paid seat ka median {deemed_median} saal hai.",
+        ].join("\n"),
+      },
+      low_clinical: {
+        label: "Low score clinical branches — {year}, {med_rank}, {surg_rank}, {deemed_fee}, {deep_branch}, {deep_rank}, {deep_score}, {stray}",
+        long: true,
+        value: [
+          "NEET PG me kam rank par clinical branch milti hai kya? | Haan, aksar deemed universities ki paid seats par. {year} me MD General Medicine ki aakhri deemed paid seat AIR {med_rank} par gayi aur MS General Surgery ki AIR {surg_rank} par. Ye paid seats hain: fees lagbhag {deemed_fee} saal.",
+          "Kam marks par sabse aage tak kaun si clinical branch gayi? | {year} me {deep_branch} sabse aage tak gayi: aakhri seat AIR {deep_rank} par (score {deep_score}).",
+          "Just qualified hoon, seat milegi kya? | Kai students ko later rounds aur stray round me seat milti hai: {year} ke stray round me MCC ne {stray} seats allot ki. Kaun si seat, kis fees par, ye aapki category, budget aur bond par depend karta hai.",
+          "Kam rank par best branch kaun si hai? | Ye aapki rank, budget aur bond par depend karta hai. Pehle dekhein kaun si clinical seat pichle saal aapki rank tak gayi, phir uski fees aur bond. Counsellor ye list aapke liye banata hai.",
+        ].join("\n"),
+      },
+      md_vs_dnb: {
+        label: "MD vs DNB — {year}, {round}, {compared}, {deeper}, {mdms_seats}, {dnb_seats}, {dnb_y1}",
+        long: true,
+        value: [
+          "DNB aur MD me kya farak hai? | Dono same speciality ki PG qualification hain aur dono NEET PG counselling se milti hain. MD/MS university degree hai jo NMC-permitted medical college me milti hai; DNB NBEMS deta hai, accredited hospital me training aur NBEMS ke exit exam ke baad.",
+          "DNB ki value MD ke barabar hai kya? | Dono specialist qualification hain. Medical college me padhane (teaching post) ke liye NMC DNB walon par kuch shartein rakhta hai; teaching ka plan ho to NMC ke current rules dekhein.",
+          "DNB seat MD se aasani se milti hai kya? | {round} me {compared} branches me se {deeper} me DNB ki aakhri Open seat MD/MS All India Quota se aage tak gayi. Agle round me dono taraf aur aage jaata hai.",
+          "NEET PG {year} me kitni DNB seats hain? | MCC ke seat matrix me {dnb_seats} DNB aur NBE diploma seats hain, aur {mdms_seats} MD/MS seats.",
+          "DNB me stipend kitna milta hai? | Counselling ki listing ke hisaab se middle DNB hospital first year me {dnb_y1} mahina deta hai. Join karne se pehle hospital se confirm karein.",
+        ].join("\n"),
+      },
+      choice_filling: {
+        label: "Choice filling (and the Hinglish counselling guide) — MCC's 2026 rules, no tokens",
+        long: true,
+        value: [
+          "Free exit kya hota hai? | Round 1 me mili seat ko security deposit gawaye bina chhod sakte hain, aur round 2 me bina dobara registration ke bhaag le sakte hain. Round 2 se free exit nahi hai.",
+          "Freeze aur Float me kya farak hai? | Freeze: round 1 ki seat par join karte hain aur upgrade nahi lete. Float: documents online verify hote hain aur round 2 me upgrade ke liye haan kehte hain; college jaane ki zaroorat nahi.",
+          "Upgrade hone par purani seat ka kya hota hai? | Upgrade hote hi purani seat turant cancel ho jaati hai aur agle candidate ko chali jaati hai. Purani seat par koi claim nahi rehta.",
+          "Round 2 me choices dobara bharni padti hain kya? | Haan. Round 1 ki choices round 2 me nahi chalti; har round me fresh choice filling aur locking hoti hai.",
+          "Kitni choices bharni chahiye? | MCC koi limit nahi rakhta aur 30 se 40 choices bharne ka suggestion deta hai. Sirf wahi bharein jahan aap sach me join karenge, apni pasand ke order me.",
+          "Choice lock nahi kiya to kya hoga? | Jo choices save hain wo MCC ke notified time par apne aap lock ho jaati hain. Lock hone ke baad badal nahi sakte, aur MCC request par unlock nahi karta.",
+          "Round 2 ki seat chhodne par kya hoga? | Round 2 ki seat join na karne ya surrender karne par security deposit forfeit hota hai. Round 3 me phir se fee bhar kar bhaag le sakte hain.",
+          "Round 3 ke baad seat chhod sakte hain kya? | Round 3 ki seat join karne ke baad na resign kar sakte hain na upgrade. Join na karne par deposit jaata hai aur aage ke saare MCC rounds se bahar.",
+          "Security deposit kitna hai aur wapas kab milta hai? | All India Quota me UR/EWS ke liye ₹25,000 aur SC/ST/OBC/PwD ke liye ₹10,000; deemed universities ke liye ₹2,00,000. Refund saare rounds khatam hone ke baad usi account me milta hai, bina interest.",
+        ].join("\n"),
+      },
+    },
+  },
+  // "NEET PG counselling kaise hoti hai" (2026-11-11): the beginner's overview in Hinglish, for families and doctors who
+  // ask it that way. Rules only from lib/choiceFillingRules.ts (MCC's documents); dates from the admin's pg_schedule.
+  "page.pg_kaise": {
+    group: "Page: NEET PG counselling kaise hoti hai (Hinglish)",
+    fields: {
+      eyebrow: { label: "Eyebrow — {year}", value: "NEET PG {year} · Hinglish guide" },
+      title: { label: "Title", value: "NEET PG counselling kaise hoti hai" },
+      accent: { label: "Accent words after the title", value: "MCC, state quota, choice filling aur upgrade" },
+      subtitle: {
+        label: "Line under the title",
+        long: true,
+        value:
+          "MCC ki All India counselling aur state ki counselling, choice filling se reporting tak, free exit, Freeze aur Float, aur seat chhodne ke rules: aasan bhasha me, MCC ke apne documents se.",
+      },
+      answer_live: {
+        label: "Line under the title while a round is running — {round}, {filling}, {locking}",
+        long: true,
+        value:
+          "Abhi {round} chal raha hai: choice filling {filling}, locking {locking}. MCC ki All India counselling aur state ki counselling dono me ek hi NEET PG rank chalti hai, par rules aur dates alag hain.",
+      },
+      cta: { label: "Hero button", value: "Apni rank par chance dekhein" },
+      source: {
+        label: "Source line",
+        long: true,
+        value: "Rules MCC ke NEET PG 2026 Information Bulletin aur notices se; dates admin ke MCC schedule se. MCC ka latest notice hi final hai.",
+      },
+      steps_title: { label: "Steps — heading", value: "6 steps me poori counselling" },
+      steps: {
+        label: "Steps — one per line, \"title | text\"",
+        long: true,
+        value: [
+          "Registration | MCC ki website par register karein aur registration fee + security deposit bharein. All India Quota aur deemed universities ka registration ek saath ho jaata hai.",
+          "Choice filling | Apni pasand ke college aur branch order me bharein. Sabse pasandida choice sabse upar, kyunki seat upar wali available choice par milti hai.",
+          "Choice locking | Last date se pehle choices lock karein. Lock nahi kiya to save hui choices apne aap lock ho jaati hain, aur uske baad badal nahi sakte.",
+          "Result | MCC rank, category aur choices ke hisaab se seat allot karta hai. Pehle provisional result aata hai, phir final.",
+          "Freeze ya Float | Round 1 ki seat mili to tay karein: Freeze (join karke upgrade nahi) ya Float (documents online verify, round 2 me upgrade ka mauka).",
+          "Reporting | Tay dates me allot hui seat par documents ke saath report karein. Report na karne ke rules round ke hisaab se alag hain.",
+        ].join("\n"),
+      },
+      quotas_title: { label: "Who fills which seat — heading", value: "Kaun si counselling kaun si seat bharti hai" },
+      quotas_intro: {
+        label: "Who fills which seat — line",
+        long: true,
+        value:
+          "MCC ki counselling All India Quota, deemed universities, central universities aur DNB seats bharti hai. Har state apni government aur private colleges ki state quota seats apni counselling me bharta hai. Dono me register kar sakte hain, par ek seat join karne ke baad doosri ke rules dekhne padte hain.",
+      },
+      state_line: {
+        label: "The state counselling — one line",
+        long: true,
+        value:
+          "State quota: har state ki apni counselling, apni dates aur domicile ki shartein. State ka page dekhein: authority, latest notices aur pichle rounds.",
+      },
+      rounds_title: { label: "Rounds — heading", value: "Round by round: kya kar sakte hain, kya nahi" },
+      rounds: {
+        label: "Rounds — one per line, \"round | choices | upgrade | leaving the seat\"",
+        long: true,
+        value: [
+          "Round 1 | Choices bharein aur lock karein. | Result ke baad Freeze ya Float chunein. | Free exit: seat chhod sakte hain bina deposit gawaye, aur round 2 me bhaag le sakte hain.",
+          "Round 2 | Fresh choices; round 1 ki choices nahi chalti. Round 1 ki allot seats bhi choose kar sakte hain. | Upgrade mila to purani seat turant cancel. | Free exit nahi: seat join na karne ya chhodne par deposit forfeit. Round 3 me phir fee bhar kar aa sakte hain.",
+          "Round 3 | Fresh choices; pehle se seat hai to sirf upgrade ke liye haan kehne par consider honge. | Round 3 tak upgrade allowed. | Round 3 ki seat join karne ke baad na resign, na upgrade. Join na karne par deposit gaya aur aage ke MCC rounds se bahar.",
+          "Stray round | Sirf unke liye jinke paas AIQ, state ya deemed me koi seat nahi. Fresh choices. | Koi upgrade nahi. | Allot seat join karni hi hai, warna deposit forfeit.",
+        ].join("\n"),
+      },
+      freeze: {
+        label: "Freeze — text",
+        long: true,
+        value: "Seat pasand hai aur upgrade nahi chahiye. Allot college me jaakar join karte hain, aur chhodna ho to wahin resign karte hain.",
+      },
+      float: {
+        label: "Float — text",
+        long: true,
+        value:
+          "Behtar seat chahiye. College documents online verify karta hai aur aap online upgrade ke liye haan kehte hain, college jaane ki zaroorat nahi. Ye willingness sirf ek baar di ja sakti hai.",
+      },
+      upgrade_line: {
+        label: "Upgrades last year — {upgraded}, {allotted}, {last_year}",
+        long: true,
+        value: "{last_year} me round 2 ke {allotted} allotments me se {upgraded} upgrades the: kai students ko round 1 se behtar seat mili.",
+      },
+      dates_title: { label: "Dates — heading — {year}", value: "MCC ki dates, {year}" },
+      faq_title: { label: "FAQ heading", value: "NEET PG counselling: sawal aur jawab" },
+      faq: {
+        label: "Extra FAQ for this page — one \"Question | Answer\" per line (the choice-filling questions from \"Site: Hinglish questions\" follow)",
+        long: true,
+        value: [
+          "NEET PG counselling kaise hoti hai? | Do counsellings saath chalti hain: MCC ki All India counselling (AIQ, deemed, central universities, DNB) aur har state ki apni counselling. Dono me register karke choices bharte hain, lock karte hain, result aata hai aur seat par report karte hain.",
+          "AIQ aur state quota me kya farak hai? | All India Quota me poore desh ke candidates ek merit list me hote hain. State quota me us state ki domicile ya wahan se MBBS jaisi shartein lagti hain, aur state ka apna reservation hota hai.",
+          "Kya main AIQ aur state dono counselling de sakta hoon? | Haan, dono me register kar sakte hain. Lekin ek seat join karne ke baad doosri seat lene ke liye pehli chhodni padti hai, aur round ke hisaab se uski keemat alag hai.",
+          "Round 1 me seat nahi mili to kya karein? | Round 2 me fresh choices bharein. Round 2 me nayi aur khaali hui seats bhi judti hain, aur round 1 me allot hui seats bhi choice me aati hain.",
+          "Seat accept karein ya upgrade ka wait karein? | Agar seat pasand hai to Freeze. Behtar chahiye to Float, par yaad rakhein: upgrade hote hi purani seat chali jaati hai. Ye faisla rank, budget aur bond dekh kar karein.",
+        ].join("\n"),
+      },
+      lead_title: { label: "Enquiry form — heading", value: "Apni rank ke hisaab se counselling plan chahiye?" },
+      lead_body: {
+        label: "Enquiry form — line",
+        long: true,
+        value: "Rank aur category bhejein. Counsellor aapke saath choices ka order, Freeze ya Float, aur AIQ ya state ka plan banata hai. Seat ka vaada koi nahi kar sakta: seat counselling allot karti hai.",
+      },
+    },
+  },
+  // Medical colleges by city (2026-11-11): one page per city, every figure from the city's own colleges.
+  "page.city": {
+    group: "Page: medical colleges in a city",
+    fields: {
+      eyebrow: { label: "Eyebrow — {state}, {city}", value: "{state} · {city}" },
+      title: { label: "Title — {city}", value: "Medical colleges in {city}" },
+      accent: { label: "Accent words after the title", value: "PG fees, MD/MS seats and stipend" },
+      answer: {
+        label: "Line under the title — {city}, {mdms}, {seats}, {govt}, {others}",
+        long: true,
+        value: "{city} has {mdms} MD/MS colleges with {seats} MD/MS seats on NMC's register: {govt} government and {others} private or deemed. Their 2026-27 PG fees, stipend, bond and branches, college by college.",
+      },
+      subtitle: {
+        label: "Line under the title when NMC's seats are missing — {city}",
+        long: true,
+        value: "Every MD/MS college in {city}: the 2026-27 PG fee on each kind of seat, stipend, bond and the branches taught, with the city's MBBS colleges and DNB hospitals.",
+      },
+      cta: { label: "Hero button", value: "Check your chance by rank" },
+      source: {
+        label: "Source line",
+        long: true,
+        value:
+          "Seats: NMC's college and course register. Fees: each college's 2026-27 notice where it has published one, else the fee listed for the 2026 counselling. Stipend: the college's published figure. Bond: as listed for the counselling, not an official notice — confirm with the state's notice.",
+      },
+      colleges_title: { label: "Colleges table — heading — {city}", value: "MD/MS colleges in {city}" },
+      colleges_intro: {
+        label: "Colleges table — line",
+        long: true,
+        value: "One row a college. The fee is the college's yearly PG fee on that kind of seat, from its cheapest to its dearest branch; a figure marked * is as listed for the counselling, the rest from the college's 2026-27 notice.",
+      },
+      fees_title: { label: "Fees — heading — {city}", value: "PG fees in {city}, 2026-27" },
+      fees_intro: {
+        label: "Fees — line",
+        long: true,
+        value: "One figure per college — the middle of its branches on that kind of seat — then the city's middle and its middle 80%. Only a kind of seat with three or more colleges is shown.",
+      },
+      seats_title: { label: "Seats & counselling — heading — {city}", value: "Seats and counselling" },
+      stipend_title: { label: "Stipend & bond — heading", value: "Stipend and bond" },
+      branches_title: { label: "Branches — heading — {city}", value: "Branches taught in {city}" },
+      mbbs_title: { label: "MBBS colleges — heading — {city}", value: "MBBS colleges in {city}" },
+      dnb_title: { label: "DNB hospitals — heading — {city}", value: "DNB hospitals in {city}" },
+      dnb_intro: {
+        label: "DNB hospitals — line",
+        long: true,
+        value: "Hospitals that train DNB residents under NBEMS. They are listed apart and never counted as medical colleges.",
+      },
+      faq_title: { label: "FAQ heading — {city}", value: "PG in {city}: common questions" },
+      faq: {
+        label:
+          "FAQ — one \"Question | Answer\" per line — {city}, {state}, {mdms}, {seats}, {govt}, {others}, {govt_fee}, {private_fee}, {mgmt_fee}, {deemed_fee}, {stipend}, {stipend_colleges}, {govt_stipend}, {bonded}, {govt_terms}, {bond_years}, {authority}, {mbbs}, {mbbs_seats}, {aiq_seats}",
+        long: true,
+        value: [
+          "How many MD/MS colleges are there in {city}? | {city} has {mdms} MD/MS colleges with {seats} MD/MS seats on NMC's register: {govt} government and {others} private or deemed.",
+          "What is the PG fee in government colleges in {city}? | {govt_fee} a year in the middle on state-quota seats, one figure per college, 2026-27.",
+          "What is the PG fee in private medical colleges in {city}? | On state-quota seats {private_fee} a year in the middle; on management seats {mgmt_fee}, one figure per college, 2026-27.",
+          "What is the PG fee in deemed universities in {city}? | {deemed_fee} a year in the middle on paid seats, one figure per college, 2026-27.",
+          "What is the PG stipend in {city}? | {stipend} a month in the first year in the middle, across {stipend_colleges} colleges that publish one.",
+          "What is the PG stipend in government colleges in {city}? | {govt_stipend} a month in the first year in the middle.",
+          "Is there a service bond in {city}'s government colleges? | {bonded} of {govt_terms} government colleges list a service bond, usually {bond_years}, as listed for the counselling. The state's own notice is the final word.",
+          "Which counselling fills PG seats in {city}? | MCC's counselling fills the All India Quota ({aiq_seats} seats here in 2026), deemed universities and central universities; {authority} fills {state}'s own quota seats.",
+          "How many MBBS colleges are there in {city}? | {mbbs} MBBS colleges with {mbbs_seats} seats on NMC's register.",
+        ].join("\n"),
+      },
+      lead_title: { label: "Enquiry form — heading — {city}", value: "Choosing a PG seat in {city}?" },
+      lead_body: {
+        label: "Enquiry form — line",
+        long: true,
+        value: "Tell us your rank and budget. A counsellor sets the colleges of {city} and its state against your rank, quota and fee, round by round. No one can promise a seat: counselling allots it.",
+      },
+    },
+  },
+  "page.city_hub": {
+    group: "Page: medical colleges by city (the index)",
+    fields: {
+      eyebrow: { label: "Eyebrow", value: "Medical colleges by city" },
+      title: { label: "Title", value: "Medical colleges by city" },
+      accent: { label: "Accent words", value: "PG fees, MD/MS seats and stipend" },
+      subtitle: {
+        label: "Line under the title — {cities}, {colleges}",
+        long: true,
+        value: "{cities} cities with five or more MD/MS colleges — {colleges} colleges in all. Each city's page gives every college's PG fee, NMC seats, stipend, bond and branches.",
+      },
+    },
+  },
   "page.pg_choice_filling.strategy": {
     group: "Page: NEET PG choice filling — strategy",
     fields: {

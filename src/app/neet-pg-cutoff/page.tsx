@@ -20,6 +20,7 @@ import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
 import BranchStateIndex from "@/components/cutoffs/BranchStateIndex";
 import { getLatestLiveRound, roundPath, type CutCat } from "@/lib/mccResults";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import { hinglishFaqs } from "@/lib/hinglishFaq";
 
 /**
  * "NEET PG cutoff branch wise", "NEET PG cutoff 2025 OBC", "MD radiology
@@ -183,6 +184,23 @@ export default async function NeetPgCutoffPage(props: Props) {
     },
   ];
 
+  // Hinglish questions on the default (general) view only: their figures are the Open category's.
+  if (category === "GEN") {
+    const radioLast = liveRadio ? liveLast(liveRadio.branch) : null;
+    const medLast = medicine ? liveLast(medicine.branch) : null;
+    faqs.push(
+      ...(await hinglishFaqs("cutoff", {
+        year: live?.year,
+        round: live?.spec.label,
+        radio_rank: radioLast ? n(radioLast) : undefined,
+        med_rank: medLast ? n(medLast) : undefined,
+        qual_year: latestQ.year,
+        qual_gen: latestQ.rows[0]?.score,
+        qual_res: latestQ.rows[2]?.score,
+        qual_out: latestQ.outOf,
+      })),
+    );
+  }
   return (
     <main className="min-h-screen bg-background">
       <PageDatasets path="/neet-pg-cutoff" />

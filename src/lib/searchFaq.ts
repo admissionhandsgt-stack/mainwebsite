@@ -50,7 +50,14 @@ const SPECIALTY = /\b(radiology|radio ?diagnosis|medicine|surgery|nuclear|pathol
 
 /** Builders whose answer is about the state or college the search names (lib/huntAnswers.ts kinds). */
 /** Compared on the kind before its first ":" ("branch-state:rajasthan" → "branch-state"). */
-const STATE_AWARE = new Set(["state-stipend", "bond-state", "college", "authority", "branch-state", "college-branch", "college-round"]);
+const STATE_AWARE = new Set([
+  "state-stipend", "bond-state", "college", "authority", "branch-state", "college-branch", "college-round",
+  // A branch's fees, stipend or bond in a state, a city or one college, and a city's own figures (lib/branchMoney.ts).
+  "branch-fees-state", "branch-fees-city", "branch-fees-college",
+  "branch-stipend-state", "branch-stipend-city", "branch-stipend-college",
+  "branch-bond-state", "branch-bond-city", "branch-bond-college",
+  "city-fees", "city-stipend", "city-bond",
+]);
 
 async function namesState(q: string): Promise<boolean> {
   const states = await getPgStates().catch(() => []);
@@ -75,7 +82,7 @@ async function roomOn(page: string, q: string) {
 }
 const lastPart = (p: string) => p.split("/").filter(Boolean).pop() ?? "";
 /** Pages about one branch, state or college: an answer about another one moves to its own page. */
-const SPECIFIC = /^\/(md-ms-india\/(branches|states|colleges|stipend|fees)|mbbs-india\/colleges|counselling\/(neet-pg|mbbs))\//;
+const SPECIFIC = /^\/(md-ms-india\/(branches|states|colleges|stipend|fees)|mbbs-india\/colleges|counselling\/(neet-pg|mbbs)|medical-colleges)\//;
 function pageFits(page: string, d: Draft, q: string): boolean {
   if (!SPECIFIC.test(page)) return true; // a hub (cutoff, marks vs rank, a round page) takes any of its searches
   if (lastPart(page) === lastPart(d.page) || d.page.startsWith(`${page}/`)) return true;

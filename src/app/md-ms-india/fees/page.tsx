@@ -14,6 +14,7 @@ import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import DataPageCounsel from "@/components/lead/DataPageCounsel";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import { hinglishFaqs } from "@/lib/hinglishFaq";
 
 /**
  * NEET PG fees, the whole country (2026-11-09): "neet pg fees", "md ms fees in india", "pg fees in private medical
@@ -80,6 +81,7 @@ export default async function PgFeesPage() {
   ];
   const cheapestPrivate = [...states].filter((s) => s.privateManagement).sort((a, b) => a.privateManagement! - b.privateManagement!);
 
+  faqs.push(...(await hinglishFaqs("fees", tokens)));
   return (
     <main className="min-h-screen bg-background">
       <StructuredData

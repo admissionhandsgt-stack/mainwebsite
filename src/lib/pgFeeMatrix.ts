@@ -32,6 +32,9 @@ export type Family = "state" | "aiq" | "management" | "nri";
 export const familyOf = (label: string | null): Family => {
   const l = label ?? "";
   if (/\bNRI\b/i.test(l)) return "nri";
+  // "Institutional Preference" is a merit quota for a university's own graduates (Gujarat's government colleges charge
+  // it the government fee); Karnataka's "Institutional Quota" and Telangana's "C Cat-Institutional" are management seats.
+  if (/institutional preference/i.test(l)) return "state";
   if (/manag|mgmt|^MNG$|^MM$|institutional|\bMQ\d|\b[BC] Cat\b|\bpaid\b/i.test(l)) return "management";
   if (/^AIQ$|^All India Quota/i.test(l)) return "aiq";
   return "state";
@@ -45,7 +48,7 @@ export const FAMILY_LABEL: Record<Family, string> = {
 const FAMILY_ORDER: Family[] = ["state", "aiq", "management", "nri"];
 
 /** Best fee per college × branch × quota (official first, blank official rows kept so they win), yearly only. */
-const BEST = sql`(
+export const BEST = sql`(
   SELECT DISTINCT ON (f.institute_id, f.course_id, f.quota_id)
          f.institute_id, f.course_id, f.quota_id, f.fee_inr, f.fee_usd, f.fee_currency, f.fee_periodicity,
          (f.fee_source IS NOT NULL) AS official, f.updated_at
@@ -53,13 +56,14 @@ const BEST = sql`(
    WHERE f.level = 'pg'
    ORDER BY f.institute_id, f.course_id, f.quota_id, (f.fee_source IS NOT NULL) DESC, f.year DESC NULLS LAST, f.id DESC
 )`;
-const KEEP = sql`(b.fee_inr > 0 OR (b.fee_currency = 'USD' AND b.fee_usd > 0))
+export const KEEP = sql`(b.fee_inr > 0 OR (b.fee_currency = 'USD' AND b.fee_usd > 0))
   AND COALESCE(b.fee_periodicity, 'per year') IN ('per year', 'first year')
   AND COALESCE(q.label, '') !~* '(DNB|NBE)'
   AND c.name !~* '^(DNB|DrNB|FNB|NBE)'
   AND i.ownership IN ('government', 'private', 'deemed')`;
-const FAMILY_SQL = sql`CASE
+export const FAMILY_SQL = sql`CASE
   WHEN COALESCE(q.label, '') ~* '\\mNRI\\M' THEN 'nri'
+  WHEN COALESCE(q.label, '') ~* 'institutional preference' THEN 'state'
   WHEN COALESCE(q.label, '') ~* '(manag|mgmt|^MNG$|^MM$|institutional|\\mMQ[0-9]|\\m[BC] Cat\\M|\\mpaid\\M)' THEN 'management'
   WHEN COALESCE(q.label, '') ~* '^(AIQ$|All India Quota)' THEN 'aiq'
   ELSE 'state' END`;
@@ -247,9 +251,31 @@ async function build(stateName: string, slug: string): Promise<StateFeeMatrix | 
 
   // The cheapest and dearest seat of each kind, named in full (college, branch, quota) — never pooled.
   const extremes: StateFeeMatrix["extremes"] = {};
+  // A management or NRI fee below the same college's state-quota fee for the same branch is a listing slip (SDM's
+  // ₹25,000 "Institutional Quota" Anatomy seat beside a state seat at several times that): never named as the cheapest.
+  const stateFee = new Map<string, number>();
+  for (const r of raw)
+    if (familyOf(r.quota) === "state" && Number(r.fee_inr) > 0) {
+      const k = `${r.slug}|${r.course}`;
+      stateFee.set(k, Math.min(stateFee.get(k) ?? Infinity, Number(r.fee_inr)));
+    }
+  // …and, as in the state fee document's †, a fee under a tenth of the same college's middle on that kind of seat
+  // (Parul's ₹1,000 management seat among ₹30-lakh ones).
+  const famFees = new Map<string, number[]>();
+  for (const r of raw)
+    if (Number(r.fee_inr) > 0) {
+      const k = `${r.slug}|${familyOf(r.quota)}`;
+      famFees.set(k, [...(famFees.get(k) ?? []), Number(r.fee_inr)]);
+    }
+  const slip = (r: Raw) => {
+    const f = familyOf(r.quota);
+    const fee = Number(r.fee_inr);
+    if (fee < (median(famFees.get(`${r.slug}|${f}`) ?? []) ?? 0) / 10) return true;
+    return (f === "management" || f === "nri") && fee < (stateFee.get(`${r.slug}|${r.course}`) ?? 0);
+  };
   for (const own of ["government", "private", "deemed"] as Ownership[]) {
     for (const fam of FAMILY_ORDER) {
-      const seats = raw.filter((r) => r.ownership === own && familyOf(r.quota) === fam && Number(r.fee_inr) > 0);
+      const seats = raw.filter((r) => r.ownership === own && familyOf(r.quota) === fam && Number(r.fee_inr) > 0 && !slip(r));
       if (seats.length < 3) continue;
       const s = [...seats].sort((a, b) => Number(a.fee_inr) - Number(b.fee_inr));
       const seat = (x: Raw): Seat => ({
