@@ -170,7 +170,7 @@ async function ourPage(path: string): Promise<{ text: string; title: string } | 
 }
 
 const STOP = new Set(
-  "a an the of in on for to and or is are was be by with at from vs v best list top all near me my i what which how why when where who whom kya hai hota hoti hain ke ki ka me mai mein se par kitne kitni kitna kaise kare karna milega milta chahiye neet 2024 2025 2026 2027 india indian latest new full details".split(" "),
+  "a an the of in on for to and or is are was be by with at from vs v best list top all near me my i what which how why when where who whom kya hai hota hoti hain ke ki ka me mai mein se par kitne kitni kitna kaise kare karna milega milta chahiye neet 2024 2025 2026 2027 india indian latest new full details students student doctors candidates".split(" "),
 );
 /** Words people type for what our pages name otherwise. */
 const FOLD: Record<string, string> = {
@@ -218,8 +218,28 @@ async function closestPage(query: string, paths: string[]): Promise<string | nul
     const score = hit / q.length - p.length / 10_000;
     if (hit && (!best || score > best.score)) best = { path: p, score };
   }
-  return best && best.score >= 0.6 ? best.path : null;
+  if (best && best.score >= 0.6) return best.path;
+  // No page names the search's own words: the hub that answers its kind of question, if one does.
+  const hub = HUBS.find(([re, level]) => re.test(query) && (level === "any" || (level === "pg" ? pg || !ug : ug)));
+  return hub ? hub[2] : null;
 }
+
+/** The hub for a kind of question, when no page carries the search's own words ("neet pg cutoff reduction"). */
+const HUBS: [RegExp, "pg" | "ug" | "any", string][] = [
+  [/\b(choice filling|upgrad|free exit|freeze|float|resign|forfeit|security deposit)/i, "pg", "/neet-pg-choice-filling"],
+  [/\b(marks?|score)\b.*\brank\b|\brank\b.*\b(marks?|score)\b|\bpercentile\b/i, "pg", "/neet-pg-marks-vs-rank"],
+  [/\b(cut ?off|closing rank)\b/i, "pg", "/neet-pg-cutoff"],
+  [/\b(cut ?off|closing rank)\b/i, "ug", "/neet-ug-cutoff"],
+  [/\bstipend\b/i, "any", "/md-ms-india/stipend"],
+  [/\bbond\b|seat leaving/i, "any", "/md-ms-india/bond"],
+  [/\b(registration|schedule|notice|date|dates|result)\b/i, "any", "/neet-counselling-updates"],
+  [/\bfees?\b/i, "pg", "/md-ms-india/fees"],
+  [/\bseat matrix|seats\b/i, "pg", "/neet-pg-seat-matrix"],
+  [/\bdnb\b/i, "pg", "/md-vs-dnb"],
+];
+
+/** A search that is only a name ("malabar institute of medical sciences kannur") — no question to answer in an H2. */
+const ASKS = /\b(fees?|stipend|cut ?off|seats?|rank|marks?|score|bond|admission|counsell?ing|round|result|quota|salary|hostel|ranking|review|how|what|which|why|when|kya|kaise|kitn[aie]|list|vs|best|top)\b/i;
 
 /* ------------------------------------------------------------------ budget */
 
@@ -292,7 +312,14 @@ export async function runResearch(limit?: number): Promise<{ researched: number;
     const advice: Advice[] = [];
     if (!landing)
       advice.push({ kind: "no_page", text: `No page of ours answers "${item.query}"${item.seen ? ` (autocomplete, seen ${item.seen}×)` : ""} — a new page or a section on the nearest one.` });
-    if (page && titleGap.length) advice.push({ kind: "title", text: `${landing}: the title lacks ${titleGap.map((w) => `"${w}"`).join(", ")}.` });
+    // The title's gap only where Google already shows that page for the search; a search we are not shown for, whose
+    // nearest page is a guess, gets "answer it there or give it a page" instead.
+    if (item.gsc && page && titleGap.length) advice.push({ kind: "title", text: `${landing}: the title lacks ${titleGap.map((w) => `"${w}"`).join(", ")}.` });
+    if (!item.gsc && landing && page && !page.text.includes(item.query.toLowerCase()))
+      advice.push({
+        kind: "section",
+        text: `"${item.query}"${item.seen ? ` (autocomplete, seen ${item.seen}×)` : ""} — nearest page ${landing}: answer it there under its own words, or give it a page of its own.`,
+      });
     const missingStrong = facts.filter((f) => !f.onOurPage && f.confidence !== "single");
     if (missingStrong.length)
       advice.push({
@@ -306,9 +333,9 @@ export async function runResearch(limit?: number): Promise<{ researched: number;
     // is not yet in the top 3: answer it under its own words (owner's reels, 2026-11-11: an H2 with the exact search, the
     // answer in its first sentence). Only when the page does not already carry the words as a heading-sized phrase.
     const long = item.query.trim().split(/\s+/).length >= 5;
-    if (long && landing && page && !(item.gsc && item.gsc.position < 3) && !page.text.includes(item.query.toLowerCase()))
-      advice.push({ kind: "section", text: `${landing}: add an H2 "${item.query}" with the answer in its first sentence (a long search, ${item.gsc ? `#${item.gsc.position.toFixed(1)}` : "autocomplete"}).` });
-    if (!mine) advice.push({ kind: "rank", text: `Not in the web's top 10; first: ${competitors.slice(0, 3).join(", ")}.` });
+    if (item.gsc && long && ASKS.test(item.query) && landing && page && item.gsc.position >= 3 && !page.text.includes(item.query.toLowerCase()))
+      advice.push({ kind: "section", text: `${landing}: add an H2 "${item.query}" with the answer in its first sentence (a long search, #${item.gsc.position.toFixed(1)}).` });
+    if (!mine && competitors.length) advice.push({ kind: "rank", text: `Not in the web's top 10; first: ${competitors.slice(0, 3).join(", ")}.` });
 
     // Priority: Search Console's impressions where we have them (more for page 1–2 positions), otherwise how often
     // autocomplete offers it; more when there is no page at all, or official figures we lack.
