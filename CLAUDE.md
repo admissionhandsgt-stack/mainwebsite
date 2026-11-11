@@ -2390,6 +2390,15 @@ Owner: "itne pending task complete karo" (Meta's Conversions API token comes lat
 - **Hero images fetch with `fetchPriority="high"`** (img and its preload): PSI mobile on a PG college page scored 71–80
   with LCP 4.9–6.4 s on the campus photo and "fetchpriority=high should be applied to the image preload request". A new
   hero `<Image priority>` takes `fetchPriority="high"` too (Next 15's preload only carries it when the prop is given).
+- **The real cause: every AVIF went out unoptimised from 9 to 11 Nov.** Next 15.5.29 passes an AVIF source through
+  untouched unless sharp reports libheif ≥ 1.23.2 (`canDecodeAvif` in next/dist/server/image-optimizer.js). sharp reads
+  that from `@img/sharp-libvips-<platform>/versions.json`, which Next's file tracing leaves out of `.next/standalone`, so
+  on the server `sharp.versions` had no `heif` and every college/hero photo reached phones at full size (118 KB where a
+  640px WebP is 40 KB) — the same file at every width, `content-type: image/avif`. `deploy_oracle.sh` now copies
+  versions.json into the release and **refuses a release whose sharp reports no libheif**. After it went live: the
+  cached `.avif` files in `/opt/admissionhands/next-cache` were deleted (255) and Cloudflare purged with `--everything`
+  (a prefix purge left some widths stale). Check after any Next or sharp upgrade: one `/_next/image?url=…avif&w=640` and
+  `&w=828` must differ in size and say `image/webp`.
 - **Search research v2 — hourly** (owner: "weekly nhi hourly review lagao abhi build kar raha hu… bot ko smart banao"):
   `lib/serpSuggest.ts` asks Google's and Bing's public autocomplete (from the Mumbai server, honest user agent, 8 seeds an
   hour, least recently asked first) about states × intents, branches × intents and English/Hinglish question heads; real
