@@ -52,9 +52,19 @@ export default function MetaPixel({ id, copy }: { id: string; copy: Copy }) {
   const pathname = usePathname();
   const [consent, setConsent] = useState<"yes" | "no" | null | "unknown">("unknown");
   const [allowed, setAllowed] = useState(false);
+  // The notice waits for the visitor's first scroll, tap or key (2026-11-11): drawn on load it was the largest text a
+  // phone painted after hydration, so it *was* the page's Largest Contentful Paint (4.1 s on a PG college page, the
+  // content itself at 1.4 s). LCP stops counting at the first input, and the pixel waits for consent either way.
+  const [engaged, setEngaged] = useState(false);
 
   useEffect(() => {
     setConsent(readConsent());
+    const on = () => setEngaged(true);
+    const events = ["scroll", "pointerdown", "keydown", "touchstart"] as const;
+    for (const e of events) window.addEventListener(e, on, { once: true, passive: true });
+    return () => {
+      for (const e of events) window.removeEventListener(e, on);
+    };
   }, []);
 
   // Each page view: only on pages a tracker may run on.
@@ -71,7 +81,7 @@ export default function MetaPixel({ id, copy }: { id: string; copy: Copy }) {
     return hardNavigateToExcluded();
   }, [consent, allowed]);
 
-  if (consent !== null || !allowed) return null;
+  if (consent !== null || !allowed || !engaged) return null;
   return (
     <div
       role="region"
