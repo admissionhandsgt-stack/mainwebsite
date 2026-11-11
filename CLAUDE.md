@@ -2431,7 +2431,20 @@ Owner: "itne pending task complete karo" (Meta's Conversions API token comes lat
   is in that page's text, and it has no college's closing rank, promise or donation talk**. Stored in `search_faqs`
   (migration 0060: answer, source_url, as_of, checked_on), shown 45 days then re-checked; a miss (`status = 'none'`) is
   retried after 30 days; a staff "Remove" stays removed. At most 2 tries an hour. The page links the official source.
-  Claude never looks for or handles the keys — the owner pastes them.
+  Claude never looks for or handles the keys — the owner pastes them. The Gemini box is a visible textarea (one key per
+  line; commas, spaces or new lines all separate), Save says how many were saved, and **"Test Gemini keys"** reports each as
+  works / refused from a free metadata request (`testGeminiKeys` in lib/gemini.ts) — never the key itself. On 2026-11-11 the
+  first attempt had saved nothing (`ai.gemini.keys` absent) and the screen had said so only in a hint.
+- **"<state> neet pg website" searches** (owner: "jaise mai search karta hu JK neet pg website… city state college
+  university etc"): `authoritySite` in lib/huntAnswers.ts names the state's counselling site — PG: the page the owner
+  approved in Zyn for that state's notices (newest), else `state_authorities` with scope "UG and PG"; UG: `state_authorities`,
+  else the state board in the alert feed — with its three latest notices and MCC for the AIQ seats; no state or "mcc" →
+  NBEMS/NTA for the exam and MCC for counselling. A held Zyn notice (Tripura) is not used. The answer goes on the state's
+  counselling page unless Google shows the search on another page of that state. `STATE_ALIAS` reads short names (jk, j&k,
+  mh, hp…), misspellings and the authorities themselves (kea, bopee, bfuhs, centac…), compared by `stateKey` — "jk" had
+  matched nothing, because the alias said "Jammu & Kashmir" and our list says "Jammu and Kashmir". Research seeds (732):
+  short state names, every state × "counselling website", the authorities and health universities, 20 cities, 45 colleges
+  searched most; 12 an hour; suggestions about nursing, pharmacy, AYUSH, engineering or jobs are dropped.
 - **Research specs (Sonnet agents, 2026-11-11), in `D:/Admisson Hands/seo_data/research_2026_11/`:** `lead_magnet_pdf.md`
   (state PG fee & stipend PDF over WhatsApp: tap → prefilled message → free-form document reply inside the 24-hour window;
   Maharashtra first), `hinglish_pages.md` (no /hi/ section; a Hinglish FAQ block on 8 existing pages and two "kaise hoti hai"

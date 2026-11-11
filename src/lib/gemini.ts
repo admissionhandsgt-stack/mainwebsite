@@ -80,3 +80,34 @@ export async function geminiJson<T>(prompt: string, schema: Schema): Promise<T |
   }
   return null;
 }
+
+/**
+ * Admin → Outreach "Test Gemini keys": each saved key's answer to a metadata request for the model (free — it spends no
+ * generation quota). Returns only a number and a verdict per key; the keys themselves never leave the server.
+ */
+export async function testGeminiKeys(): Promise<{ n: number; ok: boolean; note: string }[]> {
+  const list = await keys();
+  const model = ((await getIntegration("ai.gemini.model")) ?? MODEL).trim() || MODEL;
+  return Promise.all(
+    list.map(async (key, i) => {
+      try {
+        const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}`, {
+          headers: { "x-goog-api-key": key },
+          cache: "no-store",
+          signal: AbortSignal.timeout(15_000),
+        });
+        if (r.ok) return { n: i + 1, ok: true, note: "works" };
+        const j = (await r.json().catch(() => null)) as { error?: { status?: string; details?: { reason?: string }[] } } | null;
+        const reason = j?.error?.details?.map((d) => d.reason).find(Boolean) ?? j?.error?.status ?? "";
+        const note =
+          reason === "API_KEY_INVALID" ? "not a valid key (copy it again from AI Studio)"
+          : r.status === 403 ? "refused — the Generative Language API is off for this key's project"
+          : r.status === 429 ? "valid, but out of quota right now"
+          : `refused (HTTP ${r.status}${reason ? `, ${reason}` : ""})`;
+        return { n: i + 1, ok: r.status === 429, note };
+      } catch {
+        return { n: i + 1, ok: false, note: "no answer from Google" };
+      }
+    }),
+  );
+}

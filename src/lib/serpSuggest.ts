@@ -32,13 +32,54 @@ const HEADS = [
   "management quota kya hota hai", "aiq vs state quota", "mbbs ke liye kitne marks chahiye", "neet ug counselling kaise hoti hai",
   "domicile kya hota hai neet", "mbbs private college fees kitni", "500 marks mbbs milega kya", "neet counselling fraud",
 ];
+/**
+ * How people name a place or a body instead of the state (owner, 2026-11-11: "jaise mai search karta hu JK neet pg
+ * website ya pura naam likh ke… city state college university etc"): short state names, the counselling authorities,
+ * the health universities, the cities with many medical colleges, and the colleges searched most — each joined with what
+ * people ask about it.
+ */
+const STATE_SHORT = ["jk", "j&k", "up", "mp", "ap", "tn", "wb", "hp", "mh"];
+const SHORT_INTENTS = ["neet pg counselling", "neet pg website", "mbbs counselling", "pg stipend"];
+const WEBSITE_INTENTS = ["neet pg counselling website", "mbbs counselling website"];
+const AUTHORITIES = [
+  "kea", "jkbopee", "bopee", "cee kerala", "knruhs", "dr ntr uhs", "upneet", "dgme up", "wbmcc", "uhsr", "bfuhs", "bceceb",
+  "ojee", "dmet odisha", "acppgmec", "acpugmec", "amru", "centac", "hnbumu", "mahacet", "cet cell", "tn medical selection",
+  "jceceb", "mcc", "nbems", "rguhs", "muhs", "ssuhs", "kaloji university",
+];
+const AUTHORITY_INTENTS = ["pg counselling", "website", "merit list", "neet pg"];
+const CITIES = [
+  "mumbai", "pune", "delhi", "bangalore", "chennai", "hyderabad", "kolkata", "jaipur", "lucknow", "ahmedabad", "indore", "nagpur",
+  "kanpur", "bhopal", "patna", "mangalore", "coimbatore", "vadodara", "surat", "varanasi",
+];
+const CITY_SEEDS = (c: string) => [`medical colleges in ${c}`, `pg fees ${c}`, `md ms colleges in ${c}`];
+const COLLEGES = [
+  "aiims delhi", "pgimer chandigarh", "cmc vellore", "jipmer", "kgmu lucknow", "bhu ims", "jnmc aligarh", "kmc manipal",
+  "maulana azad medical college", "afmc pune", "grant medical college", "kem mumbai", "sms jaipur", "bj medical college ahmedabad",
+  "madras medical college", "stanley medical college", "osmania medical college", "gandhi medical college hyderabad",
+  "bmcri bangalore", "mysore medical college", "gmc nagpur", "gmch chandigarh", "ipgmer kolkata", "rg kar medical college",
+  "nrs medical college", "lhmc delhi", "ucms delhi", "vmmc safdarjung", "dy patil pune", "dy patil navi mumbai",
+  "bharati vidyapeeth pune", "kmc mangalore", "saveetha medical college", "sri ramachandra medical college", "jnmc wardha",
+  "kims bhubaneswar", "ims sum bhubaneswar", "amrita kochi", "sgpgi lucknow", "igims patna", "pmch patna", "rims ranchi",
+  "scb cuttack", "gmc srinagar", "gmc jammu",
+];
+const COLLEGE_INTENTS = ["pg fees", "pg stipend", "cut off"];
+
 /** A suggestion is ours to study only when it is about medical admission. */
-const RELEVANT = /\b(neet|pg|mbbs|bds|md|ms|dnb|mds|medical|stipend|counsel+ing|bond|seat|seats|cut ?off|rank|marks|fees?|quota|college|aiims|jipmer|nmc|mcc|choice|round|upgrade|freeze|float|domicile)\b/i;
+const RELEVANT =
+  /\b(neet|pg|mbbs|bds|md|ms|dnb|mds|medical|stipend|counsel+ing|bond|seat|seats|cut ?off|rank|marks|fees?|quota|college|aiims|jipmer|nmc|mcc|choice|round|upgrade|freeze|float|domicile|website|portal|merit list|kea|bopee|jkbopee|wbmcc|bfuhs|bceceb|uhsr|knruhs|upneet|acppgmec|acpugmec|amru|centac|hnbumu|nbems|mahacet|ojee|jceceb)\b/i;
+/** …and not about another course or exam the same boards run. */
+const OTHER =
+  /\b(nursing|pharm\w*|b\.?\s?sc|m\.?\s?sc|bams|bhms|bums|ayush|physio\w*|paramedical|engineering|b\.?\s?tech|polytechnic|iti|b\.?\s?ed|d\.?\s?el\.?\s?ed|llb|law|mba|bca|ug cet|kcet|jee|cuet|recruitment|vacancy for|job|jobs)\b/i;
 
 export async function buildSeeds(): Promise<string[]> {
   const states = (await getPgStates().catch(() => [])).map((s) => s.name.toLowerCase());
   const out = new Set<string>(HEADS);
   for (const st of states) for (const i of STATE_INTENTS) out.add(i === "medical colleges" ? `medical colleges in ${st}` : `${st} ${i}`);
+  for (const st of states) for (const i of WEBSITE_INTENTS) out.add(`${st} ${i}`);
+  for (const st of STATE_SHORT) for (const i of SHORT_INTENTS) out.add(`${st} ${i}`);
+  for (const a of AUTHORITIES) for (const i of AUTHORITY_INTENTS) out.add(`${a} ${i}`);
+  for (const c of CITIES) for (const x of CITY_SEEDS(c)) out.add(x);
+  for (const c of COLLEGES) for (const i of COLLEGE_INTENTS) out.add(`${c} ${i}`);
   for (const b of BRANCHES) for (const i of BRANCH_INTENTS) out.add(`${b} ${i}`);
   return [...out];
 }
@@ -57,7 +98,7 @@ async function ask(url: string, pick: (j: unknown) => unknown): Promise<string[]
 const tidy = (q: string) => q.toLowerCase().replace(/\s+/g, " ").trim();
 
 /** Ask both engines about `count` seeds (least recently asked first); store what comes back. */
-export async function collectSuggestions(count = 8): Promise<{ seeds: number; found: number; added: number }> {
+export async function collectSuggestions(count = 12): Promise<{ seeds: number; found: number; added: number }> {
   const seeds = await buildSeeds();
   await db.execute(sql`INSERT INTO serp_seeds (seed) SELECT unnest(${`{${seeds.map((s) => `"${s.replace(/"/g, "")}"`).join(",")}}`}::text[]) ON CONFLICT DO NOTHING`);
   const due = (await db.execute(sql`
@@ -73,7 +114,7 @@ export async function collectSuggestions(count = 8): Promise<{ seeds: number; fo
     ]);
     const all = new Map<string, Set<string>>();
     for (const [engine, list] of [["google", g], ["bing", b]] as const)
-      for (const s of list.map(tidy)) if (s.length >= 8 && s.split(" ").length >= 3 && RELEVANT.test(s)) all.set(s, (all.get(s) ?? new Set()).add(engine));
+      for (const s of list.map(tidy)) if (s.length >= 8 && s.split(" ").length >= 3 && RELEVANT.test(s) && !OTHER.test(s)) all.set(s, (all.get(s) ?? new Set()).add(engine));
     for (const [query, engines] of all) {
       const r = (await db.execute(sql`
         INSERT INTO serp_suggest (query, seed, engines) VALUES (${query}, ${seed}, ${`{${[...engines].join(",")}}`}::text[])

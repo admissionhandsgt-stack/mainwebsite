@@ -233,6 +233,8 @@ const HUBS: [RegExp, "pg" | "ug" | "any", string][] = [
   [/\b(cut ?off|closing rank)\b/i, "ug", "/neet-ug-cutoff"],
   [/\bstipend\b/i, "any", "/md-ms-india/stipend"],
   [/\bbond\b|seat leaving/i, "any", "/md-ms-india/bond"],
+  // "jk neet pg website": the answer names the state's own site and goes on its counselling page (lib/searchFaq.ts).
+  [/\b(website|portal|official site|login)\b/i, "any", "/neet-counselling-updates"],
   [/\b(registration|schedule|notice|date|dates|result)\b/i, "any", "/neet-counselling-updates"],
   [/\bfees?\b/i, "pg", "/md-ms-india/fees"],
   [/\bseat matrix|seats\b/i, "pg", "/neet-pg-seat-matrix"],
@@ -240,7 +242,7 @@ const HUBS: [RegExp, "pg" | "ug" | "any", string][] = [
 ];
 
 /** A search that is only a name ("malabar institute of medical sciences kannur") — no question to answer in an H2. */
-const ASKS = /\b(fees?|stipend|cut ?off|seats?|rank|marks?|score|bond|admission|counsell?ing|round|result|quota|salary|hostel|ranking|review|how|what|which|why|when|kya|kaise|kitn[aie]|list|vs|best|top)\b/i;
+const ASKS = /\b(fees?|stipend|cut ?off|seats?|rank|marks?|score|bond|admission|counsell?ing|round|result|quota|salary|hostel|ranking|review|how|what|which|why|when|kya|kaise|kitn[aie]|list|vs|best|top|website|portal)\b/i;
 
 /* ------------------------------------------------------------------ budget */
 
@@ -265,7 +267,7 @@ export interface Advice {
 }
 
 export async function runResearch(limit?: number): Promise<{ researched: number; ours: number; suggested?: number; published?: number; skipped?: string }> {
-  const sug = await collectSuggestions(8).catch(() => ({ seeds: 0, found: 0, added: 0 }));
+  const sug = await collectSuggestions(12).catch(() => ({ seeds: 0, found: 0, added: 0 }));
   const budget = limit ?? (await allowance());
   if (budget <= 0) return { researched: 0, ours: 0, suggested: sug.added, skipped: "web search budget kept for the daily hunt" };
 

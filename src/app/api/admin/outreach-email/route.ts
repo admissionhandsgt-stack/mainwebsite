@@ -10,6 +10,7 @@ import { askHunt, buildHunt, listHunt, markHunt, rebuildHunt } from "@/lib/hunt"
 import { deleteLibrary, listLibrary, saveLibrary } from "@/lib/huntAnswers";
 import { addSource, deleteSource, listSources, runDiscover } from "@/lib/outreachDiscover";
 import { webSearchUsage } from "@/lib/webSearch";
+import { testGeminiKeys } from "@/lib/gemini";
 
 /**
  * Admin → Outreach email (2026-11-10). GET: the mailbox and bot settings (secrets masked), the switch, the cap and every
@@ -130,17 +131,23 @@ export async function POST(request: Request) {
           await setIntegration("search.tavily.key2", tavilyKey2, true);
         }
         const geminiRaw = str(b.geminiKey, 600);
+        let geminiSaved = 0;
         if (geminiRaw) {
-          const keys = [...new Set(geminiRaw.split(/[\s,]+/).filter(Boolean))].slice(0, 4);
+          // Quotes and "key 1:" labels pasted with the keys are dropped; any separator works (comma, space, new line).
+          const keys = [...new Set(geminiRaw.replace(/["'`]/g, " ").split(/[\s,;|]+/).filter((k) => /^AIza/.test(k)))].slice(0, 4);
           if (!keys.length || keys.some((k) => !/^AIza[0-9A-Za-z_-]{30,}$/.test(k)))
-            return NextResponse.json({ error: "Gemini API keys from Google AI Studio start with AIza — paste up to four, separated by commas." }, { status: 400 });
+            return NextResponse.json({ error: "Gemini keys not saved: each key from Google AI Studio starts with AIza and is 39 characters — paste up to four, one per line." }, { status: 400 });
           await setIntegration("ai.gemini.keys", keys.join(","), true);
+          geminiSaved = keys.length;
         }
         if (typeof b.enabled === "boolean") await setIntegration("outreach.enabled", b.enabled ? "true" : "false");
         const cap = Number(b.cap);
         if (b.cap !== undefined && Number.isFinite(cap)) await setIntegration("outreach.daily_cap", String(Math.max(1, Math.min(20, Math.round(cap)))));
-        return NextResponse.json({ ok: true });
+        return NextResponse.json({ ok: true, geminiSaved });
       }
+      case "test-gemini":
+        // Each key's answer to a metadata request (free, no generation quota). The keys never leave the server.
+        return NextResponse.json({ ok: true, keys: await testGeminiKeys() });
       case "test-mail": {
         const v = await verifyMail();
         if (!v.ok) return NextResponse.json(v);

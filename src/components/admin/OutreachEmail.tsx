@@ -411,22 +411,57 @@ export default function OutreachEmail({ kit }: { kit?: React.ReactNode }) {
             <input className={`${INPUT} ${INPUT_H}`} type="password" autoComplete="off" value={form.tavilyKey2} onChange={set("tavilyKey2")} />
           </Field>
           <Field
-            label="Gemini API keys (Google AI Studio, up to 4, comma-separated)"
+            label="Gemini API keys (Google AI Studio, up to 4 — one per line)"
             hint={
               s.geminiSet
-                ? `Saved: ${s.geminiCount ?? 1} key(s), used in turn. Search research uses them to answer, from official MCC / NMC / NBEMS / state pages only, the searches our data cannot — each figure checked against the official text before it goes on a page. Paste again to replace all.`
-                : "Optional. Paste keys from aistudio.google.com (each starts with AIza), separated by commas. Without them, only searches our own data answers go on pages."
+                ? `Saved: ${s.geminiCount ?? 1} key(s), used in turn — press "Test Gemini keys" to see that each works. Search research uses them to answer, from official MCC / NMC / NBEMS / state pages only, the searches our data cannot — each figure checked against the official text before it goes on a page. Paste again to replace all.`
+                : "Not saved yet. Paste the keys from aistudio.google.com (each starts with AIza), one per line — commas or spaces between them work too — then press Save. The box empties after saving; the keys are never shown again."
             }
           >
-            <input className={`${INPUT} ${INPUT_H}`} type="password" autoComplete="off" value={form.geminiKey} onChange={set("geminiKey")} />
+            <textarea
+              className={`${INPUT} min-h-[5.5rem] font-mono text-xs`}
+              autoComplete="off"
+              spellCheck={false}
+              rows={4}
+              value={form.geminiKey}
+              onChange={(e) => setForm((f) => ({ ...f, geminiKey: e.target.value }))}
+            />
+            {form.geminiKey.trim() && (
+              <span className="mt-1 block text-xs text-slate-500">
+                {(() => {
+                  const ks = form.geminiKey.split(/[\s,]+/).filter(Boolean);
+                  const bad = ks.filter((k) => !/^AIza[0-9A-Za-z_-]{30,}$/.test(k)).length;
+                  return `${ks.length} key(s) read${bad ? ` — ${bad} do not look like a Gemini key (AIza…)` : ", each looks right"}.`;
+                })()}
+              </span>
+            )}
           </Field>
           <div className="flex items-end gap-2">
             <Badge tone={s.linked ? "success" : "warning"}>{s.linked ? "Telegram linked" : "Telegram not linked"}</Badge>
           </div>
         </div>
         <div className="mt-4 flex flex-wrap gap-2">
-          <Button variant="primary" disabled={!!busy} onClick={() => post({ action: "save", ...form }, "save")}>
+          <Button
+            variant="primary"
+            disabled={!!busy}
+            onClick={async () => {
+              const j = await post({ action: "save", ...form }, "save");
+              if (j) setMsg({ tone: "success", text: j.geminiSaved ? `Saved. Gemini: ${String(j.geminiSaved)} key(s) saved — press "Test Gemini keys" to check them.` : "Saved." });
+            }}
+          >
             Save
+          </Button>
+          <Button
+            disabled={!!busy || !s.geminiSet}
+            onClick={async () => {
+              const j = await post({ action: "test-gemini" }, "test-gemini");
+              if (j) {
+                const rows = (j.keys as { n: number; ok: boolean; note: string }[]) ?? [];
+                setMsg({ tone: rows.length && rows.every((r) => r.ok) ? "success" : "danger", text: rows.map((r) => `Key ${r.n}: ${r.ok ? "works" : r.note}`).join(" · ") || "No keys saved." });
+              }
+            }}
+          >
+            Test Gemini keys
           </Button>
           <Button disabled={!!busy || !s.passSet} onClick={async () => {
             const j = await post({ action: "test-mail" }, "test-mail");

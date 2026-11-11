@@ -48,7 +48,7 @@ const BRANCH_NAMED = /\b(md|ms|dnb|dm|m\.?ch|diploma)\s+(?!seats?\b|fees?\b|stip
 const SPECIALTY = /\b(radiology|radio ?diagnosis|medicine|surgery|nuclear|patholog|dermatolog|derma|p(a)?ediatric|orthop|obstetric|gyn(a)?ecolog|obg|an(a)?esth|psychiatr|ophthalm|ent|pulmonar|respiratory|microbiolog|pharmacolog|anatomy|physiolog|biochem|forensic|community medicine|emergency|palliative|geriatric|tropical|aerospace|genetic|cardio|neuro|nephro|gastro|onco|urolog|endocrin|radiotherapy|immunohematolog|transfusion)\w*/i;
 
 /** Builders whose answer is about the state or college the search names (lib/huntAnswers.ts kinds). */
-const STATE_AWARE = new Set(["state-stipend", "bond-state", "college"]);
+const STATE_AWARE = new Set(["state-stipend", "bond-state", "college", "authority"]);
 
 async function namesState(q: string): Promise<boolean> {
   const states = await getPgStates().catch(() => []);
@@ -58,7 +58,20 @@ async function namesState(q: string): Promise<boolean> {
 }
 
 /** A search worth answering on a page: it asks something a builder knows about, not only a name. */
-const ASKS = /\b(fees?|stipend|salary|cut ?off|seats?|rank|marks?|score|bond|penalt|upgrad|freeze|float|free exit|choice|resign|clinical|how many|statistic)\b/i;
+const ASKS = /\b(fees?|stipend|salary|cut ?off|seats?|rank|marks?|score|bond|penalt|upgrad|freeze|float|free exit|choice|resign|clinical|how many|statistic|website|portal|official site|login)\b/i;
+
+/** Room on a page for one more answer: how many are live, whether this search is there, which builders answer. */
+async function roomOn(page: string, q: string) {
+  const r = (await db.execute(sql`
+    SELECT count(*) FILTER (WHERE status = 'live')::int AS live,
+           count(*) FILTER (WHERE lower(question) = ${q}
+             -- an official answer past its days, or a miss over a month old, is looked at again
+             AND NOT (kind = 'official' AND status IN ('live', 'none') AND checked_on <= current_date - (CASE WHEN status = 'none' THEN 30 ELSE ${OFFICIAL_DAYS} END)))::int AS same,
+           array_agg(kind) FILTER (WHERE status = 'live') AS kinds
+      FROM search_faqs WHERE page = ${page}`)) as unknown as { live: number; same: number; kinds: string[] | null }[];
+  return { live: r[0]?.live ?? 0, same: r[0]?.same ?? 0, kinds: r[0]?.kinds ?? [] };
+}
+const lastPart = (p: string) => p.split("/").filter(Boolean).pop() ?? "";
 
 /**
  * Called by the research bot for each search it studied. Adds the search to `page` when a builder answers it, the page
@@ -70,15 +83,17 @@ export async function offerSearchFaq(
 ): Promise<false | "data" | "official"> {
   const q = item.query.trim().toLowerCase();
   if (!item.page || q.split(/\s+/).length < 3) return false;
-  const exists = (await db.execute(sql`
-    SELECT count(*) FILTER (WHERE status = 'live')::int AS live,
-           count(*) FILTER (WHERE lower(question) = ${q}
-             -- an official answer past its days, or a miss over a month old, is looked at again
-             AND NOT (kind = 'official' AND status IN ('live', 'none') AND checked_on <= current_date - (CASE WHEN status = 'none' THEN 30 ELSE ${OFFICIAL_DAYS} END)))::int AS same,
-           array_agg(kind) FILTER (WHERE status = 'live') AS kinds
-      FROM search_faqs WHERE page = ${item.page}`)) as unknown as { live: number; same: number; kinds: string[] | null }[];
-  if ((exists[0]?.same ?? 0) > 0 || (exists[0]?.live ?? 0) >= PER_PAGE) return false;
+  let page = item.page;
+  let room = await roomOn(page, q);
+  if (room.same > 0 || room.live >= PER_PAGE) return false;
   const d = ASKS.test(q) ? await draftFor(q) : null;
+  // "jk neet pg website" belongs on that state's own page: kept where Google shows it when that page is the state's
+  // (any of its pages ends in the state's slug), else moved to the answer's page — the state's counselling page.
+  if (d?.kind === "authority" && page !== d.page && lastPart(page) !== lastPart(d.page)) {
+    page = d.page;
+    room = await roomOn(page, q);
+    if (room.same > 0 || room.live >= PER_PAGE) return false;
+  }
   if (!d) {
     // Our data has no answer: an official page may (lib/officialAnswer.ts) — found, copied by Gemini, every figure
     // checked against that page's text. Only for a search that asks something, never a bare name.
@@ -106,7 +121,7 @@ export async function offerSearchFaq(
   }
   // One answer per builder on a page: three searches answered by the same national stipend figures would print the
   // same text three times.
-  if ((exists[0]?.kinds ?? []).includes(d.kind)) return false;
+  if (room.kinds.includes(d.kind)) return false;
   // A search that names a state is answered only by a builder that reads that state: the national figures under
   // "md radiology cutoff rajasthan" would answer a different question.
   if (!STATE_AWARE.has(d.kind) && (await namesState(q))) return false;
@@ -115,10 +130,10 @@ export async function offerSearchFaq(
   // …also when it names the speciality without the degree ("nuclear medicine pg seats in india"), or the page is a
   // branch page: only the branch builder answers there. A college's own name may hold such a word ("Institute of
   // Aerospace Medicine"), so the college builder is let through.
-  if (d.kind !== "branch" && d.kind !== "college" && (SPECIALTY.test(q) || /^\/md-ms-india\/branches\//.test(item.page))) return false;
+  if (d.kind !== "branch" && d.kind !== "college" && (SPECIALTY.test(q) || /^\/md-ms-india\/branches\//.test(page))) return false;
   await db.execute(sql`
     INSERT INTO search_faqs (page, question, kind, impressions, position)
-    VALUES (${item.page}, ${q}, ${d.kind}, ${item.impressions ?? null}, ${item.position ?? null})
+    VALUES (${page}, ${q}, ${d.kind}, ${item.impressions ?? null}, ${item.position ?? null})
     ON CONFLICT DO NOTHING`);
   revalidateTag("search-faqs");
   return "data";

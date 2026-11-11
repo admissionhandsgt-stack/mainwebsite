@@ -11,6 +11,12 @@ import { getPgStatistics } from "@/lib/pgStatistics";
 import { getSeatMatrixOverview, MATRIX_LABEL } from "@/lib/pgSeatData";
 import { ROUND_RULES, DEPOSITS, SOURCES } from "@/lib/choiceFillingRules";
 import { getDeemedPg, getPrivatePgFees, type FeeBand } from "@/lib/pgFeeQueries";
+import { unstable_cache } from "next/cache";
+import { getStateAuthority } from "@/lib/stateAuthorities";
+import { getStateNotices, getHubNotices, stateKey, FEED_STATE } from "@/lib/stateNotices";
+import { ALERT_SOURCES } from "@/lib/alertFeed";
+import { getCounselPgStates, getCounselUgStates } from "@/lib/counselStates";
+import { officialLink } from "@/lib/zynNotices";
 
 /**
  * Answers the daily hunt writes (2026-11-10; owner, with his own AIIMS New Delhi answer as the model: "aise detailed
@@ -60,6 +66,8 @@ export type Draft = {
   what: string;
   /** Add the predictor line (rank → colleges). */
   predictor?: boolean;
+  /** An official site the answer names, shown as a link. */
+  link?: { url: string; title: string };
 };
 
 export type Answer = { page: string; kind: string; answer: string };
@@ -68,6 +76,7 @@ async function render(d: Draft): Promise<Answer> {
   const c = await pageCopy("site.hunt_answer", { what: d.what, url: `${SITE}${d.page}` });
   const pred = await pageCopy("site.hunt_answer", { url: `${SITE}/neet-college-predictor?course=pg` });
   const out: string[] = [d.lead];
+  if (d.link) out.push("", `Official site: ${d.link.url}`);
   if (d.points?.length) {
     if (d.pointsTitle) out.push("", d.pointsTitle);
     out.push("", ...d.points.map((p) => `- ${p}`));
@@ -130,13 +139,32 @@ async function fromLibrary(question: string): Promise<Answer | null> {
 
 /* ------------------------------------------------------- reading the question --- */
 
-const STATE_ALIAS: Record<string, string> = { mp: "Madhya Pradesh", up: "Uttar Pradesh", tn: "Tamil Nadu", ap: "Andhra Pradesh", wb: "West Bengal", jk: "Jammu & Kashmir", hp: "Himachal Pradesh", pondicherry: "Puducherry", orissa: "Odisha" };
+/**
+ * How India types a state: short forms, misspellings, and the counselling authority or university searched in its place
+ * ("jk neet pg website", "kea pg counselling", "bopee merit list"). Matched as whole words; compared by `stateKey`, so
+ * "Jammu and Kashmir" and "Jammu & Kashmir" are one state (the alias said "&" while our list says "and", so "jk" had
+ * matched nothing).
+ */
+const STATE_ALIAS: Record<string, string> = {
+  mp: "Madhya Pradesh", up: "Uttar Pradesh", tn: "Tamil Nadu", tamilnadu: "Tamil Nadu", ap: "Andhra Pradesh", wb: "West Bengal",
+  bengal: "West Bengal", jk: "Jammu and Kashmir", "j k": "Jammu and Kashmir", "jammu kashmir": "Jammu and Kashmir",
+  kashmir: "Jammu and Kashmir", jammu: "Jammu and Kashmir", hp: "Himachal Pradesh", himachal: "Himachal Pradesh",
+  mh: "Maharashtra", uttrakhand: "Uttarakhand", chattisgarh: "Chhattisgarh", chhatisgarh: "Chhattisgarh",
+  pondicherry: "Puducherry", pondy: "Puducherry", orissa: "Odisha", andaman: "Andaman and Nicobar Islands",
+  // Authorities that run a state's counselling, searched by name.
+  kea: "Karnataka", bopee: "Jammu and Kashmir", jkbopee: "Jammu and Kashmir", bceceb: "Bihar", bceceboard: "Bihar",
+  pgmac: "Bihar", ugmac: "Bihar", wbmcc: "West Bengal", bfuhs: "Punjab", hnbumu: "Uttarakhand", amru: "Himachal Pradesh",
+  centac: "Puducherry", uhsr: "Haryana", knruhs: "Telangana", kaloji: "Telangana", ntruhs: "Andhra Pradesh",
+  drntruhs: "Andhra Pradesh", uhsap: "Andhra Pradesh", acppgmec: "Gujarat", acpugmec: "Gujarat", medadmgujarat: "Gujarat",
+  upneet: "Uttar Pradesh", mahacet: "Maharashtra", "cet cell": "Maharashtra", jceceb: "Jharkhand", ojee: "Odisha",
+  pgmcc: "Odisha", trmcc: "Tripura", tnmedicalselection: "Tamil Nadu", "cee kerala": "Kerala",
+};
 
-function stateIn(q: string, states: PgState[]): PgState | null {
+function stateIn<T extends { name: string }>(q: string, states: T[]): T | null {
   const f = fold(q);
   const byName = [...states].sort((a, b) => b.name.length - a.name.length).find((s) => f.includes(fold(s.name.replace(/&/g, "and"))) || f.includes(fold(s.name)));
   if (byName) return byName;
-  for (const [k, v] of Object.entries(STATE_ALIAS)) if (has(q, k)) return states.find((s) => s.name === v) ?? null;
+  for (const [k, v] of Object.entries(STATE_ALIAS)) if (has(q, k)) return states.find((s) => stateKey(s.name) === stateKey(v)) ?? null;
   return null;
 }
 
@@ -492,6 +520,134 @@ function choice(q: string): Draft {
   };
 }
 
+/* ------------------------------------------------- a counselling's official site --- */
+
+/** "jk neet pg website", "kea pg counselling portal", "neet pg official site": which site runs it. */
+const WEBSITE = /\b(website|web site|official (site|page|portal)|portal|login|log in)\b/i;
+const COUNSEL_WORDS = /\b(neet|pg|ug|mbbs|bds|md|ms|dnb|counsel\w*|admission|merit list|allotment|registration|choice filling|seat matrix)\b/i;
+/** A counselling authority searched by its own name ("kea website", "bopee portal") — no exam word needed. */
+const AUTHORITY_NAMED =
+  /\b(kea|bopee|jkbopee|bceceb|bceceboard|pgmac|ugmac|wbmcc|bfuhs|hnbumu|amru|centac|uhsr|knruhs|kaloji|ntruhs|drntruhs|uhsap|acppgmec|acpugmec|medadmgujarat|upneet|mahacet|cet cell|jceceb|ojee|pgmcc|trmcc|tnmedicalselection|mcc|nbems|natboard)\b/i;
+/** A college's or a university's own site is not a counselling's. */
+const A_COLLEGE = /\b(college|institute|hospital|aiims|jipmer|pgimer|university)\b/i;
+const day = (iso: string | Date | null) => {
+  if (!iso) return null;
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? null : d.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Kolkata" });
+};
+const hostLabel = (u: string) => {
+  try {
+    const x = new URL(u);
+    const path = x.pathname.replace(/\/+$/, "");
+    return `${x.hostname.replace(/^www\./, "")}${path && path.length <= 30 ? path : ""}`;
+  } catch {
+    return u;
+  }
+};
+
+/** The page each state's authority links its PG notices from, as the owner approved them in Zyn — the newest per state. */
+const authorityPages = unstable_cache(
+  async (): Promise<{ state: string; authority: string; page: string; level: string | null; on: string | null }[]> =>
+    (await db.execute(sql`
+      SELECT DISTINCT ON (lower(state), coalesce(payload->>'level', '')) state, authority, payload->>'page' AS page,
+             payload->>'level' AS level, to_json(approved_at)#>>'{}' AS on
+        FROM zyn_notices
+       WHERE status = 'published' AND state IS NOT NULL AND authority IS NOT NULL AND payload->>'page' ~ '^https?://'
+       ORDER BY lower(state), coalesce(payload->>'level', ''), approved_at DESC NULLS LAST`)) as unknown as {
+      state: string;
+      authority: string;
+      page: string;
+      level: string | null;
+      on: string | null;
+    }[],
+  ["authority-pages-v1"],
+  { revalidate: 3600, tags: ["alerts"] },
+);
+
+/** "9 Nov 2026: Online registration…" — the board's name the alerts bar puts before a title is said once, above. */
+const noticeLine = (x: { on: string; title: string }) => {
+  // Only a name before the colon (no digits): "Round 2: result" keeps its words.
+  const t = x.title.replace(/^[^:\d]{2,80}:\s*/, "").trim() || x.title;
+  const d = day(x.on);
+  return d ? `${d}: ${t}` : t;
+};
+
+const CHECKS = [
+  "Register, fill choices and pay only on the official site — no agent, college office or \"direct admission\" contact can register you or hold a counselling seat.",
+  "Dates move between rounds: the newest notice on the authority's own site is the final word.",
+];
+
+async function nationalSite(level: "pg" | "ug"): Promise<Draft> {
+  const mcc = ALERT_SOURCES.find((s) => s.id === (level === "pg" ? "mcc-pg" : "mcc-ug"))!;
+  const notes = (await getHubNotices(level, 60).catch((): Awaited<ReturnType<typeof getHubNotices>> => [])).filter((x) => x.where === "MCC").slice(0, 3);
+  return {
+    page: "/neet-counselling-updates",
+    kind: "authority",
+    lead:
+      level === "pg"
+        ? "NEET PG has two official websites: NBEMS (natboard.edu.in) conducts the exam — application, admit card and result — and MCC (mcc.nic.in) runs the All India Quota counselling, with the deemed and central universities' seats and DNB seats. Each state runs its own state-quota counselling on its own site."
+        : "NEET UG has two official websites: NTA (neet.nta.nic.in) conducts the exam — application, admit card and result — and MCC (mcc.nic.in) runs the All India Quota counselling, with AIIMS, JIPMER and the deemed and central universities. Each state runs its own state-quota counselling on its own site.",
+    link: { url: mcc.url, title: hostLabel(mcc.url) },
+    pointsTitle: notes.length ? "MCC's latest notices:" : undefined,
+    points: notes.map(noticeLine),
+    checks: CHECKS,
+    source: "the authorities' own sites.",
+    what: `list of every official ${level === "pg" ? "NEET PG" : "NEET UG"} counselling notice`,
+  };
+}
+
+async function authoritySite(q: string, states: PgState[]): Promise<Draft | null> {
+  if (!WEBSITE.test(q) || A_COLLEGE.test(q)) return null;
+  if (!COUNSEL_WORDS.test(q) && !AUTHORITY_NAMED.test(q)) return null;
+  const pgWords = /\b(pg|md|ms|dnb|pgmac|pget|post ?grad\w*)\b/i.test(q);
+  const ugWords = /\b(mbbs|bds|ug|ugmac|under ?grad\w*)\b/i.test(q);
+  const level: "pg" | "ug" = ugWords && !pgWords ? "ug" : "pg";
+  // Every state with MD/MS colleges or an MBBS college on NMC's register (a state with none has no counselling of its own).
+  const ugStates = await getCounselUgStates().catch((): Awaited<ReturnType<typeof getCounselUgStates>> => []);
+  const places = [...states.map((s) => ({ name: s.name, slug: s.slug })), ...ugStates.filter((u) => !states.some((s) => stateKey(s.name) === stateKey(u.name)))];
+  const st = stateIn(q, places);
+  if (!st || /\bmcc\b|all india|\baiq\b|central counsel/i.test(q)) return nationalSite(level);
+
+  const key = stateKey(st.name);
+  let site: { url: string; who: string; when: string | null; checked: string | null } | null = null;
+  if (level === "pg") {
+    const z = (await authorityPages().catch((): Awaited<ReturnType<typeof authorityPages>> => [])).find((r) => stateKey(r.state) === key && (r.level ?? "pg") === "pg" && officialLink(r.page));
+    if (z) site = { url: z.page, who: z.authority.split(" · ")[0].trim(), when: day(z.on), checked: null };
+  }
+  if (!site) {
+    const a = await getStateAuthority(st.name).catch(() => null);
+    if (a && (level === "ug" || a.scope === "UG and PG")) site = { url: a.url, who: a.authority, when: null, checked: a.checked };
+  }
+  if (!site && level === "ug") {
+    const id = Object.entries(FEED_STATE).find(([, s]) => stateKey(s) === key)?.[0];
+    const src = id ? ALERT_SOURCES.find((x) => x.id === id) : undefined;
+    if (src) site = { url: src.url, who: src.label, when: null, checked: null };
+  }
+  if (!site) return null;
+
+  const exam = level === "pg" ? "NEET PG" : "MBBS and BDS";
+  const notes = await getStateNotices(st.name, level, 3).catch((): Awaited<ReturnType<typeof getStateNotices>> => []);
+  const counsel = level === "pg" ? await getCounselPgStates().catch((): { name: string; slug: string }[] => []) : ugStates;
+  const c = counsel.find((s) => stateKey(s.name) === key);
+  const pg = states.find((s) => stateKey(s.name) === key);
+  const page = c ? `/counselling/${level === "pg" ? "neet-pg" : "mbbs"}/${c.slug}` : level === "pg" && pg ? `/md-ms-india/states/${pg.slug}` : "/counselling";
+  const mcc = ALERT_SOURCES.find((s) => s.id === (level === "pg" ? "mcc-pg" : "mcc-ug"))!;
+  return {
+    page,
+    kind: "authority",
+    lead: `The official website for ${exam} counselling in ${st.name} (the state quota seats) is ${hostLabel(site.url)}, run by ${site.who}.`,
+    link: { url: site.url, title: hostLabel(site.url) },
+    pointsTitle: notes.length ? `${site.who}'s latest notices:` : undefined,
+    points: [
+      ...notes.map(noticeLine),
+      `The All India Quota seats in ${st.name}'s government colleges, and the deemed universities' seats, are filled by MCC instead: ${hostLabel(mcc.url)}.`,
+    ],
+    checks: CHECKS,
+    source: site.when ? `${site.who}'s own site, as linked from its notice of ${site.when}.` : site.checked ? `${site.who}'s own site (checked ${site.checked}).` : `${site.who}'s own site.`,
+    what: `${st.name} ${level === "pg" ? "NEET PG" : "MBBS"} counselling guide`,
+  };
+}
+
 /* ---------------------------------------------------------------------- entry --- */
 
 const STIPEND = /stipend|salary|\bpay\b|in hand|ctc/i;
@@ -504,6 +660,10 @@ const CUTOFF = /cut ?off|closing rank|rank (needed|required)|kitn[ae] rank|which
 
 /** Which builder answers a question, from our live data — or none. Shared by the hunt and the site's search answers. */
 async function pickDraft(q: string, all: string, hasText: boolean, states: PgState[]): Promise<Draft | null> {
+  if (WEBSITE.test(q)) {
+    const d = await authoritySite(q, states);
+    if (d) return d;
+  }
   if (STIPEND.test(q) || /fee|cost|tuition/i.test(q)) {
     const c = await collegeIn(q, states);
     if (c) {

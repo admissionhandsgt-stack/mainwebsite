@@ -12,7 +12,7 @@ import { logError } from "@/lib/logger";
  */
 
 /** The site's own feed sources (lib/alertFeed.ts ALERT_SOURCES) that belong to one state. */
-const FEED_STATE: Record<string, string> = {
+export const FEED_STATE: Record<string, string> = {
   kea: "Karnataka",
   "mh-cet": "Maharashtra",
   tn: "Tamil Nadu",

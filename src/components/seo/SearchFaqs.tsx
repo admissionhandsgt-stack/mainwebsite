@@ -28,6 +28,14 @@ export default async function SearchFaqs() {
           <article key={f.id} className="rounded-2xl border border-border bg-card p-5">
             <h3 className="font-heading text-[1.05rem] font-bold leading-snug text-foreground">{f.heading}</h3>
             <p className="mt-2 text-[14.5px] leading-relaxed text-foreground">{f.draft.lead}</p>
+            {f.draft.link && (
+              <p className="mt-2 text-[14px]">
+                <a href={f.draft.link.url} target="_blank" rel="noopener" className="font-semibold text-primary-strong underline-offset-2 hover:underline dark:text-primary">
+                  {f.draft.link.title}
+                </a>
+              </p>
+            )}
+            {f.draft.pointsTitle && !!f.draft.points?.length && <p className="mt-2 text-[13.5px] font-semibold text-foreground">{f.draft.pointsTitle}</p>}
             {!!f.draft.points?.length && (
               <ul className="mt-2 space-y-1">
                 {f.draft.points.slice(0, 6).map((p) => (
