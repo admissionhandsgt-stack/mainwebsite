@@ -155,3 +155,67 @@ export async function sendMorningDigest(opts: { force?: boolean } = {}) {
   await db.execute(sql`UPDATE staff_digests SET report = ${JSON.stringify(report)}::jsonb WHERE day = ${day}::date`);
   return { day, report, at: new Date().toLocaleString("en-IN", { timeZone: IST }) };
 }
+
+/**
+ * The same day's call list for students our WhatsApp follow-ups did not reach (2026-11-11, owner: "meet the counsellor
+ * jaise message… failure rate 60% above… aise leads mar jate hai"). Meta holds back marketing templates to people who get
+ * many business messages (131049 — 46 of the 66 "meet the counsellor" sends in the week to 11 Nov) or who are in its own
+ * test groups (130472); no wording or retry gets past that, so a call is the way to reach them. Each hour (from the
+ * follow-up cron), every follow-up that failed since the last list and whose student has not been reached by another
+ * follow-up and is still uncontacted goes to the staff in one message: name, course, rank, phone, when they signed in.
+ * The morning digest still repeats anyone not called. Watermark: integrations `followups.call_alert_until`.
+ */
+export async function sendUnreachedCallList(): Promise<{ listed: number; sent: number }> {
+  const { getIntegration, setIntegration } = await import("@/lib/integrations");
+  const since = (await getIntegration("followups.call_alert_until").catch(() => null)) || new Date(Date.now() - 24 * 3600_000).toISOString();
+  const rows = (await db.execute(sql`
+    SELECT DISTINCT ON (right(regexp_replace(m.phone, '\D', '', 'g'), 10))
+           m.phone, m.failed_at, m.error_code, u.name, u.level::text AS level, u.stream, u.rank, u.category, u.created_at AS signed_in
+      FROM wa_messages m
+      JOIN users u ON right(regexp_replace(u.phone, '\D', '', 'g'), 10) = right(regexp_replace(m.phone, '\D', '', 'g'), 10)
+     WHERE m.direction = 'out' AND m.kind = 'followup' AND m.status = 'failed'
+       AND m.failed_at > ${since}::timestamptz AND m.failed_at <= now()
+       AND NOT EXISTS (
+         SELECT 1 FROM wa_messages x
+          WHERE x.direction = 'out' AND x.kind = 'followup' AND x.status IN ('delivered', 'read')
+            AND right(regexp_replace(x.phone, '\D', '', 'g'), 10) = right(regexp_replace(m.phone, '\D', '', 'g'), 10))
+       AND NOT EXISTS (
+         SELECT 1 FROM leads l
+          WHERE right(regexp_replace(l.phone, '\D', '', 'g'), 10) = right(regexp_replace(m.phone, '\D', '', 'g'), 10)
+            AND (lower(l.lead_status) NOT IN ('new', 'not contacted') OR l.last_contacted_at IS NOT NULL))
+     ORDER BY right(regexp_replace(m.phone, '\D', '', 'g'), 10), m.failed_at DESC`)) as unknown as {
+    phone: string;
+    failed_at: string;
+    error_code: number | null;
+    name: string | null;
+    level: string | null;
+    stream: string | null;
+    rank: number | null;
+    category: string | null;
+    signed_in: string;
+  }[];
+  const newest = rows.reduce((t, r) => (new Date(r.failed_at) > t ? new Date(r.failed_at) : t), new Date(since));
+  if (!rows.length) return { listed: 0, sent: 0 };
+
+  const course = (r: (typeof rows)[number]) =>
+    r.stream === "bds" ? "BDS" : r.stream === "mbbs" || r.level === "ug" ? "MBBS" : r.stream === "pg" || r.level === "pg" ? "PG" : "";
+  const day = (iso: string) => new Date(iso).toLocaleDateString("en-IN", { timeZone: IST, day: "numeric", month: "short" });
+  const lines = rows.slice(0, 15).map((r, i) =>
+    `${i + 1}. ${r.name || "Not given"} — ${[course(r), r.rank != null ? `rank ${Number(r.rank).toLocaleString("en-IN")}` : null, r.category].filter(Boolean).join(" · ") || "no rank yet"} — ${r.phone} — signed in ${day(r.signed_in)}`,
+  );
+  const text =
+    `📞 *WhatsApp could not reach ${rows.length === 1 ? "this student" : `these ${rows.length} students`} — please call today*\n` +
+    `Meta held back our follow-up message (its limit on marketing messages per person), so they never saw it.\n\n` +
+    lines.join("\n") +
+    (rows.length > 15 ? `\n…and ${rows.length - 15} more in the sheet` : "") +
+    (await sheetUrl().then((l) => (l ? `\n\nSheet: ${l}` : "")).catch(() => ""));
+  let sent = 0;
+  for (const s of await staffList()) {
+    const r = await sendText(s.phone, text, { purpose: "alert" });
+    if (r.sent) sent++;
+    else logError(new Error(`Call list to ${s.name} failed: ${r.error}`), { route: "staffAlerts.callList" });
+  }
+  // Move the watermark only once a list went out, so a gateway outage does not lose the students.
+  if (sent) await setIntegration("followups.call_alert_until", newest.toISOString());
+  return { listed: rows.length, sent };
+}

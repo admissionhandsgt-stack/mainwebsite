@@ -4,8 +4,11 @@
  * Two approved templates, sent from the official number, each at most once per
  * student, ever (`wa_followups`, unique on user and template):
  *
- *   ah_finish_profile   1 h – 7 d after sign-in, profile still missing an essential
- *   ah_meet_counsellor  3 h – 14 d after sign-in, and nobody on the team has spoken to them yet
+ *   ah_meet_counsellor  1 h – 14 d after sign-in, and nobody on the team has spoken to them yet (first, since
+ *                       2026-11-11: Meta lets about one marketing message a person through)
+ *   ah_finish_profile   up to 7 d after sign-in, profile still missing an essential — two days after the introduction
+ *
+ * Students a follow-up did not reach are listed to the team for a call within the hour (sendUnreachedCallList).
  *
  * Sent only 10 AM – 9 PM IST, at most MAX_PER_RUN a run, and only while
  * `whatsapp.followups.enabled` is on. `run({ dry: true })` lists who would get
@@ -92,6 +95,14 @@ async function candidates(): Promise<Candidate[]> {
        AND u.created_at >= ${SINCE}::timestamptz
        AND (u.stream IS NULL OR u.gender IS NULL OR u.domicile_state IS NULL OR u.budget_max IS NULL)
        AND ${slotOpen(FOLLOWUPS.finish)}
+       -- Second, never first (2026-11-11): Meta lets about one marketing message a person through, so the counsellor
+       -- introduction — the one that turns into a call — goes first; this nudge only two days after it, or when the team
+       -- has already spoken to the student and the introduction is not due.
+       AND (EXISTS (SELECT 1 FROM wa_followups f WHERE f.user_id = u.id AND f.template = ${FOLLOWUPS.counsellor}
+                     AND f.created_at < now() - interval '48 hours')
+            OR EXISTS (SELECT 1 FROM leads l
+                        WHERE right(regexp_replace(l.phone, '\\D', '', 'g'), 10) = right(regexp_replace(u.phone, '\\D', '', 'g'), 10)
+                          AND (lower(l.lead_status) <> 'new' OR l.last_contacted_at IS NOT NULL)))
      ORDER BY u.created_at
      LIMIT ${MAX_PER_RUN}
   `)) as unknown as { user_id: number; phone: string; name: string | null }[];
@@ -100,7 +111,7 @@ async function candidates(): Promise<Candidate[]> {
     SELECT u.id AS user_id, u.phone, u.name
       FROM users u
      WHERE u.verified_at IS NOT NULL
-       AND u.created_at BETWEEN now() - interval '14 days' AND now() - interval '3 hours'
+       AND u.created_at BETWEEN now() - interval '14 days' AND now() - interval '1 hour'
        AND u.created_at >= ${SINCE}::timestamptz
        AND ${slotOpen(FOLLOWUPS.counsellor)}
        -- Not if the team has already spoken to them: a lead from this number
@@ -114,17 +125,16 @@ async function candidates(): Promise<Candidate[]> {
      LIMIT ${MAX_PER_RUN}
   `)) as unknown as { user_id: number; phone: string; name: string | null }[];
 
-  // One message per student per run: the profile nudge first, the counsellor
-  // introduction on a later run.
+  // One message per student per run: the counsellor introduction first, the profile nudge on a later run.
   const seen = new Set<number>();
   const out: Candidate[] = [];
-  for (const r of finish) {
-    seen.add(r.user_id);
-    out.push({ userId: r.user_id, phone: r.phone, name: r.name, template: FOLLOWUPS.finish });
-  }
   for (const r of counsellor) {
-    if (seen.has(r.user_id)) continue;
+    seen.add(r.user_id);
     out.push({ userId: r.user_id, phone: r.phone, name: r.name, template: FOLLOWUPS.counsellor });
+  }
+  for (const r of finish) {
+    if (seen.has(r.user_id)) continue;
+    out.push({ userId: r.user_id, phone: r.phone, name: r.name, template: FOLLOWUPS.finish });
   }
   return out.slice(0, MAX_PER_RUN);
 }
@@ -206,6 +216,11 @@ export async function runFollowups({ dry }: { dry: boolean }): Promise<FollowupR
     failed: 0,
   };
   if (dry || !enabled || !ready || !inHours) return report;
+
+  // Students the last hour's follow-ups did not reach go to the team as a call list (lib/staffAlerts.ts).
+  await import("@/lib/staffAlerts")
+    .then((m) => m.sendUnreachedCallList())
+    .catch((error) => logError(error, { route: "followups.callList" }));
 
   for (const d of due) {
     // Claim the row first, so a second run in parallel cannot send it again. A slot

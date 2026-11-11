@@ -82,6 +82,8 @@ export type IntegrationKey =
   | "serp.digest.at"
   // What the research and hunt chase (lib/researchFocus.ts): "pg" (default) or "all".
   | "serp.focus"
+  // The hourly call list for students our follow-ups did not reach (lib/staffAlerts.ts): failures listed up to here.
+  | "followups.call_alert_until"
   // Gemini (lib/gemini.ts): the owner's AI Studio keys, up to four, comma-separated (write-only, rotated), an optional
   // model name, and today's call count.
   | "ai.gemini.keys"

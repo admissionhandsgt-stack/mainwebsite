@@ -1166,7 +1166,17 @@ was delivered in one second. Now:
   Its URL and verify token (`VERIFY_TOKEN` in `waLog.ts`) are **not secrets** by design: a status only updates a
   message id we logged, a reply only counts with our `phone_number_id`, and `whatsapp.cloud.app_secret`, once
   pasted, adds Meta's signature check. Never make a status insert a row for an unknown id.
-- **A message "accepted" with no receipt is the alarm.** If the "No receipt yet" count climbs, look there first.
+- **Follow-ups that Meta holds back are a same-day call (2026-11-11, owner: "failure rate 60% above… leads mar jate hai").**
+In the week to 11 Nov `ah_meet_counsellor_v2` failed 47 of 66 (46 × 131049) and `ah_finish_profile` 14 of 50: Meta lets about
+one marketing message a person through, and the introduction went second. Now the counsellor introduction goes first (1 h
+after sign-in) and the profile nudge two days after it (or when the team has already spoken to the student); and each hourly
+follow-up run sends the staff a call list of students a follow-up did not reach since the last list
+(`sendUnreachedCallList` in lib/staffAlerts.ts, watermark `followups.call_alert_until`) — name, course, rank, phone, sign-in
+day — skipping anyone already reached or contacted. Not done, and why: rewording the introduction as "utility" to dodge the
+category (Meta recategorises it and it is the rule this file already states); an SMS or Meta's Marketing Messages Lite API
+would need the owner (DLT registration / accepting MM Lite's terms in Business Manager).
+
+**A message "accepted" with no receipt is the alarm.** If the "No receipt yet" count climbs, look there first.
 - **The chat history is permanent (migration 0034, owner's instruction 2026-10-16).** Triggers refuse any
   DELETE or TRUNCATE on `wa_messages` and any change to what a message said (direction, phone, kind, template,
   body, sent_by, created_at, wamid); receipts, errors and `seen_at` still update. The only door is
