@@ -343,6 +343,9 @@ async function applySchedule(title: string, data: Record<string, string>) {
      WHERE collection = 'pg_schedule' AND title = ${title}`);
 }
 
+/** Words of a note to a person or a bot, never of an authority's notice title. */
+const INSTRUCTION = /\b(banao|bana\s?do|bana\s?ke|banana|karo|kar\s?do|kardo|karna|iska|iske|isko|isme|yaha|poster|please\s+(make|create|post))\b/i;
+
 /** One notice: checked, published or held, its schedule applied or held. Already-seen ids are skipped. */
 async function take(n: ZynNotice): Promise<"published" | "held" | "seen"> {
   const seen = (await db.execute(sql`SELECT 1 FROM zyn_notices WHERE id = ${n.id}`)) as unknown as unknown[];
@@ -358,6 +361,9 @@ async function take(n: ZynNotice): Promise<"published" | "held" | "seen"> {
   else if (offTopic(n.title, n.url)) [status, reason] = ["held", "not MBBS/BDS/NEET PG counselling (AYUSH, a university exam or similar)"];
   else if (barTitle(n.title).split(/[^A-Za-z]+/).filter((w) => w.length >= 3).length < 3)
     [status, reason] = ["held", "the title does not say what the notice is"];
+  // A note to Zyn's poster bot sent as the title (2026-11-11: "Pdf is link par hai iske according banao iska poster
+  // and link" reached the alerts bar and the notices page). Official titles are never Hinglish instructions.
+  else if (INSTRUCTION.test(n.title)) [status, reason] = ["held", "the title reads like an instruction, not the notice's title"];
 
   const alertId = status === "published" ? await publishAlert(n) : null;
 

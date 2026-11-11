@@ -9,6 +9,9 @@ import BranchStateIndex from "@/components/cutoffs/BranchStateIndex";
 import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
+import DataTools from "@/components/ui/DataTools";
+import { toolLabels } from "@/lib/dataToolLabels";
+import { branchAliases, branchKind } from "@/lib/branchKinds";
 
 export const revalidate = 86400;
 
@@ -35,9 +38,10 @@ const inr = (v: number | null) => (v == null ? "—" : v.toLocaleString("en-IN")
 export default async function BranchesPage() {
   const branches = await getBranches();
   // Words from Admin → Content → Text & numbers ("Page: PG branches"); photo from Admin → Media.
-  const [copy, heroImage] = await Promise.all([
+  const [copy, heroImage, labels] = await Promise.all([
     pageCopy("page.pg_branches.hero", { count: branches.length }),
     pageHeroImage("page.pg_branches.hero"),
+    toolLabels("branch_search"),
   ]);
   // "how many branches in neet pg" (GSC, position ~7, no clicks): counted from the branches on this page.
   const kind = (n: string) => (/^MD\s/.test(n) ? "MD" : /^MS\s/.test(n) ? "MS" : /^(DNB|DrNB)\s/.test(n) ? "DNB" : /diploma/i.test(n) ? "Diploma" : "Other");
@@ -102,8 +106,45 @@ export default async function BranchesPage() {
       />
 
       <div className="container-custom py-10 md:py-14">
+        {branches.length >= 8 && (
+          <DataTools
+            id="branch-index-tools"
+            className="mb-5"
+            targets={["branch-index"]}
+            total={branches.length}
+            placement="pg_branches"
+            labels={labels}
+            chips={[
+              {
+                key: "type",
+                label: "Course",
+                options: ["MD", "MS", "Diploma", "DNB"].filter((k) => byKind[k]).map((k) => ({ value: k.toLowerCase(), label: k })),
+              },
+              {
+                key: "kind",
+                label: "Kind",
+                options: (
+                  [
+                    ["clinical", "Clinical"],
+                    ["para", "Para-clinical"],
+                    ["pre", "Pre-clinical"],
+                  ] as const
+                )
+                  .filter(([k]) => branches.some((b) => branchKind(b.name) === k))
+                  .map(([value, label]) => ({ value, label })),
+              },
+            ]}
+            sorts={[
+              { key: "col", label: "Most colleges first", dir: "desc" },
+              { key: "seats", label: "Most seat options first", dir: "desc" },
+              { key: "r1", label: "Best round 1 (GEN), most competitive first", dir: "asc" },
+              { key: "last", label: "Widest (GEN), highest rank first", dir: "desc" },
+              { key: "name", label: "Branch, A–Z", text: true },
+            ]}
+          />
+        )}
         <div className="overflow-x-auto rounded-2xl border border-border bg-card">
-          <table className="w-full min-w-[620px] table-fixed border-collapse">
+          <table id="branch-index" className="w-full min-w-[620px] table-fixed border-collapse">
             <thead>
               <tr className="bg-surface-2">
                 {[
@@ -125,7 +166,19 @@ export default async function BranchesPage() {
             </thead>
             <tbody>
               {branches.map((b) => (
-                <tr key={b.slug} className="border-t border-border hover:bg-surface-2">
+                <tr
+                  key={b.slug}
+                  className="border-t border-border hover:bg-surface-2"
+                  data-row=""
+                  data-f-type={kind(b.name).toLowerCase()}
+                  data-f-kind={branchKind(b.name)}
+                  data-q={branchAliases(b.name) || undefined}
+                  data-s-name={b.name.toLowerCase()}
+                  {...(b.colleges != null ? { "data-s-col": b.colleges } : {})}
+                  {...(b.seats != null ? { "data-s-seats": b.seats } : {})}
+                  {...(b.bestRank != null ? { "data-s-r1": b.bestRank } : {})}
+                  {...(b.widestRank != null ? { "data-s-last": b.widestRank } : {})}
+                >
                   <td className="px-4 py-3">
                     <Link
                       href={`/md-ms-india/branches/${b.slug}`}

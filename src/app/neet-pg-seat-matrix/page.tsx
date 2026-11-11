@@ -14,6 +14,9 @@ import CiteThis from "@/components/seo/CiteThis";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import DataTools from "@/components/ui/DataTools";
+import { toolLabels } from "@/lib/dataToolLabels";
+import { branchAliases, branchKind } from "@/lib/branchKinds";
 
 /**
  * "NEET PG seat matrix 2026" (2026-10-20) — every seat MCC fills, from MCC's own published
@@ -59,7 +62,13 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function SeatMatrixPage() {
-  const [o, branchPages, pgStates] = await Promise.all([getSeatMatrixOverview(), getBranches(), getPgStates()]);
+  const [o, branchPages, pgStates, branchLabels, stateLabels] = await Promise.all([
+    getSeatMatrixOverview(),
+    getBranches(),
+    getPgStates(),
+    toolLabels("branch_search"),
+    toolLabels("state_search"),
+  ]);
   const hasBranch = new Set(branchPages.map((b) => b.slug));
   const stateSlug = new Map(pgStates.map((p) => [p.name, p.slug]));
 
@@ -265,8 +274,49 @@ export default async function SeatMatrixPage() {
           {/* -------------------------- by branch -------------------------- */}
           <section className="container-custom py-10 md:py-14">
             <SectionHead icon="branch" eyebrow={`${o.branches.length} courses`} title={body.branch_title} intro={body.branch_intro} />
+            {o.branches.length >= 8 && (
+              <DataTools
+                id="matrix-branch-tools"
+                className="mt-6"
+                targets={["matrix-branches"]}
+                total={o.branches.length}
+                placement="seat_matrix_branches"
+                labels={branchLabels}
+                chips={[
+                  {
+                    key: "prog",
+                    label: "Type",
+                    options: [...new Set(o.branches.map((b) => b.programme).filter(Boolean))].map((x) => ({
+                      value: x.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+                      label: x,
+                    })),
+                  },
+                  {
+                    key: "kind",
+                    label: "Kind",
+                    options: (
+                      [
+                        ["clinical", "Clinical"],
+                        ["para", "Para-clinical"],
+                        ["pre", "Pre-clinical"],
+                      ] as const
+                    )
+                      .filter(([k]) => o.branches.some((b) => branchKind(b.course) === k))
+                      .map(([value, label]) => ({ value, label })),
+                  },
+                ]}
+                sorts={[
+                  { key: "seats", label: "Most seats first", dir: "desc" },
+                  { key: "aiq", label: "Most AIQ seats first", dir: "desc" },
+                  { key: "deemed", label: "Most deemed seats first", dir: "desc" },
+                  { key: "dnb", label: "Most DNB seats first", dir: "desc" },
+                  { key: "col", label: "Most colleges first", dir: "desc" },
+                  { key: "name", label: "Course, A–Z", text: true },
+                ]}
+              />
+            )}
             <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
-              <table className="dt w-full min-w-[720px] text-left text-sm">
+              <table id="matrix-branches" className="dt w-full min-w-[720px] text-left text-sm">
                 <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
                   <tr>
                     <th scope="col" className="px-4 py-3 font-semibold">Course</th>
@@ -280,7 +330,19 @@ export default async function SeatMatrixPage() {
                 </thead>
                 <tbody className="divide-y divide-border">
                   {o.branches.map((b) => (
-                    <tr key={b.course}>
+                    <tr
+                      key={b.course}
+                      data-row=""
+                      data-f-prog={(b.programme ?? "").toLowerCase().replace(/[^a-z0-9]+/g, "-")}
+                      data-f-kind={branchKind(b.course)}
+                      data-q={branchAliases(b.course) || undefined}
+                      data-s-name={b.course.toLowerCase()}
+                      data-s-seats={b.seats}
+                      data-s-col={b.colleges}
+                      {...(b.aiq ? { "data-s-aiq": b.aiq } : {})}
+                      {...(b.deemed ? { "data-s-deemed": b.deemed } : {})}
+                      {...(b.dnb ? { "data-s-dnb": b.dnb } : {})}
+                    >
                       <th scope="row" className="px-4 py-2.5 font-medium">
                         {hasBranch.has(b.slug) ? (
                           <Link href={`/md-ms-india/branches/${b.slug}`} className="text-foreground hover:text-primary hover:underline">
@@ -307,8 +369,24 @@ export default async function SeatMatrixPage() {
           <section className="border-t border-border bg-surface-1 py-10 md:py-14">
             <div className="container-custom">
               <SectionHead icon="map" eyebrow={`${o.states.length} states`} title={body.state_title} intro={body.state_intro} />
+              {o.states.length >= 8 && (
+                <DataTools
+                  id="matrix-state-tools"
+                  className="mt-6"
+                  targets={["matrix-states"]}
+                  total={o.states.length}
+                  placement="seat_matrix_states"
+                  labels={stateLabels}
+                  sorts={[
+                    { key: "seats", label: "Most seats first", dir: "desc" },
+                    { key: "aiq", label: "Most AIQ seats first", dir: "desc" },
+                    { key: "dnb", label: "Most DNB seats first", dir: "desc" },
+                    { key: "name", label: "State, A–Z", text: true },
+                  ]}
+                />
+              )}
               <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card">
-                <table className="dt w-full min-w-[560px] text-left text-sm">
+                <table id="matrix-states" className="dt w-full min-w-[560px] text-left text-sm">
                   <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
                     <tr>
                       <th scope="col" className="px-4 py-3 font-semibold">State</th>
@@ -319,7 +397,14 @@ export default async function SeatMatrixPage() {
                   </thead>
                   <tbody className="divide-y divide-border">
                     {o.states.map((s) => (
-                      <tr key={s.state}>
+                      <tr
+                        key={s.state}
+                        data-row=""
+                        data-s-name={s.state.toLowerCase()}
+                        data-s-seats={s.seats}
+                        {...(s.aiq ? { "data-s-aiq": s.aiq } : {})}
+                        {...(s.dnb ? { "data-s-dnb": s.dnb } : {})}
+                      >
                         <th scope="row" className="px-4 py-2.5 font-medium">
                           {stateSlug.get(s.state) ? (
                             <Link href={`/md-ms-india/states/${stateSlug.get(s.state)}`} className="text-foreground hover:text-primary hover:underline">

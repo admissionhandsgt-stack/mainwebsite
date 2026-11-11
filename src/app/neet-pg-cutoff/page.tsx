@@ -21,6 +21,9 @@ import BranchStateIndex from "@/components/cutoffs/BranchStateIndex";
 import { getLatestLiveRound, roundPath, type CutCat } from "@/lib/mccResults";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 import { hinglishFaqs } from "@/lib/hinglishFaq";
+import DataTools, { type ToolChip } from "@/components/ui/DataTools";
+import { toolLabels } from "@/lib/dataToolLabels";
+import { branchAliases, branchKind } from "@/lib/branchKinds";
 
 /**
  * "NEET PG cutoff branch wise", "NEET PG cutoff 2025 OBC", "MD radiology
@@ -112,6 +115,21 @@ export default async function NeetPgCutoffPage(props: Props) {
   const medicine = branches.find((b) => b.branch === "MD General Medicine");
 
   const latestQ = NEET_PG_QUALIFYING[0];
+  const branchLabels = await toolLabels("branch_search");
+  // Clinical / para-clinical / pre-clinical, by NMC's grouping (lib/branchKinds.ts) — offered only for kinds present.
+  const kindChip = (names: string[]): ToolChip => ({
+    key: "kind",
+    label: "Kind",
+    options: (
+      [
+        ["clinical", "Clinical"],
+        ["para", "Para-clinical"],
+        ["pre", "Pre-clinical"],
+      ] as const
+    )
+      .filter(([k]) => names.some((n) => branchKind(n) === k))
+      .map(([value, label]) => ({ value, label })),
+  });
   // Words from Admin → Content → Text & numbers ("Page: NEET PG cutoff"); photo from Admin → Media.
   const [copy, heroImage, pgStates] = await Promise.all([
     // The H1 names the running year's round beside the complete year, as the title does ("NEET PG cutoff 2026 Round 1
@@ -354,8 +372,29 @@ export default async function NeetPgCutoffPage(props: Props) {
               </li>
             ))}
           </ul>
+          {branches.length >= 8 && (
+            <DataTools
+              // The category is a link (a client navigation re-renders this table): a fresh toolbar per category.
+              key={category}
+              id="branch-tools"
+              className="mt-5"
+              targets={["branch-cuts"]}
+              total={branches.length}
+              placement="neet_pg_cutoff_branches"
+              labels={branchLabels}
+              chips={[kindChip(branches.map((b) => b.branch))]}
+              sorts={[
+                ...(live ? [{ key: "live", label: `${live.year} ${live.spec.label}, most competitive first`, dir: "asc" as const }] : []),
+                { key: "last", label: "Last admitted, most competitive first", dir: "asc" },
+                { key: "last", label: "Last admitted, highest rank first", dir: "desc" },
+                { key: "r1", label: "Round 1 close, most competitive first", dir: "asc" },
+                { key: "col", label: "Most colleges first", dir: "desc" },
+                { key: "name", label: "Branch, A–Z", text: true },
+              ]}
+            />
+          )}
           <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
-            <table className={`dt w-full text-left text-sm ${live ? "min-w-[680px]" : "min-w-[560px]"}`}>
+            <table id="branch-cuts" className={`dt w-full text-left text-sm ${live ? "min-w-[680px]" : "min-w-[560px]"}`}>
               <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
                 <tr>
                   <th scope="col" className="px-4 py-3 font-semibold">Branch</th>
@@ -378,7 +417,17 @@ export default async function NeetPgCutoffPage(props: Props) {
               </thead>
               <tbody className="divide-y divide-border">
                 {branches.map((b) => (
-                  <tr key={b.branch}>
+                  <tr
+                    key={b.branch}
+                    data-row=""
+                    data-f-kind={branchKind(b.branch)}
+                    data-q={branchAliases(b.branch) || undefined}
+                    data-s-name={b.branch.toLowerCase()}
+                    data-s-col={b.colleges}
+                    {...(b.widest != null ? { "data-s-last": b.widest } : {})}
+                    {...(b.bestR1 != null ? { "data-s-r1": b.bestR1 } : {})}
+                    {...(liveLast(b.branch) != null ? { "data-s-live": liveLast(b.branch) as number } : {})}
+                  >
                     <th scope="row" className="px-4 py-3 font-medium">
                       <Link href={`/md-ms-india/branches/${b.slug}`} className="text-foreground hover:text-primary hover:underline">
                         {b.branch}
@@ -406,8 +455,24 @@ export default async function NeetPgCutoffPage(props: Props) {
             title={`NEET PG cut off ${year.year} branch wise, every category`}
             intro={`All India Quota, ${year.year}: the All India Rank of the last candidate MCC admitted to each branch, by category. A cell is shown only where three or more colleges admitted; "—" means fewer.`}
           />
+          {allCats.length >= 8 && (
+            <DataTools
+              id="allcat-tools"
+              className="mt-5"
+              targets={["allcat-cuts"]}
+              total={allCats.length}
+              placement="neet_pg_cutoff_all_categories"
+              labels={branchLabels}
+              chips={[kindChip(allCats.map((r) => r.branch))]}
+              sorts={[
+                ...ALL_CATS.map((c) => ({ key: c.toLowerCase(), label: `${c}, most competitive first`, dir: "asc" as const })),
+                ...ALL_CATS.map((c) => ({ key: c.toLowerCase(), label: `${c}, highest rank first`, dir: "desc" as const })),
+                { key: "name", label: "Branch, A–Z", text: true },
+              ]}
+            />
+          )}
           <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
-            <table className="dt w-full min-w-[640px] text-left text-sm">
+            <table id="allcat-cuts" className="dt w-full min-w-[640px] text-left text-sm">
               <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
                 <tr>
                   <th scope="col" className="px-4 py-3 font-semibold">Branch</th>
@@ -418,7 +483,14 @@ export default async function NeetPgCutoffPage(props: Props) {
               </thead>
               <tbody className="divide-y divide-border">
                 {allCats.map((r) => (
-                  <tr key={r.branch}>
+                  <tr
+                    key={r.branch}
+                    data-row=""
+                    data-f-kind={branchKind(r.branch)}
+                    data-q={branchAliases(r.branch) || undefined}
+                    data-s-name={r.branch.toLowerCase()}
+                    {...Object.fromEntries(ALL_CATS.filter((c) => r.cut[c] != null).map((c) => [`data-s-${c.toLowerCase()}`, r.cut[c] as number]))}
+                  >
                     <th scope="row" className="px-4 py-2.5 font-medium">
                       <Link href={`/md-ms-india/branches/${r.slug}`} className="text-foreground hover:text-primary hover:underline">
                         {r.branch}

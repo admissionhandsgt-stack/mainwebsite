@@ -17,6 +17,8 @@ import { getPgStates } from "@/lib/pgStateQueries";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 import { hinglishFaqs } from "@/lib/hinglishFaq";
+import DataTools from "@/components/ui/DataTools";
+import { toolLabels } from "@/lib/dataToolLabels";
 
 /**
  * "NEET PG stipend state wise" — one of the most-searched PG money questions,
@@ -63,7 +65,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function StipendPage() {
-  const [s, pgStates] = await Promise.all([getStipends(), getPgStates()]);
+  const [s, pgStates, stateLabels] = await Promise.all([getStipends(), getPgStates(), toolLabels("state_search")]);
   const stateSlug = new Map(pgStates.map((p) => [p.name, p.slug]));
   const top = s.states[0];
   const low = s.states[s.states.length - 1];
@@ -168,8 +170,25 @@ export default async function StipendPage() {
           title="PG stipend by state"
           intro="First-year stipend per month, median across the state's colleges that publish one, highest first. States with fewer than three such colleges are left out."
         />
+        {s.states.length >= 8 && (
+          <DataTools
+            id="stipend-state-tools"
+            className="mt-6"
+            targets={["stipend-states"]}
+            total={s.states.length}
+            placement="stipend_hub"
+            labels={stateLabels}
+            sorts={[
+              { key: "med", label: "Median, highest first", dir: "desc" },
+              { key: "govt", label: "Govt median, highest first", dir: "desc" },
+              { key: "pvt", label: "Private median, highest first", dir: "desc" },
+              { key: "col", label: "Most colleges first", dir: "desc" },
+              { key: "name", label: "State, A–Z", text: true },
+            ]}
+          />
+        )}
         <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
-          <table className="dt w-full min-w-[640px] text-left text-sm">
+          <table id="stipend-states" className="dt w-full min-w-[640px] text-left text-sm">
             <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
               <tr>
                 <th scope="col" className="px-4 py-3 font-semibold">State</th>
@@ -182,7 +201,15 @@ export default async function StipendPage() {
             </thead>
             <tbody className="divide-y divide-border">
               {s.states.map((r) => (
-                <tr key={r.state}>
+                <tr
+                  key={r.state}
+                  data-row=""
+                  data-s-name={r.state.toLowerCase()}
+                  data-s-col={r.colleges}
+                  {...(r.median ? { "data-s-med": r.median } : {})}
+                  {...(r.govtMedian ? { "data-s-govt": r.govtMedian } : {})}
+                  {...(r.privateMedian ? { "data-s-pvt": r.privateMedian } : {})}
+                >
                   <th scope="row" className="px-4 py-3 font-semibold text-foreground">
                     {/* Each state's own page lists every college in it (2026-10-20). */}
                     {stateSlug.get(r.state) ? (

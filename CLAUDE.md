@@ -2369,10 +2369,17 @@ when everything in it is hidden. A search opens the `<details>` it matches in. A
 Jumping to an anchor resets the filters. "Copy link" puts only the chips, sort and window in the URL (`dt-<key>`),
 **never the search text** (it can be a student's own words). Analytics: `data_tool` with placement and control only.
 Words: Admin → Content → "Site: data tools" (`toolLabels(hint)` in lib/dataToolLabels.ts). Zebra rows skip hidden rows
-(`:nth-child(even of :not([data-dt-off]))`). On: stipend state pages (type, Year 1/2/3), PG fee state pages (seat type,
-city, fee), /neet-counselling-updates (exam, kind of notice from the title's words, authority, 7/30 days), the bond
-page's college finder. Shown only on lists of 8+ rows. Next candidates: /neet-pg-cutoff's branch table, the branch index.
-Test: `scripts/tmp/harness/dt_test.mjs <base>` (git-excluded).
+(`:nth-child(even of :not([data-dt-off]))`). On: stipend state pages (type, Year 1/2/3), the stipend hub's state table,
+PG fee state pages (seat type, city, fee), /neet-counselling-updates (exam, kind of notice from the title's words,
+authority, 7/30 days), the bond page (state table: bond listed or not, penalty, leaving, length; the college finder),
+/neet-pg-cutoff (both branch tables: clinical / para / pre-clinical by `lib/branchKinds.ts`, each category's column) and
+the branch index (MD/MS/Diploma/DNB, kind, colleges, seats). Shown only on lists of 8+ rows. `data-q` gives a row words
+it answers to without printing them — a branch's short names ("obg", "ortho", "radio", "psm": `branchAliases()`).
+**A table that a client navigation re-renders** (/neet-pg-cutoff's category links) keys its toolbar by what changes
+(`key={category}`); the toolbar's layout-effect cleanup puts the DOM back as React rendered it (order, nothing hidden,
+span cells home) during the commit's deletion pass, before React moves rows. Phase 2 of the plan (city, MBBS state, seat
+matrix, new colleges, quota fee tables) is not built yet. Test: `scripts/tmp/harness/dt_test.mjs` and `dt_test2.mjs
+<base>` (git-excluded).
 
 ## The state PG fee PDF on WhatsApp (2026-11-11; spec `D:/Admisson Hands/seo_data/research_2026_11/lead_magnet_pdf.md`)
 

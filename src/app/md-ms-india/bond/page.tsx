@@ -125,7 +125,7 @@ export default async function BondPage() {
   // Hinglish questions (Admin → Content → "Site: Hinglish questions on data pages"), after the English ones.
   const noBond = govtStates.filter((s) => s.govt.colleges >= 2 && s.govt.withBond === 0).map((s) => s.state);
   if (b) faqs.push(...(await hinglishFaqs("bond", { ...tokens, no_bond_states: noBond.length ? list(noBond) : undefined })));
-  const labels = await toolLabels("bond_search");
+  const [labels, stateLabels] = await Promise.all([toolLabels("bond_search"), toolLabels("state_search")]);
   const byPenalty = govtStates.filter((s) => s.govt.penaltyMedian).sort((x, y) => (y.govt.penaltyMedian ?? 0) - (x.govt.penaltyMedian ?? 0));
 
   return (
@@ -189,8 +189,35 @@ export default async function BondPage() {
           {/* ---------------------- government seats, by state ---------------------- */}
           <section className="container-custom py-10 md:py-14">
             <SectionHead icon="authority" eyebrow="Government colleges" title={body.states_title} intro={body.states_intro} />
+            {govtStates.length >= 8 && (
+              <DataTools
+                id="bond-state-tools"
+                className="mt-6"
+                targets={["bond-states"]}
+                total={govtStates.length}
+                placement="bond_states"
+                labels={stateLabels}
+                chips={[
+                  {
+                    key: "bond",
+                    label: "Bond",
+                    options: [
+                      { value: "yes", label: "Bond listed" },
+                      { value: "no", label: "No bond listed" },
+                    ],
+                  },
+                ]}
+                sorts={[
+                  { key: "pen", label: "Bond penalty, highest first", dir: "desc" },
+                  { key: "pen", label: "Bond penalty, lowest first", dir: "asc" },
+                  { key: "exit", label: "Leaving the seat, highest first", dir: "desc" },
+                  { key: "yrs", label: "Longest bond first", dir: "desc" },
+                  { key: "name", label: "State, A–Z", text: true },
+                ]}
+              />
+            )}
             <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
-              <table className="dt w-full min-w-[760px] text-left text-sm">
+              <table id="bond-states" className="dt w-full min-w-[760px] text-left text-sm">
                 <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
                   <tr>
                     <th scope="col" className="px-4 py-3 font-semibold">State</th>
@@ -204,7 +231,15 @@ export default async function BondPage() {
                 </thead>
                 <tbody className="divide-y divide-border">
                   {govtStates.map((s) => (
-                    <tr key={s.state}>
+                    <tr
+                      key={s.state}
+                      data-row=""
+                      data-f-bond={s.govt.withBond ? "yes" : "no"}
+                      data-s-name={s.state.toLowerCase()}
+                      {...(s.govt.penaltyMedian ? { "data-s-pen": s.govt.penaltyMedian } : {})}
+                      {...(s.govt.exitMedian ? { "data-s-exit": s.govt.exitMedian } : {})}
+                      {...(s.govt.withBond && s.govt.typicalYears ? { "data-s-yrs": s.govt.typicalYears } : {})}
+                    >
                       <th scope="row" className="px-4 py-2.5 font-medium">
                         <Link href={`#${s.anchor}`} className="text-foreground hover:text-primary hover:underline">
                           {s.state}

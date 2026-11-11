@@ -11,6 +11,8 @@ import HeroBars from "@/components/hero/HeroBars";
 import CollegeFaq from "@/components/colleges/CollegeFaq";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
+import DataTools from "@/components/ui/DataTools";
+import { toolLabels } from "@/lib/dataToolLabels";
 
 /**
  * New medical colleges (2026-11-11): every college NMC permitted for the academic year in progress, from NMC's own
@@ -63,10 +65,12 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-function YearTable({ y, compact = false }: { y: NewCollegesYear; compact?: boolean }) {
+const key = (x: string | null | undefined) => (x ?? "").toLowerCase().replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "");
+
+function YearTable({ y, compact = false, id }: { y: NewCollegesYear; compact?: boolean; id?: string }) {
   return (
     <div className="overflow-x-auto rounded-2xl border border-border">
-      <table className="dt w-full min-w-[640px] text-[14px]">
+      <table id={id} className="dt w-full min-w-[640px] text-[14px]">
         <thead>
           <tr>
             <th className="text-left">College</th>
@@ -78,7 +82,14 @@ function YearTable({ y, compact = false }: { y: NewCollegesYear; compact?: boole
         </thead>
         <tbody>
           {y.colleges.map((c) => (
-            <tr key={c.code}>
+            <tr
+              key={c.code}
+              data-row=""
+              data-f-state={key(c.state)}
+              data-f-type={key(c.management)}
+              data-s-name={c.name.toLowerCase()}
+              {...(c.seats ? { "data-s-seats": c.seats } : {})}
+            >
               <td>
                 {c.slug ? (
                   <Link href={`/mbbs-india/colleges/${c.slug}`} className="font-semibold text-primary-strong hover:underline dark:text-primary">
@@ -111,7 +122,7 @@ function YearTable({ y, compact = false }: { y: NewCollegesYear; compact?: boole
 
 export default async function NewMedicalColleges() {
   const { d, now, copy } = await load();
-  const image = await pageHeroImage("page.new_colleges.hero", "page.ug_state.hero");
+  const [image, labels] = await Promise.all([pageHeroImage("page.new_colleges.hero", "page.ug_state.hero"), toolLabels("fees_search")]);
   const faqs = now
     ? [
         {
@@ -248,8 +259,35 @@ export default async function NewMedicalColleges() {
             <h2 id="every" className="font-heading text-2xl font-bold text-foreground">
               {copy.list_title}
             </h2>
+            {now.colleges.length >= 8 && (
+              <DataTools
+                id="new-college-tools"
+                className="mt-4"
+                targets={["new-colleges"]}
+                total={now.colleges.length}
+                placement="new_medical_colleges"
+                labels={labels}
+                chips={[
+                  {
+                    key: "type",
+                    label: "Type",
+                    options: [...new Set(now.colleges.map((c) => c.management).filter(Boolean))].map((m) => ({ value: key(m), label: m })),
+                  },
+                  {
+                    key: "state",
+                    label: "State",
+                    select: true,
+                    options: [...new Set(now.colleges.map((c) => c.state).filter(Boolean))].sort().map((x) => ({ value: key(x), label: x })),
+                  },
+                ]}
+                sorts={[
+                  { key: "seats", label: "Most MBBS seats first", dir: "desc" },
+                  { key: "name", label: "College, A–Z", text: true },
+                ]}
+              />
+            )}
             <div className="mt-4">
-              <YearTable y={now} />
+              <YearTable y={now} id="new-colleges" />
             </div>
             <p className="mt-3 max-w-[80ch] text-[13.5px] leading-relaxed text-muted-foreground">{copy.list_note}</p>
           </section>

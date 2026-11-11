@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Link2, RotateCcw, Search } from "lucide-react";
 import { trackEvent, aaTrack } from "@/lib/analytics";
 
@@ -128,6 +128,34 @@ export default function DataTools({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Leaving (a client navigation re-renders the table, or the toolbar is keyed to remount): hand React back the DOM it
+  // rendered — page order, nothing hidden, each spanning cell home, <details> as they were. A layout-effect cleanup runs
+  // in the commit's deletion pass, before React moves or removes the rows, so React finds its own order again.
+  useLayoutEffect(
+    () => () => {
+      const list = rows.current.filter((r) => r.isConnected);
+      if (sortedOnce.current) {
+        const parents = new Map<HTMLElement, HTMLElement[]>();
+        for (const r of list) if (r.parentElement) parents.set(r.parentElement, [...(parents.get(r.parentElement) ?? []), r]);
+        for (const [parent, kids] of parents)
+          for (const k of [...kids].sort((a, b) => (order.current.get(a) ?? 0) - (order.current.get(b) ?? 0))) parent.appendChild(k);
+      }
+      for (const r of list) {
+        r.removeAttribute("data-dt-off");
+        for (const s of Array.from(r.querySelectorAll("[data-sub][data-dt-off]"))) s.removeAttribute("data-dt-off");
+        const sp = spans.current.get(r);
+        const cell = r.querySelector("[data-dt-span]") as HTMLElement | null;
+        if (sp && cell && sp.home.isConnected) {
+          if (cell.parentElement !== sp.home) sp.home.insertBefore(cell, sp.home.firstChild);
+          cell.setAttribute("rowspan", String(sp.span));
+        }
+        if (r instanceof HTMLDetailsElement && opened.current.has(r)) r.open = opened.current.get(r) ?? false;
+        r.closest("[data-dt-section]")?.removeAttribute("data-dt-off");
+      }
+    },
+    [],
+  );
+
   const reset = useCallback(() => {
     setQ("");
     setPicked({});
@@ -156,7 +184,9 @@ export default function DataTools({
     const subChips = chips.filter((c) => c.level === "sub" && picked[c.key]);
     let visible = 0;
     for (const r of list) {
-      let ok = !needle || fold(r.textContent ?? "").includes(` ${needle}`) || fold(r.textContent ?? "").includes(needle);
+      // data-q: words a row also answers to without printing them (a branch's short names: "obg", "ortho").
+      const hay = fold(`${r.textContent ?? ""} ${r.getAttribute("data-q") ?? ""}`);
+      let ok = !needle || hay.includes(needle);
       for (const c of rowChips) if (ok && !(r.getAttribute(`data-f-${c.key}`) ?? "").split(" ").includes(picked[c.key])) ok = false;
       if (ok && win) {
         const d = r.getAttribute("data-date");
@@ -200,7 +230,8 @@ export default function DataTools({
       if (own != null) return spec?.text ? own : Number(own);
       const subs = (Array.from(r.querySelectorAll("[data-sub]")) as HTMLElement[]).filter((s) => !s.hasAttribute("data-dt-off"));
       const ks = subs.map((s) => s.getAttribute(`data-s-${key}`)).filter((v): v is string => v != null).map(Number);
-      return ks.length ? Math.min(...ks) : null;
+      // A group sorts on its lowest shown figure going up and its highest going down.
+      return ks.length ? (dir === "desc" ? Math.max(...ks) : Math.min(...ks)) : null;
     };
     // Rows are moved only once somebody sorts; until then the page's own order stands untouched.
     if (spec) sortedOnce.current = true;

@@ -1064,6 +1064,8 @@ export const PAGE_COPY = {
       stipend_search: { label: "Stipend page — search hint", value: "Find a college" },
       notices_search: { label: "Notices page — search hint", value: "Search notices or a state" },
       bond_search: { label: "Bond page — search hint", value: "Find your college" },
+      state_search: { label: "State tables — search hint", value: "Find a state" },
+      branch_search: { label: "Branch tables — search hint", value: "Find a branch" },
     },
   },
   // The state PG fee & stipend PDF on WhatsApp (2026-11-11): the button on the pages and the messages the official

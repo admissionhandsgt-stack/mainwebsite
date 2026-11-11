@@ -1,3 +1,4 @@
+import { PARA_CLINICAL, PRE_CLINICAL } from "@/lib/branchKinds";
 import { unstable_cache } from "next/cache";
 import { sql } from "drizzle-orm";
 import { db } from "@/db/client";
@@ -42,9 +43,9 @@ export interface PgStatistics {
 
 export const MILESTONES = [1_000, 10_000, 25_000, 50_000, 1_00_000, 1_50_000, 2_00_000];
 
-/** NMC's course names, by kind. Everything else on the MD/MS list is clinical. */
-const PRE = /anatomy|physiology|biochemistry|biophysics/i;
-const PARA = /patholog|microbiolog|pharmacolog|forensic|community medicine|preventive|social|laborator|lab medicine|hospital administration|community health|public health|epidemiolog/i;
+/** NMC's course names, by kind (lib/branchKinds.ts). Everything else on the MD/MS list is clinical. */
+const PRE = PRE_CLINICAL;
+const PARA = PARA_CLINICAL;
 
 const TYPE_ORDER = ["MD", "MS", "Diploma", "DM", "M.Ch."];
 const TYPE_LABEL: Record<string, string> = { MD: "MD", MS: "MS", Diploma: "PG Diploma", DM: "DM (super speciality)", "M.Ch.": "M.Ch. (super speciality)", "M.B.B.S.": "MBBS" };

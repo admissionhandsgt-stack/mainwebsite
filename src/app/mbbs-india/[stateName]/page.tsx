@@ -19,6 +19,8 @@ import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
 import SectionHead from "@/components/ui/SectionHead";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import DataTools from "@/components/ui/DataTools";
+import { toolLabels } from "@/lib/dataToolLabels";
 /**
  * One page per state, read on the server.
  *
@@ -122,13 +124,27 @@ export default async function MBBSStatePage(props: Props) {
   const name = p.state.name;
   const path = `/mbbs-india/${p.state.slug}`;
   // Words from Admin → Content → Text & numbers ("Page: MBBS state pages"); photo from Admin → Media.
-  const [copy, heroImage, authority, nmcUg] = await Promise.all([
+  const [copy, heroImage, authority, nmcUg, labels] = await Promise.all([
     pageCopy("page.ug_state.hero", { state: name, count: inr(p.colleges.length), counsellings: bodiesOf(p) }),
     pageHeroImage(`page.ug_state.${p.state.slug}.hero`, "page.ug_state.hero"),
     getStateAuthority(name),
     // NMC's MBBS seats and ownership per college (lib/nmcData.ts), for the college table.
     getNmcUgIndex().catch((): Awaited<ReturnType<typeof getNmcUgIndex>> => ({})),
+    toolLabels("fees_search"),
   ]);
+  // The college table's rows as printed, and the filters it offers (type and city, only those present).
+  const tableRows = p.colleges.map((c) => {
+    const f = nmcUg[c.slug];
+    return { c, type: (f?.management ? f.management : c.collegeType) ?? null, seats: f?.seats ?? c.intake ?? null };
+  });
+  const typeKey = (t: string | null) => (t ?? "other").toLowerCase().replace(/[^a-z]+/g, "-");
+  const typeOptions = [...new Set(tableRows.map((r) => r.type).filter((t): t is string => Boolean(t)))]
+    .sort((a, b) => (a === "Government" ? -1 : b === "Government" ? 1 : a.localeCompare(b)))
+    .map((t) => ({ value: typeKey(t), label: t }));
+  const cityKeyOf = (city: string | null) => (city ?? "").toLowerCase().replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "");
+  const cityOptions = [...new Set(tableRows.map((r) => r.c.city).filter((x): x is string => Boolean(x && x.trim())))]
+    .sort((a, b) => a.localeCompare(b))
+    .map((x) => ({ value: cityKeyOf(x), label: x }));
   const withRanks = p.colleges.filter((c) => c.rankRows > 0).length;
   const years = p.years.length ? p.years.join(" and ") : null;
   const yearSpan =
@@ -325,8 +341,29 @@ export default async function MBBSStatePage(props: Props) {
           ) : (
             // A table, as "mbbs colleges in <state> list with seats" is searched and as the leading pages show it
             // (2026-11-05); the cards it replaced carried the same facts less scannably.
+            <>
+            {tableRows.length >= 8 && (
+              <DataTools
+                id="mbbs-college-tools"
+                className="mt-6"
+                targets={["mbbs-colleges"]}
+                total={tableRows.length}
+                placement="mbbs_state_colleges"
+                labels={labels}
+                chips={[
+                  ...(typeOptions.length > 1 ? [{ key: "type", label: "Type", options: typeOptions }] : []),
+                  ...(cityOptions.length > 2 ? [{ key: "city", label: "City", options: cityOptions, select: true }] : []),
+                ]}
+                sorts={[
+                  { key: "seats", label: "Most MBBS seats first", dir: "desc" },
+                  { key: "est", label: "Oldest first", dir: "asc" },
+                  { key: "est", label: "Newest first", dir: "desc" },
+                  { key: "name", label: "College, A–Z", text: true },
+                ]}
+              />
+            )}
             <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
-              <table className="dt w-full min-w-[600px] text-left text-sm">
+              <table id="mbbs-colleges" className="dt w-full min-w-[600px] text-left text-sm">
                 <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
                   <tr>
                     <th scope="col" className="px-4 py-3 font-semibold">College</th>
@@ -337,12 +374,17 @@ export default async function MBBSStatePage(props: Props) {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {p.colleges.map((c) => {
-                    const f = nmcUg[c.slug];
-                    const type = f?.management ? f.management : c.collegeType;
-                    const seats = f?.seats ?? c.intake ?? null;
+                  {tableRows.map(({ c, type, seats }) => {
                     return (
-                      <tr key={c.slug}>
+                      <tr
+                        key={c.slug}
+                        data-row=""
+                        data-f-type={typeKey(type)}
+                        data-f-city={cityKeyOf(c.city) || undefined}
+                        data-s-name={c.name.toLowerCase()}
+                        {...(seats ? { "data-s-seats": seats } : {})}
+                        {...(c.establishedYear ? { "data-s-est": c.establishedYear } : {})}
+                      >
                         <th scope="row" className="px-4 py-2.5 font-medium">
                           <Link href={`/mbbs-india/colleges/${c.slug}`} className="text-foreground hover:text-primary hover:underline">
                             {c.name}
@@ -358,6 +400,7 @@ export default async function MBBSStatePage(props: Props) {
                 </tbody>
               </table>
             </div>
+            </>
           )}
         </div>
       </section>
