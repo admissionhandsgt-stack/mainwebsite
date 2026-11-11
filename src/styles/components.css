@@ -171,6 +171,19 @@ table.dt thead th {
 table.dt tbody tr:nth-child(even) {
   background: hsl(var(--surface-2) / 0.55);
 }
+/* Data tools (components/ui/DataTools): a filtered-out row or section is gone, whatever display class it carries
+   (`hidden` loses to `.flex`); the stripes count only the rows still shown, where the browser can. */
+[data-dt-off] {
+  display: none !important;
+}
+@supports selector(:nth-child(1 of .x)) {
+  table.dt tbody tr:nth-child(even) {
+    background: transparent;
+  }
+  table.dt tbody tr:nth-child(even of :not([data-dt-off])) {
+    background: hsl(var(--surface-2) / 0.55);
+  }
+}
 table.dt tbody tr {
   transition: background-color 120ms ease;
 }

@@ -55,12 +55,16 @@ export default function MetaPixel({ id, copy }: { id: string; copy: Copy }) {
   // The notice waits for the visitor's first scroll, tap or key (2026-11-11): drawn on load it was the largest text a
   // phone painted after hydration, so it *was* the page's Largest Contentful Paint (4.1 s on a PG college page, the
   // content itself at 1.4 s). LCP stops counting at the first input, and the pixel waits for consent either way.
+  // A *finished* tap (click), never pointerdown/touchstart: drawn between press and release, the notice landed under
+  // the finger, the release hit it instead of the control, and the browser sent the click to <body> — a first tap
+  // near the foot of the screen was lost (found on the notices page's filter chips, same day). LCP has already
+  // stopped at the pointerdown either way.
   const [engaged, setEngaged] = useState(false);
 
   useEffect(() => {
     setConsent(readConsent());
-    const on = () => setEngaged(true);
-    const events = ["scroll", "pointerdown", "keydown", "touchstart"] as const;
+    const on = () => window.setTimeout(() => setEngaged(true), 0);
+    const events = ["scroll", "click", "keydown"] as const;
     for (const e of events) window.addEventListener(e, on, { once: true, passive: true });
     return () => {
       for (const e of events) window.removeEventListener(e, on);

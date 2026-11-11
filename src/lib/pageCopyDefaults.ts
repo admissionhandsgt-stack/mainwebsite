@@ -1046,6 +1046,26 @@ export const PAGE_COPY = {
       },
     },
   },
+  // Find, filter and sort on the data pages (components/ui/DataTools, 2026-11-11).
+  "site.data_tools": {
+    group: "Site: data tools (find, filter, sort)",
+    fields: {
+      search: { label: "Search box — default hint", value: "Search this list" },
+      all: { label: "The 'all' choice", value: "All" },
+      sort: { label: "Sort label", value: "Sort" },
+      pageOrder: { label: "Sort — the page's own order", value: "As listed" },
+      reset: { label: "Reset button", value: "Reset" },
+      showing: { label: "Count — {n}, {total}", value: "Showing {n} of {total}" },
+      none: { label: "When nothing matches", value: "Nothing matches these filters." },
+      share: { label: "Copy-link button", value: "Copy link" },
+      copied: { label: "After copying", value: "Link copied" },
+      days: { label: "Date filter label", value: "Posted" },
+      fees_search: { label: "Fee page — search hint", value: "Find a college or city" },
+      stipend_search: { label: "Stipend page — search hint", value: "Find a college" },
+      notices_search: { label: "Notices page — search hint", value: "Search notices or a state" },
+      bond_search: { label: "Bond page — search hint", value: "Find your college" },
+    },
+  },
   // The state PG fee & stipend PDF on WhatsApp (2026-11-11): the button on the pages and the messages the official
   // number replies with. The student messages first, so every reply is inside WhatsApp's 24-hour window.
   "site.fee_pdf": {

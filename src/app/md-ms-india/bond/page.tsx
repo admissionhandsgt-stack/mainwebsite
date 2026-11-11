@@ -16,6 +16,8 @@ import TelegramJoin from "@/components/engage/TelegramJoin";
 import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 import { hinglishFaqs } from "@/lib/hinglishFaq";
+import DataTools from "@/components/ui/DataTools";
+import { toolLabels } from "@/lib/dataToolLabels";
 
 /**
  * "PG medical bond state wise" (2026-10-20): the service bond and seat-leaving terms on MD/MS
@@ -123,6 +125,7 @@ export default async function BondPage() {
   // Hinglish questions (Admin → Content → "Site: Hinglish questions on data pages"), after the English ones.
   const noBond = govtStates.filter((s) => s.govt.colleges >= 2 && s.govt.withBond === 0).map((s) => s.state);
   if (b) faqs.push(...(await hinglishFaqs("bond", { ...tokens, no_bond_states: noBond.length ? list(noBond) : undefined })));
+  const labels = await toolLabels("bond_search");
   const byPenalty = govtStates.filter((s) => s.govt.penaltyMedian).sort((x, y) => (y.govt.penaltyMedian ?? 0) - (x.govt.penaltyMedian ?? 0));
 
   return (
@@ -279,9 +282,19 @@ export default async function BondPage() {
           <section className="container-custom py-10 md:py-14">
             <SectionHead icon="list" eyebrow={`${b.govtColleges} colleges`} title={body.list_title} intro={body.list_intro} />
             <OpenOnHash />
-            <div className="mt-6 space-y-3">
+            {/* "Find your college": opens the state holding it and shows only the matching colleges (components/ui/DataTools). */}
+            <DataTools
+              id="bond-tools"
+              className="mt-6"
+              targets={["bond-colleges"]}
+              total={govtStates.length}
+              placement="bond_colleges"
+              labels={{ ...labels, showing: labels.showing.replace("{total}", "{total} states") }}
+              searchSubs
+            />
+            <div id="bond-colleges" className="mt-6 space-y-3">
               {govtStates.map((s) => (
-                <details key={s.state} id={s.anchor} className="scroll-mt-24 rounded-2xl border border-border bg-card">
+                <details key={s.state} id={s.anchor} data-row="" className="scroll-mt-24 rounded-2xl border border-border bg-card">
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4">
                     <span className="font-heading text-[16px] font-bold text-foreground">{s.state}</span>
                     <span className="tnum text-[13px] text-muted-foreground">
@@ -301,7 +314,7 @@ export default async function BondPage() {
                       </thead>
                       <tbody className="divide-y divide-border">
                         {s.govt.list.map((c) => (
-                          <tr key={c.slug}>
+                          <tr key={c.slug} data-sub="">
                             <th scope="row" className="px-4 py-2.5 font-medium">
                               <Link href={`/md-ms-india/colleges/${c.slug}#seat-terms`} className="text-foreground hover:text-primary hover:underline">
                                 {c.name}

@@ -5,7 +5,7 @@ import Link from "@/components/ui/Link";
 import { fitDescription, fitTitle } from "@/lib/seoTitle";
 import { resolveMetadata } from "@/lib/content";
 import { getStateFeeMatrix, FAMILY_LABEL, type MatrixCollege, type MatrixRow, type Ownership, type Seat } from "@/lib/pgFeeMatrix";
-import { approxFee, exactInr } from "@/lib/chance";
+import { approxFee, exactInr, feeBracketFloor } from "@/lib/chance";
 import { getStateStipend } from "@/lib/cutoffHubQueries";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
@@ -20,6 +20,8 @@ import { hinglishFaqs } from "@/lib/hinglishFaq";
 import { getCityIndex } from "@/lib/cityQueries";
 import { cityIn } from "@/lib/cityKey";
 import FeePdfCta from "@/components/lead/FeePdfCta";
+import DataTools from "@/components/ui/DataTools";
+import { toolLabels } from "@/lib/dataToolLabels";
 
 /**
  * One state's NEET PG fee matrix (2026-11-09): "maharashtra pg fees", "karnataka md ms fees 2026", "pg fees in
@@ -93,11 +95,13 @@ export async function generateMetadata(props: { params: Promise<{ state: string 
 }
 
 const OWN_ORDER: Ownership[] = ["government", "private", "deemed"];
+/** A place as a filter value ("Navi Mumbai" → "navi-mumbai"). */
+const cityKeyOf = (place: string | null) => (place ?? "").toLowerCase().replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "");
 
-function FeeTable({ colleges, caption }: { colleges: MatrixCollege[]; caption: string }) {
+function FeeTable({ colleges, caption, id }: { colleges: MatrixCollege[]; caption: string; id: string }) {
   return (
     <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
-      <table className="dt w-full min-w-[720px] text-left text-sm">
+      <table id={id} className="dt w-full min-w-[720px] text-left text-sm">
         <caption className="sr-only">{caption}</caption>
         <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
           <tr>
@@ -107,14 +111,30 @@ function FeeTable({ colleges, caption }: { colleges: MatrixCollege[]; caption: s
             <th scope="col" className="px-4 py-3 text-right font-semibold">Branches</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-border">
-          {colleges.map((c) =>
-            c.rows.map((r, i) => {
+        {/* One tbody a college, so the data tools hide and sort a college as one block (its anchor on the tbody). */}
+        {colleges.map((c) => (
+          <tbody
+            key={c.slug}
+            id={`c-${c.slug}`}
+            data-row=""
+            data-f-city={cityKeyOf(c.place)}
+            data-s-name={c.short.toLowerCase()}
+            className="divide-y divide-border border-t border-border first-of-type:border-t-0"
+          >
+          {c.rows.map((r, i) => {
               const cell = feeCell(r);
               return (
-                <tr key={`${c.slug}-${i}`} id={i === 0 ? `c-${c.slug}` : undefined} className="align-top">
+                <tr
+                  key={`${c.slug}-${i}`}
+                  className="align-top"
+                  data-sub=""
+                  data-f-seat={r.family}
+                  // A sort key only: the exact figure for a 2026-27 notice, the bracket's floor for a listing figure
+                  // (the page prints a listing figure as a bracket, so its exact amount stays out of the HTML).
+                  data-s-fee={r.official ? Math.round(r.low.inr) : feeBracketFloor(r.low.inr)}
+                >
                   {i === 0 && (
-                    <th scope="rowgroup" rowSpan={c.rows.length} className="w-[30%] px-4 py-3 font-medium">
+                    <th scope="rowgroup" rowSpan={c.rows.length} data-dt-span="" className="w-[30%] px-4 py-3 font-medium">
                       <Link href={`/md-ms-india/colleges/${c.slug}`} className="text-foreground hover:text-primary hover:underline">
                         {c.short}
                       </Link>
@@ -137,9 +157,9 @@ function FeeTable({ colleges, caption }: { colleges: MatrixCollege[]; caption: s
                   <td className="tnum px-4 py-3 text-right text-muted-foreground">{r.branches}</td>
                 </tr>
               );
-            }),
-          )}
-        </tbody>
+            })}
+          </tbody>
+        ))}
       </table>
     </div>
   );
@@ -185,6 +205,8 @@ export default async function StateFeesPage(props: { params: Promise<{ state: st
     { question: body.faq6_q, answer: body.faq6_a },
   ];
   const titles: Record<Ownership, string> = { government: body.govt_title, private: body.private_title, deemed: body.deemed_title };
+  const owns = OWN_ORDER.filter((o) => m.counts[o] > 0);
+  const labels = await toolLabels("fees_search");
   // A city with its own indexed page (lib/cityQueries.ts) links it from its heading.
   const cityPages = new Map((await getCityIndex().catch((): Awaited<ReturnType<typeof getCityIndex>> => [])).filter((c) => c.indexable && c.state === m.state).map((c) => [c.slug, `/medical-colleges/${c.slug}`]));
   const cityLink = (place: string) => {
@@ -250,10 +272,59 @@ export default async function StateFeesPage(props: { params: Promise<{ state: st
       />
       <FeePdfCta state={m.state} placement="pdf_fees_state" />
 
-      {OWN_ORDER.filter((o) => m.counts[o] > 0).map((own) => (
-        <section key={own} id={own} className="container-custom py-8 md:py-12">
+      {/* Find, filter and sort across the three tables (components/ui/DataTools): a college or city, a kind of seat, and
+          the cheapest seat of that kind first. Government / private / deemed stay the page's own sections, jumped to. */}
+      {m.colleges.length >= 8 && (
+        <section className="container-custom pt-8">
+          <DataTools
+            id="fee-tools"
+            targets={owns.map((o) => `fees-${o}`)}
+            total={m.colleges.length}
+            placement="fees_state"
+            labels={labels}
+            chips={[
+              {
+                key: "seat",
+                label: "Seat",
+                level: "sub",
+                options: (["state", "aiq", "management", "nri"] as const)
+                  .filter((f) => m.colleges.some((c) => c.rows.some((r) => r.family === f)))
+                  .map((f) => ({ value: f, label: FAMILY_LABEL[f] })),
+              },
+              ...(m.cities.length >= 2
+                ? [
+                    {
+                      key: "city",
+                      label: "City",
+                      select: true,
+                      options: m.cities.map((c) => ({ value: cityKeyOf(c.city), label: `${c.city} (${c.colleges})` })),
+                    },
+                  ]
+                : []),
+            ]}
+            sorts={[
+              { key: "fee", label: "Fee, lowest first (pick a seat)", requires: "seat" },
+              { key: "fee", label: "Fee, highest first (pick a seat)", dir: "desc", requires: "seat" },
+              { key: "name", label: "College name, A–Z", text: true },
+            ]}
+          />
+          <p className="mt-3 text-[13px] text-muted-foreground">
+            Jump to:{" "}
+            {owns.map((o, i) => (
+              <span key={o}>
+                {i > 0 && " · "}
+                <a href={`#${o}`} className="font-semibold text-primary-strong hover:underline dark:text-primary">
+                  {titles[o]}
+                </a>
+              </span>
+            ))}
+          </p>
+        </section>
+      )}
+      {owns.map((own) => (
+        <section key={own} id={own} data-dt-section="" className="container-custom py-8 md:py-12">
           <SectionHead icon="money" eyebrow={`${m.state} · ${m.counts[own]}`} title={titles[own]} intro={body.table_intro} />
-          <FeeTable colleges={m.colleges.filter((c) => c.ownership === own)} caption={titles[own]} />
+          <FeeTable id={`fees-${own}`} colleges={m.colleges.filter((c) => c.ownership === own)} caption={titles[own]} />
         </section>
       ))}
 

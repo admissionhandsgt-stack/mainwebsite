@@ -2347,10 +2347,32 @@ What changed:
   the viewport that a client component draws on load is an LCP candidate** — check `largest-contentful-paint-element`
   in PSI before blaming JS weight. Also checked: the PG college page's HTML is 576 KB (67 KB gzip), half of it the RSC
   payload repeating the tree — the framework's cost, not a component's.
+  **Not on `pointerdown`/`touchstart` (same day):** drawn between press and release, the notice landed under the
+  finger and the release went to it, so the browser sent the click to `<body>` — a visitor's first tap near the foot of
+  the screen did nothing (caught on the notices page's filter chips). It waits for `scroll`, `click` (a finished tap)
+  or `keydown`; LCP has already stopped at the pointerdown. **Nothing may appear under the pointer between a press and
+  its release.**
 - **Search Console "Host status: problems last week" (owner's CSV export, 2026-11-11)** was one request: the apex
   `admissionhands.com` (82 crawls in 90 days, 99% the 301 to www) got a 5xx after 19.5 s around 7 Nov; www (26,448)
   had none and the server was up. Optional: a Cloudflare Redirect Rule for apex → www would keep the origin out of it
   (dashboard only; the API token cannot edit rules).
+
+## Sort and filter on data pages (2026-11-11, owner: "smart modern tarike se sort & filtering… user friendly")
+
+`components/ui/DataTools.tsx` (client) works on the table the server already rendered — the full list stays in the
+HTML for search engines, and the toolbar only hides (`data-dt-off`) and reorders rows. Markup it reads: `data-row` on a
+row (or a college's `<tbody>`), `data-sub` on its inner rows, `data-f-<key>` (space-separated values) for a chip,
+`data-s-<key>` for a sort, `data-date` for the "Posted" window, `data-dt-span` on a cell whose `rowspan` follows the
+rows still shown (the fee table's college name moves to the first shown row), `data-dt-section` on a section that hides
+when everything in it is hidden. A search opens the `<details>` it matches in. A sort with `requires` waits for its chip
+(fee sorts need a seat type — a college's cheapest fee across seat types would mix quotas, the one-row-one-seat rule).
+Jumping to an anchor resets the filters. "Copy link" puts only the chips, sort and window in the URL (`dt-<key>`),
+**never the search text** (it can be a student's own words). Analytics: `data_tool` with placement and control only.
+Words: Admin → Content → "Site: data tools" (`toolLabels(hint)` in lib/dataToolLabels.ts). Zebra rows skip hidden rows
+(`:nth-child(even of :not([data-dt-off]))`). On: stipend state pages (type, Year 1/2/3), PG fee state pages (seat type,
+city, fee), /neet-counselling-updates (exam, kind of notice from the title's words, authority, 7/30 days), the bond
+page's college finder. Shown only on lists of 8+ rows. Next candidates: /neet-pg-cutoff's branch table, the branch index.
+Test: `scripts/tmp/harness/dt_test.mjs <base>` (git-excluded).
 
 ## The state PG fee PDF on WhatsApp (2026-11-11; spec `D:/Admisson Hands/seo_data/research_2026_11/lead_magnet_pdf.md`)
 

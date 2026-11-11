@@ -13,6 +13,8 @@ import StructuredData, { breadcrumb, webPage } from "@/components/seo/Structured
 import DataHero from "@/components/hero/DataHero";
 import DataPageCounsel from "@/components/lead/DataPageCounsel";
 import TelegramJoin from "@/components/engage/TelegramJoin";
+import DataTools from "@/components/ui/DataTools";
+import { toolLabels } from "@/lib/dataToolLabels";
 
 /**
  * NEET counselling updates (2026-11-11, the competitive review's "news" gap): the newest NEET PG and NEET UG notices
@@ -54,14 +56,41 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-function List({ items, slugs, base, empty, keyOf }: { items: HubNotice[]; slugs: Map<string, string>; base: string; empty: string; keyOf: (s: string) => string }) {
+/**
+ * What a notice is, from its own title — for the type filter. A notice can be two things ("stray round result").
+ * The words are the boards' own; anything unmatched is "other".
+ */
+const TYPES: [string, string, RegExp][] = [
+  ["dates", "Schedule & dates", /schedul|\bdates?\b|time ?table|extend|extension|postpon|last date|calendar|deadline/i],
+  ["register", "Registration & choices", /registrat|apply|application|choice (filling|locking)|option entry|counselling form/i],
+  ["seats", "Seats & vacancies", /seat matrix|seat position|vacanc|seats? (added|addition|removal)|addition and removal/i],
+  ["merit", "Merit list", /merit|rank list|state rank|waiting list/i],
+  ["result", "Allotment & result", /allot|result|selection list|provisional list|final list|selected candidates/i],
+  ["stray", "Stray & mop-up", /stray|mop ?-?up|special round/i],
+  ["fees", "Fees & refunds", /\bfees?\b|refund|security deposit|payment/i],
+];
+const typesOf = (title: string) => {
+  const t = TYPES.filter(([, , re]) => re.test(title)).map(([k]) => k);
+  return t.length ? t.join(" ") : "other";
+};
+const srcKey = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "");
+
+function List({ id, level, items, slugs, base, empty, keyOf }: { id: string; level: "pg" | "ug"; items: HubNotice[]; slugs: Map<string, string>; base: string; empty: string; keyOf: (s: string) => string }) {
   if (!items.length) return <p className="mt-3 text-[14px] text-muted-foreground">{empty}</p>;
   return (
-    <ol className="mt-4 divide-y divide-border rounded-2xl border border-border bg-card">
+    <ol id={id} className="mt-4 divide-y divide-border rounded-2xl border border-border bg-card">
       {items.map((n) => {
         const slug = n.state ? slugs.get(keyOf(n.state)) : undefined;
         return (
-          <li key={(n.url ?? "") + n.title} className="flex gap-3 px-4 py-3">
+          <li
+            key={(n.url ?? "") + n.title}
+            className="flex gap-3 px-4 py-3"
+            data-row=""
+            data-f-level={level}
+            data-f-type={typesOf(n.title)}
+            data-f-src={srcKey(n.where)}
+            data-date={n.on.slice(0, 10)}
+          >
             <time dateTime={n.on.slice(0, 10)} className="tnum w-[4.6rem] shrink-0 pt-0.5 text-[12.5px] font-semibold text-muted-foreground">
               {readableDate(n.on.slice(0, 10)).replace(/ \d{4}$/, "")}
             </time>
@@ -95,7 +124,7 @@ function List({ items, slugs, base, empty, keyOf }: { items: HubNotice[]; slugs:
 
 export default async function CounsellingUpdates() {
   const { pg, ug, pgSlug, ugSlug, key, year, copy } = await load();
-  const image = await pageHeroImage("page.counselling_updates.hero", "page.pg_counselling.hero");
+  const [image, labels] = await Promise.all([pageHeroImage("page.counselling_updates.hero", "page.pg_counselling.hero"), toolLabels("notices_search")]);
   const newest = [pg[0]?.on, ug[0]?.on].filter(Boolean).sort().pop()?.slice(0, 10) ?? null;
   const lastMonth = (xs: HubNotice[]) => xs.filter((n) => Date.parse(n.on) > Date.now() - 30 * 86_400_000).length;
 
@@ -138,18 +167,45 @@ export default async function CounsellingUpdates() {
       />
 
       <div className="container-custom py-10 md:py-14">
+        {pg.length + ug.length >= 8 && (
+          <DataTools
+            id="notice-tools"
+            className="mb-8"
+            targets={["notices-pg", "notices-ug"]}
+            total={pg.length + ug.length}
+            placement="counselling_updates"
+            labels={labels}
+            days={[7, 30]}
+            chips={[
+              { key: "level", label: "Exam", options: [{ value: "pg", label: "NEET PG" }, { value: "ug", label: "NEET UG" }] },
+              {
+                key: "type",
+                label: "Type",
+                options: [...TYPES.filter(([k]) => [...pg, ...ug].some((n) => typesOf(n.title).split(" ").includes(k))).map(([k, l]) => ({ value: k, label: l })), { value: "other", label: "Other" }],
+              },
+              {
+                key: "src",
+                label: "Authority",
+                select: true,
+                options: [...new Set([...pg, ...ug].map((n) => n.where))]
+                  .sort((a, b) => (/^(MCC|NBEMS|NMC)$/.test(a) ? 0 : 1) - (/^(MCC|NBEMS|NMC)$/.test(b) ? 0 : 1) || a.localeCompare(b))
+                  .map((w) => ({ value: srcKey(w), label: w })),
+              },
+            ]}
+          />
+        )}
         <div className="grid gap-10 lg:grid-cols-2">
-          <section aria-labelledby="pg-notices">
+          <section aria-labelledby="pg-notices" data-dt-section="">
             <h2 id="pg-notices" className="font-heading text-2xl font-bold text-foreground">
               {copy.pg_title}
             </h2>
-            <List items={pg} slugs={pgSlug} base="/md-ms-india/states" empty={copy.empty} keyOf={key} />
+            <List id="notices-pg" level="pg" items={pg} slugs={pgSlug} base="/md-ms-india/states" empty={copy.empty} keyOf={key} />
           </section>
-          <section aria-labelledby="ug-notices">
+          <section aria-labelledby="ug-notices" data-dt-section="">
             <h2 id="ug-notices" className="font-heading text-2xl font-bold text-foreground">
               {copy.ug_title}
             </h2>
-            <List items={ug} slugs={ugSlug} base="/mbbs-india" empty={copy.empty} keyOf={key} />
+            <List id="notices-ug" level="ug" items={ug} slugs={ugSlug} base="/mbbs-india" empty={copy.empty} keyOf={key} />
           </section>
         </div>
         <p className="mt-4 max-w-[80ch] text-[13.5px] text-muted-foreground">{copy.note}</p>

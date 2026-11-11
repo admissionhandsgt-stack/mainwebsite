@@ -90,6 +90,9 @@ export function approxFee(min: number | null | undefined, max?: number | null): 
     : `≈ ₹${from} – ${to}${plus} /yr*`;
 }
 
+/** The lower edge of a figure's bracket — a sort key that orders listing fees without printing them (data tools). */
+export const feeBracketFloor = (fee: number) => bracket(fee)[0];
+
 export const FEE_FOOTNOTE =
   "*Approximate yearly fee bracket from published fee schedules — the tuition alone wherever the notice prints it. The exact fee, hostel, deposit and bond for your quota are confirmed with your counsellor.";
 

@@ -20,6 +20,8 @@ import { collegeName } from "@/lib/collegeName";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 import { hinglishFaqs } from "@/lib/hinglishFaq";
 import FeePdfCta from "@/components/lead/FeePdfCta";
+import DataTools from "@/components/ui/DataTools";
+import { toolLabels } from "@/lib/dataToolLabels";
 
 /** The hero chart has room for a name, not an address: "ESIC Medical College, Alwar". The table below keeps the full one. */
 const barName = (raw: string) => {
@@ -133,6 +135,7 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
   ]);
 
   const showBond = !!bond && bond.govt.colleges > 0;
+  const labels = await toolLabels("stipend_search");
   // The colleges grouped by the city their name gives, for every city with two or more (highest first within a city).
   const byCity = new Map<string, typeof s.list>();
   for (const c of s.list) {
@@ -225,8 +228,33 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
       {/* -------------------------- every college -------------------------- */}
       <section className="container-custom py-10 md:py-14">
         <SectionHead icon="money" eyebrow={s.state} title={body.table_title} intro={body.table_intro} />
+        {s.list.length >= 8 && (
+          <DataTools
+            id="stipend-tools"
+            className="mt-6"
+            targets={["stipend-table"]}
+            total={s.list.length}
+            placement="stipend_state"
+            labels={labels}
+            chips={[
+              {
+                key: "own",
+                label: "Type",
+                options: (["government", "private", "deemed", "other"] as const)
+                  .filter((o) => s.list.some((c) => c.ownership === o))
+                  .map((o) => ({ value: o, label: OWN[o] })),
+              },
+            ]}
+            sorts={[
+              { key: "y1", label: "Year 1, highest first", dir: "desc" },
+              { key: "y2", label: "Year 2, highest first", dir: "desc" },
+              { key: "y3", label: "Year 3, highest first", dir: "desc" },
+              { key: "name", label: "College name, A–Z", text: true },
+            ]}
+          />
+        )}
         <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
-          <table className="dt w-full min-w-[640px] text-left text-sm">
+          <table id="stipend-table" className="dt w-full min-w-[640px] text-left text-sm">
             <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
               <tr>
                 <th scope="col" className="px-4 py-3 font-semibold">College</th>
@@ -238,7 +266,15 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
             </thead>
             <tbody className="divide-y divide-border">
               {s.list.map((c) => (
-                <tr key={c.slug}>
+                <tr
+                  key={c.slug}
+                  data-row=""
+                  data-f-own={c.ownership}
+                  data-s-name={c.name.toLowerCase()}
+                  {...(c.y1 ? { "data-s-y1": c.y1 } : {})}
+                  {...(c.y2 ? { "data-s-y2": c.y2 } : {})}
+                  {...(c.y3 ? { "data-s-y3": c.y3 } : {})}
+                >
                   <th scope="row" className="px-4 py-2.5 font-medium">
                     <Link href={`/md-ms-india/colleges/${c.slug}`} className="text-foreground hover:text-primary hover:underline">
                       {c.name}
