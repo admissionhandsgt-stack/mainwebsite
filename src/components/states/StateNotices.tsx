@@ -2,6 +2,7 @@ import { BellRing, ExternalLink } from "lucide-react";
 import { pageCopy } from "@/lib/pageCopy";
 import { getStateNotices } from "@/lib/stateNotices";
 import SectionHead from "@/components/ui/SectionHead";
+import Link from "@/components/ui/Link";
 
 /**
  * "<State> counselling 2026: latest notices" on the state's MBBS and MD/MS pages — the counselling authority's own
@@ -48,6 +49,12 @@ export default async function StateNotices({ state, level }: { state: string; le
         ))}
       </ul>
       {copy.note && <p className="mt-2 text-[12.5px] text-muted-foreground">{copy.note}</p>}
+      {/* Every authority's notices on one page (2026-11-11). */}
+      <p className="mt-2 text-[13.5px]">
+        <Link href="/neet-counselling-updates" className="font-semibold text-primary-strong hover:underline dark:text-primary">
+          MCC and every state&apos;s latest {exam} notices →
+        </Link>
+      </p>
     </section>
   );
 }

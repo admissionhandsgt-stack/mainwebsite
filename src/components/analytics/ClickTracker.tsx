@@ -19,7 +19,20 @@ import { rememberNudge } from "@/components/engage/EngagementLayer";
  *
  * Only the page the click happened on is sent — never the number dialled or messaged.
  * Mounted in SiteShell, so the admin is never counted.
+ *
+ * Every WhatsApp, call and Telegram tap is also counted on our own side (POST /api/tap → `cta_taps`, Admin → Taps by
+ * page, 2026-11-11): the page path without its query string, the kind and the placement — nothing else.
  */
+const tap = (kind: "whatsapp" | "call" | "telegram", placement: string) => {
+  try {
+    const body = JSON.stringify({ kind, placement, path: window.location.pathname });
+    if (!navigator.sendBeacon?.("/api/tap", new Blob([body], { type: "text/plain" }))) {
+      void fetch("/api/tap", { method: "POST", body, keepalive: true, headers: { "content-type": "text/plain" } }).catch(() => {});
+    }
+  } catch {
+    /* a lost count is fine */
+  }
+};
 export default function ClickTracker() {
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
@@ -29,6 +42,7 @@ export default function ClickTracker() {
       const source_page = window.location.pathname;
       const placement = a.dataset.placement || "other";
       const both = (name: string) => {
+        tap(name === "call_click" ? "call" : "whatsapp", placement);
         aaTrack(name, { source_page });
         trackEvent(name, { placement, source_page });
         metaTrack("Contact", { content_category: name === "call_click" ? "call" : "whatsapp", content_name: placement });
@@ -46,6 +60,7 @@ export default function ClickTracker() {
       if (host === "t.me" || host === "telegram.me") {
         // Somebody who has gone to the channel is not invited to it again.
         rememberNudge("telegram");
+        tap("telegram", placement);
         aaTrack("telegram_click", { placement, source_page });
         return trackEvent("telegram_click", { placement, source_page });
       }

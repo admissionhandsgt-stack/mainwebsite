@@ -8,7 +8,7 @@ import { getSsCourses } from "@/lib/ssQueries";
 import { getMdsSlugs } from "@/lib/mdsQueries";
 import { ROUNDS, getCounsellingYear, getCounsellingYears, getLatestLiveRound, getRoundState, roundPath } from "@/lib/mccResults";
 import { isMeritQuota } from "@/lib/chance";
-import { getStateNotices } from "@/lib/stateNotices";
+import { getHubNotices, getStateNotices } from "@/lib/stateNotices";
 import { getCounselPgStates, getCounselUgStates } from "@/lib/counselStates";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
@@ -45,6 +45,8 @@ const STATIC: { path: string; priority: number; freq: SitemapEntry["changeFreque
   { path: "/mbbs-india", priority: 0.9, freq: "weekly" },
   { path: "/mbbs-india/colleges", priority: 0.8, freq: "weekly" },
   { path: "/mbbs-india/deemed-universities", priority: 0.7, freq: "monthly" },
+  { path: "/mbbs-india/new-medical-colleges", priority: 0.8, freq: "weekly" },
+  { path: "/neet-counselling-updates", priority: 0.9, freq: "daily" },
   { path: "/md-ms-india", priority: 0.9, freq: "weekly" },
   { path: "/md-ms-india/colleges", priority: 0.8, freq: "weekly" },
   { path: "/md-ms-india/branches", priority: 0.8, freq: "weekly" },
@@ -62,6 +64,7 @@ const STATIC: { path: string; priority: number; freq: SitemapEntry["changeFreque
   { path: "/neet-mds-cutoff", priority: 0.8, freq: "monthly" },
   // Open data and the press report — the pages other sites are asked to cite.
   { path: "/data", priority: 0.7, freq: "monthly" },
+  { path: "/how-we-check-data", priority: 0.5, freq: "monthly" },
   { path: "/reports/neet-pg-stipend-2026", priority: 0.7, freq: "yearly" },
   // MCC's own seat matrix, and the bond/seat-leaving terms by state (2026-10-20).
   { path: "/neet-pg-seat-matrix", priority: 0.9, freq: "weekly" },
@@ -74,6 +77,7 @@ const STATIC: { path: string; priority: number; freq: SitemapEntry["changeFreque
   // Clinical branches at a low rank, and the statistics page made to be cited (2026-11-10).
   { path: "/neet-pg-low-score-clinical-branches", priority: 0.8, freq: "weekly" },
   { path: "/neet-pg-statistics", priority: 0.8, freq: "weekly" },
+  { path: "/md-vs-dnb", priority: 0.8, freq: "weekly" },
   { path: "/nri-quota", priority: 0.7, freq: "monthly" },
   { path: "/nri-quota/colleges", priority: 0.6, freq: "monthly" },
   // The two highest-value quota queries in this market: what an NRI or a
@@ -215,7 +219,7 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
   } catch (error) {
     console.error("[sitemap] latest round could not be read", error);
   }
-  const ROUND_HUBS = new Set(["/neet-pg-cutoff", "/neet-pg-marks-vs-rank", "/neet-pg-low-score-clinical-branches", "/neet-pg-statistics"]);
+  const ROUND_HUBS = new Set(["/neet-pg-cutoff", "/neet-pg-marks-vs-rank", "/neet-pg-low-score-clinical-branches", "/neet-pg-statistics", "/md-vs-dnb"]);
   // More of what really changes a page (2026-11-10; owner: "Google latest updated date ka data pehle dekhta hai… daily
   // update ho"). The date moves when the page's data moves — never the day of the request, which teaches Google to
   // ignore every lastmod here. Seats MCC adds between rounds and NMC's register (the statistics and seat matrix pages),
@@ -245,6 +249,13 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
   const noticeDay = async (state: string, level: "pg" | "ug") => (await getStateNotices(state, level, 1).catch(() => []))[0]?.on?.slice(0, 10) ?? "";
   const TERMS_HUBS = new Set(["/md-ms-india/bond"]);
   const UG_RANK_HUBS = new Set(["/neet-ug-cutoff", "/bds-india"]);
+  /** Pages built on NMC's register alone: they change when it does. */
+  const NMC_HUBS = new Set(["/mbbs-india/new-medical-colleges"]);
+  /** The notices hub changes with its newest notice. */
+  const NOTICE_HUBS = new Set(["/neet-counselling-updates"]);
+  const hubDay = newest(
+    await Promise.all((["pg", "ug"] as const).map(async (l) => (await getHubNotices(l, 1).catch(() => []))[0]?.on?.slice(0, 10) ?? "")),
+  );
 
   // PG college pages that print MCC's bands for the counselling year in progress: a merit-quota allotment
   // (collegeLiveBands' own test — a deemed university's paid seat is not a band) in the latest live round's year.
@@ -266,7 +277,11 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
         ? termsDate
         : UG_RANK_HUBS.has(s.path)
           ? ugRanksDate
-          : undefined;
+          : NMC_HUBS.has(s.path)
+            ? nmcDay
+            : NOTICE_HUBS.has(s.path)
+              ? hubDay || undefined
+              : undefined;
     out.hubs.push({ url: BASE + s.path, lastModified, changeFrequency: s.freq, priority: s.priority });
   }
 

@@ -1,4 +1,5 @@
 import { fitDescription, fitTitle } from "@/lib/seoTitle";
+import PageDatasets from "@/components/seo/PageDatasets";
 import CiteThis from "@/components/seo/CiteThis";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
@@ -103,6 +104,7 @@ export default async function StipendPage() {
 
   return (
     <main className="min-h-screen bg-background">
+      <PageDatasets path="/md-ms-india/stipend" />
       <StructuredData
         data={[
           breadcrumb([

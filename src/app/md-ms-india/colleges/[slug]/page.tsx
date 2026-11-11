@@ -31,6 +31,7 @@ import SeatTerms from "@/components/colleges/SeatTerms";
 import TelegramStrip from "@/components/engage/TelegramStrip";
 import { jsonLd as toJsonLd } from "@/lib/jsonLd";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import QuickAsk from "@/components/lead/QuickAsk";
 
 // The busiest pages are built at deploy time; the long tail is generated on
 // first request and then cached, so a 2,168-page build stays quick.
@@ -331,6 +332,15 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
                 <CutoffBands rows={bands} collegeName={college.name} level="pg" ctaHref="/neet-college-predictor?course=pg" />
               </div>
             )}
+
+            {/* Where the reader has the cut off and wants to ask about this college (2026-11-11): WhatsApp with the
+                college already named, or a three-field call back. */}
+            <QuickAsk
+              college={collegeHeadline(s)}
+              source={`Quick form — ${collegeHeadline(s)} (/md-ms-india/colleges/${college.slug})`}
+              placement="college_pg_ask"
+              className="mt-10"
+            />
 
             {/* -------- MCC's seat matrix: seats, not ranks -------- */}
             {matrix && (

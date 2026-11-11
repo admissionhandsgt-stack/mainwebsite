@@ -1,4 +1,5 @@
 import CiteThis from "@/components/seo/CiteThis";
+import PageDatasets from "@/components/seo/PageDatasets";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { getPrivatePgFees } from "@/lib/pgFeeQueries";
@@ -65,6 +66,7 @@ export default async function PrivateFeesPage() {
 
   return (
     <main className="min-h-screen bg-background">
+      <PageDatasets path="/md-ms-india/private-college-fees" />
       <StructuredData
         data={[
           breadcrumb([

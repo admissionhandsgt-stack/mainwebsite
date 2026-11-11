@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import PageDatasets from "@/components/seo/PageDatasets";
 import Link from "@/components/ui/Link";
 import { fitTitle, fitDescription } from "@/lib/seoTitle";
 import { resolveMetadata } from "@/lib/content";
@@ -150,6 +151,7 @@ export default async function NeetPgMarksVsRankPage() {
 
   return (
     <main className="min-h-screen bg-background">
+      <PageDatasets path="/neet-pg-marks-vs-rank" />
       <StructuredData
         data={[
           breadcrumb([

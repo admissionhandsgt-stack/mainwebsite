@@ -1,4 +1,5 @@
 import CiteThis from "@/components/seo/CiteThis";
+import PageDatasets from "@/components/seo/PageDatasets";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { getSsCourses, type SsCourseSummary } from "@/lib/ssQueries";
@@ -73,6 +74,7 @@ export default async function NeetSsCutoffPage() {
 
   return (
     <main className="min-h-screen bg-background">
+      <PageDatasets path="/neet-ss-cutoff" />
       <StructuredData
         data={[
           breadcrumb([

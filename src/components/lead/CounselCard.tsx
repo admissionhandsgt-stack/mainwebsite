@@ -1,3 +1,4 @@
+import type React from "react";
 import { ArrowRight, CalendarClock, Phone, TrendingUp } from "lucide-react";
 import Link from "@/components/ui/Link";
 import CounsellorFaces from "@/components/lead/CounsellorFaces";
@@ -24,7 +25,10 @@ export default function CounselCard({
   predictorLabel,
   predictorHref,
   placement,
+  form,
 }: {
+  /** A quick enquiry form under the card (DataPageCounsel's QuickPgForm). */
+  form?: React.ReactNode;
   id?: string;
   eyebrow: string;
   title: string;
@@ -94,6 +98,7 @@ export default function CounselCard({
           </Link>
         </div>
       </div>
+      {form && <div className="mt-5 border-t border-primary/15 pt-5">{form}</div>}
     </section>
   );
 }

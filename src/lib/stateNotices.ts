@@ -103,3 +103,75 @@ export async function getStateNotices(state: string, level: "pg" | "ug", limit =
     return [];
   }
 }
+
+/* ------------------------------------------------ every notice, for /neet-counselling-updates */
+
+/** The national bodies' feed sources (lib/alertFeed.ts) and what to call them. */
+const NATIONAL: Record<string, { who: string; level: "pg" | "ug" | null }> = {
+  "mcc-pg": { who: "MCC", level: "pg" },
+  "mcc-pg-notice": { who: "MCC", level: "pg" },
+  "mcc-round": { who: "MCC", level: "pg" },
+  "mcc-ss": { who: "MCC", level: "pg" },
+  "mcc-ug": { who: "MCC", level: "ug" },
+  nbems: { who: "NBEMS", level: "pg" },
+  "nta-neet": { who: "NTA", level: "ug" },
+};
+
+export interface HubNotice extends StateNotice {
+  /** The state, or the national body ("MCC", "NBEMS", "NMC"). */
+  where: string;
+  state: string | null;
+}
+
+const loadHub = unstable_cache(
+  async (): Promise<Row[]> =>
+    (await db.execute(sql`
+      SELECT a.title, a.link AS url, COALESCE(a.published_at, a.created_at) AS on, z.authority, z.state,
+             z.payload->>'level' AS level, a.source
+        FROM live_alerts a
+        LEFT JOIN zyn_notices z ON z.alert_id = a.id AND z.status = 'published'
+       WHERE (z.id IS NOT NULL
+              OR a.source IN (${sql.join([...Object.keys(FEED_STATE), ...Object.keys(NATIONAL)].map((k) => sql`${k}`), sql`, `)}))
+         AND (a.is_active OR (a.expires_at IS NOT NULL AND a.expires_at < now()))
+         AND COALESCE(a.published_at, a.created_at) > now() - interval '75 days'
+       ORDER BY COALESCE(a.published_at, a.created_at) DESC
+       LIMIT 800`)) as unknown as Row[],
+  ["hub-notices-v1"],
+  { revalidate: 900, tags: ["alerts"] },
+);
+
+/**
+ * The newest NEET PG or NEET UG notices from MCC, NBEMS, NMC and every state authority we follow — the same notices
+ * the alerts bar and the state pages carry, by the same rules (other courses and dental PG left out).
+ */
+export async function getHubNotices(level: "pg" | "ug", limit = 30): Promise<HubNotice[]> {
+  try {
+    const seen = new Set<string>();
+    const out: HubNotice[] = [];
+    for (const r of await loadHub()) {
+      if (OTHER_COURSES.test(r.title)) continue;
+      const nat = r.source ? NATIONAL[r.source] : undefined;
+      const state = r.state ?? (r.source ? FEED_STATE[r.source] ?? null : null);
+      const zynNational = !state && r.authority ? r.authority.split(/[\s(·,]/)[0] : null;
+      const where = state ?? nat?.who ?? zynNational;
+      if (!where) continue;
+      const words = r.title.replace(/post[\s-]*mbbs/gi, "PG");
+      const pg = r.level === "pg" || nat?.level === "pg" || PG_WORDS.test(words);
+      const ug = r.level === "ug" || nat?.level === "ug" || UG_WORDS.test(words);
+      if (level === "pg" ? (ug && !pg) || DENTAL_PG.test(words) : pg && !ug) continue;
+      // One notice reaches us twice (the board's own feed and Zyn), under one link or one wording.
+      const words2 = r.title.replace(/^[^:]{2,60}:\s*/, "").toLowerCase().replace(/[^a-z0-9]/g, "");
+      const key = r.url ?? r.title;
+      if (seen.has(key) || seen.has(words2)) continue;
+      seen.add(key);
+      seen.add(words2);
+      const on = r.on instanceof Date ? r.on.toISOString() : String(r.on);
+      out.push({ title: tidy(r.title), url: r.url, on, authority: r.authority, where, state });
+      if (out.length >= limit) break;
+    }
+    return out;
+  } catch (error) {
+    logError(error, { route: "hubNotices" });
+    return [];
+  }
+}

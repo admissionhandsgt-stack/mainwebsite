@@ -71,7 +71,7 @@ export function ugCourseOf(name: string): string {
   if (/ayurved/i.test(name)) return "BAMS";
   if (/homoeo|homeopath/i.test(name)) return "BHMS";
   if (/unani|tibbi/i.test(name)) return "BUMS";
-  if (/siddha/i.test(name)) return "BSMS"; // not "Siddhartha"
+  if (/\bsiddha\b/i.test(name)) return "BSMS"; // not "Siddhartha"
   if (/nursing/i.test(name)) return "B.Sc Nursing";
   if (/veterinar/i.test(name)) return "BVSc";
   return "MBBS";

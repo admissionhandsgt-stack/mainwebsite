@@ -1,4 +1,5 @@
 import CiteThis from "@/components/seo/CiteThis";
+import PageDatasets from "@/components/seo/PageDatasets";
 import { NEET_PG_QUALIFYING } from "@/lib/neetPgQualifying";
 import type { Metadata } from "next";
 import { fitTitle, fitDescription } from "@/lib/seoTitle";
@@ -184,6 +185,7 @@ export default async function NeetPgCutoffPage(props: Props) {
 
   return (
     <main className="min-h-screen bg-background">
+      <PageDatasets path="/neet-pg-cutoff" />
       <StructuredData
         data={[
           breadcrumb([

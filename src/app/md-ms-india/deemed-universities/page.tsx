@@ -1,4 +1,5 @@
 import CiteThis from "@/components/seo/CiteThis";
+import PageDatasets from "@/components/seo/PageDatasets";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { getDeemedPg } from "@/lib/pgFeeQueries";
@@ -71,6 +72,7 @@ export default async function DeemedPgPage() {
 
   return (
     <main className="min-h-screen bg-background">
+      <PageDatasets path="/md-ms-india/deemed-universities" />
       <StructuredData
         data={[
           breadcrumb([

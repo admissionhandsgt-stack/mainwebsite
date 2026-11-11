@@ -732,6 +732,31 @@ export const PAGE_COPY = {
       privacy: { label: "Privacy link", value: "Privacy" },
     },
   },
+  "site.quick_form": {
+    group: "Site: quick PG enquiry (college and data pages)",
+    fields: {
+      title: { label: "Heading on a college page — {college}", value: "Ask about PG admission at {college}" },
+      title_topic: { label: "Heading on a data page — {topic}", value: "Get a counsellor's plan for {topic}" },
+      body: {
+        label: "One line under the heading",
+        value: "Leave your number and NEET PG rank. A counsellor calls you back the same day with where this seat sits in your list, the fee and bond in writing, and the round to aim for.",
+        long: true,
+      },
+      name: { label: "Name field", value: "Your name" },
+      phone: { label: "Mobile field", value: "Mobile number" },
+      rank: { label: "Rank field", value: "NEET PG rank (AIR)" },
+      rank_hint: { label: "Under the rank field", value: "Not handy? Leave it blank — the counsellor will ask." },
+      button: { label: "Submit button", value: "Call me back" },
+      wa: { label: "WhatsApp button", value: "Ask on WhatsApp" },
+      wa_text: {
+        label: "The WhatsApp message, prefilled — {college} or {topic}",
+        value: "Hi, I need PG admission guidance for {college}. My NEET PG rank: ",
+        long: true,
+      },
+      done: { label: "After a successful send", value: "Thank you — a counsellor will call you shortly. Want to talk now? Message us on WhatsApp." },
+      privacy: { label: "Under the form", value: "Your number goes only to your counsellor. No spam, no sharing." },
+    },
+  },
   "site.index_boost": {
     group: "Site: more pages nearby",
     fields: {
@@ -778,6 +803,7 @@ export const PAGE_COPY = {
       name: { label: "Reviewer's name", value: "Gulshan Tomar" },
       role: { label: "Reviewer's role", value: "Admission Strategist & Data Lead", was: ["Admission Counselor"] },
       link: { label: "Link on the name (a page of this site)", value: "/team" },
+      method: { label: "Link to how we check data (blank hides it)", value: "How we check data" },
       updated: { label: "Words before the date (the date is not shown on pages since 2026-11-10)", value: "Updated" },
     },
   },
@@ -2732,6 +2758,168 @@ export const PAGE_COPY = {
         long: true,
       },
     },
+  },
+  "page.counselling_updates": {
+    group: "Page: NEET counselling updates",
+    fields: hero({
+      eyebrow: { label: "Hero eyebrow — {year}", value: "MCC · NBEMS · state authorities · {year}" },
+      title: { label: "Hero title — {year}", value: "NEET counselling {year}:" },
+      accent: { label: "Hero title, coloured part", value: "latest updates" },
+      subtitle: {
+        label: "Hero line — {pg}, {ug}, {authorities}",
+        value:
+          "The newest NEET PG and NEET UG counselling notices from MCC, NBEMS and {authorities} state authorities — schedules, seat matrices, merit lists, allotments and fee notices — newest first, each linked to the authority's own file.",
+        long: true,
+      },
+      pg_title: { label: "Heading: NEET PG", value: "NEET PG counselling notices" },
+      ug_title: { label: "Heading: NEET UG", value: "NEET UG counselling notices" },
+      empty: { label: "When a list is empty", value: "No new notice in the last 75 days." },
+      note: {
+        label: "Under the lists",
+        value: "Every notice opens the authority's own file. A counselling authority can change a date after a notice; its latest notice is the final word.",
+        long: true,
+      },
+    }),
+  },
+  "page.md_vs_dnb": {
+    group: "Page: MD/MS vs DNB",
+    fields: hero({
+      eyebrow: { label: "Hero eyebrow — {year}", value: "NEET PG {year} · seats, cut off, stipend" },
+      title: { label: "Hero title", value: "MD/MS vs DNB:" },
+      accent: { label: "Hero title, coloured part", value: "what the numbers say" },
+      subtitle: {
+        label: "Hero line — {mdms_seats}, {dnb_seats}, {dnb_hospitals}, {year}",
+        value:
+          "MCC's {year} counselling has {mdms_seats} MD/MS seats (All India Quota, deemed and central universities) and {dnb_seats} DNB and NBE diploma seats at {dnb_hospitals} hospitals. Both come through the same NEET PG counselling; what differs is where you train, what it costs, what it pays — and how far down the list each seat goes.",
+        long: true,
+      },
+      answer: {
+        label: "The answer under the title — {deeper}, {compared}, {round} (blank hides it)",
+        value: "In {round}, DNB's last Open seat went further down the list than MD/MS All India Quota's in {deeper} of {compared} branches.",
+      },
+      table_title: { label: "Heading: branch by branch — {round}", value: "MD/MS vs DNB, branch by branch: {round}" },
+      table_intro: {
+        label: "Under that heading",
+        value: "The last All India Rank admitted on an Open seat — All India Quota for MD/MS, MCC's DNB quota for DNB — only where three or more colleges took the branch, with the NEET PG score that rank held. Seats are MCC's seat matrix.",
+        long: true,
+      },
+      diff_title: { label: "Heading: how they differ", value: "How MD/MS and DNB differ" },
+      diff: {
+        label: "Rows, one a line: what | MD/MS | DNB",
+        value: [
+          "Awarded by | The university of an NMC-permitted medical college | The National Board of Examinations in Medical Sciences (NBEMS)",
+          "Where you train | A medical college and its teaching hospital | A hospital NBEMS has accredited — government, corporate, trust or a medical college",
+          "How seats are allotted | NEET PG counselling: MCC's All India Quota, deemed and central rounds, and the state's own rounds | NEET PG counselling: MCC's DNB quota; some states allot their government DNB seats in their own rounds",
+          "Final exam | The university's exam | NBEMS's national exit exam, theory and practical",
+          "Teaching jobs | Eligible for medical college faculty posts | Accepted for faculty posts on conditions NMC sets — check NMC's current teacher-eligibility rules if you aim to teach",
+        ].join("\n"),
+        long: true,
+      },
+      money_title: { label: "Heading: stipend and fee", value: "Stipend and fee: MD/MS vs DNB" },
+      money_note: {
+        label: "Caveat under the stipend and fee figures — {session}",
+        value: "One figure per hospital, as listed for the {session} counselling — not an official notice. Confirm with the college or hospital before you pay a fee or sign a bond.",
+        long: true,
+      },
+      counsel: { label: "Counsellor card topic", value: "MD/MS or DNB" },
+    }),
+  },
+  "page.new_colleges": {
+    group: "Page: new medical colleges",
+    fields: hero({
+      eyebrow: { label: "Hero eyebrow — {session}", value: "NMC's register · AY {session}" },
+      title: { label: "Hero title", value: "New medical colleges" },
+      accent: { label: "Hero title, coloured part — {year}", value: "{year}" },
+      subtitle: {
+        label: "Hero line — {n}, {seats}, {govt}, {govt_seats}, {private}, {private_seats}, {session}",
+        value:
+          "NMC has permitted {n} new medical colleges for {session}, with {seats} MBBS seats: {govt} government colleges ({govt_seats} seats) and {private} private ({private_seats} seats). Each is listed below with its state, seats and the date NMC granted its Letter of Permission.",
+        long: true,
+      },
+      answer: {
+        label: "The answer under the title — {n}, {seats}, {top_state}, {top_n}, {year}",
+        value: "{n} new MBBS colleges with {seats} seats in {year}; {top_state} has the most ({top_n}).",
+      },
+      states_title: { label: "Heading: by state", value: "New medical colleges by state" },
+      list_title: { label: "Heading: every college — {year}", value: "Every new medical college in {year}" },
+      list_note: {
+        label: "Under the list",
+        value: "Seats are NMC's approved MBBS intake for the first batch. A new college admits under a Letter of Permission (LoP), which NMC renews year by year until its first batch finishes and the course is recognised.",
+        long: true,
+      },
+      prev_title: { label: "Heading: the year before — {prev}", value: "New medical colleges in {prev}" },
+      raised_title: { label: "Heading: colleges that raised their MBBS seats", value: "Colleges that raised their MBBS seats" },
+      counsel_title: { label: "Counsellor block heading", value: "A new college on your list? Check it before you fill it." },
+      counsel_body: {
+        label: "Counsellor block text",
+        value: "A new college has no closing rank of its own yet, its fee may not be published, and its hospital and faculty are what NMC inspects for the LoP. Our counsellors check each one — and where it should sit in your order — before you lock choices.",
+        long: true,
+      },
+      source: { label: "Source line — {date}", value: "Source: National Medical Commission, college and course register (updated {date}).", long: true },
+    }),
+  },
+  "page.methodology": {
+    group: "Page: how we check our data",
+    fields: hero({
+      eyebrow: { label: "Hero eyebrow", value: "Our sources and checks" },
+      title: { label: "Hero title", value: "How we check" },
+      accent: { label: "Hero title, coloured part", value: "every figure" },
+      subtitle: {
+        label: "Hero line — {nmc_colleges}, {ranks}, {counsellings}",
+        value:
+          "Every cut off, seat count, fee and stipend on this site comes from a document an authority or a college published: {ranks} closing-rank records from {counsellings} counsellings, and the register of {nmc_colleges} medical colleges. This page says where each kind of figure comes from, what we check, and what we never publish.",
+        long: true,
+      },
+      sources_title: { label: "Heading: where the figures come from", value: "Where the figures come from" },
+      sources: {
+        label: "Sources, one a line: name | what we take from it",
+        value: [
+          "Medical Counselling Committee (MCC) | All India Quota, deemed and central university results round by round, the seat matrix, the seats added after a round, and the counselling schedule — from MCC's own result files and notices.",
+          "National Board of Examinations (NBEMS) | NEET PG results: the score each rank held, and DNB seats.",
+          "National Medical Commission (NMC) | Every medical college and course in India with its approved seats, ownership and founding year — from NMC's college and course register.",
+          "State counselling authorities | Each state's round results, merit lists and notices, from the authority's own website.",
+          "Colleges and universities | 2026-27 fees, read from the college's or university's own fee notice, marked with the session and whether the figure is tuition alone.",
+          "NIRF, Ministry of Education | College ranks, from the official NIRF Medical list.",
+        ].join("\n"),
+        long: true,
+      },
+      checks_title: { label: "Heading: what we check", value: "What we check before a figure goes on a page" },
+      checks: {
+        label: "Checks, one a line: title | text",
+        value: [
+          "Every figure has a document behind it | A figure on a data page traces to a published result, register or notice. Counts, medians and ranges are worked out from those records, never typed in by hand.",
+          "Totals must add up | A result is used only when its rows add up to the totals the authority prints, and each year is compared with the year before; anything that moves too far is checked by a person against the source.",
+          "One row is one seat | Every figure on a row belongs to the same college, course, quota and category. A government seat's rank is never shown beside a management seat's fee.",
+          "Group figures need three colleges | A range or a last-rank-admitted figure is shown only across three or more colleges, so it never stands in for one college's seat.",
+          "Fees carry their year | A fee shows the session it is for and whether it is tuition alone. A whole-course figure is never called a year's fee, and a figure we hold only from a listing is shown as a bracket and marked as such.",
+          "Listings are labelled | Where a bond, penalty or stipend comes from a listing rather than an authority's notice, the page says so and asks you to confirm with the state's notice or the college before you pay or sign.",
+        ].join("\n"),
+        long: true,
+      },
+      never_title: { label: "Heading: what we never publish", value: "What we never publish" },
+      never: {
+        label: "One a line",
+        value: [
+          "A college's exact closing rank — college pages show a band and the chance in words; a counsellor takes you through the detail.",
+          "A promise of a seat. Counselling allots seats; nobody can promise one.",
+          "A discount, donation or 'direct admission' the college does not publish itself.",
+          "A fee without its year, or a stock photo presented as a named college.",
+        ].join("\n"),
+        long: true,
+      },
+      fix_title: { label: "Heading: corrections", value: "Found a figure that does not match?" },
+      fix: {
+        label: "Corrections text",
+        value:
+          "Send us the authority's or the college's notice on WhatsApp or by email. We check it against the source and correct the page; the page's date moves whenever its data changes.",
+        long: true,
+      },
+      reviewer: {
+        label: "Who reviews — {name}, {role}",
+        value: "Data pages are reviewed by {name}, {role}, with the counselling team that works these rounds every year.",
+        long: true,
+      },
+    }),
   },
   "page.open_data.hero": {
     group: "Page: Open data",

@@ -57,6 +57,15 @@ export default async function ReviewedBy() {
           </span>
         </>
       )}
+      {/* Sources and checks behind the figures (2026-11-11) — not on that page itself. */}
+      {copy.method && path !== "/how-we-check-data" && (
+        <>
+          <span aria-hidden="true">·</span>
+          <Link href="/how-we-check-data" className="underline-offset-2 hover:text-primary hover:underline">
+            {copy.method}
+          </Link>
+        </>
+      )}
       {node && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(node) }} />}
     </p>
   );

@@ -1,4 +1,5 @@
 import CiteThis from "@/components/seo/CiteThis";
+import PageDatasets from "@/components/seo/PageDatasets";
 import type { Metadata } from "next";
 import { fitTitle, fitDescription } from "@/lib/seoTitle";
 import Link from "@/components/ui/Link";
@@ -95,6 +96,7 @@ export default async function BdsPage() {
 
   return (
     <main className="min-h-screen bg-background">
+      <PageDatasets path="/bds-india" />
       <StructuredData
         data={[
           breadcrumb([

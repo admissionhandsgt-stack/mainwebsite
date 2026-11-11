@@ -2347,6 +2347,47 @@ table `outreach_emails` (migration 0050, raw SQL), Admin → Outreach (the card 
   (2026-11-11): never the exact college × seat × round rank in public — bands, group figures over 3+ colleges and counts
   only, so pages rank and families still need a counsellor. Only NEET AIR lines may reach the predictor.
 
+## The competitive review's week: title test, quick form, taps, datasets, new pages (2026-11-11, second release)
+
+Owner: "itne pending task complete karo" (Meta's Conversions API token comes later — the owner generates it).
+
+- **Title test on MD/MS college pages** (`lib/titleTest.ts`): a hash of the slug puts each page in "control" (title as
+  before, untouched) or "figures" (`figureTails` in `collegeSnippet.ts` leads with a figure the page prints: the lowest
+  2026-27 notice fee "PG Fees from ₹40,900", the stipend "PG Stipend ₹1.01 L/Month" — "up to" when seats differ — the
+  NIRF rank, or 10+ seats). DNB and MBBS pages are not in it. Started 2026-11-11; Admin → Search research → "Title test"
+  (`lib/titleTestReport.ts`) compares the halves' CTR before and from a week after, as a difference in differences;
+  **decide after 21 days of after-data (~9 Dec)**: adopt the winner in `collegeTitle` and delete the test, or set `on`
+  false. Do not change the PG college title code while it runs — both halves would move and the test is void.
+- **Quick PG enquiry** (`components/lead/QuickPgForm.tsx`, `QuickAsk.tsx`): name, mobile, NEET PG rank (optional) →
+  `/api/leads` (level pg, source "Quick form — <college or topic> (<path>)"). On PG college pages after the cut off bands
+  with "Ask on WhatsApp" prefilled with the college's name; under the counsellor card of every `DataPageCounsel` page
+  (branch, branch × state, PG state, stipend, fees, cutoff, marks vs rank, choice filling, MD vs DNB, updates). Words:
+  "Site: quick PG enquiry".
+- **Taps by page** (migration 0057 `cta_taps`, `POST /api/tap`, Admin → Taps by page): ClickTracker beacons every
+  WhatsApp, call and Telegram tap — IST day, page path **without its query string**, kind, placement, a count. Nothing
+  about the person or the number.
+- **Dataset markup on the data pages** (`components/seo/PageDatasets.tsx`, `datasetLd()` / `DATASET_PAGES` in
+  `lib/openData.ts`): the /data descriptions on the page each table comes from, dated by the page's data date, licence
+  only on the CC BY tables. Not on the bond page (a compilation — the no-CiteThis rule).
+- **`/how-we-check-data`** — sources, checks, what we never publish, corrections. Linked from every "Reviewed by" line
+  (`site.reviewer.method`). Standards only, never mechanics (the 2026-10-21 rule). Org node carries
+  `publishingPrinciples` and `correctionsPolicy`.
+- **`/mbbs-india/new-medical-colleges`** (`lib/newColleges.ts`): NMC's register, MBBS courses whose inception year is the
+  latest — 36 colleges, 3,500 seats for 2026-27 (8 govt) — with the LoP date NMC prints, state, university, our page;
+  the year before and colleges that raised intake. The address has no year; next year's list takes it over.
+- **`/md-vs-dnb`** (`lib/mdVsDnb.ts`): MCC's matrix (MD/MS 25,841 · DNB 9,401 at 1,487 hospitals in 2026), the latest
+  round's last Open rank per branch on each side (the round pages' 3+ college figures, paired by `branchKey`) with the
+  score, and DNB vs AIQ stipend/fee medians from `pg_seat_terms` with its caveat.
+- **`/neet-counselling-updates`** (`getHubNotices` in `lib/stateNotices.ts`): MCC, NBEMS, NMC and every state's notices
+  from the last 75 days on one page, PG and UG, deduplicated by link and by wording; linked from every StateNotices block.
+  One page, never a page per notice.
+- Menu rows for the three pages: `scripts/sql/nav_new_pages_2026_11_11.sql` (after the release).
+- **Two regexes had held a backspace character instead of `\b` since 2026-11-05** (written through a Python heredoc):
+  the PG state page's main-quota pick (`\bAIQ\b`) and the Siddha course label (`\bsiddha\b`). Fixed. After writing code
+  through a script, `grep -rln $'\x08' src` must find only the two PNG icons.
+- `/neet-pg-cutoff` weighs 518 KB of HTML (55 KB with Brotli); about half is the App Router's flight payload repeating
+  the server tree. PSI is 93–99, so it was left alone.
+
 ## Low score clinical branches and the statistics page (2026-11-10)
 
 Owner: *"NEET PG / medical seats statistics 2026 banado + Low Score Clinical Branches… sab cheej khullam khulla nhi likhni,

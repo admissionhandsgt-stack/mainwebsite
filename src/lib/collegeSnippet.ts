@@ -30,6 +30,8 @@ import {
 import { getUgCollegeExtras } from "@/lib/content";
 import { getNmcFacts, type NmcFacts } from "@/lib/nmcData";
 import { getCollegeLiveBands, type LiveBands } from "@/lib/collegeLiveBands";
+import { getNirf } from "@/lib/nirf";
+import { TITLE_TEST, titleGroup } from "@/lib/titleTest";
 
 /** Google shows about 60 characters of a title. */
 const TITLE = 62;
@@ -95,6 +97,11 @@ export const collegeHeadline = (s: { short: string; place: string | null }) => {
 };
 
 export interface CollegeSummary {
+  slug: string;
+  /** NIRF Medical rank, when NIRF ranks this college (lib/nirf.ts) — the page's ranking FAQ prints it. */
+  nirfRank: number | null;
+  /** The published first-year stipends differ between this college's seats, so a title says "up to". */
+  stipendVaries: boolean;
   short: string;
   place: string | null;
   /** The whole official name, tidied — shown under the H1 when it differs. */
@@ -173,6 +180,7 @@ function summarise(
   const lo = official.length ? official.reduce((a, b) => (b.feeInr! < a.feeInr! ? b : a)) : null;
   const hi = official.length ? official.reduce((a, b) => (b.feeInr! > a.feeInr! ? b : a)) : null;
   const stipend = fees.reduce<number | null>((m, f) => (f.stipendY1Inr != null && f.stipendY1Inr > 0 && (m == null || f.stipendY1Inr > m) ? f.stipendY1Inr : m), null);
+  const stipends = new Set(fees.map((f) => f.stipendY1Inr).filter((v): v is number => v != null && v > 0));
 
   const curated =
     level === "ug"
@@ -188,6 +196,9 @@ function summarise(
   const nmcSeats = level === "ug" ? nmc?.mbbsSeats ?? null : kind === "pg" && nmc?.pgSeats ? nmc.pgSeats : null;
 
   return {
+    slug: college.slug,
+    nirfRank: getNirf(college.slug, level)?.rank ?? null,
+    stipendVaries: stipends.size > 1,
     short: n.short,
     place,
     official: n.official,
@@ -261,36 +272,7 @@ export function collegeTitle(s: CollegeSummary): string {
   // "pg" (6,227) — "<college> pg fees", "<college> pg stipend" — not "md"/"ms" (1,241). The description still opens
   // with "MD/MS cutoff".
   const c = s.kind === "pg" ? "PG" : s.course;
-  const worded: string[] =
-    s.kind === "dnb"
-      ? s.band
-        ? [`: DNB Seats, Stipend & Cut Off${y}`, `: DNB Seats & Cut Off${y}`, `: DNB Cut Off${y}`]
-        : s.stipend
-          ? [`: DNB Seats & Stipend${y}`, `: DNB Seats${y}`]
-          : [`: DNB Seats${y}`, ` DNB Seats`]
-      : [
-          // A fee from the college's own 2026-27 notice is named with its year, as it is searched ("<college> pg fees
-          // 2026-27", owner 2026-11-09: "log updated ya 2026-2027 year se bhi search karte hai"). Tried first; a long
-          // name falls through to the tails below.
-          ...(s.kind === "pg" && s.feeOfficial
-            ? s.band
-              ? s.stipend
-                ? [`: PG Fees 2026-27, Stipend & Cut Off${y}`, `: PG Fees 2026-27 & Cut Off${y}`]
-                : [`: PG Fees 2026-27 & Cut Off${y}`]
-              : s.stipend
-                ? [`: PG Fees 2026-27, Stipend & Seats`, `: PG Fees 2026-27 & Stipend`]
-                : [`: PG Fees 2026-27 & Seats`]
-            : []),
-          // "sms jaipur pg stipend", "pg stipend in vmmc": an MD/MS page that publishes a stipend says so first.
-          ...(s.kind === "pg" && s.stipend
-            ? s.band
-              ? [`: ${c} Fees, Stipend & Cut Off${y}`, `: ${c} Cut Off${y}, Fees & Stipend`]
-              : [`: ${c} Fees, Stipend & Seats`, `: ${c} Admission${y}, Fees & Stipend`]
-            : []),
-          ...(s.band
-            ? [`: ${c} Cut Off${y}, Fees & Seats`, `: ${c} Cut Off${y} & Fees`, `: ${c} Cut Off${y}`]
-            : [`: ${c} Admission${y}, Fees & Seats`, `: ${c} Fees & Seats`, `: ${c} Admission`]),
-        ];
+  const worded: string[] = [...figureTails(s, y), ...baseTails(s, c, y)];
   // "Cut Off" is one character longer than "Cutoff": where that character is all that stops a tail fitting, the
   // one-word spelling keeps the tail's other words ("Fees", "Stipend", "Seats") rather than losing them.
   const tails = worded.flatMap((t) => (t.includes("Cut Off") ? [t, t.replace("Cut Off", "Cutoff")] : [t]));
@@ -320,6 +302,72 @@ export function collegeTitle(s: CollegeSummary): string {
   const kept = fit(LONG_TITLE, [where + tail, s.short + tail]);
   if (kept) return kept;
   return `${clipMiddle(where, TITLE - tail.length)}${tail}`;
+}
+
+/** The title's tail after the college's name: what the page shows, in the words India searches. */
+function baseTails(s: CollegeSummary, c: string, y: string): string[] {
+  return s.kind === "dnb"
+      ? s.band
+        ? [`: DNB Seats, Stipend & Cut Off${y}`, `: DNB Seats & Cut Off${y}`, `: DNB Cut Off${y}`]
+        : s.stipend
+          ? [`: DNB Seats & Stipend${y}`, `: DNB Seats${y}`]
+          : [`: DNB Seats${y}`, ` DNB Seats`]
+      : [
+          // A fee from the college's own 2026-27 notice is named with its year, as it is searched ("<college> pg fees
+          // 2026-27", owner 2026-11-09: "log updated ya 2026-2027 year se bhi search karte hai"). Tried first; a long
+          // name falls through to the tails below.
+          ...(s.kind === "pg" && s.feeOfficial
+            ? s.band
+              ? s.stipend
+                ? [`: PG Fees 2026-27, Stipend & Cut Off${y}`, `: PG Fees 2026-27 & Cut Off${y}`]
+                : [`: PG Fees 2026-27 & Cut Off${y}`]
+              : s.stipend
+                ? [`: PG Fees 2026-27, Stipend & Seats`, `: PG Fees 2026-27 & Stipend`]
+                : [`: PG Fees 2026-27 & Seats`]
+            : []),
+          // "sms jaipur pg stipend", "pg stipend in vmmc": an MD/MS page that publishes a stipend says so first.
+          ...(s.kind === "pg" && s.stipend
+            ? s.band
+              ? [`: ${c} Fees, Stipend & Cut Off${y}`, `: ${c} Cut Off${y}, Fees & Stipend`]
+              : [`: ${c} Fees, Stipend & Seats`, `: ${c} Admission${y}, Fees & Stipend`]
+            : []),
+          ...(s.band
+            ? [`: ${c} Cut Off${y}, Fees & Seats`, `: ${c} Cut Off${y} & Fees`, `: ${c} Cut Off${y}`]
+            : [`: ${c} Admission${y}, Fees & Seats`, `: ${c} Fees & Seats`, `: ${c} Admission`]),
+        ];
+}
+
+/**
+ * The title test's figure-first tails (lib/titleTest.ts): MD/MS pages in the test's "figures" half lead with a number
+ * the page itself prints — the 2026-27 fee from the college's notice, the stipend a month, the NIRF rank, the seats.
+ * The "control" half, DNB and MBBS pages get none, so their titles are exactly as before.
+ */
+function figureTails(s: CollegeSummary, y: string): string[] {
+  if (!TITLE_TEST.on || s.kind !== "pg" || titleGroup(s.slug) !== "figures") return [];
+  const st = s.stipend ? `${s.stipendVaries ? "up to " : ""}${lakh(s.stipend)}/Month` : null;
+  const fee = s.feeOfficial ? lakh(s.feeOfficial.lo.inr) : null;
+  const nirf = s.nirfRank ? `NIRF #${s.nirfRank}` : null;
+  // A handful of seats is not a figure that draws a click ("6 PG Seats"); from ten up.
+  const seats = s.seats && s.seats >= 10 ? `${inr(s.seats)} PG Seats` : null;
+  const out: (string | null | false)[] = [
+    fee && st && `: PG Fees from ${fee}, Stipend ${st}`,
+    nirf && st && `: ${nirf}, PG Stipend ${st} & Fees`,
+    st && s.band && `: PG Stipend ${st}, Fees & Cut Off${y}`,
+    st && `: PG Stipend ${st}, Fees & Seats`,
+    fee && s.band && `: PG Fees from ${fee} & Cut Off${y}`,
+    fee && `: PG Fees from ${fee}, Stipend & Seats`,
+    nirf && s.band && `: ${nirf}, PG Fees & Cut Off${y}`,
+    nirf && `: ${nirf}, PG Fees, Stipend & Seats`,
+    seats && s.band && `: ${seats}, Fees & Cut Off${y}`,
+    seats && `: ${seats}, Fees & Stipend`,
+    // Shorter, for a long name: the figure still leads.
+    nirf && `: ${nirf}, PG Fees & Seats`,
+    st && `: PG Stipend ${st}`,
+    fee && `: PG Fees from ${fee}`,
+    nirf && `: ${nirf} for PG`,
+    seats && `: ${seats} & Fees`,
+  ];
+  return out.filter((t): t is string => Boolean(t));
 }
 
 /** The meta description: the summary box in a sentence or two. */

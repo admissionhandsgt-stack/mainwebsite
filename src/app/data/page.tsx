@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { Download, ExternalLink } from "lucide-react";
-import { embedCode, getAllDatasets } from "@/lib/openData";
+import { embedCode, getAllDatasets, datasetLd } from "@/lib/openData";
 import { getContactInfo, resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, webPage } from "@/components/seo/StructuredData";
 import CopyCode from "@/components/seo/CopyCode";
@@ -42,19 +42,7 @@ export default async function OpenDataPage() {
             { name: "Open data", path: PATH },
           ]),
           webPage({ name: "NEET counselling open data", description: "Free datasets: cutoffs, stipends and fees.", path: PATH }),
-          ...datasets.map((d) => ({
-            "@context": "https://schema.org",
-            "@type": "Dataset",
-            name: d.title,
-            description: d.description,
-            url: `${SITE}${d.page}`,
-            isAccessibleForFree: true,
-            ...(d.license ? { license: d.license.url } : {}),
-            creator: { "@type": "Organization", name: "AdmissionHands", url: SITE },
-            spatialCoverage: "India",
-            variableMeasured: d.columns,
-            distribution: [{ "@type": "DataDownload", encodingFormat: "text/csv", contentUrl: `${SITE}/data/${d.id}.csv` }],
-          })),
+          ...datasets.map((d) => datasetLd(d)),
         ]}
       />
 

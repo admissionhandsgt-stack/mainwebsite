@@ -197,7 +197,7 @@ export const getPgStatePage = unstable_cache(
         q.quota != null &&
         !/^(all india|open states|dnb sponsored)/i.test(String(q.counselling)) &&
         isMeritQuota(String(q.quota)) &&
-        !/in-?serv|service|sponsor|AIQ|all india/i.test(String(q.quota)) &&
+        !/in-?serv|service|sponsor|\bAIQ\b|all india/i.test(String(q.quota)) &&
         Number(q.colleges) >= 3,
     );
     let branchCut: PgStatePage["branchCut"] = null;

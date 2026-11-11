@@ -1,4 +1,5 @@
 import CiteThis from "@/components/seo/CiteThis";
+import PageDatasets from "@/components/seo/PageDatasets";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import DataHero from "@/components/hero/DataHero";
@@ -102,6 +103,7 @@ export default async function NeetUgCutoffPage() {
 
   return (
     <main className="min-h-screen bg-background">
+      <PageDatasets path="/neet-ug-cutoff" />
       <StructuredData
         data={[
           breadcrumb([

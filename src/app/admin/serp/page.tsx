@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/auth";
 import { researchReport } from "@/lib/serpResearch";
 import { webSearchUsage } from "@/lib/webSearch";
+import { getTitleTestReport, type Half } from "@/lib/titleTestReport";
 import { Badge, Card, EmptyState, PageHeader, Stats, TABLE } from "@/components/admin/ui";
 
 export const dynamic = "force-dynamic";
@@ -16,7 +17,14 @@ export default async function SerpResearchPage() {
   const user = await getSessionUser();
   if (!user) redirect("/admin");
 
-  const [{ rows, domains }, usage] = await Promise.all([researchReport(30), webSearchUsage().catch(() => null)]);
+  const [{ rows, domains }, usage, test] = await Promise.all([
+    researchReport(30),
+    webSearchUsage().catch(() => null),
+    getTitleTestReport().catch(() => null),
+  ]);
+  const pct = (v: number) => `${(v * 100).toFixed(2)}%`;
+  const half = (h: Half | null) =>
+    h ? `${h.clicks.toLocaleString("en-IN")} clicks / ${h.impressions.toLocaleString("en-IN")} imp · CTR ${pct(h.ctr)} · pos ${h.position.toFixed(1)} · ${h.pages} pages` : "—";
   const inTop = rows.filter((r) => r.our_rank != null).length;
   const withGaps = rows.filter((r) => r.missing.length).length;
 
@@ -34,6 +42,33 @@ export default async function SerpResearchPage() {
           { label: "Web searches this month", value: usage ? `${usage.used} / ${usage.budget}` : "—" },
         ]}
       />
+
+      {test && (
+        <Card
+          title="Title test: MD/MS college pages"
+          description="Half the pages lead their title with a figure (fee, stipend, NIRF rank, seats); the other half keep the old title. Same weeks, so a change both halves share cancels out."
+        >
+          <div className="space-y-2 p-4 text-sm text-slate-700">
+            <p className="text-slate-500">{test.note}</p>
+            <p>
+              <b>Before</b> ({test.before.from} – {test.before.to}) — control: {half(test.control.before)}; figures: {half(test.figures.before)}
+            </p>
+            {test.after && (
+              <p>
+                <b>After</b> ({test.after.from} – {test.after.to}) — control: {half(test.control.after)}; figures: {half(test.figures.after)}
+              </p>
+            )}
+            {test.lift != null && (
+              <p>
+                <Badge tone={test.lift > 0 ? "success" : "warning"}>
+                  Figures half vs control: {test.lift > 0 ? "+" : ""}
+                  {test.lift.toFixed(1)}% CTR
+                </Badge>
+              </p>
+            )}
+          </div>
+        </Card>
+      )}
 
       {domains.length > 0 && (
         <Card title="Who shows up most" description="Domains in the top 10 across the searches studied.">

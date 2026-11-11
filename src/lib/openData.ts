@@ -175,6 +175,57 @@ const LOADERS: Record<string, () => Promise<Dataset>> = {
 
 export const DATASET_IDS = Object.keys(LOADERS);
 
+/**
+ * Which page each dataset belongs to — so a page can describe its own tables to Google Dataset Search
+ * (components/seo/PageDatasets.tsx, 2026-11-11) without loading every other dataset. Each loader's `page` must agree;
+ * getDatasetsForPage() drops any that does not.
+ */
+export const DATASET_PAGES: Record<string, string> = {
+  "neet-ug-cutoff-mbbs": "/neet-ug-cutoff",
+  "neet-ug-cutoff-bds": "/bds-india",
+  "neet-pg-cutoff-category": "/neet-pg-cutoff",
+  "neet-pg-cutoff-branch": "/neet-pg-cutoff",
+  "neet-pg-marks-vs-rank": "/neet-pg-marks-vs-rank",
+  "pg-stipend-by-state": "/md-ms-india/stipend",
+  "pg-fees-private-by-state": "/md-ms-india/private-college-fees",
+  "pg-fees-deemed": "/md-ms-india/deemed-universities",
+  "neet-ss-cutoff": "/neet-ss-cutoff",
+  "neet-mds-cutoff": "/neet-mds-cutoff",
+};
+
+export async function getDatasetsForPage(path: string): Promise<Dataset[]> {
+  const ids = Object.entries(DATASET_PAGES).filter(([, p]) => p === path).map(([id]) => id);
+  const loaded = await Promise.all(ids.map((id) => LOADERS[id]?.().catch(() => null) ?? null));
+  return loaded.filter((d): d is Dataset => Boolean(d && d.page === path && d.rows.length));
+}
+
+/** The official body behind a dataset's figures, for `isBasedOn`. */
+const SOURCE_SITES: [RegExp, string][] = [
+  [/\bMCC\b/, "https://mcc.nic.in"],
+  [/NBEMS|NEET PG result/i, "https://natboard.edu.in"],
+];
+
+/** schema.org Dataset for one table: what /data and the table's own page both print. */
+export function datasetLd(d: Dataset, dateModified?: string | null) {
+  const basedOn = SOURCE_SITES.filter(([re]) => re.test(d.source)).map(([, u]) => u);
+  return {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    name: d.title,
+    description: d.description,
+    url: `${SITE}${d.page}`,
+    isAccessibleForFree: true,
+    ...(d.license ? { license: d.license.url } : {}),
+    creator: { "@type": "Organization", name: "AdmissionHands", url: SITE },
+    ...(basedOn.length ? { isBasedOn: basedOn } : {}),
+    ...(dateModified ? { dateModified } : {}),
+    spatialCoverage: "India",
+    inLanguage: "en-IN",
+    variableMeasured: d.columns,
+    distribution: [{ "@type": "DataDownload", encodingFormat: "text/csv", contentUrl: `${SITE}/data/${d.id}.csv` }],
+  };
+}
+
 export async function getDataset(id: string): Promise<Dataset | null> {
   const load = LOADERS[id];
   return load ? load() : null;
