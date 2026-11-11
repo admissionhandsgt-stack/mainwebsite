@@ -2422,6 +2422,16 @@ Owner: "itne pending task complete karo" (Meta's Conversions API token comes lat
   hour; no builder, no answer — never a page's first line. Each hour it answers studied searches and, without Tavily,
   Search Console queries at #3–20. Telegram's review leads with "Done on the site"; Admin → Search research lists them
   with Remove / Put back. No FAQPage markup (many pages carry one already). Wider coverage = more builders in huntAnswers.
+- **…and from official pages when our data has no answer** (owner: "jinka result nhi hai hamare DB mai unka MCC ya
+  authorised bodies ke website se… dhundke verify karke laga sakte hai… Gemini"; "middle model… 4 gemini keys hai to rotate"):
+  `lib/officialAnswer.ts` — one Tavily search limited to official sites (zynNotices `officialLink`: *.gov.in, *.nic.in,
+  NBEMS, NMC, the alert feed's boards) with the pages' text → Gemini (`lib/gemini.ts`: `gemini-flash-latest`, never
+  Flash-Lite or Pro; the owner's keys in Admin → Outreach, `ai.gemini.keys`, up to 4, used in turn, a 429 key skipped; 60
+  calls a day) answers from that text alone → **the code rejects it unless the page is official, every figure in the answer
+  is in that page's text, and it has no college's closing rank, promise or donation talk**. Stored in `search_faqs`
+  (migration 0060: answer, source_url, as_of, checked_on), shown 45 days then re-checked; a miss (`status = 'none'`) is
+  retried after 30 days; a staff "Remove" stays removed. At most 2 tries an hour. The page links the official source.
+  Claude never looks for or handles the keys — the owner pastes them.
 - **Research specs (Sonnet agents, 2026-11-11), in `D:/Admisson Hands/seo_data/research_2026_11/`:** `lead_magnet_pdf.md`
   (state PG fee & stipend PDF over WhatsApp: tap → prefilled message → free-form document reply inside the 24-hour window;
   Maharashtra first), `hinglish_pages.md` (no /hi/ section; a Hinglish FAQ block on 8 existing pages and two "kaise hoti hai"
