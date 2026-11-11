@@ -27,6 +27,7 @@ import { webSearchAnswer, webSearchUsage, type WebResult } from "@/lib/webSearch
 import { collectSuggestions } from "@/lib/serpSuggest";
 import { sitemapGroups } from "@/lib/sitemapData";
 import { getIntegration, setIntegration } from "@/lib/integrations";
+import { offerSearchFaq, PER_RUN as FAQ_PER_RUN } from "@/lib/searchFaq";
 
 export const PER_RUN = 15;
 const SITE = "sc-domain:admissionhands.com";
@@ -259,11 +260,11 @@ export async function allowance(): Promise<number> {
 /* ------------------------------------------------------------------ the run */
 
 export interface Advice {
-  kind: "no_page" | "title" | "facts" | "rank" | "section";
+  kind: "no_page" | "title" | "facts" | "rank" | "section" | "done";
   text: string;
 }
 
-export async function runResearch(limit?: number): Promise<{ researched: number; ours: number; suggested?: number; skipped?: string }> {
+export async function runResearch(limit?: number): Promise<{ researched: number; ours: number; suggested?: number; published?: number; skipped?: string }> {
   const sug = await collectSuggestions(8).catch(() => ({ seeds: 0, found: 0, added: 0 }));
   const budget = limit ?? (await allowance());
   if (budget <= 0) return { researched: 0, ours: 0, suggested: sug.added, skipped: "web search budget kept for the daily hunt" };
@@ -294,10 +295,11 @@ export async function runResearch(limit?: number): Promise<{ researched: number;
     : [];
   const today = new Date(Date.now() + 5.5 * 3600_000).toISOString().slice(0, 10);
   let researched = 0;
+  let published = 0;
   let ours = 0;
   for (const item of plan) {
     const found = await webSearchAnswer(item.query, 10);
-    if (!found) return { researched, ours, suggested: sug.added, skipped: "web search budget used up for the month" };
+    if (!found) return { researched, ours, suggested: sug.added, published, skipped: "web search budget used up for the month" };
     const results = found.results.map((x, i) => ({ rank: i + 1, url: x.url, domain: host(x.url), title: x.title, snippet: x.content.slice(0, 300) }));
     const mine = results.find((x) => OURS.test(x.domain));
     if (mine) ours++;
@@ -337,6 +339,17 @@ export async function runResearch(limit?: number): Promise<{ researched: number;
       advice.push({ kind: "section", text: `${landing}: add an H2 "${item.query}" with the answer in its first sentence (a long search, #${item.gsc.position.toFixed(1)}).` });
     if (!mine && competitors.length) advice.push({ kind: "rank", text: `Not in the web's top 10; first: ${competitors.slice(0, 3).join(", ")}.` });
 
+    // Implementation, not only advice (owner, same day): when a data builder answers the search, the landing page carries
+    // it as a heading with the answer under it (lib/searchFaq.ts) — the H2 advice done by the site itself.
+    if (landing && published < FAQ_PER_RUN) {
+      const live = await offerSearchFaq({ query: item.query, page: landing, impressions: item.gsc?.impressions, position: item.gsc?.position }).catch(() => false);
+      if (live) {
+        published++;
+        // The H2 advice is now done: replace it rather than ask for it.
+        for (let i = advice.length - 1; i >= 0; i--) if (advice[i].kind === "section") advice.splice(i, 1);
+        advice.unshift({ kind: "done", text: `Done: "${item.query}" is now answered on ${landing}, from live data.` });
+      }
+    }
     // Priority: Search Console's impressions where we have them (more for page 1–2 positions), otherwise how often
     // autocomplete offers it; more when there is no page at all, or official figures we lack.
     const base = item.gsc ? item.gsc.impressions * (item.gsc.position <= 10 ? 1.5 : 1) : (item.seen ?? 1) * 40;
@@ -355,7 +368,13 @@ export async function runResearch(limit?: number): Promise<{ researched: number;
     if (item.kind === "suggest") await db.execute(sql`UPDATE serp_suggest SET researched_on = ${today} WHERE query = ${item.query}`);
     researched++;
   }
-  return { researched, ours, suggested: sug.added };
+  // Searches not studied this hour can still be answered where Google already shows us — Search Console names the page,
+  // and our data answers it; no web search needed, so this costs no Tavily credit.
+  for (const o of opps.slice(0, 80)) {
+    if (published >= FAQ_PER_RUN) break;
+    if (await offerSearchFaq({ query: o.query, page: o.page, impressions: o.impressions, position: o.position }).catch(() => false)) published++;
+  }
+  return { researched, ours, suggested: sug.added, published };
 }
 
 /* ------------------------------------------------------------------ reading it back */
@@ -441,15 +460,26 @@ export async function researchReport(days = 30): Promise<{
 export async function digest(): Promise<string> {
   const since = (await getIntegration("serp.digest.at")) ?? new Date(Date.now() - 3_600_000).toISOString();
   const rows = (await rowsSince(sql`created_at > ${since}::timestamptz`)).filter((r) => r.advice.length);
+  // What went on the site since the last review, studied or not (lib/searchFaq.ts).
+  const done = (await db.execute(sql`
+    SELECT question, page FROM search_faqs WHERE status = 'live' AND created_at > ${since}::timestamptz ORDER BY created_at`)) as unknown as {
+    question: string;
+    page: string;
+  }[];
   await setIntegration("serp.digest.at", new Date().toISOString());
-  if (!rows.length) return "";
+  if (!rows.length && !done.length) return "";
   const top = rows.slice(0, 4);
   const line = (r: ResearchRow, i: number) =>
     [
       `${i + 1}. "${r.query}"${r.kind === "suggest" ? " (autocomplete)" : r.impressions ? ` — ${r.impressions} imp, #${r.position?.toFixed(1)}` : ""}`,
       ...r.advice.slice(0, 3).map((a) => `   • ${a.text}`),
     ].join("\n");
-  return [`Search research: ${rows.length} searches studied since the last review. Top ${top.length}:`, ...top.map(line), `All of it: Admin → Search research.`].join("\n");
+  return [
+    ...(done.length ? [`Done on the site: ${done.length} search${done.length === 1 ? "" : "es"} now answered on our pages:`, ...done.map((r) => `   ✓ "${r.question}" → ${r.page}`), ""] : []),
+    ...(rows.length ? [`Search research: ${rows.length} searches studied since the last review. Top ${top.length}:`] : []),
+    ...top.map(line),
+    `All of it: Admin → Search research.`,
+  ].join("\n");
 }
 
 /** Monday's line, once the owner moves the review to weekly (`serp.digest` = "weekly"). */

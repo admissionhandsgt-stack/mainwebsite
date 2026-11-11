@@ -3,6 +3,8 @@ import { getSessionUser } from "@/lib/auth";
 import { researchReport } from "@/lib/serpResearch";
 import { webSearchUsage } from "@/lib/webSearch";
 import { getTitleTestReport, type Half } from "@/lib/titleTestReport";
+import { asHeading, listSearchFaqs } from "@/lib/searchFaq";
+import SearchFaqToggle from "@/components/admin/SearchFaqToggle";
 import { Badge, Card, EmptyState, PageHeader, Stats, TABLE } from "@/components/admin/ui";
 
 export const dynamic = "force-dynamic";
@@ -22,10 +24,11 @@ export default async function SerpResearchPage(props: { searchParams: Promise<{ 
   const days = [1, 7, 30].includes(Number(sp.days)) ? Number(sp.days) : 7;
   const kind = sp.kind === "gsc" || sp.kind === "suggest" ? sp.kind : null;
 
-  const [{ rows: all, domains, pages, suggest }, usage, test] = await Promise.all([
+  const [{ rows: all, domains, pages, suggest }, usage, test, faqs] = await Promise.all([
     researchReport(days),
     webSearchUsage().catch(() => null),
     getTitleTestReport().catch(() => null),
+    listSearchFaqs(),
   ]);
   const rows = kind ? all.filter((r) => r.kind === kind) : all;
   const inTop = all.filter((r) => r.our_rank != null).length;
@@ -99,6 +102,47 @@ export default async function SerpResearchPage(props: { searchParams: Promise<{ 
           </div>
         </Card>
       )}
+
+      <Card
+        title={`Done on the site: ${faqs.filter((f) => f.status === "live").length} searches answered on our pages`}
+        description="Each search below is a heading on its page with the answer under it, rebuilt from live data whenever the page renders. Remove any that does not belong."
+        flush
+      >
+        {faqs.length === 0 ? (
+          <EmptyState title="None yet" hint="The hourly run adds up to 3 an hour, when one of our data builders can answer the search." />
+        ) : (
+          <div className={TABLE.wrap}>
+            <table className={TABLE.table}>
+              <thead className={TABLE.head}>
+                <tr>
+                  <th className={TABLE.th}>Search, as the heading reads</th>
+                  <th className={TABLE.th}>Page</th>
+                  <th className={TABLE.th}>Answer from</th>
+                  <th className={TABLE.th}>Added</th>
+                  <th className={TABLE.th} />
+                </tr>
+              </thead>
+              <tbody>
+                {faqs.map((f) => (
+                  <tr key={f.id} className={TABLE.row}>
+                    <td className={`${TABLE.td} text-sm`}>{asHeading(f.question)}</td>
+                    <td className={`${TABLE.td} text-xs`}>
+                      <a href={`https://www.admissionhands.com${f.page}`} target="_blank" rel="noreferrer" className="text-cyan-700 hover:underline">
+                        {f.page}
+                      </a>
+                    </td>
+                    <td className={`${TABLE.td} text-xs`}>{f.kind ?? "—"}</td>
+                    <td className={`${TABLE.td} text-xs tabular-nums`}>{f.created_at.slice(0, 16)}</td>
+                    <td className={TABLE.td}>
+                      <SearchFaqToggle id={f.id} status={f.status} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </Card>
 
       <Card title="What to do, best first" description="Priority weighs Search Console impressions (or how often autocomplete offers the search), a missing page and official figures we lack." flush>
         {rows.length === 0 ? (

@@ -732,6 +732,13 @@ export const PAGE_COPY = {
       privacy: { label: "Privacy link", value: "Privacy" },
     },
   },
+  "site.search_faqs": {
+    group: "Site: questions people ask (answers from search research)",
+    fields: {
+      heading: { label: "Heading over the searches answered on a page (blank hides the block)", value: "Questions people ask" },
+      more: { label: "Link to the page with the full table — {what}", value: "See the full {what} →" },
+    },
+  },
   "site.quick_form": {
     group: "Site: quick PG enquiry (college and data pages)",
     fields: {

@@ -43,7 +43,7 @@ export async function POST(request: Request) {
     await beat(
       "serp-research",
       true,
-      `${r.researched} researched, ${r.ours} with us in the top 10, ${r.suggested ?? 0} new real searches${r.skipped ? ` — ${r.skipped}` : ""}`,
+      `${r.researched} researched, ${r.published ?? 0} answered on the site, ${r.ours} with us in the top 10, ${r.suggested ?? 0} new real searches${r.skipped ? ` — ${r.skipped}` : ""}`,
     );
     return NextResponse.json(r, { headers: { "cache-control": "no-store" } });
   } catch (error) {

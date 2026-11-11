@@ -502,6 +502,83 @@ const SEATS = /how many (pg|md|ms|md ?\/ ?ms|post ?graduate)? ?seats|seats in in
 const LOW = /low (score|rank|marks)|just (qualified|eligible|passed)|clinical branch|clinical at|less marks|kam marks/i;
 const CUTOFF = /cut ?off|closing rank|rank (needed|required)|kitn[ae] rank|which rank|rank for/i;
 
+/** Which builder answers a question, from our live data — or none. Shared by the hunt and the site's search answers. */
+async function pickDraft(q: string, all: string, hasText: boolean, states: PgState[]): Promise<Draft | null> {
+  if (STIPEND.test(q) || /fee|cost|tuition/i.test(q)) {
+    const c = await collegeIn(q, states);
+    if (c) {
+      const d = await college(c, q);
+      if (d) return d;
+    }
+  }
+  if (BOND.test(q)) {
+    const d = await bond(stateIn(q, states));
+    if (d) return d;
+  }
+  if (STIPEND.test(q)) {
+    const st = stateIn(q, states);
+    const d = await (st ? stateStipend(st) : nationalStipend());
+    if (d) return d;
+  }
+  if (CHOICE.test(q)) return choice(q);
+  if (/fee|cost/i.test(q) && /deemed|private|management/i.test(q)) {
+    const d = await fees(q);
+    if (d) return d;
+  }
+  const mk = q.match(MARKS);
+  const score = mk ? Number(mk[1] ?? mk[5]) : NaN;
+  if (Number.isFinite(score) && score >= -180 && score <= 800 && /pg|md|ms|rank|marks|score/i.test(q)) {
+    const d = await marks(score);
+    if (d) return d;
+  }
+  if (LOW.test(q)) {
+    const d = await lowScore();
+    if (d) return d;
+  }
+  if (SEATS.test(q)) {
+    const d = await seats();
+    if (d) return d;
+  }
+  const br = branchIn(q);
+  if (br && (CUTOFF.test(q) || /seat|rank|marks|get/i.test(q))) {
+    const d = await getLowRankClinical().catch(() => null);
+    const row = d?.rows.find((r) => r.branch === br.branch);
+    if (d && row) return branch(row, d);
+  }
+  // A thread's text can say more than its title: read it once more for the broad topics.
+  if (hasText) {
+    if (STIPEND.test(all)) {
+      const st = stateIn(all, states);
+      const d = await (st ? stateStipend(st) : nationalStipend());
+      if (d) return d;
+    }
+    if (BOND.test(all)) {
+      const d = await bond(stateIn(all, states));
+      if (d) return d;
+    }
+    if (CHOICE.test(all)) return choice(all);
+    if (LOW.test(all)) {
+      const d = await lowScore();
+      if (d) return d;
+    }
+  }
+  return null;
+}
+
+/**
+ * The same answer as a draft — lead, points, checks, source — for a page of the site (lib/searchFaq.ts): only a data
+ * builder's, never the owner's saved forum answers or a page's first line, and without the forum's link and signature.
+ */
+export async function draftFor(question: string): Promise<Draft | null> {
+  const q = question.slice(0, 300);
+  const states = await getPgStates().catch((): PgState[] => []);
+  try {
+    return await pickDraft(q, q, false, states);
+  } catch {
+    return null;
+  }
+}
+
 /**
  * An answer for a question (a search or a thread title, with the thread's text when there is one). `fallback` is the
  * page that answers it when no builder fits; `pageLine` reads that page's own first line.
@@ -516,70 +593,9 @@ export async function answerFor(
   if (saved) return saved;
 
   const states = await getPgStates().catch((): PgState[] => []);
-  const tryDraft = async (d: Promise<Draft | null> | Draft | null) => {
-    const x = await d;
-    return x ? render(x) : null;
-  };
-
   try {
-    if (STIPEND.test(q) || /fee|cost|tuition/i.test(q)) {
-      const c = await collegeIn(q, states);
-      if (c) {
-        const a = await tryDraft(college(c, q));
-        if (a) return a;
-      }
-    }
-    if (BOND.test(q)) {
-      const a = await tryDraft(bond(stateIn(q, states)));
-      if (a) return a;
-    }
-    if (STIPEND.test(q)) {
-      const st = stateIn(q, states);
-      const a = await tryDraft(st ? stateStipend(st) : nationalStipend());
-      if (a) return a;
-    }
-    if (CHOICE.test(q)) return render(choice(q));
-    if (/fee|cost/i.test(q) && /deemed|private|management/i.test(q)) {
-      const a = await tryDraft(fees(q));
-      if (a) return a;
-    }
-    const mk = q.match(MARKS);
-    const score = mk ? Number(mk[1] ?? mk[5]) : NaN;
-    if (Number.isFinite(score) && score >= -180 && score <= 800 && /pg|md|ms|rank|marks|score/i.test(q)) {
-      const a = await tryDraft(marks(score));
-      if (a) return a;
-    }
-    if (LOW.test(q)) {
-      const a = await tryDraft(lowScore());
-      if (a) return a;
-    }
-    if (SEATS.test(q)) {
-      const a = await tryDraft(seats());
-      if (a) return a;
-    }
-    const br = branchIn(q);
-    if (br && (CUTOFF.test(q) || /seat|rank|marks|get/i.test(q))) {
-      const d = await getLowRankClinical().catch(() => null);
-      const row = d?.rows.find((r) => r.branch === br.branch);
-      if (d && row) return render(branch(row, d));
-    }
-    // A thread's text can say more than its title: read it once more for the broad topics.
-    if (opts.text) {
-      if (STIPEND.test(all)) {
-        const st = stateIn(all, states);
-        const a = await tryDraft(st ? stateStipend(st) : nationalStipend());
-        if (a) return a;
-      }
-      if (BOND.test(all)) {
-        const a = await tryDraft(bond(stateIn(all, states)));
-        if (a) return a;
-      }
-      if (CHOICE.test(all)) return render(choice(all));
-      if (LOW.test(all)) {
-        const a = await tryDraft(lowScore());
-        if (a) return a;
-      }
-    }
+    const d = await pickDraft(q, all, Boolean(opts.text), states);
+    if (d) return render(d);
   } catch {
     /* a builder failed — fall back to the page's own line */
   }

@@ -5,6 +5,7 @@ import { Toaster as SonnerToaster } from '@/components/ui/sonner'
 import SiteShell from '@/components/SiteShell'
 import SearchLinks from '@/components/seo/SearchLinks'
 import IndexBoost from '@/components/seo/IndexBoost'
+import SearchFaqs from '@/components/seo/SearchFaqs'
 import ClarityTag from '@/components/analytics/ClarityTag'
 import MetaPixel from '@/components/analytics/MetaPixel'
 import { pageCopy } from '@/lib/pageCopy'
@@ -240,6 +241,8 @@ export default async function RootLayout({
               alerts={liveAlerts.map((a) => ({ id: a.id, title: a.title, link: a.link }))}
             >
               {children}
+              {/* The real searches this page is found by, answered from live data (lib/searchFaq.ts); nothing on most pages. */}
+              <SearchFaqs />
               {/* Internal links chosen from Search Console, weekly (lib/searchLinks.ts); nothing on most pages. */}
               <SearchLinks />
               {/* An indexed page's not-yet-indexed neighbours, rotating weekly (lib/indexBoost.ts). */}
