@@ -2330,6 +2330,18 @@ What changed:
   headings. Menu rows: `scripts/sql/nav_city_kaise_2026_11_11.sql` (after the release). Add a city in `CITIES` when a
   search or a new college needs one.
 
+- **The consent notice was every phone page's LCP (fixed 2026-11-11, commit 1b16508).** `components/analytics/MetaPixel`
+  drew its "We use Meta's pixel…" notice after hydration, and on a phone that paragraph was the largest late-painted
+  text: PG college page LCP 4.1 s with the content at 1.4 s, PSI 72–85. It now appears only after the first scroll, tap
+  or key (LCP stops at the first input; the pixel still waits for consent): LCP 1.4 s, PSI 91–97. **Anything fixed to
+  the viewport that a client component draws on load is an LCP candidate** — check `largest-contentful-paint-element`
+  in PSI before blaming JS weight. Also checked: the PG college page's HTML is 576 KB (67 KB gzip), half of it the RSC
+  payload repeating the tree — the framework's cost, not a component's.
+- **Search Console "Host status: problems last week" (owner's CSV export, 2026-11-11)** was one request: the apex
+  `admissionhands.com` (82 crawls in 90 days, 99% the 301 to www) got a 5xx after 19.5 s around 7 Nov; www (26,448)
+  had none and the server was up. Optional: a Cloudflare Redirect Rule for apex → www would keep the origin out of it
+  (dashboard only; the API token cannot edit rules).
+
 ## The state PG fee PDF on WhatsApp (2026-11-11; spec `D:/Admisson Hands/seo_data/research_2026_11/lead_magnet_pdf.md`)
 
 - **Flow:** a page's button (`components/lead/FeePdfCta.tsx`, shown only for a state with a built PDF) opens WhatsApp on
