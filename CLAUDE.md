@@ -2350,11 +2350,19 @@ What changed:
   records it and calls `handlePdfMessage` (`lib/waPdf.ts`), which replies in the same chat with the PDF (a document by
   link, `/api/wa-pdf/<token>`) and a menu: *1* counsellor call (lead flagged, team alerted), *2* another state, *YES*
   fee updates (`wa_optins`), *STOP*. The student wrote first, so every reply is a free-form message inside the 24-hour
-  window — no template. A first request creates a lead ("WhatsApp PDF — <State> PG fees") and alerts the team.
+  window — no template. A first request creates a lead ("WhatsApp PDF — <State> PG fees"); **every PDF sent alerts the team**
+  (+91 92206 26002 and the staff list: number, WhatsApp name, the state, earlier states taken, new lead or lead #) and marks
+  an existing lead unread with a note (owner, 2026-11-11: "kis number ne kaha ka data li hai… follow up/connect karke").
 - **Guard rails:** only a message asking for a PDF (ref code or the word "pdf"), or a menu reply / state name from someone
   sent a PDF in the last 7 days, is answered; each inbound message once (`wa_pdf_events`); 3 PDFs a number a day, 300
   site-wide; Cloud API only, never the WAHA gateway. No outbound message to anyone who has not written in the last 24
   hours. A YES is stored but **nothing is sent on it yet** — fee-change updates would need an approved template.
+- **The PDF is a 3-page brochure, not a data dump (v2, owner 2026-11-11: "kafi detailed information… logo sahi nhi… counsellor
+  ke bare mai unchi baate… contact highlighted… marketing lines")**: the real logo (`public/logo.png`) and brand navy/mint;
+  page 1 the team's own figures, why families choose us and a large contact box; page 2 the state at a glance (fee by kind
+  of seat, stipend, bond — group figures) with the college-wise list offered through a counsellor; page 3 what Expert
+  Counselling gives, the counsellor (`site.reviewer`), the four steps and the call to action. Contact on every page and in
+  the footer. Strong but true: no promised seat, no invented student.
 - **Building the PDFs** (migration 0061: `lead_pdfs`, `wa_optins`, `wa_pdf_events`): `npx tsx --tsconfig
   scripts/pdf/tsconfig.json --env-file=.env.local scripts/pdf/build_fee_pdfs.ts --states <slugs> [--out <dir>] [--apply]`
   — the same live data as the state fee pages (official 2026-27 notices first), the stipend and bond pages; cover with

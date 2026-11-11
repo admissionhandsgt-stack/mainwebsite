@@ -82,23 +82,41 @@ async function lastPdf(phone: string): Promise<string | null> {
   return r[0] ? r[0].slug ?? "" : null;
 }
 
-/** A lead for a first request (the team is told); a note on the lead for a repeat. */
+/**
+ * Every student who takes a PDF is a lead kept up to date, and the team hears of every PDF (owner, 2026-11-11: "jin bhi
+ * students ko pdf share kar rahe hai unka details bhi update rakhe… 9220626002 wale number par unka details share kare kis
+ * number ne kaha ka data li hai to unse follow up/connect karke leads ko convert kia ja sake"). A first request is a new
+ * lead; a repeat (or a student already on our list) gets the PDF noted on their lead and the lead marked unread for a follow-up — and either way the staff alert names the number, the name WhatsApp shows, the
+ * state just sent and every other state's PDF that number has taken. Alerts go to the team list (lib/whatsappService:
+ * contact_info's lead number, +91 92206 26002, and the staff).
+ */
 async function noteLead(phone: string, name: string | null, state: string, note: string, alert: string | null) {
   try {
     const lead = (await db.execute(sql`
       SELECT id FROM leads WHERE phone = ${phone} AND created_at > now() - interval '30 days' ORDER BY created_at DESC LIMIT 1`)) as unknown as { id: number }[];
     const day = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" });
-    if (lead[0]) {
+    let leadId: number | null = lead[0]?.id ?? null;
+    if (leadId) {
       await db.execute(sql`
-        UPDATE leads SET admin_notes = concat_ws(E'\n', nullif(admin_notes, ''), ${`${day}: ${note}`})${alert ? sql`, is_read = false` : sql``}
-         WHERE id = ${lead[0].id}`);
+        UPDATE leads SET admin_notes = concat_ws(E'\n', nullif(admin_notes, ''), ${`${day}: ${note}`}), is_read = false
+         WHERE id = ${leadId}`);
     } else {
-      await db.execute(sql`
+      const r = (await db.execute(sql`
         INSERT INTO leads (level, name, phone, rank, category, source_page, lead_status, message)
-        VALUES ('pg'::level, ${name || "WhatsApp PDF"}, ${phone}, NULL, NULL, ${`WhatsApp PDF — ${state} PG fees`}, 'New', ${note})`);
-      alert = alert ?? `📄 Asked for the ${state} PG fee PDF on WhatsApp`;
+        VALUES ('pg'::level, ${name || "WhatsApp PDF"}, ${phone}, NULL, NULL, ${`WhatsApp PDF — ${state} PG fees`}, 'New', ${note})
+        RETURNING id`)) as unknown as { id: number }[];
+      leadId = r[0]?.id ?? null;
     }
-    if (alert) await sendWhatsAppNotification({ name: name || "Not given", phone, source: alert });
+    // Every PDF this number has taken, so the counsellor opens the call knowing what the student is weighing.
+    const taken = (await db.execute(sql`
+      SELECT DISTINCT p.state FROM wa_pdf_events e JOIN lead_pdfs p ON p.slug = e.slug
+       WHERE e.phone = ${phone} AND e.action = 'pdf' AND p.state <> ${state}`)) as unknown as { state: string }[];
+    const others = taken.map((t) => t.state);
+    const source =
+      alert ??
+      `📄 ${state} PG fee PDF sent on WhatsApp${lead[0] ? ` — already on our list (lead #${leadId})` : " — new lead"}${others.length ? `; earlier PDFs: ${others.join(", ")}` : ""}. Follow up and call.`;
+    // (Not `preferred_state`: the alert prints that as the domicile, and a PDF's state is not the student's domicile.)
+    await sendWhatsAppNotification({ name: name || "Not given", phone, source });
   } catch (error) {
     logError(error, { route: "waPdf.noteLead" });
   }

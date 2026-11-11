@@ -1059,14 +1059,16 @@ export const PAGE_COPY = {
       body: {
         label: "Button card — line — {state}",
         long: true,
-        value: "Every MD/MS college in {state} — fees by quota, stipend and bond — in one file to keep and share. Free, on WhatsApp in a minute.",
+        value: "{state} PG fees by kind of seat, stipend and bond, what to ask before you pay — and how our counsellors help. Free, on WhatsApp in a minute.",
+        was: ["Every MD/MS college in {state} — fees by quota, stipend and bond — in one file to keep and share. Free, on WhatsApp in a minute."],
       },
       button: { label: "Button — {state}", value: "Send me the PDF on WhatsApp" },
       prefill: { label: "The message the button types — {state}, {ref}", value: "Send me the {state} PG fee & stipend PDF (ref {ref}-PDF)" },
       caption: {
         label: "Caption on the PDF — {state}, {date}",
         long: true,
-        value: "{state} NEET PG: PG fees, stipend and bond, college by college (updated {date}). As listed for the counselling — not an official notice; confirm with the state authority or the college before you pay or sign.",
+        value: "{state} NEET PG 2026-27: fees, stipend & bond guide from Admission Hands (updated {date}). Figures as listed for the counselling or from college notices — confirm before you pay. Your college-wise list for your rank: reply *1*.",
+        was: ["{state} NEET PG: PG fees, stipend and bond, college by college (updated {date}). As listed for the counselling — not an official notice; confirm with the state authority or the college before you pay or sign."],
       },
       menu: {
         label: "Message after the PDF — {state}",
