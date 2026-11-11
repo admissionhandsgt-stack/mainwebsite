@@ -63,6 +63,21 @@ const COLLEGES = [
   "scb cuttack", "gmc srinagar", "gmc jammu",
 ];
 const COLLEGE_INTENTS = ["pg fees", "pg stipend", "cut off"];
+/**
+ * Branches as typed — short and full ("md radio", "radiology", "obg", "gynae") — with a year, a round, a category, a
+ * state or a college (owner, 2026-11-11, with "Neet pG 2026 MD radio cut off": "branch wise half name full name ke sath…
+ * year round wise… college ki branch ki + college round ki, State +…").
+ */
+const BRANCH_TYPED = [
+  "md radio", "radiology", "md derma", "dermatology", "md medicine", "general medicine", "ms ortho", "orthopaedics", "obg", "gynae",
+  "md paeds", "pediatrics", "anaesthesia", "ms surgery", "ent", "ophthalmology", "psychiatry", "pulmonary medicine", "psm",
+  "pathology", "radiotherapy", "emergency medicine",
+];
+const BRANCH_TYPED_SEEDS = (b: string) => [`neet pg 2026 ${b} cut off`, `${b} cut off 2026 round 1`, `${b} cut off round 2`, `${b} closing rank 2025`];
+const TOP_BRANCHES = ["md radiology", "md derma", "md medicine", "ms ortho", "obg", "md pediatrics", "ms general surgery"];
+const TOP_STATES = ["maharashtra", "karnataka", "tamil nadu", "uttar pradesh", "rajasthan", "gujarat", "kerala", "west bengal", "madhya pradesh", "telangana", "andhra pradesh", "delhi"];
+const CATEGORY_SEEDS = (b: string) => [`${b} cut off obc 2026`, `${b} cut off sc`, `${b} cut off ews`];
+const COLLEGE_CUT_SEEDS = (c: string) => [`${c} radiology cut off`, `${c} md medicine cut off`, `${c} round 1 cut off 2026`, `${c} round 2 cut off`];
 
 /** A suggestion is ours to study only when it is about medical admission. */
 const RELEVANT =
@@ -81,6 +96,10 @@ export async function buildSeeds(): Promise<string[]> {
   for (const c of CITIES) for (const x of CITY_SEEDS(c)) out.add(x);
   for (const c of COLLEGES) for (const i of COLLEGE_INTENTS) out.add(`${c} ${i}`);
   for (const b of BRANCHES) for (const i of BRANCH_INTENTS) out.add(`${b} ${i}`);
+  for (const b of BRANCH_TYPED) for (const x of BRANCH_TYPED_SEEDS(b)) out.add(x);
+  for (const b of TOP_BRANCHES) for (const st of TOP_STATES) out.add(`${b} cut off ${st}`);
+  for (const b of TOP_BRANCHES) for (const x of CATEGORY_SEEDS(b)) out.add(x);
+  for (const c of COLLEGES.slice(0, 24)) for (const x of COLLEGE_CUT_SEEDS(c)) out.add(x);
   return [...out];
 }
 
@@ -98,7 +117,7 @@ async function ask(url: string, pick: (j: unknown) => unknown): Promise<string[]
 const tidy = (q: string) => q.toLowerCase().replace(/\s+/g, " ").trim();
 
 /** Ask both engines about `count` seeds (least recently asked first); store what comes back. */
-export async function collectSuggestions(count = 12): Promise<{ seeds: number; found: number; added: number }> {
+export async function collectSuggestions(count = 16): Promise<{ seeds: number; found: number; added: number }> {
   const seeds = await buildSeeds();
   await db.execute(sql`INSERT INTO serp_seeds (seed) SELECT unnest(${`{${seeds.map((s) => `"${s.replace(/"/g, "")}"`).join(",")}}`}::text[]) ON CONFLICT DO NOTHING`);
   const due = (await db.execute(sql`

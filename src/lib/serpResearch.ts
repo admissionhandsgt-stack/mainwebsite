@@ -267,7 +267,7 @@ export interface Advice {
 }
 
 export async function runResearch(limit?: number): Promise<{ researched: number; ours: number; suggested?: number; published?: number; skipped?: string }> {
-  const sug = await collectSuggestions(12).catch(() => ({ seeds: 0, found: 0, added: 0 }));
+  const sug = await collectSuggestions(16).catch(() => ({ seeds: 0, found: 0, added: 0 }));
   const budget = limit ?? (await allowance());
   if (budget <= 0) return { researched: 0, ours: 0, suggested: sug.added, skipped: "web search budget kept for the daily hunt" };
 

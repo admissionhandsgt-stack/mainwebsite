@@ -5,7 +5,7 @@
  *
  *  1. Find: one Tavily search limited to official sites — *.gov.in, *.nic.in, MCC, NMC, NBEMS, NTA and every state board
  *     the alert feed reads (the same rule as zynNotices `officialLink`) — with each page's own text.
- *  2. Copy: Gemini (lib/gemini.ts, Flash, temperature 0) answers from that text alone, says which page it used and the
+ *  2. Copy: Gemini (lib/gemini.ts, gemini-3.6-flash, keys in turn) answers from that text alone, says which page it used and the
  *     date it prints, or says it cannot; told never to give one college's closing rank or promise a seat.
  *  3. Verify, in code, before anything is shown: the page used is official; every figure in the answer (2+ digits,
  *     amounts, years, dates) appears in that page's text; no college's closing rank, no promise, no fee guessed.

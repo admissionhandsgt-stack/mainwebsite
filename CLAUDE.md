@@ -2447,6 +2447,27 @@ Owner: "itne pending task complete karo" (Meta's Conversions API token comes lat
   matched nothing, because the alias said "Jammu & Kashmir" and our list says "Jammu and Kashmir". Research seeds (732):
   short state names, every state × "counselling website", the authorities and health universities, 20 cities, 45 colleges
   searched most; 12 an hour; suggestions about nursing, pharmacy, AYUSH, engineering or jobs are dropped.
+- **Branch searches as typed (`lib/huntBranch.ts`, same day; owner with "Neet pG 2026 MD radio cut off": "half name full
+  name… year round wise… college ki branch ki + college round ki, State +… edge cases").** `BRANCH_WORDS` reads short and
+  full names (radio/rd/radiology, derma/dvl/skin, obg/gynae, ortho, peds/paeds, anaes, eye, chest/pulmo, psm…; named
+  "… medicine" branches before general medicine), `roundIn` (round 2, r2, 2nd round, stray, mop up), `yearIn`, `categoryIn`
+  ("general surgery" is a branch, not the general category), the seat family (dnb, deemed/management/paid). Builders:
+  `branchRound` (MCC's round result: last rank per category over 3+ colleges, score, other rounds, last year's same
+  round; a round not out says so and gives the latest), `branchState` (MCC's AIQ in that state's colleges + the state's own
+  round, 3+ colleges; **no fee figures** — a listing's whole-course or dollar fee read as "a year" said ₹90 L for Rajasthan),
+  `collegeBranch` (the college page's own bands; a college named is answered with its bands or not at all — a deemed
+  university has no public band, so "kmc manipal radiology cut off" gets no answer rather than the national figure),
+  `roundOverall` ("neet pg 2026 round 2 cut off": the clinical branches side by side). **AIIMS, JIPMER, PGIMER, NIMHANS,
+  SCTIMST cut-off searches get nothing** (INI-CET, not NEET PG). Cities map to their state in `STATE_ALIAS` (jaipur →
+  Rajasthan); a search whose leftover words are only a place is never read as a college. College initials:
+  `COLLEGE_ACRONYM` (kgmu, mamc, kmc, sgpgi, bmcri, kem/gsmc…), as our names spell them. Seeds: 1,021 (branch typed ×
+  year/round, top branches × 12 states and × category, 24 colleges × branch/round); 16 an hour. QA list:
+  `scripts/tmp/harness/branch_try.ts`.
+- **Gemini model (same day, owner: "sahi model set kardo + rotation… gemini 3 flash?"):** `gemini-3.6-flash`, fallback
+  `gemini-3.8-flash` (`MODELS` in lib/gemini.ts). `gemini-3-flash-preview` is a preview whose replacement Google names as
+  3.6-flash; on the owner's keys 3.6 answered in ~2 s, 3.8 in 108 s. Gemini 3 settings per Google: temperature left at
+  default (below 1.0 can loop), `thinkingLevel: "low"`. Rotation: next key each call; 429 rests that key 15 min on that
+  model, 403 six hours.
 - **Research specs (Sonnet agents, 2026-11-11), in `D:/Admisson Hands/seo_data/research_2026_11/`:** `lead_magnet_pdf.md`
   (state PG fee & stipend PDF over WhatsApp: tap → prefilled message → free-form document reply inside the 24-hour window;
   Maharashtra first), `hinglish_pages.md` (no /hi/ section; a Hinglish FAQ block on 8 existing pages and two "kaise hoti hai"

@@ -18,6 +18,7 @@ import { db } from "@/db/client";
 import { draftFor, type Draft } from "@/lib/huntAnswers";
 import { getPgStates } from "@/lib/pgStateQueries";
 import { officialAnswer } from "@/lib/officialAnswer";
+import { branchWord } from "@/lib/huntBranch";
 
 /** An official page's answer is shown this many days after it was checked, then the hourly run checks it again. */
 const OFFICIAL_DAYS = 45;
@@ -48,7 +49,8 @@ const BRANCH_NAMED = /\b(md|ms|dnb|dm|m\.?ch|diploma)\s+(?!seats?\b|fees?\b|stip
 const SPECIALTY = /\b(radiology|radio ?diagnosis|medicine|surgery|nuclear|patholog|dermatolog|derma|p(a)?ediatric|orthop|obstetric|gyn(a)?ecolog|obg|an(a)?esth|psychiatr|ophthalm|ent|pulmonar|respiratory|microbiolog|pharmacolog|anatomy|physiolog|biochem|forensic|community medicine|emergency|palliative|geriatric|tropical|aerospace|genetic|cardio|neuro|nephro|gastro|onco|urolog|endocrin|radiotherapy|immunohematolog|transfusion)\w*/i;
 
 /** Builders whose answer is about the state or college the search names (lib/huntAnswers.ts kinds). */
-const STATE_AWARE = new Set(["state-stipend", "bond-state", "college", "authority"]);
+/** Compared on the kind before its first ":" ("branch-state:rajasthan" → "branch-state"). */
+const STATE_AWARE = new Set(["state-stipend", "bond-state", "college", "authority", "branch-state", "college-branch", "college-round"]);
 
 async function namesState(q: string): Promise<boolean> {
   const states = await getPgStates().catch(() => []);
@@ -72,6 +74,16 @@ async function roomOn(page: string, q: string) {
   return { live: r[0]?.live ?? 0, same: r[0]?.same ?? 0, kinds: r[0]?.kinds ?? [] };
 }
 const lastPart = (p: string) => p.split("/").filter(Boolean).pop() ?? "";
+/** Pages about one branch, state or college: an answer about another one moves to its own page. */
+const SPECIFIC = /^\/(md-ms-india\/(branches|states|colleges|stipend|fees)|mbbs-india\/colleges|counselling\/(neet-pg|mbbs))\//;
+function pageFits(page: string, d: Draft, q: string): boolean {
+  if (!SPECIFIC.test(page)) return true; // a hub (cutoff, marks vs rank, a round page) takes any of its searches
+  if (lastPart(page) === lastPart(d.page) || d.page.startsWith(`${page}/`)) return true;
+  // A branch page keeps a round answer about the same branch.
+  const m = /^\/md-ms-india\/branches\/([^/]+)$/.exec(page);
+  const bw = branchWord(q);
+  return Boolean(m && bw && d.kind.startsWith("branch:") && bw.course.test(m[1].replace(/-/g, " ")));
+}
 
 /**
  * Called by the research bot for each search it studied. Adds the search to `page` when a builder answers it, the page
@@ -89,7 +101,7 @@ export async function offerSearchFaq(
   const d = ASKS.test(q) ? await draftFor(q) : null;
   // "jk neet pg website" belongs on that state's own page: kept where Google shows it when that page is the state's
   // (any of its pages ends in the state's slug), else moved to the answer's page — the state's counselling page.
-  if (d?.kind === "authority" && page !== d.page && lastPart(page) !== lastPart(d.page)) {
+  if (d && page !== d.page && (d.kind === "authority" ? lastPart(page) !== lastPart(d.page) : !pageFits(page, d, q))) {
     page = d.page;
     room = await roomOn(page, q);
     if (room.same > 0 || room.live >= PER_PAGE) return false;
@@ -124,13 +136,15 @@ export async function offerSearchFaq(
   if (room.kinds.includes(d.kind)) return false;
   // A search that names a state is answered only by a builder that reads that state: the national figures under
   // "md radiology cutoff rajasthan" would answer a different question.
-  if (!STATE_AWARE.has(d.kind) && (await namesState(q))) return false;
+  const base = d.kind.split(":")[0];
+  if (!STATE_AWARE.has(base) && (await namesState(q))) return false;
   // Likewise a branch: "md nuclear medicine seats in india" is not answered by India's total PG seats.
-  if (d.kind !== "branch" && BRANCH_NAMED.test(q)) return false;
+  const branchy = base.startsWith("branch") || base.startsWith("college");
+  if (!branchy && BRANCH_NAMED.test(q)) return false;
   // …also when it names the speciality without the degree ("nuclear medicine pg seats in india"), or the page is a
   // branch page: only the branch builder answers there. A college's own name may hold such a word ("Institute of
   // Aerospace Medicine"), so the college builder is let through.
-  if (d.kind !== "branch" && d.kind !== "college" && (SPECIALTY.test(q) || /^\/md-ms-india\/branches\//.test(page))) return false;
+  if (!branchy && (SPECIALTY.test(q) || /^\/md-ms-india\/branches\//.test(page))) return false;
   await db.execute(sql`
     INSERT INTO search_faqs (page, question, kind, impressions, position)
     VALUES (${page}, ${q}, ${d.kind}, ${item.impressions ?? null}, ${item.position ?? null})

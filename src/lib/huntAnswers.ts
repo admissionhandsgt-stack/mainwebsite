@@ -17,6 +17,7 @@ import { getStateNotices, getHubNotices, stateKey, FEED_STATE } from "@/lib/stat
 import { ALERT_SOURCES } from "@/lib/alertFeed";
 import { getCounselPgStates, getCounselUgStates } from "@/lib/counselStates";
 import { officialLink } from "@/lib/zynNotices";
+import { branchWord, branchRound, branchState, collegeBranch, roundIn, roundOverall, withoutBranchWords, INI_CET } from "@/lib/huntBranch";
 
 /**
  * Answers the daily hunt writes (2026-11-10; owner, with his own AIIMS New Delhi answer as the model: "aise detailed
@@ -158,6 +159,23 @@ const STATE_ALIAS: Record<string, string> = {
   drntruhs: "Andhra Pradesh", uhsap: "Andhra Pradesh", acppgmec: "Gujarat", acpugmec: "Gujarat", medadmgujarat: "Gujarat",
   upneet: "Uttar Pradesh", mahacet: "Maharashtra", "cet cell": "Maharashtra", jceceb: "Jharkhand", ojee: "Odisha",
   pgmcc: "Odisha", trmcc: "Tripura", tnmedicalselection: "Tamil Nadu", "cee kerala": "Kerala",
+  // Cities with many medical colleges, searched in place of the state ("md radiology cut off jaipur"). A city in two
+  // states (Bilaspur, Aurangabad in Bihar) is left out or given to the one with the medical colleges people mean.
+  jaipur: "Rajasthan", jodhpur: "Rajasthan", udaipur: "Rajasthan", kota: "Rajasthan", bikaner: "Rajasthan", ajmer: "Rajasthan",
+  lucknow: "Uttar Pradesh", kanpur: "Uttar Pradesh", varanasi: "Uttar Pradesh", agra: "Uttar Pradesh", meerut: "Uttar Pradesh",
+  prayagraj: "Uttar Pradesh", allahabad: "Uttar Pradesh", gorakhpur: "Uttar Pradesh", noida: "Uttar Pradesh",
+  mumbai: "Maharashtra", pune: "Maharashtra", nagpur: "Maharashtra", nashik: "Maharashtra", aurangabad: "Maharashtra",
+  bangalore: "Karnataka", bengaluru: "Karnataka", mysore: "Karnataka", mysuru: "Karnataka", mangalore: "Karnataka",
+  mangaluru: "Karnataka", hubli: "Karnataka", belgaum: "Karnataka", belagavi: "Karnataka", davangere: "Karnataka", manipal: "Karnataka",
+  chennai: "Tamil Nadu", madurai: "Tamil Nadu", coimbatore: "Tamil Nadu", salem: "Tamil Nadu", trichy: "Tamil Nadu", vellore: "Tamil Nadu",
+  hyderabad: "Telangana", warangal: "Telangana", kolkata: "West Bengal", ahmedabad: "Gujarat", surat: "Gujarat", vadodara: "Gujarat",
+  rajkot: "Gujarat", jamnagar: "Gujarat", indore: "Madhya Pradesh", bhopal: "Madhya Pradesh", gwalior: "Madhya Pradesh",
+  jabalpur: "Madhya Pradesh", patna: "Bihar", darbhanga: "Bihar", kochi: "Kerala", cochin: "Kerala", trivandrum: "Kerala",
+  thiruvananthapuram: "Kerala", kozhikode: "Kerala", calicut: "Kerala", thrissur: "Kerala", bhubaneswar: "Odisha", cuttack: "Odisha",
+  ranchi: "Jharkhand", jamshedpur: "Jharkhand", dhanbad: "Jharkhand", raipur: "Chhattisgarh", dehradun: "Uttarakhand",
+  guwahati: "Assam", dibrugarh: "Assam", srinagar: "Jammu and Kashmir", ludhiana: "Punjab", amritsar: "Punjab", patiala: "Punjab",
+  faridkot: "Punjab", rohtak: "Haryana", shimla: "Himachal Pradesh", visakhapatnam: "Andhra Pradesh", vizag: "Andhra Pradesh",
+  guntur: "Andhra Pradesh", vijayawada: "Andhra Pradesh", kurnool: "Andhra Pradesh", tirupati: "Andhra Pradesh",
 };
 
 function stateIn<T extends { name: string }>(q: string, states: T[]): T | null {
@@ -182,17 +200,28 @@ const NOT_A_NAME = new Set(
 
 type College = { id: number; slug: string; name: string; state: string | null; ownership: string };
 
+/** Colleges searched by their initials, as the name we hold spells them (with a place word, "jnmc wardha", one is left). */
+const COLLEGE_ACRONYM: Record<string, string> = {
+  aiims: "all india institute of medical sciences", gmc: "government medical college", kgmu: "king george", kgmc: "king george",
+  bhu: "banaras hindu", ims: "institute of medical sciences", amu: "aligarh muslim", mamc: "maulana azad", lhmc: "lady hardinge",
+  ucms: "university college of medical sciences", vmmc: "vardhman mahavir", sgpgi: "sanjay gandhi postgraduate", sgpgims: "sanjay gandhi postgraduate",
+  kmc: "kasturba medical college", cmc: "christian medical college", afmc: "armed forces medical college", mmc: "madras medical college",
+  bmcri: "bangalore medical college", bmc: "bangalore medical college", igims: "indira gandhi institute of medical sciences",
+  pmch: "patna medical college", nmch: "nalanda medical college", ipgmer: "ipgme", sskm: "ipgme", rgkar: "rg kar",
+  nrs: "nil ratan sircar", gsmc: "seth gs medical", kem: "seth gs medical", bjmc: "bj medical", jnmc: "jawaharlal nehru medical college",
+  grmc: "gajra raja", gmch: "government medical college and hospital", hims: "himalayan institute", srmc: "sri ramachandra",
+  dmc: "dayanand medical college",
+};
+
 async function collegeIn(q: string, states: PgState[]): Promise<College | null> {
   const st = stateIn(q, states);
   let words = fold(q).trim().split(" ").filter((w) => w.length >= 2 && !NOT_A_NAME.has(w) && !/^\d+$/.test(w));
   if (st) words = words.filter((w) => !fold(st.name).includes(` ${w} `));
   if (!words.length || words.length > 5 || !words.some((w) => w.length >= 3)) return null;
   const like = (w: string): SQL =>
-    w === "aiims"
-      ? sql`i.name ILIKE '%all india institute of medical sciences%'`
-      : w === "gmc"
-        ? sql`i.name ILIKE '%government medical college%'`
-        : w.length <= 3
+    COLLEGE_ACRONYM[w]
+      ? sql`i.name ILIKE ${`%${COLLEGE_ACRONYM[w]}%`}`
+      : w.length <= 3
           ? sql`i.name ~* ${`\\y${w}\\y`}`
           : sql`i.name ILIKE ${`%${w}%`}`;
   const rows = (await db.execute(sql`
@@ -663,6 +692,32 @@ async function pickDraft(q: string, all: string, hasText: boolean, states: PgSta
   if (WEBSITE.test(q)) {
     const d = await authoritySite(q, states);
     if (d) return d;
+  }
+  // A branch, a round, a college or a state in any spelling, asking for a cut off ("neet pg 2026 md radio cut off",
+  // "sms jaipur radiology round 2", "md radiology cut off rajasthan") — lib/huntBranch.ts. Not a fee or stipend question.
+  const bw = branchWord(q);
+  const cutAsked = (CUTOFF.test(q) || /\b(rank|round|closing|allot\w*)\b/i.test(q)) && !STIPEND.test(q) && !/fee|cost|tuition/i.test(q);
+  // AIIMS, JIPMER, PGIMER… fill their PG seats through INI-CET: no NEET PG figure answers their cut off.
+  if (cutAsked && INI_CET.test(q)) return null;
+  if (cutAsked && (bw || roundIn(q))) {
+    // What is left once the branch, round, year and category words go: a college's name, or only a place.
+    const rest = withoutBranchWords(q);
+    const onlyPlace = fold(rest).trim().split(" ").filter(Boolean).every((w) => w.length < 2 || NOT_A_NAME.has(w) || /^\d+$/.test(w) || STATE_ALIAS[w] !== undefined || states.some((s) => fold(s.name).includes(` ${w} `)));
+    const c = onlyPlace ? null : await collegeIn(rest, states);
+    if (c) {
+      // A college named is answered with its own bands or not at all — never with the national figure under its name
+      // (a deemed university's paid seats have no public band).
+      const nm = collegeName(c.name);
+      const label = nm.place && !nm.short.toLowerCase().includes(nm.place.toLowerCase()) ? `${nm.short}, ${nm.place}` : nm.short;
+      return collegeBranch(q, { slug: c.slug, label });
+    } else if (bw) {
+      const st = stateIn(q, states);
+      const d = st ? await branchState(q, st) : await branchRound(q);
+      if (d) return d;
+    } else {
+      const d = await roundOverall(q);
+      if (d) return d;
+    }
   }
   if (STIPEND.test(q) || /fee|cost|tuition/i.test(q)) {
     const c = await collegeIn(q, states);
