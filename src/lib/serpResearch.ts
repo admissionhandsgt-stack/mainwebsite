@@ -206,13 +206,21 @@ const words = (s: string) =>
 /** The closest page in our sitemap for a search we are not shown for — a guess, labelled as one. */
 async function closestPage(query: string, paths: string[]): Promise<string | null> {
   // A PG search lands only on a PG page, an MBBS search only on an MBBS page.
-  const pg = /\b(pg|md|ms|dnb|mds|post ?graduate|stipend|bond)\b/i.test(query);
+  // A search that names neither level is a NEET PG one while that is the season (lib/researchFocus.ts) — "fees of
+  // private medical colleges in india" had landed on an MBBS college whose name says "Private Limited".
   const ug = /\b(mbbs|ug|bds|neet ug)\b/i.test(query);
+  const pg = /\b(pg|md|ms|dnb|mds|post ?graduate|stipend|bond)\b/i.test(query) || (!ug && (await pgFocus()));
   const PG_PATH = /^\/(md-ms-india|neet-pg|counselling\/neet-pg|md-vs-dnb|management-quota|nri-quota|neet-ss|neet-mds)/;
   const UG_PATH = /^\/(mbbs-india|neet-ug|bds-india|counselling\/mbbs|ayush)/;
   paths = paths.filter((p) => (pg && !ug ? !UG_PATH.test(p) : ug && !pg ? !PG_PATH.test(p) : true));
-  const q = words(query).filter((w) => !["cut", "fees", "seats", "rank", "marks", "pg", "md", "ms", "mbbs", "college"].includes(w));
-  if (!q.length) return null;
+  // Words that say what is asked or what kind of college, never which page: a college's slug can hold any of them.
+  const GENERIC = ["cut", "fees", "seats", "rank", "marks", "pg", "md", "ms", "mbbs", "college", "private", "government", "govt",
+    "deemed", "medical", "institute", "hospital", "sciences", "university", "admission", "counselling", "counseling", "quota"];
+  // A search about the journey (documents, a counsellor, open states, a refund…) that no page names goes to the page for
+  // that stage, not to whichever college or state shares one word with it.
+  const stage = JOURNEY_HUBS.find(([re]) => re.test(query));
+  const q = words(query).filter((w) => !GENERIC.includes(w));
+  if (!q.length) return stage && (pg || !ug) ? stage[1] : null;
   let best: { path: string; score: number } | null = null;
   for (const p of paths) {
     const pw = words(p.replace(/-/g, " "));
@@ -221,10 +229,34 @@ async function closestPage(query: string, paths: string[]): Promise<string | nul
     if (hit && (!best || score > best.score)) best = { path: p, score };
   }
   if (best && best.score >= 0.6) return best.path;
+  if (stage && (pg || !ug)) return stage[1];
   // No page names the search's own words: the hub that answers its kind of question, if one does.
   const hub = HUBS.find(([re, level]) => re.test(query) && (level === "any" || (level === "pg" ? pg || !ug : ug)));
   return hub ? hub[2] : null;
 }
+
+/**
+ * The page for each stage a NEET PG candidate and the family go through (2026-11-12, owner: "candidates unke guardians kin
+ * conditions se gujarte honge kaise searches karte honge… un sab keywords ko hunt karo target set karo"). Built from 90
+ * days of Search Console and ~3,000 Google/Bing autocomplete searches grouped by stage (scripts/tmp/harness/journey*.ts):
+ * the stages where families look for help — a counsellor, documents, which counselling they may sit, a refund, DNB's
+ * standing, seats added, what next after a low rank — had almost no impressions. Used when no page names the search.
+ */
+const JOURNEY_HUBS: [RegExp, string][] = [
+  [/\bnri\b.*\bdocuments?\b|\bdocuments?\b.*\bnri\b/i, "/nri-quota/documents"],
+  [/\b(counsell?or|counsell?ors|consultan\w*|guidance|agent|agents|direct admission|seat booking|donation|fraud|scam)\b/i, "/counselling"],
+  [/\b(documents?|certificates?|allotment letter|document verification|reporting|joining)\b|kagaz/i, "/neet-pg-counselling-kaise-hoti-hai"],
+  [/\b(open states?|domicile|in ?service quota|service quota|state quota|aiq vs|eligibility|eligible|fmge?|foreign medical)\b/i, "/neet-pg-counselling-kaise-hoti-hai"],
+  [/\b(security deposit|refund|registration fee)/i, "/neet-pg-choice-filling"],
+  [/\b(equivalent|equal to md|dnb kya|what is dnb|dnb degree|difference between dnb|dnb vs|vs dnb|dnb or md|md or dnb|dnb quota)\b/i, "/md-vs-dnb"],
+  [/\b(seat increase|seats increase|increase in (pg|neet pg)? ?seats|new pg seats|nmc (approved|recogni[sz]ed)|newly added|added seats)\b/i, "/neet-pg-statistics"],
+  [/\b(predictor|predict)\b/i, "/neet-college-predictor"],
+  [/\b(loan|loans|scholarship|emi|kitna paisa|paisa lagta)\b/i, "/md-ms-india/fees"],
+  [/\b(drop|dropper|repeat|not qualified|without (neet )?pg|after mbbs|what next|ke baad kya|low (rank|score|marks)|just qualified)\b/i, "/neet-pg-low-score-clinical-branches"],
+  [/\b(rank vs branch|branch(es)? list|list of (pg )?branches|top branch|best branch|which branch|branches after mbbs|scope)\b/i, "/md-ms-india/branches"],
+  [/\b(salary|kitna stipend|stipend kitna)\b/i, "/md-ms-india/stipend"],
+  [/\b(qualifying|percentile|score ?card|answer key|marks vs rank|rank vs marks)\b/i, "/neet-pg-marks-vs-rank"],
+];
 
 /** The hub for a kind of question, when no page carries the search's own words ("neet pg cutoff reduction"). */
 const HUBS: [RegExp, "pg" | "ug" | "any", string][] = [

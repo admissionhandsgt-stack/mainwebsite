@@ -20,6 +20,7 @@ import { officialLink } from "@/lib/zynNotices";
 import { branchWord, branchRound, branchSeats, branchState, collegeBranch, roundIn, roundOverall, withoutBranchWords, INI_CET } from "@/lib/huntBranch";
 import { branchMoneyDraft, cityMoneyDraft, type MoneyScope } from "@/lib/branchMoney";
 import { cityIn, CITY_WORDS } from "@/lib/cityKey";
+import { approxFeeFor } from "@/lib/chance";
 import { cityPagePath } from "@/lib/cityQueries";
 
 /**
@@ -222,7 +223,22 @@ const COLLEGE_ACRONYM: Record<string, string> = {
  * word match, which drops "medical" and "college" and so cannot tell Bangalore Medical College from every college in
  * Bangalore.
  */
-async function collegeByPhrase(q: string): Promise<College | null> {
+/**
+ * A college the search cannot mean (2026-11-12, found on the bot's live answers): "bj medical college pune" had been
+ * answered as BJ Medical College, Ahmedabad, and "bharath medical college" as Viswabharathi, Kurnool. A city or state the
+ * search names must be in the college's name or state, and a search that says "college" is never a hospital's.
+ */
+function fitsSearch(q: string, c: { name: string; state: string | null }, states: PgState[]): boolean {
+  const where = fold(`${c.name} ${c.state ?? ""}`);
+  const city = cityIn(q);
+  if (city && !city.words.some((w) => where.includes(` ${fold(w).trim()} `))) return false;
+  const st = stateIn(q, states);
+  if (st && c.state && stateKey(st.name) !== stateKey(c.state)) return false;
+  if (/\bcollege\b/i.test(q) && !/college|institute|university|school|aiims|jipmer|pgimer|academy/i.test(c.name)) return false;
+  return true;
+}
+
+async function collegeByPhrase(q: string, states: PgState[] = []): Promise<College | null> {
   const m = fold(q).match(/ ((?:[a-z]+ ){1,4})(medical college|institute of medical sciences|medical sciences|medical university)(?: ([a-z]{3,}))?/);
   if (!m) return null;
   const before = m[1].trim().split(" ").filter((w) => !NOT_A_NAME.has(w) || w === "government");
@@ -243,15 +259,16 @@ async function collegeByPhrase(q: string): Promise<College | null> {
        WHERE i.level = 'pg' AND i.is_active AND i.slug IS NOT NULL
          AND lower(regexp_replace(i.name, '[^A-Za-z]+', ' ', 'g')) LIKE ${phrase}
        LIMIT 4`)) as unknown as (College & { mdms: boolean })[];
-    const mdms = rows.filter((r) => r.mdms);
-    const pick = mdms.length === 1 ? mdms[0] : rows.length === 1 ? rows[0] : null;
+    const fit = rows.filter((r) => fitsSearch(q, r, states));
+    const mdms = fit.filter((r) => r.mdms);
+    const pick = mdms.length === 1 ? mdms[0] : fit.length === 1 ? fit[0] : null;
     if (pick) return { id: Number(pick.id), slug: pick.slug, name: pick.name, state: pick.state, ownership: pick.ownership };
   }
   return null;
 }
 
 async function collegeIn(q: string, states: PgState[]): Promise<College | null> {
-  const byPhrase = await collegeByPhrase(q).catch(() => null);
+  const byPhrase = await collegeByPhrase(q, states).catch(() => null);
   if (byPhrase) return byPhrase;
   const st = stateIn(q, states);
   let words = fold(q).trim().split(" ").filter((w) => w.length >= 2 && !NOT_A_NAME.has(w) && !/^\d+$/.test(w));
@@ -262,7 +279,7 @@ async function collegeIn(q: string, states: PgState[]): Promise<College | null> 
       ? sql`i.name ILIKE ${`%${COLLEGE_ACRONYM[w]}%`}`
       : w.length <= 3
           ? sql`i.name ~* ${`\\y${w}\\y`}`
-          : sql`i.name ILIKE ${`%${w}%`}`;
+          : sql`i.name ~* ${`\\y${w}`}`;
   const rows = (await db.execute(sql`
     SELECT i.id, i.slug, i.name, s.name AS state, i.ownership::text AS ownership,
            EXISTS (SELECT 1 FROM seat_options so JOIN courses co ON co.id = so.course_id
@@ -270,8 +287,9 @@ async function collegeIn(q: string, states: PgState[]): Promise<College | null> 
       FROM institutes i LEFT JOIN states s ON s.id = i.state_id
      WHERE i.level = 'pg' AND i.is_active AND i.slug IS NOT NULL AND ${sql.join(words.map(like), sql` AND `)}
      LIMIT 6`)) as unknown as (College & { mdms: boolean })[];
-  const mdms = rows.filter((r) => r.mdms);
-  const pick = mdms.length === 1 ? mdms[0] : rows.length === 1 ? rows[0] : null;
+  const fit = rows.filter((r) => fitsSearch(q, r, states));
+  const mdms = fit.filter((r) => r.mdms);
+  const pick = mdms.length === 1 ? mdms[0] : fit.length === 1 ? fit[0] : null;
   return pick ? { id: Number(pick.id), slug: pick.slug, name: pick.name, state: pick.state, ownership: pick.ownership } : null;
 }
 
@@ -288,6 +306,39 @@ function bondChecks(t: SeatTerms | undefined): string[] {
   else if (t.exitFullCourseFee) out.push("Leaving the seat after joining: the fee for the whole course is listed as payable.");
   if (t.hostelMin) out.push(`Hostel: ${inr(t.hostelMin)}${t.hostelMax && t.hostelMax !== t.hostelMin ? ` – ${inr(t.hostelMax)}` : ""}${t.hostelPeriod ? ` a ${t.hostelPeriod}` : ""}${t.hostelMess ? ", mess included" : ""}.`);
   return out;
+}
+
+/**
+ * A college whose 2026-27 fee notice is not out: the fee as listed for last year's counselling, per quota, as the brackets
+ * with * its own page shows (lib/chance.ts approxFeeFor) — never as an exact 2026-27 figure.
+ */
+async function listedFees(c: College, label: string, q: string, quotaAsked: RegExp | null, terms: SeatTerms[]): Promise<Draft | null> {
+  const rows = (await db.execute(sql`
+    SELECT q.label AS quota, MIN(NULLIF(so.fee_inr, 0))::int AS lo, MAX(NULLIF(so.fee_inr, 0))::int AS hi
+      FROM seat_options so JOIN quotas q ON q.id = so.quota_id
+     WHERE so.institute_id = ${c.id} AND so.fee_inr >= 1000
+     GROUP BY q.label ORDER BY MIN(NULLIF(so.fee_inr, 0)) LIMIT 6`)) as unknown as { quota: string; lo: number; hi: number }[];
+  const list = quotaAsked ? rows.filter((r) => quotaAsked.test(r.quota)) : rows;
+  if (!list.length) return null;
+  const band = (r: { lo: number; hi: number }) => {
+    const a = approxFeeFor(r.lo, null);
+    const b = approxFeeFor(r.hi, null);
+    return a && b && a !== b ? `${a} to ${b} (by branch)` : a;
+  };
+  const first = list[0];
+  if (!band(first)) return null;
+  const main = terms.find((t) => t.family === "state") ?? terms.find((t) => t.family === "aiq") ?? terms[0];
+  return {
+    page: `/md-ms-india/colleges/${c.slug}`,
+    kind: "college-fee-listed",
+    lead: `${label}${c.state ? ` (${c.state})` : ""} has not published its 2026-27 PG fee yet; as listed for last year's counselling, its ${first.quota} seats cost ${band(first)}.`,
+    pointsTitle: "Fees as listed for last year's counselling:",
+    points: list.slice(0, 4).map((r) => `${r.quota}: ${band(r)}.`),
+    checks: [...bondChecks(main), "Ask the college for its 2026-27 fee notice, and what hostel and deposits add, before you pay."],
+    source: `fees as listed for last year's counselling, shown as approximate brackets (*); the college's 2026-27 notice is awaited${main ? `; ${CAVEAT}` : ""}.`,
+    what: `fee, stipend and seat table for ${label}`,
+    predictor: true,
+  };
 }
 
 async function college(c: College, q: string): Promise<Draft | null> {
@@ -314,6 +365,11 @@ async function college(c: College, q: string): Promise<Draft | null> {
   const y1 = s?.y1 ?? tStipend?.[0] ?? null;
   const asksFee = /fee|cost|tuition/i.test(q);
   if (!y1 && !f.length) return null;
+  // A fee question is answered with a fee, never with the stipend ("fees of afmc pune"); a management or NRI fee
+  // question only with that quota's fee.
+  const quotaAsked = /\bnri\b/i.test(q) ? /nri/i : /management|mgmt|paid/i.test(q) ? /management|mgmt|paid|institutional|self/i : null;
+  if (asksFee && !f.length) return listedFees(c, label, q, quotaAsked, terms);
+  if (asksFee && quotaAsked && !f.some((r) => quotaAsked.test(r.quota ?? ""))) return null;
 
   const points: string[] = [];
   if (y1) {
@@ -824,7 +880,12 @@ async function pickDraft(q: string, all: string, hasText: boolean, states: PgSta
     if (d) return d;
   }
   if (CHOICE.test(q)) return choice(q);
-  if (/fee|cost/i.test(q) && /deemed|private|management/i.test(q)) {
+  // …and not for a search that names one college we could not find ("bharath medical college management quota fees").
+  const nameLeft = fold(withoutBranchWords(q))
+    .trim()
+    .split(" ")
+    .filter((w) => w.length >= 3 && !NOT_A_NAME.has(w) && !/^\d+$/.test(w) && STATE_ALIAS[w] === undefined && !CITY_WORDS.has(w) && !states.some((st) => fold(st.name).includes(` ${w} `)));
+  if (/fee|cost/i.test(q) && /deemed|private|management/i.test(q) && !(A_COLLEGE.test(q) && nameLeft.length)) {
     const d = await fees(q);
     if (d) return d;
   }

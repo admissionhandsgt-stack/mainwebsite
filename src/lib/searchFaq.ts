@@ -67,7 +67,7 @@ async function namesState(q: string): Promise<boolean> {
 }
 
 /** A search worth answering on a page: it asks something a builder knows about, not only a name. */
-const ASKS = /\b(fees?|stipend|salary|cut ?off|seats?|rank|marks?|score|bond|penalt|upgrad|freeze|float|free exit|choice|resign|clinical|how many|statistic|website|portal|official site|login)\b/i;
+const ASKS = /\b(fees?|stipend|salary|cut ?off|seats?|rank|marks?|score|bond|penalt|upgrad|freeze|float|free exit|choice|resign|clinical|how many|statistic|website|portal|official site|login|documents?|certificates?|eligib\w*|domicile|open states?|in ?service|refund|security deposit|equivalent|reporting|registration)\b/i;
 
 /** Room on a page for one more answer: how many are live, whether this search is there, which builders answer. */
 async function roomOn(page: string, q: string) {

@@ -110,6 +110,9 @@ export async function buildSeeds(): Promise<string[]> {
   for (const c of CITIES) for (const i of ["pg stipend", "private medical college pg fees"]) out.add(`${c} ${i}`);
   // The NEET PG season in progress: rounds, results and the states' own PG rounds.
   for (const h of PG_SEASON) out.add(h);
+  // What candidates and their families go through, in the words autocomplete returned for it (2026-11-12).
+  for (const h of JOURNEY_SEEDS) out.add(h);
+  for (const st of TOP_STATES) for (const i of ["neet pg counselling documents required", "in service quota neet pg", "neet pg domicile rules"]) out.add(`${st} ${i}`);
   for (const st of states) for (const i of PG_STATE_SEASON) out.add(`${st} ${i}`);
   for (const st of STATE_SHORT) out.add(`${st} pg counselling round 2`);
   // NEET PG only while that is the season (lib/researchFocus.ts): MBBS / NEET UG seeds rest until "serp.focus" = all.
@@ -125,7 +128,40 @@ const PG_SEASON = [
   "neet pg round 2 choice filling", "neet pg round 2 allotment", "aiq round 2 result neet pg", "neet pg state round 2",
   "deemed university pg round 2", "neet pg vacant seats round 2", "neet pg virtual vacancy", "neet pg newly added seats",
 ];
-const PG_STATE_SEASON = ["neet pg round 2", "pg counselling round 2 result", "pg merit list 2026"];
+/**
+ * The stages a NEET PG candidate and the family go through, beyond the data pages (owner, 2026-11-12: "candidates unke
+ * guardians kin conditions se gujarte honge kaise searches karte honge kesi help support dhundte honge un sab keywords ko
+ * hunt karo"). Each phrase is one Google or Bing autocomplete returned in India that day (scripts/tmp/harness/
+ * journey_suggest.ts) — Search Console showed the site almost absent from all of these stages.
+ */
+const JOURNEY_SEEDS = [
+  // A counsellor, and the frauds families fear
+  "best neet pg counsellor", "neet pg counsellor near me", "neet pg counselling guidance", "neet pg counselling consultants",
+  "neet pg seat booking", "direct admission in md ms", "donation for md seat", "mcc helpline number", "neet pg counselling agents",
+  // Documents and reporting
+  "documents required for neet pg counselling", "neet pg allotment letter", "neet pg document verification", "neet pg reporting documents",
+  "pg me admission ke liye documents", "documents required for neet pg counselling aiq", "neet pg medical fitness certificate",
+  // Which counselling they may sit
+  "open states for neet pg counselling", "neet pg domicile rules", "in service quota neet pg", "neet pg counselling eligibility criteria",
+  "aiq vs state quota neet pg", "what is state quota in neet pg", "neet pg for fmge", "neet pg counselling for fmge students",
+  // Money beyond the fee
+  "neet pg security deposit refund", "neet pg counselling fees refund", "neet pg counselling registration fees", "education loan for md",
+  "education loan for md ms in india", "neet pg me kitna paisa lagta hai", "md ki fees kitni hai", "private college mein md ki fees kitni hai",
+  // DNB's standing
+  "is dnb equivalent to md", "what is dnb in medical", "dnb kya hota hai", "difference between dnb and md", "dnb seats in government hospitals",
+  "dnb quota in neet pg",
+  // Seats added this year
+  "neet pg seat increase 2026", "nmc approved pg seats", "new pg seats 2026", "neet pg newly added seats",
+  // My rank, my branch
+  "neet pg rank predictor", "neet pg college predictor", "neet pg seat predictor", "neet pg rank vs branch", "neet pg rank vs college",
+  "top branch in neet pg", "neet pg branches list", "md radiology salary", "md medicine salary", "md pathology scope",
+  "neet pg me kitne marks chahiye", "neet pg me obc kitne marks chahiye", "neet pg mein kitna stipend milta hai",
+  // After the result, and when it goes badly
+  "what to do after neet pg result", "neet pg ke baad kya kare", "neet pg drop year", "should i take drop for neet pg",
+  "options after mbbs without neet pg", "is neet pg compulsory after mbbs", "neet pg ki counselling kaise hoti hai",
+  "neet pg counselling kab hai", "neet pg me admission kaise le", "neet pg me kitni seat hoti hai",
+];
+const PG_STATE_SEASON =["neet pg round 2", "pg counselling round 2 result", "pg merit list 2026"];
 
 async function ask(url: string, pick: (j: unknown) => unknown): Promise<string[]> {
   try {
