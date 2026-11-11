@@ -297,6 +297,13 @@ export const barTitle = (t: string) =>
     .replace(/\s+/g, " ")
     .trim() || t;
 
+/** The words the alerts bar shows for a notice: the authority's name, then the notice's own title. */
+function alertTitle(n: ZynNotice): string {
+  const who = authorityName(n.authority);
+  const words = barTitle(n.title);
+  return who && !words.toLowerCase().startsWith(who.toLowerCase()) ? `${who}: ${words}` : words;
+}
+
 /** On the alerts bar, unless the same link is already live (the site's own feed may have it). */
 async function publishAlert(n: ZynNotice): Promise<number | null> {
   if (n.url) {
@@ -325,8 +332,7 @@ async function publishAlert(n: ZynNotice): Promise<number | null> {
     expires = new Date(Math.max(after, Date.now() + 86_400_000));
   }
   const who = authorityName(n.authority);
-  const words = barTitle(n.title);
-  const title = who && !words.toLowerCase().startsWith(who.toLowerCase()) ? `${who}: ${words}` : words;
+  const title = alertTitle(n);
   // One source per authority: the alerts bar shows at most three per source, so MCC never crowds out a state board.
   const source = `zyn:${who ?? "notice"}`.slice(0, 60);
   const rows = (await db.execute(sql`
@@ -346,10 +352,35 @@ async function applySchedule(title: string, data: Record<string, string>) {
 /** Words of a note to a person or a bot, never of an authority's notice title. */
 const INSTRUCTION = /\b(banao|bana\s?do|bana\s?ke|banana|karo|kar\s?do|kardo|karna|iska|iske|isko|isme|yaha|poster|please\s+(make|create|post))\b/i;
 
-/** One notice: checked, published or held, its schedule applied or held. Already-seen ids are skipped. */
+/**
+ * One notice: checked, published or held, its schedule applied or held. An id seen before is skipped — unless Zyn sends
+ * it again corrected (zyn-3c, 2026-11-12: a notice whose title is fixed later comes again with the same id and a new
+ * `updated_at`; replace it by id, never insert a second). Then a held notice is checked again with its new title and
+ * published if it now passes; a published one gets its new title on the alerts bar; one an admin dismissed stays dismissed.
+ */
 async function take(n: ZynNotice): Promise<"published" | "held" | "seen"> {
-  const seen = (await db.execute(sql`SELECT 1 FROM zyn_notices WHERE id = ${n.id}`)) as unknown as unknown[];
-  if (seen.length) return "seen";
+  const prev = ((await db.execute(sql`
+    SELECT title, url, status, alert_id, payload->>'updated_at' AS updated FROM zyn_notices WHERE id = ${n.id}`)) as unknown as {
+    title: string;
+    url: string | null;
+    status: string;
+    alert_id: number | null;
+    updated: string | null;
+  }[])[0];
+  if (prev) {
+    const updated = str((n.raw as Record<string, unknown> | null)?.updated_at);
+    const changed = prev.title !== n.title || prev.url !== n.url || (updated !== null && updated !== prev.updated);
+    if (!changed) return "seen";
+    if (prev.status !== "held") {
+      // Published or dismissed: keep the decision, take the corrected words.
+      await db.execute(sql`
+        UPDATE zyn_notices SET title = ${n.title}, url = ${n.url}, payload = ${JSON.stringify(n.raw)}::jsonb WHERE id = ${n.id}`);
+      if (prev.status === "published" && prev.alert_id)
+        await db.execute(sql`UPDATE live_alerts SET title = ${alertTitle(n).slice(0, 300)} WHERE id = ${prev.alert_id} AND source_key = ${`zyn:${n.id}`}`);
+      return "seen";
+    }
+    // Held: checked again below as if new, and the row replaced.
+  }
   // CENTAC Puducherry posts its notices as Google Drive files linked from its own site (three PG Medical notices
   // were held on 6 Nov 2026 for it). A Drive file is anybody's, so the alert links the authority's own page instead.
   if (n.url && /^(drive|docs)\.google\.com$/.test(hostOf(n.url) ?? "") && n.page && officialLink(n.page)) n = { ...n, url: n.page };
@@ -405,7 +436,11 @@ async function take(n: ZynNotice): Promise<"published" | "held" | "seen"> {
     VALUES (${n.id}, ${n.title}, ${n.url}, ${n.authority}, ${n.state}, ${n.kind}, ${n.round},
             ${n.approvedAt}, ${JSON.stringify(n.raw)}::jsonb, ${status}, ${reason},
             ${scheduleStatus}, ${scheduleReason}, ${alertId}, ${status === "published" ? new Date().toISOString() : null})
-    ON CONFLICT (id) DO NOTHING`);
+    ON CONFLICT (id) DO UPDATE SET title = EXCLUDED.title, url = EXCLUDED.url, authority = EXCLUDED.authority, state = EXCLUDED.state,
+           kind = EXCLUDED.kind, round = EXCLUDED.round, approved_at = EXCLUDED.approved_at, payload = EXCLUDED.payload,
+           status = EXCLUDED.status, reason = EXCLUDED.reason, schedule_status = EXCLUDED.schedule_status,
+           schedule_reason = EXCLUDED.schedule_reason, alert_id = EXCLUDED.alert_id, decided_at = EXCLUDED.decided_at
+     WHERE zyn_notices.status = 'held'`);
   return status;
 }
 
@@ -464,7 +499,10 @@ export async function runZynNotices(opts: { force?: boolean } = {}): Promise<Run
       const s = await take(n);
       if (s === "published") summary.published++;
       if (s === "held") summary.held++;
-      if (n.approvedAt && (!newest || n.approvedAt > newest)) newest = n.approvedAt;
+      // Zyn's cursor follows the later of approval and correction (2026-11-12); `next` is used when it comes.
+      const upd = str(r.updated_at);
+      const mark = upd && n.approvedAt && upd > n.approvedAt ? upd : n.approvedAt;
+      if (mark && (!newest || mark > newest)) newest = mark;
     }
     const nextCursor = next ?? newest;
     if (nextCursor && nextCursor !== cursor) await setIntegration("zyn.notices.cursor", nextCursor);
