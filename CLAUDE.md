@@ -2386,7 +2386,27 @@ Owner: "itne pending task complete karo" (Meta's Conversions API token comes lat
   the PG state page's main-quota pick (`\bAIQ\b`) and the Siddha course label (`\bsiddha\b`). Fixed. After writing code
   through a script, `grep -rln $'\x08' src` must find only the two PNG icons.
 - `/neet-pg-cutoff` weighs 518 KB of HTML (55 KB with Brotli); about half is the App Router's flight payload repeating
-  the server tree. PSI is 93–99, so it was left alone.
+  the server tree. PSI mobile 91/100/95 (re-measured the same day), so it was left alone.
+- **Hero images fetch with `fetchPriority="high"`** (img and its preload): PSI mobile on a PG college page scored 71–80
+  with LCP 4.9–6.4 s on the campus photo and "fetchpriority=high should be applied to the image preload request". A new
+  hero `<Image priority>` takes `fetchPriority="high"` too (Next 15's preload only carries it when the prop is given).
+- **Search research v2 — hourly** (owner: "weekly nhi hourly review lagao abhi build kar raha hu… bot ko smart banao"):
+  `lib/serpSuggest.ts` asks Google's and Bing's public autocomplete (from the Mumbai server, honest user agent, 8 seeds an
+  hour, least recently asked first) about states × intents, branches × intents and English/Hinglish question heads; real
+  searches land in `serp_suggest` (migration 0058, also `serp_seeds`). `lib/serpResearch.ts` runs hourly (crontab `50 * * *
+  *`): `allowance()` keeps the daily hunt's Tavily share and spends the rest of the month front-loaded, at most 6 an hour;
+  half Search Console queries at #3–20, half autocomplete searches we are not shown for. Per search: landing (Search
+  Console's page, the closest sitemap page of the same level, or a hub by kind of question — `HUBS`), title gap (only where
+  Google shows that page), figures with their sites and confidence (official = gov.in/nic.in/NMC/NBEMS/MCC/NIRF, agreed = 2+
+  sites, single), the long-search H2 advice (5+ words with a question word, from the owner's reels), priority. Telegram review
+  each hour 08:00–23:00 IST (`digest()`, the night's wait for the morning); `serp.digest` = `weekly` (integrations) moves it to
+  Monday 09:00, `off` stops it. Figures found are leads — verify against the official source before a page prints them.
+- **Research specs (Sonnet agents, 2026-11-11), in `D:/Admisson Hands/seo_data/research_2026_11/`:** `lead_magnet_pdf.md`
+  (state PG fee & stipend PDF over WhatsApp: tap → prefilled message → free-form document reply inside the 24-hour window;
+  Maharashtra first), `hinglish_pages.md` (no /hi/ section; a Hinglish FAQ block on 8 existing pages and two "kaise hoti hai"
+  explainers; 25 seeds — now in the research bot — and a 25-answer counsellor script; its questions are partly hypothesis
+  until the bot's autocomplete confirms them), `city_pages.md` (`/medical-colleges/<city>`, ~9 indexable cities with 5+ MD/MS
+  colleges, UG has no city data — needs `ug_all_colleges`' city or a backfill). None is built yet.
 
 ## Low score clinical branches and the statistics page (2026-11-10)
 
