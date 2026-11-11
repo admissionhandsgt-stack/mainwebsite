@@ -134,6 +134,10 @@ fi
 say "Assembling release $STAMP"
 ssh_ "set -e; R=$APP/releases/$STAMP; mkdir -p \$R
   cp -a $APP/src/.next/standalone/. \$R/
+  # sharp reports libheif's version from @img/sharp-libvips-<platform>/versions.json, which Next's file tracing leaves
+  # out. Without it Next 15.5.29+ cannot prove libheif >= 1.23.2, refuses to optimise any AVIF and serves every AVIF
+  # upload at full size to every phone (found 2026-11-11: PG college pages' mobile LCP 5-7 s on the campus photo).
+  for v in $APP/src/node_modules/@img/sharp-libvips-*/versions.json; do d=\$R/node_modules/@img/\$(basename \$(dirname \$v)); if [ -d \$d ]; then cp \$v \$d/; fi; done
   mkdir -p \$R/.next && cp -a $APP/src/.next/static \$R/.next/static
   # The previous build's chunks too. Cloudflare holds logged-out HTML for five
   # minutes and a visitor may have a tab open for longer; either way a page from
@@ -161,7 +165,7 @@ ssh_ "set -e; R=$APP/releases/$STAMP; mkdir -p \$R
   find $APP/uploads/images -type d -exec chmod 755 {} +; find $APP/uploads/images -type f -exec chmod 644 {} +
   # sharp must load on this architecture, in the image the app runs in.
   docker run --rm --user 1003:1003 -v \$R:/app -w /app node:22-bookworm-slim \
-    node -e \"require('sharp'); console.log('  sharp loads on', process.arch)\"
+    node -e \"const v = require('sharp').versions; if (!v.heif) { console.error('  sharp reports no libheif version: Next would not optimise AVIF'); process.exit(1); } console.log('  sharp loads on', process.arch, '- libheif', v.heif)\"
   # ...and decodes AVIF correctly on this CPU. sharp 0.34 on ARM64 draws green
   # blocks through every AVIF (scripts/check_sharp_decode.cjs); loading is not
   # the same as working.
