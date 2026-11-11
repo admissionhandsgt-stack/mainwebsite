@@ -27,6 +27,7 @@ import SectionHead from "@/components/ui/SectionHead";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 import { COUNSEL_PG_MIN_COLLEGES } from "@/lib/counselStates";
 import { getCityIndex } from "@/lib/cityQueries";
+import FeePdfCta from "@/components/lead/FeePdfCta";
 /** One state's PG picture. See lib/pgStateQueries.ts for what it will and will not state. */
 
 type Props = { params: Promise<{ slug: string }> };
@@ -314,6 +315,7 @@ export default async function PgStatePage(props: Props) {
         // The state's counselling authority sits under the words, in the space the taller column left.
         aside={authority?.scope === "UG and PG" ? <StateAuthority a={authority} state={p.name} level="pg" /> : undefined}
       />
+      <FeePdfCta state={p.name} placement="pdf_pg_state" />
 
       {/* ------------- the counselling authority's latest notices (owner-approved Zyn notices + the state board feed) ------------- */}
       <StateNotices state={p.name} level="pg" />

@@ -1046,6 +1046,67 @@ export const PAGE_COPY = {
       },
     },
   },
+  // The state PG fee & stipend PDF on WhatsApp (2026-11-11): the button on the pages and the messages the official
+  // number replies with. The student messages first, so every reply is inside WhatsApp's 24-hour window.
+  "site.fee_pdf": {
+    group: "Site: PG fee PDF on WhatsApp",
+    fields: {
+      number: {
+        label: "WhatsApp number the button opens (digits with 91; must be the official number whose replies the site sends)",
+        value: "917023081792",
+      },
+      title: { label: "Button card — heading — {state}", value: "Get the {state} PG fee & stipend PDF" },
+      body: {
+        label: "Button card — line — {state}",
+        long: true,
+        value: "Every MD/MS college in {state} — fees by quota, stipend and bond — in one file to keep and share. Free, on WhatsApp in a minute.",
+      },
+      button: { label: "Button — {state}", value: "Send me the PDF on WhatsApp" },
+      prefill: { label: "The message the button types — {state}, {ref}", value: "Send me the {state} PG fee & stipend PDF (ref {ref}-PDF)" },
+      caption: {
+        label: "Caption on the PDF — {state}, {date}",
+        long: true,
+        value: "{state} NEET PG: PG fees, stipend and bond, college by college (updated {date}). As listed for the counselling — not an official notice; confirm with the state authority or the college before you pay or sign.",
+      },
+      menu: {
+        label: "Message after the PDF — {state}",
+        long: true,
+        value: "Reply *1* for a free counsellor call, *2* for another state's PDF, or *YES* to get an update when {state}'s fees change.",
+      },
+      on_1: {
+        label: "Reply to 1 — {first}",
+        long: true,
+        value: "Thank you{first}! A counsellor will call you on this number during working hours (10 AM – 10 PM). Your rank, category and budget help us prepare — type them here if you like.",
+      },
+      on_2: {
+        label: "Reply to 2 — {states}",
+        long: true,
+        value: "Type the state's name and we'll send its PDF. Ready now: {states}.",
+      },
+      on_yes: {
+        label: "Reply to YES — {state}",
+        long: true,
+        value: "Done — we'll message you when {state}'s PG fees change. Reply *STOP* any time to stop.",
+      },
+      on_stop: { label: "Reply to STOP", value: "Stopped — you won't get fee updates from us. Your PDFs stay in this chat." },
+      none: {
+        label: "No PDF for the state yet — {state}",
+        long: true,
+        value: "We don't have a {state} PDF yet. The college-by-college fees are here: {link} — or reply *1* and a counsellor will call you.",
+      },
+      cap: {
+        label: "Daily limit reached",
+        long: true,
+        value: "You've had three PDFs from us today — the next ones are ready tomorrow. Reply *1* for a counsellor call.",
+      },
+      hub_title: { label: "PDF page — title", value: "NEET PG fees & stipend PDF, state wise" },
+      hub_intro: {
+        label: "PDF page — line — {count}",
+        long: true,
+        value: "{count} states ready: every MD/MS college's 2026-27 fees by quota, the stipend and the service bond, in one PDF per state. Tap a state — WhatsApp opens with the message typed; send it and the PDF arrives in a minute.",
+      },
+    },
+  },
   // Medical colleges by city (2026-11-11): one page per city, every figure from the city's own colleges.
   "page.city": {
     group: "Page: medical colleges in a city",

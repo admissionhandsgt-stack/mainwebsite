@@ -13,7 +13,7 @@ import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { logError } from "@/lib/logger";
 
-export type MessageKind = "otp" | "followup" | "callback" | "reply" | "agent" | "other";
+export type MessageKind = "otp" | "followup" | "callback" | "reply" | "agent" | "pdf" | "other";
 
 /**
  * What Meta's "Verify token" box holds for /api/whatsapp/cloud. Deliberately

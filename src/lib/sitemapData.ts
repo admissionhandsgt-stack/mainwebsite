@@ -78,6 +78,8 @@ const STATIC: { path: string; priority: number; freq: SitemapEntry["changeFreque
   { path: "/neet-pg-choice-filling", priority: 0.9, freq: "weekly" },
   // The Hinglish beginner's guide to the same rules (2026-11-11).
   { path: "/neet-pg-counselling-kaise-hoti-hai", priority: 0.8, freq: "weekly" },
+  // The state PG fee & stipend PDFs, sent on WhatsApp (2026-11-11).
+  { path: "/neet-pg-fees-pdf", priority: 0.7, freq: "weekly" },
   // Clinical branches at a low rank, and the statistics page made to be cited (2026-11-10).
   { path: "/neet-pg-low-score-clinical-branches", priority: 0.8, freq: "weekly" },
   { path: "/neet-pg-statistics", priority: 0.8, freq: "weekly" },

@@ -19,6 +19,7 @@ import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
 import { collegeName } from "@/lib/collegeName";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 import { hinglishFaqs } from "@/lib/hinglishFaq";
+import FeePdfCta from "@/components/lead/FeePdfCta";
 
 /** The hero chart has room for a name, not an address: "ESIC Medical College, Alwar". The table below keeps the full one. */
 const barName = (raw: string) => {
@@ -219,6 +220,7 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
             : []),
         ]}
       />
+      <FeePdfCta state={s.state} placement="pdf_stipend_state" />
 
       {/* -------------------------- every college -------------------------- */}
       <section className="container-custom py-10 md:py-14">

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { getIntegration } from "@/lib/integrations";
 import { applyStatus, recordInbound, VERIFY_TOKEN } from "@/lib/waLog";
+import { handlePdfMessage } from "@/lib/waPdf";
 import { logError } from "@/lib/logger";
 
 export const dynamic = "force-dynamic";
@@ -78,6 +79,8 @@ export async function POST(request: Request) {
         for (const m of toUs ? v.messages ?? [] : []) {
           const name = v.contacts?.find((c) => c.wa_id === m.from)?.profile?.name ?? null;
           await recordInbound(m, name);
+          // A request for a state's fee PDF, or a reply to its menu, is answered in the chat (lib/waPdf.ts).
+          await handlePdfMessage(m, name).catch((error) => logError(error, { route: "/api/whatsapp/cloud pdf", request }));
         }
       }
     }

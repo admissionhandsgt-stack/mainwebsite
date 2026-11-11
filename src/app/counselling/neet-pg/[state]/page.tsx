@@ -24,6 +24,7 @@ import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import { FaqList, HowWeWork, LinkCards, RouteCards, StateChips, pairs } from "@/components/counsel/CounselBlocks";
+import FeePdfCta from "@/components/lead/FeePdfCta";
 
 /**
  * NEET PG counselling guidance for one state (2026-11-11, owner: "best NEET PG counsellor in <state>… PG alag"). The
@@ -193,6 +194,7 @@ export default async function CounselPgStatePage(props: Props) {
         topic="map"
         aside={authority ? <StateAuthority a={authority} state={p.name} level="pg" /> : undefined}
       />
+      <FeePdfCta state={p.name} placement="pdf_counsel_pg" />
 
       {round && (
         <div className="container-custom pt-8">

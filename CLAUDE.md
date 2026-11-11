@@ -2330,6 +2330,28 @@ What changed:
   headings. Menu rows: `scripts/sql/nav_city_kaise_2026_11_11.sql` (after the release). Add a city in `CITIES` when a
   search or a new college needs one.
 
+## The state PG fee PDF on WhatsApp (2026-11-11; spec `D:/Admisson Hands/seo_data/research_2026_11/lead_magnet_pdf.md`)
+
+- **Flow:** a page's button (`components/lead/FeePdfCta.tsx`, shown only for a state with a built PDF) opens WhatsApp on
+  the **official number** (`site.fee_pdf.number`, 917023081792 — the only number whose replies the site can send by Meta's
+  API) with "Send me the <State> PG fee & stipend PDF (ref MH-PDF)" typed. The student sends it; `/api/whatsapp/cloud`
+  records it and calls `handlePdfMessage` (`lib/waPdf.ts`), which replies in the same chat with the PDF (a document by
+  link, `/api/wa-pdf/<token>`) and a menu: *1* counsellor call (lead flagged, team alerted), *2* another state, *YES*
+  fee updates (`wa_optins`), *STOP*. The student wrote first, so every reply is a free-form message inside the 24-hour
+  window — no template. A first request creates a lead ("WhatsApp PDF — <State> PG fees") and alerts the team.
+- **Guard rails:** only a message asking for a PDF (ref code or the word "pdf"), or a menu reply / state name from someone
+  sent a PDF in the last 7 days, is answered; each inbound message once (`wa_pdf_events`); 3 PDFs a number a day, 300
+  site-wide; Cloud API only, never the WAHA gateway. No outbound message to anyone who has not written in the last 24
+  hours. A YES is stored but **nothing is sent on it yet** — fee-change updates would need an approved template.
+- **Building the PDFs** (migration 0061: `lead_pdfs`, `wa_optins`, `wa_pdf_events`): `npx tsx --tsconfig
+  scripts/pdf/tsconfig.json --env-file=.env.local scripts/pdf/build_fee_pdfs.ts --states <slugs> [--out <dir>] [--apply]`
+  — the same live data as the state fee pages (official 2026-27 notices first), the stipend and bond pages; cover with
+  bands, stipend and bond cards and the "ask before you pay" box (page 1 stands alone), fees college by college, stipend
+  and bond tables, "where a counsellor helps", sources; the caveat on every page footer. `--apply` stores it and switches
+  the state's older PDF off. Built 2026-11-11: Maharashtra, Karnataka, Rajasthan, Tamil Nadu, Madhya Pradesh. **Re-run
+  after a fee, stipend or bond import.** Placed on PG state, fee state, stipend state, `/counselling/neet-pg/<state>` and
+  city pages; every state's button on `/neet-pg-fees-pdf`. Words: Admin → Content → "Site: PG fee PDF on WhatsApp".
+
 ## The OCR bridge for the AH tool (2026-11-11)
 
 zyn-3c asked for OCR on public notices (its poster bot checks every date against the notice's real text); the owner, here:

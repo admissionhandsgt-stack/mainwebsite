@@ -19,6 +19,7 @@ import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 import { hinglishFaqs } from "@/lib/hinglishFaq";
 import { getCityIndex } from "@/lib/cityQueries";
 import { cityIn } from "@/lib/cityKey";
+import FeePdfCta from "@/components/lead/FeePdfCta";
 
 /**
  * One state's NEET PG fee matrix (2026-11-09): "maharashtra pg fees", "karnataka md ms fees 2026", "pg fees in
@@ -247,6 +248,7 @@ export default async function StateFeesPage(props: { params: Promise<{ state: st
           ...(m.cities.length ? [{ icon: "people" as const, label: "Cities", value: String(m.cities.length), note: m.cities.slice(0, 3).map((c) => c.city).join(", ") }] : []),
         ]}
       />
+      <FeePdfCta state={m.state} placement="pdf_fees_state" />
 
       {OWN_ORDER.filter((o) => m.counts[o] > 0).map((own) => (
         <section key={own} id={own} className="container-custom py-8 md:py-12">

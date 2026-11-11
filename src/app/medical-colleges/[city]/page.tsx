@@ -17,6 +17,7 @@ import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import DataPageCounsel from "@/components/lead/DataPageCounsel";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import FeePdfCta from "@/components/lead/FeePdfCta";
 
 /**
  * Medical colleges in a city (2026-11-11; the city-pages spec). One page per city — PG fees by kind of seat, NMC's
@@ -159,6 +160,7 @@ export default async function CityPage(props: { params: Promise<{ city: string }
           ...(p.stipend?.median ? [{ icon: "up" as const, label: "Stipend, year 1", value: lakh(p.stipend.median), note: `a month, middle of ${p.stipend.colleges} colleges` }] : []),
         ]}
       />
+      <FeePdfCta state={p.city.state} placement="pdf_city" />
 
       {/* -------------------- the colleges -------------------- */}
       <section className="container-custom py-10 md:py-14">
