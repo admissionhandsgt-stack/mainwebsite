@@ -9,6 +9,7 @@ import CollegeFilterBar from "@/components/colleges/CollegeFilterBar";
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
 import { approxFee } from "@/lib/chance";
 import { getLiveFigures } from "@/lib/liveFigures";
+import AllCollegesIndex from "@/components/colleges/AllCollegesIndex";
 
 export const dynamic = "force-dynamic";
 
@@ -260,6 +261,7 @@ export default async function PGCollegesPage(props: PageProps) {
           </div>
         </section>
       </div>
+      <AllCollegesIndex level="pg" className="py-12" />
     </main>
   );
 }

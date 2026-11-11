@@ -143,11 +143,16 @@ ssh_ "set -e; R=$APP/releases/$STAMP; mkdir -p \$R
   # minutes and a visitor may have a tab open for longer; either way a page from
   # the old build asks for the old build's hashed JS, and without these it gets
   # a 404 and a page that never hydrates. Names are content hashes, so
-  # no-clobber is exact. Carried files keep their own build time, so anything
-  # over a week old is dropped and the directory does not grow forever.
+  # no-clobber is exact. Carried files keep their own build time, so old ones are
+  # dropped and the directory does not grow forever. CSS stays 60 days: Google
+  # renders its stored copy of a page weeks later, and Search Console's audit of
+  # 2026-11-11 found 179 of 204 sampled 404s were old _next/static CSS (a page
+  # rendered without its styles). Scripts stay 14 days (~1,000 files a day of
+  # many deploys, against Cloudflare Pages' 20,000 files a deployment).
   if [ -d $APP/current/.next/static ]; then
     cp -a --update=none $APP/current/.next/static/. \$R/.next/static/
-    find \$R/.next/static -type f -mtime +7 -delete
+    find \$R/.next/static -type f -name '*.css' -mtime +60 -delete
+    find \$R/.next/static -type f ! -name '*.css' -mtime +14 -delete
   fi
   # Into, not onto. The standalone output already has a public/ (the uploads
   # route makes Next trace public/assets/images/uploads into it), so

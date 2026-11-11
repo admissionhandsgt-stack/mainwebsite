@@ -5,6 +5,7 @@ import { tellOwner } from "@/lib/telegramBot";
 import { getIntegration } from "@/lib/integrations";
 import { webSearch, webSearchUsage } from "@/lib/webSearch";
 import { answerFor, type Answer } from "@/lib/huntAnswers";
+import { pgFocus, ugOnly } from "@/lib/researchFocus";
 
 /**
  * Daily hunt (2026-11-10). Owner: "daily hunt karke de do details… admin open karke same url par jake… answer create
@@ -59,10 +60,13 @@ export async function buildHunt(
   base = `http://127.0.0.1:${process.env.PORT ?? 8150}`,
 ): Promise<{ added: number; considered: number; web: { added: number; searched: number; skipped?: string } }> {
   const rows = await gscRows(7);
+  const focus = await pgFocus();
   const byQuery = new Map<string, { imp: number; pages: Map<string, number> }>();
   for (const r of rows) {
     const q = r.query.trim().toLowerCase();
     if (q.length < 12 || q.length > 90 || BAD.test(q) || !(QUESTION.test(q) || INTENT.test(q))) continue;
+    // NEET PG only while that is the season (lib/researchFocus.ts).
+    if (focus && ugOnly(q)) continue;
     const path = r.page.replace(SITE, "").replace(/\/$/, "") || "/";
     if (path.includes("?") || path.includes("#")) continue;
     const e = byQuery.get(q) ?? { imp: 0, pages: new Map() };
@@ -182,6 +186,15 @@ const WEB_QUERIES: { q: string; forums?: boolean; range: "week" | "month" }[] = 
   { q: "private medical college PG fees", forums: true, range: "month" },
   { q: "MBBS admission doubts parents", range: "month" },
 ];
+/** The NEET PG round in progress (round 2's result is due 16 Nov 2026), added while the focus is PG. */
+const PG_SEASON_QUERIES: { q: string; forums?: boolean; range: "week" | "month" }[] = [
+  { q: "NEET PG round 2 result upgrade", forums: true, range: "week" },
+  { q: "NEET PG round 2 should I resign seat", forums: true, range: "week" },
+  { q: "NEET PG state counselling round 2", forums: true, range: "week" },
+  { q: "DNB vs MD which is better NEET PG", forums: true, range: "month" },
+  { q: "NEET PG stray vacancy round strategy", forums: true, range: "month" },
+  { q: "NEET PG deemed university fees round 2", forums: true, range: "week" },
+];
 const PER_DAY_WEB = 12;
 const looksLikeAQuestion = (t: string) => /\?|\b(how|what|which|should|can|is|any|help|advice|doubt|kya|kaise|kitna|kaunsa)\b/i.test(t);
 
@@ -194,9 +207,11 @@ export async function buildWebHunt(base = `http://127.0.0.1:${process.env.PORT ?
   const forums = ((await db.execute(sql`SELECT url FROM outreach_sources WHERE is_forum ORDER BY created_at DESC LIMIT 20`)) as unknown as { url: string }[])
     .map((f) => f.url.replace(/^https:\/\//, "").replace(/^www\./, ""));
   const inside = forums.length ? Math.ceil(perDay / 4) : 0;
+  // NEET PG only while that is the season (lib/researchFocus.ts): the MBBS / NEET UG searches rest.
+  const pool = (await pgFocus()) ? [...WEB_QUERIES.filter((x) => !ugOnly(x.q)), ...PG_SEASON_QUERIES] : WEB_QUERIES;
   const todays: { q: string; forums?: boolean; range: "week" | "month"; inside?: string[] }[] = [
-    ...Array.from({ length: perDay - inside }, (_, i) => WEB_QUERIES[(day * perDay + i) % WEB_QUERIES.length]),
-    ...Array.from({ length: inside }, (_, i) => ({ ...WEB_QUERIES[(day * inside + i + 7) % WEB_QUERIES.length], forums: false, range: "month" as const, inside: forums })),
+    ...Array.from({ length: perDay - inside }, (_, i) => pool[(day * perDay + i) % pool.length]),
+    ...Array.from({ length: inside }, (_, i) => ({ ...pool[(day * inside + i + 7) % pool.length], forums: false, range: "month" as const, inside: forums })),
   ];
   const lines = new Map<string, string | null>();
   const pageLine = async (p: string) => {

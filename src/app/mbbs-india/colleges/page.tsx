@@ -5,6 +5,7 @@ import { getNmcUgIndex } from '@/lib/nmcData';
 import { getLiveFigures } from '@/lib/liveFigures';
 import StructuredData, { breadcrumb } from "@/components/seo/StructuredData";
 import { jsonLd as toJsonLd } from "@/lib/jsonLd";
+import AllCollegesIndex from "@/components/colleges/AllCollegesIndex";
 
 /**
  * Metadata the admin can override per route (Admin -> Search & sharing).
@@ -172,6 +173,7 @@ export default async function CollegesPage() {
         ) : (
           <CollegesPageClient states={statesData} heroImages={heroImages} figures={figures} />
         )}
+        <AllCollegesIndex level="ug" className="py-12" />
       </main>
     );
   } catch (err) {

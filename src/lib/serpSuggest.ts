@@ -9,6 +9,7 @@
 import { sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { getPgStates } from "@/lib/pgStateQueries";
+import { pgFocus, ugOnly } from "@/lib/researchFocus";
 
 const UA = "AdmissionHands-research/1.0 (+https://www.admissionhands.com)";
 
@@ -100,8 +101,24 @@ export async function buildSeeds(): Promise<string[]> {
   for (const b of TOP_BRANCHES) for (const st of TOP_STATES) out.add(`${b} cut off ${st}`);
   for (const b of TOP_BRANCHES) for (const x of CATEGORY_SEEDS(b)) out.add(x);
   for (const c of COLLEGES.slice(0, 24)) for (const x of COLLEGE_CUT_SEEDS(c)) out.add(x);
-  return [...out];
+  // The NEET PG season in progress: rounds, results and the states' own PG rounds.
+  for (const h of PG_SEASON) out.add(h);
+  for (const st of states) for (const i of PG_STATE_SEASON) out.add(`${st} ${i}`);
+  for (const st of STATE_SHORT) out.add(`${st} pg counselling round 2`);
+  // NEET PG only while that is the season (lib/researchFocus.ts): MBBS / NEET UG seeds rest until "serp.focus" = all.
+  const list = [...out];
+  return (await pgFocus()) ? list.filter((s) => !ugOnly(s)) : list;
 }
+
+/** The NEET PG counselling in progress, as searched around a round (round 2's result is due 16 Nov 2026). */
+const PG_SEASON = [
+  "neet pg round 2 result", "neet pg round 2 seat matrix", "neet pg round 2 result date", "neet pg round 3 date",
+  "neet pg stray vacancy round 2026", "neet pg upgradation", "neet pg resignation round 2", "neet pg security deposit refund",
+  "neet pg round 2 reporting", "neet pg round 2 cut off", "neet pg 2026 cut off percentile", "dnb counselling 2026",
+  "neet pg round 2 choice filling", "neet pg round 2 allotment", "aiq round 2 result neet pg", "neet pg state round 2",
+  "deemed university pg round 2", "neet pg vacant seats round 2", "neet pg virtual vacancy", "neet pg newly added seats",
+];
+const PG_STATE_SEASON = ["neet pg round 2", "pg counselling round 2 result", "pg merit list 2026"];
 
 async function ask(url: string, pick: (j: unknown) => unknown): Promise<string[]> {
   try {
@@ -119,6 +136,7 @@ const tidy = (q: string) => q.toLowerCase().replace(/\s+/g, " ").trim();
 /** Ask both engines about `count` seeds (least recently asked first); store what comes back. */
 export async function collectSuggestions(count = 16): Promise<{ seeds: number; found: number; added: number }> {
   const seeds = await buildSeeds();
+  const focus = await pgFocus();
   await db.execute(sql`INSERT INTO serp_seeds (seed) SELECT unnest(${`{${seeds.map((s) => `"${s.replace(/"/g, "")}"`).join(",")}}`}::text[]) ON CONFLICT DO NOTHING`);
   const due = (await db.execute(sql`
     SELECT seed FROM serp_seeds WHERE seed IN (${sql.join(seeds.map((s) => sql`${s}`), sql`, `)})
@@ -133,7 +151,7 @@ export async function collectSuggestions(count = 16): Promise<{ seeds: number; f
     ]);
     const all = new Map<string, Set<string>>();
     for (const [engine, list] of [["google", g], ["bing", b]] as const)
-      for (const s of list.map(tidy)) if (s.length >= 8 && s.split(" ").length >= 3 && RELEVANT.test(s) && !OTHER.test(s)) all.set(s, (all.get(s) ?? new Set()).add(engine));
+      for (const s of list.map(tidy)) if (s.length >= 8 && s.split(" ").length >= 3 && RELEVANT.test(s) && !OTHER.test(s) && !(focus && ugOnly(s))) all.set(s, (all.get(s) ?? new Set()).add(engine));
     for (const [query, engines] of all) {
       const r = (await db.execute(sql`
         INSERT INTO serp_suggest (query, seed, engines) VALUES (${query}, ${seed}, ${`{${[...engines].join(",")}}`}::text[])

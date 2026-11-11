@@ -28,6 +28,7 @@ import { collectSuggestions } from "@/lib/serpSuggest";
 import { sitemapGroups } from "@/lib/sitemapData";
 import { getIntegration, setIntegration } from "@/lib/integrations";
 import { offerSearchFaq, PER_RUN as FAQ_PER_RUN } from "@/lib/searchFaq";
+import { pgFocus, ugOnly } from "@/lib/researchFocus";
 
 export const PER_RUN = 15;
 const SITE = "sc-domain:admissionhands.com";
@@ -275,13 +276,17 @@ export async function runResearch(limit?: number): Promise<{ researched: number;
     ((await db.execute(sql`SELECT DISTINCT lower(query) AS q FROM serp_research WHERE run_on > current_date - 21`)) as unknown as { q: string }[]).map((r) => r.q),
   );
   const gsc = await gscQueries();
-  const opps = [...gsc.values()].filter((r) => isOpportunity(r) && !recent.has(r.query.toLowerCase())).sort((a, b) => b.impressions - a.impressions);
+  // NEET PG only while that is the season (lib/researchFocus.ts).
+  const focus = await pgFocus();
+  const opps = [...gsc.values()]
+    .filter((r) => isOpportunity(r) && !recent.has(r.query.toLowerCase()) && !(focus && ugOnly(r.query)))
+    .sort((a, b) => b.impressions - a.impressions);
   // Real searches we are not shown for, or only past page 2: the most recurring first.
   const sugRows = (await db.execute(sql`
     SELECT query, times_seen FROM serp_suggest
      WHERE researched_on IS NULL OR researched_on < current_date - 21
      ORDER BY times_seen DESC, last_seen DESC LIMIT 200`)) as unknown as { query: string; times_seen: number }[];
-  const gaps = sugRows.filter((s) => !recent.has(s.query) && !((gsc.get(s.query)?.position ?? 99) <= 20));
+  const gaps = sugRows.filter((s) => !recent.has(s.query) && !((gsc.get(s.query)?.position ?? 99) <= 20) && !(focus && ugOnly(s.query)));
 
   const nGsc = Math.min(opps.length, Math.ceil(budget / 2));
   const nSug = Math.min(gaps.length, budget - nGsc);

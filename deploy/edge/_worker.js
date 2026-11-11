@@ -125,6 +125,11 @@ const keep = (kind, res) => (kind === "html" ? storableHtml(res) : storable(res)
 // Pages: fresh a minute, then served while the origin is asked again, for at
 // most ten. Images: fresh a minute, kept a week (their names never change).
 const STALE = { html: 10 * 60 * 1000, image: STALE_MS };
+// A search crawler may take a page up to a day old while the origin is asked again behind it (2026-11-11): Search
+// Console's crawl stats showed 797 ms a fetch and ~800 fetches a day, most re-fetching pages already indexed — a fast
+// answer lets the same crawl reach more pages. A visitor keeps the ten-minute rule; the live test still passes through.
+const SEARCH_BOT = /googlebot|bingbot|google-extended|applebot|duckduckbot|yandex(bot)?|petalbot/i;
+const CRAWLER_STALE_MS = 24 * 60 * 60 * 1000;
 
 async function revalidate(kind, cache, key, cached, request, url, env) {
   const req = originRequest(request, url, env);
@@ -163,7 +168,8 @@ export default {
     if (cached) {
       const age = Date.now() - Number(cached.headers.get("x-edge-stored") || 0);
       if (age < FRESH_MS) return finish(toVisitor(cached, "HIT"), url);
-      if (age < STALE[kind]) {
+      const bot = kind === "html" && SEARCH_BOT.test(request.headers.get("user-agent") || "");
+      if (age < (bot ? CRAWLER_STALE_MS : STALE[kind])) {
         ctx.waitUntil(revalidate(kind, cache, key, cached.clone(), request, url, env).catch(() => {}));
         return finish(toVisitor(cached, "STALE"), url);
       }

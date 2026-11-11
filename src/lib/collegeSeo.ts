@@ -32,6 +32,7 @@ import type { CollegeDetail, CourseCutoff, CollegeFee } from "@/lib/collegeQueri
 import { approxFee, exactInr, feeKind, isYearlyFee } from "@/lib/chance";
 import { generalBands } from "@/lib/cutoffBands";
 import type { LiveBands } from "@/lib/collegeLiveBands";
+import { collegeName } from "@/lib/collegeName";
 
 const SITE = "https://www.admissionhands.com";
 
@@ -140,7 +141,15 @@ export function collegeFaqs(
   facts: FaqFacts = {},
 ): Faq[] {
   const faqs: Faq[] = [];
-  const course = level === "pg" ? "MD/MS" : facts.course && facts.course !== "DNB" ? facts.course : "MBBS";
+  // A hospital that runs only National Board courses is asked about as one (Search Console audit, 2026-11-11: DNB
+  // pages said "Admission to MD/MS at…", "How many MD/MS seats…", "a government or private college").
+  const dnb = level === "pg" && facts.course === "DNB";
+  const course = level === "pg" ? (dnb ? "DNB" : "MD/MS") : facts.course && facts.course !== "DNB" ? facts.course : "MBBS";
+  const place = dnb ? "hospital" : "college";
+  // The name as searched: NBEMS's names end in an address and a PIN code ("…, Delhi-110083"), which read badly in a
+  // question and repeated the PIN in every FAQ. The official name stays on the page's own line.
+  const nm = collegeName(college.name);
+  const name = /\d{6}\s*$/.test(college.name) ? (nm.place && !nm.short.toLowerCase().includes(nm.place.toLowerCase()) ? `${nm.short}, ${nm.place}` : nm.short) : college.name;
   const year = cutoffs.find((c) => c.latestYear)?.latestYear;
 
   /* ---- the rank question, answered without a college's rank ----
@@ -156,7 +165,7 @@ export function collegeFaqs(
     const said = top.map((b) => `${b.band.replace(/\*$/, "")} on the ${b.quota} ${b.course} seat`).join(", ");
     const cats = Object.entries(top[0].byCategory).map(([c, band]) => `${c} ${band!.replace(/\*$/, "")}`);
     faqs.push({
-      q: `What is the NEET PG ${L.year} cut off for ${college.name}?`,
+      q: `What is the NEET PG ${L.year} cut off for ${name}?`,
       a:
         `In MCC's ${L.year} ${L.label} result, the last general-category seat was taken at ${said} — rank bands, not ` +
         `exact ranks. ` +
@@ -183,7 +192,7 @@ export function collegeFaqs(
       const first = bands[0];
       const cats = Object.entries(first.byCategory).map(([c, band]) => `${c} ${band!.replace(/\*$/, "")}`);
       faqs.push({
-        q: `What is the ${level === "pg" ? "NEET PG" : "NEET UG"} cutoff for ${college.name}?`,
+        q: `What is the ${level === "pg" ? "NEET PG" : "NEET UG"} cutoff for ${name}?`,
         a:
           `For the general category${first.year ? ` in ${first.year}` : ""}, the last seat was taken in the ` +
           `${said} — these are rank bands across all rounds, not exact ranks. ` +
@@ -197,7 +206,7 @@ export function collegeFaqs(
     }
 
     faqs.push({
-      q: `What NEET rank do I need for ${college.name}?`,
+      q: `What NEET rank do I need for ${name}?`,
       a:
         `It depends on the course, your quota and category, and the round — the same college closes at very ` +
         `different ranks for different seats. Seats here are filled through ${list(counsellings, 2) || "counselling"}` +
@@ -208,9 +217,9 @@ export function collegeFaqs(
 
     // "<college> admissions" (995 impressions a month on UG pages, 307 on PG, Search Console Oct–Nov 2026).
     faqs.push({
-      q: `How to get admission in ${college.name}?`,
+      q: `How to get admission in ${name}?`,
       a:
-        `Admission to ${level === "pg" ? "MD/MS" : course} at ${college.name} is through ${level === "pg" ? "NEET PG" : "NEET UG"} ` +
+        `Admission to ${course} at ${name} is through ${level === "pg" ? "NEET PG" : "NEET UG"} ` +
         `and counselling — there is no direct admission. Seats here are allotted by ${list(counsellings, 3) || "counselling"}` +
         (quotas.length ? `, under ${list(quotas, 3)}` : "") +
         `. Register for each counselling you are eligible for, place the college in your choices, and if a seat is ` +
@@ -219,7 +228,7 @@ export function collegeFaqs(
     });
 
     faqs.push({
-      q: `How many seat options does ${college.name} offer in counselling?`,
+      q: `How many seat options does ${name} offer in counselling?`,
       a:
         `${inr(cutoffs.length)} published seat options${year ? ` in ${year}` : ""} — each a course, quota and ` +
         `category combination — across ${categories} ${categories === 1 ? "category" : "categories"}.`,
@@ -241,7 +250,7 @@ export function collegeFaqs(
     const seat = (f: CollegeFee) => `a ${f.quota} seat in ${f.course}`;
     const rest = priced.length > official.length || fees.some((f) => f.feeCurrency === "USD" || !isYearlyFee(f.feePeriodicity));
     faqs.push({
-      q: `What is the ${level === "pg" ? "PG" : course} fee structure at ${college.name}?`,
+      q: `What is the ${level === "pg" ? "PG" : course} fee structure at ${name}?`,
       a:
         (lo.feeInr === hi.feeInr
           ? `The 2026-27 ${what} is ${exactInr(lo.feeInr!)} a year on ${seat(lo)}.`
@@ -257,7 +266,7 @@ export function collegeFaqs(
     if (bracket) {
       faqs.push({
         // "<college> pg fee structure", "<college> mbbs fees structure" — the fee intent as people type it.
-        q: `What is the ${level === "pg" ? "PG" : course} fee structure at ${college.name}?`,
+        q: `What is the ${level === "pg" ? "PG" : course} fee structure at ${name}?`,
         a:
           `Approximately ${bracket.replace(/^≈ /, "").replace(/\*$/, "")} ${tuitionOnly ? "in tuition" : "in fees"}, depending on the course ` +
           `and quota. This is a bracket from the published fee schedule, not a quote — hostel, deposit, bond and ` +
@@ -274,7 +283,7 @@ export function collegeFaqs(
       ? ` ${money(top.stipendY2Inr!)} in the second and ${money(top.stipendY3Inr!)} in the third,`
       : "";
     faqs.push({
-      q: `What is the PG stipend at ${college.name}?`,
+      q: `What is the PG stipend at ${name}?`,
       a: `${money(top.stipendY1Inr!)} a month in the first year,${later} as published — worth ${money(top.stipendY1Inr! * 12)} over the first year against the fees above.`,
     });
   }
@@ -285,12 +294,12 @@ export function collegeFaqs(
     // count beside it (646 against NMC's 643 at SMS Jaipur) read as a mistake (2026-11-05). "how many mbbs seats in
     // <college>": the UG list carries no seat matrix, NMC's register does.
     faqs.push({
-      q: `How many ${course} seats does ${college.name} have?`,
+      q: `How many ${course} seats does ${name} have?`,
       a: `${inr(facts.seats)} ${course} seats a year, as approved in the National Medical Commission's register.`,
     });
   } else if (college.seatsTotal && college.branchCount) {
     faqs.push({
-      q: `How many ${course} seats does ${college.name} have?`,
+      q: `How many ${course} seats does ${name} have?`,
       a: `${inr(college.seatsTotal)} seats across ${college.branchCount} ${level === "pg" ? "branches" : "courses"}, counted from the published seat matrix.`,
     });
   }
@@ -303,27 +312,27 @@ export function collegeFaqs(
   // in it, else what the regulator's register says — never a ranking we made up.
   {
     const what = [
-      ownership ? `a ${ownership} college` : null,
+      ownership ? `a ${ownership} ${place}` : null,
       college.establishedYear ? `founded in ${college.establishedYear}` : null,
       facts.seats ? `with ${inr(facts.seats)} ${course} seats${facts.seatsFromNmc ? " on NMC's register" : ""}` : null,
     ].filter(Boolean) as string[];
     if (facts.nirf || what.length >= 2) {
       faqs.push({
-        q: `What is the ranking of ${college.name}?`,
+        q: `What is the ranking of ${name}?`,
         a: facts.nirf
-          ? `${college.name} is ranked ${facts.nirf.rank} in NIRF ${facts.nirf.year} (${facts.nirf.list}), the Ministry of Education's ` +
-            `national ranking.${what.length ? ` It is ${what.join(", ")}.` : ""} For your own seat, what decides it is the college's cut off at your ` +
-            `rank, its fee and its hospital — sign in free to see your chance here.`
+          ? `${name} is ranked ${facts.nirf.rank} in NIRF ${facts.nirf.year} (${facts.nirf.list}), the Ministry of Education's ` +
+            `national ranking.${what.length ? ` It is ${what.join(", ")}.` : ""} For your own seat, what decides it is the ${place}'s cut off at your ` +
+            `rank, its fee and ${dnb ? "its training" : "its hospital"} — sign in free to see your chance here.`
           : `The official ranking of medical colleges in India is NIRF, by the Ministry of Education, which lists the top ` +
-            `colleges each year. ${college.name} is ${what.join(", ")}. For your own seat, what decides it is the college's ` +
-            `cut off at your rank, its fee and its hospital — sign in free to see your chance here.`,
+            `colleges each year. ${name} is ${what.join(", ")}. For your own seat, what decides it is the ${place}'s ` +
+            `cut off at your rank, its fee and ${dnb ? "its training" : "its hospital"} — sign in free to see your chance here.`,
       });
     }
   }
 
   if (ownership) {
     faqs.push({
-      q: `Is ${college.name} a government or private college?`,
+      q: `Is ${name} a government or private ${place}?`,
       a:
         `It is a ${ownership} ${college.ownership && college.ownership !== "other" ? "institution" : "college in the National Medical Commission's register"}` +
         (college.establishedYear ? `, established in ${college.establishedYear}` : "") +

@@ -2256,6 +2256,37 @@ colleges are there in <state>?", the bond page "Which states have no service bon
 landing on college pages at position 2–4 — conversational follow-ups that read our college pages; keep the facts those ask for
 in the first screen of a college page. Re-run: `scripts/tmp/harness/qtopics.ts` (git-excluded harness).
 
+## Search Console's "not indexed" audit and what it changed (2026-11-11)
+
+Owner (screenshot of "Why pages aren't indexed": Discovered 1,197 · Crawled 61 · three single URLs): "console ko pura
+ache se janchna hoga". Read-only audit (full report in that session's scratchpad `gsc_audit.md`):
+- **No page is broken or orphaned; crawl capacity is the limit.** Google fetched ~800 pages a day at 797 ms each, 88% of
+  them refreshes of pages already indexed (≈2,400 lastmods moved on 8–9 Nov). Discovered by type (of the 1,000 listed):
+  DNB-only hospitals 434, MD/MS colleges 247, MBBS colleges 134, branch × state 58, dental 45, branches 31.
+- The three singles were not live bugs: VHS Chennai (DNB template near-duplicate), the old NEET SS slug (308, out of the
+  sitemap), Fathima Kadapa → 747live (crawled 5 Oct; now 200 and self-canonical — queued for a recrawl).
+- 179 of 204 sampled crawl 404s were `_next/static` CSS of removed builds (Google rendered stored copies unstyled).
+
+What changed:
+- **Thin DNB pages out of the index (owner: "yes go ahead")** — `lib/thinPages.ts`: a PG institute whose every course is
+  National Board (DNB, DrNB, FNB, NBE diploma) with ONE course and ≤2 seat options is `noindex, follow` and out of the
+  sitemap (556 of 1,536 DNB-only pages). The page, the PG college page's generateMetadata and `sitemapData.ts` read the
+  same list; IndexBoost follows the sitemap, so it stops linking them. Veterinary and nursing pages stay (owner: "not
+  required").
+- **DNB FAQ wording** (`collegeFaqs`): a DNB-only hospital is asked about as DNB and as a hospital ("Admission to DNB",
+  "government or private hospital"); a name ending in a PIN code is asked by its short name + place, the official name
+  stays on its own line. No lastmod bump (template change only).
+- **Every college in the directories' HTML** — `components/colleges/AllCollegesIndex.tsx` at the foot of
+  `/md-ms-india/colleges` (632 MD/MS) and `/mbbs-india/colleges` (831 MBBS), state by state in `<details>`; the
+  directories had linked only 12–24 colleges in their HTML.
+- **Edge:** a search crawler (Googlebot, Bingbot…) may take a cached page up to 24 h old while the origin is asked behind
+  it; visitors keep 10 minutes; the live test still passes through (`deploy/edge/_worker.js`).
+- **Old static files:** CSS kept 60 days, scripts 14 (`deploy_oracle.sh`); was 7.
+- **Research and hunt chase NEET PG only (owner: "MBBS is almost over for this year")** — `lib/researchFocus.ts`,
+  integration `serp.focus` ("pg" default, "all" for the NEET UG season): MBBS / NEET UG / BDS-only seeds, suggestions,
+  Search Console picks and hunt searches rest; PG round-2 seeds and hunt searches added.
+- Re-check the report around 25 Nov; the 61 "Crawled" pages were fetched 5–8 Nov.
+
 ## The OCR bridge for the AH tool (2026-11-11)
 
 zyn-3c asked for OCR on public notices (its poster bot checks every date against the notice's real text); the owner, here:

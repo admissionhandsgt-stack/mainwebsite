@@ -12,6 +12,7 @@ import { getHubNotices, getStateNotices } from "@/lib/stateNotices";
 import { getCounselPgStates, getCounselUgStates } from "@/lib/counselStates";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
+import { getThinDnbSlugs } from "@/lib/thinPages";
 
 /**
  * The sitemap, split by page type (2026-10-17): /sitemap.xml is an index of
@@ -406,8 +407,11 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
     console.error("[sitemap] MDS specialities could not be listed", error);
   }
 
+  // The thinnest DNB-only hospital pages are noindex and stay out (lib/thinPages.ts — the page reads the same list).
+  const thinDnb = new Set(await getThinDnbSlugs().catch((): string[] => []));
   for (const c of colleges) {
     const pg = c.level === "pg";
+    if (pg && thinDnb.has(c.slug)) continue;
     // A page showing the year in progress changed when the latest round went live, and no earlier than the day
     // the template began printing it.
     const shown = pg && liveColleges.has(c.slug) ? newest([liveDay ?? "", LIVE_BANDS_FROM]) : "";

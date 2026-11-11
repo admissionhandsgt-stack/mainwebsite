@@ -32,6 +32,7 @@ import TelegramStrip from "@/components/engage/TelegramStrip";
 import { jsonLd as toJsonLd } from "@/lib/jsonLd";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 import QuickAsk from "@/components/lead/QuickAsk";
+import { isThinDnb } from "@/lib/thinPages";
 
 // The busiest pages are built at deploy time; the long tail is generated on
 // first request and then cached, so a 2,168-page build stays quick.
@@ -71,10 +72,13 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   // (lib/collegeSnippet.ts). No brand suffix: the name is what is searched.
   const title = collegeTitle(data.summary);
   const description = collegeDescription(data.summary);
+  // The thinnest National Board-only hospital pages stay out of the index and the sitemap (lib/thinPages.ts).
+  const thin = await isThinDnb(data.college.slug);
 
   return {
     title,
     description,
+    ...(thin ? { robots: { index: false, follow: true } } : {}),
     alternates: { canonical: `/md-ms-india/colleges/${data.college.slug}` },
     // These links get shared into WhatsApp groups constantly, and without
     // these tags they unfurl as a bare URL.
