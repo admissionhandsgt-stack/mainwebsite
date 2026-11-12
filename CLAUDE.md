@@ -1679,7 +1679,7 @@ use the token classes**, so dark mode and future re-skins keep working.
 |---|---|
 | `primary` (#0891B2 = cyan-600) | All actions, links, active nav. `primary-soft` for tinted backgrounds, `primary-strong` for text on light |
 | `secondary` (#22D3EE = cyan-400) | Gradient end-stop, highlights |
-| `accent` (#16A34A = green-600) | Success, WhatsApp, confirmation. `accent-soft` for its tint |
+| `accent` (#15803D = green-700) | Success, WhatsApp, confirmation. `accent-soft` for its tint. Was #16A34A until 2026-11-12 — white on it was 3.35:1, so every WhatsApp button failed WCAG AA (PSI accessibility 96); now 5.07:1, 4.72:1 on `accent-soft`. Do not lighten it again |
 | `signal-safe` / `signal-borderline` / `signal-stretch` | **Reserved for admission chance only.** Never decorative — colour is data here |
 | `surface-1/2/3` | Three elevation levels, used instead of stacking shadows |
 

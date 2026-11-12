@@ -29,7 +29,9 @@
     --secondary: 188 86% 53%;        /* #22D3EE */
     --secondary-foreground: 195 45% 11%;
 
-    --accent: 142 76% 36%;           /* #16A34A */
+    /* #15803D (green-700). Was #16A34A until 2026-11-12: white on it was 3.35:1 and it on accent-soft 3.12:1, so every
+       WhatsApp button and green label failed WCAG AA (PageSpeed accessibility 96). Now 5.07:1 and 4.72:1. */
+    --accent: 142 72% 29%;
     --accent-foreground: 0 0% 100%;
     --accent-soft: 141 70% 95%;
 
