@@ -301,7 +301,7 @@ export default function EngagementLayer({
               silence("bubble");
               setBubble(false);
             }}
-            className="mt-3 inline-flex min-h-10 items-center gap-2 rounded-xl bg-[#25D366] px-4 text-[13.5px] font-bold text-white hover:bg-[#1fbf5b]"
+            className="mt-3 inline-flex min-h-10 items-center gap-2 rounded-xl bg-accent px-4 text-[13.5px] font-bold text-accent-foreground hover:bg-accent/90"
           >
             <WhatsAppIcon className="h-4 w-4" /> Chat with a counsellor
           </a>
@@ -336,7 +336,7 @@ export default function EngagementLayer({
                 trackEvent("nudge_click", { type: "alert_whatsapp" });
                 close("toast", `alert-${newest.id}`);
               }}
-              className="inline-flex min-h-10 items-center gap-1.5 rounded-xl bg-[#25D366] px-3.5 text-[13px] font-bold text-white"
+              className="inline-flex min-h-10 items-center gap-1.5 rounded-xl bg-accent px-3.5 text-[13px] font-bold text-accent-foreground"
             >
               <WhatsAppIcon className="h-4 w-4" /> What does it mean for me?
             </a>
@@ -591,7 +591,7 @@ function ExitOffer({ onClose, source }: { onClose: () => void; source: string })
               href={wa("Hello AdmissionHands counsellor, I just asked for a counselling roadmap.")}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 inline-flex min-h-12 items-center gap-2 rounded-xl bg-[#25D366] px-5 text-[15px] font-bold text-white"
+              className="mt-4 inline-flex min-h-12 items-center gap-2 rounded-xl bg-accent px-5 text-[15px] font-bold text-accent-foreground"
             >
               <WhatsAppIcon className="h-5 w-5" /> WhatsApp a counsellor
             </a>

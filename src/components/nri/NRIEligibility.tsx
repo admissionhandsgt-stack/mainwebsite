@@ -104,7 +104,7 @@ export default async function NRIEligibility() {
                 href={wa}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#25D366] px-5 text-[14px] font-bold text-white hover:bg-[#1fbf5b]"
+                className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-accent px-5 text-[14px] font-bold text-accent-foreground hover:bg-accent/90"
               >
                 <WhatsAppIcon className="h-4 w-4" /> {copy.cta_whatsapp}
               </a>

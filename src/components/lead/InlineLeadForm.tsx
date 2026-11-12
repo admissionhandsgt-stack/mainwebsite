@@ -609,7 +609,7 @@ export const InlineLeadForm = ({
             <button
               type="submit"
               disabled={status === 'loading'}
-              className="flex-[2] flex items-center justify-center gap-1.5 bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:from-[#2ee374] hover:to-[#149d8e] active:scale-[0.98] text-white py-3.5 md:py-2.5 rounded-xl font-bold shadow-md shadow-emerald-500/20 transition-all disabled:opacity-75 disabled:active:scale-100 cursor-pointer"
+              className="flex-[2] flex items-center justify-center gap-1.5 bg-accent hover:bg-accent/90 active:scale-[0.98] text-accent-foreground py-3.5 md:py-2.5 rounded-xl font-bold shadow-md shadow-emerald-500/20 transition-all disabled:opacity-75 disabled:active:scale-100 cursor-pointer"
             >
               {status === 'loading' ? (
                 <Loader2 className="w-4 h-4 animate-spin" />

@@ -1217,7 +1217,7 @@ export default function CollegesPageClient({
                       "Hi, I want to explore MBBS Government and Private options based on my NEET score."
                     )
                   }
-                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-[#25D366] hover:bg-[#20ba56] text-white font-bold text-xs rounded-xl shadow-lg shadow-emerald-950/20 active:scale-95 transition-all"
+                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-xs rounded-xl shadow-lg shadow-emerald-950/20 active:scale-95 transition-all"
                 >
                   <WhatsAppIcon className="w-4 h-4" /> WhatsApp
                 </button>

@@ -114,7 +114,7 @@ export default function TrustShield({ compact = false }: { compact?: boolean }) 
               href={offerHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex min-h-12 items-center gap-2 border-t border-border bg-surface-2 px-5 text-[14px] font-semibold text-[#128C7E] hover:bg-surface-3 dark:text-[#25D366]"
+              className="flex min-h-12 items-center gap-2 border-t border-border bg-surface-2 px-5 text-[14px] font-semibold text-accent hover:bg-surface-3 dark:text-[#25D366]"
             >
               <WhatsAppIcon className="h-4 w-4" /> Been offered a seat? Ask a counsellor to check it, free
             </a>
@@ -162,7 +162,7 @@ export default function TrustShield({ compact = false }: { compact?: boolean }) 
                 href={offerHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-[#25D366]/40 bg-[#25D366]/10 px-5 text-[15px] font-bold text-[#128C7E] hover:bg-[#25D366]/15 dark:text-[#25D366]"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-[#25D366]/40 bg-[#25D366]/10 px-5 text-[15px] font-bold text-accent hover:bg-[#25D366]/15 dark:text-[#25D366]"
               >
                 <WhatsAppIcon className="h-5 w-5" /> Ask a counsellor to check an offer
               </a>

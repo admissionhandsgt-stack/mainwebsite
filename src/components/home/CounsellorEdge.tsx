@@ -115,7 +115,7 @@ export default async function CounsellorEdge({ compact = false }: { compact?: bo
         href={waHref}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#25D366] px-6 text-[15px] font-bold text-white shadow-[0_8px_24px_rgba(37,211,102,0.3)] hover:bg-[#1fbf5b]"
+        className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-accent px-6 text-[15px] font-bold text-accent-foreground shadow-[0_8px_24px_rgba(37,211,102,0.3)] hover:bg-accent/90"
       >
         <WhatsAppIcon className="h-5 w-5" /> Get my personal counselling roadmap
       </a>

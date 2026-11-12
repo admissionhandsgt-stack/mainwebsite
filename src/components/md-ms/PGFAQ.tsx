@@ -196,7 +196,7 @@ export const PGFAQ = ({ items: fromCms, copy }: { items?: FaqItem[]; copy?: FaqC
             onClick={() =>
               CTA.whatsapp("Hi, I have a question about NEET PG counselling.")
             }
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-[#25D366] hover:bg-[#128C7E] text-white text-xs font-black uppercase tracking-wider transition-all shadow-xs cursor-pointer active:scale-95 shrink-0"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-accent hover:bg-accent/90 text-accent-foreground text-xs font-black uppercase tracking-wider transition-all shadow-xs cursor-pointer active:scale-95 shrink-0"
           >
             <WhatsAppIcon className="w-3.5 h-3.5" />
             Chat on WhatsApp
