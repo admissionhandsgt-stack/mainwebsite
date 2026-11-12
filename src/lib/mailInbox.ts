@@ -78,6 +78,9 @@ export async function checkReplies(): Promise<{ read: number; replied: number; b
       const from = (m.envelope?.from?.[0]?.address ?? "").toLowerCase();
       const subject = (m.envelope?.subject ?? "").slice(0, 200);
       if (!from) continue;
+      // A delay notice is not a bounce: the server is still trying (2026-11-12: "Delayed Mail (still being retried)" for
+      // MediQuorum was marked bounced and stopped). Only a final failure stops an address.
+      if (/delay|still being retried|will (be )?retr|warning: message|not yet been delivered/i.test(subject)) continue;
       if (/^(mailer-daemon|postmaster)@/.test(from) || /undeliver|delivery status|failure notice|returned mail/i.test(subject)) {
         // A bounce names the address it could not reach; read its text to find which of ours.
         const full = await imapTimeout(client.fetchOne(String(uid), { source: true }, { uid: true }), 20_000, `source ${uid}`).catch(() => null);

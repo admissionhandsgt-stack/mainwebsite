@@ -2562,6 +2562,14 @@ table `outreach_emails` (migration 0050, raw SQL), Admin → Outreach (the card 
   post are the line.
 - **Sent folder:** SMTP sends do not land in the mailbox's Sent on this server, so `sendMail` builds the message once
   (nodemailer MailComposer), sends those bytes and appends the same bytes over IMAP to the folder flagged `Sent`.
+  **2026-11-12:** the owner's NevTan Mail web view showed "Nothing in Sent" while IMAP's `Sent` (\Sent) held 4 messages —
+  today's four; the 10 Nov sends were before the append. Each append's result is now in `email.imap.last_append`
+  (folder, uid or error) and the folders with counts in `email.imap.folders`, written by the hourly check. If the web view
+  still shows nothing, it is not reading that IMAP folder — check it in any IMAP client (Thunderbird, phone mail app).
+- **The hourly reply check hung for hours** (2026-11-12): one `UID FETCH n:*` stopped answering. It now searches UIDs and
+  reads one message at a time (15 s each, skipped and counted if the server holds back), every IMAP step time-limited
+  (`imapTimeout` in lib/mailer.ts). A **delay notice** ("Delayed Mail (still being retried)") is not a bounce — it had
+  marked both MediQuorum addresses bounced; only a final failure stops an address.
 - **Never:** send without the owner's Send, ask for a link in exchange for anything, or add addresses scraped in bulk.
 - **Answers the hunt writes (`lib/huntAnswers.ts`, same day — owner's model answer: AIIMS New Delhi's resident pay, "aise
   detailed answers… signup wala etc bhi rehna chaiye").** Shape: the answer first, the figures that make it, "Check these before
