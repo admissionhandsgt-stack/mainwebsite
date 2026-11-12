@@ -103,7 +103,7 @@ const ServicesList = ({
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              className="inline-flex items-center justify-center px-3 py-1.5 mb-4 text-[11.5px] font-black tracking-widest text-cyan-600 uppercase bg-cyan-50 border border-cyan-100 rounded-full"
+              className="inline-flex items-center justify-center px-3 py-1.5 mb-4 text-[11.5px] font-black tracking-widest text-primary-strong uppercase bg-cyan-50 dark:bg-cyan-950/40 border border-cyan-100 dark:border-cyan-900/30 rounded-full"
             >
               {text.eyebrow}
             </motion.div>
