@@ -72,6 +72,7 @@ export type IntegrationKey =
   | "outreach.enabled"
   | "outreach.daily_cap"
   | "outreach.imap_uid"
+  | "email.imap.folders"
   | "email.imap.host"
   | "search.tavily.key"
   | "search.tavily.used"

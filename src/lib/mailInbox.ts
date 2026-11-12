@@ -64,6 +64,17 @@ export async function checkReplies(): Promise<{ read: number; replied: number; b
     }
   } finally {
     lock.release();
+    // Which folders the mailbox has, their flags and message counts (2026-11-12: the owner's webmail showed nothing in
+    // Sent although every send "filed" a copy). Names and counts only — no message, no address.
+    try {
+      const boxes = await client.list({ statusQuery: { messages: true } });
+      await setIntegration(
+        "email.imap.folders",
+        JSON.stringify(boxes.map((b) => ({ path: b.path, use: b.specialUse ?? null, flags: [...(b.flags ?? [])], messages: b.status?.messages ?? null }))),
+      );
+    } catch {
+      /* a diagnostic must not fail the reply check */
+    }
     await client.logout().catch(() => undefined);
   }
   if (maxUid > lastUid) await setIntegration("outreach.imap_uid", String(maxUid));
