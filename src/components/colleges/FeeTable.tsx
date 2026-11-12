@@ -1,4 +1,5 @@
 import type { CollegeFee } from "@/lib/collegeQueries";
+import { branchSlug } from "@/lib/branchSlug";
 import { approxFee, approxFeeFor, exactFeeFor, exactInr, feeKind, FEE_TABLE_NOTE } from "@/lib/chance";
 
 /**
@@ -119,7 +120,7 @@ export default function FeeTable({ fees }: { fees: CollegeFee[] }) {
             {branches.map((b) => {
               const rows = fees.filter((f) => f.course === b);
               return (
-                <tr key={b} className="border-t border-border align-top transition-colors hover:bg-surface-2">
+                <tr key={b} id={`fee-${branchSlug(b)}`} className="border-t border-border align-top transition-colors hover:bg-surface-2 scroll-mt-[calc(var(--site-top,112px)_+_1rem)]">
                   <th scope="row" className="px-4 py-3 text-left text-[14px] font-medium text-foreground">{b}</th>
                   {columns.map((c) => (
                     <td key={c.codes.join("/")} className="tnum px-4 py-3 text-right text-[14px] text-foreground">

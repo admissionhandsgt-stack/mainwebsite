@@ -322,7 +322,7 @@ export default async function PgStatePage(props: Props) {
 
       {/* ------------- the state's own round of the year in progress (not read by the predictor) ------------- */}
       {round && roundCopy && (round.byQuota.length > 0 || round.byBranch.length > 0) && (
-        <section className="container-custom pt-10 md:pt-14">
+        <section id="state-round" className="container-custom pt-10 md:pt-14 scroll-mt-[calc(var(--site-top,112px)_+_1rem)]">
           <SectionHead icon="chart" eyebrow={roundCopy.eyebrow} title={roundCopy.title} intro={roundCopy.intro} />
           {round.note && (
             <p className="mt-4 rounded-xl border border-primary/30 bg-primary-soft px-4 py-3 text-[14px] leading-relaxed text-foreground">
@@ -433,7 +433,7 @@ export default async function PgStatePage(props: Props) {
 
       {/* -------------------- MCC's seats in the state, 2026 -------------------- */}
       {mcc && (
-        <section className="container-custom pt-10 md:pt-14">
+        <section id="mcc-seats" className="container-custom pt-10 md:pt-14 scroll-mt-[calc(var(--site-top,112px)_+_1rem)]">
           <SectionHead icon="list" eyebrow={`MCC · ${mcc.year}`} title={mccCopy.title} intro={mccCopy.intro} />
           <ul className="mt-5 flex flex-wrap gap-2" aria-label="Seats by seat matrix">
             {mcc.byMatrix.map((m) => (
@@ -494,7 +494,7 @@ export default async function PgStatePage(props: Props) {
       )}
 
       {p.quotas.length > 0 && (
-        <section className="container-custom py-10 md:py-14">
+        <section id="cutoff-by-quota" className="container-custom py-10 md:py-14 scroll-mt-[calc(var(--site-top,112px)_+_1rem)]">
           <SectionHead
             icon="chart"
             title={<>NEET PG {p.year} cutoff in {p.name}, by quota</>}
@@ -546,7 +546,7 @@ export default async function PgStatePage(props: Props) {
       {/* "neet pg cut off branch wise <state>" — the state's main merit quota, general category, per branch over 3+
           colleges (lib/pgStateQueries.ts branchCut). A group figure, never one college's cut. */}
       {p.branchCut && p.year && (
-        <section className="container-custom pb-10 md:pb-14">
+        <section id="cutoff-branch-wise" className="container-custom pb-10 md:pb-14 scroll-mt-[calc(var(--site-top,112px)_+_1rem)]">
           <SectionHead
             icon="list"
             title={<>{p.name} NEET PG cut off {p.year}, branch wise</>}
