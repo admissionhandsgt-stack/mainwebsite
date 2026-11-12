@@ -17,7 +17,7 @@ import { findNewSites } from "@/lib/hunt";
  * Server only.
  */
 const UA = "AdmissionHands-outreach/1.0 (+https://www.admissionhands.com; contact page reader, monthly)";
-const SKIP = /^(no-?reply|donotreply|privacy|abuse|dpo|grievance|legal|careers?|jobs|hr|recruit|ads|advertis|marketing|sales|billing|accounts?|unsubscribe|webmaster|postmaster|subscriptions?|circulation|help|helpdesk|support|custserv|customer\w*|service|membership|orders?)\b/i;
+const SKIP = /^(no-?reply|donotreply|privacy|abuse|dpo|grievance|legal|careers?|jobs|hr|recruit|ads|advertis|marketing|sales|billing|accounts?|unsubscribe|webmaster|postmaster|subscriptions?|circulation|help|helpdesk|support|custserv|customer\w*|service|membership|orders?|readers?[._-]?editor|business\w*)\b/i;
 const PREFER = /^(editorial|editor|news|newsdesk|desk|info|contact|office|secretary|president|admin|hello|team)\b/i;
 const NOT_REAL = /\.(png|jpe?g|gif|webp|svg)$|example\.|sentry|wixpress|godaddy|domain\.com|email\.com|yourmail/i;
 

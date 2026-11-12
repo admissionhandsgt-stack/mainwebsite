@@ -278,6 +278,8 @@ const FORUM_WORDS = /forum|community|discuss|discussion|board|q&a|qna|answers|as
  */
 function indianMedical(host: string, text: string): boolean {
   if (/\.(edu|ac\.uk|edu\.au|gov\.uk|us|uk|au|ca|nz|eu|de|fr)$/.test(host)) return false;
+  // App stores and study-abroad / course directories carry the words but are nobody to write to (second run).
+  if (/^(apps\.apple\.com|play\.google\.com)$|findamasters|findaphd|topuniversities|mooclab/.test(host)) return false;
   if (/\.in$/.test(host)) return /\b(neet|mbbs|medical|doctors?|md|ms|pg|aiims|nmc|health|medicine|counsell?ing|admission)\b/i.test(text);
   return /\b(neet|mbbs|aiims|nmc|mcc|resident doctors?|medical colleges? in india|indian medical)\b/i.test(text);
 }
