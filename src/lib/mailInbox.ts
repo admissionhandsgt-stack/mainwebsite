@@ -1,8 +1,7 @@
-import { ImapFlow } from "imapflow";
 import { sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { getIntegration, setIntegration } from "@/lib/integrations";
-import { mailConfig } from "@/lib/mailer";
+import { imapClient, imapTimeout, mailConfig } from "@/lib/mailer";
 import { editOwnerMessage, tellOwner } from "@/lib/telegramBot";
 
 /**
@@ -32,15 +31,21 @@ export async function checkReplies(): Promise<{ read: number; replied: number; b
     if (d && !FREE.has(d)) byDomain.set(d, [...(byDomain.get(d) ?? []), t]);
   }
 
-  const host = (await getIntegration("email.imap.host")) || c.host;
-  const client = new ImapFlow({ host, port: 993, secure: true, auth: { user: c.user, pass: c.pass }, logger: false, socketTimeout: 60_000 });
+  // Short timeouts on every step (2026-11-12): a session that hung took the hourly job past its 120 s and never ended.
+  const client = await imapClient(c);
   const lastUid = Number(await getIntegration("outreach.imap_uid")) || 0;
   let maxUid = lastUid;
   let read = 0;
   const hits: { t: Target; kind: "replied" | "bounced"; note: string }[] = [];
 
-  await client.connect();
-  const lock = await client.getMailboxLock("INBOX");
+  try {
+    await imapTimeout(client.connect(), 30_000, "connect");
+  } catch (e) {
+    await setIntegration("email.imap.folders", JSON.stringify({ at: new Date().toISOString(), error: e instanceof Error ? e.message.slice(0, 200) : String(e) })).catch(() => undefined);
+    client.close();
+    throw e;
+  }
+  const lock = await imapTimeout(client.getMailboxLock("INBOX"), 20_000, "open INBOX");
   try {
     // First run: the last 30 days. After that, every message after the last one seen.
     const range = lastUid ? `${lastUid + 1}:*` : { since: new Date(Date.now() - 30 * 86_400_000) };
@@ -67,7 +72,7 @@ export async function checkReplies(): Promise<{ read: number; replied: number; b
     // Which folders the mailbox has, their flags and message counts (2026-11-12: the owner's webmail showed nothing in
     // Sent although every send "filed" a copy). Names and counts only — no message, no address.
     try {
-      const boxes = await client.list({ statusQuery: { messages: true } });
+      const boxes = await imapTimeout(client.list({ statusQuery: { messages: true } }), 30_000, "list");
       await setIntegration(
         "email.imap.folders",
         JSON.stringify(boxes.map((b) => ({ path: b.path, use: b.specialUse ?? null, flags: [...(b.flags ?? [])], messages: b.status?.messages ?? null }))),
@@ -75,7 +80,7 @@ export async function checkReplies(): Promise<{ read: number; replied: number; b
     } catch {
       /* a diagnostic must not fail the reply check */
     }
-    await client.logout().catch(() => undefined);
+    await imapTimeout(client.logout(), 10_000, "logout").catch(() => client.close());
   }
   if (maxUid > lastUid) await setIntegration("outreach.imap_uid", String(maxUid));
 

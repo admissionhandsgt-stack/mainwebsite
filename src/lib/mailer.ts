@@ -2,7 +2,7 @@ import nodemailer from "nodemailer";
 import MailComposer from "nodemailer/lib/mail-composer";
 import { ImapFlow } from "imapflow";
 import { logError } from "@/lib/logger";
-import { getIntegration } from "@/lib/integrations";
+import { getIntegration, setIntegration } from "@/lib/integrations";
 
 /**
  * Sending email as the owner's mailbox (2026-11-10: gulshantomar@admissionhands.com; SMTP smtp.nevtan.com:465, the webmail mail.nevtan.com answers only 443). The
@@ -74,19 +74,40 @@ export async function sendMail(to: string, subject: string, text: string): Promi
   return { messageId: String(info.messageId ?? "") };
 }
 
-/** Files a sent message in the mailbox's Sent folder over IMAP (the folder flagged \Sent, else one named like it). */
-async function saveToSent(c: MailConfig, raw: Buffer): Promise<void> {
+/** Never wait on an IMAP server for longer than this per step (2026-11-12: a hung session hung the hourly job). */
+export function imapTimeout<T>(p: Promise<T>, ms: number, step: string): Promise<T> {
+  let t: ReturnType<typeof setTimeout> | undefined;
+  return Promise.race([p, new Promise<T>((_, reject) => { t = setTimeout(() => reject(new Error(`IMAP timed out at ${step}`)), ms); })]).finally(() => clearTimeout(t));
+}
+
+/** One IMAP client to the mailbox, with short timeouts. */
+export async function imapClient(c: MailConfig): Promise<ImapFlow> {
   const host = (await getIntegration("email.imap.host")) || c.host;
-  const client = new ImapFlow({ host, port: 993, secure: true, auth: { user: c.user, pass: c.pass }, logger: false, socketTimeout: 60_000 });
-  await client.connect();
+  return new ImapFlow({ host, port: 993, secure: true, auth: { user: c.user, pass: c.pass }, logger: false, connectionTimeout: 20_000, greetingTimeout: 15_000, socketTimeout: 45_000 });
+}
+
+/**
+ * Files a sent message in the mailbox's Sent folder over IMAP (the folder flagged \Sent, else one named like it), and
+ * records what happened in `email.imap.last_append` (time, folder, ok or the error) — the owner's webmail showed an empty
+ * Sent on 2026-11-12 with no error logged, so the result is now visible rather than assumed.
+ */
+async function saveToSent(c: MailConfig, raw: Buffer): Promise<void> {
+  const client = await imapClient(c);
+  const note = async (v: Record<string, unknown>) => setIntegration("email.imap.last_append", JSON.stringify({ at: new Date().toISOString(), ...v })).catch(() => undefined);
+  let folder = "";
   try {
-    const boxes = await client.list();
-    const sent =
+    await imapTimeout(client.connect(), 30_000, "connect");
+    const boxes = await imapTimeout(client.list(), 20_000, "list");
+    folder =
       boxes.find((b) => b.specialUse === "\\Sent")?.path ??
       boxes.find((b) => /^(inbox[./])?(sent|sent items|sent mail|sent messages)$/i.test(b.path))?.path ??
       "Sent";
-    await client.append(sent, raw, ["\\Seen"]);
+    const r = await imapTimeout(client.append(folder, raw, ["\\Seen"]), 30_000, "append");
+    await note({ ok: Boolean(r), folder, uid: (r && typeof r === "object" && "uid" in r ? (r as { uid?: number }).uid : null) ?? null, folders: boxes.map((b) => b.path) });
+  } catch (e) {
+    await note({ ok: false, folder, error: e instanceof Error ? e.message.slice(0, 200) : String(e) });
+    throw e;
   } finally {
-    await client.logout().catch(() => undefined);
+    await imapTimeout(client.logout(), 10_000, "logout").catch(() => client.close());
   }
 }
