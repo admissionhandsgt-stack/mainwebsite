@@ -154,7 +154,7 @@ const STATE_ALIAS: Record<string, string> = {
   mp: "Madhya Pradesh", up: "Uttar Pradesh", tn: "Tamil Nadu", tamilnadu: "Tamil Nadu", ap: "Andhra Pradesh", wb: "West Bengal",
   bengal: "West Bengal", jk: "Jammu and Kashmir", "j k": "Jammu and Kashmir", "jammu kashmir": "Jammu and Kashmir",
   kashmir: "Jammu and Kashmir", jammu: "Jammu and Kashmir", hp: "Himachal Pradesh", himachal: "Himachal Pradesh",
-  mh: "Maharashtra", uttrakhand: "Uttarakhand", chattisgarh: "Chhattisgarh", chhatisgarh: "Chhattisgarh",
+  mh: "Maharashtra", cg: "Chhattisgarh", tg: "Telangana", uttrakhand: "Uttarakhand", chattisgarh: "Chhattisgarh", chhatisgarh: "Chhattisgarh",
   pondicherry: "Puducherry", pondy: "Puducherry", orissa: "Odisha", andaman: "Andaman and Nicobar Islands",
   // Authorities that run a state's counselling, searched by name.
   kea: "Karnataka", bopee: "Jammu and Kashmir", jkbopee: "Jammu and Kashmir", bceceb: "Bihar", bceceboard: "Bihar",
@@ -187,6 +187,8 @@ function stateIn<T extends { name: string }>(q: string, states: T[]): T | null {
   const byName = [...states].sort((a, b) => b.name.length - a.name.length).find((s) => f.includes(fold(s.name.replace(/&/g, "and"))) || f.includes(fold(s.name)));
   if (byName) return byName;
   for (const [k, v] of Object.entries(STATE_ALIAS)) if (has(q, k)) return states.find((s) => stateKey(s.name) === stateKey(v)) ?? null;
+  // "uk neet pg counselling" is Uttarakhand; "uk" alone is also the United Kingdom, so only beside neet / pg.
+  if (has(q, "uk") && /\b(neet|pg)\b/i.test(q)) return states.find((s) => stateKey(s.name) === stateKey("Uttarakhand")) ?? null;
   return null;
 }
 
@@ -205,7 +207,7 @@ const NOT_A_NAME = new Set(
 type College = { id: number; slug: string; name: string; state: string | null; ownership: string };
 
 /** Colleges searched by their initials, as the name we hold spells them (with a place word, "jnmc wardha", one is left). */
-const COLLEGE_ACRONYM: Record<string, string> = {
+export const COLLEGE_ACRONYM: Record<string, string> = {
   aiims: "all india institute of medical sciences", gmc: "government medical college", kgmu: "king george", kgmc: "king george",
   bhu: "banaras hindu", ims: "institute of medical sciences", amu: "aligarh muslim", mamc: "maulana azad", lhmc: "lady hardinge",
   ucms: "university college of medical sciences", vmmc: "vardhman mahavir", sgpgi: "sanjay gandhi postgraduate", sgpgims: "sanjay gandhi postgraduate",

@@ -58,7 +58,7 @@ export async function webSearchUsage(): Promise<{ month: string; used: number; b
 
 export async function webSearch(
   query: string,
-  opts: { includeDomains?: string[]; excludeDomains?: string[]; timeRange?: "day" | "week" | "month" | "year"; maxResults?: number; raw?: boolean } = {},
+  opts: { includeDomains?: string[]; excludeDomains?: string[]; timeRange?: "day" | "week" | "month" | "year"; maxResults?: number; raw?: boolean; country?: string } = {},
 ): Promise<WebResult[] | null> {
   const key = await takeCredit();
   if (!key) return null; // no key, or every key's budget is used up this month: stop rather than pay
@@ -73,6 +73,8 @@ export async function webSearch(
       ...(opts.timeRange ? { time_range: opts.timeRange } : {}),
       ...(opts.includeDomains?.length ? { include_domains: opts.includeDomains } : {}),
       ...(opts.excludeDomains?.length ? { exclude_domains: opts.excludeDomains } : {}),
+      // Boosts (does not restrict) results from that country; Tavily takes it only with topic "general".
+      ...(opts.country ? { country: opts.country } : {}),
       include_answer: false,
       // The page's own text, for an answer checked against it (lib/officialAnswer.ts); same credit.
       include_raw_content: opts.raw ? "text" : false,

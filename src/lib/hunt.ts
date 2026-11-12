@@ -270,19 +270,32 @@ const SITE_QUERIES = [
 ];
 const FORUM_WORDS = /forum|community|discuss|discussion|board|q&a|qna|answers|ask|threads?|groups?|club/i;
 
+/**
+ * Only an Indian site about medical admission is somewhere to write to. The first unfiltered run (2026-11-12) added
+ * microsoft.com, heart.org, the American College of Physicians, jamanetwork, a US and an Australian university — and
+ * drafts to their help desks. An Indian address (.in) or a page that talks about NEET / MBBS / AIIMS / NMC / resident
+ * doctors counts; a foreign academic or national domain never does.
+ */
+function indianMedical(host: string, text: string): boolean {
+  if (/\.(edu|ac\.uk|edu\.au|gov\.uk|us|uk|au|ca|nz|eu|de|fr)$/.test(host)) return false;
+  if (/\.in$/.test(host)) return /\b(neet|mbbs|medical|doctors?|md|ms|pg|aiims|nmc|health|medicine|counsell?ing|admission)\b/i.test(text);
+  return /\b(neet|mbbs|aiims|nmc|mcc|resident doctors?|medical colleges? in india|indian medical)\b/i.test(text);
+}
+
 export async function findNewSites(): Promise<{ added: number; forums: number; skipped?: string }> {
   const run = Math.floor(Date.now() / (3.5 * 86_400_000));
   let added = 0;
   let forums = 0;
   for (let i = 0; i < 4; i++) {
     const q = SITE_QUERIES[(run * 4 + i) % SITE_QUERIES.length];
-    const results = await webSearch(q, { excludeDomains: [...NOT_FORUMS, "reddit.com", "quora.com", "wikipedia.org"], timeRange: "year", maxResults: 10 });
+    const results = await webSearch(q, { excludeDomains: [...NOT_FORUMS, "reddit.com", "quora.com", "wikipedia.org"], timeRange: "year", maxResults: 10, country: "india" });
     if (results === null) return { added, forums, skipped: "no Tavily key or budget" };
     for (const r of results) {
       if (added >= 10) break;
       const u = new URL(r.url);
       const host = u.hostname.replace(/^www\./, "");
       if (/\.(gov|nic)\.in$|\.gov$/.test(host) || NOT_FORUMS.some((d) => host === d || host.endsWith(`.${d}`))) continue;
+      if (!indianMedical(host, `${r.title} ${r.content}`)) continue;
       const isForum = FORUM_WORDS.test(`${r.title} ${u.hostname} ${u.pathname}`);
       const kind = /association|federation|union|society/i.test(r.title) ? "association" : "other";
       const org = r.title.split(/[|–—-]/)[0].trim().slice(0, 120) || host;

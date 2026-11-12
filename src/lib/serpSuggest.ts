@@ -85,7 +85,17 @@ const RELEVANT =
   /\b(neet|pg|mbbs|bds|md|ms|dnb|mds|medical|stipend|counsel+ing|bond|seat|seats|cut ?off|rank|marks|fees?|quota|college|aiims|jipmer|nmc|mcc|choice|round|upgrade|freeze|float|domicile|website|portal|merit list|kea|bopee|jkbopee|wbmcc|bfuhs|bceceb|uhsr|knruhs|upneet|acppgmec|acpugmec|amru|centac|hnbumu|nbems|mahacet|ojee|jceceb)\b/i;
 /** …and not about another course or exam the same boards run. */
 const OTHER =
-  /\b(nursing|pharm\w*|b\.?\s?sc|m\.?\s?sc|bams|bhms|bums|ayush|physio\w*|paramedical|engineering|b\.?\s?tech|polytechnic|iti|b\.?\s?ed|d\.?\s?el\.?\s?ed|llb|law|mba|bca|ug cet|kcet|jee|cuet|recruitment|vacancy for|job|jobs)\b/i;
+  /\b(nursing|pharm\w*|b\.?\s?sc|m\.?\s?sc|bams|bhms|bums|ayush|physio\w*|paramedical|engineering|b\.?\s?tech|polytechnic|iti|b\.?\s?ed|d\.?\s?el\.?\s?ed|llb|law|mba|bca|ug cet|kcet|jee|cuet|cu pg|ignou|matric|intermediate|1[0-2]th|class ?1[0-2]|recruitment|vacancy for|job|jobs)\b/i;
+/**
+ * A season that is over (2026-11-12): "pg medical counselling 2024" led the hourly review. Searches naming 2024 or an
+ * earlier year are not ours to study now; last year's (2025) still are — families compare against it.
+ */
+const OLD_YEAR = /\b20(0\d|1\d|2[0-4])\b/;
+
+/** Worth a research slot: about medical admission, not another course or exam, not an old season. */
+export function worthStudying(q: string): boolean {
+  return RELEVANT.test(q) && !OTHER.test(q) && !OLD_YEAR.test(q);
+}
 
 export async function buildSeeds(): Promise<string[]> {
   const states = (await getPgStates().catch(() => [])).map((s) => s.name.toLowerCase());
@@ -194,7 +204,7 @@ export async function collectSuggestions(count = 16): Promise<{ seeds: number; f
     ]);
     const all = new Map<string, Set<string>>();
     for (const [engine, list] of [["google", g], ["bing", b]] as const)
-      for (const s of list.map(tidy)) if (s.length >= 8 && s.split(" ").length >= 3 && RELEVANT.test(s) && !OTHER.test(s) && !(focus && ugOnly(s))) all.set(s, (all.get(s) ?? new Set()).add(engine));
+      for (const s of list.map(tidy)) if (s.length >= 8 && s.split(" ").length >= 3 && worthStudying(s) && !(focus && ugOnly(s))) all.set(s, (all.get(s) ?? new Set()).add(engine));
     for (const [query, engines] of all) {
       const r = (await db.execute(sql`
         INSERT INTO serp_suggest (query, seed, engines) VALUES (${query}, ${seed}, ${`{${[...engines].join(",")}}`}::text[])

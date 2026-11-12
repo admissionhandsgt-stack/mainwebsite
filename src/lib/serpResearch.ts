@@ -24,11 +24,12 @@ import { sql, type SQL } from "drizzle-orm";
 import { db } from "@/db/client";
 import { googleToken } from "@/lib/google";
 import { webSearchAnswer, webSearchUsage, type WebResult } from "@/lib/webSearch";
-import { collectSuggestions } from "@/lib/serpSuggest";
+import { collectSuggestions, worthStudying } from "@/lib/serpSuggest";
 import { sitemapGroups } from "@/lib/sitemapData";
 import { getIntegration, setIntegration } from "@/lib/integrations";
 import { offerSearchFaq, PER_RUN as FAQ_PER_RUN } from "@/lib/searchFaq";
 import { pgFocus, ugOnly } from "@/lib/researchFocus";
+import { COLLEGE_ACRONYM } from "@/lib/huntAnswers";
 
 export const PER_RUN = 15;
 const SITE = "sc-domain:admissionhands.com";
@@ -203,6 +204,26 @@ const words = (s: string) =>
     .filter((w) => w && !STOP.has(w))
     .map((w) => FOLD[w] ?? w);
 
+/**
+ * How people shorten what our addresses spell out (2026-11-12): "cg neet pg counselling", "uk neet pg counselling",
+ * "neet pg 3rd round", "fees of afmc pune" led the review with no page found. States by their short names (uk only
+ * beside neet or pg — it is also the United Kingdom), ordinals as numbers, colleges by their initials.
+ */
+const STATE_SHORT: Record<string, string> = {
+  cg: "chhattisgarh", mp: "madhya pradesh", up: "uttar pradesh", tn: "tamil nadu", ap: "andhra pradesh", wb: "west bengal",
+  jk: "jammu and kashmir", hp: "himachal pradesh", mh: "maharashtra", tg: "telangana", rj: "rajasthan", gj: "gujarat",
+  pb: "punjab", hr: "haryana", od: "odisha", orissa: "odisha", pondy: "pondicherry", puducherry: "pondicherry",
+};
+function spellOut(query: string): string {
+  const pgSearch = /\b(neet|pg)\b/i.test(query);
+  return query
+    .toLowerCase()
+    .replace(/\b(\d)(st|nd|rd|th)\b/g, "$1")
+    .split(/\s+/)
+    .map((w) => (w === "uk" ? (pgSearch ? "uttarakhand" : w) : STATE_SHORT[w] ?? COLLEGE_ACRONYM[w] ?? w))
+    .join(" ");
+}
+
 /** The closest page in our sitemap for a search we are not shown for — a guess, labelled as one. */
 async function closestPage(query: string, paths: string[]): Promise<string | null> {
   // A PG search lands only on a PG page, an MBBS search only on an MBBS page.
@@ -219,7 +240,7 @@ async function closestPage(query: string, paths: string[]): Promise<string | nul
   // A search about the journey (documents, a counsellor, open states, a refund…) that no page names goes to the page for
   // that stage, not to whichever college or state shares one word with it.
   const stage = JOURNEY_HUBS.find(([re]) => re.test(query));
-  const q = words(query).filter((w) => !GENERIC.includes(w));
+  const q = words(spellOut(query)).filter((w) => !GENERIC.includes(w));
   if (!q.length) return stage && (pg || !ug) ? stage[1] : null;
   let best: { path: string; score: number } | null = null;
   for (const p of paths) {
@@ -230,6 +251,12 @@ async function closestPage(query: string, paths: string[]): Promise<string | nul
   }
   if (best && best.score >= 0.6) return best.path;
   if (stage && (pg || !ug)) return stage[1];
+  // "neet pg 3rd round": the running year's counselling hub, which links every round (later rounds are not in the
+  // sitemap until they are the next one awaited).
+  if (/\b(round|r[1-4]|mop ?up|stray)\b/i.test(query) && (pg || !ug)) {
+    const yearHub = paths.filter((p) => /^\/neet-pg-counselling\/\d{4}$/.test(p)).sort().pop();
+    if (yearHub) return yearHub;
+  }
   // No page names the search's own words: the hub that answers its kind of question, if one does.
   const hub = HUBS.find(([re, level]) => re.test(query) && (level === "any" || (level === "pg" ? pg || !ug : ug)));
   return hub ? hub[2] : null;
@@ -248,7 +275,7 @@ const JOURNEY_HUBS: [RegExp, string][] = [
   [/\b(documents?|certificates?|allotment letter|document verification|reporting|joining)\b|kagaz/i, "/neet-pg-documents"],
   [/\b(in ?service|service quota|sponsored seats?|govt doctors?)\b/i, "/neet-pg-in-service-quota"],
   [/\b(open states?|domicile|other state|outside state|non.?domicile)\b/i, "/neet-pg-open-states"],
-  [/\b(state quota|aiq vs|eligibility|eligible|fmge?|foreign medical)\b/i, "/neet-pg-counselling-kaise-hoti-hai"],
+  [/\b(state quota|aiq vs|all india quota|eligibility|eligible|fmge?|foreign medical)\b/i, "/neet-pg-counselling-kaise-hoti-hai"],
   [/\b(security deposit|refund|registration fee)/i, "/neet-pg-choice-filling"],
   [/\b(equivalent|equal to md|dnb kya|what is dnb|dnb degree|difference between dnb|dnb vs|vs dnb|dnb or md|md or dnb|dnb quota)\b/i, "/md-vs-dnb"],
   [/\b(seat increase|seats increase|increase in (pg|neet pg)? ?seats|new pg seats|nmc (approved|recogni[sz]ed)|newly added|added seats)\b/i, "/neet-pg-seat-increase"],
@@ -320,7 +347,7 @@ export async function runResearch(limit?: number): Promise<{ researched: number;
     SELECT query, times_seen FROM serp_suggest
      WHERE researched_on IS NULL OR researched_on < current_date - 21
      ORDER BY times_seen DESC, last_seen DESC LIMIT 200`)) as unknown as { query: string; times_seen: number }[];
-  const gaps = sugRows.filter((s) => !recent.has(s.query) && !((gsc.get(s.query)?.position ?? 99) <= 20) && !(focus && ugOnly(s.query)));
+  const gaps = sugRows.filter((s) => worthStudying(s.query) && !recent.has(s.query) && !((gsc.get(s.query)?.position ?? 99) <= 20) && !(focus && ugOnly(s.query)));
 
   const nGsc = Math.min(opps.length, Math.ceil(budget / 2));
   const nSug = Math.min(gaps.length, budget - nGsc);
