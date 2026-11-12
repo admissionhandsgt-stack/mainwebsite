@@ -64,6 +64,11 @@ export default function ClickTracker() {
         aaTrack("telegram_click", { placement, source_page });
         return trackEvent("telegram_click", { placement, source_page });
       }
+      // Google "Preferred Sources" button (footer, "Reviewed by" line): how many readers go to pick us.
+      if (host === "www.google.com" && url.pathname === "/preferences/source") {
+        aaTrack("preferred_source_click", { placement, source_page });
+        return trackEvent("preferred_source_click", { placement, source_page });
+      }
       if (host === "wa.me" || host.endsWith("whatsapp.com") || (host === window.location.hostname && url.pathname.startsWith("/chat/"))) {
         return both("whatsapp_click");
       }

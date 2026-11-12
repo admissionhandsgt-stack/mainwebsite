@@ -1288,6 +1288,19 @@ export const PAGE_COPY = {
       heading: { label: "Heading (blank hides the block)", value: "Related searches" },
     },
   },
+  // Google "Preferred Sources" (2026-11-12, owner: "isko kardo"). A reader who picks the site as a preferred source sees it
+  // more often in Top Stories, AI Overviews and AI Mode (developers.google.com/search/docs/appearance/preferred-sources).
+  // A plain deeplink — no Google script, nothing on the page's speed; our own badge, which Google allows. Checked: Google's
+  // source tool lists "Admission Hands — admissionhands.com".
+  "site.preferred_source": {
+    group: "Site: Google preferred source button",
+    fields: {
+      domain: { label: "The site's domain, as Google's source tool knows it", value: "admissionhands.com" },
+      footer: { label: "Footer button (blank hides it)", value: "Add us on Google" },
+      footer_hint: { label: "Footer button, hover text", value: "Pick AdmissionHands as a preferred source and Google shows our updates to you more often in Top Stories and AI answers." },
+      reviewer: { label: "Link beside 'Reviewed by' on data pages (blank hides it)", value: "Add us as a preferred source on Google" },
+    },
+  },
   "site.reviewer": {
     group: "Site: reviewer on data pages",
     fields: {

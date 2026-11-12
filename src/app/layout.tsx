@@ -130,6 +130,8 @@ export default async function RootLayout({
   // Signed in but stopped before the questions that decide their list — the
   // shell shows a "finish your profile" pop-up.
   const resumeProfile = siteUser?.verified ? await profileIncomplete(siteUser.id) : false
+  // Google "Preferred Sources" button in the footer (lib/pageCopyDefaults.ts "site.preferred_source").
+  const preferred = isAdmin ? null : await pageCopy('site.preferred_source').catch(() => null)
 
   return (
     <html lang="en" className={`${jakarta.variable} ${inter.variable} ${figtree.variable}`} suppressHydrationWarning>
@@ -217,6 +219,11 @@ export default async function RootLayout({
                 youtube: setting(settings, 'social.youtube'),
                 google: setting(settings, 'social.google'),
               }}
+              preferredSource={
+                preferred?.footer && preferred.domain
+                  ? { url: `https://www.google.com/preferences/source?q=${encodeURIComponent(preferred.domain)}`, label: preferred.footer, hint: preferred.footer_hint }
+                  : undefined
+              }
               teamFigures={{
                 students: setting(settings, 'page.services.figures.students'),
                 years: setting(settings, 'page.services.figures.years'),

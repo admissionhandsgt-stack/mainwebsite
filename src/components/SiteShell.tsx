@@ -17,6 +17,12 @@ import SiteSearch from '@/components/SiteSearch';
 import { TeamFiguresProvider, type TeamFigures } from '@/components/engage/TeamFigures';
 import { TelegramProvider, type TelegramCopy } from '@/components/engage/TelegramLink';
 
+export interface PreferredSource {
+  url: string;
+  label: string;
+  hint?: string;
+}
+
 export interface SocialLinks {
   facebook?: string;
   instagram?: string;
@@ -39,6 +45,8 @@ interface SiteShellProps {
   headerCtaLabel?: string;
   showThemeToggle?: boolean;
   social?: SocialLinks;
+  /** Google's "preferred source" deeplink for the footer, from the admin's copy (blank label hides it). */
+  preferredSource?: PreferredSource;
   alertsEnabled?: boolean;
   /** The active notices, read on the server. Empty means no bar and no gap for one. */
   alerts?: BarAlert[];
@@ -59,6 +67,7 @@ export default function SiteShell({
   headerCtaLabel,
   showThemeToggle = true,
   social,
+  preferredSource,
   alertsEnabled = true,
   alerts = [],
   telegram,
@@ -107,6 +116,7 @@ export default function SiteShell({
         quickLinks={footerQuick}
         tagline={footerTagline}
         social={social}
+        preferredSource={preferredSource}
       />
       <ClickTracker />
       <WebVitals />

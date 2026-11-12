@@ -2235,6 +2235,14 @@ read a document.
 
 ## Search Console tactics from the owner's reels (2026-11-10)
 
+**Google "Preferred Sources" (2026-11-12, owner: "isko kardo").** A reader who picks the site as a preferred source sees it
+more often in Top Stories, AI Overviews and AI Mode (Search Central: appearance/preferred-sources); a personal signal, not a
+ranking boost for everyone. A plain deeplink `https://www.google.com/preferences/source?q=admissionhands.com` (Google's source
+tool lists "Admission Hands — admissionhands.com", checked) — no `publisher.js` script, our own star badge (Google allows its
+own design): a pill beside "Join on Telegram" in the footer and a link at the end of the "Reviewed by" line on data and college
+pages. Words: Admin → Content → "Site: Google preferred source button" (blank hides each). Clicks: `preferred_source_click`
+to GA4 and AutoLoom with `placement`. Use the same link in Telegram/WhatsApp posts.
+
 Owner shared SEO reels and said "1-5 done karo" (paid tools skipped). What was built, from 28 days of GSC (11 Oct – 7 Nov):
 
 - **Low CTR at page-1 positions.** Titles changed only where the template had not changed in the last two weeks (college,

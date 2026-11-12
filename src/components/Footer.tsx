@@ -1,6 +1,6 @@
 "use client";
 import React from 'react';
-import { Mail, Phone, MapPin, ArrowRight, Instagram, Facebook, Youtube, ChevronDown } from 'lucide-react';
+import { Mail, Phone, MapPin, ArrowRight, Instagram, Facebook, Youtube, ChevronDown, Star } from 'lucide-react';
 import Link from "@/components/ui/Link";
 import Image from 'next/image';
 import MobileFooter from './MobileFooter';
@@ -9,7 +9,7 @@ import { useContactInfo } from '@/hooks/useContactInfo';
 import { TelegramIcon } from '@/components/icons/TelegramIcon';
 import { useTelegram } from '@/components/engage/TelegramLink';
 import type { NavItem } from '@/lib/content';
-import type { SocialLinks } from './SiteShell';
+import type { PreferredSource, SocialLinks } from './SiteShell';
 
 /**
  * The footer (rebuilt 2026-10-21, owner: "professional website honi chahiye").
@@ -56,6 +56,7 @@ interface FooterProps {
   quickLinks?: NavItem[];
   tagline?: string;
   social?: SocialLinks;
+  preferredSource?: PreferredSource;
 }
 
 type Column = { id: number; label: string; links: NavItem[] };
@@ -71,7 +72,7 @@ function columnsOf(items: NavItem[]): Column[] {
 
 const linkProps = (l: NavItem) => (l.newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {});
 
-const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social }) => {
+const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social, preferredSource }) => {
   const currentYear = new Date().getFullYear();
   const { contactInfo } = useContactInfo();
   const telegram = useTelegram();
@@ -141,6 +142,19 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social })
                 >
                   <TelegramIcon size={16} className="text-[#229ED9]" /> Join on Telegram
                 </a>
+                {/* Google "Preferred Sources" (2026-11-12): a plain deeplink to Google's source tool — no Google script. */}
+                {preferredSource && (
+                  <a
+                    href={preferredSource.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-placement="footer"
+                    title={preferredSource.hint || undefined}
+                    className="inline-flex h-11 items-center gap-2 whitespace-nowrap rounded-xl border border-border bg-card px-3.5 text-[13px] font-semibold text-foreground transition-colors hover:border-primary/40 lg:h-10"
+                  >
+                    <Star size={16} className="h-4 w-4 fill-amber-400 text-amber-500" aria-hidden="true" /> {preferredSource.label}
+                  </a>
+                )}
               </div>
             </div>
 

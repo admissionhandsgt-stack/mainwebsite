@@ -16,7 +16,11 @@ const SITE = "https://www.admissionhands.com";
  */
 export default async function ReviewedBy() {
   const path = await currentPath();
-  const [copy, dates] = await Promise.all([pageCopy("site.reviewer", {}), getPageDates().catch(() => ({}) as Record<string, string>)]);
+  const [copy, dates, preferred] = await Promise.all([
+    pageCopy("site.reviewer", {}),
+    getPageDates().catch(() => ({}) as Record<string, string>),
+    pageCopy("site.preferred_source", {}).catch(() => null),
+  ]);
   const date = path ? (dates as Record<string, string>)[path] ?? null : null;
   if (!copy.name) return null;
   const href = copy.link?.startsWith("/") ? copy.link : null;
@@ -64,6 +68,21 @@ export default async function ReviewedBy() {
           <Link href="/how-we-check-data" className="underline-offset-2 hover:text-primary hover:underline">
             {copy.method}
           </Link>
+        </>
+      )}
+      {/* Google "Preferred Sources" (2026-11-12): readers of a data page are the ones who come back for its figures. */}
+      {preferred?.reviewer && preferred.domain && (
+        <>
+          <span aria-hidden="true">·</span>
+          <a
+            href={`https://www.google.com/preferences/source?q=${encodeURIComponent(preferred.domain)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-placement="reviewed_by"
+            className="underline-offset-2 hover:text-primary hover:underline"
+          >
+            {preferred.reviewer}
+          </a>
         </>
       )}
       {node && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(node) }} />}
