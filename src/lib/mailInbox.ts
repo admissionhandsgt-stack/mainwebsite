@@ -36,6 +36,7 @@ export async function checkReplies(): Promise<{ read: number; replied: number; b
   const lastUid = Number(await getIntegration("outreach.imap_uid")) || 0;
   let maxUid = lastUid;
   let read = 0;
+  let unreadable = 0;
   const hits: { t: Target; kind: "replied" | "bounced"; note: string }[] = [];
 
   try {
@@ -58,20 +59,28 @@ export async function checkReplies(): Promise<{ read: number; replied: number; b
   }
   const lock = await imapTimeout(client.getMailboxLock("INBOX"), 20_000, "open INBOX");
   try {
-    // First run: the last 30 days. After that, every message after the last one seen.
-    const range = lastUid ? `${lastUid + 1}:*` : { since: new Date(Date.now() - 30 * 86_400_000) };
-    // The whole read in at most a minute (2026-11-12: it hung for hours with no error).
-    await imapTimeout((async () => {
-    for await (const m of client.fetch(range, { uid: true, envelope: true }, { uid: Boolean(lastUid) })) {
-      if (m.uid <= lastUid) continue; // "N:*" always returns the newest message, even when it is older
+    // First run: the last 30 days. After that, every message after the last one seen. The UIDs first, then one message
+    // at a time with its own timeout (2026-11-12: one FETCH over the range stopped answering and the job hung for hours) —
+    // a message the server will not give within 15 s is skipped and counted, never waited on.
+    const uids = await imapTimeout(
+      client.search(lastUid ? { uid: `${lastUid + 1}:*` } : { since: new Date(Date.now() - 30 * 86_400_000) }, { uid: true }),
+      20_000,
+      "search",
+    );
+    for (const uid of (uids || []).filter((u) => u > lastUid).sort((a, b) => a - b).slice(0, 200)) {
+      maxUid = Math.max(maxUid, uid);
+      const m = await imapTimeout(client.fetchOne(String(uid), { uid: true, envelope: true }, { uid: true }), 15_000, `fetch ${uid}`).catch(() => null);
+      if (!m) {
+        unreadable++;
+        continue;
+      }
       read++;
-      maxUid = Math.max(maxUid, m.uid);
       const from = (m.envelope?.from?.[0]?.address ?? "").toLowerCase();
       const subject = (m.envelope?.subject ?? "").slice(0, 200);
       if (!from) continue;
       if (/^(mailer-daemon|postmaster)@/.test(from) || /undeliver|delivery status|failure notice|returned mail/i.test(subject)) {
         // A bounce names the address it could not reach; read its text to find which of ours.
-        const full = await client.fetchOne(String(m.uid), { source: true }, { uid: true });
+        const full = await imapTimeout(client.fetchOne(String(uid), { source: true }, { uid: true }), 20_000, `source ${uid}`).catch(() => null);
         const text = full && full.source ? full.source.toString("utf8").slice(0, 200_000).toLowerCase() : "";
         for (const t of targets) if (text.includes(t.email.toLowerCase())) hits.push({ t, kind: "bounced", note: subject || "delivery failed" });
         continue;
@@ -80,7 +89,6 @@ export async function checkReplies(): Promise<{ read: number; replied: number; b
       const sameOrg = byDomain.get(from.split("@")[1] ?? "") ?? [];
       for (const t of exact ? [exact] : sameOrg) hits.push({ t, kind: "replied", note: subject });
     }
-    })(), 60_000, "fetch");
   } finally {
     lock.release();
     await imapTimeout(client.logout(), 10_000, "logout").catch(() => client.close());
@@ -107,5 +115,5 @@ export async function checkReplies(): Promise<{ read: number; replied: number; b
     if (h.kind === "replied") replied++;
     else bounced++;
   }
-  return { read, replied, bounced };
+  return { read, replied, bounced, ...(unreadable ? { skipped: `${read} read, ${unreadable} the server would not return within 15 s, ${replied} replied, ${bounced} bounced` } : {}) };
 }
