@@ -141,7 +141,7 @@ const Testimonials = ({
                   <p className="text-[12px] md:text-[11.5px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">{t.course}</p>
                   <div className="mt-1 flex items-center gap-1.5">
                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                    <p className="text-[12px] md:text-[11.5px] text-emerald-600 dark:text-emerald-400 font-black uppercase tracking-widest">{t.outcome}</p>
+                    <p className="text-[12px] md:text-[11.5px] text-accent dark:text-emerald-400 font-black uppercase tracking-widest">{t.outcome}</p>
                   </div>
                 </div>
               </div>
