@@ -146,6 +146,10 @@ export default async function RootLayout({
         {!isAdmin && /^[A-F0-9]{32}$/i.test(setting(settings, 'seo.verify.bing').trim()) && (
           <meta name="msvalidate.01" content={setting(settings, 'seo.verify.bing').trim()} />
         )}
+        {/* Ahrefs Webmaster Tools' ownership check (2026-11-12), same rules: public code, only its own shape. */}
+        {!isAdmin && /^[a-f0-9]{64}$/i.test(setting(settings, 'seo.verify.ahrefs').trim()) && (
+          <meta name="ahrefs-site-verification" content={setting(settings, 'seo.verify.ahrefs').trim()} />
+        )}
         {/* AutoLoom Analytics, beside GA4. The write key is the public browser key.
             Not on the admin host: staff sessions are not visitors, and admin URLs
             name individual leads.

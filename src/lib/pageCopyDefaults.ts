@@ -4440,6 +4440,7 @@ export const SOCIAL_SETTINGS: { key: string; label: string; value: string }[] = 
  */
 export const VERIFY_SETTINGS: { key: string; label: string }[] = [
   { key: "seo.verify.bing", label: "Bing Webmaster Tools code (the content of the msvalidate.01 meta tag)" },
+  { key: "seo.verify.ahrefs", label: "Ahrefs Webmaster Tools code (the content of the ahrefs-site-verification meta tag, 64 letters/digits)" },
   {
     key: "analytics.meta_pixel.id",
     label: "Meta pixel (dataset) ID, digits only (Events Manager → Datasets). Blank: the pixel is off.",
