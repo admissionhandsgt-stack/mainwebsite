@@ -44,7 +44,7 @@ export default function TopMedicalInstitutes({ initialColleges }: TopMedicalInst
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 mb-4 text-[13px] sm:text-xs font-black tracking-widest text-cyan-600 uppercase bg-cyan-50 border border-cyan-100 rounded-full shadow-sm"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 mb-4 text-[13px] sm:text-xs font-black tracking-widest text-primary-strong uppercase bg-cyan-50 border border-cyan-100 rounded-full shadow-sm"
           >
             <Sparkles className="w-3 h-3" />
             Top Tier Medical Institutes
@@ -56,7 +56,7 @@ export default function TopMedicalInstitutes({ initialColleges }: TopMedicalInst
             transition={{ delay: 0.1 }}
             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 leading-[1.1] tracking-tight mb-4"
           >
-            Discover India&apos;s <span className="text-cyan-600">Finest</span> <br className="hidden sm:block" /> Medical Colleges
+            Discover India&apos;s <span className="text-primary-strong">Finest</span> <br className="hidden sm:block" /> Medical Colleges
           </motion.h2>
         </div>
 
@@ -120,7 +120,7 @@ export default function TopMedicalInstitutes({ initialColleges }: TopMedicalInst
                 </div>
 
                 <div className="p-5 flex flex-col flex-grow relative z-10">
-                  <h3 className="text-base font-black text-slate-900 leading-tight mb-3 group-hover:text-cyan-600 transition-colors line-clamp-2">
+                  <h3 className="text-base font-black text-slate-900 leading-tight mb-3 group-hover:text-primary-strong transition-colors line-clamp-2">
                     {college.college_name}
                   </h3>
 

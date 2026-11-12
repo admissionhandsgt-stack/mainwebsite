@@ -111,11 +111,11 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
             viewport={{ once: true }}
             className="text-center mb-8"
           >
-            <div className="inline-block px-3 py-1 mb-3 text-[11px] font-black tracking-widest text-cyan-600 dark:text-cyan-400 uppercase bg-cyan-50 dark:bg-cyan-950/40 rounded-full">
+            <div className="inline-block px-3 py-1 mb-3 text-[11px] font-black tracking-widest text-primary-strong dark:text-cyan-400 uppercase bg-cyan-50 dark:bg-cyan-950/40 rounded-full">
               OUR STORY
             </div>
             <h2 className="text-2xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight mb-3">
-              Built by Obsession. <span className="text-cyan-600 dark:text-cyan-400">Proven by Results.</span>
+              Built by Obsession. <span className="text-primary-strong dark:text-cyan-400">Proven by Results.</span>
             </h2>
           </motion.div>
 
@@ -150,12 +150,12 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
             >
               <h3 className="text-lg font-black text-slate-900 dark:text-white tracking-tight mb-1">What Makes Us Different</h3>
               {[
-                { icon: Brain, text: "Every seat scored against the round it actually closed in — never an estimate", color: "text-cyan-600 bg-cyan-50 dark:text-cyan-400 dark:bg-cyan-950/40" },
+                { icon: Brain, text: "Every seat scored against the round it actually closed in — never an estimate", color: "text-primary-strong bg-cyan-50 dark:text-cyan-400 dark:bg-cyan-950/40" },
                 { icon: Target, text: "Named, dedicated counsellor from NEET score release to college reporting", color: "text-emerald-600 bg-emerald-50 dark:text-emerald-400 dark:bg-emerald-950/20" },
                 { icon: BarChart3, text: "2.7 lakh published closing ranks, across every college in the counselling", color: "text-teal-600 bg-teal-50 dark:text-teal-400 dark:bg-teal-950/20" },
                 { icon: FileCheck, text: "Every document checked against your state's list before you report", color: "text-amber-600 bg-amber-50 dark:text-amber-400 dark:bg-amber-950/20" },
                 { icon: Shield, text: "Round-by-round seat upgrade strategy with real-time decision support", color: "text-rose-600 bg-rose-50 dark:text-rose-400 dark:bg-rose-950/20" },
-                { icon: Zap, text: "Parallel AIQ + State Quota management to maximize allotment probability", color: "text-cyan-600 bg-cyan-50 dark:text-cyan-400 dark:bg-cyan-950/20" },
+                { icon: Zap, text: "Parallel AIQ + State Quota management to maximize allotment probability", color: "text-primary-strong bg-cyan-50 dark:text-cyan-400 dark:bg-cyan-950/20" },
               ].map((item, idx) => (
                 <div key={idx} className="flex items-start gap-3">
                   <div className={`w-8 h-8 rounded-lg ${item.color} flex items-center justify-center shrink-0 mt-0.5`}>
@@ -182,7 +182,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
               WHAT WE DELIVER
             </div>
             <h2 className="text-2xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight mb-3">
-              End-to-End <span className="text-cyan-600 dark:text-cyan-400">Admission Intelligence</span>
+              End-to-End <span className="text-primary-strong dark:text-cyan-400">Admission Intelligence</span>
             </h2>
             <p className="text-sm text-slate-600 dark:text-slate-400 font-semibold max-w-2xl mx-auto">
               From the moment your NEET score drops to the day you walk into your college — we architect every step.
@@ -261,7 +261,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
               THE ADMISSION HANDS EDGE
             </div>
             <h2 className="text-2xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight mb-3">
-              Why <span className="text-cyan-600 dark:text-cyan-400">{team.students} Families</span> Chose Us
+              Why <span className="text-primary-strong dark:text-cyan-400">{team.students} Families</span> Chose Us
             </h2>
             <p className="text-sm text-slate-600 dark:text-slate-400 font-semibold max-w-2xl mx-auto">
               In a landscape filled with noise, here&apos;s what sets us apart — and why families come back year after year.
@@ -393,7 +393,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
               OUR PROCESS
             </div>
             <h2 className="text-2xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight mb-3">
-              From First Call to <span className="text-cyan-600 dark:text-cyan-400">College Reporting</span>
+              From First Call to <span className="text-primary-strong dark:text-cyan-400">College Reporting</span>
             </h2>
           </motion.div>
 
@@ -471,12 +471,12 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
                 <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider mb-2">Get In Touch</h3>
                 
                 <div className="flex items-start gap-3">
-                  <div className="bg-cyan-50 dark:bg-cyan-950/20 p-2 rounded-lg text-cyan-600 shrink-0">
+                  <div className="bg-cyan-50 dark:bg-cyan-950/20 p-2 rounded-lg text-primary-strong shrink-0">
                     <Phone className="h-4 w-4" />
                   </div>
                   <div>
                     <h4 className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Phone</h4>
-                    <a href={`tel:${CONTACT_INFO.phone}`} className="text-xs md:text-sm font-black text-slate-800 dark:text-slate-200 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
+                    <a href={`tel:${CONTACT_INFO.phone}`} className="text-xs md:text-sm font-black text-slate-800 dark:text-slate-200 hover:text-primary-strong dark:hover:text-cyan-400 transition-colors">
                       {CONTACT_INFO.phone}
                     </a>
                   </div>
@@ -488,7 +488,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
                   </div>
                   <div>
                     <h4 className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Email</h4>
-                    <a href={`mailto:${CONTACT_INFO.email}`} className="text-xs md:text-sm font-black text-slate-800 dark:text-slate-200 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
+                    <a href={`mailto:${CONTACT_INFO.email}`} className="text-xs md:text-sm font-black text-slate-800 dark:text-slate-200 hover:text-primary-strong dark:hover:text-cyan-400 transition-colors">
                       {CONTACT_INFO.email}
                     </a>
                   </div>

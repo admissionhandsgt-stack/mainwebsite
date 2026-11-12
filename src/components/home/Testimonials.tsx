@@ -79,7 +79,7 @@ const Testimonials = ({
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            className="inline-block px-4 py-1.5 mb-4 text-[11.5px] font-black tracking-[0.2em] text-cyan-600 dark:text-cyan-400 uppercase bg-cyan-600/10 dark:bg-cyan-900/20 rounded-full"
+            className="inline-block px-4 py-1.5 mb-4 text-[11.5px] font-black tracking-[0.2em] text-primary-strong dark:text-cyan-400 uppercase bg-cyan-600/10 dark:bg-cyan-900/20 rounded-full"
           >
             {text.eyebrow}
           </motion.span>
@@ -90,7 +90,7 @@ const Testimonials = ({
             transition={{ delay: 0.1 }}
             className="text-responsive-h2 text-slate-900 dark:text-white mb-4"
           >
-            {text.title} <span className="text-cyan-600 dark:text-cyan-400">{text.titleAccent}</span>
+            {text.title} <span className="text-primary-strong dark:text-cyan-400">{text.titleAccent}</span>
           </motion.h2>
           <p className="text-responsive-body text-slate-600 dark:text-slate-400 max-w-2xl mx-auto font-medium">
             {text.subtitle}

@@ -49,7 +49,7 @@ export const PGDocumentChecklist = ({ items: fromCms }: { items?: PgDocument[] |
         <motion.div initial={mounted ? { opacity: 0, y: 15 } : false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
           <span className="inline-block text-xs font-black tracking-widest text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40 px-4 py-1.5 rounded-full mb-4">DOCUMENT READINESS</span>
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white">
-            Essential Documents for <span className="text-cyan-600 dark:text-cyan-400">NEET PG</span> Counselling
+            Essential Documents for <span className="text-primary-strong dark:text-cyan-400">NEET PG</span> Counselling
           </h2>
           <p className="text-sm md:text-base text-slate-500 dark:text-slate-400 mt-3 max-w-2xl mx-auto">Missing even one document can cost you your confirmed seat. Here is your complete checklist.</p>
         </motion.div>
@@ -58,7 +58,7 @@ export const PGDocumentChecklist = ({ items: fromCms }: { items?: PgDocument[] |
           {documents.map((doc, i) => (
             <motion.div key={i} initial={mounted ? { opacity: 0, y: 15 } : false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.05 }}
               className="bg-slate-50 dark:bg-slate-900 p-2.5 md:p-3.5 rounded-lg border border-slate-100 dark:border-slate-800 hover:border-cyan-200 dark:hover:border-cyan-800 transition flex items-start gap-2.5 md:gap-3">
-              <div className="w-5.5 h-5.5 rounded-full bg-cyan-50 dark:bg-cyan-950/40 text-cyan-600 dark:text-cyan-400 font-black text-[13px] md:text-xs flex items-center justify-center flex-shrink-0">{i + 1}</div>
+              <div className="w-5.5 h-5.5 rounded-full bg-cyan-50 dark:bg-cyan-950/40 text-primary-strong dark:text-cyan-400 font-black text-[13px] md:text-xs flex items-center justify-center flex-shrink-0">{i + 1}</div>
               <div className="min-w-0">
                 <p className="font-bold text-xs md:text-sm text-slate-900 dark:text-white leading-tight">{doc.name}</p>
                 <p className="text-[13px] md:text-xs text-slate-500 dark:text-slate-400 mt-0.5">{doc.note}</p>

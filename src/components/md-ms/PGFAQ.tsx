@@ -78,7 +78,7 @@ export const PGFAQ = ({ items: fromCms, copy }: { items?: FaqItem[]; copy?: FaqC
       <div className="container-custom max-w-4xl">
         {/* Header */}
         <div className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-widest bg-cyan-50 text-cyan-600 dark:bg-cyan-950/40 dark:text-cyan-400 mb-2">
+          <span className="inline-block px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-widest bg-cyan-50 text-primary-strong dark:bg-cyan-950/40 dark:text-cyan-400 mb-2">
             {text.eyebrow}
           </span>
           <h2 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-2 tracking-tight">
@@ -143,12 +143,12 @@ export const PGFAQ = ({ items: fromCms, copy }: { items?: FaqItem[]; copy?: FaqC
                         className="w-full text-left py-2 flex justify-between items-center gap-4 group focus:outline-none"
                         aria-expanded={isOpen}
                       >
-                        <span className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors leading-snug">
+                        <span className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white group-hover:text-primary-strong dark:group-hover:text-cyan-400 transition-colors leading-snug">
                           {item.question}
                         </span>
                         <ChevronDown
                           className={`w-3.5 h-3.5 text-slate-400 dark:text-slate-500 flex-shrink-0 transition-transform duration-200 ${
-                            isOpen ? "rotate-180 text-cyan-600" : ""
+                            isOpen ? "rotate-180 text-primary-strong" : ""
                           }`}
                         />
                       </button>

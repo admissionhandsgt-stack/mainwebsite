@@ -29,7 +29,7 @@ export const MBBSEligibilityInfo = ({ data = mbbsData }: { data?: MbbsContent } 
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-50 dark:bg-cyan-950/40 border border-cyan-100/50 dark:border-cyan-900/30 text-cyan-600 dark:text-cyan-400 text-[11.5px] font-black tracking-widest uppercase mb-4"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-50 dark:bg-cyan-950/40 border border-cyan-100/50 dark:border-cyan-900/30 text-primary-strong dark:text-cyan-400 text-[11.5px] font-black tracking-widest uppercase mb-4"
           >
             <ShieldCheck className="w-3.5 h-3.5" /> Admission Prerequisites
           </motion.div>
@@ -171,7 +171,7 @@ export const MBBSEligibilityInfo = ({ data = mbbsData }: { data?: MbbsContent } 
                     transition={{ delay: idx * 0.1 + 0.1 }}
                     className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-cyan-200 dark:hover:border-cyan-900/60 transition-all duration-300 group flex items-start gap-5"
                   >
-                    <div className="w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-950 flex items-center justify-center shrink-0 group-hover:bg-cyan-50 dark:group-hover:bg-cyan-950/20 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors text-slate-400 dark:text-slate-500">
+                    <div className="w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-950 flex items-center justify-center shrink-0 group-hover:bg-cyan-50 dark:group-hover:bg-cyan-950/20 group-hover:text-primary-strong dark:group-hover:text-cyan-400 transition-colors text-slate-400 dark:text-slate-500">
                       <InsightIcon className="w-6 h-6" />
                     </div>
                     <div>

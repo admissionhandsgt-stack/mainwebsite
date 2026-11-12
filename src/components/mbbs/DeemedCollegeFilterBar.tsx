@@ -36,7 +36,7 @@ export function DeemedCollegeFilterBar({
         <div className="mb-3">
           <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Search className="h-4 w-4 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
+              <Search className="h-4 w-4 text-slate-400 group-focus-within:text-primary-strong transition-colors" />
             </div>
             <input
               type="text"
@@ -137,7 +137,7 @@ export function DeemedCollegeFilterBar({
         {/* Count */}
         <div className="mt-2 flex items-center gap-2">
           <span className="text-cyan-700 text-xs font-black">{totalCount}</span>
-          <span className="text-cyan-600 text-[11.5px] font-bold uppercase tracking-wider">Colleges found</span>
+          <span className="text-primary-strong text-[11.5px] font-bold uppercase tracking-wider">Colleges found</span>
         </div>
       </div>
     </div>

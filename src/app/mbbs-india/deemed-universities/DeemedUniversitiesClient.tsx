@@ -154,14 +154,14 @@ export default function DeemedUniversitiesClient({ heroImages, phoneNumber = "+9
           <div className="container-custom relative z-10">
             <div className="text-center mb-8">
               <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                className="inline-block px-4 py-1.5 mb-4 text-[11.5px] font-black tracking-widest text-cyan-600 uppercase bg-cyan-600/10 rounded-full"
+                className="inline-block px-4 py-1.5 mb-4 text-[11.5px] font-black tracking-widest text-primary-strong uppercase bg-cyan-600/10 rounded-full"
               >
                 What Makes Them Special
               </motion.div>
               <motion.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
                 className="text-responsive-h2 text-slate-900 mb-3"
               >
-                Understanding <span className="text-cyan-600">Deemed Universities</span>
+                Understanding <span className="text-primary-strong">Deemed Universities</span>
               </motion.h2>
               <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
                 className="text-responsive-body text-slate-500 max-w-2xl mx-auto font-medium"
@@ -212,7 +212,7 @@ export default function DeemedUniversitiesClient({ heroImages, phoneNumber = "+9
               <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-6 lg:gap-10 items-center">
                 <div>
                   <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                    className="inline-flex items-center gap-2 px-3 py-1.5 mb-5 text-[11.5px] font-black tracking-widest text-cyan-600 uppercase bg-cyan-50 border border-cyan-100 rounded-full"
+                    className="inline-flex items-center gap-2 px-3 py-1.5 mb-5 text-[11.5px] font-black tracking-widest text-primary-strong uppercase bg-cyan-50 border border-cyan-100 rounded-full"
                   >
                     <Sparkles className="w-3.5 h-3.5" /> Direct Support
                   </motion.div>
@@ -252,7 +252,7 @@ export default function DeemedUniversitiesClient({ heroImages, phoneNumber = "+9
                       <motion.div key={idx} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 + (idx * 0.1) }}
                         className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-white transition-colors duration-300"
                       >
-                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-white flex items-center justify-center text-cyan-600 border border-slate-100 shadow-sm shrink-0">
+                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-white flex items-center justify-center text-primary-strong border border-slate-100 shadow-sm shrink-0">
                           <s.icon className="w-4 h-4" />
                         </div>
                         <div className="pt-0.5">

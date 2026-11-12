@@ -8,7 +8,7 @@ import { Calendar, ArrowRight, FileSearch, ClipboardList, BarChart3, MousePointe
 
 const stepIcons = [FileSearch, BarChart3, ClipboardList, MousePointerClick, Trophy, Building2];
 const stepColors = [
-  { bg: "bg-cyan-600", light: "bg-cyan-50", border: "border-cyan-200", text: "text-cyan-600", shadow: "shadow-cyan-200" },
+  { bg: "bg-cyan-600", light: "bg-cyan-50", border: "border-cyan-200", text: "text-primary-strong", shadow: "shadow-cyan-200" },
   { bg: "bg-teal-600", light: "bg-teal-50", border: "border-teal-200", text: "text-teal-600", shadow: "shadow-teal-200" },
   { bg: "bg-teal-600", light: "bg-teal-50", border: "border-teal-200", text: "text-teal-600", shadow: "shadow-teal-200" },
   { bg: "bg-teal-600", light: "bg-teal-50", border: "border-teal-200", text: "text-teal-600", shadow: "shadow-teal-200" },
@@ -31,7 +31,7 @@ export const AdmissionProcess = ({ data = mbbsData }: { data?: MbbsContent } = {
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mb-12">
           <div>
             <h2 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-tight mb-3">
-              Step-by-Step <span className="text-cyan-600 dark:text-cyan-400">Admission Journey</span>
+              Step-by-Step <span className="text-primary-strong dark:text-cyan-400">Admission Journey</span>
             </h2>
             <p className="text-sm text-slate-500 dark:text-slate-400 font-medium max-w-xl leading-relaxed">
               We&apos;ve simplified the complex admission cycle into 6 clear steps to keep you ahead of the competition.

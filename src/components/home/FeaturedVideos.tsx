@@ -95,7 +95,7 @@ export default function FeaturedVideos() {
           </div>
           <a
             href="/videos"
-            className="shrink-0 inline-flex items-center gap-2 text-sm font-black text-cyan-600 dark:text-cyan-400 uppercase tracking-widest hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors bg-white dark:bg-slate-900 border border-cyan-200 dark:border-cyan-800 rounded-xl px-5 py-3 shadow-sm hover:shadow-md hover:border-cyan-300 dark:hover:border-cyan-700"
+            className="shrink-0 inline-flex items-center gap-2 text-sm font-black text-primary-strong dark:text-cyan-400 uppercase tracking-widest hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors bg-white dark:bg-slate-900 border border-cyan-200 dark:border-cyan-800 rounded-xl px-5 py-3 shadow-sm hover:shadow-md hover:border-cyan-300 dark:hover:border-cyan-700"
           >
             View All →
           </a>
@@ -140,7 +140,7 @@ export default function FeaturedVideos() {
 
               <span className="absolute inset-0 flex items-center justify-center">
                 <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white/95 shadow-2xl transition-transform duration-300 group-hover:scale-110 md:h-20 md:w-20">
-                  <Play className="ml-1 h-7 w-7 fill-cyan-600 text-cyan-600 md:h-8 md:w-8" aria-hidden="true" />
+                  <Play className="ml-1 h-7 w-7 fill-cyan-600 text-primary-strong md:h-8 md:w-8" aria-hidden="true" />
                 </span>
               </span>
 
@@ -214,7 +214,7 @@ export default function FeaturedVideos() {
                     </div>
                   )}
                   <h4 className={`text-sm font-bold line-clamp-3 leading-snug transition-colors ${
-                    activeVideo?.id === video.id ? "text-cyan-900 dark:text-cyan-200" : "text-slate-900 dark:text-slate-100 group-hover:text-cyan-600 dark:group-hover:text-cyan-400"
+                    activeVideo?.id === video.id ? "text-cyan-900 dark:text-cyan-200" : "text-slate-900 dark:text-slate-100 group-hover:text-primary-strong dark:group-hover:text-cyan-400"
                   }`}>
                     {video.title || "Untitled"}
                   </h4>
@@ -230,7 +230,7 @@ export default function FeaturedVideos() {
             {videos.length > 4 && (
               <a
                 href="/videos"
-                className="mt-2 p-4 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 text-center text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:border-cyan-300 dark:hover:border-cyan-700 hover:bg-cyan-50 dark:hover:bg-cyan-950/20 transition-all"
+                className="mt-2 p-4 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 text-center text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-primary-strong dark:hover:text-cyan-400 hover:border-cyan-300 dark:hover:border-cyan-700 hover:bg-cyan-50 dark:hover:bg-cyan-950/20 transition-all"
               >
                 View {videos.length - 4} more videos
               </a>

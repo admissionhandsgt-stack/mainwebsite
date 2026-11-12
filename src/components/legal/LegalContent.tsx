@@ -70,7 +70,7 @@ function CopyableHeading({
       <button
         type="button"
         onClick={handleCopy}
-        className="absolute top-1/2 -translate-y-1/2 -left-6 opacity-0 group-hover:opacity-100 transition-opacity duration-150 text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400"
+        className="absolute top-1/2 -translate-y-1/2 -left-6 opacity-0 group-hover:opacity-100 transition-opacity duration-150 text-slate-400 hover:text-primary-strong dark:hover:text-cyan-400"
         aria-label={`Copy link to ${id}`}
       >
         <Link2 className="h-4 w-4" />
@@ -194,7 +194,7 @@ export default function LegalContent({ sections }: LegalContentProps) {
         // GFM autolinks a bare "www.admissionhands.com" as http://. Our own
         // address is always https — an http link here was an audit error.
         href={href?.replace(/^http:\/\/((www\.)?admissionhands\.com)/i, "https://$1")}
-        className="text-cyan-600 dark:text-cyan-400 underline"
+        className="text-primary-strong dark:text-cyan-400 underline"
         target="_blank"
         rel="noopener noreferrer"
       >

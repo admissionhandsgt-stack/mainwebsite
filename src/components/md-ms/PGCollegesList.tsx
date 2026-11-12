@@ -49,11 +49,11 @@ export const PGCollegesList = () => {
       <div className="container-custom max-w-7xl">
         {/* Header */}
         <div className="text-center mb-4">
-          <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-cyan-50 text-cyan-600 dark:bg-cyan-950/40 dark:text-cyan-400 text-[11px] font-black tracking-widest uppercase mb-1">
+          <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-cyan-50 text-primary-strong dark:bg-cyan-950/40 dark:text-cyan-400 text-[11px] font-black tracking-widest uppercase mb-1">
             <GraduationCap className="w-2.5 h-2.5" /> Verified Institutions
           </div>
           <h2 className="text-xl md:text-2xl lg:text-3xl font-black text-slate-900 dark:text-white tracking-tight mb-1">
-            Top PG Medical Colleges & <span className="text-cyan-600 dark:text-cyan-400">Deemed Universities</span>
+            Top PG Medical Colleges & <span className="text-primary-strong dark:text-cyan-400">Deemed Universities</span>
           </h2>
           <p className="text-slate-500 dark:text-slate-400 text-xs font-bold max-w-2xl mx-auto">
             Explore institutions based on demand, reputation, and counselling trends across India.
@@ -174,7 +174,7 @@ export const PGCollegesList = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 rounded-full bg-cyan-50 dark:bg-cyan-950/30 flex items-center justify-center">
-                    <Building2 className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
+                    <Building2 className="w-3.5 h-3.5 text-primary-strong dark:text-cyan-400" />
                   </div>
                   <span className="text-[11.5px] font-bold text-slate-500 dark:text-slate-400">Strategic choice filling support</span>
                 </div>
@@ -239,7 +239,7 @@ export const PGCollegesList = () => {
             <SearchX className="w-14 h-14 text-slate-200 dark:text-slate-800 mb-4" />
             <h3 className="text-xl font-black text-slate-800 dark:text-white mb-2">No matching institutions found</h3>
             <p className="text-slate-500 dark:text-slate-400 text-sm font-bold mb-6">Try adjusting your filters or talk to our experts.</p>
-            <Button onClick={clearFilters} variant="outline" className="rounded-xl px-6 border-cyan-200 dark:border-cyan-800 text-cyan-600 dark:text-cyan-400 font-bold hover:bg-slate-50 dark:hover:bg-slate-800">
+            <Button onClick={clearFilters} variant="outline" className="rounded-xl px-6 border-cyan-200 dark:border-cyan-800 text-primary-strong dark:text-cyan-400 font-bold hover:bg-slate-50 dark:hover:bg-slate-800">
               Reset Search
             </Button>
           </div>

@@ -109,7 +109,7 @@ export function CollegeCard({
       {/* Content — flex-1 so it grows naturally, no fixed height */}
       <div className="p-3 flex flex-col flex-1 gap-1.5 min-h-0">
         {/* College Name */}
-        <h3 className="text-[13px] sm:text-xs font-extrabold text-slate-900 dark:text-white leading-tight line-clamp-3 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
+        <h3 className="text-[13px] sm:text-xs font-extrabold text-slate-900 dark:text-white leading-tight line-clamp-3 group-hover:text-primary-strong dark:group-hover:text-cyan-400 transition-colors">
           {collegeName}
         </h3>
 
@@ -120,7 +120,7 @@ export function CollegeCard({
             <span className="leading-snug">{city ? `${city}, ` : ''}{state}</span>
           </div>
           {yearEstablished && (
-            <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-cyan-50/80 dark:bg-cyan-950/50 text-cyan-600 dark:text-cyan-400 text-[10.5px] font-black border border-cyan-200/40 dark:border-cyan-900/30 whitespace-nowrap shrink-0">
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-cyan-50/80 dark:bg-cyan-950/50 text-primary-strong dark:text-cyan-400 text-[10.5px] font-black border border-cyan-200/40 dark:border-cyan-900/30 whitespace-nowrap shrink-0">
               Est. {yearEstablished}
             </span>
           )}
@@ -138,7 +138,7 @@ export function CollegeCard({
         {universityBody && (
           <div className="text-[10.5px] text-slate-400 dark:text-slate-500 font-bold border-t border-slate-50 dark:border-slate-800/40 pt-1 flex items-center justify-between">
             <span className="uppercase tracking-wider shrink-0">Affiliation</span>
-            <span className="text-cyan-600 dark:text-cyan-400 font-extrabold max-w-[70%] text-right ml-1 leading-snug">{universityBody}</span>
+            <span className="text-primary-strong dark:text-cyan-400 font-extrabold max-w-[70%] text-right ml-1 leading-snug">{universityBody}</span>
           </div>
         )}
 

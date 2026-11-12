@@ -49,7 +49,7 @@ const COLORS = [
   "from-cyan-600 to-cyan-600",
 ];
 const STAT_ICONS: Record<string, { icon: React.ElementType; color: string }> = {
-  students: { icon: Users, color: "text-cyan-600" },
+  students: { icon: Users, color: "text-primary-strong" },
   ranks: { icon: TrendingUp, color: "text-emerald-600" },
   years: { icon: Clock, color: "text-teal-600" },
   states: { icon: Award, color: "text-amber-600" },
@@ -103,7 +103,7 @@ function ServiceCard({ service, show, hide, wide }: { service: Card; show: strin
         {/* Expandable features */}
         <button
           onClick={() => setExpanded(!expanded)}
-          className="flex items-center gap-1 text-[11.5px] font-black text-cyan-600 uppercase tracking-widest hover:text-cyan-800 transition-colors mb-2"
+          className="flex items-center gap-1 text-[11.5px] font-black text-primary-strong uppercase tracking-widest hover:text-cyan-800 transition-colors mb-2"
         >
           {expanded ? hide : show} Details
           {expanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
@@ -281,7 +281,7 @@ export default function ServicesClient({ heroImages, heroCredit, data, compare }
               initial={mounted ? { opacity: 0 } : false}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              className="inline-block px-3 py-1 mb-2 text-[11px] font-black tracking-widest text-cyan-600 uppercase bg-cyan-600/10 rounded-full"
+              className="inline-block px-3 py-1 mb-2 text-[11px] font-black tracking-widest text-primary-strong uppercase bg-cyan-600/10 rounded-full"
             >
               {copy.why_badge}
             </motion.div>
@@ -291,7 +291,7 @@ export default function ServicesClient({ heroImages, heroCredit, data, compare }
               viewport={{ once: true }}
               className="text-xl md:text-3xl font-black text-slate-900 tracking-tight mb-2"
             >
-              {copy.why_title} <span className="text-cyan-600">{copy.why_accent}</span> {copy.why_title_end}
+              {copy.why_title} <span className="text-primary-strong">{copy.why_accent}</span> {copy.why_title_end}
             </motion.h2>
             <p className="text-xs md:text-sm text-slate-600 font-semibold max-w-2xl mx-auto">
               {copy.why_intro}
@@ -343,7 +343,7 @@ export default function ServicesClient({ heroImages, heroCredit, data, compare }
               viewport={{ once: true }}
               className="text-xl md:text-3xl font-black text-slate-900 tracking-tight mb-2"
             >
-              {copy.services_title} <span className="text-cyan-600">{copy.services_accent}</span> {copy.services_title_end}
+              {copy.services_title} <span className="text-primary-strong">{copy.services_accent}</span> {copy.services_title_end}
             </motion.h2>
             <p className="text-xs md:text-sm text-slate-600 font-semibold max-w-2xl mx-auto">
               {copy.services_intro}
@@ -381,7 +381,7 @@ export default function ServicesClient({ heroImages, heroCredit, data, compare }
               viewport={{ once: true }}
               className="text-xl md:text-3xl font-black text-slate-900 tracking-tight mb-2"
             >
-              {copy.how_title} <span className="text-cyan-600">{copy.how_accent}</span>
+              {copy.how_title} <span className="text-primary-strong">{copy.how_accent}</span>
             </motion.h2>
             <p className="text-xs md:text-sm text-slate-600 font-semibold max-w-xl mx-auto">
               {copy.how_intro}

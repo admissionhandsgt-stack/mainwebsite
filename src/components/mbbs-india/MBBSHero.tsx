@@ -54,14 +54,14 @@ export const MBBSHero = ({ backgroundImageUrl, credit, data = mbbsData }: MBBSHe
           {/* Left Side Content - Original */}
           <div className="lg:col-span-8 space-y-4 md:space-y-6 text-center md:text-left pt-4 md:pt-0">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-cyan-600/5 dark:bg-cyan-950/30 border border-cyan-600/10 dark:border-cyan-900/30 rounded-full backdrop-blur-md self-center md:self-start">
-              <ShieldCheck className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
+              <ShieldCheck className="w-3.5 h-3.5 text-primary-strong dark:text-cyan-400" />
               <span className="text-cyan-900 dark:text-cyan-300 text-[11.5px] font-black uppercase tracking-widest">
                 Trusted, Data-Driven Guidance for AIQ & State Counselling
               </span>
             </div>
 
             <h1 className="text-responsive-h1 text-slate-900 dark:text-white">
-              MBBS <span className="text-cyan-600 dark:text-cyan-400">Admission</span> in India Made Simple
+              MBBS <span className="text-primary-strong dark:text-cyan-400">Admission</span> in India Made Simple
             </h1>
 
             {/* Promising Info - Minimal */}
@@ -83,7 +83,7 @@ export const MBBSHero = ({ backgroundImageUrl, credit, data = mbbsData }: MBBSHe
                 <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5" />
               </CTAButton>
               
-              <CTAButton action="call" variant="ghost" className="rounded-xl md:rounded-2xl px-5 md:px-4 py-3.5 md:py-3 text-sm text-cyan-600 dark:text-cyan-400 hover:bg-cyan-50 dark:hover:bg-cyan-950/45 font-black border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+              <CTAButton action="call" variant="ghost" className="rounded-xl md:rounded-2xl px-5 md:px-4 py-3.5 md:py-3 text-sm text-primary-strong dark:text-cyan-400 hover:bg-cyan-50 dark:hover:bg-cyan-950/45 font-black border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
                 <Phone className="w-4 h-4 mr-2" />
                 Call Expert
               </CTAButton>
@@ -104,7 +104,7 @@ export const MBBSHero = ({ backgroundImageUrl, credit, data = mbbsData }: MBBSHe
                 </div>
                 
                 <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
-                  Secure Your <br/> <span className="text-cyan-600 dark:text-cyan-400">MBBS Seat</span> Now
+                  Secure Your <br/> <span className="text-primary-strong dark:text-cyan-400">MBBS Seat</span> Now
                 </h2>
                 
                 <p className="text-sm text-slate-600 dark:text-slate-300 font-bold leading-relaxed">

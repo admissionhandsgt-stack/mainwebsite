@@ -59,7 +59,7 @@ const HowItWorks = ({ steps: fromCms, copy }: { steps?: Step[]; copy?: StepsCopy
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            className="inline-block px-3 py-1.5 mb-3 text-[11.5px] font-black tracking-widest text-cyan-600 dark:text-cyan-400 uppercase bg-cyan-100/50 dark:bg-cyan-950/40 border border-cyan-200/50 dark:border-cyan-900/30 rounded-full"
+            className="inline-block px-3 py-1.5 mb-3 text-[11.5px] font-black tracking-widest text-primary-strong dark:text-cyan-400 uppercase bg-cyan-100/50 dark:bg-cyan-950/40 border border-cyan-200/50 dark:border-cyan-900/30 rounded-full"
           >
             {text.eyebrow}
           </motion.div>
@@ -71,7 +71,7 @@ const HowItWorks = ({ steps: fromCms, copy }: { steps?: Step[]; copy?: StepsCopy
             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white mb-3 tracking-tight"
           >
             {text.title} in{' '}
-            <span className="text-cyan-600 dark:text-cyan-400">{steps.length} Steps</span>
+            <span className="text-primary-strong dark:text-cyan-400">{steps.length} Steps</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0 }}
@@ -121,7 +121,7 @@ const HowItWorks = ({ steps: fromCms, copy }: { steps?: Step[]; copy?: StepsCopy
                   
                   {/* Text Content */}
                   <div className="flex-1 lg:mt-2">
-                    <h3 className="text-sm lg:text-[17px] font-black leading-snug text-slate-900 dark:text-white mb-1 lg:mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors tracking-tight">{step.title}</h3>
+                    <h3 className="text-sm lg:text-[17px] font-black leading-snug text-slate-900 dark:text-white mb-1 lg:mb-2 group-hover:text-primary-strong dark:group-hover:text-cyan-400 transition-colors tracking-tight">{step.title}</h3>
                     <p className="text-slate-500 dark:text-slate-400 text-[12.5px] sm:text-[13px] lg:text-[14px] font-medium leading-snug sm:leading-relaxed">{step.description}</p>
                   </div>
                 </div>

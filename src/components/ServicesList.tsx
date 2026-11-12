@@ -147,7 +147,7 @@ const ServicesList = ({
                   </div>
 
                   <div className="relative z-10 flex-1 flex flex-col min-w-0 w-full break-words">
-                    <h3 className="text-sm md:text-xl font-black text-slate-900 mb-1 md:mb-2 leading-tight group-hover:text-cyan-600 transition-colors">
+                    <h3 className="text-sm md:text-xl font-black text-slate-900 mb-1 md:mb-2 leading-tight group-hover:text-primary-strong transition-colors">
                       {service.title}
                     </h3>
                     <p className="text-slate-500 text-[13px] md:text-sm font-medium leading-relaxed mb-4">
@@ -168,7 +168,7 @@ const ServicesList = ({
                       {service.href ? (
                         <Link
                           href={service.href}
-                          className="inline-flex min-h-11 items-center text-[13px] md:text-sm font-black text-slate-900 hover:text-cyan-600 group/btn transition-colors"
+                          className="inline-flex min-h-11 items-center text-[13px] md:text-sm font-black text-slate-900 hover:text-primary-strong group/btn transition-colors"
                         >
                           {cta}
                           <ArrowRight className="ml-1 w-1.5 h-1.5 md:ml-1.5 md:w-4 md:h-4 group-hover/btn:translate-x-1 transition-transform" />
@@ -176,7 +176,7 @@ const ServicesList = ({
                       ) : (
                         <button
                           onClick={() => setIsModalOpen(true)}
-                          className="inline-flex min-h-11 items-center text-[13px] md:text-sm font-black text-slate-900 hover:text-cyan-600 group/btn transition-colors"
+                          className="inline-flex min-h-11 items-center text-[13px] md:text-sm font-black text-slate-900 hover:text-primary-strong group/btn transition-colors"
                         >
                           {cta}
                           <ArrowRight className="ml-1 w-1.5 h-1.5 md:ml-1.5 md:w-4 md:h-4 group-hover/btn:translate-x-1 transition-transform" />
@@ -220,7 +220,7 @@ const ServicesList = ({
 
                 <div className="text-center mb-6 pt-2">
                   <div className="w-12 h-12 bg-cyan-50 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                    <Users size={24} className="text-cyan-600" />
+                    <Users size={24} className="text-primary-strong" />
                   </div>
                   <h3 className="text-lg font-black text-slate-900 mb-1 tracking-tight">Connect with Expert</h3>
                   <p className="text-xs text-slate-500 font-bold">Choose your preferred way to talk.</p>

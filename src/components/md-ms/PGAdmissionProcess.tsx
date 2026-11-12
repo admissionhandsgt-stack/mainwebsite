@@ -168,7 +168,7 @@ export const PGAdmissionProcess = ({ items: fromCms }: { items?: PgStep[] | null
             THE PG ADMISSION JOURNEY
           </span>
           <h2 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
-            From NEET PG Score to <span className="text-cyan-600 dark:text-cyan-400">College Reporting</span>
+            From NEET PG Score to <span className="text-primary-strong dark:text-cyan-400">College Reporting</span>
           </h2>
           <p className="text-sm md:text-base text-slate-500 dark:text-slate-400 mt-3 max-w-2xl mx-auto font-medium">
             Explore the seven critical phases that decide your PG seat. We manage timelines, documentation, and strategy at every single step.
@@ -223,7 +223,7 @@ export const PGAdmissionProcess = ({ items: fromCms }: { items?: PgStep[] | null
                   </div>
                   
                   {/* Chevron Toggle */}
-                  <div className={`w-7 h-7 md:w-8 md:h-8 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 transition-transform duration-300 shrink-0 ${isOpen ? "rotate-180 text-cyan-600 dark:text-cyan-400" : ""}`}>
+                  <div className={`w-7 h-7 md:w-8 md:h-8 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 transition-transform duration-300 shrink-0 ${isOpen ? "rotate-180 text-primary-strong dark:text-cyan-400" : ""}`}>
                     <ChevronDown className="w-3.5 h-3.5 md:w-4 md:h-4" />
                   </div>
                 </button>

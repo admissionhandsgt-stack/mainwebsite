@@ -53,7 +53,7 @@ const ProcessAccordion = ({ phases = UG_PHASES }: { phases?: UgPhase[] }) => {
       {/* Accordion Steps for Active Phase */}
       <div className="w-full md:w-2/3 p-3 sm:p-5 bg-white dark:bg-slate-950 min-h-[250px] md:min-h-[300px]">
         <div className="mb-3 md:mb-4">
-          <div className="inline-flex px-2 py-0.5 bg-cyan-50 dark:bg-cyan-950/40 text-cyan-600 dark:text-cyan-300 font-black uppercase tracking-wider text-[12px] md:text-[11.5px] rounded-full mb-1">
+          <div className="inline-flex px-2 py-0.5 bg-cyan-50 dark:bg-cyan-950/40 text-primary-strong dark:text-cyan-300 font-black uppercase tracking-wider text-[12px] md:text-[11.5px] rounded-full mb-1">
             Phase {activePhaseIndex + 1}
           </div>
           <h2 className="text-base md:text-xl font-black text-slate-900 dark:text-white">{activePhase.title}</h2>
@@ -91,7 +91,7 @@ const ProcessAccordion = ({ phases = UG_PHASES }: { phases?: UgPhase[] }) => {
                       </h3>
                     </div>
                     <div className={`flex items-center justify-center w-5 h-5 md:w-6 md:h-6 rounded-full transition-colors ${isOpen ? 'bg-cyan-100 dark:bg-cyan-900/40' : 'bg-slate-50 dark:bg-slate-905 group-hover:bg-cyan-50 dark:group-hover:bg-cyan-900/20'}`}>
-                      <ChevronDown className={`h-3 w-3 md:h-4 md:w-4 transition-transform duration-300 ${isOpen ? 'rotate-180 text-cyan-600 dark:text-cyan-400' : 'text-slate-400 dark:text-slate-500 group-hover:text-cyan-500 dark:group-hover:text-cyan-400'}`} />
+                      <ChevronDown className={`h-3 w-3 md:h-4 md:w-4 transition-transform duration-300 ${isOpen ? 'rotate-180 text-primary-strong dark:text-cyan-400' : 'text-slate-400 dark:text-slate-500 group-hover:text-cyan-500 dark:group-hover:text-cyan-400'}`} />
                     </div>
                   </button>
                   
@@ -132,10 +132,10 @@ const ProcessAccordion = ({ phases = UG_PHASES }: { phases?: UgPhase[] }) => {
 
                           <div className="ml-1.5 md:ml-9 p-2 md:p-3 bg-gradient-to-r from-cyan-50 to-teal-50 dark:from-cyan-950/20 dark:to-teal-950/20 rounded-lg border border-cyan-100/50 dark:border-cyan-900/30 flex gap-2 shadow-inner">
                             <div className="flex-shrink-0 mt-0.5">
-                              <Info className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />
+                              <Info className="h-3.5 w-3.5 text-primary-strong dark:text-cyan-400" />
                             </div>
                             <div>
-                              <p className="text-[11.5px] font-black text-cyan-600 dark:text-cyan-400 uppercase tracking-widest mb-0.5">Admission Hands Support</p>
+                              <p className="text-[11.5px] font-black text-primary-strong dark:text-cyan-400 uppercase tracking-widest mb-0.5">Admission Hands Support</p>
                               <p className="text-[13px] md:text-xs text-slate-700 dark:text-slate-300 font-medium leading-tight">{step.support}</p>
                             </div>
                           </div>

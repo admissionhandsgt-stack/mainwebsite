@@ -101,7 +101,7 @@ export function VideosClient({ videos }: { videos: VideoRecord[] }) {
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 flex items-center justify-center bg-slate-950/30 opacity-100 transition-all duration-300">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/95 dark:bg-slate-900/95 text-cyan-600 dark:text-cyan-400 shadow-md transform group-hover:scale-110 transition-transform duration-300">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/95 dark:bg-slate-900/95 text-primary-strong dark:text-cyan-400 shadow-md transform group-hover:scale-110 transition-transform duration-300">
                     <Play size={18} className="fill-current ml-0.5" />
                   </div>
                 </div>
@@ -115,13 +115,13 @@ export function VideosClient({ videos }: { videos: VideoRecord[] }) {
                         Featured
                       </span>
                     )}
-                    <span className="text-[11.5px] font-black uppercase tracking-wider text-cyan-600 dark:text-cyan-400">
+                    <span className="text-[11.5px] font-black uppercase tracking-wider text-primary-strong dark:text-cyan-400">
                       Counselling Guide
                     </span>
                   </div>
                   <h2 
                     onClick={() => setSelectedVideoId(video.id)}
-                    className="mb-2 text-sm md:text-base font-black text-slate-800 dark:text-slate-100 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors cursor-pointer leading-snug line-clamp-2"
+                    className="mb-2 text-sm md:text-base font-black text-slate-800 dark:text-slate-100 hover:text-primary-strong dark:hover:text-cyan-400 transition-colors cursor-pointer leading-snug line-clamp-2"
                   >
                     {video.title}
                   </h2>
@@ -134,7 +134,7 @@ export function VideosClient({ videos }: { videos: VideoRecord[] }) {
                 <div className="mt-4 flex items-center justify-between border-t border-slate-50 dark:border-slate-800/60 pt-4">
                   <button
                     onClick={() => setSelectedVideoId(video.id)}
-                    className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-cyan-600 dark:text-cyan-400 group/btn"
+                    className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-primary-strong dark:text-cyan-400 group/btn"
                   >
                     Watch Now
                     <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />

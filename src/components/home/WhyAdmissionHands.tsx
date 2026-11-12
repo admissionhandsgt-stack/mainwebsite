@@ -13,7 +13,7 @@ export interface Reason {
 }
 
 const PALETTE = [
-  { gradient: "from-cyan-500 to-teal-600", bg: "bg-cyan-50", iconColor: "text-cyan-600" },
+  { gradient: "from-cyan-500 to-teal-600", bg: "bg-cyan-50", iconColor: "text-primary-strong" },
   { gradient: "from-teal-500 to-emerald-600", bg: "bg-teal-50", iconColor: "text-teal-600" },
   { gradient: "from-teal-500 to-teal-600", bg: "bg-teal-50", iconColor: "text-teal-600" },
   { gradient: "from-emerald-500 to-rose-600", bg: "bg-emerald-50", iconColor: "text-emerald-600" },
@@ -132,7 +132,7 @@ const WhyAdmissionHands = ({ reasons: fromCms, copy }: { reasons?: Reason[]; cop
                   <BlockIcon name={item.icon} fallback="ShieldCheck" size={24} className={tone.iconColor} />
                 </div>
                 
-                <h3 className="text-[15px] md:text-base font-black leading-snug text-slate-900 dark:text-white mb-1.5 md:mb-2 tracking-tight group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
+                <h3 className="text-[15px] md:text-base font-black leading-snug text-slate-900 dark:text-white mb-1.5 md:mb-2 tracking-tight group-hover:text-primary-strong dark:group-hover:text-cyan-400 transition-colors">
                   {item.title}
                 </h3>
                 <p className="text-slate-500 dark:text-slate-400 text-xs font-medium leading-relaxed">

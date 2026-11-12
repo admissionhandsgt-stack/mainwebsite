@@ -438,7 +438,7 @@ export default function CollegesPageClient({
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-100 dark:border-cyan-900/30 text-[11.5px] font-bold text-cyan-600 dark:text-cyan-400">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-100 dark:border-cyan-900/30 text-[11.5px] font-bold text-primary-strong dark:text-cyan-400">
                   <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
                   2026 Seat Matrix Active
                 </span>
@@ -622,7 +622,7 @@ export default function CollegesPageClient({
                         <div className="hidden md:grid grid-cols-12 items-center gap-3">
                           {/* LEFT (col-span-8): College Name and Location only */}
                           <div className="col-span-8 min-w-0 pr-2 space-y-1">
-                            <h3 className="text-[13px] md:text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors leading-snug break-words">
+                            <h3 className="text-[13px] md:text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-primary-strong dark:group-hover:text-cyan-400 transition-colors leading-snug break-words">
                               {college.slug ? (
                                 <Link href={`/mbbs-india/colleges/${college.slug}`} className="hover:underline">
                                   {college.name}
@@ -663,7 +663,7 @@ export default function CollegesPageClient({
                                   `Hi, I would like to get information regarding admissions at ${college.name}`
                                 )
                               }
-                              className="px-3 py-2.5 md:py-1 rounded-lg bg-cyan-50 hover:bg-cyan-100 dark:bg-cyan-900/20 dark:hover:bg-cyan-900/40 text-cyan-600 dark:text-cyan-400 border border-cyan-100/60 dark:border-cyan-900/40 transition-colors text-[12px] md:text-[11px] font-bold flex items-center justify-center gap-1 shrink-0"
+                              className="px-3 py-2.5 md:py-1 rounded-lg bg-cyan-50 hover:bg-cyan-100 dark:bg-cyan-900/20 dark:hover:bg-cyan-900/40 text-primary-strong dark:text-cyan-400 border border-cyan-100/60 dark:border-cyan-900/40 transition-colors text-[12px] md:text-[11px] font-bold flex items-center justify-center gap-1 shrink-0"
                             >
                               Enquire
                             </button>
@@ -712,7 +712,7 @@ export default function CollegesPageClient({
                                   `Hi, I would like to get information regarding admissions at ${college.name}`
                                 )
                               }
-                              className="px-3 py-2.5 md:py-1 rounded-lg bg-cyan-50 hover:bg-cyan-100 dark:bg-cyan-900/20 dark:hover:bg-cyan-900/40 text-cyan-600 dark:text-cyan-400 border border-cyan-100/60 dark:border-cyan-900/40 transition-colors text-[12px] md:text-[11.5px] font-bold shrink-0"
+                              className="px-3 py-2.5 md:py-1 rounded-lg bg-cyan-50 hover:bg-cyan-100 dark:bg-cyan-900/20 dark:hover:bg-cyan-900/40 text-primary-strong dark:text-cyan-400 border border-cyan-100/60 dark:border-cyan-900/40 transition-colors text-[12px] md:text-[11.5px] font-bold shrink-0"
                             >
                               Enquire
                             </button>
@@ -840,7 +840,7 @@ export default function CollegesPageClient({
             viewport={{ once: true }}
             className="text-center mb-6"
           >
-            <span className="text-[11.5px] font-bold uppercase tracking-widest text-cyan-600 dark:text-cyan-400 mb-1.5 block">
+            <span className="text-[11.5px] font-bold uppercase tracking-widest text-primary-strong dark:text-cyan-400 mb-1.5 block">
               Complete Guide 2026
             </span>
             <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">
@@ -863,7 +863,7 @@ export default function CollegesPageClient({
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold border-b-2 transition-all whitespace-nowrap ${
                   activeTab === tab.id
-                    ? "border-cyan-600 text-cyan-600 dark:border-cyan-400 dark:text-cyan-400"
+                    ? "border-cyan-600 text-primary-strong dark:border-cyan-400 dark:text-cyan-400"
                     : "border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-zinc-300"
                 }`}
               >
@@ -895,7 +895,7 @@ export default function CollegesPageClient({
                     {[
                       {
                         title: "AIQ Quota (15%)",
-                        color: "text-cyan-600 dark:text-cyan-400",
+                        color: "text-primary-strong dark:text-cyan-400",
                         desc: "15% of seats in all Government Medical Colleges are pooled into the All India Quota, open to students from any state. Managed by MCC.",
                       },
                       {
@@ -1038,7 +1038,7 @@ export default function CollegesPageClient({
             viewport={{ once: true }}
             className="text-center mb-6"
           >
-            <span className="text-[11.5px] font-bold uppercase tracking-widest text-cyan-600 dark:text-cyan-400 mb-1.5 block">
+            <span className="text-[11.5px] font-bold uppercase tracking-widest text-primary-strong dark:text-cyan-400 mb-1.5 block">
               Expert Counselling Partner
             </span>
             <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">
@@ -1080,7 +1080,7 @@ export default function CollegesPageClient({
                 className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700/80 transition-all shadow-sm"
               >
                 <div className="w-8 h-8 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/30 flex items-center justify-center mb-3">
-                  <feat.icon className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+                  <feat.icon className="w-4 h-4 text-primary-strong dark:text-cyan-400" />
                 </div>
                 <h3 className="text-xs font-bold text-slate-900 dark:text-white mb-1">{feat.title}</h3>
                 <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">{feat.desc}</p>
@@ -1103,7 +1103,7 @@ export default function CollegesPageClient({
               viewport={{ once: true }}
               className="lg:sticky lg:top-[calc(var(--site-top,112px)_+_1rem)]"
             >
-              <span className="text-[11.5px] font-bold uppercase tracking-widest text-cyan-600 dark:text-cyan-400 mb-2 block">
+              <span className="text-[11.5px] font-bold uppercase tracking-widest text-primary-strong dark:text-cyan-400 mb-2 block">
                 Common Questions
               </span>
               <h2 className="font-heading text-2xl md:text-3.5xl font-black text-slate-900 dark:text-white leading-tight">

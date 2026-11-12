@@ -67,7 +67,7 @@ export const PGWhyUs = ({ items: fromCms }: { items?: PgCard[] | null } = {}) =>
             initial={mounted ? { opacity: 0, y: 10 } : false}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50 dark:bg-cyan-950/40 text-cyan-600 dark:text-cyan-400 text-[11.5px] font-black tracking-widest uppercase mb-3"
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50 dark:bg-cyan-950/40 text-primary-strong dark:text-cyan-400 text-[11.5px] font-black tracking-widest uppercase mb-3"
           >
             Why Admission Hands
           </motion.div>
@@ -77,7 +77,7 @@ export const PGWhyUs = ({ items: fromCms }: { items?: PgCard[] | null } = {}) =>
             viewport={{ once: true }}
             className="text-2xl md:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white tracking-tight mb-3"
           >
-            The <span className="text-cyan-600 dark:text-cyan-400">Competitive Edge</span> Your PG Journey Deserves
+            The <span className="text-primary-strong dark:text-cyan-400">Competitive Edge</span> Your PG Journey Deserves
           </motion.h2>
           <motion.p
             initial={mounted ? { opacity: 0, y: 10 } : false}
