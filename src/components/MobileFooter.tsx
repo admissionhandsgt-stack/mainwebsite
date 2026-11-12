@@ -58,7 +58,7 @@ const MobileFooter = () => {
   }, []);
 
   const handleWhatsAppClick = () => {
-    window.open(`https://wa.me/${phoneNumber.replace(/[+\s-]/g, '')}?text=${encodeURIComponent("Hi, I'm interested in MD/MS counselling")}`, '_blank');
+    window.open(`https://wa.me/${phoneNumber.replace(/[+\s-]/g, '')}?text=${encodeURIComponent("Hi, I'm interested in NEET counselling")}`, '_blank');
   };
 
   const handleCallClick = () => {

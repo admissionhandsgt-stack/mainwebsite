@@ -81,7 +81,7 @@ export const PGDocumentChecklist = ({ items: fromCms }: { items?: PgDocument[] |
               </a>
             </p>
           </div>
-          <button onClick={() => CTA.whatsapp("Hi, I need help with document preparation for NEET PG counselling.")}
+          <button onClick={() => CTA.whatsapp("Hi, I need help with document preparation for NEET counselling.")}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[13px] md:text-sm font-black uppercase tracking-wider px-4 py-2 md:px-5 md:py-2.5 rounded-lg transition-colors flex-shrink-0">
             <WhatsAppIcon className="w-3.5 h-3.5" /> Chat With Us
           </button>

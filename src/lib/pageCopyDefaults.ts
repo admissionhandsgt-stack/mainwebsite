@@ -181,7 +181,7 @@ export const PAGE_COPY = {
       rules_note: { label: "Line under the box", value: "Every rule above is from MCC's 2026 counselling bulletin." },
       rules_link: { label: "Link to the rules", value: "Round by round rules →" },
       cta: { label: "Button", value: "Talk it through before the deadline" },
-      wa_text: { label: "WhatsApp message, prefilled", value: "Hi, I have a low NEET PG rank and I am deciding between taking a seat and dropping a year. My rank: " },
+      wa_text: { label: "WhatsApp message, prefilled", value: "Hi, I have a low NEET rank and I am deciding between taking a seat and dropping a year. My rank: ", was: ["Hi, I have a low NEET PG rank and I am deciding between taking a seat and dropping a year. My rank: "] },
     },
   },
   "page.pg_low_clinical.body": {
@@ -216,7 +216,7 @@ export const PAGE_COPY = {
         ].join("\n"),
         long: true,
       },
-      wa_text: { label: "WhatsApp message", value: "Hi, I want a clinical branch in NEET PG. My rank is ___ and category ___. Which colleges are possible?" },
+      wa_text: { label: "WhatsApp message", value: "Hi, I want a clinical branch. My NEET rank is ___ and category ___. Which colleges are possible?", was: ["Hi, I want a clinical branch in NEET PG. My rank is ___ and category ___. Which colleges are possible?"] },
       urgency: {
         label: "Round strip — {round}, {filling}, {locking} (hidden between rounds)",
         value: "{round} choice filling: {filling}. Locking: {locking}. Get your clinical order checked before you lock — the order decides the seat.",
@@ -229,7 +229,7 @@ export const PAGE_COPY = {
         long: true,
       },
       band_button: { label: "Rank band button", value: "Get colleges for my rank" },
-      band_wa: { label: "Rank band WhatsApp message — {rank}", value: "Hi, my NEET PG rank is around {rank}. Which clinical branches and colleges are possible for me?" },
+      band_wa: { label: "Rank band WhatsApp message — {rank}", value: "Hi, my NEET rank is around {rank}. Which clinical branches and colleges are possible for me?", was: ["Hi, my NEET PG rank is around {rank}. Which clinical branches and colleges are possible for me?"] },
       cases_types_title: { label: "Cases we work on — title", value: "Cases we work on every season" },
       cases_types_intro: {
         label: "Cases we work on — intro",
@@ -274,7 +274,7 @@ export const PAGE_COPY = {
         ].join("\n"),
         long: true,
       },
-      eligible_wa: { label: "Just eligible WhatsApp message", value: "Hi, I just qualified NEET PG with a low score (rank ___, category ___). Which clinical seats can I still try for?" },
+      eligible_wa: { label: "Just eligible WhatsApp message", value: "Hi, I just qualified NEET with a low score (rank ___, category ___). Which clinical seats can I still try for?", was: ["Hi, I just qualified NEET PG with a low score (rank ___, category ___). Which clinical seats can I still try for?"] },
       scores_title: { label: "Score cards title", value: "NEET PG marks vs clinical branch" },
       scores_intro: {
         label: "Score cards intro — {now_year}, {year}",
@@ -592,7 +592,7 @@ export const PAGE_COPY = {
         long: true,
       },
       cta: { label: "Hero button (to the predictor)", value: "Check your colleges free" },
-      wa_text: { label: "WhatsApp message — {state}", value: "Hi, I need NEET PG counselling guidance for {state}." },
+      wa_text: { label: "WhatsApp message — {state}", value: "Hi, I need NEET counselling guidance for {state}.", was: ["Hi, I need NEET PG counselling guidance for {state}."] },
       routes_title: { label: "Section: the two counsellings — heading, {state}", value: "Two ways into a PG seat in {state}" },
       route_state: {
         label: "Section: the state counselling card — {state}, {authority}",
@@ -688,7 +688,7 @@ export const PAGE_COPY = {
         long: true,
       },
       cta: { label: "Hero button (to the predictor)", value: "Check your MBBS colleges free" },
-      wa_text: { label: "WhatsApp message — {state}", value: "Hi, I need MBBS counselling guidance for {state}." },
+      wa_text: { label: "WhatsApp message — {state}", value: "Hi, I need NEET counselling guidance for {state}.", was: ["Hi, I need MBBS counselling guidance for {state}."] },
       routes_title: { label: "Section: the counsellings — heading, {state}", value: "Who fills the MBBS seats in {state}" },
       route_state: {
         label: "Section: the state counselling card — {state}, {authority}",
@@ -788,7 +788,7 @@ export const PAGE_COPY = {
       },
       cta_primary: { label: "WhatsApp button", value: "Talk to an expert counsellor" },
       cta_call: { label: "Call button", value: "Call us" },
-      wa_text: { label: "WhatsApp message, prefilled", value: "Hello AdmissionHands, I need NEET PG counselling. My rank: , category: , state: " },
+      wa_text: { label: "WhatsApp message, prefilled", value: "Hello AdmissionHands, I need NEET counselling. My rank: , category: , state: ", was: ["Hello AdmissionHands, I need NEET PG counselling. My rank: , category: , state: "] },
       pillars: {
         label: "Four cards beside the heading, one per line: title | text — {years}",
         value: [
@@ -897,7 +897,7 @@ export const PAGE_COPY = {
         long: true,
       },
       fraud_cta: { label: "Fraud section button", value: "Been offered a seat? Ask us to check it — free" },
-      fraud_wa: { label: "Fraud section WhatsApp message, prefilled", value: "Hello AdmissionHands, someone has offered me a PG seat. Can you check if it is genuine?" },
+      fraud_wa: { label: "Fraud section WhatsApp message, prefilled", value: "Hello AdmissionHands, someone has offered me a medical seat. Can you check if it is genuine?", was: ["Hello AdmissionHands, someone has offered me a PG seat. Can you check if it is genuine?"] },
       faq_title: { label: "FAQ heading", value: "Questions families ask before choosing a counsellor" },
       faqs: {
         label: "FAQs, one per line: question | answer — {years}",
@@ -1104,7 +1104,7 @@ export const PAGE_COPY = {
         long: true,
       },
       check_cta: { label: "Check box button", value: "Check my documents" },
-      wa_text: { label: "WhatsApp message, prefilled", value: "Hello AdmissionHands, please check my documents for NEET PG reporting. My counselling: " },
+      wa_text: { label: "WhatsApp message, prefilled", value: "Hello AdmissionHands, please check my documents for NEET counselling reporting. My counselling: ", was: ["Hello AdmissionHands, please check my documents for NEET PG reporting. My counselling: "] },
       states_eyebrow: { label: "States eyebrow", value: "State counselling" },
       states_title: { label: "States heading", value: "Documents for each state's PG counselling" },
       states_intro: {
@@ -1242,7 +1242,7 @@ export const PAGE_COPY = {
       wa: { label: "WhatsApp button", value: "Ask on WhatsApp" },
       wa_text: {
         label: "The WhatsApp message, prefilled — {college} or {topic}",
-        value: "Hi, I need PG admission guidance for {college}. My NEET PG rank: ",
+        value: "Hi, I need admission guidance for {college}. My NEET rank: ", was: ["Hi, I need PG admission guidance for {college}. My NEET PG rank: "],
         long: true,
       },
       done: { label: "After a successful send", value: "Thank you — a counsellor will call you shortly. Want to talk now? Message us on WhatsApp." },
@@ -1570,7 +1570,7 @@ export const PAGE_COPY = {
         was: ["Every MD/MS college in {state} — fees by quota, stipend and bond — in one file to keep and share. Free, on WhatsApp in a minute."],
       },
       button: { label: "Button — {state}", value: "Send me the PDF on WhatsApp" },
-      prefill: { label: "The message the button types — {state}, {ref}", value: "Send me the {state} PG fee & stipend PDF (ref {ref}-PDF)" },
+      prefill: { label: "The message the button types — {state}, {ref}", value: "Send me the {state} fee & stipend PDF (ref {ref}-PDF)", was: ["Send me the {state} PG fee & stipend PDF (ref {ref}-PDF)"] },
       caption: {
         label: "Caption on the PDF — {state}, {date}",
         long: true,
@@ -1738,7 +1738,7 @@ export const PAGE_COPY = {
         long: true,
       },
       cta: { label: "Button — WhatsApp", value: "Get Expert Counselling" },
-      wa_text: { label: "The WhatsApp message — {round}", value: "Hi Admission Hands, I need help with my NEET PG {round} choice filling." },
+      wa_text: { label: "The WhatsApp message — {round}", value: "Hi Admission Hands, I need help with my NEET counselling {round} choice filling.", was: ["Hi Admission Hands, I need help with my NEET PG {round} choice filling."] },
       call: { label: "Button — call", value: "Call a counsellor" },
       note: {
         label: "Small print under the buttons",
@@ -2872,7 +2872,7 @@ export const PAGE_COPY = {
       },
       cta_call: { label: "Call button", value: "Talk to a PG expert" },
       cta_whatsapp: { label: "WhatsApp button", value: "WhatsApp us" },
-      wa_text: { label: "WhatsApp message the button starts", value: "Hi, I need guidance for NEET PG counselling" },
+      wa_text: { label: "WhatsApp message the button starts", value: "Hi, I need guidance for NEET counselling", was: ["Hi, I need guidance for NEET PG counselling"] },
       browse: { label: "Link to the PG colleges list", value: "Browse every MD/MS college" },
       fact_colleges: { label: "Fact 1 — {md_ms_colleges} (NMC's register)", value: "{md_ms_colleges} MD/MS colleges on NMC's register" },
       fact_dnb: { label: "Fact 2 — {dnb_hospitals}, {mcc_year} (MCC's matrix)", value: "{dnb_hospitals} DNB hospitals in MCC's {mcc_year} counselling" },
@@ -4058,7 +4058,7 @@ export const PAGE_COPY = {
       },
       decide_join_past: { label: "Result-day card: reporting date, passed — {join_by}, {round}", value: "{round} reporting closed on {join_by}." },
       decide_wa: { label: "Result-day card: WhatsApp button", value: "Talk to a counsellor on WhatsApp" },
-      decide_wa_text: { label: "Result-day card: the WhatsApp message — {year}, {round}", value: "Hi Admission Hands, I need help with my NEET PG {year} {round} result." },
+      decide_wa_text: { label: "Result-day card: the WhatsApp message — {year}, {round}", value: "Hi Admission Hands, I need help with my NEET counselling {year} {round} result.", was: ["Hi Admission Hands, I need help with my NEET PG {year} {round} result."] },
       decide_call: { label: "Result-day card: call button", value: "Call a counsellor" },
       decide_predictor: { label: "Result-day card: predictor link", value: "Or check your chances with your rank" },
       cuts_more: { label: "Branch table: show every branch — {count}", value: "Show all {count} branches" },
@@ -4303,7 +4303,7 @@ export const PAGE_COPY = {
         long: true,
       },
       wa: { label: "WhatsApp button", value: "Talk to a counsellor on WhatsApp" },
-      wa_text: { label: "The WhatsApp message — {topic}", value: "Hi Admission Hands, I need help with NEET PG counselling ({topic})." },
+      wa_text: { label: "The WhatsApp message — {topic}", value: "Hi Admission Hands, I need help with NEET counselling ({topic}).", was: ["Hi Admission Hands, I need help with NEET PG counselling ({topic})."] },
       call: { label: "Call button", value: "Call a counsellor" },
       predictor: { label: "Predictor link", value: "Or check your chances with your rank" },
     },

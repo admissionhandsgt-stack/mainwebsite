@@ -185,7 +185,7 @@ export const PGSpecializations = () => {
             Not sure which branch suits your rank and career goals?
           </p>
           <button
-            onClick={() => CTA.whatsapp("Hi, I need help choosing the right PG specialization for my rank.")}
+            onClick={() => CTA.whatsapp("Hi, I need help choosing the right branch for my NEET rank.")}
             className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white text-[13px] md:text-xs font-black uppercase tracking-wider hover:shadow-lg transition-all flex-shrink-0"
           >
             <WhatsAppIcon className="w-3.5 h-3.5" />

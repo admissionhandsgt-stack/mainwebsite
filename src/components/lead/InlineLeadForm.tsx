@@ -69,7 +69,7 @@ const COPY = {
     rankMissing: 'Enter your NEET UG rank to continue.',
     namePlaceholder: 'Rahul Sharma',
     course: 'mbbs',
-    intake: 'my MBBS enquiry form',
+    intake: 'my enquiry form',
   },
   pg: {
     desk: 'PG Advisory Desk Active',
@@ -82,7 +82,7 @@ const COPY = {
     rankMissing: 'Enter your NEET PG rank to continue.',
     namePlaceholder: 'Dr. Rahul Sharma',
     course: 'pg',
-    intake: 'my PG intake form',
+    intake: 'my enquiry form',
   },
 } as const;
 

@@ -45,7 +45,7 @@ export const PGStickyMobileBar = () => {
 
       {/* 2. Quick WhatsApp */}
       <button
-        onClick={() => cta.whatsapp("Hi, I want to discuss MD/MS admission options for NEET PG 2026.")}
+        onClick={() => cta.whatsapp("Hi, I want to discuss my NEET admission options for 2026.")}
         className="flex-1 flex items-center justify-center gap-1.5 bg-slate-900 border border-white/10 text-white rounded-xl py-2.5 text-xs font-black active:scale-[0.97] transition-all cursor-pointer"
       >
         <WhatsAppIcon className="w-3.5 h-3.5 text-emerald-400" />

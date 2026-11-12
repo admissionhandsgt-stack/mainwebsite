@@ -344,7 +344,7 @@ export default async function LowScoreClinicalPage() {
           <div className="container-custom flex flex-wrap items-center gap-3 py-3 text-[15px] text-foreground">
             <CalendarClock className="h-5 w-5 shrink-0 text-accent" aria-hidden />
             <p className="min-w-0 flex-1">{body.urgency}</p>
-            <a href={wa(`Hi, please check my NEET PG ${round.label} choice order. My rank is ___ and category ___.`)} target="_blank" rel="noopener noreferrer" data-placement="low_clinical_round" className="inline-flex min-h-11 items-center gap-2 rounded-full bg-accent px-4 text-sm font-semibold text-white">
+            <a href={wa(`Hi, please check my NEET counselling ${round.label} choice order. My rank is ___ and category ___.`)} target="_blank" rel="noopener noreferrer" data-placement="low_clinical_round" className="inline-flex min-h-11 items-center gap-2 rounded-full bg-accent px-4 text-sm font-semibold text-white">
               <MessageCircle className="h-4 w-4" aria-hidden /> Check my order
             </a>
           </div>
@@ -559,7 +559,7 @@ export default async function LowScoreClinicalPage() {
                     ))}
                   </ol>
                   <a
-                    href={wa(`Hi, my NEET PG rank is around ${n(x.rank)}. Please make my clinical seat plan.`)}
+                    href={wa(`Hi, my NEET rank is around ${n(x.rank)}. Please make my clinical seat plan.`)}
                     target="_blank"
                     rel="noopener noreferrer"
                     data-placement={`low_clinical_plan_${x.rank}`}
