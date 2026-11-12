@@ -45,10 +45,23 @@ export async function checkReplies(): Promise<{ read: number; replied: number; b
     client.close();
     throw e;
   }
+  // Which folders the mailbox has, their flags and message counts (2026-11-12: the owner's webmail showed nothing in
+  // Sent although every send "filed" a copy). Before INBOX, so a stuck read cannot hide it. Names and counts only.
+  try {
+    const boxes = await imapTimeout(client.list({ statusQuery: { messages: true } }), 30_000, "list");
+    await setIntegration(
+      "email.imap.folders",
+      JSON.stringify({ at: new Date().toISOString(), folders: boxes.map((b) => ({ path: b.path, use: b.specialUse ?? null, flags: [...(b.flags ?? [])], messages: b.status?.messages ?? null })) }),
+    );
+  } catch (e) {
+    await setIntegration("email.imap.folders", JSON.stringify({ at: new Date().toISOString(), error: e instanceof Error ? e.message.slice(0, 200) : String(e) })).catch(() => undefined);
+  }
   const lock = await imapTimeout(client.getMailboxLock("INBOX"), 20_000, "open INBOX");
   try {
     // First run: the last 30 days. After that, every message after the last one seen.
     const range = lastUid ? `${lastUid + 1}:*` : { since: new Date(Date.now() - 30 * 86_400_000) };
+    // The whole read in at most a minute (2026-11-12: it hung for hours with no error).
+    await imapTimeout((async () => {
     for await (const m of client.fetch(range, { uid: true, envelope: true }, { uid: Boolean(lastUid) })) {
       if (m.uid <= lastUid) continue; // "N:*" always returns the newest message, even when it is older
       read++;
@@ -67,19 +80,9 @@ export async function checkReplies(): Promise<{ read: number; replied: number; b
       const sameOrg = byDomain.get(from.split("@")[1] ?? "") ?? [];
       for (const t of exact ? [exact] : sameOrg) hits.push({ t, kind: "replied", note: subject });
     }
+    })(), 60_000, "fetch");
   } finally {
     lock.release();
-    // Which folders the mailbox has, their flags and message counts (2026-11-12: the owner's webmail showed nothing in
-    // Sent although every send "filed" a copy). Names and counts only — no message, no address.
-    try {
-      const boxes = await imapTimeout(client.list({ statusQuery: { messages: true } }), 30_000, "list");
-      await setIntegration(
-        "email.imap.folders",
-        JSON.stringify(boxes.map((b) => ({ path: b.path, use: b.specialUse ?? null, flags: [...(b.flags ?? [])], messages: b.status?.messages ?? null }))),
-      );
-    } catch {
-      /* a diagnostic must not fail the reply check */
-    }
     await imapTimeout(client.logout(), 10_000, "logout").catch(() => client.close());
   }
   if (maxUid > lastUid) await setIntegration("outreach.imap_uid", String(maxUid));
