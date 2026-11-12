@@ -315,11 +315,18 @@ function bondChecks(t: SeatTerms | undefined): string[] {
  * with * its own page shows (lib/chance.ts approxFeeFor) — never as an exact 2026-27 figure.
  */
 async function listedFees(c: College, label: string, q: string, quotaAsked: RegExp | null, terms: SeatTerms[]): Promise<Draft | null> {
+  // A listing figure under a tenth of the same quota's middle is a slip, not a fee (2026-11-12 audit: Rohilkhand's UP
+  // private open seats read "under ₹1 L to ₹20–30 L" from one junk row) — the PG fee pages' † rule, applied here too.
   const rows = (await db.execute(sql`
-    SELECT q.label AS quota, MIN(NULLIF(so.fee_inr, 0))::int AS lo, MAX(NULLIF(so.fee_inr, 0))::int AS hi
-      FROM seat_options so JOIN quotas q ON q.id = so.quota_id
-     WHERE so.institute_id = ${c.id} AND so.fee_inr >= 1000
-     GROUP BY q.label ORDER BY MIN(NULLIF(so.fee_inr, 0)) LIMIT 6`)) as unknown as { quota: string; lo: number; hi: number }[];
+    WITH f AS (
+      SELECT q.label AS quota, so.fee_inr AS fee
+        FROM seat_options so JOIN quotas q ON q.id = so.quota_id
+       WHERE so.institute_id = ${c.id} AND so.fee_inr >= 1000),
+    m AS (SELECT quota, percentile_cont(0.5) WITHIN GROUP (ORDER BY fee) AS med FROM f GROUP BY quota)
+    SELECT f.quota, MIN(f.fee)::int AS lo, MAX(f.fee)::int AS hi
+      FROM f JOIN m USING (quota)
+     WHERE f.fee >= m.med / 10
+     GROUP BY f.quota ORDER BY MIN(f.fee) LIMIT 6`)) as unknown as { quota: string; lo: number; hi: number }[];
   const list = quotaAsked ? rows.filter((r) => quotaAsked.test(r.quota)) : rows;
   if (!list.length) return null;
   const band = (r: { lo: number; hi: number }) => {

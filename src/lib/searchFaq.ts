@@ -140,7 +140,10 @@ export async function offerSearchFaq(
   }
   // One answer per builder on a page: three searches answered by the same national stipend figures would print the
   // same text three times.
-  if (room.kinds.includes(d.kind)) return false;
+  // "college" and "college-fee-listed" are one builder (a college without a 2026-27 notice falls back to its listing),
+  // so two searches about one college's fees printed the same answer twice (Rama Kanpur, 2026-11-12 audit).
+  const family = (k: string) => (k === "college-fee-listed" ? "college" : k);
+  if (room.kinds.some((k) => family(k) === family(d.kind))) return false;
   // A search that names a state is answered only by a builder that reads that state: the national figures under
   // "md radiology cutoff rajasthan" would answer a different question.
   const base = d.kind.split(":")[0];
