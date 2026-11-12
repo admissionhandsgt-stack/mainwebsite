@@ -1288,6 +1288,33 @@ export const PAGE_COPY = {
       heading: { label: "Heading (blank hides the block)", value: "Related searches" },
     },
   },
+  // A branch's seats state by state, on the branch page (2026-11-12): answers "dnb <branch> seats in <state>" and
+  // "<branch> seats in <state>" in one table instead of a page per pair (lib/branchSeatsByState.ts).
+  "page.pg_branch.seats_state": {
+    group: "Page: PG branch pages — seats in each state",
+    fields: {
+      title: { label: "Heading — {branch}", value: "{branch} seats in each state" },
+      intro: {
+        label: "Intro — {branch}, {year}",
+        value: "NMC's approved {branch} seats in every state, and the seats MCC itself allots there in the {year} counselling — All India quota, deemed universities and DNB. A state's own quota seats are inside NMC's figure, not MCC's.",
+      },
+      col_state: { label: "Column: state", value: "State" },
+      col_nmc: { label: "Column: NMC seats", value: "NMC seats" },
+      col_govt: { label: "Column: in government colleges", value: "In govt colleges" },
+      col_mcc: { label: "Column: MCC MD/MS — {year}", value: "MCC {year}: MD/MS" },
+      col_dnb: { label: "Column: MCC DNB — {year}", value: "MCC {year}: DNB" },
+      colleges: { label: "Under the NMC figure — {n}", value: "{n} colleges" },
+      source: {
+        label: "Source line — {year}",
+        value: "Seat counts, never ranks: NMC's college and course register, and MCC's {year} seat matrix with the seats it has added since.",
+      },
+      faq_q: { label: "FAQ question — {branch}", value: "How many {branch} seats are there in each state?" },
+      faq_a: {
+        label: "FAQ answer — {branch}, {total}, {states}, {top}",
+        value: "NMC lists {total} approved {branch} seats across {states} states. The most are in {top}. The table above gives every state, with the seats MCC allots there in All India and DNB counselling.",
+      },
+    },
+  },
   // Google "Preferred Sources" (2026-11-12, owner: "isko kardo"). A reader who picks the site as a preferred source sees it
   // more often in Top Stories, AI Overviews and AI Mode (developers.google.com/search/docs/appearance/preferred-sources).
   // A plain deeplink — no Google script, nothing on the page's speed; our own badge, which Google allows. Checked: Google's

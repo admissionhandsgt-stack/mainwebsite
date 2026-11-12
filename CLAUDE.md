@@ -1760,6 +1760,19 @@ radiology") — answered from data we hold, nothing typed:
 
 ## A PG branch in a state — `/md-ms-india/branches/[slug]/[state]` (2026-10-26)
 
+**Sections before pages (2026-11-12, owner: "itne pages banana sahi hai? … sub section … easy tarika").** The competitor
+sitemap study (scratchpad `competitor_page_gap.md`: Formity 9,326 college × branch pages, Careers360 ~11,600, Sartha 439
+branch × state) tempted ~10,000 new pages; 1,211 of ours were already "Discovered – not indexed". Measured demand first:
+90 days of Search Console + autocomplete gave a few hundred impressions across every branch × state pair, mostly
+"<branch> seats in <state>" / "dnb <branch> seats in <state>". So: a page only where a real search exists **and** the page
+has its own data; otherwise a section with an anchor on the page Google already ranks. Built: **"<branch> seats in each
+state"** on every PG branch page (`lib/branchSeatsByState.ts`, `components/seats/BranchSeatsByState.tsx`, copy
+`page.pg_branch.seats_state`) — NMC's approved MD/MS seats per state (colleges, government share) and MCC's running-year
+MD/MS and DNB seats of the same specialty (DNB twins matched by `specialtyKey`, e.g. "DNB Dermatology & Venereology" ↔
+"MD Dermatology, Venereology & Leprosy", "DNB Orthopedics Surgery" ↔ "MS Orthopaedics"), each row `#seats-<state>`,
+plus a FAQ. Seat counts only. Do not widen `BRANCH_STATE_COURSES` without a demand check
+(`scripts/tmp/harness/branch_state_demand.ts`).
+
 "MD Radiology cutoff Rajasthan", "MS Orthopaedics seats in Maharashtra": a competitor (Sartha) ranks for these with one
 page per state × branch carrying one rank table. Ours, from `lib/branchStateQueries.ts`: the latest live MCC round's last
 rank per category in the state (AIQ and deemed paid seats, 3+ colleges, with the score from `score_ranks`), the state's

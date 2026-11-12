@@ -21,6 +21,9 @@ import { CUT_CATS, getLatestLiveRound, roundPath } from "@/lib/mccResults";
 import { getScoreTables } from "@/lib/scoreRank";
 import { getBranchStateCombos, SEARCH_NAME } from "@/lib/branchStateQueries";
 import { getNmcBranchSeats } from "@/lib/nmcData";
+import { getBranchSeatsByState } from "@/lib/branchSeatsByState";
+import { getPgStates } from "@/lib/pgStateQueries";
+import BranchSeatsByState from "@/components/seats/BranchSeatsByState";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 import { CLINICAL, getLowRankClinical } from "@/lib/lowRankClinical";
 import { hinglishFaqs } from "@/lib/hinglishFaq";
@@ -191,6 +194,19 @@ export default async function BranchPage(
     open_rank: live?.cut.Open ? inr(live.cut.Open) : undefined,
   });
   const answer = nmcSeats ? (live?.cut.Open && copy.answer_live ? copy.answer_live : copy.answer) : "";
+  // Seats in every state, one table (lib/branchSeatsByState.ts) — "dnb <branch> seats in <state>" without a page per pair.
+  const pgStates = await getPgStates().catch(() => []);
+  const seatsByState = await getBranchSeatsByState(b.name, pgStates.map((s) => s.name)).catch(() => null);
+  const searchName = SEARCH_NAME[b.name] ?? b.name;
+  const seatsCopy = seatsByState
+    ? await pageCopy("page.pg_branch.seats_state", {
+        branch: searchName,
+        year: seatsByState.year ?? undefined,
+        total: inr(seatsByState.rows.reduce((t, r) => t + r.nmcSeats, 0)),
+        states: seatsByState.rows.filter((r) => r.nmcSeats > 0).length,
+        top: [...seatsByState.rows].sort((x, y) => y.nmcSeats - x.nmcSeats).slice(0, 3).map((r) => `${r.state} (${inr(r.nmcSeats)})`).join(", "),
+      })
+    : null;
   const mccCopy = mcc
     ? await pageCopy("page.pg_branch.mcc", {
         branch: b.name,
@@ -244,6 +260,7 @@ export default async function BranchPage(
           },
         ]
       : []),
+    ...(seatsCopy && seatsByState && seatsByState.rows.some((r) => r.nmcSeats > 0) ? [{ q: seatsCopy.faq_q, a: seatsCopy.faq_a }] : []),
     {
       q: `How many colleges offer ${b.name}?`,
       a: `${inr(b.colleges)} colleges in ${b.states} states, in the published counselling results${b.year ? ` for ${b.year}` : ""} — ${inr(b.seats)} seat options in all, where a seat option is one college, quota and category.`,
@@ -569,6 +586,16 @@ export default async function BranchPage(
               </Link>
             </p>
           </section>
+        )}
+
+        {/* ------------------------ seats in each state ------------------------ */}
+        {seatsByState && seatsCopy && (
+          <BranchSeatsByState
+            data={seatsByState}
+            copy={seatsCopy}
+            slugOf={Object.fromEntries(pgStates.map((s) => [s.name, s.slug]))}
+            pairPage={Object.fromEntries(byState.map((c) => [c.state, `/md-ms-india/branches/${c.courseSlug}/${c.stateSlug}`]))}
+          />
         )}
 
         {/* ------------------------------- faq ------------------------------- */}
