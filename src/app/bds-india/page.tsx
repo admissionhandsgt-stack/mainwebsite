@@ -218,6 +218,19 @@ export default async function BdsPage() {
         </div>
       </section>
 
+      <section className="container-custom pb-10">
+        <CiteThis title={"BDS colleges and cutoff in India"} path="/bds-india" source={"MCC's All India Quota results"} />
+      </section>
+
+      <TelegramJoin placement="bds_india" />
+
+      <LeadCapture
+        level="ug"
+        source="BDS colleges page"
+        title="Deciding between BDS seats?"
+        body="A counsellor orders your BDS and MBBS choices against the published closing ranks and your budget, through every round."
+      />
+
       <section className="container-custom py-10 md:py-14">
         <SectionHead
           icon="help"
@@ -233,17 +246,7 @@ export default async function BdsPage() {
         </div>
       </section>
 
-      <section className="container-custom pb-10">
-        <CiteThis title={"BDS colleges and cutoff in India"} path="/bds-india" source={"MCC's All India Quota results"} />
-      </section>
 
-      <LeadCapture
-        level="ug"
-        source="BDS colleges page"
-        title="Deciding between BDS seats?"
-        body="A counsellor orders your BDS and MBBS choices against the published closing ranks and your budget, through every round."
-      />
-      <TelegramJoin placement="bds_india" />
     </main>
   );
 }

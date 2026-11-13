@@ -2435,6 +2435,34 @@ loans 14, what-next 74). Built the same day, every rule from the authority's own
   5, 5, 30 — until the queue is done (scratchpad `ah_gsc_loop.js`); a half-hourly session watchdog re-injects it after a
   frozen tab. The queue was rebuilt PG-first: new PG pages, branch × state, DNB/diploma branches, 401 MD/MS colleges.
 
+## One page skeleton — read before adding a block to any page (2026-11-13)
+
+Owner: "SEO ke chakkar mai bhot sare patches, chije tukdo mai add ki thi … complete website & mobile site ko organise
+kardo … SEO na bidge … inter linking na bigde". Measured first (31 templates at 390 and 1440px, scratchpad
+`section_map_before.json`; the whole sitemap's tags and links in `crawl_before.json` — 3,650 pages, 0 broken, 119
+orphans): most data pages ended with the same thing said two or three times — a Telegram round alert AND a Telegram
+invite with the same heading, and three "talk to a counsellor" blocks (ExpertPlaybook, DataPageCounsel's card,
+LeadCapture's band), plus a CtaBand on branch and college pages. The rule now:
+
+- **A data page ends with `components/lead/DataPageEnd.tsx`**, placed right after its data and before its FAQ:
+  Cite this → one Telegram box → the counsellor (the playbook + ONE card: `counsel` = the PG card with the quick form,
+  or `lead` = the counsellor band where a page has no card) → the page's FAQ → (layout) searched questions, related
+  searches, "More on" → footer. Pages that keep their own order (PG state, branch, choice filling, MBBS state) follow
+  the same sequence by hand.
+- **One Telegram box per page.** `TelegramJoin unlessRound` steps aside while the round cue is set on a page that also
+  carries `TelegramRoundAlert` (which shows only while a NEET PG result is next). `DataPageEnd` does this itself.
+- **At most two counsellor blocks, side by side in one place** (the playbook + one card). No CtaBand after them; the
+  college templates' closing CtaBand is gone too (the Ask box, playbook and CounsellorEdge already carry WhatsApp,
+  call and the form). Service pages (/counselling/…) and the low-score landing page are the exception: there the
+  counsellor IS the content.
+- **Nothing hidden, no link lost**: only repeated CTA blocks were merged; every section with information stays, and
+  links that lived inside a moved block moved with it. Long link lists use `components/colleges/CollegeLinkGroups`
+  (grouped by type, names running on with "·" on a phone, columns from `sm`) — the PG state page's ~200 college cards
+  were 18,500px on a phone.
+- Check a change with `scripts/tmp/harness/section_map.mjs <base> <out.json> [paths]` (sections, CTA counts, links)
+  and, after the deploy, the whole-site crawl copy that keeps links (`scripts/tmp/harness/seo_crawl_links.mjs`):
+  orphans and broken links must not go up.
+
 ## Sort and filter on data pages (2026-11-11, owner: "smart modern tarike se sort & filtering… user friendly")
 
 `components/ui/DataTools.tsx` (client) works on the table the server already rendered — the full list stays in the

@@ -156,6 +156,19 @@ export default async function NeetSsCutoffPage() {
         </div>
       </section>
 
+      <section className="container-custom pb-10">
+        <CiteThis title={`NEET SS cutoff ${s.year ?? ""} — DM, MCh and DrNB`} path="/neet-ss-cutoff" source={"MCC's NEET SS results"} />
+      </section>
+
+      <TelegramJoin placement="neet_ss_cutoff" />
+
+      <LeadCapture
+        level="pg"
+        source="NEET SS cutoff page"
+        title="Planning your super-speciality choices?"
+        body="A counsellor orders your DM / MCh / DrNB choices against two years of MCC results — institute, course and the round each one actually closes in."
+      />
+
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">
         <div className="container-custom">
           <SectionHead
@@ -173,17 +186,7 @@ export default async function NeetSsCutoffPage() {
         </div>
       </section>
 
-      <section className="container-custom pb-10">
-        <CiteThis title={`NEET SS cutoff ${s.year ?? ""} — DM, MCh and DrNB`} path="/neet-ss-cutoff" source={"MCC's NEET SS results"} />
-      </section>
 
-      <LeadCapture
-        level="pg"
-        source="NEET SS cutoff page"
-        title="Planning your super-speciality choices?"
-        body="A counsellor orders your DM / MCh / DrNB choices against two years of MCC results — institute, course and the round each one actually closes in."
-      />
-      <TelegramJoin placement="neet_ss_cutoff" />
     </main>
   );
 }

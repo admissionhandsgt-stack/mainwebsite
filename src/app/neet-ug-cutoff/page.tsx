@@ -206,6 +206,19 @@ export default async function NeetUgCutoffPage() {
         </ul>
       </section>
 
+      <section className="container-custom pb-10">
+        <CiteThis title={`NEET UG cutoff ${mbbs?.year ?? ""} — MBBS and BDS by category`} path="/neet-ug-cutoff" source={"MCC's All India Quota results"} />
+      </section>
+
+      <TelegramJoin placement="neet_ug_cutoff" />
+
+      <LeadCapture
+        level="ug"
+        source="NEET UG cutoff page"
+        title="Know your rank? Get a choice list built on these numbers"
+        body="A counsellor orders your MBBS and BDS choices against the published closing ranks — AIQ and your state — and stays with you through every round."
+      />
+
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">
         <div className="container-custom">
           <SectionHead icon="help" eyebrow="FAQ" title="NEET UG cutoff: common questions" />
@@ -220,17 +233,7 @@ export default async function NeetUgCutoffPage() {
         </div>
       </section>
 
-      <section className="container-custom pb-10">
-        <CiteThis title={`NEET UG cutoff ${mbbs?.year ?? ""} — MBBS and BDS by category`} path="/neet-ug-cutoff" source={"MCC's All India Quota results"} />
-      </section>
 
-      <LeadCapture
-        level="ug"
-        source="NEET UG cutoff page"
-        title="Know your rank? Get a choice list built on these numbers"
-        body="A counsellor orders your MBBS and BDS choices against the published closing ranks — AIQ and your state — and stays with you through every round."
-      />
-      <TelegramJoin placement="neet_ug_cutoff" />
     </main>
   );
 }

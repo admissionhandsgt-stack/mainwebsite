@@ -12,7 +12,6 @@ import DataHero from "@/components/hero/DataHero";
 import SectionHead from "@/components/ui/SectionHead";
 import OpenOnHash from "@/components/ui/OpenOnHash";
 import DataPageCounsel from "@/components/lead/DataPageCounsel";
-import LeadCapture from "@/components/lead/LeadCapture";
 import { FaqList } from "@/components/counsel/CounselBlocks";
 
 /**
@@ -233,7 +232,6 @@ export default async function PgDocumentsPage() {
 
       <DataPageCounsel kind="cutoff" name={c.counsel_topic} placement="pg_documents" />
       {faqs.length > 0 && <FaqList title={c.faq_title} faqs={faqs} />}
-      <LeadCapture level="pg" source="NEET PG documents" />
     </main>
   );
 }

@@ -405,21 +405,8 @@ export default async function MBBSStatePage(props: Props) {
         </div>
       </section>
 
-      {/* -------------------------------- faq -------------------------------- */}
-      <section className="container-custom py-10 md:py-14">
-        <SectionHead
-          icon="help"
-          title={<>MBBS in {name}: common questions</>}
-        />
-        <div className="mt-6 space-y-3">
-          {faqs.map((f) => (
-            <details key={f.question} className="rounded-2xl border border-border bg-card p-5">
-              <summary className="cursor-pointer font-semibold text-foreground">{f.question}</summary>
-              <p className="mt-3 leading-relaxed text-muted-foreground">{f.answer}</p>
-            </details>
-          ))}
-        </div>
-      </section>
+
+      <TelegramJoin placement="ug_state" />
 
       <ExpertPlaybook kind="mbbs_state" name={name} placement="ug_state" />
       {/* The service page for the same state (2026-11-11): how a counsellor plans MBBS counselling here. */}
@@ -437,7 +424,22 @@ export default async function MBBSStatePage(props: Props) {
         title={`Planning MBBS in ${name}?`}
         body="Tell us your rank and category. A counsellor builds your choice list for this state, round by round, and stays with you until you report."
       />
-      <TelegramJoin placement="ug_state" />
+
+      {/* -------------------------------- faq -------------------------------- */}
+      <section className="container-custom py-10 md:py-14">
+        <SectionHead
+          icon="help"
+          title={<>MBBS in {name}: common questions</>}
+        />
+        <div className="mt-6 space-y-3">
+          {faqs.map((f) => (
+            <details key={f.question} className="rounded-2xl border border-border bg-card p-5">
+              <summary className="cursor-pointer font-semibold text-foreground">{f.question}</summary>
+              <p className="mt-3 leading-relaxed text-muted-foreground">{f.answer}</p>
+            </details>
+          ))}
+        </div>
+      </section>
 
       {/* --------------------------- other states --------------------------- */}
       <section className="container-custom border-t border-border py-10">

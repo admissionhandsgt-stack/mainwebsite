@@ -1,4 +1,3 @@
-import CiteThis from "@/components/seo/CiteThis";
 import PageDatasets from "@/components/seo/PageDatasets";
 import { NEET_PG_QUALIFYING } from "@/lib/neetPgQualifying";
 import type { Metadata } from "next";
@@ -9,17 +8,13 @@ import { getPgStates } from "@/lib/pgStateQueries";
 import { resolveMetadata } from "@/lib/content";
 import CategoryCutTable from "@/components/cutoffs/CategoryCutTable";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
-import LeadCapture from "@/components/lead/LeadCapture";
-import TelegramJoin from "@/components/engage/TelegramJoin";
-import DataPageCounsel from "@/components/lead/DataPageCounsel";
 import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import SectionHead from "@/components/ui/SectionHead";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
-import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
 import BranchStateIndex from "@/components/cutoffs/BranchStateIndex";
 import { getLatestLiveRound, roundPath, type CutCat } from "@/lib/mccResults";
-import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import DataPageEnd from "@/components/lead/DataPageEnd";
 import { hinglishFaqs } from "@/lib/hinglishFaq";
 import DataTools, { type ToolChip } from "@/components/ui/DataTools";
 import { toolLabels } from "@/lib/dataToolLabels";
@@ -527,13 +522,13 @@ export default async function NeetPgCutoffPage(props: Props) {
 
       <BranchStateIndex className="pt-10 md:pt-14" />
 
-      {/* The next MCC result is the strongest reason a cutoff reader has to join the channel. */}
-      <TelegramRoundAlert placement="round_alert_neet_pg_cutoff" className="pt-10 md:pt-14" />
 
-      <section className="container-custom pt-10 md:pt-14">
-        <ExpertPlaybook bare kind="cutoff" name="NEET PG cut off" placement="neet_pg_cutoff" />
-        <DataPageCounsel kind="cutoff" placement="counsel_neet_pg_cutoff" />
-      </section>
+      <DataPageEnd
+        cite={{ title: `NEET PG cutoff ${year?.year ?? ""} — branch wise, by category`, path: "/neet-pg-cutoff", source: "MCC's All India Quota results" }}
+        telegram={{ placement: "neet_pg_cutoff" }}
+        playbook={{ kind: "cutoff", name: "NEET PG cut off", placement: "neet_pg_cutoff" }}
+        counsel={{ kind: "cutoff", placement: "counsel_neet_pg_cutoff" }}
+      />
 
       <section className="container-custom py-10 md:py-14">
         <SectionHead icon="help" eyebrow="FAQ" title="NEET PG cutoff: common questions" />
@@ -556,17 +551,7 @@ export default async function NeetPgCutoffPage(props: Props) {
         </p>
       </section>
 
-      <section className="container-custom pb-10">
-        <CiteThis title={`NEET PG cutoff ${year?.year ?? ""} — branch wise, by category`} path="/neet-pg-cutoff" source={"MCC's All India Quota results"} />
-      </section>
 
-      <LeadCapture
-        level="pg"
-        source="NEET PG cutoff page"
-        title="Have your PG rank? Get a choice list built on these numbers"
-        body="A counsellor orders your branches and colleges against the published closing ranks — AIQ, state and deemed — and stays with you through every round."
-      />
-      <TelegramJoin placement="neet_pg_cutoff" />
     </main>
   );
 }

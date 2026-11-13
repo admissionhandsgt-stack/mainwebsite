@@ -27,6 +27,7 @@ export default function TelegramJoin({
   heading,
   body,
   className,
+  unlessRound = false,
 }: {
   /** Which copy of the invite this is, for the click event. */
   placement: string;
@@ -37,8 +38,12 @@ export default function TelegramJoin({
   heading?: string;
   body?: string;
   className?: string;
+  /** The page also carries a TelegramRoundAlert that follows the round cue: while a round result is next that box is
+   *  the invite, and this one would say the same thing again (2026-11-13 organise pass), so it steps aside. */
+  unlessRound?: boolean;
 }) {
   const copy = useTelegram();
+  if (unlessRound && copy.round) return null;
   const box = (
     <div
       className={cn(

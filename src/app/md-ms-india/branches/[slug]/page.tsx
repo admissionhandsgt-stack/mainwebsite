@@ -12,7 +12,6 @@ import DataPageCounsel from "@/components/lead/DataPageCounsel";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import { branchImage } from "@/lib/branchImage";
 import StructuredData from "@/components/seo/StructuredData";
-import CtaBand from "@/components/ui/CtaBand";
 import SeatOverview from "@/components/seats/SeatOverview";
 import BranchBands from "@/components/seats/BranchBands";
 import { summariseSeats } from "@/lib/seatSummary";
@@ -518,8 +517,6 @@ export default async function BranchPage(
               </Link>
             </p>
           )}
-          <ExpertPlaybook bare kind="branch" name={b.name} placement="branch" />
-          <DataPageCounsel kind="branch" name={b.name} placement="counsel_branch" />
         </section>
 
         {/* ------------------------ MCC's seat matrix ------------------------ */}
@@ -598,6 +595,9 @@ export default async function BranchPage(
           />
         )}
 
+          <ExpertPlaybook bare kind="branch" name={b.name} placement="branch" />
+          <DataPageCounsel kind="branch" name={b.name} placement="counsel_branch" />
+
         {/* ------------------------------- faq ------------------------------- */}
         <section className="mt-12">
           <h2 className="font-heading text-xl font-bold text-foreground md:text-2xl">
@@ -632,12 +632,6 @@ export default async function BranchPage(
         </Link>
       </div>
 
-      <CtaBand
-        title={`Where does ${b.name} actually sit for your rank?`}
-        body="The table above is every seat, not your shortlist. Bring your rank, category and quota and our counsellors will tell you which of these are realistic, which are a stretch, and the order to put them in."
-        image="/assets/images/hero/medical-admission-counselling-session.avif"
-        primaryLabel="Ask a counsellor"
-      />
       <TelegramJoin placement="pg_branch" />
     </main>
   );

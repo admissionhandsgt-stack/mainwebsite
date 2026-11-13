@@ -13,7 +13,6 @@ import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import SectionHead from "@/components/ui/SectionHead";
 import DataPageCounsel from "@/components/lead/DataPageCounsel";
-import LeadCapture from "@/components/lead/LeadCapture";
 import { FaqList } from "@/components/counsel/CounselBlocks";
 
 /**
@@ -270,7 +269,6 @@ export default async function SeatIncreasePage() {
           {faqs.length > 0 && <FaqList title={c.faq_title} faqs={faqs} />}
         </>
       )}
-      <LeadCapture level="pg" source="NEET PG seat increase" />
     </main>
   );
 }

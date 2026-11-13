@@ -12,10 +12,10 @@ import { getFeeStates } from "@/lib/pgFeeMatrix";
 import { getStipends } from "@/lib/cutoffHubQueries";
 import { resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
-import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import DataPageCounsel from "@/components/lead/DataPageCounsel";
 import DataHero from "@/components/hero/DataHero";
+import CollegeLinkGroups, { type LinkGroup } from "@/components/colleges/CollegeLinkGroups";
 import HeroFacts from "@/components/hero/HeroFacts";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import { getStateSeatMatrix, MATRIX_LABEL } from "@/lib/pgSeatData";
@@ -43,6 +43,18 @@ const span = (a: number | null, b: number | null, f: (v: number | null) => strin
   a == null && b == null ? "—" : a === b || b == null ? f(a) : a == null ? f(b) : `${f(a)} – ${f(b)}`;
 const OWN: Record<string, string> = { government: "Government", private: "Private", deemed: "Deemed", other: "Other" };
 const OWN_SHORT: Record<string, string> = { government: "Govt", private: "Private", deemed: "Deemed", other: "Other" };
+
+/** MD/MS colleges by type, then DNB hospitals (their type as a note) — the 2026-11-13 grouped list. */
+function collegeGroups(list: { name: string; slug: string; ownership: string; dnb: boolean }[]): LinkGroup[] {
+  const groups: LinkGroup[] = [];
+  for (const c of list) {
+    const key = c.dnb ? "dnb" : c.ownership;
+    let g = groups.find((x) => x.key === key);
+    if (!g) groups.push((g = { key, label: c.dnb ? "DNB hospitals" : `${OWN[c.ownership] ?? c.ownership} MD/MS colleges`, items: [] }));
+    g.items.push({ href: `/md-ms-india/colleges/${c.slug}`, name: c.name, note: c.dnb ? OWN_SHORT[c.ownership] ?? c.ownership : undefined });
+  }
+  return groups.sort((a, b) => Number(a.key === "dnb") - Number(b.key === "dnb"));
+}
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params;
@@ -591,27 +603,6 @@ export default async function PgStatePage(props: Props) {
         </section>
       )}
 
-      <section className="container-custom pb-10 md:pb-14">
-        <ExpertPlaybook bare kind="state" name={p.name} placement="pg_state" />
-        <DataPageCounsel kind="state" name={p.name} placement="counsel_pg_state" />
-        {/* The service page for the same state (2026-11-11): how a counsellor plans NEET PG counselling here. */}
-        {p.mdmsCount >= COUNSEL_PG_MIN_COLLEGES && (
-          <p className="mt-5">
-            <Link href={`/counselling/neet-pg/${p.slug}`} className="font-semibold text-primary-strong hover:underline">
-              NEET PG counselling in {p.name}: how our counsellors plan the state and MCC rounds with you →
-            </Link>
-          </p>
-        )}
-        {/* Who may sit this state's counselling (2026-11-12): other-state candidates and in-service doctors. */}
-        <p className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-[14.5px]">
-          <Link href={`/neet-pg-open-states#${p.name.toLowerCase().replace(/&/g, "and").replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "")}`} className="font-semibold text-primary-strong hover:underline">
-            Can other-state candidates take {p.name}&apos;s PG seats? →
-          </Link>
-          <Link href={`/neet-pg-in-service-quota#${p.name.toLowerCase().replace(/&/g, "and").replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "")}`} className="font-semibold text-primary-strong hover:underline">
-            In-service quota in {p.name} →
-          </Link>
-        </p>
-      </section>
 
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">
         <div className="container-custom">
@@ -640,19 +631,31 @@ export default async function PgStatePage(props: Props) {
           icon="college"
           title={<>PG medical colleges in {p.name}</>}
         />
-        <ul className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-          {p.colleges.map((c) => (
-            <li key={c.slug}>
-              <Link
-                href={`/md-ms-india/colleges/${c.slug}`}
-                className="flex h-full flex-col rounded-xl border border-border bg-card px-3 py-2 text-sm transition-colors hover:border-primary"
-              >
-                <span className="font-medium text-foreground">{c.name}</span>
-                <span className="text-[12px] text-muted-foreground">{OWN[c.ownership] ?? c.ownership}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <CollegeLinkGroups className="mt-5" groups={collegeGroups(p.colleges)} />
+      </section>
+
+      <TelegramJoin placement="pg_state" />
+
+      <section className="container-custom pb-10 md:pb-14">
+        <ExpertPlaybook bare kind="state" name={p.name} placement="pg_state" />
+        <DataPageCounsel kind="state" name={p.name} placement="counsel_pg_state" />
+        {/* The service page for the same state (2026-11-11): how a counsellor plans NEET PG counselling here. */}
+        {p.mdmsCount >= COUNSEL_PG_MIN_COLLEGES && (
+          <p className="mt-5">
+            <Link href={`/counselling/neet-pg/${p.slug}`} className="font-semibold text-primary-strong hover:underline">
+              NEET PG counselling in {p.name}: how our counsellors plan the state and MCC rounds with you →
+            </Link>
+          </p>
+        )}
+        {/* Who may sit this state's counselling (2026-11-12): other-state candidates and in-service doctors. */}
+        <p className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-[14.5px]">
+          <Link href={`/neet-pg-open-states#${p.name.toLowerCase().replace(/&/g, "and").replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "")}`} className="font-semibold text-primary-strong hover:underline">
+            Can other-state candidates take {p.name}&apos;s PG seats? →
+          </Link>
+          <Link href={`/neet-pg-in-service-quota#${p.name.toLowerCase().replace(/&/g, "and").replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "")}`} className="font-semibold text-primary-strong hover:underline">
+            In-service quota in {p.name} →
+          </Link>
+        </p>
       </section>
 
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">
@@ -672,13 +675,6 @@ export default async function PgStatePage(props: Props) {
         </div>
       </section>
 
-      <LeadCapture
-        level="pg"
-        source={`PG in ${p.name}`}
-        title={`Planning MD/MS in ${p.name}?`}
-        body="A counsellor orders your branch and college choices across the state quota, AIQ and deemed rounds, against the published closing ranks and your budget."
-      />
-      <TelegramJoin placement="pg_state" />
 
       <section className="container-custom border-t border-border py-10">
         <h2 className="font-heading text-xl font-bold text-foreground">PG in other states</h2>

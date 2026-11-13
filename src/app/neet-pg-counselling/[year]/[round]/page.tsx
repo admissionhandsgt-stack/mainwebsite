@@ -30,7 +30,6 @@ import HeroFacts from "@/components/hero/HeroFacts";
 import { type Insight } from "@/components/ui/InsightCards";
 import SectionHead from "@/components/ui/SectionHead";
 import CiteThis from "@/components/seo/CiteThis";
-import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
 import RoundCuts from "@/components/mcc/RoundCuts";
@@ -641,8 +640,7 @@ export default async function RoundResultPage(props: { params: Promise<Params> }
         </section>
       )}
 
-      <LeadCapture level="pg" source={`NEET PG ${year} ${spec.label} result page`} title={body.lead_title} body={body.lead_body} />
-      <TelegramJoin placement="pg_round_result" />
+      <TelegramJoin placement="pg_round_result" unlessRound={alertRound !== null} />
     </main>
   );
 }

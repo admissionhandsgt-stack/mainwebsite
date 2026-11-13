@@ -185,6 +185,19 @@ export default async function NeetMdsCutoffPage() {
         </section>
       )}
 
+      <section className="container-custom pb-10">
+        <CiteThis title={`NEET MDS cutoff ${o.year ?? ""} by speciality`} path="/neet-mds-cutoff" source={"MCC's NEET MDS results"} />
+      </section>
+
+      <TelegramJoin placement="neet_mds_cutoff" />
+
+      <LeadCapture
+        level="pg"
+        source="NEET MDS cutoff page"
+        title="Planning your MDS choices?"
+        body="A counsellor orders your MDS specialities and colleges — AIQ, deemed and your state — against MCC's published results and your budget."
+      />
+
       <section className="container-custom py-10 md:py-14">
         <SectionHead
           icon="help"
@@ -203,17 +216,7 @@ export default async function NeetMdsCutoffPage() {
         </p>
       </section>
 
-      <section className="container-custom pb-10">
-        <CiteThis title={`NEET MDS cutoff ${o.year ?? ""} by speciality`} path="/neet-mds-cutoff" source={"MCC's NEET MDS results"} />
-      </section>
 
-      <LeadCapture
-        level="pg"
-        source="NEET MDS cutoff page"
-        title="Planning your MDS choices?"
-        body="A counsellor orders your MDS specialities and colleges — AIQ, deemed and your state — against MCC's published results and your budget."
-      />
-      <TelegramJoin placement="neet_mds_cutoff" />
     </main>
   );
 }

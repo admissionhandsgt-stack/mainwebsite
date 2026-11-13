@@ -12,12 +12,8 @@ import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/S
 import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import SectionHead from "@/components/ui/SectionHead";
-import LeadCapture from "@/components/lead/LeadCapture";
-import TelegramJoin from "@/components/engage/TelegramJoin";
-import DataPageCounsel from "@/components/lead/DataPageCounsel";
-import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
 import { collegeName } from "@/lib/collegeName";
-import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import DataPageEnd from "@/components/lead/DataPageEnd";
 import { hinglishFaqs } from "@/lib/hinglishFaq";
 import FeePdfCta from "@/components/lead/FeePdfCta";
 import DataTools from "@/components/ui/DataTools";
@@ -316,12 +312,6 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
         </section>
       )}
 
-      <TelegramRoundAlert placement="round_alert_pg_stipend_state" className="pb-10 md:pb-14" />
-
-      <section className="container-custom pb-10 md:pb-14">
-        <ExpertPlaybook bare kind="stipend" name={s.state} placement="stipend_state" />
-        <DataPageCounsel kind="stipend" name={s.state} placement="counsel_stipend_state" />
-      </section>
 
       {/* -------------------------- the bond -------------------------- */}
       {showBond && (
@@ -357,6 +347,12 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
         </section>
       )}
 
+      <DataPageEnd
+        telegram={{ placement: "pg_stipend_state" }}
+        playbook={{ kind: "stipend", name: s.state, placement: "stipend_state" }}
+        counsel={{ kind: "stipend", name: s.state, placement: "counsel_stipend_state" }}
+      />
+
       {/* -------------------------- FAQ -------------------------- */}
       <section className="container-custom py-10 md:py-14">
         <SectionHead icon="help" eyebrow="FAQ" title={body.faq_title} />
@@ -384,8 +380,6 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
         </p>
       </section>
 
-      <LeadCapture level="pg" source={`PG stipend page (${s.state})`} title={body.lead_title} body={body.lead_body} />
-      <TelegramJoin placement="pg_stipend_state" />
     </main>
   );
 }

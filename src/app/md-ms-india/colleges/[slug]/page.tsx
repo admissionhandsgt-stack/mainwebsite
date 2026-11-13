@@ -20,7 +20,6 @@ import { generalBands } from "@/lib/cutoffBands";
 import CutoffBands from "@/components/colleges/CutoffBands";
 import CounsellorEdge from "@/components/home/CounsellorEdge";
 import TelegramJoin from "@/components/engage/TelegramJoin";
-import CtaBand from "@/components/ui/CtaBand";
 import PhotoCredit from "@/components/ui/PhotoCredit";
 import { getPgCollegePhoto } from "@/lib/content";
 import TrackView from "@/components/analytics/TrackView";
@@ -473,12 +472,6 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
         <CollegeFaq faqs={faqs} />
       </div>
 
-      <CtaBand
-        title={`Is ${s.short} the right pick for your rank?`}
-        body="Our counsellors work from every published round for this college. Bring your rank and we will tell you where it should sit in your preference order — or whether it should be on the list at all."
-        image="/assets/images/hero/medical-admission-counselling-session.avif"
-        primaryLabel="Ask a counsellor"
-      />
     </main>
   );
 }

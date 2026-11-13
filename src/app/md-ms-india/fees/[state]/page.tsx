@@ -12,10 +12,7 @@ import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/S
 import DataHero from "@/components/hero/DataHero";
 import HeroFacts from "@/components/hero/HeroFacts";
 import SectionHead from "@/components/ui/SectionHead";
-import LeadCapture from "@/components/lead/LeadCapture";
-import TelegramJoin from "@/components/engage/TelegramJoin";
-import DataPageCounsel from "@/components/lead/DataPageCounsel";
-import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import DataPageEnd from "@/components/lead/DataPageEnd";
 import { hinglishFaqs } from "@/lib/hinglishFaq";
 import { getCityIndex } from "@/lib/cityQueries";
 import { cityIn } from "@/lib/cityKey";
@@ -335,10 +332,6 @@ export default async function StateFeesPage(props: { params: Promise<{ state: st
         </p>
       </section>
 
-      <section className="container-custom pb-10 md:pb-14">
-        <ExpertPlaybook bare kind="fees" name={m.state} placement="pg_fees_state" />
-        <DataPageCounsel kind="state" name={m.state} placement="counsel_pg_fees_state" />
-      </section>
 
       {m.cities.length > 1 && (
         <section className="border-t border-border bg-surface-1 py-10 md:py-14">
@@ -375,6 +368,12 @@ export default async function StateFeesPage(props: { params: Promise<{ state: st
           </div>
         </section>
       )}
+
+      <DataPageEnd
+        telegram={{ placement: "pg_fees_state", round: false }}
+        playbook={{ kind: "fees", name: m.state, placement: "pg_fees_state" }}
+        counsel={{ kind: "state", name: m.state, placement: "counsel_pg_fees_state" }}
+      />
 
       <section className="container-custom py-10 md:py-14">
         <SectionHead icon="help" eyebrow="FAQ" title={body.faq_title} />
@@ -414,8 +413,6 @@ export default async function StateFeesPage(props: { params: Promise<{ state: st
         </p>
       </section>
 
-      <LeadCapture level="pg" source={`PG fees page (${m.state})`} title={body.lead_title} body={body.lead_body} />
-      <TelegramJoin placement="pg_fees_state" />
     </main>
   );
 }

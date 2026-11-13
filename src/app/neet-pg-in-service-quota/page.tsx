@@ -13,7 +13,6 @@ import HeroBars from "@/components/hero/HeroBars";
 import SectionHead from "@/components/ui/SectionHead";
 import OpenOnHash from "@/components/ui/OpenOnHash";
 import DataPageCounsel from "@/components/lead/DataPageCounsel";
-import LeadCapture from "@/components/lead/LeadCapture";
 import { FaqList } from "@/components/counsel/CounselBlocks";
 
 /**
@@ -203,7 +202,6 @@ export default async function InServicePage() {
           </section>
         </>
       )}
-      <LeadCapture level="pg" source="In-service quota (NEET PG)" />
     </main>
   );
 }

@@ -12,9 +12,7 @@ import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import SectionHead from "@/components/ui/SectionHead";
 import OpenOnHash from "@/components/ui/OpenOnHash";
-import DataPageCounsel from "@/components/lead/DataPageCounsel";
-import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
-import LeadCapture from "@/components/lead/LeadCapture";
+import DataPageEnd from "@/components/lead/DataPageEnd";
 import { FaqList } from "@/components/counsel/CounselBlocks";
 
 /**
@@ -175,12 +173,14 @@ export default async function OpenStatesPage() {
             </div>
           </section>
 
-          <DataPageCounsel kind="state" name={c.counsel_topic} placement="pg_open_states" />
-          <ExpertPlaybook kind="state" name={c.counsel_topic} placement="pg_open_states" />
+          <DataPageEnd
+            telegram={{ placement: "pg_open_states", round: false }}
+            playbook={{ kind: "state", name: c.counsel_topic, placement: "pg_open_states" }}
+            counsel={{ kind: "state", name: c.counsel_topic, placement: "pg_open_states" }}
+          />
           {faqs.length > 0 && <FaqList title={c.faq_title} faqs={faqs} />}
         </>
       )}
-      <LeadCapture level="pg" source="Open states (NEET PG)" />
     </main>
   );
 }

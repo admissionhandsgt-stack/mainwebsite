@@ -10,10 +10,7 @@ import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/S
 import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import SectionHead from "@/components/ui/SectionHead";
-import LeadCapture from "@/components/lead/LeadCapture";
-import TelegramJoin from "@/components/engage/TelegramJoin";
-import DataPageCounsel from "@/components/lead/DataPageCounsel";
-import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import DataPageEnd from "@/components/lead/DataPageEnd";
 import { hinglishFaqs } from "@/lib/hinglishFaq";
 
 /**
@@ -172,10 +169,12 @@ export default async function PgFeesPage() {
         </p>
       </section>
 
-      <section className="container-custom pb-10 md:pb-14">
-        <ExpertPlaybook bare kind="fees" placement="pg_fees" />
-        <DataPageCounsel kind="cutoff" name="PG fees" placement="counsel_pg_fees" />
-      </section>
+
+      <DataPageEnd
+        telegram={{ placement: "pg_fees", round: false }}
+        playbook={{ kind: "fees", placement: "pg_fees" }}
+        counsel={{ kind: "cutoff", name: "PG fees", placement: "counsel_pg_fees" }}
+      />
 
       <section className="container-custom py-10 md:py-14">
         <SectionHead icon="help" eyebrow="FAQ" title={body.faq_title} />
@@ -215,8 +214,6 @@ export default async function PgFeesPage() {
         </p>
       </section>
 
-      <LeadCapture level="pg" source="PG fees page" title={body.lead_title} body={body.lead_body} />
-      <TelegramJoin placement="pg_fees" />
     </main>
   );
 }

@@ -16,7 +16,6 @@ import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/S
 import DataHero from "@/components/hero/DataHero";
 import HeroFacts from "@/components/hero/HeroFacts";
 import SectionHead from "@/components/ui/SectionHead";
-import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
 import DataPageCounsel from "@/components/lead/DataPageCounsel";
@@ -354,8 +353,7 @@ export default async function NeetPgKaisePage() {
           { label: "Counsellor kaise chunein", href: "/counselling", note: "Fraud agent se kaise bachein" },
         ]}
       />
-      <LeadCapture level="pg" source="NEET PG counselling kaise hoti hai" title={c.lead_title} body={c.lead_body} />
-      <TelegramJoin placement="pg_kaise" />
+      <TelegramJoin placement="pg_kaise" unlessRound />
     </main>
   );
 }

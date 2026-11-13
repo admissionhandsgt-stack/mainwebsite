@@ -275,7 +275,7 @@ export default async function CounsellingYearPage(props: { params: Promise<Param
       )}
 
       <LeadCapture level="pg" source={`NEET PG counselling ${year} page`} title={body.lead_title} body={body.lead_body} />
-      <TelegramJoin placement="pg_counselling_year" />
+      <TelegramJoin placement="pg_counselling_year" unlessRound />
     </main>
   );
 }

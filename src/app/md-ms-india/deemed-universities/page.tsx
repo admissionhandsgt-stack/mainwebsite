@@ -1,4 +1,3 @@
-import CiteThis from "@/components/seo/CiteThis";
 import PageDatasets from "@/components/seo/PageDatasets";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
@@ -6,15 +5,14 @@ import { getDeemedPg } from "@/lib/pgFeeQueries";
 import { resolveMetadata } from "@/lib/content";
 import FeeBandTable, { lakh } from "@/components/cutoffs/FeeBandTable";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
-import LeadCapture from "@/components/lead/LeadCapture";
 import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
 import SectionHead from "@/components/ui/SectionHead";
-import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 import DataTools from "@/components/ui/DataTools";
 import { toolLabels } from "@/lib/dataToolLabels";
+import DataPageEnd from "@/components/lead/DataPageEnd";
 /**
  * "Deemed university PG fee structure", "NEET PG deemed cutoff". Per-college
  * fees are free on every college page, so listing them here gives nothing away;
@@ -209,6 +207,18 @@ export default async function DeemedPgPage() {
         </div>
       </section>
 
+      <DataPageEnd
+        cite={{ title: `Deemed university MD/MS fees ${d.year ?? ""}`, path: "/md-ms-india/deemed-universities", source: "fees published with MCC's deemed counselling" }}
+        telegram={{ placement: "deemed", round: false }}
+        playbook={{ kind: "quota", name: "deemed university seats", placement: "deemed" }}
+        lead={{
+          level: "pg",
+          source: "Deemed PG page",
+          title: "Considering a deemed seat?",
+          body: "Deemed rounds run on MCC's calendar with their own deposit and exit rules. A counsellor plans them beside your state and AIQ options so a deposit is never lost by accident.",
+        }}
+      />
+
       <section className="container-custom py-10 md:py-14">
         <SectionHead
           icon="help"
@@ -230,18 +240,8 @@ export default async function DeemedPgPage() {
         </p>
       </section>
 
-      <section className="container-custom pb-10">
-        <CiteThis title={`Deemed university MD/MS fees ${d.year ?? ""}`} path="/md-ms-india/deemed-universities" source={"fees published with MCC's deemed counselling"} />
-      </section>
 
-      <ExpertPlaybook kind="quota" name="deemed university seats" placement="deemed" />
 
-      <LeadCapture
-        level="pg"
-        source="Deemed PG page"
-        title="Considering a deemed seat?"
-        body="Deemed rounds run on MCC's calendar with their own deposit and exit rules. A counsellor plans them beside your state and AIQ options so a deposit is never lost by accident."
-      />
     </main>
   );
 }

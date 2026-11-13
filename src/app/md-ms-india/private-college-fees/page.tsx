@@ -1,4 +1,3 @@
-import CiteThis from "@/components/seo/CiteThis";
 import PageDatasets from "@/components/seo/PageDatasets";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
@@ -6,13 +5,12 @@ import { getPrivatePgFees } from "@/lib/pgFeeQueries";
 import { resolveMetadata } from "@/lib/content";
 import FeeBandTable, { lakh } from "@/components/cutoffs/FeeBandTable";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
-import LeadCapture from "@/components/lead/LeadCapture";
 import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 
 import SectionHead from "@/components/ui/SectionHead";
-import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import DataPageEnd from "@/components/lead/DataPageEnd";
 /** "MD fees in private colleges" — by quota family, nationally and per state. See lib/pgFeeQueries.ts. */
 
 const PATH = "/md-ms-india/private-college-fees";
@@ -145,6 +143,18 @@ export default async function PrivateFeesPage() {
         </div>
       </section>
 
+      <DataPageEnd
+        cite={{ title: `MD/MS fees in private medical colleges ${f.year ?? ""}`, path: "/md-ms-india/private-college-fees", source: "fees published with the PG counselling" }}
+        telegram={{ placement: "private_fees", round: false }}
+        playbook={{ kind: "fees", name: "private college PG fees", placement: "private_fees" }}
+        lead={{
+          level: "pg",
+          source: "Private PG fees page",
+          title: "Fee, rank and budget — in one list",
+          body: "A counsellor builds your PG choice list against the fee of each seat, its stipend and your budget for three years — not just the rank.",
+        }}
+      />
+
       <section className="container-custom py-10 md:py-14">
         <SectionHead
           icon="help"
@@ -166,18 +176,8 @@ export default async function PrivateFeesPage() {
         </p>
       </section>
 
-      <section className="container-custom pb-10">
-        <CiteThis title={`MD/MS fees in private medical colleges ${f.year ?? ""}`} path="/md-ms-india/private-college-fees" source={"fees published with the PG counselling"} />
-      </section>
 
-      <ExpertPlaybook kind="fees" name="private college PG fees" placement="private_fees" />
 
-      <LeadCapture
-        level="pg"
-        source="Private PG fees page"
-        title="Fee, rank and budget — in one list"
-        body="A counsellor builds your PG choice list against the fee of each seat, its stipend and your budget for three years — not just the rank."
-      />
     </main>
   );
 }

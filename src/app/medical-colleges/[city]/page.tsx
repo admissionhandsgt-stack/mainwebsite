@@ -13,10 +13,7 @@ import type { Family, Ownership } from "@/lib/pgFeeMatrix";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import DataHero from "@/components/hero/DataHero";
 import SectionHead from "@/components/ui/SectionHead";
-import LeadCapture from "@/components/lead/LeadCapture";
-import TelegramJoin from "@/components/engage/TelegramJoin";
-import DataPageCounsel from "@/components/lead/DataPageCounsel";
-import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import DataPageEnd from "@/components/lead/DataPageEnd";
 import FeePdfCta from "@/components/lead/FeePdfCta";
 
 /**
@@ -346,9 +343,6 @@ export default async function CityPage(props: { params: Promise<{ city: string }
         </section>
       )}
 
-      <section className="container-custom py-10 md:py-12">
-        <DataPageCounsel kind="cutoff" name={`PG in ${p.city.name}`} placement="counsel_city" />
-      </section>
 
       {/* -------------------- MBBS and DNB -------------------- */}
       {(p.mbbs.length >= 2 || p.dnb.length > 0) && (
@@ -389,7 +383,11 @@ export default async function CityPage(props: { params: Promise<{ city: string }
         </section>
       )}
 
-      <ExpertPlaybook kind="fees" name={`PG in ${p.city.name}`} placement="city" />
+      <DataPageEnd
+        telegram={{ placement: "city", round: false }}
+        playbook={{ kind: "fees", name: `PG in ${p.city.name}`, placement: "city" }}
+        counsel={{ kind: "cutoff", name: `PG in ${p.city.name}`, placement: "counsel_city" }}
+      />
 
       {/* -------------------- FAQ -------------------- */}
       {faqs.length > 0 && (
@@ -425,8 +423,6 @@ export default async function CityPage(props: { params: Promise<{ city: string }
         </section>
       )}
 
-      <LeadCapture level="pg" source={`City page — ${p.city.name}`} title={c.lead_title} body={c.lead_body} />
-      <TelegramJoin placement="city" />
     </main>
   );
 }

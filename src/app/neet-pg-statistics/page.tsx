@@ -11,10 +11,7 @@ import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import DataHero from "@/components/hero/DataHero";
 import SectionHead from "@/components/ui/SectionHead";
-import CiteThis from "@/components/seo/CiteThis";
-import LeadCapture from "@/components/lead/LeadCapture";
-import TelegramJoin from "@/components/engage/TelegramJoin";
-import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import DataPageEnd from "@/components/lead/DataPageEnd";
 
 /**
  * /neet-pg-statistics (2026-11-10; owner: "NEET PG / medical seats statistics 2026 banado"). A statistics page is what
@@ -388,7 +385,12 @@ export default async function PgStatisticsPage() {
             </p>
           </section>
 
-          <ExpertPlaybook kind="cutoff" name="NEET PG" placement="pg_statistics" />
+          <DataPageEnd
+            cite={{ title: "NEET PG & medical seats statistics", path: PATH, source: "NBEMS, NMC and MCC data compiled by AdmissionHands" }}
+            telegram={{ placement: "pg_statistics", round: false }}
+            playbook={{ kind: "cutoff", name: "NEET PG", placement: "pg_statistics" }}
+            lead={{ level: "pg", source: "NEET PG statistics page", title: body.lead_title, body: body.lead_body }}
+          />
 
           {faqs.length > 0 && (
             <section className="border-t border-border bg-surface-1 py-8 md:py-10">
@@ -406,9 +408,6 @@ export default async function PgStatisticsPage() {
             </section>
           )}
 
-          <section className="container-custom py-8">
-            <CiteThis title="NEET PG & medical seats statistics" path={PATH} source="NBEMS, NMC and MCC data compiled by AdmissionHands" />
-          </section>
         </>
       )}
 
@@ -420,8 +419,6 @@ export default async function PgStatisticsPage() {
           { label: "In-service quota, state wise", href: "/neet-pg-in-service-quota", note: "Seats kept for doctors in government service" },
         ]}
       />
-      <LeadCapture level="pg" source="NEET PG statistics page" title={body.lead_title} body={body.lead_body} />
-      <TelegramJoin placement="pg_statistics" />
     </main>
   );
 }

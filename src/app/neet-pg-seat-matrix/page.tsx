@@ -11,13 +11,10 @@ import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/S
 import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import SectionHead from "@/components/ui/SectionHead";
-import CiteThis from "@/components/seo/CiteThis";
-import LeadCapture from "@/components/lead/LeadCapture";
-import TelegramJoin from "@/components/engage/TelegramJoin";
-import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 import DataTools from "@/components/ui/DataTools";
 import { toolLabels } from "@/lib/dataToolLabels";
 import { branchAliases, branchKind } from "@/lib/branchKinds";
+import DataPageEnd from "@/components/lead/DataPageEnd";
 
 /**
  * "NEET PG seat matrix 2026" (2026-10-20) — every seat MCC fills, from MCC's own published
@@ -472,6 +469,13 @@ export default async function SeatMatrixPage() {
             </section>
           )}
 
+          <DataPageEnd
+            cite={{ title: `NEET PG seat matrix ${o.year}`, path: PATH, source: "MCC's published NEET PG seat matrix", openData: false }}
+            telegram={{ placement: "pg_seat_matrix", round: false }}
+            playbook={{ kind: "cutoff", name: "NEET PG seats", placement: "seat_matrix" }}
+            lead={{ level: "pg", source: "NEET PG seat matrix page", title: body.lead_title, body: body.lead_body }}
+          />
+
           {/* -------------------------- FAQ -------------------------- */}
           {faqs.length > 0 && (
             <section className="border-t border-border bg-surface-1 py-10 md:py-14">
@@ -495,13 +499,9 @@ export default async function SeatMatrixPage() {
             </section>
           )}
 
-          <section className="container-custom py-10">
-            <CiteThis title={`NEET PG seat matrix ${o.year}`} path={PATH} source="MCC's published NEET PG seat matrix" openData={false} />
-          </section>
         </>
       )}
 
-      <ExpertPlaybook kind="cutoff" name="NEET PG seats" placement="seat_matrix" />
 
       <LinkCards
         title="Related"
@@ -511,8 +511,6 @@ export default async function SeatMatrixPage() {
           { label: "Choice filling and upgrade rules", href: "/neet-pg-choice-filling", note: "Round by round, from MCC's bulletin" },
         ]}
       />
-      <LeadCapture level="pg" source="NEET PG seat matrix page" title={body.lead_title} body={body.lead_body} />
-      <TelegramJoin placement="pg_seat_matrix" />
     </main>
   );
 }

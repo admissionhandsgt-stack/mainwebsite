@@ -15,10 +15,7 @@ import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/S
 import DataHero from "@/components/hero/DataHero";
 import HeroFacts from "@/components/hero/HeroFacts";
 import SectionHead from "@/components/ui/SectionHead";
-import DataPageCounsel from "@/components/lead/DataPageCounsel";
-import LeadCapture from "@/components/lead/LeadCapture";
-import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
-import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import DataPageEnd from "@/components/lead/DataPageEnd";
 
 /**
  * One PG branch in one state — "MD Radiology cutoff Rajasthan" (2026-10-26). What it states and what it
@@ -337,10 +334,6 @@ export default async function BranchStatePage(props: Props) {
         </section>
       )}
 
-      <section className="container-custom pb-10 md:pb-14">
-        <ExpertPlaybook bare kind="branch" name={`${name} in ${p.state}`} placement="branch_state" />
-        <DataPageCounsel kind="branch" name={`${name} in ${p.state}`} placement="counsel_branch_state" />
-      </section>
 
       {/* ------------------------------ seats, stipend, bond ------------------------------ */}
       {(seats || stipend || bond?.govt.withBond) && (
@@ -401,6 +394,12 @@ export default async function BranchStatePage(props: Props) {
         </ul>
       </section>
 
+      <DataPageEnd
+        telegram={{ placement: "branch_state" }}
+        playbook={{ kind: "branch", name: `${name} in ${p.state}`, placement: "branch_state" }}
+        counsel={{ kind: "branch", name: `${name} in ${p.state}`, placement: "counsel_branch_state" }}
+      />
+
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">
         <div className="container-custom">
           <SectionHead icon="help" title={body.faq_title} />
@@ -415,9 +414,7 @@ export default async function BranchStatePage(props: Props) {
         </div>
       </section>
 
-      <TelegramRoundAlert placement="round_alert_branch_state" className="pt-10 md:pt-14" />
 
-      <LeadCapture level="pg" source={`${p.course} in ${p.state}`} title={body.lead_title} body={body.lead_body} />
 
       <section className="container-custom border-t border-border py-10">
         <h2 className="font-heading text-xl font-bold text-foreground">{body.other_states}</h2>

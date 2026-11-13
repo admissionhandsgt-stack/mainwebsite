@@ -11,13 +11,10 @@ import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import SectionHead from "@/components/ui/SectionHead";
 import OpenOnHash from "@/components/ui/OpenOnHash";
-import LeadCapture from "@/components/lead/LeadCapture";
-import TelegramJoin from "@/components/engage/TelegramJoin";
-import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
-import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 import { hinglishFaqs } from "@/lib/hinglishFaq";
 import DataTools from "@/components/ui/DataTools";
 import { toolLabels } from "@/lib/dataToolLabels";
+import DataPageEnd from "@/components/lead/DataPageEnd";
 
 /**
  * "PG medical bond state wise" (2026-10-20): the service bond and seat-leaving terms on MD/MS
@@ -269,8 +266,6 @@ export default async function BondPage() {
             </p>
           </section>
 
-          {/* The bond is read by someone choosing seats for the next MCC round — the alert is what they need next. */}
-          <TelegramRoundAlert placement="round_alert_pg_bond" className="pb-10 md:pb-14" />
 
           {/* ---------------------- private, deemed, society ---------------------- */}
           {otherStates.length > 0 && (
@@ -372,6 +367,12 @@ export default async function BondPage() {
             </div>
           </section>
 
+          <DataPageEnd
+            telegram={{ placement: "pg_bond" }}
+            playbook={{ kind: "fees", name: "PG bond", placement: "bond" }}
+            lead={{ level: "pg", source: "PG bond page", title: body.lead_title, body: body.lead_body }}
+          />
+
           {/* ---------------------- FAQ ---------------------- */}
           {faqs.length > 0 && (
             <section className="border-t border-border bg-surface-1 py-10 md:py-14">
@@ -397,10 +398,7 @@ export default async function BondPage() {
         </>
       )}
 
-      <ExpertPlaybook kind="fees" name="PG bond" placement="bond" />
 
-      <LeadCapture level="pg" source="PG bond page" title={body.lead_title} body={body.lead_body} />
-      <TelegramJoin placement="pg_bond" />
     </main>
   );
 }

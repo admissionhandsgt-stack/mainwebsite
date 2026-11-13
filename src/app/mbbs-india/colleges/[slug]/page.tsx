@@ -20,7 +20,6 @@ import { generalBands } from "@/lib/cutoffBands";
 import CutoffBands from "@/components/colleges/CutoffBands";
 import CounsellorEdge from "@/components/home/CounsellorEdge";
 import TelegramJoin from "@/components/engage/TelegramJoin";
-import CtaBand from "@/components/ui/CtaBand";
 import TrackView from "@/components/analytics/TrackView";
 import TelegramStrip from "@/components/engage/TelegramStrip";
 import { jsonLd as toJsonLd } from "@/lib/jsonLd";
@@ -316,12 +315,6 @@ export default async function UgCollegePage(props0: { params: Promise<{ slug: st
         <CollegeFaq faqs={faqs} />
       </div>
 
-      <CtaBand
-        title={`Is ${s.short} within reach of your rank?`}
-        body="Send us your NEET UG rank, category and domicile. We check it against every published round for this college and the ones around it, and tell you where it actually sits."
-        image="/assets/images/hero/medical-admission-counselling-session.avif"
-        primaryLabel="Get a free rank check"
-      />
     </main>
   );
 }

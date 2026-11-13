@@ -12,10 +12,7 @@ import DataHero from "@/components/hero/DataHero";
 import HeroBars from "@/components/hero/HeroBars";
 import SectionHead from "@/components/ui/SectionHead";
 import MarksRankLookup from "@/components/marks/MarksRankLookup";
-import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
-import DataPageCounsel from "@/components/lead/DataPageCounsel";
-import LeadCapture from "@/components/lead/LeadCapture";
-import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import DataPageEnd from "@/components/lead/DataPageEnd";
 import { hinglishFaqs } from "@/lib/hinglishFaq";
 
 /**
@@ -344,12 +341,12 @@ export default async function NeetPgMarksVsRankPage() {
         </div>
       </section>
 
-      <TelegramRoundAlert placement="round_alert_marks_rank" className="pt-10 md:pt-14" />
 
-      <section className="container-custom pt-10 md:pt-14">
-        <ExpertPlaybook bare kind="marks" name="NEET PG marks vs rank" placement="marks_rank" />
-        <DataPageCounsel kind="cutoff" placement="counsel_marks_rank" />
-      </section>
+      <DataPageEnd
+        telegram={{ placement: "marks_rank" }}
+        playbook={{ kind: "marks", name: "NEET PG marks vs rank", placement: "marks_rank" }}
+        counsel={{ kind: "cutoff", placement: "counsel_marks_rank" }}
+      />
 
       <section className="container-custom py-10 md:py-14">
         <SectionHead icon="help" eyebrow="FAQ" title={body.faq_title} />
@@ -363,12 +360,6 @@ export default async function NeetPgMarksVsRankPage() {
         </div>
       </section>
 
-      <LeadCapture
-        level="pg"
-        source="NEET PG marks vs rank page"
-        title="Got your rank? Get a choice list built for it"
-        body="A counsellor orders your branches and colleges against the published closing ranks — AIQ, state and deemed — and stays with you through every round."
-      />
     </main>
   );
 }

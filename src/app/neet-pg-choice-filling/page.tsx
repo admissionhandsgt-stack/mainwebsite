@@ -12,7 +12,6 @@ import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/S
 import DataHero from "@/components/hero/DataHero";
 import HeroFacts from "@/components/hero/HeroFacts";
 import SectionHead from "@/components/ui/SectionHead";
-import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
 import DataPageCounsel from "@/components/lead/DataPageCounsel";
@@ -340,9 +339,6 @@ export default async function ChoiceFillingPage() {
         </div>
       </section>
 
-      <section className="container-custom pb-10 md:pb-14">
-        <DataPageCounsel kind="cutoff" name="NEET PG choice filling" placement="counsel_pg_choice_filling" />
-      </section>
 
       {/* -------------------- state + next year -------------------- */}
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">
@@ -370,6 +366,10 @@ export default async function ChoiceFillingPage() {
             <p className="mt-3"><Cite keys={["bulletin", "stray2024", "d19"]} /></p>
           </div>
         </div>
+      </section>
+
+      <section className="container-custom pb-10 md:pb-14">
+        <DataPageCounsel kind="cutoff" name="NEET PG choice filling" placement="counsel_pg_choice_filling" />
       </section>
 
       {/* -------------------- FAQ -------------------- */}
@@ -412,8 +412,7 @@ export default async function ChoiceFillingPage() {
         </div>
       </section>
 
-      <LeadCapture level="pg" source="NEET PG choice filling page" title={body.lead_title} body={body.lead_body} />
-      <TelegramJoin placement="pg_choice_filling" />
+      <TelegramJoin placement="pg_choice_filling" unlessRound />
     </main>
   );
 }

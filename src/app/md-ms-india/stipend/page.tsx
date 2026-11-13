@@ -1,21 +1,16 @@
 import { fitDescription, fitTitle } from "@/lib/seoTitle";
 import PageDatasets from "@/components/seo/PageDatasets";
-import CiteThis from "@/components/seo/CiteThis";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { getStipends } from "@/lib/cutoffHubQueries";
 import { resolveMetadata } from "@/lib/content";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
-import LeadCapture from "@/components/lead/LeadCapture";
-import TelegramJoin from "@/components/engage/TelegramJoin";
-import DataPageCounsel from "@/components/lead/DataPageCounsel";
-import TelegramRoundAlert from "@/components/engage/TelegramRoundAlert";
 import DataHero from "@/components/hero/DataHero";
 import SectionHead from "@/components/ui/SectionHead";
 import HeroBars from "@/components/hero/HeroBars";
 import { getPgStates } from "@/lib/pgStateQueries";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
-import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
+import DataPageEnd from "@/components/lead/DataPageEnd";
 import { hinglishFaqs } from "@/lib/hinglishFaq";
 import DataTools from "@/components/ui/DataTools";
 import { toolLabels } from "@/lib/dataToolLabels";
@@ -236,12 +231,6 @@ export default async function StipendPage() {
         </div>
       </section>
 
-      <TelegramRoundAlert placement="round_alert_pg_stipend" className="pb-10 md:pb-14" />
-
-      <section className="container-custom pb-10 md:pb-14">
-        <ExpertPlaybook bare kind="stipend" placement="stipend" />
-        <DataPageCounsel kind="stipend" placement="counsel_stipend" />
-      </section>
 
       <section className="border-t border-border bg-surface-1 py-10 md:py-14">
         <div className="container-custom">
@@ -281,6 +270,13 @@ export default async function StipendPage() {
         </div>
       </section>
 
+      <DataPageEnd
+        cite={{ title: "NEET PG stipend by state", path: "/md-ms-india/stipend", source: "colleges' published PG stipends" }}
+        telegram={{ placement: "pg_stipend" }}
+        playbook={{ kind: "stipend", placement: "stipend" }}
+        counsel={{ kind: "stipend", placement: "counsel_stipend" }}
+      />
+
       <section className="container-custom py-10 md:py-14">
         <SectionHead icon="help" eyebrow="FAQ" title="PG stipend: common questions" />
         <div className="mt-6 space-y-3">
@@ -299,17 +295,7 @@ export default async function StipendPage() {
         </p>
       </section>
 
-      <section className="container-custom pb-10">
-        <CiteThis title={"NEET PG stipend by state"} path="/md-ms-india/stipend" source={"colleges' published PG stipends"} />
-      </section>
 
-      <LeadCapture
-        level="pg"
-        source="PG stipend page"
-        title="Weighing fee against stipend?"
-        body="A counsellor sets each seat's fee, stipend and bond against your rank and budget, so the shortlist is one you can afford for three years."
-      />
-      <TelegramJoin placement="pg_stipend" />
     </main>
   );
 }
