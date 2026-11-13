@@ -263,15 +263,15 @@ const TONE: Record<string, Tone> = {
 const when = (v: string | null) =>
   v ? new Date(v).toLocaleString("en-IN", { timeZone: "Asia/Kolkata", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "—";
 
-type TabId = "emails" | "hunt" | "sites" | "settings" | "kit";
-const TAB_IDS: TabId[] = ["emails", "hunt", "sites", "settings", "kit"];
+type TabId = "emails" | "hunt" | "posts" | "sites" | "settings" | "kit";
+const TAB_IDS: TabId[] = ["emails", "hunt", "posts", "sites", "settings", "kit"];
 
 /**
  * One screen, five tabs (2026-11-10, owner: "lamba lamba scroll hai, chije unorganised"): the day's work first (emails,
  * the hunt), then the sites list, the settings and the share kit. The tab is in the address (#hunt), so a Telegram link
  * opens the right one.
  */
-export default function OutreachEmail({ kit }: { kit?: React.ReactNode }) {
+export default function OutreachEmail({ kit, posts }: { kit?: React.ReactNode; posts?: React.ReactNode }) {
   const [tab, setTabState] = useState<TabId>("emails");
   useEffect(() => {
     const h = window.location.hash.slice(1) as TabId;
@@ -357,6 +357,7 @@ export default function OutreachEmail({ kit }: { kit?: React.ReactNode }) {
         items={[
           { id: "emails" as TabId, label: "Emails", count: s.rows.length },
           { id: "hunt" as TabId, label: "Daily hunt", count: s.hunt.filter((h) => h.status === "new").length },
+          ...(posts ? [{ id: "posts" as TabId, label: "Data posts" }] : []),
           { id: "sites" as TabId, label: "Websites", count: s.sources.length },
           { id: "settings" as TabId, label: "Settings" },
           ...(kit ? [{ id: "kit" as TabId, label: "Share kit" }] : []),
@@ -641,6 +642,7 @@ export default function OutreachEmail({ kit }: { kit?: React.ReactNode }) {
       </div>
       )}
 
+      {tab === "posts" && posts}
       {tab === "kit" && kit}
     </div>
   );

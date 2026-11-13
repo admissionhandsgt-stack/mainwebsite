@@ -104,10 +104,29 @@ export function packFor(a: Angle): PostPack {
   };
 }
 
+export const TOPIC_LABEL: Record<Topic, string> = {
+  trend: "Cut off trend (this year vs last)",
+  seats: "Seats added by MCC",
+  colleges: "New medical colleges (NMC)",
+  fees: "PG fees: private and deemed",
+  stipend: "PG stipend by state",
+};
+
+/** The rotation order starting from today's topic. */
+export function rotation(): Topic[] {
+  const day = Math.floor(Date.now() / 86_400_000) % POST_TOPICS.length;
+  return [...POST_TOPICS.slice(day), ...POST_TOPICS.slice(0, day)];
+}
+
+/** Every topic's pack, today's first — for Admin → Outreach → Data posts, where the owner copies them. */
+export async function allPacks(): Promise<PostPack[]> {
+  const packs = await Promise.all(rotation().map((t) => angleForPost(t).then((a) => (a ? packFor(a) : null)).catch(() => null)));
+  return packs.filter((p): p is PostPack => !!p);
+}
+
 /** Today's topic in rotation, falling through to the next topic that has data. */
 export async function todaysPack(prefer?: Topic | null): Promise<PostPack | null> {
-  const day = Math.floor(Date.now() / 86_400_000);
-  const order = prefer ? [prefer, ...POST_TOPICS.filter((t) => t !== prefer)] : [...POST_TOPICS.slice(day % POST_TOPICS.length), ...POST_TOPICS.slice(0, day % POST_TOPICS.length)];
+  const order = prefer ? [prefer, ...POST_TOPICS.filter((t) => t !== prefer)] : rotation();
   for (const t of order) {
     const a = await angleForPost(t).catch(() => null);
     if (a) return packFor(a);
@@ -118,7 +137,7 @@ export async function todaysPack(prefer?: Topic | null): Promise<PostPack | null
 /** The pack as Telegram messages for the owner to copy, one per platform. */
 export function packMessages(p: PostPack): string[] {
   return [
-    `🗞 Today's data post (${p.topic}) — post it yourself; check each community's rules first (many subreddits allow no links: drop the link lines there).`,
+    `🗞 Today's data post (${p.topic}) — post it yourself; check each community's rules first (many subreddits allow no links: drop the link lines there). Every topic with Copy buttons: https://admin.admissionhands.com/outreach#posts`,
     `REDDIT (r/NEETPG, r/IndianMedschool)\n\nTitle: ${p.reddit.title}\n\n${p.reddit.body}`,
     `QUORA — answer one of:\n${p.quora.questions.map((q) => `• ${q}`).join("\n")}\n\n${p.quora.answer}`,
     `X / TWITTER (thread)\n\n${p.x.join("\n\n")}`,

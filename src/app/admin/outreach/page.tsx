@@ -4,6 +4,8 @@ import { getSessionUser } from "@/lib/auth";
 import { buildOutreachKit, type KitItem } from "@/lib/outreachKit";
 import CopyCode from "@/components/seo/CopyCode";
 import OutreachEmail from "@/components/admin/OutreachEmail";
+import DataPosts from "@/components/admin/DataPosts";
+import { allPacks } from "@/lib/socialPosts";
 import { Badge, Card, Notice, PageHeader } from "@/components/admin/ui";
 
 /**
@@ -19,7 +21,7 @@ const SITE = "https://www.admissionhands.com";
 export default async function OutreachPage() {
   const user = await getSessionUser();
   if (!user) redirect("/admin"); // the login screen (on the admin host, middleware cleans it to /)
-  const items = await buildOutreachKit();
+  const [items, packs] = await Promise.all([buildOutreachKit(), allPacks().catch(() => [])]);
 
   // Grouped by where it gets sent, in the order the kit lists them.
   const groups: { channel: string; items: KitItem[] }[] = [];
@@ -84,8 +86,8 @@ export default async function OutreachPage() {
 
   return (
     <div>
-      <PageHeader title="Outreach" description="Emails approved on Telegram, the daily hunt of questions to answer, the sites we read for contacts, and the share kit." />
-      <OutreachEmail kit={kit} />
+      <PageHeader title="Outreach" description="Emails approved on Telegram, the daily hunt of questions to answer, data posts to copy, the sites we read for contacts, and the share kit." />
+      <OutreachEmail kit={kit} posts={<DataPosts packs={packs} />} />
     </div>
   );
 }

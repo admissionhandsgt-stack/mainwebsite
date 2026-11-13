@@ -2576,6 +2576,9 @@ table `outreach_emails` (migration 0050, raw SQL), Admin → Outreach (the card 
   the outreach angles plus the stipend hub), written per platform: Reddit (title, body, its own source line, disclosure),
   Quora (two questions to answer + the answer), an X thread, LinkedIn, our Telegram channel. Sent to the owner's
   Telegram after the daily hunt (06:05 UTC); `/posts [topic]` in the bot's chat asks for one any time. Never posted by code.
+  Also **Admin → Outreach → Data posts** (`components/admin/DataPosts.tsx`, `allPacks()`; owner: "post mujhe admin mai do, whi se
+  copy paste karunga"): every topic, today's first and open, a Copy button per part (Reddit title/post, Quora answer + its
+  questions, each X thread part, LinkedIn, Telegram) and links to where each goes.
 - **Sent folder:** SMTP sends do not land in the mailbox's Sent on this server, so `sendMail` builds the message once
   (nodemailer MailComposer), sends those bytes and appends the same bytes over IMAP to the folder flagged `Sent`.
   **2026-11-12:** the owner's NevTan Mail web view showed "Nothing in Sent" while IMAP's `Sent` (\Sent) held 4 messages —
