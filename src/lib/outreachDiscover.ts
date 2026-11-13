@@ -58,6 +58,9 @@ function emailsIn(html: string): string[] {
   const found = new Set<string>();
   for (const m of text.matchAll(/(?:mailto:)?([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,})/gi)) {
     const e = m[1].toLowerCase().replace(/\.$/, "");
+    // A page word glued to an address in the text is not an address (2026-11-13: Times of India's page gave
+    // "contact-ustimeslitfestdelhi@gmail.com" — "Contact us" + an event's Gmail).
+    if (/^(contact-?us|about-?us|e-?mail-?us|mail-?us|write-?to-?us|reach-?us)[a-z]/.test(e)) continue;
     if (!NOT_REAL.test(e)) found.add(e);
   }
   return [...found];
