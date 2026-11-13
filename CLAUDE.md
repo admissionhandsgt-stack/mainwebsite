@@ -2782,6 +2782,16 @@ Owner: "itne pending task complete karo" (Meta's Conversions API token comes lat
   3.6-flash; on the owner's keys 3.6 answered in ~2 s, 3.8 in 108 s. Gemini 3 settings per Google: temperature left at
   default (below 1.0 can loop), `thinkingLevel: "low"`. Rotation: next key each call; 429 rests that key 15 min on that
   model, 403 six hours.
+- **The bot's answers, audited 2026-11-13 (owner: "bot jo hourly searches kar raha hai … jud rahe hai website mai? +
+  janch hui?"):** 116 answers went on pages in three days (all PG), 92 live; 11 were wrong and were switched off —
+  patients' searches ("dermatologist fees near me", "paediatrician near me fees") answered with MD Derma/Paeds PG fees,
+  "radiology msra cut off" (the UK's exam) with NEET PG's, "md radiology salary" with the PG stipend, an MD answer on
+  NEET SS and Diploma pages, "dnb stipend in west bengal" with MD/MS figures, a college's question with its city's
+  spread. Guards since: `lib/searchIntent.ts` `notOurs()` (patient / foreign exam / salary without "pg"/"resident"),
+  used by `worthStudying` and `offerSearchFaq`; NEET SS and MDS pages are SPECIFIC (an MD answer moves to its own page);
+  a Diploma/DNB branch page takes a search only when it says diploma/dnb; a DNB search needs a DNB figure; a `city-*`
+  builder never answers a named college. Audit again with `node --env-file=.env.local scripts/tmp/bot_audit.mjs` and
+  `scripts/tmp/bot_list.mjs` (every live answer with its page and builder) — read every new line, not a sample.
 - **Research specs (Sonnet agents, 2026-11-11), in `D:/Admisson Hands/seo_data/research_2026_11/`:** `lead_magnet_pdf.md`
   (state PG fee & stipend PDF over WhatsApp: tap → prefilled message → free-form document reply inside the 24-hour window;
   Maharashtra first), `hinglish_pages.md` (no /hi/ section; a Hinglish FAQ block on 8 existing pages and two "kaise hoti hai"

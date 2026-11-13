@@ -7,6 +7,7 @@
  * agent; a refused or failed engine is skipped, never worked around. Free: no API key, no credits. Server only.
  */
 import { sql } from "drizzle-orm";
+import { notOurs } from "@/lib/searchIntent";
 import { db } from "@/db/client";
 import { getPgStates } from "@/lib/pgStateQueries";
 import { pgFocus, ugOnly } from "@/lib/researchFocus";
@@ -94,7 +95,7 @@ const OLD_YEAR = /\b20(0\d|1\d|2[0-4])\b/;
 
 /** Worth a research slot: about medical admission, not another course or exam, not an old season. */
 export function worthStudying(q: string): boolean {
-  return RELEVANT.test(q) && !OTHER.test(q) && !OLD_YEAR.test(q);
+  return RELEVANT.test(q) && !OTHER.test(q) && !OLD_YEAR.test(q) && !notOurs(q);
 }
 
 export async function buildSeeds(): Promise<string[]> {

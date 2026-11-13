@@ -13,6 +13,7 @@
  * member removes one from Admin → Search research. Server only.
  */
 import { unstable_cache, revalidateTag } from "next/cache";
+import { notOurs } from "@/lib/searchIntent";
 import { sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { draftFor, type Draft } from "@/lib/huntAnswers";
@@ -81,16 +82,21 @@ async function roomOn(page: string, q: string) {
   return { live: r[0]?.live ?? 0, same: r[0]?.same ?? 0, kinds: r[0]?.kinds ?? [] };
 }
 const lastPart = (p: string) => p.split("/").filter(Boolean).pop() ?? "";
-/** Pages about one branch, state or college: an answer about another one moves to its own page. */
-const SPECIFIC = /^\/(md-ms-india\/(branches|states|colleges|stipend|fees)|mbbs-india\/colleges|counselling\/(neet-pg|mbbs)|medical-colleges)\//;
+/** Pages about one branch, state or college: an answer about another one moves to its own page. NEET SS and MDS pages
+ *  are their own courses: an MD answer there ("md radiology fees" on DM Neuro Radiology) moves too (2026-11-13 audit). */
+const SPECIFIC = /^\/(md-ms-india\/(branches|states|colleges|stipend|fees)|mbbs-india\/colleges|counselling\/(neet-pg|mbbs)|medical-colleges|neet-ss|neet-mds)\//;
 function pageFits(page: string, d: Draft, q: string): boolean {
   if (!SPECIFIC.test(page)) return true; // a hub (cutoff, marks vs rank, a round page) takes any of its searches
   if (lastPart(page) === lastPart(d.page) || d.page.startsWith(`${page}/`)) return true;
-  // A branch page keeps a round answer about the same branch.
+  // A branch page keeps a round answer about the same branch…
   const m = /^\/md-ms-india\/branches\/([^/]+)$/.exec(page);
   const bw = branchWord(q);
+  // …of the same degree: "anesthesia cut off marks" (MD) is not the Diploma in Anaesthesia page's (2026-11-13 audit).
+  const deg = m ? (/^(diploma|drnb|dnb)\b/.exec(m[1].replace(/-/g, " ")) ?? [])[1] : undefined;
+  if (deg && !new RegExp(`\\b${deg}\\b`, "i").test(q)) return false;
   return Boolean(m && bw && d.kind.startsWith("branch:") && bw.course.test(m[1].replace(/-/g, " ")));
 }
+
 
 /**
  * Called by the research bot for each search it studied. Adds the search to `page` when a builder answers it, the page
@@ -101,7 +107,7 @@ export async function offerSearchFaq(
   opts: { official?: boolean } = {},
 ): Promise<false | "data" | "official"> {
   const q = item.query.trim().toLowerCase();
-  if (!item.page || q.split(/\s+/).length < 3) return false;
+  if (!item.page || q.split(/\s+/).length < 3 || notOurs(q)) return false;
   let page = item.page;
   let room = await roomOn(page, q);
   if (room.same > 0 || room.live >= PER_PAGE) return false;
@@ -148,6 +154,11 @@ export async function offerSearchFaq(
   // "md radiology cutoff rajasthan" would answer a different question.
   const base = d.kind.split(":")[0];
   if (!STATE_AWARE.has(base) && (await namesState(q))) return false;
+  // A DNB search is answered only by a DNB figure or the hospital's own page ("dnb stipend in west bengal" had the
+  // state's MD/MS stipend), and a college named is not answered by its city's spread ("madras medical college pg
+  // stipend" had Chennai's) — the 2026-11-13 audit.
+  if (/\bdnb\b/.test(q) && !d.kind.includes("dnb") && !base.startsWith("college")) return false;
+  if (base.startsWith("city-") && /\b(medical college|institute|university)\b/.test(q)) return false;
   // Likewise a branch: "md nuclear medicine seats in india" is not answered by India's total PG seats.
   const branchy = base.startsWith("branch") || base.startsWith("college");
   if (!branchy && BRANCH_NAMED.test(q)) return false;
