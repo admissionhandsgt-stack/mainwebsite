@@ -1,6 +1,7 @@
 import { sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { addOutreach, type Kind } from "@/lib/outreach";
+import type { Topic } from "@/lib/outreachAngles";
 import { findNewSites } from "@/lib/hunt";
 
 /**
@@ -21,7 +22,7 @@ const SKIP = /^(no-?reply|donotreply|privacy|abuse|dpo|grievance|legal|careers?|
 const PREFER = /^(editorial|editor|news|newsdesk|desk|info|contact|office|secretary|president|admin|hello|team)\b/i;
 const NOT_REAL = /\.(png|jpe?g|gif|webp|svg)$|example\.|sentry|wixpress|godaddy|domain\.com|email\.com|yourmail/i;
 
-export type Source = { id: number; url: string; org: string; kind: Kind; last_crawled_at: string | null; found: number; last_note: string | null };
+export type Source = { id: number; url: string; org: string; kind: Kind; last_crawled_at: string | null; found: number; last_note: string | null; topic?: string | null };
 
 async function get(url: string): Promise<string | null> {
   try {
@@ -78,7 +79,7 @@ export async function discoverOne(s: Source): Promise<{ added: string[]; note: s
   // Its own contact-like pages, from the home page's links, plus the usual addresses.
   const links = new Set<string>(["/contact", "/contact-us", "/about", "/about-us"]);
   for (const m of home.matchAll(/href="([^"#]+)"[^>]*>([^<]{0,60})</gi)) {
-    if (!/contact|about|team|editorial|reach|press|write to us/i.test(`${m[1]} ${m[2]}`)) continue;
+    if (!/contact|about|team|editorial|reach|press|write to us|write for us|contribute|submit|authors?/i.test(`${m[1]} ${m[2]}`)) continue;
     try {
       const u = new URL(m[1], origin);
       // Never a feed or a file: Express Healthcare's /feed/ gave a writer's own Gmail (2026-11-10), not the site's contact.
@@ -113,7 +114,7 @@ export async function discoverOne(s: Source): Promise<{ added: string[]; note: s
   const added: string[] = [];
   for (const [email, path] of picked) {
     try {
-      await addOutreach({ email, org: s.org, kind: s.kind, why: `Published on ${origin.hostname}${path}`, sourceUrl: origin.origin + path });
+      await addOutreach({ email, org: s.org, kind: s.kind, why: `Published on ${origin.hostname}${path}`, sourceUrl: origin.origin + path, topic: (s.topic as Topic | null | undefined) ?? null });
       added.push(email);
     } catch {
       /* already on the list, or not an address */
@@ -126,7 +127,7 @@ export async function runDiscover(opts: { force?: boolean } = {}): Promise<{ sit
   // New sites first (Tavily, a few a week), so this week's reading already includes them.
   const fresh = await findNewSites().catch(() => ({ added: 0 }));
   const due = (await db.execute(sql`
-    SELECT id, url, org, kind, to_json(last_crawled_at)#>>'{}' AS last_crawled_at, found, last_note FROM outreach_sources
+    SELECT id, url, org, kind, topic, to_json(last_crawled_at)#>>'{}' AS last_crawled_at, found, last_note FROM outreach_sources
      WHERE ${opts.force ? sql`true` : sql`last_crawled_at IS NULL OR last_crawled_at < now() - interval '30 days'`}
      ORDER BY last_crawled_at NULLS FIRST LIMIT 25`)) as unknown as Source[];
   let added = 0;

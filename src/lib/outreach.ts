@@ -5,6 +5,34 @@ import { getStipends } from "@/lib/cutoffHubQueries";
 import { getBondByState } from "@/lib/pgSeatData";
 import { sendMail } from "@/lib/mailer";
 import { editOwnerMessage, tellOwner, type InlineButton } from "@/lib/telegramBot";
+import { DATA_TOPICS, firstAngle, type Angle, type Topic } from "@/lib/outreachAngles";
+
+/** A stable number from a name, so the same organisation always gets the same rotation. */
+const seedOf = (s: string) => [...s].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7);
+
+/** An email built on one data angle (lib/outreachAngles.ts) — trend, seats, new colleges or fees. */
+function angleEmail(a: Angle, hi: string, me: string, forReaders: boolean): { subject: string; body: string } {
+  return {
+    subject: a.subject.slice(0, 150),
+    body: [
+      hi,
+      "",
+      `${me} ${a.intro}`,
+      "",
+      ...a.points.map((p) => `• ${p}`),
+      "",
+      ...a.links,
+      "",
+      forReaders
+        ? "Free to use for your readers with a link. If a figure looks wrong to you, tell me and I'll check it against the source."
+        : "Happy to share the underlying data or answer questions. Free to use with a link.",
+      "",
+      SIGNATURE,
+      "",
+      OPT_OUT,
+    ].join("\n"),
+  };
+}
 
 /**
  * Outreach email with the owner's approval on Telegram (2026-11-10; owner: "sab kuch banake telegram ke through approval
@@ -29,7 +57,7 @@ const SITE = "https://www.admissionhands.com";
 const inr = (v: number | null | undefined) => (v == null ? "—" : `₹${Math.round(v).toLocaleString("en-IN")}`);
 const lakh = (v: number | null | undefined) => (v == null ? "—" : v >= 1e7 ? `₹${(v / 1e7).toFixed(2).replace(/\.?0+$/, "")} Cr` : `₹${(v / 1e5).toFixed(2).replace(/\.?0+$/, "")} L`);
 
-export type Kind = "journalist" | "association" | "other";
+export type Kind = "journalist" | "blogger" | "association" | "other";
 export type OutreachRow = {
   id: number;
   email: string;
@@ -48,6 +76,8 @@ export type OutreachRow = {
   last_sent_at: string | null;
   last_error: string | null;
   created_at: string;
+  /** The data the first email offered (lib/outreachAngles.ts), so a follow-up offers something else. */
+  topic?: string | null;
 };
 
 // One fact per line, labelled, the number written so a phone offers to call it (2026-11-10: a single line "site · number"
@@ -57,7 +87,21 @@ const OPT_OUT = `If you would rather not hear from me, reply "no" and I won't wr
 
 /* ------------------------------------------------------------------ drafts ---- */
 
-export async function draftFor(kind: Kind, name: string | null, org: string): Promise<{ subject: string; body: string }> {
+export async function draftFor(kind: Kind, name: string | null, org: string, topic: Topic | null = null): Promise<{ subject: string; body: string; topic: Topic }> {
+  // Beyond the stipend (2026-11-13, owner): a journalist, blogger or anyone else gets the angle that fits what they cover
+  // (`topic`, from the site), else one in rotation; an association of doctors keeps the stipend and bond pitch.
+  if (kind !== "association" && topic !== "stipend") {
+    const a = await firstAngle(topic, seedOf(org));
+    if (a) {
+      const hi = `Hi ${name?.trim() || "there"},`;
+      const me = "I'm Gulshan Tomar, a NEET PG admission counsellor at AdmissionHands.";
+      return { ...angleEmail(a, hi, me, kind === "blogger"), topic: a.topic };
+    }
+  }
+  return { ...(await stipendDraft(kind, name, org)), topic: "stipend" };
+}
+
+async function stipendDraft(kind: Kind, name: string | null, org: string): Promise<{ subject: string; body: string }> {
   const [st, bond] = await Promise.all([getStipends(), getBondByState().catch(() => null)]);
   const top = st.states[0];
   const low = st.states[st.states.length - 1];
@@ -91,7 +135,7 @@ export async function draftFor(kind: Kind, name: string | null, org: string): Pr
     };
   }
 
-  if (kind === "journalist") {
+  if (kind === "journalist" || kind === "blogger") {
     return {
       subject: top && low ? `Data: first-year PG stipend runs from ${inr(low.median)} to ${inr(top.median)} a month across states` : "Data: PG resident stipend by state",
       body: [
@@ -136,16 +180,27 @@ export async function draftFor(kind: Kind, name: string | null, org: string): Pr
 export const MAX_EMAILS = 3;
 export const GAP_DAYS = 3;
 
-function followupFor(r: OutreachRow): { subject: string; body: string } {
+/**
+ * A follow-up offers something new rather than the same note again (2026-11-13): the next data angle the first email did
+ * not use, above the earlier note. The last one says so.
+ */
+async function followupFor(r: OutreachRow): Promise<{ subject: string; body: string }> {
   const last = r.emails_sent + 1 >= MAX_EMAILS;
+  const used = (r.topic ?? "stipend") as Topic;
+  const rest = DATA_TOPICS.filter((t) => t !== used);
+  const a = r.kind === "association" ? null : await firstAngle(rest[(r.emails_sent + seedOf(r.org)) % rest.length] ?? null, seedOf(r.org) + r.emails_sent);
+  const fresh = a && a.topic !== used ? a : null;
   return {
     subject: r.subject.startsWith("Re:") ? r.subject : `Re: ${r.subject}`,
     body: [
       `Hi ${r.name?.trim() || "there"},`,
       "",
       last
-        ? "One last note from me, in case the data below is useful. I won't write again unless you reply."
-        : "Bringing my note below back to the top in case it is useful. No reply needed if not.",
+        ? "One last note from me. I won't write again unless you reply."
+        : fresh
+          ? "One more set of figures since my note below, in case it is useful:"
+          : "Bringing my note below back to the top in case it is useful. No reply needed if not.",
+      ...(fresh ? ["", fresh.intro, "", ...fresh.points.map((p) => `• ${p}`), "", ...fresh.links] : []),
       "",
       SIGNATURE,
       "",
@@ -169,16 +224,16 @@ export async function listOutreach(): Promise<OutreachRow[]> {
       FROM outreach_emails ORDER BY created_at DESC LIMIT 500`);
 }
 
-export async function addOutreach(t: { email: string; name?: string; org: string; kind: Kind; why?: string; sourceUrl?: string }) {
+export async function addOutreach(t: { email: string; name?: string; org: string; kind: Kind; why?: string; sourceUrl?: string; topic?: Topic | null }) {
   const email = t.email.trim().toLowerCase();
   if (!/^[^\s@<>"]+@[^\s@<>"]+\.[a-z]{2,}$/i.test(email)) throw new Error("That is not an email address.");
   const org = t.org.trim().slice(0, 160);
   if (!org) throw new Error("Say which organisation it is.");
   const name = t.name?.trim().slice(0, 80) || null;
-  const d = await draftFor(t.kind, name, org);
+  const d = await draftFor(t.kind, name, org, t.topic ?? null);
   const r = await rows(sql`
-    INSERT INTO outreach_emails (email, name, org, kind, why, source_url, subject, body)
-    VALUES (${email}, ${name}, ${org}, ${t.kind}, ${t.why?.trim().slice(0, 300) || null}, ${t.sourceUrl?.trim().slice(0, 400) || null}, ${d.subject}, ${d.body})
+    INSERT INTO outreach_emails (email, name, org, kind, why, source_url, subject, body, topic)
+    VALUES (${email}, ${name}, ${org}, ${t.kind}, ${t.why?.trim().slice(0, 300) || null}, ${t.sourceUrl?.trim().slice(0, 400) || null}, ${d.subject}, ${d.body}, ${d.topic})
     ON CONFLICT ((lower(email))) DO NOTHING
     RETURNING id`);
   if (!r.length) throw new Error("That address is already on the list — nobody is written to twice.");
@@ -256,7 +311,7 @@ export async function runOutreach(opts: { force?: boolean } = {}): Promise<{ pre
      ORDER BY last_sent_at LIMIT 20`);
   for (const r of due) {
     if (room <= 0) break;
-    const f = followupFor(r);
+    const f = await followupFor(r);
     const full = { ...r, followup_subject: f.subject, followup_body: f.body };
     const mid = await tellOwner(previewText(full, true), buttons(r.id));
     await setRow(r.id, sql`status = 'followup_previewed', followup_subject = ${f.subject}, followup_body = ${f.body}, tg_message_id = ${mid}`);

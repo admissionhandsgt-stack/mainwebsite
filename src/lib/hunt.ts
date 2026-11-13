@@ -6,6 +6,7 @@ import { getIntegration } from "@/lib/integrations";
 import { webSearch, webSearchUsage } from "@/lib/webSearch";
 import { answerFor, type Answer } from "@/lib/huntAnswers";
 import { pgFocus, ugOnly } from "@/lib/researchFocus";
+import { geminiJson } from "@/lib/gemini";
 
 /**
  * Daily hunt (2026-11-10). Owner: "daily hunt karke de do details… admin open karke same url par jake… answer create
@@ -254,20 +255,49 @@ export async function buildWebHunt(base = `http://127.0.0.1:${process.env.PORT ?
  * site whose contact page is read for an address; a forum or community is also flagged `is_forum`, so the daily hunt
  * searches inside it. Four searches a run, rotating through the list.
  */
-const SITE_QUERIES = [
-  "doctors forum India discussion",
-  "medical students community India forum",
-  "MBBS students forum India discussion board",
-  "NEET PG aspirants community forum",
-  "resident doctors association India",
-  "medical PG aspirants discussion platform India",
-  "NEET PG counselling guidance blog India",
-  "MBBS admission guidance website Hindi",
-  "medical education blog India PG",
-  "doctors community app India discussion",
-  "NEET PG preparation forum questions",
-  "medical students association India contact",
+/**
+ * Where to look for people who write about NEET PG / medical admission (2026-11-13, owner: "daily 3 times… extensive
+ * search… AI use karo… emails nikale, blogs dekhe, sabcheej dekhe"): education and health reporters, bloggers, doctors'
+ * and students' associations, forums — English and Hindi. Six searches a run, three runs a day, rotating through the list.
+ * `range` is how fresh the results must be: news and blogs this month, organisations this year.
+ */
+const SITE_QUERIES: { q: string; range: "week" | "month" | "year" }[] = [
+  // Reporters and news desks
+  { q: "NEET PG 2026 counselling news India", range: "month" },
+  { q: "NEET PG 2026 cut off round result news", range: "month" },
+  { q: "resident doctors stipend news India 2026", range: "month" },
+  { q: "medical education news India NMC 2026 PG seats", range: "month" },
+  { q: "MBBS seats new medical colleges 2026 news", range: "month" },
+  { q: "NEET PG fees private medical colleges news", range: "month" },
+  { q: "medical PG bond policy state news India", range: "month" },
+  { q: "health reporter India medical education", range: "year" },
+  { q: "education news portal India NEET counselling", range: "month" },
+  // Blogs
+  { q: "NEET PG 2026 blog choice filling strategy", range: "month" },
+  { q: "NEET PG counselling experience blog doctor", range: "year" },
+  { q: "MD MS seat matrix 2026 blog", range: "month" },
+  { q: "NEET PG branch selection blog clinical non clinical", range: "year" },
+  { q: "medical student blog India PG residency life", range: "year" },
+  { q: "doctor blogger India PG stipend bond", range: "year" },
+  { q: "NEET PG stray vacancy round blog", range: "year" },
+  { q: "deemed university PG fees blog India", range: "year" },
+  { q: "NEET PG low rank options blog", range: "year" },
+  // Associations and communities
+  { q: "resident doctors association India contact", range: "year" },
+  { q: "junior doctors association state India", range: "year" },
+  { q: "medical students association India", range: "year" },
+  { q: "Indian Medical Association junior doctors network", range: "year" },
+  { q: "federation resident doctors association press release", range: "year" },
+  { q: "doctors forum India discussion", range: "year" },
+  { q: "NEET PG aspirants community forum", range: "year" },
+  { q: "MBBS students forum India discussion board", range: "year" },
+  // Hindi
+  { q: "नीट पीजी काउंसलिंग 2026 समाचार", range: "month" },
+  { q: "पीजी डॉक्टर स्टाइपेंड खबर", range: "month" },
+  { q: "मेडिकल कॉलेज सीटें 2026 खबर", range: "month" },
+  { q: "नीट पीजी कटऑफ 2026", range: "month" },
 ];
+const PER_RUN = 6;
 const FORUM_WORDS = /forum|community|discuss|discussion|board|q&a|qna|answers|ask|threads?|groups?|club/i;
 
 /**
@@ -284,31 +314,116 @@ function indianMedical(host: string, text: string): boolean {
   return /\b(neet|mbbs|aiims|nmc|mcc|resident doctors?|medical colleges? in india|indian medical)\b/i.test(text);
 }
 
-export async function findNewSites(): Promise<{ added: number; forums: number; skipped?: string }> {
-  const run = Math.floor(Date.now() / (3.5 * 86_400_000));
-  let added = 0;
-  let forums = 0;
-  for (let i = 0; i < 4; i++) {
-    const q = SITE_QUERIES[(run * 4 + i) % SITE_QUERIES.length];
-    const results = await webSearch(q, { excludeDomains: [...NOT_FORUMS, "reddit.com", "quora.com", "wikipedia.org"], timeRange: "year", maxResults: 10, country: "india" });
-    if (results === null) return { added, forums, skipped: "no Tavily key or budget" };
+type Found = { host: string; url: string; title: string; snippet: string };
+type Judged = { host: string; relevant: boolean; kind: "journalist" | "blogger" | "association" | "forum" | "other"; topic: "trend" | "seats" | "colleges" | "fees" | "stipend" | "general"; org: string };
+
+const JUDGE_SCHEMA = {
+  type: "ARRAY",
+  items: {
+    type: "OBJECT",
+    properties: {
+      host: { type: "STRING" },
+      relevant: { type: "BOOLEAN" },
+      kind: { type: "STRING", enum: ["journalist", "blogger", "association", "forum", "other"] },
+      topic: { type: "STRING", enum: ["trend", "seats", "colleges", "fees", "stipend", "general"] },
+      org: { type: "STRING" },
+    },
+    required: ["host", "relevant", "kind", "topic", "org"],
+  },
+};
+
+/**
+ * AI's read of each found site (Gemini, one call for the run): is it an Indian outlet, blog, association or forum that
+ * writes about medical admission, NEET, medical colleges or doctors' training — someone who might use or cite our data —
+ * and what does it cover. Null when AI is unavailable; the word rules then decide alone.
+ */
+async function judge(found: Found[]): Promise<Map<string, Judged> | null> {
+  if (!found.length) return new Map();
+  const list = found.map((f, i) => `[${i + 1}] host: ${f.host}\ntitle: ${f.title.slice(0, 160)}\ntext: ${f.snippet.replace(/\s+/g, " ").slice(0, 400)}`).join("\n\n");
+  const out = await geminiJson<Judged[]>(
+    [
+      "These are web pages found while looking for Indian websites whose readers are medical students, doctors or NEET aspirants",
+      "and their families. For each host decide:",
+      "- relevant: true only if the site itself is an Indian news outlet, education/health desk, blog, association, union or",
+      "  community that writes about medical admission, NEET UG/PG, medical colleges, residency, stipend, or doctors' training.",
+      "  False for government sites, coaching/test-prep sellers, admission agents/consultancies, hospitals, pharma, foreign",
+      "  sites, app stores, generic portals with no such writing, and competitors that sell admission counselling.",
+      "- kind: journalist (news outlet or desk), blogger (personal or topic blog), association (doctors'/students' body),",
+      "  forum (discussion community), or other.",
+      "- topic: what of ours fits it best — trend (cut off / rank trends), seats (seat increase, seat matrix), colleges (new",
+      "  medical colleges), fees (PG fees), stipend (stipend, bond, resident pay), or general.",
+      "- org: the site's own name, short.",
+      "Answer for every host, in order. Judge only from the text given; do not guess beyond it.",
+      "",
+      list,
+    ].join("\n"),
+    JUDGE_SCHEMA,
+  ).catch(() => null);
+  if (!out || !Array.isArray(out)) return null;
+  return new Map(out.filter((j) => j && j.host).map((j) => [j.host.replace(/^www\./, "").toLowerCase(), j]));
+}
+
+export async function findNewSites(): Promise<{ added: number; forums: number; judged?: number; rejected?: number; skipped?: string }> {
+  // Three runs a day (server crontab), each taking the next six searches.
+  const run = Math.floor(Date.now() / (8 * 3_600_000));
+  const found = new Map<string, Found>();
+  let searched = 0;
+  for (let i = 0; i < PER_RUN; i++) {
+    const wq = SITE_QUERIES[(run * PER_RUN + i) % SITE_QUERIES.length];
+    const results = await webSearch(wq.q, { excludeDomains: [...NOT_FORUMS, "reddit.com", "quora.com", "wikipedia.org"], timeRange: wq.range, maxResults: 10, country: "india" });
+    if (results === null) {
+      if (!searched) return { added: 0, forums: 0, skipped: "no Tavily key or budget" };
+      break;
+    }
+    searched++;
     for (const r of results) {
-      if (added >= 10) break;
-      const u = new URL(r.url);
-      const host = u.hostname.replace(/^www\./, "");
+      let u: URL;
+      try {
+        u = new URL(r.url);
+      } catch {
+        continue;
+      }
+      const host = u.hostname.replace(/^www\./, "").toLowerCase();
+      if (found.has(host)) continue;
       if (/\.(gov|nic)\.in$|\.gov$/.test(host) || NOT_FORUMS.some((d) => host === d || host.endsWith(`.${d}`))) continue;
       if (!indianMedical(host, `${r.title} ${r.content}`)) continue;
-      const isForum = FORUM_WORDS.test(`${r.title} ${u.hostname} ${u.pathname}`);
-      const kind = /association|federation|union|society/i.test(r.title) ? "association" : "other";
-      const org = r.title.split(/[|–—-]/)[0].trim().slice(0, 120) || host;
-      const ins = (await db.execute(sql`
-        INSERT INTO outreach_sources (url, org, kind, is_forum) VALUES (${`https://${u.hostname}`}, ${org}, ${kind}, ${isForum})
-        ON CONFLICT DO NOTHING RETURNING id`)) as unknown as { id: number }[];
-      if (ins.length) {
-        added++;
-        if (isForum) forums++;
-      }
+      found.set(host, { host, url: `https://${u.hostname}`, title: r.title, snippet: r.content });
     }
   }
-  return { added, forums };
+  // Sites we already hold are not judged again.
+  const known = new Set(
+    ((await db.execute(sql`SELECT url FROM outreach_sources`)) as unknown as { url: string }[]).map((x) => {
+      try {
+        return new URL(x.url).hostname.replace(/^www\./, "").toLowerCase();
+      } catch {
+        return x.url;
+      }
+    }),
+  );
+  const fresh = [...found.values()].filter((f) => !known.has(f.host)).slice(0, 25);
+  const ai = await judge(fresh);
+  let added = 0;
+  let forums = 0;
+  let rejected = 0;
+  for (const f of fresh) {
+    if (added >= 12) break;
+    const j = ai?.get(f.host) ?? null;
+    if (ai && (!j || !j.relevant)) {
+      rejected++;
+      continue;
+    }
+    const isForum = j ? j.kind === "forum" : FORUM_WORDS.test(`${f.title} ${f.host}`);
+    const kind = j ? (j.kind === "forum" ? "other" : j.kind) : /association|federation|union|society/i.test(f.title) ? "association" : "other";
+    const org = (j?.org || f.title.split(/[|–—-]/)[0]).trim().slice(0, 120) || f.host;
+    const topic = j && j.topic !== "general" ? j.topic : null;
+    const ins = (await db.execute(sql`
+      INSERT INTO outreach_sources (url, org, kind, is_forum, topic) VALUES (${f.url}, ${org}, ${kind}, ${isForum}, ${topic})
+      ON CONFLICT DO NOTHING RETURNING id`)) as unknown as { id: number }[];
+    if (ins.length) {
+      added++;
+      if (isForum) forums++;
+    }
+  }
+  return { added, forums, judged: ai ? fresh.length : 0, rejected };
 }
+

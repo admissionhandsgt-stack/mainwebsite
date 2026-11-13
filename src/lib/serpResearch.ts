@@ -39,6 +39,8 @@ const BASE = `http://127.0.0.1:${process.env.PORT ?? 8150}`;
 const JUNK = /^(yes|no|ok|hi|hello|fees\??|stipend\??|round \d\??)$/i;
 /** Searches a month the daily hunt and new-site discovery need (lib/hunt.ts: 24 a day, plus ~20 twice a week). */
 const HUNT_PER_DAY = 30;
+/** Outreach discovery: three runs a day, six searches each (lib/hunt.ts findNewSites), kept out of research's share. */
+const DISCOVER_PER_DAY = 18;
 
 interface GscRow {
   query: string;
@@ -314,7 +316,7 @@ export async function allowance(): Promise<number> {
   const now = new Date();
   const end = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1));
   const hoursLeft = Math.max(1, (end.getTime() - now.getTime()) / 3_600_000);
-  const reserve = Math.ceil((hoursLeft / 24) * HUNT_PER_DAY);
+  const reserve = Math.ceil((hoursLeft / 24) * (HUNT_PER_DAY + DISCOVER_PER_DAY));
   const free = u.budget - u.used - reserve;
   if (free <= 0) return 0;
   // Front-loaded (the owner wants research now): spread over a third of the hours left, at most 6 an hour.

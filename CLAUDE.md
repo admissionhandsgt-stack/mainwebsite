@@ -2545,6 +2545,17 @@ table `outreach_emails` (migration 0050, raw SQL), Admin → Outreach (the card 
   contact/about/team/editorial pages at most monthly, robots.txt respected, honest user agent, and adds at most two of the
   organisation's own published addresses as drafts (never role addresses like privacy/careers/sales/no-reply). Drafts
   still wait for Send.
+- **Three runs a day, AI-judged, more than the stipend (2026-11-13, owner: "daily 3 times run karo… extensive search…
+  AI use karo… blogs dekhe… stipend ke alaawa ranking trend ya data se jo bhi").** Server crontab: discovery 03:50, 09:50,
+  15:50 UTC and previews 04:05, 10:05, 16:05 UTC (09:20/09:35, 15:20/15:35, 21:20/21:35 IST). `findNewSites` runs six of
+  30 searches a run (reporters, blogs, associations, forums, Hindi; India-boosted, news/blogs from the last month) and
+  one Gemini call judges the new hosts — relevant or not (government, coaching sellers, agents, hospitals, foreign sites
+  and counselling competitors are not), kind (journalist / blogger / association / forum) and `topic`
+  (migration 0063). Contact reading also opens write-for-us / contribute pages. **Pitch angles** (`lib/outreachAngles.ts`,
+  all live data, group figures or counts only): `trend` (MCC's running round against the same round last year, clinical
+  branches, AIQ open), `seats` (MCC's added seats), `colleges` (NMC's new MBBS colleges), `fees` (private and deemed PG
+  fee middles), `stipend` (associations always; the old pitch). A site's topic picks its first angle; a follow-up offers
+  a different angle instead of repeating the note. Tavily: `DISCOVER_PER_DAY` (18) is reserved beside the hunt's share.
 - **Daily hunt (migration 0052, `lib/hunt.ts`):** Reddit refuses automated reading from servers (403/429; its Data API
   needs approval for commercial use) — and faking a browser to get past that is not done. So the questions come from
   Search Console: daily `/api/cron/hunt` (06:05 UTC) takes the week's searched questions that land on our pages, one

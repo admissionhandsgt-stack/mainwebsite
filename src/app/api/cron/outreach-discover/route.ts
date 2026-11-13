@@ -5,7 +5,7 @@ import { logError } from "@/lib/logger";
 import { beat } from "@/lib/heartbeat";
 
 /**
- * Twice a week (server crontab, Tuesdays and Fridays 05:50 UTC): find new forums and sites (Tavily), then read the listed sites' own contact pages for addresses to write to
+ * Three times a day (server crontab, 03:50, 09:50 and 15:50 UTC): find new sites with web search and AI (lib/hunt.ts), then read the listed sites' own contact pages for addresses to write to
  * (lib/outreachDiscover.ts). Drafts only — each still waits for the owner's Send. Anything without the secret is a 404.
  */
 export const dynamic = "force-dynamic";
