@@ -5,6 +5,8 @@ import { tg } from "@/lib/telegramBot";
 import { onOutreachButton, onOutreachEdit } from "@/lib/outreach";
 import { logError } from "@/lib/logger";
 import { askHunt } from "@/lib/hunt";
+import { packMessages, todaysPack } from "@/lib/socialPosts";
+import type { Topic } from "@/lib/outreachAngles";
 
 /**
  * The site's Telegram bot webhook (2026-11-10), set from Admin → Outreach email. Telegram sends every update with the
@@ -67,6 +69,15 @@ export async function POST(request: Request) {
       for (let i = 0; i < body.length; i += 3900) {
         await tg("sendMessage", { chat_id: chat, text: body.slice(i, i + 3900), disable_web_page_preview: true }).catch(() => undefined);
       }
+      return NextResponse.json({ ok: true });
+    }
+
+    // "/posts [trend|seats|colleges|fees|stipend]": a data post for each platform, to post by hand (lib/socialPosts.ts).
+    const posts = text.match(/^\/posts(?:@\w+)?(?:\s+(trend|seats|colleges|fees|stipend))?\s*$/i);
+    if (u.message && chat && String(u.message.chat.id) === chat && posts) {
+      const pack = await todaysPack((posts[1]?.toLowerCase() as Topic | undefined) ?? null).catch(() => null);
+      const msgs = pack ? packMessages(pack) : ["No data post could be built right now."];
+      for (const m of msgs) await tg("sendMessage", { chat_id: chat, text: m.slice(0, 3900), disable_web_page_preview: true }).catch(() => undefined);
       return NextResponse.json({ ok: true });
     }
 

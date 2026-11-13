@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { timingSafeEqual } from "node:crypto";
 import { buildHunt } from "@/lib/hunt";
+import { packMessages, todaysPack } from "@/lib/socialPosts";
+import { tellOwner } from "@/lib/telegramBot";
 import { logError } from "@/lib/logger";
 import { beat } from "@/lib/heartbeat";
 
@@ -22,7 +24,10 @@ export async function POST(request: Request) {
   if (!authorised(request)) return NextResponse.json({ error: "Not found" }, { status: 404 });
   try {
     const result = await buildHunt();
-    await beat("hunt", true, `${result.added} added`);
+    // Today's data post for the owner to put up himself (lib/socialPosts.ts); never fails the hunt.
+    const pack = await todaysPack().catch(() => null);
+    if (pack) for (const m of packMessages(pack)) await tellOwner(m).catch(() => undefined);
+    await beat("hunt", true, `${result.added} added${pack ? `, data post: ${pack.topic}` : ""}`);
     return NextResponse.json(result, { headers: { "cache-control": "no-store" } });
   } catch (error) {
     logError(error, { route: "cron/hunt" });

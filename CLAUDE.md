@@ -2571,6 +2571,11 @@ table `outreach_emails` (migration 0050, raw SQL), Admin → Outreach (the card 
 - **Asked for and not built:** auto-posting answers with links on Reddit, forums or other sites' article sections —
   automated promotional posting is spam under Reddit's rules and a link scheme under Google's; drafts for a person to
   post are the line.
+- **Data posts for the owner to post himself (2026-11-13, owner: "stipend + alag alag muddo ko hum khud bhi reddit quora
+  etc par post kar sakte").** `lib/socialPosts.ts`: one topic a day in rotation (trend, seats, colleges, fees, stipend —
+  the outreach angles plus the stipend hub), written per platform: Reddit (title, body, its own source line, disclosure),
+  Quora (two questions to answer + the answer), an X thread, LinkedIn, our Telegram channel. Sent to the owner's
+  Telegram after the daily hunt (06:05 UTC); `/posts [topic]` in the bot's chat asks for one any time. Never posted by code.
 - **Sent folder:** SMTP sends do not land in the mailbox's Sent on this server, so `sendMail` builds the message once
   (nodemailer MailComposer), sends those bytes and appends the same bytes over IMAP to the folder flagged `Sent`.
   **2026-11-12:** the owner's NevTan Mail web view showed "Nothing in Sent" while IMAP's `Sent` (\Sent) held 4 messages —
