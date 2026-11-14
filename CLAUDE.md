@@ -900,6 +900,41 @@ rows still are: R1/R2 of 19 state counsellings from the September scrape, 300 ro
 every row with its id). They had not hidden 2025: the scrape labels 2026's seats "State" where 2025's say "Government",
 so they sat in `seat_options` as 249 extra seats read from round 1/2 alone. Nothing reads `state_round_cuts` at level `ug`.
 
+**The states' own NEET UG 2026 counselling — imported 2026-11-14 (owner: "Karlo data import and sahi tarike se set
+karlo"; the one import agreed with zyn on 11-11).** Source: zyn's `D:/Zyn/data/reference/state_ug_2026.json` (built
+14-11: 34 states, 17,665 seat lines with each round's furthest rank, read from each authority's own lists; per-state
+notes on every code in `D:/Zyn/data/normalized/state_ug_2026/<state>.json`). Pipeline:
+`node --env-file=.env.local scripts/ug/match_state_ug_2026.mjs [--air-only] [--show]` (colleges, within the state;
+North-East states nationwide) → `scripts/data/ug_state_2026_decisions.json` (all 820 AIR names decided — 337 by four
+agents who also caught 30 wrong automatic matches; the matcher's "start" rule took "Dr. R. Ahmed Dental College" for
+"Dental College, RIMS" and six UP colleges for IMS BHU, so every reviewed key is pinned as a decision) →
+`node --env-file=.env.local scripts/ug/import_state_ug_2026.mjs [--show] [--apply --backup <f>] | --restore <f>`, with the
+seat-label rules in `scripts/ug/state_ug_2026_labels.mjs` (per state, 2025's own quota/category where the seat type is
+the same, else a code of its own — women's, hilly, earmarked, ESM-priority seats never share a code; only the same seat
+printed two ways merges, e.g. Maharashtra's "OPEN (EMD)" into OPEN, CG's "Mgmt (Converted UR)" into Mgmt).
+- **closing_ranks** (the predictor and bands) takes a line only when its rank_type is exactly "NEET AIR" (per line, never
+  per state), its college is matched AND in the counselling's own state (North-East central-pool / nominated seats are
+  colleges elsewhere — as the state's seats they would show to that college's home-state students), and its seat type
+  maps. Rounds are R1, R2, … in the state's own order; closing_rank = ai_rank = the round's furthest AIR (fresh +
+  upgraded), rank_basis 'All India Rank', the state's 2025 UG counselling. **Applied: 23,827 rows** (Karnataka, Telangana,
+  Maharashtra, Rajasthan, UP, MP, Odisha, CG, WB, Haryana, Bihar, Puducherry, Punjab's AIR lines, Delhi GGSIPU, Assam,
+  Tripura's govt colleges, Meghalaya's state quota); extracted_at stamped. UG 2026 now 33,462 rows at 982 colleges.
+- **state_round_cuts** (level ug, 2026) holds the other 9,865 round rows with the rank as what it is (closing_air, or
+  closing_state_rank + a note naming the rank type; Gujarat's tied ".5" ranks only in the note): AP ("NEET RANK", not
+  labelled AIR — keep it out unless confirmed), TN, Kerala, Gujarat, J&K, Uttarakhand, HP, Jharkhand, Punjab's state merit,
+  Mizoram/Nagaland (score order), Manipur (prints the candidate's category, not the seat's), Arunachal and the central
+  pool, Tripura's private colleges (state and all-India pools in one line), Maharashtra's converted "Against" / "Inter-se"
+  / ORPHAN / MKB seats. The September scrape's 300 rows were replaced. Backup:
+  `D:/Admisson Hands/ug_data/backups/state_ug_2026_before_2026_11_14.json`.
+- Not ours yet (null decisions, 12): GMC Bagalkot (new 2026), GMC Ahilyanagar, ASPL CSMSS MC, D.Y. Patil Dental
+  Lohegaon (our 3045 mixes the Pimpri deemed college with it), Shri Ram Janki Samastipur, Mamta Siwan, Kurma Sanskriti
+  Jehanabad, K K Rajgir, Kalpnath Rai Mau, RSS Mathura, GMC Chapra. Twins the agents found to merge later: PGIDS Rohtak
+  3210/3346, SMBT dental 3234/4262, MGPGIDS 3161/4300, SGT dental 3264/4085, Mewati 2961/4501, GMC Kolhapur 3382/4632,
+  Bharatpur 4306/4490, Bijnor 4301/3879; NMC pairings to undo: BSP MC (MH/085) → 4266, ALVA'S (KA/073) → 4264;
+  `ug_mcc_decisions.json` has "government medical college karauli": null but our 3674 ("Karuali") is it.
+- Pending at source on 14-11 (re-import when zyn sends a newer stamp): AP Special Stray 2, Maharashtra SS3, Punjab
+  special stray, Tripura extended special stray; MP's special stray has no list (admission by attendance).
+
 **Parse the saved HTML, never the CSV or JSON the scraper also wrote.** Those were keyed from the
 header row, but the body rows carry two extra cells of HTML-comment debris, so every column after the
 first is shifted by one in them — `institute` holds the quota, `course` holds the institute, `fees`

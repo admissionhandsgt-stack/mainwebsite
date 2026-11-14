@@ -1,0 +1,3282 @@
+{
+ "Arunachal Pradesh|Tomo Riba Institute of Health and Medical Science (TRIHMS)|MBBS": {
+  "id": 3422,
+  "how": "decision"
+ },
+ "Arunachal Pradesh|Pt. JNM Medical College Raipur, Chhatisgarh|MBBS": {
+  "id": 3541,
+  "how": "decision"
+ },
+ "Arunachal Pradesh|RIMS, Imphal|MBBS": {
+  "id": 3810,
+  "how": "decision"
+ },
+ "Arunachal Pradesh|Dr. R. Ahmed Dental College, Kolkata, West Bengal|BDS": {
+  "id": 3048,
+  "how": "decision"
+ },
+ "Arunachal Pradesh|Lat Sh. Lakhiram Agarwal Memorial Govt. Medical College, Raigarh, Chhatisgarh|MBBS": {
+  "id": 3365,
+  "how": "decision"
+ },
+ "Arunachal Pradesh|Agartala Govt. Medical College|MBBS": {
+  "id": 3832,
+  "how": "decision"
+ },
+ "Arunachal Pradesh|KG Dental College, Lucknow, Uttar Pradesh|BDS": {
+  "id": 3058,
+  "how": "decision"
+ },
+ "Arunachal Pradesh|Regional Dental College (RDC)|BDS": {
+  "id": 3224,
+  "how": "decision"
+ },
+ "Arunachal Pradesh|RIMS, Imphal|BDS": {
+  "id": 3042,
+  "how": "decision"
+ },
+ "Arunachal Pradesh|Govt. Dental College, Raipur, Chhatisgarh|BDS": {
+  "id": 3083,
+  "how": "decision"
+ },
+ "Arunachal Pradesh|Lucknow|BDS": {
+  "id": 3058,
+  "how": "decision"
+ },
+ "Arunachal Pradesh|Imphal|BDS": {
+  "id": 3042,
+  "how": "decision"
+ },
+ "Arunachal Pradesh|Guwahati|BDS": {
+  "id": 3224,
+  "how": "decision"
+ },
+ "Arunachal Pradesh|Chhattisgarh|BDS": {
+  "id": 3083,
+  "how": "decision"
+ },
+ "Arunachal Pradesh|Kolkata|BDS": {
+  "id": 3048,
+  "how": "decision"
+ },
+ "Arunachal Pradesh|TRIHMS|MBBS": {
+  "id": 3422,
+  "how": "decision"
+ },
+ "Arunachal Pradesh|Raigarh|MBBS": {
+  "id": 3365,
+  "how": "decision"
+ },
+ "Arunachal Pradesh|RIMS|BDS": {
+  "id": 3042,
+  "how": "decision"
+ },
+ "Assam|Barpeta Medical College, Barpeta|MBBS": {
+  "id": 3866,
+  "how": "decision"
+ },
+ "Assam|Dhubri Medical College, Dhubri|MBBS": {
+  "id": 3447,
+  "how": "decision"
+ },
+ "Assam|Pragjyotishpur Medical College, Guwahati|MBBS": {
+  "id": 3395,
+  "how": "decision"
+ },
+ "Assam|Regional Dental College, Guwahati|BDS": {
+  "id": 3224,
+  "how": "decision"
+ },
+ "Assam|Government Dental College, Dibrugarh|BDS": {
+  "id": 3080,
+  "how": "decision"
+ },
+ "Assam|Government Dental College, Silchar|BDS": {
+  "id": 3085,
+  "how": "decision"
+ },
+ "Bihar|P.M.C.PATNA|MBBS": {
+  "id": 2971,
+  "how": "decision"
+ },
+ "Bihar|I.G.I.M.S. PATNA|MBBS": {
+  "id": 2944,
+  "how": "decision"
+ },
+ "Bihar|N.M.C. PATNA|MBBS": {
+  "id": 2955,
+  "how": "decision"
+ },
+ "Bihar|D.M.C.LAHERIASARAI|MBBS": {
+  "id": 3768,
+  "how": "decision"
+ },
+ "Bihar|B.M.I.M.S,PAWAPURI, NALANDA|MBBS": {
+  "id": 4647,
+  "how": "decision"
+ },
+ "Bihar|S.K.M.C. MUZAFFARPUR|MBBS": {
+  "id": 4633,
+  "how": "decision"
+ },
+ "Bihar|J.L.N.M.C. BHAGALPUR|MBBS": {
+  "id": 3745,
+  "how": "decision"
+ },
+ "Bihar|ESIC MC & H, BIHTA, PATNA|MBBS": {
+  "id": 3442,
+  "how": "decision"
+ },
+ "Bihar|G.M.C., BETTIAH|MBBS": {
+  "id": 3734,
+  "how": "decision"
+ },
+ "Bihar|J.K.T.M.C.& H. MADHEPURA|MBBS": {
+  "id": 4539,
+  "how": "decision"
+ },
+ "Bihar|A.N.M.M.C. GAYA|MBBS": {
+  "id": 3757,
+  "how": "decision"
+ },
+ "Bihar|G.M.C. PURNEA|MBBS": {
+  "id": 3872,
+  "how": "decision"
+ },
+ "Bihar|P.D.C, Patna|BDS": {
+  "id": 3203,
+  "how": "decision"
+ },
+ "Bihar|MGMMC & LSK HOS, KISHANGANJ|MBBS": {
+  "id": 4416,
+  "how": "decision"
+ },
+ "Bihar|K.M.C. KATIHAR|MBBS": {
+  "id": 4523,
+  "how": "decision"
+ },
+ "Bihar|LORD BUDHA KOSHI MEDICAL COLLEGE & HOSPITAL, SAHARSA|MBBS": {
+  "id": 4606,
+  "how": "decision"
+ },
+ "Bihar|N.M.C &.H, SASARAM|MBBS": {
+  "id": 3779,
+  "how": "decision"
+ },
+ "Bihar|BUDDHA INST. OF DENTAL SCIENCE & HOSPITAL|BDS": {
+  "id": 3013,
+  "how": "decision"
+ },
+ "Bihar|RDJM MEDICAL COLLEGE & HOSPITAL, TURKI, MUZAFFARPUR|MBBS": {
+  "id": 3452,
+  "how": "decision"
+ },
+ "Bihar|NETAJI SUBHAS MEDICAL COLLEGE & HOSPITAL|MBBS": {
+  "id": 3445,
+  "how": "decision"
+ },
+ "Bihar|BUDDHA HOSPITAL AND RESEARCH INSTITUTE, GAYA- DOBHI ROAD, NH-22, KHARANTI MORE, GAYA-823004|MBBS": {
+  "id": 4268,
+  "how": "decision"
+ },
+ "Bihar|SARJUG DENTAL COLLEGE & HOSPITAL LAHERIASARAI|BDS": {
+  "id": 3240,
+  "how": "decision"
+ },
+ "Bihar|MADHUBANI MEDICAL COLLEGE , MADHUBANI|MBBS": {
+  "id": 4291,
+  "how": "decision"
+ },
+ "Bihar|SHRI NARAYAN MEDICAL INSTITUTE & HOSPITAL, SAHARSA|MBBS": {
+  "id": 3443,
+  "how": "decision"
+ },
+ "Bihar|SHYAMLAL CHANDRASHEKHAR MEDICAL COLLEGE, KHAGARIA|MBBS": {
+  "id": 4110,
+  "how": "decision"
+ },
+ "Bihar|HIMALAYA MEDICAL COLLEGE & HOSPITAL, PALIGANJ, PATNA|MBBS": {
+  "id": 3873,
+  "how": "decision"
+ },
+ "Bihar|SHRINIVAS (G) EDUCATIONAL & RESEARCH INSTITUTE OF MEDICAL SCIENCES, CHAPRA -GARKHA HIGHWAY, SARAN -841311|MBBS": {
+  "id": 4278,
+  "how": "decision"
+ },
+ "Bihar|MITHILA MINORITY DENTAL COLLEGE & HOSPITAL|BDS": {
+  "id": 3182,
+  "how": "decision"
+ },
+ "Bihar|Mahabodhi Medical College and Hospital, Naknupa, Sherghati, GAYAJI|MBBS": {
+  "id": 4109,
+  "how": "decision"
+ },
+ "Bihar|VIRAAT RAMAYAN INSTITUTE OF MEDICAL SCIENCES,KOYLA BELWA, PS CHAKIA, EAST CHAMPARAN|MBBS": {
+  "id": 4112,
+  "how": "decision"
+ },
+ "Bihar|Shri Ram Janki Medical College and Hospital , Samastipur|MBBS": {
+  "id": null,
+  "how": "decision"
+ },
+ "Bihar|Government Medical College Chapra, Saran|MBBS": {
+  "id": null,
+  "how": "decision"
+ },
+ "Bihar|MAMTA MEDICAL COLLEGE AND HOSPITAL,CHINTAMANPUR, DURUNDHA, SIWAN|MBBS": {
+  "id": null,
+  "how": "decision"
+ },
+ "Bihar|SHRINIVAS (G) EDUCATIONAL & RESEARCH INSTITUTE OF MEDICAL SCIENCES, CHAPRA - GARKHA HIGHWAY, SARAN -841311|MBBS": {
+  "id": 4278,
+  "how": "decision"
+ },
+ "Bihar|KURMA SANSKRITI MEDICAL COLLEGE AND HOSPITAL KURMA JEHANABAD|MBBS": {
+  "id": null,
+  "how": "decision"
+ },
+ "Bihar|K K MEDICAL COLLEGE AND HOSPITAL , LODIPUR, CHHABILAPUR, RAJGIR, NALANDA|MBBS": {
+  "id": null,
+  "how": "decision"
+ },
+ "Bihar|BUDDHA HOSPITAL AND RESEARCH INSTITUTE, GAYA-DOBHI ROAD, NH-22, KHARANTI MORE, GAYA-823004|MBBS": {
+  "id": 4268,
+  "how": "decision"
+ },
+ "Chhattisgarh|Pt. Jawahar Lal Nehru Memorial Medical College, Raipur C.G.|MBBS": {
+  "id": 3541,
+  "how": "decision"
+ },
+ "Chhattisgarh|Chhattisgarh Institute of Medical Sciences (CIMS), Bilaspur C.G.|MBBS": {
+  "id": 3378,
+  "how": "decision"
+ },
+ "Chhattisgarh|Chandulal Chandrakar Memorial Government Medical College, Kachandur, Durg C.G.|MBBS": {
+  "id": 4515,
+  "how": "decision"
+ },
+ "Chhattisgarh|Late Shri Baliram Kashyap Memorial Medical College, Jagdalpur C.G.|MBBS": {
+  "id": 3414,
+  "how": "decision"
+ },
+ "Chhattisgarh|Bharat Ratna Late Shree Atal Bihari Vajpayee Memorial Medical College, Rajnandgaon C.G.|MBBS": {
+  "id": 3408,
+  "how": "decision"
+ },
+ "Chhattisgarh|Shri Shankaracharya Institute of Medical Science, Junwani Bhilai C.G.|MBBS": {
+  "id": 3413,
+  "how": "decision"
+ },
+ "Chhattisgarh|Rajmata Smt. Devendra Kumari Singhdeo Government Medical College Ambikapur (Surguja) C.G.|MBBS": {
+  "id": 4516,
+  "how": "decision"
+ },
+ "Chhattisgarh|Late Shri Lakhi Ram Agrawal Memorial Government Medical College, Raigarh C.G.|MBBS": {
+  "id": 3365,
+  "how": "decision"
+ },
+ "Chhattisgarh|Shri Balaji Institute Of Medical Science, Mowa Raipur C.G.|MBBS": {
+  "id": 2964,
+  "how": "decision"
+ },
+ "Chhattisgarh|Raipur Institute of Medical Sciences,Raipur C.G.|MBBS": {
+  "id": 3652,
+  "how": "decision"
+ },
+ "Chhattisgarh|Late. Smt. Indira Gandhi Memorial Government Medical College, Kanker C.G.|MBBS": {
+  "id": 3389,
+  "how": "decision"
+ },
+ "Chhattisgarh|Late Bisahu Das Mahant Memorial Medical College Korba C.G.|MBBS": {
+  "id": 3449,
+  "how": "decision"
+ },
+ "Chhattisgarh|Government Medical College Mahasamund C.G.|MBBS": {
+  "id": 3448,
+  "how": "decision"
+ },
+ "Chhattisgarh|Government Medical College Janjgir–Champa, C.G.|MBBS": {
+  "id": 4294,
+  "how": "decision"
+ },
+ "Chhattisgarh|Shri Rawatpura Sarkar Institute of Medical Sciences and Research, Nava Raipur C.G.|MBBS": {
+  "id": 3876,
+  "how": "decision"
+ },
+ "Chhattisgarh|Government Dental College,Raipur C.G.|BDS": {
+  "id": 3083,
+  "how": "decision"
+ },
+ "Chhattisgarh|Government Medical College Manendragarh, C.G.|MBBS": {
+  "id": 4299,
+  "how": "decision"
+ },
+ "Chhattisgarh|Government Medical College Kabirdham, C.G.|MBBS": {
+  "id": 4298,
+  "how": "decision"
+ },
+ "Chhattisgarh|Government Medical College Kunkuri- Jashpur, C.G.|MBBS": {
+  "id": 4295,
+  "how": "decision"
+ },
+ "Chhattisgarh|Government Medical College Geedam, Dantewada, C.G.|MBBS": {
+  "id": 4290,
+  "how": "decision"
+ },
+ "Chhattisgarh|Abhishek I Mishra Memorial Medical College & Research, Junwani - Bhilai, Durg, C.G.|MBBS": {
+  "id": 3874,
+  "how": "decision"
+ },
+ "Chhattisgarh|Maa Padmawati Institute of Medical Sciences Pacheda, Raipur C.G.|MBBS": {
+  "id": 4274,
+  "how": "decision"
+ },
+ "Chhattisgarh|Rungta College of Dental Sciences & Research,Bhilai C.G.|BDS": {
+  "id": 3228,
+  "how": "decision"
+ },
+ "Chhattisgarh|Maitri College Of Dentistry And Research Center,Durg C.G.|BDS": {
+  "id": 3164,
+  "how": "decision"
+ },
+ "Chhattisgarh|New Horizon Dental College and Research Institute, Bilaspur C.G.|BDS": {
+  "id": 3192,
+  "how": "decision"
+ },
+ "Chhattisgarh|Chhattisgarh Dental College and Research Institute,Rajnandgaon C.G.|BDS": {
+  "id": 3022,
+  "how": "decision"
+ },
+ "Chhattisgarh|Shri Balaji Institute of Dental Seciences, Raipur C.G.|BDS": {
+  "id": 4069,
+  "how": "decision"
+ },
+ "Chhattisgarh|Triveni Institute of Dental Sciences, Hospital & Research centre, Bilaspur C.G.|BDS": {
+  "id": 3299,
+  "how": "decision"
+ },
+ "Delhi|NDMC Medical College at Hindu Rao Hospital, Malka Ganj, Delhi|MBBS": {
+  "id": 3326,
+  "how": "decision"
+ },
+ "Delhi|Dr. BSA Hospital, Medical College, Sector 6, Rohini, Delhi|MBBS": {
+  "id": 3321,
+  "how": "decision"
+ },
+ "Delhi|Army College of Medical Science, Near Base Hospital, Delhi Cantt, New Delhi|MBBS": {
+  "id": 3318,
+  "how": "decision"
+ },
+ "Haryana|Pandit Bhagwat Dayal Sharma PGIMS, Rohtak|MBBS": {
+  "id": 2985,
+  "how": "decision"
+ },
+ "Haryana|ESIC Medical College, NIT, Faridabad|MBBS": {
+  "id": 3197,
+  "how": "decision"
+ },
+ "Haryana|Kalpana Chawla Govt. Medical College, Karnal|MBBS": {
+  "id": 2975,
+  "how": "decision"
+ },
+ "Haryana|Shaheed Hasan Khan Mewati Govt. Medical College, Nalhar Mewat|MBBS": {
+  "id": 4501,
+  "how": "decision"
+ },
+ "Haryana|Bhagat Phool Singh Govt. Medical College For Women, Khanpur Kalan, Sonepat|MBBS": {
+  "id": 4503,
+  "how": "decision"
+ },
+ "Haryana|Maharaja Agrasen Medical College, Agroha Hisar|MBBS": {
+  "id": 4498,
+  "how": "decision"
+ },
+ "Haryana|Sh. Atal Bihari Vajpayee Government Medical College, Chhainsa, Faridabad|MBBS": {
+  "id": 3427,
+  "how": "decision"
+ },
+ "Haryana|Pt. Neki Ram Sharma Government Medical College, Bhiwani|MBBS": {
+  "id": 3360,
+  "how": "decision"
+ },
+ "Haryana|Maharishi Chyawan Government Medical College, Koriawas, Narnaul|MBBS": {
+  "id": 3356,
+  "how": "decision"
+ },
+ "Haryana|PGIDS, Rohtak|BDS": {
+  "id": 3210,
+  "how": "decision"
+ },
+ "Haryana|Adesh Medical College & Hospital, Shahbad (M), Kurukshetra|MBBS": {
+  "id": 3154,
+  "how": "decision"
+ },
+ "Haryana|World College Of Medical Sciences And Research, Jhajjar|MBBS": {
+  "id": 4518,
+  "how": "decision"
+ },
+ "Haryana|Maharishi Markendeshwar College of Medical Sciences and Research (Maharishi Markendeshwar University) Sadhopur, Ambala|MBBS": {
+  "id": 3868,
+  "how": "decision"
+ },
+ "Haryana|NC Medical College & Hospital, Israna, Panipat|MBBS": {
+  "id": 3208,
+  "how": "decision"
+ },
+ "Haryana|Faculty of Medicine & Health Sciences, SGT University, Gurugram|MBBS": {
+  "id": 4500,
+  "how": "decision"
+ },
+ "Haryana|Sudha Rustagi College Of Dental Sciences & Research, Faridabad|BDS": {
+  "id": 3283,
+  "how": "decision"
+ },
+ "Haryana|Jan Nayak Ch. Devi Lal Dental College, Sirsa|BDS": {
+  "id": 3117,
+  "how": "decision"
+ },
+ "Haryana|SGT Dental College, (SGT University) Gurugram|BDS": {
+  "id": 4085,
+  "how": "decision"
+ },
+ "Haryana|J.N. Kapoor, D.A.V Centenary Dental College, Yamunanagar|BDS": {
+  "id": 3033,
+  "how": "decision"
+ },
+ "Haryana|Swami Devi Dayal Hospital & Dental College, Punchkula|BDS": {
+  "id": 3287,
+  "how": "decision"
+ },
+ "Haryana|Yamuna Institute Of Dental Sciences & Research Gadholi, Yamunanagar|BDS": {
+  "id": 3313,
+  "how": "decision"
+ },
+ "Haryana|Al-Falah School of Medical Science & Research Centre, Faridabad|MBBS": {
+  "id": 4499,
+  "how": "decision"
+ },
+ "Haryana|Sanskaram School of Medical Sciences, Jhajjar (Sanskaram University)|MBBS": {
+  "id": 4283,
+  "how": "decision"
+ },
+ "Karnataka|Bangalore Medical College,NO- 2, Fort , K R ROAD,Bangalore|MBBS": {
+  "id": 4380,
+  "how": "decision"
+ },
+ "Karnataka|SDM College of Medical Sciences and Hospital,Manjushree Nagar, PB ROAD,Dharwad|MBBS": {
+  "id": 4420,
+  "how": "decision"
+ },
+ "Karnataka|M.S.Ramaiah Medical College,MSR Nagar, MSRIT Post,Bangalore|MBBS": {
+  "id": 4388,
+  "how": "decision"
+ },
+ "Karnataka|Belgaum Institute of Medical Sciences,Dr B R Ambedkar Road,,Belgaum|MBBS": {
+  "id": 4393,
+  "how": "decision"
+ },
+ "Karnataka|St John Medical College,,Bangalore|MBBS": {
+  "id": 4390,
+  "how": "decision"
+ },
+ "Karnataka|Mysore Medical College,Irwin Road,,Mysore|MBBS": {
+  "id": 4418,
+  "how": "decision"
+ },
+ "Karnataka|Karnataka Institute of Medical Sciences,Vidyanagar,Hubli|MBBS": {
+  "id": 4410,
+  "how": "decision"
+ },
+ "Karnataka|Kasturba Medical College,PB No -53,,Hampanakatta,Mangalore.|MBBS": {
+  "id": 4562,
+  "how": "decision"
+ },
+ "Karnataka|Shri Atal Bihari Vajpayee Institute of Medical Science,,Bengaluru|MBBS": {
+  "id": 4382,
+  "how": "decision"
+ },
+ "Karnataka|Gulbarga Institute of Medical Sciences,VIRESHNAGAR SEDAM ROAD,,GULBARGA|MBBS": {
+  "id": 4411,
+  "how": "decision"
+ },
+ "Karnataka|ESI Medical College,Rajajinagar,Bangalore|MBBS": {
+  "id": 4386,
+  "how": "decision"
+ },
+ "Karnataka|Kempegowda Institute of Medical Sciences,B.S.K II Stage,,Bangalore|MBBS": {
+  "id": 4387,
+  "how": "decision"
+ },
+ "Karnataka|Vijayanagar Institute of Medical Sciences,Cantonment,Bellary|MBBS": {
+  "id": 4395,
+  "how": "decision"
+ },
+ "Karnataka|Shimoga Institute of Medical Sciences,Sagar Road,,Shimoga|MBBS": {
+  "id": 4421,
+  "how": "decision"
+ },
+ "Karnataka|Hassan Institute of Medical Sciences,Near Chamarajendra Hospital,Hassan|MBBS": {
+  "id": 4408,
+  "how": "decision"
+ },
+ "Karnataka|Mandya Institute of Medical Sciences,District Hospital,,Mandya|MBBS": {
+  "id": 4663,
+  "how": "decision"
+ },
+ "Karnataka|Jagadguru Sri Shivarathreeswara Medical College,Sri Shivarathreeshwara Nagar,,Mysore|MBBS": {
+  "id": 4560,
+  "how": "decision"
+ },
+ "Karnataka|Father Muller Institute of Med. Education & Research,Father Muller Road,,Mangalore|MBBS": {
+  "id": 4415,
+  "how": "decision"
+ },
+ "Karnataka|Jawaharalal Nehru Medical College,Nehru Nagar,Belgaum|MBBS": {
+  "id": 4559,
+  "how": "decision"
+ },
+ "Karnataka|ESI Medical College,Sedam Road,Gulbarga|MBBS": {
+  "id": 4404,
+  "how": "decision"
+ },
+ "Karnataka|Jaya Jagadguru Murugharajendra Medical College,,Davangere District|MBBS": {
+  "id": 4401,
+  "how": "decision"
+ },
+ "Karnataka|Vydehi Institute of Medical Science and Research Centre,No. 82,EPIP Area, Nallurahalli,Bangalore|MBBS": {
+  "id": 4392,
+  "how": "decision"
+ },
+ "Karnataka|Sri Madhusudan Sai Institute of Medical Sciences and Research,,Muddenahalli,CHIKKA BALLAPURA|MBBS": {
+  "id": 3692,
+  "how": "decision"
+ },
+ "Karnataka|Chamarajanagar Institute of Medical Science,SURVEY NO 124, YADAPURA,CHAMARAJANAGA R|MBBS": {
+  "id": 4398,
+  "how": "decision"
+ },
+ "Karnataka|BGS Global Institute of Medical Sciences,# 67, BGS Health & Education,Kengeri, Bangalore|MBBS": {
+  "id": 4381,
+  "how": "decision"
+ },
+ "Karnataka|PES University Institute of Medical Sceinces and Research,Electronic city,BANGALORE|MBBS": {
+  "id": 3904,
+  "how": "decision"
+ },
+ "Karnataka|Raichur Institute of Medical Sciences,Sy No.307 & 308,,Raichur|MBBS": {
+  "id": 4664,
+  "how": "decision"
+ },
+ "Karnataka|Nandi Medical College and Research Institute Chikkaballapura (Chikkaballapura Institute of Medical Sciences Chikkaballapura )|MBBS": {
+  "id": 3399,
+  "how": "decision"
+ },
+ "Karnataka|K.S.Hegde Medical Academy,Nithyananda Nagar,Mangalore|MBBS": {
+  "id": 4563,
+  "how": "decision"
+ },
+ "Karnataka|Kodagu Institute of Medical Sciences,,MADIKERI|MBBS": {
+  "id": 4413,
+  "how": "decision"
+ },
+ "Karnataka|K.H. Patil Institute of Medical Sciences (previously Gadag Institute of Medical Sciences, Mallasamudra, Mulgund Road, Gadag)|MBBS": {
+  "id": 4403,
+  "how": "decision"
+ },
+ "Karnataka|Yenepoya Medical College,University Road, Nithyanandar,Mangalore|MBBS": {
+  "id": 4568,
+  "how": "decision"
+ },
+ "Karnataka|Bidar Institute of Medical Sciences,Udgir Road,,Bidar|MBBS": {
+  "id": 4396,
+  "how": "decision"
+ },
+ "Karnataka|Dr. B.R. Ambedkar Medical College,Kadugondanahalli,,Bang alore|MBBS": {
+  "id": 4384,
+  "how": "decision"
+ },
+ "Karnataka|S. Nijalingappa Medical College and Research Centre,,Bagalkot|MBBS": {
+  "id": 4378,
+  "how": "decision"
+ },
+ "Karnataka|Chikkamagaluru Institute of Medical Sciences,,Chikkamagaluru|MBBS": {
+  "id": 3662,
+  "how": "decision"
+ },
+ "Karnataka|Adichunchanagiri Institute of Medical Sciences,B.G Nagar,,Bellur, Mandya Dist.|MBBS": {
+  "id": 4379,
+  "how": "decision"
+ },
+ "Karnataka|Karwar Institute of Medical Science,M G ROAD,UTTARA KANNADA|MBBS": {
+  "id": 4412,
+  "how": "decision"
+ },
+ "Karnataka|A.J.Institute of Medical Sciences,NH - 66, Kuntikana,Mangalore|MBBS": {
+  "id": 4414,
+  "how": "decision"
+ },
+ "Karnataka|East Point College of Medical Sciences and Research Center,,Bangalore|MBBS": {
+  "id": 4385,
+  "how": "decision"
+ },
+ "Karnataka|Sapthagiri Institute of Medical Sciences,No.15, chikkasandra,,Bangalore|MBBS": {
+  "id": 4389,
+  "how": "decision"
+ },
+ "Karnataka|Dr. Chandramma Dayananda Sagar Institute of Medical Education,,Harohalli hobli, Kanakapura Rd|MBBS": {
+  "id": 4540,
+  "how": "decision"
+ },
+ "Karnataka|Farookh Academy of Medical Education Hospital and Research Institute, Mysore Madikeri Road, Near Illavala Hunsur Taluk, Mysore District|MBBS": {
+  "id": 4095,
+  "how": "decision"
+ },
+ "Karnataka|Shridevi Institute of Medical Sciences and Research Hospital,Sira Road,,Tumkur|MBBS": {
+  "id": 4425,
+  "how": "decision"
+ },
+ "Karnataka|Koppal Institute of Medical Sciences,GANGAVATI ROAD, KIDDIDAL GATE,,KOPPAL|MBBS": {
+  "id": 4661,
+  "how": "decision"
+ },
+ "Karnataka|Shymanuru Shivashankarappa Institute Of Medical Sciences,Jnanashankara, NH- 4,Davangere|MBBS": {
+  "id": 4402,
+  "how": "decision"
+ },
+ "Karnataka|Chitradurga Medical College and Research Institute,,Chitradurga|MBBS": {
+  "id": 3693,
+  "how": "decision"
+ },
+ "Karnataka|Siddaganga Medical College and Research Institute,,Tumakuru|MBBS": {
+  "id": 3661,
+  "how": "decision"
+ },
+ "Karnataka|Haveri Institute of Medical Sciences,,Haveri|MBBS": {
+  "id": 3663,
+  "how": "decision"
+ },
+ "Karnataka|Srinivasa Institute of Medical Research Center Srinivas Nagar Mangalore|MBBS": {
+  "id": 4424,
+  "how": "decision"
+ },
+ "Karnataka|Yadgiri Institute of Medical Sciences,,Yadgiri|MBBS": {
+  "id": 3425,
+  "how": "decision"
+ },
+ "Karnataka|BGS Medical College and Hospital,,BANGALORE|MBBS": {
+  "id": 3676,
+  "how": "decision"
+ },
+ "Karnataka|SRI CHAMUNDESHWARI MEDICAL COLLEGE, HOSPITAL AND RESEARCH INST,,CHANNAPATNA, RAMANAGARA|MBBS": {
+  "id": 3691,
+  "how": "decision"
+ },
+ "Karnataka|M.V.J.Medical College and Research Hospital,NH-4, Dandupalya, Kolathur -,Channasandra, Bangalore|MBBS": {
+  "id": 4409,
+  "how": "decision"
+ },
+ "Karnataka|K.Venkataramana Gowda Medical College and Hospital,Kurunjibag,,Dakshina Kannada|MBBS": {
+  "id": 4423,
+  "how": "decision"
+ },
+ "Karnataka|The Oxford Medical College Hospital and Research Center,Yadavanahalli, Attibele Hobli,Bangalore|MBBS": {
+  "id": 4391,
+  "how": "decision"
+ },
+ "Karnataka|Akash Institute of Medical Sciences and Research Centre,DEVANAHALLI,,BANGAL ORE|MBBS": {
+  "id": 4400,
+  "how": "decision"
+ },
+ "Karnataka|Mahadevappa Rampure Medical College,Mahadevappa Rampure Marg,Kalaburgi|MBBS": {
+  "id": 4407,
+  "how": "decision"
+ },
+ "Karnataka|Jagadguru Gangadhar Mahaswamigalu Moorusavirmath Medical College,Dharwad|MBBS": {
+  "id": 3402,
+  "how": "decision"
+ },
+ "Karnataka|Al-Ameen Medical College,ADMINISTRATIVE BLOCK,VIJAYAPUR|MBBS": {
+  "id": 4397,
+  "how": "decision"
+ },
+ "Karnataka|Subbaiah Institute of Medical Science,NH-13, Purle,,Shimoga|MBBS": {
+  "id": 4422,
+  "how": "decision"
+ },
+ "Karnataka|ALVAS INSTITUTE OF MEDICAL SCIENCES AND RESEARCH CENTRE, DK&#10;|MBBS": {
+  "id": 4264,
+  "how": "decision"
+ },
+ "Karnataka|Kanachur Institute of Medical Sciences and Research Centre,UNIVERSITY ROAD,MANGALORE|MBBS": {
+  "id": 4419,
+  "how": "decision"
+ },
+ "Karnataka|Sri Basaveshwara Medical College and Hospital,NH-4, S.J.M.I.T Campus,,Chitradurga|MBBS": {
+  "id": 4399,
+  "how": "decision"
+ },
+ "Karnataka|G R Medical College Hospital and Research Centre Mangalore D.K|MBBS": {
+  "id": 3401,
+  "how": "decision"
+ },
+ "Karnataka|Navodaya Medical College,PB No.26, Navodaya Nagar,Raichur|MBBS": {
+  "id": 4660,
+  "how": "decision"
+ },
+ "Karnataka|S R Patil Medical College Hospital and Research Center,Badagandi,BAGALKOT|MBBS": {
+  "id": 3905,
+  "how": "decision"
+ },
+ "Karnataka|Khaja Bande Navaz Institute Of Medical Sciences,Rouza Buzurq,,Gulbarga|MBBS": {
+  "id": 4406,
+  "how": "decision"
+ },
+ "Karnataka|Government Dental College,Victoria Hospital Premises,Bangalore|BDS": {
+  "id": 3079,
+  "how": "decision"
+ },
+ "Karnataka|Bapuji Dental College and Hospital,M C C, B Block,Davangere|BDS": {
+  "id": 3005,
+  "how": "decision"
+ },
+ "Karnataka|Academy of Medical Education Dental College,Near Government Polytechnic,Raichur|BDS": {
+  "id": 2991,
+  "how": "decision"
+ },
+ "Karnataka|Sri Dharmasthala Manjunatheswara Dental College,Dhavalanagar,,Dharwad|BDS": {
+  "id": 3246,
+  "how": "decision"
+ },
+ "Karnataka|M.S.Ramaiah Univerisity of Applied Sciences,MSR Nagar,,Bangalore|BDS": {
+  "id": 3150,
+  "how": "decision"
+ },
+ "Karnataka|Sharavathi Dental College,Alkola, T H Road,,Shimoga|BDS": {
+  "id": 3250,
+  "how": "decision"
+ },
+ "Karnataka|Dayananada Sagar Dental College, Bangalore|BDS": {
+  "id": 3040,
+  "how": "decision"
+ },
+ "Karnataka|Government Dental College and Research Institute,Cantonment Area,,Bellary|BDS": {
+  "id": 3075,
+  "how": "decision"
+ },
+ "Karnataka|Rashtreeya Vidyalaya Dental College,No CA-37, 24th Main,Bangalore|BDS": {
+  "id": 3032,
+  "how": "decision"
+ },
+ "Karnataka|BGS Global Institute of Dental Sciences and Hospital, Bangalore|BDS": {
+  "id": 4094,
+  "how": "decision"
+ },
+ "Karnataka|A.J. Institute of Dental Sciences,NH-66,,Mangalore|BDS": {
+  "id": 2981,
+  "how": "decision"
+ },
+ "Karnataka|Employees State Insurance Corporation Dental College,,Gulbarga|BDS": {
+  "id": 3055,
+  "how": "decision"
+ },
+ "Karnataka|Vydehi Institute of Dental Sciences and Research Centre,82, EPIP Area, Nallura Halli,,Bangalore|BDS": {
+  "id": 3312,
+  "how": "decision"
+ },
+ "Karnataka|Dr.M.R.Ambedkar Dental College and Hospital,1/36, Cline Road,,Bangalore|BDS": {
+  "id": 3149,
+  "how": "decision"
+ },
+ "Karnataka|College of Dental Sciences,PB No.327,Davangere|BDS": {
+  "id": 3027,
+  "how": "decision"
+ },
+ "Karnataka|K L E S Institute of Dental Sciences,No. 20, Yeshwanthpur Suburb,,Bangalore|BDS": {
+  "id": 3136,
+  "how": "decision"
+ },
+ "Karnataka|Sri. Hasanamba Dental College and Hospital,No.86,Hassan|BDS": {
+  "id": 3266,
+  "how": "decision"
+ },
+ "Karnataka|Raja Rajeshwari Dental College and Hospital,No.14 ,Ramohalli Cross,,Bangalore|BDS": {
+  "id": 3218,
+  "how": "decision"
+ },
+ "Karnataka|Vokkaligara Sanga Dental College, Bangalore.|BDS": {
+  "id": 3301,
+  "how": "decision"
+ },
+ "Karnataka|Al Badar Dental College and Hospital,Sy No.12, Daryapur Village,Gulbarga|BDS": {
+  "id": 2989,
+  "how": "decision"
+ },
+ "Karnataka|Bangalore Institute of Dental Sciences & Hospital,5/3 Hosur Main Road,,Bangalore|BDS": {
+  "id": 3004,
+  "how": "decision"
+ },
+ "Karnataka|Oxford Dental College,Bommanahalli,,Bangalor e|BDS": {
+  "id": 3297,
+  "how": "decision"
+ },
+ "Karnataka|Al-Ameen Dental College,Athani Road,Bijapur|BDS": {
+  "id": 2987,
+  "how": "decision"
+ },
+ "Karnataka|S.B.Patil Institute for Dental Sciences and Research,Naubad Post,Bidar|BDS": {
+  "id": 3231,
+  "how": "decision"
+ },
+ "Karnataka|Maratha Mandal Dental College,47A/2,Opp Police Parade Ground,Belgaum|BDS": {
+  "id": 3177,
+  "how": "decision"
+ },
+ "Karnataka|Sri Jagadguru Murugharajendra Dental College & Hospital,P B Road,Chitradurga|BDS": {
+  "id": 3233,
+  "how": "decision"
+ },
+ "Karnataka|Hyderabad Karnataka Education Societies Dental College,Sedam Road,,Gulbarga|BDS": {
+  "id": 3095,
+  "how": "decision"
+ },
+ "Karnataka|Coorg Institute of Dental Sciences,Kanjitanda Kushalappa Campus,, Coorg District|BDS": {
+  "id": 3030,
+  "how": "decision"
+ },
+ "Karnataka|HKDET`S Dental College Hospital,Kalur Road,Humnabad, Bidar Dist|BDS": {
+  "id": 3094,
+  "how": "decision"
+ },
+ "Karnataka|Sri Rajiv Gandhi Dental College,Chola Nagar,,Bangalore|BDS": {
+  "id": 3267,
+  "how": "decision"
+ },
+ "Karnataka|PM Nadagowda Memorial Dental College and Hospital,Raichur Road,,Bagalkot|BDS": {
+  "id": 3195,
+  "how": "decision"
+ },
+ "Karnataka|Srinivasa Institute of Dental Science,Srinivas Nagar, Mukka,Mangalore|BDS": {
+  "id": 3277,
+  "how": "decision"
+ },
+ "Karnataka|K.Venkataramana Gowda Dental College Hospital and Research Centre,Kurunji Bagh,,Dakshina Kannada|BDS": {
+  "id": 3127,
+  "how": "decision"
+ },
+ "Karnataka|Krishnadevaraya College of Dental Sciences,Krishnadevaraya Nagar,HM halli, Road, Bangalore|BDS": {
+  "id": 3140,
+  "how": "decision"
+ },
+ "Karnataka|Subbaiah Institute of Dental Sciences,NH-13, Purle,Shimoga|BDS": {
+  "id": 3281,
+  "how": "decision"
+ },
+ "Karnataka|Navodaya Dental College,PB No. 26,Navodaya Nagar,,Raichur|BDS": {
+  "id": 3191,
+  "how": "decision"
+ },
+ "Karnataka|Venkateswara Dental College,Kariappanahalli, Anekal Road,,Bangalore|BDS": {
+  "id": 3274,
+  "how": "decision"
+ },
+ "Karnataka|K.G.F. College of Dental Sciences,No 36, D K Plantation,K.G.F.|BDS": {
+  "id": 3124,
+  "how": "decision"
+ },
+ "Karnataka|Bagalkote Medical College and Research Institute Navanagar Sector 11, Bagalkote|MBBS": {
+  "id": null,
+  "how": "decision"
+ },
+ "Karnataka|Nandi Medical College and Research Institute Chikkaballapura (Chikkaballapura Institute of Medical Sciences Chikkaballapura)|MBBS": {
+  "id": 3399,
+  "how": "decision"
+ },
+ "Karnataka|A. J. Institute of Medical Sciences, NH - 66, Kuntikana, Mangalore|MBBS": {
+  "id": 4414,
+  "how": "decision"
+ },
+ "Madhya Pradesh|MAHATMA GANDHI MEMORIAL MEDICAL COLLEGE INDORE|MBBS": {
+  "id": 4350,
+  "how": "decision"
+ },
+ "Madhya Pradesh|NETAJI SUBHASH CHANDRA BOSE MEDICAL COLLEGE JABALPUR|MBBS": {
+  "id": 4383,
+  "how": "decision"
+ },
+ "Madhya Pradesh|GAJRA RAJA MEDICAL COLLEGE GWALIOR|MBBS": {
+  "id": 3756,
+  "how": "decision"
+ },
+ "Madhya Pradesh|GANDHI MEDICAL COLLEGE BHOPAL|MBBS": {
+  "id": 4312,
+  "how": "decision"
+ },
+ "Madhya Pradesh|SHRIMANT RAJMATA VIJAYARAJE SCINDIA MEDICAL COLLEGE SHIVPURI|MBBS": {
+  "id": 3680,
+  "how": "decision"
+ },
+ "Madhya Pradesh|ATAL BIHARI VAJPAYEE GOVERNMENT MEDICAL COLLEGE VIDISHA|MBBS": {
+  "id": 4372,
+  "how": "decision"
+ },
+ "Madhya Pradesh|SHYAM SHAH MEDICAL COLLEGE REWA|MBBS": {
+  "id": 4188,
+  "how": "decision"
+ },
+ "Madhya Pradesh|ESIC MEDICAL COLLEGE AND HOSPITAL INDORE|MBBS": {
+  "id": 4105,
+  "how": "decision"
+ },
+ "Madhya Pradesh|Dr. Laxminarayan Pandey Government Medical College, Ratlam|MBBS": {
+  "id": 4292,
+  "how": "decision"
+ },
+ "Madhya Pradesh|BUNDELKHAND MEDICAL COLLEGE SAGAR|MBBS": {
+  "id": 4078,
+  "how": "decision"
+ },
+ "Madhya Pradesh|SRI AUROBINDO INSTITUTE OF MEDICAL SCIENCE INDORE|MBBS": {
+  "id": 4361,
+  "how": "decision"
+ },
+ "Madhya Pradesh|NANDKUMAR SINGH CHOUHAN GOVERNMENT MEDICAL COLLEGE KHANDWA|MBBS": {
+  "id": 4315,
+  "how": "decision"
+ },
+ "Madhya Pradesh|BIRSA MUNDA GOVERNMENT MEDICAL COLLEGE SHAHDOL|MBBS": {
+  "id": 4405,
+  "how": "decision"
+ },
+ "Madhya Pradesh|GOVERNMENT MEDICAL COLLEGE DATIA|MBBS": {
+  "id": 3865,
+  "how": "decision"
+ },
+ "Madhya Pradesh|GOVERNMENT MEDICAL COLLEGE SEONI|MBBS": {
+  "id": 4637,
+  "how": "decision"
+ },
+ "Madhya Pradesh|CHHINDWARA INSTITUTE OF MEDICAL SCIENCES CHHINDWARA|MBBS": {
+  "id": 4394,
+  "how": "decision"
+ },
+ "Madhya Pradesh|GOVERNMENT MEDICAL COLLEGE SATNA|MBBS": {
+  "id": 3678,
+  "how": "decision"
+ },
+ "Madhya Pradesh|VIRENDRA KUMAR SAKHLECHA GOVERNMENT MEDICAL COLLEGE NEEMUCH|MBBS": {
+  "id": 3396,
+  "how": "decision"
+ },
+ "Madhya Pradesh|GOVERNMENT MEDICAL COLLEGE SHEOPUR|MBBS": {
+  "id": 3417,
+  "how": "decision"
+ },
+ "Madhya Pradesh|SUNDERLAL PATWA GOVERNMENT MEDICAL COLLEGE MANDSAUR|MBBS": {
+  "id": 4645,
+  "how": "decision"
+ },
+ "Madhya Pradesh|GOVERNMENT MEDICAL COLLEGE SINGRAULI|MBBS": {
+  "id": 3232,
+  "how": "decision"
+ },
+ "Madhya Pradesh|GOVERNMENT AUTONOMOUS COLLEGE OF DENTISTRY INDORE|BDS": {
+  "id": 3029,
+  "how": "decision"
+ },
+ "Madhya Pradesh|RD GARDI MEDICAL COLLEGE UJJAIN|MBBS": {
+  "id": 4318,
+  "how": "decision"
+ },
+ "Madhya Pradesh|CHIRAYU MEDICAL COLLEGE AND HOSPITAL BHOPAL|MBBS": {
+  "id": 4311,
+  "how": "decision"
+ },
+ "Madhya Pradesh|LN MEDICAL COLLEGE BHOPAL|MBBS": {
+  "id": 4313,
+  "how": "decision"
+ },
+ "Madhya Pradesh|SUKH SAGAR MEDICAL COLLEGE AND HOSPITAL JABALPUR|MBBS": {
+  "id": 3681,
+  "how": "decision"
+ },
+ "Madhya Pradesh|PEOPLES COLLEGE OF MEDICAL SCIENCE BHOPAL|MBBS": {
+  "id": 4314,
+  "how": "decision"
+ },
+ "Madhya Pradesh|MAHAVEER INSTITUTE OF MEDICAL SCIENCES AND RESEARCH BHOPAL|MBBS": {
+  "id": 4525,
+  "how": "decision"
+ },
+ "Madhya Pradesh|INDEX MEDICAL COLLEGE HOSPITAL AND RESEARCH CENTER INDORE|MBBS": {
+  "id": 4339,
+  "how": "decision"
+ },
+ "Madhya Pradesh|AMALTAS INSTITUTE OF MEDICAL SCIENCES DEWAS|MBBS": {
+  "id": 4328,
+  "how": "decision"
+ },
+ "Madhya Pradesh|LNCT MEDICAL COLLEGE AND SEWAKUNJ HOSPITAL INDORE|MBBS": {
+  "id": 3428,
+  "how": "decision"
+ },
+ "Madhya Pradesh|RAM KRISHNA MEDICAL COLLEGE HOSPITAL AND RESEARCH CENTRE BHOPAL|MBBS": {
+  "id": 3679,
+  "how": "decision"
+ },
+ "Madhya Pradesh|PEOPLES DENTAL ACADAMY BHOPAL|BDS": {
+  "id": 3206,
+  "how": "decision"
+ },
+ "Madhya Pradesh|SCHOOL OF MEDICAL SCIENCE SRI SATYA SAI UNIVERSITY OF TECHNOLOGY AND MEDICAL SCIENCES SEHORE|MBBS": {
+  "id": 3918,
+  "how": "decision"
+ },
+ "Madhya Pradesh|RKDF MEDICAL COLLEGE HOSPITAL AND RESEARCH CENTRE BHOPAL|MBBS": {
+  "id": 4526,
+  "how": "decision"
+ },
+ "Madhya Pradesh|SRI AUROBINDO COLLEGE OF DENTISTRY INDORE|BDS": {
+  "id": 3261,
+  "how": "decision"
+ },
+ "Madhya Pradesh|INDEX INSTITUTE OF DENTAL SCIENCES INDORE|BDS": {
+  "id": 3107,
+  "how": "decision"
+ },
+ "Madhya Pradesh|BHABHA COLLEGE OF DENTAL SCIENCES BHOPAL|BDS": {
+  "id": 3008,
+  "how": "decision"
+ },
+ "Madhya Pradesh|MODERN DENTAL COLLEGE AND RESEARCH CENTRE INDORE|BDS": {
+  "id": 3184,
+  "how": "decision"
+ },
+ "Madhya Pradesh|MANSAROVAR MEDICAL COLLEGE AND MGU HOSPITAL SEHORE|MBBS": {
+  "id": 4092,
+  "how": "decision"
+ },
+ "Madhya Pradesh|PEOPLES COLLEGE OF DENTAL SCIENCES AND RESEARCH CENTRE BHOPAL|BDS": {
+  "id": 3207,
+  "how": "decision"
+ },
+ "Madhya Pradesh|COLLEGE OF DENTAL SCIENCES AND HOSPITAL RAU INDORE|BDS": {
+  "id": 3025,
+  "how": "decision"
+ },
+ "Madhya Pradesh|MAHARANA PRATAP COLLEGE OF DENTISTRY AND RESEARCH CENTER GWALIOR|BDS": {
+  "id": 3155,
+  "how": "decision"
+ },
+ "Madhya Pradesh|RKDF DENTAL COLLEGE AND RESEARCH CENTRE BHOPAL|BDS": {
+  "id": 3226,
+  "how": "decision"
+ },
+ "Madhya Pradesh|HITKARINI DENTAL COLLEGE AND HOSPITAL JABALPUR|BDS": {
+  "id": 3103,
+  "how": "decision"
+ },
+ "Madhya Pradesh|RISHIRAJ COLLEGE OF DENTAL SCIENCES AND RESEARCH CENTRE BHOPAL|BDS": {
+  "id": 3225,
+  "how": "decision"
+ },
+ "Madhya Pradesh|MANSAROVAR DENTAL COLLEGE BHOPAL|BDS": {
+  "id": 3173,
+  "how": "decision"
+ },
+ "Maharashtra|GSMC MUMBAI|MBBS": {
+  "id": 3367,
+  "how": "decision"
+ },
+ "Maharashtra|BJMC PUNE|MBBS": {
+  "id": 4621,
+  "how": "decision"
+ },
+ "Maharashtra|Nair DC MUMBAI|BDS": {
+  "id": 3185,
+  "how": "decision"
+ },
+ "Maharashtra|GMC MUMBAI|MBBS": {
+  "id": 3363,
+  "how": "decision"
+ },
+ "Maharashtra|Tilak MC MUMBAI|MBBS": {
+  "id": 4531,
+  "how": "decision"
+ },
+ "Maharashtra|Nair MC MUMBAI|MBBS": {
+  "id": 3368,
+  "how": "decision"
+ },
+ "Maharashtra|GMC CH. SAMBHAJINAGAR|MBBS": {
+  "id": 4343,
+  "how": "decision"
+ },
+ "Maharashtra|B HIRE MC DHULE|MBBS": {
+  "id": 4524,
+  "how": "decision"
+ },
+ "Maharashtra|HBT & COOPER MC JUHU, MUMBAI|MBBS": {
+  "id": 3364,
+  "how": "decision"
+ },
+ "Maharashtra|GMC NAGPUR|MBBS": {
+  "id": 4555,
+  "how": "decision"
+ },
+ "Maharashtra|GMC KOLHAPUR|MBBS": {
+  "id": 4632,
+  "how": "decision"
+ },
+ "Maharashtra|ESIC MC ANDHERI MUMBAI|MBBS": {
+  "id": 4082,
+  "how": "decision"
+ },
+ "Maharashtra|GMC & GT HOSP MUMBAI|MBBS": {
+  "id": 3910,
+  "how": "decision"
+ },
+ "Maharashtra|RGMC KALVA THANE|MBBS": {
+  "id": 4618,
+  "how": "decision"
+ },
+ "Maharashtra|GDC MUMBAI|BDS": {
+  "id": 3071,
+  "how": "decision"
+ },
+ "Maharashtra|GMC MIRAJ|MBBS": {
+  "id": 4348,
+  "how": "decision"
+ },
+ "Maharashtra|GMC NASHIK|MBBS": {
+  "id": 4064,
+  "how": "decision"
+ },
+ "Maharashtra|GMC BARAMATI|MBBS": {
+  "id": 4344,
+  "how": "decision"
+ },
+ "Maharashtra|AB VAJPAYEE MC PUNE|MBBS": {
+  "id": 3719,
+  "how": "decision"
+ },
+ "Maharashtra|K J Somaiya MC MUMBAI|MBBS": {
+  "id": 3366,
+  "how": "decision"
+ },
+ "Maharashtra|IGMC NAGPUR|MBBS": {
+  "id": 4565,
+  "how": "decision"
+ },
+ "Maharashtra|GMC AMBERNATH|MBBS": {
+  "id": 4066,
+  "how": "decision"
+ },
+ "Maharashtra|V M MC SOLAPUR|MBBS": {
+  "id": 4631,
+  "how": "decision"
+ },
+ "Maharashtra|DR.S.C.GMC NANDED|MBBS": {
+  "id": 4597,
+  "how": "decision"
+ },
+ "Maharashtra|GMC SATARA|MBBS": {
+  "id": 3386,
+  "how": "decision"
+ },
+ "Maharashtra|V.D. GMC LATUR|MBBS": {
+  "id": 4629,
+  "how": "decision"
+ },
+ "Maharashtra|MIMER MC TALEGAON PUNE|MBBS": {
+  "id": 4624,
+  "how": "decision"
+ },
+ "Maharashtra|MGIMS MC SEVAGRAM,WARDHA|MBBS": {
+  "id": 4351,
+  "how": "decision"
+ },
+ "Maharashtra|VNMC YEOTMAL|MBBS": {
+  "id": 4604,
+  "how": "decision"
+ },
+ "Maharashtra|GMC AKOLA|MBBS": {
+  "id": 4340,
+  "how": "decision"
+ },
+ "Maharashtra|GMC JALGAON|MBBS": {
+  "id": 4545,
+  "how": "decision"
+ },
+ "Maharashtra|DR R GODE MC AMARAVATI|MBBS": {
+  "id": 3720,
+  "how": "decision"
+ },
+ "Maharashtra|GMC ALIBAUG|MBBS": {
+  "id": 3387,
+  "how": "decision"
+ },
+ "Maharashtra|MS KANNAMWAR GMC CHANDRAPUR|MBBS": {
+  "id": 4345,
+  "how": "decision"
+ },
+ "Maharashtra|V PAWAR MC NASIK|MBBS": {
+  "id": 4337,
+  "how": "decision"
+ },
+ "Maharashtra|GMC AMARAVATI|MBBS": {
+  "id": 4068,
+  "how": "decision"
+ },
+ "Maharashtra|SRTR MC AMBAJOGAI|MBBS": {
+  "id": 4341,
+  "how": "decision"
+ },
+ "Maharashtra|GMC RATNAGIRI|MBBS": {
+  "id": 3723,
+  "how": "decision"
+ },
+ "Maharashtra|GMC PARBHANI|MBBS": {
+  "id": 3722,
+  "how": "decision"
+ },
+ "Maharashtra|RAMCHANDRA INST MC|MBBS": {
+  "id": 3926,
+  "how": "decision"
+ },
+ "Maharashtra|PMC PARBHANI|MBBS": {
+  "id": 4036,
+  "how": "decision"
+ },
+ "Maharashtra|GMC BULDHANA|MBBS": {
+  "id": 4061,
+  "how": "decision"
+ },
+ "Maharashtra|GGMC GONDIA|MBBS": {
+  "id": 4576,
+  "how": "decision"
+ },
+ "Maharashtra|GMC NANDURBAR|MBBS": {
+  "id": 4530,
+  "how": "decision"
+ },
+ "Maharashtra|GMC SINDHUDURG|MBBS": {
+  "id": 3724,
+  "how": "decision"
+ },
+ "Maharashtra|GMC DHARASHIV|MBBS": {
+  "id": 3721,
+  "how": "decision"
+ },
+ "Maharashtra|GMC JALNA|MBBS": {
+  "id": 4063,
+  "how": "decision"
+ },
+ "Maharashtra|GMC BHANDARA|MBBS": {
+  "id": 4060,
+  "how": "decision"
+ },
+ "Maharashtra|Terna MC NERUL NAVI MUMBAI|MBBS": {
+  "id": 4349,
+  "how": "decision"
+ },
+ "Maharashtra|MIMSR MC LATUR|MBBS": {
+  "id": 4630,
+  "how": "decision"
+ },
+ "Maharashtra|GMC WASHIM|MBBS": {
+  "id": 4062,
+  "how": "decision"
+ },
+ "Maharashtra|DNY TASGAONKAR MC KARJAT|MBBS": {
+  "id": 3730,
+  "how": "decision"
+ },
+ "Maharashtra|IIMSR JALNA|MBBS": {
+  "id": 4605,
+  "how": "decision"
+ },
+ "Maharashtra|GMC GADCHIROLI|MBBS": {
+  "id": 4059,
+  "how": "decision"
+ },
+ "Maharashtra|GMC HINGOLI|MBBS": {
+  "id": 4065,
+  "how": "decision"
+ },
+ "Maharashtra|WALAWALKAR MC RATNAGIRI|MBBS": {
+  "id": 4634,
+  "how": "decision"
+ },
+ "Maharashtra|DR U. PATIL MC JALGAON|MBBS": {
+  "id": 4535,
+  "how": "decision"
+ },
+ "Maharashtra|GDC NAGPUR|BDS": {
+  "id": 3072,
+  "how": "decision"
+ },
+ "Maharashtra|PDMC AMRAVATI|MBBS": {
+  "id": 4342,
+  "how": "decision"
+ },
+ "Maharashtra|ASHWINI MED.COL SOLAPUR|MBBS": {
+  "id": 4346,
+  "how": "decision"
+ },
+ "Maharashtra|ACPM MC DHULE|MBBS": {
+  "id": 4512,
+  "how": "decision"
+ },
+ "Maharashtra|SSPM MC KUDAL SINDHUDURG|MBBS": {
+  "id": 2979,
+  "how": "decision"
+ },
+ "Maharashtra|SMT.S.N.KATKADE MC KOPERGAON|MBBS": {
+  "id": 4115,
+  "how": "decision"
+ },
+ "Maharashtra|VEDANTA MC PALGHAR|MBBS": {
+  "id": 4608,
+  "how": "decision"
+ },
+ "Maharashtra|GDC CH. SAMBHAJINAGAR|BDS": {
+  "id": 3070,
+  "how": "decision"
+ },
+ "Maharashtra|SMBT MC NASHIK NANDIHILLS|MBBS": {
+  "id": 4607,
+  "how": "decision"
+ },
+ "Maharashtra|BSP MC & HOSP CH.SAMBHAJINAGAR|MBBS": {
+  "id": 4266,
+  "how": "decision"
+ },
+ "Maharashtra|MALATI HOSP & MC MURTIZAPUR AKOLA|MBBS": {
+  "id": 4256,
+  "how": "decision"
+ },
+ "Maharashtra|GDC JALGAON|BDS": {
+  "id": 4058,
+  "how": "decision"
+ },
+ "Maharashtra|PIMS ISLAMPUR ISLAMPUR,SANGLI|MBBS": {
+  "id": 4635,
+  "how": "decision"
+ },
+ "Maharashtra|MGM DC NEW MUMBAI|BDS": {
+  "id": 3160,
+  "how": "decision"
+ },
+ "Maharashtra|KAMBE DC AKOLA|BDS": {
+  "id": 3049,
+  "how": "decision"
+ },
+ "Maharashtra|MGVM DC NASIK|BDS": {
+  "id": 3162,
+  "how": "decision"
+ },
+ "Maharashtra|MAR DC PUNE|BDS": {
+  "id": 3147,
+  "how": "decision"
+ },
+ "Maharashtra|ACPM DC DHULE|BDS": {
+  "id": 2994,
+  "how": "decision"
+ },
+ "Maharashtra|YMT DC NEW MUMBAI|BDS": {
+  "id": 3315,
+  "how": "decision"
+ },
+ "Maharashtra|TERNA DC NEW MUMBAI|BDS": {
+  "id": 3293,
+  "how": "decision"
+ },
+ "Maharashtra|CSMSS DC CH. SAMBHAJINAGAR|BDS": {
+  "id": 3021,
+  "how": "decision"
+ },
+ "Maharashtra|SDKS DC NAGPUR|BDS": {
+  "id": 3288,
+  "how": "decision"
+ },
+ "Maharashtra|V Patil DC SANGLI|BDS": {
+  "id": 3304,
+  "how": "decision"
+ },
+ "Maharashtra|D Y PATIL DC LOHGAON, PUNE|BDS": {
+  "id": null,
+  "how": "decision"
+ },
+ "Maharashtra|MIDSR DC LATUR|BDS": {
+  "id": 3157,
+  "how": "decision"
+ },
+ "Maharashtra|SD DC PARBHANI|BDS": {
+  "id": 3237,
+  "how": "decision"
+ },
+ "Maharashtra|YCM DC AHILYANAGAR(A'NAGAR)|BDS": {
+  "id": 3144,
+  "how": "decision"
+ },
+ "Maharashtra|PDU DC SOLAPUR|BDS": {
+  "id": 3200,
+  "how": "decision"
+ },
+ "Maharashtra|KORE DC KOLHAPUR|BDS": {
+  "id": 3291,
+  "how": "decision"
+ },
+ "Maharashtra|HEDGEWAR DC HINGOLI|BDS": {
+  "id": 3047,
+  "how": "decision"
+ },
+ "Maharashtra|ADITYA DC BEED|BDS": {
+  "id": 2984,
+  "how": "decision"
+ },
+ "Maharashtra|VYWS DC AMRAVATI|BDS": {
+  "id": 3305,
+  "how": "decision"
+ },
+ "Maharashtra|SMBT DC NASIK|BDS": {
+  "id": 3256,
+  "how": "decision"
+ },
+ "Maharashtra|SMBT DC SANGAMNER|BDS": {
+  "id": 4262,
+  "how": "decision"
+ },
+ "Maharashtra|NANDED RURAL DC|BDS": {
+  "id": 3186,
+  "how": "decision"
+ },
+ "Maharashtra|YOGITA DC KHED, RATNAGIRI|BDS": {
+  "id": 3316,
+  "how": "decision"
+ },
+ "Maharashtra|HBT & COOPER MC JUHU, MUMBAI(No|MBBS": {
+  "id": 3364,
+  "how": "decision"
+ },
+ "Maharashtra|MGIMS MC SEVAGRAM,WARDHA(No|MBBS": {
+  "id": 4351,
+  "how": "decision"
+ },
+ "Maharashtra|MS KANNAMWAR GMC CHANDRAPUR(No|MBBS": {
+  "id": 4345,
+  "how": "decision"
+ },
+ "Maharashtra|Terna MC NERUL NAVI MUMBAI(No|MBBS": {
+  "id": 4349,
+  "how": "decision"
+ },
+ "Maharashtra|NKP SALVE MC NAGPUR|MBBS": {
+  "id": 4586,
+  "how": "decision"
+ },
+ "Maharashtra|SMBT MC NASHIK NANDIHILLS(No|MBBS": {
+  "id": 4607,
+  "how": "decision"
+ },
+ "Maharashtra|BSP MC & HOSP CH.SAMBHAJINAGAR(No|MBBS": {
+  "id": 4266,
+  "how": "decision"
+ },
+ "Maharashtra|DNY TASGAONKAR MC KARJAT(No|MBBS": {
+  "id": 3730,
+  "how": "decision"
+ },
+ "Maharashtra|PIMS ISLAMPUR ISLAMPUR,SANGLI(No|MBBS": {
+  "id": 4635,
+  "how": "decision"
+ },
+ "Maharashtra|VVPF'S MED. COL|MBBS": {
+  "id": 4338,
+  "how": "decision"
+ },
+ "Maharashtra|SSPM MC KUDAL SINDHUDURG(No|MBBS": {
+  "id": 2979,
+  "how": "decision"
+ },
+ "Maharashtra|MALATI HOSP & MC MURTIZAPUR|MBBS": {
+  "id": 4256,
+  "how": "decision"
+ },
+ "Maharashtra|RANJEET DESHMUKH DC HINGANA NAGPUR|BDS": {
+  "id": 4255,
+  "how": "decision"
+ },
+ "Maharashtra|D Y PATIL DC LOHGAON, PUNE(No|BDS": {
+  "id": null,
+  "how": "decision"
+ },
+ "Maharashtra|BSP MC & HOSP|MBBS": {
+  "id": 4266,
+  "how": "decision"
+ },
+ "Maharashtra|CSMSS DC CH. SAMBHAJINAGAR(No|BDS": {
+  "id": 3021,
+  "how": "decision"
+ },
+ "Maharashtra|YOGITA DC KHED, RATNAGIRI(No|BDS": {
+  "id": 3316,
+  "how": "decision"
+ },
+ "Maharashtra|YCM DC AHILYANAGAR(A'NAGAR)(No|BDS": {
+  "id": 3144,
+  "how": "decision"
+ },
+ "Maharashtra|ASPL CSMSS MC & HOSP|MBBS": {
+  "id": null,
+  "how": "decision"
+ },
+ "Maharashtra|GMC AHILYANAGAR|MBBS": {
+  "id": null,
+  "how": "decision"
+ },
+ "Maharashtra|SKN MED.COL PUNE|MBBS": {
+  "id": 4628,
+  "how": "decision"
+ },
+ "Maharashtra|PIMS ISLAMPUR|MBBS": {
+  "id": 4635,
+  "how": "decision"
+ },
+ "Maharashtra|RANJEET DESHMUKH DC HINGANA|BDS": {
+  "id": 4255,
+  "how": "decision"
+ },
+ "Maharashtra|VVPF'S MED. COL AHILYANAGAR(A'NAGAR)|MBBS": {
+  "id": 4338,
+  "how": "decision"
+ },
+ "Maharashtra|ASPL CSMSS MC & HOSP CH.SAMBHAJINAGAR|MBBS": {
+  "id": null,
+  "how": "decision"
+ },
+ "Maharashtra|SMT.S.N.KATKADE MC KOPERGAON A'NAGAR|MBBS": {
+  "id": 4115,
+  "how": "decision"
+ },
+ "Manipur|RIMS|MBBS": {
+  "id": 3810,
+  "how": "decision"
+ },
+ "Manipur|JNIMS|MBBS": {
+  "id": 3801,
+  "how": "decision"
+ },
+ "Manipur|CMC|MBBS": {
+  "id": 3951,
+  "how": "decision"
+ },
+ "Manipur|SAHS|MBBS": {
+  "id": 2962,
+  "how": "decision"
+ },
+ "Manipur|JNIMS|BDS": {
+  "id": 3118,
+  "how": "decision"
+ },
+ "Manipur|RIMS|BDS": {
+  "id": 3042,
+  "how": "decision"
+ },
+ "Manipur|RDC|BDS": {
+  "id": 3224,
+  "how": "decision"
+ },
+ "Meghalaya|PA Sangma International Medical College|MBBS": {
+  "id": 4252,
+  "how": "decision"
+ },
+ "Meghalaya|VMMC & Safdarjung Hospital, New Delhi, Delhi|MBBS": {
+  "id": 3330,
+  "how": "decision"
+ },
+ "Meghalaya|Lady Hardinge Medical College, New Delhi, Delhi|MBBS": {
+  "id": 3323,
+  "how": "decision"
+ },
+ "Meghalaya|Patna Medical College, Patna, Bihar|MBBS": {
+  "id": 2971,
+  "how": "decision"
+ },
+ "Meghalaya|Guwahati Medical College, Guwahati, Assam|MBBS": {
+  "id": 3908,
+  "how": "decision"
+ },
+ "Meghalaya|K.G. Medical College, Lucknow, Uttar Pradesh|MBBS": {
+  "id": 3343,
+  "how": "decision"
+ },
+ "Meghalaya|Govt. Medical College Hospital, Chandigarh, Chandigarh|MBBS": {
+  "id": 3362,
+  "how": "decision"
+ },
+ "Meghalaya|NEIGRIHMS, Shillong, Meghalaya|MBBS": {
+  "id": 3854,
+  "how": "decision"
+ },
+ "Meghalaya|Assam Medical College, Dibrugarh, Assam|MBBS": {
+  "id": 3875,
+  "how": "decision"
+ },
+ "Meghalaya|F.A.A. Medical College, Barpeta, Assam|MBBS": {
+  "id": 3866,
+  "how": "decision"
+ },
+ "Meghalaya|Pt. JNM Medical College, Raipur, Chhattisgarh|MBBS": {
+  "id": 3541,
+  "how": "decision"
+ },
+ "Meghalaya|Regional Institute of Medical Sciences, Imphal, Manipur|MBBS": {
+  "id": 3810,
+  "how": "decision"
+ },
+ "Meghalaya|Shillong Medical College, Shillong, Meghalaya|MBBS": {
+  "id": 4302,
+  "how": "decision"
+ },
+ "Meghalaya|BRD Medical College, Gorakhpur, Uttar Pradesh|MBBS": {
+  "id": 3143,
+  "how": "decision"
+ },
+ "Meghalaya|Tezpur Medical College, Tezpur, Assam|MBBS": {
+  "id": 3929,
+  "how": "decision"
+ },
+ "Meghalaya|Maulana Azad Medical College, Delhi, Delhi|MBBS": {
+  "id": 3325,
+  "how": "decision"
+ },
+ "Meghalaya|MGM Medical College, Indore, Madhya Pradesh|MBBS": {
+  "id": 4350,
+  "how": "decision"
+ },
+ "Meghalaya|Gandhi Medical College, Bhopal, Madhya Pradesh|MBBS": {
+  "id": 4312,
+  "how": "decision"
+ },
+ "Meghalaya|Jorhat Medical College, Jorhat, Assam|MBBS": {
+  "id": 3038,
+  "how": "decision"
+ },
+ "Meghalaya|Nalanda Medical College, Patna, Bihar|MBBS": {
+  "id": 2955,
+  "how": "decision"
+ },
+ "Meghalaya|Silchar Medical College, Silchar, Assam|MBBS": {
+  "id": 3919,
+  "how": "decision"
+ },
+ "Meghalaya|NSCB Medical College, Jabalpur, Madhya Pradesh|MBBS": {
+  "id": 4383,
+  "how": "decision"
+ },
+ "Meghalaya|Agartala Govt. Medical College, Agartala, Tripura|MBBS": {
+  "id": 3832,
+  "how": "decision"
+ },
+ "Meghalaya|R.I.M.S., Ranchi, Jharkhand|MBBS": {
+  "id": 3347,
+  "how": "decision"
+ },
+ "Meghalaya|G.R. Medical College, Gwalior, Madhya Pradesh|MBBS": {
+  "id": 3756,
+  "how": "decision"
+ },
+ "Meghalaya|Lt. Shri. Baliram Kashyap Memorial Medical College, Jagdalpur, Chhattisgarh|MBBS": {
+  "id": 3414,
+  "how": "decision"
+ },
+ "Meghalaya|Government Medical College, Mahasamund, Chhattisgarh|MBBS": {
+  "id": 3448,
+  "how": "decision"
+ },
+ "Meghalaya|Dr. V.M. Medical College, Solapur, Maharashtra|MBBS": {
+  "id": 4631,
+  "how": "decision"
+ },
+ "Meghalaya|Government Medical College, Aurangabad, Maharashtra|MBBS": {
+  "id": 4343,
+  "how": "decision"
+ },
+ "Meghalaya|S.N. Medical College, Agra, Uttar Pradesh|MBBS": {
+  "id": 3444,
+  "how": "decision"
+ },
+ "Meghalaya|Chandulal Chandrakar Smiriti Medical College, Durg, Chhattisgarh|MBBS": {
+  "id": 4515,
+  "how": "decision"
+ },
+ "Meghalaya|J.L.N. Medical College, Bhagalpur, Bihar|MBBS": {
+  "id": 3745,
+  "how": "decision"
+ },
+ "Meghalaya|Dr.S.N. Medical College, Jodhpur, Rajasthan|MBBS": {
+  "id": 2996,
+  "how": "decision"
+ },
+ "Meghalaya|J.L.N. Medical College, Ajmer, Rajasthan|MBBS": {
+  "id": 4487,
+  "how": "decision"
+ },
+ "Meghalaya|B.S. Medical College, Bankura, West Bengal|MBBS": {
+  "id": 3940,
+  "how": "decision"
+ },
+ "Meghalaya|S.P. Medical College, Bikaner, Rajasthan|MBBS": {
+  "id": 4491,
+  "how": "decision"
+ },
+ "Meghalaya|GSVM Medical College, Kanpur, Uttar Pradesh|MBBS": {
+  "id": 3675,
+  "how": "decision"
+ },
+ "Meghalaya|Chhattisgarh Institute of Medical Sciences, Bilaspur, Chhattisgarh|MBBS": {
+  "id": 3378,
+  "how": "decision"
+ },
+ "Meghalaya|Palamu Medical College, Palamu, Jharkhand|MBBS": {
+  "id": 3391,
+  "how": "decision"
+ },
+ "Meghalaya|Darbhanga Medical College, Lehariasarai, Bihar|MBBS": {
+  "id": 3768,
+  "how": "decision"
+ },
+ "Meghalaya|P.M.C.H., Dhanbad, Jharkhand|MBBS": {
+  "id": 3392,
+  "how": "decision"
+ },
+ "Meghalaya|Lt. Bisahu Das Mahant Memorial Medical College, Korba, Chhattisgarh|MBBS": {
+  "id": 3449,
+  "how": "decision"
+ },
+ "Meghalaya|S.S. Medical College, Rewa, Madhya Pradesh|MBBS": {
+  "id": 4188,
+  "how": "decision"
+ },
+ "Meghalaya|Regional Dental College, Guwahati|BDS": {
+  "id": 3224,
+  "how": "decision"
+ },
+ "Meghalaya|Dental College, Regional Institute of Medical Sciences, Imphal|BDS": {
+  "id": 3042,
+  "how": "decision"
+ },
+ "Meghalaya|Dr. R. Ahmed Dental College, Kolkata, West Bengal|BDS": {
+  "id": 3048,
+  "how": "decision"
+ },
+ "Meghalaya|K.G. Dental College, Lucknow, Uttar Pradesh|BDS": {
+  "id": 3058,
+  "how": "decision"
+ },
+ "Odisha|SCB MCH, CUTTACK|MBBS": {
+  "id": 4304,
+  "how": "decision"
+ },
+ "Odisha|MKCG MCH, BERHAMPUR|MBBS": {
+  "id": 4280,
+  "how": "decision"
+ },
+ "Odisha|VIMSAR, BURLA|MBBS": {
+  "id": 4293,
+  "how": "decision"
+ },
+ "Odisha|SJMCH, PURI|MBBS": {
+  "id": 3423,
+  "how": "decision"
+ },
+ "Odisha|FM MCH, BALASORE|MBBS": {
+  "id": 4243,
+  "how": "decision"
+ },
+ "Odisha|BB MCH, BALANGIR|MBBS": {
+  "id": 4232,
+  "how": "decision"
+ },
+ "Odisha|JKMCH, Jajpur|MBBS": {
+  "id": 3877,
+  "how": "decision"
+ },
+ "Odisha|PRM MCH, BARIPADA|MBBS": {
+  "id": 4253,
+  "how": "decision"
+ },
+ "Odisha|SCB DENTAL COLLEGE, CUTTACK|BDS": {
+  "id": 3349,
+  "how": "decision"
+ },
+ "Odisha|SLN MCH, KORAPUT|MBBS": {
+  "id": 4600,
+  "how": "decision"
+ },
+ "Odisha|GMCH, KEONJHAR|MBBS": {
+  "id": 3450,
+  "how": "decision"
+ },
+ "Odisha|GMCH, SUNDERGARH|MBBS": {
+  "id": 3451,
+  "how": "decision"
+ },
+ "Odisha|PABITRA MOHAN PRADHAN MEDICAL COLLEGE, TALCHER|MBBS": {
+  "id": 3359,
+  "how": "decision"
+ },
+ "Odisha|Government Medical College, Bhawanipatna|MBBS": {
+  "id": 3965,
+  "how": "decision"
+ },
+ "Odisha|GOVERNMENT MEDICAL COLLEGE , PHULBANI, KANDHAMAL|MBBS": {
+  "id": 4106,
+  "how": "decision"
+ },
+ "Odisha|HITECH MCH, ROURKELA|MBBS": {
+  "id": 4543,
+  "how": "decision"
+ },
+ "Odisha|HITECH MCH, BHUBANESWAR|MBBS": {
+  "id": 4269,
+  "how": "decision"
+ },
+ "Odisha|DRIEMS Institute of Health Sciences & Hospital, Hairapari|MBBS": {
+  "id": 3727,
+  "how": "decision"
+ },
+ "Odisha|HITECH DENTAL COLLEGE, BHUBANESWAR|BDS": {
+  "id": 3102,
+  "how": "decision"
+ },
+ "Puducherry|Mahatma Gandhi Post Graduate Institute of Dental Sciences, Puducherry|BDS": {
+  "id": 3161,
+  "how": "decision"
+ },
+ "Puducherry|Mahe Institute of Dental Sciences, Mahe|BDS": {
+  "id": 3163,
+  "how": "decision"
+ },
+ "Puducherry|Indira Gandhi Medical College and Research Institute, Puducherry|MBBS": {
+  "id": 4486,
+  "how": "decision"
+ },
+ "Puducherry|Pondicherry Institute of Medical Sciences, Puducherry|MBBS": {
+  "id": 4484,
+  "how": "decision"
+ },
+ "Puducherry|Sri Manakula Vinayagar Medical College and Hospital, Puducherry|MBBS": {
+  "id": 4485,
+  "how": "decision"
+ },
+ "Puducherry|Sri Venkateswara Dental College, Puducherry|BDS": {
+  "id": 3275,
+  "how": "decision"
+ },
+ "Puducherry|Sri Venkateshwaraa Medical College and Research Institute, Puducherry|MBBS": {
+  "id": 4483,
+  "how": "decision"
+ },
+ "Punjab|Dayanand Medical College and Hospital Ludhiana|MBBS": {
+  "id": 2973,
+  "how": "decision"
+ },
+ "Punjab|Government Medical College, Patiala|MBBS": {
+  "id": 3187,
+  "how": "decision"
+ },
+ "Punjab|Government Medical College, Amritsar|MBBS": {
+  "id": 4494,
+  "how": "decision"
+ },
+ "Punjab|Guru Gobind Singh Medical College Faridkot|MBBS": {
+  "id": 3306,
+  "how": "decision"
+ },
+ "Punjab|Dr.B.R Ambedkar State Institute of Medical Sciences S.A.S Nagar,Mohali|MBBS": {
+  "id": 3665,
+  "how": "decision"
+ },
+ "Punjab|ESIC Medical College, Bharat Nagar, Ludhiana|MBBS": {
+  "id": 4083,
+  "how": "decision"
+ },
+ "Punjab|Christian Medical College, Ludhiana|MBBS": {
+  "id": 2969,
+  "how": "decision"
+ },
+ "Punjab|Punjab Institute of Medical Sciences, Jalandhar|MBBS": {
+  "id": 2974,
+  "how": "decision"
+ },
+ "Punjab|Government Dental College, Patiala|BDS": {
+  "id": 3073,
+  "how": "decision"
+ },
+ "Punjab|Gian Sagar Medical College & Hospital, Banur|MBBS": {
+  "id": 4533,
+  "how": "decision"
+ },
+ "Punjab|Government Dental College, Amritsar|BDS": {
+  "id": 3204,
+  "how": "decision"
+ },
+ "Punjab|Sri Guru Ram Das Institute of Medical Sciences and Research Amritsar|MBBS": {
+  "id": 4495,
+  "how": "decision"
+ },
+ "Punjab|RIMT Medical College and Hospital,Mandi Gobindgarh|MBBS": {
+  "id": 3936,
+  "how": "decision"
+ },
+ "Punjab|Christian Dental College, Ludhiana|BDS": {
+  "id": 3024,
+  "how": "decision"
+ },
+ "Punjab|Adesh Institute of Medical Sciences & Research, Bathinda|MBBS": {
+  "id": 4496,
+  "how": "decision"
+ },
+ "Punjab|Baba Jaswant Singh Dental College, Ludhiana|BDS": {
+  "id": 3002,
+  "how": "decision"
+ },
+ "Punjab|SGRD Inst. of Dental Sci. & Research, Amritsar|BDS": {
+  "id": 3265,
+  "how": "decision"
+ },
+ "Punjab|Dasmesh Institute of Research & Dental Sciences, Faridkot|BDS": {
+  "id": 3036,
+  "how": "decision"
+ },
+ "Punjab|Luxmi Bai Instt. of Dental Sciences & Hospital, Patiala|BDS": {
+  "id": 3146,
+  "how": "decision"
+ },
+ "Punjab|Genesis Institute of Dental Sciences & Research, Ferozepur|BDS": {
+  "id": 3064,
+  "how": "decision"
+ },
+ "Punjab|Gian Sagar Dental College & Hospital, Banur|BDS": {
+  "id": 3388,
+  "how": "decision"
+ },
+ "Punjab|Adesh Institute of Dental Sciences & Research, Bathinda|BDS": {
+  "id": 2982,
+  "how": "decision"
+ },
+ "Punjab|National Dental College, Dera Bassi|BDS": {
+  "id": 3190,
+  "how": "decision"
+ },
+ "Punjab|Shaheed Kartar Singh Sarabha Dental College, Sarabha(Ldh)|BDS": {
+  "id": 3248,
+  "how": "decision"
+ },
+ "Punjab|Guru Nanak Dev Dental College, Sunam|BDS": {
+  "id": 3092,
+  "how": "decision"
+ },
+ "Punjab|Rayat-Bahra Dental College & Hospital, Sahauran, Mohali|BDS": {
+  "id": 3223,
+  "how": "decision"
+ },
+ "Punjab|RIMT Dental College,Mandi Gobindgarh|BDS": {
+  "id": 3996,
+  "how": "decision"
+ },
+ "Punjab|Desh Bhagat Dental College & Hospital,Mandi Gobindgarh|BDS": {
+  "id": 3044,
+  "how": "decision"
+ },
+ "Punjab|Sri Sukhmani Dental College & Hospital, Dera Bassi|BDS": {
+  "id": 3285,
+  "how": "decision"
+ },
+ "Punjab|Desh Bhagat Dental College & Hospital, Mandi Gobindgarh|BDS": {
+  "id": 3044,
+  "how": "decision"
+ },
+ "Rajasthan|SMS Medical College, Jaipur|MBBS": {
+  "id": 4625,
+  "how": "decision"
+ },
+ "Rajasthan|Sardar Patel Medical College, Bikaner|MBBS": {
+  "id": 4491,
+  "how": "decision"
+ },
+ "Rajasthan|RUHS College of Medical Sciences, Jaipur|MBBS": {
+  "id": 3039,
+  "how": "decision"
+ },
+ "Rajasthan|Dr SN Medical College, Jodhpur|MBBS": {
+  "id": 2996,
+  "how": "decision"
+ },
+ "Rajasthan|Government Medical College, Kota|MBBS": {
+  "id": 3110,
+  "how": "decision"
+ },
+ "Rajasthan|R N T Medical College, Udaipur|MBBS": {
+  "id": 3088,
+  "how": "decision"
+ },
+ "Rajasthan|Jawaharlal Nehru Medical College, Ajmer|MBBS": {
+  "id": 4487,
+  "how": "decision"
+ },
+ "Rajasthan|ESIC Medical College and Hospital, Jaipur|MBBS": {
+  "id": 4102,
+  "how": "decision"
+ },
+ "Rajasthan|Shri jagannath Pahadiya Medical College, Bharatpur|MBBS": {
+  "id": 4490,
+  "how": "decision"
+ },
+ "Rajasthan|Jhalawar Medical College, Jhalawar|MBBS": {
+  "id": 3230,
+  "how": "decision"
+ },
+ "Rajasthan|Shri Kalyan Govt. Medical College, Sikar|MBBS": {
+  "id": 4537,
+  "how": "decision"
+ },
+ "Rajasthan|Employees State Insurance Corporation Medical College, Alwar|MBBS": {
+  "id": 3421,
+  "how": "decision"
+ },
+ "Rajasthan|Government Medical College, Bhilwara|MBBS": {
+  "id": 4534,
+  "how": "decision"
+ },
+ "Rajasthan|Government Medical College, Pali|MBBS": {
+  "id": 3176,
+  "how": "decision"
+ },
+ "Rajasthan|Government Medical College, Churu|MBBS": {
+  "id": 4536,
+  "how": "decision"
+ },
+ "Rajasthan|Government Medical College, Chittorgarh|MBBS": {
+  "id": 3440,
+  "how": "decision"
+ },
+ "Rajasthan|Government Medical College, Sri Ganganagar|MBBS": {
+  "id": 3438,
+  "how": "decision"
+ },
+ "Rajasthan|Government Medical College, Sirohi|MBBS": {
+  "id": 3439,
+  "how": "decision"
+ },
+ "Rajasthan|Government Medical College, Dausa|MBBS": {
+  "id": 3672,
+  "how": "decision"
+ },
+ "Rajasthan|Government Medical College, Alwar|MBBS": {
+  "id": 3670,
+  "how": "decision"
+ },
+ "Rajasthan|Government Medical College, Barmer|MBBS": {
+  "id": 4488,
+  "how": "decision"
+ },
+ "Rajasthan|Government Medical College, Bundi|MBBS": {
+  "id": 3671,
+  "how": "decision"
+ },
+ "Rajasthan|Government Medical College, Dungarpur|MBBS": {
+  "id": 4493,
+  "how": "decision"
+ },
+ "Rajasthan|Government Medical College, Jhunjhunu|MBBS": {
+  "id": 3901,
+  "how": "decision"
+ },
+ "Rajasthan|Government Medical College, Nagaur|MBBS": {
+  "id": 3943,
+  "how": "decision"
+ },
+ "Rajasthan|Government Medical College, Hanumangarh|MBBS": {
+  "id": 3673,
+  "how": "decision"
+ },
+ "Rajasthan|Government Medical College, Sawai Madhopur|MBBS": {
+  "id": 3944,
+  "how": "decision"
+ },
+ "Rajasthan|Government Medical College, Baran|MBBS": {
+  "id": 3942,
+  "how": "decision"
+ },
+ "Rajasthan|Government Medical College, Karauli|MBBS": {
+  "id": 3674,
+  "how": "decision"
+ },
+ "Rajasthan|Government Medical College, Dholpur|MBBS": {
+  "id": 3441,
+  "how": "decision"
+ },
+ "Rajasthan|Government Medical College, Banswara|MBBS": {
+  "id": 3941,
+  "how": "decision"
+ },
+ "Rajasthan|Government Medical College, Jaisalmer|MBBS": {
+  "id": 3370,
+  "how": "decision"
+ },
+ "Rajasthan|Government Medical College, Tonk|MBBS": {
+  "id": 3669,
+  "how": "decision"
+ },
+ "Rajasthan|RUHS College of Dental Sciences, Jaipur|BDS": {
+  "id": 3426,
+  "how": "decision"
+ },
+ "Rajasthan|Dr. S. S. Tantia Dental College, Hospital & Research Centre Sri Ganganagar|BDS": {
+  "id": 4071,
+  "how": "decision"
+ },
+ "Rajasthan|Government Dental College, Jodhpur|BDS": {
+  "id": 4258,
+  "how": "decision"
+ },
+ "Rajasthan|Rajasthan Dental College, Jaipur|BDS": {
+  "id": 3221,
+  "how": "decision"
+ },
+ "Rajasthan|Mahatma Gandhi Medical College and Hospital, Sitapura, Jaipur|MBBS": {
+  "id": 3018,
+  "how": "decision"
+ },
+ "Rajasthan|Darshan Dental College & Hospital, Udaipur|BDS": {
+  "id": 3035,
+  "how": "decision"
+ },
+ "Rajasthan|SURENDERA DENTAL COLLEGE & RESEARCH INSTITUTE, SRI GANGANAGAR|BDS": {
+  "id": 3286,
+  "how": "decision"
+ },
+ "Rajasthan|Mahatma Gandhi Dental College and Hospital, Jaipur|BDS": {
+  "id": 3159,
+  "how": "decision"
+ },
+ "Rajasthan|Vyas Dental College, Jodhpur|BDS": {
+  "id": 3311,
+  "how": "decision"
+ },
+ "Rajasthan|Prince Medical College & Hospital, Sikar|MBBS": {
+  "id": 4277,
+  "how": "decision"
+ },
+ "Rajasthan|Ananta Institute of Medical Sciences & Research Centre, Rajsamand|MBBS": {
+  "id": 2959,
+  "how": "decision"
+ },
+ "Rajasthan|American Int. Inst. of Med. Sc., Udaipur|MBBS": {
+  "id": 4489,
+  "how": "decision"
+ },
+ "Rajasthan|JIET Medical College and Hospital, Jodhpur|MBBS": {
+  "id": 3945,
+  "how": "decision"
+ },
+ "Rajasthan|Geetanjali Institute of Medical Sciences, Jaipur|MBBS": {
+  "id": 4091,
+  "how": "decision"
+ },
+ "Rajasthan|Eklavya Dental College, Kotputli|BDS": {
+  "id": 3054,
+  "how": "decision"
+ },
+ "Rajasthan|R.R. Dental College & Hospital, Udaipur|BDS": {
+  "id": 3215,
+  "how": "decision"
+ },
+ "Rajasthan|NIMS Dental College and Hospital, Jaipur|BDS": {
+  "id": 3193,
+  "how": "decision"
+ },
+ "Rajasthan|Geetanjali Medical College & Hospital, Udaipur|MBBS": {
+  "id": 3057,
+  "how": "decision"
+ },
+ "Rajasthan|Daswani Dental College and Research Centre, Kota|BDS": {
+  "id": 3037,
+  "how": "decision"
+ },
+ "Rajasthan|Dr B. S. Tomar Institute of Medical Sciences and Research, Jagatpura, Jaipur|MBBS": {
+  "id": 4271,
+  "how": "decision"
+ },
+ "Rajasthan|Geetanjali Dental And Research Institute, Udaipur|BDS": {
+  "id": 3063,
+  "how": "decision"
+ },
+ "Rajasthan|Maharaja Ganga Singh Dental College & Research Centre, Sri Ganganagar|BDS": {
+  "id": 3153,
+  "how": "decision"
+ },
+ "Rajasthan|Pacific Dental College and Research Centre, Udaipur|BDS": {
+  "id": 3196,
+  "how": "decision"
+ },
+ "Rajasthan|Pacific Medical College & Hospital, Bhilo Ka Bedla, Udaipur|MBBS": {
+  "id": 3077,
+  "how": "decision"
+ },
+ "Rajasthan|National Institute of Medical Sciences & Research (NIMS), Jaipur|MBBS": {
+  "id": 3028,
+  "how": "decision"
+ },
+ "Rajasthan|Pacific Dental College and Hospital, Udaipur|BDS": {
+  "id": 3198,
+  "how": "decision"
+ },
+ "Rajasthan|Sudha Medical College, Kota|MBBS": {
+  "id": 3902,
+  "how": "decision"
+ },
+ "Rajasthan|Dr S S Tantia Medical College Hospital & Research Centre, Sri Ganganagar|MBBS": {
+  "id": 3420,
+  "how": "decision"
+ },
+ "Rajasthan|JNU Institute for Medical Sciences & Research Centre , Jaipur|MBBS": {
+  "id": 3007,
+  "how": "decision"
+ },
+ "Rajasthan|Bharat Vikas Institute of Medical Sciences, Kota|MBBS": {
+  "id": 4267,
+  "how": "decision"
+ },
+ "Rajasthan|Arya Medical College and Hospital, Jaipur|MBBS": {
+  "id": 4103,
+  "how": "decision"
+ },
+ "Rajasthan|Balvir Singh Tomar Institute of Medical Sciences and Research, Science Tech City, Jaipur|MBBS": {
+  "id": 4087,
+  "how": "decision"
+ },
+ "Rajasthan|Vyas Medical College & Hospital, Jodhpur|MBBS": {
+  "id": 3903,
+  "how": "decision"
+ },
+ "Rajasthan|Pacific Institute of Medical Sciences, Umarda, Udaipur|MBBS": {
+  "id": 3068,
+  "how": "decision"
+ },
+ "Rajasthan|Jaipur Dental College, Jaipur|BDS": {
+  "id": 3116,
+  "how": "decision"
+ },
+ "Telangana|OSMANIA MEDICAL COLLEGE, HYDERABAD|MBBS": {
+  "id": 4364,
+  "how": "decision"
+ },
+ "Telangana|GANDHI MEDICAL COLLEGE, SECUNDERABAD|MBBS": {
+  "id": 4376,
+  "how": "decision"
+ },
+ "Telangana|KAKATIYA MEDICAL COLLEGE, WARANGAL|MBBS": {
+  "id": 4377,
+  "how": "decision"
+ },
+ "Telangana|RAJIV INSTITUTE OF MEDICAL SCIENCE, ADILABAD|MBBS": {
+  "id": 4352,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, NIZAMABAD|MBBS": {
+  "id": 4638,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, MAHABUBNAGAR|MBBS": {
+  "id": 4374,
+  "how": "decision"
+ },
+ "Telangana|ESI  MEDICAL COLLEGE, SANATHNAGAR, HYD|MBBS": {
+  "id": 4359,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, SIDDIPET|MBBS": {
+  "id": 4639,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, SURYAPET|MBBS": {
+  "id": 4648,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, NALGONDA|MBBS": {
+  "id": 4646,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, BHADRADRI KOTHAGUDEM|MBBS": {
+  "id": 3701,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, MAHABUBABAD|MBBS": {
+  "id": 3709,
+  "how": "decision"
+ },
+ "Telangana|SINGARENI INSTITUTE OF MEDICAL SCEINCES, RAMAGUNDAM|MBBS": {
+  "id": 3718,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, WANAPARTHY|MBBS": {
+  "id": 3717,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, NAGARKURNOOL|MBBS": {
+  "id": 3711,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, SANGAREDDY|MBBS": {
+  "id": 3714,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, JAGITYAL|MBBS": {
+  "id": 3954,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, MANCHERIAL|MBBS": {
+  "id": 3710,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, JANGAON|MBBS": {
+  "id": 3702,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, JAYASHANKAR BHUPALPALLY|MBBS": {
+  "id": 3703,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, KAMAREDDY|MBBS": {
+  "id": 3704,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, KARIMNAGAR|MBBS": {
+  "id": 3706,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, KHAMMAM|MBBS": {
+  "id": 3707,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, KUMURAM BHEEM ASIFABAD|MBBS": {
+  "id": 3708,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, NIRMAL|MBBS": {
+  "id": 3712,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, RAJANNA SIRCILLA|MBBS": {
+  "id": 3713,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, VIKARABAD|MBBS": {
+  "id": 3715,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, NARSAMPET|MBBS": {
+  "id": 3927,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, MULUGU|MBBS": {
+  "id": 3932,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, NARAYANPET|MBBS": {
+  "id": 3933,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, GADWAL|MBBS": {
+  "id": 3928,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, MAHESHWARAM|MBBS": {
+  "id": 3930,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, MEDAK|MBBS": {
+  "id": 3931,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, QUTHBULLAPUR|MBBS": {
+  "id": 3934,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, YADADRI BHUVANAGIRI|MBBS": {
+  "id": 3935,
+  "how": "decision"
+ },
+ "Telangana|GOVT MEDICAL COLLEGE, KODANGAL|MBBS": {
+  "id": 3398,
+  "how": "decision"
+ },
+ "Telangana|APOLLO INSTITUTE OF MEDICAL SCIENCES AND RESEARCH, HYD|MBBS": {
+  "id": 4356,
+  "how": "decision"
+ },
+ "Telangana|KAMINENI ACADEMY OF MEDICAL SCI AND RESEARCH, HYD|MBBS": {
+  "id": 4360,
+  "how": "decision"
+ },
+ "Telangana|MAMATA ACADEMY OF MED SCI, BACHUPALLY|MBBS": {
+  "id": 4353,
+  "how": "decision"
+ },
+ "Telangana|MAMATA MEDICAL COLLEGE, KHAMMAM|MBBS": {
+  "id": 4367,
+  "how": "decision"
+ },
+ "Telangana|C ANANDA RAO IINSTITUTE OF MEDICAL SCIENCES, KARIMNAGAR|MBBS": {
+  "id": 4365,
+  "how": "decision"
+ },
+ "Telangana|PRATHIMA INSTITUTE OF MEDICAL SCIENCES, KARIMNAGAR|MBBS": {
+  "id": 4366,
+  "how": "decision"
+ },
+ "Telangana|PRATIMA RELIEF INSTITUTE OF MEDICAL SCIENCES, WARANGAL|MBBS": {
+  "id": 3660,
+  "how": "decision"
+ },
+ "Telangana|S.V.S. MEDICAL COLLEGE, MAHABUBNAGAR|MBBS": {
+  "id": 4368,
+  "how": "decision"
+ },
+ "Telangana|MAHESHWARA MEDICAL COLLEGE,  PATANCHERU, MEDAK|MBBS": {
+  "id": 4369,
+  "how": "decision"
+ },
+ "Telangana|MNR MEDICAL COLLEGE, SANGAREDDY|MBBS": {
+  "id": 4643,
+  "how": "decision"
+ },
+ "Telangana|RVM MEDICAL COLLEGE, MULUGU|MBBS": {
+  "id": 4640,
+  "how": "decision"
+ },
+ "Telangana|SURABHI INSTITUTE OF MEDICAL SCIENCES, SIDDIPET|MBBS": {
+  "id": 4641,
+  "how": "decision"
+ },
+ "Telangana|TRR INSTITUTE OF MEDICAL SCIENCES, INOLE, PATANCHERU|MBBS": {
+  "id": 4550,
+  "how": "decision"
+ },
+ "Telangana|RAJA RAJESHWARI INSTITUTE OF MEDICAL SCIENCES, PATANCHERU, SANGAREDDY|MBBS": {
+  "id": 4279,
+  "how": "decision"
+ },
+ "Telangana|KAMINENI INSTITUTE OF MEDICAL SCIENCES., NARKETPALLY|MBBS": {
+  "id": 4375,
+  "how": "decision"
+ },
+ "Telangana|BHASKAR MEDICAL COLLEGE, MOINABAD, RR|MBBS": {
+  "id": 4373,
+  "how": "decision"
+ },
+ "Telangana|DR PATNAM MAHENDER REDDY INST OF MED SCI, CHEVELLA|MBBS": {
+  "id": 4355,
+  "how": "decision"
+ },
+ "Telangana|MAHAVIR INSTITUTE OF MEDICAL SCIENCES, VIKARABAD|MBBS": {
+  "id": 4642,
+  "how": "decision"
+ },
+ "Telangana|MEDICITY INSTITUTE OF MEDICAL SCIENCES|MBBS": {
+  "id": 4370,
+  "how": "decision"
+ },
+ "Telangana|CMR INSTITUTE OF MEDICAL SCIENCES, KANDALKOYA, MEDCHAL|MBBS": {
+  "id": 3698,
+  "how": "decision"
+ },
+ "Telangana|NOVA INSTITUTE OF MEDICAL SCIECNES, HAYATHNAGAR, RR|MBBS": {
+  "id": 4097,
+  "how": "decision"
+ },
+ "Telangana|FATHER COLOMBO INSTITUTE OF MEDICAL SCIENCES, WARANGAL|MBBS": {
+  "id": 3699,
+  "how": "decision"
+ },
+ "Telangana|ARUNDATHI INSTITUTE OF MEDICAL SCIENCES, DUNDIGAL|MBBS": {
+  "id": 3697,
+  "how": "decision"
+ },
+ "Telangana|DECCAN COLLEGE OF MEDICAL SCIENCES|MBBS": {
+  "id": 4357,
+  "how": "decision"
+ },
+ "Telangana|SHADAN INSTITUTE OF MEDICAL SCIENCES|MBBS": {
+  "id": 4644,
+  "how": "decision"
+ },
+ "Telangana|AYAAN INSTITUTE OF MEDICAL SCIENCES|MBBS": {
+  "id": 4371,
+  "how": "decision"
+ },
+ "Telangana|DR V R K WOMENS MEDICAL COLLEGE|MBBS": {
+  "id": 4358,
+  "how": "decision"
+ },
+ "Telangana|GOVT DENTAL COLLEGE AND HOSPITAL, HYDERABAD|BDS": {
+  "id": 3743,
+  "how": "decision"
+ },
+ "Telangana|ARMY COLLEGE OF DENTAL SCIENCES, SECUNDERABAD|BDS": {
+  "id": 2997,
+  "how": "decision"
+ },
+ "Telangana|PANINEEYA MAHA VIDYALAYA INSTITUTE OF DENTAL SCIENCES|BDS": {
+  "id": 3201,
+  "how": "decision"
+ },
+ "Telangana|MAMATA INSTITUTE OF  DENTAL SCIENCES, BACHUPALLY, HYDERABAD.|BDS": {
+  "id": 3696,
+  "how": "decision"
+ },
+ "Telangana|MAMATA DENTAL COLLEGE, KHAMMAM|BDS": {
+  "id": 3169,
+  "how": "decision"
+ },
+ "Telangana|SVS DENTAL COLLEGE, MAHABUBNAGAR|BDS": {
+  "id": 3742,
+  "how": "decision"
+ },
+ "Telangana|M.N.R. DENTAL COLLEGE, FASALWADI|BDS": {
+  "id": 3183,
+  "how": "decision"
+ },
+ "Telangana|KAMINENI INSTITUTE OF DENTAL SCIENCES, NARKETPALLY|BDS": {
+  "id": 3130,
+  "how": "decision"
+ },
+ "Telangana|MEGHANA INSTITUTE OF DENTAL SCIENCES, NIZAMABAD|BDS": {
+  "id": 3180,
+  "how": "decision"
+ },
+ "Telangana|THIRUMALA ACADEMY OF DENTAL SCIENCES, NIZAMABAD|BDS": {
+  "id": 3298,
+  "how": "decision"
+ },
+ "Telangana|BALAJI DENTAL COLLEGE, MOINABAD|BDS": {
+  "id": 3262,
+  "how": "decision"
+ },
+ "Telangana|SRI SAI COLLEGE OF DENTAL SURGERY, VIKARABAD|BDS": {
+  "id": 3270,
+  "how": "decision"
+ },
+ "Telangana|NEELIMA INSTITUTE OF MEDICAL SCIENCES, GHATKESAR|MBBS": {
+  "id": 3700,
+  "how": "decision"
+ },
+ "Tripura|AGARTALA GOVERNMENT MEDICAL COLLEGE, AGARTALA, TRIPURA|MBBS": {
+  "id": 3832,
+  "how": "decision"
+ },
+ "Tripura|REGIONAL INSTITUTE OF MEDICAL SCIENCES, IMPHAL, MANIPUR|MBBS": {
+  "id": 3810,
+  "how": "decision"
+ },
+ "Tripura|TRIPURA MEDICAL COLLEGE & DR. BRAM TEACHING HOSPITAL, HAPANIA AGARTALA|MBBS": {
+  "id": 3843,
+  "how": "decision"
+ },
+ "Tripura|AGARTALA GOVERNMENT DENTAL COLLEGE, AGARTALA|BDS": {
+  "id": 3667,
+  "how": "decision"
+ },
+ "Tripura|TRIPURA SANTINIKETAN MEDICAL COLLEGE|MBBS": {
+  "id": 3916,
+  "how": "decision"
+ },
+ "Tripura|TRIPURA MEDICAL COLLEGE & DR. BRAM TEACHING HOSPITAL, HAPANIA, AGARTALA|MBBS": {
+  "id": 3843,
+  "how": "decision"
+ },
+ "Tripura|REGIONAL DENTAL COLLEGE, GUWAHATI|BDS": {
+  "id": 3224,
+  "how": "decision"
+ },
+ "Tripura|K.G. DENTAL COLLEGE, LUCKNOW, UTTAR PRADESH|BDS": {
+  "id": 3058,
+  "how": "decision"
+ },
+ "Tripura|REGIONAL INSTITUTE OF MEDICAL SCIENCES, IMPHAL, MANIPUR|BDS": {
+  "id": 3042,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, BAHRAICH ( 001 )|MBBS": {
+  "id": 3508,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, BASTI ( 002 )|MBBS": {
+  "id": 3564,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, DEORIA ( 003 )|MBBS": {
+  "id": 3725,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, ETAH ( 004 )|MBBS": {
+  "id": 3880,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, FATEHPUR ( 005 )|MBBS": {
+  "id": 3881,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, FIROZABAD ( 006 )|MBBS": {
+  "id": 3597,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, GHAZIPUR ( 007 )|MBBS": {
+  "id": 3882,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, HARDOI ( 008 )|MBBS": {
+  "id": 3883,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, JAUNPUR ( 009 )|MBBS": {
+  "id": 3884,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, MIRZAPUR ( 010 )|MBBS": {
+  "id": 3889,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, PRATAPGARH ( 011 )|MBBS": {
+  "id": 3891,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, SHAHJAHANPUR ( 012 )|MBBS": {
+  "id": 3099,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, SIDDHARTH NAGAR ( 013 )|MBBS": {
+  "id": 3892,
+  "how": "decision"
+ },
+ "Uttar Pradesh|BABA RAGHAVDAS MEDICAL COLLEGE, GORAKHPUR ( 014 )|MBBS": {
+  "id": 3143,
+  "how": "decision"
+ },
+ "Uttar Pradesh|DR.RAM MANOHAR LOHIA INSTITUTE OF MEDICAL SCIENCES, GOMTI NAGAR, LUCKNOW. ( 015 )|MBBS": {
+  "id": 3339,
+  "how": "decision"
+ },
+ "Uttar Pradesh|GANESH SHANKER VIDHARTHI MEMORIAL MEDICAL COLLEGE, KANPUR ( 016 )|MBBS": {
+  "id": 3675,
+  "how": "decision"
+ },
+ "Uttar Pradesh|GOVERNMENT MEDICAL COLLEGE, AZAMGARH ( 017 )|MBBS": {
+  "id": 3486,
+  "how": "decision"
+ },
+ "Uttar Pradesh|GOVERNMENT MEDICAL COLLEGE, BADAUN ( 018 )|MBBS": {
+  "id": 3497,
+  "how": "decision"
+ },
+ "Uttar Pradesh|GOVERNMENT MEDICAL COLLEGE, BANDA ( 019 )|MBBS": {
+  "id": 3406,
+  "how": "decision"
+ },
+ "Uttar Pradesh|GOVERNMENT INSTITUTE OF MEDICAL SCIENCES, GREATER NOIDA ( 020 )|MBBS": {
+  "id": 3619,
+  "how": "decision"
+ },
+ "Uttar Pradesh|KING GEORGE MEDICAL UNIVERSITY, LUCKNOW ( 021 )|MBBS": {
+  "id": 3343,
+  "how": "decision"
+ },
+ "Uttar Pradesh|LALA LAJPAT RAI MEMORIAL MEDICAL COLLEGE, MEERUT ( 022 )|MBBS": {
+  "id": 3332,
+  "how": "decision"
+ },
+ "Uttar Pradesh|MAHARANI LAXMIBAI MEDICAL COLLEGE, JHANSI ( 023 )|MBBS": {
+  "id": 3358,
+  "how": "decision"
+ },
+ "Uttar Pradesh|MOTI LAL NEHRU MEDICAL COLLEGE, PRAGYRAJ ( 024 )|MBBS": {
+  "id": 3464,
+  "how": "decision"
+ },
+ "Uttar Pradesh|SAROJINI NAIDU MEDICAL COLLEGE, AGRA ( 025 )|MBBS": {
+  "id": 3444,
+  "how": "decision"
+ },
+ "Uttar Pradesh|UTTAR PRADESH UNIVERSITY OF MEDICAL SCIENCES, SAIFAI, ETAWAH. ( 026 )|MBBS": {
+  "id": 3716,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, BIJNOR ( 027 )|MBBS": {
+  "id": 3879,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, BULANDSHAHR ( 028 )|MBBS": {
+  "id": 3871,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, KANPUR DEHAT ( 029 )|MBBS": {
+  "id": 3885,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, KUSHINAGAR ( 030 )|MBBS": {
+  "id": 3887,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, LALITPUR ( 031 )|MBBS": {
+  "id": 3888,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, PILIBHIT ( 032 )|MBBS": {
+  "id": 3890,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, SULTANPUR ( 033 )|MBBS": {
+  "id": 3893,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, AYODHYA ( 034 )|MBBS": {
+  "id": 3575,
+  "how": "decision"
+ },
+ "Uttar Pradesh|GOVERNMENT MEDICAL COLLEGE, AMBEDKAR NAGAR ( 035 )|MBBS": {
+  "id": 3475,
+  "how": "decision"
+ },
+ "Uttar Pradesh|GOVERNMENT MEDICAL COLLEGE, JALAUN ( 036 )|MBBS": {
+  "id": 3352,
+  "how": "decision"
+ },
+ "Uttar Pradesh|GOVERNMENT MEDICAL COLLEGE, KANNAUJ ( 037 )|MBBS": {
+  "id": 3351,
+  "how": "decision"
+ },
+ "Uttar Pradesh|GOVERNMENT MEDICAL COLLEGE, SAHARANPUR ( 038 )|MBBS": {
+  "id": 3328,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AJAY SANGAAL INSTITUTE OF MEDICAL SCIENCE & RESEARCH & AYUSHMAAN HOSPITAL, SHAMLI [ PPP] ( 039 )|MBBS": {
+  "id": 3894,
+  "how": "decision"
+ },
+ "Uttar Pradesh|KMC MEDICAL COLLEGE & HOSPITAL, MAHARAJGANJ [ PPP] ( 040 )|MBBS": {
+  "id": 3895,
+  "how": "decision"
+ },
+ "Uttar Pradesh|SHRI SIDDHI VINAYAK MEDICAL COLLEGE & HOSPITAL, SAMBHAL [ PPP] ( 041 )|MBBS": {
+  "id": 3898,
+  "how": "decision"
+ },
+ "Uttar Pradesh|CAREER INSTITUTE OF MEDICAL SCIENCES, LUCKNOW (MUSLIM MINORITY) ( 042 )|MBBS": {
+  "id": 3338,
+  "how": "decision"
+ },
+ "Uttar Pradesh|ERA'S LUCKNOW MEDICAL COLLEGE, LUCKNOW (MUSLIM MINORITY) ( 043 )|MBBS": {
+  "id": 3340,
+  "how": "decision"
+ },
+ "Uttar Pradesh|F.H. MEDICAL COLLEGE, AGRA (MUSLIM MINORITY) ( 044 )|MBBS": {
+  "id": 3433,
+  "how": "decision"
+ },
+ "Uttar Pradesh|INTEGRAL INSTITUTE OF MEDICAL SCIENCES & & RESEARCH, LUCKNOW (MUSLIM MINORITY) ( 045 )|MBBS": {
+  "id": 3342,
+  "how": "decision"
+ },
+ "Uttar Pradesh|TEERTHANKAR MAHAVEER MEDICAL COLLEGE & RESEARCH CENTRE, MORADABAD (JAIN MINORITY) ( 047 )|MBBS": {
+  "id": 3695,
+  "how": "decision"
+ },
+ "Uttar Pradesh|CAREER INSTITUTE OF MEDICAL SCIENCES & HOSPITAL, LUCKNOW ( 048 )|MBBS": {
+  "id": 3338,
+  "how": "decision"
+ },
+ "Uttar Pradesh|ERA'S LUCKNOW MEDICAL COLLEGE & HOSPITAL, LUCKNOW ( 049 )|MBBS": {
+  "id": 3340,
+  "how": "decision"
+ },
+ "Uttar Pradesh|F.H. MEDICAL COLLEGE, AGRA ( 050 )|MBBS": {
+  "id": 3433,
+  "how": "decision"
+ },
+ "Uttar Pradesh|G S MEDICAL COLLEGE & HOSPITAL, HAPUR ( 051 )|MBBS": {
+  "id": 4538,
+  "how": "decision"
+ },
+ "Uttar Pradesh|HERITAGE INSTITUTE OF MEDICAL SCIENCES, VARANASI ( 052 )|MBBS": {
+  "id": 2943,
+  "how": "decision"
+ },
+ "Uttar Pradesh|HIND INSTITUTE OF MEDICAL SCIENCES, BARABANKI ( 053 )|MBBS": {
+  "id": 3519,
+  "how": "decision"
+ },
+ "Uttar Pradesh|HIND INSTITUTE OF MEDICAL SCIENCES, SITAPUR ( 054 )|MBBS": {
+  "id": 3350,
+  "how": "decision"
+ },
+ "Uttar Pradesh|INTEGRAL INSTITUTE OF MEDICAL SCIENCES & RESEARCH, LUCKNOW ( 055 )|MBBS": {
+  "id": 3342,
+  "how": "decision"
+ },
+ "Uttar Pradesh|KANTI DEVI MEDICAL COLLEGE, HOSPITAL & RESEARCH CENTRE, MATHURA ( 056 )|MBBS": {
+  "id": 3336,
+  "how": "decision"
+ },
+ "Uttar Pradesh|KRISHNA MOHAN MEDICAL COLLEGE & HOSPITAL, MATHURA ( 057 )|MBBS": {
+  "id": 3337,
+  "how": "decision"
+ },
+ "Uttar Pradesh|MAYO INSTITUTE OF MEDICAL SCIENCES, BARABANKI ( 058 )|MBBS": {
+  "id": 3344,
+  "how": "decision"
+ },
+ "Uttar Pradesh|MUZAFFARNAGAR MEDICAL COLLEGE, MUZAFFARNAGAR ( 059 )|MBBS": {
+  "id": 3331,
+  "how": "decision"
+ },
+ "Uttar Pradesh|NARAINA MEDICAL COLLEGE & RESEARCH CENTER, KANPUR ( 060 )|MBBS": {
+  "id": 3394,
+  "how": "decision"
+ },
+ "Uttar Pradesh|NATIONAL CAPITAL REGION INSTITUTE OF MEDICAL SCIENCES, MEERUT ( 061 )|MBBS": {
+  "id": 3333,
+  "how": "decision"
+ },
+ "Uttar Pradesh|NOIDA INTERNATIONAL INSTITUTE OF MEDICAL SCIENCES, GREATER NOIDA ( 062 )|MBBS": {
+  "id": 3630,
+  "how": "decision"
+ },
+ "Uttar Pradesh|PRASAD INSTITUTE OF MEDICAL SCIENCES, LUCKNOW ( 063 )|MBBS": {
+  "id": 3345,
+  "how": "decision"
+ },
+ "Uttar Pradesh|RAJSHREE MEDICAL RESEARCH INSTITUTE, BAREILLY ( 064 )|MBBS": {
+  "id": 3530,
+  "how": "decision"
+ },
+ "Uttar Pradesh|RAMA MEDICAL COLLEGE HOSPITAL, & RESEARCH CENTRE, HAPUR ( 065 )|MBBS": {
+  "id": 3653,
+  "how": "decision"
+ },
+ "Uttar Pradesh|RAMA MEDICAL COLLEGE HOSPITAL, & RESEARCH CENTRE, KANPUR ( 066 )|MBBS": {
+  "id": 3684,
+  "how": "decision"
+ },
+ "Uttar Pradesh|ROHILKHAND MEDICAL COLLEGE & HOSPITAL, BAREILLY ( 067 )|MBBS": {
+  "id": 3542,
+  "how": "decision"
+ },
+ "Uttar Pradesh|SARASWATI INSTITUTE OF MEDICAL SCIENCES, HAPUR ( 068 )|MBBS": {
+  "id": 3664,
+  "how": "decision"
+ },
+ "Uttar Pradesh|SARASWATI MEDICAL COLLEGE, UNNAO ( 069 )|MBBS": {
+  "id": 3726,
+  "how": "decision"
+ },
+ "Uttar Pradesh|SCHOOL OF MEDICAL SCIENCES & RESEARCH AND SHARDA HOSPITAL, GREATER NOIDA ( 070 )|MBBS": {
+  "id": 3641,
+  "how": "decision"
+ },
+ "Uttar Pradesh|SHRI GORAKSHNATH MEDICAL COLLEGE HOSPITAL & RESEARCH CENTER, SONBARSA, GORAKHPUR ( 071 )|MBBS": {
+  "id": 3896,
+  "how": "decision"
+ },
+ "Uttar Pradesh|SKS HOSPITAL MEDICAL COLLEGE & RESEARCH CENTER, MATHURA ( 072 )|MBBS": {
+  "id": 3694,
+  "how": "decision"
+ },
+ "Uttar Pradesh|SRI RAMMURTI SMARAK INSTITUTE OF MEDICAL SCIENCES, BAREILLY ( 073 )|MBBS": {
+  "id": 3553,
+  "how": "decision"
+ },
+ "Uttar Pradesh|SUBHARTI MEDICAL COLLEGE, MEERUT ( 074 )|MBBS": {
+  "id": 3334,
+  "how": "decision"
+ },
+ "Uttar Pradesh|T.S.MISRA MEDICAL COLLEGE & HOSPITAL, LUCKNOW ( 075 )|MBBS": {
+  "id": 3348,
+  "how": "decision"
+ },
+ "Uttar Pradesh|TEERTHANKAR MAHAVEER MEDICAL COLLEGE & RESEARCH CENTRE, MORADABAD ( 076 )|MBBS": {
+  "id": 3695,
+  "how": "decision"
+ },
+ "Uttar Pradesh|UNITED INSTITUTE OF MEDICAL SCIENCES, PRAYAGRAJ ( 077 )|MBBS": {
+  "id": 3361,
+  "how": "decision"
+ },
+ "Uttar Pradesh|VARUNARJUN MEDICAL COLLEGE & ROHILKHAND HOSPITAL , SHAHJAHANPUR ( 078 )|MBBS": {
+  "id": 3120,
+  "how": "decision"
+ },
+ "Uttar Pradesh|VENKATESWARA INSTITUTE OF MEDICAL SCIENCES, GAJRAULA, AMROAHA ( 079 )|MBBS": {
+  "id": 3608,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, AURAIYA ( 080 )|MBBS": {
+  "id": 3921,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, CHANDAULI ( 081 )|MBBS": {
+  "id": 3925,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, GONDA ( 082 )|MBBS": {
+  "id": 3923,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, KAUSHAMBI ( 083 )|MBBS": {
+  "id": 3924,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, LAKHIMPUR KHIRI ( 084 )|MBBS": {
+  "id": 3922,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, SONBHADRA ( 085 )|MBBS": {
+  "id": 3937,
+  "how": "decision"
+ },
+ "Uttar Pradesh|DR. B.S. KUSHWAH INSTITUTE OF MDICAL COLLEGE, KANPUR ( 086 )|MBBS": {
+  "id": 4037,
+  "how": "decision"
+ },
+ "Uttar Pradesh|ESIC MEDICAL COLLEGE AND HOSPITAL, NOIDA ( 087 )|MBBS": {
+  "id": 4081,
+  "how": "decision"
+ },
+ "Uttar Pradesh|AUTONOMOUS STATE MEDICAL COLLEGE, AMETHI ( 088 )|MBBS": {
+  "id": 4093,
+  "how": "decision"
+ },
+ "Uttar Pradesh|ESIC MEDICAL COLLEGE AND HOSPITAL, VARANASI ( 089 )|MBBS": {
+  "id": 4107,
+  "how": "decision"
+ },
+ "Uttar Pradesh|FACULTY OF DENTAL SCIENCES, KGMU, LUCKNOW ( 100 )|BDS": {
+  "id": 3058,
+  "how": "decision"
+ },
+ "Uttar Pradesh|BBD COLLEGE OF DENTAL SCIENCES, LUCKNOW ( 101 )|BDS": {
+  "id": 3003,
+  "how": "decision"
+ },
+ "Uttar Pradesh|CAREER POST GRADUATE INSTITUTE OF DENTAL SCIENCES & HOSPITAL, LUCKNOW ( 102 )|BDS": {
+  "id": 3017,
+  "how": "decision"
+ },
+ "Uttar Pradesh|CAREER POST GRADUATE INSTIUTE OF DENTAL SCIENCES & HOSPITAL, LUCKNOW (MUSLIM MINORITY) ( 103 )|BDS": {
+  "id": 3017,
+  "how": "decision"
+ },
+ "Uttar Pradesh|CHANDRA DENTAL COLLEGE & HOSPITAL, BARABANKI ( 104 )|BDS": {
+  "id": 3020,
+  "how": "decision"
+ },
+ "Uttar Pradesh|D.J.COLLEGE OF DENTAL SCIENCES & RESEARCH, MODINAGAR, GHAZIABAD ( 105 )|BDS": {
+  "id": 3034,
+  "how": "decision"
+ },
+ "Uttar Pradesh|D.J. COLLEGE OF DENTAL SCIENCES & RESEARCH,MODINAGAR, GHAZIABAD (SIKHS MINORITY) ( 106 )|BDS": {
+  "id": 3034,
+  "how": "decision"
+ },
+ "Uttar Pradesh|DENTAL COLLEGE, AZAMGARH ( 107 )|BDS": {
+  "id": 3041,
+  "how": "decision"
+ },
+ "Uttar Pradesh|INDERPRASTHA DENTAL COLLEGE & HOSPITAL, GHAZIABAD ( 108 )|BDS": {
+  "id": 3106,
+  "how": "decision"
+ },
+ "Uttar Pradesh|INSTITUTE OF DENTAL SCIENCES, BAREILLY ( 109 )|BDS": {
+  "id": 3112,
+  "how": "decision"
+ },
+ "Uttar Pradesh|INSTITUTE OF DENTAL STUDIES & TECHNOLOGIES, MODINAGAR, GHAZIABAD ( 110 )|BDS": {
+  "id": 3115,
+  "how": "decision"
+ },
+ "Uttar Pradesh|ITS CENTER FOR DENTAL STUDIES & RESEARCH, GHAZIABAD ( 111 )|BDS": {
+  "id": 3104,
+  "how": "decision"
+ },
+ "Uttar Pradesh|ITS DENTAL COLLEGE, HOSPITAL & RESEARCH CENTER, GREATOR NOIDA ( 112 )|BDS": {
+  "id": 3105,
+  "how": "decision"
+ },
+ "Uttar Pradesh|K.D. DENTAL COLLEGE & HOSPITAL, MATHURA ( 113 )|BDS": {
+  "id": 3123,
+  "how": "decision"
+ },
+ "Uttar Pradesh|KALKA DENTAL COLLEGE, MEERUT ( 114 )|BDS": {
+  "id": 3129,
+  "how": "decision"
+ },
+ "Uttar Pradesh|KOTHIWAL DENTAL COLLEGE & RESEARCH CENTER, MORADABAD ( 115 )|BDS": {
+  "id": 3139,
+  "how": "decision"
+ },
+ "Uttar Pradesh|MAHARANA PRATAP DENTAL COLLEGE & HOSPITAL, KANPUR ( 116 )|BDS": {
+  "id": 3156,
+  "how": "decision"
+ },
+ "Uttar Pradesh|PURVANCHAL INSTITUTE OF DENTAL SCIENCE, GORAKHPUR ( 117 )|BDS": {
+  "id": 3213,
+  "how": "decision"
+ },
+ "Uttar Pradesh|RAMA DENTAL COLLEGE HOSPITAL & RESEARCH CENTER, KANPUR ( 118 )|BDS": {
+  "id": 3222,
+  "how": "decision"
+ },
+ "Uttar Pradesh|SARASWATI DENTAL COLLEGE & HOSPITAL, LUCKNOW ( 119 )|BDS": {
+  "id": 3238,
+  "how": "decision"
+ },
+ "Uttar Pradesh|SARDAR PATEL POST GRADUATE INSTITUTE OF DENTAL & MEDICAL SCIENCES, LUCKNOW ( 120 )|BDS": {
+  "id": 3239,
+  "how": "decision"
+ },
+ "Uttar Pradesh|SCHOOL OF DENTAL SCIENCES, SHARDA UNIVERSITY, GREATER NOIDA ( 121 )|BDS": {
+  "id": 3244,
+  "how": "decision"
+ },
+ "Uttar Pradesh|SHREE BANKEY BIHARI DENTAL COLLEGE & RESEARCH CENTER, GHAZIABAD ( 122 )|BDS": {
+  "id": 3251,
+  "how": "decision"
+ },
+ "Uttar Pradesh|SUBHARTI DENTAL COLLEGE & HOSPITAL, MEERUT ( 123 )|BDS": {
+  "id": 3282,
+  "how": "decision"
+ },
+ "Uttar Pradesh|TEERTHANKER MAHAVEER DENTAL COLLEGE & RESEARCH CENTRE, MORADABAD (JAIN MINORITY) ( 124 )|BDS": {
+  "id": 3292,
+  "how": "decision"
+ },
+ "Uttar Pradesh|TEERTHANKAR MAHAVEER DENTAL COLLEGE & RESEARCH CENTER, MORDABAD ( 125 )|BDS": {
+  "id": 3292,
+  "how": "decision"
+ },
+ "Uttar Pradesh|SARDAR PATEL INSTITUTE OF MEDICAL EDUCATION AND HEATH SCIENCES, LUCKNOW ( 126 )|MBBS": {
+  "id": 4282,
+  "how": "decision"
+ },
+ "Uttar Pradesh|FULAN SINGH MEDICAL COLLEGE, FS UNIVERSITY , SHIKOHABAD ( 127 )|MBBS": {
+  "id": 4272,
+  "how": "decision"
+ },
+ "Uttar Pradesh|RADHA GOVIND INSTITUTE OF MEDICAL SCIENCES, MEERUT ( 128 )|MBBS": {
+  "id": 4308,
+  "how": "decision"
+ },
+ "Uttar Pradesh|PRASAD MEDICAL COLLEGE AND HOSPITAL, UNNAO ( 129 )|MBBS": {
+  "id": 4307,
+  "how": "decision"
+ },
+ "Uttar Pradesh|KALPNATH RAI INSTITUTE OF MEDICAL SCIENCE, MAU ( 130 )|MBBS": {
+  "id": null,
+  "how": "decision"
+ },
+ "Uttar Pradesh|RSS MEDICAL COLLEGE & HOSPITAL, MATHURA ( 131 )|MBBS": {
+  "id": null,
+  "how": "decision"
+ },
+ "West Bengal|MEDICAL COLLEGE, KOLKATA|MBBS": {
+  "id": 4111,
+  "how": "decision"
+ },
+ "West Bengal|INSTITUTE OF PG MEDICAL EDUCATION AND RESEARCH, KOLKATA|MBBS": {
+  "id": 4090,
+  "how": "decision"
+ },
+ "West Bengal|RAMPURHAT GOVT MEDICAL COLLEGE AND HOSPITAL|MBBS": {
+  "id": 4200,
+  "how": "decision"
+ },
+ "West Bengal|NILRATAN SIRCAR MEDICAL COLLEGE, KOLKATA|MBBS": {
+  "id": 4122,
+  "how": "decision"
+ },
+ "West Bengal|R.G. KAR MEDICAL COLLEGE, KOLKATA|MBBS": {
+  "id": 4133,
+  "how": "decision"
+ },
+ "West Bengal|CALCUTTA NATIONAL MEDICAL COLLEGE, KOLKATA|MBBS": {
+  "id": 4067,
+  "how": "decision"
+ },
+ "West Bengal|NORTH BENGAL MEDICAL COLLEGE AND HOSPITAL, DARJEELING|MBBS": {
+  "id": 3971,
+  "how": "decision"
+ },
+ "West Bengal|BURDWAN MEDICAL COLLEGE, BURDWAN|MBBS": {
+  "id": 3949,
+  "how": "decision"
+ },
+ "West Bengal|BANKURA SAMMILANI MEDICAL COLLEGE, BANKURA|MBBS": {
+  "id": 3940,
+  "how": "decision"
+ },
+ "West Bengal|ESI PGI MSR AND ESIC MEDICAL COLLEGE JOKA KOLKATA|MBBS": {
+  "id": 4079,
+  "how": "decision"
+ },
+ "West Bengal|DIAMOND HARBOUR GOVT MEDICAL COLLEGE AND HOSPITAL|MBBS": {
+  "id": 4026,
+  "how": "decision"
+ },
+ "West Bengal|COLLEGE OF MEDICINE AND SAGORE DUTTA HOSPITAL, KAMARHATI|MBBS": {
+  "id": 4551,
+  "how": "decision"
+ },
+ "West Bengal|MIDNAPORE MEDICAL COLLEGE, MIDNAPUR|MBBS": {
+  "id": 4166,
+  "how": "decision"
+ },
+ "West Bengal|BARASAT GOVERNMENT MEDICAL COLLEGE AND HOSPITAL|MBBS": {
+  "id": 3429,
+  "how": "decision"
+ },
+ "West Bengal|MURSHIDABAD MEDICAL COLLEGE AND HOSPITAL, MURSHIDABAD|MBBS": {
+  "id": 4177,
+  "how": "decision"
+ },
+ "West Bengal|COLLEGE OF MEDICINE AND JNM HOSPITAL, KALYANI|MBBS": {
+  "id": 4057,
+  "how": "decision"
+ },
+ "West Bengal|MALDA MEDICAL COLLEGE AND HOSPITAL, MALDA|MBBS": {
+  "id": 4155,
+  "how": "decision"
+ },
+ "West Bengal|JALPAIGURI GOVERNMENT MEDICAL COLLEGE AND HOSPITAL|MBBS": {
+  "id": 3430,
+  "how": "decision"
+ },
+ "West Bengal|KPC MEDICAL COLLEGE AND HOSPITAL, JADAVPUR|MBBS": {
+  "id": 4035,
+  "how": "decision"
+ },
+ "West Bengal|TAMRALIPTO GOVERNMENT MEDICAL COLLEGE AND HOSPITAL|MBBS": {
+  "id": 3424,
+  "how": "decision"
+ },
+ "West Bengal|SARAT CHANDRA CHATTOPADHYAY GOVERNMENT MEDICAL COLLEGE AND HOSPITAL|MBBS": {
+  "id": 3437,
+  "how": "decision"
+ },
+ "West Bengal|DEBEN MAHATA GOVERNMENT MEDICAL COLLEGE AND HOSPITAL|MBBS": {
+  "id": 3322,
+  "how": "decision"
+ },
+ "West Bengal|PRAFULLA CHANDRA SEN GOVERNMENT MEDICAL COLLEGE|MBBS": {
+  "id": 3435,
+  "how": "decision"
+ },
+ "West Bengal|MAHARAJA JITENDRA NARAYAN MEDICAL COLLEGE AND HOSPITAL, COOCHBEHAR|MBBS": {
+  "id": 3434,
+  "how": "decision"
+ },
+ "West Bengal|JHARGRAM GOVERNMENT MEDICAL COLLEGE AND HOSPITAL|MBBS": {
+  "id": 3431,
+  "how": "decision"
+ },
+ "West Bengal|RAIGANJ GOVT MEDICAL COLLEGE AND HOSPITAL|MBBS": {
+  "id": 4189,
+  "how": "decision"
+ },
+ "West Bengal|NORTH BENGAL DENTAL COLLEGE|BDS": {
+  "id": 3296,
+  "how": "decision"
+ },
+ "West Bengal|DR. R. AHMED DENTAL COLLEGE AND HOSPITAL, KOLKATA|BDS": {
+  "id": 3048,
+  "how": "decision"
+ },
+ "West Bengal|JAGANNATH GUPTA INSTITUTE OF MEDICAL SCIENCES AND HOSPITAL|MBBS": {
+  "id": 4101,
+  "how": "decision"
+ },
+ "West Bengal|I Q CITY MEDICAL COLLEGE|MBBS": {
+  "id": 3993,
+  "how": "decision"
+ },
+ "West Bengal|BURDWAN DENTAL COLLEGE AND HOSPITAL, BURDWAN|BDS": {
+  "id": 3014,
+  "how": "decision"
+ },
+ "West Bengal|ICARE INSTITUTE OF MEDICAL SCIENCE AND RESEARCH AND DR B C ROY HOSPITAL HALDIA|MBBS": {
+  "id": 4015,
+  "how": "decision"
+ },
+ "West Bengal|JAGANNATH GUPTA INSTITUTE OF MEDICAL SCIENCES & HOSPITAL- NORTH KOLKATA|MBBS": {
+  "id": 4284,
+  "how": "decision"
+ },
+ "West Bengal|JIS SCHOOL OF MEDICAL SCIENCE AND RESEARCH|MBBS": {
+  "id": 3677,
+  "how": "decision"
+ },
+ "West Bengal|JMN MEDICAL COLLEGE|MBBS": {
+  "id": 3900,
+  "how": "decision"
+ },
+ "West Bengal|SANTINIKETAN MEDICAL COLLEGE|MBBS": {
+  "id": 3436,
+  "how": "decision"
+ },
+ "West Bengal|GOURI DEVI INSTITUTE OF MEDICAL SCIENCES AND HOSPITAL|MBBS": {
+  "id": 3982,
+  "how": "decision"
+ },
+ "West Bengal|SHRI RAMKRISHNA INSTITUTE OF MEDICAL SCIENCES AND SANAKA HOSPITALS|MBBS": {
+  "id": 4004,
+  "how": "decision"
+ },
+ "West Bengal|JAKIR HOSAIN MEDICAL COLLEGE & RESEARCH INSTITUTE|MBBS": {
+  "id": 4039,
+  "how": "decision"
+ },
+ "West Bengal|KRISHNANAGAR INSTITUTE OF MEDICAL SCIENCE PRIVATE LIMITED|MBBS": {
+  "id": 3899,
+  "how": "decision"
+ },
+ "West Bengal|PKG MEDICAL COLLEGE & HOSPITAL|MBBS": {
+  "id": 4118,
+  "how": "decision"
+ },
+ "West Bengal|GURU NANAK INSTITUTE OF DENTAL SCIENCES AND RESEARCH|BDS": {
+  "id": 3093,
+  "how": "decision"
+ },
+ "West Bengal|RANIGANJ INSTITUTE OF MEDICAL SCIENCE|MBBS": {
+  "id": 4108,
+  "how": "decision"
+ },
+ "West Bengal|SKS MEDICAL COLLEGE|MBBS": {
+  "id": 4273,
+  "how": "decision"
+ },
+ "West Bengal|HALDIA INSTITUTE OF DENTAL SCIENCES AND RESEARCH|BDS": {
+  "id": 3097,
+  "how": "decision"
+ },
+ "West Bengal|KUSUM DEVI SUNDERLAL DUGAR JAIN DENTAL COLLEGE AND HOSPITAL|BDS": {
+  "id": 3141,
+  "how": "decision"
+ },
+ "West Bengal|SANAKA INSTITUTE OF DENTAL SCIENCES|BDS": {
+  "id": 4072,
+  "how": "decision"
+ }
+}
