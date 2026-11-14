@@ -15,6 +15,13 @@ export const CONTACT_INFO = {
    * `social.google` setting wins over this.
    */
   google: "https://www.google.com/maps?cid=15474144466729356168",
+  /**
+   * The profile's own "write a review" link (Google Business Profile → Ask for reviews, read 2026-11-14; it opens the
+   * review box on place 0x390ce5c62016fac3:0xd6bf34682e7acb88). The admin's `social.google_review` setting wins.
+   * The competitor benchmark of that day found 0 reviews against NEET Advisor's 2,200 — reviews are what the local
+   * results reward, so the footer and the leads screen both carry this link.
+   */
+  googleReview: "https://g.page/r/CYjLei5oNL_WEBM/review",
 };
 
 /**

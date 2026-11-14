@@ -29,6 +29,8 @@ export interface SocialLinks {
   youtube?: string;
   /** The Google Business Profile — the footer's address links to it. */
   google?: string;
+  /** The profile's "write a review" link — the footer's "Rate us on Google". */
+  google_review?: string;
 }
 
 interface SiteShellProps {

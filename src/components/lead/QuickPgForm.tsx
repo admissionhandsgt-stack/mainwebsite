@@ -15,6 +15,10 @@ export interface QuickFormCopy {
   button: string;
   done: string;
   privacy: string;
+  /** With `chooseLevel`: the two choices and the UG rank field. */
+  level_ug?: string;
+  level_pg?: string;
+  rank_ug?: string;
 }
 
 /**
@@ -23,11 +27,31 @@ export interface QuickFormCopy {
  * The same rules the server applies (lib/phone, lib/formRules, lib/neetLimits), said while they can still be fixed.
  * The rank never goes to analytics — trackLead sends its band only.
  */
-export default function QuickPgForm({ source, copy, waHref }: { source: string; copy: QuickFormCopy; waHref: string }) {
+export default function QuickPgForm({
+  source,
+  copy,
+  waHref,
+  chooseLevel = false,
+  stacked = false,
+  defaultLevel = "pg",
+  formName = "quick_pg_form",
+}: {
+  source: string;
+  copy: QuickFormCopy;
+  waHref: string;
+  /** NEET UG / NEET PG choice above the fields (the homepage, 2026-11-14: 8 of 12 competitors had a form there). */
+  chooseLevel?: boolean;
+  /** One column at every width, for a narrow card. */
+  stacked?: boolean;
+  defaultLevel?: "ug" | "pg";
+  formName?: string;
+}) {
   const id = useId();
+  const [level, setLevel] = useState<"ug" | "pg">(chooseLevel ? defaultLevel : "pg");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [rank, setRank] = useState("");
+  const rankLabel = level === "ug" ? copy.rank_ug || "NEET UG rank (AIR)" : copy.rank;
   const [trap, setTrap] = useState("");
   const [state, setState] = useState<"idle" | "sending" | "done">("idle");
   const [error, setError] = useState("");
@@ -40,7 +64,7 @@ export default function QuickPgForm({ source, copy, waHref }: { source: string; 
     const p = checkPhone(phone, { allowInternational: true });
     if (!p.ok) return setError(p.error);
     if (rank.trim()) {
-      const r = checkRank(rank, "pg");
+      const r = checkRank(rank, level);
       if (!r.ok) return setError(r.error);
     }
     setError("");
@@ -49,12 +73,12 @@ export default function QuickPgForm({ source, copy, waHref }: { source: string; 
       const res = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, phone, rank: rank.trim() || undefined, level: "pg", source, honeypot: trap }),
+        body: JSON.stringify({ name, phone, rank: rank.trim() || undefined, level, source, honeypot: trap }),
       });
       const j = (await res.json().catch(() => ({}))) as { error?: string };
       if (!res.ok) throw new Error(j.error || "Could not send. Please try again.");
       setState("done");
-      trackLead({ form: "quick_pg_form", course: "pg", rank: rank.trim() || undefined });
+      trackLead({ form: formName, course: level === "ug" ? "mbbs" : "pg", rank: rank.trim() || undefined });
     } catch (err) {
       setState("idle");
       setError(err instanceof Error ? err.message : "Could not send. Please try again.");
@@ -80,18 +104,34 @@ export default function QuickPgForm({ source, copy, waHref }: { source: string; 
   return (
     <form onSubmit={submit} noValidate className="space-y-2">
       <input type="text" name="website" value={trap} onChange={(e) => setTrap(e.target.value)} className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
-      <div className="grid gap-2 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto]">
+      {chooseLevel && (
+        <div role="radiogroup" aria-label="Which counselling" className="grid grid-cols-2 gap-1 rounded-xl bg-surface-2 p-1">
+          {(["ug", "pg"] as const).map((l) => (
+            <button
+              key={l}
+              type="button"
+              role="radio"
+              aria-checked={level === l}
+              onClick={() => setLevel(l)}
+              className={`min-h-11 rounded-lg px-3 text-[14px] font-bold transition-colors ${level === l ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+            >
+              {l === "ug" ? copy.level_ug || "NEET UG (MBBS / BDS)" : copy.level_pg || "NEET PG (MD / MS)"}
+            </button>
+          ))}
+        </div>
+      )}
+      <div className={stacked ? "grid gap-2" : "grid gap-2 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto]"}>
         <label className="sr-only" htmlFor={`${id}-name`}>{copy.name}</label>
         <input id={`${id}-name`} className={input} placeholder={copy.name} autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} />
         <label className="sr-only" htmlFor={`${id}-phone`}>{copy.phone}</label>
         <input id={`${id}-phone`} className={input} type="tel" inputMode="tel" autoComplete="tel" placeholder={copy.phone} value={phone} onChange={(e) => setPhone(e.target.value)} />
-        <label className="sr-only" htmlFor={`${id}-rank`}>{copy.rank}</label>
+        <label className="sr-only" htmlFor={`${id}-rank`}>{rankLabel}</label>
         <input
           id={`${id}-rank`}
           data-aa-mask
           className={input}
           inputMode="numeric"
-          placeholder={copy.rank}
+          placeholder={rankLabel}
           aria-describedby={`${id}-hint`}
           value={rank}
           onChange={(e) => setRank(e.target.value.replace(/[^\d,]/g, ""))}

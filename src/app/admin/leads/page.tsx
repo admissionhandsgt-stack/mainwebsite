@@ -2,12 +2,25 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import {
-  Loader2, RefreshCw, Inbox, Search, Phone, Download, Trash2, X, CalendarClock, ChevronDown,
+  Loader2, RefreshCw, Inbox, Search, Phone, Download, Trash2, X, CalendarClock, ChevronDown, Star,
 } from 'lucide-react';
+import { CONTACT_INFO } from '@/lib/constants';
 import { toast } from 'sonner';
 import { listRows, updateRow, deleteRow } from '@/lib/adminApi';
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { CLOSED, FOLLOW_TIMES, LEAD_STATUSES, OUTCOMES, statusLabel } from '@/lib/leadVocab';
+
+/**
+ * The WhatsApp message a counsellor sends to ask for a Google review (2026-11-14: the competitor benchmark found
+ * 0 reviews on our Business Profile against NEET Advisor's 2,200). It opens the counsellor's own WhatsApp with the
+ * words written; the counsellor decides whether to send it. Ask everyone the same way: Google does not allow
+ * offering anything for a review or asking only the happy families.
+ */
+function reviewAskHref(phone: string, name?: string | null) {
+  const first = (name ?? '').trim().split(/\s+/)[0];
+  const text = `Hi${first ? ' ' + first : ''}, thank you for choosing AdmissionHands for your NEET counselling. If our guidance helped you, could you take a minute to share your experience on Google? It helps other NEET families find honest help: ${CONTACT_INFO.googleReview}`;
+  return `https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(text)}`;
+}
 
 /**
  * UG and PG enquiries live in one table, separated by `level`. Everything the
@@ -631,6 +644,15 @@ export default function LeadsManager() {
                 className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-semibold text-emerald-700 hover:bg-emerald-100"
               >
                 <WhatsAppIcon className="h-4 w-4" /> WhatsApp
+              </a>
+              <a
+                href={reviewAskHref(selected.phone, selected.name)}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Opens your WhatsApp with a Google review request written for this student"
+                className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-4 py-2.5 text-sm font-semibold text-amber-800 hover:bg-amber-100"
+              >
+                <Star className="h-4 w-4" /> Ask review
               </a>
               <button
                 onClick={() => remove(selected)}

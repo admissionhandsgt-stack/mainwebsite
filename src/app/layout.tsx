@@ -222,6 +222,7 @@ export default async function RootLayout({
                 instagram: setting(settings, 'social.instagram'),
                 youtube: setting(settings, 'social.youtube'),
                 google: setting(settings, 'social.google'),
+                google_review: setting(settings, 'social.google_review'),
               }}
               preferredSource={
                 preferred?.footer && preferred.domain

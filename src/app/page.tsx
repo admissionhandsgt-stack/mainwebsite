@@ -17,6 +17,7 @@ import { getRecommendedColleges } from "@/lib/colleges";
 import { getMediaAsset, getSettings, setting, getBlocks, getSections, getContactInfo } from "@/lib/content";
 import { backdropPlaceholder } from "@/lib/backdrop";
 import { fillLive, getLiveFigures } from "@/lib/liveFigures";
+import { pageCopy } from "@/lib/pageCopy";
 
 const ServicesList = dynamic(() => import('@/components/ServicesList'), { loading: () => <SectionLoader /> });
 const HowItWorks = dynamic(() => import('@/components/home/HowItWorks'), { loading: () => <SectionLoader /> });
@@ -60,7 +61,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const Index = async () => {
   const [initialColleges, campusHero, doctorsHero, s, serviceBlocks, stepBlocks, whyBlocks,
-    testimonialBlocks, sections, live] =
+    testimonialBlocks, sections, live, quickCopy] =
     await Promise.all([
       getRecommendedColleges(),
       getMediaAsset('homepage_hero_campus'),
@@ -72,6 +73,7 @@ const Index = async () => {
       getBlocks('testimonials'),
       getSections('home'),
       getLiveFigures(),
+      pageCopy("site.quick_form", { college: "NEET admission", topic: "NEET admission" }).catch(() => null),
     ]);
 
   // The campus backdrop's first frame, inline — see lib/backdrop.ts.
@@ -251,6 +253,18 @@ const Index = async () => {
                 title={setting(s, 'home.enquiry.title')}
                 body={setting(s, 'home.enquiry.body')}
                 points={[1, 2, 3, 4].map((i) => setting(s, `home.enquiry.point_${i}`))}
+                quick={
+                  quickCopy?.home_heading
+                    ? {
+                        heading: quickCopy.home_heading,
+                        copy: {
+                          name: quickCopy.name, phone: quickCopy.phone, rank: quickCopy.rank, rank_hint: quickCopy.rank_hint,
+                          button: quickCopy.button, done: quickCopy.done, privacy: quickCopy.privacy,
+                          level_ug: quickCopy.level_ug, level_pg: quickCopy.level_pg, rank_ug: quickCopy.rank_ug,
+                        },
+                      }
+                    : undefined
+                }
               />
             ),
           },

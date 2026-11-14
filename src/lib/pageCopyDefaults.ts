@@ -1247,6 +1247,10 @@ export const PAGE_COPY = {
       },
       done: { label: "After a successful send", value: "Thank you — a counsellor will call you shortly. Want to talk now? Message us on WhatsApp." },
       privacy: { label: "Under the form", value: "Your number goes only to your counsellor. No spam, no sharing." },
+      home_heading: { label: "Homepage: the line above the call-back form (blank hides the form)", value: "Or leave your number for a call back" },
+      level_ug: { label: "Homepage: the NEET UG choice", value: "NEET UG (MBBS / BDS)" },
+      level_pg: { label: "Homepage: the NEET PG choice", value: "NEET PG (MD / MS)" },
+      rank_ug: { label: "Homepage: the rank field when NEET UG is chosen", value: "NEET UG rank (AIR)" },
     },
   },
   "site.index_boost": {
@@ -4458,6 +4462,11 @@ export const SOCIAL_SETTINGS: { key: string; label: string; value: string }[] = 
     key: "social.google",
     label: "Google Business Profile link (https://www.google.com/maps?cid=…)",
     value: "https://www.google.com/maps?cid=15474144466729356168",
+  },
+  {
+    key: "social.google_review",
+    label: "Google review link (Business Profile → Ask for reviews; https://g.page/r/…/review). Blank uses the shipped link",
+    value: "https://g.page/r/CYjLei5oNL_WEBM/review",
   },
 ];
 

@@ -49,6 +49,7 @@ const DEFAULT_SOCIAL: Required<SocialLinks> = {
   instagram: 'https://www.instagram.com/admissionhandss?igsh=cDEyd2dsdXBpeW5v',
   youtube: 'https://youtube.com/@admissionhands',
   google: CONTACT_INFO.google,
+  google_review: CONTACT_INFO.googleReview,
 };
 
 interface FooterProps {
@@ -93,6 +94,8 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social, p
     { key: 'youtube', label: 'YouTube', icon: Youtube, href: social?.youtube ?? DEFAULT_SOCIAL.youtube },
   ].filter((s) => s.href); // Telegram has its own pill beside these, so it is not an icon here too
   const googleProfile = social?.google ?? DEFAULT_SOCIAL.google;
+  // An empty setting is "use what shipped" (setting() returns ""), so only an explicit value replaces the default.
+  const googleReview = social?.google_review || DEFAULT_SOCIAL.google_review;
 
   // One line of contact details above the copyright (third pass, owner: "footer ko thora compact") —
   // they had taken the brand column's height down past the link columns.
@@ -230,6 +233,13 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social, p
                 <MapPin className={contactIcon} aria-hidden="true" />
                 <span className="leading-snug">{CONTACT_INFO.address}</span>
               </span>
+            )}
+            {/* Families we have counselled are the ones who read this far down (2026-11-14 benchmark: 0 Google reviews). */}
+            {googleReview && (
+              <a href={googleReview} target="_blank" rel="noopener noreferrer" data-placement="footer_review" className={contactRow}>
+                <Star className="h-4 w-4 shrink-0 fill-amber-400 text-amber-500" aria-hidden="true" />
+                <span className="font-semibold text-foreground">Rate us on Google</span>
+              </a>
             )}
           </address>
 

@@ -1,6 +1,7 @@
 import Link from "@/components/ui/Link";
 import { ArrowRight, CalendarClock, Phone, PhoneCall, Route, Scale } from "lucide-react";
 import { InlineLeadForm } from "@/components/lead/InlineLeadForm";
+import QuickPgForm, { type QuickFormCopy } from "@/components/lead/QuickPgForm";
 import CounsellorFaces from "@/components/lead/CounsellorFaces";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { CONTACT_INFO } from "@/lib/constants";
@@ -31,7 +32,14 @@ export default function LeadCapture({
   points,
   withForm = false,
   chooseLevel = false,
+  quick,
 }: {
+  /**
+   * A short call-back form under the WhatsApp and call buttons (name, mobile, rank optional, NEET UG or PG). The
+   * homepage since 2026-11-14: the competitor benchmark found a form on 8 of 12 counselling sites' homepages and
+   * none on ours, so a family that would not message or call had no way to leave a number.
+   */
+  quick?: { heading: string; copy: QuickFormCopy };
   level?: "ug" | "pg";
   source: string;
   title?: string;
@@ -151,6 +159,20 @@ export default function LeadCapture({
                 >
                   Check my chances first <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Link>
+                {quick?.heading && (
+                  <div className="mt-5 border-t border-border pt-4">
+                    <p className="mb-2.5 text-[14px] font-bold text-foreground">{quick.heading}</p>
+                    <QuickPgForm
+                      source={source}
+                      copy={quick.copy}
+                      waHref={`https://wa.me/${wa}?text=${encodeURIComponent("Hello AdmissionHands, I would like to talk to an expert counsellor about my NEET admission.")}`}
+                      chooseLevel
+                      stacked
+                      defaultLevel={level}
+                      formName="home_quick_form"
+                    />
+                  </div>
+                )}
               </div>
             )}
           </div>
