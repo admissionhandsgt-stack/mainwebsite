@@ -40,11 +40,13 @@ export default async function ReviewedBy() {
       }
     : null;
   return (
+    // Links here are separate flex items, not words in a sentence, so they need a 24px tap target (WCAG 2.5.8; PSI flagged
+    // /team and the preferred-source link on desktop, 2026-11-14).
     <p className="mt-3 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[12.5px] text-muted-foreground">
       <BadgeCheck className="h-3.5 w-3.5 shrink-0 text-accent" aria-hidden="true" />
       <span>{copy.label}</span>
       {href ? (
-        <Link href={href} className="font-semibold text-foreground hover:text-primary hover:underline">
+        <Link href={href} className="inline-flex min-h-6 items-center font-semibold text-foreground hover:text-primary hover:underline">
           {copy.name}
         </Link>
       ) : (
@@ -65,7 +67,7 @@ export default async function ReviewedBy() {
       {copy.method && path !== "/how-we-check-data" && (
         <>
           <span aria-hidden="true">·</span>
-          <Link href="/how-we-check-data" className="underline-offset-2 hover:text-primary hover:underline">
+          <Link href="/how-we-check-data" className="inline-flex min-h-6 items-center underline-offset-2 hover:text-primary hover:underline">
             {copy.method}
           </Link>
         </>
@@ -79,7 +81,7 @@ export default async function ReviewedBy() {
             target="_blank"
             rel="noopener noreferrer"
             data-placement="reviewed_by"
-            className="underline-offset-2 hover:text-primary hover:underline"
+            className="inline-flex min-h-6 items-center underline-offset-2 hover:text-primary hover:underline"
           >
             {preferred.reviewer}
           </a>

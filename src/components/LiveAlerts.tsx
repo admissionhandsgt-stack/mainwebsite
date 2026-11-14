@@ -112,17 +112,14 @@ export default function LiveAlerts({ alerts }: { alerts: BarAlert[] }) {
           target="_blank"
           rel="noopener noreferrer"
           data-placement={round ? "alerts_bar_round" : "alerts_bar"}
-          aria-label={
-            round
-              ? `Get the NEET PG ${round.year} ${round.label} result alert on Telegram`
-              : "Join Admission Hands on Telegram for counselling updates"
-          }
           className="ml-3 inline-flex min-h-[44px] shrink-0 items-center z-10 md:ml-4"
         >
           <span className={`inline-flex h-7 items-center gap-1.5 whitespace-nowrap rounded-md bg-white px-2 text-[12px] font-black text-primary-strong shadow-sm transition-colors hover:bg-white/90 md:px-3 md:text-[11px] ${round ? "tracking-normal [word-spacing:0.1em]" : "tracking-tight"}`}>
             <TelegramIcon size={16} className="text-[#229ED9]" />
             <span className="md:hidden">{round ? fillRound(telegram.roundCopy.barShort, round) : "Join"}</span>
             <span className="hidden md:inline">{round ? fillRound(telegram.roundCopy.bar, round) : "Join on Telegram"}</span>
+            {/* The name is the visible words plus this, never an aria-label that leaves them out (WCAG 2.5.3, PSI 2026-11-14). */}
+            <span className="sr-only">{round ? `, NEET PG ${round.year}, on Telegram` : ", Admission Hands counselling updates"}</span>
           </span>
         </a>
       </div>

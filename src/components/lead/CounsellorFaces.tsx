@@ -73,9 +73,9 @@ export default function CounsellorFaces({
           target="_blank"
           rel="noopener"
           title={`${c.name} — ${c.title}`}
-          aria-label={`${c.name}, ${c.title} — open card`}
           className="relative transition-transform hover:z-10 hover:-translate-y-0.5"
         >
+          <span className="sr-only">{`${c.name}, ${c.title} — open card`}</span>
           {c.photo ? (
             <Image
               src={`/card/${c.photo}`}
@@ -87,6 +87,7 @@ export default function CounsellorFaces({
             />
           ) : (
             <span
+              aria-hidden="true"
               className={`font-heading inline-flex items-center justify-center rounded-full border-2 bg-gradient-brand text-[13px] font-extrabold text-white ${ring}`}
               style={{ width: size, height: size }}
             >

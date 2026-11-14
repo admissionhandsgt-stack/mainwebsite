@@ -55,9 +55,10 @@
     --grad-via: 192 91% 40%;
     --grad-to: 188 86% 53%;
 
-    /* admission chance — semantic only, never decorative */
-    --signal-safe: 142 71% 34%;
-    --signal-borderline: 35 92% 40%;
+    /* admission chance — semantic only, never decorative. Light-mode shades darkened 2026-11-14 so the words and
+       figures drawn in them clear 4.5:1 on white (PSI accessibility: safe was 4.0:1, borderline 3.3:1). */
+    --signal-safe: 142 72% 29%;
+    --signal-borderline: 32 95% 32%;
     --signal-stretch: 345 68% 48%;
 
     --glow: 192 91% 36%;

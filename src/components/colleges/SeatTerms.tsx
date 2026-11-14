@@ -87,15 +87,17 @@ function hostelText(t: Terms): string | null {
 
 function Row({ icon: Icon, label, value, sub }: { icon: typeof Wallet; label: string; value: ReactNode; sub?: string }) {
   return (
-    <div className="flex gap-3">
-      <span className="mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-soft text-primary-strong dark:text-primary" aria-hidden="true">
-        <Icon className="h-4 w-4" />
-      </span>
-      <div className="min-w-0">
-        <dt className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">{label}</dt>
-        <dd className="tnum mt-0.5 text-[14.5px] font-semibold leading-snug text-foreground">{value}</dd>
-        {sub && <dd className="mt-0.5 text-[12.5px] leading-snug text-muted-foreground">{sub}</dd>}
-      </div>
+    // A <dl> may hold only dt/dd or a div of them, so the icon sits inside the dt (absolutely placed) rather than
+    // beside a nested div — axe flagged the old wrapper on every PG college page (definition-list, dlitem).
+    <div className="relative min-w-0 pl-11">
+      <dt className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+        <span className="absolute left-0 top-0.5 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary-soft text-primary-strong dark:text-primary" aria-hidden="true">
+          <Icon className="h-4 w-4" />
+        </span>
+        {label}
+      </dt>
+      <dd className="tnum mt-0.5 text-[14.5px] font-semibold leading-snug text-foreground">{value}</dd>
+      {sub && <dd className="mt-0.5 text-[12.5px] leading-snug text-muted-foreground">{sub}</dd>}
     </div>
   );
 }

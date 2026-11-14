@@ -229,7 +229,9 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
             {photo && (
               <div className="relative min-w-0">
             <div className="relative aspect-[16/10] overflow-hidden rounded-[1.75rem] border border-border bg-surface-3 shadow-lift">
-              <Image src={photo.imageUrl} alt={`${college.name} campus`} fill priority fetchPriority="high" sizes="(min-width: 1280px) 26rem, (min-width: 1024px) 24rem, 100vw" className="object-cover" />
+              {/* The hero photo is the LCP on a phone. "55vw" under 640px makes a 2.6x phone fetch the 640px file (72 KB at
+                  quality 60) instead of 1080px; PSI mobile had it at 114 KB and LCP 4.7–5.2 s (2026-11-14). */}
+              <Image src={photo.imageUrl} alt={`${college.name} campus`} fill priority fetchPriority="high" quality={60} sizes="(min-width: 1280px) 26rem, (min-width: 1024px) 24rem, (min-width: 640px) 90vw, 55vw" className="object-cover" />
               <PhotoCredit
                 subject={college.name}
                 attribution={photo.imageAttribution}
