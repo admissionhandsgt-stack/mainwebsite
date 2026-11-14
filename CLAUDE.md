@@ -919,9 +919,16 @@ printed two ways merges, e.g. Maharashtra's "OPEN (EMD)" into OPEN, CG's "Mgmt (
   upgraded), rank_basis 'All India Rank', the state's 2025 UG counselling. **Applied: 23,827 rows** (Karnataka, Telangana,
   Maharashtra, Rajasthan, UP, MP, Odisha, CG, WB, Haryana, Bihar, Puducherry, Punjab's AIR lines, Delhi GGSIPU, Assam,
   Tripura's govt colleges, Meghalaya's state quota); extracted_at stamped. UG 2026 now 33,462 rows at 982 colleges.
-- **state_round_cuts** (level ug, 2026) holds the other 9,865 round rows with the rank as what it is (closing_air, or
-  closing_state_rank + a note naming the rank type; Gujarat's in-between merit numbers like 2326.5, given to candidates added to the list later, only in the note): AP ("NEET RANK", not
-  labelled AIR — keep it out unless confirmed), TN, Kerala, Gujarat, J&K, Uttarakhand, HP, Jharkhand, Punjab's state merit,
+  **Gujarat added the same day** (zyn's rebuild, file sha256 0352…6956: every ACPUGMEC allotment ranked by the AIR its
+  list prints, the state Merit No. kept by zyn as extra.merit_no): GQ → "Government" (also at GMERS and private colleges,
+  as 2025 files them), LQ → "Local Quota (Municipal Corporation)" (NHL and SMIMER, a seat of its own), MQ → Management,
+  NQ → NRI, a category ending PH → that category's PwD code; 44 college names decided by hand (the matcher's start rule
+  put NHL, CU Shah, Bhagyoday and Kiran Surat on 4323 Medical College Baroda). +999 rows: 24,826 in all, UG 2026 34,461
+  rows at 1,021 colleges. Kiran Medical College, Surat (6 lines) is in no UG list we hold; Vaidik Dental, Daman stays
+  out (outside Gujarat). Backup `state_ug_2026_before_gujarat_2026_11_14.json`.
+- **state_round_cuts** (level ug, 2026) holds the other 8,866 round rows (9,865 before Gujarat moved over) with the rank as what it is (closing_air, or
+  closing_state_rank + a note naming the rank type): AP ("NEET RANK", not
+  labelled AIR — keep it out unless confirmed), TN, Kerala, J&K, Uttarakhand, HP, Jharkhand, Punjab's state merit,
   Mizoram/Nagaland (score order), Manipur (prints the candidate's category, not the seat's), Arunachal and the central
   pool, Tripura's private colleges (state and all-India pools in one line), Maharashtra's converted "Against" / "Inter-se"
   / ORPHAN / MKB seats. The September scrape's 300 rows were replaced. Backup:

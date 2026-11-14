@@ -241,6 +241,22 @@ const M = {
     if (m[2] === "PH") return { quota, cats: [`${v} PwD`] };
     return { quota, cats: [`Delhi ${v === "Open" ? "GEN" : v} DEF`] };
   },
+  // ACPUGMEC (zyn's rebuild of 14-11: every Gujarat line ranked by the NEET AIR its lists print). GQ = Government
+  // seats (the state quota, also at GMERS and private colleges, as 2025 files them); LQ = the local quota of Smt. NHL
+  // (Ahmedabad) and SMIMER (Surat), a seat of its own; MQ = management (vacant NRI seats refilled as MQ at MQ fees);
+  // NQ = NRI. Category = the one the seat was allotted under; a code ending PH is that category's PwD seat.
+  Gujarat(l) {
+    const q = String(l.quota ?? "").trim().toUpperCase();
+    const c = String(l.category ?? "").trim().toUpperCase();
+    if (q === "MQ") return { quota: "Management", cats: ["Management"] };
+    if (q === "NQ") return { quota: "NRI", cats: ["NRI"] };
+    const quota = { GQ: "Government", LQ: "Local Quota (Municipal Corporation)" }[q];
+    if (!quota) return { skip: `quota ${l.quota}` };
+    const m = /^(OP|SE|EW|SC|ST)(PH)?$/.exec(c);
+    if (!m) return { skip: `category ${l.category}` };
+    if (m[2]) return { quota, cats: [{ OP: "UR PWD", SE: "SE-PWD", EW: "EWS-PWD", SC: "SC-PWD", ST: "ST-PWD" }[m[1]]] };
+    return { quota, cats: [{ OP: "OPEN", SE: "SEBC", EW: "EWS", SC: "SC", ST: "ST" }[m[1]]] };
+  },
   // Assam State Quota (government colleges only).
   Assam(l) {
     const c = String(l.category ?? "").trim();
