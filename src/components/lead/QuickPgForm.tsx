@@ -115,7 +115,7 @@ export default function QuickPgForm({
               onClick={() => setLevel(l)}
               className={`min-h-11 rounded-lg px-3 text-[14px] font-bold transition-colors ${level === l ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
             >
-              {l === "ug" ? copy.level_ug || "NEET UG (MBBS / BDS)" : copy.level_pg || "NEET PG (MD / MS)"}
+              {l === "ug" ? copy.level_ug || "NEET UG" : copy.level_pg || "NEET PG"}
             </button>
           ))}
         </div>
