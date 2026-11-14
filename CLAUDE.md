@@ -920,7 +920,7 @@ printed two ways merges, e.g. Maharashtra's "OPEN (EMD)" into OPEN, CG's "Mgmt (
   Maharashtra, Rajasthan, UP, MP, Odisha, CG, WB, Haryana, Bihar, Puducherry, Punjab's AIR lines, Delhi GGSIPU, Assam,
   Tripura's govt colleges, Meghalaya's state quota); extracted_at stamped. UG 2026 now 33,462 rows at 982 colleges.
 - **state_round_cuts** (level ug, 2026) holds the other 9,865 round rows with the rank as what it is (closing_air, or
-  closing_state_rank + a note naming the rank type; Gujarat's tied ".5" ranks only in the note): AP ("NEET RANK", not
+  closing_state_rank + a note naming the rank type; Gujarat's in-between merit numbers like 2326.5, given to candidates added to the list later, only in the note): AP ("NEET RANK", not
   labelled AIR — keep it out unless confirmed), TN, Kerala, Gujarat, J&K, Uttarakhand, HP, Jharkhand, Punjab's state merit,
   Mizoram/Nagaland (score order), Manipur (prints the candidate's category, not the seat's), Arunachal and the central
   pool, Tripura's private colleges (state and all-India pools in one line), Maharashtra's converted "Against" / "Inter-se"

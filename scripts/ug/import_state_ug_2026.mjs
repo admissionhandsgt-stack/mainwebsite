@@ -187,7 +187,7 @@ for (const l of J.lines) {
         seat_type_printed: l.quota ?? null, category: String(l.category ?? "-"), category_printed: String(l.category ?? "-"),
         pwd: Boolean(l.pwd), additional_category: null, in_service: false, seats_allotted: x.new ?? null,
         opening_air: isAir ? x.near ?? null : null, closing_air: isAir ? x.far : null,
-        // Gujarat's merit list prints tied ranks as halves ("2326.5"): a whole number goes in the column, any other
+        // Gujarat's merit list gives candidates added to it later in-between numbers ("2326.5"): a whole number goes in the column, any other
         // figure only in the note, exactly as printed.
         opening_state_rank: isAir || !Number.isInteger(x.near) ? null : x.near, closing_state_rank: isAir || !Number.isInteger(x.far) ? null : x.far,
         note: isAir
