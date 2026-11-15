@@ -12,6 +12,8 @@ import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import DataTools from "@/components/ui/DataTools";
 import { toolLabels } from "@/lib/dataToolLabels";
 import { branchAliases, branchKind } from "@/lib/branchKinds";
+import { getLatestLiveRound, roundPath } from "@/lib/mccResults";
+import { getScoreTables } from "@/lib/scoreRank";
 
 export const revalidate = 86400;
 
@@ -38,11 +40,37 @@ const inr = (v: number | null) => (v == null ? "—" : v.toLocaleString("en-IN")
 export default async function BranchesPage() {
   const branches = await getBranches();
   // Words from Admin → Content → Text & numbers ("Page: PG branches"); photo from Admin → Media.
-  const [copy, heroImage, labels] = await Promise.all([
+  const [copy, heroImage, labels, live, scoreTables] = await Promise.all([
     pageCopy("page.pg_branches.hero", { count: branches.length }),
     pageHeroImage("page.pg_branches.hero"),
     toolLabels("branch_search"),
+    getLatestLiveRound().catch(() => null),
+    getScoreTables("pg").catch(() => []),
   ]);
+  // The running round's order of branches: MD/MS, All India Quota, open category, last rank admitted over 3+ colleges
+  // (the round page's own figures). A group figure, never one college's close.
+  const scores = live ? scoreTables.find((t) => t.year === live.year) ?? null : null;
+  const top = live
+    ? [...live.byCourse]
+        .map(([course, last]) => ({ course, rank: last.Open }))
+        .filter((x): x is { course: string; rank: number } => x.rank != null && /^(MD|MS)\s/.test(x.course))
+        .sort((a, b) => a.rank - b.rank)
+        .slice(0, 10)
+        .map((x) => ({
+          ...x,
+          slug: branches.find((b) => b.name === x.course)?.slug ?? null,
+          score: scores?.rows.find((r) => r.rankMin <= x.rank && x.rank <= r.rankMax)?.score ?? null,
+        }))
+    : [];
+  const topCopy =
+    live && top.length >= 5
+      ? await pageCopy("page.pg_branches.top", {
+          year: live.year,
+          round: live.spec.label,
+          out_of: scores?.outOf ?? "",
+          list: top.slice(0, 5).map((t) => `${t.course} (AIR ${t.rank.toLocaleString("en-IN")})`).join(", "),
+        })
+      : null;
   // "how many branches in neet pg" (GSC, position ~7, no clicks): counted from the branches on this page.
   const kind = (n: string) => (/^MD\s/.test(n) ? "MD" : /^MS\s/.test(n) ? "MS" : /^(DNB|DrNB)\s/.test(n) ? "DNB" : /diploma/i.test(n) ? "Diploma" : "Other");
   const byKind = branches.reduce<Record<string, number>>((a, b) => ((a[kind(b.name)] = (a[kind(b.name)] ?? 0) + 1), a), {});
@@ -56,6 +84,7 @@ export default async function BranchesPage() {
       question: "Which branches are clinical in NEET PG?",
       answer: "General Medicine, General Surgery, Orthopaedics, Obstetrics & Gynaecology, Paediatrics, Radio Diagnosis, Dermatology, ENT, Ophthalmology, Psychiatry, Anaesthesiology, Respiratory Medicine and Emergency Medicine are the ones asked about most. Pathology, Microbiology, Pharmacology, Forensic and Community Medicine are para-clinical; Anatomy, Physiology and Biochemistry pre-clinical.",
     },
+    ...(topCopy?.faq_q && topCopy.faq_a ? [{ question: topCopy.faq_q, answer: topCopy.faq_a }] : []),
   ];
 
   return (
@@ -104,6 +133,44 @@ export default async function BranchesPage() {
           />
         }
       />
+
+      {live && topCopy && (
+        <section id="top-branches" className="container-custom pt-10 md:pt-14" aria-labelledby="top-branches-title">
+          <SectionHead id="top-branches-title" icon="list" eyebrow={topCopy.eyebrow} title={topCopy.title} />
+          <p className="mt-3 max-w-[78ch] text-[14.5px] leading-relaxed text-muted-foreground">{topCopy.intro}</p>
+          <ol className="mt-5 grid gap-2 sm:grid-cols-2">
+            {top.map((t, i) => (
+              <li key={t.course} className="flex items-center gap-3 rounded-xl border border-border bg-card px-4 py-3">
+                <span className="tnum flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-soft text-[14px] font-bold text-primary-strong">
+                  {i + 1}
+                </span>
+                <span className="min-w-0 flex-1">
+                  {t.slug ? (
+                    <Link href={`/md-ms-india/branches/${t.slug}`} className="block font-semibold text-foreground hover:text-primary">
+                      {t.course}
+                    </Link>
+                  ) : (
+                    <span className="block font-semibold text-foreground">{t.course}</span>
+                  )}
+                  <span className="tnum block text-[13px] text-muted-foreground">
+                    {topCopy.closed?.replace("{rank}", t.rank.toLocaleString("en-IN"))}
+                    {t.score != null && scores && topCopy.marks
+                      ? ` · ${topCopy.marks.replace("{score}", String(t.score)).replace("{out_of}", String(scores.outOf))}`
+                      : ""}
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ol>
+          <p className="mt-4 max-w-[78ch] text-[13.5px] leading-relaxed text-muted-foreground">
+            {topCopy.note}{" "}
+            <Link href={roundPath(live.year, live.spec.slug)} className="font-semibold text-primary-strong hover:underline">
+              {topCopy.link}
+            </Link>
+            .
+          </p>
+        </section>
+      )}
 
       <div className="container-custom py-10 md:py-14">
         {branches.length >= 8 && (

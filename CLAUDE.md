@@ -2329,6 +2329,17 @@ colleges are there in <state>?", the bond page "Which states have no service bon
 landing on college pages at position 2–4 — conversational follow-ups that read our college pages; keep the facts those ask for
 in the first screen of a college page. Re-run: `scripts/tmp/harness/qtopics.ts` (git-excluded harness).
 
+**Third batch of reels (2026-11-15, owner: "inme se konse kam ki hai wo karo… chrome tumko dia hua hai").** (1) GBP: Performance →
+Search trends had "<50 searches", so no terms yet; 12 custom services were added under the "Counsellor" category (NEET PG
+counselling, choice filling & round strategy, MD/MS, DNB, NEET UG/MBBS, BDS, NRI quota, deemed, management quota, PG fees/stipend/
+bond, document verification, stray round) — no seat promise, no "direct admission". Google holds an edit up to a day for review.
+Re-read Search trends in a month and add services for the terms it shows. (2) The regex `best|vs|review|compare|alternative` over
+90 days of Search Console: 1,766 impressions (~0.4%) — our searchers type data words, not decision words. From it: **"Top NEET PG
+branches, in the order they filled"** on `/md-ms-india/branches` (`#top-branches`, copy "Page: PG branches — top branches in the
+order they filled"): the running round's MD/MS AIQ open last rank per branch (`getLatestLiveRound().byCourse`, 3+ colleges, as the
+round page prints it) with the score, top 10, plus an FAQ "Which are the top branches in NEET PG?". It follows the round by itself.
+`scripts/tmp/gsc_decision.mjs` and `gsc_striking.mjs` re-run both studies. (3) The "top 10 SEO tools" reel: nothing new for us.
+
 ## Search Console's "not indexed" audit and what it changed (2026-11-11)
 
 Owner (screenshot of "Why pages aren't indexed": Discovered 1,197 · Crawled 61 · three single URLs): "console ko pura

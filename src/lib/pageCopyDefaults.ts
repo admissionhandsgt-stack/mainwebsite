@@ -3306,6 +3306,34 @@ export const PAGE_COPY = {
       visual_title: { label: "Chart title", value: "Most offered branches" },
     }),
   },
+  // "top branches in neet pg (rank wise)", "neet pg top branches" (Search Console, 90 days to 13 Nov, position 28–46):
+  // the hub had no order of branches. The running round's AIQ closes give one (2026-11-15).
+  "page.pg_branches.top": {
+    group: "Page: PG branches — top branches in the order they filled",
+    fields: {
+      eyebrow: { label: "Eyebrow — {year}, {round}", value: "NEET PG {year} · {round}" },
+      title: { label: "Heading", value: "Top NEET PG branches, in the order they filled" },
+      intro: {
+        label: "Intro — {year}, {round}",
+        value: "In MCC's {round} result of NEET PG {year}, the last All India Quota seat in the open category went to the rank shown for each MD/MS branch. The earlier a branch closed, the more candidates ranked it first. Each figure is over 3 or more colleges.",
+        long: true,
+      },
+      closed: { label: "Under each branch — {rank}", value: "Closed at AIR {rank}" },
+      marks: { label: "Beside the rank — {score}, {out_of}", value: "≈ {score}/{out_of} marks" },
+      note: {
+        label: "Note under the list",
+        value: "Your category, your state's quota and deemed universities' seats close at different ranks. Open a branch for its cut off by category, or see every branch in the round's result.",
+        long: true,
+      },
+      link: { label: "Link to the round — {round}", value: "Every branch in the {round} result" },
+      faq_q: { label: "FAQ question", value: "Which are the top branches in NEET PG?" },
+      faq_a: {
+        label: "FAQ answer — {round}, {year}, {list}",
+        value: "By how early they filled in MCC's {round} of NEET PG {year} (All India Quota, open category): {list}. Category, state quota and deemed seats close at different ranks.",
+        long: true,
+      },
+    },
+  },
   "page.pg_states.hero": {
     group: "Page: PG states",
     fields: hero({
