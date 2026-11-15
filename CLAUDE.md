@@ -2834,6 +2834,16 @@ Owner: "itne pending task complete karo" (Meta's Conversions API token comes lat
   a Diploma/DNB branch page takes a search only when it says diploma/dnb; a DNB search needs a DNB figure; a `city-*`
   builder never answers a named college. Audit again with `node --env-file=.env.local scripts/tmp/bot_audit.mjs` and
   `scripts/tmp/bot_list.mjs` (every live answer with its page and builder) — read every new line, not a sample.
+  **Second audit, 2026-11-15** (130 live): 3 wrong, switched off — "institute of naval medicine mumbai pg stipend" (MD
+  General Medicine's Mumbai figure: "naval medicine" read as the branch), "interventional radiology seats in india" (MD
+  Radiology's seats; it is a DM course), "msp fee schedule general surgery" (British Columbia's billing). And **four bond
+  answers had never shown**: the builder's page carried a "#state" anchor and a page reads its answers by path. Since:
+  pages are stored without "#…" (and read without it); `SUPER_SPECIALTY` in lib/huntBranch.ts (interventional radiology,
+  cardiology, neurology, critical care…) stops the branch and India-seat builders; a named college/institute/hospital we
+  cannot find gets no city, state or India figure from the branch-money path; `notOurs` refuses billing words (msp, ohip,
+  medicare, cpt, fee schedule) and is re-checked at render; a Delhi/Puducherry stipend search takes the state's figure
+  (Delhi's stipend page counts 92 colleges, the city answer 15). Local check of every live answer:
+  `npx tsx --tsconfig scripts/tmp/harness/tsconfig.json --env-file=.env.local scripts/tmp/harness/faq_audit.ts`.
 - **Research specs (Sonnet agents, 2026-11-11), in `D:/Admisson Hands/seo_data/research_2026_11/`:** `lead_magnet_pdf.md`
   (state PG fee & stipend PDF over WhatsApp: tap → prefilled message → free-form document reply inside the 24-hour window;
   Maharashtra first), `hinglish_pages.md` (no /hi/ section; a Hinglish FAQ block on 8 existing pages and two "kaise hoti hai"

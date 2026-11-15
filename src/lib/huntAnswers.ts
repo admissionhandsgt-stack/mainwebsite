@@ -17,7 +17,7 @@ import { getStateNotices, getHubNotices, stateKey, FEED_STATE } from "@/lib/stat
 import { ALERT_SOURCES } from "@/lib/alertFeed";
 import { getCounselPgStates, getCounselUgStates } from "@/lib/counselStates";
 import { officialLink } from "@/lib/zynNotices";
-import { branchWord, branchRound, branchSeats, branchState, collegeBranch, roundIn, roundOverall, withoutBranchWords, INI_CET } from "@/lib/huntBranch";
+import { branchWord, branchRound, branchSeats, branchState, collegeBranch, roundIn, roundOverall, withoutBranchWords, INI_CET, SUPER_SPECIALTY } from "@/lib/huntBranch";
 import { branchMoneyDraft, cityMoneyDraft, type MoneyScope } from "@/lib/branchMoney";
 import { cityIn, CITY_WORDS } from "@/lib/cityKey";
 import { approxFeeFor } from "@/lib/chance";
@@ -663,6 +663,8 @@ const AUTHORITY_NAMED =
   /\b(kea|bopee|jkbopee|bceceb|bceceboard|pgmac|ugmac|wbmcc|bfuhs|hnbumu|amru|centac|uhsr|knruhs|kaloji|ntruhs|drntruhs|uhsap|acppgmec|acpugmec|medadmgujarat|upneet|mahacet|cet cell|jceceb|ojee|pgmcc|trmcc|tnmedicalselection|mcc|nbems|natboard)\b/i;
 /** A college's or a university's own site is not a counselling's. */
 const A_COLLEGE = /\b(college|institute|hospital|aiims|jipmer|pgimer|university)\b/i;
+/** Words beside a branch's fee that name no college ("radiology course fees in private college"). */
+const MONEY_FILLER = new Set(["course", "courses", "programme", "program", "degree", "near", "only"]);
 const day = (iso: string | Date | null) => {
   if (!iso) return null;
   const d = new Date(iso);
@@ -837,6 +839,11 @@ async function pickDraft(q: string, all: string, hasText: boolean, states: PgSta
     // A place word can be a college's own name ("Madras Medical College", "Bangalore Medical College"): when the search
     // says college / institute / hospital, a single college that matches wins over the city.
     const c = onlyPlace && !A_COLLEGE.test(q) ? null : await collegeIn(rest, states);
+    // A college, institute or hospital named that we could not find is answered by nobody — never by its city's,
+    // state's or India's figures ("institute of naval medicine mumbai pg stipend", 2026-11-15 audit). Generic words
+    // ("fees in private college") name no one.
+    const named = fold(rest).trim().split(" ").filter((w) => w.length >= 3 && !placeWord(w) && !MONEY_FILLER.has(w));
+    if (!c && A_COLLEGE.test(q) && named.length) return null;
     const st = stateIn(q, states);
     let scope: MoneyScope;
     if (c) {
@@ -868,6 +875,14 @@ async function pickDraft(q: string, all: string, hasText: boolean, states: PgSta
   }
   if (placeOnly && !bw && !namedCollege) {
     const city = cityIn(q);
+    // Delhi, Chandigarh and Puducherry are a city and a state at once: a stipend search there is the state's — its
+    // stipend page counts 92 Delhi colleges where the city answer counted 15 (2026-11-15 audit).
+    // A state too small for a stipend figure (Chandigarh) keeps the city's answer.
+    if (city && STIPEND.test(q) && ["delhi", "chandigarh", "puducherry"].includes(city.slug)) {
+      const st = stateIn(q, states);
+      const d = st ? await stateStipend(st).catch(() => null) : null;
+      if (d) return d;
+    }
     if (city) return cityMoneyDraft(/fee|cost|tuition/i.test(q) ? "fees" : "stipend", city);
   }
   if (moneyAsked && !placeOnly) {
@@ -914,7 +929,7 @@ async function pickDraft(q: string, all: string, hasText: boolean, states: PgSta
     if (d) return d;
   }
   // India's seat totals — never for a search that names a branch or a super-speciality ("dnb dermatology seats").
-  if (SEATS.test(q) && !bw && !/\b(dnb|drnb|m\.?\s?ch|dm|diploma)\s+(in\s+)?[a-z]{3,}/i.test(q)) {
+  if (SEATS.test(q) && !bw && !SUPER_SPECIALTY.test(q) && !/\b(dnb|drnb|m\.?\s?ch|dm|diploma)\s+(in\s+)?[a-z]{3,}/i.test(q)) {
     const d = await seats();
     if (d) return d;
   }

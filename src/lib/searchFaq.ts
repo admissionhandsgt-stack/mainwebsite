@@ -108,14 +108,17 @@ export async function offerSearchFaq(
 ): Promise<false | "data" | "official"> {
   const q = item.query.trim().toLowerCase();
   if (!item.page || q.split(/\s+/).length < 3 || notOurs(q)) return false;
-  let page = item.page;
+  // A page is stored without its "#section": the page renders its answers by path, so "/md-ms-india/bond#karnataka"
+  // never showed (four bond answers sat unseen, 2026-11-15 audit).
+  const bare = (p: string) => p.split("#")[0];
+  let page = bare(item.page);
   let room = await roomOn(page, q);
   if (room.same > 0 || room.live >= PER_PAGE) return false;
   const d = ASKS.test(q) ? await draftFor(q) : null;
   // "jk neet pg website" belongs on that state's own page: kept where Google shows it when that page is the state's
   // (any of its pages ends in the state's slug), else moved to the answer's page — the state's counselling page.
-  if (d && page !== d.page && (d.kind === "authority" ? lastPart(page) !== lastPart(d.page) : !pageFits(page, d, q))) {
-    page = d.page;
+  if (d && page !== bare(d.page) && (d.kind === "authority" ? lastPart(page) !== lastPart(bare(d.page)) : !pageFits(page, { ...d, page: bare(d.page) }, q))) {
+    page = bare(d.page);
     room = await roomOn(page, q);
     if (room.same > 0 || room.live >= PER_PAGE) return false;
   }
@@ -128,7 +131,7 @@ export async function offerSearchFaq(
       // Remember the miss, so the same search is not paid for again every hour.
       await db.execute(sql`
         INSERT INTO search_faqs (page, question, kind, status, impressions, position, checked_on)
-        VALUES (${item.page}, ${q}, 'official', 'none', ${item.impressions ?? null}, ${item.position ?? null}, current_date)
+        VALUES (${page}, ${q}, 'official', 'none', ${item.impressions ?? null}, ${item.position ?? null}, current_date)
         ON CONFLICT (page, lower(question)) DO UPDATE
           SET status = CASE WHEN search_faqs.status = 'removed' THEN 'removed' ELSE 'none' END, checked_on = current_date, updated_at = now()`);
       return false;
@@ -136,7 +139,7 @@ export async function offerSearchFaq(
     // A staff member's "Remove" stays removed even when the page is found again.
     await db.execute(sql`
       INSERT INTO search_faqs (page, question, kind, impressions, position, answer, source_url, as_of, checked_on)
-      VALUES (${item.page}, ${q}, 'official', ${item.impressions ?? null}, ${item.position ?? null},
+      VALUES (${page}, ${q}, 'official', ${item.impressions ?? null}, ${item.position ?? null},
               ${JSON.stringify({ lead: o.lead, points: o.points, title: o.sourceTitle })}::jsonb, ${o.sourceUrl}, ${o.asOf}, current_date)
       ON CONFLICT (page, lower(question)) DO UPDATE
         SET answer = EXCLUDED.answer, source_url = EXCLUDED.source_url, as_of = EXCLUDED.as_of, checked_on = current_date,
@@ -203,7 +206,7 @@ const livePages = unstable_cache(
          ORDER BY impressions DESC NULLS LAST, id`)) as unknown as (LiveRow & { page: string; answer: unknown })[];
       const out: Record<string, LiveRow[]> = {};
       for (const x of r)
-        (out[x.page] ??= []).push({ ...x, answer: typeof x.answer === "string" ? (JSON.parse(x.answer) as LiveRow["answer"]) : (x.answer as LiveRow["answer"]) });
+        (out[x.page.split("#")[0]] ??= []).push({ ...x, answer: typeof x.answer === "string" ? (JSON.parse(x.answer) as LiveRow["answer"]) : (x.answer as LiveRow["answer"]) });
       return out;
     } catch {
       return {};
@@ -232,6 +235,8 @@ export async function getSearchFaqs(path: string | null): Promise<SearchFaq[]> {
           official: { url: x.source_url, title: x.answer.title, asOf: x.as_of, checkedOn: x.checked_on ?? "" },
         };
       }
+      // A search the guards now refuse is not shown even if it was placed before them.
+      if (notOurs(x.question)) return null;
       const d = await answer(x.question).catch(() => null);
       return d ? { id: x.id, question: x.question, heading: asHeading(x.question), draft: d } : null;
     }),

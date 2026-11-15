@@ -73,13 +73,22 @@ export const BRANCH_WORDS: { q: RegExp; course: RegExp; name: string }[] = [
 
 export type BranchWord = (typeof BRANCH_WORDS)[number];
 /** The branch a search names, if any — never for a surgery or medicine qualified by a word we do not list. */
+/** DM / MCh courses people name without the degree ("interventional radiology", "critical care medicine"): NEET SS, not
+ *  NEET PG. Shared with the national seat answer, so India's MD/MS total never answers them either. */
+export const SUPER_SPECIALTY =
+  /\b(interventional|neuro ?-?radiology|neuroradiology|cardiology|neurology|nephrology|gastroenterology|endocrinology|rheumatology|hepatology|neonatology|medical oncology|surgical oncology|clinical (h(a)?ematology|immunology|pharmacology)|critical care|infectious diseases?)\b/i;
+
 export function branchWord(q: string): BranchWord | null {
   // DM / MCh / DrNB are super-specialities (NEET SS): "mch head and neck surgery" is not general surgery.
   if (/\b(m\.?\s?ch|dm|drnb|super ?speciality)\b/i.test(q)) return null;
+  // …and so are these named on their own: "interventional radiology seats in india" is not MD Radiology's seats, and
+  // "critical care medicine" is not General Medicine (2026-11-15 audit).
+  if (SUPER_SPECIALTY.test(q)) return null;
   const b = BRANCH_WORDS.find((x) => x.q.test(q)) ?? null;
   if (!b) return null;
   if (b.course.source.includes("general surgery") && /\b(plastic|neuro|cardio\w*|paediatric|pediatric|uro\w*|vascular|oncolog\w*|gastro\w*|thoracic|oral|maxillo\w*)\s*surgery/i.test(q)) return null;
-  if (b.course.source.includes("general medicine") && /\b(lab(oratory)?|marine|space|internal)\s+medicine/i.test(q)) return null;
+  // "Institute of Naval Medicine" had MD General Medicine's Mumbai stipend (2026-11-15 audit).
+  if (b.course.source.includes("general medicine") && /\b(lab(oratory)?|marine|space|internal|naval|military|army|defen[cs]e)\s+medicine/i.test(q)) return null;
   return b;
 }
 

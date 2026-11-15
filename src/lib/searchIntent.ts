@@ -10,10 +10,12 @@ const DOCTOR = /\b(dermatologist|p(a)?ediatrician|gyn(a)?ecologist|radiologist|o
 const COURSE = /\b(pg|md|ms|dnb|neet|seats?|course|admission|cut ?off|college|stipend|residency|resident)\b/i;
 const FOREIGN = /\b(msra|plab|usmle|ukmla|mrcp|mrcs|frcs|dha|haad|dhamcq|prometric|nclex|fmge|nmle|step ?[123]|abroad|uk|usa|canada|australia|germany|nhs)\b/i;
 const SALARY = /\bsalar(y|ies)\b/i;
+/** Another country's doctors' billing — "msp fee schedule general surgery" is British Columbia's (2026-11-15 audit). */
+const BILLING = /\b(msp|ohip|medicare|medicaid|tricare|cpt|rvu|billing|fee schedule)\b/i;
 const RESIDENT = /\b(pg|resident|residency|stipend|junior|jr|senior|sr)\b/i;
 
 export function notOurs(q: string): boolean {
-  if (PATIENT.test(q) || FOREIGN.test(q)) return true;
+  if (PATIENT.test(q) || FOREIGN.test(q) || BILLING.test(q)) return true;
   if (DOCTOR.test(q) && !COURSE.test(q)) return true;
   return SALARY.test(q) && !RESIDENT.test(q);
 }
