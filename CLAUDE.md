@@ -3320,8 +3320,15 @@ for 8–9 Oct (root-only). Remedy: Request indexing for the affected URLs.
   it to students. **A counsellor card after the main table** of branch, PG state, stipend (hub and state)
   and NEET PG cutoff pages (`components/lead/DataPageCounsel` → `CounselCard`; words in "Counsellor card on
   data pages") — those pages had their only counsellor block under the FAQs, and branch pages none.
-- **IndexNow daily since 2026-11-10:** `POST /api/cron/indexnow` (server crontab 06:25 UTC, heartbeat `indexnow`) sends every
-  sitemap URL whose lastmod is in the last two days (all 4,119 were sent by hand that day).
+- **IndexNow hourly, streamed, since 2026-11-15** (was one daily batch from 2026-11-10, which Bing Webmaster Tools flagged
+  "IndexNow is in batch mode"): `POST /api/cron/indexnow` (server crontab minute 25, heartbeat `indexnow`, 3 h) sends sitemap
+  pages whose lastmod moved since they were last sent (`indexnow_sent`, migration 0064 — seeded with every page's lastmod on
+  15 Nov), at most 100 an hour, hubs and states first, changes up to 7 days old. A big import drains over a day.
+  The old line is in `/opt/admissionhands/backups/crontab-before-indexnow-hourly.txt`.
+- **Bing's "Important URLs … cannot appear in Copilot" (NOARCHIVE, 44 pages, seen 2026-11-15)** is a stale scan: no page
+  serves noarchive (only /admin does), and Bing's own URL Inspection of a listed page (GMC Eluru) says "Indexed
+  successfully · No SEO/GEO issues found". Re-check the recommendation in a few weeks; it should clear on recrawl. Bing's
+  AI Performance (Copilot citations) is at bing.com/webmasters/aiperformance — it errored on 15 Nov, look again.
 - **IndexNow** (Bing, Yandex, Naver, Seznam): `node scripts/indexnow.mjs --since <date>` after a change,
   or with paths. The key file `public/<32 hex>.txt` is public by design. All 3,630 URLs submitted
   2026-10-08. Cloudflare's Crawler Hints would automate this but cannot be enabled by API token (10405).
