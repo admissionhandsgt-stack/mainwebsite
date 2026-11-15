@@ -241,7 +241,16 @@ export async function getSearchFaqs(path: string | null): Promise<SearchFaq[]> {
       return d ? { id: x.id, question: x.question, heading: asHeading(x.question), draft: d } : null;
     }),
   );
-  return out.filter((x): x is SearchFaq => Boolean(x));
+  // Two searches can come to the same answer once a builder changes ("delhi pg stipend" was stored as the city answer,
+  // "pg stipend in delhi" as the state's, and both read the state's after the 2026-11-15 fix): print each answer once.
+  const seen = new Set<string>();
+  return out.filter((x): x is SearchFaq => {
+    if (!x) return false;
+    const key = x.draft.lead.trim();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 export async function listSearchFaqs(): Promise<{ id: number; page: string; question: string; kind: string | null; status: string; created_at: string }[]> {
