@@ -32,7 +32,7 @@ const MAX_AGE: Record<string, number> = {
   "outreach-inbox": 3 * 60 * MIN, // hourly at :47
   "outreach-discover": 8 * 24 * 60 * MIN, // Tuesdays 05:50 UTC
   hunt: 26 * 60 * MIN, // daily 06:05 UTC
-  indexnow: 26 * 60 * MIN, // daily 06:25 UTC: changed URLs to Bing (IndexNow)
+  indexnow: 3 * 60 * MIN, // hourly at minute 25: changed URLs to Bing (IndexNow), 100 at a time
   "serp-research": 3 * 60 * MIN, // hourly at :50: autocomplete + what the web answers for our searches (Tavily)
   "index-status": 14 * 60 * MIN, // 03:35 and 15:35 UTC: Google index status of the oldest-checked sitemap URLs
 };

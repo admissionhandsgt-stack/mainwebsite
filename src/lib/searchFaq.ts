@@ -117,7 +117,19 @@ export async function offerSearchFaq(
   const d = ASKS.test(q) ? await draftFor(q) : null;
   // "jk neet pg website" belongs on that state's own page: kept where Google shows it when that page is the state's
   // (any of its pages ends in the state's slug), else moved to the answer's page — the state's counselling page.
-  if (d && page !== bare(d.page) && (d.kind === "authority" ? lastPart(page) !== lastPart(bare(d.page)) : !pageFits(page, { ...d, page: bare(d.page) }, q))) {
+  // A hub (the stipend, fees or cut-off page) never keeps an answer whose own page is a specific one — a state's stipend,
+  // a college, a branch: two of our pages would then compete for one search ("rajasthan pg stipend" showed the national
+  // stipend page at 6.2 and the Rajasthan page at 3.6 — 2026-11-15, from the owner's cannibalisation reel).
+  const target = d ? bare(d.page) : "";
+  if (
+    d &&
+    page !== target &&
+    (d.kind === "authority"
+      ? lastPart(page) !== lastPart(target)
+      : !SPECIFIC.test(page)
+        ? SPECIFIC.test(target)
+        : !pageFits(page, { ...d, page: target }, q))
+  ) {
     page = bare(d.page);
     room = await roomOn(page, q);
     if (room.same > 0 || room.live >= PER_PAGE) return false;
