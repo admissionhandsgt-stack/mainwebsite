@@ -1,7 +1,7 @@
 import { ExternalLink, FileText } from "lucide-react";
 import type { ReactNode } from "react";
 import Link from "@/components/ui/Link";
-import { money, safeUrl, sourcesOf, STATUS_LABEL, type BondStatus, type Json, type JsonObject, type OfficialCollege, type Source } from "@/lib/officialBond";
+import { money, noOwnBond, safeUrl, sourcesOf, STATUS_LABEL, type BondStatus, type Json, type JsonObject, type OfficialCollege, type Source } from "@/lib/officialBond";
 
 /**
  * Pieces the official bond pages share (2026-11-16): the source line under every figure, the status of a college's row, a
@@ -214,8 +214,8 @@ export function SourcedNote({ text }: { text: string }) {
 /** A college's own service bond, in words: "1 year · ₹10 L if not served", or branch by branch. */
 export function collegeBondText(c: OfficialCollege): string | null {
   if (c.status === "not_verified") return null;
-  if (c.status === "none_in_official_documents") return "No service bond in its own PG documents";
-  if (c.years === 0 && !c.amount && !c.branches) return "No service bond of its own";
+  if (c.status === "none_in_official_documents") return "0 years · no service bond in its own PG documents";
+  if (noOwnBond(c)) return "0 years · no service bond of its own";
   const parts = [c.years ? `${c.years} year${c.years === 1 ? "" : "s"}` : null, c.amount ? `${money(c.amount)} if not served` : null].filter(Boolean);
   return parts.length ? parts.join(" · ") : c.what;
 }
@@ -258,7 +258,7 @@ export function CollegeBondTable({ id, colleges, ask }: { id: string; colleges: 
               <tr
                 key={`${c.instituteId}-${c.name}`}
                 data-row=""
-                data-f-status={c.status.startsWith("official") ? "official" : c.status === "none_in_official_documents" ? "none" : "ask"}
+                data-f-status={noOwnBond(c) ? "none" : c.status.startsWith("official") ? "official" : "ask"}
                 data-f-type={c.type.toLowerCase().startsWith("deemed") ? "deemed" : "private"}
                 data-s-name={c.name.toLowerCase()}
                 {...(c.amount ? { "data-s-amt": c.amount } : c.branches ? { "data-s-amt": Math.max(...c.branches.map((b) => b[1])) } : {})}

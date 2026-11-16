@@ -26,7 +26,7 @@ import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/S
 import ExpertPromise from "@/components/counsel/ExpertPromise";
 import { FaqList, HowWeWork, LinkCards, RouteCards, StateChips, pairs } from "@/components/counsel/CounselBlocks";
 import FeePdfCta from "@/components/lead/FeePdfCta";
-import { getOfficialStateByName, govtBond, rangeText, yearsText } from "@/lib/officialBond";
+import { getOfficialStateByName, govtBond, rangeText, yearsText, serviceYears } from "@/lib/officialBond";
 import WhereNow from "@/components/counsel/WhereNow";
 
 /**
@@ -90,7 +90,8 @@ async function load(slug: string) {
       : og.flag === "lead"
         ? null
         : (() => {
-            const parts = [yearsText(og.years, og.yearsMax) ? `${yearsText(og.years, og.yearsMax)} of government service` : null, rangeText(og.min, og.max) ? `${rangeText(og.min, og.max)} if not served` : null].filter(Boolean);
+            const parts = [serviceYears(og), rangeText(og.min, og.max) ? `${rangeText(og.min, og.max)} if not served` : null].filter(Boolean);
+            if (og.zero) return `${p.name}'s government colleges carry no service bond (0 years): none is stated in the state's own 2026-27 documents.`;
             return parts.length ? `${p.name}'s government colleges bind MD/MS graduates to ${parts.join(", ")}, as the state's own 2026-27 rules print it.` : null;
           })()
     : null;

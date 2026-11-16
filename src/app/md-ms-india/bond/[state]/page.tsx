@@ -73,6 +73,7 @@ async function load(slug: string) {
 }
 
 function bondShort(g: ReturnType<typeof govtBond>) {
+  if (g.zero) return "No Service Bond (0 Years)";
   const y = yearsText(g.years, g.yearsMax);
   const r = rangeText(g.min, g.max);
   return y && r ? `${y.replace(/years?/, (m) => (m === "year" ? "Year" : "Years"))}, ${r.replace(/ – /, "–")}` : r ?? (y ? y.replace(/years?/, (m) => (m === "year" ? "Year" : "Years")) : null);
@@ -90,7 +91,9 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       ? `no government service bond notified for ${d.session} yet`
       : d.g.flag === "lead"
         ? "the government bond not yet confirmed in an official notice"
-        : short
+        : d.g.zero
+          ? "no service bond for government colleges (0 years)"
+          : short
           ? `government colleges ${yearsText(d.g.years, d.g.yearsMax) ?? ""}${rangeText(d.g.min, d.g.max) ? ` or ${rangeText(d.g.min, d.g.max)} if not served` : ""}`.replace("  ", " ")
           : "the government-college bond as the rules print it";
   return resolveMetadata(`/md-ms-india/bond/${d.state.slug}`, {
@@ -138,8 +141,9 @@ export default async function BondStatePage(props: Props) {
 
   // --------------------------------------------------------------- the hero's answer, from the rules
   const amountRows = isObj(gsb.amount_inr) ? Object.entries(gsb.amount_inr).filter(([, v]) => typeof v === "number") : [];
-  const govtSentence =
-    g.flag === "not_notified"
+  const govtSentence = g.zero
+    ? `${name}'s government colleges carry no service bond (0 years): none is stated in the state's own 2026-27 documents.`
+    : g.flag === "not_notified"
       ? c.govt_not_notified
       : g.flag === "lead"
         ? c.govt_lead

@@ -2154,6 +2154,12 @@ states + MCC, 302 colleges, every figure with its URL, page and quote. It replac
   government college) and a "Does <college> have a PG bond?" FAQ, and SeatTerms hides the listing's bond and exit
   (`hideBond`); stipend state and NEET PG counselling state pages use the official rule. In the states sitemap (dated by
   the reading), llms.txt, and the edge's DATA_PAGE.
+- **"0 years" where the documents carry no bond (owner, same day: "jaha par … notice par bond nhi hai wha verify karke 0
+  years bond karo").** Only where a document was read: a college with status none_in_official_documents or an official row
+  saying "No … bond" / "None" / 0 years (`noOwnBond`, 107 colleges) reads "0 years · no service bond…"; a state whose own
+  documents state no service bond (`govtBond().zero`: Delhi, J&K for its domicile, Puducherry) reads "no service bond (0
+  years)" (`serviceYears`). Never for not_verified rows, Haryana (not notified), MP (a bond form, no figures) or Jharkhand
+  (a lead).
 - **No per-figure source lists (owner, same day: "source karke original notice die hai wo hatado last mai ek jagah
   likhdo sourced from official updates").** `Sources` renders nothing (`SHOW_SOURCES = false` in
   components/bond/OfficialBond.tsx — the data keeps every URL/page/quote) and the tables have no "Document" column; bond and

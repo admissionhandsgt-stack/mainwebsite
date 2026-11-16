@@ -22,7 +22,7 @@ import { branchMoneyDraft, cityMoneyDraft, type MoneyScope } from "@/lib/branchM
 import { cityIn, CITY_WORDS } from "@/lib/cityKey";
 import { approxFeeFor } from "@/lib/chance";
 import { cityPagePath } from "@/lib/cityQueries";
-import { bindsAiq, getOfficialBond, getOfficialStateByName, govtBond, hasOwnBond, money, rangeText, yearsText } from "@/lib/officialBond";
+import { bindsAiq, getOfficialBond, getOfficialStateByName, govtBond, hasOwnBond, money, rangeText, yearsText, serviceYears } from "@/lib/officialBond";
 import { getOfficialStipend, getOfficialStipendState, hasOwnStipend, type GovtStipend } from "@/lib/officialStipend";
 
 /**
@@ -427,7 +427,8 @@ async function officialBondLine(state: string): Promise<string | null> {
   const g = govtBond(off);
   if (g.flag === "not_notified") return `${state} has not notified a government service bond for the 2026-27 batch yet.`;
   if (g.flag === "lead") return null;
-  const parts = [yearsText(g.years, g.yearsMax) ? `${yearsText(g.years, g.yearsMax)} of government service` : null, rangeText(g.min, g.max) ? `${rangeText(g.min, g.max)} if not served` : null].filter(Boolean);
+  const parts = [serviceYears(g), rangeText(g.min, g.max) ? `${rangeText(g.min, g.max)} if not served` : null].filter(Boolean);
+  if (g.zero) return `Government colleges here carry no service bond (0 years): none is stated in the state's own 2026-27 documents.`;
   return parts.length ? `Government colleges here bind you to ${parts.join(", ")}${bindsAiq(off) ? ", All India Quota seats included" : ""} (the state's own 2026-27 rules).` : null;
 }
 
@@ -538,7 +539,7 @@ async function bond(st: PgState | null): Promise<Draft | null> {
     const own = official!.colleges.filter((c) => c.state === os.state);
     const ownBond = own.filter(hasOwnBond);
     const rows = Array.isArray(os.data.seat_leaving) ? (os.data.seat_leaving as Record<string, unknown>[]).filter((r) => r && typeof r === "object") : [];
-    const parts = [yearsText(g.years, g.yearsMax) ? `${yearsText(g.years, g.yearsMax)} of government service` : null, rangeText(g.min, g.max) ? `${rangeText(g.min, g.max)} if it is not served` : null].filter(Boolean);
+    const parts = [serviceYears(g), rangeText(g.min, g.max) ? `${rangeText(g.min, g.max)} if it is not served` : null].filter(Boolean);
     return {
       page: `/md-ms-india/bond/${os.slug}`,
       kind: "bond-state",
@@ -548,7 +549,9 @@ async function bond(st: PgState | null): Promise<Draft | null> {
           : g.flag === "lead"
             ? `${os.state}'s government service bond is not confirmed in an official notice for 2026-27; ask the college before you sign.`
             : parts.length
-              ? `In ${os.state}, government colleges bind MD/MS graduates to ${parts.join(", ")}, under the state's own 2026-27 rules.`
+              ? g.zero
+                ? `In ${os.state}, government colleges carry no service bond (0 years): none is stated in the state's own 2026-27 documents. Its rules still set what leaving a seat costs.`
+                : `In ${os.state}, government colleges bind MD/MS graduates to ${parts.join(", ")}, under the state's own 2026-27 rules.`
               : `${os.state}'s own 2026-27 rules set the government-college bond as printed on its bond page.`,
       points: [
         ...(bindsAiq(os) ? ["The bond binds All India Quota seats in the state's government colleges too."] : []),

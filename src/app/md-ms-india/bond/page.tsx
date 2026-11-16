@@ -103,11 +103,13 @@ export default async function BondPage() {
   };
   const notNotified = (f?.rows ?? []).filter((r) => r.g.flag === "not_notified").map((r) => r.s.state);
   const lead = (f?.rows ?? []).filter((r) => r.g.flag === "lead").map((r) => r.s.state);
-  const noFigure = (f?.rows ?? []).filter((r) => !r.g.flag && !r.g.years && !r.g.min).map((r) => r.s.state);
+  const noFigure = (f?.rows ?? []).filter((r) => !r.g.flag && !r.g.zero && !r.g.years && !r.g.min).map((r) => r.s.state);
+  const zeroStates = (f?.rows ?? []).filter((r) => r.g.zero).map((r) => r.s.state);
   const bondStates = (f?.rows ?? []).filter((r) => !r.g.flag && (r.g.years || r.g.min));
   const otherLine = [
     notNotified.length ? `${list(notNotified)} ${notNotified.length > 1 ? "have" : "has"} not notified one for ${f?.session} yet.` : "",
     lead.length ? `${list(lead)}'s is not confirmed in an official notice yet.` : "",
+    zeroStates.length ? `${list(zeroStates)} carry no government service bond (0 years): none is stated in their 2026-27 documents.` : "",
     noFigure.length ? `${list(noFigure)} print no fixed figure; their pages give the rules as printed.` : "",
   ]
     .filter(Boolean)
@@ -251,7 +253,7 @@ export default async function BondPage() {
                         </Link>
                       </th>
                       <td className="px-4 py-2.5">
-                        {g.flag === "not_notified" ? "Not notified yet" : g.flag === "lead" ? "Not confirmed yet" : (yearsText(g.years, g.yearsMax) ?? <span className="text-muted-foreground">As printed</span>)}
+                        {g.flag === "not_notified" ? "Not notified yet" : g.flag === "lead" ? "Not confirmed yet" : g.zero ? "0 years (no service bond)" : (yearsText(g.years, g.yearsMax) ?? <span className="text-muted-foreground">As printed</span>)}
                       </td>
                       <td className="tnum px-4 py-2.5 text-right font-semibold">
                         {g.flag !== "lead" && rangeText(g.min, g.max) ? rangeText(g.min, g.max) : <span className="font-normal text-muted-foreground">{g.words ? "No fixed figure" : "—"}</span>}

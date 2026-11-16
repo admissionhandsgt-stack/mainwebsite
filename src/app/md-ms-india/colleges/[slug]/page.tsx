@@ -32,7 +32,7 @@ import { CollegeOfficialStipend } from "@/components/stipend/OfficialStipend";
 import { getOfficialCollegeStipend, getOfficialStipendState } from "@/lib/officialStipend";
 import { getStipends } from "@/lib/cutoffHubQueries";
 import { collegeBondText } from "@/components/bond/OfficialBond";
-import { getOfficialCollegeBond, getOfficialStateByName, govtBond, isCentralInstitution, rangeText, yearsText } from "@/lib/officialBond";
+import { getOfficialCollegeBond, getOfficialStateByName, govtBond, isCentralInstitution, rangeText, yearsText, serviceYears } from "@/lib/officialBond";
 import TelegramStrip from "@/components/engage/TelegramStrip";
 import { jsonLd as toJsonLd } from "@/lib/jsonLd";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
@@ -173,13 +173,15 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
       : bondStateRule
         ? (() => {
             const g = govtBond(bondStateRule);
-            const parts = [yearsText(g.years, g.yearsMax) ? `${yearsText(g.years, g.yearsMax)} of government service` : null, rangeText(g.min, g.max) ? `${rangeText(g.min, g.max)} if not served` : null].filter(Boolean);
+            const parts = [serviceYears(g), rangeText(g.min, g.max) ? `${rangeText(g.min, g.max)} if not served` : null].filter(Boolean);
             return g.flag === "not_notified"
               ? `${bondStateRule.state} has not notified a government service bond for this batch yet.`
               : g.flag === "lead"
                 ? `${bondStateRule.state}'s government bond is not confirmed in an official notice yet; ask the college before you sign.`
                 : parts.length
-                  ? `As a ${bondStateRule.state} government college it carries the state's bond: ${parts.join(", ")}, as the state's own rules print it.`
+                  ? g.zero
+                    ? `As a ${bondStateRule.state} government college it carries no service bond (0 years): none is stated in the state's own 2026-27 documents.`
+                    : `As a ${bondStateRule.state} government college it carries the state's bond: ${parts.join(", ")}, as the state's own rules print it.`
                   : null;
           })()
         : null;

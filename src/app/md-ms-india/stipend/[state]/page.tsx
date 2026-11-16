@@ -7,7 +7,7 @@ import { resolveMetadata } from "@/lib/content";
 import { getStateStipend } from "@/lib/cutoffHubQueries";
 import { getPgStates } from "@/lib/pgStateQueries";
 import { getBondByState } from "@/lib/pgSeatData";
-import { bindsAiq, getOfficialBondState, govtBond, hasOwnBond, rangeText, yearsText } from "@/lib/officialBond";
+import { bindsAiq, getOfficialBondState, govtBond, hasOwnBond, rangeText, yearsText, serviceYears } from "@/lib/officialBond";
 import { SourcedNote, Sources } from "@/components/bond/OfficialBond";
 import { getOfficialStipendState, hasOwnStipend, type GovtStipend } from "@/lib/officialStipend";
 import { CollegeStipendTable, GovtStipendCard, kindLabel, NationalRules } from "@/components/stipend/OfficialStipend";
@@ -142,7 +142,7 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
       ? `${s.state} has not notified a government service bond for this batch yet.`
       : og.flag === "lead"
         ? `${s.state}'s government bond is not confirmed in an official notice yet.`
-        : [yearsText(og.years, og.yearsMax) ? `${yearsText(og.years, og.yearsMax)} of government service` : null, rangeText(og.min, og.max) ? `${rangeText(og.min, og.max)} if not served` : null]
+        : [serviceYears(og), rangeText(og.min, og.max) ? `${rangeText(og.min, og.max)} if not served` : null]
             .filter(Boolean)
             .join(", ") || og.words || null
     : null;

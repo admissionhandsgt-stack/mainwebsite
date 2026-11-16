@@ -1,6 +1,6 @@
 import { ScrollText } from "lucide-react";
 import Link from "@/components/ui/Link";
-import { bindsAiq, govtBond, rangeText, yearsText, type OfficialCollege, type OfficialState, sourcesOf } from "@/lib/officialBond";
+import { bindsAiq, govtBond, rangeText, yearsText, type OfficialCollege, type OfficialState, sourcesOf, serviceYears } from "@/lib/officialBond";
 import { BranchAmounts, collegeBondText, Sources, StatusChip } from "@/components/bond/OfficialBond";
 
 /**
@@ -84,7 +84,7 @@ export default function CollegeOfficialBond({
       ? `${state!.state} has not notified a government service bond for this batch yet.`
       : g.flag === "lead"
         ? `${state!.state}'s government bond is not confirmed in an official notice yet: ask the college before you sign.`
-        : [yearsText(g.years, g.yearsMax) ? `${yearsText(g.years, g.yearsMax)} of government service` : null, rangeText(g.min, g.max) ? `${rangeText(g.min, g.max)} if not served` : null]
+        : [serviceYears(g), rangeText(g.min, g.max) ? `${rangeText(g.min, g.max)} if not served` : null]
             .filter(Boolean)
             .join(", ") || g.words || "As the state's rules print it.";
   return (

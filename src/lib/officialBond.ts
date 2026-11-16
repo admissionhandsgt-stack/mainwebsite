@@ -141,6 +141,12 @@ export interface GovtBondSummary {
   flag: "not_notified" | "lead" | null;
   /** A non-numeric rule, as printed ("double the stipend received"), when there is no rupee figure. */
   words: string | null;
+  /**
+   * The state's own documents were read and carry no service bond for government colleges (owner, 2026-11-16: "jaha par
+   * … notice par bond nhi hai wha verify karke 0 years") — Delhi, J&K (its own domicile), Puducherry. Years are then 0.
+   * Never set for "not notified" (Haryana), "not stated" with a bond form (MP) or a lead (Jharkhand).
+   */
+  zero: boolean;
 }
 
 function numbersIn(v: Json | undefined, depth = 0): number[] {
@@ -151,7 +157,7 @@ function numbersIn(v: Json | undefined, depth = 0): number[] {
 
 export function govtBond(s: OfficialState): GovtBondSummary {
   const g = isObj(s.data.government_service_bond) ? s.data.government_service_bond : {};
-  const out: GovtBondSummary = { years: null, yearsMax: null, min: null, max: null, flag: null, words: null };
+  const out: GovtBondSummary = { years: null, yearsMax: null, min: null, max: null, flag: null, words: null, zero: false };
   if (g.notified === false) out.flag = "not_notified";
   if (g.lead_not_verified) out.flag = "lead";
   const ys = typeof g.years === "number" ? [g.years] : numbersIn(g.years as Json);
@@ -159,6 +165,11 @@ export function govtBond(s: OfficialState): GovtBondSummary {
   const amounts = numbersIn(g.amount_inr as Json);
   if (amounts.length && out.flag !== "lead") [out.min, out.max] = [Math.min(...amounts), Math.max(...amounts)];
   else if (typeof g.amount_inr === "string" && !LEAD.test(g.amount_inr)) out.words = g.amount_inr;
+  if (!out.flag && out.years == null && out.min == null && /\bno (pg |state )?service bond\b/i.test(str(g.what) ?? "")) {
+    out.zero = true;
+    out.years = 0;
+    out.yearsMax = 0;
+  }
   return out;
 }
 
@@ -271,6 +282,14 @@ export async function getOfficialStateByName(name: string): Promise<OfficialStat
 }
 
 /**
+ * A college's own documents were read and carry no service bond of its own: "0 years" (owner, 2026-11-16). Its status says
+ * so (none_in_official_documents), or an official row prints "0" years or says "No … bond" / "None" with no amount.
+ */
+export const noOwnBond = (c: OfficialCollege) =>
+  c.status === "none_in_official_documents" ||
+  (c.status.startsWith("official") && !c.amount && !c.branches && (c.years === 0 || (c.years == null && /^(no\b|none\b)/i.test(c.what ?? ""))));
+
+/**
  * A college prints its own service bond: years, an amount or branch-wise amounts on an official row. Many official rows
  * say the opposite in words ("No college service bond in the 2026-27 packet") and carry only a leaving penalty.
  */
@@ -291,6 +310,10 @@ export function money(v: number): string {
   if (v >= 1e5) return `₹${trim(v / 1e5)} L`;
   return `₹${v.toLocaleString("en-IN")}`;
 }
+
+/** "2 years of government service" / "no service bond (0 years)" — the service half of a state's government bond. */
+export const serviceYears = (g: GovtBondSummary): string | null =>
+  g.zero ? "no service bond (0 years)" : g.years != null && g.years > 0 ? `${yearsText(g.years, g.yearsMax)} of government service` : null;
 
 export const yearsText = (y: number | null, yMax?: number | null) =>
   y == null ? null : yMax && yMax !== y ? `${y}–${yMax} years` : `${y} year${y === 1 ? "" : "s"}`;

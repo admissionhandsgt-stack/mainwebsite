@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Info } from "lucide-react";
 import Link from "@/components/ui/Link";
-import { getOfficialStateByName, govtBond, rangeText, yearsText } from "@/lib/officialBond";
+import { getOfficialStateByName, govtBond, rangeText, yearsText, serviceYears } from "@/lib/officialBond";
 import { getOfficialStipend } from "@/lib/officialStipend";
 import { fitDescription, fitTitle } from "@/lib/seoTitle";
 import { resolveMetadata } from "@/lib/content";
@@ -103,7 +103,7 @@ export default async function CityPage(props: { params: Promise<{ city: string }
   const ob = offBondState ? govtBond(offBondState) : null;
   const obLine =
     ob && !ob.flag
-      ? [yearsText(ob.years, ob.yearsMax) ? `${yearsText(ob.years, ob.yearsMax)} of government service` : null, rangeText(ob.min, ob.max) ? `${rangeText(ob.min, ob.max)} if not served` : null].filter(Boolean).join(", ") || null
+      ? [serviceYears(ob), rangeText(ob.min, ob.max) ? `${rangeText(ob.min, ob.max)} if not served` : null].filter(Boolean).join(", ") || null
       : ob?.flag === "not_notified"
         ? "not notified for 2026-27 yet"
         : null;
