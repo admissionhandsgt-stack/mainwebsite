@@ -168,13 +168,13 @@ export function CollegeStipendTable({
             <span className="text-foreground">{c.name}</span>
           )}
           <span className="mt-0.5 block text-[12px] font-normal text-muted-foreground">
-            {c.type} · {fromListing ? (listedText ? LISTED : "NMC's at-par rule above") : sourceWords(c.status, c.session)}
+            {c.type} · {fromListing ? (listedText ? LISTED : "no published figure") : sourceWords(c.status, c.session)}
           </span>
         </th>
         <td className="px-4 py-2.5 text-[13.5px] leading-snug">
           {fromListing ? (
             <span className={listedText ? "tnum font-semibold text-foreground" : "text-foreground"}>
-              {listedText ?? "At par with the state's government colleges (NMC's rule above)"}
+              {listedText ?? "Not published by the college"}
             </span>
           ) : (
             <>
@@ -288,11 +288,8 @@ export function CollegeOfficialStipend({
             ))}
           </dl>
           <p className="mt-3 text-[13.5px] leading-relaxed text-muted-foreground">
-            A month, {LISTED}{listed.session ? ` (${listed.session})` : ""}, not the college's own document.
-            {!isGovt && state
-              ? ` By NMC's rule it must pay at par with ${state}'s government colleges${atPar && govtFigure(atPar, 0) ? `, which pay ${govtFigure(atPar, 0)} a month in year 1` : ""}.`
-              : ""}{" "}
-            Our counsellors confirm what it pays before you lock the seat.
+            A month, {LISTED}{listed.session ? ` (${listed.session})` : ""}, not the college's own document. Our counsellors confirm
+            what it actually pays before you lock the seat.
           </p>
         </>
       ) : row ? (
