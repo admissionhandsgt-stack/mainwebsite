@@ -1,6 +1,6 @@
 import { Landmark, Wallet } from "lucide-react";
 import Link from "@/components/ui/Link";
-import { LISTED, listedStipendText, Sources, sourceWords } from "@/components/bond/OfficialBond";
+import { LISTED, listedStipendText, Sources, sourceWords, stipendYearsText } from "@/components/bond/OfficialBond";
 import type { ListedTerms } from "@/lib/pgSeatData";
 import type { ReportedStipend } from "@/lib/collegeResearch";
 import { govtFigure, nmcReturn, rupee, STIPEND_STATUS, type GovtStipend, type NationalRule, type StipendCollege, type StipendStatus } from "@/lib/officialStipend";
@@ -119,8 +119,8 @@ export function StipendStatusChip({ status }: { status: StipendStatus }) {
 /** A college's own figure in words: "₹30,000 · ₹30,000 · ₹30,000", the document's words, or what the status says. */
 export function collegeStipendText(c: StipendCollege, ask = "Official figure not confirmed yet"): string {
   if (c.status === "not_verified") return ask;
-  if (c.status === "states_no_stipend") return "No PG stipend paid, as its own record says";
-  if (c.y[0]) return c.y.map((v) => (v ? rupee(v) : "—")).join(" · ");
+  if (c.status === "states_no_stipend") return `No PG stipend at present, as the college's own ${c.session?.match(/20\d\d-\d\d/)?.[0] ?? ""} document says`.replace("  ", " ");
+  if (c.y[0]) return stipendYearsText(c.y);
   const n = nmcReturn(c.asWritten);
   if (n) return `${rupee(n.v)} a month${n.stateRate ? " (the state's rate)" : ""}, as it told NMC${n.year ? ` in ${n.year}` : ""}`;
   return c.asWritten ?? "As printed in its document";
@@ -151,7 +151,7 @@ export function CollegeStipendTable({
     const fromListing = c.status === "not_verified";
     const rep = fromListing && c.instituteId != null ? reported[String(c.instituteId)] : undefined;
     const l = c.instituteId != null ? listed[String(c.instituteId)] : undefined;
-    const repText = rep?.y[0] ? rep.y.map((v) => (v ? `₹${v.toLocaleString("en-IN")}` : "—")).join(" · ") : null;
+    const repText = rep?.y[0] ? stipendYearsText(rep.y) : null;
     const listedText = fromListing ? (repText ?? listedStipendText(l)) : null;
     if (listedText) anyListed = true;
     const y1 = fromListing ? (rep?.y[0] ?? l?.stipend[0]) : (c.y[0] ?? nmcReturn(c.asWritten)?.v);
@@ -185,7 +185,6 @@ export function CollegeStipendTable({
           ) : (
             <>
               <span className={c.y[0] || nmcReturn(c.asWritten) ? "tnum font-semibold text-foreground" : "text-foreground"}>{collegeStipendText(c)}</span>
-              {c.y[0] && c.periodUnstated && <span className="mt-0.5 block text-[12px] text-muted-foreground">The document prints no period: read as a month</span>}
               {c.branches && (
                 <span className="mt-1 block text-[12.5px] leading-relaxed text-muted-foreground">
                   {c.branches.map(([b, v], i) => (
@@ -209,7 +208,7 @@ export function CollegeStipendTable({
           <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
             <tr>
               <th scope="col" className="w-[38%] px-4 py-2.5 font-semibold">College</th>
-              <th scope="col" className="px-4 py-2.5 font-semibold">Stipend a month · year 1 · 2 · 3</th>
+              <th scope="col" className="px-4 py-2.5 font-semibold">Stipend a month, year by year</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border">{body}</tbody>

@@ -264,10 +264,20 @@ export function listedExitText(l: ListedTerms | null | undefined): string | null
   if (l.exitFullCourseFee) return "The full course fee to leave the seat";
   return null;
 }
+/**
+ * A month's stipend in each year of the course, labelled (owner, 2026-11-16: "₹30,000 · ₹35,000 · ₹40,000" read as three
+ * different monthly guesses; it is year 1, 2 and 3): "Y1 ₹30,000 · Y2 ₹35,000 · Y3 ₹40,000".
+ */
+export function stipendYearsText(y: (number | null | undefined)[]): string {
+  return y
+    .map((v, i) => (v ? `Y${i + 1} ₹${v.toLocaleString("en-IN")}` : null))
+    .filter(Boolean)
+    .join(" · ");
+}
 /** The stipend a month in years 1–3, as listed (MD/MS seats only). */
 export function listedStipendText(l: ListedTerms | null | undefined): string | null {
   if (!l?.stipend[0]) return null;
-  return l.stipend.map((v) => (v ? `₹${v.toLocaleString("en-IN")}` : "—")).join(" · ");
+  return stipendYearsText(l.stipend);
 }
 
 /**
