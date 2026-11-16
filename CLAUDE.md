@@ -2160,6 +2160,12 @@ states + MCC, 302 colleges, every figure with its URL, page and quote. It replac
   stipend pages end with `<SourcedNote>` ("Sourced from official updates: …", copy `sourced_note` in "Page: PG service bond
   — official rules" and "Page: PG stipend — official figures"). Don't write "every figure links its notice" anywhere.
 
+**A data import shows at once (owner, same day: "ek ghante mai kyu… cache refresh karke instant reflect"):** after an
+import's `--apply`, run `bash scripts/revalidate_tags.sh --purge <tag…>` — it asks the app on the server to drop those
+`unstable_cache` tags (`POST /api/cron/revalidate`, cron secret read on the server, allow-listed tags only) and, with
+`--purge`, clears Cloudflare's edge. Both import scripts print the line. Without it the data caches refresh within an hour
+and the edge serves data pages up to 6 h stale.
+
 ## Official PG stipend (2026-11-16, owner chose to wait for it: "bond ki tarah pura official")
 
 `D:/Admisson Hands/pg_handoff/from_pg/official_stipend_all_states_2026-27.json` (zyn-92): 25 states' government-college

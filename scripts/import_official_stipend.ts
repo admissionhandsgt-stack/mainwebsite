@@ -115,4 +115,5 @@ await db.transaction(async (tx) => {
       VALUES (${r.our_id}, ${r.institute_id}, ${r.state}, ${r.status}, ${JSON.stringify(r.data)}::jsonb, ${d.as_of})`);
 });
 console.log(`\nloaded: ${ruleRows.length} rule rows (incl. NMC and central), ${collegeRows.length} colleges`);
+console.log("live at once: bash scripts/revalidate_tags.sh --purge official-stipend");
 process.exit(0);
