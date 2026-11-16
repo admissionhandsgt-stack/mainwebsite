@@ -28,6 +28,9 @@ import {
   type Level,
 } from "@/lib/collegeQueries";
 import { getUgCollegeExtras } from "@/lib/content";
+import { getOfficialCollegeStipend, getOfficialStipendState, nmcReturn } from "@/lib/officialStipend";
+import { isCentralInstitution } from "@/lib/officialBond";
+import { getReportedStipends } from "@/lib/collegeResearch";
 import { getNmcFacts, type NmcFacts } from "@/lib/nmcData";
 import { getCollegeLiveBands, type LiveBands } from "@/lib/collegeLiveBands";
 import { getNirf } from "@/lib/nirf";
@@ -58,8 +61,44 @@ export const loadCollegePage = cache(async (slug: string, level: Level) => {
   const ownYear = cutoffs.reduce<number | null>((m, c) => (c.latestYear != null && (m == null || c.latestYear > m) ? c.latestYear : m), null);
   const liveAll = level === "pg" ? await getCollegeLiveBands(slug, cutoffs) : null;
   const live = liveAll && (ownYear == null || liveAll.year > ownYear) ? liveAll : null;
-  return { college, cutoffs, fees, extras, nmc, live, summary: summarise(level, college, cutoffs, fees, extras, index, nmc, live) };
+  const summary = summarise(level, college, cutoffs, fees, extras, index, nmc, live);
+  if (summary.kind === "pg") await preferOfficialStipend(slug, college.state, summary).catch(() => undefined);
+  return { college, cutoffs, fees, extras, nmc, live, summary };
 });
+
+/**
+ * The summary's stipend (the tile at the top, the meta description, the figures half of the title test) follows the same
+ * order as the page's own stipend box (owner, 2026-11-16: the listing said ₹7,000 at the top of Sri Venkateswaraa's page
+ * while its official box said ₹40,000): the college's official row, then — for a state government college — the state's
+ * official rate (not a basic-pay figure, which is never "the stipend"), then a corroborated report, then the listing.
+ */
+async function preferOfficialStipend(slug: string, state: string | null, s: CollegeSummary) {
+  const row = await getOfficialCollegeStipend(slug).catch(() => null);
+  if (row && row.status !== "not_verified") {
+    const v = row.status === "states_no_stipend" ? null : (row.y[0] ?? nmcReturn(row.asWritten)?.v ?? null);
+    if (v || row.status === "states_no_stipend") {
+      s.stipend = v;
+      s.stipendVaries = false;
+      s.stipendSource = v ? "official" : null;
+      return;
+    }
+  }
+  if (!row && s.type === "Government" && state && !isCentralInstitution(s.official)) {
+    const g = (await getOfficialStipendState(state).catch(() => null))?.state.govt;
+    if (g?.y[0] && g.kind !== "basic" && g.kind !== "none") {
+      s.stipend = g.y[0];
+      s.stipendVaries = false;
+      s.stipendSource = "official";
+      return;
+    }
+  }
+  const rep = (await getReportedStipends().catch(() => null))?.bySlug[slug];
+  if (rep?.y[0]) {
+    s.stipend = rep.y[0];
+    s.stipendVaries = false;
+    s.stipendSource = "reported";
+  }
+}
 
 /**
  * How many colleges of a level share each short name + place. Two pages with
@@ -132,8 +171,10 @@ export interface CollegeSummary {
   fromNmc: boolean;
   /** The seat figure itself is NMC's (not a curated intake or our seat-matrix count). */
   seatsFromNmc: boolean;
-  /** Highest published first-year stipend, a month (PG). */
+  /** First-year stipend, a month (PG): the college's official figure, else a corroborated report, else the listing's highest. */
   stipend: number | null;
+  /** Where `stipend` comes from — the summary tile says so. */
+  stipendSource: "official" | "reported" | "listed" | null;
   established: number | null;
   beds: number | null;
 }
@@ -238,6 +279,7 @@ function summarise(
     fromNmc: Boolean(nmc && (nmcSeats || nmcType)),
     seatsFromNmc: nmcSeats != null,
     stipend: level === "pg" ? stipend : null,
+    stipendSource: level === "pg" && stipend ? "listed" : null,
     established: nmc?.inceptionYear ?? college.establishedYear,
     beds: college.beds,
   };

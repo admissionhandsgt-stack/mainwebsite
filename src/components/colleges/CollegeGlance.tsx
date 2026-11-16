@@ -35,7 +35,12 @@ export default function CollegeGlance({ s }: { s: CollegeSummary }) {
           ? "Approved by NMC"
           : undefined,
     });
-  if (s.stipend) tiles.push({ label: "Stipend / month", value: money(s.stipend), sub: "First year, as published" });
+  if (s.stipend)
+    tiles.push({
+      label: "Stipend / month",
+      value: money(s.stipend),
+      sub: s.stipendSource === "official" ? "First year, official" : s.stipendSource === "reported" ? "First year, reported" : "First year, as listed",
+    });
   if (s.type) tiles.push({ label: "Type", value: s.type, sub: s.established ? `Est. ${s.established}` : undefined });
   else if (s.established) tiles.push({ label: "Established", value: String(s.established) });
 
