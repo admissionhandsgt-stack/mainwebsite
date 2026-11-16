@@ -30,6 +30,7 @@ import SeatTerms from "@/components/colleges/SeatTerms";
 import CollegeOfficialBond from "@/components/bond/CollegeOfficialBond";
 import { CollegeOfficialStipend } from "@/components/stipend/OfficialStipend";
 import { getOfficialCollegeStipend, getOfficialStipendState } from "@/lib/officialStipend";
+import { getStipends } from "@/lib/cutoffHubQueries";
 import { collegeBondText } from "@/components/bond/OfficialBond";
 import { getOfficialCollegeBond, getOfficialStateByName, govtBond, isCentralInstitution, rangeText, yearsText } from "@/lib/officialBond";
 import TelegramStrip from "@/components/engage/TelegramStrip";
@@ -135,6 +136,8 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
       ? stipendState.state.govt
       : null;
   const officialStipend = !!stipendRow || !!stipendGovt;
+  // The state's stipend page exists only with three colleges listed (Goa has none): link it only then.
+  const stipendPage = officialStipend && college.state ? !!(await getStipends().catch(() => null))?.states.some((x) => x.state === college.state) : false;
   // Words from Admin → Content ("Page: PG college pages — MCC seats, bond and stipend").
   const [seatsCopy, termsCopy] = await Promise.all([
     pageCopy("page.college_pg.mcc", { college: s.short, year: matrix?.year, total: matrix?.total.toLocaleString("en-IN") }),
@@ -182,6 +185,32 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
         : null;
     const bondName = s.place && !s.short.toLowerCase().includes(s.place.toLowerCase()) ? `${s.short}, ${s.place}` : s.short;
     if (bondAnswer) faqs.push({ q: `Does ${bondName} have a PG bond?`, a: bondAnswer.replace(/\.\./g, ".") });
+    // The stipend question answers from the official figure where there is one (the box above shows the same), never the
+    // listing's — Goa Medical College's listing said ₹80,000 against its own declared ₹60,000.
+    if (officialStipend) {
+      const r = stipendRow;
+      const g = stipendGovt;
+      const inr = (v: number) => `₹${v.toLocaleString("en-IN")}`;
+      const official = r
+        ? r.status === "not_verified"
+          ? `${s.short}'s current stipend document has not been read yet. Ask the college what it pays in each year, in writing; NMC requires PG stipend at par with the state's government colleges.`
+          : r.status === "states_no_stipend"
+            ? `Its own record says no PG stipend is paid${r.session ? ` (${r.session})` : ""}. Ask the college whether that has changed; NMC requires PG stipend at par with the state's government colleges.`
+            : r.y[0]
+              ? `${r.y.map((v, i) => (v ? `${inr(v)} a month in year ${i + 1}` : null)).filter(Boolean).join(", ")}, from the college's own document${r.session ? ` (${r.session})` : ""}.`
+              : r.asWritten
+                ? `As its own document prints it: ${r.asWritten}`
+                : null
+        : g && g.y[0]
+          ? `As a ${college.state} government college it pays the state's rate: ${g.y.map((v, i) => (v ? `${inr(v)}${g.kind === "basic" ? " basic" : ""} a month in year ${i + 1}` : null)).filter(Boolean).join(", ")}${g.kind === "basic" ? ", with DA and allowances on top" : g.kind === "disclosure" || g.label ? ", as an official government-college document gives it" : ", under the state's order"}.`
+          : null;
+      if (official) {
+        const i = faqs.findIndex((f) => /stipend/i.test(f.q));
+        const q = `What is the PG stipend at ${bondName}?`;
+        if (i >= 0) faqs[i] = { q: faqs[i].q, a: official };
+        else faqs.push({ q, a: official });
+      }
+    }
   }
   const liveR1 = live ? live.rounds.length === 1 && live.rounds[0] === "Round 1" : false;
   const jsonLd = collegeJsonLd({
@@ -437,7 +466,7 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
                   row={stipendRow}
                   govt={stipendGovt}
                   state={college.state}
-                  stateSlug={stateSlug}
+                  stateSlug={stipendPage ? stateSlug : null}
                 />
               </div>
             )}

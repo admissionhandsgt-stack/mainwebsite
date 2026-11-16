@@ -65,6 +65,8 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function StipendPage() {
   const [s, pgStates, stateLabels, off] = await Promise.all([getStipends(), getPgStates(), toolLabels("state_search"), getOfficialStipend().catch(() => null)]);
   // The official rates (2026-11-16): each state's order, by year-1 government figure; basic-pay states marked.
+  // A state has a stipend page only with three colleges listed (getStateStipend): never link one that 404s (Goa).
+  const hasPage = new Set(s.states.map((x) => x.state));
   const offRows = (off?.states ?? []).map((st) => ({
     st,
     own: off!.colleges.filter((c) => c.state === st.state && hasOwnStipend(c)).length,
@@ -160,7 +162,7 @@ export default async function StipendPage() {
                 label: r.st.state,
                 value: r.st.govt.y[0]!,
                 display: `${inr(r.st.govt.y[0])}${r.st.govt.kind === "basic" ? " basic" : ""}`,
-                href: stateSlug.get(r.st.state) ? `/md-ms-india/stipend/${stateSlug.get(r.st.state)}#official` : undefined,
+                href: stateSlug.get(r.st.state) && hasPage.has(r.st.state) ? `/md-ms-india/stipend/${stateSlug.get(r.st.state)}#official` : undefined,
                 note: r.st.govt.label ? "state prospectus" : r.st.govt.kind === "disclosure" ? "from a govt college document" : r.st.govt.kind === "basic" ? "basic pay + DA" : "state order",
               }))}
             />
@@ -218,7 +220,7 @@ export default async function StipendPage() {
                 {offRows.map(({ st, own, all }) => (
                   <tr key={st.slug}>
                     <th scope="row" className="px-4 py-2.5 font-medium">
-                      {stateSlug.get(st.state) ? (
+                      {stateSlug.get(st.state) && hasPage.has(st.state) ? (
                         <Link href={`/md-ms-india/stipend/${stateSlug.get(st.state)}#official`} className="text-primary-strong hover:underline dark:text-primary">
                           {st.state} PG stipend
                         </Link>

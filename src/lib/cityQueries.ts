@@ -214,8 +214,9 @@ async function build(slug: string): Promise<CityPage | null> {
        GROUP BY b.institute_id, 2`),
     db.execute(sql`
       SELECT DISTINCT ON (f.institute_id) f.institute_id, f.stipend_y1_inr AS y1
-        FROM fees f
+        FROM fees f JOIN courses c ON c.id = f.course_id
        WHERE f.level = 'pg' AND f.stipend_y1_inr > 0 AND f.stipend_periodicity = 'per_month' AND f.institute_id IN (${idList})
+         AND c.name !~* '^(dnb|drnb|fnb)' AND c.name NOT ILIKE '%-NBE' AND c.name NOT ILIKE 'Diploma (NBE)%'
        ORDER BY f.institute_id, f.year DESC NULLS LAST, f.stipend_y1_inr DESC`),
     db.execute(sql`
       SELECT t.institute_id, t.institute_type, t.seat_type, t.degree, t.bond_years, t.bond_unknown, t.bond_penalty_inr

@@ -26,6 +26,8 @@ import { chromium } from "playwright";
 import { getStateFeeMatrix, FAMILY_LABEL, type Ownership } from "@/lib/pgFeeMatrix";
 import { getStateStipend } from "@/lib/cutoffHubQueries";
 import { getBondByState } from "@/lib/pgSeatData";
+import { getOfficialStateByName, govtBond, rangeText, yearsText } from "@/lib/officialBond";
+import { getOfficialStipendState } from "@/lib/officialStipend";
 import { getStateAuthority } from "@/lib/stateAuthorities";
 import { getCounsellingFacts } from "@/lib/counsellingFacts";
 import { getLiveFigures } from "@/lib/liveFigures";
@@ -73,7 +75,7 @@ async function build(slug: string) {
     console.warn(`! ${slug}: no fee matrix (fewer than 3 colleges with a yearly fee) — skipped`);
     return null;
   }
-  const [stipend, bondAll, authority, facts, live, team, reviewer] = await Promise.all([
+  const [stipend, bondAll, authority, facts, live, team, reviewer, offStipend, offBond] = await Promise.all([
     getStateStipend(m.state).catch(() => null),
     getBondByState().catch(() => null),
     getStateAuthority(m.state).catch(() => null),
@@ -81,8 +83,30 @@ async function build(slug: string) {
     getLiveFigures().catch(() => null),
     pageCopy("page.services.figures"),
     pageCopy("site.reviewer"),
+    // The state's own 2026-27 stipend order and bond rules (2026-11-16), where read: they replace the listing's figures.
+    getOfficialStipendState(m.state).catch(() => null),
+    getOfficialStateByName(m.state).catch(() => null),
   ]);
   const bond = bondAll?.states.find((s) => s.state === m.state) ?? null;
+  const og = offStipend?.state.govt ?? null;
+  const ob = offBond ? govtBond(offBond) : null;
+  const stipendCard =
+    og && og.y[0]
+      ? `<div class="card"><b>${money(og.y[0])}${og.kind === "basic" ? " basic" : ""} / month</b><span>Government colleges, year 1${og.y[2] ? `; ${money(og.y[2])} by year 3` : ""}${og.kind === "basic" ? " · basic pay, DA and allowances on top" : ""} · ${og.kind === "disclosure" || og.label ? "official college document" : "the state's own order"}</span></div>`
+      : og
+        ? `<div class="card"><b>${og.kind === "formula" ? "Set by formula" : "No official figure"}</b><span>Government colleges' stipend in ${esc(m.state)}: ask the college what it pays in each year</span></div>`
+        : stipend
+          ? `<div class="card"><b>${money(stipend.median)} / month</b><span>Stipend in year 1, middle of ${stipend.colleges} colleges as listed${stipend.govtMedian ? ` · government ${money(stipend.govtMedian)}` : ""}</span></div>`
+          : "";
+  const bondParts = ob ? [yearsText(ob.years, ob.yearsMax), rangeText(ob.min, ob.max) ? `${rangeText(ob.min, ob.max)} if not served` : null].filter(Boolean) : [];
+  const bondCard =
+    ob && !ob.flag && bondParts.length
+      ? `<div class="card"><b>${esc(bondParts[0])}</b><span>government colleges' service bond${bondParts[1] ? ` · ${esc(bondParts[1])}` : ""} · the state's own 2026-27 rules</span></div>`
+      : ob?.flag === "not_notified"
+        ? `<div class="card"><b>Not notified yet</b><span>${esc(m.state)} has not notified a government service bond for 2026-27</span></div>`
+        : !ob && bond && bond.govt.colleges
+          ? `<div class="card"><b>${bond.govt.withBond} of ${bond.govt.colleges}</b><span>government colleges list a service bond${bond.govt.typicalYears ? `, usually ${bond.govt.typicalYears} year${bond.govt.typicalYears === 1 ? "" : "s"}` : ""}${bond.govt.penaltyMedian ? `; breaking it costs ${money(bond.govt.penaltyMedian)}` : ""}</span></div>`
+          : "";
   const auth = authority && authority.scope === "UG and PG" ? authority : null;
   const date = m.updated ? new Date(`${m.updated}T00:00:00+05:30`).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "";
   const phone = phoneText(CONTACT_INFO.whatsapp);
@@ -213,8 +237,8 @@ ul{margin:6px 0 0;padding-left:16px}li{margin:3px 0}
   <h2>The fee you can expect <small>a year, one figure per college</small></h2>
   <table><thead><tr><th>Colleges</th><th>Seat</th><th style="text-align:right">Middle</th><th style="text-align:right">Most colleges</th></tr></thead><tbody>${bandRows}</tbody></table>
   <div class="cards">
-    ${stipend ? `<div class="card"><b>${money(stipend.median)} / month</b><span>Stipend in year 1, middle of ${stipend.colleges} colleges and hospitals${stipend.govtMedian ? ` · government ${money(stipend.govtMedian)}` : ""}</span></div>` : ""}
-    ${bond && bond.govt.colleges ? `<div class="card"><b>${bond.govt.withBond} of ${bond.govt.colleges}</b><span>government colleges list a service bond${bond.govt.typicalYears ? `, usually ${bond.govt.typicalYears} year${bond.govt.typicalYears === 1 ? "" : "s"}` : ""}${bond.govt.penaltyMedian ? `; breaking it costs ${money(bond.govt.penaltyMedian)}` : ""}</span></div>` : ""}
+    ${stipendCard}
+    ${bondCard}
   </div>
   <div class="teaser"><b>Your college-wise list — fee, bond and chance for your rank</b>
     <p>Every ${esc(m.state)} college, branch by branch, set against your rank, category and budget, with the seats worth locking first. Our counsellor prepares it for you and walks you through it on a call.</p></div>
@@ -226,7 +250,7 @@ ul{margin:6px 0 0;padding-left:16px}li{margin:3px 0}
       <li>What does leaving the seat cost in this round, under this year's notice?</li>
     </ul></div>
   ${contactBox("Get your personal college list", "Send your rank on WhatsApp — a counsellor replies with what fits you.")}
-  <p class="cave">Fees: each college's own 2026-27 notice where published, else as listed for the 2026 counselling. Stipend and bond: as listed for the counselling, not an official notice. Confirm with ${auth ? esc(auth.authority) : "the state's counselling authority"} or the college before you pay or sign.</p>
+  <p class="cave">Fees: each college's own 2026-27 notice where published, else as listed for the 2026 counselling. Stipend and bond: ${og || ob ? "the state's own 2026-27 orders and rules where read; otherwise" : ""} as listed for the counselling, not an official notice. Confirm with ${auth ? esc(auth.authority) : "the state's counselling authority"} or the college before you pay or sign.</p>
 </section>
 
 <section class="page">
@@ -271,7 +295,7 @@ async function main() {
         displayHeaderFooter: true,
         headerTemplate: "<div></div>",
         footerTemplate: `<div style="width:100%;padding:0 12mm;font-family:Inter,Arial,sans-serif;font-size:8px;color:#5b6b80;display:flex;justify-content:space-between;align-items:center">
-          <span>Fees as listed or from college notices; stipend and bond as listed — confirm before you pay.</span>
+          <span>Fees from college notices or as listed; stipend and bond from the state's own rules where read — confirm before you pay.</span>
           <span style="background:#e7fbf4;border:1px solid #14d9a5;border-radius:6px;padding:3px 8px;color:#1d3550;font-weight:700;font-size:9px">Admission Hands · WhatsApp / call ${esc(b.phone)} · ${SITE}</span></div>`,
       });
       const pages = (pdf.toString("latin1").match(/\/Type\s*\/Page[^s]/g) ?? []).length;

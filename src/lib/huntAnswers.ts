@@ -22,6 +22,8 @@ import { branchMoneyDraft, cityMoneyDraft, type MoneyScope } from "@/lib/branchM
 import { cityIn, CITY_WORDS } from "@/lib/cityKey";
 import { approxFeeFor } from "@/lib/chance";
 import { cityPagePath } from "@/lib/cityQueries";
+import { bindsAiq, getOfficialBond, getOfficialStateByName, govtBond, hasOwnBond, money, rangeText, yearsText } from "@/lib/officialBond";
+import { getOfficialStipend, getOfficialStipendState, hasOwnStipend, type GovtStipend } from "@/lib/officialStipend";
 
 /**
  * Answers the daily hunt writes (2026-11-10; owner, with his own AIIMS New Delhi answer as the model: "aise detailed
@@ -410,7 +412,54 @@ async function college(c: College, q: string): Promise<Draft | null> {
   };
 }
 
+/** "₹77,662, ₹80,050 and ₹82,441 in years 1–3" — a state's official government rate in words. */
+function govtRateWords(g: GovtStipend): string | null {
+  const ys = g.y.map((v, i) => (v ? `${inr(v)} in year ${i + 1}` : null)).filter(Boolean) as string[];
+  if (!ys.length) return null;
+  const list = ys.length > 1 ? `${ys.slice(0, -1).join(", ")} and ${ys[ys.length - 1]}` : ys[0];
+  return `${list.replace(" in year", " a month in year")}${g.kind === "basic" ? ", as basic pay with DA and allowances on top" : ""}`;
+}
+
+/** A state's official government-college bond in words, from its own 2026-27 rules; null when there is no figure. */
+async function officialBondLine(state: string): Promise<string | null> {
+  const off = await getOfficialStateByName(state).catch(() => null);
+  if (!off) return null;
+  const g = govtBond(off);
+  if (g.flag === "not_notified") return `${state} has not notified a government service bond for the 2026-27 batch yet.`;
+  if (g.flag === "lead") return null;
+  const parts = [yearsText(g.years, g.yearsMax) ? `${yearsText(g.years, g.yearsMax)} of government service` : null, rangeText(g.min, g.max) ? `${rangeText(g.min, g.max)} if not served` : null].filter(Boolean);
+  return parts.length ? `Government colleges here bind you to ${parts.join(", ")}${bindsAiq(off) ? ", All India Quota seats included" : ""} (the state's own 2026-27 rules).` : null;
+}
+
+/**
+ * A state's PG stipend: its own order where read (lib/officialStipend.ts, 2026-11-16) — the government rate, private
+ * colleges' own figures, NMC's at-par rule — else the listing's medians, labelled as such.
+ */
 async function stateStipend(st: PgState): Promise<Draft | null> {
+  const off = await getOfficialStipendState(st.name).catch(() => null);
+  if (off) {
+    const g = off.state.govt;
+    const rate = govtRateWords(g);
+    const own = off.colleges.filter((c) => hasOwnStipend(c) && c.y[0]).sort((a, z) => (z.y[0] ?? 0) - (a.y[0] ?? 0));
+    const bondLine = await officialBondLine(st.name);
+    return {
+      page: `/md-ms-india/stipend/${st.slug}`,
+      kind: "state-stipend",
+      lead: rate
+        ? `In ${st.name}, government colleges pay MD/MS residents ${rate}, ${g.label ? "per the state counselling authority's prospectus" : g.kind === "disclosure" ? "as an official government-college document gives it" : "under the state's own order"}.`
+        : g.kind === "formula" && g.asWritten
+          ? `In ${st.name}, the state's order sets the government-college PG stipend by a formula: ${g.asWritten.split(/(?<=\.)\s/)[0]}`
+          : `${st.name} has no official order with the government-college rupee figure; ask the college what it pays in each year, in writing.`,
+      pointsTitle: "Private and deemed colleges:",
+      points: [
+        ...(own.length ? [`Their own published figures, year 1: ${own.slice(0, 3).map((c) => `${collegeName(c.name).short} ${inr(c.y[0])}`).join(", ")}.`] : []),
+        "NMC's PGMER-2023 (regulation 5.4) requires every college to pay PG students at par with the state's government colleges.",
+      ],
+      checks: [...(bondLine ? [bondLine] : []), "Whether the stipend is paid from month one, and what is deducted from it.", "Income tax is deducted at source, so the amount credited is lower."],
+      source: `${st.name}'s own stipend order and each college's own document, 2026-27${bondLine ? "; the state's own bond rules" : ""}.`,
+      what: `${st.name} official stipend, college by college`,
+    };
+  }
   const [s, bond, all] = await Promise.all([getStateStipend(st.name).catch(() => null), getBondByState().catch(() => null), getStipends().catch(() => null)]);
   if (!s) return null;
   const b: BondState | undefined = bond?.states.find((x) => x.state === st.name);
@@ -444,6 +493,26 @@ async function stateStipend(st: PgState): Promise<Draft | null> {
 }
 
 async function nationalStipend(): Promise<Draft | null> {
+  const off = await getOfficialStipend().catch(() => null);
+  const ranked = (off?.states ?? []).filter((x) => x.govt.y[0] && (x.govt.kind === "figures" || x.govt.kind === "disclosure")).sort((a, z) => (z.govt.y[0] ?? 0) - (a.govt.y[0] ?? 0));
+  if (off && ranked.length >= 3) {
+    const basic = off.states.filter((x) => x.govt.kind === "basic").map((x) => x.state);
+    return {
+      page: "/md-ms-india/stipend",
+      kind: "stipend",
+      lead: `Under each state's own order, government colleges pay MD/MS residents from ${inr(ranked[ranked.length - 1].govt.y[0])} to ${inr(ranked[0].govt.y[0])} a month in year 1; ${ranked[0].state} pays the most.${basic.length ? ` ${basic.join(", ")} print basic pay only, with DA and allowances on top.` : ""}`,
+      pointsTitle: "Highest government rates, year 1:",
+      points: ranked.slice(0, 3).map((x) => `${x.state}: ${inr(x.govt.y[0])} a month${x.govt.y[2] ? `, ${inr(x.govt.y[2])} by year 3` : ""}`),
+      checks: [
+        "Private colleges must pay at par with the state's government colleges (NMC, PGMER-2023 regulation 5.4); ask the college what it actually pays.",
+        "Whether the state binds you to a service bond after the course, and what breaking it costs.",
+        "Income tax is deducted at source, so the credited amount is lower.",
+      ],
+      source: "each state's own stipend order, 2026-27, and NMC's regulations.",
+      compare: "AIIMS, JIPMER and PGIMER admit through INI-CET and pay residents a salary on the central pay matrix, so they are not in NEET PG stipend lists.",
+      what: "official state-wise and college-wise stipend",
+    };
+  }
   const all = await getStipends().catch(() => null);
   if (!all) return null;
   const states = [...all.states].sort((a, z) => (z.govtMedian ?? z.median) - (a.govtMedian ?? a.median)).slice(0, 3);
@@ -460,7 +529,55 @@ async function nationalStipend(): Promise<Draft | null> {
   };
 }
 
+/** A state's bond from its own 2026-27 rules where read (lib/officialBond.ts), else the listing's, labelled as such. */
 async function bond(st: PgState | null): Promise<Draft | null> {
+  const official = await getOfficialBond().catch(() => null);
+  const os = st && official ? official.states.find((x) => x.state === st.name) : undefined;
+  if (os) {
+    const g = govtBond(os);
+    const own = official!.colleges.filter((c) => c.state === os.state);
+    const ownBond = own.filter(hasOwnBond);
+    const rows = Array.isArray(os.data.seat_leaving) ? (os.data.seat_leaving as Record<string, unknown>[]).filter((r) => r && typeof r === "object") : [];
+    const parts = [yearsText(g.years, g.yearsMax) ? `${yearsText(g.years, g.yearsMax)} of government service` : null, rangeText(g.min, g.max) ? `${rangeText(g.min, g.max)} if it is not served` : null].filter(Boolean);
+    return {
+      page: `/md-ms-india/bond/${os.slug}`,
+      kind: "bond-state",
+      lead:
+        g.flag === "not_notified"
+          ? `${os.state} has not notified a government service bond for the 2026-27 batch yet; its own rules still set what leaving a seat or the course costs.`
+          : g.flag === "lead"
+            ? `${os.state}'s government service bond is not confirmed in an official notice for 2026-27; ask the college before you sign.`
+            : parts.length
+              ? `In ${os.state}, government colleges bind MD/MS graduates to ${parts.join(", ")}, under the state's own 2026-27 rules.`
+              : `${os.state}'s own 2026-27 rules set the government-college bond as printed on its bond page.`,
+      points: [
+        ...(bindsAiq(os) ? ["The bond binds All India Quota seats in the state's government colleges too."] : []),
+        ...rows.slice(0, 2).map((r) => `${String(r.when ?? "").slice(0, 80)}: ${String(r.government ?? "").slice(0, 160)}`),
+        ...(own.length ? [`Private and deemed colleges: ${ownBond.length} of ${own.length} print their own service bond${ownBond[0] ? `, e.g. ${collegeName(ownBond[0].name).short}` : ""}.`] : []),
+      ],
+      checks: ["Whether the bond is served in a government post (and paid) or only as a penalty.", "Whether original certificates are kept by the college until the course ends.", "The college's own course-leaving terms, in writing, before you pay."],
+      source: `${os.state}'s own 2026-27 bulletin, orders and each college's own notice.`,
+      what: `${os.state} official bond and seat-leaving rules`,
+    };
+  }
+  if (!st && official && official.states.length >= 5) {
+    const ranked = official.states.map((x) => ({ x, g: govtBond(x) })).filter((r) => r.g.max && r.g.flag !== "lead").sort((a, z) => (z.g.max ?? 0) - (a.g.max ?? 0));
+    const ys = official.states.map((x) => govtBond(x)).filter((g) => g.years && !g.flag);
+    const yMin = Math.min(...ys.map((g) => g.years!));
+    const yMax = Math.max(...ys.map((g) => g.yearsMax ?? g.years!));
+    return {
+      page: "/md-ms-india/bond",
+      kind: "bond",
+      lead: `Under each state's own 2026-27 rules, a government-college PG bond runs ${yMin}–${yMax} years and costs up to ${money(ranked[0].g.max!)} (${ranked[0].x.state}) if you do not serve it.`,
+      points: [
+        `Highest: ${ranked.slice(0, 3).map((r) => `${r.x.state} ${money(r.g.max!)}`).join(", ")}.`,
+        `States whose bond binds All India Quota seats too: ${official.states.filter(bindsAiq).map((x) => x.state).join(", ")}.`,
+      ],
+      checks: ["Your state's own rules for the bond and the seat-leaving terms, round by round.", "Whether the bond is a paid government posting or a penalty only.", "Whether the college keeps your original certificates."],
+      source: "each state's own 2026-27 bulletin, orders and gazette.",
+      what: "official state-wise bond and seat-leaving rules",
+    };
+  }
   const b = await getBondByState().catch(() => null);
   if (!b) return null;
   const s = st ? b.states.find((x) => x.state === st.name) : undefined;

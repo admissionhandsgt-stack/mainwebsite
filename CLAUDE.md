@@ -2190,6 +2190,14 @@ official_2026_27 / official_older / states_no_stipend / not_verified). MD/MS onl
   and report pages and in the search-answer bot — all now say "as listed for the counselling, not an official notice".
   **And it mixed DNB rates in** (₹1,30,653 topped many states): `LATEST_STIPEND` now reads MD/MS and college-diploma rows only.
   College titles still quote the listing's stipend while the title test runs (until ~9 Dec).
+- **Everywhere else that spoke of stipend or bond (same day, owner: "deploy and complete kardo"):** the search-answer bot
+  (`stateStipend`, `nationalStipend`, `bond` in lib/huntAnswers.ts) answers from the official rules where read and points
+  a state's bond search at `/md-ms-india/bond/<state>` (SPECIFIC in searchFaq.ts knows the bond pages); the WhatsApp fee
+  PDFs' stipend and bond cards use the official rules (all 24 rebuilt — `data_date` is the fees' date, so no update message
+  went out); city pages lead with the state's official stipend and bond, take a college's official figure in the table and
+  drop the DNB rate from the listing; a PG college's "What is the PG stipend at …?" FAQ answers from the official figure
+  (Goa Medical College's listing said ₹80,000 against its own ₹60,000). A state stipend page exists only with three
+  colleges listed, so Goa has none — links to it are drawn only where the page exists.
 
 ## Per-state PG stipend pages (2026-10-20)
 

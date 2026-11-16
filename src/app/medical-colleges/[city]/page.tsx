@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Info } from "lucide-react";
 import Link from "@/components/ui/Link";
+import { getOfficialStateByName, govtBond, rangeText, yearsText } from "@/lib/officialBond";
+import { getOfficialStipend } from "@/lib/officialStipend";
 import { fitDescription, fitTitle } from "@/lib/seoTitle";
 import { resolveMetadata } from "@/lib/content";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
@@ -96,6 +98,18 @@ export default async function CityPage(props: { params: Promise<{ city: string }
   const path = `/medical-colleges/${p.city.slug}`;
   const others = p.colleges.length - p.govt;
   const authority = await getStateAuthority(p.city.state).catch(() => null);
+  // The state's own 2026-27 bond rules and stipend order (2026-11-16), where read, replace the listing's figures here.
+  const [offBondState, offStip] = await Promise.all([getOfficialStateByName(p.city.state).catch(() => null), getOfficialStipend().catch(() => null)]);
+  const ob = offBondState ? govtBond(offBondState) : null;
+  const obLine =
+    ob && !ob.flag
+      ? [yearsText(ob.years, ob.yearsMax) ? `${yearsText(ob.years, ob.yearsMax)} of government service` : null, rangeText(ob.min, ob.max) ? `${rangeText(ob.min, ob.max)} if not served` : null].filter(Boolean).join(", ") || null
+      : ob?.flag === "not_notified"
+        ? "not notified for 2026-27 yet"
+        : null;
+  const os = offStip?.states.find((s) => s.state === p.city.state) ?? null;
+  const osLine = os?.govt.y[0] ? `${lakh(os.govt.y[0])}${os.govt.kind === "basic" ? " basic + allowances" : ""} a month in year 1` : null;
+  const offCollege = new Map((offStip?.colleges ?? []).filter((c) => c.slug && c.y[0] && c.status.startsWith("official")).map((c) => [c.slug!, c.y[0]!]));
   const band = (own: Ownership, fam: Family) => p.bands.find((b) => b.own === own && b.family === fam);
   const aiqSeats = p.mcc.byMatrix.find((m) => m.matrix === "AIQ")?.seats;
   const mbbsSeats = p.mbbs.reduce((s, m) => s + (m.seats ?? 0), 0);
@@ -113,9 +127,10 @@ export default async function CityPage(props: { params: Promise<{ city: string }
     stipend: lakh(p.stipend?.median),
     stipend_colleges: p.stipend?.colleges,
     govt_stipend: lakh(p.stipend?.govtMedian),
-    bonded: p.bond?.govt ? p.bond.bonded : undefined,
-    govt_terms: p.bond?.govt,
-    bond_years: p.bond?.years ? `${p.bond.years} year${p.bond.years === 1 ? "" : "s"}` : undefined,
+    // The FAQ's bond line speaks of the listing; where the state's own rules are read, the section above gives those.
+    bonded: !obLine && p.bond?.govt ? p.bond.bonded : undefined,
+    govt_terms: obLine ? undefined : p.bond?.govt,
+    bond_years: !obLine && p.bond?.years ? `${p.bond.years} year${p.bond.years === 1 ? "" : "s"}` : undefined,
     authority: authority && authority.scope === "UG and PG" ? authority.authority : `${p.city.state}'s own counselling authority`,
     mbbs: p.mbbs.length >= 2 ? p.mbbs.length : undefined,
     mbbs_seats: mbbsSeats ? n(mbbsSeats) : undefined,
@@ -202,7 +217,9 @@ export default async function CityPage(props: { params: Promise<{ city: string }
                   <td className="px-4 py-2.5 text-[13px]">
                     <FeeCell c={x} />
                   </td>
-                  <td className="tnum px-4 py-2.5 text-right">{x.stipendY1 ? `${lakh(x.stipendY1)} /mo` : "—"}</td>
+                  <td className="tnum px-4 py-2.5 text-right">
+                    {offCollege.get(x.slug) ? `${lakh(offCollege.get(x.slug))} /mo` : x.stipendY1 ? `${lakh(x.stipendY1)} /mo` : "—"}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -291,14 +308,25 @@ export default async function CityPage(props: { params: Promise<{ city: string }
         <div>
           <SectionHead icon="coins" eyebrow="Year 1" title={c.stipend_title} />
           <ul className="mt-5 space-y-2 text-[15px]">
+            {osLine && (
+              <li className="rounded-xl border border-primary/25 bg-card px-4 py-2.5">
+                {p.city.state}&apos;s government colleges: <span className="tnum font-semibold">{osLine}</span>
+                {os!.govt.kind === "basic" ? " (basic pay from the state's order)" : os!.govt.kind === "figures" ? " (the state's own order)" : " (an official document)"}.
+              </li>
+            )}
+            {obLine && (
+              <li className="rounded-xl border border-primary/25 bg-card px-4 py-2.5">
+                Government-college bond in {p.city.state}: <span className="font-semibold">{obLine}</span> (the state&apos;s own 2026-27 rules).
+              </li>
+            )}
             {p.stipend?.median && (
               <li className="rounded-xl border border-border bg-card px-4 py-2.5">
-                Stipend: <span className="tnum font-semibold">{lakh(p.stipend.median)}</span> a month in the middle ({p.stipend.colleges} colleges)
+                Stipend as listed for the counselling: <span className="tnum font-semibold">{lakh(p.stipend.median)}</span> a month in the middle ({p.stipend.colleges} colleges)
                 {p.stipend.govtMedian ? `; government ${lakh(p.stipend.govtMedian)}` : ""}
                 {p.stipend.otherMedian ? `; private and deemed ${lakh(p.stipend.otherMedian)}` : ""}.
               </li>
             )}
-            {p.bond?.govt ? (
+            {!obLine && p.bond?.govt ? (
               <li className="rounded-xl border border-border bg-card px-4 py-2.5">
                 Bond: {p.bond.bonded} of {p.bond.govt} government colleges list a service bond
                 {p.bond.years ? `, usually ${p.bond.years} year${p.bond.years === 1 ? "" : "s"}` : ""}
@@ -309,13 +337,15 @@ export default async function CityPage(props: { params: Promise<{ city: string }
           <p className="mt-3 flex gap-2 text-[13px] leading-relaxed text-muted-foreground">
             <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
             <span>
-              Bond terms are as listed for the 2026 counselling, not an official notice — confirm with the state&apos;s notice or the college before you sign.{" "}
+              {obLine || osLine
+                ? "Government-college stipend and bond from the state's own 2026-27 order and rules; the other figures as listed for the counselling, not an official notice. Confirm with the college before you sign."
+                : "Bond terms are as listed for the 2026 counselling, not an official notice — confirm with the state's notice or the college before you sign."}{" "}
               <Link href={`/md-ms-india/stipend/${stateSlug}`} className="font-semibold text-primary-strong hover:underline dark:text-primary">
                 {p.city.state} PG stipend
               </Link>{" "}
               ·{" "}
-              <Link href="/md-ms-india/bond" className="font-semibold text-primary-strong hover:underline dark:text-primary">
-                PG bond by state
+              <Link href={offBondState ? `/md-ms-india/bond/${offBondState.slug}` : "/md-ms-india/bond"} className="font-semibold text-primary-strong hover:underline dark:text-primary">
+                {offBondState ? `${p.city.state} PG bond` : "PG bond by state"}
               </Link>
             </span>
           </p>

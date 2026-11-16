@@ -284,7 +284,7 @@ export function collegeFaqs(
       : "";
     faqs.push({
       q: `What is the PG stipend at ${name}?`,
-      a: `${money(top.stipendY1Inr!)} a month in the first year,${later} as published — worth ${money(top.stipendY1Inr! * 12)} over the first year against the fees above.`,
+      a: `${money(top.stipendY1Inr!)} a month in the first year,${later} as listed for the counselling (not an official notice) — worth ${money(top.stipendY1Inr! * 12)} over the first year against the fees above.`,
     });
   }
 

@@ -84,7 +84,7 @@ async function roomOn(page: string, q: string) {
 const lastPart = (p: string) => p.split("/").filter(Boolean).pop() ?? "";
 /** Pages about one branch, state or college: an answer about another one moves to its own page. NEET SS and MDS pages
  *  are their own courses: an MD answer there ("md radiology fees" on DM Neuro Radiology) moves too (2026-11-13 audit). */
-const SPECIFIC = /^\/(md-ms-india\/(branches|states|colleges|stipend|fees)|mbbs-india\/colleges|counselling\/(neet-pg|mbbs)|medical-colleges|neet-ss|neet-mds)\//;
+const SPECIFIC = /^\/(md-ms-india\/(branches|states|colleges|stipend|fees|bond)|mbbs-india\/colleges|counselling\/(neet-pg|mbbs)|medical-colleges|neet-ss|neet-mds)\//;
 function pageFits(page: string, d: Draft, q: string): boolean {
   if (!SPECIFIC.test(page)) return true; // a hub (cutoff, marks vs rank, a round page) takes any of its searches
   if (lastPart(page) === lastPart(d.page) || d.page.startsWith(`${page}/`)) return true;
