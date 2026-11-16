@@ -1531,6 +1531,118 @@ export const PAGE_COPY = {
       },
     },
   },
+  // The Google Ads landing page for NEET PG candidates after Round 2 (owner, 2026-11-16: "ek dum marketing page… without
+  // number claims… aggressive claims + language + words"). Strong words, no figures, and only claims that are true: the
+  // rules are MCC's (lib/choiceFillingRules.ts), the way of working is the team's own, and no seat is ever promised.
+  "page.pg_round3": {
+    group: "Page: NEET PG after Round 2 (ads landing page)",
+    fields: {
+      eyebrow: { label: "Eyebrow — {year}", value: "NEET PG {year} · Round 3, stray aur state rounds" },
+      title: { label: "Title", value: "Round 2 mein seat nahi mili?" },
+      accent: { label: "Title, coloured part", value: "Game abhi khatam nahi hua." },
+      subtitle: {
+        label: "Line under the title",
+        long: true,
+        value:
+          "Round 3, state ke agle rounds, stray aur special stray abhi baaki hain, aur har round mein woh seats khulti hain jo upgrade aur non-joining se khaali hoti hain. Sawaal ye nahi ki seat bachi hai ya nahi. Sawaal ye hai ki aapka plan ready hai ya nahi.",
+      },
+      points: {
+        label: "Three ticks under the title, one per line",
+        long: true,
+        value: [
+          "Aapki rank, category, domicile aur budget par personal round-by-round plan",
+          "Choice list jo seat dilane ke liye bani hai, sirf bharne ke liye nahi",
+          "Har result ke baad sahi faisla: join karo, upgrade lo ya chhodo, deposit bachake",
+        ].join("\n"),
+      },
+      cta: { label: "Main button", value: "Mera Round 3 plan banao" },
+      wa: { label: "WhatsApp button", value: "WhatsApp par baat karo" },
+      wa_text: { label: "WhatsApp message, prefilled", long: true, value: "Hi, Round 2 ke baad mujhe NEET PG seat ke liye expert counselling chahiye. Meri rank: " },
+      call: { label: "Call button", value: "Call karo" },
+      form_title: { label: "Form card heading", value: "Counsellor aapko call karega" },
+      form_body: { label: "Form card line", long: true, value: "Naam, number aur rank chhodiye. Aaj hi aapke case par baat hogi." },
+      form_button: { label: "Form button", value: "Mujhe call karo" },
+      form_done: { label: "After the form is sent", long: true, value: "Shukriya! Counsellor jaldi aapko call karega. Abhi baat karni hai? WhatsApp par message kijiye." },
+      urgency_title: { label: "Urgency strip — heading", value: "Round 3 ki window chhoti hoti hai" },
+      urgency_body: {
+        label: "Urgency strip — line",
+        long: true,
+        value: "Choice filling kuch hi din khulti hai, aur lock hone ke baad kuch nahi badalta. Jo pehle se taiyaar hai, wahi aage nikalta hai.",
+      },
+      dates_note: { label: "Under the dates", value: "Dates MCC ke schedule se. MCC ka latest notice hi final hai." },
+      situations_title: { label: "Situations — heading", value: "Aap kis situation mein ho?" },
+      situations_intro: { label: "Situations — line", long: true, value: "Har situation ka rasta alag hai. Apni wali chuniye, counsellor wahin se shuru karega." },
+      situations: {
+        label: "Situations, one per line: title | text | WhatsApp message",
+        long: true,
+        value: [
+          "Round 2 mein koi seat nahi mili | Round 3, state ka agla round, stray aur special stray abhi baaki hain. Har round mein woh seats khulti hain jo upgrade ya non-joining se khaali hoti hain. Sahi round mein sahi choices ho, toh mauka abhi bhi hai. | Hi, Round 2 mein mujhe NEET PG seat nahi mili. Round 3 aur stray ke liye plan chahiye. Meri rank: ",
+          "Seat mili, par pasand nahi | Round 3 upgrade ka aakhri mauka hai. Round 3 ki seat join karne ke baad na resign hoti hai, na upgrade. Ek galat lock aur aap usi seat par ruk jaoge. | Hi, Round 2 mein mujhe seat mili hai par main upgrade chahta hoon. Round 3 ki strategy chahiye. Meri rank: ",
+          "Eligibility ya cut-off ka intezaar | Qualifying cut-off ho ya documents, jis din rasta khulega us din choice filling ki window chhoti hogi. Aapki list us din se pehle ready honi chahiye. | Hi, main NEET PG eligibility / cut-off ka wait kar raha hoon. Pehle se plan chahiye. Mera score/rank: ",
+          "Budget, bond ya state ka confusion | Deemed ki paid seat, state ka mop-up ya management quota: kahan apply karna hai aur kahan nahi, fee aur bond dekhkar. Galat jagah lock matlab saalon ka bond. | Hi, mujhe NEET PG ke liye budget aur bond ke hisaab se college chunne mein madad chahiye. Meri rank: ",
+        ].join("\n"),
+      },
+      situation_button: { label: "Situation card button", value: "Is par baat karo" },
+      traps_title: { label: "Mistakes — heading", value: "Ye galtiyan seat chheen leti hain" },
+      traps_intro: { label: "Mistakes — line", long: true, value: "Aakhri rounds ke rules sakht hain. Ek chook, aur poora saal." },
+      traps: {
+        label: "Mistakes, one per line: title | text",
+        long: true,
+        value: [
+          "State seat join karke MCC ka stray bhool gaye | Jo state ke round 3 tak state ki seat join kar lete hain, unhe MCC ke stray round se pehle hata diya jaata hai. Kaunsi seat pehle pakadni hai, yahi order sab kuch hai.",
+          "Seat allot hui, join nahi ki | Round 2 ya uske baad mili MCC seat join nahi ki, toh security deposit gaya. Round 3 ki seat chhodi, toh MCC ke aage ke rounds se bhi bahar.",
+          "Round 3 seat join karke 'baad mein dekh lenge' | Round 3 ki seat join karne ke baad na resign hoti hai, na upgrade. Lock karne se pehle har choice pakki honi chahiye.",
+          "Stray round ko lottery samajhna | Stray round sirf unke liye hai jinke paas AIQ, state ya deemed, kahin bhi seat nahi hai. Aur yahan upgrade nahi milta: jo mila, wahi join karna padta hai.",
+          "Fee aur bond bina padhe lock | Kai seats ke saath service bond aur seat chhodne ka bhaari penalty aata hai. Lock se pehle sab likhit mein dekhiye.",
+          "'Seat booking' ya 'direct admission' wale agent | PG seat sirf counselling se milti hai. Paise dekar 'confirm seat' ka koi kanooni rasta nahi, aur jo aisa bole wahi sabse bada khatra hai.",
+        ].join("\n"),
+      },
+      steps_title: { label: "Our work — heading", value: "Expert Counselling: aakhri round tak hum aapke saath" },
+      steps: {
+        label: "Our work, one step per line: title | text",
+        long: true,
+        value: [
+          "Aapka case padhte hain | Rank, category, domicile, budget aur bond par aapki soch: sab ek call mein.",
+          "Har bacha rasta map karte hain | MCC ka Round 3 aur stray, aapke state ke rounds, deemed ki seats: kis mein aap eligible ho aur kis order mein.",
+          "Choice list banate hain | Kaunse college, kaunsi branch, kis order mein, taaki jo seat mil sakti hai woh list se chhoot na jaaye.",
+          "Har result par faisla | Join karo, upgrade ke liye ruko ya chhodo: deposit aur agla round dono bachake.",
+          "Reporting tak saath | Documents, fee, hostel aur bond: college office se likhit mein, joining tak.",
+        ].join("\n"),
+      },
+      why_title: { label: "Why us — heading", value: "Kyun AdmissionHands" },
+      why: {
+        label: "Why us, one per line: title | text",
+        long: true,
+        value: [
+          "Pura India, ek team | MCC, har state ki counselling aur deemed universities: sab ek saath track, taaki koi round na chhoote.",
+          "College offices se seedhi baat | Fee, hostel, deposit aur bond ki baat likhit mein, joining se pehle.",
+          "Saaf aur seedhi baat | Fee kaam shuru hone se pehle bata di jaati hai. Seat ka jhootha promise nahi: sirf poora plan aur poori mehnat.",
+          "Aapka apna counsellor | Ek insaan jo aapka case jaanta hai, round-by-round aapke saath.",
+        ].join("\n"),
+      },
+      promise_note: {
+        label: "The no-promise line",
+        long: true,
+        value:
+          "Seat counselling allot karti hai. Koi bhi iski guarantee nahi de sakta, aur jo de, usse door rahiye. Hum ye pakka karte hain ki aap koi round, koi rasta aur koi sahi choice miss na karo.",
+      },
+      end_title: { label: "Closing — heading", value: "Round 3 se pehle apna plan pakka karo" },
+      end_body: { label: "Closing — line", long: true, value: "Choice filling khulne se pehle plan ready ho, toh aadha kaam ho gaya. Aaj hi baat kijiye." },
+      faq_title: { label: "FAQ heading", value: "Aksar pooche jaane wale sawaal" },
+      faq: {
+        label: "FAQ, one per line: question | answer",
+        long: true,
+        value: [
+          "Round 2 mein seat nahi mili, ab kya karein? | Round 3, aapke state ke agle rounds, stray aur special stray abhi baaki hain. Pehle ye tay kijiye ki kis round mein aap eligible ho, phir choice list. Counsellor dono aapke case ke hisaab se banata hai.",
+          "Kya Round 3 ki seat join karke baad mein chhod sakte hain? | Nahi. Round 3 ki seat join karne ke baad na resign hoti hai, na upgrade. Join nahi kiya toh security deposit jaata hai aur MCC ke aage ke rounds bhi.",
+          "Stray round mein kaun bhaag le sakta hai? | Sirf wo jinke paas AIQ, state ya deemed counselling mein koi seat nahi hai. Stray mein mili seat join karni padti hai, warna deposit jaata hai.",
+          "Kya aap seat ki guarantee dete ho? | Nahi. Seat counselling allot karti hai, aur koi bhi iski guarantee nahi de sakta. Hum aapka plan aur choice list aise banate hain ki koi mauka na chhoote.",
+          "Cut-off kam hoga kya? | Ye NBEMS tay karta hai, aur pehle se koi nahi bata sakta. Agar hota hai, toh choice filling ki window chhoti hogi, isliye list pehle se ready rakhiye.",
+          "Expert Counselling ki fee kitni hai? | Pehli baat-cheet free hai. Counsellor kaam shuru hone se pehle fee saaf bata deta hai.",
+        ].join("\n"),
+      },
+    },
+  },
   // "NEET PG counselling kaise hoti hai" (2026-11-11): the beginner's overview in Hinglish, for families and doctors who
   // ask it that way. Rules only from lib/choiceFillingRules.ts (MCC's documents); dates from the admin's pg_schedule.
   "page.pg_kaise": {
