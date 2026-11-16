@@ -7,6 +7,9 @@ import { resolveMetadata } from "@/lib/content";
 import { getStateStipend } from "@/lib/cutoffHubQueries";
 import { getPgStates } from "@/lib/pgStateQueries";
 import { getBondByState } from "@/lib/pgSeatData";
+import { bindsAiq, getOfficialBondState, govtBond, hasOwnBond, rangeText, yearsText } from "@/lib/officialBond";
+import { Sources } from "@/components/bond/OfficialBond";
+import { sourcesOf } from "@/lib/officialBond";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import DataHero from "@/components/hero/DataHero";
@@ -103,6 +106,18 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
   const path = `/md-ms-india/stipend/${slug}`;
   const bondAll = await getBondByState();
   const bond = bondAll?.states.find((b) => b.state === s.state) ?? null;
+  // The state's own 2026-27 rules (lib/officialBond.ts), when they have been read: they replace the listing's bond here.
+  const official = await getOfficialBondState(slug).catch(() => null);
+  const og = official ? govtBond(official.state) : null;
+  const ogLine = og
+    ? og.flag === "not_notified"
+      ? `${s.state} has not notified a government service bond for this batch yet.`
+      : og.flag === "lead"
+        ? `${s.state}'s government bond is not confirmed in an official notice yet.`
+        : [yearsText(og.years, og.yearsMax) ? `${yearsText(og.years, og.yearsMax)} of government service` : null, rangeText(og.min, og.max) ? `${rangeText(og.min, og.max)} if not served` : null]
+            .filter(Boolean)
+            .join(", ") || og.words || null
+    : null;
   const top = s.list[0];
 
   const tokens = {
@@ -145,15 +160,20 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
     ...(s.govtMedian && s.privateMedian && s.govtMedian !== s.privateMedian ? [{ question: body.faq2_q, answer: body.faq2_a }] : []),
     ...(top ? [{ question: body.faq3_q, answer: body.faq3_a }] : []),
     ...(s.y2Median && s.y3Median ? [{ question: body.faq4_q, answer: body.faq4_a }] : []),
-    ...(showBond && bond!.govt.withBond > 0 && bond!.govt.penaltyMedian ? [{ question: body.faq5_q, answer: body.faq5_a }] : []),
+    ...(official && ogLine
+      ? [{ question: body.faq5_q, answer: `${ogLine.replace(/\.$/, "")}${official && bindsAiq(official.state) ? ". It binds All India Quota seats in the state's government colleges too" : ""}. From ${s.state}'s own 2026-27 rules; the state's bond page has every rule and each private college's own bond.` }]
+      : showBond && bond!.govt.withBond > 0 && bond!.govt.penaltyMedian
+        ? [{ question: body.faq5_q, answer: body.faq5_a }]
+        : []),
   ];
 
   faqs.push(
     ...(await hinglishFaqs("stipend_state", {
       ...tokens,
-      // The bond question only where the state's government colleges list one.
-      bond_years: bond && bond.govt.withBond > 0 ? years(bond.govt.typicalYears) : undefined,
-      bond_penalty: bond && bond.govt.withBond > 0 ? big(bond.govt.penaltyMedian) : undefined,
+      // The bond question only where the state's government colleges list one — and not where the official rules are
+      // read: that line speaks of the listing's middle figure, and the English answer above gives the official one.
+      bond_years: !official && bond && bond.govt.withBond > 0 ? years(bond.govt.typicalYears) : undefined,
+      bond_penalty: !official && bond && bond.govt.withBond > 0 ? big(bond.govt.penaltyMedian) : undefined,
       private_median: s.govtMedian !== s.privateMedian ? tokens.private_median : undefined,
     })),
   );
@@ -214,9 +234,11 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
                 ? [{ icon: "college" as const, label: "Private median", value: rupees(s.privateMedian), note: "first year, a month" }]
                 : []),
           ...(s.y3Median ? [{ icon: "spark" as const, label: "Year 3 median", value: rupees(s.y3Median), note: `year 1: ${rupees(s.median)}` }] : []),
-          ...(showBond && bond!.govt.withBond > 0
-            ? [{ icon: "authority" as const, label: "Govt colleges with a bond", value: `${bond!.govt.withBond} of ${bond!.govt.colleges}`, note: `usually ${years(bond!.govt.typicalYears)}` }]
-            : []),
+          ...(official && og && !og.flag && (og.years || og.min)
+            ? [{ icon: "authority" as const, label: "Govt-college bond", value: yearsText(og.years, og.yearsMax) ?? rangeText(og.min, og.max)!, note: rangeText(og.min, og.max) ? `${rangeText(og.min, og.max)} if not served · official` : "official 2026-27 rules" }]
+            : !official && showBond && bond!.govt.withBond > 0
+              ? [{ icon: "authority" as const, label: "Govt colleges with a bond", value: `${bond!.govt.withBond} of ${bond!.govt.colleges}`, note: `usually ${years(bond!.govt.typicalYears)}` }]
+              : []),
         ]}
       />
       <FeePdfCta state={s.state} placement="pdf_stipend_state" />
@@ -313,8 +335,37 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
       )}
 
 
-      {/* -------------------------- the bond -------------------------- */}
-      {showBond && (
+      {/* -------------------------- the bond: the state's own rules where read -------------------------- */}
+      {official && (
+        <section className="border-t border-border bg-surface-1 py-10 md:py-14" id="bond">
+          <div className="container-custom">
+            <SectionHead icon="document" eyebrow="Service bond · official 2026-27" title={body.bond_title} />
+            <div className="mt-6 rounded-2xl border border-border bg-card p-5 md:p-6">
+              <p className="text-[15.5px] leading-relaxed text-foreground">
+                <span className="font-semibold">Government colleges:</span> {ogLine ?? "as the state's rules print it."}
+                {bindsAiq(official.state) ? " It binds All India Quota seats in the state's government colleges too." : ""}
+              </p>
+              {official.colleges.length > 0 && (
+                <p className="mt-2 text-[14.5px] leading-relaxed text-muted-foreground">
+                  Private and deemed colleges: {official.colleges.filter(hasOwnBond).length} of {official.colleges.length} print their own service bond, as their own notices show.
+                </p>
+              )}
+              {og?.flag !== "lead" && (() => {
+                const gsb = official.state.data.government_service_bond;
+                return gsb && typeof gsb === "object" && !Array.isArray(gsb) ? <Sources sources={sourcesOf(gsb.source).slice(0, 2)} className="mt-4 border-t border-border pt-4" /> : null;
+              })()}
+              <p className="mt-4">
+                <Link href={`/md-ms-india/bond/${official.state.slug}`} className="font-semibold text-primary-strong hover:underline dark:text-primary">
+                  {s.state} PG bond: every rule, round by round →
+                </Link>
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* -------------------------- the bond: the listing, for a state not read yet -------------------------- */}
+      {!official && showBond && (
         <section className="border-t border-border bg-surface-1 py-10 md:py-14">
           <div className="container-custom">
             <SectionHead icon="document" eyebrow="Service bond" title={body.bond_title} intro={body.bond_intro} />

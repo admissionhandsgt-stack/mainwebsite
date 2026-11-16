@@ -19,6 +19,7 @@ import { PAGE_COPY } from "@/lib/pageCopyDefaults";
 import { getDataStats } from "@/lib/dataStats";
 import { getSeatMatrixOverview } from "@/lib/pgSeatData";
 import { getStipends } from "@/lib/cutoffHubQueries";
+import { getOfficialBond, govtBond, rangeText, yearsText } from "@/lib/officialBond";
 import { ROUNDS, getCounsellingYear, getCounsellingYears, getRoundResult, getRoundState, roundPath } from "@/lib/mccResults";
 import { getMbbsStateSeats } from "@/lib/stateQueries";
 import { getPgStates } from "@/lib/pgStateQueries";
@@ -90,6 +91,7 @@ export async function llmsText(full: boolean): Promise<string> {
     getPgStates().catch((): Awaited<ReturnType<typeof getPgStates>> => []),
     getBranches().catch((): Awaited<ReturnType<typeof getBranches>> => []),
   ]);
+  const bond = await getOfficialBond().catch(() => null);
   // This year's round to point at: the latest one with a result, else the next one awaited.
   const states = await Promise.all(ROUNDS.map((r) => getRoundState(current, r.round)));
   const liveIdx = states.map((s, i) => (s.status === "live" ? i : -1)).filter((i) => i >= 0).pop();
@@ -168,7 +170,20 @@ export async function llmsText(full: boolean): Promise<string> {
     link("MD/MS branches", "/md-ms-india/branches", `${n(stats.pgBranches)} PG courses, each with its colleges, seat options and cutoff band`),
     link("PG by state", "/md-ms-india/states", "every state's MD/MS colleges and DNB hospitals, its counselling and its cutoff by quota"),
     link("PG stipend, state wise", "/md-ms-india/stipend", stipends.colleges ? `first-year stipends published by ${n(stipends.colleges)} colleges and DNB hospitals, with a page per state` : undefined),
-    link("PG service bond by state", "/md-ms-india/bond", "bond years and penalties on government seats, as listed for the counselling; confirm with the state's notice before signing"),
+    link(
+      "PG service bond by state",
+      "/md-ms-india/bond",
+      bond
+        ? `each state's own 2026-27 rules for ${bond.states.length} states and MCC: government bond years and amount if not served, which states bind All India Quota seats, seat-leaving terms round by round, security deposits, and ${bond.colleges.length} private and deemed colleges' own bonds; every figure linked to its official notice, with a page per state`
+        : "bond years and penalties on government seats, as listed for the counselling; confirm with the state's notice before signing",
+    ),
+    ...(bond
+      ? bond.states.map((st) => {
+          const g = govtBond(st);
+          const fig = g.flag ? null : [yearsText(g.years, g.yearsMax), rangeText(g.min, g.max)].filter(Boolean).join(", ");
+          return link(`${st.state} PG bond`, `/md-ms-india/bond/${st.slug}`, fig ? `government colleges: ${fig} if not served (official 2026-27)` : "official 2026-27 rules");
+        })
+      : []),
     link("NEET PG fees 2026-27, state by state", "/md-ms-india/fees", "every government, private and deemed MD/MS college's yearly fee, quota by quota, with the cheapest and dearest branch named; 2026-27 notices printed exactly, with a page per state"),
     link("Medical colleges by city", "/medical-colleges", "a page per city with five or more MD/MS colleges: every college's 2026-27 PG fee by kind of seat, NMC's MD/MS and MBBS seats, stipend, bond, branches taught and MCC's seats; DNB hospitals listed apart"),
     link("MD fees in private medical colleges", "/md-ms-india/private-college-fees", "state by state, as the median and the middle 80%"),

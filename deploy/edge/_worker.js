@@ -136,7 +136,7 @@ const CRAWLER_STALE_MS = 24 * 60 * 60 * 1000;
 // 0.89 s, 2026-11-14 benchmark). A visitor may now get such a page up to six hours old while the origin is asked again
 // behind the visit, so the next visitor gets it fresh. Pages that follow a live round or notices (home,
 // /neet-pg-counselling, updates, choice filling, hubs) keep the ten-minute rule.
-const DATA_PAGE = /^\/(mbbs-india\/colleges\/[^/]+|md-ms-india\/(colleges|branches|states|stipend|fees)\/.+|medical-colleges\/[^/]+|neet-ss\/[^/]+|neet-mds\/[^/]+|counselling\/(neet-pg|mbbs)\/[^/]+)$/;
+const DATA_PAGE = /^\/(mbbs-india\/colleges\/[^/]+|md-ms-india\/(colleges|branches|states|stipend|fees|bond)\/.+|medical-colleges\/[^/]+|neet-ss\/[^/]+|neet-mds\/[^/]+|counselling\/(neet-pg|mbbs)\/[^/]+)$/;
 const DATA_STALE_MS = 6 * 60 * 60 * 1000;
 
 async function revalidate(kind, cache, key, cached, request, url, env) {

@@ -27,6 +27,9 @@ import { getCollegeSeatMatrix, getCollegeSeatTerms, termsSession } from "@/lib/p
 import { pageCopy } from "@/lib/pageCopy";
 import MccSeats from "@/components/colleges/MccSeats";
 import SeatTerms from "@/components/colleges/SeatTerms";
+import CollegeOfficialBond from "@/components/bond/CollegeOfficialBond";
+import { collegeBondText } from "@/components/bond/OfficialBond";
+import { getOfficialCollegeBond, getOfficialStateByName, govtBond, isCentralInstitution, rangeText, yearsText } from "@/lib/officialBond";
 import TelegramStrip from "@/components/engage/TelegramStrip";
 import { jsonLd as toJsonLd } from "@/lib/jsonLd";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
@@ -100,7 +103,7 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
   if (!data) notFound();
   const { college, cutoffs, fees, nmc, live, summary: s } = data;
 
-  const [pgStates, similar, photo, matrix, terms, mbbsPage, twin] = await Promise.all([
+  const [pgStates, similar, photo, matrix, terms, mbbsPage, twin, bondRow, bondState] = await Promise.all([
     getPgStates(),
     getSimilarColleges(params.slug, "pg", 5),
     getPgCollegePhoto(params.slug),
@@ -112,7 +115,14 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
     getOtherLevelPage(params.slug, "pg"),
     // The same hospital's DNB entry, or its MD/MS entry (lib/collegeQueries.ts).
     getPgTwin(params.slug),
+    // The official bond (2026-11-16, lib/officialBond.ts): the college's own row, or its state's government-college rule.
+    getOfficialCollegeBond(college.slug),
+    college.state ? getOfficialStateByName(college.state) : Promise.resolve(null),
   ]);
+  // A state's government bond is shown on a state government college with no row of its own — never on a DNB-only
+  // hospital (National Board seats) or a central institution (AIIMS, ESIC, …), whose terms are their own.
+  const bondStateRule = !bondRow && bondState && s.kind === "pg" && s.type === "Government" && !isCentralInstitution(college.name) ? bondState : null;
+  const officialBond = !!bondRow || !!bondStateRule;
   // Words from Admin → Content ("Page: PG college pages — MCC seats, bond and stipend").
   const [seatsCopy, termsCopy] = await Promise.all([
     pageCopy("page.college_pg.mcc", { college: s.short, year: matrix?.year, total: matrix?.total.toLocaleString("en-IN") }),
@@ -138,6 +148,29 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
 
   const nirf = getNirf(college.slug, "pg");
   const faqs = collegeFaqs(college, cutoffs, fees, "pg", { course: s.course, type: s.type, seats: s.seats, fromNmc: s.fromNmc, seatsFromNmc: s.seatsFromNmc, live, nirf });
+  {
+    // "<college> pg bond" is searched (GSC: sms jaipur, gmc amritsar, andhra medical college…): answered from the official
+    // row or the state's rule, never from the listing.
+    const bondAnswer = bondRow
+      ? bondRow.status === "not_verified"
+        ? `${s.short}'s current PG documents have not been read yet. Ask the college for its bond and course-leaving terms in writing before you sign.`
+        : `${collegeBondText(bondRow) ?? "No service bond of its own"}${bondRow.leaving ? `. Leaving the course: ${bondRow.leaving}` : ""}${bondRow.session ? ` (${bondRow.session}, from the college's own notice)` : " (from the college's own notice)"}.`
+      : bondStateRule
+        ? (() => {
+            const g = govtBond(bondStateRule);
+            const parts = [yearsText(g.years, g.yearsMax) ? `${yearsText(g.years, g.yearsMax)} of government service` : null, rangeText(g.min, g.max) ? `${rangeText(g.min, g.max)} if not served` : null].filter(Boolean);
+            return g.flag === "not_notified"
+              ? `${bondStateRule.state} has not notified a government service bond for this batch yet.`
+              : g.flag === "lead"
+                ? `${bondStateRule.state}'s government bond is not confirmed in an official notice yet; ask the college before you sign.`
+                : parts.length
+                  ? `As a ${bondStateRule.state} government college it carries the state's bond: ${parts.join(", ")}, as the state's own rules print it.`
+                  : null;
+          })()
+        : null;
+    const bondName = s.place && !s.short.toLowerCase().includes(s.place.toLowerCase()) ? `${s.short}, ${s.place}` : s.short;
+    if (bondAnswer) faqs.push({ q: `Does ${bondName} have a PG bond?`, a: bondAnswer.replace(/\.\./g, ".") });
+  }
   const liveR1 = live ? live.rounds.length === 1 && live.rounds[0] === "Round 1" : false;
   const jsonLd = collegeJsonLd({
     college,
@@ -378,11 +411,19 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
               </section>
             )}
 
+            {/* -------- the official bond (the college's own notice, or its state's rule) -------- */}
+            {officialBond && (
+              <div className="mt-12">
+                <CollegeOfficialBond name={s.place && !s.short.toLowerCase().includes(s.place.toLowerCase()) ? `${s.short}, ${s.place}` : s.short} row={bondRow} state={bondRow ? bondState : bondStateRule} />
+              </div>
+            )}
+
             {/* -------- bond, stipend by year, seat-leaving penalty -------- */}
             {terms.length > 0 && (
               <div className="mt-12">
                 <SeatTerms
                   terms={terms}
+                  hideBond={officialBond}
                   copy={{
                     eyebrow: termsCopy.terms_eyebrow,
                     title: termsCopy.terms_title,

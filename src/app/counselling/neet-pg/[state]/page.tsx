@@ -26,6 +26,7 @@ import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/S
 import ExpertPromise from "@/components/counsel/ExpertPromise";
 import { FaqList, HowWeWork, LinkCards, RouteCards, StateChips, pairs } from "@/components/counsel/CounselBlocks";
 import FeePdfCta from "@/components/lead/FeePdfCta";
+import { getOfficialStateByName, govtBond, rangeText, yearsText } from "@/lib/officialBond";
 import WhereNow from "@/components/counsel/WhereNow";
 
 /**
@@ -48,7 +49,7 @@ async function load(slug: string) {
   if (!states.some((s) => s.slug === slug)) return null;
   const p = await getPgStatePage(slug);
   if (!p) return null;
-  const [anyAuthority, nmcPg, mcc, stipends, fees, bond, team, contact, round] = await Promise.all([
+  const [anyAuthority, nmcPg, mcc, stipends, fees, bond, team, contact, round, official] = await Promise.all([
     getStateAuthority(p.name),
     getNmcPgForState(p.name),
     getStateSeatMatrix(p.name),
@@ -58,6 +59,7 @@ async function load(slug: string) {
     pageCopy("page.services.figures"),
     getContactInfo().catch(() => null),
     getStateRound(slug).catch(() => null),
+    getOfficialStateByName(p.name).catch(() => null),
   ]);
   // The shipped list names some boards for MBBS only; a UG-only board is not the one that fills PG seats.
   const authority = anyAuthority?.scope === "UG and PG" ? anyAuthority : null;
@@ -80,8 +82,21 @@ async function load(slug: string) {
         fee.deemedPaid != null && `deemed universities ${money(fee.deemedPaid)}`,
       ].filter(Boolean)
     : [];
-  const bondLine =
-    b && b.govt.colleges >= 3
+  // The state's own 2026-27 bond rules where read (lib/officialBond.ts); the listing's count only for a state not read yet.
+  const og = official ? govtBond(official) : null;
+  const officialLine = og
+    ? og.flag === "not_notified"
+      ? `${p.name} has not notified a government service bond for the 2026-27 batch yet.`
+      : og.flag === "lead"
+        ? null
+        : (() => {
+            const parts = [yearsText(og.years, og.yearsMax) ? `${yearsText(og.years, og.yearsMax)} of government service` : null, rangeText(og.min, og.max) ? `${rangeText(og.min, og.max)} if not served` : null].filter(Boolean);
+            return parts.length ? `${p.name}'s government colleges bind MD/MS graduates to ${parts.join(", ")}, as the state's own 2026-27 rules print it.` : null;
+          })()
+    : null;
+  const bondLine = official
+    ? officialLine
+    : b && b.govt.colleges >= 3
       ? b.govt.withBond === 0
         ? `None of the ${b.govt.colleges} government colleges in ${p.name} lists a service bond for its PG seats.`
         : `${b.govt.withBond} of the ${b.govt.colleges} government colleges in ${p.name} list a service bond for their PG seats${
@@ -104,9 +119,12 @@ async function load(slug: string) {
     hours: OFFICE.hoursShort,
     fee_list: feeParts.join(", "),
     bond_line: bondLine ?? "",
+    bond_caveat: official
+      ? `Bond terms are from ${p.name}'s own 2026-27 rules; its PG bond page links each notice.`
+      : `Bond terms are as listed for the counselling, not an official notice — confirm with ${p.name}'s notice or the college before you pay a fee or sign a bond.`,
   };
   const c = await pageCopy("page.counsel_pg", tokens);
-  return { p, states, authority, nmcSeats, mcc, mccSplit, stipend, fee, b, bondLine, feeParts, c, year, contact, round };
+  return { p, states, authority, nmcSeats, mcc, mccSplit, stipend, fee, b, bondLine, feeParts, c, year, contact, round, official, og };
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
@@ -125,7 +143,7 @@ export default async function CounselPgStatePage(props: Props) {
   const { state } = await props.params;
   const d = await load(state);
   if (!d) notFound();
-  const { p, c, authority, nmcSeats, mcc, mccSplit, stipend, fee, b, bondLine, feeParts, year, contact, round } = d;
+  const { p, c, authority, nmcSeats, mcc, mccSplit, stipend, fee, b, bondLine, feeParts, year, contact, round, official, og } = d;
   const path = `/counselling/neet-pg/${p.slug}`;
   const [heroImage, ugStates] = await Promise.all([
     pageHeroImage(`page.pg_state.${p.slug}.hero`, "page.pg_state.hero"),
@@ -150,7 +168,11 @@ export default async function CounselPgStatePage(props: Props) {
     { label: `NEET PG cut off and colleges in ${p.name}`, href: `/md-ms-india/states/${p.slug}`, note: "By quota and branch, with the state's own round" },
     ...(fee ? [{ label: `PG fees in ${p.name}`, href: `/md-ms-india/fees/${p.slug}`, note: "College by college, branch and quota" }] : []),
     ...(stipend ? [{ label: `PG stipend in ${p.name}`, href: `/md-ms-india/stipend/${p.slug}`, note: "Every college that publishes one" }] : []),
-    ...(b ? [{ label: "Service bond by state", href: `/md-ms-india/bond#${b.anchor}`, note: "As listed for the counselling" }] : []),
+    ...(official
+      ? [{ label: `PG bond in ${p.name}`, href: `/md-ms-india/bond/${official.slug}`, note: "The state's own 2026-27 rules, round by round" }]
+      : b
+        ? [{ label: "Service bond by state", href: `/md-ms-india/bond#${b.anchor}`, note: "As listed for the counselling" }]
+        : []),
     { label: "NEET PG choice filling", href: "/neet-pg-choice-filling", note: "MCC's rules for each round" },
     ...(ug ? [{ label: `MBBS counselling in ${ug.name}`, href: `/counselling/mbbs/${ug.slug}` }] : []),
   ];
@@ -243,13 +265,15 @@ export default async function CounselPgStatePage(props: Props) {
             {fee?.privateManagement != null && <Tile label="Management quota" value={money(fee.privateManagement)} note="fee a year, middle" />}
             {fee?.deemedPaid != null && <Tile label="Deemed universities" value={money(fee.deemedPaid)} note="fee a year, middle" />}
             {stipend && <Tile label="Stipend, all colleges" value={`₹${stipend.median.toLocaleString("en-IN")}`} note="median a month, year 1" />}
-            {b && b.govt.colleges >= 3 && (
+            {official && og && !og.flag && (og.years || og.min) ? (
+              <Tile label="Govt-college bond" value={yearsText(og.years, og.yearsMax) ?? rangeText(og.min, og.max)!} note={rangeText(og.min, og.max) ? `${rangeText(og.min, og.max)} if not served · official` : "official 2026-27 rules"} />
+            ) : !official && b && b.govt.colleges >= 3 ? (
               <Tile
                 label="Service bond"
                 value={`${b.govt.withBond} of ${b.govt.colleges}`}
                 note={`government colleges${b.govt.typicalYears ? `, ~${b.govt.typicalYears} yr` : ""} · as listed`}
               />
-            )}
+            ) : null}
           </div>
           <p className="mt-3 max-w-[90ch] text-[12.5px] leading-relaxed text-muted-foreground">{c.money_note}</p>
         </section>

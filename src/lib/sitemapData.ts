@@ -14,6 +14,7 @@ import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
 import { getThinDnbSlugs } from "@/lib/thinPages";
 import { getCityIndex, getCityPage } from "@/lib/cityQueries";
+import { getOfficialBond } from "@/lib/officialBond";
 
 /**
  * The sitemap, split by page type (2026-10-17): /sitemap.xml is an index of
@@ -208,6 +209,9 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
     colleges = data.colleges;
     states = data.states;
     termsDate = data.termsDate ?? undefined;
+    // The official bond rules (2026-11-16) are what the bond hub now leads with: their date moves it too.
+    const bondDay = (await getOfficialBond().catch(() => null))?.asOf ?? "";
+    termsDate = newest([termsDate ?? "", bondDay]) || undefined;
     mccLive = data.mccLive;
     ugRanksDate = data.ugRanksDate ?? undefined;
   } catch (error) {
@@ -357,6 +361,14 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
   } catch (error) {
     console.error("[sitemap] counselling pages could not be listed", error);
   }
+  // One official bond page per state whose own rules have been read (2026-11-16), dated by the rules' reading.
+  try {
+    const off = await getOfficialBond();
+    for (const s of off?.states ?? [])
+      out.states.push({ url: `${BASE}/md-ms-india/bond/${seg(s.slug)}`, lastModified: s.asOf ?? undefined, changeFrequency: "monthly", priority: 0.7 });
+  } catch (error) {
+    console.error("[sitemap] bond states could not be listed", error);
+  }
   // One stipend page per state with three or more colleges publishing one (2026-10-20).
   try {
     const slugOf = new Map((await getPgStates()).map((s) => [s.name, s.slug]));
@@ -436,6 +448,9 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
 
   // The thinnest DNB-only hospital pages are noindex and stay out (lib/thinPages.ts — the page reads the same list).
   const thinDnb = new Set(await getThinDnbSlugs().catch((): string[] => []));
+  // A PG college with a row in the official bond file shows it (components/bond/CollegeOfficialBond): dated by its reading.
+  const bondOff = await getOfficialBond().catch(() => null);
+  const bondSlugs = new Set((bondOff?.colleges ?? []).map((c) => c.slug).filter(Boolean) as string[]);
   for (const c of colleges) {
     const pg = c.level === "pg";
     if (pg && thinDnb.has(c.slug)) continue;
@@ -444,7 +459,7 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
     const shown = pg && liveColleges.has(c.slug) ? newest([liveDay ?? "", LIVE_BANDS_FROM]) : "";
     (pg ? out["pg-colleges"] : out["ug-colleges"]).push({
       url: `${BASE}${pg ? "/md-ms-india/colleges" : "/mbbs-india/colleges"}/${seg(c.slug)}`,
-      lastModified: newest([c.updated ?? "", shown]) || undefined,
+      lastModified: newest([c.updated ?? "", shown, pg && bondSlugs.has(c.slug) ? bondOff?.asOf ?? "" : ""]) || undefined,
       changeFrequency: "monthly",
       priority: 0.6,
     });

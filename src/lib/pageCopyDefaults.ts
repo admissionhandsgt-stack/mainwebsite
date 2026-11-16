@@ -606,9 +606,12 @@ export const PAGE_COPY = {
       },
       money_title: { label: "Section: fees, stipend and bond — heading, {state}", value: "What a PG seat in {state} costs, and pays" },
       money_note: {
-        label: "Section: fees — the line under the figures",
-        value: "Fees are the middle of what colleges publish for a year, one figure per college; stipend is the median first-year stipend a month. Bond terms are as listed for the counselling, not an official notice — confirm with the state's notice or the college before you pay a fee or sign a bond.",
+        label: "Section: fees — the line under the figures ({bond_caveat} = the bond's source, written by the page)",
+        value: "Fees are the middle of what colleges publish for a year, one figure per college; stipend is the median first-year stipend a month. {bond_caveat}",
         long: true,
+        was: [
+          "Fees are the middle of what colleges publish for a year, one figure per college; stipend is the median first-year stipend a month. Bond terms are as listed for the counselling, not an official notice — confirm with the state's notice or the college before you pay a fee or sign a bond.",
+        ],
       },
       how_title: { label: "Section: how we work — heading, {state}", value: "How our counsellors work with {state} students" },
       how_steps: {
@@ -649,9 +652,10 @@ export const PAGE_COPY = {
       },
       faq_bond_q: { label: "FAQ: bond — question", value: "Is there a service bond after PG in {state}?" },
       faq_bond_a: {
-        label: "FAQ: bond — answer ({state}, {bond_line} = the figures, written by the page)",
-        value: "{bond_line} These terms are as listed for the counselling, not an official notice — confirm with {state}'s notice or the college before you sign a bond.",
+        label: "FAQ: bond — answer ({state}, {bond_line} = the figures, {bond_caveat} = their source, both written by the page)",
+        value: "{bond_line} {bond_caveat}",
         long: true,
+        was: ["{bond_line} These terms are as listed for the counselling, not an official notice — confirm with {state}'s notice or the college before you sign a bond."],
       },
       faq_online_q: { label: "FAQ: online help — question", value: "Can I get NEET PG counselling help for {state} without visiting an office?" },
       faq_online_a: {
@@ -1395,16 +1399,24 @@ export const PAGE_COPY = {
     fields: {
       bond: {
         label:
-          "Bond page — {year}, {govt_bonded}, {govt_colleges}, {penalty_median}, {penalty_low}, {penalty_high}, {exit_median}, {exit_colleges}, {all_colleges}, {private_bonded}, {private_colleges}, {one_year}, {two_year}, {three_year}, {no_bond_states}",
+          "Bond page (official rules) — {session}, {official_states}, {years_range}, {top_list}, {aiq_list}, {read_colleges}, {own_colleges}",
         long: true,
         value: [
+          "PG me bond kya hota hai? | Government college ki PG seat ke saath aksar service bond hota hai: course ke baad tay saal tak state ki service, warna tay rakam bharni padti hai. {official_states} states ke {session} ke official niyam is page par hain, har state ka apna page bhi.",
+          "Bond todne par kitna dena padta hai? | Har state ka alag hai. Sabse zyada: {top_list}. Har state ke page par rakam course ya branch ke hisaab se, notice ke link ke saath di gayi hai.",
+          "Seat leaving penalty kya hai, aur bond se kaise alag hai? | Service bond course ke baad ki service ki shart hai. Seat leaving penalty admission ke baad seat chhodne par lagti hai, aur round ke saath badhti hai. MCC aur har state ke round-wise niyam unke pages par hain.",
+          "Kya bond All India Quota seat par bhi lagta hai? | MCC ka apna bond nahi hai, par in states ke government colleges me AIQ seat par bhi state ka bond lagta hai: {aiq_list}.",
+          "PG bond kitne saal ka hota hai? | Official niyamon me {years_range}. Har state ke saal aur rakam upar ki table me hain.",
+          "Private college me bhi bond hota hai kya? | Zyadatar ka apna bond nahi hota: jin {read_colleges} private aur deemed colleges ke documents padhe gaye, unme se {own_colleges} apna service bond chhaapte hain. Seat chhodne par fee ya penalty wahan bhi lag sakti hai.",
+        ].join("\n"),
+        was: [[
           "PG me bond kya hota hai? | Government college ki PG seat ke saath aksar ek service bond hota hai: course poora hone ke baad tay saal tak state ke hospital me kaam karna, warna penalty bharna. {year} counselling ki listing me {govt_colleges} me se {govt_bonded} government PG colleges bond list karte hain.",
           "Bond todne par kitni penalty lagti hai? | Government colleges me bond penalty ka middle figure {penalty_median} hai, zyadatar {penalty_low} se {penalty_high} ke beech. Har state ka alag hai, isliye upar ki state-wise table dekhein aur seat lene se pehle state ka notice confirm karein.",
           "Seat leaving penalty kya hai, aur bond se kaise alag hai? | Service bond course ke baad ki service ki shart hai. Seat leaving penalty admission ke baad seat chhodne par lagti hai. {all_colleges} me se {exit_colleges} colleges ye penalty list karte hain; middle figure {exit_median}.",
           "Kaun se state me PG bond nahi hai? | {year} ki listing ke hisaab se {no_bond_states} me kisi government PG college ne service bond list nahi kiya. Ye har saal badal sakta hai, state ka notice dekh kar hi faisla karein.",
           "PG bond kitne saal ka hota hai? | Aam taur par 1 se 3 saal: listing me {one_year} government colleges 1 saal, {two_year} colleges 2 saal aur {three_year} colleges 3 saal ka bond rakhte hain.",
           "Private college me bhi bond hota hai kya? | Kam colleges me: {private_colleges} private aur deemed colleges me se {private_bonded} bond list karte hain. Seat chhodne par fee ya penalty wahan bhi lag sakti hai, isliye college ki shartein pehle padhein.",
-        ].join("\n"),
+        ].join("\n")],
       },
       stipend: {
         label: "Stipend page — {colleges}, {median}, {top_state}, {top_median}, {low_state}, {low_median}, {govt_top_state}, {govt_top_median}",
@@ -3674,94 +3686,169 @@ export const PAGE_COPY = {
       title: { label: "Hero title", value: "PG medical bond," },
       accent: { label: "Hero title, coloured part", value: "state by state" },
       subtitle: {
-        label: "Hero line — {colleges}, {states}",
+        label: "Hero line — {official_states}, {session}",
         value:
-          "How many years each state binds an MD/MS graduate to government service, what breaking that bond costs, and the penalty for leaving a seat once you have joined. Covers {colleges} colleges in {states} states.",
+          "Every state's own {session} rules for MD/MS seats: how long the government bond binds you, what not serving it costs, what leaving a seat costs round by round, and each private college's own bond. {official_states} states, read from their own notices.",
         long: true,
+        was: [
+          "How many years each state binds an MD/MS graduate to government service, what breaking that bond costs, and the penalty for leaving a seat once you have joined. Covers {colleges} colleges in {states} states.",
+        ],
       },
       answer: {
-        label: "Quick answer under the title — {govt_bonded}, {govt_colleges}, {penalty_median}, {exit_median}",
+        label: "Quick answer under the title — {official_states}, {years_range}, {top_bond}, {top_state}, {aiq_states}",
         value:
-          "{govt_bonded} of {govt_colleges} government PG colleges bind MD/MS graduates to government service after the course, and not serving it costs a middle {penalty_median}. Leaving a seat once you have joined costs a middle {exit_median} where a penalty is listed. Every state is below.",
+          "Official {session} rules for {official_states} states: a government-college bond runs {years_range} and costs up to {top_bond} ({top_state}) if you do not serve it, and {aiq_states} states bind All India Quota seats in their colleges too. Every figure links its notice.",
         long: true,
+        was: [
+          "{govt_bonded} of {govt_colleges} government PG colleges bind MD/MS graduates to government service after the course, and not serving it costs a middle {penalty_median}. Leaving a seat once you have joined costs a middle {exit_median} where a penalty is listed. Every state is below.",
+        ],
       },
       cta: { label: "Hero button", value: "Check your PG chances" },
       source: {
-        label: "Source line — {year}",
+        label: "Source line — {session}, {as_of}",
         value:
-          "As listed for the {year} counselling. This is not an official notice: confirm with the state's notice or the college before you pay a fee or sign a bond.",
+          "From each state's own {session} bulletin, prospectus, orders or gazette, and each college's own notice, read on {as_of}. Every figure links its document. The few states not read yet are marked: their figures are as listed for the counselling, so confirm before you pay or sign.",
         long: true,
         was: [
+          "As listed for the {year} counselling. This is not an official notice: confirm with the state's notice or the college before you pay a fee or sign a bond.",
           "As listed for the {year} counselling, compiled from counselling notices and college fee schedules by a third-party data service. This is not an official notice. Confirm with the state's notice or the college before you pay a fee or sign a bond.",
         ],
       },
-      visual_title: { label: "Chart title", value: "Bond penalty on government seats" },
-      visual_caption: { label: "Chart caption", value: "Middle penalty for not serving the bond" },
+      visual_title: { label: "Chart title", value: "Government-college bond, by state", was: ["Bond penalty on government seats"] },
+      visual_caption: { label: "Chart caption", value: "Highest MD/MS amount if the service is not done", was: ["Middle penalty for not serving the bond"] },
     }),
+  },
+  "page.pg_bond.official": {
+    group: "Page: PG service bond — official rules (2026-27)",
+    fields: {
+      states_title: { label: "Official table heading — {session}", value: "Official bond rules, state by state ({session})" },
+      states_intro: {
+        label: "Official table line — {session}",
+        value:
+          "Read from each state's own {session} bulletin, prospectus, orders or gazette. Open a state for every rule, the round-by-round seat-leaving terms and each private college's own bond, with each figure linked to its notice.",
+        long: true,
+      },
+      mcc_title: { label: "MCC box heading", value: "MCC's seats: All India Quota, deemed and central" },
+      mcc_intro: {
+        label: "MCC box line",
+        value: "MCC sets no service bond of its own. What it does set is what leaving a seat costs, round by round, and the security deposit.",
+        long: true,
+      },
+      other_title: { label: "Heading over the states not read yet", value: "Other states, as listed for the counselling" },
+      other_intro: {
+        label: "Line over the states not read yet",
+        value:
+          "We have not read these states' own documents yet. These figures are as listed for the counselling, not an official notice: confirm with the state's notice or the college before you pay a fee or sign a bond.",
+        long: true,
+      },
+      insight_states: { label: "Card: states with official rules", value: "States read from their own notices" },
+      insight_top: { label: "Card: highest government bond", value: "Highest government-college bond" },
+      insight_aiq: { label: "Card: states binding AIQ seats", value: "States whose bond binds AIQ seats" },
+      insight_private: { label: "Card: private colleges read", value: "Private and deemed colleges read" },
+      faq_states_q: { label: "Question: which states", value: "Which states have a PG service bond in {session}?" },
+      faq_states_a: {
+        label: "Answer — {bond_states}, {other_line}",
+        value: "Read from their own {session} rules, these states bind government-college MD/MS graduates to service: {bond_states}. {other_line}",
+        long: true,
+      },
+      faq_top_q: { label: "Question: highest", value: "Which state has the highest PG bond?" },
+      faq_top_a: {
+        label: "Answer — {top_list}",
+        value: "By the highest MD/MS amount the state's own rules print: {top_list}. The amount is what you pay if you do not serve; each state's page prints it branch by branch where the rules do.",
+        long: true,
+      },
+      faq_aiq_q: { label: "Question: AIQ seats", value: "Does the PG bond apply to All India Quota seats?" },
+      faq_aiq_a: {
+        label: "Answer — {aiq_list}",
+        value:
+          "MCC sets no service bond of its own. An All India Quota seat in a state's government college carries that state's bond where its rules say so: {aiq_list}. Elsewhere the state's rules do not say it; ask the college before you lock the seat.",
+        long: true,
+      },
+      faq_private_q: { label: "Question: private colleges", value: "Do private medical colleges have a PG bond?" },
+      faq_private_a: {
+        label: "Answer — {read_colleges}, {own_colleges}",
+        value:
+          "Most do not set one of their own. Of the {read_colleges} private and deemed colleges whose own current PG documents we read, {own_colleges} print their own service bond. Some states' rules reach private seats too; each state's page says which.",
+        long: true,
+      },
+      faq_leave_q: { label: "Question: leaving a seat", value: "What happens if I leave a PG seat after joining?" },
+      faq_leave_a: {
+        label: "Answer — {mcc_leave}",
+        value: "It depends on the counselling and the round. On MCC's seats: {mcc_leave} Each state prints its own round-by-round terms on its page.",
+        long: true,
+      },
+    },
+  },
+  "page.pg_bond_state": {
+    group: "Page: PG bond in a state (official rules)",
+    fields: {
+      eyebrow: { label: "Hero eyebrow — {session}", value: "Official · {session}" },
+      title: { label: "Hero title — {state}", value: "{state} PG bond" },
+      accent: { label: "Hero title, coloured part — {session}", value: "and seat leaving rules, {session}" },
+      source: {
+        label: "Source line — {state}, {session}, {as_of}",
+        value:
+          "From {state}'s own {session} bulletin, prospectus and orders, and each college's own notice, read on {as_of}. Each figure links its document; check the current version before you sign or pay.",
+        long: true,
+      },
+      cta: { label: "Hero button", value: "Check your PG chances" },
+      govt_title: { label: "Government bond heading", value: "Government colleges: the service bond" },
+      govt_lead: {
+        label: "When the government bond is only a lead",
+        value: "No official document confirms the government bond yet. Ask the state's counselling authority before you rely on any figure.",
+        long: true,
+      },
+      govt_not_notified: { label: "When the state has not notified it — {session}", value: "The state has not notified a service bond for the {session} batch yet.", long: true },
+      course_title: { label: "Leaving the course heading", value: "Leaving the course midway" },
+      seat_title: { label: "Round-by-round heading", value: "Leaving a seat, round by round" },
+      seat_intro: { label: "Round-by-round line", value: "What leaving an allotted seat costs, by round, as the state's own rules print it.", long: true },
+      deposit_title: { label: "Deposit heading", value: "Security deposit" },
+      private_title: { label: "Private colleges heading", value: "Private and deemed colleges" },
+      private_intro: {
+        label: "Private colleges line",
+        value:
+          "The state's rules for private seats, then each college's own bond as its own notice prints it. Where we have not read a college's current documents, the row says so.",
+        long: true,
+      },
+      ask: { label: "Words for a college not read yet", value: "Not read yet: ask the college" },
+      govt_list_title: { label: "Government colleges heading — {state}", value: "Government colleges in {state}" },
+      govt_list_intro: { label: "Government colleges line", value: "The government bond above applies to these colleges as its rules say. Each page has the seats, fees and stipend.", long: true },
+      notes_title: { label: "Notes heading", value: "Also in the notices" },
+      mcc_line: {
+        label: "Line about MCC's seats",
+        value: "All India Quota and deemed seats are allotted by MCC, whose own rules apply to leaving them.",
+        long: true,
+      },
+      mcc_link: { label: "Link to MCC's rules", value: "MCC's seat-leaving rules →" },
+      faq_title: { label: "FAQ heading — {state}", value: "{state} PG bond: common questions" },
+      faq_is_q: { label: "Question: is there a bond — {state}", value: "Is there a PG service bond in {state}?" },
+      faq_amount_q: { label: "Question: how much — {state}", value: "How much is the PG bond in {state}?" },
+      faq_aiq_q: { label: "Question: AIQ seats — {state}", value: "Does the {state} PG bond apply to All India Quota seats?" },
+      faq_leave_q: { label: "Question: leaving a seat — {state}", value: "What is the penalty for leaving a PG seat in {state}?" },
+      faq_private_q: { label: "Question: private colleges — {state}", value: "Do private medical colleges in {state} have a PG bond?" },
+      lead_title: { label: "Enquiry box heading — {state}", value: "Will the {state} bond fit your plans?" },
+      lead_body: {
+        label: "Enquiry box line",
+        value: "A counsellor weighs each seat's bond, stipend and leaving rules against your plans, before you lock a choice you cannot easily leave.",
+        long: true,
+      },
+      links_title: { label: "Links heading — {state}", value: "{state}: more on PG seats" },
+    },
   },
   "page.pg_bond.body": {
     group: "Page: PG service bond — body",
     fields: {
-      states_title: { label: "State table heading", value: "Service bond on government PG seats, by state" },
-      states_intro: {
-        label: "State table line",
-        value:
-          "Government colleges, on their All India and state-quota MD/MS seats. A college counts as having a bond when any of those seats lists one. A state's penalty is shown only where at least three colleges list one: the middle value, with the usual range under it where colleges differ.",
-        long: true,
-      },
-      private_title: { label: "Private colleges heading", value: "Private, deemed and society-run colleges" },
-      private_intro: {
-        label: "Private colleges line",
-        value:
-          "In some states a bond reaches private-college seats too. This table shows, state by state, how many private, deemed and society-run colleges list one on any of their seats, what leaving a seat usually costs, and how many keep the whole course fee if you leave.",
-        long: true,
-      },
       faq_title: { label: "FAQ heading", value: "PG service bond: common questions" },
       list_title: { label: "College list heading", value: "Every government college's bond" },
       list_intro: {
         label: "College list line",
-        value: "Open a state to see each government college's bond, penalty, seat-leaving terms and first-year stipend. Each college's page has its terms seat type by seat type.",
-        long: true,
-      },
-      faq1_q: { label: "Question 1", value: "Is there a bond for MD/MS in government medical colleges?" },
-      faq1_a: {
-        label: "Answer 1 — {govt_bonded}, {govt_colleges}",
         value:
-          "{govt_bonded} of the {govt_colleges} government colleges listed here have a service bond on their MD/MS seats: a period of government service after the course, with a penalty for not serving it. Each state sets the length and the penalty. The state table on this page shows both.",
+          "Open a state for its government colleges. Where the state's own rules have been read, they apply as printed and each college links its page; for the rest, the listing's figures are shown with their caveat.",
         long: true,
+        was: [
+          "Open a state to see each government college's bond, penalty, seat-leaving terms and first-year stipend. Each college's page has its terms seat type by seat type.",
+        ],
       },
-      faq2_q: { label: "Question 2", value: "How long is the PG service bond?" },
-      faq2_a: {
-        label: "Answer 2 — {one_year}, {two_year}, {three_year}",
-        value:
-          "Among the government colleges listed here, {one_year} have a one-year bond, {two_year} a two-year bond and {three_year} a three-year bond. The state table shows each state's usual length.",
-        long: true,
-      },
-      faq3_q: { label: "Question 3", value: "What is the penalty for breaking a PG bond?" },
-      faq3_a: {
-        label: "Answer 3 — {penalty_median}, {penalty_low}, {penalty_high}",
-        value:
-          "It varies by state. Across the government colleges listed here, the middle penalty is {penalty_median}, and most fall between {penalty_low} and {penalty_high}. The state table gives each state's own figure.",
-        long: true,
-      },
-      faq4_q: { label: "Question 4", value: "What happens if I leave a PG seat after joining?" },
-      faq4_a: {
-        label: "Answer 4 — {exit_colleges}, {all_colleges}, {exit_median}",
-        value:
-          "{exit_colleges} of the {all_colleges} colleges listed here charge a seat-leaving penalty, and the middle figure is {exit_median}. Some also bar you from counselling for a few years. The terms can depend on the round you leave in, so read them before you join a seat you might give up.",
-        long: true,
-      },
-      faq5_q: { label: "Question 5", value: "Do private medical colleges have a PG bond?" },
-      faq5_a: {
-        label: "Answer 5 — {private_colleges}, {private_bonded}, {private_bond_states}",
-        value:
-          "Some do. Of the {private_colleges} private, deemed and society-run colleges listed here, {private_bonded} list a service bond on at least one type of seat, most of them in {private_bond_states}. The private-colleges table shows every state.",
-        long: true,
-      },
-      insight_bonded: { label: "Card: government colleges with a bond", value: "Government colleges with a bond" },
-      insight_penalty: { label: "Card: middle bond penalty", value: "Middle bond penalty" },
-      insight_exit: { label: "Card: middle seat-leaving penalty", value: "Middle seat-leaving penalty" },
-      insight_private: { label: "Card: private colleges with a bond", value: "Private colleges with a bond" },
       lead_title: { label: "Enquiry box heading", value: "Can you serve the bond that comes with the seat?" },
       lead_body: {
         label: "Enquiry box line",

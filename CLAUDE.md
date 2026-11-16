@@ -2126,6 +2126,38 @@ MCC's seats:
 The page title leads with "2026 Round 1 & 2025". Copy is the `page.pg_state.round` group in Admin → Content.
 When a year's rounds are complete, move them into `closing_ranks` and empty these tables for that year.
 
+## Official PG bond, state by state (2026-11-16, owner: "Bonds wgrh sahi se updated nhi hai… detailed mai dalo")
+
+The PG data session (zyn-92) read each state's own 2026-27 bulletin / prospectus / GO / gazette, MCC's bulletin and each
+private or deemed college's own notice: `D:/Admisson Hands/pg_handoff/from_pg/official_bond_all_states_2026-27.json` — 25
+states + MCC, 302 colleges, every figure with its URL, page and quote. It replaces the third-party compilation
+(`pg_seat_terms`) wherever it reaches; the compilation stays only for states not read yet, under its caveat.
+- **Load:** migration 0065 (`pg_bond_rules` jsonb per state + "mcc", `pg_bond_colleges` per college), `npx tsx
+  --env-file=.env.local scripts/import_official_bond.ts [file] [--show] [--applies] [--apply --backup <f>]` — dry run by
+  default, replaces both tables. **`our_id` is `institutes.source_id`** (the PG tool's College_ID), not `institutes.id`;
+  a row must be a PG institute of the same state or it is held back (2 Jharkhand colleges not in our list).
+  Backups in `D:/Admisson Hands/pg_handoff/bond_tables_before_*.json`.
+- **Read side:** `lib/officialBond.ts` (tag `official-bond`): `govtBond()` (years, amount range, `flag` not_notified /
+  lead), `hasOwnBond()` (years/amount/branch amounts > 0 — many official rows say "no bond of its own" in words),
+  `AIQ_BOUND` (states whose government bond binds AIQ seats, **set by hand from each state's `applies_to`** — a regex read
+  them wrong; re-read with `--applies` after every re-import), `isCentralInstitution()` (AIIMS, ESIC, JIPMER… never get a
+  state's bond), `clean()` on every string (strips local research paths like `D:/Zyn/…` and "(file id time-stamp…)" notes),
+  `sessionOf()` (the field is sometimes a sentence), `safeUrl()` (never links svmcpondy.com, iqcitymedicalcollege.in,
+  kimsmedicalcollege.org, pimslko.edu.in — compromised sites per zyn-92).
+- **Never shown as a figure:** a `lead_not_verified` government bond (Jharkhand), anything "not stated", a not_verified
+  college (only "ask the college"). Researchers' notes about their own reading are filtered (`INTERNAL` in the state page).
+- **Pages:** `/md-ms-india/bond/<state>` (25, `components/bond/OfficialBond.tsx` renders each state's own shape: government
+  bond → leaving the course → round by round → deposit → private colleges' own bonds with DataTools → government colleges
+  by name → notes → FAQ; copy "Page: PG bond in a state"); `/md-ms-india/bond` leads with the official table + MCC's rules
+  (`#mcc`), the compilation only for states not read (copy "… — official rules"); PG college pages carry
+  `components/bond/CollegeOfficialBond` (`#official-bond`: the college's own row, or its state's rule on a state
+  government college) and a "Does <college> have a PG bond?" FAQ, and SeatTerms hides the listing's bond and exit
+  (`hideBond`); stipend state and NEET PG counselling state pages use the official rule. In the states sitemap (dated by
+  the reading), llms.txt, and the edge's DATA_PAGE.
+- **Stipend next (zyn-92, same day):** the stipend pages' "each college's own published stipend" source line is wrong —
+  `fees.stipend_y1_inr` came from the same third-party handoff. An official stipend file
+  (`official_stipend_all_states_2026-27.json`) is being researched; the owner decides the source line.
+
 ## Per-state PG stipend pages (2026-10-20)
 
 `/md-ms-india/stipend/[state]` for every state with three or more colleges publishing a monthly stipend

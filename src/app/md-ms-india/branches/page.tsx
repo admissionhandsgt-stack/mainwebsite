@@ -13,7 +13,7 @@ import DataTools from "@/components/ui/DataTools";
 import { toolLabels } from "@/lib/dataToolLabels";
 import { branchAliases, branchKind } from "@/lib/branchKinds";
 import { getLatestLiveRound, roundPath } from "@/lib/mccResults";
-import { getScoreTables } from "@/lib/scoreRank";
+import { getScoreTables, type ScoreTable } from "@/lib/scoreRank";
 
 export const revalidate = 86400;
 
@@ -45,7 +45,7 @@ export default async function BranchesPage() {
     pageHeroImage("page.pg_branches.hero"),
     toolLabels("branch_search"),
     getLatestLiveRound().catch(() => null),
-    getScoreTables("pg").catch(() => []),
+    getScoreTables("pg").catch((): ScoreTable[] => []),
   ]);
   // The running round's order of branches: MD/MS, All India Quota, open category, last rank admitted over 3+ colleges
   // (the round page's own figures). A group figure, never one college's close.
