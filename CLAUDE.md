@@ -2197,6 +2197,13 @@ states + MCC, 302 colleges, every figure with its URL, page and quote. It replac
   `college_research` (migration 0067, `scripts/import_college_research.ts <dir> [--apply]`, the files stay outside the repo
   because the repo is public), shown on **Admin → College notes** (`/admin/college-notes`, session-checked). Never on a
   public page.
+- **Two new private PG colleges, Jharkhand (same night, owner's OK here and in zyn-92's session):** Laxmi Chandravansi,
+  Palamu (JH/003/P/3, 6 branches × 4) and Netaji Subhas, Jamshedpur (JH/006/P/4, 5 × 4), first batch 2026-27, counselled
+  by JCECEB as "All India & NRI" (not MCC). `scripts/sql/jh_new_pg_colleges_2026_11_16.sql` (guarded): institutes 4670/4671
+  (source_id 9301/9302 = zyn-92's ids), quota "JCECEB All India & NRI", NMC pairing (its register still lists only their
+  MBBS — their MD/MS courses arrive at a later weekly sync), NSMCH's own 2026-27 tuition a year (₹26–60 L, hostel ₹4.5 L)
+  and LCMCH's six branches "Not published by the college yet". No cut-offs (first batch); bond/stipend unpublished. They
+  are on no state list or directory that reads seat_options until a round is published there.
 
 **A data import shows at once (owner, same day: "ek ghante mai kyu… cache refresh karke instant reflect"):** after an
 import's `--apply`, run `bash scripts/revalidate_tags.sh --purge <tag…>` — it asks the app on the server to drop those
