@@ -190,7 +190,7 @@ export function maxDeposit(s: OfficialState): number | null {
  * Uttarakhand (state quota only), Tripura (AIQ only if the candidate takes the state's stipend), Goa (the Rules do not
  * separate the quotas). Re-read `applies_to` after every re-import (`--applies` prints it).
  */
-const AIQ_BOUND = new Set(["Tamil Nadu", "Kerala", "Punjab", "Himachal Pradesh", "Chhattisgarh", "Odisha", "Gujarat", "Karnataka", "Maharashtra"]);
+const AIQ_BOUND = new Set(["Tamil Nadu", "Kerala", "Punjab", "Himachal Pradesh", "Chhattisgarh", "Odisha", "Gujarat", "Karnataka", "Maharashtra", "Madhya Pradesh"]);
 export const bindsAiq = (s: OfficialState) => AIQ_BOUND.has(s.state);
 
 async function load(): Promise<OfficialBond | null> {
