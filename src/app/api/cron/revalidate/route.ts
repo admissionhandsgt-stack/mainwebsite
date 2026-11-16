@@ -16,7 +16,7 @@ import { logError } from "@/lib/logger";
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-const ALLOWED = new Set(["official-bond", "official-stipend", "seat-terms", "seat-data", "mcc", "mcc-results", "nmc", "sitemap", "content"]);
+const ALLOWED = new Set(["official-bond", "official-stipend", "college-research", "seat-terms", "seat-data", "mcc", "mcc-results", "nmc", "sitemap", "content"]);
 
 function authorised(request: Request): boolean {
   const expected = process.env.CRON_SECRET ?? "";

@@ -7,6 +7,7 @@ import { resolveMetadata } from "@/lib/content";
 import { getStateStipend } from "@/lib/cutoffHubQueries";
 import { getPgStates } from "@/lib/pgStateQueries";
 import { getBondByState, getListedTermsByState } from "@/lib/pgSeatData";
+import { getReportedStipends } from "@/lib/collegeResearch";
 import { bindsAiq, getOfficialBondState, govtBond, hasOwnBond, rangeText, yearsText, serviceYears } from "@/lib/officialBond";
 import { SourcedNote, Sources } from "@/components/bond/OfficialBond";
 import { getOfficialStipendState, hasOwnStipend, type GovtStipend } from "@/lib/officialStipend";
@@ -150,10 +151,12 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
     : null;
   const top = s.list[0];
   // The official stipend (lib/officialStipend.ts): the state's order and each college's own document, where read.
-  const [stip, listed] = await Promise.all([
+  const [stip, listed, reported] = await Promise.all([
     getOfficialStipendState(s.state).catch(() => null),
     // Each college's stipend as listed for the counselling, for a college whose own document is not read (marked so).
     getListedTermsByState(s.state).catch(() => ({})),
+    // Corroborated reports from the research pass, shown before the listing.
+    getReportedStipends().then((r) => r.byId).catch(() => ({})),
   ]);
   const sg = stip?.state.govt ?? null;
   const stipOwn = stip ? stip.colleges.filter(hasOwnStipend) : [];
@@ -393,7 +396,7 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
                 />
               )}
               <div className="mt-4">
-                <CollegeStipendTable id="stipend-official" colleges={stip.colleges} listed={listed} note={oc.ask} />
+                <CollegeStipendTable id="stipend-official" colleges={stip.colleges} listed={listed} reported={reported} note={oc.ask} />
               </div>
             </>
           )}

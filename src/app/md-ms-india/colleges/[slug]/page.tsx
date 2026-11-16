@@ -24,6 +24,7 @@ import PhotoCredit from "@/components/ui/PhotoCredit";
 import { getPgCollegePhoto } from "@/lib/content";
 import TrackView from "@/components/analytics/TrackView";
 import { foldListed, getCollegeSeatMatrix, getCollegeSeatTerms, termsSession } from "@/lib/pgSeatData";
+import { getReportedStipends } from "@/lib/collegeResearch";
 import { pageCopy } from "@/lib/pageCopy";
 import MccSeats from "@/components/colleges/MccSeats";
 import SeatTerms from "@/components/colleges/SeatTerms";
@@ -146,9 +147,11 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
       ? stipendState.state.govt
       : null;
   const officialStipend = !!stipendVerified || !!stipendGovt;
+  // Two or more independent sources agree (the research pass, 2026-11-16): shown before the listing, marked "reported".
+  const stipendReported = !officialStipend && s.kind === "pg" ? ((await getReportedStipends().catch(() => null))?.bySlug[college.slug] ?? null) : null;
   const stipendListed = !officialStipend && listedTerms?.stipend[0] ? listedTerms : null;
   // The state's stipend page exists only with three colleges listed (Goa has none): link it only then.
-  const stipendPage = (officialStipend || stipendListed) && college.state ? !!(await getStipends().catch(() => null))?.states.some((x) => x.state === college.state) : false;
+  const stipendPage = (officialStipend || stipendListed || stipendReported) && college.state ? !!(await getStipends().catch(() => null))?.states.some((x) => x.state === college.state) : false;
   // Words from Admin → Content ("Page: PG college pages — MCC seats, bond and stipend").
   const [seatsCopy, termsCopy] = await Promise.all([
     pageCopy("page.college_pg.mcc", { college: s.short, year: matrix?.year, total: matrix?.total.toLocaleString("en-IN") }),
@@ -467,7 +470,7 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
                   {officialStipend ? "; the stipend, from its official document, is in the box below" : "; stipend as listed for the counselling, not an official notice"}.
                   Where a figure is missing the authority did not publish it.
                 </p>
-                <FeeTable fees={fees} hideStipend={officialStipend} />
+                <FeeTable fees={fees} hideStipend={officialStipend || !!stipendReported} />
               </section>
             )}
 
@@ -483,7 +486,7 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
                 />
               </div>
             )}
-            {(officialStipend || stipendListed) && (
+            {(officialStipend || stipendListed || stipendReported) && (
               <div className="mt-6">
                 <CollegeOfficialStipend
                   name={s.place && !s.short.toLowerCase().includes(s.place.toLowerCase()) ? `${s.short}, ${s.place}` : s.short}
@@ -492,6 +495,7 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
                   state={college.state}
                   stateSlug={stipendPage ? stateSlug : null}
                   listed={stipendListed}
+                  reported={stipendReported}
                   atPar={stipendState?.state.govt ?? null}
                   isGovt={s.type === "Government"}
                 />
@@ -504,7 +508,7 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
                 <SeatTerms
                   terms={terms}
                   hideBond={officialBond}
-                  hideStipend={officialStipend}
+                  hideStipend={officialStipend || !!stipendReported}
                   copy={{
                     eyebrow: termsCopy.terms_eyebrow,
                     title: termsCopy.terms_title,

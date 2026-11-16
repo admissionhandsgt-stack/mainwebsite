@@ -68,6 +68,7 @@ const NAV: { label: string; items: NavItem[] }[] = [
       { name: 'MBBS states', href: '/admin/mbbs-states', icon: MapPin },
       { name: 'PG branches', href: '/admin/pg-branches', icon: GitBranch },
       { name: 'Data sync (NMC)', href: '/admin/data-sync', icon: Database },
+      { name: 'College notes', href: '/admin/college-notes', icon: FileText },
     ],
   },
   {

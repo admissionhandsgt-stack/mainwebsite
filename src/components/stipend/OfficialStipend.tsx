@@ -2,6 +2,7 @@ import { Landmark, Wallet } from "lucide-react";
 import Link from "@/components/ui/Link";
 import { LISTED, listedStipendText, Sources, sourceWords } from "@/components/bond/OfficialBond";
 import type { ListedTerms } from "@/lib/pgSeatData";
+import type { ReportedStipend } from "@/lib/collegeResearch";
 import { govtFigure, nmcReturn, rupee, STIPEND_STATUS, type GovtStipend, type NationalRule, type StipendCollege, type StipendStatus } from "@/lib/officialStipend";
 
 /**
@@ -135,20 +136,25 @@ export function CollegeStipendTable({
   id,
   colleges,
   listed = {},
+  reported = {},
   note,
 }: {
   id: string;
   colleges: StipendCollege[];
   listed?: Record<string, ListedTerms>;
+  /** Corroborated reports (the research pass), shown before the listing. */
+  reported?: Record<string, ReportedStipend>;
   note: string;
 }) {
   let anyListed = false;
   const body = colleges.map((c) => {
     const fromListing = c.status === "not_verified";
+    const rep = fromListing && c.instituteId != null ? reported[String(c.instituteId)] : undefined;
     const l = c.instituteId != null ? listed[String(c.instituteId)] : undefined;
-    const listedText = fromListing ? listedStipendText(l) : null;
+    const repText = rep?.y[0] ? rep.y.map((v) => (v ? `₹${v.toLocaleString("en-IN")}` : "—")).join(" · ") : null;
+    const listedText = fromListing ? (repText ?? listedStipendText(l)) : null;
     if (listedText) anyListed = true;
-    const y1 = fromListing ? l?.stipend[0] : (c.y[0] ?? nmcReturn(c.asWritten)?.v);
+    const y1 = fromListing ? (rep?.y[0] ?? l?.stipend[0]) : (c.y[0] ?? nmcReturn(c.asWritten)?.v);
     return (
       <tr
         key={`${c.instituteId}-${c.name}`}
@@ -168,7 +174,7 @@ export function CollegeStipendTable({
             <span className="text-foreground">{c.name}</span>
           )}
           <span className="mt-0.5 block text-[12px] font-normal text-muted-foreground">
-            {c.type} · {fromListing ? (listedText ? LISTED : "no published figure") : sourceWords(c.status, c.session)}
+            {c.type} · {fromListing ? (repText ? "as reported by residents and stipend lists" : listedText ? LISTED : "no published figure") : sourceWords(c.status, c.session)}
           </span>
         </th>
         <td className="px-4 py-2.5 text-[13.5px] leading-snug">
@@ -245,6 +251,7 @@ export function CollegeOfficialStipend({
   state,
   stateSlug,
   listed = null,
+  reported = null,
   atPar = null,
   isGovt = false,
 }: {
@@ -255,11 +262,15 @@ export function CollegeOfficialStipend({
   stateSlug: string | null;
   /** The college's stipend as listed for the counselling — shown when its own document is not read (owner, 2026-11-16). */
   listed?: ListedTerms | null;
+  /** Two or more independent sources agree on its stipend (the research pass): shown before the listing. */
+  reported?: ReportedStipend | null;
   /** The state's government rate, which a private or deemed college must match (NMC's rule). */
   atPar?: GovtStipend | null;
   isGovt?: boolean;
 }) {
-  if (!row && !govt && !listed?.stipend[0]) return null;
+  // A corroborated report outranks the counselling listing (owner, 2026-11-16: "verified + listing").
+  const shown = reported?.y[0] ? { y: reported.y, session: reported.session, reported: true } : listed?.stipend[0] ? { y: listed.stipend, session: listed.session, reported: false } : null;
+  if (!row && !govt && !shown) return null;
   const link = stateSlug ? (
     <Link href={`/md-ms-india/stipend/${stateSlug}`} className="font-semibold text-primary-strong hover:underline dark:text-primary">
       {state} PG stipend, every college →
@@ -271,16 +282,16 @@ export function CollegeOfficialStipend({
         <h2 className="flex items-center gap-2 font-heading text-xl font-bold text-foreground">
           <Wallet className="h-5 w-5 text-primary" aria-hidden="true" /> PG stipend at {name}
         </h2>
-        {(!row || row.status === "not_verified") && !govt && listed?.stipend[0] ? (
-          <span className="inline-flex items-center rounded-full border border-border bg-surface-1 px-2.5 py-0.5 text-[12px] font-semibold text-muted-foreground">As listed</span>
+        {(!row || row.status === "not_verified") && !govt && shown ? (
+          <span className="inline-flex items-center rounded-full border border-border bg-surface-1 px-2.5 py-0.5 text-[12px] font-semibold text-muted-foreground">{shown.reported ? "Reported" : "As listed"}</span>
         ) : (
           row && <StipendStatusChip status={row.status} />
         )}
       </div>
-      {(!row || row.status === "not_verified") && !govt && listed?.stipend[0] ? (
+      {(!row || row.status === "not_verified") && !govt && shown ? (
         <>
           <dl className="mt-4 grid grid-cols-3 gap-3 sm:max-w-lg">
-            {listed.stipend.map((v, i) => (
+            {shown.y.map((v, i) => (
               <div key={i} className="rounded-xl border border-border bg-surface-1 px-3 py-2.5">
                 <dt className="text-[11.5px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">Year {i + 1}</dt>
                 <dd className="tnum font-heading mt-0.5 text-[1.1rem] font-extrabold text-foreground">{v ? rupee(v) : "—"}</dd>
@@ -288,8 +299,11 @@ export function CollegeOfficialStipend({
             ))}
           </dl>
           <p className="mt-3 text-[13.5px] leading-relaxed text-muted-foreground">
-            A month, {LISTED}{listed.session ? ` (${listed.session})` : ""}, not the college's own document. Our counsellors confirm
-            what it actually pays before you lock the seat.
+            A month,{" "}
+            {shown.reported
+              ? `as reported by residents and published stipend lists${shown.session ? ` (${shown.session})` : ""}, `
+              : `${LISTED}${shown.session ? ` (${shown.session})` : ""}, `}
+            not the college's own document. Our counsellors confirm what it actually pays before you lock the seat.
           </p>
         </>
       ) : row ? (

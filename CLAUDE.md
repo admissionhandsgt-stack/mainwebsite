@@ -2182,6 +2182,21 @@ states + MCC, 302 colleges, every figure with its URL, page and quote. It replac
   boxes (chip "As listed", plus NMC's at-par rule against the state's government rate), the bond FAQ, and Jharkhand's
   government bond (only a lead in its documents: 3 years, ₹30 L as listed). Karnataka-type states with no rupee order
   show the listed government median. Only a college with nothing listed anywhere points to the state's rules above.
+- **The deep check of the 156 unread colleges (same night; owner: "government figure par nhi jaana… deep jao blogs news
+  forums… sahi info").** Six research agents, every figure with URL, quote and date and a status: official / corroborated
+  (2+ independent sources) / single_report / conflicting / not_found. Stipend: official 1 · corroborated 3 · conflicting 15
+  · single 9 · not found 26. Bond: official 92 (mostly the STATE's rule for those seats — KEA, KNRUHS, DME MP, Dr NTR UHS…;
+  ~32 cite the college's own document or MCC's Annexure-C) · single 15 · not found 28. The listing is sometimes plainly
+  wrong (Sri Venkateshwaraa Puducherry listed ₹7,000, its own prospectus ₹40,000; Hamdard ₹1,00,000 vs its own ₹80,000) or
+  a copy of the state rate (Kiran, Azeezia, Mahaveer, RIMS Raipur, RVM); meducate.in repeats the listing, so it is never
+  independent corroboration. Official rows went to zyn-92 (official_rows_for_zyn92.json) to re-check against each source
+  and fold into the official files — that session owns them. The owner's display rules: a private college never shows the
+  state's government rate beside its own figure ("misleading"); stipend precedence official › corroborated ("Reported",
+  `getReportedStipends` in lib/collegeResearch.ts) › the listing ("As listed"). Everything else — residents' complaints, the
+  ED charge-sheet at Mahadevappa Rampure, NMC's ₹1 crore fines (Akash, Prasad Lucknow) — is **for counsellors only**: table
+  `college_research` (migration 0067, `scripts/import_college_research.ts <dir> [--apply]`, the files stay outside the repo
+  because the repo is public), shown on **Admin → College notes** (`/admin/college-notes`, session-checked). Never on a
+  public page.
 
 **A data import shows at once (owner, same day: "ek ghante mai kyu… cache refresh karke instant reflect"):** after an
 import's `--apply`, run `bash scripts/revalidate_tags.sh --purge <tag…>` — it asks the app on the server to drop those
