@@ -1,6 +1,7 @@
 import { Landmark, Wallet } from "lucide-react";
 import Link from "@/components/ui/Link";
-import { Sources, sourceWords, UnconfirmedColleges } from "@/components/bond/OfficialBond";
+import { LISTED, listedStipendText, Sources, sourceWords } from "@/components/bond/OfficialBond";
+import type { ListedTerms } from "@/lib/pgSeatData";
 import { govtFigure, nmcReturn, rupee, STIPEND_STATUS, type GovtStipend, type NationalRule, type StipendCollege, type StipendStatus } from "@/lib/officialStipend";
 
 /**
@@ -22,7 +23,7 @@ export const KIND_LABEL: Record<GovtStipend["kind"], string> = {
 export const kindLabel = (g: GovtStipend) => g.label ?? KIND_LABEL[g.kind];
 
 /** The state's government-college rate: Y1–Y3 as the order gives them, its words, what it covers, the documents. */
-export function GovtStipendCard({ g, state, title }: { g: GovtStipend; state: string; title: string }) {
+export function GovtStipendCard({ g, state, title, listedMedian = null }: { g: GovtStipend; state: string; title: string; listedMedian?: number | null }) {
   return (
     <div className="rounded-2xl border border-border bg-card p-5 md:p-6">
       <div className="flex items-center gap-2.5">
@@ -31,7 +32,7 @@ export function GovtStipendCard({ g, state, title }: { g: GovtStipend; state: st
         </span>
         <h3 className="font-heading text-[17px] font-bold text-foreground">{title}</h3>
       </div>
-      <p className="mt-2 text-[13.5px] font-semibold text-muted-foreground">{kindLabel(g)}</p>
+      <p className="mt-2 text-[13.5px] font-semibold text-muted-foreground">{g.kind === "none" && listedMedian ? "As listed for the counselling" : kindLabel(g)}</p>
       {g.y.some(Boolean) && (
         <dl className="mt-4 grid grid-cols-3 gap-3">
           {g.y.map((v, i) => (
@@ -44,10 +45,22 @@ export function GovtStipendCard({ g, state, title }: { g: GovtStipend; state: st
         </dl>
       )}
       {g.kind === "none" ? (
-        <p className="mt-3 text-[14.5px] leading-relaxed text-foreground">
-          No official order with {state}'s government-college rupee figures could be found. NMC's rule applies, and our
-          counsellors confirm what a college pays in each year before you lock the seat.
-        </p>
+        listedMedian ? (
+          <>
+            <p className="tnum mt-3 font-heading text-[1.6rem] font-extrabold text-foreground">
+              {rupee(listedMedian)} <span className="text-[14px] font-semibold text-muted-foreground">a month, year 1 (median)</span>
+            </p>
+            <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">
+              What {state}'s government colleges pay, as listed for the counselling: {state} publishes no order with the rupee
+              figure. Private and deemed colleges must pay at par with it (NMC's rule).
+            </p>
+          </>
+        ) : (
+          <p className="mt-3 text-[14.5px] leading-relaxed text-foreground">
+            {state} publishes no order with the government-college rupee figure. Private and deemed colleges must pay at par with
+            the state's government colleges (NMC's rule).
+          </p>
+        )
       ) : (
         <dl className="mt-4 grid gap-x-4 gap-y-2.5 sm:grid-cols-[minmax(8rem,12rem)_1fr]">
           {g.asWritten && (
@@ -113,67 +126,90 @@ export function collegeStipendText(c: StipendCollege, ask = "Official figure not
 }
 
 /**
- * Private and deemed colleges whose figure is confirmed, one row each: the college (with where the figure comes from) and
- * its own stipend a month in years 1–3, branch by branch where printed. The rest are named together under the table.
+ * Every private and deemed college of a state, one row each (owner, 2026-11-16: no college left out and no "ask the
+ * college"): the college with where its figure comes from, and its stipend a month in years 1–3, branch by branch where
+ * printed. A college whose own document is not read shows its stipend as listed for the counselling, marked so, with the
+ * caveat (`note`) under the table; one with nothing listed falls under NMC's at-par rule shown above.
  */
-export function CollegeStipendTable({ id, colleges, unconfirmed }: { id: string; colleges: StipendCollege[]; unconfirmed: string }) {
-  const shown = colleges.filter((c) => c.status !== "not_verified");
-  const later = colleges.filter((c) => c.status === "not_verified");
+export function CollegeStipendTable({
+  id,
+  colleges,
+  listed = {},
+  note,
+}: {
+  id: string;
+  colleges: StipendCollege[];
+  listed?: Record<string, ListedTerms>;
+  note: string;
+}) {
+  let anyListed = false;
+  const body = colleges.map((c) => {
+    const fromListing = c.status === "not_verified";
+    const l = c.instituteId != null ? listed[String(c.instituteId)] : undefined;
+    const listedText = fromListing ? listedStipendText(l) : null;
+    if (listedText) anyListed = true;
+    const y1 = fromListing ? l?.stipend[0] : (c.y[0] ?? nmcReturn(c.asWritten)?.v);
+    return (
+      <tr
+        key={`${c.instituteId}-${c.name}`}
+        data-row=""
+        data-f-status={fromListing ? "listed" : c.status === "states_no_stipend" ? "none" : "official"}
+        data-f-type={c.type.toLowerCase().startsWith("deemed") ? "deemed" : "private"}
+        data-s-name={c.name.toLowerCase()}
+        {...(y1 ? { "data-s-y1": y1 } : {})}
+        className="align-top"
+      >
+        <th scope="row" className="px-4 py-2.5 font-medium">
+          {c.slug ? (
+            <Link href={`/md-ms-india/colleges/${c.slug}#official-stipend`} className="text-foreground hover:text-primary hover:underline">
+              {c.name}
+            </Link>
+          ) : (
+            <span className="text-foreground">{c.name}</span>
+          )}
+          <span className="mt-0.5 block text-[12px] font-normal text-muted-foreground">
+            {c.type} · {fromListing ? (listedText ? LISTED : "NMC's at-par rule above") : sourceWords(c.status, c.session)}
+          </span>
+        </th>
+        <td className="px-4 py-2.5 text-[13.5px] leading-snug">
+          {fromListing ? (
+            <span className={listedText ? "tnum font-semibold text-foreground" : "text-foreground"}>
+              {listedText ?? "At par with the state's government colleges (NMC's rule above)"}
+            </span>
+          ) : (
+            <>
+              <span className={c.y[0] || nmcReturn(c.asWritten) ? "tnum font-semibold text-foreground" : "text-foreground"}>{collegeStipendText(c)}</span>
+              {c.y[0] && c.periodUnstated && <span className="mt-0.5 block text-[12px] text-muted-foreground">The document prints no period: read as a month</span>}
+              {c.branches && (
+                <span className="mt-1 block text-[12.5px] leading-relaxed text-muted-foreground">
+                  {c.branches.map(([b, v], i) => (
+                    <span key={b}>
+                      {i > 0 && " · "}
+                      {b} <span className="tnum font-semibold text-foreground">{v}</span>
+                    </span>
+                  ))}
+                </span>
+              )}
+            </>
+          )}
+        </td>
+      </tr>
+    );
+  });
   return (
     <>
-      {shown.length > 0 && (
-        <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
-          <table id={id} className="dt w-full min-w-[640px] text-left text-sm">
-            <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
-              <tr>
-                <th scope="col" className="w-[38%] px-4 py-2.5 font-semibold">College</th>
-                <th scope="col" className="px-4 py-2.5 font-semibold">Its own stipend a month · year 1 · 2 · 3</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {shown.map((c) => (
-                <tr
-                  key={`${c.instituteId}-${c.name}`}
-                  data-row=""
-                  data-f-status={c.status === "states_no_stipend" ? "none" : "official"}
-                  data-f-type={c.type.toLowerCase().startsWith("deemed") ? "deemed" : "private"}
-                  data-s-name={c.name.toLowerCase()}
-                  {...(c.y[0] ? { "data-s-y1": c.y[0] } : {})}
-                  className="align-top"
-                >
-                  <th scope="row" className="px-4 py-2.5 font-medium">
-                    {c.slug ? (
-                      <Link href={`/md-ms-india/colleges/${c.slug}#official-stipend`} className="text-foreground hover:text-primary hover:underline">
-                        {c.name}
-                      </Link>
-                    ) : (
-                      <span className="text-foreground">{c.name}</span>
-                    )}
-                    <span className="mt-0.5 block text-[12px] font-normal text-muted-foreground">
-                      {c.type} · {sourceWords(c.status, c.session)}
-                    </span>
-                  </th>
-                  <td className="px-4 py-2.5 text-[13.5px] leading-snug">
-                    <span className={c.y[0] || nmcReturn(c.asWritten) ? "tnum font-semibold text-foreground" : "text-foreground"}>{collegeStipendText(c)}</span>
-                    {c.y[0] && c.periodUnstated && <span className="mt-0.5 block text-[12px] text-muted-foreground">The document prints no period: read as a month</span>}
-                    {c.branches && (
-                      <span className="mt-1 block text-[12.5px] leading-relaxed text-muted-foreground">
-                        {c.branches.map(([b, v], i) => (
-                          <span key={b}>
-                            {i > 0 && " · "}
-                            {b} <span className="tnum font-semibold text-foreground">{v}</span>
-                          </span>
-                        ))}
-                      </span>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-      <UnconfirmedColleges colleges={later} text={unconfirmed} anchor="official-stipend" />
+      <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
+        <table id={id} className="dt w-full min-w-[640px] text-left text-sm">
+          <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
+            <tr>
+              <th scope="col" className="w-[38%] px-4 py-2.5 font-semibold">College</th>
+              <th scope="col" className="px-4 py-2.5 font-semibold">Stipend a month · year 1 · 2 · 3</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-border">{body}</tbody>
+        </table>
+      </div>
+      {anyListed && note && <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">{note}</p>}
     </>
   );
 }
@@ -202,8 +238,28 @@ export function NationalRules({ rules, title }: { rules: NationalRule[]; title: 
  * "PG stipend at <college>" on a PG college page (#official-stipend): its own figure from its own document, or — for a
  * state government college with no row of its own — the state's government rate. Replaces the listing's stipend there.
  */
-export function CollegeOfficialStipend({ name, row, govt, state, stateSlug }: { name: string; row: StipendCollege | null; govt: GovtStipend | null; state: string | null; stateSlug: string | null }) {
-  if (!row && !govt) return null;
+export function CollegeOfficialStipend({
+  name,
+  row,
+  govt,
+  state,
+  stateSlug,
+  listed = null,
+  atPar = null,
+  isGovt = false,
+}: {
+  name: string;
+  row: StipendCollege | null;
+  govt: GovtStipend | null;
+  state: string | null;
+  stateSlug: string | null;
+  /** The college's stipend as listed for the counselling — shown when its own document is not read (owner, 2026-11-16). */
+  listed?: ListedTerms | null;
+  /** The state's government rate, which a private or deemed college must match (NMC's rule). */
+  atPar?: GovtStipend | null;
+  isGovt?: boolean;
+}) {
+  if (!row && !govt && !listed?.stipend[0]) return null;
   const link = stateSlug ? (
     <Link href={`/md-ms-india/stipend/${stateSlug}`} className="font-semibold text-primary-strong hover:underline dark:text-primary">
       {state} PG stipend, every college →
@@ -215,9 +271,31 @@ export function CollegeOfficialStipend({ name, row, govt, state, stateSlug }: { 
         <h2 className="flex items-center gap-2 font-heading text-xl font-bold text-foreground">
           <Wallet className="h-5 w-5 text-primary" aria-hidden="true" /> PG stipend at {name}
         </h2>
-        {row && <StipendStatusChip status={row.status} />}
+        {(!row || row.status === "not_verified") && !govt && listed?.stipend[0] ? (
+          <span className="inline-flex items-center rounded-full border border-border bg-surface-1 px-2.5 py-0.5 text-[12px] font-semibold text-muted-foreground">As listed</span>
+        ) : (
+          row && <StipendStatusChip status={row.status} />
+        )}
       </div>
-      {row ? (
+      {(!row || row.status === "not_verified") && !govt && listed?.stipend[0] ? (
+        <>
+          <dl className="mt-4 grid grid-cols-3 gap-3 sm:max-w-lg">
+            {listed.stipend.map((v, i) => (
+              <div key={i} className="rounded-xl border border-border bg-surface-1 px-3 py-2.5">
+                <dt className="text-[11.5px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">Year {i + 1}</dt>
+                <dd className="tnum font-heading mt-0.5 text-[1.1rem] font-extrabold text-foreground">{v ? rupee(v) : "—"}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="mt-3 text-[13.5px] leading-relaxed text-muted-foreground">
+            A month, {LISTED}{listed.session ? ` (${listed.session})` : ""}, not the college's own document.
+            {!isGovt && state
+              ? ` By NMC's rule it must pay at par with ${state}'s government colleges${atPar && govtFigure(atPar, 0) ? `, which pay ${govtFigure(atPar, 0)} a month in year 1` : ""}.`
+              : ""}{" "}
+            Our counsellors confirm what it pays before you lock the seat.
+          </p>
+        </>
+      ) : row ? (
         <>
           {row.y[0] ? (
             <dl className="mt-4 grid grid-cols-3 gap-3 sm:max-w-lg">

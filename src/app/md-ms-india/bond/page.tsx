@@ -103,12 +103,20 @@ export default async function BondPage() {
   };
   const notNotified = (f?.rows ?? []).filter((r) => r.g.flag === "not_notified").map((r) => r.s.state);
   const lead = (f?.rows ?? []).filter((r) => r.g.flag === "lead").map((r) => r.s.state);
+  // A state whose government bond is only a lead (Jharkhand): its government colleges' bond as listed for the counselling,
+  // marked so (owner, 2026-11-16: never "not confirmed" where we hold a figure).
+  const listedGovt = (state: string) => {
+    const x = b?.states.find((y) => y.state === state)?.govt;
+    if (!x?.colleges) return null;
+    if (!x.typicalYears) return x.withBond === 0 ? "0 years (no service bond)" : null;
+    return `${x.typicalYears} year${x.typicalYears === 1 ? "" : "s"}${x.penaltyMedian ? `, ${money(x.penaltyMedian)} if not served` : ""}`;
+  };
   const noFigure = (f?.rows ?? []).filter((r) => !r.g.flag && !r.g.zero && !r.g.years && !r.g.min).map((r) => r.s.state);
   const zeroStates = (f?.rows ?? []).filter((r) => r.g.zero).map((r) => r.s.state);
   const bondStates = (f?.rows ?? []).filter((r) => !r.g.flag && (r.g.years || r.g.min));
   const otherLine = [
     notNotified.length ? `${list(notNotified)} ${notNotified.length > 1 ? "have" : "has"} not notified one for ${f?.session} yet.` : "",
-    lead.length ? `${list(lead)}'s is not confirmed in an official notice yet.` : "",
+    ...lead.map((st) => (listedGovt(st) ? `${st}'s government colleges: ${listedGovt(st)}, as listed for the counselling.` : "")),
     zeroStates.length ? `${list(zeroStates)} carry no government service bond (0 years): none is stated in their 2026-27 documents.` : "",
     noFigure.length ? `${list(noFigure)} print no fixed figure; their pages give the rules as printed.` : "",
   ]
@@ -253,7 +261,7 @@ export default async function BondPage() {
                         </Link>
                       </th>
                       <td className="px-4 py-2.5">
-                        {g.flag === "not_notified" ? "Not notified yet" : g.flag === "lead" ? "Not confirmed yet" : g.zero ? "0 years (no service bond)" : (yearsText(g.years, g.yearsMax) ?? <span className="text-muted-foreground">As printed</span>)}
+                        {g.flag === "not_notified" ? "Not notified yet" : g.flag === "lead" ? (listedGovt(s.state) ? `${listedGovt(s.state)} (as listed)` : "As listed for the counselling") : g.zero ? "0 years (no service bond)" : (yearsText(g.years, g.yearsMax) ?? <span className="text-muted-foreground">As printed</span>)}
                       </td>
                       <td className="tnum px-4 py-2.5 text-right font-semibold">
                         {g.flag !== "lead" && rangeText(g.min, g.max) ? rangeText(g.min, g.max) : <span className="font-normal text-muted-foreground">{g.words ? "No fixed figure" : "—"}</span>}
@@ -382,7 +390,7 @@ export default async function BondPage() {
                           {o.g.flag === "not_notified"
                             ? `${s.state} has not notified a government service bond for ${f?.session} yet.`
                             : o.g.flag === "lead"
-                              ? `${s.state}'s government bond is not confirmed in an official notice yet.`
+                              ? `Government colleges, as listed for the counselling: ${listedGovt(s.state) ?? "see the colleges below"}.`
                               : `Government colleges: ${[yearsText(o.g.years, o.g.yearsMax) ? `${yearsText(o.g.years, o.g.yearsMax)} of service` : null, rangeText(o.g.min, o.g.max) ? `${rangeText(o.g.min, o.g.max)} if not served` : null].filter(Boolean).join(", ") || "as the state's rules print it"}.`}{" "}
                           <Link href={`/md-ms-india/bond/${o.s.slug}`} className="font-semibold text-primary-strong hover:underline dark:text-primary">
                             {s.state}'s rules in full →

@@ -6,7 +6,7 @@ import { fitDescription, fitTitle } from "@/lib/seoTitle";
 import { resolveMetadata } from "@/lib/content";
 import { getStateStipend } from "@/lib/cutoffHubQueries";
 import { getPgStates } from "@/lib/pgStateQueries";
-import { getBondByState } from "@/lib/pgSeatData";
+import { getBondByState, getListedTermsByState } from "@/lib/pgSeatData";
 import { bindsAiq, getOfficialBondState, govtBond, hasOwnBond, rangeText, yearsText, serviceYears } from "@/lib/officialBond";
 import { SourcedNote, Sources } from "@/components/bond/OfficialBond";
 import { getOfficialStipendState, hasOwnStipend, type GovtStipend } from "@/lib/officialStipend";
@@ -141,14 +141,20 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
     ? og.flag === "not_notified"
       ? `${s.state} has not notified a government service bond for this batch yet.`
       : og.flag === "lead"
-        ? `${s.state}'s government bond is not confirmed in an official notice yet.`
+        ? bond?.govt.typicalYears
+          ? `${bond.govt.typicalYears} year${bond.govt.typicalYears === 1 ? "" : "s"}${bond.govt.penaltyMedian ? `, ${rupees(bond.govt.penaltyMedian)} if not served` : ""}, as listed for the counselling.`
+          : null
         : [serviceYears(og), rangeText(og.min, og.max) ? `${rangeText(og.min, og.max)} if not served` : null]
             .filter(Boolean)
             .join(", ") || og.words || null
     : null;
   const top = s.list[0];
   // The official stipend (lib/officialStipend.ts): the state's order and each college's own document, where read.
-  const stip = await getOfficialStipendState(s.state).catch(() => null);
+  const [stip, listed] = await Promise.all([
+    getOfficialStipendState(s.state).catch(() => null),
+    // Each college's stipend as listed for the counselling, for a college whose own document is not read (marked so).
+    getListedTermsByState(s.state).catch(() => ({})),
+  ]);
   const sg = stip?.state.govt ?? null;
   const stipOwn = stip ? stip.colleges.filter(hasOwnStipend) : [];
   const stipTop = stipOwn.filter((c) => c.y[0]).sort((a, b) => (b.y[0] ?? 0) - (a.y[0] ?? 0));
@@ -161,7 +167,9 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
           ? `Government colleges in ${s.state} pay MD/MS residents ${govtWords}, ${sg!.label ? "as the state counselling authority's prospectus gives it, quoting the state's orders" : sg!.kind === "disclosure" ? "as an official government-college document gives it" : "under the state's order"}.`
           : sg?.kind === "formula"
             ? `${s.state}'s order sets the government-college stipend by a formula, shown below as written.`
-            : `No official order with ${s.state}'s government-college rupee figures could be found.`,
+            : s.govtMedian
+              ? `${s.state} publishes no order with the government-college rupee figure; as listed for the counselling, its government colleges pay about ${rupees(s.govtMedian)} a month in year 1.`
+              : `${s.state} publishes no order with the government-college rupee figure; private and deemed colleges must pay at par with its government colleges (NMC's rule).`,
         stipOwn.length ? `${stipOwn.length} of the ${stip.colleges.length} private and deemed colleges listed publish their own figure.` : "",
       ]
         .filter(Boolean)
@@ -339,7 +347,7 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
           <SectionHead icon="money" eyebrow={oc.section_eyebrow} title={oc.section_title} intro={oc.section_intro} />
           {/* Uneven cards in CSS columns, not a grid row as tall as its longer half (the 2026-10-22 blank-space rule). */}
           <div className="mt-6 gap-4 lg:columns-2 [&>*]:mb-4 [&>*]:break-inside-avoid">
-            <GovtStipendCard g={stip.state.govt} state={s.state} title={oc.govt_title} />
+            <GovtStipendCard g={stip.state.govt} state={s.state} title={oc.govt_title} listedMedian={s.govtMedian} />
             {stip.state.privateRule && (
               <div className="rounded-2xl border border-border bg-card p-5">
                 <h3 className="font-heading text-[16px] font-bold text-foreground">Private and deemed colleges: the state's rule</h3>
@@ -351,12 +359,12 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
           {stip.colleges.length > 0 && (
             <>
               <h3 className="mt-8 font-heading text-xl font-bold text-foreground">{oc.private_title}</h3>
-              {stip.colleges.filter((x) => x.status !== "not_verified").length >= 8 && (
+              {stip.colleges.length >= 8 && (
                 <DataTools
                   id="stipend-official-tools"
                   className="mt-4"
                   targets={["stipend-official"]}
-                  total={stip.colleges.filter((x) => x.status !== "not_verified").length}
+                  total={stip.colleges.length}
                   placement="stipend_official"
                   labels={labels}
                   chips={[
@@ -366,6 +374,7 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
                       options: [
                         { value: "official", label: "Own figure" },
                         { value: "none", label: "Says no stipend" },
+                        { value: "listed", label: "As listed" },
                       ],
                     },
                     {
@@ -384,7 +393,7 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
                 />
               )}
               <div className="mt-4">
-                <CollegeStipendTable id="stipend-official" colleges={stip.colleges} unconfirmed={oc.ask} />
+                <CollegeStipendTable id="stipend-official" colleges={stip.colleges} listed={listed} note={oc.ask} />
               </div>
             </>
           )}

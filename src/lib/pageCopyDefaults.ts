@@ -2294,19 +2294,23 @@ export const PAGE_COPY = {
       section_intro: {
         label: "Section line — {state}",
         value:
-          "The government-college rate as {state}'s own order gives it, then each private and deemed college's own figure from its own document. Colleges whose figure is not confirmed yet are named under the table.",
+          "The government-college rate as {state}'s own order gives it, then each private and deemed college's own figure from its own document. A college whose own document is not read shows its figure as listed for the counselling.",
         was: [
           "The government-college rate as {state}'s own order gives it, then each private and deemed college's own figure from its own document. A college whose current document has not been read says so.",
+          "The government-college rate as {state}'s own order gives it, then each private and deemed college's own figure from its own document. Colleges whose figure is not confirmed yet are named under the table.",
         ],
         long: true,
       },
       govt_title: { label: "Government card heading — {state}", value: "Government colleges in {state}" },
       private_title: { label: "Private colleges heading", value: "Private and deemed colleges: their own figure" },
       ask: {
-        label: "Line over the colleges whose figure is not confirmed yet — {n}",
+        label: "Under the college table, when a row shows a figure as listed for the counselling",
         value:
+          "A row marked “as listed for the counselling” shows the college's stipend as listed for the 2026 counselling, not its own document. Our counsellors confirm what each college pays with the college before you lock a seat.",
+        was: [
+          "Not read yet: ask the college",
           "{n} more colleges: their 2026-27 stipend is not confirmed in an official document yet. NMC requires it at par with the state's government colleges, and our counsellors confirm what each one pays before you put it on your list.",
-        was: ["Not read yet: ask the college"],
+        ],
         long: true,
       },
       nmc_title: { label: "NMC rules heading", value: "NMC's rule: at par with the state's government colleges" },
@@ -3992,7 +3996,9 @@ export const PAGE_COPY = {
       govt_title: { label: "Government bond heading", value: "Government colleges: the service bond" },
       govt_lead: {
         label: "When the government bond is only a lead",
-        value: "No official document confirms the government bond yet. Ask the state's counselling authority before you rely on any figure.",
+        value:
+          "{state}'s own 2026-27 documents do not print the government bond, so the figure here is as listed for the counselling. Our counsellors confirm it with the state's counselling authority before you sign.",
+        was: ["No official document confirms the government bond yet. Ask the state's counselling authority before you rely on any figure."],
         long: true,
       },
       govt_not_notified: { label: "When the state has not notified it — {session}", value: "The state has not notified a service bond for the {session} batch yet.", long: true },
@@ -4004,17 +4010,21 @@ export const PAGE_COPY = {
       private_intro: {
         label: "Private colleges line",
         value:
-          "The state's rules for private seats, then each college's own bond as its own notice prints it. Colleges whose terms are not confirmed yet are named under the table.",
+          "The state's rules for private seats, then each college's own bond as its own notice prints it. A college whose own notice is not read shows its terms as listed for the counselling.",
         was: [
           "The state's rules for private seats, then each college's own bond as its own notice prints it. Where we have not read a college's current documents, the row says so.",
+          "The state's rules for private seats, then each college's own bond as its own notice prints it. Colleges whose terms are not confirmed yet are named under the table.",
         ],
         long: true,
       },
       ask: {
-        label: "Line over the colleges whose terms are not confirmed yet — {n}",
+        label: "Under the college table, when a row shows terms as listed for the counselling",
         value:
+          "A row marked “as listed for the counselling” shows the college's bond and seat-leaving terms as listed for the 2026 counselling, not its own notice. Our counsellors confirm them with the college before you lock a seat.",
+        was: [
+          "Not read yet: ask the college",
           "{n} more colleges: their 2026-27 bond terms are not confirmed in an official document yet. The state's rules above apply to their seats, and our counsellors confirm each college's own terms before you put it on your list.",
-        was: ["Not read yet: ask the college"],
+        ],
         long: true,
       },
       govt_list_title: { label: "Government colleges heading — {state}", value: "Government colleges in {state}" },

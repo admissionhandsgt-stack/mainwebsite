@@ -547,7 +547,13 @@ async function bond(st: PgState | null): Promise<Draft | null> {
         g.flag === "not_notified"
           ? `${os.state} has not notified a government service bond for the 2026-27 batch yet; its own rules still set what leaving a seat or the course costs.`
           : g.flag === "lead"
-            ? `${os.state}'s government service bond is not confirmed in an official notice for 2026-27; ask the college before you sign.`
+            ? await (async () => {
+                // Only a lead in the state's own documents (Jharkhand): the government colleges' bond as listed, marked so.
+                const x = (await getBondByState().catch(() => null))?.states.find((y) => y.state === os.state)?.govt;
+                return x?.typicalYears
+                  ? `${os.state}'s government colleges bind MD/MS graduates to ${x.typicalYears} year${x.typicalYears === 1 ? "" : "s"} of service${x.penaltyMedian ? ` or about ${inr(x.penaltyMedian)} if not served` : ""}, as listed for the counselling.`
+                  : `${os.state}'s government-college bond is set out on its bond page, with what leaving a seat or the course costs.`;
+              })()
             : parts.length
               ? g.zero
                 ? `In ${os.state}, government colleges carry no service bond (0 years): none is stated in the state's own 2026-27 documents. Its rules still set what leaving a seat costs.`

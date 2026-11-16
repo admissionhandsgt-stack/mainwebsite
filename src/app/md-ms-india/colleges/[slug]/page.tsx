@@ -23,7 +23,7 @@ import TelegramJoin from "@/components/engage/TelegramJoin";
 import PhotoCredit from "@/components/ui/PhotoCredit";
 import { getPgCollegePhoto } from "@/lib/content";
 import TrackView from "@/components/analytics/TrackView";
-import { getCollegeSeatMatrix, getCollegeSeatTerms, termsSession } from "@/lib/pgSeatData";
+import { foldListed, getCollegeSeatMatrix, getCollegeSeatTerms, termsSession } from "@/lib/pgSeatData";
 import { pageCopy } from "@/lib/pageCopy";
 import MccSeats from "@/components/colleges/MccSeats";
 import SeatTerms from "@/components/colleges/SeatTerms";
@@ -31,7 +31,7 @@ import CollegeOfficialBond from "@/components/bond/CollegeOfficialBond";
 import { CollegeOfficialStipend } from "@/components/stipend/OfficialStipend";
 import { getOfficialCollegeStipend, getOfficialStipendState, nmcReturn } from "@/lib/officialStipend";
 import { getStipends } from "@/lib/cutoffHubQueries";
-import { collegeBondText } from "@/components/bond/OfficialBond";
+import { collegeBondText, listedBondText, listedExitText } from "@/components/bond/OfficialBond";
 import { getOfficialCollegeBond, getOfficialStateByName, govtBond, isCentralInstitution, rangeText, yearsText, serviceYears } from "@/lib/officialBond";
 import TelegramStrip from "@/components/engage/TelegramStrip";
 import { jsonLd as toJsonLd } from "@/lib/jsonLd";
@@ -127,17 +127,28 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
   ]);
   // A state's government bond is shown on a state government college with no row of its own — never on a DNB-only
   // hospital (National Board seats) or a central institution (AIIMS, ESIC, …), whose terms are their own.
-  const bondStateRule = !bondRow && bondState && s.kind === "pg" && s.type === "Government" && !isCentralInstitution(college.name) ? bondState : null;
-  const officialBond = !!bondRow || !!bondStateRule;
+  // A row whose own notice is not read is not an official figure (owner, 2026-11-16: "Not confirmed yet" on a college page
+  // "bharosa girata hai… what is the difference?"): the college's terms as listed for the counselling show instead, marked
+  // so, with the state's rules for its seats. Likewise a state whose government bond is only a lead (Jharkhand).
+  const bondVerified = bondRow && bondRow.status !== "not_verified" ? bondRow : null;
+  const bondStateRule =
+    !bondVerified && bondState && s.kind === "pg" && s.type === "Government" && !isCentralInstitution(college.name) && govtBond(bondState).flag !== "lead"
+      ? bondState
+      : null;
+  const officialBond = !!bondVerified || !!bondStateRule;
+  const listedTerms = s.kind === "pg" && !isCentralInstitution(college.name) ? foldListed(terms) : null;
+  const bondListed = !officialBond && listedTerms && (listedBondText(listedTerms) || listedExitText(listedTerms)) ? listedTerms : null;
   // The same rule for the stipend: a state government college with no row of its own shows the state's rate, unless the
   // state has no official figure; a central institution or a DNB-only hospital never takes a state's rate.
+  const stipendVerified = stipendRow && stipendRow.status !== "not_verified" ? stipendRow : null;
   const stipendGovt =
-    !stipendRow && stipendState && s.kind === "pg" && s.type === "Government" && !isCentralInstitution(college.name) && stipendState.state.govt.kind !== "none"
+    !stipendVerified && stipendState && s.kind === "pg" && s.type === "Government" && !isCentralInstitution(college.name) && stipendState.state.govt.kind !== "none"
       ? stipendState.state.govt
       : null;
-  const officialStipend = !!stipendRow || !!stipendGovt;
+  const officialStipend = !!stipendVerified || !!stipendGovt;
+  const stipendListed = !officialStipend && listedTerms?.stipend[0] ? listedTerms : null;
   // The state's stipend page exists only with three colleges listed (Goa has none): link it only then.
-  const stipendPage = officialStipend && college.state ? !!(await getStipends().catch(() => null))?.states.some((x) => x.state === college.state) : false;
+  const stipendPage = (officialStipend || stipendListed) && college.state ? !!(await getStipends().catch(() => null))?.states.some((x) => x.state === college.state) : false;
   // Words from Admin → Content ("Page: PG college pages — MCC seats, bond and stipend").
   const [seatsCopy, termsCopy] = await Promise.all([
     pageCopy("page.college_pg.mcc", { college: s.short, year: matrix?.year, total: matrix?.total.toLocaleString("en-IN") }),
@@ -166,10 +177,10 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
   {
     // "<college> pg bond" is searched (GSC: sms jaipur, gmc amritsar, andhra medical college…): answered from the official
     // row or the state's rule, never from the listing.
-    const bondAnswer = bondRow
-      ? bondRow.status === "not_verified"
-        ? `${s.short}'s 2026-27 bond terms are not confirmed in an official document yet. Get its bond and course-leaving terms in writing before you sign; our counsellors confirm them for you.`
-        : `${collegeBondText(bondRow) ?? "No service bond of its own"}${bondRow.leaving ? `. Leaving the course: ${bondRow.leaving}` : ""}${bondRow.session ? ` (${bondRow.session}, from the college's own notice)` : " (from the college's own notice)"}.`
+    const bondAnswer = bondVerified
+      ? `${collegeBondText(bondVerified) ?? "No service bond of its own"}${bondVerified.leaving ? `. Leaving the course: ${bondVerified.leaving}` : ""}${bondVerified.session ? ` (${bondVerified.session}, from the college's own notice)` : " (from the college's own notice)"}.`
+      : bondListed
+        ? `As listed for the counselling: ${[listedBondText(bondListed) ? `service bond ${listedBondText(bondListed)}` : null, listedExitText(bondListed)].filter(Boolean).join("; ")}. That is the counselling listing, not the college's own notice; our counsellors confirm it with the college before you lock the seat.`
       : bondStateRule
         ? (() => {
             const g = govtBond(bondStateRule);
@@ -190,7 +201,7 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
     // The stipend question answers from the official figure where there is one (the box above shows the same), never the
     // listing's — Goa Medical College's listing said ₹80,000 against its own declared ₹60,000.
     if (officialStipend) {
-      const r = stipendRow;
+      const r = stipendVerified;
       const g = stipendGovt;
       const inr = (v: number) => `₹${v.toLocaleString("en-IN")}`;
       const official = r
@@ -461,19 +472,28 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
             )}
 
             {/* -------- the official bond (the college's own notice, or its state's rule) -------- */}
-            {officialBond && (
+            {(officialBond || bondListed) && (
               <div className="mt-12">
-                <CollegeOfficialBond name={s.place && !s.short.toLowerCase().includes(s.place.toLowerCase()) ? `${s.short}, ${s.place}` : s.short} row={bondRow} state={bondRow ? bondState : bondStateRule} />
+                <CollegeOfficialBond
+                  name={s.place && !s.short.toLowerCase().includes(s.place.toLowerCase()) ? `${s.short}, ${s.place}` : s.short}
+                  row={bondVerified}
+                  state={bondVerified || bondListed ? bondState : bondStateRule}
+                  listed={bondListed}
+                  privateSeats={s.type !== "Government"}
+                />
               </div>
             )}
-            {officialStipend && (
+            {(officialStipend || stipendListed) && (
               <div className="mt-6">
                 <CollegeOfficialStipend
                   name={s.place && !s.short.toLowerCase().includes(s.place.toLowerCase()) ? `${s.short}, ${s.place}` : s.short}
-                  row={stipendRow}
+                  row={stipendVerified}
                   govt={stipendGovt}
                   state={college.state}
                   stateSlug={stipendPage ? stateSlug : null}
+                  listed={stipendListed}
+                  atPar={stipendState?.state.govt ?? null}
+                  isGovt={s.type === "Government"}
                 />
               </div>
             )}

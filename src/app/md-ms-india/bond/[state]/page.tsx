@@ -6,7 +6,7 @@ import { fitDescription, fitTitle } from "@/lib/seoTitle";
 import { resolveMetadata } from "@/lib/content";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import { getPgStates } from "@/lib/pgStateQueries";
-import { getBondByState } from "@/lib/pgSeatData";
+import { getBondByState, getListedTermsByState } from "@/lib/pgSeatData";
 import { getStipends } from "@/lib/cutoffHubQueries";
 import { getFeeStates } from "@/lib/pgFeeMatrix";
 import { getCounselPgStates } from "@/lib/counselStates";
@@ -90,7 +90,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     d.g.flag === "not_notified"
       ? `no government service bond notified for ${d.session} yet`
       : d.g.flag === "lead"
-        ? "the government bond not yet confirmed in an official notice"
+        ? "the government colleges' bond as listed for the counselling"
         : d.g.zero
           ? "no service bond for government colleges (0 years)"
           : short
@@ -124,7 +124,7 @@ export default async function BondStatePage(props: Props) {
   const own = colleges.filter(hasOwnBond);
   const read = colleges.filter((c) => c.status !== "not_verified");
 
-  const [c, oc, heroImage, pgStates, bondAll, stipends, fees, counsel, labels] = await Promise.all([
+  const [c, oc, heroImage, pgStates, bondAll, stipends, fees, counsel, labels, listed] = await Promise.all([
     pageCopy("page.pg_bond_state", { state: name, session, as_of: date(s.asOf) }),
     pageCopy("page.pg_bond.official", { as_of: date(s.asOf) }),
     pageHeroImage("page.pg_bond.hero"),
@@ -134,6 +134,8 @@ export default async function BondStatePage(props: Props) {
     getFeeStates().catch(() => null),
     getCounselPgStates().catch(() => [] as { name: string; slug: string; mdms: number }[]),
     toolLabels("bond_search"),
+    // Each college's terms as listed for the counselling: shown for a college whose own notice is not read (marked so).
+    getListedTermsByState(name).catch(() => ({})),
   ]);
   const pgSlug = pgStates.find((p) => p.name === name)?.slug;
   // Government colleges by name only (the compilation's list): the rule above is what applies to them, not its figures.
@@ -141,12 +143,19 @@ export default async function BondStatePage(props: Props) {
 
   // --------------------------------------------------------------- the hero's answer, from the rules
   const amountRows = isObj(gsb.amount_inr) ? Object.entries(gsb.amount_inr).filter(([, v]) => typeof v === "number") : [];
+  // Only a lead in the state's own documents (Jharkhand): the government colleges' bond as listed for the counselling.
+  const lg = g.flag === "lead" ? bondAll?.states.find((b) => b.state === name)?.govt : undefined;
+  const leadListed = lg?.typicalYears
+    ? `${lg.typicalYears} year${lg.typicalYears === 1 ? "" : "s"}${lg.penaltyMedian ? `, ${money(lg.penaltyMedian)} if not served` : ""}`
+    : null;
   const govtSentence = g.zero
     ? `${name}'s government colleges carry no service bond (0 years): none is stated in the state's own 2026-27 documents.`
     : g.flag === "not_notified"
       ? c.govt_not_notified
       : g.flag === "lead"
-        ? c.govt_lead
+        ? leadListed
+          ? `As listed for the counselling, ${name}'s government colleges bind MD/MS graduates to ${leadListed}.`
+          : c.govt_lead
         : g.years || g.min
           ? `Government colleges bind MD/MS graduates to ${yearsText(g.years, g.yearsMax) ?? "a period"} of service${rangeText(g.min, g.max) ? `, or ${rangeText(g.min, g.max)} if it is not served` : ""}.`
           : g.words
@@ -251,12 +260,14 @@ export default async function BondStatePage(props: Props) {
           {
             icon: "authority" as const,
             label: "Government service",
-            value: g.flag === "not_notified" ? "Not notified" : g.flag === "lead" ? "Not confirmed" : (yearsText(g.years, g.yearsMax) ?? "As printed"),
-            note: g.flag ? "see the rules below" : "government colleges",
+            value: g.flag === "not_notified" ? "Not notified" : g.flag === "lead" ? (lg?.typicalYears ? `${lg.typicalYears} year${lg.typicalYears === 1 ? "" : "s"}` : "As listed") : (yearsText(g.years, g.yearsMax) ?? "As printed"),
+            note: g.flag === "lead" ? "as listed for the counselling" : g.flag ? "see the rules below" : "government colleges",
           },
           ...(g.min && g.flag !== "lead"
             ? [{ icon: "up" as const, label: "If not served", value: rangeText(g.min, g.max)!, note: amountRows.length > 1 ? "by course or branch" : "the bond amount" }]
-            : []),
+            : lg?.penaltyMedian
+              ? [{ icon: "up" as const, label: "If not served", value: money(lg.penaltyMedian), note: "as listed for the counselling" }]
+              : []),
           { icon: "compare" as const, label: "All India Quota seats", value: aiq ? "Bound too" : "Not stated", note: aiq ? "in government colleges" : "in the state's rules" },
           ...(colleges.length ? [{ icon: "college" as const, label: "Private colleges' own bond", value: `${own.length} of ${colleges.length}`, note: `${read.length} read from their own notices` }] : []),
         ]}
@@ -369,12 +380,12 @@ export default async function BondStatePage(props: Props) {
             )}
             {colleges.length > 0 && (
               <>
-                {colleges.filter((x) => x.status !== "not_verified").length >= 8 && (
+                {colleges.length >= 8 && (
                   <DataTools
                     id="bond-college-tools"
                     className="mt-6"
                     targets={["bond-state-colleges"]}
-                    total={colleges.filter((x) => x.status !== "not_verified").length}
+                    total={colleges.length}
                     placement="bond_state_colleges"
                     labels={labels}
                     chips={[
@@ -385,6 +396,7 @@ export default async function BondStatePage(props: Props) {
                           { value: "official", label: "Own bond" },
                           { value: "none", label: "0 years (no bond)" },
                           { value: "other", label: "Other terms" },
+                          { value: "listed", label: "As listed" },
                         ],
                       },
                       {
@@ -403,7 +415,7 @@ export default async function BondStatePage(props: Props) {
                   />
                 )}
                 <div className="mt-6">
-                  <CollegeBondTable id="bond-state-colleges" colleges={colleges} unconfirmed={c.ask} />
+                  <CollegeBondTable id="bond-state-colleges" colleges={colleges} listed={listed} note={c.ask} />
                 </div>
               </>
             )}
@@ -412,7 +424,7 @@ export default async function BondStatePage(props: Props) {
       )}
 
       {/* ------------------------------------------------------- government colleges by name */}
-      {govtColleges.length > 0 && g.flag !== "lead" && (
+      {govtColleges.length > 0 && (
         <section className="container-custom py-8 md:py-10" id="government-colleges">
           <SectionHead icon="list" title={c.govt_list_title} intro={c.govt_list_intro} />
           <p className="mt-5 text-[14.5px] leading-relaxed">

@@ -553,6 +553,70 @@ async function loadCollegeTerms(slug: string): Promise<SeatTerms[]> {
   }
 }
 
+/**
+ * Every PG college of a state, its terms as listed for the counselling folded into one line each (owner, 2026-11-16: a
+ * college whose own notice is not read must still show what we know, not "not confirmed"): MD/MS and college-diploma seats
+ * only — a DNB rate is not the college's stipend — over every non-DNB seat type. Keyed by institute id. Always shown under
+ * the listing's caveat ("as listed for the counselling"), never as official.
+ */
+export type ListedTerms = Pick<SeatTerms, "stipend" | "bondYears" | "bondUnknown" | "bondPenalty" | "exitPenalty" | "exitFullCourseFee" | "session">;
+
+async function loadListedByState(state: string): Promise<Record<string, ListedTerms>> {
+  try {
+    const r = rows<TermRow & { institute_id: number }>(
+      await db.execute(sql`
+        SELECT t.institute_id, ${TERM_COLS}
+          FROM pg_seat_terms t JOIN institutes i ON i.id = t.institute_id
+          JOIN states s ON s.id = i.state_id
+         WHERE i.level = 'pg' AND s.name = ${state}`),
+    );
+    const groups = new Map<number, TermRow[]>();
+    for (const x of r) {
+      if (seatFamily(x.seat_type ?? "", x.degree) === "dnb") continue;
+      const g = groups.get(x.institute_id);
+      if (g) g.push(x);
+      else groups.set(x.institute_id, [x]);
+    }
+    const out: Record<string, ListedTerms> = {};
+    for (const [id, list] of groups) {
+      const s = summarise(list);
+      out[String(id)] = {
+        stipend: s.stipend,
+        bondYears: s.bondYears,
+        bondUnknown: s.bondUnknown,
+        bondPenalty: s.bondPenalty,
+        exitPenalty: s.exitPenalty,
+        exitFullCourseFee: s.exitFullCourseFee,
+        session: s.session,
+      };
+    }
+    return out;
+  } catch (error) {
+    logError(error, { route: `pgSeatData:listed:${state}` });
+    return {};
+  }
+}
+
+export const getListedTermsByState = (state: string) =>
+  unstable_cache(() => loadListedByState(state), ["seat-terms-state-v2", state], { revalidate: DAY, tags: ["seat-terms"] })();
+
+/** A college's listed terms folded the same way (its own page): non-DNB seats only. */
+export function foldListed(terms: SeatTerms[]): ListedTerms | null {
+  const own = terms.filter((t) => t.family !== "dnb");
+  if (!own.length) return null;
+  const by = <T,>(f: (t: SeatTerms) => T | null) => mode(own.flatMap((t) => Array(t.courses).fill(f(t)) as (T | null)[]));
+  const bondYears = by((t) => (t.bondUnknown ? null : t.bondYears));
+  return {
+    stipend: [by((t) => t.stipend[0]), by((t) => t.stipend[1]), by((t) => t.stipend[2])],
+    bondYears,
+    bondUnknown: own.every((t) => t.bondUnknown),
+    bondPenalty: bondYears ? by((t) => (t.bondYears === bondYears ? t.bondPenalty : null)) : null,
+    exitPenalty: by((t) => t.exitPenalty),
+    exitFullCourseFee: own.some((t) => t.exitFullCourseFee),
+    session: by((t) => t.session),
+  };
+}
+
 /** The counselling year most of a college's terms were listed for ("2026", sometimes "2025"). */
 export const termsSession = (terms: SeatTerms[]) => mode(terms.map((t) => t.session));
 

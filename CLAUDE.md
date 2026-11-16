@@ -2174,6 +2174,14 @@ states + MCC, 302 colleges, every figure with its URL, page and quote. It replac
   the college" per row. A college whose only record is NMC's college-wise list shows one figure, "₹30,000 a month, as
   it told NMC in 2024" (`nmcReturn` in lib/officialStipend.ts), never the list's raw text. Leaving the course and the
   security deposit sit side by side; the stipend state page's three cards are CSS columns; sections `py-8 md:py-10`.
+- **Never "not confirmed" where we hold a figure (owner, same evening, on a college page: "aise chije dalenge to students
+  kaise humpe bharosa karenge… we are expert counsellors… what is the difference?").** A not_verified row is not official
+  and is not shown as a gap: the college's terms **as listed for the counselling** (`pg_seat_terms`, folded per college by
+  `getListedTermsByState` / `foldListed` in lib/pgSeatData.ts — non-DNB seats only) fill the bond and stipend tables
+  (every college a row, marked "as listed for the counselling", the caveat `ask` under the table), the college page's
+  boxes (chip "As listed", plus NMC's at-par rule against the state's government rate), the bond FAQ, and Jharkhand's
+  government bond (only a lead in its documents: 3 years, ₹30 L as listed). Karnataka-type states with no rupee order
+  show the listed government median. Only a college with nothing listed anywhere points to the state's rules above.
 
 **A data import shows at once (owner, same day: "ek ghante mai kyu… cache refresh karke instant reflect"):** after an
 import's `--apply`, run `bash scripts/revalidate_tags.sh --purge <tag…>` — it asks the app on the server to drop those
