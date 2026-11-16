@@ -2596,16 +2596,18 @@ loans 14, what-next 74). Built the same day, every rule from the authority's own
 
 Owner: "ek dedicated page… Round 2 bhi khtam hogya still not got seat ya jo bande eligible hone ka wait kar rahe hai unko
 target kare… mai google ads chala dunga", then "ek dum marketing page chaiye without number claims… aggressive claims +
-language + words". So: Hinglish selling copy and **no figures** (only MCC's dates from `pg_schedule` and round numbers).
+language + words", then the same evening "english mai karo… Top clinical branches, Top medical colleges… compact". So:
+**English** selling copy (no Hinglish), an "Aim higher" block (top clinical branches, top medical colleges, government-fee
+seats, budget seats: what the strategy goes after, never a promised result), MCC's dates inside the hero, no ExpertCompare,
+and **no figures** (only MCC's dates from `pg_schedule` and round numbers).
 Strong but true: every rule is MCC's (`lib/choiceFillingRules.ts` — round 3 no resignation or upgrade, a round 2+ seat not
 joined costs the deposit, the stray round only for candidates holding no seat, a state seat joined by the state's round 3
 removes you before MCC's stray), the way of working is the team's own, and the page says outright that nobody can
 guarantee a seat (also what Google Ads' misrepresentation policy needs). Never add "guaranteed", "direct admission",
 "100%" or a typed count here. `noindex, follow`, not in the sitemap or menus (no data of its own; the round pages answer
-"neet pg round 3" for search). Sections: hero with the call-back form (`#plan`), urgency strip with the dates and
-`ScheduleRevisionNote`, four situations (no seat / want an upgrade / waiting for eligibility or a cut-off / budget-bond-
-state) each with a prefilled WhatsApp, six mistakes, five steps of Expert Counselling, why us, `ExpertCompare`, FAQs, a
-closing ask. Words: Admin → Content → "Page: NEET PG after Round 2 (ads landing page)". Leads: source "Ads landing — NEET
+"neet pg round 3" for search). Sections: hero with the call-back form (`#plan`) and the round clock (dates +
+`ScheduleRevisionNote`), aim higher, four situations each with a prefilled WhatsApp, six mistakes, five steps + why us,
+FAQs, a closing ask (desktop ~3,400px). Words: Admin → Content → "Page: NEET PG after Round 2 (ads landing page)". Leads: source "Ads landing — NEET
 PG after Round 2 (…)"; taps `r3_*` placements. No bottom bar of its own: the site's floating WhatsApp already sits there
 on a phone. zyn-92 is researching competitors' ads (Meta Ad Library, Google Ads Transparency Center) for the campaign.
 
