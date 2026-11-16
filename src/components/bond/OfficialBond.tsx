@@ -1,7 +1,7 @@
 import { ExternalLink, FileText } from "lucide-react";
 import type { ReactNode } from "react";
 import Link from "@/components/ui/Link";
-import { money, noOwnBond, safeUrl, sourcesOf, STATUS_LABEL, type BondStatus, type Json, type JsonObject, type OfficialCollege, type Source } from "@/lib/officialBond";
+import { money, noOwnBond, OWN_BOND_TEXT, safeUrl, sourcesOf, STATUS_LABEL, type BondStatus, type Json, type JsonObject, type OfficialCollege, type Source } from "@/lib/officialBond";
 
 /**
  * Pieces the official bond pages share (2026-11-16): the source line under every figure, the status of a college's row, a
@@ -214,6 +214,7 @@ export function SourcedNote({ text }: { text: string }) {
 /** A college's own service bond, in words: "1 year · ₹10 L if not served", or branch by branch. */
 export function collegeBondText(c: OfficialCollege): string | null {
   if (c.status === "not_verified") return null;
+  if (OWN_BOND_TEXT[c.ourId]) return OWN_BOND_TEXT[c.ourId];
   if (c.status === "none_in_official_documents") return "0 years · no service bond in its own PG documents";
   if (noOwnBond(c)) return "0 years · no service bond of its own";
   const parts = [c.years ? `${c.years} year${c.years === 1 ? "" : "s"}` : null, c.amount ? `${money(c.amount)} if not served` : null].filter(Boolean);

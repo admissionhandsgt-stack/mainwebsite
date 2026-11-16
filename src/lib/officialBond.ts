@@ -41,6 +41,8 @@ export interface OfficialState {
 }
 
 export interface OfficialCollege {
+  /** The handoff's key (institutes.source_id). */
+  ourId: number;
   instituteId: number | null;
   slug: string | null;
   name: string;
@@ -201,8 +203,9 @@ async function load(): Promise<OfficialBond | null> {
       as_of: string | null;
     }[];
     const cols = (await db.execute(sql`
-      SELECT b.institute_id, b.state, b.status, b.data, i.slug, i.name
+      SELECT b.our_id, b.institute_id, b.state, b.status, b.data, i.slug, i.name
         FROM pg_bond_colleges b LEFT JOIN institutes i ON i.id = b.institute_id`)) as unknown as {
+      our_id: number;
       institute_id: number | null;
       state: string;
       status: BondStatus;
@@ -219,6 +222,7 @@ async function load(): Promise<OfficialBond | null> {
         ? (Object.entries(d.amount_by_branch_as_printed).filter(([, v]) => typeof v === "number") as [string, number][])
         : null;
       return {
+        ourId: Number(r.our_id),
         instituteId: r.institute_id,
         slug: r.slug,
         name: r.name ?? str(d.college) ?? "",
@@ -254,7 +258,7 @@ async function load(): Promise<OfficialBond | null> {
   }
 }
 
-export const getOfficialBond = unstable_cache(load, ["official-bond-v4"], { revalidate: 3600, tags: ["official-bond"] });
+export const getOfficialBond = unstable_cache(load, ["official-bond-v5"], { revalidate: 3600, tags: ["official-bond"] });
 
 export async function getOfficialBondState(slug: string): Promise<{ state: OfficialState; colleges: OfficialCollege[]; all: OfficialBond } | null> {
   const all = await getOfficialBond();
@@ -295,6 +299,16 @@ export const noOwnBond = (c: OfficialCollege) =>
  */
 export const hasOwnBond = (c: OfficialCollege) =>
   c.status.startsWith("official") && ((c.years ?? 0) > 0 || (c.amount ?? 0) > 0 || !!c.branches?.some(([, v]) => v > 0));
+
+/**
+ * A college whose own-bond line needs words the data does not carry, set from the PG data session's reading (zyn-92,
+ * 2026-11-16), by our_id: Tripura MC prints no service bond of its own but the state's bond may reach its state-quota
+ * seats; ASCOMS Jammu's only official terms are of 2024. Re-check on a re-import.
+ */
+export const OWN_BOND_TEXT: Record<number, string> = {
+  362: "No college service bond (2025-26 prospectus); whether the state's bond reaches its state-quota seats is not confirmed: ask TRMCC or the college",
+  99: "No service bond (college terms of 2024)",
+};
 
 export const STATUS_LABEL: Record<BondStatus, string> = {
   official_2026_27: "Official, 2026-27",
