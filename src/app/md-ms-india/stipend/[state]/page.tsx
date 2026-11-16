@@ -10,7 +10,7 @@ import { getBondByState } from "@/lib/pgSeatData";
 import { bindsAiq, getOfficialBondState, govtBond, hasOwnBond, rangeText, yearsText } from "@/lib/officialBond";
 import { SourcedNote, Sources } from "@/components/bond/OfficialBond";
 import { getOfficialStipendState, hasOwnStipend, type GovtStipend } from "@/lib/officialStipend";
-import { CollegeStipendTable, GovtStipendCard, KIND_LABEL, NationalRules } from "@/components/stipend/OfficialStipend";
+import { CollegeStipendTable, GovtStipendCard, kindLabel, NationalRules } from "@/components/stipend/OfficialStipend";
 import { sourcesOf } from "@/lib/officialBond";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
@@ -158,7 +158,7 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
   const stipSubtitle = stip
     ? [
         govtWords
-          ? `Government colleges in ${s.state} pay MD/MS residents ${govtWords}, ${sg!.kind === "disclosure" ? "as an official government-college document gives it" : "under the state's order"}.`
+          ? `Government colleges in ${s.state} pay MD/MS residents ${govtWords}, ${sg!.label ? "as the state counselling authority's prospectus gives it, quoting the state's orders" : sg!.kind === "disclosure" ? "as an official government-college document gives it" : "under the state's order"}.`
           : sg?.kind === "formula"
             ? `${s.state}'s order sets the government-college stipend by a formula, shown below as written.`
             : `No official order with ${s.state}'s government-college rupee figures could be found.`,
@@ -308,7 +308,7 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
             icon: "authority" as const,
             label: "Govt colleges, year 1",
             value: sg?.y[0] ? `${rupees(sg.y[0])}${sg.kind === "basic" ? " basic" : ""}` : sg?.kind === "formula" ? "By formula" : "Not published",
-            note: sg ? KIND_LABEL[sg.kind].split(";")[0].split("(")[0].trim().toLowerCase() : "",
+            note: sg ? kindLabel(sg).split(";")[0].split("(")[0].trim().toLowerCase() : "",
           },
           ...(sg?.y[2] ? [{ icon: "spark" as const, label: "Govt colleges, year 3", value: `${rupees(sg.y[2])}${sg.kind === "basic" ? " basic" : ""}`, note: "a month" }] : []),
           { icon: "college" as const, label: "Private colleges' own figure", value: `${stipOwn.length} of ${stip.colleges.length}`, note: "from their own documents" },

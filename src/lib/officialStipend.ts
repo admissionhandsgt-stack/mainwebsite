@@ -38,6 +38,8 @@ export interface GovtStipend {
   effectiveFrom: string | null;
   diploma: string | null;
   sources: Source[];
+  /** A state whose source fits no kind's words says what it is (Andhra Pradesh). */
+  label: string | null;
 }
 
 export interface StipendState {
@@ -117,6 +119,15 @@ const sentences = (t: string | null) =>
  * disclosure because no order could be read. Basic-pay states are read from the file's own qualifier ("BASIC pay only").
  */
 const NO_FIGURE = new Set(["Assam", "Chhattisgarh", "Karnataka", "Telangana", "Jammu and Kashmir", "Tripura"]);
+/**
+ * Andhra Pradesh's figures are the state counselling authority's own prospectus quoting "Govt. of AP orders" — neither the
+ * order (not read) nor a college's document (zyn-92, 2026-11-16). A press-reported revision (G.O.Ms.No.141, 2026) is a lead:
+ * no figure from it is shown, only the caution.
+ */
+const KIND_OVERRIDE: Record<string, string> = {
+  "Andhra Pradesh":
+    "From the state counselling authority's prospectus (Dr NTR UHS 2026-27), quoting Govt of AP orders; the rate may have been revised since, so ask the college",
+};
 const FROM_DISCLOSURE = new Set(["Maharashtra", "Odisha", "Himachal Pradesh", "Goa", "Uttarakhand", "Punjab", "Andhra Pradesh"]);
 
 function govtOf(g: JsonObject, state = ""): GovtStipend {
@@ -140,6 +151,7 @@ function govtOf(g: JsonObject, state = ""): GovtStipend {
     effectiveFrom: sentences(str(g.effective_from)?.replace(/,?\s*(and,\s*)?per search index only,?\s*/i, " ").replace(/\s{2,}/g, " ").trim() ?? null),
     diploma: kind === "none" ? null : str(g.diploma),
     sources: kind === "none" ? [] : sources(g.source),
+    label: KIND_OVERRIDE[state] ?? null,
   };
 }
 
@@ -219,7 +231,7 @@ async function load(): Promise<OfficialStipend | null> {
   }
 }
 
-export const getOfficialStipend = unstable_cache(load, ["official-stipend-v6"], { revalidate: 3600, tags: ["official-stipend"] });
+export const getOfficialStipend = unstable_cache(load, ["official-stipend-v7"], { revalidate: 3600, tags: ["official-stipend"] });
 
 export async function getOfficialStipendState(name: string) {
   const all = await getOfficialStipend();

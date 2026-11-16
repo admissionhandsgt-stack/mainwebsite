@@ -18,6 +18,9 @@ export const KIND_LABEL: Record<GovtStipend["kind"], string> = {
   none: "No official order with the rupee figures",
 };
 
+/** A state's own label where its source fits no kind (Andhra Pradesh), else the kind's. */
+export const kindLabel = (g: GovtStipend) => g.label ?? KIND_LABEL[g.kind];
+
 /** The state's government-college rate: Y1–Y3 as the order gives them, its words, what it covers, the documents. */
 export function GovtStipendCard({ g, state, title }: { g: GovtStipend; state: string; title: string }) {
   return (
@@ -28,7 +31,7 @@ export function GovtStipendCard({ g, state, title }: { g: GovtStipend; state: st
         </span>
         <h3 className="font-heading text-[17px] font-bold text-foreground">{title}</h3>
       </div>
-      <p className="mt-2 text-[13.5px] font-semibold text-muted-foreground">{KIND_LABEL[g.kind]}</p>
+      <p className="mt-2 text-[13.5px] font-semibold text-muted-foreground">{kindLabel(g)}</p>
       {g.y.some(Boolean) && (
         <dl className="mt-4 grid grid-cols-3 gap-3">
           {g.y.map((v, i) => (
@@ -230,7 +233,7 @@ export function CollegeOfficialStipend({ name, row, govt, state, stateSlug }: { 
             <span className="font-semibold">{state}'s government-college rate:</span>{" "}
             {govt!.y[0] ? govt!.y.map((v, i) => (v ? `Y${i + 1} ${govtFigure(govt!, i)}` : null)).filter(Boolean).join(" · ") : govt!.asWritten}
           </p>
-          <p className="mt-1 text-[13.5px] text-muted-foreground">{KIND_LABEL[govt!.kind]}</p>
+          <p className="mt-1 text-[13.5px] text-muted-foreground">{kindLabel(govt!)}</p>
           <Sources sources={govt!.sources.slice(0, 2)} className="mt-4 border-t border-border pt-4" />
         </>
       )}

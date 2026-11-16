@@ -15,7 +15,7 @@ import { hinglishFaqs } from "@/lib/hinglishFaq";
 import DataTools from "@/components/ui/DataTools";
 import { toolLabels } from "@/lib/dataToolLabels";
 import { getOfficialStipend, hasOwnStipend } from "@/lib/officialStipend";
-import { GovtStipendCard, KIND_LABEL, NationalRules } from "@/components/stipend/OfficialStipend";
+import { GovtStipendCard, kindLabel, NationalRules } from "@/components/stipend/OfficialStipend";
 import { SourcedNote } from "@/components/bond/OfficialBond";
 
 /**
@@ -161,7 +161,7 @@ export default async function StipendPage() {
                 value: r.st.govt.y[0]!,
                 display: `${inr(r.st.govt.y[0])}${r.st.govt.kind === "basic" ? " basic" : ""}`,
                 href: stateSlug.get(r.st.state) ? `/md-ms-india/stipend/${stateSlug.get(r.st.state)}#official` : undefined,
-                note: r.st.govt.kind === "disclosure" ? "from a govt college document" : r.st.govt.kind === "basic" ? "basic pay + DA" : "state order",
+                note: r.st.govt.label ? "state prospectus" : r.st.govt.kind === "disclosure" ? "from a govt college document" : r.st.govt.kind === "basic" ? "basic pay + DA" : "state order",
               }))}
             />
           ) : (
@@ -231,7 +231,7 @@ export default async function StipendPage() {
                         {v ? `${inr(v)}${st.govt.kind === "basic" ? " basic" : ""}` : <span className="font-normal text-muted-foreground">—</span>}
                       </td>
                     ))}
-                    <td className="px-4 py-2.5 text-[13px] text-muted-foreground">{KIND_LABEL[st.govt.kind].split(";")[0]}</td>
+                    <td className="px-4 py-2.5 text-[13px] text-muted-foreground">{kindLabel(st.govt).split(";")[0]}</td>
                     <td className="tnum px-4 py-2.5 text-right">{all ? `${own} of ${all}` : "—"}</td>
                   </tr>
                 ))}
