@@ -26,6 +26,7 @@ import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/S
 import ExpertPromise from "@/components/counsel/ExpertPromise";
 import { FaqList, HowWeWork, LinkCards, RouteCards, StateChips, pairs } from "@/components/counsel/CounselBlocks";
 import FeePdfCta from "@/components/lead/FeePdfCta";
+import WhereNow from "@/components/counsel/WhereNow";
 
 /**
  * NEET PG counselling guidance for one state (2026-11-11, owner: "best NEET PG counsellor in <state>… PG alag"). The
@@ -209,6 +210,8 @@ export default async function CounselPgStatePage(props: Props) {
           </p>
         </div>
       )}
+
+      <WhereNow level="pg" placement="counsel_pg_state" stateName={p.name} feesHref={fee ? `/md-ms-india/fees/${p.slug}` : undefined} />
 
       <StateNotices state={p.name} level="pg" />
 

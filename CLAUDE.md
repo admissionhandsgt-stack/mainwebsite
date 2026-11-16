@@ -2448,6 +2448,14 @@ loans 14, what-next 74). Built the same day, every rule from the authority's own
   themselves") and **4.5** (₹1 crore per seat, student discharged), FAQ + FAQPage. The `state` variant (choosing + fraud)
   is on every /counselling/neet-pg/<state>. Title "NEET PG Counsellor 2026: Expert Counselling Guidance, All India".
   No self-awarded "best"; the FAQ tells a family how to judge any counsellor.
+- **"Where are you right now?" (2026-11-16, owner's OK)** — `components/counsel/WhereNow.tsx` right after the hero on
+  /counselling (NEET PG cards + a line to the MBBS states), every /counselling/neet-pg/<state> and /counselling/mbbs/<state>:
+  six situations (PG: result out, got a seat, no seat yet, low rank, a budget, reporting; MBBS: rank in hand, state vs AIQ,
+  got a seat, private/deemed budget, NRI, next year's NEET UG), each with its free guide (an inline link) and a WhatsApp
+  chat prefilled with the situation and the state. All cards shown (no tabs). The running round (Telegram cue) names "No
+  seat yet"'s link and messages; a state page's fee link goes to its fee page when it has one. Words: Admin → Content →
+  "Counselling: where are you right now?", one line per situation ("situation | text | link words | link | message"; only
+  site paths are linked). Taps: `whatsapp_click` with placement `<page>_where_<n>` — read which situation brings leads.
 - **/neet-pg-open-states** and **/neet-pg-in-service-quota** — `lib/pgEligibility.ts`: the PG source's "Open States (Private
   Institute seats available for all candidates)" counselling by state, and every quota/category matching `SERVICE_QUOTA_RE`
   by state (MCC's DNB sponsored seats apart). Counts are colleges and **college × branch options, never seats**. No
@@ -3766,6 +3774,15 @@ covers the proxied hosts only (apex, admin, origin, mumbai) — www is DNS-only 
 Cloudflare's language `contains` is an infix operator (`lower(http.request.uri.path) contains "/.env"`), not a function;
 `starts_with()` / `ends_with()` are functions. The API token cannot edit WAF rules (403): the rule was made in the
 dashboard, in the Admissionhands.gt Chrome profile. Smoke 72/72 after it went live.
+
+**DMARC reports through Cloudflare (2026-11-16, owner: "DMARC kardo").** Mail goes out through Hostinger and nevtan (SPF
+`include:_spf.mail.hostinger.com include:_spf.nevtan.com ~all`; DKIM selectors `hostingermail-a` and `dkim`). The record was
+`v=DMARC1; p=none` with no reports, so nobody could see who sends as @admissionhands.com. Cloudflare's free **DMARC
+Management** (Email → DMARC Management, enabled in the Admissionhands.gt profile) added its own report address:
+`v=DMARC1; p=none; rua=mailto:…@dmarc-reports.cloudflare.net;` — reports land in that dashboard, no mailbox needed.
+**Next, by hand, after ~2 weeks of reports (around 1 Dec):** if every real source (Hostinger, nevtan, anything else listed)
+passes SPF or DKIM aligned, edit the record to `p=quarantine; pct=25`, then 100, then `p=reject`. A real sender that fails
+gets its SPF include / DKIM first, or the team's own mail lands in spam. Keep the Cloudflare `rua` when editing.
 
 **Cache rules (three, since 2026-10-06), plus Smart Tiered Cache on:**
 1. `/_next/static/*`, `/_next/image*`, `/assets/*` → edge, lifetime from the origin's `Cache-Control`.

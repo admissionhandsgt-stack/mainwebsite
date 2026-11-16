@@ -18,6 +18,7 @@ import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 import { FaqList, HowWeWork, LinkCards, RouteCards, StateChips, pairs } from "@/components/counsel/CounselBlocks";
+import WhereNow from "@/components/counsel/WhereNow";
 
 /**
  * MBBS counselling guidance for one state (2026-11-11, owner: "best NEET counsellor in <state>… MBBS ke sath + PG alag").
@@ -142,6 +143,8 @@ export default async function CounselUgStatePage(props: Props) {
         topic="map"
         aside={authority ? <StateAuthority a={authority} state={name} level="ug" /> : undefined}
       />
+
+      <WhereNow level="ug" placement="counsel_ug_state" stateName={name} stateSlug={p.state.slug} />
 
       <StateNotices state={name} level="ug" />
 

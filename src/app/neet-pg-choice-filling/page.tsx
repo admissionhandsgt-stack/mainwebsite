@@ -236,7 +236,7 @@ export default async function ChoiceFillingPage() {
             </ul>
             <p className="mt-3"><Cite keys={["bulletin", "userGuide"]} /></p>
           </div>
-          <div>
+          <div id="freeze-or-float" className="scroll-mt-32">
             <SectionHead icon="route" eyebrow="New in 2026" title="Freeze or Float" />
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
               <div className="rounded-2xl border border-border bg-card p-5">

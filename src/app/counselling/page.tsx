@@ -10,6 +10,7 @@ import ExpertCompare from "@/components/lead/ExpertCompare";
 import LeadCapture from "@/components/lead/LeadCapture";
 import ExpertPromise, { expertFaqs } from "@/components/counsel/ExpertPromise";
 import { FaqList } from "@/components/counsel/CounselBlocks";
+import WhereNow from "@/components/counsel/WhereNow";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
 
 /**
@@ -70,6 +71,7 @@ export default async function CounsellingHub() {
         topic="map"
       />
 
+      <WhereNow level="pg" placement="counsel_hub" ugLink="#states" />
       <ExpertPromise placement="counsel_hub" />
 
       <section className="container-custom py-10 md:py-14" id="states">

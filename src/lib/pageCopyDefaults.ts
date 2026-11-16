@@ -774,6 +774,50 @@ export const PAGE_COPY = {
       ug_title: { label: "MBBS list heading", value: "MBBS (NEET UG) counselling" },
     },
   },
+  "page.counsel_where": {
+    group: "Counselling: where are you right now? (/counselling and the state counselling pages)",
+    fields: {
+      eyebrow: { label: "Small line over the heading", value: "Start where you are" },
+      title: { label: "Heading", value: "Where are you right now?" },
+      intro: {
+        label: "Line under the heading",
+        value: "Pick the line that is you. Each opens the free guide for it, or a WhatsApp chat with a counsellor that already says where you stand, so the first reply is about your case.",
+        long: true,
+      },
+      wa_label: { label: "WhatsApp button on each card", value: "Ask a counsellor" },
+      pg_items: {
+        label:
+          "NEET PG situations, one per line: situation | what a counsellor does | link words | link | WhatsApp message — {round} is the round running now (\"Round 2\"), {round_page} the words for its page, {round_link} its page, {fees_link} the state's fee page (else India's), {state} the state on a state page",
+        value: [
+          "My result is out and I have to fill choices | We turn your rank into an ordered choice list for MCC and your state, round by round — one wrong order can cost a seat your rank could take. | Choice filling rules | /neet-pg-choice-filling | Hello AdmissionHands, my NEET PG result is out and I need help with choice filling for {round}. My rank: , category: , state: {state}",
+          "I got a seat: join, upgrade or exit? | We weigh your seat against what last year's later rounds opened up, and the deposit and bond at stake, before MCC's deadline. | Freeze, float and upgrade | /neet-pg-choice-filling#freeze-or-float | Hello AdmissionHands, I got a NEET PG seat and need to decide: join, upgrade or exit? My seat: , rank: , category: ",
+          "No seat yet | We plan your next round with you: which seats open up after upgrades, what the stray round holds, and where your rank can still reach. | {round_page} | {round_link} | Hello AdmissionHands, I have no NEET PG seat yet. Please help me plan {round}. My rank: , category: , state: {state}",
+          "My rank is low and I want a clinical branch | We look for the clinical seats ranks like yours took last year — DNB, deemed paid seats and open states — and what each costs. | Clinical branches at a low rank | /neet-pg-low-score-clinical-branches | Hello AdmissionHands, my NEET PG rank is low. Is a clinical branch possible for me? My rank: , category: , state: {state}",
+          "I have a budget for a private or deemed seat | We list the seats your budget covers, with fee, stipend and bond, ordered by what your rank can reach. | PG fees by college | {fees_link} | Hello AdmissionHands, I can pay for a private or deemed NEET PG seat. Budget a year: , rank: , state: {state}",
+          "My seat is allotted and reporting is next | We check every document before you travel, and confirm the fee, hostel, deposit and bond with the college in writing. | Documents for reporting | /neet-pg-documents | Hello AdmissionHands, I have been allotted a NEET PG seat and reporting is next. Please check my documents. College: , state: {state}",
+        ].join("\n"),
+        long: true,
+      },
+      ug_items: {
+        label: "MBBS situations, one per line: situation | what a counsellor does | link words | link | WhatsApp message — {state_link} is the state's MBBS page, {state_page} the words for it, {state} the state, {next_year} the coming NEET UG",
+        value: [
+          "I have my NEET UG rank: which colleges? | We read your rank against every counselling you can join — MCC, your state and the deemed universities — and tell you where it stands. | Check your colleges | /neet-college-predictor?course=mbbs | Hello AdmissionHands, I have my NEET UG rank and want to know which MBBS colleges I can get. My rank: , category: , state: {state}",
+          "State quota or All India: where do I register? | We register you where your rank and domicile count most, and keep both routes open through every round. | {state_page} | {state_link} | Hello AdmissionHands, I need help deciding between my state quota and All India counselling for MBBS. My rank: , state: {state}",
+          "I got a seat: join or wait for an upgrade? | We weigh the seat against what last year's later rounds opened, and what leaving it would cost you. | How NEET UG counselling runs | /neet-ug-process | Hello AdmissionHands, I got an MBBS seat and need to decide whether to join or wait for an upgrade. My seat: , rank: ",
+          "Private or deemed MBBS within a budget | We list the private and deemed colleges your rank and budget can reach, and confirm each fee with the college. | Deemed universities | /mbbs-india/deemed-universities | Hello AdmissionHands, I am looking for a private or deemed MBBS seat. Budget a year: , rank: , state: {state}",
+          "NRI quota | We check the documents the NRI quota asks for, and which colleges took NRI seats last year. | NRI quota | /nri-quota | Hello AdmissionHands, I need help with MBBS admission on the NRI quota. Rank: , country: ",
+          "Planning for NEET UG {next_year} | We show you what rank your target colleges took this year, so your target score is a number, not a guess. | NEET UG cut off | /neet-ug-cutoff | Hello AdmissionHands, I am preparing for NEET UG {next_year} and want to plan my target colleges. State: {state}",
+        ].join("\n"),
+        long: true,
+      },
+      note: {
+        label: "Line under the cards",
+        value: "No one can promise a seat: counselling allots it. A counsellor's work is making sure your rank reaches the best seat it can, round by round.",
+        long: true,
+      },
+      ug_line: { label: "Line under the NEET PG cards on /counselling, linking the MBBS states", value: "Preparing for MBBS? Pick your state for MBBS counselling →" },
+    },
+  },
   "page.counsel_expert": {
     group: "Counselling: why an expert counsellor (/counselling, and the state counselling pages)",
     fields: {
