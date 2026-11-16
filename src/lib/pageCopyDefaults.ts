@@ -1614,6 +1614,8 @@ export const PAGE_COPY = {
         was: ["Every MD/MS college in {state} — fees by quota, stipend and bond — in one file to keep and share. Free, on WhatsApp in a minute."],
       },
       button: { label: "Button — {state}", value: "Send me the PDF on WhatsApp" },
+      // The PDFs' own page was linked from nowhere (2026-11-16 crawl); blank hides the link.
+      all_states: { label: "Link to every state's PDF (blank hides it)", value: "Other states' PDFs" },
       prefill: { label: "The message the button types — {state}, {ref}", value: "Send me the {state} fee & stipend PDF (ref {ref}-PDF)", was: ["Send me the {state} PG fee & stipend PDF (ref {ref}-PDF)"] },
       caption: {
         label: "Caption on the PDF — {state}, {date}",

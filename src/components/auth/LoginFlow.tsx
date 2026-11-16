@@ -38,7 +38,7 @@ export default function LoginFlow({
       role="tab"
       aria-selected={mode === m}
       onClick={() => setMode(m)}
-      className={`flex-1 whitespace-nowrap rounded-xl px-3 py-2.5 text-sm font-bold transition-colors ${
+      className={`min-h-11 flex-1 whitespace-nowrap rounded-xl px-3 py-2.5 text-sm font-bold transition-colors ${
         mode === m ? "bg-card text-foreground shadow-sm ring-1 ring-border" : "text-muted-foreground hover:text-foreground"
       }`}
     >

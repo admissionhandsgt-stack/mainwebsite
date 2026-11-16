@@ -358,7 +358,7 @@ export default async function NeetPgCutoffPage(props: Props) {
                   aria-current={c === category ? "page" : undefined}
                   className={`inline-flex min-h-10 items-center rounded-full border px-4 text-sm transition-colors ${
                     c === category
-                      ? "border-primary bg-primary text-primary-foreground"
+                      ? "border-primary-strong bg-primary-strong text-primary-foreground"
                       : "border-border text-foreground hover:border-primary hover:text-primary"
                   }`}
                 >
@@ -443,7 +443,7 @@ export default async function NeetPgCutoffPage(props: Props) {
       {/* Every category in one table ("neet pg cut off rank branch wise", 657 impressions a month — the leading pages
           print all five categories side by side). AIQ, the last rank admitted, each cell over 3+ colleges. */}
       {year && allCats.length > 0 && (
-        <section className="container-custom pt-10 md:pt-14" id="all-categories">
+        <section className="cv-auto container-custom pt-10 md:pt-14" id="all-categories">
           <SectionHead
             icon="list"
             eyebrow="All categories"
@@ -503,7 +503,7 @@ export default async function NeetPgCutoffPage(props: Props) {
       )}
 
       {statesWithMdms.length > 0 && (
-        <section className="container-custom pt-10 md:pt-14">
+        <section className="cv-auto container-custom pt-10 md:pt-14">
           <SectionHead icon="map" eyebrow="By state" title="NEET PG cutoff branch wise, state by state" intro="Each state's own counselling: closing ranks by branch and quota, seats, fees and stipend." />
           <ul className="mt-6 flex flex-wrap gap-2">
             {statesWithMdms.map((s) => (
@@ -520,7 +520,7 @@ export default async function NeetPgCutoffPage(props: Props) {
         </section>
       )}
 
-      <BranchStateIndex className="pt-10 md:pt-14" />
+      <BranchStateIndex className="cv-auto pt-10 md:pt-14" />
 
 
       <DataPageEnd
@@ -530,7 +530,7 @@ export default async function NeetPgCutoffPage(props: Props) {
         counsel={{ kind: "cutoff", placement: "counsel_neet_pg_cutoff" }}
       />
 
-      <section className="container-custom py-10 md:py-14">
+      <section className="cv-auto container-custom py-10 md:py-14">
         <SectionHead icon="help" eyebrow="FAQ" title="NEET PG cutoff: common questions" />
         <div className="mt-6 space-y-3">
           {faqs.map((f) => (

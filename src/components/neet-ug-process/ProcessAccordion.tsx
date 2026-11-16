@@ -31,7 +31,7 @@ const ProcessAccordion = ({ phases = UG_PHASES }: { phases?: UgPhase[] }) => {
                   setActivePhaseIndex(idx);
                   setOpenStepId(phases[idx].steps[0].id);
                 }}
-                className={`flex items-center justify-between text-left px-2.5 py-1.5 md:px-4 md:py-3.5 rounded-lg md:rounded-xl font-black text-xs md:text-sm transition-all whitespace-nowrap md:whitespace-normal shrink-0 ${
+                className={`flex min-h-11 md:min-h-0 items-center justify-between text-left px-2.5 py-1.5 md:px-4 md:py-3.5 rounded-lg md:rounded-xl font-black text-xs md:text-sm transition-all whitespace-nowrap md:whitespace-normal shrink-0 ${
                   isActive 
                     ? 'bg-cyan-600 text-white shadow-md shadow-cyan-600/20' 
                     : 'bg-transparent text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800'
@@ -78,7 +78,7 @@ const ProcessAccordion = ({ phases = UG_PHASES }: { phases?: UgPhase[] }) => {
                 >
                   <button
                     onClick={() => setOpenStepId(isOpen ? null : step.id)}
-                    className="w-full px-2.5 py-2.5 md:px-4 md:py-3.5 flex items-center justify-between text-left group"
+                    className="w-full min-h-11 px-2.5 py-2.5 md:px-4 md:py-3.5 flex items-center justify-between text-left group"
                   >
                     <div className="flex items-center gap-2 md:gap-3">
                       <span className={`flex h-5 w-5 md:h-6 md:w-6 items-center justify-center rounded-full text-[13px] md:text-xs font-black transition-all shadow-sm ${

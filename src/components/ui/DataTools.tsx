@@ -290,7 +290,7 @@ export default function DataTools({
     [sorts, picked],
   );
   const chip = (on: boolean) =>
-    `inline-flex h-8 shrink-0 items-center rounded-full border px-3 text-[13px] font-semibold transition-colors ${
+    `inline-flex h-11 md:h-8 shrink-0 items-center rounded-full border px-3 text-[13px] font-semibold transition-colors ${
       on ? "border-primary bg-primary-strong text-primary-foreground" : "border-border bg-card text-foreground hover:border-primary/50"
     }`;
 
@@ -400,11 +400,11 @@ export default function DataTools({
             </span>
             {active && (
               <>
-                <button type="button" onClick={reset} className="inline-flex h-8 items-center gap-1 rounded-lg px-2 text-[13px] font-semibold text-primary-strong hover:bg-primary-soft dark:text-primary">
+                <button type="button" onClick={reset} className="inline-flex h-11 md:h-8 items-center gap-1 rounded-lg px-2 text-[13px] font-semibold text-primary-strong hover:bg-primary-soft dark:text-primary">
                   <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" /> {labels.reset}
                 </button>
                 {(Object.values(picked).some(Boolean) || sort || win) && (
-                  <button type="button" onClick={share} className="inline-flex h-8 items-center gap-1 rounded-lg px-2 text-[13px] font-semibold text-primary-strong hover:bg-primary-soft dark:text-primary">
+                  <button type="button" onClick={share} className="inline-flex h-11 md:h-8 items-center gap-1 rounded-lg px-2 text-[13px] font-semibold text-primary-strong hover:bg-primary-soft dark:text-primary">
                     <Link2 className="h-3.5 w-3.5" aria-hidden="true" /> {copied ? labels.copied : labels.share}
                   </button>
                 )}

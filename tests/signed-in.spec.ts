@@ -59,9 +59,11 @@ test.describe("A verified student", () => {
     }
   });
 
+  // Since the owner's 2026-10-20 rule the profile is one screen ("Three quick details" for MD/MS, "Two" for MBBS/BDS),
+  // not the old "Step 1 of 4" wizard.
   test("the chance finder opens on the questions", async ({ page }) => {
     await page.goto("/neet-college-predictor?course=pg&rank=25000&category=GEN");
-    await expect(page.getByText(/Step 1 of/)).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByRole("heading", { name: /quick details/i })).toBeVisible({ timeout: 30_000 });
   });
 });
 

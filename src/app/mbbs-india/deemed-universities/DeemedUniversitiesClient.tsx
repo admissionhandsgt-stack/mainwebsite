@@ -229,7 +229,7 @@ export default function DeemedUniversitiesClient({ heroImages, phoneNumber = "+9
                   <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
                     className="flex flex-col xs:flex-row gap-3"
                   >
-                    <a href={`tel:${phoneNumber}`} className="bg-gradient-to-br from-cyan-600 to-teal-600 text-white hover:from-cyan-700 hover:to-teal-700 font-black py-2.5 px-4 sm:py-3 sm:px-6 rounded-xl text-xs sm:text-sm transition-all shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2 active:scale-95 w-full xs:w-auto">
+                    <a href={`tel:${phoneNumber}`} className="min-h-11 bg-primary-strong text-white hover:bg-primary-strong/90 font-black py-2.5 px-4 sm:py-3 sm:px-6 rounded-xl text-xs sm:text-sm transition-all shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2 active:scale-95 w-full xs:w-auto">
                       <Phone className="w-4 h-4 shrink-0" /> Call Our Experts
                     </a>
                     <button onClick={() => CTA.whatsapp("Hi, I need guidance for deemed university admission")}

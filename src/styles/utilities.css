@@ -203,3 +203,12 @@
    by colour alone (WCAG 1.4.1, axe link-in-text-block). */
 a.text-primary { color: hsl(var(--primary-strong)); }
 p a.text-primary { text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+
+/* Below-the-fold blocks of very long pages skip rendering until they near the viewport (2026-11-16 deep test:
+   /neet-pg-cutoff spent ~2.1 s of desktop main thread in rendering + layout for its tables). Content stays in the DOM,
+   so find-in-page, anchors, DataTools and search engines see it all; `auto` remembers each block's real height once
+   rendered. Never on a block holding a sticky element (containment clips it to the block). */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1000px;
+}

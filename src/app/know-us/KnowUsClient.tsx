@@ -441,12 +441,12 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
           </p>
           <div className="flex flex-col xs:flex-row gap-3 justify-center">
             <button onClick={() => CTA.call()}
-              className="inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl font-black text-xs sm:text-sm hover:bg-cyan-50 transition-all shadow-lg active:scale-95 cursor-pointer w-full xs:w-auto"
+              className="inline-flex min-h-11 items-center justify-center gap-2 bg-white text-slate-900 px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl font-black text-xs sm:text-sm hover:bg-cyan-50 transition-all shadow-lg active:scale-95 cursor-pointer w-full xs:w-auto"
             >
               <Phone className="w-4 h-4 shrink-0" /> Book Free Consultation
             </button>
             <button onClick={() => CTA.whatsapp("Hi, I'd like a free consultation about NEET counselling")}
-              className="inline-flex items-center justify-center gap-2 border-2 border-white/60 text-white px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl font-black text-xs sm:text-sm hover:bg-white/10 transition-all active:scale-95 cursor-pointer w-full xs:w-auto"
+              className="inline-flex min-h-11 items-center justify-center gap-2 border-2 border-white/60 text-white px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl font-black text-xs sm:text-sm hover:bg-white/10 transition-all active:scale-95 cursor-pointer w-full xs:w-auto"
             >
               <WhatsAppIcon size={16} /> Message on WhatsApp
             </button>
@@ -476,7 +476,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
                   </div>
                   <div>
                     <h4 className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Phone</h4>
-                    <a href={`tel:${CONTACT_INFO.phone}`} className="text-xs md:text-sm font-black text-slate-800 dark:text-slate-200 hover:text-primary-strong dark:hover:text-cyan-400 transition-colors">
+                    <a href={`tel:${CONTACT_INFO.phone}`} className="inline-flex min-h-11 items-center text-xs md:text-sm font-black text-slate-800 dark:text-slate-200 hover:text-primary-strong dark:hover:text-cyan-400 transition-colors">
                       {CONTACT_INFO.phone}
                     </a>
                   </div>
@@ -488,7 +488,7 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
                   </div>
                   <div>
                     <h4 className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Email</h4>
-                    <a href={`mailto:${CONTACT_INFO.email}`} className="text-xs md:text-sm font-black text-slate-800 dark:text-slate-200 hover:text-primary-strong dark:hover:text-cyan-400 transition-colors">
+                    <a href={`mailto:${CONTACT_INFO.email}`} className="inline-flex min-h-11 items-center text-xs md:text-sm font-black text-slate-800 dark:text-slate-200 hover:text-primary-strong dark:hover:text-cyan-400 transition-colors">
                       {CONTACT_INFO.email}
                     </a>
                   </div>
@@ -515,13 +515,13 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
                 <div className="flex items-end gap-2 mt-2 sm:mt-0">
                   <button 
                     onClick={() => CTA.call()}
-                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1 bg-slate-900 dark:bg-slate-800 text-white px-3.5 py-2 rounded-lg font-black text-[11.5px] hover:bg-slate-800 dark:hover:bg-slate-700 transition-all cursor-pointer"
+                    className="flex-1 sm:flex-initial inline-flex min-h-11 items-center justify-center gap-1 bg-slate-900 dark:bg-slate-800 text-white px-3.5 py-2 rounded-lg font-black text-[11.5px] hover:bg-slate-800 dark:hover:bg-slate-700 transition-all cursor-pointer"
                   >
                     Call Now
                   </button>
                   <button 
                     onClick={() => CTA.whatsapp("Hi, I want to ask about medical admissions")}
-                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1 bg-emerald-600 text-white px-3.5 py-2 rounded-lg font-black text-[11.5px] hover:bg-emerald-700 transition-all cursor-pointer"
+                    className="flex-1 sm:flex-initial inline-flex min-h-11 items-center justify-center gap-1 bg-accent text-white px-3.5 py-2 rounded-lg font-black text-[11.5px] hover:bg-accent/90 transition-all cursor-pointer"
                   >
                     <WhatsAppIcon size={12} /> WhatsApp
                   </button>

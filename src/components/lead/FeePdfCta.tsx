@@ -1,4 +1,5 @@
 import { FileDown } from "lucide-react";
+import Link from "@/components/ui/Link";
 import { pageCopy } from "@/lib/pageCopy";
 import { refFor } from "@/lib/feePdfRefs";
 import { hasFeePdf } from "@/lib/feePdfs";
@@ -26,7 +27,17 @@ export default async function FeePdfCta({ state, placement, className = "" }: { 
           </span>
           <div>
             <p className="font-heading text-[16px] font-bold text-foreground">{c.title}</p>
-            <p className="mt-0.5 text-[14px] leading-relaxed text-muted-foreground">{c.body}</p>
+            <p className="mt-0.5 text-[14px] leading-relaxed text-muted-foreground">
+              {c.body}
+              {c.all_states ? (
+                <>
+                  {" "}
+                  <Link href="/neet-pg-fees-pdf" className="font-semibold text-primary-strong underline-offset-2 hover:underline">
+                    {c.all_states}
+                  </Link>
+                </>
+              ) : null}
+            </p>
           </div>
         </div>
         <a

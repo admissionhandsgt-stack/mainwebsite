@@ -110,6 +110,7 @@ export default function LegalLayout({ sections }: LegalLayoutProps) {
                     day: 'numeric',
                     month: 'long',
                     year: 'numeric',
+                    timeZone: 'Asia/Kolkata',
                   })}
                 </time>
               </div>

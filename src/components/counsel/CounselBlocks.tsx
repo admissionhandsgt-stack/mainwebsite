@@ -129,7 +129,7 @@ export function StateChips({ title, items }: { title: string; items: { name: str
           <li key={s.href}>
             <Link
               href={s.href}
-              className="inline-flex min-h-10 items-center rounded-full border border-border px-4 text-sm text-foreground transition-colors hover:border-primary hover:text-primary"
+              className="inline-flex min-h-11 items-center rounded-full border border-border px-4 text-sm text-foreground transition-colors hover:border-primary hover:text-primary"
             >
               {s.name}
             </Link>

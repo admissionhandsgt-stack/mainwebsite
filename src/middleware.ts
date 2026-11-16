@@ -57,10 +57,17 @@ function requireSessionCookie(
 
 export function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
-  const hostname =
+  const forwarded =
     req.headers.get("x-forwarded-host") ||
     req.headers.get("host") ||
     url.hostname;
+  /**
+   * The in-country edge reaches the app through origin.admissionhands.com; Caddy tells the app Host www but passes
+   * X-Forwarded-Host origin.*. Read as itself, that host was neither the site nor the admin, so www/admin showed the
+   * admin login inline instead of moving to the admin host, and a signed-out admin page bounced to the origin host's
+   * /admin — the origin's name in a visitor's address bar (2026-11-16 deep test). The origin host is www.
+   */
+  const hostname = /^origin\.admissionhands\.com(:\d+)?$/i.test(forwarded) ? "www.admissionhands.com" : forwarded;
 
 
   // 1. Handle admin subdomain requests (e.g., admin.admissionhands.com, admin-uat.admissionhands.com)

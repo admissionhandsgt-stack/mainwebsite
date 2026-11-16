@@ -71,7 +71,9 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   const description = collegeDescription(data.summary);
   // Nothing on the page beyond the name — no published round, no published fee, no NMC record: not indexed, and
   // left out of the sitemap by the same test (lib/sitemapData.ts), so the two never disagree.
-  const thin = data.cutoffs.length === 0 && !data.fees.some((f) => (f.feeInr ?? 0) > 0) && !data.nmc;
+  // A fee alone is not enough (2026-11-16): the 134 fee-only UG pages were AYUSH and veterinary colleges whose scraped
+  // fee is filed under "MBBS" — a page with nothing a family can use. Rounds or NMC's record, as the sitemap requires.
+  const thin = data.cutoffs.length === 0 && !data.nmc;
   return {
     title,
     description,

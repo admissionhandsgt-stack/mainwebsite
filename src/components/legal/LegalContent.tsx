@@ -111,10 +111,13 @@ function isShortList(children: ReactNode): boolean {
 
 function formatDate(dateString: string): string {
   try {
+    // One time zone on the server and in the browser, or a date near midnight renders as two different days and React
+    // throws a hydration error (#418, found on /terms in the 2026-11-16 deep test).
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
+      timeZone: "Asia/Kolkata",
     });
   } catch {
     return dateString;

@@ -123,7 +123,7 @@ export const PGSpecializations = () => {
             <button
               key={key}
               onClick={() => setActiveCategory(key)}
-              className={`px-4 py-2 rounded-full text-xs font-black uppercase tracking-wider cursor-pointer transition-all ${
+              className={`min-h-11 md:min-h-0 px-4 py-2 rounded-full text-xs font-black uppercase tracking-wider cursor-pointer transition-all ${
                 activeCategory === key
                   ? `bg-gradient-to-r ${tabStyles[key].active} text-white shadow-lg`
                   : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-900 dark:text-slate-400 dark:hover:bg-slate-800"

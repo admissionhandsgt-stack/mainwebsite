@@ -78,12 +78,12 @@ export const MBBSHero = ({ backgroundImageUrl, credit, data = mbbsData }: MBBSHe
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 pt-3 md:pt-4 justify-center md:justify-start">
-              <CTAButton action="counselling" className="bg-cyan-600 hover:bg-cyan-700 text-white rounded-xl md:rounded-2xl px-5 md:px-10 py-3.5 md:py-6 text-sm md:text-lg font-black shadow-lg shadow-cyan-600/20 active:scale-95 transition-all">
+              <CTAButton action="counselling" className="bg-primary-strong hover:bg-primary-strong/90 text-white min-h-11 rounded-xl md:rounded-2xl px-5 md:px-10 py-3.5 md:py-6 text-sm md:text-lg font-black shadow-lg shadow-cyan-600/20 active:scale-95 transition-all">
                 Secure Your MBBS Seat
                 <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5" />
               </CTAButton>
               
-              <CTAButton action="call" variant="ghost" className="rounded-xl md:rounded-2xl px-5 md:px-4 py-3.5 md:py-3 text-sm text-primary-strong dark:text-cyan-400 hover:bg-cyan-50 dark:hover:bg-cyan-950/45 font-black border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+              <CTAButton action="call" variant="ghost" className="min-h-11 rounded-xl md:rounded-2xl px-5 md:px-4 py-3.5 md:py-3 text-sm text-primary-strong dark:text-cyan-400 hover:bg-cyan-50 dark:hover:bg-cyan-950/45 font-black border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
                 <Phone className="w-4 h-4 mr-2" />
                 Call Expert
               </CTAButton>

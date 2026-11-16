@@ -199,7 +199,13 @@ function summarise(
     slug: college.slug,
     nirfRank: getNirf(college.slug, level)?.rank ?? null,
     stipendVaries: stipends.size > 1,
-    short: n.short,
+    // Two colleges of one short name and place with no locality to tell them apart ("Pacific Dental College, Udaipur"
+    // was both Pacific Dental College and Pacific Dental College & Research Centre — one title on two pages, 2026-11-16
+    // crawl): keep the official name's first part, which carries what the short name dropped.
+    short:
+      (index[`${n.short}|${n.place ?? ""}`.toLowerCase()] ?? 0) > 1 && n.places.length <= 1
+        ? (n.official.split(",")[0] ?? n.short).trim() || n.short
+        : n.short,
     place,
     official: n.official,
     course,
@@ -373,6 +379,10 @@ function figureTails(s: CollegeSummary, y: string): string[] {
 /** The meta description: the summary box in a sentence or two. */
 export function collegeDescription(s: CollegeSummary): string {
   const where = s.place ? `${s.short}, ${s.place}` : s.short;
+  // A name made only of generic words ("Government Medical College") is every such college's without its place: the
+  // shorter fallbacks keep the place for it (2026-11-16 crawl: GMC Kadapa and GMC Srikakulam had one description).
+  const generic = /^(?:(?:government|govt\.?|medical|college|institute|of|sciences?|hospital|and|&|district|general|autonomous|state|research|centre|center|civil|sadar)[\s,]*)+$/i.test(s.short.trim());
+  const name = generic && s.place ? where : s.short;
   const b = s.band;
   const by = b?.year ?? s.year;
   // A 2026-27 notice's figures in lakh for the snippet ("₹1 L – ₹61.55 L"; the page itself prints them in full), called
@@ -393,8 +403,8 @@ export function collegeDescription(s: CollegeSummary): string {
         `DNB at ${where}: ${lead}. ${cut ? cut + ". " : ""}For NEET PG doctors — check your chance free.`,
         `DNB at ${where}: ${lead}. ${cut ? cut + "." : ""}`,
         `DNB at ${where}: ${lead}.`,
-        `DNB seats at ${s.short}: ${lead}.`,
-      ]) ?? `DNB seats, stipend and cutoff at ${s.short}.`
+        `DNB seats at ${name}: ${lead}.`,
+      ]) ?? `DNB seats, stipend and cutoff at ${name}.`
     );
   }
 
@@ -421,11 +431,11 @@ export function collegeDescription(s: CollegeSummary): string {
         `${where} — ${cutShort ?? "MD/MS admission"}.${facts(lcFirst(fee), stipend, seats)}`,
         `${where} — ${cutShort ?? "MD/MS admission"}.${facts(lcFirst(feeShort), stipend, seatsShort)}`,
         `${where} — ${cutShort ?? "MD/MS admission"}.${facts(lcFirst(feeShort), stipend)}`,
-        `${s.short} — ${cutShort ?? "MD/MS admission"}.${facts(lcFirst(feeShort), stipend)}`,
+        `${name} — ${cutShort ?? "MD/MS admission"}.${facts(lcFirst(feeShort), stipend)}`,
         `${where} — ${cutShort ?? "MD/MS admission"}.${facts(stipend, seats)}`,
-        `${s.short} — ${cutShort ?? "MD/MS admission"}.${facts(stipend ?? seats)}`,
-        `${s.short}: MD/MS seats, fees and stipend.`,
-      ]) ?? `MD/MS seats, fees and stipend at ${s.short}.`
+        `${name} — ${cutShort ?? "MD/MS admission"}.${facts(stipend ?? seats)}`,
+        `${name}: MD/MS seats, fees and stipend.`,
+      ]) ?? `MD/MS seats, fees and stipend at ${name}.`
     );
   }
 
@@ -440,7 +450,7 @@ export function collegeDescription(s: CollegeSummary): string {
       .filter(Boolean)
       .join(" ");
   return (
-    fit(DESCRIPTION, [parts(cut), parts(cut, true, false), parts(cutShort, true, false), parts(cutShort, false, false), `${s.short} — ${cutShort ?? `${s.course} admission`}.`]) ??
-    `${s.course} cutoff, fees and seats at ${s.short}.`
+    fit(DESCRIPTION, [parts(cut), parts(cut, true, false), parts(cutShort, true, false), parts(cutShort, false, false), `${name} — ${cutShort ?? `${s.course} admission`}.`]) ??
+    `${s.course} cutoff, fees and seats at ${name}.`
   );
 }

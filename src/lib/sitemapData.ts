@@ -137,8 +137,11 @@ const loadSitemapData = unstable_cache(
           -- A page with something on it beyond the name: published rounds, a published fee, or the NMC's record.
           -- The same test sends the rest noindex (the college pages' generateMetadata, 2026-11-04) — before, 418
           -- such UG pages were indexable, linked from state pages, and left out of here: two signals at once.
+          -- A UG page needs rounds or NMC's record (2026-11-16 deep test): 134 UG pages had only a scraped fee row —
+          -- AYUSH and veterinary colleges whose fee is filed under "MBBS" — were listed here, linked from no page, and
+          -- one (Nagpur Veterinary) was even noindex, because the page drops fees under ₹1,000 and this test did not.
           AND (EXISTS (SELECT 1 FROM seat_options so WHERE so.institute_id = i.id)
-               OR EXISTS (SELECT 1 FROM fees f WHERE f.institute_id = i.id AND f.fee_inr > 0)
+               OR (i.level = 'pg' AND EXISTS (SELECT 1 FROM fees f WHERE f.institute_id = i.id AND f.fee_inr > 0))
                OR EXISTS (SELECT 1 FROM nmc_institutes n WHERE n.institute_id = i.id))
         ORDER BY i.level, i.slug
       `),

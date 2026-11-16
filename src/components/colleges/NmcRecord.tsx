@@ -53,7 +53,7 @@ export default function NmcRecord({ nmc, level }: { nmc: NmcFacts | null; level:
           href={NMC_SEARCH}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex min-h-[40px] items-center gap-1.5 rounded-full border border-border bg-card px-4 text-[13px] font-semibold text-primary-strong transition-colors hover:border-primary/50"
+          className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-border bg-card px-4 text-[13px] font-semibold text-primary-strong transition-colors hover:border-primary/50"
         >
           Check on NMC <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
         </a>

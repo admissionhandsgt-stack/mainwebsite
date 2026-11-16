@@ -97,7 +97,7 @@ export const PGFAQ = ({ items: fromCms, copy }: { items?: FaqItem[]; copy?: FaqC
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-3 py-1.5 rounded-lg text-[11.5px] font-black uppercase tracking-wider transition-all cursor-pointer ${
+                className={`min-h-11 md:min-h-0 px-3 py-1.5 rounded-lg text-[11.5px] font-black uppercase tracking-wider transition-all cursor-pointer ${
                   activeCategory === cat
                     ? "bg-cyan-600 text-white shadow-sm"
                     : "bg-slate-50 text-slate-500 hover:bg-slate-100 dark:bg-slate-950 dark:text-slate-400 dark:hover:bg-slate-800"

@@ -183,7 +183,7 @@ export default function BranchPicker({
                           >
                             <span
                               className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border ${
-                                on ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background"
+                                on ? "border-primary-strong bg-primary-strong text-primary-foreground" : "border-border bg-background"
                               }`}
                             >
                               {on && <Check className="h-3.5 w-3.5" />}

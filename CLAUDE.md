@@ -3042,6 +3042,34 @@ audit.
 A number a tool produces is worth nothing until you have checked the tool is measuring the thing you
 think it is.
 
+### The deep test of 2026-11-16 (owner: "in depth testing… hidden chije bhi… deep root") — what it fixed
+
+Ran: smoke 72/72, verify_gate 33/33, Playwright gate + width, a crawl of all 3,666 sitemap pages (0 broken links),
+SEO drift on 12 templates, the rank-leak check (48 analytics requests, no exact rank), PSI on 9 templates, and
+`scripts/tmp/hidden_probe.mjs` (secret files, source maps, admin/cron/API doors, the content API's allow-list, CORS,
+open redirects, hosts, TLS expiry, SPF/DMARC, TTFB). Hydration sweep: `scripts/tmp/hydration_sweep.mjs` (38 templates,
+IST and UTC browsers). Fixed:
+- **The edge's origin host read as its own site** (`middleware.ts`): Caddy passes X-Forwarded-Host origin.admissionhands.com,
+  so www/admin showed the admin login inline and a signed-out admin page bounced to origin.*/admin. origin.* is now www.
+- **/terms threw React #418 for every visitor in India**: client components formatted dates in the browser's zone while
+  the server rendered UTC. Any date a client component formats at render takes `timeZone: "Asia/Kolkata"`.
+- **Contrast**: the seat-offer WhatsApp button (`TrustShield`), the selected category pill on /neet-pg-cutoff and the
+  predictor's branch chips use `primary-strong`/`accent-soft`, never white on `bg-primary` or `cyan-600`/`emerald-600`.
+- **Generic college names keep their place in the description** ("Government Medical College — …" was one description
+  on two pages); and two colleges of one short name + place keep the official name's first part in the title (Pacific Dental).
+- **A UG college page needs rounds or NMC's record** (page `thin` and the sitemap agree): 134 fee-only pages — AYUSH and
+  veterinary colleges whose scraped fee is filed under "MBBS" — are noindex and out of the sitemap.
+- `/neet-pg-fees-pdf` is linked from every fee-PDF button ("Other states' PDFs", `site.fee_pdf.all_states`).
+- `.cv-auto` (utilities.css: `content-visibility: auto`) on the below-the-fold sections of /neet-pg-cutoff and
+  /md-ms-india/stipend — rendering + layout of their tables was ~2.1 s of desktop main thread. Never on a block with a sticky child.
+- Tap targets to 44px on phones (desktop unchanged) on the older pages: know-us, MBBS hero, deemed list, MD/MS FAQ and
+  specialisation tabs, NEET UG process, DataTools chips, college filter chips, rank lens, login tabs, NMC button.
+- `public/.well-known/security.txt` (expires 2027-11-16 — renew it).
+- tests/signed-in.spec.ts expects the one-screen profile ("… quick details"), not the old "Step 1 of".
+Left on purpose: c.bing.com errors (Clarity's pixel, blocked by local DNS), DMARC p=none (tightening needs a report
+mailbox first — the owner's call), the NE Institute of Ayurveda twin (its two entries hold conflicting BAMS ranks), and
+"Secure your seat" wording in ~10 places (owner's call; the rule bans "Seat Secured" and seat promises).
+
 ## AutoLoom Analytics, beside GA4 (2026-10-17)
 
 The SDK tag is in the root layout `<head>` on the public site only (not the admin host), with the public

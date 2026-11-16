@@ -162,7 +162,7 @@ export default function TrustShield({ compact = false }: { compact?: boolean }) 
                 href={offerHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-[#25D366]/40 bg-[#25D366]/10 px-5 text-[15px] font-bold text-accent hover:bg-[#25D366]/15 dark:text-[#25D366]"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-accent/30 bg-accent-soft px-5 text-[15px] font-bold text-accent hover:bg-accent-soft/70 dark:text-[#25D366]"
               >
                 <WhatsAppIcon className="h-5 w-5" /> Ask a counsellor to check an offer
               </a>
