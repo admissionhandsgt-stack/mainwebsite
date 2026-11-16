@@ -169,12 +169,16 @@ export async function llmsText(full: boolean): Promise<string> {
     link("NEET PG cutoff, branch wise by category", "/neet-pg-cutoff", "All India Quota, from MCC's published round results"),
     link("MD/MS branches", "/md-ms-india/branches", `${n(stats.pgBranches)} PG courses, each with its colleges, seat options and cutoff band`),
     link("PG by state", "/md-ms-india/states", "every state's MD/MS colleges and DNB hospitals, its counselling and its cutoff by quota"),
-    link("PG stipend, state wise", "/md-ms-india/stipend", stipends.colleges ? `first-year stipends published by ${n(stipends.colleges)} colleges and DNB hospitals, with a page per state` : undefined),
+    link(
+      "PG stipend, state wise",
+      "/md-ms-india/stipend",
+      "each state's own 2026-27 government-college MD/MS stipend order (year 1 to 3; basic pay where the order gives only that), NMC's at-par rule, and each private or deemed college's own published figure, from official documents; the listing's medians beside them are marked as not official. A page per state",
+    ),
     link(
       "PG service bond by state",
       "/md-ms-india/bond",
       bond
-        ? `each state's own 2026-27 rules for ${bond.states.length} states and MCC: government bond years and amount if not served, which states bind All India Quota seats, seat-leaving terms round by round, security deposits, and ${bond.colleges.length} private and deemed colleges' own bonds; every figure linked to its official notice, with a page per state`
+        ? `each state's own 2026-27 rules for ${bond.states.length} states and MCC: government bond years and amount if not served, which states bind All India Quota seats, seat-leaving terms round by round, security deposits, and ${bond.colleges.length} private and deemed colleges' own bonds; from official notices, with a page per state`
         : "bond years and penalties on government seats, as listed for the counselling; confirm with the state's notice before signing",
     ),
     ...(bond

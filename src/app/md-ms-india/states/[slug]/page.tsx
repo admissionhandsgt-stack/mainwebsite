@@ -251,7 +251,7 @@ export default async function PgStatePage(props: Props) {
       ? [
           {
             question: `What is the PG stipend in ${p.name}?`,
-            answer: `The median first-year stipend among ${p.name}'s PG colleges that publish one is ₹${stipend.median.toLocaleString("en-IN")} a month${stipend.govtMedian ? ` (government ₹${stipend.govtMedian.toLocaleString("en-IN")})` : ""}${stipend.privateMedian ? `, private ₹${stipend.privateMedian.toLocaleString("en-IN")}` : ""}.`,
+            answer: `As listed for the counselling, the median first-year stipend among ${p.name}'s MD/MS colleges is ₹${stipend.median.toLocaleString("en-IN")} a month${stipend.govtMedian ? ` (government ₹${stipend.govtMedian.toLocaleString("en-IN")})` : ""}${stipend.privateMedian ? `, private ₹${stipend.privateMedian.toLocaleString("en-IN")}` : ""}.`,
           },
         ]
       : []),
@@ -321,7 +321,7 @@ export default async function PgStatePage(props: Props) {
                 wide: true,
               },
             ]}
-            footnote={`From ${p.year ?? "the latest"} published counselling results and each college's published stipend.`}
+            footnote={`From ${p.year ?? "the latest"} published counselling results; stipend as listed for the counselling, not an official notice.`}
           />
         }
         // The state's counselling authority sits under the words, in the space the taller column left.

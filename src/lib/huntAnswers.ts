@@ -420,7 +420,7 @@ async function stateStipend(st: PgState): Promise<Draft | null> {
   return {
     page: `/md-ms-india/stipend/${st.slug}`,
     kind: "state-stipend",
-    lead: `In ${st.name}, the median first-year PG stipend is ${inr(s.median)} a month across ${s.colleges} colleges that publish one${s.govtMedian ? `; government colleges pay a median of ${inr(s.govtMedian)}` : ""}${s.privateMedian ? ` and private/deemed colleges ${inr(s.privateMedian)}` : ""}.`,
+    lead: `In ${st.name}, the median first-year PG stipend is ${inr(s.median)} a month across ${s.colleges} colleges as listed for the counselling${s.govtMedian ? `; government colleges pay a median of ${inr(s.govtMedian)}` : ""}${s.privateMedian ? ` and private/deemed colleges ${inr(s.privateMedian)}` : ""}.`,
     pointsTitle: "How it runs:",
     points: [
       ...(s.y2Median ? [`Year 2: median ${inr(s.y2Median)} a month${s.y3Median ? `; year 3: ${inr(s.y3Median)}` : ""}.`] : []),
@@ -434,7 +434,7 @@ async function stateStipend(st: PgState): Promise<Draft | null> {
       ...(b?.govt.exitMedian ? [`Leaving a government seat after joining: ${inr(b.govt.exitMedian)} in the middle${b.govt.debarYears ? `, with a ${b.govt.debarYears}-year bar` : ""}.`] : []),
       "Income tax is deducted at source on the stipend, so the amount credited is lower.",
     ],
-    source: `each college's own published stipend, its latest year${b && b.govt.withBond ? `; ${CAVEAT}` : ""}.`,
+    source: `the stipend as listed for the counselling (not an official notice), its latest year${b && b.govt.withBond ? `; ${CAVEAT}` : ""}.`,
     compare:
       all && pos >= 0
         ? `For comparison, the national median is ${inr(all.median)} a month; ${st.name} is ${pos === 0 ? "the highest" : `number ${pos + 1}`} of ${ranked.length} states by its government colleges' median.`
@@ -450,11 +450,11 @@ async function nationalStipend(): Promise<Draft | null> {
   return {
     page: "/md-ms-india/stipend",
     kind: "stipend",
-    lead: `The median first-year MD/MS stipend in India is ${inr(all.median)} a month across ${n(all.colleges)} colleges that publish one${all.govtMedian ? ` — government colleges ${inr(all.govtMedian)}` : ""}${all.privateMedian ? `, private and deemed ${inr(all.privateMedian)}` : ""}.`,
+    lead: `The median first-year MD/MS stipend in India is ${inr(all.median)} a month across ${n(all.colleges)} MD/MS colleges as listed for the counselling${all.govtMedian ? ` — government colleges ${inr(all.govtMedian)}` : ""}${all.privateMedian ? `, private and deemed ${inr(all.privateMedian)}` : ""}.`,
     pointsTitle: "Where it is highest (government colleges' median):",
     points: states.map((s) => `${s.state}: ${inr(s.govtMedian ?? s.median)} a month (${s.colleges} colleges)`),
     checks: ["Whether the state binds you to a service bond after the course, and what breaking it costs.", "Whether the stipend rises in years 2 and 3, and whether it is paid from month one.", "Income tax is deducted at source, so the credited amount is lower."],
-    source: "each college's own published monthly stipend, its latest year.",
+    source: "the monthly stipend as listed for the counselling (not an official notice), its latest year; each state's official rate is on its stipend page.",
     compare: "AIIMS, JIPMER and PGIMER admit through INI-CET and pay residents a salary on the central pay matrix, so they are not in NEET PG stipend lists.",
     what: "state-wise and college-wise stipend table",
   };

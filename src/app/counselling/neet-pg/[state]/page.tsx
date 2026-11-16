@@ -120,7 +120,7 @@ async function load(slug: string) {
     fee_list: feeParts.join(", "),
     bond_line: bondLine ?? "",
     bond_caveat: official
-      ? `Bond terms are from ${p.name}'s own 2026-27 rules; its PG bond page links each notice.`
+      ? `Bond terms are from ${p.name}'s own 2026-27 rules; its PG bond page has every rule.`
       : `Bond terms are as listed for the counselling, not an official notice — confirm with ${p.name}'s notice or the college before you pay a fee or sign a bond.`,
   };
   const c = await pageCopy("page.counsel_pg", tokens);

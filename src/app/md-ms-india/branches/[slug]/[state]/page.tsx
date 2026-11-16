@@ -233,7 +233,7 @@ export default async function BranchStatePage(props: Props) {
               ...(seats?.deemed ? [{ label: `Deemed seats, ${mcc!.year}`, value: n(seats.deemed), sub: "MCC's seat matrix" }] : []),
               ...(stipend?.govtMedian ? [{ label: "Govt stipend", value: `₹${stipend.govtMedian.toLocaleString("en-IN")}`, sub: "median a month, year 1" }] : []),
             ]}
-            footnote={`From ${p.year ?? "the latest"} published counselling results, MCC's seat matrix and each college's published stipend.`}
+            footnote={`From ${p.year ?? "the latest"} published counselling results, MCC's seat matrix; stipend as listed for the counselling, not an official notice.`}
           />
         }
       />

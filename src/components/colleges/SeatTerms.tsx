@@ -102,7 +102,7 @@ function Row({ icon: Icon, label, value, sub }: { icon: typeof Wallet; label: st
   );
 }
 
-function Card({ t, copy, hideBond }: { t: Terms; copy: SeatTermsCopy; hideBond?: boolean }) {
+function Card({ t, copy, hideBond, hideStipend }: { t: Terms; copy: SeatTermsCopy; hideBond?: boolean; hideStipend?: boolean }) {
   const counselling = t.counselling && /^AIQ - MCC/i.test(t.counselling) ? "MCC" : t.counselling;
   const stipend = stipendText(t.stipend);
   const bond = bondText(t);
@@ -117,7 +117,7 @@ function Card({ t, copy, hideBond }: { t: Terms; copy: SeatTermsCopy; hideBond?:
       <h3 className="font-heading mt-1 text-[16px] font-bold leading-snug text-foreground">{name}</h3>
       {counselling && <p className="mt-0.5 text-[12.5px] text-muted-foreground">Counselling: {counselling}</p>}
       <dl className="mt-4 space-y-3.5">
-        {stipend && <Row icon={Wallet} label={copy.stipend} value={stipend} />}
+        {stipend && !hideStipend && <Row icon={Wallet} label={copy.stipend} value={stipend} />}
         {!hideBond && <Row icon={ScrollText} label={copy.bond} value={bond.value} sub={bond.sub} />}
         {!hideBond && <Row icon={DoorOpen} label={copy.exit} value={exit.value} sub={exit.sub} />}
         {hostel && <Row icon={BedDouble} label={copy.hostel} value={hostel} />}
@@ -132,9 +132,9 @@ const SHOWN = 6;
  * `hideBond` (2026-11-16): the college's bond and seat-leaving terms come from an official document instead (the box
  * above, components/bond/CollegeOfficialBond), so the listing's figures for them are not shown; stipend and hostel stay.
  */
-export default function SeatTerms({ terms, copy, hideBond }: { terms: Terms[]; copy: SeatTermsCopy; hideBond?: boolean }) {
+export default function SeatTerms({ terms, copy, hideBond, hideStipend }: { terms: Terms[]; copy: SeatTermsCopy; hideBond?: boolean; hideStipend?: boolean }) {
   // With the bond hidden, a card with neither stipend nor hostel would say nothing.
-  const shown = hideBond ? terms.filter((t) => stipendText(t.stipend) || hostelText(t)) : terms;
+  const shown = terms.filter((t) => (!hideBond) || (!hideStipend && stipendText(t.stipend)) || hostelText(t));
   if (!shown.length) return null;
   const first = shown.slice(0, SHOWN);
   const rest = shown.slice(SHOWN);
@@ -143,7 +143,7 @@ export default function SeatTerms({ terms, copy, hideBond }: { terms: Terms[]; c
       <SectionHead icon="document" eyebrow={copy.eyebrow} title={copy.title} intro={copy.intro} />
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
         {first.map((t) => (
-          <Card key={`${t.counselling}|${t.seatType}`} t={t} copy={copy} hideBond={hideBond} />
+          <Card key={`${t.counselling}|${t.seatType}`} t={t} copy={copy} hideBond={hideBond} hideStipend={hideStipend} />
         ))}
       </div>
       {rest.length > 0 && (
@@ -153,7 +153,7 @@ export default function SeatTerms({ terms, copy, hideBond }: { terms: Terms[]; c
           </summary>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             {rest.map((t) => (
-              <Card key={`${t.counselling}|${t.seatType}`} t={t} copy={copy} hideBond={hideBond} />
+              <Card key={`${t.counselling}|${t.seatType}`} t={t} copy={copy} hideBond={hideBond} hideStipend={hideStipend} />
             ))}
           </div>
         </details>

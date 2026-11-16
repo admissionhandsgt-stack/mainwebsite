@@ -157,7 +157,9 @@ function SourceLine({ s }: { s: Source }) {
 
 /** "Source: …" under a figure; a numbered list when there are several. */
 export function Sources({ sources, className = "" }: { sources: Source[]; className?: string }) {
-  if (!sources.length) return null;
+  // Owner, 2026-11-16: "source karke original notice die hai wo hatado last mai ek jagah likhdo sourced from official
+  // updates". The sources stay in the data (and SHOW_SOURCES brings them back); the pages end with <SourcedNote>.
+  if (!SHOW_SOURCES || !sources.length) return null;
   return (
     <div className={`text-[12.5px] leading-relaxed ${className}`}>
       <p className="flex items-center gap-1.5 font-semibold uppercase tracking-[0.08em] text-muted-foreground">
@@ -195,6 +197,20 @@ export function StatusChip({ status }: { status: BondStatus }) {
   );
 }
 
+/** Per-figure source lists are off (owner's call, 2026-11-16); flip to bring them back. */
+const SHOW_SOURCES = false;
+
+/** The one line a bond or stipend page ends with, in place of the per-figure sources. */
+export function SourcedNote({ text }: { text: string }) {
+  if (!text) return null;
+  return (
+    <p className="container-custom pb-10 pt-2 text-[12.5px] leading-relaxed text-muted-foreground">
+      <FileText className="mr-1.5 inline h-3.5 w-3.5 align-[-2px]" aria-hidden="true" />
+      {text}
+    </p>
+  );
+}
+
 /** A college's own service bond, in words: "1 year · ₹10 L if not served", or branch by branch. */
 export function collegeBondText(c: OfficialCollege): string | null {
   if (c.status === "not_verified") return null;
@@ -226,14 +242,13 @@ export function BranchAmounts({ branches }: { branches: [string, number][] }) {
 export function CollegeBondTable({ id, colleges, ask }: { id: string; colleges: OfficialCollege[]; ask: string }) {
   return (
     <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
-      <table id={id} className="dt w-full min-w-[860px] text-left text-sm">
+      <table id={id} className="dt w-full min-w-[760px] text-left text-sm">
         <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
           <tr>
             <th scope="col" className="px-4 py-3 font-semibold">College</th>
             <th scope="col" className="px-4 py-3 font-semibold">Status</th>
             <th scope="col" className="px-4 py-3 font-semibold">Its own service bond</th>
             <th scope="col" className="px-4 py-3 font-semibold">Leaving the course</th>
-            <th scope="col" className="px-4 py-3 font-semibold">Document</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-border">
@@ -278,20 +293,6 @@ export function CollegeBondTable({ id, colleges, ask }: { id: string; colleges: 
                 <td className="px-4 py-3 text-[13.5px] leading-relaxed text-foreground">
                   {c.leaving ?? <span className="text-muted-foreground">—</span>}
                   {c.deposit && <span className="mt-1 block text-[12.5px] text-muted-foreground">Deposit: {c.deposit}</span>}
-                </td>
-                <td className="px-4 py-3 text-[12.5px] leading-snug">
-                  {c.source ? (
-                    c.source.url ? (
-                      <a href={c.source.url} target="_blank" rel="noopener nofollow" className="font-semibold text-primary-strong underline-offset-2 hover:underline dark:text-primary">
-                        {pageLabel(c.source.page) ?? "Open"}
-                        <ExternalLink className="ml-1 inline h-3 w-3 align-[-1px]" aria-hidden="true" />
-                      </a>
-                    ) : (
-                      <span className="text-muted-foreground">Not linked</span>
-                    )
-                  ) : (
-                    <span className="text-muted-foreground">—</span>
-                  )}
                 </td>
               </tr>
             );

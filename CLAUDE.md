@@ -2154,9 +2154,36 @@ states + MCC, 302 colleges, every figure with its URL, page and quote. It replac
   government college) and a "Does <college> have a PG bond?" FAQ, and SeatTerms hides the listing's bond and exit
   (`hideBond`); stipend state and NEET PG counselling state pages use the official rule. In the states sitemap (dated by
   the reading), llms.txt, and the edge's DATA_PAGE.
-- **Stipend next (zyn-92, same day):** the stipend pages' "each college's own published stipend" source line is wrong —
-  `fees.stipend_y1_inr` came from the same third-party handoff. An official stipend file
-  (`official_stipend_all_states_2026-27.json`) is being researched; the owner decides the source line.
+- **No per-figure source lists (owner, same day: "source karke original notice die hai wo hatado last mai ek jagah
+  likhdo sourced from official updates").** `Sources` renders nothing (`SHOW_SOURCES = false` in
+  components/bond/OfficialBond.tsx — the data keeps every URL/page/quote) and the tables have no "Document" column; bond and
+  stipend pages end with `<SourcedNote>` ("Sourced from official updates: …", copy `sourced_note` in "Page: PG service bond
+  — official rules" and "Page: PG stipend — official figures"). Don't write "every figure links its notice" anywhere.
+
+## Official PG stipend (2026-11-16, owner chose to wait for it: "bond ki tarah pura official")
+
+`D:/Admisson Hands/pg_handoff/from_pg/official_stipend_all_states_2026-27.json` (zyn-92): 25 states' government-college
+MD/MS stipend, NMC's rules (`national`), Central Govt institutes (`central_govt`), 302 private/deemed colleges (statuses
+official_2026_27 / official_older / states_no_stipend / not_verified). MD/MS only — no DNB figure.
+- **Load:** migration 0066 (`pg_stipend_rules` incl. slugs "national"/"central", `pg_stipend_colleges`),
+  `npx tsx --env-file=.env.local scripts/import_official_stipend.ts [--apply --backup <f>]` (our_id = `institutes.source_id`).
+- **Read side:** `lib/officialStipend.ts`. A state's `govt.kind`: figures (the order's Y1–Y3), basic (UP, Haryana,
+  Rajasthan — basic pay only; always shown "basic + allowances", never as the stipend), disclosure (Maharashtra, Odisha,
+  HP, Goa, Uttarakhand, Punjab, AP, Gujarat — from an official government-college document, labelled so), formula (Odisha,
+  West Bengal, Delhi — the order's words), none (Assam, Chhattisgarh, Karnataka, Telangana, J&K, Tripura — no figure, their
+  words hold press leads). `NO_FIGURE` / `FROM_DISCLOSURE` are set by hand from zyn-92's notes: re-read on a re-import.
+  `sentences()` drops researcher remarks ("Checked:", "seen", "Lead:", "per press", "search index", "HTTP 404"…). A private
+  college is never filled from the state rate; a not_verified row shows only "ask the college".
+- **Pages:** `/md-ms-india/stipend/<state>` leads with the official section (`#official`: government card + the state's
+  private-college rule + NMC's at-par rule + each college's own figure, DataTools) and an official hero/title ("Uttar Pradesh
+  PG Stipend 2026-27: Govt ₹56,100 Basic + DA a Month"); the listing's table follows as "as listed for the counselling". The
+  hub leads with the official state table, NMC's rules and Central Govt pay. PG college pages carry `CollegeOfficialStipend`
+  (`#official-stipend`; the college's row or its state's rate on a state government college) and hide the listing's stipend
+  in FeeTable and SeatTerms (`hideStipend`).
+- **The listing's stipend was mislabelled** "each college's own published stipend" on the stipend, PG state, branch × state
+  and report pages and in the search-answer bot — all now say "as listed for the counselling, not an official notice".
+  **And it mixed DNB rates in** (₹1,30,653 topped many states): `LATEST_STIPEND` now reads MD/MS and college-diploma rows only.
+  College titles still quote the listing's stipend while the title test runs (until ~9 Dec).
 
 ## Per-state PG stipend pages (2026-10-20)
 

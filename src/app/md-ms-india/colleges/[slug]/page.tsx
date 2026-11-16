@@ -28,6 +28,8 @@ import { pageCopy } from "@/lib/pageCopy";
 import MccSeats from "@/components/colleges/MccSeats";
 import SeatTerms from "@/components/colleges/SeatTerms";
 import CollegeOfficialBond from "@/components/bond/CollegeOfficialBond";
+import { CollegeOfficialStipend } from "@/components/stipend/OfficialStipend";
+import { getOfficialCollegeStipend, getOfficialStipendState } from "@/lib/officialStipend";
 import { collegeBondText } from "@/components/bond/OfficialBond";
 import { getOfficialCollegeBond, getOfficialStateByName, govtBond, isCentralInstitution, rangeText, yearsText } from "@/lib/officialBond";
 import TelegramStrip from "@/components/engage/TelegramStrip";
@@ -103,7 +105,7 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
   if (!data) notFound();
   const { college, cutoffs, fees, nmc, live, summary: s } = data;
 
-  const [pgStates, similar, photo, matrix, terms, mbbsPage, twin, bondRow, bondState] = await Promise.all([
+  const [pgStates, similar, photo, matrix, terms, mbbsPage, twin, bondRow, bondState, stipendRow, stipendState] = await Promise.all([
     getPgStates(),
     getSimilarColleges(params.slug, "pg", 5),
     getPgCollegePhoto(params.slug),
@@ -118,11 +120,21 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
     // The official bond (2026-11-16, lib/officialBond.ts): the college's own row, or its state's government-college rule.
     getOfficialCollegeBond(college.slug),
     college.state ? getOfficialStateByName(college.state) : Promise.resolve(null),
+    // The official stipend (2026-11-16, lib/officialStipend.ts): the college's own figure, or its state's government rate.
+    getOfficialCollegeStipend(college.slug).catch(() => null),
+    college.state ? getOfficialStipendState(college.state).catch(() => null) : Promise.resolve(null),
   ]);
   // A state's government bond is shown on a state government college with no row of its own — never on a DNB-only
   // hospital (National Board seats) or a central institution (AIIMS, ESIC, …), whose terms are their own.
   const bondStateRule = !bondRow && bondState && s.kind === "pg" && s.type === "Government" && !isCentralInstitution(college.name) ? bondState : null;
   const officialBond = !!bondRow || !!bondStateRule;
+  // The same rule for the stipend: a state government college with no row of its own shows the state's rate, unless the
+  // state has no official figure; a central institution or a DNB-only hospital never takes a state's rate.
+  const stipendGovt =
+    !stipendRow && stipendState && s.kind === "pg" && s.type === "Government" && !isCentralInstitution(college.name) && stipendState.state.govt.kind !== "none"
+      ? stipendState.state.govt
+      : null;
+  const officialStipend = !!stipendRow || !!stipendGovt;
   // Words from Admin → Content ("Page: PG college pages — MCC seats, bond and stipend").
   const [seatsCopy, termsCopy] = await Promise.all([
     pageCopy("page.college_pg.mcc", { college: s.short, year: matrix?.year, total: matrix?.total.toLocaleString("en-IN") }),
@@ -404,10 +416,11 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
               <section className="mt-12">
                 <h2 className="font-heading text-xl font-bold text-foreground md:text-2xl">PG fee structure, hostel and stipend</h2>
                 <p className="mt-1.5 text-[15px] text-muted-foreground">
-                  Approximate brackets from the published fee schedule; stipend as published. Where a figure is
-                  missing the authority did not publish it.
+                  Approximate brackets from the published fee schedule
+                  {officialStipend ? "; the stipend, from its official document, is in the box below" : "; stipend as listed for the counselling, not an official notice"}.
+                  Where a figure is missing the authority did not publish it.
                 </p>
-                <FeeTable fees={fees} />
+                <FeeTable fees={fees} hideStipend={officialStipend} />
               </section>
             )}
 
@@ -417,6 +430,17 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
                 <CollegeOfficialBond name={s.place && !s.short.toLowerCase().includes(s.place.toLowerCase()) ? `${s.short}, ${s.place}` : s.short} row={bondRow} state={bondRow ? bondState : bondStateRule} />
               </div>
             )}
+            {officialStipend && (
+              <div className="mt-6">
+                <CollegeOfficialStipend
+                  name={s.place && !s.short.toLowerCase().includes(s.place.toLowerCase()) ? `${s.short}, ${s.place}` : s.short}
+                  row={stipendRow}
+                  govt={stipendGovt}
+                  state={college.state}
+                  stateSlug={stateSlug}
+                />
+              </div>
+            )}
 
             {/* -------- bond, stipend by year, seat-leaving penalty -------- */}
             {terms.length > 0 && (
@@ -424,6 +448,7 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
                 <SeatTerms
                   terms={terms}
                   hideBond={officialBond}
+                  hideStipend={officialStipend}
                   copy={{
                     eyebrow: termsCopy.terms_eyebrow,
                     title: termsCopy.terms_title,

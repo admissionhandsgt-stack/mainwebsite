@@ -89,13 +89,13 @@ export function clean(text: string): string {
     .replace(/\s*\([^()]*\b[A-Z]:[\\/][^()]*\)/g, "")
     // How a file was found is the reader's business, not the page's: "(linked as 'Information Booklet' in the site
     // menu; file id time-stamp c. 18-10-2026, no date printed)".
-    .replace(/\s*\([^()]*\b(file id|time-?stamp|site menu|linked as|posted in|folder)\b[^()]*\)/gi, "")
+    .replace(/\s*\([^()]*\b(file id|time-?stamp|site menu|linked as|linked from|posted in|folder|see (the )?(national|notes|exceptions)( section)?|per search index)\b[^()]*\)/gi, "")
     .replace(/[;,]?\s*(identical to|copy at|saved (as|at)|local copy:?)\s+[A-Z]:[\\/]\S+/gi, "")
     .replace(/\b[A-Z]:[\\/][^\s,;)]+/g, "")
     .replace(/\s{2,}/g, " ")
     .trim();
 }
-function deepClean<T>(v: T): T {
+export function deepClean<T>(v: T): T {
   if (typeof v === "string") return clean(v) as T;
   if (Array.isArray(v)) return v.map(deepClean) as T;
   if (v && typeof v === "object") return Object.fromEntries(Object.entries(v).filter(([k]) => k !== "local_copy").map(([k, x]) => [k, deepClean(x)])) as T;
@@ -243,7 +243,7 @@ async function load(): Promise<OfficialBond | null> {
   }
 }
 
-export const getOfficialBond = unstable_cache(load, ["official-bond-v3"], { revalidate: 3600, tags: ["official-bond"] });
+export const getOfficialBond = unstable_cache(load, ["official-bond-v4"], { revalidate: 3600, tags: ["official-bond"] });
 
 export async function getOfficialBondState(slug: string): Promise<{ state: OfficialState; colleges: OfficialCollege[]; all: OfficialBond } | null> {
   const all = await getOfficialBond();

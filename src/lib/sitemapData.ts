@@ -15,6 +15,7 @@ import { sql } from "drizzle-orm";
 import { getThinDnbSlugs } from "@/lib/thinPages";
 import { getCityIndex, getCityPage } from "@/lib/cityQueries";
 import { getOfficialBond } from "@/lib/officialBond";
+import { getOfficialStipend } from "@/lib/officialStipend";
 
 /**
  * The sitemap, split by page type (2026-10-17): /sitemap.xml is an index of
@@ -201,6 +202,7 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
   let colleges: { level: string; slug: string; updated: string }[] = [];
   let states: string[] = [];
   let termsDate: string | undefined;
+  let stipendDay: string | undefined;
   let mccLive: { slug: string; year: number; quota: string }[] = [];
   let ugRanksDate: string | undefined;
   try {
@@ -212,6 +214,8 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
     // The official bond rules (2026-11-16) are what the bond hub now leads with: their date moves it too.
     const bondDay = (await getOfficialBond().catch(() => null))?.asOf ?? "";
     termsDate = newest([termsDate ?? "", bondDay]) || undefined;
+    // The official stipend (2026-11-16) leads the stipend hub and state pages, which carry the bond too.
+    stipendDay = (await getOfficialStipend().catch(() => null))?.asOf ?? undefined;
     mccLive = data.mccLive;
     ugRanksDate = data.ugRanksDate ?? undefined;
   } catch (error) {
@@ -265,7 +269,7 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
   const SCHEDULE_HUBS = new Set(["/neet-pg-choice-filling", "/neet-pg-process", "/neet-pg-counselling-kaise-hoti-hai"]);
   /** The newest notice on a state's page — the page lists them, so a new one is a change to it. */
   const noticeDay = async (state: string, level: "pg" | "ug") => (await getStateNotices(state, level, 1).catch(() => []))[0]?.on?.slice(0, 10) ?? "";
-  const TERMS_HUBS = new Set(["/md-ms-india/bond"]);
+  const TERMS_HUBS = new Set(["/md-ms-india/bond", "/md-ms-india/stipend"]);
   const UG_RANK_HUBS = new Set(["/neet-ug-cutoff", "/bds-india"]);
   /** Pages built on NMC's register alone: they change when it does. */
   const NMC_HUBS = new Set(["/mbbs-india/new-medical-colleges"]);
@@ -292,7 +296,7 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
       : ROUND_HUBS.has(s.path)
       ? liveDay
       : TERMS_HUBS.has(s.path)
-        ? termsDate
+        ? newest([termsDate ?? "", s.path === "/md-ms-india/stipend" ? stipendDay ?? "" : ""]) || undefined
         : UG_RANK_HUBS.has(s.path)
           ? ugRanksDate
           : NMC_HUBS.has(s.path)
@@ -375,7 +379,7 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
     for (const s of (await getStipends()).states) {
       const slug = slugOf.get(s.state);
       // Each carries the state's bond box from pg_seat_terms.
-      if (slug) out.states.push({ url: `${BASE}/md-ms-india/stipend/${seg(slug)}`, lastModified: newest([pgDate ?? "", termsDate ?? ""]) || undefined, changeFrequency: "monthly", priority: 0.7 });
+      if (slug) out.states.push({ url: `${BASE}/md-ms-india/stipend/${seg(slug)}`, lastModified: newest([pgDate ?? "", termsDate ?? "", stipendDay ?? ""]) || undefined, changeFrequency: "monthly", priority: 0.7 });
     }
   } catch (error) {
     console.error("[sitemap] stipend states could not be listed", error);
@@ -451,6 +455,8 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
   // A PG college with a row in the official bond file shows it (components/bond/CollegeOfficialBond): dated by its reading.
   const bondOff = await getOfficialBond().catch(() => null);
   const bondSlugs = new Set((bondOff?.colleges ?? []).map((c) => c.slug).filter(Boolean) as string[]);
+  const stipendOff = await getOfficialStipend().catch(() => null);
+  const stipendSlugs = new Set((stipendOff?.colleges ?? []).map((c) => c.slug).filter(Boolean) as string[]);
   for (const c of colleges) {
     const pg = c.level === "pg";
     if (pg && thinDnb.has(c.slug)) continue;
@@ -459,7 +465,7 @@ export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry
     const shown = pg && liveColleges.has(c.slug) ? newest([liveDay ?? "", LIVE_BANDS_FROM]) : "";
     (pg ? out["pg-colleges"] : out["ug-colleges"]).push({
       url: `${BASE}${pg ? "/md-ms-india/colleges" : "/mbbs-india/colleges"}/${seg(c.slug)}`,
-      lastModified: newest([c.updated ?? "", shown, pg && bondSlugs.has(c.slug) ? bondOff?.asOf ?? "" : ""]) || undefined,
+      lastModified: newest([c.updated ?? "", shown, pg && bondSlugs.has(c.slug) ? bondOff?.asOf ?? "" : "", pg && stipendSlugs.has(c.slug) ? stipendOff?.asOf ?? "" : ""]) || undefined,
       changeFrequency: "monthly",
       priority: 0.6,
     });

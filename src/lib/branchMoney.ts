@@ -576,7 +576,7 @@ export async function cityMoneyDraft(want: "fees" | "stipend" | "bond", city: Ci
       pointsTitle: "Highest published:",
       points: [...top.map((c) => `${c.short}: ${inr(c.stipendY1)} a month.`), count],
       checks: ["Whether the state binds you to a service bond after the course.", "Income tax is deducted at source, so the amount credited is lower."],
-      source: "each college's own published monthly stipend, its latest year.",
+      source: "the monthly stipend as listed for the counselling (not an official notice), its latest year; each state's official rate is on its stipend page.",
       what: `college-by-college table for ${city.name}`,
     };
   }

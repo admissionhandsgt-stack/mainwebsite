@@ -181,15 +181,18 @@ export interface CollegeStipend {
 }
 
 /**
- * One monthly first-year stipend per PG college: the most recent year it
- * published one. Only rows recorded per month — mixing in an annual figure
- * would read as twelve times the stipend.
+ * One monthly first-year stipend per PG college: the most recent year listed. Only rows recorded per month — mixing in
+ * an annual figure would read as twelve times the stipend. MD/MS and college diplomas only (2026-11-16): DNB / NBEMS
+ * rows carry the National Board's rate (₹1,30,653 topped many states' lists), which is not an MD/MS stipend. These are
+ * the third-party listing's figures, never official; lib/officialStipend.ts holds the official ones.
  */
 const LATEST_STIPEND = sql`
   SELECT DISTINCT ON (f.institute_id)
          f.institute_id, f.stipend_y1_inr AS y1, f.stipend_y2_inr AS y2, f.stipend_y3_inr AS y3
     FROM fees f
+    JOIN courses c ON c.id = f.course_id
    WHERE f.level = 'pg' AND f.stipend_y1_inr > 0 AND f.stipend_periodicity = 'per_month'
+     AND c.name !~* '^(dnb|drnb|fnb)' AND c.name NOT ILIKE '%-NBE' AND c.name NOT ILIKE 'Diploma (NBE)%'
    ORDER BY f.institute_id, f.year DESC NULLS LAST, f.stipend_y1_inr DESC
 `;
 
@@ -265,7 +268,7 @@ export const getStipends = unstable_cache(
       throw error;
     }
   },
-  ["hub-stipend-v2"],
+  ["hub-stipend-v3"],
   { revalidate: 86400, tags: ["seat-data"] },
 );
 
@@ -333,7 +336,7 @@ export const getStateStipend = (state: string) =>
         return null;
       }
     },
-    ["state-stipend-v1", state],
+    ["state-stipend-v2", state],
     { revalidate: 86400, tags: ["seat-data"] },
   )();
 

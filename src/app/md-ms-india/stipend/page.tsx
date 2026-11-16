@@ -14,6 +14,9 @@ import DataPageEnd from "@/components/lead/DataPageEnd";
 import { hinglishFaqs } from "@/lib/hinglishFaq";
 import DataTools from "@/components/ui/DataTools";
 import { toolLabels } from "@/lib/dataToolLabels";
+import { getOfficialStipend, hasOwnStipend } from "@/lib/officialStipend";
+import { GovtStipendCard, KIND_LABEL, NationalRules } from "@/components/stipend/OfficialStipend";
+import { SourcedNote } from "@/components/bond/OfficialBond";
 
 /**
  * "NEET PG stipend state wise" — one of the most-searched PG money questions,
@@ -60,7 +63,22 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function StipendPage() {
-  const [s, pgStates, stateLabels] = await Promise.all([getStipends(), getPgStates(), toolLabels("state_search")]);
+  const [s, pgStates, stateLabels, off] = await Promise.all([getStipends(), getPgStates(), toolLabels("state_search"), getOfficialStipend().catch(() => null)]);
+  // The official rates (2026-11-16): each state's order, by year-1 government figure; basic-pay states marked.
+  const offRows = (off?.states ?? []).map((st) => ({
+    st,
+    own: off!.colleges.filter((c) => c.state === st.state && hasOwnStipend(c)).length,
+    all: off!.colleges.filter((c) => c.state === st.state).length,
+  }));
+  const offRanked = offRows.filter((r) => r.st.govt.y[0] && r.st.govt.kind !== "none").sort((a, b) => (b.st.govt.y[0] ?? 0) - (a.st.govt.y[0] ?? 0));
+  const offFull = offRanked.filter((r) => r.st.govt.kind === "figures" || r.st.govt.kind === "disclosure");
+  const offBasic = offRows.filter((r) => r.st.govt.kind === "basic").map((r) => r.st.state);
+  const offNone = offRows.filter((r) => r.st.govt.kind === "none").map((r) => r.st.state);
+  const offOwn = off ? off.colleges.filter(hasOwnStipend).length : 0;
+  const offAnswer =
+    off && offFull[0]
+      ? `Under each state's own order, ${offFull[0].st.state} pays government-college MD/MS residents the most: ${inr(offFull[0].st.govt.y[0])} a month in year 1${offFull[1] ? `, then ${offFull[1].st.state} at ${inr(offFull[1].st.govt.y[0])}` : ""}. ${offBasic.length ? `${offBasic.join(", ")} print basic pay only, with DA and allowances on top; ` : ""}${offNone.length} states publish no rupee figure. NMC requires every college, private ones included, to pay at par with the state's government colleges.`
+      : null;
   const stateSlug = new Map(pgStates.map((p) => [p.name, p.slug]));
   const top = s.states[0];
   const low = s.states[s.states.length - 1];
@@ -79,17 +97,21 @@ export default async function StipendPage() {
     }),
     pageHeroImage("page.pg_stipend.hero"),
   ]);
+  const oc = await pageCopy("page.pg_stipend_official", {
+    as_of: off?.asOf ? new Date(`${off.asOf}T00:00:00+05:30`).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Kolkata" }) : "",
+  });
 
   const faqs = [
+    ...(offAnswer ? [{ question: "Which state pays the highest PG stipend in government colleges?", answer: offAnswer }] : []),
     {
       question: "What is the NEET PG stipend in India?",
-      answer: `Across the ${s.colleges.toLocaleString("en-IN")} colleges and DNB hospitals that publish one, the median first-year stipend is ${inr(s.median)} a month. It varies widely by state and between government and private colleges — the table on this page lists each state.`,
+      answer: `Across the ${s.colleges.toLocaleString("en-IN")} MD/MS colleges listed for the counselling, the median first-year stipend is ${inr(s.median)} a month (as listed, not an official notice; each state's official rate is in the official table). It varies widely by state and between government and private colleges — the table on this page lists each state.`,
     },
     ...(top && low
       ? [
           {
             question: "Which state pays the highest PG stipend?",
-            answer: `By median first-year stipend among colleges that publish one, ${top.state} is highest at ${inr(top.median)} a month and ${low.state} lowest at ${inr(low.median)}. A state's government and private colleges often differ widely, so compare the two columns.`,
+            answer: `By median first-year stipend among MD/MS colleges as listed for the counselling, ${top.state} is highest at ${inr(top.median)} a month and ${low.state} lowest at ${inr(low.median)}. A state's government and private colleges often differ widely, so compare the two columns.`,
           },
         ]
       : []),
@@ -121,15 +143,28 @@ export default async function StipendPage() {
         eyebrow={copy.eyebrow}
         title={copy.title}
         accent={copy.accent}
-        subtitle={answerReady && copy.answer ? copy.answer : copy.subtitle}
+        subtitle={offAnswer ?? (answerReady && copy.answer ? copy.answer : copy.subtitle)}
         image={heroImage}
         topic="money"
         // One block of numbers (2026-10-21): the stat tiles repeated the highest state, so the national median
         // and its counts lead the insight cards instead.
         cta={{ label: copy.cta, href: "/neet-college-predictor?course=pg" }}
         telegram="hero_pg_stipend"
-        source={copy.source}
+        source={off ? oc.hub_source : copy.source}
         visual={
+          offRanked.length >= 5 ? (
+            <HeroBars
+              title="Government-college stipend, year 1"
+              caption="A month, from each state's own order"
+              rows={offRanked.slice(0, 7).map((r) => ({
+                label: r.st.state,
+                value: r.st.govt.y[0]!,
+                display: `${inr(r.st.govt.y[0])}${r.st.govt.kind === "basic" ? " basic" : ""}`,
+                href: stateSlug.get(r.st.state) ? `/md-ms-india/stipend/${stateSlug.get(r.st.state)}#official` : undefined,
+                note: r.st.govt.kind === "disclosure" ? "from a govt college document" : r.st.govt.kind === "basic" ? "basic pay + DA" : "state order",
+              }))}
+            />
+          ) : (
           <HeroBars
             title={copy.visual_title}
             caption="Median first-year stipend a month"
@@ -142,13 +177,19 @@ export default async function StipendPage() {
             }))}
             footnote={low ? `Lowest: ${low.state}, ${inr(low.median)} a month. Every state is in the table below.` : undefined}
           />
+          )
         }
-        insights={[
+        insights={off ? [
+          { icon: "authority" as const, label: "States with an official rate", value: `${offRanked.length} of ${offRows.length}`, note: `${offBasic.length} of them basic pay only` },
+          ...(offFull[0] ? [{ icon: "up" as const, label: "Highest govt rate, year 1", value: inr(offFull[0].st.govt.y[0]), note: offFull[0].st.state }] : []),
+          { icon: "college" as const, label: "Private colleges' own figure", value: String(offOwn), note: `of ${off.colleges.length} read from their own documents` },
+          { icon: "people" as const, label: "Median as listed", value: inr(s.median), note: `first year · ${s.colleges.toLocaleString("en-IN")} MD/MS colleges, not an official figure` },
+        ] : [
           {
             icon: "people" as const,
             label: "Median / month, all India",
             value: inr(s.median),
-            note: `first year · ${s.colleges.toLocaleString("en-IN")} colleges & hospitals that publish a stipend, in ${s.states.length} states`,
+            note: `first year · ${s.colleges.toLocaleString("en-IN")} MD/MS colleges as listed, in ${s.states.length} states`,
           },
           ...(top ? [{ icon: "up" as const, label: "Highest median", value: inr(top.median), note: `${top.state} · ${top.colleges} colleges` }] : []),
           ...(s.govtMedian && s.privateMedian
@@ -158,12 +199,58 @@ export default async function StipendPage() {
         ]}
       />
 
+      {off && (
+        <section className="container-custom py-10 md:py-14" id="official">
+          <SectionHead icon="authority" eyebrow="Official · 2026-27" title={oc.hub_title} intro={oc.hub_intro} />
+          <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
+            <table className="dt w-full min-w-[820px] text-left text-sm">
+              <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
+                <tr>
+                  <th scope="col" className="px-4 py-3 font-semibold">State</th>
+                  <th scope="col" className="px-4 py-3 text-right font-semibold">Year 1</th>
+                  <th scope="col" className="px-4 py-3 text-right font-semibold">Year 2</th>
+                  <th scope="col" className="px-4 py-3 text-right font-semibold">Year 3</th>
+                  <th scope="col" className="px-4 py-3 font-semibold">From</th>
+                  <th scope="col" className="px-4 py-3 text-right font-semibold">Private colleges' own figure</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {offRows.map(({ st, own, all }) => (
+                  <tr key={st.slug}>
+                    <th scope="row" className="px-4 py-2.5 font-medium">
+                      {stateSlug.get(st.state) ? (
+                        <Link href={`/md-ms-india/stipend/${stateSlug.get(st.state)}#official`} className="text-primary-strong hover:underline dark:text-primary">
+                          {st.state} PG stipend
+                        </Link>
+                      ) : (
+                        <span className="text-foreground">{st.state}</span>
+                      )}
+                    </th>
+                    {st.govt.y.map((v, i) => (
+                      <td key={i} className="tnum px-4 py-2.5 text-right font-semibold">
+                        {v ? `${inr(v)}${st.govt.kind === "basic" ? " basic" : ""}` : <span className="font-normal text-muted-foreground">—</span>}
+                      </td>
+                    ))}
+                    <td className="px-4 py-2.5 text-[13px] text-muted-foreground">{KIND_LABEL[st.govt.kind].split(";")[0]}</td>
+                    <td className="tnum px-4 py-2.5 text-right">{all ? `${own} of ${all}` : "—"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="mt-6 grid gap-4 lg:grid-cols-2 lg:items-start">
+            <NationalRules rules={off.national} title={oc.nmc_title} />
+            {off.central && <GovtStipendCard g={off.central} state="Central Government" title="Central Government institutes (VMMC-Safdarjung, LHMC)" />}
+          </div>
+        </section>
+      )}
+
       <section className="container-custom py-10 md:py-14">
         <SectionHead
           icon="money"
           eyebrow="State by state"
           title="PG stipend by state"
-          intro="First-year stipend per month, median across the state's colleges that publish one, highest first. States with fewer than three such colleges are left out."
+          intro="First-year stipend per month as listed for the counselling (not an official notice), median across the state's colleges, highest first. States with fewer than three colleges listed are left out."
         />
         {s.states.length >= 8 && (
           <DataTools
@@ -296,6 +383,7 @@ export default async function StipendPage() {
       </section>
 
 
+      {off && <SourcedNote text={oc.sourced_note} />}
     </main>
   );
 }

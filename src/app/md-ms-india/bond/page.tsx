@@ -16,7 +16,7 @@ import { hinglishFaqs } from "@/lib/hinglishFaq";
 import DataTools from "@/components/ui/DataTools";
 import { toolLabels } from "@/lib/dataToolLabels";
 import DataPageEnd from "@/components/lead/DataPageEnd";
-import { JsonView, Rows, Sources, sourcesIn } from "@/components/bond/OfficialBond";
+import { JsonView, Rows, SourcedNote, Sources, sourcesIn } from "@/components/bond/OfficialBond";
 import { sourcesOf } from "@/lib/officialBond";
 
 /**
@@ -68,7 +68,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description: fitDescription(
       ...(f && top
         ? [
-            `Official ${f.session} PG bond rules for ${f.rows.length} states: government bonds of ${f.yMin}–${f.yMax} years, up to ${money(top.g.max!)} (${top.s.state}) if not served. Seat-leaving penalty round by round and ${f.off.colleges.length} private colleges' own bonds, each linked to its notice.`,
+            `Official ${f.session} PG bond rules for ${f.rows.length} states: government bonds of ${f.yMin}–${f.yMax} years, up to ${money(top.g.max!)} (${top.s.state}) if not served. Seat-leaving penalty round by round and ${f.off.colleges.length} private colleges' own bonds, from official notices.`,
             `Official ${f.session} PG bond rules, state wise: years, amount if not served, seat-leaving penalty by round and private colleges' bonds for ${f.rows.length} states.`,
           ]
         : []),
@@ -467,6 +467,7 @@ export default async function BondPage() {
           </div>
         </section>
       )}
+      {f && <SourcedNote text={oc.sourced_note} />}
     </main>
   );
 }

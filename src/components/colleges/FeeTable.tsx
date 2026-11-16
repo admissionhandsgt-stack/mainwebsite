@@ -83,7 +83,8 @@ function FeeCell({ fee }: { fee: CollegeFee | undefined }) {
   return <span className="text-[13px] text-muted-foreground">{fee.feeNullReason ?? "Not published"}</span>;
 }
 
-export default function FeeTable({ fees }: { fees: CollegeFee[] }) {
+/** `hideStipend` (2026-11-16): the college's stipend comes from an official document instead (the box above the fees). */
+export default function FeeTable({ fees, hideStipend }: { fees: CollegeFee[]; hideStipend?: boolean }) {
   const branches = Array.from(new Set(fees.map((f) => f.course))).sort((a, b) => a.localeCompare(b));
   const byKey = new Map(fees.map((f) => [`${f.course}\u0000${f.quota}`, f]));
   const codes = Array.from(new Set(fees.map((f) => f.quota))).sort(
@@ -113,7 +114,7 @@ export default function FeeTable({ fees }: { fees: CollegeFee[] }) {
                 </th>
               ))}
               <th scope="col" className={`${th} text-right`}>Hostel</th>
-              <th scope="col" className={`${th} text-right`}>Stipend / mo</th>
+              {!hideStipend && <th scope="col" className={`${th} text-right`}>Stipend / mo</th>}
             </tr>
           </thead>
           <tbody>
@@ -130,9 +131,11 @@ export default function FeeTable({ fees }: { fees: CollegeFee[] }) {
                   <td className="tnum px-4 py-3 text-right text-[14px] text-muted-foreground">
                     {approxFee(mode(rows.map((r) => r.hostelMinInr))) ?? "—"}
                   </td>
-                  <td className="tnum px-4 py-3 text-right text-[14px] font-semibold text-signal-safe">
-                    {money(mode(rows.map((r) => r.stipendY1Inr)))}
-                  </td>
+                  {!hideStipend && (
+                    <td className="tnum px-4 py-3 text-right text-[14px] font-semibold text-signal-safe">
+                      {money(mode(rows.map((r) => r.stipendY1Inr)))}
+                    </td>
+                  )}
                 </tr>
               );
             })}

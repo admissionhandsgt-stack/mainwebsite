@@ -2113,22 +2113,27 @@ export const PAGE_COPY = {
       accent: { label: "Hero title, coloured part", value: "state by state" },
       subtitle: {
         label: "Hero line",
-        value: "The monthly first-year stipend MD/MS residents are paid, as each college publishes it — government against private, in every state.",
+        value: "The monthly MD/MS stipend in every state: the government-college rate from each state's own order, each private college's own figure, and the listing's medians beside them, government against private.",
         long: true,
+        was: ["The monthly first-year stipend MD/MS residents are paid, as each college publishes it — government against private, in every state."],
       },
       // The line under the title answers the page's top query outright ("highest pg stipend in india"), for Google's
       // snippet and AI answers (2026-11-10). Used when every figure is there; the line above otherwise.
       answer: {
         label: "Quick answer under the title — {top_state}, {top_median}, {govt_top_state}, {govt_top_median}, {low_state}, {low_median}",
         value:
-          "{top_state} pays the highest median first-year MD/MS stipend, {top_median} a month; in government colleges {govt_top_state} leads at {govt_top_median}. The lowest is {low_state}, {low_median}. Every state is below, government against private, from each college's own published figure.",
+          "{top_state} pays the highest median first-year MD/MS stipend, {top_median} a month, as listed for the counselling; in government colleges {govt_top_state} leads at {govt_top_median}. The lowest is {low_state}, {low_median}. Each state's official rate from its own order is in the table below.",
         long: true,
+        was: [
+          "{top_state} pays the highest median first-year MD/MS stipend, {top_median} a month; in government colleges {govt_top_state} leads at {govt_top_median}. The lowest is {low_state}, {low_median}. Every state is below, government against private, from each college's own published figure.",
+        ],
       },
       cta: { label: "Hero button", value: "Check your PG chances" },
       source: {
         label: "Source line",
-        value: "From each college's own published stipend, first year, per month. States with fewer than three such colleges are left out.",
+        value: "The medians are as listed for the counselling (first year, per month), not an official notice; the official figures are each state's own order, above. States with fewer than three colleges listed are left out.",
         long: true,
+        was: ["From each college's own published stipend, first year, per month. States with fewer than three such colleges are left out."],
       },
       visual_title: { label: "Chart title", value: "Highest-paying states" },
     }),
@@ -2156,17 +2161,68 @@ export const PAGE_COPY = {
       },
       cta: { label: "Hero button — {state}", value: "Check your PG chances in {state}" },
       source: {
-        label: "Source line",
+        label: "Source line (a state not read yet)",
         value:
-          "From each college's own published stipend, per month, the latest year it published one. The bond terms further down are as listed for the counselling; confirm them in the state's notice before you sign.",
+          "As listed for the counselling, per month, the latest year listed: not an official notice. Confirm the stipend and the bond with the state's notice or the college before you sign.",
         long: true,
         was: [
+          "From each college's own published stipend, per month, the latest year it published one. The bond terms further down are as listed for the counselling; confirm them in the state's notice before you sign.",
           "From each college's own published stipend, per month, the latest year it published one. The bond terms further down are compiled by a third-party data service; confirm them in the state's notice before you sign.",
         ],
       },
       visual_title: { label: "Chart title — {state}", value: "Highest-paying colleges in {state}" },
       visual_caption: { label: "Chart caption", value: "First-year stipend a month" },
     }),
+  },
+  "page.pg_stipend_official": {
+    group: "Page: PG stipend — official figures (2026-27)",
+    fields: {
+      section_eyebrow: { label: "Section eyebrow", value: "Official · 2026-27" },
+      section_title: { label: "Section heading — {state}", value: "The official PG stipend in {state}" },
+      section_intro: {
+        label: "Section line — {state}",
+        value:
+          "The government-college rate as {state}'s own order gives it, then each private and deemed college's own figure from its own document. A college whose current document has not been read says so.",
+        long: true,
+      },
+      govt_title: { label: "Government card heading — {state}", value: "Government colleges in {state}" },
+      private_title: { label: "Private colleges heading", value: "Private and deemed colleges: their own figure" },
+      ask: { label: "Words for a college not read yet", value: "Not read yet: ask the college" },
+      nmc_title: { label: "NMC rules heading", value: "NMC's rule: at par with the state's government colleges" },
+      source: {
+        label: "Source line on a state page — {state}, {as_of}",
+        value:
+          "From {state}'s own order (or a government college's own official document, where it says so) and each college's own document, read on {as_of}. The table further down is as listed for the counselling, not an official notice.",
+        long: true,
+      },
+      visual_title: { label: "Chart heading — {state}", value: "Private colleges' own year-1 figure, {state}" },
+      visual_caption: { label: "Chart caption", value: "From each college's own document" },
+      listed_title: { label: "Heading over the listing's table — {state}", value: "Every PG college in {state}, as listed for the counselling" },
+      listed_intro: {
+        label: "Line over the listing's table",
+        value: "As listed for the counselling, not an official notice: the official figures are above. A dash means no figure for that year.",
+        long: true,
+      },
+      hub_title: { label: "Hub: official table heading", value: "Official PG stipend, state by state (2026-27)" },
+      hub_intro: {
+        label: "Hub: official table line",
+        value:
+          "The government-college rate from each state's own order — basic pay where the order gives only that, a formula where it sets one — and how many private and deemed colleges publish their own figure. Open a state for every college.",
+        long: true,
+      },
+      hub_source: {
+        label: "Hub: source line — {as_of}",
+        value:
+          "The official table is from each state's own order and each college's own document, read on {as_of}. The medians further down are as listed for the counselling, not an official notice.",
+        long: true,
+      },
+      sourced_note: {
+        label: "The one line at the end of the stipend pages — {as_of}",
+        value:
+          "Sourced from official updates: each state's own stipend orders, NMC's regulations and notices, and each college's own disclosure, read on {as_of}. Ask the college for its current figure in writing before you lock the seat.",
+        long: true,
+      },
+    },
   },
   "page.pg_stipend_state.body": {
     group: "Page: PG stipend, one state — body",
@@ -2255,8 +2311,9 @@ export const PAGE_COPY = {
       cta: { label: "Hero button", value: "Check your PG chances" },
       source: {
         label: "Source line — {year}",
-        value: "From the {year} published counselling results, and each college's own published fee and stipend.",
+        value: "From the {year} published counselling results; fees from the colleges' notices where official, otherwise as listed; stipend as listed for the counselling, not an official notice.",
         long: true,
+        was: ["From the {year} published counselling results, and each college's own published fee and stipend."],
       },
     }),
   },
@@ -3405,7 +3462,12 @@ export const PAGE_COPY = {
         was: ["{colleges} PG colleges across {states} states and union territories. Open one for its quotas, cutoffs, fees, branches and stipend."],
       },
       cta: { label: "Hero button", value: "Check your PG chances" },
-      source: { label: "Source line", value: "From the published NEET PG counselling results and each college's own published stipend.", long: true },
+      source: {
+        label: "Source line",
+        value: "From the published NEET PG counselling results; stipend as listed for the counselling, not an official notice (each state's official rate is on its stipend page).",
+        long: true,
+        was: ["From the published NEET PG counselling results and each college's own published stipend."],
+      },
       visual_title: { label: "Chart title", value: "Most MD/MS colleges", was: ["Most PG colleges"] },
       how_title: { label: "Box title", value: "How PG seats in a state are filled" },
       how_aiq: {
@@ -3697,9 +3759,10 @@ export const PAGE_COPY = {
       answer: {
         label: "Quick answer under the title — {official_states}, {years_range}, {top_bond}, {top_state}, {aiq_states}",
         value:
-          "Official {session} rules for {official_states} states: a government-college bond runs {years_range} and costs up to {top_bond} ({top_state}) if you do not serve it, and {aiq_states} states bind All India Quota seats in their colleges too. Every figure links its notice.",
+          "Official {session} rules for {official_states} states: a government-college bond runs {years_range} and costs up to {top_bond} ({top_state}) if you do not serve it, and {aiq_states} states bind All India Quota seats in their colleges too.",
         long: true,
         was: [
+          "Official {session} rules for {official_states} states: a government-college bond runs {years_range} and costs up to {top_bond} ({top_state}) if you do not serve it, and {aiq_states} states bind All India Quota seats in their colleges too. Every figure links its notice.",
           "{govt_bonded} of {govt_colleges} government PG colleges bind MD/MS graduates to government service after the course, and not serving it costs a middle {penalty_median}. Leaving a seat once you have joined costs a middle {exit_median} where a penalty is listed. Every state is below.",
         ],
       },
@@ -3707,9 +3770,10 @@ export const PAGE_COPY = {
       source: {
         label: "Source line — {session}, {as_of}",
         value:
-          "From each state's own {session} bulletin, prospectus, orders or gazette, and each college's own notice, read on {as_of}. Every figure links its document. The few states not read yet are marked: their figures are as listed for the counselling, so confirm before you pay or sign.",
+          "From each state's own {session} bulletin, prospectus, orders or gazette, and each college's own notice, read on {as_of}. The few states not read yet are marked: their figures are as listed for the counselling, so confirm before you pay or sign.",
         long: true,
         was: [
+          "From each state's own {session} bulletin, prospectus, orders or gazette, and each college's own notice, read on {as_of}. Every figure links its document. The few states not read yet are marked: their figures are as listed for the counselling, so confirm before you pay or sign.",
           "As listed for the {year} counselling. This is not an official notice: confirm with the state's notice or the college before you pay a fee or sign a bond.",
           "As listed for the {year} counselling, compiled from counselling notices and college fee schedules by a third-party data service. This is not an official notice. Confirm with the state's notice or the college before you pay a fee or sign a bond.",
         ],
@@ -3725,7 +3789,16 @@ export const PAGE_COPY = {
       states_intro: {
         label: "Official table line — {session}",
         value:
+          "Read from each state's own {session} bulletin, prospectus, orders or gazette. Open a state for every rule, the round-by-round seat-leaving terms and each private college's own bond.",
+        long: true,
+        was: [
           "Read from each state's own {session} bulletin, prospectus, orders or gazette. Open a state for every rule, the round-by-round seat-leaving terms and each private college's own bond, with each figure linked to its notice.",
+        ],
+      },
+      sourced_note: {
+        label: "The one line at the end of the bond pages — {as_of}",
+        value:
+          "Sourced from official updates: each state's own 2026-27 bulletins, orders and gazettes, MCC's bulletin and each college's own notices, read on {as_of}. Confirm the current version with the state or the college before you sign or pay.",
         long: true,
       },
       mcc_title: { label: "MCC box heading", value: "MCC's seats: All India Quota, deemed and central" },
@@ -3788,8 +3861,11 @@ export const PAGE_COPY = {
       source: {
         label: "Source line — {state}, {session}, {as_of}",
         value:
-          "From {state}'s own {session} bulletin, prospectus and orders, and each college's own notice, read on {as_of}. Each figure links its document; check the current version before you sign or pay.",
+          "From {state}'s own {session} bulletin, prospectus and orders, and each college's own notice, read on {as_of}. Check the current version before you sign or pay.",
         long: true,
+        was: [
+          "From {state}'s own {session} bulletin, prospectus and orders, and each college's own notice, read on {as_of}. Each figure links its document; check the current version before you sign or pay.",
+        ],
       },
       cta: { label: "Hero button", value: "Check your PG chances" },
       govt_title: { label: "Government bond heading", value: "Government colleges: the service bond" },
@@ -4049,9 +4125,12 @@ export const PAGE_COPY = {
       cta: { label: "Hero button", value: "See every state's stipend" },
       source: {
         label: "Source line",
-        value: "From each college's own published stipend: first year, per month, the latest year it published one.",
+        value: "Stipends as listed for the counselling (first year, per month, the latest year listed), not an official notice. Each state's official rate from its own order is on its stipend page.",
         long: true,
-        was: ["Every figure is computed from each college's own published stipend when the page is opened — nothing is typed in."],
+        was: [
+          "From each college's own published stipend: first year, per month, the latest year it published one.",
+          "Every figure is computed from each college's own published stipend when the page is opened — nothing is typed in.",
+        ],
       },
       visual_title: { label: "Chart title", value: "Highest-paying states" },
     }),

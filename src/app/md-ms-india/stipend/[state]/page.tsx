@@ -8,7 +8,9 @@ import { getStateStipend } from "@/lib/cutoffHubQueries";
 import { getPgStates } from "@/lib/pgStateQueries";
 import { getBondByState } from "@/lib/pgSeatData";
 import { bindsAiq, getOfficialBondState, govtBond, hasOwnBond, rangeText, yearsText } from "@/lib/officialBond";
-import { Sources } from "@/components/bond/OfficialBond";
+import { SourcedNote, Sources } from "@/components/bond/OfficialBond";
+import { getOfficialStipendState, hasOwnStipend, type GovtStipend } from "@/lib/officialStipend";
+import { CollegeStipendTable, GovtStipendCard, KIND_LABEL, NationalRules } from "@/components/stipend/OfficialStipend";
 import { sourcesOf } from "@/lib/officialBond";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
@@ -48,6 +50,12 @@ const big = (v: number | null | undefined) => {
 const years = (y: number | null | undefined) => (y ? `${y} year${y === 1 ? "" : "s"}` : "—");
 const OWN: Record<string, string> = { government: "Govt", private: "Private", deemed: "Deemed", other: "Other" };
 
+/** The state's year-1 government figure as a title may carry it: "Govt ₹77,662", "Govt ₹56,100 Basic + DA"; none otherwise. */
+function govtTitleFigure(g: GovtStipend): string | null {
+  if (!g.y[0] || g.kind === "none" || g.kind === "formula") return null;
+  return g.kind === "basic" ? `Govt ₹${g.y[0].toLocaleString("en-IN")} Basic + DA` : `Govt ₹${g.y[0].toLocaleString("en-IN")}`;
+}
+
 async function load(slug: string) {
   const state = (await getPgStates()).find((s) => s.slug === slug);
   if (!state) return null;
@@ -68,8 +76,28 @@ export async function generateMetadata(props: { params: Promise<{ state: string 
   // colleges", "pg stipend in government medical colleges kerala" are among these pages' top queries (GSC, Oct–Nov
   // 2026), and the pages sat at position ~6 with CTR under 1% (2026-11-10). The best-paying college is named in the
   // description because college names are searched here too ("rml delhi pg stipend", "madras medical college pg stipend").
-  const govt = s.govtMedian ? rupees(s.govtMedian) : null;
+  // The state's own 2026-27 order (lib/officialStipend.ts), where read, leads the title and description; the listing's
+  // medians only for a state not read yet (2026-11-16).
+  const off = await getOfficialStipendState(s.state).catch(() => null);
+  const offFig = off ? govtTitleFigure(off.state.govt) : null;
+  const govt = off ? null : s.govtMedian ? rupees(s.govtMedian) : null;
   const best = s.list[0] ? `${collegeName(s.list[0].name).short} ${rupees(s.list[0].y1)}` : null;
+  if (off) {
+    const own = off.colleges.filter(hasOwnStipend).length;
+    return resolveMetadata(`/md-ms-india/stipend/${page.slug}`, {
+      title: fitTitle(
+        ...(offFig ? [`${s.state} PG Stipend 2026-27: ${offFig} a Month, College Wise & Bond`, `${s.state} PG Stipend 2026-27: ${offFig} a Month`, `${s.state} PG Stipend: ${offFig} a Month`] : []),
+        `${s.state} PG Stipend 2026-27: Govt & Private, College Wise & Bond`,
+        `${s.state} PG Stipend 2026-27: College Wise`,
+        `${s.state} PG Stipend`,
+      ),
+      description: fitDescription(
+        `Official ${s.state} PG stipend 2026-27: ${offFig ? `government colleges ${offFig} a month in year 1` : "the government-college rule as the state's order gives it"}${own ? `; ${own} private and deemed colleges' own figures` : ""}, from official documents. College wise${hasBond ? ", and the bond" : ""}.`,
+        `Official ${s.state} PG stipend 2026-27, government and private colleges, from official documents.`,
+      ),
+      keywords: `${s.state} PG stipend, PG stipend in ${s.state}, ${s.state} NEET PG stipend 2026, MD MS stipend ${s.state}, resident doctor stipend ${s.state}, ${s.state} government medical college PG stipend`,
+    });
+  }
   return resolveMetadata(`/md-ms-india/stipend/${page.slug}`, {
     // "rajasthan pg stipend", "pg stipend in rajasthan", "rajasthan neet pg stipend". No year:
     // the figures are each college's latest published stipend, not one year's.
@@ -119,6 +147,26 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
             .join(", ") || og.words || null
     : null;
   const top = s.list[0];
+  // The official stipend (lib/officialStipend.ts): the state's order and each college's own document, where read.
+  const stip = await getOfficialStipendState(s.state).catch(() => null);
+  const sg = stip?.state.govt ?? null;
+  const stipOwn = stip ? stip.colleges.filter(hasOwnStipend) : [];
+  const stipTop = stipOwn.filter((c) => c.y[0]).sort((a, b) => (b.y[0] ?? 0) - (a.y[0] ?? 0));
+  const govtWords = sg?.y[0]
+    ? `${sg.y.map((v, i) => (v ? `${rupees(v)} in year ${i + 1}` : null)).filter(Boolean).join(", ")}${sg.kind === "basic" ? " as basic pay, with DA and other allowances on top" : ""}`
+    : null;
+  const stipSubtitle = stip
+    ? [
+        govtWords
+          ? `Government colleges in ${s.state} pay MD/MS residents ${govtWords}, ${sg!.kind === "disclosure" ? "as an official government-college document gives it" : "under the state's order"}.`
+          : sg?.kind === "formula"
+            ? `${s.state}'s order sets the government-college stipend by a formula, shown below as written.`
+            : `No official order with ${s.state}'s government-college rupee figures could be found.`,
+        stipOwn.length ? `${stipOwn.length} of the ${stip.colleges.length} private and deemed colleges listed publish their own figure.` : "",
+      ]
+        .filter(Boolean)
+        .join(" ")
+    : null;
 
   const tokens = {
     state: s.state,
@@ -139,9 +187,13 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
     bond_years: years(bond?.govt.typicalYears),
     bond_penalty: big(bond?.govt.penaltyMedian),
   };
-  const [copy, body, heroImage] = await Promise.all([
+  const [copy, body, oc, heroImage] = await Promise.all([
     pageCopy("page.pg_stipend_state.hero", tokens),
     pageCopy("page.pg_stipend_state.body", tokens),
+    pageCopy("page.pg_stipend_official", {
+      state: s.state,
+      as_of: stip?.state.asOf ? new Date(`${stip.state.asOf}T00:00:00+05:30`).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Kolkata" }) : "",
+    }),
     pageHeroImage(`page.pg_stipend_state.${slug}.hero`, "page.pg_stipend.hero"),
   ]);
 
@@ -156,10 +208,22 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
   }
   const cities = [...byCity].filter(([, l]) => l.length >= 2).sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]));
   const faqs = [
-    { question: body.faq1_q, answer: body.faq1_a },
-    ...(s.govtMedian && s.privateMedian && s.govtMedian !== s.privateMedian ? [{ question: body.faq2_q, answer: body.faq2_a }] : []),
-    ...(top ? [{ question: body.faq3_q, answer: body.faq3_a }] : []),
-    ...(s.y2Median && s.y3Median ? [{ question: body.faq4_q, answer: body.faq4_a }] : []),
+    ...(stip
+      ? [
+          { question: body.faq1_q, answer: stipSubtitle! },
+          ...(stip.state.privateRule
+            ? [{ question: body.faq2_q, answer: `${stip.state.privateRule} NMC's PGMER-2023 (regulation 5.4) requires every college to pay PG students at par with the state's government colleges.` }]
+            : []),
+          ...(stipTop[0]
+            ? [{ question: body.faq3_q, answer: `Among the private and deemed colleges whose own documents were read, ${stipTop[0].name} publishes the highest: ${rupees(stipTop[0].y[0])} a month in year 1. Government colleges pay the state's rate above.` }]
+            : []),
+        ]
+      : [
+          { question: body.faq1_q, answer: body.faq1_a },
+          ...(s.govtMedian && s.privateMedian && s.govtMedian !== s.privateMedian ? [{ question: body.faq2_q, answer: body.faq2_a }] : []),
+          ...(top ? [{ question: body.faq3_q, answer: body.faq3_a }] : []),
+          ...(s.y2Median && s.y3Median ? [{ question: body.faq4_q, answer: body.faq4_a }] : []),
+        ]),
     ...(official && ogLine
       ? [{ question: body.faq5_q, answer: `${ogLine.replace(/\.$/, "")}${official && bindsAiq(official.state) ? ". It binds All India Quota seats in the state's government colleges too" : ""}. From ${s.state}'s own 2026-27 rules; the state's bond page has every rule and each private college's own bond.` }]
       : showBond && bond!.govt.withBond > 0 && bond!.govt.penaltyMedian
@@ -167,7 +231,7 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
         : []),
   ];
 
-  faqs.push(
+  if (!stip) faqs.push(
     ...(await hinglishFaqs("stipend_state", {
       ...tokens,
       // The bond question only where the state's government colleges list one — and not where the official rules are
@@ -202,29 +266,55 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
         eyebrow={copy.eyebrow}
         title={copy.title}
         accent={copy.accent}
-        subtitle={s.govtMedian && s.privateMedian && top && copy.answer ? copy.answer : copy.subtitle}
+        subtitle={stipSubtitle ?? (s.govtMedian && s.privateMedian && top && copy.answer ? copy.answer : copy.subtitle)}
         image={heroImage}
         topic="money"
         // One block of numbers (2026-10-21): the government and private medians were a tile each and a card;
         // the state's median and its count of colleges lead the cards instead.
         cta={{ label: copy.cta, href: "/neet-college-predictor?course=pg" }}
         telegram="hero_pg_stipend_state"
-        source={copy.source}
+        source={stip ? oc.source : copy.source}
         visual={
-          <HeroBars
-            title={copy.visual_title}
-            caption={copy.visual_caption}
-            rows={s.list.slice(0, 7).map((c) => ({
-              label: barName(c.name),
-              value: c.y1,
-              display: rupees(c.y1),
-              href: `/md-ms-india/colleges/${c.slug}`,
-              note: OWN[c.ownership] ?? c.ownership,
-            }))}
-          />
+          stip ? (
+            stipTop.length >= 3 ? (
+              <HeroBars
+                title={oc.visual_title}
+                caption={oc.visual_caption}
+                rows={stipTop.slice(0, 7).map((c) => ({
+                  label: barName(c.name),
+                  value: c.y[0]!,
+                  display: rupees(c.y[0]),
+                  href: c.slug ? `/md-ms-india/colleges/${c.slug}#official-stipend` : undefined,
+                  note: c.type,
+                }))}
+              />
+            ) : undefined
+          ) : (
+            <HeroBars
+              title={copy.visual_title}
+              caption={copy.visual_caption}
+              rows={s.list.slice(0, 7).map((c) => ({
+                label: barName(c.name),
+                value: c.y1,
+                display: rupees(c.y1),
+                href: `/md-ms-india/colleges/${c.slug}`,
+                note: OWN[c.ownership] ?? c.ownership,
+              }))}
+            />
+          )
         }
-        insights={[
-          { icon: "people" as const, label: "Median / month", value: rupees(s.median), note: `first year · ${s.colleges} colleges & hospitals that publish a stipend` },
+        insights={stip ? [
+          {
+            icon: "authority" as const,
+            label: "Govt colleges, year 1",
+            value: sg?.y[0] ? `${rupees(sg.y[0])}${sg.kind === "basic" ? " basic" : ""}` : sg?.kind === "formula" ? "By formula" : "Not published",
+            note: sg ? KIND_LABEL[sg.kind].split(";")[0].split("(")[0].trim().toLowerCase() : "",
+          },
+          ...(sg?.y[2] ? [{ icon: "spark" as const, label: "Govt colleges, year 3", value: `${rupees(sg.y[2])}${sg.kind === "basic" ? " basic" : ""}`, note: "a month" }] : []),
+          { icon: "college" as const, label: "Private colleges' own figure", value: `${stipOwn.length} of ${stip.colleges.length}`, note: "from their own documents" },
+          ...(stipTop[0] ? [{ icon: "up" as const, label: "Highest private, year 1", value: rupees(stipTop[0].y[0]), note: stipTop[0].name }] : []),
+        ] : [
+          { icon: "people" as const, label: "Median / month", value: rupees(s.median), note: `first year · ${s.colleges} colleges, as listed for the counselling` },
           ...(top ? [{ icon: "up" as const, label: "Highest", value: rupees(top.y1), note: top.name }] : []),
           ...(s.govtMedian && s.privateMedian
             ? [{ icon: "compare" as const, label: "Govt vs private", value: `${rupees(s.govtMedian)} vs ${rupees(s.privateMedian)}`, note: "medians, first year, a month" }]
@@ -243,9 +333,69 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
       />
       <FeePdfCta state={s.state} placement="pdf_stipend_state" />
 
+      {/* -------------------------- the official stipend (2026-11-16) -------------------------- */}
+      {stip && (
+        <section className="container-custom py-10 md:py-14" id="official">
+          <SectionHead icon="money" eyebrow={oc.section_eyebrow} title={oc.section_title} intro={oc.section_intro} />
+          <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:items-start">
+            <GovtStipendCard g={stip.state.govt} state={s.state} title={oc.govt_title} />
+            <div className="space-y-4">
+              {stip.state.privateRule && (
+                <div className="rounded-2xl border border-border bg-card p-5">
+                  <h3 className="font-heading text-[16px] font-bold text-foreground">Private and deemed colleges: the state's rule</h3>
+                  <p className="mt-2 text-[14.5px] leading-relaxed text-foreground">{stip.state.privateRule}</p>
+                </div>
+              )}
+              <NationalRules rules={stip.all.national.slice(0, 1)} title={oc.nmc_title} />
+            </div>
+          </div>
+          {stip.colleges.length > 0 && (
+            <>
+              <h3 className="mt-10 font-heading text-xl font-bold text-foreground">{oc.private_title}</h3>
+              {stip.colleges.length >= 8 && (
+                <DataTools
+                  id="stipend-official-tools"
+                  className="mt-4"
+                  targets={["stipend-official"]}
+                  total={stip.colleges.length}
+                  placement="stipend_official"
+                  labels={labels}
+                  chips={[
+                    {
+                      key: "status",
+                      label: "Status",
+                      options: [
+                        { value: "official", label: "Own figure" },
+                        { value: "none", label: "Says no stipend" },
+                        { value: "ask", label: "Ask the college" },
+                      ],
+                    },
+                    {
+                      key: "type",
+                      label: "Type",
+                      options: [
+                        { value: "private", label: "Private" },
+                        { value: "deemed", label: "Deemed" },
+                      ],
+                    },
+                  ]}
+                  sorts={[
+                    { key: "y1", label: "Year 1, highest first", dir: "desc" },
+                    { key: "name", label: "College, A–Z", text: true },
+                  ]}
+                />
+              )}
+              <div className="mt-4">
+                <CollegeStipendTable id="stipend-official" colleges={stip.colleges} ask={oc.ask} />
+              </div>
+            </>
+          )}
+        </section>
+      )}
+
       {/* -------------------------- every college -------------------------- */}
       <section className="container-custom py-10 md:py-14">
-        <SectionHead icon="money" eyebrow={s.state} title={body.table_title} intro={body.table_intro} />
+        <SectionHead icon="money" eyebrow={s.state} title={stip ? oc.listed_title : body.table_title} intro={stip ? oc.listed_intro : body.table_intro} />
         {s.list.length >= 8 && (
           <DataTools
             id="stipend-tools"
@@ -431,6 +581,7 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
         </p>
       </section>
 
+      {stip && <SourcedNote text={oc.sourced_note} />}
     </main>
   );
 }

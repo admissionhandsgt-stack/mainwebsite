@@ -30,7 +30,7 @@ import DataTools from "@/components/ui/DataTools";
 import { toolLabels } from "@/lib/dataToolLabels";
 import DataPageEnd from "@/components/lead/DataPageEnd";
 import { FaqList, LinkCards } from "@/components/counsel/CounselBlocks";
-import { CollegeBondTable, collegeBondText, JsonView, Rows, Sources, sourcesIn } from "@/components/bond/OfficialBond";
+import { CollegeBondTable, collegeBondText, JsonView, Rows, SourcedNote, Sources, sourcesIn } from "@/components/bond/OfficialBond";
 import { sourcesOf } from "@/lib/officialBond";
 
 /**
@@ -101,7 +101,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       `${name} PG Bond`,
     ),
     description: fitDescription(
-      `Official ${name} PG bond ${d.session}: ${govtLine}. Seat-leaving penalty round by round, security deposit${own ? `, and ${own} private colleges' own bonds` : ", private colleges"} — each figure linked to its notice.`,
+      `Official ${name} PG bond ${d.session}: ${govtLine}. Seat-leaving penalty round by round, security deposit${own ? `, and ${own} private colleges' own bonds` : ", private colleges"}, from the state's own notices.`,
       `Official ${name} PG bond ${d.session}: ${govtLine}. Seat-leaving penalty by round and deposits, from the state's own notices.`,
     ),
     keywords: `${name} PG bond, ${name} NEET PG bond, PG bond in ${name}, ${name} PG service bond, penalty for leaving NEET PG seat in ${name}, ${name} seat leaving penalty`,
@@ -121,8 +121,9 @@ export default async function BondStatePage(props: Props) {
   const own = colleges.filter(hasOwnBond);
   const read = colleges.filter((c) => c.status !== "not_verified");
 
-  const [c, heroImage, pgStates, bondAll, stipends, fees, counsel, labels] = await Promise.all([
+  const [c, oc, heroImage, pgStates, bondAll, stipends, fees, counsel, labels] = await Promise.all([
     pageCopy("page.pg_bond_state", { state: name, session, as_of: date(s.asOf) }),
+    pageCopy("page.pg_bond.official", { as_of: date(s.asOf) }),
     pageHeroImage("page.pg_bond.hero"),
     getPgStates(),
     getBondByState().catch(() => null),
@@ -463,6 +464,7 @@ export default async function BondStatePage(props: Props) {
           ))}
         </p>
       </section>
+      <SourcedNote text={oc.sourced_note} />
     </main>
   );
 }
