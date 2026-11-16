@@ -199,7 +199,7 @@ export default async function BondPage() {
 
       {/* ---------------------- official rules, state by state ---------------------- */}
       {f && (
-        <section className="container-custom py-10 md:py-14" id="official">
+        <section className="container-custom py-8 md:py-10" id="official">
           <SectionHead icon="authority" eyebrow={`Official · ${f.session}`} title={oc.states_title} intro={oc.states_intro} />
           <DataTools
             id="bond-official-tools"
@@ -280,7 +280,7 @@ export default async function BondPage() {
 
       {/* ---------------------- states not read yet: the compilation, with its caveat ---------------------- */}
       {(otherGovt.length > 0 || otherPrivate.length > 0) && (
-        <section className="container-custom py-10 md:py-14" id="other-states">
+        <section className="container-custom py-8 md:py-10" id="other-states">
           <SectionHead icon="list" eyebrow="As listed for the counselling" title={oc.other_title} intro={oc.other_intro} />
           {otherGovt.length > 0 && (
             <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
@@ -351,7 +351,7 @@ export default async function BondPage() {
 
       {/* ---------------------- every government college ---------------------- */}
       {b && govtStates.length > 0 && (
-        <section className="border-t border-border bg-surface-1 py-10 md:py-14">
+        <section className="border-t border-border bg-surface-1 py-8 md:py-10">
           <div className="container-custom">
             <SectionHead icon="list" eyebrow={`${b.govtColleges} colleges`} title={body.list_title} intro={body.list_intro} />
             <OpenOnHash />
@@ -448,7 +448,7 @@ export default async function BondPage() {
 
       {/* ---------------------- FAQ ---------------------- */}
       {faqs.length > 0 && (
-        <section className="border-t border-border bg-surface-1 py-10 md:py-14">
+        <section className="border-t border-border bg-surface-1 py-8 md:py-10">
           <div className="container-custom">
             <SectionHead icon="help" eyebrow="FAQ" title={body.faq_title} />
             <div className="mt-6 space-y-3">
@@ -482,7 +482,7 @@ function MccRules({ mcc, title, intro }: { mcc: OfficialState; title: string; in
   const deposit = isObj(d.security_deposit_inr) ? d.security_deposit_inr : null;
   const course = isObj(d.course_leaving_penalty) ? d.course_leaving_penalty : null;
   return (
-    <section className="border-y border-border bg-surface-1 py-10 md:py-14" id="mcc">
+    <section className="border-y border-border bg-surface-1 py-8 md:py-10" id="mcc">
       <div className="container-custom">
         <SectionHead icon="authority" eyebrow={sessionOf(mcc)} title={title} intro={intro} />
         <div className="mt-6 grid gap-4 lg:grid-cols-2">

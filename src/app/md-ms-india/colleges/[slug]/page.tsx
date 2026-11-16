@@ -29,7 +29,7 @@ import MccSeats from "@/components/colleges/MccSeats";
 import SeatTerms from "@/components/colleges/SeatTerms";
 import CollegeOfficialBond from "@/components/bond/CollegeOfficialBond";
 import { CollegeOfficialStipend } from "@/components/stipend/OfficialStipend";
-import { getOfficialCollegeStipend, getOfficialStipendState } from "@/lib/officialStipend";
+import { getOfficialCollegeStipend, getOfficialStipendState, nmcReturn } from "@/lib/officialStipend";
 import { getStipends } from "@/lib/cutoffHubQueries";
 import { collegeBondText } from "@/components/bond/OfficialBond";
 import { getOfficialCollegeBond, getOfficialStateByName, govtBond, isCentralInstitution, rangeText, yearsText, serviceYears } from "@/lib/officialBond";
@@ -168,7 +168,7 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
     // row or the state's rule, never from the listing.
     const bondAnswer = bondRow
       ? bondRow.status === "not_verified"
-        ? `${s.short}'s current PG documents have not been read yet. Ask the college for its bond and course-leaving terms in writing before you sign.`
+        ? `${s.short}'s 2026-27 bond terms are not confirmed in an official document yet. Get its bond and course-leaving terms in writing before you sign; our counsellors confirm them for you.`
         : `${collegeBondText(bondRow) ?? "No service bond of its own"}${bondRow.leaving ? `. Leaving the course: ${bondRow.leaving}` : ""}${bondRow.session ? ` (${bondRow.session}, from the college's own notice)` : " (from the college's own notice)"}.`
       : bondStateRule
         ? (() => {
@@ -195,12 +195,17 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
       const inr = (v: number) => `₹${v.toLocaleString("en-IN")}`;
       const official = r
         ? r.status === "not_verified"
-          ? `${s.short}'s current stipend document has not been read yet. Ask the college what it pays in each year, in writing; NMC requires PG stipend at par with the state's government colleges.`
+          ? `${s.short}'s 2026-27 stipend is not confirmed in an official document yet. NMC requires PG stipend at par with the state's government colleges; our counsellors confirm what it pays in each year before you choose it.`
           : r.status === "states_no_stipend"
             ? `Its own record says no PG stipend is paid${r.session ? ` (${r.session})` : ""}. Ask the college whether that has changed; NMC requires PG stipend at par with the state's government colleges.`
             : r.y[0]
               ? `${r.y.map((v, i) => (v ? `${inr(v)} a month in year ${i + 1}` : null)).filter(Boolean).join(", ")}, from the college's own document${r.session ? ` (${r.session})` : ""}.`
-              : r.asWritten
+              : nmcReturn(r.asWritten)
+                ? (() => {
+                    const n = nmcReturn(r.asWritten)!;
+                    return `${inr(n.v)} a month${n.stateRate ? " (the state's rate)" : ""}, as the college told NMC${n.year ? ` in ${n.year}` : ""}. Ask for its current figure in writing; NMC requires PG stipend at par with the state's government colleges.`;
+                  })()
+                : r.asWritten
                 ? `As its own document prints it: ${r.asWritten}`
                 : null
         : g && g.y[0]

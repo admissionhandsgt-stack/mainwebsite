@@ -335,29 +335,28 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
 
       {/* -------------------------- the official stipend (2026-11-16) -------------------------- */}
       {stip && (
-        <section className="container-custom py-10 md:py-14" id="official">
+        <section className="container-custom py-8 md:py-10" id="official">
           <SectionHead icon="money" eyebrow={oc.section_eyebrow} title={oc.section_title} intro={oc.section_intro} />
-          <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:items-start">
+          {/* Uneven cards in CSS columns, not a grid row as tall as its longer half (the 2026-10-22 blank-space rule). */}
+          <div className="mt-6 gap-4 lg:columns-2 [&>*]:mb-4 [&>*]:break-inside-avoid">
             <GovtStipendCard g={stip.state.govt} state={s.state} title={oc.govt_title} />
-            <div className="space-y-4">
-              {stip.state.privateRule && (
-                <div className="rounded-2xl border border-border bg-card p-5">
-                  <h3 className="font-heading text-[16px] font-bold text-foreground">Private and deemed colleges: the state's rule</h3>
-                  <p className="mt-2 text-[14.5px] leading-relaxed text-foreground">{stip.state.privateRule}</p>
-                </div>
-              )}
-              <NationalRules rules={stip.all.national.slice(0, 1)} title={oc.nmc_title} />
-            </div>
+            {stip.state.privateRule && (
+              <div className="rounded-2xl border border-border bg-card p-5">
+                <h3 className="font-heading text-[16px] font-bold text-foreground">Private and deemed colleges: the state's rule</h3>
+                <p className="mt-2 text-[14.5px] leading-relaxed text-foreground">{stip.state.privateRule}</p>
+              </div>
+            )}
+            <NationalRules rules={stip.all.national.slice(0, 1)} title={oc.nmc_title} />
           </div>
           {stip.colleges.length > 0 && (
             <>
-              <h3 className="mt-10 font-heading text-xl font-bold text-foreground">{oc.private_title}</h3>
-              {stip.colleges.length >= 8 && (
+              <h3 className="mt-8 font-heading text-xl font-bold text-foreground">{oc.private_title}</h3>
+              {stip.colleges.filter((x) => x.status !== "not_verified").length >= 8 && (
                 <DataTools
                   id="stipend-official-tools"
                   className="mt-4"
                   targets={["stipend-official"]}
-                  total={stip.colleges.length}
+                  total={stip.colleges.filter((x) => x.status !== "not_verified").length}
                   placement="stipend_official"
                   labels={labels}
                   chips={[
@@ -367,7 +366,6 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
                       options: [
                         { value: "official", label: "Own figure" },
                         { value: "none", label: "Says no stipend" },
-                        { value: "ask", label: "Ask the college" },
                       ],
                     },
                     {
@@ -386,7 +384,7 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
                 />
               )}
               <div className="mt-4">
-                <CollegeStipendTable id="stipend-official" colleges={stip.colleges} ask={oc.ask} />
+                <CollegeStipendTable id="stipend-official" colleges={stip.colleges} unconfirmed={oc.ask} />
               </div>
             </>
           )}
@@ -394,7 +392,7 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
       )}
 
       {/* -------------------------- every college -------------------------- */}
-      <section className="container-custom py-10 md:py-14">
+      <section className="container-custom py-8 md:py-10">
         <SectionHead icon="money" eyebrow={s.state} title={stip ? oc.listed_title : body.table_title} intro={stip ? oc.listed_intro : body.table_intro} />
         {s.list.length >= 8 && (
           <DataTools
@@ -461,7 +459,7 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
 
       {/* -------------------------- by city ("jaipur neet pg colleges stipend") -------------------------- */}
       {cities.length > 0 && (
-        <section className="container-custom pb-10 md:pb-14">
+        <section className="container-custom pb-8 md:pb-10">
           <SectionHead icon="map" eyebrow={s.state} title={body.city_title} intro={body.city_intro} />
           <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {cities.map(([city, list]) => (
@@ -487,7 +485,7 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
 
       {/* -------------------------- the bond: the state's own rules where read -------------------------- */}
       {official && (
-        <section className="border-t border-border bg-surface-1 py-10 md:py-14" id="bond">
+        <section className="border-t border-border bg-surface-1 py-8 md:py-10" id="bond">
           <div className="container-custom">
             <SectionHead icon="document" eyebrow="Service bond · official 2026-27" title={body.bond_title} />
             <div className="mt-6 rounded-2xl border border-border bg-card p-5 md:p-6">
@@ -516,7 +514,7 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
 
       {/* -------------------------- the bond: the listing, for a state not read yet -------------------------- */}
       {!official && showBond && (
-        <section className="border-t border-border bg-surface-1 py-10 md:py-14">
+        <section className="border-t border-border bg-surface-1 py-8 md:py-10">
           <div className="container-custom">
             <SectionHead icon="document" eyebrow="Service bond" title={body.bond_title} intro={body.bond_intro} />
             <dl className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
@@ -555,7 +553,7 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
       />
 
       {/* -------------------------- FAQ -------------------------- */}
-      <section className="container-custom py-10 md:py-14">
+      <section className="container-custom py-8 md:py-10">
         <SectionHead icon="help" eyebrow="FAQ" title={body.faq_title} />
         <div className="mt-6 space-y-3">
           {faqs.map((f) => (

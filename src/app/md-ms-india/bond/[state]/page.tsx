@@ -257,15 +257,15 @@ export default async function BondStatePage(props: Props) {
           ...(g.min && g.flag !== "lead"
             ? [{ icon: "up" as const, label: "If not served", value: rangeText(g.min, g.max)!, note: amountRows.length > 1 ? "by course or branch" : "the bond amount" }]
             : []),
-          { icon: "compare" as const, label: "All India Quota seats", value: aiq ? "Bound too" : "Not stated", note: aiq ? "in government colleges" : "ask the college" },
+          { icon: "compare" as const, label: "All India Quota seats", value: aiq ? "Bound too" : "Not stated", note: aiq ? "in government colleges" : "in the state's rules" },
           ...(colleges.length ? [{ icon: "college" as const, label: "Private colleges' own bond", value: `${own.length} of ${colleges.length}`, note: `${read.length} read from their own notices` }] : []),
         ]}
       />
 
       {/* ------------------------------------------------------- government colleges */}
-      <section className="container-custom py-10 md:py-14" id="government-bond">
+      <section className="container-custom py-8 md:py-10" id="government-bond">
         <SectionHead icon="authority" eyebrow={`${name} · ${session}`} title={c.govt_title} intro={str(data.counselling) ?? undefined} />
-        <div className="mt-6 rounded-2xl border border-border bg-card p-5 md:p-6">
+        <div className="mt-5 rounded-2xl border border-border bg-card p-5">
           {(g.flag === "lead" || g.flag === "not_notified") && (
             <p className="mb-4 flex gap-2.5 rounded-xl border border-signal-borderline/40 bg-signal-borderline/10 px-4 py-3 text-[14px] leading-relaxed text-foreground">
               <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-signal-borderline" aria-hidden="true" />
@@ -285,42 +285,28 @@ export default async function BondStatePage(props: Props) {
         )}
       </section>
 
-      {/* ------------------------------------------------------- leaving the course */}
-      {courseLeave && (
-        <section className="container-custom pb-10 md:pb-14" id="leaving-the-course">
-          <SectionHead icon="document" title={c.course_title} />
-          <div className="mt-6 rounded-2xl border border-border bg-card p-5 md:p-6">
-            {str(courseLeave.text) && <p className="text-[15px] leading-relaxed text-foreground">{str(courseLeave.text)}</p>}
-            <div className={str(courseLeave.text) ? "mt-4" : ""}>
-              <Rows obj={courseLeave} />
-            </div>
-            <Sources sources={sourcesIn(courseLeave)} className="mt-5 border-t border-border pt-4" />
-          </div>
-        </section>
-      )}
-
       {/* ------------------------------------------------------- round by round */}
       {seatRows.length > 0 && (
-        <section className="border-y border-border bg-surface-1 py-10 md:py-14" id="seat-leaving">
+        <section className="border-y border-border bg-surface-1 py-8 md:py-10" id="seat-leaving">
           <div className="container-custom">
             <SectionHead icon="route" title={c.seat_title} intro={c.seat_intro} />
-            <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
+            <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
               <table className="dt w-full min-w-[720px] text-left text-sm">
                 <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
                   <tr>
-                    <th scope="col" className="w-[22%] px-4 py-3 font-semibold">When</th>
-                    <th scope="col" className="px-4 py-3 font-semibold">Government colleges</th>
-                    <th scope="col" className="px-4 py-3 font-semibold">Private colleges</th>
+                    <th scope="col" className="w-[22%] px-4 py-2.5 font-semibold">When</th>
+                    <th scope="col" className="px-4 py-2.5 font-semibold">Government colleges</th>
+                    <th scope="col" className="px-4 py-2.5 font-semibold">Private colleges</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
                   {seatRows.map((r, i) => (
                     <tr key={i} className="align-top">
-                      <th scope="row" className="px-4 py-3 font-semibold text-foreground">{str(r.when)}</th>
-                      <td className="px-4 py-3 leading-relaxed text-foreground">
+                      <th scope="row" className="px-4 py-2.5 font-semibold text-foreground">{str(r.when)}</th>
+                      <td className="px-4 py-2.5 text-[14px] leading-snug text-foreground">
                         <JsonView value={r.government} />
                       </td>
-                      <td className="px-4 py-3 leading-relaxed text-foreground">
+                      <td className="px-4 py-2.5 text-[14px] leading-snug text-foreground">
                         {str(r.private) && /^same\b/i.test(str(r.private)!) ? <span className="text-muted-foreground">{str(r.private)}</span> : <JsonView value={r.private} />}
                       </td>
                     </tr>
@@ -338,29 +324,43 @@ export default async function BondStatePage(props: Props) {
         </section>
       )}
 
-      {/* ------------------------------------------------------- deposit */}
-      {(deposit || str(data.security_lost_when)) && (
-        <section className="container-custom py-10 md:py-14" id="security-deposit">
-          <SectionHead icon="money" title={c.deposit_title} />
-          <div className="mt-6 rounded-2xl border border-border bg-card p-5 md:p-6">
-            {deposit && <Rows obj={deposit} />}
-            {str(data.security_lost_when) && (
-              <div className={deposit ? "mt-4 border-t border-border pt-4" : ""}>
-                <Rows obj={{ security_lost_when: data.security_lost_when ?? null }} />
+      {/* ------------------------------------------------------- leaving the course · deposit, side by side */}
+      {(courseLeave || deposit || str(data.security_lost_when)) && (
+        <section className="container-custom py-8 md:py-10" id="leaving-the-course">
+          <div className={`grid gap-4 lg:items-start ${courseLeave && (deposit || str(data.security_lost_when)) ? "lg:grid-cols-2" : ""}`}>
+            {courseLeave && (
+              <div className="rounded-2xl border border-border bg-card p-5">
+                <h2 className="font-heading text-[18px] font-bold text-foreground">{c.course_title}</h2>
+                {str(courseLeave.text) && <p className="mt-2 text-[14.5px] leading-relaxed text-foreground">{str(courseLeave.text)}</p>}
+                <div className={str(courseLeave.text) ? "mt-3" : "mt-2"}>
+                  <Rows obj={courseLeave} />
+                </div>
               </div>
             )}
-            <Sources sources={[...sourcesOf(data.security_source as Json), ...sourcesOf(data.security_source_2 as Json)]} className="mt-5 border-t border-border pt-4" />
+            {(deposit || str(data.security_lost_when)) && (
+              <div className="rounded-2xl border border-border bg-card p-5" id="security-deposit">
+                <h2 className="font-heading text-[18px] font-bold text-foreground">{c.deposit_title}</h2>
+                <div className="mt-3">
+                  {deposit && <Rows obj={deposit} />}
+                  {str(data.security_lost_when) && (
+                    <div className={deposit ? "mt-3 border-t border-border pt-3" : ""}>
+                      <Rows obj={{ security_lost_when: data.security_lost_when ?? null }} />
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </section>
       )}
 
       {/* ------------------------------------------------------- private and deemed */}
       {(pc || colleges.length > 0 || str(data.private_service_bond) || str(data.state_service_bond)) && (
-        <section className="border-t border-border bg-surface-1 py-10 md:py-14" id="private-colleges">
+        <section className="border-t border-border bg-surface-1 py-8 md:py-10" id="private-colleges">
           <div className="container-custom">
             <SectionHead icon="college" eyebrow={colleges.length ? `${colleges.length} colleges` : undefined} title={c.private_title} intro={c.private_intro} />
             {(pc || str(data.private_service_bond) || str(data.state_service_bond)) && (
-              <div className="mt-6 rounded-2xl border border-border bg-card p-5 md:p-6">
+              <div className="mt-5 rounded-2xl border border-border bg-card p-5">
                 {pc && <Rows obj={pc} />}
                 {str(data.private_service_bond) && <Rows obj={{ private_service_bond: data.private_service_bond ?? null }} />}
                 {str(data.state_service_bond) && <Rows obj={{ state_service_bond: data.state_service_bond ?? null }} />}
@@ -369,12 +369,12 @@ export default async function BondStatePage(props: Props) {
             )}
             {colleges.length > 0 && (
               <>
-                {colleges.length >= 8 && (
+                {colleges.filter((x) => x.status !== "not_verified").length >= 8 && (
                   <DataTools
                     id="bond-college-tools"
                     className="mt-6"
                     targets={["bond-state-colleges"]}
-                    total={colleges.length}
+                    total={colleges.filter((x) => x.status !== "not_verified").length}
                     placement="bond_state_colleges"
                     labels={labels}
                     chips={[
@@ -382,9 +382,9 @@ export default async function BondStatePage(props: Props) {
                         key: "status",
                         label: "Status",
                         options: [
-                          { value: "official", label: "Official terms" },
-                          { value: "none", label: "No bond in its documents" },
-                          { value: "ask", label: "Ask the college" },
+                          { value: "official", label: "Own bond" },
+                          { value: "none", label: "0 years (no bond)" },
+                          { value: "other", label: "Other terms" },
                         ],
                       },
                       {
@@ -403,7 +403,7 @@ export default async function BondStatePage(props: Props) {
                   />
                 )}
                 <div className="mt-6">
-                  <CollegeBondTable id="bond-state-colleges" colleges={colleges} ask={c.ask} />
+                  <CollegeBondTable id="bond-state-colleges" colleges={colleges} unconfirmed={c.ask} />
                 </div>
               </>
             )}
@@ -413,7 +413,7 @@ export default async function BondStatePage(props: Props) {
 
       {/* ------------------------------------------------------- government colleges by name */}
       {govtColleges.length > 0 && g.flag !== "lead" && (
-        <section className="container-custom py-10 md:py-14" id="government-colleges">
+        <section className="container-custom py-8 md:py-10" id="government-colleges">
           <SectionHead icon="list" title={c.govt_list_title} intro={c.govt_list_intro} />
           <p className="mt-5 text-[14.5px] leading-relaxed">
             {govtColleges.map((x, i) => (
@@ -430,9 +430,9 @@ export default async function BondStatePage(props: Props) {
 
       {/* ------------------------------------------------------- the rest of the notices */}
       {(notes.length > 0 || Object.keys(extra).length > 0 || docSources.length > 0) && (
-        <section className="container-custom pb-10 md:pb-14" id="notes">
+        <section className="container-custom pb-8 md:pb-10" id="notes">
           <SectionHead icon="document" title={c.notes_title} />
-          <div className="mt-6 rounded-2xl border border-border bg-card p-5 md:p-6">
+          <div className="mt-5 rounded-2xl border border-border bg-card p-5">
             {Object.keys(extra).length > 0 && <Rows obj={extra} />}
             {notes.length > 0 && (
               <ul className={`list-disc space-y-2 pl-5 text-[14.5px] leading-relaxed text-foreground ${Object.keys(extra).length ? "mt-4" : ""}`}>

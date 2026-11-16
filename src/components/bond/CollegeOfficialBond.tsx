@@ -37,8 +37,9 @@ export default function CollegeOfficialBond({
         </div>
         {row.status === "not_verified" ? (
           <p className="mt-3 text-[15px] leading-relaxed text-foreground">
-            This college's current PG documents have not been read yet, so no figure is shown here. Ask the college for its
-            bond and course-leaving terms in writing before you sign or pay.{state ? " The state's own rules apply too." : ""}
+            This college's 2026-27 bond terms are not confirmed in an official document yet, so no figure is shown here.
+            {state ? " The state's own rules for its seats apply." : ""} Our counsellors confirm its bond and course-leaving
+            terms in writing before you choose it.
           </p>
         ) : (
           <dl className="mt-4 grid gap-x-4 gap-y-3 sm:grid-cols-[minmax(9rem,13rem)_1fr]">

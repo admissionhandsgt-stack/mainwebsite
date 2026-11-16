@@ -2165,6 +2165,15 @@ states + MCC, 302 colleges, every figure with its URL, page and quote. It replac
   components/bond/OfficialBond.tsx — the data keeps every URL/page/quote) and the tables have no "Document" column; bond and
   stipend pages end with `<SourcedNote>` ("Sourced from official updates: …", copy `sourced_note` in "Page: PG service bond
   — official rules" and "Page: PG stipend — official figures"). Don't write "every figure links its notice" anywhere.
+- **One look for every college, nothing dropped (owner, same day: "ask the college… sab jagah alag alag si info… belief
+  girta hai… blank space reduce compact design yet no information miss").** The bond and stipend college tables
+  (`CollegeBondTable`, `CollegeStipendTable`) show only colleges whose terms are confirmed, each row the same columns
+  (college + "2026-27 notice" / "2025-26 sheet (latest)" under its name — `sourceWords`, bond, leaving · deposit); every
+  not_verified college is named once in `UnconfirmedColleges` under the table, with copy `ask` ("{n} more colleges: …
+  not confirmed in an official document yet… our counsellors confirm…"). Status chip "Not confirmed yet", never "Ask
+  the college" per row. A college whose only record is NMC's college-wise list shows one figure, "₹30,000 a month, as
+  it told NMC in 2024" (`nmcReturn` in lib/officialStipend.ts), never the list's raw text. Leaving the course and the
+  security deposit sit side by side; the stipend state page's three cards are CSS columns; sections `py-8 md:py-10`.
 
 **A data import shows at once (owner, same day: "ek ghante mai kyu… cache refresh karke instant reflect"):** after an
 import's `--apply`, run `bash scripts/revalidate_tags.sh --purge <tag…>` — it asks the app on the server to drop those

@@ -244,13 +244,36 @@ export async function getOfficialCollegeStipend(slug: string): Promise<StipendCo
 }
 
 /** A college prints its own figure (an official row with a year-1 rupee figure, or its words). */
+/**
+ * A college's PG figure as its own return to NMC prints it ("Stipend of College: 'UG-Rs.4000/- PG-RS.20000/-'"), for the
+ * rows whose only official record is NMC's college-wise list (owner, 2026-11-16: the raw list text read as a research
+ * note). "Given as mentioned by state Govt" takes the state figure the same return prints. Null when no PG figure is printed.
+ */
+export function nmcReturn(text: string | null): { v: number; year: string | null; stateRate: boolean } | null {
+  if (!text || !/stipend of college/i.test(text)) return null;
+  const year = text.match(/report received in NMC(?: on)?:?\s*'?(\d{4})/i)?.[1] ?? null;
+  const pg = (s: string) => {
+    const m = s.match(/\bPG[-\s]*(?:1st[-\s]*)?Rs\.?\s*([\d,]{4,})/i);
+    const v = m ? Number(m[1].replace(/,/g, "")) : NaN;
+    return v >= 1000 && v < 500000 ? v : null;
+  };
+  const [statePart, collegePart] = text.split(/stipend of college/i);
+  const own = pg(collegePart ?? "");
+  if (own) return { v: own, year, stateRate: false };
+  if (/given as mentioned/i.test(collegePart ?? "")) {
+    const st = pg(statePart.split(/stipend of state govt/i)[1] ?? "");
+    if (st) return { v: st, year, stateRate: true };
+  }
+  return null;
+}
+
 export const hasOwnStipend = (c: StipendCollege) => c.status.startsWith("official") && (!!c.y[0] || !!c.asWritten);
 
 export const STIPEND_STATUS: Record<StipendStatus, string> = {
   official_2026_27: "Official, 2026-27",
   official_older: "Official, latest sheet",
   states_no_stipend: "Says no stipend",
-  not_verified: "Ask the college",
+  not_verified: "Not confirmed yet",
 };
 
 export const rupee = (v: number) => `₹${v.toLocaleString("en-IN")}`;

@@ -1,7 +1,7 @@
 import { ExternalLink, FileText } from "lucide-react";
 import type { ReactNode } from "react";
 import Link from "@/components/ui/Link";
-import { money, noOwnBond, OWN_BOND_TEXT, safeUrl, sourcesOf, STATUS_LABEL, type BondStatus, type Json, type JsonObject, type OfficialCollege, type Source } from "@/lib/officialBond";
+import { hasOwnBond, money, noOwnBond, OWN_BOND_TEXT, safeUrl, sourcesOf, STATUS_LABEL, type BondStatus, type Json, type JsonObject, type OfficialCollege, type Source } from "@/lib/officialBond";
 
 /**
  * Pieces the official bond pages share (2026-11-16): the source line under every figure, the status of a college's row, a
@@ -236,71 +236,108 @@ export function BranchAmounts({ branches }: { branches: [string, number][] }) {
   );
 }
 
+/** Where a college's figure comes from, in a few words: "2026-27 notice", "2025-26 sheet (latest)". */
+export function sourceWords(status: string, session: string | null): string {
+  if (status === "official_2025_26_only" || status === "official_older") {
+    const y = session?.match(/20\d\d-\d\d/)?.[0];
+    return y ? `${y} sheet (latest)` : "latest official sheet";
+  }
+  if (status === "none_in_official_documents") return "2026-27 documents";
+  if (status === "states_no_stipend") return session?.match(/20\d\d/)?.[0] ? `official record, ${session.match(/20\d\d/)![0]}` : "official record";
+  return "2026-27 notice";
+}
+
 /**
- * Private and deemed colleges, one row each: its status, its own bond (branch by branch where printed), what leaving
- * costs, the deposit and the document. A not_verified row says only "ask the college".
+ * Colleges whose official terms are not confirmed yet, named in one block under the table (owner, 2026-11-16: a row of
+ * "ask the college" each "belief girta hai"). Nothing is dropped: every name is here, with what a counsellor does about it.
  */
-export function CollegeBondTable({ id, colleges, ask }: { id: string; colleges: OfficialCollege[]; ask: string }) {
+export function UnconfirmedColleges({ colleges, text, anchor }: { colleges: { name: string; slug: string | null }[]; text: string; anchor: string }) {
+  if (!colleges.length) return null;
   return (
-    <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
-      <table id={id} className="dt w-full min-w-[760px] text-left text-sm">
-        <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
-          <tr>
-            <th scope="col" className="px-4 py-3 font-semibold">College</th>
-            <th scope="col" className="px-4 py-3 font-semibold">Status</th>
-            <th scope="col" className="px-4 py-3 font-semibold">Its own service bond</th>
-            <th scope="col" className="px-4 py-3 font-semibold">Leaving the course</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-border">
-          {colleges.map((c) => {
-            const bond = collegeBondText(c);
-            return (
-              <tr
-                key={`${c.instituteId}-${c.name}`}
-                data-row=""
-                data-f-status={noOwnBond(c) ? "none" : c.status.startsWith("official") ? "official" : "ask"}
-                data-f-type={c.type.toLowerCase().startsWith("deemed") ? "deemed" : "private"}
-                data-s-name={c.name.toLowerCase()}
-                {...(c.amount ? { "data-s-amt": c.amount } : c.branches ? { "data-s-amt": Math.max(...c.branches.map((b) => b[1])) } : {})}
-                className="align-top"
-              >
-                <th scope="row" className="px-4 py-3 font-medium">
-                  {c.slug ? (
-                    <Link href={`/md-ms-india/colleges/${c.slug}#official-bond`} className="text-foreground hover:text-primary hover:underline">
-                      {c.name}
-                    </Link>
-                  ) : (
-                    <span className="text-foreground">{c.name}</span>
-                  )}
-                  <span className="mt-0.5 block text-[12px] font-normal text-muted-foreground">{c.type}</span>
-                </th>
-                <td className="px-4 py-3">
-                  <StatusChip status={c.status} />
-                  {c.status === "official_2025_26_only" && c.session && <span className="mt-1 block text-[12px] text-muted-foreground">{c.session}</span>}
-                </td>
-                <td className="px-4 py-3">
-                  {c.status === "not_verified" ? (
-                    <span className="text-muted-foreground">{ask}</span>
-                  ) : (
-                    <>
-                      <span className="font-semibold text-foreground">{bond ?? "—"}</span>
-                      {c.what && bond !== c.what && <span className="mt-0.5 block text-[12.5px] text-muted-foreground">{c.what}</span>}
+    <div className="mt-4 rounded-2xl border border-border bg-surface-1 px-5 py-4">
+      <p className="text-[14px] font-semibold leading-relaxed text-foreground">{text.replace("{n}", String(colleges.length))}</p>
+      <p className="mt-2 text-[13.5px] leading-relaxed">
+        {colleges.map((c, i) => (
+          <span key={`${c.slug}-${c.name}`}>
+            {i > 0 && <span className="text-muted-foreground"> · </span>}
+            {c.slug ? (
+              <Link href={`/md-ms-india/colleges/${c.slug}#${anchor}`} className="text-foreground hover:text-primary hover:underline">
+                {c.name}
+              </Link>
+            ) : (
+              <span className="text-foreground">{c.name}</span>
+            )}
+          </span>
+        ))}
+      </p>
+    </div>
+  );
+}
+
+/**
+ * Private and deemed colleges whose terms are confirmed, one row each in the same three columns: the college (with where its
+ * terms come from), its own service bond (branch by branch where printed), and what leaving the course costs with the
+ * deposit. The rest are named together under the table (`UnconfirmedColleges`).
+ */
+export function CollegeBondTable({ id, colleges, unconfirmed }: { id: string; colleges: OfficialCollege[]; unconfirmed: string }) {
+  const shown = colleges.filter((c) => c.status !== "not_verified");
+  const later = colleges.filter((c) => c.status === "not_verified");
+  return (
+    <>
+      {shown.length > 0 && (
+        <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
+          <table id={id} className="dt w-full min-w-[720px] text-left text-sm">
+            <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
+              <tr>
+                <th scope="col" className="w-[30%] px-4 py-2.5 font-semibold">College</th>
+                <th scope="col" className="w-[36%] px-4 py-2.5 font-semibold">Its own service bond</th>
+                <th scope="col" className="px-4 py-2.5 font-semibold">Leaving the course · deposit</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {shown.map((c) => {
+                const bond = collegeBondText(c);
+                return (
+                  <tr
+                    key={`${c.instituteId}-${c.name}`}
+                    data-row=""
+                    data-f-status={noOwnBond(c) ? "none" : hasOwnBond(c) ? "official" : "other"}
+                    data-f-type={c.type.toLowerCase().startsWith("deemed") ? "deemed" : "private"}
+                    data-s-name={c.name.toLowerCase()}
+                    {...(c.amount ? { "data-s-amt": c.amount } : c.branches ? { "data-s-amt": Math.max(...c.branches.map((b) => b[1])) } : {})}
+                    className="align-top"
+                  >
+                    <th scope="row" className="px-4 py-2.5 font-medium">
+                      {c.slug ? (
+                        <Link href={`/md-ms-india/colleges/${c.slug}#official-bond`} className="text-foreground hover:text-primary hover:underline">
+                          {c.name}
+                        </Link>
+                      ) : (
+                        <span className="text-foreground">{c.name}</span>
+                      )}
+                      <span className="mt-0.5 block text-[12px] font-normal text-muted-foreground">
+                        {c.type} · {sourceWords(c.status, c.session)}
+                      </span>
+                    </th>
+                    <td className="px-4 py-2.5 text-[13.5px] leading-snug">
+                      <span className={`text-foreground ${!bond || bond.length < 80 ? "font-semibold" : ""}`}>{bond ?? "As its notice prints it"}</span>
+                      {c.what && bond !== c.what && !noOwnBond(c) && <span className="mt-0.5 block text-[12.5px] text-muted-foreground">{c.what}</span>}
                       {c.branches && <BranchAmounts branches={c.branches} />}
                       {c.ifNotServed && !c.branches && <span className="mt-0.5 block text-[12.5px] text-muted-foreground">{c.ifNotServed}</span>}
-                    </>
-                  )}
-                </td>
-                <td className="px-4 py-3 text-[13.5px] leading-relaxed text-foreground">
-                  {c.leaving ?? <span className="text-muted-foreground">—</span>}
-                  {c.deposit && <span className="mt-1 block text-[12.5px] text-muted-foreground">Deposit: {c.deposit}</span>}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+                    </td>
+                    <td className="px-4 py-2.5 text-[13px] leading-snug text-foreground">
+                      {c.leaving ?? (!c.deposit && <span className="text-muted-foreground">Not stated in its notice</span>)}
+                      {c.deposit && <span className={`${c.leaving ? "mt-1 " : ""}block text-[12.5px] text-muted-foreground`}>Deposit: {c.deposit}</span>}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+      <UnconfirmedColleges colleges={later} text={unconfirmed} anchor="official-bond" />
+    </>
   );
 }
 

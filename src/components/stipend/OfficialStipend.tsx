@@ -1,7 +1,7 @@
 import { Landmark, Wallet } from "lucide-react";
 import Link from "@/components/ui/Link";
-import { Sources } from "@/components/bond/OfficialBond";
-import { govtFigure, rupee, STIPEND_STATUS, type GovtStipend, type NationalRule, type StipendCollege, type StipendStatus } from "@/lib/officialStipend";
+import { Sources, sourceWords, UnconfirmedColleges } from "@/components/bond/OfficialBond";
+import { govtFigure, nmcReturn, rupee, STIPEND_STATUS, type GovtStipend, type NationalRule, type StipendCollege, type StipendStatus } from "@/lib/officialStipend";
 
 /**
  * The official stipend's pieces (2026-11-16): a state's government-college rate as its order gives it, each private or
@@ -45,8 +45,8 @@ export function GovtStipendCard({ g, state, title }: { g: GovtStipend; state: st
       )}
       {g.kind === "none" ? (
         <p className="mt-3 text-[14.5px] leading-relaxed text-foreground">
-          No official order with {state}'s government-college rupee figures could be found. Ask the college what it pays in
-          each year, in writing, before you lock the seat. NMC's rule below still applies.
+          No official order with {state}'s government-college rupee figures could be found. NMC's rule applies, and our
+          counsellors confirm what a college pays in each year before you lock the seat.
         </p>
       ) : (
         <dl className="mt-4 grid gap-x-4 gap-y-2.5 sm:grid-cols-[minmax(8rem,12rem)_1fr]">
@@ -103,69 +103,78 @@ export function StipendStatusChip({ status }: { status: StipendStatus }) {
 }
 
 /** A college's own figure in words: "₹30,000 · ₹30,000 · ₹30,000", the document's words, or what the status says. */
-export function collegeStipendText(c: StipendCollege, ask = "Not read yet: ask the college"): string {
+export function collegeStipendText(c: StipendCollege, ask = "Official figure not confirmed yet"): string {
   if (c.status === "not_verified") return ask;
   if (c.status === "states_no_stipend") return "No PG stipend paid, as its own record says";
   if (c.y[0]) return c.y.map((v) => (v ? rupee(v) : "—")).join(" · ");
+  const n = nmcReturn(c.asWritten);
+  if (n) return `${rupee(n.v)} a month${n.stateRate ? " (the state's rate)" : ""}, as it told NMC${n.year ? ` in ${n.year}` : ""}`;
   return c.asWritten ?? "As printed in its document";
 }
 
-/** Every private and deemed college the file holds for a state: status, its own figure, the document. */
-export function CollegeStipendTable({ id, colleges, ask }: { id: string; colleges: StipendCollege[]; ask: string }) {
+/**
+ * Private and deemed colleges whose figure is confirmed, one row each: the college (with where the figure comes from) and
+ * its own stipend a month in years 1–3, branch by branch where printed. The rest are named together under the table.
+ */
+export function CollegeStipendTable({ id, colleges, unconfirmed }: { id: string; colleges: StipendCollege[]; unconfirmed: string }) {
+  const shown = colleges.filter((c) => c.status !== "not_verified");
+  const later = colleges.filter((c) => c.status === "not_verified");
   return (
-    <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
-      <table id={id} className="dt w-full min-w-[720px] text-left text-sm">
-        <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
-          <tr>
-            <th scope="col" className="px-4 py-3 font-semibold">College</th>
-            <th scope="col" className="px-4 py-3 font-semibold">Status</th>
-            <th scope="col" className="px-4 py-3 font-semibold">Its own stipend a month · year 1 · 2 · 3</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-border">
-          {colleges.map((c) => (
-            <tr
-              key={`${c.instituteId}-${c.name}`}
-              data-row=""
-              data-f-status={c.status.startsWith("official") ? "official" : c.status === "states_no_stipend" ? "none" : "ask"}
-              data-f-type={c.type.toLowerCase().startsWith("deemed") ? "deemed" : "private"}
-              data-s-name={c.name.toLowerCase()}
-              {...(c.y[0] ? { "data-s-y1": c.y[0] } : {})}
-              className="align-top"
-            >
-              <th scope="row" className="px-4 py-3 font-medium">
-                {c.slug ? (
-                  <Link href={`/md-ms-india/colleges/${c.slug}#official-stipend`} className="text-foreground hover:text-primary hover:underline">
-                    {c.name}
-                  </Link>
-                ) : (
-                  <span className="text-foreground">{c.name}</span>
-                )}
-                <span className="mt-0.5 block text-[12px] font-normal text-muted-foreground">{c.type}</span>
-              </th>
-              <td className="px-4 py-3">
-                <StipendStatusChip status={c.status} />
-                {c.status === "official_older" && c.session && <span className="mt-1 block max-w-[16rem] text-[12px] text-muted-foreground">{c.session}</span>}
-              </td>
-              <td className="px-4 py-3">
-                <span className={`${c.y[0] ? "tnum font-semibold text-foreground" : "text-[13.5px] leading-relaxed text-muted-foreground"}`}>{collegeStipendText(c, ask)}</span>
-                {c.y[0] && c.periodUnstated && <span className="mt-0.5 block text-[12px] text-muted-foreground">The document prints no period: read as a month</span>}
-                {c.branches && (
-                  <span className="mt-1 block text-[12.5px] leading-relaxed text-muted-foreground">
-                    {c.branches.map(([b, v], i) => (
-                      <span key={b}>
-                        {i > 0 && " · "}
-                        {b} <span className="tnum font-semibold text-foreground">{v}</span>
+    <>
+      {shown.length > 0 && (
+        <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
+          <table id={id} className="dt w-full min-w-[640px] text-left text-sm">
+            <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
+              <tr>
+                <th scope="col" className="w-[38%] px-4 py-2.5 font-semibold">College</th>
+                <th scope="col" className="px-4 py-2.5 font-semibold">Its own stipend a month · year 1 · 2 · 3</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {shown.map((c) => (
+                <tr
+                  key={`${c.instituteId}-${c.name}`}
+                  data-row=""
+                  data-f-status={c.status === "states_no_stipend" ? "none" : "official"}
+                  data-f-type={c.type.toLowerCase().startsWith("deemed") ? "deemed" : "private"}
+                  data-s-name={c.name.toLowerCase()}
+                  {...(c.y[0] ? { "data-s-y1": c.y[0] } : {})}
+                  className="align-top"
+                >
+                  <th scope="row" className="px-4 py-2.5 font-medium">
+                    {c.slug ? (
+                      <Link href={`/md-ms-india/colleges/${c.slug}#official-stipend`} className="text-foreground hover:text-primary hover:underline">
+                        {c.name}
+                      </Link>
+                    ) : (
+                      <span className="text-foreground">{c.name}</span>
+                    )}
+                    <span className="mt-0.5 block text-[12px] font-normal text-muted-foreground">
+                      {c.type} · {sourceWords(c.status, c.session)}
+                    </span>
+                  </th>
+                  <td className="px-4 py-2.5 text-[13.5px] leading-snug">
+                    <span className={c.y[0] || nmcReturn(c.asWritten) ? "tnum font-semibold text-foreground" : "text-foreground"}>{collegeStipendText(c)}</span>
+                    {c.y[0] && c.periodUnstated && <span className="mt-0.5 block text-[12px] text-muted-foreground">The document prints no period: read as a month</span>}
+                    {c.branches && (
+                      <span className="mt-1 block text-[12.5px] leading-relaxed text-muted-foreground">
+                        {c.branches.map(([b, v], i) => (
+                          <span key={b}>
+                            {i > 0 && " · "}
+                            {b} <span className="tnum font-semibold text-foreground">{v}</span>
+                          </span>
+                        ))}
                       </span>
-                    ))}
-                  </span>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      <UnconfirmedColleges colleges={later} text={unconfirmed} anchor="official-stipend" />
+    </>
   );
 }
 
@@ -223,7 +232,7 @@ export function CollegeOfficialStipend({ name, row, govt, state, stateSlug }: { 
             <p className="mt-3 text-[15px] leading-relaxed text-foreground">{collegeStipendText(row)}</p>
           )}
           {row.status !== "not_verified" && row.asWritten && row.y[0] && <p className="mt-3 text-[13.5px] leading-relaxed text-muted-foreground">As written: {row.asWritten}</p>}
-          {row.status === "not_verified" && <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">NMC requires every college to pay PG students at par with the state's government colleges and to publish what it pays.</p>}
+          {row.status === "not_verified" && <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">NMC requires every college to pay PG students at par with the state's government colleges and to publish what it pays. Our counsellors confirm what it pays for you before you choose it.</p>}
           {row.session && row.status !== "not_verified" && <p className="mt-2 text-[13px] text-muted-foreground">Session: {row.session}</p>}
           {row.source && <Sources sources={[row.source]} className="mt-4 border-t border-border pt-4" />}
         </>

@@ -202,7 +202,7 @@ export default async function StipendPage() {
       />
 
       {off && (
-        <section className="container-custom py-10 md:py-14" id="official">
+        <section className="container-custom py-8 md:py-10" id="official">
           <SectionHead icon="authority" eyebrow="Official · 2026-27" title={oc.hub_title} intro={oc.hub_intro} />
           <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
             <table className="dt w-full min-w-[820px] text-left text-sm">
@@ -247,7 +247,7 @@ export default async function StipendPage() {
         </section>
       )}
 
-      <section className="container-custom py-10 md:py-14">
+      <section className="container-custom py-8 md:py-10">
         <SectionHead
           icon="money"
           eyebrow="State by state"
@@ -321,7 +321,7 @@ export default async function StipendPage() {
       </section>
 
 
-      <section className="cv-auto border-t border-border bg-surface-1 py-10 md:py-14">
+      <section className="cv-auto border-t border-border bg-surface-1 py-8 md:py-10">
         <div className="container-custom">
           <SectionHead icon="trend" eyebrow="Top 25" title="Highest PG stipends" />
           <p className="mt-2 max-w-[70ch] text-muted-foreground">
@@ -366,7 +366,7 @@ export default async function StipendPage() {
         counsel={{ kind: "stipend", placement: "counsel_stipend" }}
       />
 
-      <section className="cv-auto container-custom py-10 md:py-14">
+      <section className="cv-auto container-custom py-8 md:py-10">
         <SectionHead icon="help" eyebrow="FAQ" title="PG stipend: common questions" />
         <div className="mt-6 space-y-3">
           {faqs.map((f) => (

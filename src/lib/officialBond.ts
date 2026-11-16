@@ -314,7 +314,7 @@ export const STATUS_LABEL: Record<BondStatus, string> = {
   official_2026_27: "Official, 2026-27",
   official_2025_26_only: "Official, latest sheet",
   none_in_official_documents: "No bond in its documents",
-  not_verified: "Ask the college",
+  not_verified: "Not confirmed yet",
 };
 
 /** ₹40 L / ₹1.5 Cr / ₹25,000. */
