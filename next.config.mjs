@@ -135,6 +135,9 @@ const nextConfig = {
   async redirects() {
     const tool = "/neet-college-predictor";
     return [
+      // Old-site addresses Google still asks for (Search Console's 404 list, 2026-11-16): the home page.
+      { source: "/index.html", destination: "/", permanent: true },
+      { source: "/index.php", destination: "/", permanent: true },
       { source: "/mbbs-india/predictor", destination: `${tool}?course=mbbs`, permanent: true },
       { source: "/md-ms-india/predictor", destination: `${tool}?course=pg`, permanent: true },
       { source: "/mbbs-india/rounds", destination: `${tool}?course=mbbs`, permanent: true },
