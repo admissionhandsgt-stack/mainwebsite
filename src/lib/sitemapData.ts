@@ -1,4 +1,5 @@
 import { unstable_cache } from "next/cache";
+import { singleFlight } from "@/lib/singleFlight";
 import { getBranches } from "@/lib/branchQueries";
 import { getBranchStateCombos } from "@/lib/branchStateQueries";
 import { getPgStates } from "@/lib/pgStateQueries";
@@ -114,7 +115,8 @@ const rows = <T,>(r: unknown) => r as unknown as T[];
  * The database-backed half. Throwing here means nothing is cached, which is
  * the point — a blank result must never be stored.
  */
-const loadSitemapData = unstable_cache(
+// One rebuild at a time (lib/singleFlight.ts): the "More on …" block on every page reads this through sitemapGroups().
+const loadSitemapData = singleFlight(unstable_cache(
   async () => {
     const [hidden, pg, st, terms, mccLive, ugRanks] = await Promise.all([
       db.execute(sql`SELECT route FROM page_seo WHERE no_index = true`),
@@ -178,7 +180,7 @@ const loadSitemapData = unstable_cache(
   },
   ["sitemap-routes-v6"],
   { revalidate: 86400, tags: ["sitemap"] },
-);
+));
 
 /**
  * `lastmod` is only worth sending when it is true. A college page changes when
@@ -197,7 +199,10 @@ const LIVE_BANDS_FROM = "2026-11-09";
 /** A slug as a URL path segment. A raw "&" in two state slugs once made the whole file invalid XML. */
 const seg = (slug: string) => encodeURIComponent(slug);
 
-export async function sitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry[]>> {
+/** Concurrent callers share one build (lib/singleFlight.ts). */
+export const sitemapGroups = singleFlight(buildSitemapGroups);
+
+async function buildSitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry[]>> {
   let noIndex = new Set<string>();
   let colleges: { level: string; slug: string; updated: string }[] = [];
   let states: string[] = [];

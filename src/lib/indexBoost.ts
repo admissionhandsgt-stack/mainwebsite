@@ -18,6 +18,7 @@ import { db } from "@/db/client";
 import { sitemapGroups, BASE } from "@/lib/sitemapData";
 import { getBranches } from "@/lib/branchQueries";
 import { collegeName } from "@/lib/collegeName";
+import { singleFlight } from "@/lib/singleFlight";
 
 const INDEXED = "Submitted and indexed";
 const MAX = 8;
@@ -33,7 +34,8 @@ interface BoostData {
 
 const rows = <T,>(r: unknown) => r as unknown as T[];
 
-const load = unstable_cache(
+// One rebuild at a time after the tag is revalidated (lib/singleFlight.ts — this block is on every page).
+const load = singleFlight(unstable_cache(
   async (): Promise<BoostData> => {
     const [status, groups, inst, states, branches] = await Promise.all([
       db.execute(sql`SELECT path, coverage FROM index_status`),
@@ -63,7 +65,7 @@ const load = unstable_cache(
   },
   ["index-boost-v1"],
   { revalidate: 21600, tags: ["index-status", "sitemap"] },
-);
+));
 
 /** A stable order that changes once a week (ISO week), so each waiting page takes its turn. */
 function weekOrder(path: string): number {
