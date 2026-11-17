@@ -112,6 +112,7 @@ export async function generateMetadata(props: { params: Promise<Params> }): Prom
   const d = await load(params);
   if (!d) return { title: "Not found", robots: { index: false, follow: false } };
   const { year, spec, state, result, prev, when } = d;
+  const hold = d.year === d.current ? d.row?.hold ?? null : null;
   const path = roundPath(year, spec.slug);
   const lc = spec.label.toLowerCase();
   const T = spec.round; // "Round 1", "Stray Vacancy Round"
@@ -144,6 +145,20 @@ export async function generateMetadata(props: { params: Promise<Params> }): Prom
         `MCC has published the NEET PG ${year} ${lc} result. MCC's own PDF link here, with seats by branch, quota and category and the branch-wise last rank.`,
       ),
       keywords,
+    });
+  } else if (hold) {
+    // MCC has put the round on hold (2026-11-17, Round 2: the Madras High Court's interim stay) — said in the title, as it
+    // is searched ("neet pg round 2 result on hold"), with MCC's reason in the description.
+    meta = await resolveMetadata(path, {
+      title: fitTitle(`NEET PG ${T} Result ${year} On Hold: MCC's Latest Notice`, `NEET PG ${T} Result ${year} On Hold`, `NEET PG ${year} ${T} Result On Hold`),
+      description: fitDescription(
+        `NEET PG ${year} ${lc} result is on hold: ${hold.text.replace(/\.$/, "")}. MCC's notice is linked here; the result, seat allotment and branch-wise last rank are here the moment MCC declares it.`,
+        `NEET PG ${year} ${lc} result is on hold: ${hold.text.replace(/\.$/, "")}. MCC's notice is linked here.`,
+        // The reason's first clause ("the Madras High Court's interim stay of 17 Nov 2026"), for a snippet that fits.
+        `NEET PG ${year} ${lc} result is on hold after ${hold.text.split(/\s\(|,|;/)[0].trim()}. MCC's notice and the latest update here.`,
+        `NEET PG ${year} ${lc} result is on hold — MCC's notice and the latest update here.`,
+      ),
+      keywords: `${keywords}, NEET PG ${lc} result on hold, NEET PG ${year} ${lc} stay`,
     });
   } else {
     const overdueMeta = !!when?.expected && Date.now() > when.expected.getTime() + 18.5 * 3600 * 1000; // past midnight IST after MCC's day
@@ -251,6 +266,7 @@ export default async function RoundResultPage(props: { params: Promise<Params> }
     choice_locking: steps?.choiceLocking,
     result_date: steps?.result,
     reporting: steps?.reporting,
+    hold: year === current ? row?.hold?.text?.replace(/\.$/, "") : undefined,
   };
   const [copy, body, heroImage, shownBody] = await Promise.all([
     pageCopy("page.pg_round.hero", tokens),
@@ -274,13 +290,17 @@ export default async function RoundResultPage(props: { params: Promise<Params> }
   // MCC's day has passed (the window's last date, from midnight IST after it) and nothing
   // is out: say so, never "expected around" a past date (owner, 2026-11-17).
   const overdue = !live && !out && !!when?.expected && Date.now() > when.expected.getTime() + 18.5 * 3600 * 1000;
-  const accent = live ? copy.accent_live : out ? copy.accent_out : overdue ? copy.accent_overdue : expected ? copy.accent_pending : copy.accent_pending_nodate;
+  // MCC has put the round on hold (the admin's schedule row carries MCC's reason): that, before any date.
+  const held = !live && !out && year === current && !!row?.hold;
+  const accent = live ? copy.accent_live : out ? copy.accent_out : held ? copy.accent_hold : overdue ? copy.accent_overdue : expected ? copy.accent_pending : copy.accent_pending_nodate;
   const subtitle = live
     ? copy.subtitle_live
     : state.status === "failed"
       ? copy.subtitle_failed
       : out
         ? copy.subtitle_out
+        : held
+          ? copy.subtitle_hold
         : overdue && steps?.result
           ? copy.subtitle_overdue
           : when

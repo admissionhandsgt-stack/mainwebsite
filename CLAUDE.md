@@ -528,6 +528,16 @@ filling, process, year hub, round page). Applying a schedule (Zyn or Admin → N
 three fields in Admin → Content → "NEET PG · MCC schedule" (`scripts/sql/pg_schedule_revision_fields_2026_11_09.sql` adds
 them to the form — run after the release). Words: "Site: MCC dates may change".
 
+**A round on hold (2026-11-17, owner: "website par update daldo notice aya hai MCC round 2 on hold").** MCC Notice No. 10
+of 17.11.2026 kept the Round 2 result's seat processing on hold after the Madras High Court's interim stay (WP No. 46350 of
+2026, Sri Venkateshwaraa Medical College v. Govt. of India — all further admission and joining by MCC and CENTAC stayed;
+result only after the court's clarification). `pg_schedule` rows take `hold`, `hold_url`, `hold_on` (Admin → Content →
+"NEET PG · MCC schedule"): while `hold` is set, the round's page title says "On Hold", the hero says "on hold" with that
+reason (copy `accent_hold`, `subtitle_hold`, `chip_hold`), and the year page's badge reads "On hold". The same notice sits
+in `revision` (the "dates may change" line above every table of MCC dates). `scripts/sql/pg_schedule_round2_hold_2026_11_17.sql`
+set Round 2's, and retitled the alerts-bar item. **When MCC lifts the hold, empty `hold`, `hold_url`, `hold_on` and the
+three `revision` fields the same day.** Zyn's notice came as kind "result", so `scheduleRevision()` did not catch it.
+
 **The choice-filling page follows the running round** (same day): title/H1/description name the round the Telegram cue names
 (`getTelegramCue`, the first round 1–4 whose result is not out) with its choice-filling and locking dates —
 "NEET PG Round 2 Choice Filling 2026: Dates, Locking & Upgradation". `components/lead/ChoiceStrategy` ("Filling choices is the

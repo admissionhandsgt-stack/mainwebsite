@@ -100,6 +100,9 @@ export default async function CounsellingYearPage(props: { params: Promise<Param
     if (r.result) return { text: body.chip_live, tone: "live" as const };
     if (r.state.status === "detected") return { text: body.chip_out, tone: "out" as const };
     if (r.state.status === "failed") return { text: body.chip_failed, tone: "out" as const };
+    // MCC has put the round on hold (the admin's schedule row, `hold`).
+    if (year === current && r.spec.schedule && schedule.find((s) => s.round.trim().toLowerCase() === r.spec.schedule)?.hold)
+      return { text: body.chip_hold, tone: "pending" as const };
     return {
       text: r.when?.expected
         ? (Date.now() > r.when.expected.getTime() + 18.5 * 3600 * 1000 ? body.chip_overdue : body.chip_pending).replace("{expected}", DAY.format(r.when.expected))

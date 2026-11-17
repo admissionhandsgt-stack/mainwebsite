@@ -33,6 +33,12 @@ export type ScheduleRound = {
    * galat info dikhate na rahe").
    */
   revision?: { title: string; url?: string; on?: string };
+  /**
+   * MCC has put the round on hold (2026-11-17: Round 2's result "kept on hold" after the Madras High Court's interim
+   * stay, MCC Notice No. 10). Set in Admin → Content → "NEET PG · MCC schedule" (`hold`, `hold_url`, `hold_on`); while it
+   * is set, the round's page says "on hold" with MCC's reason instead of "expected" or "later than MCC's schedule".
+   */
+  hold?: { text: string; url?: string; on?: string };
 };
 
 export const NEET_PG_SCHEDULE = {

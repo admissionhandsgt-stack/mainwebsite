@@ -4328,6 +4328,15 @@ export const PAGE_COPY = {
       // Owner, 2026-11-17 ("date bhi galat… chije change hoti rehti hai"): once MCC's scheduled day has passed and the
       // result is not out, the page says so instead of "expected around" a past date.
       accent_overdue: { label: "Hero title, coloured part, MCC's date passed and not out", value: "not out yet, later than MCC's schedule" },
+      // 2026-11-17: MCC kept Round 2's result on hold (Madras High Court's interim stay, Notice No. 10). Shown while the
+      // round's row in "NEET PG · MCC schedule" carries `hold` (MCC's reason, as {hold}).
+      accent_hold: { label: "Hero title, coloured part, MCC has put the round on hold", value: "on hold" },
+      subtitle_hold: {
+        label: "Hero line, round on hold — {round}, {hold} (the reason, from the schedule row)",
+        value:
+          "MCC has kept the {round} result on hold: {hold}. It is here the moment MCC declares it: MCC's own PDF, seats allotted by branch, quota, category and state, and the last rank admitted in each branch. Do not pay a fee or join on the basis of any unofficial list.",
+        long: true,
+      },
       subtitle_overdue: {
         label: "Hero line, MCC's date passed and not out — {round}, {result_date}, {expected}",
         value:
@@ -4637,6 +4646,7 @@ export const PAGE_COPY = {
       chip_pending: { label: "Badge: expected — {expected}", value: "Expected {expected}" },
       chip_pending_nodate: { label: "Badge: not out", value: "Not out yet" },
       chip_overdue: { label: "Badge: MCC's date passed, not out — {expected}", value: "Due {expected}, not out yet" },
+      chip_hold: { label: "Badge: MCC has put the round on hold", value: "On hold" },
       schedule_title: { label: "Schedule heading — {year}", value: "MCC's schedule, {year}" },
       schedule_intro: {
         label: "Schedule line",
