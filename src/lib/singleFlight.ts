@@ -17,3 +17,23 @@ export function singleFlight<T>(fn: () => Promise<T>): () => Promise<T> {
     return inFlight;
   };
 }
+
+/**
+ * For data a page render reads but need not have fresh to the second (the reviewer line's date, the "More on …" block):
+ * one shared build at a time, and a caller waits at most `waitMs` for it when an earlier result is in memory — after
+ * that it gets the earlier result while the build finishes. Only the first call in a fresh process waits for the build.
+ */
+export function fastOrLast<T>(fn: () => Promise<T>, waitMs = 250): () => Promise<T> {
+  let last: { v: T } | null = null;
+  const shared = singleFlight(async () => {
+    const v = await fn();
+    last = { v };
+    return v;
+  });
+  return async () => {
+    const p = shared();
+    if (!last) return p;
+    const quick = await Promise.race([p.then((v) => ({ v }), () => null), new Promise<null>((r) => setTimeout(() => r(null), waitMs))]);
+    return (quick ?? last).v;
+  };
+}

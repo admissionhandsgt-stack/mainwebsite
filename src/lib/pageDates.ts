@@ -6,8 +6,10 @@
 import { unstable_cache } from "next/cache";
 import { headers } from "next/headers";
 import { sitemapGroupsForPage } from "@/lib/sitemapData";
+import { fastOrLast } from "@/lib/singleFlight";
 
-export const getPageDates = unstable_cache(
+// A page never waits on a rebuild when an earlier result is in memory (lib/singleFlight.ts fastOrLast).
+export const getPageDates = fastOrLast(unstable_cache(
   async (): Promise<Record<string, string>> => {
     const groups = await sitemapGroupsForPage();
     const out: Record<string, string> = {};
@@ -21,7 +23,7 @@ export const getPageDates = unstable_cache(
   },
   ["page-dates-v1"],
   { revalidate: 3600, tags: ["sitemap"] },
-);
+));
 
 /** The current request's path, as the middleware passes it (`x-ah-path`). */
 export const currentPath = async () => (await headers()).get("x-ah-path") ?? null;

@@ -7,6 +7,8 @@ export async function register() {
     // while a rebuild runs (lib/sitemapData.ts sitemapGroupsForPage; 2026-11-17 slowdown). Off the start-up path.
     setTimeout(() => {
       import("@/lib/sitemapData").then((m) => m.sitemapGroups()).catch(() => undefined);
+      import("@/lib/pageDates").then((m) => m.getPageDates()).catch(() => undefined);
+      import("@/lib/indexBoost").then((m) => m.getIndexBoost("/")).catch(() => undefined);
     }, 15_000);
   }
 }
