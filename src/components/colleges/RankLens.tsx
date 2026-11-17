@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Search, X, Loader2 } from "lucide-react";
 import { checkRank } from "@/lib/neetLimits";
-import { aaTrack, aaCourse } from "@/lib/analytics";
+import { trackEvent, aaCourse } from "@/lib/analytics";
 
 /**
  * The rank lens over a college directory.
@@ -168,7 +168,7 @@ export function RankLensBar({
         onSubmit={(e) => {
           e.preventDefault();
           if (valid) {
-            aaTrack("cutoff_search", { course: aaCourse(level), category: lens.category });
+            trackEvent("cutoff_search", { course: aaCourse(level), category: lens.category, source_page: window.location.pathname });
             lens.apply(parsed);
           }
         }}

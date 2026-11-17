@@ -84,24 +84,12 @@ export const trackEvent = (eventName: string, payload?: EventPayload) => {
   }
 };
 
-/* ------------------------------------------------------------- AutoLoom */
+/* AutoLoom Analytics was removed on 2026-11-17 (owner: "Autoloom sdk hatado — google search console use kar hi rahe
+   hai"). Its events now go to GA4 where GA4 did not already have them (cutoff_search, the counselling panel's
+   whatsapp_click / call_click); college_viewed, pdf_download and counsellor_chat_opened are GA4's own page views,
+   file downloads and outbound clicks. */
 
-export type AAProps = Record<string, string | number | boolean | null | undefined>;
-
-/**
- * An AutoLoom Analytics event (the SDK is loaded in the root layout, beside GA4).
- * Queued on window.aa, so an event fired before the script arrives is kept.
- * Personal data is stripped here rather than trusted to every caller: no name,
- * phone, email, NEET rank or roll number ever leaves the page.
- */
-export function aaTrack(event: string, props: AAProps = {}) {
-  if (typeof window === "undefined") return;
-  const w = window as Window & { aa?: unknown[] };
-  w.aa = w.aa || [];
-  w.aa.push(["track", event, sanitize(props)]);
-}
-
-/** The course word AutoLoom reports: "mbbs", "bds" or "md-ms". */
+/** The course word events report: "mbbs", "bds" or "md-ms". */
 export const aaCourse = (v: string | null | undefined) =>
   v === "pg" || v === "md-ms" ? "md-ms" : v === "bds" ? "bds" : v ? "mbbs" : undefined;
 
@@ -118,8 +106,7 @@ export interface LeadProps {
 
 /**
  * A lead, after the server has accepted it — the one call every form makes.
- * AutoLoom gets `lead_form_submitted`, GA4 gets its recommended `generate_lead`
- * with the same non-personal fields (2026-10-17).
+ * GA4 gets its recommended `generate_lead` with non-personal fields only (2026-10-17).
  */
 export function trackLead({ form, course, state, rank }: LeadProps) {
   if (typeof window === "undefined") return;
@@ -130,7 +117,6 @@ export function trackLead({ form, course, state, rank }: LeadProps) {
     rank_band: rankBand(rank),
     source_page: window.location.pathname,
   };
-  aaTrack("lead_form_submitted", common);
   trackEvent("generate_lead", { ...common, lead_source: form });
   metaTrack("Lead", { content_category: form, content_name: common.course });
 }
@@ -149,12 +135,11 @@ export function metaTrack(event: "Lead" | "CompleteRegistration" | "Contact", pr
 
 /**
  * A new account, once the sign-in code is redeemed (an account and a lead now
- * exist). GA4's recommended `sign_up`, plus the same lead event to AutoLoom.
+ * exist). GA4's recommended `sign_up`.
  */
 export function trackSignUp({ course, rank }: { course?: string | null; rank?: unknown }) {
   if (typeof window === "undefined") return;
   const common = { course: aaCourse(course ?? undefined), rank_band: rankBand(rank), source_page: window.location.pathname };
-  aaTrack("lead_form_submitted", { form: "sign_up", ...common });
   trackEvent("sign_up", { method: "phone_code", ...common });
   metaTrack("CompleteRegistration", { content_name: common.course });
 }

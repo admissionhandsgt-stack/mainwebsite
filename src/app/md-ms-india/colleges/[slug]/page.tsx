@@ -22,7 +22,6 @@ import CounsellorEdge from "@/components/home/CounsellorEdge";
 import TelegramJoin from "@/components/engage/TelegramJoin";
 import PhotoCredit from "@/components/ui/PhotoCredit";
 import { getPgCollegePhoto } from "@/lib/content";
-import TrackView from "@/components/analytics/TrackView";
 import { foldListed, getCollegeSeatMatrix, getCollegeSeatTerms, termsSession } from "@/lib/pgSeatData";
 import { getReportedStipends } from "@/lib/collegeResearch";
 import { pageCopy } from "@/lib/pageCopy";
@@ -305,7 +304,6 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
 
   return (
     <main className="min-h-screen bg-background">
-      <TrackView event="college_viewed" props={{ college_slug: params.slug, course: "md-ms", state: college.state }} />
       {jsonLd.map((schema, i) => (
         <script
           key={i}

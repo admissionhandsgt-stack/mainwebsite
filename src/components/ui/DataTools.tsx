@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Link2, RotateCcw, Search } from "lucide-react";
-import { trackEvent, aaTrack } from "@/lib/analytics";
+import { trackEvent } from "@/lib/analytics";
 
 /**
  * Find, filter and sort on a data page (2026-11-11; owner: "informative pages par smart modern tarike se sort & filtering…
@@ -96,7 +96,6 @@ export default function DataTools({
     if (used.current.has(control)) return;
     used.current.add(control);
     trackEvent("data_tool", { placement, control });
-    aaTrack("data_tool", { placement, control });
   };
 
   // Collect the rows once, after hydration; remember the page's own order and each group's spanning cell.

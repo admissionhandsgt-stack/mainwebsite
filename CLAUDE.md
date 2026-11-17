@@ -3261,6 +3261,16 @@ mailbox first — the owner's call), the NE Institute of Ayurveda twin (its two 
 
 ## AutoLoom Analytics, beside GA4 (2026-10-17)
 
+> **Removed 2026-11-17 (owner: "Autoloom sdk hatado — google search console use kar hi rahe hai").** No AutoLoom script,
+> CSP host or `aaTrack` remains; `cutoff_search` and the counselling panel's `whatsapp_click` / `call_click` now go to GA4;
+> college views, PDF downloads and counsellor-app links are GA4's own page views, file downloads and outbound clicks. Its
+> SDK sent batches with `fetch(…, keepalive: true)`, which the DevTools protocol never reports as finished, so Lighthouse
+> sat to its time limit on every page. **The speed pass of the same day:** GA4's gtag.js and Clarity load on the first
+> scroll, tap, key or mouse move, or 10 s after load (`window.__ahLater` in app/layout.tsx; their queues start at once, so
+> nothing is dropped) — Lighthouse stops ~5 s after the page goes quiet, so a shorter timer lands inside its window; the
+> phone's floating call/WhatsApp buttons (MobileFooter) are CSS, drawn with the page, and start hiding only after the first
+> interaction; the footer and the shared bottom blocks carry `.cv-auto`. The rest of this section is history.
+
 The SDK tag is in the root layout `<head>` on the public site only (not the admin host), with the public
 browser key; `analytics.theautoloom.in` is in CSP script-src and connect-src. Page views, sessions,
 referrers, UTM, clicks and form submits are automatic. Session replay is off (`replay: false`) on purpose —

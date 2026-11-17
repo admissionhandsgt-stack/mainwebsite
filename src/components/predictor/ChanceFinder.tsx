@@ -12,7 +12,7 @@ import ChanceInsight, { ChanceBar } from "./ChanceInsight";
 import ChanceResults from "./ChanceResults";
 import ProfileWizard, { draftFrom, essentialsDone, type Draft } from "./ProfileWizard";
 import type { PredictData, RoundsData, StreamFacets, Viewer } from "./chanceTypes";
-import { aaTrack, aaCourse, trackLead } from "@/lib/analytics";
+import { trackEvent, aaCourse, trackLead } from "@/lib/analytics";
 import { TeamFigure } from "@/components/engage/TeamFigures";
 
 /**
@@ -166,7 +166,7 @@ export default function ChanceFinder({
   /** Step one: the free answer. */
   const run = async () => {
     if (!checked.ok) return setError(checked.error);
-    aaTrack("cutoff_search", { course: aaCourse(stream), category: cat, state: draft.domicileState || undefined });
+    trackEvent("cutoff_search", { course: aaCourse(stream), category: cat, state: draft.domicileState || undefined, source_page: window.location.pathname });
     setError(null);
     setLoading(true);
     try {

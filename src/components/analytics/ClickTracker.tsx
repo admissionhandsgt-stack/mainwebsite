@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { aaTrack, trackEvent, metaTrack } from "@/lib/analytics";
+import { trackEvent, metaTrack } from "@/lib/analytics";
 import { rememberNudge } from "@/components/engage/EngagementLayer";
 
 /**
@@ -43,7 +43,6 @@ export default function ClickTracker() {
       const placement = a.dataset.placement || "other";
       const both = (name: string) => {
         tap(name === "call_click" ? "call" : "whatsapp", placement);
-        aaTrack(name, { source_page });
         trackEvent(name, { placement, source_page });
         metaTrack("Contact", { content_category: name === "call_click" ? "call" : "whatsapp", content_name: placement });
       };
@@ -56,24 +55,18 @@ export default function ClickTracker() {
         return;
       }
       const host = url.hostname.toLowerCase();
-      if (host === "ah.aismartscan.in") return aaTrack("counsellor_chat_opened", { source_page });
       if (host === "t.me" || host === "telegram.me") {
         // Somebody who has gone to the channel is not invited to it again.
         rememberNudge("telegram");
         tap("telegram", placement);
-        aaTrack("telegram_click", { placement, source_page });
         return trackEvent("telegram_click", { placement, source_page });
       }
       // Google "Preferred Sources" button (footer, "Reviewed by" line): how many readers go to pick us.
       if (host === "www.google.com" && url.pathname === "/preferences/source") {
-        aaTrack("preferred_source_click", { placement, source_page });
         return trackEvent("preferred_source_click", { placement, source_page });
       }
       if (host === "wa.me" || host.endsWith("whatsapp.com") || (host === window.location.hostname && url.pathname.startsWith("/chat/"))) {
         return both("whatsapp_click");
-      }
-      if (/\.pdf$/i.test(url.pathname)) {
-        return aaTrack("pdf_download", { file: decodeURIComponent(url.pathname.split("/").pop() ?? "").slice(0, 120), source_page });
       }
     };
     document.addEventListener("click", onClick, { capture: true });

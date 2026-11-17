@@ -141,7 +141,7 @@ export default async function RootLayout({
             tasks on a phone, and their traffic kept PageSpeed's trace open for 35 s. Lighthouse stops once the page has
             been quiet for ~5 s after load, i.e. about load + 7 s — a 6 s timer still landed inside it. Their commands
             queue from the start, so nothing is dropped; only a visitor who leaves within 10 s without touching, scrolling
-            or moving the mouse goes uncounted. */}
+            or moving the mouse goes uncounted. (AutoLoom's SDK was loaded the same way until it was removed, 2026-11-17.) */}
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){var q=[],d=0,C=["pointerdown","keydown","touchstart","mousemove"],B=["scroll","wheel"];function go(e){if(d)return;if(e&&e.type==="scroll"&&e.target!==document)return;d=1;window.__ahLaterWhy=e?e.type:"timer";try{performance.mark("ah-later:"+window.__ahLaterWhy)}catch(x){}C.forEach(function(n){removeEventListener(n,go,true)});B.forEach(function(n){removeEventListener(n,go)});var f;while((f=q.shift()))try{f()}catch(x){}}C.forEach(function(n){addEventListener(n,go,{capture:true,passive:true})});B.forEach(function(n){addEventListener(n,go,{passive:true})});function t(){setTimeout(go,10000)}document.readyState==="complete"?t():addEventListener("load",t);window.__ahLater=function(f){d?f():q.push(f)}})();`,
@@ -160,45 +160,6 @@ export default async function RootLayout({
         {/* Ahrefs Webmaster Tools' ownership check (2026-11-12), same rules: public code, only its own shape. */}
         {!isAdmin && /^[a-f0-9]{64}$/i.test(setting(settings, 'seo.verify.ahrefs').trim()) && (
           <meta name="ahrefs-site-verification" content={setting(settings, 'seo.verify.ahrefs').trim()} />
-        )}
-        {/* AutoLoom Analytics, beside GA4. The write key is the public browser key.
-            Not on the admin host: staff sessions are not visitors, and admin URLs
-            name individual leads.
-
-            Initialised from the queue rather than with data-write-key on the tag,
-            because only init() takes redactQueryParams: the predictor and the rank
-            lens keep the rank in the URL (?rank=23456), and every page view and
-            click would otherwise carry it. The SDK drops these params from the page
-            URL, the referrer and clicked links' hrefs. With no data-write-key there
-            is no second, unredacted init to fall back to — if this one is not run,
-            nothing is tracked. Session replay records the page, forms included —
-            where students type their name, phone and rank. Off until the owner
-            decides otherwise. */}
-        {!isAdmin && (
-          <>
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `window.aa=window.aa||[];window.aa.push(["init",${JSON.stringify({
-                  writeKey: "pk_prod_SGbTggoA1rvgFPeWpR29J3CKPXzTsvY0",
-                  host: "https://analytics.theautoloom.in",
-                  autoPageviews: "history",
-                  autocapture: true,
-                  inAppMessages: true,
-                  replay: false,
-                  redactQueryParams: ["rank", "air", "score", "roll", "phone", "mobile", "email"],
-                })}]);`,
-              }}
-            />
-            {/* The SDK itself waits for window.__ahLater, like GA and Clarity (2026-11-17): it sends its batches with
-                fetch(…, keepalive: true), which the DevTools protocol never reports as finished, so Lighthouse sat to its
-                35–45 s limit on every page ("The page loaded too slowly to finish") and caught GA and Clarity inside its
-                window. Calls made before it loads wait in window.aa above, so no event of ours is lost. */}
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `(window.__ahLater||function(f){f()})(function(){var s=document.createElement('script');s.defer=true;s.src='https://analytics.theautoloom.in/sdk/v1/analytics.js';document.head.appendChild(s);});`,
-              }}
-            />
-          </>
         )}
       </head>
       <body className="antialiased font-body overflow-x-hidden supports-[overflow:clip]:overflow-x-clip bg-background text-foreground transition-colors duration-200">

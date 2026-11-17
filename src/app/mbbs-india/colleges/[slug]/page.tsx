@@ -20,7 +20,6 @@ import { generalBands } from "@/lib/cutoffBands";
 import CutoffBands from "@/components/colleges/CutoffBands";
 import CounsellorEdge from "@/components/home/CounsellorEdge";
 import TelegramJoin from "@/components/engage/TelegramJoin";
-import TrackView from "@/components/analytics/TrackView";
 import TelegramStrip from "@/components/engage/TelegramStrip";
 import { jsonLd as toJsonLd } from "@/lib/jsonLd";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
@@ -136,7 +135,6 @@ export default async function UgCollegePage(props0: { params: Promise<{ slug: st
 
   return (
     <main className="min-h-screen bg-background">
-      <TrackView event="college_viewed" props={{ college_slug: params.slug, course: "mbbs", state: college.state }} />
       {jsonLd.map((schema, i) => (
         <script
           key={i}

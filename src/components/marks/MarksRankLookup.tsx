@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "@/components/ui/Link";
-import { rankBand, trackEvent, aaTrack } from "@/lib/analytics";
+import { rankBand, trackEvent } from "@/lib/analytics";
 
 /**
  * Score → the rank range NBEMS gave it → the MD/MS branches whose All India Quota seats in the running
@@ -65,7 +65,6 @@ export default function MarksRankLookup({
     setShown({ score: s, cat });
     const r = byScore.get(s)!;
     trackEvent("marks_rank_lookup", { exam: "pg", rank_band: rankBand(r[2]) });
-    aaTrack("marks_rank_lookup", { exam: "pg", rank_band: rankBand(r[2]) ?? "" });
   };
 
   const r = shown ? byScore.get(shown.score) : null;
