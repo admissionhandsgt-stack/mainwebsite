@@ -61,7 +61,7 @@ export default function ClarityTag({ id }: { id: string }) {
     };
     window.addEventListener("popstate", guard);
 
-    // Clarity's own loader; its script waits for the first scroll, tap or key, or 6 s after load (the layout's
+    // Clarity's own loader; its script waits for the first scroll, tap, key or mouse move, or 10 s after load (the layout's
     // window.__ahLater) — it was ~180 ms of long tasks while the page was still settling on a phone.
     if (!window.clarity) {
       const c = function (...args: unknown[]) {
