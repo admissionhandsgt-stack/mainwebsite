@@ -344,13 +344,16 @@ async function buildSitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry[]
       const listed = ROUNDS.filter((r, i) => states[i]?.status !== "pending" || r === next);
       if (!listed.length) continue;
       const day = (s: (typeof states)[number]) => (s?.updatedAt ?? s?.publishedAt ?? "").slice(0, 10) || undefined;
-      const latest = newest(states.map((s) => day(s) ?? "")) || undefined;
+      // This year's pages also print MCC's schedule, a hold or a "dates may change" notice (pg_schedule): their date
+      // moves when that does (2026-11-17: Round 2's hold went up, and the awaited page had no lastmod at all).
+      const sched = year === current ? scheduleDay ?? "" : "";
+      const latest = newest([...states.map((s) => day(s) ?? ""), sched]) || undefined;
       out.hubs.push({ url: `${BASE}/neet-pg-counselling/${year}`, lastModified: latest, changeFrequency: year === current ? "daily" : "yearly", priority: year === current ? 0.9 : 0.6 });
       for (const r of listed) {
         const s = states[ROUNDS.indexOf(r)];
         out.hubs.push({
           url: BASE + roundPath(year, r.slug),
-          lastModified: day(s),
+          lastModified: s?.status === "pending" ? newest([day(s) ?? "", sched]) || undefined : day(s),
           changeFrequency: year === current ? "hourly" : "yearly",
           priority: year === current ? 0.9 : 0.6,
         });

@@ -130,6 +130,9 @@ const STALE = { html: 10 * 60 * 1000, image: STALE_MS };
 // answer lets the same crawl reach more pages. A visitor keeps the ten-minute rule; the live test still passes through.
 const SEARCH_BOT = /googlebot|bingbot|google-extended|applebot|duckduckbot|yandex(bot)?|petalbot/i;
 const CRAWLER_STALE_MS = 24 * 60 * 60 * 1000;
+// Pages that follow a live round or MCC's notices keep the visitors' ten-minute rule for crawlers too (2026-11-17:
+// Googlebot was still being handed the Round 2 page from before MCC's hold notice — a day-old copy is wrong there).
+const LIVE_PAGE = /^\/($|neet-pg-counselling(\/.*)?$|neet-pg-counselling-kaise-hoti-hai$|neet-counselling-updates$|neet-pg-choice-filling$|neet-pg-process$|neet-pg-round-3-strategy$)/;
 // Data pages (one college, branch, branch × state, PG state, stipend, fee, city, SS/MDS course, counselling-by-state)
 // change only when an import runs, and most are opened a few times a day per edge, so the ten-minute window sent
 // nearly every visit to Mumbai (MISS 0.15–0.42 s vs HIT 0.06 s; real-user mobile TTFB 1.25 s against Shiksha's
@@ -177,7 +180,9 @@ export default {
       const age = Date.now() - Number(cached.headers.get("x-edge-stored") || 0);
       if (age < FRESH_MS) return finish(toVisitor(cached, "HIT"), url);
       const bot = kind === "html" && SEARCH_BOT.test(request.headers.get("user-agent") || "");
-      const limit = bot ? CRAWLER_STALE_MS : kind === "html" && DATA_PAGE.test(url.pathname) ? DATA_STALE_MS : STALE[kind];
+      const limit = bot
+        ? LIVE_PAGE.test(url.pathname) ? STALE.html : CRAWLER_STALE_MS
+        : kind === "html" && DATA_PAGE.test(url.pathname) ? DATA_STALE_MS : STALE[kind];
       if (age < limit) {
         ctx.waitUntil(revalidate(kind, cache, key, cached.clone(), request, url, env).catch(() => {}));
         return finish(toVisitor(cached, "STALE"), url);
