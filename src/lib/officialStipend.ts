@@ -70,6 +70,12 @@ export interface StipendCollege {
    * (the PG data session, 2026-11-16). Null when the row has a year split (y) or no figure of the college's own.
    */
   oneFigure: number | null;
+  /**
+   * What the college's own earlier declarations show it paid ("History (…): FY 2025-26 … Rs 30,000/- for 1st year…"),
+   * from the PG session's notes, the research remarks in brackets removed (owner, 2026-11-17: Subharti "stipend deta
+   * hai" — its own records show it paid earlier batches, which a "no stipend" line alone hid).
+   */
+  history: string | null;
   source: Source | null;
 }
 
@@ -208,8 +214,18 @@ async function load(): Promise<OfficialStipend | null> {
     const colleges: StipendCollege[] = cols.map((r) => {
       const d = deepClean(parse<JsonObject>(r.data));
       const shown = r.status === "official_2026_27" || r.status === "official_older";
-      const branches = shown && isObj(d.by_branch_as_printed)
-        ? (Object.entries(d.by_branch_as_printed).map(([k, v]) => [k, typeof v === "number" ? `₹${v.toLocaleString("en-IN")}` : str(v) ?? ""]).filter(([, v]) => v) as [string, string][])
+      // Branch by branch as the document prints it — a "no stipend" row too (Subharti's 4(c) option), and a year split
+      // printed as a list reads as its distinct values.
+      const cell = (v: unknown): string => {
+        if (typeof v === "number") return `₹${v.toLocaleString("en-IN")}`;
+        if (Array.isArray(v)) {
+          const vals = [...new Set(v.map((x) => (typeof x === "number" ? `₹${x.toLocaleString("en-IN")}` : str(x))).filter((x): x is string => !!x && x !== "same"))];
+          return vals.join(" / ");
+        }
+        return str(v) ?? "";
+      };
+      const branches = (shown || r.status === "states_no_stipend") && isObj(d.by_branch_as_printed)
+        ? (Object.entries(d.by_branch_as_printed).map(([k, v]) => [k, cell(v)]).filter(([, v]) => v) as [string, string][])
         : null;
       return {
         instituteId: r.institute_id,
@@ -221,6 +237,15 @@ async function load(): Promise<OfficialStipend | null> {
         // Never a figure on a not_verified row; a "no stipend" row has none to show.
         y: shown ? [num(d.y1_inr_pm), num(d.y2_inr_pm), num(d.y3_inr_pm)] : [null, null, null],
         oneFigure: shown && !num(d.y1_inr_pm) ? num(d.pg_one_figure_inr_pm) : null,
+        history: (() => {
+          const seg = (str(d.notes) ?? "").split(" | ").find((x) => /^History\b/.test(x.trim()));
+          if (!seg || r.status === "not_verified") return null;
+          return seg
+            .replace(/^History\s*\([^)]*\)\s*:\s*/i, "")
+            .replace(/\s*\((?:[^()]*https?:[^()]*|[^()]*(?:read by eye|checked|signature)[^()]*)\)/gi, "")
+            .replace(/\s{2,}/g, " ")
+            .trim();
+        })(),
         branches: branches?.length ? branches : null,
         asWritten: r.status === "not_verified" ? null : sentences(str(d.as_written)),
         session: str(d.session),
@@ -238,7 +263,7 @@ async function load(): Promise<OfficialStipend | null> {
   }
 }
 
-export const getOfficialStipend = unstable_cache(load, ["official-stipend-v8"], { revalidate: 3600, tags: ["official-stipend"] });
+export const getOfficialStipend = unstable_cache(load, ["official-stipend-v9"], { revalidate: 3600, tags: ["official-stipend"] });
 
 export async function getOfficialStipendState(name: string) {
   const all = await getOfficialStipend();

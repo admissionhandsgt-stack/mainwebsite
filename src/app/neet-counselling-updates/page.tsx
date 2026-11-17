@@ -1,3 +1,4 @@
+import NoticeSummary from "@/components/states/NoticeSummary";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
 import { ExternalLink } from "lucide-react";
@@ -114,6 +115,7 @@ function List({ id, level, items, slugs, base, empty, keyOf }: { id: string; lev
                   <span className="font-semibold">{n.where}</span>
                 )}
               </p>
+              <NoticeSummary brief={n.brief} points={n.points} />
             </div>
           </li>
         );

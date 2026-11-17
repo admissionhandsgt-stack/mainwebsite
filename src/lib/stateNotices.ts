@@ -56,15 +56,36 @@ export interface StateNotice {
   /** ISO date the notice was published (or first seen). */
   on: string;
   authority: string | null;
+  /** The approved summary and points (Zyn's public_brief / public_points), when the notice carries them. */
+  brief: string | null;
+  points: string[];
 }
 
-type Row = { title: string; url: string | null; on: string | Date; authority: string | null; state: string | null; level: string | null; source: string | null };
+type Row = {
+  title: string;
+  url: string | null;
+  on: string | Date;
+  authority: string | null;
+  state: string | null;
+  level: string | null;
+  source: string | null;
+  brief: string | null;
+  points: unknown;
+};
+
+/** Zyn's public summary, tidied: an empty brief is none; points are the non-empty strings, at most eight. */
+function summary(r: Row): { brief: string | null; points: string[] } {
+  const raw = typeof r.points === "string" ? (() => { try { return JSON.parse(r.points as string); } catch { return []; } })() : r.points;
+  const points = Array.isArray(raw) ? raw.filter((p): p is string => typeof p === "string" && !!p.trim()).map((p) => p.trim()).slice(0, 8) : [];
+  return { brief: r.brief?.trim() || null, points };
+}
 
 const loadAll = unstable_cache(
   async (): Promise<Row[]> =>
     (await db.execute(sql`
       SELECT a.title, a.link AS url, COALESCE(a.published_at, a.created_at) AS on, z.authority, z.state,
-             z.payload->>'level' AS level, a.source
+             z.payload->>'level' AS level, a.source,
+             z.payload->>'public_brief' AS brief, z.payload->'public_points' AS points
         FROM live_alerts a
         LEFT JOIN zyn_notices z ON z.alert_id = a.id AND z.status = 'published'
        WHERE (z.id IS NOT NULL OR a.source IN (${sql.join(Object.keys(FEED_STATE).map((k) => sql`${k}`), sql`, `)}))
@@ -72,7 +93,7 @@ const loadAll = unstable_cache(
          AND COALESCE(a.published_at, a.created_at) > now() - interval '75 days'
        ORDER BY COALESCE(a.published_at, a.created_at) DESC
        LIMIT 600`)) as unknown as Row[],
-  ["state-notices-v1"],
+  ["state-notices-v2"],
   { revalidate: 900, tags: ["alerts"] },
 );
 
@@ -94,7 +115,7 @@ export async function getStateNotices(state: string, level: "pg" | "ug", limit =
       if (seen.has(key)) continue;
       seen.add(key);
       const on = r.on instanceof Date ? r.on.toISOString() : String(r.on);
-      out.push({ title: tidy(r.title), url: r.url, on, authority: r.authority });
+      out.push({ title: tidy(r.title), url: r.url, on, authority: r.authority, ...summary(r) });
       if (out.length >= limit) break;
     }
     return out;
@@ -127,7 +148,8 @@ const loadHub = unstable_cache(
   async (): Promise<Row[]> =>
     (await db.execute(sql`
       SELECT a.title, a.link AS url, COALESCE(a.published_at, a.created_at) AS on, z.authority, z.state,
-             z.payload->>'level' AS level, a.source
+             z.payload->>'level' AS level, a.source,
+             z.payload->>'public_brief' AS brief, z.payload->'public_points' AS points
         FROM live_alerts a
         LEFT JOIN zyn_notices z ON z.alert_id = a.id AND z.status = 'published'
        WHERE (z.id IS NOT NULL
@@ -136,7 +158,7 @@ const loadHub = unstable_cache(
          AND COALESCE(a.published_at, a.created_at) > now() - interval '75 days'
        ORDER BY COALESCE(a.published_at, a.created_at) DESC
        LIMIT 800`)) as unknown as Row[],
-  ["hub-notices-v1"],
+  ["hub-notices-v2"],
   { revalidate: 900, tags: ["alerts"] },
 );
 
@@ -166,7 +188,7 @@ export async function getHubNotices(level: "pg" | "ug", limit = 30): Promise<Hub
       seen.add(key);
       seen.add(words2);
       const on = r.on instanceof Date ? r.on.toISOString() : String(r.on);
-      out.push({ title: tidy(r.title), url: r.url, on, authority: r.authority, where, state });
+      out.push({ title: tidy(r.title), url: r.url, on, authority: r.authority, where, state, ...summary(r) });
       if (out.length >= limit) break;
     }
     return out;

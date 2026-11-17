@@ -4820,7 +4820,7 @@ export const PAGE_COPY = {
 
 /** Site-wide Telegram settings, read by the root layout (see components/engage/TelegramLink). */
 export const TELEGRAM_SETTINGS: { key: string; label: string; value: string; long?: boolean }[] = [
-  { key: "social.telegram", label: "Telegram channel link (https://t.me/…)", value: "https://t.me/AdmissionHandsIndia" },
+  { key: "social.telegram", label: "Telegram join link (the bot's request-to-join link, https://t.me/+…)", value: "https://t.me/+2oCwgUBSa6xjOGJl" },
   { key: "telegram.card.heading", label: "Telegram card heading", value: "Counselling updates on Telegram" },
   {
     key: "telegram.card.body",

@@ -159,8 +159,8 @@ const Index = async () => {
     // Share-tracking parameters ("?igsh=…") are not part of a profile's address —
     // but a Google Business Profile's is its "?cid=…", so that one keeps it.
     .map((u) => (/^https:\/\/(www\.)?google\.[a-z.]+\/maps/.test(u) ? u : u.split('?')[0]))
-    // The Telegram channel: the admin's setting, or the shipped address.
-    .concat(/^https:\/\/(t\.me|telegram\.me)\//.test(setting(s, 'social.telegram')) ? setting(s, 'social.telegram') : CONTACT_INFO.telegram);
+    // The Telegram channel by its public address — an invite link ("t.me/+…") is not a profile (2026-11-17).
+    .concat(/^https:\/\/(t\.me|telegram\.me)\/(?!\+)/.test(setting(s, 'social.telegram')) ? setting(s, 'social.telegram') : CONTACT_INFO.telegramPublic);
   const siteSchema = [
     organization({ phone: contact?.phoneNumber, email: contact?.email }, social),
     website(social),

@@ -321,6 +321,20 @@ export function CollegeOfficialStipend({
             <p className="mt-3 text-[15px] leading-relaxed text-foreground">{collegeStipendText(row)}</p>
           )}
           {row.status !== "not_verified" && row.asWritten && row.y[0] && <p className="mt-3 text-[13.5px] leading-relaxed text-muted-foreground">As written: {row.asWritten}</p>}
+          {row.status === "states_no_stipend" && row.branches && (
+            <ul className="mt-3 space-y-1 text-[14px] leading-relaxed text-foreground">
+              {row.branches.map(([k, v]) => (
+                <li key={k}>
+                  <span className="text-muted-foreground">{k}:</span> {v}
+                </li>
+              ))}
+            </ul>
+          )}
+          {row.history && (
+            <p className="mt-3 rounded-xl border border-border bg-surface-1 px-3.5 py-2.5 text-[13.5px] leading-relaxed text-foreground">
+              <span className="font-semibold">What its own earlier declarations show:</span> {row.history}
+            </p>
+          )}
           {row.status === "not_verified" && <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">NMC requires every college to pay PG students at par with the state's government colleges and to publish what it pays. Our counsellors confirm what it pays for you before you choose it.</p>}
           {row.session && row.status !== "not_verified" && <p className="mt-2 text-[13px] text-muted-foreground">Session: {row.session}</p>}
           {row.source && <Sources sources={[row.source]} className="mt-4 border-t border-border pt-4" />}

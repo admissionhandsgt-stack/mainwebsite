@@ -8,7 +8,14 @@ export const CONTACT_INFO = {
    * straight, never through the AutoLoom /go/ah-tg link: that one is for the
    * channel's own description and lands on our homepage, tagged as Telegram traffic.
    */
-  telegram: "https://t.me/AdmissionHandsIndia",
+  telegram: "https://t.me/+2oCwgUBSa6xjOGJl",
+  /**
+   * Every link a visitor taps is the channel's request-to-join link above (owner, 2026-11-17, via the PG session): the
+   * students' bot DMs a welcome ("rank bhejo, options pao" → WhatsApp / counsellor) and approves within a minute — joins
+   * through the public address never reach the bot. The public address stays the channel's identity: the Organization's
+   * `sameAs` and the admin's posting card.
+   */
+  telegramPublic: "https://t.me/AdmissionHandsIndia",
   /**
    * The Google Business Profile (verified 2026-10-17, "Admission Hands — Counselor
    * in Noida"), by its CID so the link survives a rename. The admin's

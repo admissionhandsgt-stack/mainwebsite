@@ -1,3 +1,4 @@
+import NoticeSummary from "@/components/states/NoticeSummary";
 import { BellRing, ExternalLink } from "lucide-react";
 import { pageCopy } from "@/lib/pageCopy";
 import { getStateNotices } from "@/lib/stateNotices";
@@ -44,6 +45,7 @@ export default async function StateNotices({ state, level }: { state: string; le
               <p className="mt-0.5 text-[12.5px] text-muted-foreground">
                 <time dateTime={n.on.slice(0, 10)}>{day(n.on)}</time>
               </p>
+              <NoticeSummary brief={n.brief} points={n.points} />
             </div>
           </li>
         ))}
