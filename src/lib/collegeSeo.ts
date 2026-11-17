@@ -28,6 +28,7 @@
  * this site claims.
  */
 
+import { FULL_NAMES } from "@/lib/collegeFullNames";
 import type { CollegeDetail, CourseCutoff, CollegeFee } from "@/lib/collegeQueries";
 import { approxFee, exactInr, feeKind, isYearlyFee } from "@/lib/chance";
 import { generalBands } from "@/lib/cutoffBands";
@@ -371,7 +372,11 @@ export function collegeJsonLd(opts: {
       "@context": "https://schema.org",
       "@type": "CollegeOrUniversity",
       name: college.name,
-      ...(shortName && shortName !== college.name ? { alternateName: shortName } : {}),
+      // The name it is searched by, and its full official name where the lists give only initials (Dr. PSI).
+      ...(() => {
+        const alt = [shortName, FULL_NAMES[college.slug]].filter((x, i, a): x is string => !!x && x !== college.name && a.indexOf(x) === i);
+        return alt.length ? { alternateName: alt.length === 1 ? alt[0] : alt } : {};
+      })(),
       address: {
         "@type": "PostalAddress",
         addressLocality: college.district ?? college.city ?? undefined,

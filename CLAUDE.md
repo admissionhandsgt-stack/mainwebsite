@@ -2204,6 +2204,21 @@ states + MCC, 302 colleges, every figure with its URL, page and quote. It replac
   MBBS — their MD/MS courses arrive at a later weekly sync), NSMCH's own 2026-27 tuition a year (₹26–60 L, hostel ₹4.5 L)
   and LCMCH's six branches "Not published by the college yet". No cut-offs (first batch); bond/stipend unpublished. They
   are on no state list or directory that reads seat_options until a round is published there.
+- **Three more first PG batches, 2026-27 (2026-11-17, owner: "verify if they have NEET PG fees this year and build the
+  college page").** `scripts/sql/new_pg_colleges_2026_11_17.sql` (guarded), from NMC MARB's PG seat matrix of 06-11-2026
+  (nmc.org.in/whats-new/download/1884 — read it with `pdftotext -table`; `-layout` and `-raw` misalign the course column):
+  Banas, Palanpur (GJ/004/P/3, 12 × 4 seats, institute 4672), JIET, Jodhpur (RJ/036/P/3, 14 × 4, 4673), Vyas, Jodhpur
+  (RJ/047/P/5, 13 × 4, 4674); source_id 99101–99103 (ours). JIET and Vyas take their 2026-27 tuition a year from the
+  Rajasthan board's private-college fee sheet (pg.neetrajasthan.com/notifications/1794824607098.pdf — the copy carrying
+  them; AI = "RAJ Priv-All India", State = "RAJ Priv-Govt Quota", Mgmt = "RAJ Priv-Mgmt Quota", as for the other Rajasthan
+  private colleges), hostel, caution money and the colleges' remarks (Vyas: State/AI fees subject to FRC Rajasthan's final
+  fee, on fee_label); both are in the board's Round 2 MD/MS matrix of 14-11-2026. Banas: not in Gujarat's Round 1 matrix,
+  Round 2's not posted, no 2026-27 PG fee published — its branches read "Not published yet". Santiniketan, Bolpur has no
+  PG course in NMC's matrix: no page. The board's sheet is read through its site's API (`GET
+  https://pg.neetrajasthan.com/api/v1/user/getAllNotifications` lists every notice and file). "Dr. Pinnamaneni Siddhartha
+  Institute of Medical Sciences, Gannavaram" is our Dr. PSI Medical College, Chinoutpalli: its full name is shown under
+  the H1 and in the markup (`lib/collegeFullNames.ts`, keyed by slug) — families search "psi medical college", so the
+  title keeps the short name.
 - **Deemed universities, branch by branch (2026-11-17, the owner's deemed keyword sheet: 54 colleges × 15 branches × 11
   searches).** Measured first: the 54 deemed pages had 6,212 impressions in 90 days (fees 3,980, stipend 952, cut off 648;
   only 660 named a branch; "seat matrix / eligibility / admission process / total fees" ≈50), at positions 6–10. So no 810

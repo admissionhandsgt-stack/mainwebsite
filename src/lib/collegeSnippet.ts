@@ -10,6 +10,7 @@
  * prints (lib/cutoffBands.ts) — never the rank behind it.
  */
 
+import { FULL_NAMES } from "@/lib/collegeFullNames";
 import { cache } from "react";
 import { unstable_cache } from "next/cache";
 import { sql } from "drizzle-orm";
@@ -248,7 +249,7 @@ function summarise(
         ? (n.official.split(",")[0] ?? n.short).trim() || n.short
         : n.short,
     place,
-    official: n.official,
+    official: FULL_NAMES[college.slug] ?? n.official,
     course,
     kind,
     year,
