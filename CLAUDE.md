@@ -2204,6 +2204,16 @@ states + MCC, 302 colleges, every figure with its URL, page and quote. It replac
   MBBS — their MD/MS courses arrive at a later weekly sync), NSMCH's own 2026-27 tuition a year (₹26–60 L, hostel ₹4.5 L)
   and LCMCH's six branches "Not published by the college yet". No cut-offs (first batch); bond/stipend unpublished. They
   are on no state list or directory that reads seat_options until a round is published there.
+- **Deemed universities, branch by branch (2026-11-17, the owner's deemed keyword sheet: 54 colleges × 15 branches × 11
+  searches).** Measured first: the 54 deemed pages had 6,212 impressions in 90 days (fees 3,980, stipend 952, cut off 648;
+  only 660 named a branch; "seat matrix / eligibility / admission process / total fees" ≈50), at positions 6–10. So no 810
+  new URLs: `components/colleges/DeemedBranches.tsx` on every PG college page with MCC "Deemed" seats replaces MccSeats there
+  — a table, one row per branch with its own anchor (#md-radio-diagnosis) and chips to jump: MCC's paid / NRI / minority
+  seats, the paid and NRI fee a year (the college's own 2026-27 notice exactly, else a bracket), and "paid seats at deemed
+  universities, up to AIR …" from the latest MCC round (`LatestRound.byCourseDeemed`, 3+ colleges) — said to be the least
+  competitive of them, never this college's rank. Plus FAQs "What is the MD Radiology fee at <college>?" (two most-searched
+  branches with a fee) and "What is the <branch> cut off at <college>?" (the group figure, and that we never publish one
+  college's closing rank). Judge on Search Console ~3–4 weeks after.
 
 **A data import shows at once (owner, same day: "ek ghante mai kyu… cache refresh karke instant reflect"):** after an
 import's `--apply`, run `bash scripts/revalidate_tags.sh --purge <tag…>` — it asks the app on the server to drop those

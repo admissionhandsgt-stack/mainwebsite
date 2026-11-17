@@ -27,6 +27,8 @@ import { foldListed, getCollegeSeatMatrix, getCollegeSeatTerms, termsSession } f
 import { getReportedStipends } from "@/lib/collegeResearch";
 import { pageCopy } from "@/lib/pageCopy";
 import MccSeats from "@/components/colleges/MccSeats";
+import DeemedBranches, { deemedBranches } from "@/components/colleges/DeemedBranches";
+import { getLatestLiveRound } from "@/lib/mccResults";
 import SeatTerms from "@/components/colleges/SeatTerms";
 import CollegeOfficialBond from "@/components/bond/CollegeOfficialBond";
 import { CollegeOfficialStipend } from "@/components/stipend/OfficialStipend";
@@ -175,6 +177,12 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
   const counsellings = Array.from(new Set(cutoffs.map((c) => c.counselling).filter(Boolean))) as string[];
   const bands = generalBands(cutoffs, 20);
 
+  // A deemed university: its MD/MS seats branch by branch, with fees and the deemed paid-seat cut-off as a group figure
+  // (owner, 2026-11-17, from the deemed keyword sheet — sections on the pages Google already ranks, not new URLs).
+  const isDeemed = !!matrix?.rows.some((r) => r.seatMatrix === "Deemed");
+  const latestRound = isDeemed ? await getLatestLiveRound().catch(() => null) : null;
+  const dBranches = isDeemed ? deemedBranches(matrix, fees, latestRound && latestRound.year === matrix?.year ? latestRound.byCourseDeemed : null) : [];
+
   const nirf = getNirf(college.slug, "pg");
   const faqs = collegeFaqs(college, cutoffs, fees, "pg", { course: s.course, type: s.type, seats: s.seats, fromNmc: s.fromNmc, seatsFromNmc: s.seatsFromNmc, live, nirf });
   {
@@ -200,6 +208,24 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
           })()
         : null;
     const bondName = s.place && !s.short.toLowerCase().includes(s.place.toLowerCase()) ? `${s.short}, ${s.place}` : s.short;
+    // A deemed university: the fee of its most-searched branches, and how its cut off is read (a group figure).
+    if (dBranches.length) {
+      const PRIORITY = ["MD Radio Diagnosis", "MD General Medicine", "MD Dermatology, Venereology & Leprosy", "MD Paediatrics", "MS Orthopaedics", "MS General Surgery", "MS Obstetrics & Gynaecology"];
+      const ranked = [...dBranches].sort((a, b) => (PRIORITY.indexOf(a.course) + 99) % 99 - (PRIORITY.indexOf(b.course) + 99) % 99);
+      for (const b of ranked.filter((x) => x.paidFee).slice(0, 2)) {
+        faqs.push({
+          q: `What is the ${b.name} fee at ${bondName}?`,
+          a: `${b.paidFee} on a paid (management) seat${b.nriFee ? ` and ${b.nriFee} on an NRI seat` : ""}${b.paidOfficial ? ", from the college's own 2026-27 notice" : " (approximate)"}. MCC's ${matrix?.year ?? ""} matrix has ${[b.paid ? `${b.paid} paid` : null, b.nri ? `${b.nri} NRI` : null].filter(Boolean).join(" and ") || "its"} seats in ${b.name} here. Hostel, deposit and bond are extra; confirm them before you pay.`,
+        });
+      }
+      const withCut = ranked.find((x) => x.cut);
+      if (withCut) {
+        faqs.push({
+          q: `What is the ${withCut.name} cut off at ${bondName}?`,
+          a: `Across all deemed universities, paid seats in ${withCut.name.replace(/^(MD|MS) /, "")} admitted ranks up to AIR ${withCut.cut!.toLocaleString("en-IN")} in MCC's ${latestRound?.spec.label ?? "latest round"} ${latestRound?.year ?? ""} — that is the least competitive of them; leading deemed universities close far earlier. We do not publish one college's closing rank: your own chance at ${s.short} is in the chance box on this page, and a counsellor can place it in your choice list.`,
+        });
+      }
+    }
     if (bondAnswer) faqs.push({ q: `Does ${bondName} have a PG bond?`, a: bondAnswer.replace(/\.\./g, ".") });
     // The stipend question answers from the official figure where there is one (the box above shows the same), never the
     // listing's — Goa Medical College's listing said ₹80,000 against its own declared ₹60,000.
@@ -439,8 +465,15 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
               className="mt-10"
             />
 
-            {/* -------- MCC's seat matrix: seats, not ranks -------- */}
-            {matrix && (
+            {/* -------- a deemed university: branch by branch (seats, fees, the paid-seat group cut-off) -------- */}
+            {dBranches.length > 0 && (
+              <div className="mt-12">
+                <DeemedBranches short={s.place && !s.short.toLowerCase().includes(s.place.toLowerCase()) ? `${s.short}, ${s.place}` : s.short} branches={dBranches} year={matrix?.year ?? null} round={latestRound?.spec.label ?? null} />
+              </div>
+            )}
+
+            {/* -------- MCC's seat matrix: seats, not ranks (a deemed college's are in its branch block) -------- */}
+            {matrix && dBranches.length === 0 && (
               <div className="mt-12">
                 <MccSeats
                   matrix={matrix}

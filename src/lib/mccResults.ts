@@ -592,6 +592,8 @@ export interface LatestRound {
   byCourse: Map<string, Partial<Record<CutCat, number>>>;
   /** The same for DNB and NBE-diploma seats (MCC's "DNB Quota"), whose branches are their own pages. */
   byCourseDnb: Map<string, Partial<Record<CutCat, number>>>;
+  /** Deemed universities' paid seats per branch (3+ colleges) — a deemed college page's group cut-off (2026-11-17). */
+  byCourseDeemed: Map<string, Partial<Record<CutCat, number>>>;
 }
 
 /**
@@ -612,6 +614,7 @@ export async function getLatestLiveRound(): Promise<LatestRound | null> {
       total: result.total,
       byCourse: new Map(result.cuts.aiq.map((b) => [b.course, b.last])),
       byCourseDnb: new Map(result.cuts.dnb.map((b) => [b.course, b.last])),
+      byCourseDeemed: new Map(result.cuts.deemed.map((b) => [b.course, b.last])),
     };
   }
   return null;
