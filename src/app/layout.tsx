@@ -141,7 +141,7 @@ export default async function RootLayout({
             and kept PageSpeed's trace open for 35 s. Their commands queue from the start, so nothing is dropped. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){var q=[],d=0,C=["pointerdown","keydown","touchstart"],B=["scroll","wheel"];function go(e){if(d)return;if(e&&e.type==="scroll"&&e.target!==document)return;d=1;window.__ahLaterWhy=e?e.type:"timer";C.forEach(function(n){removeEventListener(n,go,true)});B.forEach(function(n){removeEventListener(n,go)});var f;while((f=q.shift()))try{f()}catch(x){}}C.forEach(function(n){addEventListener(n,go,{capture:true,passive:true})});B.forEach(function(n){addEventListener(n,go,{passive:true})});function t(){setTimeout(go,6000)}document.readyState==="complete"?t():addEventListener("load",t);window.__ahLater=function(f){d?f():q.push(f)}})();`,
+            __html: `(function(){var q=[],d=0,C=["pointerdown","keydown","touchstart"],B=["scroll","wheel"];function go(e){if(d)return;if(e&&e.type==="scroll"&&e.target!==document)return;d=1;window.__ahLaterWhy=e?e.type:"timer";try{performance.mark("ah-later:"+window.__ahLaterWhy)}catch(x){}C.forEach(function(n){removeEventListener(n,go,true)});B.forEach(function(n){removeEventListener(n,go)});var f;while((f=q.shift()))try{f()}catch(x){}}C.forEach(function(n){addEventListener(n,go,{capture:true,passive:true})});B.forEach(function(n){addEventListener(n,go,{passive:true})});function t(){setTimeout(go,6000)}document.readyState==="complete"?t():addEventListener("load",t);window.__ahLater=function(f){d?f():q.push(f)}})();`,
           }}
         />
         {/* Analytics loads after the first interaction (above); resolving its hosts early
