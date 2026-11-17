@@ -26,7 +26,7 @@ const PAID = /self.?financed|paid|management/i;
 const NRI = /nri|non-resident/i;
 const feePaid = /^MNG$|Mgmt|Management|Mgt|Paid|^MQ|Deemed/i;
 
-function feeText(f: CollegeFee | undefined): string | null {
+export function feeText(f: CollegeFee | undefined): string | null {
   if (!f || f.feeInr == null || f.feeInr <= 0) return null;
   const exact = f.official ? exactFeeFor(f.feeInr, f.feePeriodicity, f.feeUsd, f.feeCurrency) : null;
   return exact ?? approxFeeFor(f.feeInr, f.feePeriodicity);

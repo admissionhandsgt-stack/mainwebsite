@@ -2214,6 +2214,13 @@ states + MCC, 302 colleges, every figure with its URL, page and quote. It replac
   competitive of them, never this college's rank. Plus FAQs "What is the MD Radiology fee at <college>?" (two most-searched
   branches with a fee) and "What is the <branch> cut off at <college>?" (the group figure, and that we never publish one
   college's closing rank). Judge on Search Console ~3–4 weeks after.
+- **Private and government college keyword sheets (2026-11-17, owner: "existing matching kuch hoto skip karna").** 227 of
+  the sheets' 265 colleges already have a PG page; 90 days of Search Console gave the private pages 9,188 impressions (fees
+  2,561, stipend 1,377, cut off 1,105 — all answered already) and only 218 naming a branch ("nims jaipur md medicine fees",
+  "gcs md medicine fees"); the government sheet 167. So no new pages: the PG fee table has a branch strip linking each row's
+  existing `#fee-<branch>` (6+ branches; one scrolling row on a phone), and a private college (NMC type Private, not deemed)
+  answers "What is the MD General Medicine / MD Radiology … fee at <college>?" for its two most-searched branches with a
+  fee — one line per fee with the quotas that share it, cheapest first, the dearest always kept, official vs ≈ said.
 - **17 Nov, owner "1,2,3,4,6,7 karo":** (1) every visitor-facing Telegram link is the channel's request-to-join link
   `https://t.me/+2oCwgUBSa6xjOGJl` (CONTACT_INFO.telegram, `social.telegram` default and stored row) — the students' bot
   welcomes and approves; the public `t.me/AdmissionHandsIndia` stays only as the Organization's sameAs

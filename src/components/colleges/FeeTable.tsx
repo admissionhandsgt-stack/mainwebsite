@@ -1,5 +1,6 @@
 import type { CollegeFee } from "@/lib/collegeQueries";
 import { branchSlug } from "@/lib/branchSlug";
+import { SEARCH_NAME } from "@/lib/branchStateQueries";
 import { approxFee, approxFeeFor, exactFeeFor, exactInr, feeKind, FEE_TABLE_NOTE } from "@/lib/chance";
 
 /**
@@ -103,6 +104,21 @@ export default function FeeTable({ fees, hideStipend }: { fees: CollegeFee[]; hi
   const th = "px-4 py-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground";
   return (
     <>
+      {/* Jump to a branch (2026-11-17, the owner's college keyword sheets: "<college> MD Medicine fees"): each row has
+          its own address, #fee-md-general-medicine. */}
+      {branches.length >= 6 && (
+        <nav aria-label="Fees by branch" className="-mx-4 mt-4 flex gap-1.5 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0">
+          {branches.map((b) => (
+            <a
+              key={b}
+              href={`#fee-${branchSlug(b)}`}
+              className="inline-flex min-h-11 shrink-0 items-center whitespace-nowrap rounded-full border border-border bg-card px-3 text-[13px] font-semibold text-foreground hover:border-primary/40 hover:text-primary-strong sm:min-h-9"
+            >
+              {(SEARCH_NAME[b] ?? b).replace(/^(MD|MS|Diploma) /, "")}
+            </a>
+          ))}
+        </nav>
+      )}
       <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
         <table className="w-full border-collapse" style={{ minWidth: `${220 + columns.length * 170 + 220}px` }}>
           <thead>

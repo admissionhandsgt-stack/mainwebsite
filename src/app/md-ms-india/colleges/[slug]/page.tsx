@@ -27,7 +27,8 @@ import { foldListed, getCollegeSeatMatrix, getCollegeSeatTerms, termsSession } f
 import { getReportedStipends } from "@/lib/collegeResearch";
 import { pageCopy } from "@/lib/pageCopy";
 import MccSeats from "@/components/colleges/MccSeats";
-import DeemedBranches, { deemedBranches } from "@/components/colleges/DeemedBranches";
+import DeemedBranches, { deemedBranches, feeText } from "@/components/colleges/DeemedBranches";
+import { SEARCH_NAME } from "@/lib/branchStateQueries";
 import { getLatestLiveRound } from "@/lib/mccResults";
 import SeatTerms from "@/components/colleges/SeatTerms";
 import CollegeOfficialBond from "@/components/bond/CollegeOfficialBond";
@@ -208,6 +209,43 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
           })()
         : null;
     const bondName = s.place && !s.short.toLowerCase().includes(s.place.toLowerCase()) ? `${s.short}, ${s.place}` : s.short;
+    // A private college (not deemed — its block above answers that): the fee of its two most-searched branches, quota by
+    // quota from its own fee rows ("nims jaipur md medicine fees", "gcs md medicine fees" — the owner's keyword sheet,
+    // 2026-11-17; the only branch searches Google showed these pages for).
+    if (!dBranches.length && s.kind === "pg" && /^Private/.test(s.type ?? "") && fees.length) {
+      const PRIORITY = ["MD General Medicine", "MD Radio Diagnosis", "MD Dermatology, Venereology & Leprosy", "MD Paediatrics", "MS Orthopaedics", "MS General Surgery", "MS Obstetrics & Gynaecology"];
+      let added = 0;
+      for (const course of PRIORITY) {
+        if (added >= 2) break;
+        const rows = fees.filter((f) => f.course === course && f.feeInr != null && f.feeInr > 0);
+        if (!rows.length) continue;
+        // One line per fee, the quotas that share it named together, cheapest first; never more than five lines, and the
+        // dearest always kept (an NRI seat is often the figure searched).
+        const groups = new Map<string, { t: string; inr: number; quotas: string[]; official: boolean }>();
+        for (const f of rows) {
+          const text = feeText(f)?.replace(/\*$/, "");
+          if (!text) continue;
+          const g = groups.get(text) ?? { t: text, inr: f.feeInr!, quotas: [], official: f.official };
+          if (f.quota && !g.quotas.includes(f.quota)) g.quotas.push(f.quota);
+          groups.set(text, g);
+        }
+        let list = [...groups.values()].sort((x, y) => x.inr - y.inr);
+        if (list.length > 5) list = [...list.slice(0, 4), list[list.length - 1]];
+        if (!list.length) continue;
+        const official = list.filter((x) => x.official).length;
+        const source =
+          official === list.length
+            ? " — from the 2026-27 notice"
+            : official
+              ? " — exact figures from the 2026-27 notice, figures marked ≈ approximate from the counselling listing"
+              : " — approximate, from the counselling listing";
+        faqs.push({
+          q: `What is the ${SEARCH_NAME[course] ?? course} fee at ${bondName}?`,
+          a: `${list.map((x) => `${x.t} on ${x.quotas.length > 1 ? `${x.quotas.join(" / ")} seats` : `the ${x.quotas[0] ?? "listed"} seat`}`).join("; ")}${source}. Hostel, deposit and bond are extra; confirm them for your seat before you pay.`,
+        });
+        added++;
+      }
+    }
     // A deemed university: the fee of its most-searched branches, and how its cut off is read (a group figure).
     if (dBranches.length) {
       const PRIORITY = ["MD Radio Diagnosis", "MD General Medicine", "MD Dermatology, Venereology & Leprosy", "MD Paediatrics", "MS Orthopaedics", "MS General Surgery", "MS Obstetrics & Gynaecology"];
