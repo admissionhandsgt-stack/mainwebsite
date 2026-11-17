@@ -199,8 +199,30 @@ const LIVE_BANDS_FROM = "2026-11-09";
 /** A slug as a URL path segment. A raw "&" in two state slugs once made the whole file invalid XML. */
 const seg = (slug: string) => encodeURIComponent(slug);
 
-/** Concurrent callers share one build (lib/singleFlight.ts). */
-export const sitemapGroups = singleFlight(buildSitemapGroups);
+/** The last build, kept so a page render never waits on a rebuild (sitemapGroupsForPage). */
+let lastGroups: Record<SitemapGroup, SitemapEntry[]> | null = null;
+
+/**
+ * Every sitemap entry, by group. Concurrent callers share one build (lib/singleFlight.ts). For the sitemap files, the
+ * crons and scripts — they wait for a fresh build.
+ */
+export const sitemapGroups = singleFlight(async () => {
+  const g = await buildSitemapGroups();
+  lastGroups = g;
+  return g;
+});
+
+/**
+ * For a page render (the "updated" date on the reviewer line, the "More on …" block): the fresh groups when they come
+ * within 250 ms, else the last build. After the `sitemap` tag is revalidated a rebuild takes ~16 s, and every page had
+ * waited for it (2026-11-17: 21:09–21:11 IST, pages took 16–46 s). Only a fresh process with no earlier build waits.
+ */
+export async function sitemapGroupsForPage(): Promise<Record<SitemapGroup, SitemapEntry[]>> {
+  const p = sitemapGroups();
+  if (!lastGroups) return p;
+  const quick = await Promise.race([p.then((g) => g, () => null), new Promise<null>((r) => setTimeout(() => r(null), 250))]);
+  return quick ?? lastGroups;
+}
 
 async function buildSitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry[]>> {
   let noIndex = new Set<string>();

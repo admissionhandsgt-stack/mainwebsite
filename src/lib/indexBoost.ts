@@ -15,7 +15,7 @@
 import { unstable_cache } from "next/cache";
 import { sql } from "drizzle-orm";
 import { db } from "@/db/client";
-import { sitemapGroups, BASE } from "@/lib/sitemapData";
+import { sitemapGroupsForPage, BASE } from "@/lib/sitemapData";
 import { getBranches } from "@/lib/branchQueries";
 import { collegeName } from "@/lib/collegeName";
 import { singleFlight } from "@/lib/singleFlight";
@@ -39,7 +39,7 @@ const load = singleFlight(unstable_cache(
   async (): Promise<BoostData> => {
     const [status, groups, inst, states, branches] = await Promise.all([
       db.execute(sql`SELECT path, coverage FROM index_status`),
-      sitemapGroups(),
+      sitemapGroupsForPage(),
       db.execute(sql`
         SELECT i.slug, i.level::text AS level, i.name, s.name AS state, s.slug AS state_slug
           FROM institutes i LEFT JOIN states s ON s.id = i.state_id WHERE i.is_active`),

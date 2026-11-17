@@ -5,11 +5,11 @@
  */
 import { unstable_cache } from "next/cache";
 import { headers } from "next/headers";
-import { sitemapGroups } from "@/lib/sitemapData";
+import { sitemapGroupsForPage } from "@/lib/sitemapData";
 
 export const getPageDates = unstable_cache(
   async (): Promise<Record<string, string>> => {
-    const groups = await sitemapGroups();
+    const groups = await sitemapGroupsForPage();
     const out: Record<string, string> = {};
     for (const list of Object.values(groups))
       for (const e of list) {
