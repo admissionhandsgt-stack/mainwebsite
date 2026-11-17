@@ -2214,6 +2214,18 @@ states + MCC, 302 colleges, every figure with its URL, page and quote. It replac
   competitive of them, never this college's rank. Plus FAQs "What is the MD Radiology fee at <college>?" (two most-searched
   branches with a fee) and "What is the <branch> cut off at <college>?" (the group figure, and that we never publish one
   college's closing rank). Judge on Search Console ~3–4 weeks after.
+- **17 Nov, owner "1,2,3,4,6,7 karo":** (1) every visitor-facing Telegram link is the channel's request-to-join link
+  `https://t.me/+2oCwgUBSa6xjOGJl` (CONTACT_INFO.telegram, `social.telegram` default and stored row) — the students' bot
+  welcomes and approves; the public `t.me/AdmissionHandsIndia` stays only as the Organization's sameAs
+  (CONTACT_INFO.telegramPublic) and the admin posting card. The WhatsApp template `ah_meet_counsellor_v2` still carries
+  the public link (Meta-approved text; changing it needs a new template). (2) Notices print Zyn's approved
+  `public_brief` / `public_points` under the title (components/states/NoticeSummary, state pages and
+  /neet-counselling-updates); notices sent before 16 Nov have none unless Zyn re-sends them. (3) A "no stipend" college's
+  box shows its document's branch lines and its own earlier declarations (`history`, from the PG session's notes). (4) State
+  rounds from the PG session's round-closing feed: `scripts/import_state_round_feed.ts "<feed key>" --printed … --counselling
+  … [--note …] [--apply --backup f]` (feed college_id = our source_id, quota labels ours). Loaded Haryana (provisional R1
+  after grievances, 12 Nov, 389 lines / 19 colleges) and Assam (R1 5 Nov, 253 / 9). Odisha's revised R1 (279 lines) is
+  not swapped in: its allotment rows would no longer match — take it with Round 2. Puducherry waits for a final list.
 
 **A data import shows at once (owner, same day: "ek ghante mai kyu… cache refresh karke instant reflect"):** after an
 import's `--apply`, run `bash scripts/revalidate_tags.sh --purge <tag…>` — it asks the app on the server to drop those
