@@ -10,7 +10,6 @@ import ClarityTag from '@/components/analytics/ClarityTag'
 import MetaPixel from '@/components/analytics/MetaPixel'
 import { pageCopy } from '@/lib/pageCopy'
 import type { Metadata } from 'next'
-import Script from 'next/script'
 import { Plus_Jakarta_Sans, Inter, Figtree } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 
@@ -136,7 +135,16 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${jakarta.variable} ${inter.variable} ${figtree.variable}`} suppressHydrationWarning>
       <head>
-        {/* Analytics loads after the page (lazyOnload); resolving its hosts early
+        {/* window.__ahLater(fn): runs fn on the visitor's first scroll, tap or key, or 6 s after the load event, whichever
+            comes first (2026-11-17, owner: PageSpeed "100 par le jao" without losing anything). Google Analytics' script
+            and Microsoft Clarity wait for it: loaded during the first seconds they were ~400 ms of long tasks on a phone
+            and kept PageSpeed's trace open for 35 s. Their commands queue from the start, so nothing is dropped. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var q=[],d=0,C=["pointerdown","keydown","touchstart"],B=["scroll","wheel"];function go(e){if(d)return;if(e&&e.type==="scroll"&&e.target!==document)return;d=1;window.__ahLaterWhy=e?e.type:"timer";C.forEach(function(n){removeEventListener(n,go,true)});B.forEach(function(n){removeEventListener(n,go)});var f;while((f=q.shift()))try{f()}catch(x){}}C.forEach(function(n){addEventListener(n,go,{capture:true,passive:true})});B.forEach(function(n){addEventListener(n,go,{passive:true})});function t(){setTimeout(go,6000)}document.readyState==="complete"?t():addEventListener("load",t);window.__ahLater=function(f){d?f():q.push(f)}})();`,
+          }}
+        />
+        {/* Analytics loads after the first interaction (above); resolving its hosts early
             costs nothing and saves the lookup when it does. Not a preconnect: that
             would open sockets competing with the critical path. */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
@@ -184,26 +192,17 @@ export default async function RootLayout({
       </head>
       <body className="antialiased font-body overflow-x-hidden supports-[overflow:clip]:overflow-x-clip bg-background text-foreground transition-colors duration-200">
         {/*
-          Analytics after the page has loaded, not before. `afterInteractive`
-          made Next emit a preload for gtag.js — 176 KB at high priority,
-          fetched in the same instant as the CSS and ahead of everything the
-          visitor can see. `lazyOnload` waits for the load event. The page view
-          is still recorded; what can be lost is a visitor who leaves before
-          the page has finished loading.
+          Google Analytics. The queue and its config are set up at once, so a page view and any event the page sends
+          wait in dataLayer; gtag.js itself (176 KB) is fetched on the first scroll, tap or key, or 6 s after the load
+          event (window.__ahLater above). It used to load on the load event (`lazyOnload`; `afterInteractive` had made
+          Next preload it at high priority beside the CSS). What can be lost is a visitor who leaves without touching
+          the page within about 6 s of it loading.
         */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-SCQ3V4NFLS"
-          strategy="lazyOnload"
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-SCQ3V4NFLS');(window.__ahLater||function(f){f()})(function(){var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-SCQ3V4NFLS';document.head.appendChild(s);});`,
+          }}
         />
-        <Script id="google-analytics" strategy="lazyOnload">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'G-SCQ3V4NFLS');
-          `}
-        </Script>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {isAdmin ? (
             <main className="w-full">{children}</main>

@@ -22,6 +22,8 @@ const allowed = (u: URL) => !EXCLUDED.test(u.pathname) && !PERSONAL.test(u.searc
 declare global {
   interface Window {
     clarity?: ((...args: unknown[]) => void) & { q?: unknown[] };
+    /** The layout's first-interaction trigger (app/layout.tsx). */
+    __ahLater?: (f: () => void) => void;
   }
 }
 
@@ -59,16 +61,20 @@ export default function ClarityTag({ id }: { id: string }) {
     };
     window.addEventListener("popstate", guard);
 
-    // Clarity's own loader, unchanged.
+    // Clarity's own loader; its script waits for the first scroll, tap or key, or 6 s after load (the layout's
+    // window.__ahLater) — it was ~180 ms of long tasks while the page was still settling on a phone.
     if (!window.clarity) {
       const c = function (...args: unknown[]) {
         (c.q = c.q || []).push(args);
       } as NonNullable<Window["clarity"]>;
       window.clarity = c;
-      const t = document.createElement("script");
-      t.async = true;
-      t.src = `https://www.clarity.ms/tag/${id}`;
-      document.head.appendChild(t);
+      const inject = () => {
+        const t = document.createElement("script");
+        t.async = true;
+        t.src = `https://www.clarity.ms/tag/${id}`;
+        document.head.appendChild(t);
+      };
+      (window.__ahLater ?? ((f: () => void) => f()))(inject);
     }
 
     return () => {

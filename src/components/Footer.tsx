@@ -105,7 +105,7 @@ const Footer: React.FC<FooterProps> = ({ explore, quickLinks, tagline, social, p
 
   return (
     <>
-      <footer className="relative border-t border-border bg-surface-1 text-foreground">
+      <footer className="cv-auto relative border-t border-border bg-surface-1 text-foreground">
         <div className="container-custom pb-3 pt-8 md:pt-10">
           <div className="grid gap-7 lg:grid-cols-[minmax(220px,0.8fr)_minmax(0,3fr)] lg:gap-12">
             {/* Who we are */}

@@ -18,7 +18,7 @@ export default async function SearchFaqs() {
   const copy = await pageCopy("site.search_faqs", {}).catch(() => ({ heading: "", more: "" }));
   if (!copy.heading) return null;
   return (
-    <section className="container-custom py-8" aria-labelledby="search-faqs-heading">
+    <section className="cv-auto container-custom py-8" aria-labelledby="search-faqs-heading">
       <h2 id="search-faqs-heading" className="font-heading flex items-center gap-2 text-xl font-bold text-foreground md:text-2xl">
         <MessageCircleQuestion className="h-5 w-5 text-primary" aria-hidden="true" />
         {copy.heading}

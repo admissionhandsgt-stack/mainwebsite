@@ -15,7 +15,7 @@ export default async function SearchLinks() {
   const [links, copy] = await Promise.all([getSearchLinks(path), pageCopy("site.search_links", {}).catch(() => ({ heading: "" }))]);
   if (!links.length || !copy.heading) return null;
   return (
-    <section data-search-links className="container-custom py-6" aria-labelledby="search-links-heading">
+    <section data-search-links className="cv-auto container-custom py-6" aria-labelledby="search-links-heading">
       <h2 id="search-links-heading" className="flex items-center gap-2 text-sm font-semibold text-foreground">
         <Search className="h-4 w-4 text-primary-strong" aria-hidden="true" />
         {copy.heading}
