@@ -360,18 +360,29 @@ const INSTRUCTION = /\b(banao|bana\s?do|bana\s?ke|banana|karo|kar\s?do|kardo|kar
  */
 async function take(n: ZynNotice): Promise<"published" | "held" | "seen"> {
   const prev = ((await db.execute(sql`
-    SELECT title, url, status, alert_id, payload->>'updated_at' AS updated FROM zyn_notices WHERE id = ${n.id}`)) as unknown as {
+    SELECT title, url, status, alert_id, payload->>'updated_at' AS updated,
+           COALESCE(payload->>'public_brief', '') || '|' || COALESCE((payload->'public_points')::text, '') AS public_text
+      FROM zyn_notices WHERE id = ${n.id}`)) as unknown as {
     title: string;
     url: string | null;
     status: string;
     alert_id: number | null;
     updated: string | null;
+    public_text: string;
   }[])[0];
   if (prev) {
-    const updated = str((n.raw as Record<string, unknown> | null)?.updated_at);
+    const raw = (n.raw ?? {}) as Record<string, unknown>;
+    const updated = str(raw.updated_at);
     // A notice stored before Zyn sent `updated_at` counts as changed only if its words or link changed.
     const changed = prev.title !== n.title || prev.url !== n.url || (updated !== null && prev.updated !== null && updated !== prev.updated);
-    if (!changed) return "seen";
+    if (!changed) {
+      // The approved public summary (public_brief / public_points, 2026-11-17) reaches notices stored before it existed:
+      // the payload is refreshed, nothing else about the notice or its alert changes.
+      const publicText = `${str(raw.public_brief) ?? ""}|${raw.public_points == null ? "" : JSON.stringify(raw.public_points)}`;
+      if (publicText !== "|" && publicText.replace(/\s+/g, "") !== prev.public_text.replace(/\s+/g, ""))
+        await db.execute(sql`UPDATE zyn_notices SET payload = ${JSON.stringify(n.raw)}::jsonb WHERE id = ${n.id}`);
+      return "seen";
+    }
     if (prev.status !== "held") {
       // Published or dismissed: keep the decision, take the corrected words.
       await db.execute(sql`
