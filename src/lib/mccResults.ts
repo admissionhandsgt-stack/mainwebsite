@@ -520,12 +520,15 @@ const MONTHS = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "
 export function roundSchedule(
   spec: RoundSpec,
   year: number,
-  schedule: { round: string; aiq: string; aiqJoinBy: string }[],
+  schedule: { round: string; aiq: string; aiqJoinBy: string; result?: string }[],
 ): { window: string; joinBy: string | null; expected: Date | null } | null {
   if (!spec.schedule) return null;
   const row = schedule.find((s) => s.round.trim().toLowerCase() === spec.schedule);
   if (!row || !row.aiq || row.aiq === "—") return null;
-  const found = [...row.aiq.matchAll(/(\d{1,2})\s+([A-Za-z]{3})/g)];
+  // The result's own date when MCC's schedule prints one ("16 Nov (provisional), 17 Nov (final)" → 17 Nov, the final);
+  // else the window's last date (owner, 2026-11-17: the page said "expected around 16 Nov" on result day, the 17th).
+  const resultDates = [...(row.result ?? "").matchAll(/(\d{1,2})\s+([A-Za-z]{3})/g)];
+  const found = resultDates.length ? resultDates : [...row.aiq.matchAll(/(\d{1,2})\s+([A-Za-z]{3})/g)];
   const last = found[found.length - 1];
   const month = last ? MONTHS.indexOf(last[2].toLowerCase()) : -1;
   const expected = last && month >= 0 ? new Date(Date.UTC(month < 6 ? year + 1 : year, month, Number(last[1]))) : null;

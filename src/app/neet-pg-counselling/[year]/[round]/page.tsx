@@ -146,7 +146,8 @@ export async function generateMetadata(props: { params: Promise<Params> }): Prom
       keywords,
     });
   } else {
-    const expected = when?.expected ? DAY.format(when.expected) : null;
+    const overdueMeta = !!when?.expected && Date.now() > when.expected.getTime() + 18.5 * 3600 * 1000; // past midnight IST after MCC's day
+    const expected = when?.expected && !overdueMeta ? DAY.format(when.expected) : null;
     const steps = d.steps;
     meta = await resolveMetadata(path, {
       // "neet pg round 2 result 2026", "neet pg round 2 date", "neet pg round 2 cut off 2025" (autocomplete,
@@ -164,9 +165,13 @@ export async function generateMetadata(props: { params: Promise<Params> }): Prom
         ...(steps?.choiceFilling && steps.result
           ? (() => {
               const cf = steps.choiceFilling.split(",")[0].trim();
-              const res = steps.result.split(/[,(]/)[0].trim();
+              // "16 Nov (provisional), 17 Nov (final)" → "17 Nov (final)": the day the result is due (owner, 2026-11-17).
+              const res = steps.result.includes(",") ? steps.result.split(",").pop()!.trim() : steps.result.split("(")[0].trim();
               const reg = steps.registration?.split(",")[0].trim();
               return [
+                ...(overdueMeta
+                  ? [`NEET PG ${year} ${lc} result: MCC's schedule said ${res}; not out yet. MCC's PDF, seat allotment and branch-wise last rank here the moment it is out.`]
+                  : []),
                 `NEET PG ${year} ${lc}: ${reg ? `registration ${reg}, ` : ""}choice filling ${cf}, result ${res} as per MCC's schedule. MCC's PDF, seat allotment and branch-wise last rank here the moment it is out.`,
                 `NEET PG ${year} ${lc}: choice filling ${cf}, result ${res} as per MCC's schedule. Seat allotment and branch-wise last rank here the moment it is out.`,
                 `NEET PG ${year} ${lc}: choice filling ${cf}, result ${res} (MCC). Seat allotment and branch-wise last rank here when it is out.`,
@@ -266,16 +271,21 @@ export default async function RoundResultPage(props: { params: Promise<Params> }
     if (!m || mon < 0) return false;
     return Date.now() > Date.UTC(mon < 6 ? year + 1 : year, mon, Number(m[1]), 18, 30); // 24:00 IST
   })();
-  const accent = live ? copy.accent_live : out ? copy.accent_out : expected ? copy.accent_pending : copy.accent_pending_nodate;
+  // MCC's day has passed (the window's last date, from midnight IST after it) and nothing
+  // is out: say so, never "expected around" a past date (owner, 2026-11-17).
+  const overdue = !live && !out && !!when?.expected && Date.now() > when.expected.getTime() + 18.5 * 3600 * 1000;
+  const accent = live ? copy.accent_live : out ? copy.accent_out : overdue ? copy.accent_overdue : expected ? copy.accent_pending : copy.accent_pending_nodate;
   const subtitle = live
     ? copy.subtitle_live
     : state.status === "failed"
       ? copy.subtitle_failed
       : out
         ? copy.subtitle_out
-        : when
-          ? copy.subtitle_pending
-          : copy.subtitle_pending_nodate;
+        : overdue && steps?.result
+          ? copy.subtitle_overdue
+          : when
+            ? copy.subtitle_pending
+            : copy.subtitle_pending_nodate;
   const source = live ? (state.publishedAt ? copy.source_live : copy.source_archive) : copy.source_pending;
 
   // With a result, its figures are the insight cards under the words (2026-10-21) — the tiles repeated

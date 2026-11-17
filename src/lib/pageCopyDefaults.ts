@@ -4325,6 +4325,15 @@ export const PAGE_COPY = {
       },
       accent_pending: { label: "Hero title, coloured part, not out — {expected}", value: "expected around {expected}" },
       accent_pending_nodate: { label: "Hero title, coloured part, not out, no date", value: "not out yet" },
+      // Owner, 2026-11-17 ("date bhi galat… chije change hoti rehti hai"): once MCC's scheduled day has passed and the
+      // result is not out, the page says so instead of "expected around" a past date.
+      accent_overdue: { label: "Hero title, coloured part, MCC's date passed and not out", value: "not out yet, later than MCC's schedule" },
+      subtitle_overdue: {
+        label: "Hero line, MCC's date passed and not out — {round}, {result_date}, {expected}",
+        value:
+          "MCC's schedule put the {round} result on {result_date}, and MCC has not published it yet. It is here the moment MCC does: MCC's own PDF, seats allotted by branch, quota, category and state, and the last rank admitted in each branch.",
+        long: true,
+      },
       subtitle_pending: {
         label: "Hero line, not out — {round}, {window}",
         value:
@@ -4627,6 +4636,7 @@ export const PAGE_COPY = {
       chip_failed: { label: "Badge: PDF not readable", value: "Out — see MCC" },
       chip_pending: { label: "Badge: expected — {expected}", value: "Expected {expected}" },
       chip_pending_nodate: { label: "Badge: not out", value: "Not out yet" },
+      chip_overdue: { label: "Badge: MCC's date passed, not out — {expected}", value: "Due {expected}, not out yet" },
       schedule_title: { label: "Schedule heading — {year}", value: "MCC's schedule, {year}" },
       schedule_intro: {
         label: "Schedule line",

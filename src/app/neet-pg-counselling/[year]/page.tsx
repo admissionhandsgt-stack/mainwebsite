@@ -101,7 +101,9 @@ export default async function CounsellingYearPage(props: { params: Promise<Param
     if (r.state.status === "detected") return { text: body.chip_out, tone: "out" as const };
     if (r.state.status === "failed") return { text: body.chip_failed, tone: "out" as const };
     return {
-      text: r.when?.expected ? body.chip_pending.replace("{expected}", DAY.format(r.when.expected)) : body.chip_pending_nodate,
+      text: r.when?.expected
+        ? (Date.now() > r.when.expected.getTime() + 18.5 * 3600 * 1000 ? body.chip_overdue : body.chip_pending).replace("{expected}", DAY.format(r.when.expected))
+        : body.chip_pending_nodate,
       tone: "pending" as const,
     };
   };
