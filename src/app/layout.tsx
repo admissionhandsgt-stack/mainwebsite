@@ -189,7 +189,15 @@ export default async function RootLayout({
                 })}]);`,
               }}
             />
-            <script defer src="https://analytics.theautoloom.in/sdk/v1/analytics.js" />
+            {/* The SDK itself waits for window.__ahLater, like GA and Clarity (2026-11-17): it sends its batches with
+                fetch(…, keepalive: true), which the DevTools protocol never reports as finished, so Lighthouse sat to its
+                35–45 s limit on every page ("The page loaded too slowly to finish") and caught GA and Clarity inside its
+                window. Calls made before it loads wait in window.aa above, so no event of ours is lost. */}
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `(window.__ahLater||function(f){f()})(function(){var s=document.createElement('script');s.defer=true;s.src='https://analytics.theautoloom.in/sdk/v1/analytics.js';document.head.appendChild(s);});`,
+              }}
+            />
           </>
         )}
       </head>
