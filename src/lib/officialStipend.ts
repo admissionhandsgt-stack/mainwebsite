@@ -64,6 +64,12 @@ export interface StipendCollege {
   session: string | null;
   /** The document prints no "per month" word. */
   periodUnstated: boolean;
+  /**
+   * ONE PG figure a month with no year attached (NMC's college-wise list: "PG-RS.30000/-"; NMC's notice 221 footnote makes
+   * every cell a month's stipend). Shown as "₹X a month (year not stated)" — never as year 1, never spread over three years
+   * (the PG data session, 2026-11-16). Null when the row has a year split (y) or no figure of the college's own.
+   */
+  oneFigure: number | null;
   source: Source | null;
 }
 
@@ -214,6 +220,7 @@ async function load(): Promise<OfficialStipend | null> {
         status: r.status,
         // Never a figure on a not_verified row; a "no stipend" row has none to show.
         y: shown ? [num(d.y1_inr_pm), num(d.y2_inr_pm), num(d.y3_inr_pm)] : [null, null, null],
+        oneFigure: shown && !num(d.y1_inr_pm) ? num(d.pg_one_figure_inr_pm) : null,
         branches: branches?.length ? branches : null,
         asWritten: r.status === "not_verified" ? null : sentences(str(d.as_written)),
         session: str(d.session),
@@ -231,7 +238,7 @@ async function load(): Promise<OfficialStipend | null> {
   }
 }
 
-export const getOfficialStipend = unstable_cache(load, ["official-stipend-v7"], { revalidate: 3600, tags: ["official-stipend"] });
+export const getOfficialStipend = unstable_cache(load, ["official-stipend-v8"], { revalidate: 3600, tags: ["official-stipend"] });
 
 export async function getOfficialStipendState(name: string) {
   const all = await getOfficialStipend();

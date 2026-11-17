@@ -28,7 +28,7 @@ import {
   type Level,
 } from "@/lib/collegeQueries";
 import { getUgCollegeExtras } from "@/lib/content";
-import { getOfficialCollegeStipend, getOfficialStipendState, nmcReturn } from "@/lib/officialStipend";
+import { getOfficialCollegeStipend, getOfficialStipendState } from "@/lib/officialStipend";
 import { isCentralInstitution } from "@/lib/officialBond";
 import { getReportedStipends } from "@/lib/collegeResearch";
 import { getNmcFacts, type NmcFacts } from "@/lib/nmcData";
@@ -75,7 +75,7 @@ export const loadCollegePage = cache(async (slug: string, level: Level) => {
 async function preferOfficialStipend(slug: string, state: string | null, s: CollegeSummary) {
   const row = await getOfficialCollegeStipend(slug).catch(() => null);
   if (row && row.status !== "not_verified") {
-    const v = row.status === "states_no_stipend" ? null : (row.y[0] ?? nmcReturn(row.asWritten)?.v ?? null);
+    const v = row.status === "states_no_stipend" ? null : (row.y[0] ?? row.oneFigure ?? null);
     if (v || row.status === "states_no_stipend") {
       s.stipend = v;
       s.stipendVaries = false;

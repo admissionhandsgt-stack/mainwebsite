@@ -30,7 +30,7 @@ import MccSeats from "@/components/colleges/MccSeats";
 import SeatTerms from "@/components/colleges/SeatTerms";
 import CollegeOfficialBond from "@/components/bond/CollegeOfficialBond";
 import { CollegeOfficialStipend } from "@/components/stipend/OfficialStipend";
-import { getOfficialCollegeStipend, getOfficialStipendState, nmcReturn } from "@/lib/officialStipend";
+import { getOfficialCollegeStipend, getOfficialStipendState } from "@/lib/officialStipend";
 import { getStipends } from "@/lib/cutoffHubQueries";
 import { collegeBondText, listedBondText, listedExitText } from "@/components/bond/OfficialBond";
 import { getOfficialCollegeBond, getOfficialStateByName, govtBond, isCentralInstitution, rangeText, yearsText, serviceYears } from "@/lib/officialBond";
@@ -214,11 +214,8 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
             ? `Its own record says no PG stipend is paid${r.session ? ` (${r.session})` : ""}. Ask the college whether that has changed; NMC requires PG stipend at par with the state's government colleges.`
             : r.y[0]
               ? `${r.y.map((v, i) => (v ? `${inr(v)} a month in year ${i + 1}` : null)).filter(Boolean).join(", ")}, from the college's own document${r.session ? ` (${r.session})` : ""}.`
-              : nmcReturn(r.asWritten)
-                ? (() => {
-                    const n = nmcReturn(r.asWritten)!;
-                    return `${inr(n.v)} a month${n.stateRate ? " (the state's rate)" : ""}, as the college told NMC${n.year ? ` in ${n.year}` : ""}. Ask for its current figure in writing; NMC requires PG stipend at par with the state's government colleges.`;
-                  })()
+              : r.oneFigure
+                ? `${inr(r.oneFigure)} a month (the year of the course is not stated), from the college's own return to NMC${r.session ? ` (${r.session})` : ""}.`
                 : r.asWritten
                 ? `As its own document prints it: ${r.asWritten}`
                 : null

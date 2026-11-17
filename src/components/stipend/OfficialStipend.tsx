@@ -3,7 +3,7 @@ import Link from "@/components/ui/Link";
 import { LISTED, listedStipendText, Sources, sourceWords, stipendYearsText } from "@/components/bond/OfficialBond";
 import type { ListedTerms } from "@/lib/pgSeatData";
 import type { ReportedStipend } from "@/lib/collegeResearch";
-import { govtFigure, nmcReturn, rupee, STIPEND_STATUS, type GovtStipend, type NationalRule, type StipendCollege, type StipendStatus } from "@/lib/officialStipend";
+import { govtFigure, rupee, STIPEND_STATUS, type GovtStipend, type NationalRule, type StipendCollege, type StipendStatus } from "@/lib/officialStipend";
 
 /**
  * The official stipend's pieces (2026-11-16): a state's government-college rate as its order gives it, each private or
@@ -121,9 +121,10 @@ export function collegeStipendText(c: StipendCollege, ask = "Official figure not
   if (c.status === "not_verified") return ask;
   if (c.status === "states_no_stipend") return `No PG stipend at present, as the college's own ${c.session?.match(/20\d\d-\d\d/)?.[0] ?? ""} document says`.replace("  ", " ");
   if (c.y[0]) return stipendYearsText(c.y);
-  const n = nmcReturn(c.asWritten);
-  if (n) return `${rupee(n.v)} a month${n.stateRate ? " (the state's rate)" : ""}, as it told NMC${n.year ? ` in ${n.year}` : ""}`;
-  return c.asWritten ?? "As printed in its document";
+  if (c.oneFigure) return `${rupee(c.oneFigure)} a month (year not stated)`;
+  // An official row with no figure of the college's own (NMC's list says "given as mentioned by state Govt." or nothing):
+  // the state column is never copied onto a college.
+  return "No figure of its own in its latest record";
 }
 
 /**
@@ -154,7 +155,7 @@ export function CollegeStipendTable({
     const repText = rep?.y[0] ? stipendYearsText(rep.y) : null;
     const listedText = fromListing ? (repText ?? listedStipendText(l)) : null;
     if (listedText) anyListed = true;
-    const y1 = fromListing ? (rep?.y[0] ?? l?.stipend[0]) : (c.y[0] ?? nmcReturn(c.asWritten)?.v);
+    const y1 = fromListing ? (rep?.y[0] ?? l?.stipend[0]) : (c.y[0] ?? c.oneFigure);
     return (
       <tr
         key={`${c.instituteId}-${c.name}`}
@@ -184,7 +185,7 @@ export function CollegeStipendTable({
             </span>
           ) : (
             <>
-              <span className={c.y[0] || nmcReturn(c.asWritten) ? "tnum font-semibold text-foreground" : "text-foreground"}>{collegeStipendText(c)}</span>
+              <span className={c.y[0] || c.oneFigure ? "tnum font-semibold text-foreground" : "text-foreground"}>{collegeStipendText(c)}</span>
               {c.branches && (
                 <span className="mt-1 block text-[12.5px] leading-relaxed text-muted-foreground">
                   {c.branches.map(([b, v], i) => (
