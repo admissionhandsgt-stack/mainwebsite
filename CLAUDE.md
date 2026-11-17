@@ -2240,7 +2240,7 @@ states + MCC, 302 colleges, every figure with its URL, page and quote. It replac
   `https://t.me/+2oCwgUBSa6xjOGJl` (CONTACT_INFO.telegram, `social.telegram` default and stored row) — the students' bot
   welcomes and approves; the public `t.me/AdmissionHandsIndia` stays only as the Organization's sameAs
   (CONTACT_INFO.telegramPublic) and the admin posting card. The WhatsApp template `ah_meet_counsellor_v2` still carries
-  the public link (Meta-approved text; changing it needs a new template). (2) Notices print Zyn's approved
+  the public link (Meta-approved text; changing it needs a new template). **`ah_meet_counsellor_v3`** (v2 word for word with the request link, `scripts/wa_counsellor_v3_template.mjs`, owner's OK 2026-11-17) was submitted that day — id 1899001298208707, MARKETING, PENDING; `lib/followups.ts` sends v3 once Meta approves it, v2 until then (`--status` on the script reads Meta's answer). (2) Notices print Zyn's approved
   `public_brief` / `public_points` under the title (components/states/NoticeSummary, state pages and
   /neet-counselling-updates); notices sent before 16 Nov have none unless Zyn re-sends them. (3) A "no stipend" college's
   box shows its document's branch lines and its own earlier declarations (`history`, from the PG session's notes). (4) State

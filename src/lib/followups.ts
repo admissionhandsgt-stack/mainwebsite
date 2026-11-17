@@ -46,6 +46,12 @@ export const FOLLOWUPS = {
  * version never gets the second: one introduction per student, ever.
  */
 export const COUNSELLOR_V2 = "ah_meet_counsellor_v2";
+/**
+ * v2 word for word with the channel's request-to-join link (https://t.me/+2oCwgUBSa6xjOGJl) in place of the public one
+ * (2026-11-17, owner): only a join through the request link reaches the students' bot, which welcomes and approves the
+ * joiner. Submitted by scripts/wa_counsellor_v3_template.mjs; sent in place of v2 once Meta approves it.
+ */
+export const COUNSELLOR_V3 = "ah_meet_counsellor_v3";
 
 const MAX_PER_RUN = 50;
 
@@ -147,7 +153,7 @@ async function candidates(): Promise<Candidate[]> {
 export const CALLBACK_TEMPLATE = "ah_callback_request";
 
 /** Which templates Meta has approved. A send before approval fails and would use up the student's one message. */
-async function approvedTemplates(names: string[] = [...Object.values(FOLLOWUPS), COUNSELLOR_V2]): Promise<Set<string>> {
+async function approvedTemplates(names: string[] = [...Object.values(FOLLOWUPS), COUNSELLOR_V2, COUNSELLOR_V3]): Promise<Set<string>> {
   const c = await cloudConfig();
   const out = new Set<string>();
   if (!c?.wabaId) return out;
@@ -203,7 +209,8 @@ export async function runFollowups({ dry }: { dry: boolean }): Promise<FollowupR
   const inHours = inSendingHours();
   const [all, approved] = await Promise.all([candidates(), approvedTemplates()]);
   // The slot is recorded under its first name; what goes out is the newest approved version.
-  const sendAs = (slot: string) => (slot === FOLLOWUPS.counsellor && approved.has(COUNSELLOR_V2) ? COUNSELLOR_V2 : slot);
+  const sendAs = (slot: string) =>
+    slot !== FOLLOWUPS.counsellor ? slot : approved.has(COUNSELLOR_V3) ? COUNSELLOR_V3 : approved.has(COUNSELLOR_V2) ? COUNSELLOR_V2 : slot;
   const due = all.filter((d) => approved.has(sendAs(d.template)));
   const report: FollowupReport = {
     dry,

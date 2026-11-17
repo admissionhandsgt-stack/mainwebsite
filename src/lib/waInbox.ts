@@ -27,6 +27,21 @@ const TEMPLATE_TEXT: Record<string, (p: string[]) => string> = {
     `*Your NEET seat plan, made with an expert*\n\nHi ${name}, students with the same NEET rank often land a whole tier apart — it comes down to choice order, the round they freeze in and the quota they pick.\n\nGulshan Tomar, admission counsellor at AdmissionHands, builds that plan with you:\n✅ Which colleges to fill, and in what order\n✅ When to float, freeze or upgrade\n✅ Real fees, bond and hidden charges, confirmed with colleges\n\n[Expert Counsellor]  [See Gulshan's profile]`,
   ah_meet_counsellor_v2: ([name = "there"]) =>
     `*Your NEET seat plan, made with an expert*\n\nHi ${name}, students with the same NEET rank often land a whole tier apart — it comes down to choice order, the round they freeze in and the quota they pick.\n\nGulshan Tomar, admission counsellor at AdmissionHands, builds that plan with you:\n✅ Which colleges to fill, and in what order\n✅ When to float, freeze or upgrade\n✅ Real fees, bond and hidden charges, confirmed with colleges\n\n15+ years of NEET counselling · open daily, 10 AM – 10 PM.\n\nFor the latest counselling updates and info, join our Telegram channel: https://t.me/AdmissionHandsIndia\n\n[Expert Counsellor]  [See Gulshan's profile]`,
+  ah_meet_counsellor_v3: ([name = "there"]) =>
+    `*Your NEET seat plan, made with an expert*
+
+Hi ${name}, students with the same NEET rank often land a whole tier apart — it comes down to choice order, the round they freeze in and the quota they pick.
+
+Gulshan Tomar, admission counsellor at AdmissionHands, builds that plan with you:
+✅ Which colleges to fill, and in what order
+✅ When to float, freeze or upgrade
+✅ Real fees, bond and hidden charges, confirmed with colleges
+
+15+ years of NEET counselling · open daily, 10 AM – 10 PM.
+
+For the latest counselling updates and info, join our Telegram channel: https://t.me/+2oCwgUBSa6xjOGJl
+
+[Expert Counsellor]  [See Gulshan's profile]`,
   ah_callback_request: ([name = "there"]) =>
     `Hi ${name}, we have received your request for NEET admission counselling on AdmissionHands.\n\nAn admission counsellor will call you on this number between 10 AM and 10 PM. Please keep your NEET rank, category and domicile state ready for the call.\n\n[Message your counsellor]`,
   hello_world: () => "Hello World — Welcome and congratulations!! (Meta's sample template)",
@@ -37,6 +52,7 @@ const TEMPLATE_LABEL: Record<string, string> = {
   ah_finish_profile: "Finish-profile reminder",
   ah_meet_counsellor: "Meet the counsellor",
   ah_meet_counsellor_v2: "Meet the counsellor (with Telegram)",
+  ah_meet_counsellor_v3: "Meet the counsellor (Telegram join request)",
   ah_callback_request: "Call-back confirmation",
   hello_world: "Test template",
 };
