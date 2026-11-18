@@ -5,6 +5,9 @@ import { getIntegration } from "@/lib/integrations";
 import { tellOwner } from "@/lib/telegramBot";
 import { logError } from "@/lib/logger";
 import { beat } from "@/lib/heartbeat";
+import { sql } from "drizzle-orm";
+import { db } from "@/db/client";
+import { checkPaths } from "@/lib/pageWatch";
 
 /**
  * Hourly (server crontab, minute 50): lib/serpResearch.ts collects real searches from autocomplete and studies what the
@@ -27,7 +30,14 @@ function authorised(request: Request): boolean {
 export async function POST(request: Request) {
   if (!authorised(request)) return NextResponse.json({ error: "Not found" }, { status: 404 });
   try {
+    const started = new Date();
     const r = await runResearch();
+    // The answers this run put on (or took off) our pages: re-read those pages now, so each one's lastmod and "Updated"
+    // time move the minute its words do, and Google and Bing hear of it (lib/pageWatch.ts, 2026-11-18).
+    const touched = (await db
+      .execute(sql`SELECT DISTINCT page FROM search_faqs WHERE updated_at >= ${started.toISOString()} OR created_at >= ${started.toISOString()}`)
+      .catch(() => [])) as unknown as { page: string }[];
+    if (touched.length) await checkPaths(touched.map((t) => t.page), "research bot answers").catch(() => undefined);
     const ist = new Date(Date.now() + 5.5 * 3600_000);
     const hour = ist.getUTCHours();
     const mode = (await getIntegration("serp.digest").catch(() => null)) ?? "hourly";

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { afterAdminEdit } from "@/lib/adminEditWatch";
 import { requireAdmin } from "@/lib/auth";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
@@ -49,6 +50,7 @@ export async function PATCH(
         .then(async (m) => m.notifyChange(await m.schedulePaths(), `MCC schedule edited in the admin (${String(row.title ?? row.id)})`))
         .catch(() => undefined);
     }
+    afterAdminEdit(params.resource);
     return NextResponse.json({ data: row });
   } catch (error) {
     console.error(`[admin PATCH ${params.resource}/${params.id}]`, error);
@@ -74,6 +76,7 @@ export async function DELETE(
 
   try {
     await db.execute(sql`DELETE FROM ${sql.raw(r.table)} WHERE id = ${id}`);
+    afterAdminEdit(params.resource);
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error(`[admin DELETE ${params.resource}/${params.id}]`, error);

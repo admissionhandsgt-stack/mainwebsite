@@ -57,8 +57,10 @@ export default async function ReviewedBy() {
           now that it moves with notices, added seats, schedule changes and rounds; never the day of the visit. */}
       {date && (
         <>
-          <span aria-hidden="true">·</span>
-          <span>
+          {/* data-nohash: the time this line prints is set from the page's own fingerprint (lib/pageWatch.ts), so it must
+              not count as part of what the page says — counting it would move the page on every check. */}
+          <span aria-hidden="true" data-nohash>·</span>
+          <span data-nohash>
             {copy.updated} <time dateTime={date}>{readableDate(date)}</time>
           </span>
         </>

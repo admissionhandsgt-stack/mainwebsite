@@ -554,6 +554,30 @@ own update), and ReviewedBy prints it — "Updated 17 Nov 2026, 7:49 pm IST" wit
 dateModified — on every DataHero page and, since this change, under /neet-pg-process's PageHero. The hourly IndexNow job keeps
 the whole lastmod, so a second change on the same day is sent again.
 
+**…and every word is watched, whoever changed it (same day, owner: "agar ek word bhi change hota hai page par to wo recrawl
+ho … bot add kar raha hai kuch bhi tb bhi … perfect timing ke sath … fail na ho").** `lib/pageWatch.ts` renders each sitemap
+page from the app itself (127.0.0.1:8150), hashes what it says (`lib/pageFingerprint.ts`: title, meta description, robots,
+canonical, and every word, link and alt text inside `<main>` — not the header, alerts bar or footer, and not elements marked
+`data-nohash`: the "Updated" time itself, which would loop, and the weekly-rotating "More on…" block), and when the hash moves
+— confirmed by a second render, so a page that differs on every render is counted `unstable`, never changed — sets
+`page_fingerprints.changed_at` (migration 0068; each change also in `page_change_log`, 120 days). That moment becomes the
+sitemap lastmod (`overlayWatched` in lib/sitemapData.ts, the later of it and the data's own date), the page's "Updated … IST"
+line and JSON-LD dateModified; IndexNow is sent at once (and `indexnow_sent` recorded so the hourly job does not repeat it);
+the sitemap is resubmitted to Google; and **the edge stops serving any copy stored before that moment** — to visitors and
+crawlers alike (`/api/edge/changes`, edge key only, read by deploy/edge/_worker.js at most once a minute per isolate, fail
+open). A first sight of a page is a baseline, never a change; a failed render (5xx, timeout, under 200 characters in
+`<main>`) is never a change and is retried. Sweep: `POST /api/cron/page-watch` every 10 minutes (server crontab, lease
+`lease.page-watch`, heartbeat `page-watch` 40 min in /api/health) — live pages (the edge's LIVE_PAGE list) every 10 minutes and
+always first, other hubs hourly, state and branch pages every 6 hours, college pages daily between 01:00 and 07:00 IST (or
+when 36 h overdue); 3-minute budget by day, 7 at night. Event-driven on top: `notifyChange` now drops the `alerts` and
+`mcc-results` caches and has the watcher re-read its pages (a page that reads the same is not announced; one that cannot be
+rendered is sent to IndexNow anyway); the research bot's run re-reads every page whose answers it touched; Remove / Put back
+of an answer re-reads that page; a related-links rebuild queues the pages whose list changed; `/api/cron/revalidate` (the
+import scripts' `revalidate_tags.sh`) queues the page families each tag feeds (`FEEDS`); any admin save except leads queues
+hubs, states and branches (`lib/adminEditWatch.ts`). By hand: `POST /api/cron/page-watch` with `{"check":[…]}` (now, ≤60) or
+`{"queue":[…]}` (next sweeps). A new block that changes on every render (a random pick, a clock) must carry `data-nohash` or
+it will show up as `unstable` in the sweep's summary.
+
 **The choice-filling page follows the running round** (same day): title/H1/description name the round the Telegram cue names
 (`getTelegramCue`, the first round 1–4 whose result is not out) with its choice-filling and locking dates —
 "NEET PG Round 2 Choice Filling 2026: Dates, Locking & Upgradation". `components/lead/ChoiceStrategy` ("Filling choices is the

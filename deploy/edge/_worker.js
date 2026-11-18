@@ -142,6 +142,51 @@ const LIVE_PAGE = /^\/($|neet-pg-counselling(\/.*)?$|neet-pg-counselling-kaise-h
 const DATA_PAGE = /^\/(mbbs-india\/colleges\/[^/]+|md-ms-india\/(colleges|branches|states|stipend|fees|bond)\/.+|medical-colleges\/[^/]+|neet-ss\/[^/]+|neet-mds\/[^/]+|counselling\/(neet-pg|mbbs)\/[^/]+)$/;
 const DATA_STALE_MS = 6 * 60 * 60 * 1000;
 
+// Pages whose words changed (src/lib/pageWatch.ts, 2026-11-18): a copy stored before its page changed is never served —
+// not to a visitor, not to a search crawler — so an engine told about a change reads the change, not a day-old copy.
+// The list (path → ms) comes from the origin at most once a minute per isolate, kept in this location's cache for a new
+// isolate. It fails open: with no list, the edge behaves exactly as before.
+const CHANGES_EVERY = 60 * 1000;
+let changes = { at: 0, c: {} };
+let changesLoading = null;
+
+async function loadChanges(env, cache, metaKey) {
+  const res = await fetch(new Request(new URL("/api/edge/changes", env.ORIGIN_URL), {
+    headers: { "x-ah-edge-key": env.EDGE_SHARED_SECRET, accept: "application/json" },
+  }));
+  if (!res.ok) throw new Error(String(res.status));
+  const j = await res.json();
+  const v = { at: Date.now(), c: j && j.c && typeof j.c === "object" ? j.c : {} };
+  changes = v;
+  await cache.put(metaKey, new Response(JSON.stringify(v), { headers: { "content-type": "application/json", "cache-control": "public, max-age=600" } }));
+}
+
+async function changedAt(path, env, ctx, cache, host) {
+  const metaKey = new Request(`https://${host}/__meta/changes`, { method: "GET" });
+  if (!changes.at) {
+    const hit = await cache.match(metaKey).catch(() => null);
+    if (hit) {
+      try {
+        const v = await hit.json();
+        if (v && v.c && typeof v.at === "number") changes = v;
+      } catch {}
+    }
+  }
+  if (Date.now() - changes.at > CHANGES_EVERY && !changesLoading) {
+    const first = !changes.at;
+    changesLoading = loadChanges(env, cache, metaKey)
+      .catch(() => {
+        changes = { at: Date.now() - CHANGES_EVERY + 15000, c: changes.c }; // try again in 15 s
+      })
+      .finally(() => {
+        changesLoading = null;
+      });
+    ctx.waitUntil(changesLoading);
+    if (first) await Promise.race([changesLoading, new Promise((r) => setTimeout(r, 600))]);
+  }
+  return Number(changes.c[path] || 0);
+}
+
 async function revalidate(kind, cache, key, cached, request, url, env) {
   const req = originRequest(request, url, env);
   const etag = cached.headers.get("etag");
@@ -175,7 +220,11 @@ export default {
     // One key space per kind, on the canonical host, so the pages.dev address
     // and www never share a copy.
     const key = new Request(`https://${url.hostname}/__${kind}${url.pathname}${url.search}`, { method: "GET" });
-    const cached = await cache.match(key);
+    let cached = await cache.match(key);
+    if (cached && kind === "html") {
+      const changed = await changedAt(url.pathname, env, ctx, cache, url.hostname).catch(() => 0);
+      if (changed && changed > Number(cached.headers.get("x-edge-stored") || 0)) cached = null; // stored before the page changed
+    }
     if (cached) {
       const age = Date.now() - Number(cached.headers.get("x-edge-stored") || 0);
       if (age < FRESH_MS) return finish(toVisitor(cached, "HIT"), url);

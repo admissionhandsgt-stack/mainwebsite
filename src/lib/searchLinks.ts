@@ -232,12 +232,22 @@ export async function rebuildSearchLinks(base = `http://127.0.0.1:${process.env.
   }
 
   const value: Stored = { builtAt: new Date().toISOString(), links };
+  // The pages whose "Related searches" list changed, for the page watcher (lib/pageWatch.ts) — queued, not checked here.
+  const before = (await db.execute(sql`SELECT value FROM integrations WHERE key = ${KEY}`).catch(() => [])) as unknown as { value: string | null }[];
+  let old: Record<string, SearchLink[]> = {};
+  try {
+    old = (JSON.parse(before[0]?.value ?? "{}") as Partial<Stored>).links ?? {};
+  } catch {
+    old = {};
+  }
+  const moved = [...new Set([...Object.keys(old), ...Object.keys(links)])].filter((p) => JSON.stringify(old[p] ?? []) !== JSON.stringify(links[p] ?? []));
   await db.execute(sql`
     INSERT INTO integrations (key, value, is_secret, updated_at)
     VALUES (${KEY}, ${JSON.stringify(value)}, false, now())
     ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_at = now()
   `);
   revalidateTag("search-links");
+  if (moved.length) await import("@/lib/pageWatch").then((m) => m.queueCheck(moved)).catch(() => undefined);
   return { pairs, pages: Object.keys(links).length, links: Object.values(links).reduce((n, l) => n + l.length, 0), skippedLinked };
 }
 

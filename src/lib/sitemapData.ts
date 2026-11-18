@@ -223,9 +223,39 @@ let lastGroups: Record<SitemapGroup, SitemapEntry[]> | null = null;
  */
 export const sitemapGroups = singleFlight(async () => {
   const g = await buildSitemapGroups();
+  await overlayWatched(g).catch(() => undefined);
   lastGroups = g;
   return g;
 });
+
+/** The later of two lastmods (a date, or an IST date and time). A bare day gives way to a time on that same day. */
+function laterOf(a: string | undefined, b: string): string {
+  if (!a) return b;
+  const da = a.slice(0, 10);
+  const db_ = b.slice(0, 10);
+  if (db_ !== da) return db_ > da ? b : a;
+  if (a.length <= 10) return b;
+  return Date.parse(b) >= Date.parse(a) ? b : a;
+}
+
+/**
+ * The moment each page's words last changed, as the page watcher saw it (lib/pageWatch.ts, page_fingerprints): every
+ * word, from any source — the research bot's answers, a deploy's wording, a date passing — moves the page's lastmod
+ * and, through lib/pageDates.ts, its "Updated … IST" line (2026-11-18, owner: "ek word bhi change hota hai… perfect
+ * timing ke sath"). Read fresh on every build; the watcher drops the `sitemap` tag when it records a change.
+ */
+async function overlayWatched(g: Record<SitemapGroup, SitemapEntry[]>): Promise<void> {
+  const rows = (await db.execute(sql`
+    SELECT path, to_char(changed_at AT TIME ZONE 'Asia/Kolkata', 'YYYY-MM-DD"T"HH24:MI:SS') || '+05:30' AS at
+      FROM page_fingerprints WHERE changed_at IS NOT NULL`)) as unknown as { path: string; at: string }[];
+  if (!rows.length) return;
+  const at = new Map(rows.map((r) => [r.path, r.at]));
+  for (const grp of SITEMAP_GROUPS)
+    for (const e of g[grp]) {
+      const t = at.get(e.url.replace("https://www.admissionhands.com", "") || "/");
+      if (t) e.lastModified = laterOf(e.lastModified, t);
+    }
+}
 
 /**
  * For a page render (the "updated" date on the reviewer line, the "More on …" block): the fresh groups when they come

@@ -282,6 +282,9 @@ export async function listSearchFaqs(): Promise<{ id: number; page: string; ques
 }
 
 export async function setSearchFaqStatus(id: number, status: "live" | "removed") {
-  await db.execute(sql`UPDATE search_faqs SET status = ${status}, updated_at = now() WHERE id = ${id}`);
+  const rows = (await db.execute(sql`UPDATE search_faqs SET status = ${status}, updated_at = now() WHERE id = ${id} RETURNING page`)) as unknown as { page: string }[];
   revalidateTag("search-faqs");
+  // The page's words changed: re-read it now (lib/pageWatch.ts), not on its tier's next sweep. Not awaited.
+  if (rows[0]?.page)
+    void import("@/lib/pageWatch").then((m) => m.checkPaths([rows[0].page], "search answer " + status)).catch(() => undefined);
 }

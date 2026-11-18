@@ -16,7 +16,8 @@ export default async function IndexBoost() {
   const copy = await pageCopy("site.index_boost", { topic: boost.topic }).catch(() => ({ heading: "" }));
   if (!copy.heading) return null;
   return (
-    <section data-search-links className="cv-auto container-custom py-6" aria-labelledby="index-boost-heading">
+    // data-nohash: it rotates by week through not-yet-indexed neighbours, which is not a change to this page (lib/pageFingerprint.ts).
+    <section data-search-links data-nohash className="cv-auto container-custom py-6" aria-labelledby="index-boost-heading">
       <h2 id="index-boost-heading" className="flex items-center gap-2 text-sm font-semibold text-foreground">
         <Compass className="h-4 w-4 text-primary-strong" aria-hidden="true" />
         {copy.heading}

@@ -4,12 +4,14 @@
  * miss hogyi"). On 17 Nov MCC put Round 2's result on hold; the page said so within the hour, but Google had last read it
  * the night before and kept showing the old title.
  *
- * What it does, in order:
- * 1. Refreshes the sitemap cache, so the page's new lastmod (an exact IST time, lib/sitemapData.ts) is what Google reads.
- * 2. IndexNow for the changed pages — Bing, Yandex, Seznam, Naver re-crawl within minutes.
- * 3. Resubmits the sitemap to Google Search Console (the supported way to say "read it again"; Google retired the old
- *    sitemap ping in 2023, and its Indexing API is only for job postings and live streams — never used here). At most
- *    once every 20 minutes; a change inside that window is picked up by the hourly IndexNow cron's resubmit.
+ * What it does: drops the caches the named pages read their changing parts through, then has lib/pageWatch.ts re-render
+ * each page and compare its words with the last check. For each page that changed: the moment becomes its sitemap
+ * lastmod, its "Updated … IST" line and JSON-LD dateModified; IndexNow (Bing, Yandex, Seznam, Naver) at once; the sitemap
+ * resubmitted to Google Search Console (`resubmitSitemap` — the supported way to say "read it again"; Google retired the
+ * sitemap ping in 2023 and its Indexing API is only for job postings and live streams, never used here; at most every 20
+ * minutes, and the hourly IndexNow job resubmits as well); the edge stops serving a copy stored before it. The watcher's
+ * sweep (every 10 minutes) catches every change no writer announces — the research bot's answers, a deploy's wording, a
+ * date passing.
  * Never throws: a failure here must not fail the import, the notice or the admin save that called it.
  */
 import { revalidateTag } from "next/cache";
@@ -77,19 +79,29 @@ export async function resubmitSitemap(force = false): Promise<string> {
 }
 
 /**
- * The pages changed: refresh the sitemap, IndexNow them, resubmit the sitemap to Google. `reason` goes to the server log
- * only. Never throws.
+ * The pages may have changed: drop the caches their changing parts are read through, re-render each one and compare what
+ * it says with the last check (lib/pageWatch.ts). Every page whose words changed gets that moment as its lastmod and
+ * "Updated" time, IndexNow, the Google resubmit and a fresh edge copy; a page that reads the same is left alone (telling
+ * search engines about a change they cannot see teaches them to ignore us). A page that could not be rendered is still
+ * sent to IndexNow — when in doubt, tell. `reason` goes to the server log and the change log. Never throws.
  */
-export async function notifyChange(paths: string[], reason: string): Promise<{ pages: number; indexnow: string; google: string }> {
+export async function notifyChange(paths: string[], reason: string): Promise<{ pages: number; changed: string[]; indexnow: string; google: string }> {
   const list = [...new Set(paths.filter((p) => typeof p === "string" && p.startsWith("/")))];
-  try {
-    revalidateTag("sitemap");
-  } catch {
-    // Outside a request (a script) there is no cache to drop; the sitemap's own day-long cache catches up.
+  for (const tag of ["alerts", "mcc-results"]) {
+    try {
+      revalidateTag(tag);
+    } catch {
+      // Outside a request (a script) there is no cache to drop.
+    }
   }
-  const ping = list.length ? await pingIndexNow(list).catch(() => ({ ok: false, status: undefined })) : { ok: false, status: undefined };
-  const google = await resubmitSitemap();
-  const out = { pages: list.length, indexnow: ping.ok ? `accepted (${ping.status})` : `not sent${ping.status ? ` (${ping.status})` : ""}`, google };
-  console.log(`[notify] ${reason}: ${out.pages} pages, IndexNow ${out.indexnow}, Google sitemap ${out.google}`);
+  const { checkPaths } = await import("@/lib/pageWatch");
+  const r = await checkPaths(list, reason.slice(0, 120));
+  let indexnow = r.indexnow;
+  if (r.failed.length) {
+    const ping = await pingIndexNow(r.failed).catch(() => ({ ok: false, status: undefined }));
+    indexnow += ` · ${r.failed.length} not rendered, sent anyway: ${ping.ok ? `accepted (${ping.status})` : "not sent"}`;
+  }
+  const out = { pages: list.length, changed: r.changed, indexnow, google: r.google };
+  console.log(`[notify] ${reason}: ${list.length} pages, ${r.changed.length} changed, IndexNow ${indexnow}, Google sitemap ${r.google}`);
   return out;
 }

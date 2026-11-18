@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { afterAdminEdit } from "@/lib/adminEditWatch";
 import { requireAdmin } from "@/lib/auth";
 import { db } from "@/db/client";
 import { sql } from "drizzle-orm";
@@ -58,6 +59,7 @@ export async function POST(request: Request, props: { params: Promise<{ resource
       )})
       RETURNING *
     `);
+    afterAdminEdit(params.resource);
     return NextResponse.json({ data: (inserted as unknown as unknown[])[0] }, { status: 201 });
   } catch (error) {
     console.error(`[admin POST ${params.resource}]`, error);
@@ -90,6 +92,7 @@ export async function PATCH(request: Request, props: { params: Promise<{ resourc
       WHERE id = (SELECT id FROM ${sql.raw(r.table)} ORDER BY id LIMIT 1)
       RETURNING *
     `);
+    afterAdminEdit(params.resource);
     return NextResponse.json({ data: (updated as unknown as unknown[])[0] });
   } catch (error) {
     console.error(`[admin PATCH ${params.resource}]`, error);
