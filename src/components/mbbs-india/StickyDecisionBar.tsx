@@ -65,7 +65,7 @@ export const StickyDecisionBar = () => {
           <CTAButton 
             action="call" 
             variant="outline"
-            className="bg-white dark:bg-white text-slate-950 dark:text-slate-950 border-transparent dark:border-transparent rounded-full px-5 py-2.5 h-auto text-[11px] font-black flex items-center gap-1.5 hover:bg-cyan-50 dark:hover:bg-cyan-50 transition-colors shrink-0"
+            className="bg-white dark:bg-white text-slate-950 dark:text-slate-950 border-transparent dark:border-transparent rounded-full min-h-11 px-5 py-2.5 h-auto text-[11px] font-black flex items-center gap-1.5 hover:bg-cyan-50 dark:hover:bg-cyan-50 transition-colors shrink-0"
           >
             <Phone className="w-3.5 h-3.5" />
             Book Free Call
@@ -73,7 +73,7 @@ export const StickyDecisionBar = () => {
           
           <CTAButton 
             action="whatsapp" 
-            className="bg-emerald-500 hover:bg-emerald-600 text-white rounded-full px-5 py-2.5 h-auto text-[11px] font-black flex items-center gap-1.5 shadow-lg shadow-emerald-500/20 shrink-0"
+            className="bg-emerald-500 hover:bg-emerald-600 text-white rounded-full min-h-11 px-5 py-2.5 h-auto text-[11px] font-black flex items-center gap-1.5 shadow-lg shadow-emerald-500/20 shrink-0"
           >
             <WhatsAppIcon size={16} />
             WhatsApp Now

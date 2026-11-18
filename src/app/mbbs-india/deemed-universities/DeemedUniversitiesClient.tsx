@@ -233,7 +233,7 @@ export default function DeemedUniversitiesClient({ heroImages, phoneNumber = "+9
                       <Phone className="w-4 h-4 shrink-0" /> Call Our Experts
                     </a>
                     <button onClick={() => CTA.whatsapp("Hi, I need guidance for deemed university admission")}
-                      className="bg-slate-50 border-2 border-slate-200 text-slate-700 hover:bg-slate-100 hover:border-slate-300 font-black py-2.5 px-4 sm:py-3 sm:px-6 rounded-xl text-xs sm:text-sm transition-all active:scale-95 w-full xs:w-auto"
+                      className="min-h-11 bg-slate-50 border-2 border-slate-200 text-slate-700 hover:bg-slate-100 hover:border-slate-300 font-black py-2.5 px-4 sm:py-3 sm:px-6 rounded-xl text-xs sm:text-sm transition-all active:scale-95 w-full xs:w-auto"
                     >
                       WhatsApp Us
                     </button>

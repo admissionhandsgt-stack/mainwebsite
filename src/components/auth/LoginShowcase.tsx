@@ -210,14 +210,14 @@ export default function LoginShowcase({
                     target="_blank"
                     rel="noopener"
                     data-placement="login_showcase"
-                    className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-accent px-3 py-2 text-[13px] font-bold text-accent-foreground hover:opacity-90"
+                    className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-accent px-3 py-2 text-[13px] font-bold text-accent-foreground hover:opacity-90"
                   >
                     <MessageCircle className="h-4 w-4" aria-hidden="true" /> {c.card_whatsapp_label}
                   </a>
                   <a
                     href={`tel:${phone.replace(/[^\d+]/g, "")}`}
                     data-placement="login_showcase"
-                    className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 text-[13px] font-bold text-foreground hover:border-primary/40"
+                    className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 text-[13px] font-bold text-foreground hover:border-primary/40"
                   >
                     <Phone className="h-4 w-4" aria-hidden="true" /> {c.card_call_label}
                   </a>

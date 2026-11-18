@@ -181,7 +181,7 @@ export function DeemedCollegesListing() {
                   <button
                     onClick={() => handlePageChange(page - 1)}
                     disabled={page === 1 || isLoading}
-                    className="p-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm flex items-center justify-center shrink-0"
+                    className="inline-flex min-h-11 min-w-11 items-center justify-center md:min-h-0 md:min-w-0 p-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm flex items-center justify-center shrink-0"
                     title="Previous Page"
                   >
                     <ChevronLeft className="w-3.5 h-3.5" />
@@ -193,7 +193,7 @@ export function DeemedCollegesListing() {
                       key={pNum}
                       onClick={() => handlePageChange(pNum)}
                       disabled={isLoading}
-                      className={`h-8 min-w-[2rem] px-2 rounded-lg text-xs font-bold transition-all shadow-sm ${
+                      className={`h-11 min-w-11 md:h-8 md:min-w-[2rem] px-2 rounded-lg text-xs font-bold transition-all shadow-sm ${
                         pNum === page
                           ? 'bg-cyan-600 text-white border border-cyan-600'
                           : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60'
@@ -207,7 +207,7 @@ export function DeemedCollegesListing() {
                   <button
                     onClick={() => handlePageChange(page + 1)}
                     disabled={page === totalPages || isLoading}
-                    className="p-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm flex items-center justify-center shrink-0"
+                    className="inline-flex min-h-11 min-w-11 items-center justify-center md:min-h-0 md:min-w-0 p-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm flex items-center justify-center shrink-0"
                     title="Next Page"
                   >
                     <ChevronRight className="w-3.5 h-3.5" />

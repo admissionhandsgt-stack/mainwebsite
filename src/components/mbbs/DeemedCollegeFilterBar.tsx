@@ -78,7 +78,7 @@ export function DeemedCollegeFilterBar({
 
             <button
               onClick={() => onFilterChange('nriSeats', !filters.nriSeats)}
-              className={`px-3 py-2 rounded-lg text-[11.5px] font-black uppercase tracking-wider border transition-all ${
+              className={`min-h-11 md:min-h-0 px-3 py-2 rounded-lg text-[11.5px] font-black uppercase tracking-wider border transition-all ${
                 filters.nriSeats
                   ? 'bg-amber-50 border-amber-300 text-amber-700'
                   : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-300'
@@ -89,7 +89,7 @@ export function DeemedCollegeFilterBar({
 
             <button
               onClick={() => onFilterChange('minoritySeats', !filters.minoritySeats)}
-              className={`px-3 py-2 rounded-lg text-[11.5px] font-black uppercase tracking-wider border transition-all ${
+              className={`min-h-11 md:min-h-0 px-3 py-2 rounded-lg text-[11.5px] font-black uppercase tracking-wider border transition-all ${
                 filters.minoritySeats
                   ? 'bg-teal-50 border-teal-300 text-teal-700'
                   : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-300'
@@ -100,7 +100,7 @@ export function DeemedCollegeFilterBar({
 
             <button
               onClick={() => onFilterChange('womenOnly', !filters.womenOnly)}
-              className={`px-3 py-2 rounded-lg text-[11.5px] font-black uppercase tracking-wider border transition-all ${
+              className={`min-h-11 md:min-h-0 px-3 py-2 rounded-lg text-[11.5px] font-black uppercase tracking-wider border transition-all ${
                 filters.womenOnly
                   ? 'bg-emerald-50 border-emerald-300 text-emerald-700'
                   : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-300'

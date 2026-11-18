@@ -5,7 +5,7 @@ import { logError } from "@/lib/logger";
 import { beat } from "@/lib/heartbeat";
 
 /**
- * Weekly (server crontab, Mondays 05:17 UTC): rebuild the "Related searches" links from the last 28 days of Search
+ * Weekly (server crontab, Sundays 20:17 UTC = Monday 01:47 IST, at night since 2026-11-18 — it re-reads every page): rebuild the "Related searches" links from the last 28 days of Search
  * Console (lib/searchLinks.ts). Same secret as the other cron routes; anything without it is a 404.
  *
  *   curl -fsS -X POST -H "x-cron-secret: $(cat /opt/admissionhands/.cron-secret)" \

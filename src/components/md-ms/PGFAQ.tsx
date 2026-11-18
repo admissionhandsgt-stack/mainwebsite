@@ -140,7 +140,7 @@ export const PGFAQ = ({ items: fromCms, copy }: { items?: FaqItem[]; copy?: FaqC
                     <div key={idx} className="first:pt-0 last:pb-0 py-2">
                       <button
                         onClick={() => setOpenIndex(isOpen ? null : idx)}
-                        className="w-full text-left py-2 flex justify-between items-center gap-4 group focus:outline-none"
+                        className="w-full min-h-11 text-left py-2 flex justify-between items-center gap-4 group focus:outline-none"
                         aria-expanded={isOpen}
                       >
                         <span className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white group-hover:text-primary-strong dark:group-hover:text-cyan-400 transition-colors leading-snug">

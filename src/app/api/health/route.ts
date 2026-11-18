@@ -26,15 +26,15 @@ const MAX_AGE: Record<string, number> = {
   alerts: 150 * MIN, // every 2 hours at :07
   digest: 26 * 60 * MIN, // daily 04:30 UTC
   backup: 26 * 60 * MIN, // daily 21:15 UTC, written by the host's backup.sh
-  nmc: 8 * 24 * 60 * MIN, // Mondays 03:41 UTC
-  "search-links": 8 * 24 * 60 * MIN, // Mondays 05:17 UTC
+  nmc: 8 * 24 * 60 * MIN, // Sundays 21:45 UTC (Monday 03:15 IST — night, 2026-11-18)
+  "search-links": 8 * 24 * 60 * MIN, // Sundays 20:17 UTC (Monday 01:47 IST — night, 2026-11-18)
   outreach: 26 * 60 * MIN, // daily 05:35 UTC
   "outreach-inbox": 3 * 60 * MIN, // hourly at :47
   "outreach-discover": 8 * 24 * 60 * MIN, // Tuesdays 05:50 UTC
   hunt: 26 * 60 * MIN, // daily 06:05 UTC
   indexnow: 3 * 60 * MIN, // hourly at minute 25: changed URLs to Bing (IndexNow), 100 at a time
   "serp-research": 3 * 60 * MIN, // hourly at :50: autocomplete + what the web answers for our searches (Tavily)
-  "index-status": 14 * 60 * MIN, // 03:35 and 15:35 UTC: Google index status of the oldest-checked sitemap URLs
+  "index-status": 26 * 60 * MIN, // 19:35 and 22:05 UTC (01:05 and 03:35 IST — both at night since 2026-11-18, so the gap is ~21.5 h): Google index status of the oldest-checked sitemap URLs
 };
 /** The MCC result worker checks every 2 minutes near a round, every 30 otherwise. */
 const WORKER_MAX_AGE = 45 * MIN;

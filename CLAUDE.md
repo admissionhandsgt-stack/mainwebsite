@@ -381,7 +381,7 @@ Private), university, founding year and recognition status. Source: NMC's public
 `nmc.org.in/information-desk-college-and-course-search/search?page=&per_page=500` (robots allows it;
 `course_type` is exactly `M.B.B.S.`, `MD`, `MS`, `Diploma`, `DM`, `M.Ch.`).
 
-- **Sync:** `lib/nmcSync.ts` — weekly from the server crontab (`POST /api/cron/nmc`, Mondays 03:41 UTC,
+- **Sync:** `lib/nmcSync.ts` — weekly from the server crontab (`POST /api/cron/nmc`, Sundays 21:45 UTC = Monday 03:15 IST,
   ~1.5 min), from **Admin → Data sync (NMC)**, or `npx tsx --env-file=.env.local scripts/sync_nmc.ts`.
   It replaces the register in one transaction **only after sanity checks** (≥600 MBBS colleges, ≥90% of
   the last row count), and every run is a row in `nmc_sync_runs`.
@@ -2460,6 +2460,12 @@ again, the commit is in the history — the reason it went is not that it did no
 Verified by `node scripts/verify_documents.mjs <url>`: 19 checks, most of them about who *cannot*
 read a document.
 
+- **Heavy jobs run at night (2026-11-18, owner: "night like 01 or 03 am … lesser traffic"):** the Google index check
+  (`/api/cron/index-status`) at 19:35 and 22:05 UTC (01:05 and 03:35 IST; was 09:05 and 21:05 IST), the related-links
+  rebuild (`search-links`, re-reads every page) Sundays 20:17 UTC (Monday 01:47 IST), the NMC sync Sundays 21:45 UTC
+  (Monday 03:15 IST, after the 02:45 IST backup). `/api/health` allows the index check 26 h between runs. Jobs timed for
+  people stay put: the 10 AM digest, follow-ups in sending hours, the owner's outreach previews and hunt.
+
 ## Search Console tactics from the owner's reels (2026-11-10)
 
 **Google "Preferred Sources" (2026-11-12, owner: "isko kardo").** A reader who picks the site as a preferred source sees it
@@ -2482,8 +2488,7 @@ Owner shared SEO reels and said "1-5 done karo" (paid tools skipped). What was b
   branch pages: field `answer` (branch: `answer_live` / `answer`) in each group's copy, every figure a live token, used
   only when every figure exists — `pageCopy` turns a missing token into an empty string.
 - **"Related searches"** (`lib/searchLinks.ts`, `components/seo/SearchLinks.tsx` in the root layout above the footer,
-  heading in Admin → Content → "Site: related searches", blank hides it): weekly `POST /api/cron/search-links` (Mondays
-  05:17 UTC, heartbeat `search-links`) links a page to the page that answers a query Google shows it for, when that page
+  heading in Admin → Content → "Site: related searches", blank hides it): weekly `POST /api/cron/search-links` (Sundays 20:17 UTC = Monday 01:47 IST, heartbeat `search-links`) links a page to the page that answers a query Google shows it for, when that page
   names everything the query names and the first page does not, and the first page does not already link it (its HTML is
   read from 127.0.0.1:8150, minus this block). Rules learnt on the real data — a plain overlap score made 122 links, many
   wrong (Banda's ayurvedic college → Varanasi's, "dy patil mbbs" → a dental college): every name word must be in the

@@ -570,7 +570,7 @@ export default function CollegesPageClient({
                 <div className="flex items-center gap-1 p-0.5 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80 rounded-md shrink-0">
                   <button
                     onClick={() => setLayoutView("list")}
-                    className={`flex items-center gap-1 px-2 py-0.5 rounded text-[11.5px] font-medium transition-all ${
+                    className={`flex min-h-11 min-w-11 items-center justify-center gap-1 px-2 py-0.5 rounded text-[11.5px] font-medium transition-all sm:min-h-0 sm:min-w-0 ${
                       layoutView === "list"
                         ? "bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm"
                         : "text-slate-500 hover:text-slate-800 dark:text-slate-500 dark:hover:text-zinc-300"
@@ -582,7 +582,7 @@ export default function CollegesPageClient({
                   </button>
                   <button
                     onClick={() => setLayoutView("grid")}
-                    className={`flex items-center gap-1 px-2 py-0.5 rounded text-[11.5px] font-medium transition-all ${
+                    className={`flex min-h-11 min-w-11 items-center justify-center gap-1 px-2 py-0.5 rounded text-[11.5px] font-medium transition-all sm:min-h-0 sm:min-w-0 ${
                       layoutView === "grid"
                         ? "bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm"
                         : "text-slate-500 hover:text-slate-800 dark:text-slate-500 dark:hover:text-zinc-300"
@@ -663,7 +663,7 @@ export default function CollegesPageClient({
                                   `Hi, I would like to get information regarding admissions at ${college.name}`
                                 )
                               }
-                              className="px-3 py-2.5 md:py-1 rounded-lg bg-cyan-50 hover:bg-cyan-100 dark:bg-cyan-900/20 dark:hover:bg-cyan-900/40 text-primary-strong dark:text-cyan-400 border border-cyan-100/60 dark:border-cyan-900/40 transition-colors text-[12px] md:text-[11px] font-bold flex items-center justify-center gap-1 shrink-0"
+                              className="min-h-11 md:min-h-0 px-3 py-2.5 md:py-1 rounded-lg bg-cyan-50 hover:bg-cyan-100 dark:bg-cyan-900/20 dark:hover:bg-cyan-900/40 text-primary-strong dark:text-cyan-400 border border-cyan-100/60 dark:border-cyan-900/40 transition-colors text-[12px] md:text-[11px] font-bold flex items-center justify-center gap-1 shrink-0"
                             >
                               Enquire
                             </button>
@@ -712,7 +712,7 @@ export default function CollegesPageClient({
                                   `Hi, I would like to get information regarding admissions at ${college.name}`
                                 )
                               }
-                              className="px-3 py-2.5 md:py-1 rounded-lg bg-cyan-50 hover:bg-cyan-100 dark:bg-cyan-900/20 dark:hover:bg-cyan-900/40 text-primary-strong dark:text-cyan-400 border border-cyan-100/60 dark:border-cyan-900/40 transition-colors text-[12px] md:text-[11.5px] font-bold shrink-0"
+                              className="min-h-11 md:min-h-0 px-3 py-2.5 md:py-1 rounded-lg bg-cyan-50 hover:bg-cyan-100 dark:bg-cyan-900/20 dark:hover:bg-cyan-900/40 text-primary-strong dark:text-cyan-400 border border-cyan-100/60 dark:border-cyan-900/40 transition-colors text-[12px] md:text-[11.5px] font-bold shrink-0"
                             >
                               Enquire
                             </button>

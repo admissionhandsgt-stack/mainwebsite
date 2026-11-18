@@ -160,7 +160,7 @@ export default function CollegeFilterBar({
             key={s.name}
             type="button"
             onClick={() => toggle("states", s.name)}
-            className={`rounded-full border px-3 py-1.5 text-[13px] transition-colors ${
+            className={`min-h-11 md:min-h-0 rounded-full border px-3 py-1.5 text-[13px] transition-colors ${
               current.states.includes(s.name)
                 ? "border-primary bg-primary-soft text-primary-strong dark:text-primary"
                 : "border-border bg-card text-muted-foreground hover:border-primary/40"

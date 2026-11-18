@@ -19,7 +19,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Sign in or create your free account | AdmissionHands",
   description:
-    "One free account for MBBS and MD/MS counselling: the colleges your NEET rank reached with your chance at each, latest counselling updates, your documents, and an expert counsellor who already knows your profile.",
+    "One free account for MBBS and MD/MS counselling: your colleges with your chance at each, the latest updates, your documents and an expert counsellor.",
   // Not indexed, but it still gets shared in WhatsApp groups — an unfurled card with no title is a link nobody taps.
   alternates: { canonical: "/login" },
   openGraph: {
@@ -113,9 +113,9 @@ export default async function LoginPage(props: { searchParams: Promise<{ next?: 
                   <li key={x.slug}>
                     <a href={`/${x.slug}`} title={x.name} className="block rounded-full ring-2 ring-background transition-transform hover:z-10 hover:-translate-y-0.5">
                       {x.photo ? (
-                        <Image src={`/card/${x.photo}`} alt={x.name} width={36} height={36} className="h-9 w-9 rounded-full object-cover" />
+                        <Image src={`/card/${x.photo}`} alt={x.name} width={44} height={44} className="h-11 w-11 rounded-full object-cover sm:h-9 sm:w-9" />
                       ) : (
-                        <span className="font-heading flex h-9 w-9 items-center justify-center rounded-full bg-gradient-brand text-[11px] font-extrabold text-white">
+                        <span className="font-heading flex h-11 w-11 items-center justify-center rounded-full bg-gradient-brand text-[11px] sm:h-9 sm:w-9 font-extrabold text-white">
                           <span aria-hidden="true">{initials(x.name)}</span>
                           <span className="sr-only">{x.name}</span>
                         </span>
