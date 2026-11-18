@@ -23,17 +23,20 @@ export function singleFlight<T>(fn: () => Promise<T>): () => Promise<T> {
  * one shared build at a time, and a caller waits at most `waitMs` for it when an earlier result is in memory — after
  * that it gets the earlier result while the build finishes. Only the first call in a fresh process waits for the build.
  */
-export function fastOrLast<T>(fn: () => Promise<T>, waitMs = 250): () => Promise<T> {
+export function fastOrLast<T>(fn: () => Promise<T>, waitMs = 250): (() => Promise<T>) & { fresh: () => Promise<T> } {
   let last: { v: T } | null = null;
   const shared = singleFlight(async () => {
     const v = await fn();
     last = { v };
     return v;
   });
-  return async () => {
+  const get = async () => {
     const p = shared();
     if (!last) return p;
     const quick = await Promise.race([p.then((v) => ({ v }), () => null), new Promise<null>((r) => setTimeout(() => r(null), waitMs))]);
     return (quick ?? last).v;
   };
+  // Wait for a fresh build (after its cache tag was dropped), so the next caller is served it — lib/pageWatch.ts uses this
+  // before it tells search engines a page changed, so the page they fetch carries its new "Updated" time.
+  return Object.assign(get, { fresh: () => shared() });
 }

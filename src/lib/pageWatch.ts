@@ -150,6 +150,19 @@ async function announce(changed: string[], source: string): Promise<{ indexnow: 
   } catch {
     // Outside a request there is no cache to drop.
   }
+  // Wait for the sitemap and the pages' dates to be rebuilt before anyone is told: a page rendered from the earlier build
+  // would carry its old "Updated" time, and the edge would keep that copy. Only then is the page "announced" — the edge
+  // drops every copy stored before that moment (recentChanges) — and the engines pinged.
+  try {
+    const [{ sitemapGroups }, { getPageDates }] = await Promise.all([import("@/lib/sitemapData"), import("@/lib/pageDates")]);
+    await sitemapGroups();
+    await getPageDates.fresh();
+  } catch {
+    // A failed rebuild leaves the earlier dates; the content itself is already fresh.
+  }
+  await db
+    .execute(sql`UPDATE page_fingerprints SET announced_at = now() WHERE path IN (${sql.join(changed.map((p) => sql`${p}`), sql`, `)})`)
+    .catch(() => undefined);
   let indexnow = "not sent";
   for (let i = 0; i < changed.length; i += 100) {
     const part = changed.slice(i, i + 100);
@@ -287,6 +300,12 @@ export async function runWatch(budgetMs?: number): Promise<WatchSummary> {
       until,
     );
     const told = await announce(out.changed, "sweep");
+    // A resubmit skipped inside the 20-minute gap is owed: send it once the gap has passed (lib/notifyChange.ts).
+    if (!out.changed.length) {
+      const { resubmitPending } = await import("@/lib/notifyChange");
+      const owed = await resubmitPending().catch(() => null);
+      if (owed) told.google = owed;
+    }
     // Prune the change log.
     await db.execute(sql`DELETE FROM page_change_log WHERE at < now() - interval '120 days'`).catch(() => undefined);
     const summary = { ...out, due: list.length, left: Math.max(0, list.length - done), ...told };
@@ -325,7 +344,7 @@ export async function queueGroups(names: string[]): Promise<number> {
 /** Pages changed in the last `hours` hours, path → epoch ms (the edge's freshness list). */
 export async function recentChanges(hours = 48): Promise<Record<string, number>> {
   const rows = (await db.execute(sql`
-    SELECT path, (extract(epoch FROM changed_at) * 1000)::bigint AS t FROM page_fingerprints
+    SELECT path, (extract(epoch FROM GREATEST(changed_at, COALESCE(announced_at, changed_at))) * 1000)::bigint AS t FROM page_fingerprints
      WHERE changed_at > now() - make_interval(hours => ${hours})`)) as unknown as { path: string; t: string | number }[];
   return Object.fromEntries(rows.map((r) => [r.path, Number(r.t)]));
 }

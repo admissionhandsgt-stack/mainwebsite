@@ -577,6 +577,11 @@ import scripts' `revalidate_tags.sh`) queues the page families each tag feeds (`
 hubs, states and branches (`lib/adminEditWatch.ts`). By hand: `POST /api/cron/page-watch` with `{"check":[…]}` (now, ≤60) or
 `{"queue":[…]}` (next sweeps). A new block that changes on every render (a random pick, a clock) must carry `data-nohash` or
 it will show up as `unstable` in the sweep's summary.
+Two details that make the timing exact: after a change the watcher **waits for the sitemap and the page dates to be
+rebuilt** (`getPageDates.fresh()` — `fastOrLast` would otherwise hand the next render the earlier "Updated" time) and only
+then sets `announced_at` and pings; the edge drops copies stored before `GREATEST(changed_at, announced_at)`. And a Google
+resubmit skipped inside the 20-minute gap (or refused) is **owed**, not dropped (`gsc.sitemap.pending`): the next sweep sends
+it once the gap has passed (`resubmitPending`).
 
 **The choice-filling page follows the running round** (same day): title/H1/description name the round the Telegram cue names
 (`getTelegramCue`, the first round 1–4 whose result is not out) with its choice-filling and locking dates —

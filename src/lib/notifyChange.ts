@@ -60,22 +60,48 @@ async function markSubmitted(at: Date) {
   if (!u.length) await db.execute(sql`INSERT INTO integrations (key, value) VALUES (${STAMP_KEY}, ${v})`);
 }
 
-/** Resubmit the sitemap index to Google Search Console, at most once every 20 minutes. */
+const PENDING_KEY = "gsc.sitemap.pending";
+
+async function setPending(on: boolean) {
+  const v = on ? new Date().toISOString() : "";
+  const u = (await db.execute(sql`UPDATE integrations SET value = ${v}, updated_at = now() WHERE key = ${PENDING_KEY} RETURNING id`)) as unknown as unknown[];
+  if (!u.length && on) await db.execute(sql`INSERT INTO integrations (key, value) VALUES (${PENDING_KEY}, ${v})`);
+}
+
+/**
+ * Resubmit the sitemap index to Google Search Console, at most once every 20 minutes. One skipped inside that gap is
+ * owed, not dropped: the page watcher's next sweep sends it once the gap has passed (`resubmitPending`).
+ */
 export async function resubmitSitemap(force = false): Promise<string> {
   try {
-    if (!force && Date.now() - (await lastSubmit()) < GAP_MS) return "skipped (submitted in the last 20 min)";
+    if (!force && Date.now() - (await lastSubmit()) < GAP_MS) {
+      await setPending(true).catch(() => undefined);
+      return "owed (submitted in the last 20 min; the next sweep sends it)";
+    }
     const token = await googleToken(["https://www.googleapis.com/auth/webmasters"]);
     if (!token) return "no Google service account";
     const r = await fetch(
       `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(PROPERTY)}/sitemaps/${encodeURIComponent(SITEMAP)}`,
       { method: "PUT", headers: { authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(20_000), cache: "no-store" },
     );
-    if (!r.ok) return `Search Console answered ${r.status}`;
+    if (!r.ok) {
+      await setPending(true).catch(() => undefined);
+      return `Search Console answered ${r.status} (owed; retried next sweep)`;
+    }
     await markSubmitted(new Date());
+    await setPending(false).catch(() => undefined);
     return "resubmitted";
   } catch (error) {
     return `failed: ${error instanceof Error ? error.message : String(error)}`;
   }
+}
+
+/** The resubmit owed since a change inside the 20-minute gap (or a failed one), once the gap has passed; null if none. */
+export async function resubmitPending(): Promise<string | null> {
+  const r = (await db.execute(sql`SELECT value FROM integrations WHERE key = ${PENDING_KEY} LIMIT 1`)) as unknown as { value: string }[];
+  if (!r[0]?.value) return null;
+  if (Date.now() - (await lastSubmit()) < GAP_MS) return null;
+  return resubmitSitemap();
 }
 
 /**

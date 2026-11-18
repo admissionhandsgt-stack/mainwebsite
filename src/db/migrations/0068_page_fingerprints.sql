@@ -17,8 +17,12 @@ CREATE TABLE IF NOT EXISTS page_fingerprints (
   unstable_at     timestamptz,
   unstable_count  integer NOT NULL DEFAULT 0,
   -- Set by queueCheck(): checked first by the next sweep, whatever its tier's interval.
-  due             boolean NOT NULL DEFAULT false
+  due             boolean NOT NULL DEFAULT false,
+  -- When the engines were told: after the sitemap and the page's "Updated" time were rebuilt. The edge drops every copy
+  -- stored before GREATEST(changed_at, announced_at).
+  announced_at    timestamptz
 );
+ALTER TABLE page_fingerprints ADD COLUMN IF NOT EXISTS announced_at timestamptz;
 CREATE INDEX IF NOT EXISTS page_fingerprints_changed ON page_fingerprints (changed_at DESC) WHERE changed_at IS NOT NULL;
 CREATE INDEX IF NOT EXISTS page_fingerprints_due ON page_fingerprints (path) WHERE due;
 
