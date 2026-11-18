@@ -461,6 +461,16 @@ async function take(n: ZynNotice): Promise<"published" | "held" | "seen"> {
            status = EXCLUDED.status, reason = EXCLUDED.reason, schedule_status = EXCLUDED.schedule_status,
            schedule_reason = EXCLUDED.schedule_reason, alert_id = EXCLUDED.alert_id, decided_at = EXCLUDED.decided_at
      WHERE zyn_notices.status = 'held'`);
+  // A published notice changes the notices page, its state's pages, and — an MCC notice — every page that prints MCC's
+  // dates: tell search engines at once (lib/notifyChange.ts; 2026-11-18, after the Round 2 hold went unseen by Google).
+  if (status === "published") {
+    const { notifyChange, schedulePaths, statePaths } = await import("@/lib/notifyChange");
+    const mcc = /\bMCC\b/i.test(n.authority ?? "") || scheduleStatus === "applied" || scheduleStatus === "flagged";
+    await notifyChange(
+      ["/neet-counselling-updates", ...(n.state ? statePaths(n.state) : []), ...(mcc ? await schedulePaths() : [])],
+      `notice ${n.id}: ${n.title.slice(0, 80)}`,
+    ).catch(() => undefined);
+  }
   return status;
 }
 
@@ -575,6 +585,8 @@ export async function decideNotice(id: string, action: "publish" | "dismiss" | "
   if (action === "publish") {
     const alertId = await publishAlert(n);
     await db.execute(sql`UPDATE zyn_notices SET status = 'published', reason = NULL, alert_id = ${alertId}, decided_at = now() WHERE id = ${id}`);
+    const { notifyChange, statePaths } = await import("@/lib/notifyChange");
+    await notifyChange(["/neet-counselling-updates", ...(n.state ? statePaths(n.state) : [])], `notice ${id} published by an admin`).catch(() => undefined);
     return { ok: true, message: "On the alerts bar." };
   }
   const upd = scheduleUpdate(n);
@@ -582,5 +594,7 @@ export async function decideNotice(id: string, action: "publish" | "dismiss" | "
   if (!upd.ok) return { ok: false, message: `Not applied: ${upd.reason}. Change the dates in Admin → Page content → MCC schedule.` };
   await applySchedule(upd.title, { ...upd.data, ...CLEAR_REVISION });
   await db.execute(sql`UPDATE zyn_notices SET schedule_status = 'applied', schedule_reason = NULL WHERE id = ${id}`);
+  const { notifyChange, schedulePaths } = await import("@/lib/notifyChange");
+  await notifyChange(await schedulePaths(), `${upd.title} dates applied by an admin`).catch(() => undefined);
   return { ok: true, message: `${upd.title} dates updated.` };
 }

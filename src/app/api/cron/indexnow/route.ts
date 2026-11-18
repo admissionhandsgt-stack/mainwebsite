@@ -43,7 +43,9 @@ export async function POST(request: Request) {
     const changed = Object.values(groups).flatMap((entries, g) =>
       entries
         .filter((e) => e.lastModified && String(e.lastModified).slice(0, 10) >= since)
-        .map((e) => ({ url: e.url, lastmod: String(e.lastModified).slice(0, 10), g })),
+        // The whole lastmod: pages that follow live events carry the time too (lib/sitemapData.ts istStamp), so a second
+        // change on the same day is sent again.
+        .map((e) => ({ url: e.url, lastmod: String(e.lastModified), g })),
     );
     const sent = new Map<string, string>();
     if (changed.length) {
@@ -66,6 +68,12 @@ export async function POST(request: Request) {
           VALUES ${sql.join(batch.map((b) => sql`(${b.url}, ${b.lastmod}, now())`), sql`, `)}
           ON CONFLICT (url) DO UPDATE SET lastmod = EXCLUDED.lastmod, sent_at = now()`);
       }
+    }
+    // Pages changed this hour: ask Google to read the sitemap again too (at most every 20 minutes, lib/notifyChange.ts),
+    // which also catches a change notifyChange skipped inside that window.
+    if (accepted > 0) {
+      const { resubmitSitemap } = await import("@/lib/notifyChange");
+      await resubmitSitemap().catch(() => undefined);
     }
     const ok = batch.length === 0 || accepted > 0;
     await beat("indexnow", ok, `${accepted} sent, ${pending.length - accepted} waiting (changed since ${since})`);

@@ -538,6 +538,22 @@ in `revision` (the "dates may change" line above every table of MCC dates). `scr
 set Round 2's, and retitled the alerts-bar item. **When MCC lifts the hold, empty `hold`, `hold_url`, `hold_on` and the
 three `revision` fields the same day.** Zyn's notice came as kind "result", so `scheduleRevision()` did not catch it.
 
+**Every change tells Google at once, and the page says when it changed (2026-11-18, owner: "jo bhi page hamara update hota
+hai page par timestamp & date lagado … google notify hoke recrawl karle — jaise kal MCC hold par humko search visibility miss
+hogyi").** `lib/notifyChange.ts` `notifyChange(paths, reason)`: refreshes the `sitemap` tag, sends IndexNow for the paths, and
+resubmits the sitemap index to Google Search Console (`PUT webmasters/v3/sites/sc-domain…/sitemaps/…`, the site's service
+account; at most every 20 minutes, `integrations` `gsc.sitemap.submitted_at` — the hourly IndexNow job resubmits too when it
+sent anything, which catches a change inside that gap). Never the Indexing API (job postings only) and never the retired
+sitemap ping. Never throws. Called by: a published Zyn notice (the updates page, its state's four pages, and — MCC — every
+page that prints MCC's dates, `schedulePaths()`), an admin publishing or applying a notice, MCC's round result going live,
+MCC's added seats, and an admin save of a `pg_schedule` block. **A change made by hand (an SQL file) needs
+`bash scripts/notify_change.sh --schedule "<reason>"` or `… /path … "<reason>"`** (`POST /api/cron/notify`, cron secret on
+the server; after any `revalidate_tags.sh --purge`). The sitemap's lastmod for pages that follow live events is an exact IST
+time (`istStamp` in lib/sitemapData.ts: the schedule rows' and applied notices' last change, the newest notice, a round's
+own update), and ReviewedBy prints it — "Updated 17 Nov 2026, 7:49 pm IST" with `<time dateTime>` and the JSON-LD
+dateModified — on every DataHero page and, since this change, under /neet-pg-process's PageHero. The hourly IndexNow job keeps
+the whole lastmod, so a second change on the same day is sent again.
+
 **The choice-filling page follows the running round** (same day): title/H1/description name the round the Telegram cue names
 (`getTelegramCue`, the first round 1–4 whose result is not out) with its choice-filling and locking dates —
 "NEET PG Round 2 Choice Filling 2026: Dates, Locking & Upgradation". `components/lead/ChoiceStrategy` ("Filling choices is the

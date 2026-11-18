@@ -190,6 +190,21 @@ const loadSitemapData = singleFlight(unstable_cache(
 const newest = (dates: string[]) => dates.reduce((a, b) => (b > a ? b : a), "");
 
 /**
+ * The exact moment, in IST as a W3C datetime ("2026-11-17T19:44:12+05:30"), for pages that follow live events — MCC's
+ * schedule and holds, notices, round results (2026-11-18, owner: "jo bhi page hamara update hota hai page par timestamp &
+ * date lagado … google notify hoke recrawl karle"). A value with no time of day stays a date: midnight is not a time it
+ * changed. Sorts correctly beside plain dates (a later time of the same day sorts after the bare day).
+ */
+const istStamp = (v: string | Date | null | undefined): string => {
+  if (!v) return "";
+  const s = v instanceof Date ? v.toISOString() : String(v);
+  if (!/\d{2}:\d{2}/.test(s)) return s.slice(0, 10);
+  const d = new Date(v);
+  if (Number.isNaN(d.getTime())) return s.slice(0, 10);
+  return `${new Date(d.getTime() + 330 * 60_000).toISOString().slice(0, 19)}+05:30`;
+};
+
+/**
  * The day PG college pages began printing MCC's bands for the counselling year in progress (commit 2372e12,
  * deployed 2026-11-09). Before it their lastmod stayed where the data left it (most at 2026-10-18), so Google
  * had no reason to re-read 1,400 pages that now say "Cut Off 2026".
@@ -282,13 +297,14 @@ async function buildSitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry[]
       db.execute(sql`SELECT MAX(nmc_updated)::text AS d FROM nmc_courses`),
       // The schedule rows themselves, or MCC's dates applied from a notice (Zyn's apply does not touch updated_at).
       db.execute(sql`
-        SELECT (GREATEST(
+        SELECT to_char(GREATEST(
                   (SELECT MAX(updated_at) FROM content_blocks WHERE collection = 'pg_schedule'),
-                  (SELECT MAX(decided_at) FROM zyn_notices WHERE schedule_status = 'applied')) AT TIME ZONE 'Asia/Kolkata')::date::text AS d`),
+                  (SELECT MAX(decided_at) FROM zyn_notices WHERE schedule_status = 'applied')) AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS d`),
     ]);
     addedDay = rows<{ d: string | null }>(a)[0]?.d ?? undefined;
     nmcDay = rows<{ d: string | null }>(nmc)[0]?.d?.slice(0, 10) ?? undefined;
-    scheduleDay = rows<{ d: string | null }>(sch)[0]?.d ?? undefined;
+    // The exact moment (an edit in the admin, a hold, a notice's dates applied), not only the day.
+    scheduleDay = istStamp(rows<{ d: string | null }>(sch)[0]?.d) || undefined;
   } catch (error) {
     console.error("[sitemap] change dates could not be read", error);
   }
@@ -303,7 +319,7 @@ async function buildSitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry[]
   /** The notices hub changes with its newest notice. */
   const NOTICE_HUBS = new Set(["/neet-counselling-updates"]);
   const hubDay = newest(
-    await Promise.all((["pg", "ug"] as const).map(async (l) => (await getHubNotices(l, 1).catch(() => []))[0]?.on?.slice(0, 10) ?? "")),
+    await Promise.all((["pg", "ug"] as const).map(async (l) => istStamp((await getHubNotices(l, 1).catch(() => []))[0]?.on))),
   );
 
   // PG college pages that print MCC's bands for the counselling year in progress: a merit-quota allotment
@@ -343,7 +359,8 @@ async function buildSitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry[]
       const next = ROUNDS.find((r, i) => r.order <= 4 && states[i]?.status === "pending" && year === current);
       const listed = ROUNDS.filter((r, i) => states[i]?.status !== "pending" || r === next);
       if (!listed.length) continue;
-      const day = (s: (typeof states)[number]) => (s?.updatedAt ?? s?.publishedAt ?? "").slice(0, 10) || undefined;
+      // A round's own moment (detected, published, ingested) — the time too, not only the day.
+      const day = (s: (typeof states)[number]) => istStamp(s?.updatedAt ?? s?.publishedAt) || undefined;
       // This year's pages also print MCC's schedule, a hold or a "dates may change" notice (pg_schedule): their date
       // moves when that does (2026-11-17: Round 2's hold went up, and the awaited page had no lastmod at all).
       const sched = year === current ? scheduleDay ?? "" : "";

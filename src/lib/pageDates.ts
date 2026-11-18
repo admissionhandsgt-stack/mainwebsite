@@ -17,7 +17,7 @@ export const getPageDates = fastOrLast(unstable_cache(
       for (const e of list) {
         if (!e.lastModified) continue;
         const path = decodeURIComponent(new URL(e.url).pathname);
-        out[path] = String(e.lastModified).slice(0, 10);
+        out[path] = String(e.lastModified); // a date, or a date and time for pages that follow live events
       }
     return out;
   },
@@ -28,6 +28,15 @@ export const getPageDates = fastOrLast(unstable_cache(
 /** The current request's path, as the middleware passes it (`x-ah-path`). */
 export const currentPath = async () => (await headers()).get("x-ah-path") ?? null;
 
-/** "2026-11-09" → "9 Nov 2026". */
-export const readableDate = (iso: string) =>
-  new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+/** "2026-11-09" → "9 Nov 2026"; "2026-11-17T19:44:12+05:30" → "17 Nov 2026, 7:44 pm IST" (live pages carry the time). */
+export const readableDate = (iso: string) => {
+  if (/T\d{2}:\d{2}/.test(iso)) {
+    const d = new Date(iso);
+    if (!Number.isNaN(d.getTime())) {
+      const day = d.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Kolkata" });
+      const time = d.toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit", hour12: true, timeZone: "Asia/Kolkata" });
+      return `${day}, ${time.replace(/\s?(am|pm)$/i, (m) => ` ${m.trim().toLowerCase()}`)} IST`;
+    }
+  }
+  return new Date(`${iso.slice(0, 10)}T00:00:00Z`).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+};

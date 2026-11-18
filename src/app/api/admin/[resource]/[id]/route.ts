@@ -40,8 +40,15 @@ export async function PATCH(
       RETURNING *
     `);
 
-    const row = (updated as unknown as unknown[])[0];
+    const row = (updated as unknown as Record<string, unknown>[])[0];
     if (!row) return NextResponse.json({ error: "Not found." }, { status: 404 });
+    // An edit to MCC's schedule (dates, a hold, a "dates may change" line) changes every page that prints it: tell
+    // search engines at once (lib/notifyChange.ts, 2026-11-18). Not awaited — the save answers straight away.
+    if (params.resource === "blocks" && row.collection === "pg_schedule") {
+      void import("@/lib/notifyChange")
+        .then(async (m) => m.notifyChange(await m.schedulePaths(), `MCC schedule edited in the admin (${String(row.title ?? row.id)})`))
+        .catch(() => undefined);
+    }
     return NextResponse.json({ data: row });
   } catch (error) {
     console.error(`[admin PATCH ${params.resource}/${params.id}]`, error);

@@ -18,6 +18,7 @@ import { getDataStats, inr } from "@/lib/dataStats";
 import { getLiveFigures } from "@/lib/liveFigures";
 import { getRoundSpan, getTightenedTotal } from "@/lib/roundQueries";
 import PageHero from "@/components/ui/PageHero";
+import ReviewedBy from "@/components/seo/ReviewedBy";
 import Reveal from "@/components/ui/Reveal";
 import LeadCapture from "@/components/lead/LeadCapture";
 import TelegramJoin from "@/components/engage/TelegramJoin";
@@ -124,6 +125,11 @@ export default async function NeetPgProcessPage() {
           { value: inr(stats.pgRanks), label: "Published cutoffs" },
         ]}
       />
+      {/* PageHero is a client component, so the reviewer line and the time MCC's dates last changed sit just under it
+          (2026-11-18: every page that prints MCC's schedule says when it last changed). */}
+      <div className="container-custom">
+        <ReviewedBy />
+      </div>
 
       <div className="container-custom space-y-14 py-12 md:space-y-20 md:py-16">
         {/* ------------------------- who runs what ------------------------- */}

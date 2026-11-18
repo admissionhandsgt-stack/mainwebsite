@@ -22,7 +22,6 @@ import { branchSlug } from "@/lib/branchSlug";
 import { MIN_GROUP } from "@/lib/chance";
 import { staffList } from "@/lib/staffList";
 import { sendText } from "@/lib/waGateway";
-import { pingIndexNow } from "@/lib/indexNow";
 import { logError } from "@/lib/logger";
 import { CUT_CATS, quotaFamily, shortCategory, type BranchCut, type CutCat, type CutQuota } from "@/lib/mccRoundTypes";
 import { getSettings } from "@/lib/content";
@@ -302,7 +301,9 @@ export async function ingestRound(year: number, round: string, opts: { dryRun?: 
   await roundAlert(year, spec, "live", stats.rows);
 
   const path = roundPath(year, spec.slug);
-  const ping = await pingIndexNow([path, `/neet-pg-counselling/${year}`, "/neet-pg-seat-matrix"]);
+  // IndexNow + the sitemap resubmitted to Google (lib/notifyChange.ts), not IndexNow alone (2026-11-18).
+  const { notifyChange } = await import("@/lib/notifyChange");
+  const told = await notifyChange([path, `/neet-pg-counselling/${year}`, "/neet-pg-seat-matrix", "/neet-pg-cutoff"], `${spec.label} ${year} result live`);
   const after = await roundRow(year, round);
   if (after?.source_url && after.alerted_live_url !== after.source_url) {
     await db.execute(sql`UPDATE mcc_round_results SET alerted_live_url = ${after.source_url} WHERE year = ${year} AND round = ${round}`);
@@ -314,7 +315,7 @@ export async function ingestRound(year: number, round: string, opts: { dryRun?: 
         `\n${SITE}${path}\n\nShare it on Telegram and in the WhatsApp groups.`,
     );
   }
-  return { dryRun: false, ...stats, indexNow: ping.status ?? null };
+  return { dryRun: false, ...stats, indexNow: told.indexnow, google: told.google };
 }
 
 /* ---------------------------------------------------------------- reading */
