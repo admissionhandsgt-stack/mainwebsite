@@ -31,9 +31,10 @@ export async function POST(request: Request) {
     const paths = (Array.isArray(body.paths) ? body.paths : []).filter((p): p is string => typeof p === "string" && PATH.test(p)).slice(0, 100);
     if (body.schedule === true) paths.push(...(await schedulePaths()));
     const reason = typeof body.reason === "string" ? body.reason.slice(0, 120) : "manual change";
-    if (body.force === true) await resubmitSitemap(true);
+    // Forced: resubmit first, and report that result (notifyChange's own resubmit then sees the fresh stamp and skips).
+    const forced = body.force === true ? await resubmitSitemap(true) : null;
     const out = await notifyChange(paths, reason);
-    return NextResponse.json({ ...out, paths }, { headers: { "cache-control": "no-store" } });
+    return NextResponse.json({ ...out, google: forced ?? out.google, paths }, { headers: { "cache-control": "no-store" } });
   } catch (error) {
     logError(error, { route: "cron/notify" });
     return NextResponse.json({ error: "failed" }, { status: 500 });
