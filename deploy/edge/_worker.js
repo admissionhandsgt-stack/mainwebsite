@@ -172,8 +172,9 @@ async function changedAt(path, env, ctx, cache, host) {
       } catch {}
     }
   }
-  if (Date.now() - changes.at > CHANGES_EVERY && !changesLoading) {
-    const first = !changes.at;
+  if (changesLoading) {
+    await Promise.race([changesLoading, new Promise((r) => setTimeout(r, 800))]);
+  } else if (Date.now() - changes.at > CHANGES_EVERY) {
     changesLoading = loadChanges(env, cache, metaKey)
       .catch(() => {
         changes = { at: Date.now() - CHANGES_EVERY + 15000, c: changes.c }; // try again in 15 s
@@ -182,7 +183,9 @@ async function changedAt(path, env, ctx, cache, host) {
         changesLoading = null;
       });
     ctx.waitUntil(changesLoading);
-    if (first) await Promise.race([changesLoading, new Promise((r) => setTimeout(r, 600))]);
+    // Wait for it (at most 800 ms): answering from the older list let the first visit after a change — Googlebot's,
+    // perhaps — take the copy from before it (edge test, 2026-11-18). Once a minute per isolate, ~0.1–0.2 s to Mumbai.
+    await Promise.race([changesLoading, new Promise((r) => setTimeout(r, 800))]);
   }
   return Number(changes.c[path] || 0);
 }

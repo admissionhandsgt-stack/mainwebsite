@@ -1,5 +1,6 @@
 import { datasetLd, getDatasetsForPage } from "@/lib/openData";
 import { getPageDates } from "@/lib/pageDates";
+import { changedAtFor, laterOf } from "@/lib/pageChanged";
 import { jsonLd } from "@/lib/jsonLd";
 
 /**
@@ -14,7 +15,7 @@ export default async function PageDatasets({ path }: { path: string }) {
     getPageDates().catch(() => ({}) as Record<string, string>),
   ]);
   if (!sets.length) return null;
-  const date = (dates as Record<string, string>)[path] ?? null;
+  const date = laterOf((dates as Record<string, string>)[path] ?? null, await changedAtFor(path));
   return (
     <>
       {sets.map((d) => (

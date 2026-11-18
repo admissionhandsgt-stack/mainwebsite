@@ -582,6 +582,10 @@ rebuilt** (`getPageDates.fresh()` — `fastOrLast` would otherwise hand the next
 then sets `announced_at` and pings; the edge drops copies stored before `GREATEST(changed_at, announced_at)`. And a Google
 resubmit skipped inside the 20-minute gap (or refused) is **owed**, not dropped (`gsc.sitemap.pending`): the next sweep sends
 it once the gap has passed (`resubmitPending`).
+The "Updated" line and the datasets' dateModified also read the page's own `changed_at` per render (`lib/pageChanged.ts`,
+one indexed row) — after a restart Next serves an expired cached build once while rebuilding, and a page changed at 1:38 pm
+still said 11:37 am in the edge test. The edge **waits** (≤800 ms) for its change list when it is over a minute old instead
+of answering from the older list.
 
 **The choice-filling page follows the running round** (same day): title/H1/description name the round the Telegram cue names
 (`getTelegramCue`, the first round 1–4 whose result is not out) with its choice-filling and locking dates —

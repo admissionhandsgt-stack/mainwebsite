@@ -1,5 +1,6 @@
 import { unstable_cache } from "next/cache";
 import { singleFlight } from "@/lib/singleFlight";
+import { laterOf } from "@/lib/pageChanged";
 import { getBranches } from "@/lib/branchQueries";
 import { getBranchStateCombos } from "@/lib/branchStateQueries";
 import { getPgStates } from "@/lib/pgStateQueries";
@@ -228,15 +229,6 @@ export const sitemapGroups = singleFlight(async () => {
   return g;
 });
 
-/** The later of two lastmods (a date, or an IST date and time). A bare day gives way to a time on that same day. */
-function laterOf(a: string | undefined, b: string): string {
-  if (!a) return b;
-  const da = a.slice(0, 10);
-  const db_ = b.slice(0, 10);
-  if (db_ !== da) return db_ > da ? b : a;
-  if (a.length <= 10) return b;
-  return Date.parse(b) >= Date.parse(a) ? b : a;
-}
 
 /**
  * The moment each page's words last changed, as the page watcher saw it (lib/pageWatch.ts, page_fingerprints): every
@@ -253,7 +245,7 @@ async function overlayWatched(g: Record<SitemapGroup, SitemapEntry[]>): Promise<
   for (const grp of SITEMAP_GROUPS)
     for (const e of g[grp]) {
       const t = at.get(e.url.replace("https://www.admissionhands.com", "") || "/");
-      if (t) e.lastModified = laterOf(e.lastModified, t);
+      if (t) e.lastModified = laterOf(e.lastModified, t) ?? t;
     }
 }
 

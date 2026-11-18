@@ -3,6 +3,7 @@ import { BadgeCheck } from "lucide-react";
 import { pageCopy } from "@/lib/pageCopy";
 import { currentPath, getPageDates, readableDate } from "@/lib/pageDates";
 import { jsonLd } from "@/lib/jsonLd";
+import { changedAtFor, laterOf } from "@/lib/pageChanged";
 
 const SITE = "https://www.admissionhands.com";
 
@@ -21,7 +22,8 @@ export default async function ReviewedBy() {
     getPageDates().catch(() => ({}) as Record<string, string>),
     pageCopy("site.preferred_source", {}).catch(() => null),
   ]);
-  const date = path ? (dates as Record<string, string>)[path] ?? null : null;
+  // The later of the sitemap's date and the watcher's own record of the page's last change (lib/pageChanged.ts).
+  const date = path ? laterOf((dates as Record<string, string>)[path] ?? null, await changedAtFor(path)) : null;
   if (!copy.name) return null;
   const href = copy.link?.startsWith("/") ? copy.link : null;
   const node = path
