@@ -77,6 +77,7 @@ interface Stored {
   path: string;
   hash: string;
   chars: number;
+  status?: number;
 }
 
 export interface CheckResult {
@@ -87,7 +88,7 @@ export interface CheckResult {
   unstable: string[];
 }
 
-async function checkOne(path: string, prev: Stored | undefined, source: string, out: CheckResult): Promise<void> {
+async function checkOne(path: string, prev: Stored | undefined, source: string, out: CheckResult, isNew = false): Promise<void> {
   const a = await render(path);
   // Unreachable, a server error, or a 200 with almost nothing in <main> (an error shell): never a change, retried later.
   if (!a || a.status >= 500 || (a.status === 200 && (!a.hash || (a.chars ?? 0) < 200))) {
@@ -96,17 +97,41 @@ async function checkOne(path: string, prev: Stored | undefined, source: string, 
   }
   out.checked++;
   if (a.status !== 200) {
-    // Moved or gone: remember the status; the sitemap drops such a page by itself.
+    // Moved or gone. A page that answered 200 before has changed — the edge must drop its old copy, or a crawler is
+    // handed the page for up to a day after it was removed or redirected. The sitemap drops it by itself.
+    const was200 = !!prev?.hash && (prev.status ?? 200) === 200;
     await db.execute(sql`
       INSERT INTO page_fingerprints (path, hash, chars, status, checked_at) VALUES (${path}, '', 0, ${a.status}, now())
-      ON CONFLICT (path) DO UPDATE SET status = EXCLUDED.status, checked_at = now(), due = false`);
+      ON CONFLICT (path) DO UPDATE SET hash = '', chars = 0, status = EXCLUDED.status, checked_at = now(), due = false,
+             changed_at = CASE WHEN ${was200} THEN now() ELSE page_fingerprints.changed_at END,
+             changes = page_fingerprints.changes + CASE WHEN ${was200} THEN 1 ELSE 0 END`);
+    if (was200) {
+      await db.execute(sql`INSERT INTO page_change_log (path, source, chars_before, chars_after) VALUES (${path}, ${`${source} (now ${a.status})`}, ${prev!.chars}, 0)`);
+      out.changed.push(path);
+    }
+    return;
+  }
+  // Back after a 404 or a redirect: a change too.
+  if (prev && !prev.hash && prev.status && prev.status !== 200) {
+    await db.execute(sql`
+      UPDATE page_fingerprints SET hash = ${a.hash!}, chars = ${a.chars!}, status = 200, checked_at = now(), changed_at = now(),
+             changes = changes + 1, due = false WHERE path = ${path}`);
+    await db.execute(sql`INSERT INTO page_change_log (path, source, chars_before, chars_after) VALUES (${path}, ${`${source} (back)`}, 0, ${a.chars!})`);
+    out.changed.push(path);
     return;
   }
   if (!prev || !prev.hash) {
+    // A page seen for the first time. While a family is being watched for the first time that is a baseline; once the
+    // family is watched (isNew), a page that appears in it is new — announced like a change, so Google re-reads the
+    // child sitemap that gained it and Bing is told.
     await db.execute(sql`
-      INSERT INTO page_fingerprints (path, hash, chars, status, checked_at) VALUES (${path}, ${a.hash!}, ${a.chars!}, 200, now())
-      ON CONFLICT (path) DO UPDATE SET hash = EXCLUDED.hash, chars = EXCLUDED.chars, status = 200, checked_at = now(), due = false`);
-    out.baseline++;
+      INSERT INTO page_fingerprints (path, hash, chars, status, checked_at, changed_at) VALUES (${path}, ${a.hash!}, ${a.chars!}, 200, now(), ${isNew ? sql`now()` : sql`NULL`})
+      ON CONFLICT (path) DO UPDATE SET hash = EXCLUDED.hash, chars = EXCLUDED.chars, status = 200, checked_at = now(), due = false,
+             changed_at = COALESCE(EXCLUDED.changed_at, page_fingerprints.changed_at)`);
+    if (isNew) {
+      await db.execute(sql`INSERT INTO page_change_log (path, source, chars_before, chars_after) VALUES (${path}, ${`${source} (new page)`}, 0, ${a.chars!})`);
+      out.changed.push(path);
+    } else out.baseline++;
     return;
   }
   if (prev.hash === a.hash) {
@@ -126,50 +151,68 @@ async function checkOne(path: string, prev: Stored | undefined, source: string, 
     out.unstable.push(path);
     return;
   }
-  await db.execute(sql`
+  // Only if nobody recorded it meanwhile (a sweep and an event check on the same page record one change, not two).
+  const won = (await db.execute(sql`
     UPDATE page_fingerprints
        SET hash = ${a.hash}, chars = ${a.chars!}, status = 200, checked_at = now(), changed_at = now(), changes = changes + 1, due = false
-     WHERE path = ${path}`);
+     WHERE path = ${path} AND hash = ${prev.hash}
+    RETURNING path`)) as unknown as unknown[];
+  if (!won.length) return;
   await db.execute(sql`
     INSERT INTO page_change_log (path, source, chars_before, chars_after) VALUES (${path}, ${source}, ${prev.chars}, ${a.chars!})`);
   out.changed.push(path);
 }
 
+/**
+ * Which pages would be new: a sitemap page never fingerprinted, in a family (hubs, states, …) of which 90% is already
+ * fingerprinted — so the first look at a whole family is a baseline, and a page added later is announced.
+ */
+async function newPageTest(): Promise<(path: string) => boolean> {
+  try {
+    const { sitemapGroups, SITEMAP_GROUPS } = await import("@/lib/sitemapData");
+    const g = await sitemapGroups();
+    const rows = (await db.execute(sql`SELECT path FROM page_fingerprints WHERE hash <> '' AND checked_at IS NOT NULL`)) as unknown as { path: string }[];
+    const have = new Set(rows.map((r) => r.path));
+    const groupOf = new Map<string, string>();
+    const watched = new Set<string>();
+    for (const n of SITEMAP_GROUPS) {
+      const ps = g[n].map((e) => pathOf(e.url));
+      for (const x of ps) groupOf.set(x, n);
+      if (ps.length && ps.filter((x) => have.has(x)).length / ps.length >= 0.9) watched.add(n);
+    }
+    return (path) => {
+      const n = groupOf.get(path);
+      return !!n && watched.has(n) && !have.has(path);
+    };
+  } catch {
+    return () => false;
+  }
+}
+
 async function stored(paths: string[]): Promise<Map<string, Stored>> {
   if (!paths.length) return new Map();
   const rows = (await db.execute(sql`
-    SELECT path, hash, chars FROM page_fingerprints WHERE path IN (${sql.join(paths.map((p) => sql`${p}`), sql`, `)})`)) as unknown as Stored[];
+    SELECT path, hash, chars, status FROM page_fingerprints WHERE path IN (${sql.join(paths.map((p) => sql`${p}`), sql`, `)})`)) as unknown as Stored[];
   return new Map(rows.map((r) => [r.path, r]));
 }
 
-/** Tell everyone what changed: the sitemap and the pages' own dates, IndexNow, Google. Never throws. */
-async function announce(changed: string[], source: string): Promise<{ indexnow: string; google: string }> {
-  if (!changed.length) return { indexnow: "nothing changed", google: "nothing changed" };
-  try {
-    revalidateTag("sitemap");
-  } catch {
-    // Outside a request there is no cache to drop.
-  }
-  // Wait for the sitemap and the pages' dates to be rebuilt before anyone is told: a page rendered from the earlier build
-  // would carry its old "Updated" time, and the edge would keep that copy. Only then is the page "announced" — the edge
-  // drops every copy stored before that moment (recentChanges) — and the engines pinged.
-  try {
-    const [{ sitemapGroups }, { getPageDates }] = await Promise.all([import("@/lib/sitemapData"), import("@/lib/pageDates")]);
-    await sitemapGroups();
-    await getPageDates.fresh();
-  } catch {
-    // A failed rebuild leaves the earlier dates; the content itself is already fresh.
-  }
-  await db
-    .execute(sql`UPDATE page_fingerprints SET announced_at = now() WHERE path IN (${sql.join(changed.map((p) => sql`${p}`), sql`, `)})`)
-    .catch(() => undefined);
+/**
+ * Engines are pinged this long after a change is announced: every edge isolate re-reads its change list within 30 s
+ * (deploy/edge/_worker.js), so by then none can hand a crawler the copy from before the change.
+ */
+const PING_DELAY_MS = 45_000;
+
+const pathOf = (url: string) => url.replace(ORIGIN, "") || "/";
+
+async function sendPings(changed: string[], groups: string[], source: string): Promise<void> {
   let indexnow = "not sent";
   for (let i = 0; i < changed.length; i += 100) {
     const part = changed.slice(i, i + 100);
     const r = await pingIndexNow(part).catch(() => ({ ok: false, status: undefined as number | undefined }));
     indexnow = r.ok ? `accepted (${r.status})` : `not sent${r.status ? ` (${r.status})` : ""}`;
     if (r.ok) {
-      // The lastmod the sitemap now carries for each page, so the hourly IndexNow job does not send it again.
+      // The lastmod the sitemap now carries for each page, so the hourly IndexNow job does not send it again. Unsent
+      // (a refusal, a restart before this ran) it stays unrecorded, and the hourly job sends it.
       await db
         .execute(sql`
           INSERT INTO indexnow_sent (url, lastmod, sent_at)
@@ -181,9 +224,43 @@ async function announce(changed: string[], source: string): Promise<{ indexnow: 
     }
   }
   const { resubmitSitemap } = await import("@/lib/notifyChange");
-  const google = await resubmitSitemap();
-  console.log(`[page-watch] ${source}: ${changed.length} changed (${changed.slice(0, 6).join(", ")}${changed.length > 6 ? ", …" : ""}); IndexNow ${indexnow}; Google sitemap ${google}`);
-  return { indexnow, google };
+  const google = await resubmitSitemap(false, groups);
+  console.log(`[page-watch] ${source}: told engines about ${changed.length} (${changed.slice(0, 6).join(", ")}${changed.length > 6 ? ", …" : ""}); IndexNow ${indexnow}; Google ${google}`);
+}
+
+/**
+ * Tell everyone what changed: the sitemap and the pages' own dates at once, then — PING_DELAY_MS later — IndexNow and
+ * Google (the index and each child sitemap listing a changed page). The Google resubmits are marked owed before anything
+ * is attempted, so a restart in between leaves them to the next sweep; IndexNow left unsent is the hourly job's. Never throws.
+ */
+async function announce(changed: string[], source: string): Promise<{ indexnow: string; google: string }> {
+  if (!changed.length) return { indexnow: "nothing changed", google: "nothing changed" };
+  try {
+    revalidateTag("sitemap");
+  } catch {
+    // Outside a request there is no cache to drop.
+  }
+  // Wait for the sitemap and the pages' dates to be rebuilt before anyone is told: a page rendered from the earlier build
+  // would carry its old "Updated" time, and the edge would keep that copy. Only then is the page "announced" — the edge
+  // drops every copy stored before that moment (recentChanges).
+  let groups: string[] = [];
+  try {
+    const [{ sitemapGroups, SITEMAP_GROUPS }, { getPageDates }] = await Promise.all([import("@/lib/sitemapData"), import("@/lib/pageDates")]);
+    const g = await sitemapGroups();
+    await getPageDates.fresh();
+    const set = new Set(changed);
+    groups = SITEMAP_GROUPS.filter((n) => g[n].some((e) => set.has(pathOf(e.url))));
+  } catch {
+    // A failed rebuild leaves the earlier dates; the content itself is already fresh.
+  }
+  await db
+    .execute(sql`UPDATE page_fingerprints SET announced_at = now() WHERE path IN (${sql.join(changed.map((p) => sql`${p}`), sql`, `)})`)
+    .catch(() => undefined);
+  const { oweSitemaps } = await import("@/lib/notifyChange");
+  await oweSitemaps(groups);
+  setTimeout(() => void sendPings(changed, groups, source).catch(() => undefined), PING_DELAY_MS);
+  const when = `in ${PING_DELAY_MS / 1000} s`;
+  return { indexnow: `${changed.length} page(s) ${when}`, google: `index${groups.length ? ` + ${groups.join(", ")}` : ""} ${when}` };
 }
 
 async function pool<T>(items: T[], n: number, fn: (x: T) => Promise<void>, until = Infinity): Promise<void> {
@@ -200,11 +277,15 @@ async function pool<T>(items: T[], n: number, fn: (x: T) => Promise<void>, until
  * For a few pages at a time — a big list belongs in queueCheck. Never throws.
  */
 export async function checkPaths(paths: string[], source: string): Promise<CheckResult & { indexnow: string; google: string }> {
-  const list = [...new Set(paths.map((p) => p.replace(/[?#].*$/, "").replace(/(.)\/$/, "$1")).filter((p) => p.startsWith("/")))].slice(0, 60);
+  const all = [...new Set(paths.map((p) => p.replace(/[?#].*$/, "").replace(/(.)\/$/, "$1")).filter((p) => p.startsWith("/")))];
+  const list = all.slice(0, 60);
   const out: CheckResult = { checked: 0, baseline: 0, changed: [], failed: [], unstable: [] };
   try {
+    // More than 60 at once: the rest go to the front of the next sweep rather than being dropped.
+    if (all.length > list.length) await queueCheck(all.slice(60));
     const prev = await stored(list);
-    await pool(list, 2, (p) => checkOne(p, prev.get(p), source, out).catch(() => void out.failed.push(p)));
+    const isNew = await newPageTest();
+    await pool(list, 2, (p) => checkOne(p, prev.get(p), source, out, isNew(p)).catch(() => void out.failed.push(p)));
     return { ...out, ...(await announce(out.changed, source)) };
   } catch (error) {
     logError(error, { route: "pageWatch.checkPaths" });
@@ -258,7 +339,7 @@ export async function runWatch(budgetMs?: number): Promise<WatchSummary> {
     const groups = await sitemapGroups();
     const tier = new Map<string, Tier>();
     for (const g of SITEMAP_GROUPS) for (const e of groups[g]) tier.set(e.url.replace(ORIGIN, "") || "/", tierOf(e.url.replace(ORIGIN, "") || "/", g));
-    const rows = (await db.execute(sql`SELECT path, hash, chars, checked_at, due FROM page_fingerprints`)) as unknown as (Stored & {
+    const rows = (await db.execute(sql`SELECT path, hash, chars, status, checked_at, due FROM page_fingerprints`)) as unknown as (Stored & {
       checked_at: string | null;
       due: boolean;
     })[];
@@ -267,9 +348,13 @@ export async function runWatch(budgetMs?: number): Promise<WatchSummary> {
     const istHour = new Date(now + 330 * MIN).getUTCHours();
     const night = istHour >= 1 && istHour < 7;
     const due: { path: string; rank: number; age: number }[] = [];
+    // Pages not re-read for three times their interval (a page that never renders, a sweep that never reaches it): a page
+    // whose date could not move. Reported in the heartbeat, which then fails /api/health and so emails the owner.
+    const stuck: string[] = [];
     for (const [path, t] of tier) {
       const r = known.get(path);
       const age = r?.checked_at ? now - Date.parse(r.checked_at) : NEVER;
+      if (age !== NEVER && age > 3 * EVERY[t] + 60 * MIN) stuck.push(path);
       // Live pages first, always — a big queue (an import) must not hold up a round page; then queued pages.
       if (t === "live" && (r?.due || age >= EVERY.live)) {
         due.push({ path, rank: -2, age });
@@ -289,12 +374,13 @@ export async function runWatch(budgetMs?: number): Promise<WatchSummary> {
     due.sort((x, y) => x.rank - y.rank || y.age - x.age);
     const until = Date.now() + (budgetMs ?? (night ? 7 * MIN : 3 * MIN));
     const list = due.map((d) => d.path);
+    const isNew = await newPageTest();
     let done = 0;
     await pool(
       list,
       2,
       async (p) => {
-        await checkOne(p, known.get(p), "sweep", out).catch(() => void out.failed.push(p));
+        await checkOne(p, known.get(p), "sweep", out, isNew(p)).catch(() => void out.failed.push(p));
         done++;
       },
       until,
@@ -309,10 +395,18 @@ export async function runWatch(budgetMs?: number): Promise<WatchSummary> {
     // Prune the change log.
     await db.execute(sql`DELETE FROM page_change_log WHERE at < now() - interval '120 days'`).catch(() => undefined);
     const summary = { ...out, due: list.length, left: Math.max(0, list.length - done), ...told };
+    // Unstable pages (two renders differ) can never be recorded as changed; stuck pages are not being re-read. Either one
+    // means a page whose date would not move, so the heartbeat fails and the health check emails the owner.
+    const unstableNow = (await db
+      .execute(sql`SELECT path FROM page_fingerprints WHERE unstable_at > now() - interval '1 day' AND (changed_at IS NULL OR unstable_at > changed_at) ORDER BY unstable_at DESC LIMIT 5`)
+      .catch(() => [])) as unknown as { path: string }[];
+    const ok = out.failed.length < Math.max(5, out.checked) && !unstableNow.length && !stuck.length;
     await beat(
       "page-watch",
-      out.failed.length < Math.max(5, out.checked),
-      `${out.checked} checked, ${out.changed.length} changed, ${out.baseline} new, ${out.failed.length} failed, ${out.unstable.length} unstable, ${summary.left} waiting`,
+      ok,
+      `${out.checked} checked, ${out.changed.length} changed, ${out.baseline} new, ${out.failed.length} failed, ${summary.left} waiting` +
+        (unstableNow.length ? `; UNSTABLE (differs on every render — add data-nohash): ${unstableNow.map((u) => u.path).join(", ")}` : "") +
+        (stuck.length ? `; NOT RE-READ for 3x their interval: ${stuck.length} (${stuck.slice(0, 5).join(", ")})` : ""),
     );
     return summary;
   } catch (error) {

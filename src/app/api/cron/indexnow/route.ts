@@ -72,8 +72,9 @@ export async function POST(request: Request) {
     // Pages changed this hour: ask Google to read the sitemap again too (at most every 20 minutes, lib/notifyChange.ts),
     // which also catches a change notifyChange skipped inside that window.
     if (accepted > 0) {
+      const names = Object.keys(groups);
       const { resubmitSitemap } = await import("@/lib/notifyChange");
-      await resubmitSitemap().catch(() => undefined);
+      await resubmitSitemap(false, [...new Set(batch.map((b) => names[b.g]))]).catch(() => undefined);
     }
     const ok = batch.length === 0 || accepted > 0;
     await beat("indexnow", ok, `${accepted} sent, ${pending.length - accepted} waiting (changed since ${since})`);

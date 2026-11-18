@@ -465,6 +465,9 @@ export async function syncNmc(triggeredBy: string): Promise<SyncResult> {
              seats = ${result.seats}, matched = ${result.matched}
        WHERE id = ${run.id}
     `);
+    // The register's figures are on college, state and branch pages: queue them for the page watcher (lib/pageWatch.ts),
+    // which re-reads each (the callers drop the `nmc` tag first) and announces the ones whose words changed.
+    await import("@/lib/pageWatch").then((m) => m.queueGroups(["hubs", "states", "branches", "ug-colleges", "pg-colleges"])).catch(() => undefined);
     return result;
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);

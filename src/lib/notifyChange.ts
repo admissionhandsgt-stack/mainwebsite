@@ -48,60 +48,90 @@ export function statePaths(state: string): string[] {
   return slug ? [`/md-ms-india/states/${slug}`, `/mbbs-india/${slug}`, `/counselling/neet-pg/${slug}`, `/counselling/mbbs/${slug}`] : [];
 }
 
-async function lastSubmit(): Promise<number> {
-  const r = (await db.execute(sql`SELECT value FROM integrations WHERE key = ${STAMP_KEY} LIMIT 1`)) as unknown as { value: string }[];
-  const t = Date.parse(r[0]?.value ?? "");
-  return Number.isNaN(t) ? 0 : t;
+const SITEMAP_GROUP = /^(hubs|states|branches|ug-colleges|pg-colleges)$/;
+/** The child sitemap that lists a group's pages. */
+export const childSitemap = (group: string) => `https://www.admissionhands.com/sitemaps/${group}.xml`;
+const stampKey = (url: string) => (url === SITEMAP ? STAMP_KEY : `${STAMP_KEY}:${url.replace(/^.*\/sitemaps\//, "")}`);
+
+async function getValue(key: string): Promise<string | null> {
+  const r = (await db.execute(sql`SELECT value FROM integrations WHERE key = ${key} LIMIT 1`)) as unknown as { value: string }[];
+  return r[0]?.value ?? null;
 }
 
-async function markSubmitted(at: Date) {
-  const v = at.toISOString();
-  const u = (await db.execute(sql`UPDATE integrations SET value = ${v}, updated_at = now() WHERE key = ${STAMP_KEY} RETURNING id`)) as unknown as unknown[];
-  if (!u.length) await db.execute(sql`INSERT INTO integrations (key, value) VALUES (${STAMP_KEY}, ${v})`);
+async function setValue(key: string, v: string) {
+  const u = (await db.execute(sql`UPDATE integrations SET value = ${v}, updated_at = now() WHERE key = ${key} RETURNING id`)) as unknown as unknown[];
+  if (!u.length) await db.execute(sql`INSERT INTO integrations (key, value) VALUES (${key}, ${v})`);
 }
 
 const PENDING_KEY = "gsc.sitemap.pending";
 
-async function setPending(on: boolean) {
-  const v = on ? new Date().toISOString() : "";
-  const u = (await db.execute(sql`UPDATE integrations SET value = ${v}, updated_at = now() WHERE key = ${PENDING_KEY} RETURNING id`)) as unknown as unknown[];
-  if (!u.length && on) await db.execute(sql`INSERT INTO integrations (key, value) VALUES (${PENDING_KEY}, ${v})`);
+/** The sitemaps owed a resubmit (a change inside a 20-minute gap, a refused or lost one), as URLs. */
+async function pending(): Promise<string[]> {
+  return ((await getValue(PENDING_KEY).catch(() => null)) ?? "").split(/\s+/).filter((u) => u.startsWith("https://"));
+}
+
+async function setPending(add: string[], remove: string[]) {
+  const now = new Set(await pending());
+  for (const u of add) now.add(u);
+  for (const u of remove) now.delete(u);
+  await setValue(PENDING_KEY, [...now].join(" "));
+}
+
+/** Mark sitemaps owed before anything is attempted, so a restart mid-way still leaves them for the next sweep. */
+export async function oweSitemaps(groups: string[]): Promise<void> {
+  await setPending([SITEMAP, ...groups.filter((g) => SITEMAP_GROUP.test(g)).map(childSitemap)], []).catch(() => undefined);
+}
+
+async function submitOne(url: string, token: string, force: boolean): Promise<"ok" | "owed" | string> {
+  const last = Date.parse((await getValue(stampKey(url)).catch(() => null)) ?? "");
+  if (!force && !Number.isNaN(last) && Date.now() - last < GAP_MS) return "owed";
+  const r = await fetch(`https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(PROPERTY)}/sitemaps/${encodeURIComponent(url)}`, {
+    method: "PUT",
+    headers: { authorization: `Bearer ${token}` },
+    signal: AbortSignal.timeout(20_000),
+    cache: "no-store",
+  });
+  if (!r.ok) return `answered ${r.status}`;
+  await setValue(stampKey(url), new Date().toISOString());
+  return "ok";
 }
 
 /**
- * Resubmit the sitemap index to Google Search Console, at most once every 20 minutes. One skipped inside that gap is
- * owed, not dropped: the page watcher's next sweep sends it once the gap has passed (`resubmitPending`).
+ * Resubmit the sitemap index to Google Search Console — and the child sitemaps that list the changed pages: Google re-reads
+ * the index within seconds of a resubmit but left /sitemaps/hubs.xml unread from 13 to 18 Nov (found 2026-11-18), so the
+ * new lastmods inside a child were never seen until the child itself was submitted. Each sitemap at most once every 20
+ * minutes; one skipped inside that gap, refused, or lost is owed, not dropped — the page watcher's next sweep sends it
+ * (`resubmitPending`).
  */
-export async function resubmitSitemap(force = false): Promise<string> {
+export async function resubmitSitemap(force = false, groups: string[] = []): Promise<string> {
+  const targets = [SITEMAP, ...[...new Set(groups)].filter((g) => SITEMAP_GROUP.test(g)).map(childSitemap)];
   try {
-    if (!force && Date.now() - (await lastSubmit()) < GAP_MS) {
-      await setPending(true).catch(() => undefined);
-      return "owed (submitted in the last 20 min; the next sweep sends it)";
-    }
     const token = await googleToken(["https://www.googleapis.com/auth/webmasters"]);
     if (!token) return "no Google service account";
-    const r = await fetch(
-      `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(PROPERTY)}/sitemaps/${encodeURIComponent(SITEMAP)}`,
-      { method: "PUT", headers: { authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(20_000), cache: "no-store" },
-    );
-    if (!r.ok) {
-      await setPending(true).catch(() => undefined);
-      return `Search Console answered ${r.status} (owed; retried next sweep)`;
+    const done: string[] = [];
+    const owed: string[] = [];
+    const words: string[] = [];
+    for (const url of targets) {
+      const r = await submitOne(url, token, force).catch((e) => `failed: ${e instanceof Error ? e.message : String(e)}`);
+      const name = url === SITEMAP ? "index" : url.replace(/^.*\/sitemaps\//, "");
+      if (r === "ok") done.push(url);
+      else owed.push(url);
+      words.push(r === "ok" ? `${name} resubmitted` : r === "owed" ? `${name} owed (sent within 20 min)` : `${name} ${r} (owed)`);
     }
-    await markSubmitted(new Date());
-    await setPending(false).catch(() => undefined);
-    return "resubmitted";
+    await setPending(owed, done).catch(() => undefined);
+    return words.join(", ");
   } catch (error) {
-    return `failed: ${error instanceof Error ? error.message : String(error)}`;
+    await setPending(targets, []).catch(() => undefined);
+    return `failed: ${error instanceof Error ? error.message : String(error)} (owed)`;
   }
 }
 
-/** The resubmit owed since a change inside the 20-minute gap (or a failed one), once the gap has passed; null if none. */
+/** Send every resubmit still owed whose 20-minute gap has passed; null when none is owed. */
 export async function resubmitPending(): Promise<string | null> {
-  const r = (await db.execute(sql`SELECT value FROM integrations WHERE key = ${PENDING_KEY} LIMIT 1`)) as unknown as { value: string }[];
-  if (!r[0]?.value) return null;
-  if (Date.now() - (await lastSubmit()) < GAP_MS) return null;
-  return resubmitSitemap();
+  const owed = await pending();
+  if (!owed.length) return null;
+  const groups = owed.filter((u) => u !== SITEMAP).map((u) => u.replace(/^.*\/sitemaps\//, "").replace(/\.xml$/, ""));
+  return resubmitSitemap(false, groups);
 }
 
 /**

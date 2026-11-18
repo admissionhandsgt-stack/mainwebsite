@@ -144,9 +144,9 @@ const DATA_STALE_MS = 6 * 60 * 60 * 1000;
 
 // Pages whose words changed (src/lib/pageWatch.ts, 2026-11-18): a copy stored before its page changed is never served —
 // not to a visitor, not to a search crawler — so an engine told about a change reads the change, not a day-old copy.
-// The list (path → ms) comes from the origin at most once a minute per isolate, kept in this location's cache for a new
+// The list (path → ms) comes from the origin at most every 30 s per isolate, kept in this location's cache for a new
 // isolate. It fails open: with no list, the edge behaves exactly as before.
-const CHANGES_EVERY = 60 * 1000;
+const CHANGES_EVERY = 30 * 1000; // lib/pageWatch.ts pings engines 45 s after a change, once every isolate has re-read this
 let changes = { at: 0, c: {} };
 let changesLoading = null;
 
@@ -184,7 +184,7 @@ async function changedAt(path, env, ctx, cache, host) {
       });
     ctx.waitUntil(changesLoading);
     // Wait for it (at most 800 ms): answering from the older list let the first visit after a change — Googlebot's,
-    // perhaps — take the copy from before it (edge test, 2026-11-18). Once a minute per isolate, ~0.1–0.2 s to Mumbai.
+    // perhaps — take the copy from before it (edge test, 2026-11-18). Every 30 s per isolate, ~0.1–0.2 s to Mumbai.
     await Promise.race([changesLoading, new Promise((r) => setTimeout(r, 800))]);
   }
   return Number(changes.c[path] || 0);

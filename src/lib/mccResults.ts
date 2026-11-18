@@ -304,6 +304,9 @@ export async function ingestRound(year: number, round: string, opts: { dryRun?: 
   // IndexNow + the sitemap resubmitted to Google (lib/notifyChange.ts), not IndexNow alone (2026-11-18).
   const { notifyChange } = await import("@/lib/notifyChange");
   const told = await notifyChange([path, `/neet-pg-counselling/${year}`, "/neet-pg-seat-matrix", "/neet-pg-cutoff"], `${spec.label} ${year} result live`);
+  // The round's figures also reach every PG college page (live bands), the branch pages and the hubs: queue them now
+  // rather than leave them to the nightly college sweep (lib/pageWatch.ts).
+  await import("@/lib/pageWatch").then((m) => m.queueGroups(["hubs", "branches", "states", "pg-colleges"])).catch(() => undefined);
   const after = await roundRow(year, round);
   if (after?.source_url && after.alerted_live_url !== after.source_url) {
     await db.execute(sql`UPDATE mcc_round_results SET alerted_live_url = ${after.source_url} WHERE year = ${year} AND round = ${round}`);

@@ -121,6 +121,7 @@ export async function ingestAddedSeats(url: string, year: number): Promise<{ row
   revalidateTag("mcc");
   const { notifyChange } = await import("@/lib/notifyChange");
   await notifyChange(["/neet-pg-statistics", "/neet-pg-seat-matrix", "/neet-pg-seat-increase"], `MCC added seats: ${title.slice(0, 80)}`).catch(() => undefined);
+  await import("@/lib/pageWatch").then((m) => m.queueGroups(["hubs", "branches", "states", "pg-colleges"])).catch(() => undefined);
   if (await getIntegration("telegram.bot.chat_id").catch(() => null)) {
     await tellOwner(
       `🆕 MCC added seats: ${title.replace(/^MCC PG Medical \d{4} - /, "")} — ${result.seats.toLocaleString("en-IN")} seats now in the ${year} matrix${result.skipped ? ` (${result.skipped} AFMS/other left out)` : ""}. Statistics and seat matrix pages updated.`,

@@ -586,6 +586,24 @@ The "Updated" line and the datasets' dateModified also read the page's own `chan
 one indexed row) — after a restart Next serves an expired cached build once while rebuilding, and a page changed at 1:38 pm
 still said 11:37 am in the edge test. The edge **waits** (≤800 ms) for its change list when it is over a minute old instead
 of answering from the older list.
+**Edge cases closed the same evening (owner: "koi edge case to nahi … jisme ye date and time update na ho and google par page
+cache mai fasa rahe"):** (1) Google re-read the sitemap *index* within seconds of every resubmit but had not read
+/sitemaps/hubs.xml since 13 Nov — so `resubmitSitemap(force, groups)` now submits the index **and each child sitemap listing a
+changed page**, each on its own 20-minute gap, and every one not sent is owed (`gsc.sitemap.pending`, a list of URLs, set
+before anything is attempted) until a sweep sends it. (2) Engines are pinged 45 s after a change is announced (`PING_DELAY_MS`)
+and the edge re-reads its change list every 30 s, so no edge location can hand a crawler the copy from before the change;
+IndexNow lost to a restart is the hourly job's (it is recorded only when sent). (3) A page that turns 404 or a redirect — or
+comes back — is a change, so the edge drops its old copy. (4) MCC's round result and added seats queue hubs, branches, states
+and PG colleges; the NMC sync queues every family — instead of waiting for the night sweep. (5) `page-watch` fails its
+heartbeat (and so /api/health, which emails the owner) when any page is `unstable` (differs on every render — it could never
+be recorded as changed: add `data-nohash` to the moving part) or not re-read for three times its interval.
+(6) A page that appears in a family already watched (90% fingerprinted) is **new** — announced like a change, so the child
+sitemap that gained it is resubmitted — while a family's first look is a baseline. (7) `checkPaths` queues anything past
+its 60-page cap; a change is written only if the stored hash is still the one compared (`WHERE hash = prev`), so a sweep
+and an event check on the same page record it once.
+**What no code can do:** make Google recrawl at once. These are the strongest legitimate signals (accurate lastmod, child
+sitemap resubmits, a fresh page at the edge); the Indexing API is for job postings and live streams only, and Search Console's
+Request indexing is a daily quota used by the watchdog loop.
 
 **The choice-filling page follows the running round** (same day): title/H1/description name the round the Telegram cue names
 (`getTelegramCue`, the first round 1–4 whose result is not out) with its choice-filling and locking dates —
