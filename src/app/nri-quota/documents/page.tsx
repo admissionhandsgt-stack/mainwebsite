@@ -96,8 +96,8 @@ export default async function NriDocumentsPage() {
             // Sentences, not figures: set lighter than the panel's number style.
             facts={[
               { label: "Who counts as an NRI", text: body.rule_nri },
-              { label: "A ward (MBBS/BDS)", text: body.rule_ward },
-              { label: "MD/MS priority", text: body.rule_pg },
+              { label: "A guardian relative", text: body.rule_ward },
+              { label: "MD/MS", text: body.rule_pg },
               { label: "Sponsorship", text: body.rule_sponsor },
             ].map((f) => ({
               label: f.label,

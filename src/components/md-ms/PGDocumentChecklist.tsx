@@ -7,19 +7,21 @@ import { FileText } from "lucide-react";
 import { useCTA } from "@/hooks/useCTA";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
+// MCC's list for NEET PG 2026 (information bulletin, chapter 12.2 and FAQ 6), checked 19 Nov 2026. The earlier
+// list had a "NEET PG attempt certificate" no authority asks for, invented copy counts, and no allotment letter.
 const SHIPPED_DOCUMENTS = [
-  { name: "NEET PG Scorecard & Rank Letter", note: "Original + 3 self-attested copies" },
-  { name: "MBBS Degree Certificate", note: "Or provisional certificate from university" },
-  { name: "Internship Completion Certificate", note: "With exact dates of completion" },
-  { name: "NMC/State Medical Council Registration", note: "Valid and current registration" },
-  { name: "All MBBS Year Mark Sheets", note: "1st through Final year including supplementary" },
-  { name: "Attempt Certificate", note: "Confirming NEET PG attempt number" },
-  { name: "Photo ID Proof", note: "Aadhaar / Passport / PAN / Voter ID" },
-  { name: "Date of Birth Certificate", note: "Or Class 10th certificate as proof" },
-  { name: "Category/Caste Certificate", note: "If applicable — issued by competent authority" },
-  { name: "Domicile Certificate", note: "Required for State Quota counselling" },
-  { name: "Passport Size Photographs", note: "10-15 copies with white background" },
-  { name: "Migration Certificate", note: "From university of MBBS graduation" },
+  { name: "MCC allotment letter", note: "Or your state counselling's — print it from your login" },
+  { name: "NEET PG 2026 admit card", note: "Issued by NBEMS" },
+  { name: "NEET PG 2026 result / rank letter", note: "Issued by NBEMS" },
+  { name: "MBBS mark sheets", note: "1st, 2nd and 3rd professional examinations" },
+  { name: "MBBS degree or provisional certificate", note: "MCC marks it essential — no admission without it" },
+  { name: "Internship completion certificate", note: "Or the head of institution's certificate that it ends by 30 Sep 2026" },
+  { name: "State Medical Council registration", note: "Permanent; provisional only if the internship ends by 30 Sep 2026" },
+  { name: "Class 10 or birth certificate", note: "Proof of date of birth" },
+  { name: "Photo ID", note: "Driving licence, voter ID, passport or Aadhaar" },
+  { name: "SC/ST, OBC-NCL or EWS certificate", note: "If you claim it — in MCC's format; OBC on the Central List; income for the year ending 31 Mar 2026" },
+  { name: "PwD eligibility certificate", note: "If you claim it — only from MCC's authorised medical board, with your UDID card" },
+  { name: "Your state counselling's own extras", note: "Domicile, bonds, an NOC or an MBBS attempt certificate — each state's own list" },
 ];
 
 export const PGDocumentChecklist = ({ items: fromCms }: { items?: PgDocument[] | null } = {}) => {
@@ -51,7 +53,7 @@ export const PGDocumentChecklist = ({ items: fromCms }: { items?: PgDocument[] |
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white">
             Essential Documents for <span className="text-primary-strong dark:text-cyan-400">NEET PG</span> Counselling
           </h2>
-          <p className="text-sm md:text-base text-slate-500 dark:text-slate-400 mt-3 max-w-2xl mx-auto">Missing even one document can cost you your confirmed seat. Here is your complete checklist.</p>
+          <p className="text-sm md:text-base text-slate-500 dark:text-slate-400 mt-3 max-w-2xl mx-auto">MCC's list for NEET PG 2026, from its information bulletin. Originals at reporting — a missing one can cost the seat.</p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-3">

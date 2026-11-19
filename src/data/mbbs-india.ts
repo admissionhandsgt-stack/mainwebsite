@@ -110,21 +110,23 @@ export const mbbsData = {
     ],
   },
 
+  // MCC's list for NEET UG 2026 (information bulletin, Q. 32), checked 19 Nov 2026 — a transfer or migration
+  // certificate is not on MCC's list (colleges and some states ask for one), so it sits in the note, not the list.
   documents: {
     list: [
-      "NEET-UG Scorecard & Admit Card",
-      "Class 10 Marksheet & Certificate",
-      "Class 12 Marksheet & Certificate",
-      "Transfer Certificate (TC)",
-      "Domicile / Residence Certificate",
-      "Category Certificate (SC/ST/OBC/EWS)",
-      "Aadhaar Card / Photo ID",
-      "Passport Size Photographs (8-10)",
-      "Income Certificate (if applicable)",
-      "Migration Certificate",
+      "MCC allotment letter (or your state's)",
+      "NEET UG 2026 admit card (NTA)",
+      "NEET UG 2026 result / rank letter (NTA)",
+      "Class 10 certificate (date of birth proof)",
+      "Class 12 certificate and marksheet",
+      "Photo ID: Aadhaar, PAN, driving licence or passport",
+      "8 passport-size photos, same as on the NEET form",
+      "SC/ST, OBC-NCL (Central List) or EWS certificate, if claimed",
+      "PwD certificate from MCC's medical board, if claimed",
+      "Domicile certificate — state quota seats only",
     ],
     disclaimer:
-      "Document requirements may vary by state and college. Always verify with the official counselling authority.",
+      "MCC's list for NEET UG 2026 (information bulletin, Q. 32). A state counselling or the allotted college may ask for more — a transfer or migration certificate, a gap affidavit — so check its list before you report.",
   },
 
   fees: {

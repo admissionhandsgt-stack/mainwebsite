@@ -1,12 +1,12 @@
 /**
- * The NRI-quota document checklist as shipped (2026-10-18) — the fallback for
- * the admin's `nri_documents` collection (Admin → Content → Sections & lists),
- * which is where the team updates it each cycle.
+ * The NRI-quota document checklist as shipped — the fallback for the admin's `nri_documents` collection
+ * (Admin → Content → Sections & lists), which is where the team updates it each cycle.
  *
- * From MCC's 2025 notices: the NEET UG round notices of July and September 2025
- * and the NEET PG 2025 information bulletin (as reported by Careers360 on 25 July,
- * 2 September and 17 October 2025). Each item says what MCC listed — nothing is
- * added from memory. No imports: the seed script reads this file too.
+ * Read on 19 Nov 2026 in MCC's own 2026 documents: the NEET UG Counselling 2026 Information Bulletin (1 Aug 2026,
+ * chapter 3), the NEET UG 2026 Candidate User Guide (section 8) and the NEET PG Counselling 2026 Information Bulletin
+ * (chapter 4). The earlier list (2026-10-18) came from news reports of MCC's 2025 notices: it called the candidate's
+ * passport optional and listed a self-attested declaration that the 2026 lists do not have. No imports: the seed script
+ * reads this file too.
  */
 
 export interface NriDocument {
@@ -18,62 +18,87 @@ export interface NriDocument {
   body: string;
 }
 
-export const NRI_DOCUMENT_GROUPS = ["Proof of NRI status", "If a relative sponsors you", "Exam, school and identity"];
+export const NRI_DOCUMENT_GROUPS = ["Every NRI-quota candidate", "If you, a parent or a real brother or sister is the NRI", "If an NRI guardian sponsors you", "OCI candidates", "Foreign nationals"];
 
 export const NRI_DOCUMENTS: NriDocument[] = [
   {
+    title: "Date of birth certificate",
+    group: "Every NRI-quota candidate",
+    body: "Listed first by MCC in every category.",
+  },
+  {
+    title: "Class 10 mark sheet and pass certificate",
+    group: "Every NRI-quota candidate",
+    body: "From a foreign board: the Association of Indian Universities' (AIU) equivalence certificate — for MD/MS, a certified transcript also counts.",
+  },
+  {
+    title: "Class 12 mark sheet and pass certificate",
+    group: "Every NRI-quota candidate",
+    body: "The same rule for a foreign board.",
+  },
+  {
+    title: "NEET score card",
+    group: "Every NRI-quota candidate",
+    body: "NEET UG's from NTA for MBBS and BDS; NEET PG's from NBEMS for MD/MS.",
+  },
+  {
+    title: "Your valid passport",
+    group: "Every NRI-quota candidate",
+    body: "Required in every category in 2026 — a foreign national's foreign passport.",
+  },
+  {
+    title: "MBBS mark sheets (MD/MS only)",
+    group: "Every NRI-quota candidate",
+    body: "1st, 2nd and 3rd professional examinations — and the FMGE score card if you studied MBBS abroad.",
+  },
+  {
     title: "NRI certificate from the Indian embassy or consulate",
-    group: "Proof of NRI status",
-    body: "Issued by the Indian mission in the country where the NRI parent or relative lives. MCC sends NRI proofs to the mission for verification.",
-  },
-  {
-    title: "Passport of the NRI parent or relative, with visa or residence permit",
-    group: "Proof of NRI status",
-    body: "A valid passport and the visa, residence permit or work permit for the country of residence.",
-  },
-  {
-    title: "OCI or PIO card",
-    group: "Proof of NRI status",
-    body: "Only if you are an Overseas Citizen of India or a Person of Indian Origin.",
-  },
-  {
-    title: "Self-attested declaration in MCC's format",
-    group: "Proof of NRI status",
-    body: "That you are an NRI, OCI or PIO, or the child of NRI parents. The format is published on mcc.nic.in.",
-  },
-  {
-    title: "Relationship certificate with a family tree",
-    group: "If a relative sponsors you",
-    body: "Issued by the competent revenue authority, showing exactly how the NRI relative is related to you.",
+    group: "If you, a parent or a real brother or sister is the NRI",
+    body: "Issued by the competent authority in the country where the NRI lives.",
   },
   {
     title: "Notarised sponsorship affidavit",
-    group: "If a relative sponsors you",
-    body: "The NRI relative undertakes to pay your whole course fee and living expenses.",
+    group: "If you, a parent or a real brother or sister is the NRI",
+    body: "By the NRI parent, brother or sister: they will pay the whole course fee and your living costs during the course. For MD/MS, on ₹100 stamp paper.",
   },
   {
     title: "NRE bank account passbook of the sponsor",
-    group: "If a relative sponsors you",
-    body: "The proof behind the affidavit: the sponsor's NRE account.",
+    group: "If you, a parent or a real brother or sister is the NRI",
+    body: "The proof behind the affidavit. For MD/MS an NRO passbook is also accepted.",
   },
   {
-    title: "NEET admit card and scorecard",
-    group: "Exam, school and identity",
-    body: "Of the exam you are counselling for — NEET UG for MBBS and BDS, NEET PG for MD/MS.",
+    title: "Relationship verified by a revenue officer",
+    group: "If you, a parent or a real brother or sister is the NRI",
+    body: "A Tehsildar or another government officer of the revenue department (for MD/MS, a Patwari too) confirms how the NRI is related to you.",
   },
   {
-    title: "Class 10 and Class 12 marksheets and certificates",
-    group: "Exam, school and identity",
-    body: "As issued by your board.",
+    title: "NRI certificate and passport of the guardian",
+    group: "If an NRI guardian sponsors you",
+    body: "The guardian's NRI certificate from the Indian embassy or consulate; for MBBS and BDS, the guardian's valid passport too.",
   },
   {
-    title: "Birth certificate",
-    group: "Exam, school and identity",
-    body: "Listed by MCC for every NRI-quota candidate.",
+    title: "Proof of guardianship",
+    group: "If an NRI guardian sponsors you",
+    body: "The guardian must be your nearest NRI relation — a real uncle or aunt on either side, a grandparent or a first cousin — who has looked after you. MBBS/BDS: legal proof that they are your guardian under the Guardian and Wards Act 1890.",
   },
   {
-    title: "Your passport or your sponsor's (optional)",
-    group: "Exam, school and identity",
-    body: "MCC lists it as optional.",
+    title: "Guardian's affidavit with evidence (MD/MS)",
+    group: "If an NRI guardian sponsors you",
+    body: "As candidates are adults, no court order is needed: a notarised affidavit on ₹100 stamp paper that they have cared for and supported you, with evidence such as fee receipts they paid, educational records and bank records.",
+  },
+  {
+    title: "Guardian's sponsorship affidavit and NRE passbook",
+    group: "If an NRI guardian sponsors you",
+    body: "They will pay the whole course fee and your living costs during the course.",
+  },
+  {
+    title: "OCI card",
+    group: "OCI candidates",
+    body: "For MBBS and BDS a PIO card is also accepted.",
+  },
+  {
+    title: "Visa, residence permit or work permit",
+    group: "Foreign nationals",
+    body: "For MBBS and BDS. For MD/MS MCC asks for a citizenship certificate instead.",
   },
 ];

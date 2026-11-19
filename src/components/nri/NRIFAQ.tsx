@@ -16,11 +16,11 @@ export interface NriFaq {
 const FALLBACK_ITEMS: NriFaq[] = [
   {
     q: "What is NRI quota in medical colleges?",
-    a: "NRI quota refers to seats reserved in medical colleges for Non-Resident Indians (NRIs), Person of Indian Origin (PIO), Overseas Citizens of India (OCI), and foreign nationals. Typically, 15% of seats in private and deemed universities are allocated under the NRI/Management quota."
+    a: "Seats set aside for Non-Resident Indians and candidates an NRI relative sponsors, OCI and PIO cardholders and foreign nationals. In deemed universities MCC allots 15% of the seats as NRI seats; in private colleges each state decides whether there is an NRI quota and how big it is."
   },
   {
     q: "Does every medical college have NRI quota seats?",
-    a: "No, not all medical colleges offer NRI quota seats. Most private medical colleges, deemed universities, and some government medical colleges have NRI quota seats. The availability and number of seats vary by institution and are typically regulated by respective state authorities."
+    a: "No. MCC's NRI seats are in the deemed universities; in private colleges each state's rules decide whether a college keeps NRI seats and how many. A state's NRI seat follows that state's own information bulletin, so check the bulletin of every counselling you register for."
   },
   {
     q: "Is NEET mandatory for NRI quota admissions?",
@@ -28,11 +28,11 @@ const FALLBACK_ITEMS: NriFaq[] = [
   },
   {
     q: "Can a student sponsored by an NRI apply under NRI quota?",
-    a: "Yes, many institutions accept NRI-sponsored candidates. The sponsor must be a blood relative (parent, sibling, or specific cousins/uncles/aunts). Relationship requirements vary by institution."
+    a: "Yes, within MCC's rule (from the Supreme Court's Anshul Tomar case): a parent or a real brother or sister who is an NRI; or your nearest NRI relation — a real uncle or aunt on either side, a grandparent or a first cousin — who has looked after you as your guardian, with evidence and an affidavit, and who sponsors the whole course fee. State counsellings set their own rules."
   },
   {
     q: "What documents are required to prove NRI status?",
-    a: "Common documents include a valid passport with visa stamps, overseas address proof, employment proof, NRI bank statements, and tax documents from the foreign country."
+    a: "For MCC: an NRI certificate from the Indian embassy or consulate, your valid passport, a notarised affidavit by the NRI sponsor to pay the whole course fee and living costs backed by an NRE passbook, and the relationship verified by a revenue officer such as a Tehsildar — plus your Class 10 and 12 certificates and the NEET score card. The full list, category by category, is on our NRI documents page."
   }
 ];
 

@@ -2714,6 +2714,21 @@ loans 14, what-next 74). Built the same day, every rule from the authority's own
   **`pg_documents_official`** (one row per authority; `[E] ` marks essential, `## ` a sub-heading), seeded by
   `scripts/seed_pg_documents.mjs` from `lib/pgDocuments.ts`. **Not `pg_documents`** — that is the MD/MS page's own short
   checklist (since Sept), which now links here. The MCC bulletin as posted is "DRAFT – V10 05102026": re-check when MCC revises it.
+- **Every document checklist, re-checked against MCC's own 2026 bulletins (2026-11-19, owner: "documents required checklist
+  … galat chije … ekdum ache se verify karke sahi karo").** Sources (downloaded and read, never a coaching or news site):
+  NEET UG Counselling 2026 Information Bulletin (`uploads/2026/08/20260801170630.pdf`, Q. 32 + chapter 3), NEET UG 2026
+  Candidate User Guide (section 8), NEET PG Counselling 2026 Information Bulletin (chapter 4 + 12.2 + FAQ 6). What was wrong:
+  the MD/MS page's list (`pg_documents`) had a "NEET PG attempt certificate" no authority asks for, "10–15 photos" / "3
+  self-attested copies", domicile as a blanket rule, and no allotment letter or admit card; the MBBS page's (`mbbs_documents`)
+  put transfer and migration certificates on MCC's list (they are a college's or state's — now in the note under it); the NRI
+  page (`nri_documents` + "Page: NRI documents") described 2025 (documents by email every round, the candidate's passport
+  "optional", a self-attested declaration, a "two priority groups" MD/MS rule and an NRI = "182 days abroad" definition) —
+  2026 is four categories, upload at registration, MCC's NRI Document Verification Committee before choice filling, passport
+  mandatory, the Anshul Tomar rule for sponsors; the MD/MS FAQ (#28 internship by 30 Sep 2026 and the 2026 percentiles,
+  #35 Freeze/Float, #36 what a missed deadline costs) and the NRI FAQ (#38, #39, #41, #42). /neet-pg-documents gained MCC's
+  "essential" mark on the internship and OBC certificates and the Gazetted Officer rule for translations. Database rows by
+  `scripts/sql/documents_facts_2026_11_19.mjs` and `faq_facts_2026_11_19.mjs` (guarded on the old text); the code fallbacks
+  match. State lists on /neet-pg-documents were already from each state's 2026 document and were left as they are.
 - **/md-vs-dnb** — "Is DNB equal to MD? What the law says": NMC Act 2019 **s. 37(2)** quoted (equivalent in all respects when
   trained in a medical institution with an attached hospital or a 500+ bed hospital; otherwise a year of senior residency
   for teaching), NMC faculty regulations 2025 reg. 7, FNB not for teaching (NBEMS gazette 14 Nov 2022).

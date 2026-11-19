@@ -35,9 +35,9 @@ const DOCS = {
     "Class 12 marksheet and pass certificate",
     "A photo ID — Aadhaar, PAN, passport or driving licence",
     "8 passport-size photographs (the ones on the NEET form)",
-    "Category certificate, if you apply under SC / ST / OBC-NCL / EWS",
-    "Domicile certificate, for state quota seats",
-    "PwBD certificate, if applicable",
+    "Category certificate in MCC's format, if you apply under SC / ST / OBC-NCL (Central List) / EWS",
+    "Domicile certificate — for state quota seats only, not MCC's All India Quota",
+    "PwD eligibility certificate from MCC's medical board, if you claim PwD",
     "The seat allotment letter, once you are allotted",
   ],
   pg: [
@@ -49,7 +49,9 @@ const DOCS = {
     "NMC / state medical council registration",
     "Class 10 certificate (date of birth proof)",
     "A photo ID, and passport-size photographs",
-    "Category, domicile or PwBD certificate, if you apply under one",
+    "Category certificate in MCC's format (OBC on the Central List), if you claim one",
+    "PwD eligibility certificate from MCC's medical board, if you claim PwD",
+    "Domicile, bond or NOC papers, if your state counselling asks for them",
     "The seat allotment letter, once you are allotted",
   ],
 };
