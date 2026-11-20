@@ -263,6 +263,18 @@ hogyi hai… kya 2168 colleges hai?… third party tool… bharosa girata hai." 
   the media rows and the specialty photos in `uploads/branches-*.avif`, never replacing an admin's choice.
   Removed: the NRI hero's AI "D.Y. PATIL UNIVERSITY" fallback, and the government/private campuses that rotated
   under "Deemed universities" (only `deemed_campus_1` now). BDS, MDS and AYUSH have no suitable photo yet.
+  **New hero scenes, 2026-11-20 (owner: "real doctors type images … young PG age … nice clean modern infra"):** ten
+  scenes — residents in a lounge, a corridor, a night shift, a library, an MBBS lab, a ward round, an operating theatre,
+  pathology, radiology, an admission-office counter — made with the owner's own Gemini subscription in his Chrome, each
+  looked at full size, saved as WebP (1024×572; Gemini's full-size download refused, so the "Copy image" copy is what we
+  hold) under upload-style names `hero-<scene>-<13-digit ms>-<8 hex>.webp`. `scripts/sql/hero_photos_2026_11_20.mjs`
+  (applied; backup `D:/Admisson Hands/content_backups/hero_photos_before_2026_11_20.json`, `--restore`) points the 22
+  uncredited `page.*.hero` rows at them; a state's credited campus photo and the legacy cut-out keys are untouched.
+  Generated scenes carry no subject, credit or licence (PageHero draws a chip for a licence alone) and their alt text
+  describes the scene only. Gemini's small sparkle mark in the corner was left as it is — never edit it out. Originals:
+  `D:/Admisson Hands/hero_images_2026_11`. Still the older pictures: the 26 `uploads/branches-*.avif` specialty photos,
+  the services carousel, `homepage_hero_doctors` / `pg_hero_doctors`. A Playwright `fullPage` screenshot draws these
+  images grey (and drops the logo); check heroes with a plain viewport shot (`scripts/tmp/hero_shot.mjs`).
 - **Menus are grouped in Admin → Navigation.** A header item whose children have children is a mega menu:
   each child (url `#`) is a titled column, its links carry `nav_items.description` (migration 0042). MD/MS =
   Colleges & seats · Cutoff & results · Counselling guide · Fees, stipend & bond (since 2026-11-20, owner: "page mai aa
