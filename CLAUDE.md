@@ -722,6 +722,14 @@ MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within mi
   `short-name`) → 93.8%. The provisional result loaded before the fix was repaired by
   `scripts/fix_mcc_round2_2026_11_20.mjs` (backup `D:/Admisson Hands/match_backups/mcc_2026_round2_before_2026_11_20.json`),
   which also cleared Round 2's hold (MCC Notice No. 11: the Madras High Court's stay is Sri Venkateshwaraa's 161 seats alone).
+- **Round pages answer the round's searches (2026-11-20).** A result-day page leads its title with "Result <year> Out: Seat
+  Allotment, Cut Off & PDF" and asks the FAQs as searched (cut off, result date, provisional vs final, last date to join,
+  upgrade, next round's dates); an awaited round of the running year prints an important-dates table from the admin's
+  schedule (MCC's window and joining date, the states' round and joining date) before MCC posts its steps, a rules
+  section in the bulletin's words (`ROUND_RULES` in lib/choiceFillingRules.ts — Round 3 carries who / register / seats /
+  after / alias, from the bulletin's Round-3 section and FAQs 35–37) and FAQs on eligibility, registration, seats,
+  resigning, upgrading, last year's cut off and "mop-up round". Copy: Admin → Content → "Page: NEET PG round result"
+  (`faq_r_*`, `rules_*`, `dates_*`). Add the stray round's who / register / seats when MCC's notice for it is out.
 - **The round poster** (owner's "NEET PG <last> vs <this> · MCC Round N closing ranks · All India Quota" image):
   `node --env-file=.env.local scripts/poster/round_cuts_poster.mjs --year 2026 --round "Round 2" --out <dir>` —
   every figure from `mcc_allotments`, a 2160px PNG; `--set deemed` makes the deemed-universities one (Paid/Management =
