@@ -265,7 +265,12 @@ hogyi hai… kya 2168 colleges hai?… third party tool… bharosa girata hai." 
   under "Deemed universities" (only `deemed_campus_1` now). BDS, MDS and AYUSH have no suitable photo yet.
 - **Menus are grouped in Admin → Navigation.** A header item whose children have children is a mega menu:
   each child (url `#`) is a titled column, its links carry `nav_items.description` (migration 0042). MD/MS =
-  Colleges & seats · Cutoff & counselling · Fees, stipend & bond. Footer Explore: top-level `#` rows are the
+  Colleges & seats · Cutoff & results · Counselling guide · Fees, stipend & bond (since 2026-11-20, owner: "page mai aa
+  bhi nhi rahe options … compact"; it was three columns of 7 / 13 / 5 that ran past a laptop screen —
+  `scripts/sql/nav_md_ms_compact_2026_11_20.mjs`, `--restore` undoes it). The panel takes up to four columns, keeps each
+  description to one short line (under ~40 characters — write new ones that short), is centred on the page against the
+  header (not under its button, so a wide panel never runs off the right edge) and is capped at the screen's height;
+  ~440px tall for 25 links. Check with `node scripts/tmp/menu_shot.mjs <base> <dir>`. Footer Explore: top-level `#` rows are the
   columns (MBBS, MD/MS, PG fees & stipend, Courses & tools, Company); footer_quick is the **bottom line**
   (Privacy, Terms, Data & DPDP), no longer phone pills. Rows: `scripts/sql/nav_megamenu_2026_10_21.sql` —
   applied only after the release that renders groups (an older header draws a `#` row as a dead link).
