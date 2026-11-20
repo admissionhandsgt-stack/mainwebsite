@@ -49,6 +49,8 @@ export const roundPath = (year: number, slug: string) => `/neet-pg-counselling/$
 
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 const firstPart = (s: string) => norm(s.split(",")[0] ?? s);
+/** Lower case, spaces folded, punctuation kept — the comma after a short name is what the prefix match needs. */
+const squash = (s: string) => s.toLowerCase().replace(/\s+/g, " ").trim();
 /** The same test as the SQL that reads earlier rounds (`mcc_course ~* 'NBEMS|DNB|NBE'`), so keys agree. */
 const isDnb = (course: string) => /NBEMS|DNB|NBE/i.test(course);
 
@@ -181,9 +183,13 @@ export async function ingestRound(year: number, round: string, opts: { dryRun?: 
   const spec = roundByName(round);
   if (!spec) throw new Error(`unknown round ${round}`);
   const meta = await roundRow(year, round);
+  // "Retained" is not an allotment of this round: a candidate who floated and got no upgrade keeps the earlier seat.
+  // MCC's 2025 PDFs printed "-" there (never staged); 2026's round 2 prints "Retained" with the old seat — 8,585 rows
+  // that made round 2 read 29,292 seats against 20,707 allotted (2026-11-20).
   const staged = rows<Staged>(
     await db.execute(sql`SELECT rank, quota, institute, course, allotted_category, candidate_category, remarks
-                           FROM mcc_allotments_staging WHERE year = ${year} AND round = ${round} AND institute IS NOT NULL AND institute <> ''`),
+                           FROM mcc_allotments_staging WHERE year = ${year} AND round = ${round} AND institute IS NOT NULL AND institute <> ''
+                            AND COALESCE(remarks, '') NOT ILIKE 'Retained%'`),
   );
   if (!staged.length) throw new Error("nothing staged");
 
@@ -205,11 +211,26 @@ export async function ingestRound(year: number, round: string, opts: { dryRun?: 
   ].sort((a, b) => a.n - b.n);
   const exact = new Map<string, number>();
   const firstIds = new Map<string, Set<number>>();
+  const lowered: Record<string, { k: string; id: number }[]> = { true: [], false: [] };
   for (const k of known) {
     exact.set(`${norm(k.name)}|${k.dnb}`, k.institute_id); // ascending count: the most common wins
     const f = `${firstPart(k.name)}|${k.dnb}`;
     firstIds.set(f, (firstIds.get(f) ?? new Set<number>()).add(k.institute_id));
+    lowered[String(k.dnb)].push({ k: squash(k.name), id: k.institute_id });
   }
+  // MCC's 2026 round 2 PDF prints a college's short name only ("SMS Medical College, Jaipur") where round 1 printed
+  // "<short name>,<official name / address>" — the whole-name match placed 37% of rows (2026-11-20). A name takes the
+  // institute of every earlier name that starts with it and a comma, only when all of them agree on one institute.
+  const prefixMemo = new Map<string, number | null>();
+  const byPrefix = (name: string, dnb: boolean) => {
+    const n = squash(name);
+    const key = `${n}|${dnb}`;
+    if (!prefixMemo.has(key)) {
+      const ids = new Set(lowered[String(dnb)].filter((x) => x.k === n || x.k.startsWith(`${n},`)).map((x) => x.id));
+      prefixMemo.set(key, n.length >= 8 && ids.size === 1 ? [...ids][0] : null);
+    }
+    return prefixMemo.get(key) ?? null;
+  };
   // The fallback, on the name before its first comma, only when one college has that start — the
   // unguarded version put 84 rows at the wrong college ("Government Medical College" is dozens) —
   // and only when that college's state is named in MCC's wording: a chain hospital known only in
@@ -227,7 +248,7 @@ export async function ingestRound(year: number, round: string, opts: { dryRun?: 
     return words.length > 0 && words.every((w) => hay.includes(` ${w} `) || hay.includes(` ${w}`));
   };
 
-  const stats = { rows: staged.length, institutes: 0, courses: 0, byExact: 0, byName: 0 };
+  const stats = { rows: staged.length, institutes: 0, courses: 0, byExact: 0, byShort: 0, byName: 0 };
   const out = staged.map((s) => {
     const course = s.course ?? "";
     const ours = course ? ourCourseFor(course) : null;
@@ -238,7 +259,10 @@ export async function ingestRound(year: number, round: string, opts: { dryRun?: 
     let inst = exact.get(`${norm(name)}|${dnb}`) ?? null;
     let method: string | null = inst ? "earlier-round" : null;
     if (inst) stats.byExact++;
-    else {
+    else if ((inst = byPrefix(name, dnb))) {
+      method = "short-name";
+      stats.byShort++;
+    } else {
       const ids = firstIds.get(`${firstPart(name)}|${dnb}`);
       const only = ids && ids.size === 1 ? [...ids][0] : null;
       if (only && inState(only, name)) {

@@ -709,6 +709,14 @@ MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within mi
   Caste (SC)" / "Schedule Caste (SC) (Person with Disability)". Matched exactly, the 2026 round page had **no SC
   or ST column** on result day (found 2026-10-24). `shortCategory()` in `lib/mccRoundTypes.ts` maps both on
   ingest and on read; the rows stored before the fix still hold the long form, which the read side covers.
+- **MCC's 2026 round 2 PDF changed two things (found on result day, 20 Nov 2026):** (1) a candidate who floated and got no
+  upgrade is printed "Retained" with the round 1 seat (2025 printed "-") — 8,585 rows that made round 2 read 29,292 seats
+  against 20,707 allotted; `ingestRound` now skips them. (2) A college is printed by its short name only ("SMS Medical
+  College, Jaipur"; round 1 printed "<short name>,<official name / address>"), so the whole-name match placed 37%; a name
+  now takes the institute of every earlier name that starts with it and a comma when all agree (`byPrefix`, method
+  `short-name`) → 93.8%. The provisional result loaded before the fix was repaired by
+  `scripts/fix_mcc_round2_2026_11_20.mjs` (backup `D:/Admisson Hands/match_backups/mcc_2026_round2_before_2026_11_20.json`),
+  which also cleared Round 2's hold (MCC Notice No. 11: the Madras High Court's stay is Sri Venkateshwaraa's 161 seats alone).
 - **The round poster** (owner's "NEET PG <last> vs <this> · MCC Round N closing ranks · All India Quota" image):
   `node --env-file=.env.local scripts/poster/round_cuts_poster.mjs --year 2026 --round "Round 2" --out <dir>` —
   every figure from `mcc_allotments`, a 2160px PNG; `--set deemed` makes the deemed-universities one (Paid/Management =
