@@ -70,7 +70,8 @@ export default async function NRIHero({ backgroundImageUrl, credit }: NRIHeroPro
               />
               <PhotoCredit {...credit} tone="chip" className="absolute right-2.5 top-2.5" />
             </div>
-            <div className="relative z-10 -mt-14 ml-4 mr-8 rounded-2xl border border-border bg-card p-5 shadow-lift sm:-mt-16 lg:-ml-8 lg:mr-10">
+            {/* Under the photo, never over it (2026-11-20). */}
+            <div className="relative mt-3 rounded-2xl border border-border bg-card p-5 shadow-lift">
               <div className="flex items-start gap-3.5">
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary-strong" aria-hidden="true">
                   <Plus className="h-5 w-5" />

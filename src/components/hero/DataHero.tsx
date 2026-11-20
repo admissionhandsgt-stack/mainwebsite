@@ -211,7 +211,9 @@ export default function DataHero({
                     />
                   )}
                 </div>
-                {visual && <div className="relative z-10 -mt-16 px-3 sm:-mt-20 sm:px-6 lg:-ml-10 lg:mr-4 lg:px-0">{visual}</div>}
+                {/* The card sits under the photo, never over it (owner, 2026-11-20: the "at a glance" card hid the picture —
+                    the homepage's rule of 2026-11-10, now on every data page). */}
+                {visual && <div className="relative mt-3">{visual}</div>}
               </>
             ) : (
               <>
