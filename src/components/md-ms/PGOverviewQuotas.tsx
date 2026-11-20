@@ -18,7 +18,7 @@ import type { CopyFields } from "@/lib/pageCopyDefaults";
 const SHIPPED_OVERVIEW: { icon: LucideIcon; title: string; desc: string }[] = [
   { icon: GraduationCap, title: "Eligibility", desc: "MBBS degree from a recognized institution with completed 1-year internship and NMC/State Medical Council registration." },
   { icon: BookOpen, title: "NEET PG Exam", desc: "National-level entrance by NBEMS. Computer-based, 180 MCQs in 2026. The qualifying percentile is notified each year." },
-  { icon: Clock, title: "Internship", desc: "1-year compulsory rotating internship must be completed before counselling. Completion certificate mandatory." },
+  { icon: Clock, title: "Internship", desc: "The 1-year compulsory rotating internship must be complete by 30 September 2026 (MCC's cut-off this year): the completion certificate, or the head of institution's certificate that it will be complete by then." },
   { icon: Building2, title: "Counselling Bodies", desc: "MCC handles AIQ, Deemed & Central seats. State authorities manage State Quota. Both run in parallel." },
   { icon: ShieldCheck, title: "Reservation", desc: "SC, ST, OBC-NCL, EWS, PwD — each category has specific cutoffs, seat pools, and documentation requirements." },
   { icon: RotateCcw, title: "Counselling Rounds", desc: "4 rounds typically: Round 1, Round 2, Round 3 and Stray Vacancy (many states still call their third round mop-up). Each round opens new opportunities." },

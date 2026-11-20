@@ -20,7 +20,7 @@ const FALLBACK_ITEMS: NriFaq[] = [
   },
   {
     q: "Does every medical college have NRI quota seats?",
-    a: "No. MCC's NRI seats are in the deemed universities; in private colleges each state's rules decide whether a college keeps NRI seats and how many. A state's NRI seat follows that state's own information bulletin, so check the bulletin of every counselling you register for."
+    a: "No. MCC allots NRI seats at the deemed universities and at AMU, and foreign-national seats at AIIMS; in private colleges each state's rules decide whether a college keeps NRI seats and how many. A state's NRI seat follows that state's own information bulletin, so check the bulletin of every counselling you register for."
   },
   {
     q: "Is NEET mandatory for NRI quota admissions?",

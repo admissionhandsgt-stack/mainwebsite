@@ -37,6 +37,7 @@ import RoundWatch from "@/components/mcc/RoundWatch";
 import ScheduleRevisionNote from "@/components/mcc/ScheduleRevisionNote";
 import CounselCard from "@/components/lead/CounselCard";
 import { getSeatMatrixOverview } from "@/lib/pgSeatData";
+import { ROUND_RULES } from "@/lib/choiceFillingRules";
 
 /**
  * /neet-pg-counselling/<year>/<round> (2026-10-21) — one round of MCC's NEET PG counselling, built by
@@ -68,6 +69,8 @@ const IST = new Intl.DateTimeFormat("en-IN", {
 const ist = (iso: string | null | undefined) => (iso ? `${IST.format(new Date(iso))} IST` : "");
 const DAY = new Intl.DateTimeFormat("en-IN", { timeZone: "UTC", day: "numeric", month: "short", year: "numeric" });
 const DAY_IST = new Intl.DateTimeFormat("en-IN", { timeZone: "Asia/Kolkata", day: "numeric", month: "short", year: "numeric" });
+/** "2nd round", as searched ("neet pg 2nd round result 2026"). */
+const ORDINAL: Record<number, string> = { 1: "1st round", 2: "2nd round", 3: "3rd round" };
 
 async function load(params: Params) {
   if (!/^20\d\d$/.test(params.year)) return null;
@@ -86,6 +89,11 @@ async function load(params: Params) {
     year === current ? getPgProcessContent().then((c) => c.schedule) : Promise.resolve([]),
   ]);
   const when = roundSchedule(spec, year, schedule);
+  // The round after this one and its dates, for "when is round 3" on a round 2 page (searched on result day, 2026-11-20).
+  const nextSpec = ROUNDS.find((r) => r.order === spec.order + 1 && r.order <= 4) ?? null;
+  const nextWhen = nextSpec ? roundSchedule(nextSpec, year, schedule) : null;
+  // This counselling's own rules for the round (MCC's 2026 bulletin) — only for the year they were written for.
+  const rule = year === current ? ROUND_RULES.find((r) => r.round.toLowerCase() === spec.round.toLowerCase()) ?? null : null;
   // MCC's own steps for the round (registration, choice filling, locking, result, reporting), when the admin's
   // schedule carries them — "neet pg round 2 choice filling date" (2026-11-05).
   const row = spec.schedule ? schedule.find((r) => r.round.trim().toLowerCase() === spec.schedule) : undefined;
@@ -97,7 +105,7 @@ async function load(params: Params) {
     const next = ROUNDS.find((r, i) => r.order <= 4 && states[i]?.status === "pending");
     indexable = next?.slug === spec.slug;
   }
-  return { year, spec, current, state, result: result && result.total ? result : null, prev, when, steps, row, indexable };
+  return { year, spec, current, state, result: result && result.total ? result : null, prev, when, steps, row, indexable, nextSpec, nextWhen, rule };
 }
 
 function kindOf(state: RoundState, body: { status_final: string; status_provisional: string; status_result: string; status_out: string; status_pending: string }) {
@@ -116,7 +124,8 @@ export async function generateMetadata(props: { params: Promise<Params> }): Prom
   const path = roundPath(year, spec.slug);
   const lc = spec.label.toLowerCase();
   const T = spec.round; // "Round 1", "Stray Vacancy Round"
-  const keywords = `NEET PG ${year} ${lc} result, NEET PG ${lc} result, NEET PG ${lc} cutoff ${year}, MCC PG ${lc} allotment result, NEET PG ${year} counselling result`;
+  const nth = ORDINAL[spec.order];
+  const keywords = `NEET PG ${year} ${lc} result, NEET PG ${lc} result, NEET PG ${lc} cutoff ${year}, MCC PG ${lc} allotment result, NEET PG ${year} counselling result, NEET PG ${lc} result PDF, NEET PG ${lc} seat allotment${nth ? `, NEET PG ${nth} result ${year}` : ""}`;
   let meta: Metadata;
   if (result) {
     const split = result.upgraded ? ` (${n(result.fresh)} fresh, ${n(result.upgraded)} upgraded)` : "";
@@ -124,14 +133,27 @@ export async function generateMetadata(props: { params: Promise<Params> }): Prom
     // Searched as "neet pg round 1 result 2026", "neet pg 2026 round 1 result", "neet pg round 1 counselling
     // result 2026", "neet pg cut off rank branch wise" (Search Console, 21–25 Oct 2026) — the result first,
     // then the cut off and closing rank people open it for.
+    // Result day of the running counselling (2026-11-20, Search Console + autocomplete): "neet pg round 2 counselling
+    // result 2026", "… result pdf", "… seat allotment", "… provisional result", "… result date", "… cut off". The
+    // title says it is out and names what people open it for; the description says provisional or final, and when.
+    const day = state.detectedAt ? DAY_IST.format(new Date(state.detectedAt)).replace(/\s\d{4}$/, "") : "";
+    const kindWord = state.kind === "provisional" ? "provisional" : state.kind === "final" ? "final" : "";
+    const running = year === d.current;
     meta = await resolveMetadata(path, {
       title: fitTitle(
+        ...(running ? [`NEET PG ${T} Result ${year} Out: Seat Allotment, Cut Off & PDF`, `NEET PG ${T} Result ${year} Out: Seat Allotment & Cut Off`] : []),
         `NEET PG ${T} Result ${year}: Branch Wise Cut Off & Closing Rank`,
         `NEET PG ${T} Result ${year}: Branch Wise Cut Off`,
         `NEET PG ${year} ${T} Result: Branch Wise Last Rank`,
         `NEET PG ${year} ${T} Result`,
       ),
       description: fitDescription(
+        ...(running && day
+          ? [
+              `NEET PG ${year} ${lc} result${kindWord ? ` (${kindWord}, ${day})` : ` (${day})`}: ${n(result.total)} seats allotted. Branch-wise cut off by category, MCC's result PDF and the last date to join.`,
+              `NEET PG ${year} ${lc} result${kindWord ? ` (${kindWord})` : ""}: ${n(result.total)} seats allotted. Branch-wise cut off by category, MCC's PDF and the joining date.`,
+            ]
+          : []),
         `MCC's ${final}NEET PG ${year} ${lc} counselling result: ${n(result.total)} seats allotted${split}. Branch-wise cut off — the last rank admitted — by category, for AIQ, deemed and DNB seats.`,
         `MCC's ${final}NEET PG ${year} ${lc} result: ${n(result.total)} seats allotted. Branch-wise cut off (last rank admitted) by category, for AIQ, deemed and DNB seats.`,
         `MCC's NEET PG ${year} ${lc} result: ${n(result.total)} seats allotted. Branch-wise last rank admitted by category, for AIQ, deemed and DNB seats.`,
@@ -213,7 +235,7 @@ export default async function RoundResultPage(props: { params: Promise<Params> }
   const params = await props.params;
   const d = await load(params);
   if (!d) notFound();
-  const { year, spec, current, state, result, prev, when, steps, row } = d;
+  const { year, spec, current, state, result, prev, when, steps, row, nextWhen, rule } = d;
   const path = roundPath(year, spec.slug);
   const [branchPages, pgStates, matrix] = await Promise.all([
     getBranches(),
@@ -267,6 +289,11 @@ export default async function RoundResultPage(props: { params: Promise<Params> }
     result_date: steps?.result,
     reporting: steps?.reporting,
     hold: year === current ? row?.hold?.text?.replace(/\.$/, "") : undefined,
+    round_nth: ORDINAL[spec.order] ?? lc,
+    next_window: nextWhen?.window,
+    next_join_by: nextWhen?.joinBy ?? undefined,
+    upgrade_rule: rule?.upgrade,
+    leave_rule: rule?.leaving,
   };
   const [copy, body, heroImage, shownBody] = await Promise.all([
     pageCopy("page.pg_round.hero", tokens),
@@ -368,6 +395,12 @@ export default async function RoundResultPage(props: { params: Promise<Params> }
     ...(result ? [{ question: body.faq1_q, answer: body.faq1_a }] : []),
     ...(result?.aiqOpenLast ? [{ question: body.faq2_q, answer: body.faq2_a }] : []),
     ...(result && state.detectedAt ? [{ question: body.faq3_live_q, answer: body.faq3_live_a }] : []),
+    // Result day's own questions (2026-11-20): provisional or final, the last date to join, what an upgrade does,
+    // and when the next round is — each only where this counselling's facts answer it.
+    ...(result && year === current && state.kind === "provisional" ? [{ question: body.faq_prov_q, answer: body.faq_prov_a }] : []),
+    ...(result && year === current && when?.joinBy && rule ? [{ question: body.faq_join_q, answer: body.faq_join_a }] : []),
+    ...(result && year === current && result.upgraded && rule ? [{ question: body.faq_upgrade_q, answer: body.faq_upgrade_a }] : []),
+    ...(result && year === current && nextSpec && nextWhen?.window && nextWhen.joinBy ? [{ question: body.faq_next_q, answer: body.faq_next_a }] : []),
     ...(!result && when?.joinBy ? [{ question: body.faq3_q, answer: body.faq3_a }] : []),
     { question: body.faq4_q, answer: body.faq4_a },
     ...(result && prev ? [{ question: body.faq5_q, answer: body.faq5_a }] : []),

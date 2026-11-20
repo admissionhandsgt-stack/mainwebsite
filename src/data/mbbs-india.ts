@@ -73,15 +73,15 @@ export const mbbsData = {
       },
       {
         title: "Private / Deemed Universities",
-        body: "Private medical colleges and Deemed Universities conduct counselling through MCC or their own processes. Fees are higher but seats are more accessible at certain rank ranges.",
+        body: "Deemed universities fill all their seats through MCC's counselling, in the same rounds as the All India Quota; private colleges fill theirs through the state's counselling. Fees are higher but seats are more accessible at certain rank ranges.",
         goalStrategy:
           "For ranks between 50K–2L, private colleges offer excellent infrastructure. We identify NMC-approved colleges with the best fee-to-quality ratio and manage the entire admission process.",
       },
       {
         title: "Management / NRI Quota",
-        body: "A percentage of seats in private colleges are reserved under Management and NRI quotas. These require separate applications and often have different fee structures.",
+        body: "A share of seats in private colleges are management and NRI quota seats, allotted through the same counselling — the state's for private colleges, MCC's for deemed universities. NRI seats need NRI documents verified first, and their fees differ from state-quota seats.",
         goalStrategy:
-          "If budget is flexible, management quota seats in top-tier private colleges can be strategic. We negotiate and verify legitimacy to ensure a transparent, hassle-free admission.",
+          "If budget is flexible, management quota seats in top-tier private colleges can be strategic. We get the college's fees in writing and negotiate payment terms where the college allows — the seat itself comes only through the counselling.",
       },
     ],
     disclaimer:

@@ -701,7 +701,7 @@ export const PAGE_COPY = {
       },
       route_mcc: {
         label: "Section: MCC card — {state}",
-        value: "MCC — the All India counselling | 15% of the seats at government colleges (the All India Quota), every seat at deemed universities, and central institutions such as AIIMS and JIPMER — open to students from every state.",
+        value: "MCC — the All India counselling | 15% of the seats at government colleges (the All India Quota), every seat at deemed universities, and AIIMS, JIPMER and the central universities — open to students from every state, apart from the domicile and internal seats some keep (JIPMER's Puducherry seats, the central universities' internal quotas).",
         long: true,
       },
       counsellings_title: { label: "Section: counsellings in our results — heading, {state}", value: "Counsellings that allotted MBBS seats in {state}" },
@@ -1041,7 +1041,7 @@ export const PAGE_COPY = {
       subtitle: { label: "Hero line when the results cannot be read", value: "Which states keep MD/MS, diploma and DNB seats for doctors in government service.", long: true },
       answer: {
         label: "Hero answer — {year}, {states}, {colleges}, {top}",
-        value: "In the {year} counselling, {states} states allotted PG seats to in-service doctors under their own quota — {colleges} colleges, most of them in {top}. Government and PSU doctors also have DNB sponsored seats through MCC.",
+        value: "In the {year} counselling, {states} states allotted PG seats to in-service doctors under their own quota — {colleges} colleges, most of them in {top}. DNB in-service (sponsored) seats are not part of MCC's counselling — MCC's bulletin says so — so a doctor sponsored by a government or PSU employer asks NBEMS or the sponsoring department.",
         long: true,
       },
       cta: { label: "Hero button", value: "Check your colleges free" },
@@ -1085,11 +1085,11 @@ export const PAGE_COPY = {
         value: "An option is one branch at one college under that quota; the results do not print how many seats it holds. Where a state files in-service candidates as a category inside its government quota, the government quota is listed.",
         long: true,
       },
-      dnb_eyebrow: { label: "DNB sponsored eyebrow", value: "Through MCC" },
+      dnb_eyebrow: { label: "DNB sponsored eyebrow", value: "Outside MCC's counselling", was: ["Through MCC"] },
       dnb_title: { label: "DNB sponsored heading", value: "DNB sponsored seats for government and PSU doctors" },
       dnb_intro: {
         label: "DNB sponsored line — {sponsored_colleges}, {sponsored_states}",
-        value: "MCC's counselling also allots DNB seats sponsored for doctors in government or PSU service — {sponsored_colleges} hospitals in {sponsored_states} states in the latest results.",
+        value: "DNB seats sponsored for doctors in government or PSU service are allotted outside MCC's counselling (MCC's bulletin says it does not counsel them) — {sponsored_colleges} hospitals in {sponsored_states} states in the latest results we hold.",
         long: true,
       },
       dnb_link: { label: "Link to MD vs DNB", value: "MD vs DNB: what a DNB is worth →" },
@@ -1548,7 +1548,7 @@ export const PAGE_COPY = {
         label: "Line under the title",
         long: true,
         value:
-          "Round 3, the state rounds, the stray vacancy round and special stray rounds still release seats, freed by upgrades and by candidates who never join. The candidates who win them are not luckier. They are better prepared.",
+          "Round 3, the state rounds and the stray vacancy round still release seats, freed by upgrades and by candidates who never join. The candidates who win them are not luckier. They are better prepared.",
       },
       points: {
         label: "Three ticks under the title, one per line",
@@ -1556,7 +1556,7 @@ export const PAGE_COPY = {
         value: [
           "A personal round-by-round strategy built on your rank, category, domicile and budget",
           "A choice list engineered to land the best seat you can realistically win",
-          "An expert call at every result: join, upgrade or walk away, without losing your deposit",
+          "An expert call at every result: join or upgrade, knowing exactly what leaving would cost",
         ].join("\n"),
       },
       cta: { label: "Main button", value: "Get my Round 3 strategy" },
@@ -1596,7 +1596,7 @@ export const PAGE_COPY = {
         label: "Situations, one per line: title | text | WhatsApp message",
         long: true,
         value: [
-          "No seat after Round 2 | Round 3, your state's next round, the stray round and special stray rounds are still ahead. The seat is out there; the right list and the right timing win it. | Hi, I did not get a seat in Round 2. I need a plan for Round 3 and the stray round. My rank: ",
+          "No seat after Round 2 | Round 3, your state's next round and the stray vacancy round are still ahead. The seat is out there; the right list and the right timing win it. | Hi, I did not get a seat in Round 2. I need a plan for Round 3 and the stray round. My rank: ",
           "Holding a seat, want better | Round 3 is your last upgrade. Join a Round 3 seat and you can neither resign nor upgrade, so every choice must be right the first time. | Hi, I hold a Round 2 seat but want an upgrade. I need a Round 3 strategy. My rank: ",
           "Waiting on eligibility or a cut-off | If the qualifying cut-off changes or your documents clear, choice filling opens fast. Have your list ready before it does. | Hi, I am waiting on NEET PG eligibility or a cut-off change and want a plan ready. My score / rank: ",
           "Torn between budget, bond and state | Deemed paid seats, state mop-ups, management quota: we weigh fee, bond and stipend so you lock a seat you will not regret. | Hi, I need help choosing a NEET PG college by budget and bond. My rank: ",
@@ -1625,7 +1625,7 @@ export const PAGE_COPY = {
           "Deep case review | Rank, category, domicile, budget and bond tolerance, mapped in one call.",
           "Every route mapped | MCC Round 3 and stray, your state's rounds, deemed seats: where you qualify and in what order.",
           "Precision choice list | The right colleges and branches in the right order, so no winnable seat slips past you.",
-          "An expert call at every result | Join, upgrade or walk away, protecting your deposit and your next round.",
+          "An expert call at every result | Join or upgrade, knowing what each choice costs: from Round 2, a seat you do not join forfeits the security deposit.",
           "With you until you join | Documents, fees, hostel and bond confirmed with the college, through reporting.",
         ].join("\n"),
       },
@@ -1653,7 +1653,7 @@ export const PAGE_COPY = {
         label: "FAQ, one per line: question | answer",
         long: true,
         value: [
-          "I did not get a seat in Round 2. What now? | Round 3, your state's next rounds, the stray round and special stray rounds are still ahead. First confirm which rounds you are eligible for, then build the choice list; your counsellor does both for your case.",
+          "I did not get a seat in Round 2. What now? | Round 3, your state's next rounds and the stray vacancy round are still ahead (MCC adds a special stray round only if MoHFW or a court directs). First confirm which rounds you are eligible for, then build the choice list; your counsellor does both for your case.",
           "Can I leave a Round 3 seat after joining? | No. A joined Round 3 seat cannot be resigned or upgraded. Not joining forfeits the security deposit and takes you out of further MCC rounds.",
           "Who can take part in the stray vacancy round? | Only candidates holding no seat in AIQ, state or deemed counselling. A stray-round seat must be joined, or the deposit is forfeited.",
           "Do you guarantee a seat? | No. Counselling allots seats and no one can guarantee one. We make sure your strategy and choice list leave no opportunity on the table.",
@@ -3154,7 +3154,8 @@ export const PAGE_COPY = {
       },
       docs_list: {
         label: "Documents — one per line",
-        value: "NEET PG scorecard and rank letter\nMBBS degree certificate and all mark sheets\nInternship completion certificate\nPermanent or provisional medical registration\nClass 10 certificate, for date of birth\nCategory certificate (SC / ST / OBC-NCL / EWS), in the prescribed format\nPwBD certificate from a designated centre, if applicable\nDomicile or state-eligibility proof, for state counselling\nPhoto ID, passport photographs, and the allotment letter",
+        value: "MCC (or state) allotment letter\nNEET PG admit card and result / rank letter (NBEMS)\nMBBS degree or provisional certificate, and all mark sheets\nInternship completion certificate, or the head of institution's certificate that it ends by 30 Sep 2026\nPermanent or provisional medical registration\nClass 10 certificate, for date of birth\nCategory certificate (SC / ST / OBC-NCL / EWS), in the prescribed format\nPwBD certificate from a designated centre, if applicable\nDomicile or state-eligibility proof, for state counselling\nPhoto ID (driving licence, voter ID, passport or Aadhaar) and passport photographs",
+        was: ["NEET PG scorecard and rank letter\nMBBS degree certificate and all mark sheets\nInternship completion certificate\nPermanent or provisional medical registration\nClass 10 certificate, for date of birth\nCategory certificate (SC / ST / OBC-NCL / EWS), in the prescribed format\nPwBD certificate from a designated centre, if applicable\nDomicile or state-eligibility proof, for state counselling\nPhoto ID, passport photographs, and the allotment letter"],
         long: true,
       },
       mistakes_title: { label: "Mistakes heading — {count}", value: "{count} mistakes that cost people a seat" },
@@ -3234,13 +3235,13 @@ export const PAGE_COPY = {
       g1_not: { label: "Group 1: not accepted — one per line", value: "", long: true },
       g1_docs: {
         label: "Group 1: documents",
-        value: "NRI status certificate, passport copies, visa stamps, bank statements showing foreign transactions.",
+        value: "NRI certificate from the Indian embassy or consulate, your valid passport, a notarised affidavit by the NRI parent, brother or sister to pay the whole course fee backed by an NRE passbook, and the relationship verified by a revenue officer (Tehsildar), with your Class 10 and 12 certificates and NEET score card.",
         long: true,
       },
       g2_title: { label: "Group 2: name", value: "NRI Sponsored Candidates" },
       g2_def: {
         label: "Group 2: who it is",
-        value: "Indian nationals who are sponsored by an NRI relative (blood relations only).",
+        value: "Indian nationals sponsored by an NRI legal guardian — the nearest NRI relation who has looked after them — with legal proof of guardianship under the Guardian and Wards Act 1890 (an NRI parent, brother or sister is the first group).",
         long: true,
       },
       g2_points: {
@@ -3255,7 +3256,7 @@ export const PAGE_COPY = {
       },
       g2_docs: {
         label: "Group 2: documents",
-        value: "Sponsor's NRI proof, affidavit of relation, sponsorship letter, NEET scorecard.",
+        value: "The guardian's valid passport and NRI certificate, legal proof of guardianship, a notarised affidavit to pay the whole course fee backed by an NRE passbook, your valid passport and NEET score card.",
         long: true,
       },
       g3_title: { label: "Group 3: name", value: "OCI/PIO Card Holders" },
@@ -3268,7 +3269,7 @@ export const PAGE_COPY = {
       g3_not: { label: "Group 3: not accepted — one per line", value: "", long: true },
       g3_docs: {
         label: "Group 3: documents",
-        value: "OCI/PIO card, foreign passport, 10+2 mark sheets, NEET score card (if applicable)",
+        value: "OCI or PIO card, valid passport, Class 10 and 12 mark sheets and certificates, NEET UG score card",
         long: true,
       },
       g4_title: { label: "Group 4: name", value: "Foreign Nationals" },
@@ -3277,14 +3278,14 @@ export const PAGE_COPY = {
       g4_not: { label: "Group 4: not accepted — one per line", value: "", long: true },
       g4_docs: {
         label: "Group 4: documents",
-        value: "Foreign passport, visa, 10+2 equivalent mark sheets, NEET score card (if applicable)",
+        value: "Foreign passport, visa, residence or work permit, Class 10 and 12 mark sheets (AIU equivalence for a foreign board), NEET UG score card",
         long: true,
       },
       general_title: { label: "Academic requirements heading", value: "General Academic Requirements" },
       general_points: {
         label: "Academic requirements — one per line",
         value:
-          "Min 50% marks in PCB in 10+2\nQualified NEET-UG score\nAt least 17 years old by 31 December of the admission year\nEnglish language proficiency",
+          "Min 50% marks in PCB in 10+2\nQualified NEET-UG score\nAt least 17 years old by 31 December of the admission year\nPhysics, Chemistry, Biology and English passed in Class 12",
         long: true,
       },
       cta_title: { label: "Help box: heading", value: "Eligibility differs by state, college and document." },
@@ -4494,7 +4495,7 @@ export const PAGE_COPY = {
       decide_body_pending: {
         label: "Result-day card line, before the result",
         value:
-          "Once the result is out you have days, not weeks, to report — and to decide whether to keep your seat or try for a better one in the next round. A counsellor plans it with you before the result, not after.",
+          "Once the result is out you have days, not weeks, to report — and after rounds 1 and 2, to decide whether to keep your seat or try for a better one; a round 3 seat, once joined, can be neither resigned nor upgraded. A counsellor plans it with you before the result, not after.",
         long: true,
       },
       decide_title_live: { label: "Result-day card heading, after the result — {round_lc}", value: "Got a seat in {round_lc}? Decide before you report." },
@@ -4556,12 +4557,19 @@ export const PAGE_COPY = {
           "MCC's {round_lc} result allotted {total} seats{split}, across the All India Quota ({aiq_colleges_all} colleges), deemed universities, central universities' quotas and DNB.",
         long: true,
       },
-      faq2_q: { label: "Question 2 — {round_lc}", value: "What was the last All India Open rank admitted in {round_lc}?" },
+      // As searched on result day (2026-11-20): "neet pg round 2 cut off 2026", "neet pg round 2 result date",
+      // "neet pg 2nd round result … pdf".
+      faq2_q: {
+        label: "Question 2 — {year}, {round_lc}",
+        value: "What is the NEET PG {year} {round_lc} cut off?",
+        was: ["What was the last All India Open rank admitted in {round_lc}?"],
+      },
       faq2_a: {
-        label: "Answer 2 — {aiq_open_last}, {aiq_colleges}",
+        label: "Answer 2 — {aiq_open_last}, {aiq_colleges}, {round_lc}",
         value:
-          "{aiq_open_last}, in the All India Quota's Open category, across {aiq_colleges} colleges. The branch table on this page breaks it down by branch and category.",
+          "In the All India Quota's Open category, the last rank admitted in {round_lc} was {aiq_open_last}, across {aiq_colleges} colleges. The branch-wise cut off by category, for AIQ, deemed and DNB seats, is in the table on this page.",
         long: true,
+        was: ["{aiq_open_last}, in the All India Quota's Open category, across {aiq_colleges} colleges. The branch table on this page breaks it down by branch and category."],
       },
       faq3_q: { label: "Question 3 — {year}, {round_lc}", value: "When is the NEET PG {year} {round_lc} result?" },
       faq3_a: {
@@ -4573,18 +4581,52 @@ export const PAGE_COPY = {
           "MCC's schedule has {round_lc} running {window}, with joining by {join_by}. MCC revises its dates in most years; this page updates itself when the result is published.",
         ],
       },
-      faq3_live_q: { label: "Question 3, result read — {round_lc}", value: "When did MCC publish the {round_lc} result?" },
+      faq3_live_q: {
+        label: "Question 3, result read — {year}, {round_lc}",
+        value: "What is the NEET PG {year} {round_lc} result date?",
+        was: ["When did MCC publish the {round_lc} result?"],
+      },
       faq3_live_a: {
         label: "Answer 3, result read — {kind}, {detected_day}",
         value: "MCC published the {kind} result on {detected_day}. MCC's own PDF is linked at the top of this page.",
         long: true,
         was: ["This page was built from MCC's {kind} result on {published}, automatically, from MCC's own PDF."],
       },
-      faq4_q: { label: "Question 4 — {round_lc}", value: "How do I check my NEET PG {round_lc} allotment?" },
+      faq4_q: {
+        label: "Question 4 — {round_nth} (\"2nd round\"), {year}",
+        value: "How do I check the NEET PG {round_nth} result {year} and download the PDF?",
+        was: ["How do I check my NEET PG {round_lc} allotment?"],
+      },
       faq4_a: {
         label: "Answer 4 — {round_lc}",
         value:
+          "MCC publishes the {round_lc} result PDF on mcc.nic.in under PG Medical Counselling; once it is out, it is linked at the top of this page too. It lists every allotted rank with the college, course, quota and category — search it for your rank. Your allotment letter is in your MCC login.",
+        long: true,
+        was: [
           "On MCC's website, mcc.nic.in, under PG Medical Counselling: the {round_lc} result PDF lists every allotted rank with the college, course, quota and category. Search the PDF for your rank. Your allotment letter is in your MCC login.",
+        ],
+      },
+      faq_prov_q: { label: "Question, provisional result — {year}, {round_lc}", value: "Is the NEET PG {year} {round_lc} provisional result final?" },
+      faq_prov_a: {
+        label: "Answer, provisional result",
+        value:
+          "No. MCC says a provisional result is only indicative and subject to change, and that candidates should approach the allotted college only after the final result. A discrepancy is raised with MCC through the grievance system in the candidate login, within the time MCC's notice gives.",
+        long: true,
+      },
+      faq_join_q: { label: "Question, last date to join — {year}, {round_lc}", value: "What is the last date to join a NEET PG {year} {round_lc} seat?" },
+      faq_join_a: {
+        label: "Answer, last date to join — {join_by}, {leave_rule} (MCC's rule for the round)",
+        value:
+          "MCC's schedule has {round_lc} joining by {join_by}, at the allotted college after the final result, with the allotment letter and original documents. {leave_rule}",
+        long: true,
+      },
+      faq_upgrade_q: { label: "Question, upgrade — {round_lc}", value: "What happens if I got an upgrade in NEET PG {round_lc}?" },
+      faq_upgrade_a: { label: "Answer, upgrade — {upgrade_rule} (MCC's rule for the round)", value: "{upgrade_rule}", long: true },
+      faq_next_q: { label: "Question, the next round — {year}, {next_round}", value: "When is NEET PG {year} {next_round}?" },
+      faq_next_a: {
+        label: "Answer, the next round — {next_round}, {next_window}, {next_join_by}, {round_lc}",
+        value:
+          "MCC's schedule has {next_round} running {next_window}, with joining by {next_join_by}. Seats left after {round_lc}, and seats freed when candidates upgrade or do not join, go into {next_round}. MCC revises its dates in most years; its latest notice is the final word.",
         long: true,
       },
       faq5_q: { label: "Question 5 — {year}, {prev_year}, {round_lc}", value: "How did {round_lc} compare with {prev_year}?" },

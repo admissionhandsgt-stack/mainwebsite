@@ -540,7 +540,7 @@ export default async function LowScoreClinicalPage() {
                   : x.deemed.length
                     ? `Paid seats, ordered by fee and college: ${x.deemed.slice(0, 6).join(", ")}${x.deemed.length > 6 ? ` and ${x.deemed.length - 6} more` : ""} went this far on deemed universities' paid seats.`
                     : "Deemed universities' paid clinical seats closed before this rank last year — state management and NRI seats are the route.",
-                "Your state's counselling in parallel, then float or freeze after every result — and the stray round ready with documents and fee.",
+                "Your state's counselling in parallel, then float or freeze after the round 1 and 2 results (a joined round 3 seat is final) — and the stray round ready with documents and fee.",
               ];
               return (
                 <article key={x.rank} className="flex flex-col rounded-2xl border border-border bg-card p-5">

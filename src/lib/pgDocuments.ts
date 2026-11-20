@@ -39,7 +39,7 @@ export const PG_DOCUMENTS: PgDocumentList[] = [
       "[E] Internship completion certificate — or a certificate from the head of the institution that the internship will be complete by 30 September 2026",
       "[E] Permanent or provisional registration certificate from a State Medical Council (provisional only if the internship ends by 30 September 2026)",
       "[E] Class 10 certificate or birth certificate, as proof of date of birth",
-      "Photo ID: driving licence, voter ID, passport or Aadhaar card",
+      "[E] Photo ID: driving licence, voter ID, passport or Aadhaar card",
       "## If they apply to you",
       "[E] SC/ST certificate from the competent authority, in the bulletin's format, in English or Hindi, with the sub-caste clearly mentioned",
       "[E] EWS certificate as per Central Government norms, in the bulletin's format — income for the financial year ending 31 March 2026",

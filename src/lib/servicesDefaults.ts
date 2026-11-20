@@ -97,7 +97,7 @@ export const SERVICES: ServiceItem[] = [
     title: "Deemed & Private University Strategy",
     tagline: "Premium seats need premium strategy.",
     description:
-      "Deemed and private medical colleges have their own counselling calendars, fee structures, and seat matrices. We provide dedicated guidance for students targeting these institutions.",
+      "Deemed universities fill their seats through MCC's counselling and private colleges through the state's, each with its own fee structure and seat matrix. We provide dedicated guidance for students targeting these institutions.",
     features: [
       "Complete deemed university counselling (MCC Deemed track)",
       "Private college seats through the state's management and NRI rounds",

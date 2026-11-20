@@ -22,7 +22,7 @@ export const PG_ROUNDS: PgRound[] = [
       "Register separately for AIQ on mcc.nic.in and for your state on its own portal. They are different accounts, different fees and different deadlines — being registered for one does not register you for the other.",
       "Fill every college and branch you would genuinely accept, in true order of preference. Allotment walks your list from the top and stops at the first seat your rank reaches.",
       "Lock your choices before the deadline. An unlocked list is auto-locked as it stands, which is how people end up allotted to a choice they meant to delete.",
-      "If allotted, report to the college within the reporting window with your originals. Miss it and the seat is gone — there is no extension.",
+      "If allotted, report to the college within the reporting window with your originals. Miss it and the seat is gone; MCC changes its dates only by a notice, so plan for the date as printed.",
     ],
     watch:
       "Filling a short list. A list of ten choices means ten chances to be allotted; the candidates who go unallotted in round 1 are almost always the ones who filled only the colleges they wanted rather than every college they would accept.",
@@ -33,7 +33,7 @@ export const PG_ROUNDS: PgRound[] = [
     summary: "The first point where a decision can cost you the seat in your hand.",
     detail: [
       "Candidates unallotted in round 1 get a fresh shot at everything still vacant.",
-      "If you hold a round-1 seat you choose between keeping it and entering round 2 for something better. Entering means the round-1 seat goes back into the pool.",
+      "If you hold a round-1 seat you choose Freeze (keep it, no upgrade) or Float (stay in for an upgrade in round 2). Floating keeps your round-1 seat; it is released only if you are upgraded.",
       "Upgrades free seats further down, which is why a later round can reach much deeper than round 1 did.",
       "Fresh registration is normally open, so the competition is not only the people who were there in round 1.",
     ],
@@ -81,6 +81,6 @@ export const PG_MISTAKES: { title: string; body: string }[] = [
   },
   {
     title: "Missing the reporting window",
-    body: "The allotment is not the seat. Reporting with originals inside the window is the seat, and the deadline does not move.",
+    body: "The allotment is not the seat. Reporting with originals inside the window is the seat, and plan for the date as printed — MCC changes it only by a notice.",
   },
 ];

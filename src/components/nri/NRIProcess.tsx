@@ -6,9 +6,9 @@ import type { NriStep } from '@/lib/nriContent';
 const SHIPPED_STEPS = [
   { step: "01", title: "Qualify NEET-UG", date: "May – June", desc: "NEET-UG is mandatory for MBBS and BDS admission in India, NRI quota included. There is no NRI route around it.", side: "left" },
   { step: "02", title: "Confirm NRI eligibility", date: "June", desc: "Check that you — or your sponsor — meet the NRI definition of the counselling you will use. MCC and each state set it in their own information bulletin, re-issued every year.", side: "right" },
-  { step: "03", title: "Prepare the documents", date: "June – July", desc: "NRI status proof, your sponsor's passport and visa, proof of relationship and the affidavits the bulletin lists — gathered before registration opens.", side: "left" },
+  { step: "03", title: "Prepare the documents", date: "June – July", desc: "Your passport, the NRI certificate from the Indian embassy or consulate, the sponsor's affidavit backed by an NRE passbook and the relationship verified by a revenue officer — the documents MCC's bulletin lists for your category, ready before registration opens.", side: "left" },
   { step: "04", title: "Register for counselling", date: "July – August", desc: "Register with MCC for deemed universities and with each state counselling whose private colleges you want. Each is a separate registration with its own fee and deadline.", side: "right" },
-  { step: "05", title: "Choice filling and rounds", date: "August – October", desc: "List colleges in order of preference, round by round. NRI documents are checked before an allotment is confirmed — a missing paper at that point can cost the seat.", side: "left" },
+  { step: "05", title: "Choice filling and rounds", date: "August – October", desc: "Upload the NRI documents when you register; MCC's NRI committee checks them online before choice filling, and NRI seats appear in your list only once your category is converted. Then list colleges in order of preference, round by round.", side: "left" },
   { step: "06", title: "Report and pay", date: "After allotment", desc: "Report to the allotted college within the counselling's deadline with your original documents and the fee, in rupees or US dollars as that college's notice says.", side: "right" },
 ];
 

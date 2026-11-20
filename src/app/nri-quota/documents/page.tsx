@@ -81,9 +81,9 @@ export default async function NriDocumentsPage() {
         accent={copy.accent}
         subtitle={subtitle}
         stats={[
-          { label: "Documents", value: String(docs.length), note: "from MCC's 2025 notices" },
-          { label: "Sent", value: "Every round", note: "one email, MCC's format" },
-          { label: "Checked", value: "Twice", note: "the mission and the college" },
+          { label: "Documents", value: String(docs.length), note: "from MCC's 2026 bulletins" },
+          { label: "Uploaded", value: "Once", note: "at registration, on MCC's portal" },
+          { label: "Checked", value: "Online", note: "by MCC's NRI committee, then the college" },
         ]}
         cta={{ label: copy.cta, href: "/contact" }}
         telegram="hero_nri_documents"
@@ -111,7 +111,7 @@ export default async function NriDocumentsPage() {
       <div className="container-custom py-10 md:py-14">
         {/* ------------------------------ checklist ------------------------------ */}
         <section>
-          <SectionHead icon="document" eyebrow="MCC · 2025" title={body.list_title} intro={body.list_intro} />
+          <SectionHead icon="document" eyebrow="MCC · 2026" title={body.list_title} intro={body.list_intro} />
           <div className="mt-8 grid gap-6 lg:grid-cols-3">
             {groups.map((g, gi) => (
               <div
