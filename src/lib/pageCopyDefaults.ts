@@ -1290,7 +1290,10 @@ export const PAGE_COPY = {
       wa: { label: "WhatsApp button", value: "Ask on WhatsApp" },
       wa_text: {
         label: "The WhatsApp message, prefilled — {college} or {topic}",
-        value: "Hi, I need admission guidance for {college}. My NEET rank: ", was: ["Hi, I need PG admission guidance for {college}. My NEET PG rank: "],
+        // One blank a line, so a student sees what to fill before pressing send (owner, 2026-11-20: a chat arrived with the
+        // college's name and nothing else — "koi rank nhi koi student details ni ati").
+        value: "Hi, I need admission guidance for {college}.\nMy NEET rank (AIR): \nCategory: \nHome state: \nMy name: ",
+        was: ["Hi, I need PG admission guidance for {college}. My NEET PG rank: ", "Hi, I need admission guidance for {college}. My NEET rank: "],
         long: true,
       },
       done: { label: "After a successful send", value: "Thank you — a counsellor will call you shortly. Want to talk now? Message us on WhatsApp." },
