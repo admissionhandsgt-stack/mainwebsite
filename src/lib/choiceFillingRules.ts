@@ -124,5 +124,5 @@ export const LOCKING_FACTS = [
 export const STATE_FACTS = [
   "To take a state seat while holding an All India seat: a Freeze candidate surrenders the AIQ seat at the admitted college; a Float candidate resigns online, which is recorded on MCC's portal.",
   "Leaving the AIQ seat for a state seat follows the round's rule: free in round 1, with forfeiture of the deposit in round 2.",
-  "MCC and the states exchange the lists of candidates who joined after each round. A candidate who joined a state seat by the state's round 3 is removed before MCC's stray round, and the states remove MCC's joiners before their own later rounds.",
+  "MCC and the states share the lists of candidates who joined, on the dates in MCC's schedule. A candidate on a state's list after its round 3 is removed before MCC's stray vacancy round.",
 ];

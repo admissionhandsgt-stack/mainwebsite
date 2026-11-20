@@ -358,8 +358,9 @@ export default async function ChoiceFillingPage() {
           <div>
             <SectionHead icon="authority" eyebrow="Next year" title="Does leaving a seat bar you from next year's NEET PG?" />
             <p className="mt-5 text-[15px] leading-relaxed text-foreground">
-              MCC&apos;s 2026 bulletin names no such bar. The consequences it names are losing the security deposit, and — not joining a
-              round 3 seat — being out of every further MCC round. In the 2024 counselling MCC did announce that candidates who did not join
+              MCC&apos;s 2026 bulletin names no bar from next year&apos;s NEET PG. The consequences it names are losing the security deposit;
+              — not joining a round 3 seat — being out of every further MCC round; and, for AFMS institutions only, a three-year bar for
+              Priority III–V candidates who failed to report for, or vacated, a seat that then lapsed. In the 2024 counselling MCC did announce that candidates who did not join
               a stray-round seat would be barred from the next year&apos;s exam, so read each year&apos;s notices; in March 2026 the Delhi High
               Court held that in the 2025 cycle only forfeiture applied.
             </p>

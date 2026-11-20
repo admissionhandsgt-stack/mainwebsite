@@ -925,7 +925,7 @@ export const PAGE_COPY = {
       fraud_lead: {
         label: "The answer, in one or two sentences",
         value:
-          "Every MD/MS, DNB and diploma seat in India — government, private or deemed; state quota, management or NRI — is allotted through counselling on the NEET PG merit list, by MCC or the state's counselling authority. No college may admit anyone itself. A seat offered outside counselling is not a seat.",
+          "Every MD/MS, DNB and diploma seat in India — government, private or deemed; state quota, management or NRI — is allotted through counselling on the entrance exam's merit list — NEET PG, or INI-CET for AIIMS, JIPMER, PGIMER, NIMHANS and SCTIMST — by the central or state counselling authority. No college may admit anyone itself. A seat offered outside counselling is not a seat.",
         long: true,
       },
       fraud_source: {
@@ -1425,9 +1425,9 @@ export const PAGE_COPY = {
         label: "Stipend page — {colleges}, {median}, {top_state}, {top_median}, {low_state}, {low_median}, {govt_top_state}, {govt_top_median}",
         long: true,
         value: [
-          "NEET PG me stipend kitna milta hai? | Jo {colleges} colleges aur DNB hospitals stipend publish karte hain, unka first-year median {median} mahina hai. State aur college type (government ya private) ke hisaab se bahut farak hai.",
+          "NEET PG me stipend kitna milta hai? | Jo {colleges} MD/MS colleges stipend publish karte hain, unka first-year median {median} mahina hai. State aur college type (government ya private) ke hisaab se bahut farak hai.",
           "Sabse zyada PG stipend kis state me milta hai? | Median ke hisaab se {top_state} sabse upar hai ({top_median} mahina) aur {low_state} sabse neeche ({low_median} mahina).",
-          "Government college me sabse zyada stipend kahan hai? | Sirf government colleges ka median dekhein to {govt_top_state} sabse aage hai: {govt_top_median} mahina.",
+          "Government college me sabse zyada stipend kahan hai? | Counselling ki listing mein sirf government colleges ka median dekhein to {govt_top_state} sabse aage hai: {govt_top_median} mahina. Har state ka official government rate neeche ki table mein hai.",
           "Private college me stipend milta hai kya? | Kai private colleges dete hain, par government jitna regular nahi, aur kuch publish hi nahi karte. College ke page par stipend aur fee saath rakh kar dekhein.",
         ].join("\n"),
       },
@@ -2069,7 +2069,7 @@ export const PAGE_COPY = {
       faq9_a: {
         label: "Answer 9",
         value:
-          "MCC's 2026 bulletin names no such bar: what it names is forfeiture of the deposit and, after round 3, being out of further MCC rounds. In the 2024 counselling MCC did announce a year's bar for not joining a stray-round seat, so read each year's notices; the Delhi High Court held in March 2026 that only forfeiture applied in the 2025 cycle.",
+          "MCC's 2026 bulletin names no bar from next year's NEET PG. What it names is forfeiture of the deposit, removal from further MCC rounds after an unjoined round 3 seat, and — for AFMS institutions only — a three-year bar for Priority III–V candidates who failed to report for, or vacated, a seat that then lapsed. In the 2024 counselling MCC did announce a year's bar for not joining a stray-round seat, so read each year's notices; the Delhi High Court held in March 2026 that only forfeiture applied in the 2025 cycle.",
         long: true,
       },
       lead_title: { label: "Enquiry form heading", value: "Float or freeze? Talk it through first" },
@@ -3874,9 +3874,14 @@ export const PAGE_COPY = {
       },
       faq5_q: { label: "Question 5", value: "Do seats really move after round 1?" },
       faq5_a: {
-        label: "Answer 5 — {year}, {r2_upgraded}, {r3_upgraded}",
+        // {upgrade_year}: the latest counselling with a round 3 result (2026-11-20: the matrix year's round 3 was still to come,
+        // and the answer said "0 in round 3").
+        label: "Answer 5 — {upgrade_year}, {r2_upgraded}, {r3_upgraded}",
         value:
+          "Yes. In MCC's {upgrade_year} results, {r2_upgraded} candidates were upgraded in round 2 and {r3_upgraded} in round 3. Every upgrade frees a seat for the next candidate, which is why later rounds can reach much further down the merit list.",
+        was: [
           "Yes. In MCC's {year} results, {r2_upgraded} candidates were upgraded in round 2 and {r3_upgraded} in round 3. Every upgrade frees a seat for the next candidate, which is why later rounds can reach much further down the merit list.",
+        ],
         long: true,
       },
       lead_title: { label: "Enquiry box heading", value: "Which of these seats should be on your list?" },

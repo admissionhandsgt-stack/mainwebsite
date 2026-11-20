@@ -206,17 +206,24 @@ export default function Header({
   const megaPanel = (link: NavItem) => {
     const groups = link.children.filter((g) => g.children.length > 0);
     const loose = link.children.filter((g) => g.children.length === 0);
-    const cols = Math.min(groups.length, 3);
+    // Compact (2026-11-20, owner: "page mai aa bhi nhi rahe options … compact … blank space hatado"): up to four
+    // columns of short rows — title and one line — so a 25-link menu is ~430px tall instead of running past the
+    // screen. Centred on the page (see the wrapper) and capped at the viewport's height, scrolling inside if it must.
+    const cols = Math.min(groups.length, 4);
+    const width = cols >= 4 ? 1080 : cols === 3 ? 880 : 600;
     return (
       <div
-        className="rounded-2xl border border-border bg-card shadow-lift overflow-hidden"
-        style={{ width: `min(${cols >= 3 ? 880 : 600}px, calc(100vw - 3rem))` }}
+        className="overflow-y-auto overscroll-contain rounded-2xl border border-border bg-card shadow-lift"
+        style={{ width: `min(${width}px, calc(100vw - 2rem))`, maxHeight: 'calc(100vh - 96px)' }}
       >
-        <div className="grid gap-x-6 gap-y-5 p-5" style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}>
+        <div className="grid divide-x divide-border/70 p-2.5" style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}>
           {groups.map((g) => (
-            <div key={g.id} className="min-w-0">
-              <p className="px-3 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">{g.label}</p>
-              <ul className="mt-2 space-y-0.5">
+            <div key={g.id} className="min-w-0 px-1.5">
+              <p className="flex items-center gap-2 px-2.5 pb-1 pt-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-primary-strong dark:text-primary">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                {g.label}
+              </p>
+              <ul className="space-y-px">
                 {g.children.map((l) => {
                   const here = pathname === l.url;
                   return (
@@ -226,15 +233,15 @@ export default function Header({
                         {...linkProps(l)}
                         onClick={picked(link.id)}
                         aria-current={here ? 'page' : undefined}
-                        className={`block rounded-xl px-3 py-2.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                        className={`block rounded-lg px-2.5 py-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
                           here ? 'bg-primary-soft' : 'hover:bg-primary-soft/70'
                         }`}
                       >
-                        <span className={`block text-[14px] font-semibold leading-snug ${here ? 'text-primary-strong dark:text-primary' : 'text-foreground'}`}>
+                        <span className={`block text-[13.5px] font-semibold leading-tight ${here ? 'text-primary-strong dark:text-primary' : 'text-foreground'}`}>
                           {l.label}
                         </span>
                         {l.description && (
-                          <span className="mt-0.5 block text-[12.5px] leading-snug text-muted-foreground">{l.description}</span>
+                          <span className="mt-0.5 block text-[12px] leading-snug text-muted-foreground">{l.description}</span>
                         )}
                       </Link>
                     </li>
@@ -245,7 +252,7 @@ export default function Header({
           ))}
         </div>
         {(loose.length > 0 || !isMenuOnly(link)) && (
-          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border bg-surface-1 px-6 py-3">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border bg-surface-1 px-5 py-2.5">
             <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
               {!isMenuOnly(link) && (
                 <Link
@@ -341,7 +348,9 @@ export default function Header({
                   : 'text-muted-foreground hover:text-primary hover:bg-primary-soft/60'
               }`;
               return (
-                <div key={link.id} className="relative group" onMouseLeave={() => setShut((v) => (v === link.id ? null : v))}>
+                // A grouped (mega) menu is placed against the header, not its button — centred on the page, so a
+                // wide panel never runs off the right edge (2026-11-20). A plain dropdown stays under its button.
+                <div key={link.id} className={grouped ? 'group' : 'relative group'} onMouseLeave={() => setShut((v) => (v === link.id ? null : v))}>
                   {/* A menu with no page of its own ("Other Courses", url "#") is a
                       button: focusing it opens the list, as hovering does. */}
                   {menuOnly ? (
@@ -361,8 +370,10 @@ export default function Header({
                     <div
                       // Opens at once and fades out (150ms): a menu used many times a visit should not
                       // make anybody wait for it to arrive.
-                      className={`absolute top-full z-50 pt-3 opacity-0 invisible transition-[opacity,visibility] duration-150 group-hover:visible group-hover:opacity-100 group-hover:duration-0 group-focus-within:visible group-focus-within:opacity-100 group-focus-within:duration-0 ${
-                        grouped ? 'left-1/2 -translate-x-1/2' : 'left-0'
+                      // Grouped: from just under the button (52px down the 72px header) with padding, so the pointer
+                      // moving down never leaves the menu's hover area before the panel.
+                      className={`absolute z-50 opacity-0 invisible transition-[opacity,visibility] duration-150 group-hover:visible group-hover:opacity-100 group-hover:duration-0 group-focus-within:visible group-focus-within:opacity-100 group-focus-within:duration-0 ${
+                        grouped ? 'left-1/2 top-[52px] -translate-x-1/2 pt-[24px]' : 'left-0 top-full pt-3'
                       } ${shut === link.id ? '!invisible !opacity-0' : ''}`}
                     >
                       {grouped ? megaPanel(link) : simplePanel(link)}

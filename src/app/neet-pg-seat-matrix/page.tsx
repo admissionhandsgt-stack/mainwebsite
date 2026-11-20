@@ -74,7 +74,11 @@ export default async function SeatMatrixPage() {
   const latest = years[years.length - 1];
   const latestRounds = o?.rounds.filter((r) => r.year === latest) ?? [];
   const upgraded = latestRounds.reduce((a, r) => a + r.upgraded, 0);
-  const upgradedIn = (re: RegExp) => latestRounds.find((r) => re.test(r.round))?.upgraded ?? 0;
+  // Upgrades per round from the latest counselling that has a round 3 result — the running year's round 3 may not
+  // have happened yet, and "0 in round 3" would be a figure for a round that never ran (2026-11-20).
+  const fullYear = [...years].reverse().find((y) => o?.rounds.some((r) => r.year === y && /^round 3/i.test(r.round))) ?? latest;
+  const fullRounds = o?.rounds.filter((r) => r.year === fullYear) ?? [];
+  const upgradedIn = (re: RegExp) => fullRounds.find((r) => re.test(r.round))?.upgraded ?? 0;
   const aiq = o?.aiqCategories;
   // MCC's AIQ matrix carries no separate PwD figures (every PwD column is 0), so the row is shown
   // only if a future matrix has some — never as "0 seats for candidates with a disability".
@@ -103,6 +107,7 @@ export default async function SeatMatrixPage() {
     upgraded: n(upgraded),
     r2_upgraded: n(upgradedIn(/^round 2/i)),
     r3_upgraded: n(upgradedIn(/^round 3/i)),
+    upgrade_year: fullYear,
   };
   const [copy, body, heroImage] = await Promise.all([
     pageCopy("page.pg_seat_matrix.hero", tokens),
