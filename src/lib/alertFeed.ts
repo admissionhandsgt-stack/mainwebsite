@@ -127,7 +127,7 @@ const CORE = /(neet|mbbs|\bbds\b|\bmds\b|md\s*\/\s*ms|pg medical|medical pg|supe
 const EVENT =
   /(counsel|round|allot|seat|merit|schedule|registration|choice|option|mop[\s-]*up|stray|vacan|result|notice|notification|admission|cut[\s-]*off|document|verification|reporting|joining|fee|bulletin|prospectus|extension|revised|corrigendum|list|matrix|instruction|guideline|score|answer key|admit card|eligib|quota|declared)/i;
 const EXCLUDE =
-  /(nursing|pharm|paramedic|\bgnm\b|\banm\b|physiother|polytechnic|engineering|b\.?\s?tech|b\.?\s?arch|\biti\b|recruit|tender|faculty|walk[\s-]*in|quotation|\brti\b|salary|hostel|ayush|bams|bhms|bums|bsms|b\.?\s?sc|m\.?\s?sc|veterinar|fmge|gpat|dpee|\bfet\b|exit exam|staff|employee|auction|pension|transfer|deputation|\bbpt\b|\bmpt\b|b\.?\s?ed\b|\bllb\b|\bpgcet\b|mba|mca|lateral entry|agricultur|fisheries|horticult|\bbhmct\b)/i;
+  /(nursing|post[\s-]*basic|pharm|paramedic|\bgnm\b|\banm\b|physiother|polytechnic|engineering|b\.?\s?tech|b\.?\s?arch|\biti\b|recruit|tender|faculty|walk[\s-]*in|quotation|\brti\b|salary|hostel|ayush|bams|bhms|bums|bsms|b\.?\s?sc|m\.?\s?sc|veterinar|fmge|gpat|dpee|\bfet\b|exit exam|staff|employee|auction|pension|transfer|deputation|\bbpt\b|\bmpt\b|b\.?\s?ed\b|\bllb\b|\bpgcet\b|mba|mca|lateral entry|agricultur|fisheries|horticult|\bbhmct\b)/i;
 
 export interface FeedItem {
   title: string;
