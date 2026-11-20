@@ -64,6 +64,13 @@ export interface RoundRule {
   /** Short verdict for the table: what leaving costs. */
   exit: string;
   sources: SourceKey[];
+  /** Round 3's own procedure from the bulletin (Round-3 section and FAQs 35–37), printed on the round's page. */
+  who?: string;
+  register?: string;
+  seats?: string;
+  after?: string;
+  /** What else the bulletin calls the round ("3rd (mop up) round"), for the search people still type. */
+  alias?: string;
 }
 
 export const ROUND_RULES: RoundRule[] = [
@@ -90,6 +97,11 @@ export const ROUND_RULES: RoundRule[] = [
     leaving: "Once you join a round 3 seat you cannot resign it or upgrade from it. Not joining costs the deposit and takes you out of every further MCC round.",
     exit: "No resignation",
     sources: ["bulletin"],
+    who: "Candidates registering for the first time; candidates registered but not allotted a seat in round 1 or round 2; and candidates who left a round 2 seat with forfeiture, on paying the fee again. Anyone holding a round 1 or round 2 All India seat who did not say yes to an upgrade into round 3 is not eligible.",
+    register: "New candidates register and pay the fee for round 3. Candidates registered earlier but not allotted a seat in round 1 or 2 need not register again; those who left a round 2 seat with forfeiture pay the fee again.",
+    seats: "Round 3's seat matrix is the seats left vacant after round 2 — not allotted, not joined or not reported. Choices are filled and locked afresh.",
+    after: "After the round 3 result, every round 3 allottee, and every Float candidate of round 1 or 2 who was not upgraded, must report at the college in person with the original documents. An upgraded candidate takes relieving from the round 2 seat and joins the round 3 seat, with no claim on the earlier one. A candidate newly registered in round 3 and not allotted a seat can take part in the stray vacancy round.",
+    alias: "3rd (mop up) round",
   },
   {
     round: "Stray vacancy round",

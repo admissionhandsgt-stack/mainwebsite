@@ -37,7 +37,7 @@ import RoundWatch from "@/components/mcc/RoundWatch";
 import ScheduleRevisionNote from "@/components/mcc/ScheduleRevisionNote";
 import CounselCard from "@/components/lead/CounselCard";
 import { getSeatMatrixOverview } from "@/lib/pgSeatData";
-import { ROUND_RULES } from "@/lib/choiceFillingRules";
+import { ROUND_RULES, SOURCES } from "@/lib/choiceFillingRules";
 
 /**
  * /neet-pg-counselling/<year>/<round> (2026-10-21) — one round of MCC's NEET PG counselling, built by
@@ -191,6 +191,7 @@ export async function generateMetadata(props: { params: Promise<Params> }): Prom
       // Oct 2026): before the result, the page shows MCC's dates and last year's same round — its cut off.
       title: fitTitle(
         ...(steps?.choiceFilling ? [`NEET PG ${T} Result ${year}: Dates, Choice Filling & Cut Off`, `NEET PG ${year} ${T}: Choice Filling Dates & Result`] : []),
+        ...(d.rule ? [`NEET PG ${T} Counselling ${year}: Date, Result, Rules & Cut Off`, `NEET PG ${T} ${year}: Date, Result, Rules & Cut Off`] : []),
         ...(prev ? [`NEET PG ${T} Result ${year}: Date, Seat Allotment & Cut Off`] : []),
         `NEET PG ${T} Result ${year}: Date & Seat Allotment`,
         `NEET PG ${year} ${T} Result: Date & Seat Allotment`,
@@ -215,9 +216,17 @@ export async function generateMetadata(props: { params: Promise<Params> }): Prom
               ];
             })()
           : []),
+        ...(d.rule && when?.joinBy && !overdueMeta
+          ? [
+              `NEET PG ${year} ${lc}: ${when.window} as per MCC, joining by ${when.joinBy}. Who can take part, registration, the rules${prev ? ` and ${prev.year}'s ${lc} cut off, branch wise` : ""}.`,
+              `NEET PG ${year} ${lc}: ${when.window} (MCC), joining by ${when.joinBy}. Who can take part, the rules${prev ? ` and ${prev.year}'s cut off` : ""}.`,
+            ]
+          : []),
         `NEET PG ${year} ${lc} result${expected ? `, expected around ${expected} as per MCC's schedule` : ""}: MCC's PDF, seat allotment and branch-wise last rank, here the moment it is out${prev ? `. ${prev.year}'s figures meanwhile` : ""}.`,
       ),
-      keywords,
+      keywords: d.rule
+        ? `${keywords}, NEET PG ${lc} date ${year}, NEET PG ${lc} rules, NEET PG ${lc} registration, NEET PG ${lc} eligibility${d.rule.alias ? ", NEET PG mop up round" : ""}`
+        : keywords,
     });
   }
   return d.indexable ? meta : { ...meta, robots: { index: false, follow: true } };
@@ -294,6 +303,14 @@ export default async function RoundResultPage(props: { params: Promise<Params> }
     next_join_by: nextWhen?.joinBy ?? undefined,
     upgrade_rule: rule?.upgrade,
     leave_rule: rule?.leaving,
+    who_rule: rule?.who,
+    register_rule: rule?.register,
+    seats_rule: rule?.seats,
+    alias: rule?.alias,
+    state_window: row?.state && row.state !== "—" ? row.state : undefined,
+    state_join_by: row?.stateJoinBy && row.stateJoinBy !== "—" ? row.stateJoinBy : undefined,
+    prev_aiq_open_last: prev?.aiqOpenLast ? n(prev.aiqOpenLast) : undefined,
+    prev_aiq_colleges: prev ? n(prev.aiqOpenColleges) : undefined,
   };
   const [copy, body, heroImage, shownBody] = await Promise.all([
     pageCopy("page.pg_round.hero", tokens),
@@ -402,6 +419,16 @@ export default async function RoundResultPage(props: { params: Promise<Params> }
     ...(result && year === current && result.upgraded && rule ? [{ question: body.faq_upgrade_q, answer: body.faq_upgrade_a }] : []),
     ...(result && year === current && nextSpec && nextWhen?.window && nextWhen.joinBy ? [{ question: body.faq_next_q, answer: body.faq_next_a }] : []),
     ...(!result && when?.joinBy ? [{ question: body.faq3_q, answer: body.faq3_a }] : []),
+    // The awaited round's own questions (2026-11-20, Round 3): dates for both counsellings, who can take part,
+    // registration, seats, resigning, upgrading, last year's cut off and the round's other name — from the bulletin.
+    ...(!result && rule && when?.window && row?.state && row.state !== "—" ? [{ question: body.faq_r_when_q, answer: body.faq_r_when_a }] : []),
+    ...(!result && rule?.who ? [{ question: body.faq_r_who_q, answer: body.faq_r_who_a }] : []),
+    ...(!result && rule?.register ? [{ question: body.faq_r_register_q, answer: body.faq_r_register_a }] : []),
+    ...(!result && rule?.seats ? [{ question: body.faq_r_seats_q, answer: body.faq_r_seats_a }] : []),
+    ...(!result && rule ? [{ question: body.faq_r_leave_q, answer: body.faq_r_leave_a }] : []),
+    ...(!result && rule ? [{ question: body.faq_r_upgrade_q, answer: body.faq_r_upgrade_a }] : []),
+    ...(!result && prev?.aiqOpenLast ? [{ question: body.faq_r_prev_q, answer: body.faq_r_prev_a }] : []),
+    ...(!result && rule?.alias ? [{ question: body.faq_r_alias_q, answer: body.faq_r_alias_a }] : []),
     { question: body.faq4_q, answer: body.faq4_a },
     ...(result && prev ? [{ question: body.faq5_q, answer: body.faq5_a }] : []),
   ];
@@ -509,7 +536,7 @@ export default async function RoundResultPage(props: { params: Promise<Params> }
       )}
 
       {/* ------------------------------ the round's dates, MCC's own steps ------------------------------ */}
-      {year === current && steps && (
+      {year === current && (steps || when) && (
         <section className={`container-custom ${awaited ? "pt-6" : "pt-10"}`} id="dates">
           <SectionHead icon="route" title={body.dates_title} intro={body.dates_intro} />
           <div className="mt-5 overflow-x-auto rounded-2xl border border-border bg-card">
@@ -517,14 +544,18 @@ export default async function RoundResultPage(props: { params: Promise<Params> }
               <tbody className="divide-y divide-border">
                 {(
                   [
-                    [body.dates_registration, steps.registration],
-                    [body.dates_choice_filling, steps.choiceFilling],
-                    [body.dates_choice_locking, steps.choiceLocking],
-                    [body.dates_result, steps.result],
-                    [body.dates_reporting, steps.reporting],
+                    [body.dates_registration, steps?.registration],
+                    [body.dates_choice_filling, steps?.choiceFilling],
+                    [body.dates_choice_locking, steps?.choiceLocking],
+                    [body.dates_result, steps?.result],
+                    [body.dates_reporting, steps?.reporting],
+                    [body.dates_aiq_window, when?.window],
+                    [body.dates_aiq_join, when?.joinBy],
+                    [body.dates_state_window, row?.state],
+                    [body.dates_state_join, row?.stateJoinBy],
                   ] as const
                 )
-                  .filter(([, v]) => v)
+                  .filter(([label, v]) => label && v && v !== "—")
                   .map(([label, v]) => (
                     <tr key={label}>
                       <th scope="row" className="w-[40%] px-4 py-3 font-medium text-foreground">{label}</th>
@@ -534,14 +565,47 @@ export default async function RoundResultPage(props: { params: Promise<Params> }
               </tbody>
             </table>
           </div>
-          {steps.sourceUrl && (
+          {(steps ?? row)?.sourceUrl && (
             <p className="mt-2 text-[13px] text-muted-foreground">
-              <a href={steps.sourceUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary-strong hover:underline">
+              <a href={(steps ?? row)!.sourceUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary-strong hover:underline">
                 {body.dates_source}
               </a>
-              {steps.source ? ` — ${steps.source}` : ""}
+              {(steps ?? row)?.source ? ` — ${(steps ?? row)!.source}` : ""}
             </p>
           )}
+        </section>
+      )}
+
+      {/* ------------------------------ the round's rules, MCC's bulletin (this year's counselling) ------------------------------ */}
+      {rule && (
+        <section className="container-custom pt-8" id="rules">
+          <SectionHead icon="authority" eyebrow={body.rules_eyebrow} title={body.rules_title} intro={body.rules_intro} />
+          <div className="mt-5 gap-3 md:columns-2 [&>div]:mb-3 [&>div]:break-inside-avoid">
+            {(
+              [
+                [body.rules_who, rule.who],
+                [body.rules_register, rule.register],
+                [body.rules_seats, rule.seats],
+                [body.rules_choices, rule.choices],
+                [body.rules_after, rule.after],
+                [body.rules_upgrade, rule.upgrade],
+                [body.rules_leaving, rule.leaving],
+              ] as const
+            )
+              .filter(([label, v]) => label && v)
+              .map(([label, v]) => (
+                <div key={label} className="rounded-2xl border border-border bg-card p-4">
+                  <p className="text-[12px] font-bold uppercase tracking-wide text-primary-strong dark:text-primary">{label}</p>
+                  <p className="mt-1.5 text-[14.5px] leading-relaxed text-foreground">{v}</p>
+                </div>
+              ))}
+          </div>
+          <p className="text-[13px] text-muted-foreground">
+            <a href={SOURCES.bulletin.url} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary-strong hover:underline">
+              {SOURCES.bulletin.title}
+            </a>
+            {` — ${SOURCES.bulletin.by}, ${SOURCES.bulletin.date}`}
+          </p>
         </section>
       )}
 

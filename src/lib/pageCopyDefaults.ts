@@ -4419,7 +4419,60 @@ export const PAGE_COPY = {
       dates_result: { label: "Dates row: result", value: "Result" },
       dates_reporting: { label: "Dates row: reporting", value: "Reporting and joining" },
       dates_source: { label: "Dates source link", value: "MCC's schedule" },
-      faq_dates_q: { label: "Question: the round's dates — {year}, {round_lc}", value: "When is NEET PG {year} {round_lc} choice filling?" },
+      // The round's window and joining dates for MCC and the states (admin's schedule), shown before MCC posts its steps.
+      dates_aiq_window: { label: "Dates row: MCC's round (All India Quota, deemed, central)", value: "MCC round (All India Quota, deemed, central)" },
+      dates_aiq_join: { label: "Dates row: last date to join, MCC", value: "Last date to join (MCC)" },
+      dates_state_window: { label: "Dates row: the states' same round", value: "State counselling round" },
+      dates_state_join: { label: "Dates row: last date to join, states", value: "Last date to join (state)" },
+      // The round's rules from MCC's bulletin (2026-11-20).
+      rules_eyebrow: { label: "Rules: small heading — {year}", value: "MCC's {year} bulletin" },
+      rules_title: { label: "Rules: heading — {round}", value: "Who can take part, and the {round} rules" },
+      rules_intro: {
+        label: "Rules: line under the heading",
+        value: "Each rule as MCC's information bulletin states it. They decide whether a seat can be left, upgraded or lost — read them before you fill choices.",
+        long: true,
+      },
+      rules_who: { label: "Rules: who can take part", value: "Who can take part" },
+      rules_register: { label: "Rules: registration", value: "Registration" },
+      rules_seats: { label: "Rules: seats", value: "Seats" },
+      rules_choices: { label: "Rules: choices", value: "Choices" },
+      rules_after: { label: "Rules: after the result", value: "After the result" },
+      rules_upgrade: { label: "Rules: upgrades", value: "Upgrades" },
+      rules_leaving: { label: "Rules: leaving the seat", value: "Leaving the seat" },
+      // An awaited round's questions, as searched ("neet pg round 3 date", "… rules", "… registration", "… eligibility",
+      // "can i resign round 3 seat", "… cut off 2025", "what is mop up round in neet pg"; 2026-11-20).
+      faq_r_when_q: { label: "Question, awaited round: dates — {year}, {round_lc}", value: "When is NEET PG {year} {round_lc}?" },
+      faq_r_when_a: {
+        label: "Answer — {round_lc}, {window}, {join_by}, {state_window}, {state_join_by}",
+        value:
+          "As per MCC's schedule, the All India {round_lc} (with deemed and central universities) runs {window}, with joining by {join_by}. The states' {round_lc} runs {state_window}, with joining by {state_join_by}. MCC posts the step dates — registration, choice filling, result — in its notice for the round, and they appear on this page the same day.",
+        long: true,
+      },
+      faq_r_who_q: { label: "Question, awaited round: who can take part — {round_lc}", value: "Who can take part in NEET PG {round_lc}?" },
+      faq_r_who_a: { label: "Answer — {who_rule} (MCC's bulletin)", value: "{who_rule}", long: true },
+      faq_r_register_q: { label: "Question, awaited round: registration — {round_lc}", value: "Do I need to register again for NEET PG {round_lc}?" },
+      faq_r_register_a: { label: "Answer — {register_rule} (MCC's bulletin)", value: "{register_rule}", long: true },
+      faq_r_seats_q: { label: "Question, awaited round: seats — {round_lc}", value: "Which seats are offered in NEET PG {round_lc}?" },
+      faq_r_seats_a: { label: "Answer — {seats_rule} (MCC's bulletin)", value: "{seats_rule}", long: true },
+      faq_r_leave_q: { label: "Question, awaited round: resigning — {round_lc}", value: "Can I resign a NEET PG {round_lc} seat?" },
+      faq_r_leave_a: { label: "Answer — {leave_rule} (MCC's rule for the round)", value: "{leave_rule}", long: true },
+      faq_r_upgrade_q: { label: "Question, awaited round: upgrading — {round_lc}", value: "Can I upgrade into NEET PG {round_lc}?" },
+      faq_r_upgrade_a: { label: "Answer — {upgrade_rule} (MCC's rule for the round)", value: "{upgrade_rule}", long: true },
+      faq_r_prev_q: { label: "Question, awaited round: last year's cut off — {prev_year}, {round_lc}", value: "What was the NEET PG {prev_year} {round_lc} cut off?" },
+      faq_r_prev_a: {
+        label: "Answer — {prev_year}, {round_lc}, {prev_aiq_open_last}, {prev_aiq_colleges}, {prev_total}",
+        value:
+          "In {prev_year}'s {round_lc}, the last All India Quota Open rank admitted was {prev_aiq_open_last}, across {prev_aiq_colleges} colleges, and the round allotted {prev_total} seats. The branch-wise cut off by category, for AIQ, deemed and DNB seats, is in the table on this page.",
+        long: true,
+      },
+      faq_r_alias_q: { label: "Question, awaited round: its other name — {round_lc}", value: "Is NEET PG {round_lc} the mop-up round?" },
+      faq_r_alias_a: {
+        label: "Answer — {alias}, {round_lc}",
+        value:
+          "Yes. MCC's bulletin also calls it the {alias}. After it comes only the stray vacancy round, which is open only to candidates holding no seat.",
+        long: true,
+      },
+      faq_dates_q:{ label: "Question: the round's dates — {year}, {round_lc}", value: "When is NEET PG {year} {round_lc} choice filling?" },
       faq_dates_a: {
         label: "Answer — {choice_filling}, {choice_locking}, {registration}, {result_date}, {reporting}",
         value:
