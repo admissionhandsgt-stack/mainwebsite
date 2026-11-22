@@ -734,6 +734,15 @@ MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within mi
   `short-name`) → 93.8%. The provisional result loaded before the fix was repaired by
   `scripts/fix_mcc_round2_2026_11_20.mjs` (backup `D:/Admisson Hands/match_backups/mcc_2026_round2_before_2026_11_20.json`),
   which also cleared Round 2's hold (MCC Notice No. 11: the Madras High Court's stay is Sri Venkateshwaraa's 161 seats alone).
+- **Round 2's final result and last reporting date (corrected 2026-11-22, two days late).** MCC posted the final result
+  on the evening of 20 Nov (ingested by itself: 20,707 seats, 93.8% of rows matched, no "Retained" rows) and Notice No. 12:
+  "the last date of reporting for Round-2 is 25.11.2026 (upto 10:00 P.M) … no extension". The schedule row had been
+  written that morning from the provisional result ("final result awaited", "till 24 Nov") and stayed so — a final
+  result replaces the allotments but never touches `pg_schedule`. `scripts/sql/pg_schedule_round2_final_2026_11_22.mjs`
+  set result 20 Nov, reporting "till 25 Nov, 10 PM (no extension)", join by 25 Nov, and cleared the "dates may change"
+  note (and Round 1's stale one from a 12 Nov notice about non-reported candidates). **After a provisional result,
+  re-read `mcc_round_results.kind` and MCC's notices the same evening** and correct the row's `result`, `reporting` and
+  `aiq_join_by` by hand; then `revalidate_tags.sh --purge content mcc-results` and `notify_change.sh --schedule`.
 - **Round pages answer the round's searches (2026-11-20).** A result-day page leads its title with "Result <year> Out: Seat
   Allotment, Cut Off & PDF" and asks the FAQs as searched (cut off, result date, provisional vs final, last date to join,
   upgrade, next round's dates); an awaited round of the running year prints an important-dates table from the admin's
