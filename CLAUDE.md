@@ -627,13 +627,19 @@ were recorded fine. Now: a first render that differs from the stored page, follo
 that met an odd render is still recorded); only three renders with no two alike are `unstable`. Every such event writes
 what differed into `page_change_log` (source "odd render (…)" or "unstable (…)", with the words each render had at the
 first difference; "same words" means the links, alt text, title or description differed), and the heartbeat's words
-count the last day's odd renders without failing. The cause was not found that day: 0 of ~860 renders straight from the
-app (the watcher's user agent, two at a time, across the two-minute cron and an 18-second sitemap rebuild) and 0 of 783
-live pages differed, and 40 by-hand checks on the server were clean. One lead, unproven: the fingerprint reads the title,
-description, robots and canonical only from the HTML before `<main>`, Next 15.5 streams metadata into the body for
-user agents outside its `htmlLimitedBots` list (the watcher, visitors, Googlebot, the AI crawlers) when
-`generateMetadata` finishes after the page, and `getPageSeo` is an uncached query on every render. Read the rows before
-adding `data-nohash` anywhere:
+count the last day's odd renders without failing. **The cause: Next 15's streaming metadata.** It could not be
+reproduced by hand (0 of ~860 renders straight from the app, 0 of 783 live pages, 40 checks on the server), but the first
+logged odd render (the Hinglish guide, 17:02 IST) read "same words", 10,691 characters both times — only the `<head>`
+part differed. Since 15.2 Next renders the title, description, canonical and share tags inside a hidden `<div>` under
+Suspense for every user agent outside its own list of HTML-limited bots (the watcher, visitors, Googlebot, GPTBot…;
+`node_modules/next/dist/lib/metadata/metadata.js`), and when `generateMetadata` finishes after the page — its
+`getPageSeo` is a database read on every render, while a light page's body reads only caches — the tags go out at the
+end of the body, not in `<head>`. The edge keeps one copy of a page for everybody, so such a copy could also reach
+Bingbot and WhatsApp's link preview. **`htmlLimitedBots: /.*/` in `next.config.mjs` puts metadata in `<head>` for every
+request, as Next 14 did; never remove it, and re-check it at each Next upgrade** (a response with no `<title>` before
+`<main` is the symptom; `scripts/tmp/meta_place.mjs` and `meta_wild.mjs` count them). A row now also names the part
+that differed (in `<head>`: title / description / robots / canonical; a link; an alt text). Read the rows before adding
+`data-nohash` anywhere:
 `SELECT at, path, source FROM page_change_log WHERE source LIKE 'odd render%' OR source LIKE 'unstable%' ORDER BY at DESC`.
 **What no code can do:** make Google recrawl at once. These are the strongest legitimate signals (accurate lastmod, child
 sitemap resubmits, a fresh page at the edge); the Indexing API is for job postings and live streams only, and Search Console's

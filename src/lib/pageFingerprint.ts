@@ -66,6 +66,10 @@ export interface Fingerprint {
   links: number;
   /** The text itself, for a diff when a change needs explaining. */
   text: string;
+  /** The other three things the hash covers, for the same purpose: the <head> snippet, every link, every alt text. */
+  snippet: string;
+  hrefs: string[];
+  alts: string[];
 }
 
 /** The hash of a rendered page's own content, or null when the HTML has no <main>. */
@@ -101,5 +105,5 @@ export function fingerprint(html: string): Fingerprint | null {
     .update("\n\u0000alt\n")
     .update(alts.join("\n"))
     .digest("hex");
-  return { hash, chars: text.length, links: links.length, text };
+  return { hash, chars: text.length, links: links.length, text, snippet, hrefs: links, alts };
 }

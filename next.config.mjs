@@ -94,6 +94,25 @@ const nextConfig = {
   // exploit to try.
   poweredByHeader: false,
 
+  /**
+   * The title, description, canonical and share tags are always in <head>, for every user agent (2026-11-23).
+   *
+   * Next 15.2+ "streams" metadata: for any user agent outside its own list of HTML-limited bots it renders the tags
+   * inside a hidden <div> under Suspense, and when `generateMetadata` finishes after the page itself (every page's
+   * metadata waits on a database read, `getPageSeo`; the page body mostly reads caches) the tags are sent at the END of
+   * the body instead of in <head>, to be moved by script in a browser. On this site that is wrong three ways:
+   *  - the edge keeps ONE copy of a page for everybody, so a copy rendered that way for a visitor is then handed to the
+   *    very crawlers Next protects (Bingbot, WhatsApp and Facebook link previews, LinkedIn, Slack) for up to a day;
+   *  - the crawlers that never run script and are not on Next's list (GPTBot, ClaudeBot, PerplexityBot, Ahrefs) get a
+   *    page with no title, description or canonical where they look for them;
+   *  - the page watcher reads those tags from <head>, so one such render read as "the page changed, then changed back":
+   *    the Hinglish guide was flagged about one check in fifteen (lib/pageWatch.ts, "odd render").
+   * The pattern below matches every user agent, so every request gets blocking metadata, which is how Next 14
+   * behaved. Nothing is slower in practice: hardly any page here streams (a data page has no Suspense boundary, so its
+   * first byte already waits for the whole page), and the metadata is nearly always ready before the page is.
+   */
+  htmlLimitedBots: /.*/,
+
   // Next 15 lints during `next build`; the repo's ESLint config is the Vite-era flat config (CLAUDE.md, known gaps),
   // which errors on a typescript-eslint rule there. Next 14 never ran it in the build, so the build stays as it was;
   // `npm run lint` is unchanged.

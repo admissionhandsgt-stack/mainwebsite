@@ -59,8 +59,11 @@ interface Render {
   status: number;
   hash?: string;
   chars?: number;
-  /** The hashed text, kept only while one page is being checked — to say where two renders differ. */
+  /** What was hashed, kept only while one page is being checked — to say where two renders differ. */
   text?: string;
+  snippet?: string;
+  hrefs?: string[];
+  alts?: string[];
 }
 
 /**
@@ -68,8 +71,27 @@ interface Render {
  * to mark `data-nohash` (or the data that flips) instead of leaving it to be reproduced by hand (2026-11-23: two pages
  * were flagged for days by a one-render variant nobody could catch from outside).
  */
-function whereDiffer(a: string, b: string): string {
-  if (a === b) return "same words; the links, alt text, title or description differ";
+function whereDiffer(ra: Render, rb: Render): string {
+  const a = ra.text ?? "";
+  const b = rb.text ?? "";
+  if (a === b) {
+    // Same words: it is the <head> snippet (title, description, robots, canonical — one per line), a link or an alt text.
+    const short = (s: string) => (s.length > 150 ? `${s.slice(0, 150)}…` : s);
+    const firstDiff = (x: string[], y: string[]) => {
+      const i = x.findIndex((v, n) => v !== y[n]);
+      const at = i < 0 ? Math.min(x.length, y.length) : i;
+      return `#${at + 1} first: "${short(x[at] ?? "(none)")}" then: "${short(y[at] ?? "(none)")}" (${x.length} vs ${y.length})`;
+    };
+    if ((ra.snippet ?? "") !== (rb.snippet ?? "")) {
+      const names = ["title", "description", "robots", "canonical"];
+      const sa = (ra.snippet ?? "").split("\n");
+      const sb = (rb.snippet ?? "").split("\n");
+      const parts = names.map((n, i) => (sa[i] === sb[i] ? null : `${n} first: "${short(sa[i] ?? "")}" then: "${short(sb[i] ?? "")}"`)).filter(Boolean);
+      return `same words; in <head>: ${parts.join("; ")}`;
+    }
+    if ((ra.hrefs ?? []).join("\n") !== (rb.hrefs ?? []).join("\n")) return `same words; link ${firstDiff(ra.hrefs ?? [], rb.hrefs ?? [])}`;
+    return `same words; alt text ${firstDiff(ra.alts ?? [], rb.alts ?? [])}`;
+  }
   let k = 0;
   while (k < a.length && k < b.length && a[k] === b[k]) k++;
   let ea = a.length;
@@ -95,7 +117,7 @@ async function render(path: string): Promise<Render | null> {
       return { status: r.status };
     }
     const fp = fingerprint(await r.text());
-    return fp ? { status: 200, hash: fp.hash, chars: fp.chars, text: fp.text } : { status: 200 };
+    return fp ? { status: 200, hash: fp.hash, chars: fp.chars, text: fp.text, snippet: fp.snippet, hrefs: fp.hrefs, alts: fp.alts } : { status: 200 };
   } catch {
     return null;
   }
@@ -180,7 +202,7 @@ async function checkOne(path: string, prev: Stored | undefined, source: string, 
       db
         .execute(sql`
           INSERT INTO page_change_log (path, source, chars_before, chars_after)
-          VALUES (${path}, ${`${kind}, ${source}: ${whereDiffer(a.text ?? "", b.text ?? "")}`.slice(0, 900)}, ${a.chars ?? 0}, ${b.chars ?? 0})`)
+          VALUES (${path}, ${`${kind}, ${source}: ${whereDiffer(a, b)}`.slice(0, 900)}, ${a.chars ?? 0}, ${b.chars ?? 0})`)
         .catch(() => undefined);
     if (b.hash === prev.hash) {
       // One odd render that did not repeat: the page reads as stored again. That is neither a change nor a page that
