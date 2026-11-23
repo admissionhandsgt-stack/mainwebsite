@@ -40,6 +40,13 @@ const LIVE_PAGE =
 type Tier = "live" | "hub" | "data" | "college";
 const EVERY: Record<Tier, number> = { live: 10 * MIN, hub: 60 * MIN, data: 6 * 60 * MIN, college: 24 * 60 * MIN };
 const ORDER: Tier[] = ["live", "hub", "data", "college"];
+/**
+ * A page is due a little before its interval is up. A sweep re-reads a page a few seconds after it starts, so when the
+ * next sweep starts ten minutes later that page is 9 m 57 s old: measured against the full interval, every live page was
+ * read on alternate sweeps — every 20 minutes, not 10 — and an hourly page every 70 (seen 2026-11-23: a sweep that
+ * checked 0 pages, all 20 live pages re-read 9 m 57–59 s earlier).
+ */
+const SLACK = 2 * MIN;
 /** "Never checked", as an age that still sorts (Infinity - Infinity is NaN in a comparator). */
 const NEVER = Number.MAX_SAFE_INTEGER;
 
@@ -407,7 +414,7 @@ export async function runWatch(budgetMs?: number): Promise<WatchSummary> {
       const age = r?.checked_at ? now - Date.parse(r.checked_at) : NEVER;
       if (age !== NEVER && age > 3 * EVERY[t] + 60 * MIN) stuck.push(path);
       // Live pages first, always — a big queue (an import) must not hold up a round page; then queued pages.
-      if (t === "live" && (r?.due || age >= EVERY.live)) {
+      if (t === "live" && (r?.due || age >= EVERY.live - SLACK)) {
         due.push({ path, rank: -2, age });
         continue;
       }
@@ -415,7 +422,7 @@ export async function runWatch(budgetMs?: number): Promise<WatchSummary> {
         due.push({ path, rank: -1, age });
         continue;
       }
-      if (age < EVERY[t]) continue;
+      if (age < EVERY[t] - SLACK) continue;
       // College pages at night, unless a page is 36 hours overdue (a missed night); a first look always waits for night.
       if (t === "college" && !night && (age === NEVER || age < 36 * 60 * MIN)) continue;
       due.push({ path, rank: ORDER.indexOf(t), age });

@@ -586,7 +586,9 @@ open). A first sight of a page is a baseline, never a change; a failed render (5
 `<main>`) is never a change and is retried. Sweep: `POST /api/cron/page-watch` every 10 minutes (server crontab, lease
 `lease.page-watch`, heartbeat `page-watch` 40 min in /api/health) — live pages (the edge's LIVE_PAGE list) every 10 minutes and
 always first, other hubs hourly, state and branch pages every 6 hours, college pages daily between 01:00 and 07:00 IST (or
-when 36 h overdue); 3-minute budget by day, 7 at night. Event-driven on top: `notifyChange` now drops the `alerts` and
+when 36 h overdue); 3-minute budget by day, 7 at night. A page is due two minutes before its interval is up (`SLACK`,
+2026-11-23): a page re-read three seconds into one sweep was 9 m 57 s old when the next began, so live pages were in
+fact read every 20 minutes and hourly ones every 70. Event-driven on top: `notifyChange` now drops the `alerts` and
 `mcc-results` caches and has the watcher re-read its pages (a page that reads the same is not announced; one that cannot be
 rendered is sent to IndexNow anyway); the research bot's run re-reads every page whose answers it touched; Remove / Put back
 of an answer re-reads that page; a related-links rebuild queues the pages whose list changed; `/api/cron/revalidate` (the
