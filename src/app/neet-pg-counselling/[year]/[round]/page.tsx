@@ -417,6 +417,9 @@ export default async function RoundResultPage(props: { params: Promise<Params> }
     ...(result && year === current && state.kind === "provisional" ? [{ question: body.faq_prov_q, answer: body.faq_prov_a }] : []),
     ...(result && year === current && when?.joinBy && rule ? [{ question: body.faq_join_q, answer: body.faq_join_a }] : []),
     ...(result && year === current && result.upgraded && rule ? [{ question: body.faq_upgrade_q, answer: body.faq_upgrade_a }] : []),
+    // "Can I resign a round 2 seat?" once the result is out too (2026-11-23: MCC's resignation window of 23–25 Nov
+    // is in the round's rule) — the awaited round's question, asked of a round whose seats are now held.
+    ...(result && year === current && rule ? [{ question: body.faq_r_leave_q, answer: body.faq_r_leave_a }] : []),
     ...(result && year === current && nextSpec && nextWhen?.window && nextWhen.joinBy ? [{ question: body.faq_next_q, answer: body.faq_next_a }] : []),
     ...(!result && when?.joinBy ? [{ question: body.faq3_q, answer: body.faq3_a }] : []),
     // The awaited round's own questions (2026-11-20, Round 3): dates for both counsellings, who can take part,
@@ -605,6 +608,18 @@ export default async function RoundResultPage(props: { params: Promise<Params> }
               {SOURCES.bulletin.title}
             </a>
             {` — ${SOURCES.bulletin.by}, ${SOURCES.bulletin.date}`}
+            {/* A rule that also rests on a later MCC notice (a resignation window) names that notice too. */}
+            {rule.sources
+              .filter((k) => k !== "bulletin")
+              .map((k) => (
+                <span key={k}>
+                  {"; "}
+                  <a href={SOURCES[k].url} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary-strong hover:underline">
+                    {SOURCES[k].title}
+                  </a>
+                  {` — ${SOURCES[k].date}`}
+                </span>
+              ))}
           </p>
         </section>
       )}

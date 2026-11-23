@@ -773,7 +773,10 @@ function choice(q: string): Draft {
       : "In MCC's NEET PG counselling, a round 1 seat can be left free, a round 2 seat costs the security deposit, and a round 3 seat cannot be resigned once joined.",
     points: rule ? [rule.choices, rule.upgrade] : ROUND_RULES.map((r) => `${r.round}: ${r.exit}. ${r.upgrade}`),
     checks: [...dep, "Each round needs fresh choice filling and locking — earlier rounds' choices do not count."],
-    source: `MCC's ${SOURCES.bulletin.title} (${SOURCES.bulletin.date}).`,
+    source: `MCC's ${SOURCES.bulletin.title} (${SOURCES.bulletin.date})${(rule?.sources ?? [])
+      .filter((k) => k !== "bulletin")
+      .map((k) => `; MCC's ${SOURCES[k].title} (${SOURCES[k].date})`)
+      .join("")}.`,
     what: "round-by-round guide to choice filling, upgrades and free exit",
     predictor: true,
   };

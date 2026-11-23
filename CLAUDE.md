@@ -743,6 +743,15 @@ MCC posts a round's allotment result as one PDF (1,300–3,000 pages); within mi
   note (and Round 1's stale one from a 12 Nov notice about non-reported candidates). **After a provisional result,
   re-read `mcc_round_results.kind` and MCC's notices the same evening** and correct the row's `result`, `reporting` and
   `aiq_join_by` by hand; then `revalidate_tags.sh --purge content mcc-results` and `notify_change.sh --schedule`.
+- **MCC's resignation window, 23 – 25 Nov 2026 (on the site the same day).** MCC's notice of 23.11.2026 (Ref.
+  U-12021/09/2026-MEC): a joined round 1 seat not upgraded in round 2, and a joined round 2 seat (fresh or upgraded), can
+  be resigned from 2 PM of 23 Nov to 6 PM of 25 Nov with the security deposit forfeited; a Freeze candidate at the
+  college, a Float candidate online; the resignation letter must be generated online by the college or it is void. Zyn
+  put it on the alerts bar and /neet-counselling-updates by itself, but as a "schedule" notice with no round it reached
+  no page's rules. It is typed into `ROUND_RULES` (`lib/choiceFillingRules.ts`: Round 1 and Round 2 `leaving`, source
+  `resign23Nov`), so it prints on the choice-filling page, both round pages (the rules card, which now names every notice
+  a rule rests on, and "Can I resign a NEET PG round N seat?", asked on result-out rounds of the running year too) and in
+  the bot's answer. **A resignation notice goes into that file the same day; if MCC extends the window, change both lines.**
 - **Round pages answer the round's searches (2026-11-20).** A result-day page leads its title with "Result <year> Out: Seat
   Allotment, Cut Off & PDF" and asks the FAQs as searched (cut off, result date, provisional vs final, last date to join,
   upgrade, next round's dates); an awaited round of the running year prints an important-dates table from the admin's

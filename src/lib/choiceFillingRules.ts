@@ -23,6 +23,14 @@ export const SOURCES = {
     date: "7 Nov 2026",
     url: `${B}/2026/11/20261107776874972.pdf`,
   },
+  // 23 Nov 2026: MCC opened a window to resign a joined round 1 or round 2 seat, 2 PM of 23 Nov to 6 PM of 25 Nov,
+  // with the deposit forfeited (Ref. U-12021/09/2026-MEC). If MCC extends it, change the two `leaving` lines below.
+  resign23Nov: {
+    title: "Notice: resignation of Round 1 or Round 2 seats",
+    by: "MCC, DGHS",
+    date: "23 Nov 2026",
+    url: `${B}/2026/11/20261123617658977.pdf`,
+  },
   userGuide: {
     title: "Candidate User Guide: NEET PG Counselling 2026",
     by: "MCC, DGHS",
@@ -78,17 +86,17 @@ export const ROUND_RULES: RoundRule[] = [
     round: "Round 1",
     choices: "Fill and lock your choices. You can add, delete and reorder them until you lock; whatever is saved is locked automatically at the time MCC notifies.",
     upgrade: "After the result you choose Freeze (join the seat in person, no upgrade) or Float (documents verified online, and you say yes to an upgrade in round 2 — no visit needed).",
-    leaving: "Free exit: a round 1 seat can be left without losing the security deposit, and you can take part in round 2 without registering again. In 2026 MCC allowed resignation of a round 1 seat without forfeiture up to 6:00 PM on 9 Nov 2026.",
+    leaving: "Free exit: a round 1 seat can be left without losing the security deposit, and you can take part in round 2 without registering again. In 2026 MCC allowed resignation of a round 1 seat without forfeiture up to 6:00 PM on 9 Nov 2026. A round 1 seat kept through round 2 without an upgrade can be resigned from 2:00 PM on 23 Nov to 6:00 PM on 25 Nov 2026, with the security deposit forfeited.",
     exit: "Free exit",
-    sources: ["bulletin", "notice5"],
+    sources: ["bulletin", "notice5", "resign23Nov"],
   },
   {
     round: "Round 2",
     choices: "Fresh choices: round 1's choices do not carry over. Seats allotted in round 1 appear as virtual vacancies you can choose. Holding a round 1 seat without saying yes to an upgrade, you keep it and are not considered in round 2.",
     upgrade: "If you are upgraded, your round 1 seat is cancelled at once and goes to the next candidate; you take relieving online and join the round 2 seat, with no claim on the old one.",
-    leaving: "No free exit. A round 2 seat you do not join, or surrender, costs the security deposit. You can still take part in round 3, paying the fee again.",
+    leaving: "No free exit. A round 2 seat you do not join, or surrender, costs the security deposit. You can still take part in round 3, paying the fee again. In 2026 MCC opened a resignation window for a joined round 2 seat, fresh or upgraded, from 2:00 PM on 23 Nov to 6:00 PM on 25 Nov, with the security deposit forfeited: a Freeze candidate resigns at the allotted college, a Float candidate online on MCC's portal, and the resignation letter must be generated online by the college, or the resignation is void.",
     exit: "Deposit forfeited",
-    sources: ["bulletin"],
+    sources: ["bulletin", "resign23Nov"],
   },
   {
     round: "Round 3",
