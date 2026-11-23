@@ -159,35 +159,58 @@ async function checkOne(path: string, prev: Stored | undefined, source: string, 
     await db.execute(sql`UPDATE page_fingerprints SET checked_at = now(), status = 200, due = false WHERE path = ${path}`);
     return;
   }
-  // Confirm: the same new text twice. A page that differs between two renders has something random in it.
+  // Confirm: the same new text twice.
   const b = await render(path);
   if (!b || b.status !== 200 || !b.hash) {
     out.failed.push(path);
     return;
   }
+  // The reading to record: normally the two renders agree.
+  let next: Render = a;
   if (b.hash !== a.hash) {
-    await db.execute(sql`
-      UPDATE page_fingerprints SET unstable_at = now(), unstable_count = unstable_count + 1, checked_at = now(), due = false
-       WHERE path = ${path}`);
-    // What differed, and whether the second render was back to the stored page (one odd render) or a third reading.
-    const kind = b.hash === prev.hash ? "unstable (second render reads as stored)" : "unstable (two new readings)";
-    await db
-      .execute(sql`
-        INSERT INTO page_change_log (path, source, chars_before, chars_after)
-        VALUES (${path}, ${`${kind}, ${source}: ${whereDiffer(a.text ?? "", b.text ?? "")}`.slice(0, 900)}, ${a.chars ?? 0}, ${b.chars ?? 0})`)
-      .catch(() => undefined);
-    out.unstable.push(path);
-    return;
+    // What differed goes into the log either way, so the cause can be found without catching the render by hand.
+    const note = (kind: string) =>
+      db
+        .execute(sql`
+          INSERT INTO page_change_log (path, source, chars_before, chars_after)
+          VALUES (${path}, ${`${kind}, ${source}: ${whereDiffer(a.text ?? "", b.text ?? "")}`.slice(0, 900)}, ${a.chars ?? 0}, ${b.chars ?? 0})`)
+        .catch(() => undefined);
+    if (b.hash === prev.hash) {
+      // One odd render that did not repeat: the page reads as stored again. That is neither a change nor a page that
+      // differs on every render (2026-11-23: the Hinglish guide failed the heartbeat for five days on such renders, about
+      // one check in fifteen, while its real changes were recorded fine). Logged, never counted as unstable; the
+      // heartbeat's words say how many there were in the last day.
+      await db.execute(sql`UPDATE page_fingerprints SET checked_at = now(), status = 200, due = false WHERE path = ${path}`);
+      await note("odd render (second render reads as stored)");
+      return;
+    }
+    // Two new readings. A third render decides: a real change that met one odd render is still a change, and only a
+    // page that reads three ways in three renders has something random in it.
+    const c = await render(path);
+    if (!c || c.status !== 200 || !c.hash) {
+      out.failed.push(path);
+      return;
+    }
+    if (c.hash !== a.hash && c.hash !== b.hash) {
+      await db.execute(sql`
+        UPDATE page_fingerprints SET unstable_at = now(), unstable_count = unstable_count + 1, checked_at = now(), due = false
+         WHERE path = ${path}`);
+      await note(c.hash === prev.hash ? "unstable (two odd renders, the third reads as stored)" : "unstable (three renders, three readings)");
+      out.unstable.push(path);
+      return;
+    }
+    await note("odd render (two of three renders agree)");
+    next = c.hash === b.hash ? b : a;
   }
   // Only if nobody recorded it meanwhile (a sweep and an event check on the same page record one change, not two).
   const won = (await db.execute(sql`
     UPDATE page_fingerprints
-       SET hash = ${a.hash}, chars = ${a.chars!}, status = 200, checked_at = now(), changed_at = now(), changes = changes + 1, due = false
+       SET hash = ${next.hash!}, chars = ${next.chars!}, status = 200, checked_at = now(), changed_at = now(), changes = changes + 1, due = false
      WHERE path = ${path} AND hash = ${prev.hash}
     RETURNING path`)) as unknown as unknown[];
   if (!won.length) return;
   await db.execute(sql`
-    INSERT INTO page_change_log (path, source, chars_before, chars_after) VALUES (${path}, ${source}, ${prev.chars}, ${a.chars!})`);
+    INSERT INTO page_change_log (path, source, chars_before, chars_after) VALUES (${path}, ${source}, ${prev.chars}, ${next.chars!})`);
   out.changed.push(path);
 }
 
@@ -423,18 +446,24 @@ export async function runWatch(budgetMs?: number): Promise<WatchSummary> {
     // Prune the change log.
     await db.execute(sql`DELETE FROM page_change_log WHERE at < now() - interval '120 days'`).catch(() => undefined);
     const summary = { ...out, due: list.length, left: Math.max(0, list.length - done), ...told };
-    // Unstable pages (two renders differ) can never be recorded as changed; stuck pages are not being re-read. Either one
-    // means a page whose date would not move, so the heartbeat fails and the health check emails the owner.
+    // Unstable pages (three renders, no two alike) can never be recorded as changed; stuck pages are not being re-read.
+    // Either one means a page whose date would not move, so the heartbeat fails and the health check emails the owner.
     const unstableNow = (await db
       .execute(sql`SELECT path FROM page_fingerprints WHERE unstable_at > now() - interval '1 day' AND (changed_at IS NULL OR unstable_at > changed_at) ORDER BY unstable_at DESC LIMIT 5`)
       .catch(() => [])) as unknown as { path: string }[];
+    // One odd render that did not repeat is not a failure (the page's changes are still recorded), but it is said here so
+    // it is not forgotten: what each odd render read is in page_change_log.
+    const [odd] = (await db
+      .execute(sql`SELECT COUNT(*)::int AS n, COUNT(DISTINCT path)::int AS pages FROM page_change_log WHERE source LIKE 'odd render%' AND at > now() - interval '1 day'`)
+      .catch(() => [])) as unknown as { n: number; pages: number }[];
     const ok = out.failed.length < Math.max(5, out.checked) && !unstableNow.length && !stuck.length;
     await beat(
       "page-watch",
       ok,
       `${out.checked} checked, ${out.changed.length} changed, ${out.baseline} new, ${out.failed.length} failed, ${summary.left} waiting` +
         (unstableNow.length ? `; UNSTABLE (differs on every render — add data-nohash): ${unstableNow.map((u) => u.path).join(", ")}` : "") +
-        (stuck.length ? `; NOT RE-READ for 3x their interval: ${stuck.length} (${stuck.slice(0, 5).join(", ")})` : ""),
+        (stuck.length ? `; NOT RE-READ for 3x their interval: ${stuck.length} (${stuck.slice(0, 5).join(", ")})` : "") +
+        (odd?.n ? `; ${odd.n} odd render(s) on ${odd.pages} page(s) in the last day (page_change_log)` : ""),
     );
     return summary;
   } catch (error) {

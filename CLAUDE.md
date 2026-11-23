@@ -576,7 +576,7 @@ ho … bot add kar raha hai kuch bhi tb bhi … perfect timing ke sath … fail 
 page from the app itself (127.0.0.1:8150), hashes what it says (`lib/pageFingerprint.ts`: title, meta description, robots,
 canonical, and every word, link and alt text inside `<main>` — not the header, alerts bar or footer, and not elements marked
 `data-nohash`: the "Updated" time itself, which would loop, and the weekly-rotating "More on…" block), and when the hash moves
-— confirmed by a second render, so a page that differs on every render is counted `unstable`, never changed — sets
+— confirmed by a second render (a third when the first two disagree), so a page that differs on every render is counted `unstable`, never changed — sets
 `page_fingerprints.changed_at` (migration 0068; each change also in `page_change_log`, 120 days). That moment becomes the
 sitemap lastmod (`overlayWatched` in lib/sitemapData.ts, the later of it and the data's own date), the page's "Updated … IST"
 line and JSON-LD dateModified; IndexNow is sent at once (and `indexnow_sent` recorded so the hourly job does not repeat it);
@@ -617,12 +617,22 @@ be recorded as changed: add `data-nohash` to the moving part) or not re-read for
 (6) A page that appears in a family already watched (90% fingerprinted) is **new** — announced like a change, so the child
 sitemap that gained it is resubmitted — while a family's first look is a baseline. (7) `checkPaths` queues anything past
 its 60-page cap; a change is written only if the stored hash is still the one compared (`WHERE hash = prev`), so a sweep
-and an event check on the same page record it once. (8) An `unstable` event writes what differed into `page_change_log`
-(source "unstable (second render reads as stored)…" or "unstable (two new readings)…", with the words each render had
-at the first difference) since 2026-11-23: `/neet-pg-choice-filling` and the Hinglish guide had been flagged 29 and 53
-times, always in the same sweep, by a one-render variant that eight back-to-back renders from outside and from the
-app's own port could not reproduce and that left no error. Read those rows before adding `data-nohash` anywhere:
-`SELECT at, path, source FROM page_change_log WHERE source LIKE 'unstable%' ORDER BY at DESC`.
+and an event check on the same page record it once. (8) **One odd render is not `unstable` (2026-11-23).**
+`/neet-pg-choice-filling` and the Hinglish guide had been flagged 29 and 54 times in five days by a render that differed
+once and did not repeat — which kept /api/health red and would have hidden a real failure — while their real changes
+were recorded fine. Now: a first render that differs from the stored page, followed by one that reads as stored, is an
+**odd render** — logged, not counted; two new readings get a third render, and two that agree are the page (a change
+that met an odd render is still recorded); only three renders with no two alike are `unstable`. Every such event writes
+what differed into `page_change_log` (source "odd render (…)" or "unstable (…)", with the words each render had at the
+first difference; "same words" means the links, alt text, title or description differed), and the heartbeat's words
+count the last day's odd renders without failing. The cause was not found that day: 0 of ~860 renders straight from the
+app (the watcher's user agent, two at a time, across the two-minute cron and an 18-second sitemap rebuild) and 0 of 783
+live pages differed, and 40 by-hand checks on the server were clean. One lead, unproven: the fingerprint reads the title,
+description, robots and canonical only from the HTML before `<main>`, Next 15.5 streams metadata into the body for
+user agents outside its `htmlLimitedBots` list (the watcher, visitors, Googlebot, the AI crawlers) when
+`generateMetadata` finishes after the page, and `getPageSeo` is an uncached query on every render. Read the rows before
+adding `data-nohash` anywhere:
+`SELECT at, path, source FROM page_change_log WHERE source LIKE 'odd render%' OR source LIKE 'unstable%' ORDER BY at DESC`.
 **What no code can do:** make Google recrawl at once. These are the strongest legitimate signals (accurate lastmod, child
 sitemap resubmits, a fresh page at the edge); the Indexing API is for job postings and live streams only, and Search Console's
 Request indexing is a daily quota used by the watchdog loop.
