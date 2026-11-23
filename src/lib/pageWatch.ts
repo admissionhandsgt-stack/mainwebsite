@@ -52,6 +52,27 @@ interface Render {
   status: number;
   hash?: string;
   chars?: number;
+  /** The hashed text, kept only while one page is being checked — to say where two renders differ. */
+  text?: string;
+}
+
+/**
+ * Where two renders of one page differ, in a few words each way — for the log, so an "unstable" page names the block
+ * to mark `data-nohash` (or the data that flips) instead of leaving it to be reproduced by hand (2026-11-23: two pages
+ * were flagged for days by a one-render variant nobody could catch from outside).
+ */
+function whereDiffer(a: string, b: string): string {
+  if (a === b) return "same words; the links, alt text, title or description differ";
+  let k = 0;
+  while (k < a.length && k < b.length && a[k] === b[k]) k++;
+  let ea = a.length;
+  let eb = b.length;
+  while (ea > k && eb > k && a[ea - 1] === b[eb - 1]) {
+    ea--;
+    eb--;
+  }
+  const cut = (s: string, from: number, to: number) => s.slice(from, Math.min(to, from + 220));
+  return `after "${a.slice(Math.max(0, k - 90), k)}" first: "${cut(a, k, ea)}" then: "${cut(b, k, eb)}"`;
 }
 
 async function render(path: string): Promise<Render | null> {
@@ -67,7 +88,7 @@ async function render(path: string): Promise<Render | null> {
       return { status: r.status };
     }
     const fp = fingerprint(await r.text());
-    return fp ? { status: 200, hash: fp.hash, chars: fp.chars } : { status: 200 };
+    return fp ? { status: 200, hash: fp.hash, chars: fp.chars, text: fp.text } : { status: 200 };
   } catch {
     return null;
   }
@@ -148,6 +169,13 @@ async function checkOne(path: string, prev: Stored | undefined, source: string, 
     await db.execute(sql`
       UPDATE page_fingerprints SET unstable_at = now(), unstable_count = unstable_count + 1, checked_at = now(), due = false
        WHERE path = ${path}`);
+    // What differed, and whether the second render was back to the stored page (one odd render) or a third reading.
+    const kind = b.hash === prev.hash ? "unstable (second render reads as stored)" : "unstable (two new readings)";
+    await db
+      .execute(sql`
+        INSERT INTO page_change_log (path, source, chars_before, chars_after)
+        VALUES (${path}, ${`${kind}, ${source}: ${whereDiffer(a.text ?? "", b.text ?? "")}`.slice(0, 900)}, ${a.chars ?? 0}, ${b.chars ?? 0})`)
+      .catch(() => undefined);
     out.unstable.push(path);
     return;
   }

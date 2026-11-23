@@ -617,7 +617,12 @@ be recorded as changed: add `data-nohash` to the moving part) or not re-read for
 (6) A page that appears in a family already watched (90% fingerprinted) is **new** — announced like a change, so the child
 sitemap that gained it is resubmitted — while a family's first look is a baseline. (7) `checkPaths` queues anything past
 its 60-page cap; a change is written only if the stored hash is still the one compared (`WHERE hash = prev`), so a sweep
-and an event check on the same page record it once.
+and an event check on the same page record it once. (8) An `unstable` event writes what differed into `page_change_log`
+(source "unstable (second render reads as stored)…" or "unstable (two new readings)…", with the words each render had
+at the first difference) since 2026-11-23: `/neet-pg-choice-filling` and the Hinglish guide had been flagged 29 and 53
+times, always in the same sweep, by a one-render variant that eight back-to-back renders from outside and from the
+app's own port could not reproduce and that left no error. Read those rows before adding `data-nohash` anywhere:
+`SELECT at, path, source FROM page_change_log WHERE source LIKE 'unstable%' ORDER BY at DESC`.
 **What no code can do:** make Google recrawl at once. These are the strongest legitimate signals (accurate lastmod, child
 sitemap resubmits, a fresh page at the edge); the Indexing API is for job postings and live streams only, and Search Console's
 Request indexing is a daily quota used by the watchdog loop.
