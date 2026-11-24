@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "@/components/ui/Link";
 import { getPgStatePage } from "@/lib/pgStateQueries";
-import { getStateAuthority } from "@/lib/stateAuthorities";
+import { getPgAuthority } from "@/lib/pgAuthority";
 import { getNmcPgForState } from "@/lib/nmcData";
 import { getStateSeatMatrix, getBondByState } from "@/lib/pgSeatData";
 import { getStipends } from "@/lib/cutoffHubQueries";
@@ -49,8 +49,8 @@ async function load(slug: string) {
   if (!states.some((s) => s.slug === slug)) return null;
   const p = await getPgStatePage(slug);
   if (!p) return null;
-  const [anyAuthority, nmcPg, mcc, stipends, fees, bond, team, contact, round, official] = await Promise.all([
-    getStateAuthority(p.name),
+  const [authority, nmcPg, mcc, stipends, fees, bond, team, contact, round, official] = await Promise.all([
+    getPgAuthority(p.name),
     getNmcPgForState(p.name),
     getStateSeatMatrix(p.name),
     getStipends().catch(() => null),
@@ -61,8 +61,6 @@ async function load(slug: string) {
     getStateRound(slug).catch(() => null),
     getOfficialStateByName(p.name).catch(() => null),
   ]);
-  // The shipped list names some boards for MBBS only; a UG-only board is not the one that fills PG seats.
-  const authority = anyAuthority?.scope === "UG and PG" ? anyAuthority : null;
   const year = counsellingYear();
   const authorityName = authority?.authority ?? `${p.name}'s counselling authority`;
   const stipend = stipends?.states.find((x) => x.state === p.name) ?? null;

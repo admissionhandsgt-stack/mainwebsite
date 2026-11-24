@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { timingSafeEqual } from "node:crypto";
-import { runZynNotices } from "@/lib/zynNotices";
+import { recheckHeld, runZynNotices } from "@/lib/zynNotices";
 import { logError } from "@/lib/logger";
 import { beat } from "@/lib/heartbeat";
 
@@ -24,6 +24,10 @@ function authorised(request: Request): boolean {
 export async function POST(request: Request) {
   if (!authorised(request)) return NextResponse.json({ error: "Not found" }, { status: 404 });
   try {
+    // By hand, after an authority's portal is added to the official list: held-for-the-domain notices judged again.
+    //   curl … -H "content-type: application/json" -d '{"recheck":true}' http://127.0.0.1:8150/api/cron/notices
+    const body = (await request.json().catch(() => null)) as { recheck?: unknown } | null;
+    if (body?.recheck === true) return NextResponse.json({ recheck: await recheckHeld() }, { headers: { "cache-control": "no-store" } });
     const result = await runZynNotices();
     await beat("notices", true);
     return NextResponse.json(result, { headers: { "cache-control": "no-store" } });

@@ -9,7 +9,7 @@ import { resolveMetadata } from "@/lib/content";
 import { pageCopy, pageHeroImage } from "@/lib/pageCopy";
 import { faqLines } from "@/lib/hinglishFaq";
 import { getCityPage, getCityIndex, type CityCollege } from "@/lib/cityQueries";
-import { getStateAuthority } from "@/lib/stateAuthorities";
+import { getPgAuthority } from "@/lib/pgAuthority";
 import { MATRIX_LABEL } from "@/lib/pgSeatData";
 import type { Family, Ownership } from "@/lib/pgFeeMatrix";
 import StructuredData, { breadcrumb, faqPage, webPage } from "@/components/seo/StructuredData";
@@ -97,7 +97,7 @@ export default async function CityPage(props: { params: Promise<{ city: string }
   if (!p) notFound();
   const path = `/medical-colleges/${p.city.slug}`;
   const others = p.colleges.length - p.govt;
-  const authority = await getStateAuthority(p.city.state).catch(() => null);
+  const authority = await getPgAuthority(p.city.state).catch(() => null);
   // The state's own 2026-27 bond rules and stipend order (2026-11-16), where read, replace the listing's figures here.
   const [offBondState, offStip] = await Promise.all([getOfficialStateByName(p.city.state).catch(() => null), getOfficialStipend().catch(() => null)]);
   const ob = offBondState ? govtBond(offBondState) : null;

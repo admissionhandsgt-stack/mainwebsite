@@ -52,7 +52,8 @@ export const STATE_AUTHORITIES: StateAuthority[] = [
   },
   { state: "Madhya Pradesh", authority: "Directorate of Medical Education (DME), Madhya Pradesh", url: "https://dme.mponline.gov.in", label: "dme.mponline.gov.in", scope: "UG and PG" },
   { state: "West Bengal", authority: "West Bengal Medical Counselling Committee (WBMCC)", url: "https://wbmcc.nic.in", label: "wbmcc.nic.in", scope: "UG and PG" },
-  { state: "Haryana", authority: "Pt. B.D. Sharma University of Health Sciences (UHSR), Rohtak", url: "https://uhsr.ac.in", label: "uhsr.ac.in", scope: "UG and PG" },
+  // MBBS only: dmer.haryana.gov.in links UHSR's portal for MBBS and DMER Haryana's own (hry.online-counselling.co.in) for MD/MS (checked 2026-11-24).
+  { state: "Haryana", authority: "Pt. B.D. Sharma University of Health Sciences (UHSR), Rohtak", url: "https://uhsr.ac.in", label: "uhsr.ac.in", scope: "UG" },
   { state: "Punjab", authority: "Baba Farid University of Health Sciences (BFUHS), Faridkot", url: "https://bfuhs.ac.in", label: "bfuhs.ac.in", scope: "UG and PG" },
   { state: "Bihar", authority: "Bihar Combined Entrance Competitive Examination Board (BCECEB)", url: "https://bceceboard.bihar.gov.in", label: "bceceboard.bihar.gov.in", scope: "UG and PG" },
   { state: "Odisha", authority: "Odisha Joint Entrance Examination (OJEE) Committee", url: "https://ojee.nic.in", label: "ojee.nic.in", scope: "UG" },

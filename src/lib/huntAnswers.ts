@@ -16,7 +16,8 @@ import { getStateAuthority } from "@/lib/stateAuthorities";
 import { getStateNotices, getHubNotices, stateKey, FEED_STATE } from "@/lib/stateNotices";
 import { ALERT_SOURCES } from "@/lib/alertFeed";
 import { getCounselPgStates, getCounselUgStates } from "@/lib/counselStates";
-import { officialLink } from "@/lib/zynNotices";
+import { officialLink, portalHome } from "@/lib/zynNotices";
+import { authorityLabel, pgNoticePages } from "@/lib/pgAuthority";
 import { branchWord, branchRound, branchSeats, branchState, collegeBranch, roundIn, roundOverall, withoutBranchWords, INI_CET, SUPER_SPECIALTY } from "@/lib/huntBranch";
 import { branchMoneyDraft, cityMoneyDraft, type MoneyScope } from "@/lib/branchMoney";
 import { cityIn, CITY_WORDS } from "@/lib/cityKey";
@@ -809,25 +810,6 @@ const hostLabel = (u: string) => {
   }
 };
 
-/** The page each state's authority links its PG notices from, as the owner approved them in Zyn — the newest per state. */
-const authorityPages = unstable_cache(
-  async (): Promise<{ state: string; authority: string; page: string; level: string | null; on: string | null }[]> =>
-    (await db.execute(sql`
-      SELECT DISTINCT ON (lower(state), coalesce(payload->>'level', '')) state, authority, payload->>'page' AS page,
-             payload->>'level' AS level, to_json(approved_at)#>>'{}' AS on
-        FROM zyn_notices
-       WHERE status = 'published' AND state IS NOT NULL AND authority IS NOT NULL AND payload->>'page' ~ '^https?://'
-       ORDER BY lower(state), coalesce(payload->>'level', ''), approved_at DESC NULLS LAST`)) as unknown as {
-      state: string;
-      authority: string;
-      page: string;
-      level: string | null;
-      on: string | null;
-    }[],
-  ["authority-pages-v1"],
-  { revalidate: 3600, tags: ["alerts"] },
-);
-
 /** "9 Nov 2026: Online registration…" — the board's name the alerts bar puts before a title is said once, above. */
 const noticeLine = (x: { on: string; title: string }) => {
   // Only a name before the colon (no digits): "Round 2: result" keeps its words.
@@ -860,8 +842,25 @@ async function nationalSite(level: "pg" | "ug"): Promise<Draft> {
   };
 }
 
+/**
+ * "haryana neet pg counselling", "manipur pg counselling", "uttarakhand mbbs counselling", "pgmcc odisha": the search is
+ * the state's counselling itself — who runs it, where, its latest notices (2026-11-24: 2,500 impressions in ten days at
+ * #9 with three clicks, and no builder answered them). Only when nothing else is asked: a date, a fee, a cut off, a
+ * result, a counsellor or senior-resident counselling each have their own answer or none.
+ */
+const OTHER_ASK =
+  /counsel+ors?\b|consultan|\bagents?\b|guidance|expert|\bbest\b|\btop\b|fee|cost|cut ?off|\brank|marks|score|stipend|bond|\bdates?\b|schedule|result|merit|allot|\bseats?\b|matrix|round|regist|document|eligib|senior resident|\bsr\b|\bss\b|super ?special|nursing|ayush|bams|bhms|\bmds\b|process|kaise|\bhow\b|\bwhat\b|\bwhen\b/i;
+export function bareCounselling(q: string): boolean {
+  if (WEBSITE.test(q) || OTHER_ASK.test(q) || A_COLLEGE.test(q)) return false;
+  const medical = /\b(neet|pg|ug|mbbs|md|ms|medical)\b/i.test(q);
+  // An authority by its own name needs a medical word too, unless it only ever runs medical counselling ("kea" alone is every exam KEA holds).
+  return (/\bcounsel+ing\b/i.test(q) && medical) || (AUTHORITY_NAMED.test(q) && (medical || MEDICAL_ONLY.test(q)));
+}
+const MEDICAL_ONLY = /\b(pgmac|ugmac|wbmcc|pgmcc|trmcc|acppgmec|acpugmec|medadmgujarat|tnmedicalselection)\b/i;
+
 async function authoritySite(q: string, states: PgState[]): Promise<Draft | null> {
-  if (!WEBSITE.test(q) || A_COLLEGE.test(q)) return null;
+  const bare = bareCounselling(q);
+  if ((!WEBSITE.test(q) && !bare) || A_COLLEGE.test(q)) return null;
   if (!COUNSEL_WORDS.test(q) && !AUTHORITY_NAMED.test(q)) return null;
   const pgWords = /\b(pg|md|ms|dnb|pgmac|pget|post ?grad\w*)\b/i.test(q);
   const ugWords = /\b(mbbs|bds|ug|ugmac|under ?grad\w*)\b/i.test(q);
@@ -870,13 +869,16 @@ async function authoritySite(q: string, states: PgState[]): Promise<Draft | null
   const ugStates = await getCounselUgStates().catch((): Awaited<ReturnType<typeof getCounselUgStates>> => []);
   const places = [...states.map((s) => ({ name: s.name, slug: s.slug })), ...ugStates.filter((u) => !states.some((s) => stateKey(s.name) === stateKey(u.name)))];
   const st = stateIn(q, places);
+  // "neet pg counselling" with no state is the whole country's counselling: the national answer is for a website search.
+  if (bare && (!st || /\bmcc\b|all india|\baiq\b|central counsel/i.test(q))) return null;
   if (!st || /\bmcc\b|all india|\baiq\b|central counsel/i.test(q)) return nationalSite(level);
 
   const key = stateKey(st.name);
   let site: { url: string; who: string; when: string | null; checked: string | null } | null = null;
   if (level === "pg") {
-    const z = (await authorityPages().catch((): Awaited<ReturnType<typeof authorityPages>> => [])).find((r) => stateKey(r.state) === key && (r.level ?? "pg") === "pg" && officialLink(r.page));
-    if (z) site = { url: z.page, who: z.authority.split(" · ")[0].trim(), when: day(z.on), checked: null };
+    const z = (await pgNoticePages().catch((): Awaited<ReturnType<typeof pgNoticePages>> => [])).find((r) => stateKey(r.state) === key && (r.level ?? "pg") === "pg" && officialLink(r.page));
+    // The portal's home, not the address its notices are read from (Rajasthan's and Haryana's `page` is an API).
+    if (z) site = { url: portalHome(z.page), who: authorityLabel(z.authority), when: day(z.on), checked: null };
   }
   if (!site) {
     const a = await getStateAuthority(st.name).catch(() => null);
@@ -899,7 +901,9 @@ async function authoritySite(q: string, states: PgState[]): Promise<Draft | null
   return {
     page,
     kind: "authority",
-    lead: `The official website for ${exam} counselling in ${st.name} (the state quota seats) is ${hostLabel(site.url)}, run by ${site.who}.`,
+    lead: bare
+      ? `${exam} counselling in ${st.name} for the state quota seats is run by ${site.who}, on its official site ${hostLabel(site.url)}.`
+      : `The official website for ${exam} counselling in ${st.name} (the state quota seats) is ${hostLabel(site.url)}, run by ${site.who}.`,
     link: { url: site.url, title: hostLabel(site.url) },
     pointsTitle: notes.length ? `${site.who}'s latest notices:` : undefined,
     points: [
@@ -924,7 +928,7 @@ const CUTOFF = /cut ?off|closing rank|rank (needed|required)|kitn[ae] rank|which
 
 /** Which builder answers a question, from our live data — or none. Shared by the hunt and the site's search answers. */
 async function pickDraft(q: string, all: string, hasText: boolean, states: PgState[]): Promise<Draft | null> {
-  if (WEBSITE.test(q)) {
+  if (WEBSITE.test(q) || bareCounselling(q)) {
     const d = await authoritySite(q, states);
     if (d) return d;
   }

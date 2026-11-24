@@ -673,6 +673,26 @@ held. Held notices wait in the admin (publish, dismiss, apply dates); the team g
 change. Zyn's endpoint (`GET /api/integrations/website/notices?since=`, X-AH-Sync-Key, approved only; record shape in the
 2026-11-05 message to zyn-c9) needs the owner's OK in zyn-c9's session. UG stays on the site's own feed (`lib/alertFeed.ts`).
 
+**An authority's portal that is on no government domain (2026-11-24).** Every DMER Haryana PG notice and every ACPPGMEC
+Gujarat file had been held as "link is not on an official domain" — 12 notices in three weeks — because the file's host
+is not the page Zyn reads (Haryana: `hry.online-counselling.co.in` read through the portal's `hryapi` host, some files in
+an amazonaws.com bucket; Gujarat: `medadmgujarat.ncode.in`, linked 158 times from medadmgujarat.org/pg). Both are in
+`PORTAL_HOSTS` (lib/zynNotices.ts), **each checked against the authority's own site first** (dmer.haryana.gov.in links the
+Haryana portal) — add a host there only after the same check. A file in a cloud bucket or on Google Drive links the
+authority's portal instead (`portalHome()`, which also turns a notices-API address into the site's home: Rajasthan's and
+Haryana's `page` is an API). After adding a host: `POST /api/cron/notices {"recheck": true}` judges the last two weeks'
+domain-held notices again (`recheckHeld`). Still held for the domain, unverified: Manipur's RIMS notice (rims.edu.in),
+CENTAC's older Drive files. **Check `scripts/tmp/held_notices.mjs` whenever a state's page shows no notices.**
+
+**Who runs a state's PG counselling — `lib/pgAuthority.ts` (same day).** `getPgAuthority(state)` is what the PG counselling,
+PG state and city pages read: the admin's "State counselling authorities" row when its scope covers PG, else — for the
+states in `FROM_NOTICES` only (Haryana, J&K, Jharkhand, Tripura; each a government body on its own counselling page) — the
+body whose page the state's newest approved PG notice came from. Haryana's row named UHSR Rohtak for UG and PG; it runs
+MBBS only (dmer.haryana.gov.in: uhsrugcounselling.com for MBBS, DMER's portal for MD/MS), so the row is scope "UG" now
+(`scripts/sql/haryana_pg_authority_2026_11_24.sql`, shipped list too). Rajasthan's and Odisha's PG bodies
+(pg.neetrajasthan.com, dmetodisha.in) are not in either list yet: no government page was found linking them — their PG
+pages show notices but no authority card, and "pgmcc odisha" gets no bot answer.
+
 ## NEET PG round results, published by themselves (2026-10-21)
 
 Owner's request: *"page automatic ban jaye… result aa jayega wahan fetch karta rahe… har 2-2 min… turant banade"*.
@@ -3215,6 +3235,18 @@ Owner: "itne pending task complete karo" (Meta's Conversions API token comes lat
   medicare, cpt, fee schedule) and is re-checked at render; a Delhi/Puducherry stipend search takes the state's figure
   (Delhi's stipend page counts 92 colleges, the city answer 15). Local check of every live answer:
   `npx tsx --tsconfig scripts/tmp/harness/tsconfig.json --env-file=.env.local scripts/tmp/harness/faq_audit.ts`.
+  **Does it help? Measured 2026-11-24** (`scripts/tmp/faq_effect.mjs`: the 114 searches answered 11–16 Nov that sat at
+  #3–20 before, Search Console 1–10 Nov against 17–23 Nov, beside 5,868 unanswered searches of the same band, word count
+  and page families): answered searches moved #6.8 → #6.0 (median −1.0; 62 better, 19 worse), kept their impressions
+  (+4%) and went from 0.75% to 2.26% clicks; the control moved #7.7 → #7.3 (median −0.5), lost 16% of impressions and
+  went 0.66% → 1.05%. The same gap holds at 5+, 10+ and 20+ impressions. So an answer is worth about half a position and
+  roughly twice the click rate — real, but small in clicks (about +3 a day on named searches from 114 answers). By builder:
+  `college` (stipend / fee of a named college) helps most (#7.2 → #5.3); `official` (Gemini from official pages) did not
+  (#9.1 → #13.4, four searches). Coverage is the limit, not the hourly cap: of the 260 biggest searches off the top 3, a
+  builder answers 132 (`scripts/tmp/harness/faq_gaps.ts` lists the rest). Gaps by size: a state's counselling by name
+  (answered since this day — `bareCounselling` in lib/huntAnswers.ts, "haryana neet pg counselling" → who runs it, its
+  site, its latest notices; never when a date, fee, result or counsellor is asked), "dm <course> seats in india" (NEET SS
+  pages; `SUPER_SPECIALTY` stops them), a PG college's cut off with no branch named, hospital names alone (no answer exists).
 - **Research specs (Sonnet agents, 2026-11-11), in `D:/Admisson Hands/seo_data/research_2026_11/`:** `lead_magnet_pdf.md`
   (state PG fee & stipend PDF over WhatsApp: tap → prefilled message → free-form document reply inside the 24-hour window;
   Maharashtra first), `hinglish_pages.md` (no /hi/ section; a Hinglish FAQ block on 8 existing pages and two "kaise hoti hai"

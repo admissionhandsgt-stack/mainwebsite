@@ -101,6 +101,30 @@ const hostOf = (u: string | null) => {
   }
 };
 
+/**
+ * Counselling portals that are the authority's own but sit on no government domain and on another host than the page Zyn
+ * reads — each one checked against the authority's own site (2026-11-24). Every DMER Haryana PG notice
+ * (hry.online-counselling.co.in, which dmer.haryana.gov.in links as its PG counselling portal; Zyn reads it through the
+ * portal's own hryapi host) and every ACPPGMEC Gujarat file (medadmgujarat.ncode.in, linked 158 times from
+ * medadmgujarat.org/pg) had been held as "not on an official domain": 12 notices in three weeks, while "haryana neet pg
+ * counselling" was the most-shown state search of the site and its page listed no notice at all.
+ */
+const PORTAL_HOSTS = ["hry.online-counselling.co.in", "hryapi.online-counselling.co.in", "medadmgujarat.ncode.in"];
+/** Where a reader goes when Zyn's `page` is the address a portal's notices are read from, not a page for people. */
+const PORTAL_HOME: Record<string, string> = { "hryapi.online-counselling.co.in": "https://hry.online-counselling.co.in/" };
+
+/** The page of an authority a person can open: its portal's home when Zyn's `page` is an API address. */
+export function portalHome(page: string): string {
+  try {
+    const u = new URL(page);
+    const host = u.hostname.toLowerCase().replace(/^www\./, "");
+    if (PORTAL_HOME[host]) return PORTAL_HOME[host];
+    return /\/api\//i.test(u.pathname) ? `${u.origin}/` : page;
+  } catch {
+    return page;
+  }
+}
+
 /** "Rajasthan NEET PG Counselling Board 2026 (pg.neetrajasthan.com)" → "Rajasthan NEET PG Counselling Board 2026". */
 const authorityName = (a: string | null) => (a ? a.replace(/\s*\([^)]*\)\s*$/, "").trim() : null);
 
@@ -120,6 +144,7 @@ export function officialLink(url: string | null, page?: string | null): boolean 
   }
   if (host.endsWith(".gov.in") || host.endsWith(".nic.in")) return true;
   if (["natboard.edu.in", "nbe.edu.in", "nmc.org.in"].some((h) => host === h || host.endsWith(`.${h}`))) return true;
+  if (PORTAL_HOSTS.includes(host)) return true;
   return [...BOARD_HOSTS].some((h) => host === h || host.endsWith(`.${h}`));
 }
 
@@ -358,7 +383,7 @@ const INSTRUCTION = /\b(banao|bana\s?do|bana\s?ke|banana|karo|kar\s?do|kardo|kar
  * `updated_at`; replace it by id, never insert a second). Then a held notice is checked again with its new title and
  * published if it now passes; a published one gets its new title on the alerts bar; one an admin dismissed stays dismissed.
  */
-async function take(n: ZynNotice): Promise<"published" | "held" | "seen"> {
+async function take(n: ZynNotice, recheck = false): Promise<"published" | "held" | "seen"> {
   const prev = ((await db.execute(sql`
     SELECT title, url, status, alert_id, payload->>'updated_at' AS updated,
            COALESCE(payload->>'public_brief', '') || '|' || COALESCE((payload->'public_points')::text, '') AS public_text
@@ -375,7 +400,8 @@ async function take(n: ZynNotice): Promise<"published" | "held" | "seen"> {
     const updated = str(raw.updated_at);
     // A notice stored before Zyn sent `updated_at` counts as changed only if its words or link changed.
     const changed = prev.title !== n.title || prev.url !== n.url || (updated !== null && prev.updated !== null && updated !== prev.updated);
-    if (!changed) {
+    // `recheck`: a held notice is judged again as it stands (the rules changed, not the notice).
+    if (!changed && !(recheck && prev.status === "held")) {
       // The approved public summary (public_brief / public_points, 2026-11-17) reaches notices stored before it existed:
       // the payload is refreshed, nothing else about the notice or its alert changes.
       const publicText = `${str(raw.public_brief) ?? ""}|${raw.public_points == null ? "" : JSON.stringify(raw.public_points)}`;
@@ -395,7 +421,9 @@ async function take(n: ZynNotice): Promise<"published" | "held" | "seen"> {
   }
   // CENTAC Puducherry posts its notices as Google Drive files linked from its own site (three PG Medical notices
   // were held on 6 Nov 2026 for it). A Drive file is anybody's, so the alert links the authority's own page instead.
-  if (n.url && /^(drive|docs)\.google\.com$/.test(hostOf(n.url) ?? "") && n.page && officialLink(n.page)) n = { ...n, url: n.page };
+  // DMER Haryana keeps some of its notice files in a cloud bucket (amazonaws.com): the same rule, and the link is its portal.
+  if (n.url && /^(drive|docs)\.google\.com$|(^|\.)amazonaws\.com$/.test(hostOf(n.url) ?? "") && n.page && officialLink(n.page))
+    n = { ...n, url: portalHome(n.page) };
 
   let status: "published" | "held" = "published";
   let reason: string | null = null;
@@ -544,6 +572,28 @@ export async function runZynNotices(opts: { force?: boolean } = {}): Promise<Run
   }
   await setIntegration("zyn.notices.last", JSON.stringify(summary));
   return summary;
+}
+
+/**
+ * Notices held only because their link was "not on an official domain", judged again by today's rules — run once after a
+ * host is added to PORTAL_HOSTS (`POST /api/cron/notices {"recheck": true}`). Only the last two weeks: an older notice
+ * would reach the alerts bar already expired. Every other check (approved, on topic, a real title) still applies.
+ */
+export async function recheckHeld(days = 14): Promise<{ checked: number; published: number; held: number }> {
+  const rows = (await db.execute(sql`
+    SELECT payload FROM zyn_notices
+     WHERE status = 'held' AND reason = 'link is not on an official domain' AND received_at > now() - make_interval(days => ${days})
+     ORDER BY received_at`)) as unknown as { payload: unknown }[];
+  const out = { checked: 0, published: 0, held: 0 };
+  for (const r of rows) {
+    const n = normalise((typeof r.payload === "string" ? JSON.parse(r.payload) : r.payload) as Record<string, unknown>);
+    if (!n) continue;
+    out.checked++;
+    const s = await take(n, true);
+    if (s === "published") out.published++;
+    else out.held++;
+  }
+  return out;
 }
 
 /** The admin's "Test" button: one record, nothing written. */

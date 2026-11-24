@@ -2,7 +2,7 @@ import { pageOgImage } from "@/lib/ogImage";
 import { getNmcPgForState } from "@/lib/nmcData";
 import StateNotices from "@/components/states/StateNotices";
 import { fitTitle, fitDescription, count } from "@/lib/seoTitle";
-import { getStateAuthority } from "@/lib/stateAuthorities";
+import { getPgAuthority } from "@/lib/pgAuthority";
 import StateAuthority from "@/components/states/StateAuthority";
 import type { Metadata } from "next";
 import Link from "@/components/ui/Link";
@@ -178,7 +178,7 @@ export default async function PgStatePage(props: Props) {
   const [copy, heroImage, authority, mcc, branchPages, combos, live, nmcPg] = await Promise.all([
     pageCopy("page.pg_state.hero", { state: p.name, year: p.year ?? "the latest" }),
     pageHeroImage(`page.pg_state.${p.slug}.hero`, "page.pg_state.hero"),
-    getStateAuthority(p.name),
+    getPgAuthority(p.name),
     // MCC's 2026 seat matrix for the state — "md medicine seats in <state>" (lib/pgSeatData.ts).
     getStateSeatMatrix(p.name),
     getBranches(),
