@@ -192,14 +192,15 @@ export const getPgStatePage = unstable_cache(
 
     // The state's own main merit quota: the one most colleges fill, from its own counselling.
     const quotaRows = rows<Record<string, unknown>>(quotas);
-    const main = quotaRows.find(
-      (q) =>
-        q.quota != null &&
-        !/^(all india|open states|dnb sponsored)/i.test(String(q.counselling)) &&
-        isMeritQuota(String(q.quota)) &&
-        !/in-?serv|service|sponsor|\bAIQ\b|all india/i.test(String(q.quota)) &&
-        Number(q.colleges) >= 3,
-    );
+    const isMain = (q: Record<string, unknown>) =>
+      q.quota != null &&
+      !/^(all india|open states|dnb sponsored)/i.test(String(q.counselling)) &&
+      isMeritQuota(String(q.quota)) &&
+      !/in-?serv|service|sponsor|\bAIQ\b|all india/i.test(String(q.quota)) &&
+      Number(q.colleges) >= 3;
+    // An MD/MS quota before a DNB or diploma one: Bihar lists more DNB hospitals than medical colleges, and its "main
+    // merit quota" read "Bihar DNB Seats" (2026-11-24).
+    const main = quotaRows.find((q) => isMain(q) && !/\bDNB\b|diploma/i.test(String(q.quota))) ?? quotaRows.find(isMain);
     let branchCut: PgStatePage["branchCut"] = null;
     if (main && y != null) {
       const cut = rows<Record<string, unknown>>(
@@ -252,6 +253,6 @@ export const getPgStatePage = unstable_cache(
       branchCut,
     };
   },
-  ["pg-state-page-v6"],
+  ["pg-state-page-v7"],
   { revalidate: 86400, tags: ["seat-data"] },
 );

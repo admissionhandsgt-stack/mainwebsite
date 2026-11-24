@@ -84,7 +84,9 @@ async function build(stateSlug: string, pick?: { year: number; round: string }):
       const colleges = Number(x.colleges);
       return { quota: String(x.quota), colleges, tightest: groupRank(num(x.tightest), colleges), last: groupRank(num(x.last), colleges) };
     });
-    const mainQuota = byQuota[0]?.quota ?? null;
+    // The quota most colleges fill — an MD/MS quota before a DNB or diploma one (Bihar's list has more DNB hospitals than
+    // medical colleges, and its "main quota" read "Bihar DNB Seats").
+    const mainQuota = (byQuota.find((q) => q.colleges >= 3 && !/\bDNB\b|diploma/i.test(q.quota)) ?? byQuota[0])?.quota ?? null;
 
     const [cats, branches] = mainQuota
       ? await Promise.all([
@@ -141,7 +143,7 @@ async function build(stateSlug: string, pick?: { year: number; round: string }):
     };
 }
 
-export const getStateRound = unstable_cache((stateSlug: string) => build(stateSlug), ["state-round-v1"], {
+export const getStateRound = unstable_cache((stateSlug: string) => build(stateSlug), ["state-round-v2"], {
   revalidate: 3600,
   tags: ["state-round", "seat-data"],
 });
@@ -149,6 +151,6 @@ export const getStateRound = unstable_cache((stateSlug: string) => build(stateSl
 /** One named round ("R1") of one year — /neet-pg-counselling/<year>/<round>/<state> (lib/stateRoundPages.ts). */
 export const getStateRoundOf = unstable_cache(
   (stateSlug: string, year: number, round: string) => build(stateSlug, { year, round }),
-  ["state-round-of-v1"],
+  ["state-round-of-v2"],
   { revalidate: 3600, tags: ["state-round", "seat-data"] },
 );

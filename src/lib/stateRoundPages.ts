@@ -72,20 +72,27 @@ export const KIND_LABEL: Record<NoticeKind, string> = {
   notice: "Notice",
 };
 
-/** What a notice is, from its own title first (Zyn files a merit list under "result"). */
-export function noticeKind(title: string, kind: string | null): NoticeKind {
+/**
+ * What a notice is, from its own title alone. Zyn's `kind` is not used: it files a merit list, a "second round seat
+ * allotment – notification" and a resignation notice under "result" or "schedule", and the page answers "Is the result
+ * out?" from this (audit of 2026-11-24: Karnataka's and Jharkhand's Round 2 pages said "out" on notices that were not
+ * results). A result is a result, an allotment / selection list, the allotments or a seat allocation — never a schedule,
+ * a notification about the allotment, an option facility, or a notice about withheld, cancelled or resigned seats.
+ * Anything the title does not settle is a plain "Notice".
+ */
+export function noticeKind(title: string, _kind?: string | null): NoticeKind {
   const t = title.toLowerCase();
-  const listed = /\bresults?\b|\blist\b|allotments\b|allotment order/.test(t);
-  if (/merit\s*(list|no|position)|eligible candidates|eligibility list/.test(t)) return "merit";
-  // "First round seat allotment SCHEDULE" and "allotment facility for OPTION confirmation" are not results: a result
-  // is a list, a result or the allotments themselves ("Is the result out?" is answered from this).
-  if (/schedule|time ?table|calendar|important dates/.test(t) && !listed) return "schedule";
-  if (/option|choice|regist|facility|apply online|application/.test(t) && !listed) return "registration";
-  if (/\bresults?\b|allotment\s+(list|result|order)|allotments\b|allotted\s+(list|candidates)|selection list|select list|admitted candidates/.test(t)) return "result";
-  if (/seat\s*matrix|vacan|seat position|seat distribution/.test(t)) return "matrix";
-  if (/schedule|time ?table|calendar|important dates/.test(t)) return "schedule";
-  if (/regist|web[\s-]?option|choice|option entry|apply online|application/.test(t)) return "registration";
-  return kind === "result" ? "result" : kind === "seat_matrix" ? "matrix" : kind === "schedule" ? "schedule" : kind === "registration" || kind === "choice_filling" ? "registration" : "notice";
+  if (/merit\s*(list|no\b|position)/.test(t)) return "merit";
+  const never = /withh?eld|extension|resign|cancel|free exit/.test(t);
+  const explicit = /allot+ment\s+(list|result|order)|allot+ments\b|seat allocation|selection list|select list|selected candidates|list of selected/.test(t);
+  // "Allotment" or "result" alone counts only in a title that is not a notice about something else ("Important notice
+  // regarding 2nd round … on the basis of NEET PG result" is not a result).
+  const bare = /\ballot+ment\b|\bresults?\b/.test(t) && !/s(e)?chedule|notification|notice|procedure|instruction|information|option|facility|\bfee\b|report|guideline|regarding|basis of/.test(t);
+  if (!never && (explicit || bare) && !/s(e)?chedule/.test(t.replace(/allot+ment\s+(list|result|order)/, ""))) return "result";
+  if (/\bmatrix\b|vacan|seat position|seat distribution/.test(t)) return "matrix";
+  if (/s(e)?chedule|time ?table|calendar|important dates/.test(t)) return "schedule";
+  if (/regist|web[\s-]?options?|choice filling|option (form|entry)|preferences?\b|apply online|online application/.test(t)) return "registration";
+  return "notice";
 }
 
 /* --------------------------------------------------------------------------- the notices --- */
@@ -95,6 +102,8 @@ export interface RoundNotice {
   url: string | null;
   /** ISO time the authority published it (or the owner approved it). */
   on: string;
+  /** `on` is the authority's own publication day (Zyn's `published_on`), not the day the notice was approved here. */
+  exact: boolean;
   authority: string | null;
   kind: NoticeKind;
   order: number;
@@ -127,7 +136,8 @@ const loadNotices = unstable_cache(
       // The day the authority published it (Zyn's `published_on`, a date), else the moment the owner approved it.
       // A `published_on` after today is a date inside the notice (a schedule's last day), not when it was published.
       const pub = r.pub && /^\d{4}-\d{2}-\d{2}$/.test(r.pub) ? `${r.pub}T12:00:00+05:30` : null;
-      const on = pub && Date.parse(pub) <= Date.now() + 86_400_000 ? pub : r.at;
+      const exact = !!pub && Date.parse(pub) <= Date.now() + 86_400_000;
+      const on = exact ? pub : r.at;
       if (!order || !on) continue;
       const raw = typeof r.points === "string" ? (() => { try { return JSON.parse(r.points as string); } catch { return []; } })() : r.points;
       out.push({
@@ -135,6 +145,7 @@ const loadNotices = unstable_cache(
         title: r.title.replace(/\s+/g, " ").trim(),
         url: r.url,
         on,
+        exact,
         authority: r.authority ? r.authority.split(" · ")[0].replace(/\s*\([^)]*\.[a-z]{2,}[^)]*\)\s*$/i, "").trim() : null,
         kind: noticeKind(r.title, r.kind),
         order,
@@ -142,9 +153,18 @@ const loadNotices = unstable_cache(
         points: Array.isArray(raw) ? raw.filter((p): p is string => typeof p === "string" && !!p.trim()).map((p) => p.trim()).slice(0, 8) : [],
       });
     }
-    return out.sort((a, b) => Date.parse(b.on) - Date.parse(a.on));
+    // The same notice sent twice (one title, one day, two links) is listed once.
+    const seen = new Set<string>();
+    return out
+      .sort((a, b) => Date.parse(b.on) - Date.parse(a.on))
+      .filter((x) => {
+        const k = `${x.state}|${x.order}|${x.title.toLowerCase()}|${x.on.slice(0, 10)}`;
+        if (seen.has(k)) return false;
+        seen.add(k);
+        return true;
+      });
   },
-  ["state-round-notices-v1"],
+  ["state-round-notices-v2"],
   { revalidate: 900, tags: ["alerts", "state-round"] },
 );
 
@@ -214,7 +234,7 @@ export const getStateRoundIndex = unstable_cache(
       return { year: new Date().getFullYear(), entries: [] };
     }
   },
-  ["state-round-index-v1"],
+  ["state-round-index-v2"],
   { revalidate: 900, tags: ["alerts", "state-round", "seat-data"] },
 );
 
@@ -254,9 +274,9 @@ const lastYearRound = unstable_cache(
     const out = list
       .map((x) => ({ name: String(x.name), slug: branchSlug(String(x.name)), colleges: Number(x.colleges), last: groupRank(Number(x.last), Number(x.colleges)) }))
       .filter((x): x is { name: string; slug: string; colleges: number; last: number } => x.last != null);
-    return out.length ? { year: p.year, quota, colleges: Number(list[0]?.all_colleges ?? 0), rows: out } : null;
+    return out.length >= 3 ? { year: p.year, quota, colleges: Number(list[0]?.all_colleges ?? 0), rows: out } : null;
   },
-  ["state-round-last-year-v1"],
+  ["state-round-last-year-v2"],
   { revalidate: 86400, tags: ["seat-data"] },
 );
 

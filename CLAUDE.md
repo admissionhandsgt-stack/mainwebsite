@@ -2236,6 +2236,27 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
   the state's counselling page (`components/states/StateRoundLinks`, under the latest notices), and each other.
 - **Freshness:** a published notice re-reads its state's round pages at once (`take()` in lib/zynNotices.ts); the page
   watcher reads them hourly (`tierOf`), not with the live pages every ten minutes; the edge treats them as live pages.
+- **The accuracy audit of the first evening (owner: "verify … do not show any false or inaccurate information or any
+  rules or claims"; `scripts/tmp/harness/round_audit.ts` prints every page's claims beside the notices behind them — read
+  all of it after any change to `noticeKind`).** What it found and the rules it left:
+  - *A notice's kind comes from its title alone, never Zyn's `kind`* — Zyn files "second round seat allotment –
+    notification", a resignation notice and a merit list under "result" or "schedule", and Karnataka's and Jharkhand's Round
+    2 pages said "result out" on such notices. A result is an allotment / selection list, the allotments, a seat allocation
+    or a title that is itself a result; "allotment" or "result" inside a notice *about* something ("important notice
+    regarding … on the basis of NEET PG result") is not, nor is a withheld, cancelled, extended or resigned-seat notice.
+  - *The page never says a result is not out* — a result notice with no round in its title is on no round page (Andhra
+    Pradesh's and Telangana's untagged results), so the wording is "no result notice is listed here yet … check the
+    authority's site", and the tile says "Not listed yet".
+  - *The H1 and title name only what the page carries*: "merit list", "seat matrix", "schedule" need that kind of notice;
+    "Cut Off" needs this year's loaded list, and last year's table is named as last year's ("2025 Cut Off", 5+ branches).
+  - *"Posted on <date>" only for the authority's own publication day* (Zyn's `published_on`; `exact`); otherwise no date
+    in the sentence, and the notice line reads "listed <date>".
+  - *Every "last general seat" figure names its quota* (the tile, the FAQ, the description), and the main quota is an
+    MD/MS quota before a DNB one (`build` in stateRoundQueries.ts and `main` in pgStateQueries.ts: Bihar's had been
+    "Bihar DNB Seats").
+  - *No rule is stated* — "a seat not joined is cancelled", "one candidate holds one seat", "vacant seats go to the next
+    round" came out: the page says where the rule is (the authority's notice, the state's bulletin) and nothing more.
+  - Last year's table carries the in-service note (the last candidate admitted may have held a state's extra marks).
 - Words: Admin → Content → "Page: a state's NEET PG round (result, merit list, seat matrix)" (`page.pg_state_round`).
   Judge on Search Console ~3 weeks after (around 15 Dec): impressions for "<state> neet pg round N result / merit list /
   seat matrix". **A state's Round 2 list, once loaded into `state_round_cuts`, gives its page figures by itself.**

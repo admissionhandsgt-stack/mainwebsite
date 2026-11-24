@@ -51,17 +51,21 @@ function titleParts(p: StateRoundPage) {
     merit: kinds.has("merit"),
     matrix: kinds.has("matrix"),
     schedule: kinds.has("schedule"),
-    cut: !!p.figures || !!p.lastYear,
+    // This year's cut off only when this year's list is loaded; last year's is named as last year's.
+    cut: p.figures ? "Cut Off" : p.lastYear && p.lastYear.rows.length >= 5 ? `${p.lastYear.year} Cut Off` : null,
   };
 }
+
+/** The main quota's own row: every "last general seat" figure names that quota beside it. */
+const generalOf = (p: StateRoundPage) => p.figures?.byQuota.find((q) => q.quota === p.figures?.mainQuota) ?? p.figures?.byQuota[0] ?? null;
 
 function metaFor(p: StateRoundPage) {
   const s = p.state.name;
   const r = p.spec.label;
   const t = titleParts(p);
-  const tail = [t.merit ? "Merit List" : null, t.matrix ? "Seat Matrix" : null, t.cut ? "Cut Off" : null].filter((x): x is string => !!x);
+  const tail = [t.merit ? "Merit List" : null, t.matrix ? "Seat Matrix" : null, t.cut].filter((x): x is string => !!x);
   const head = t.out ? `${s} NEET PG ${r} Result ${p.year}` : `${s} NEET PG ${r} Counselling ${p.year}`;
-  const waitTail = [t.schedule ? "Schedule" : null, t.matrix ? "Seat Matrix" : null, t.merit ? "Merit List" : null, t.cut ? "Cut Off" : null].filter((x): x is string => !!x);
+  const waitTail = [t.schedule ? "Schedule" : null, t.matrix ? "Seat Matrix" : null, t.merit ? "Merit List" : null, t.cut].filter((x): x is string => !!x);
   const parts = t.out ? tail : waitTail;
   const join = (xs: string[]) => (xs.length > 1 ? `${xs.slice(0, -1).join(", ")} & ${xs[xs.length - 1]}` : xs.join(""));
   const title = fitTitle(
@@ -72,22 +76,24 @@ function metaFor(p: StateRoundPage) {
     `${s} NEET PG ${r} ${p.year}`,
   );
   const who = p.authority ?? `${s}'s counselling authority`;
-  const general = p.figures?.byQuota[0];
+  const general = generalOf(p);
   const facts = [
-    p.result ? `result posted ${day(p.result.on)}` : p.figures ? "allotment list out" : p.notices.length ? `latest notice ${day(p.notices[0].on)}` : null,
-    general?.last ? `last general seat at AIR ${n(general.last)}` : null,
+    p.result ? (p.result.exact ? `result posted ${day(p.result.on)}` : "result posted") : p.figures ? "allotment list out" : null,
+    general?.last ? `last general seat at AIR ${n(general.last)} (${general.quota})` : null,
     p.lastYear ? `${p.lastYear.year}'s ${r.toLowerCase()} cut off for ${p.lastYear.rows.length} branches` : null,
   ].filter((x): x is string => !!x);
   const lead = `${s} NEET PG ${p.year} ${r.toLowerCase()}`;
   const linked = p.notices.length ? `${p.notices.length} official notice${p.notices.length === 1 ? "" : "s"} linked.` : "From the authority's allotment list.";
   // Longest that fits first: every fact with the authority, then without it, then fewer facts.
-  const description = fitDescription(
-    `${lead} by ${who}: ${facts.join(", ")}. ${linked}`,
-    `${lead}: ${facts.join(", ")}. ${linked}`,
-    `${lead}: ${facts.slice(0, 2).join(", ")}. ${linked}`,
-    `${lead}: ${facts[0] ?? "official notices"}. ${linked}`,
-    `${lead}: official notices, result and cut off.`,
-  );
+  const description = facts.length
+    ? fitDescription(
+        `${lead} by ${who}: ${facts.join(", ")}. ${linked}`,
+        `${lead}: ${facts.join(", ")}. ${linked}`,
+        `${lead}: ${facts.slice(0, 2).join(", ")}. ${linked}`,
+        `${lead}: ${facts[0]}. ${linked}`,
+        `${lead}: ${linked}`,
+      )
+    : fitDescription(`${lead} by ${who}: ${linked} Each opens the authority's own file.`, `${lead}: ${linked}`);
   return { title, description, who };
 }
 
@@ -116,8 +122,13 @@ export default async function StateRoundResultPage(props: Props) {
   const path = p.entry.path;
   const { description, who } = metaFor(p);
 
-  const general = figures?.byQuota[0] ?? null;
+  const general = generalOf(p);
   const matrix = notices.find((x) => x.kind === "matrix") ?? null;
+  const t = titleParts(p);
+  // The H1's second half, from what the page carries: never "merit list" or "seat matrix" without that notice.
+  const has = t.out
+    ? list(["result", t.merit ? "merit list" : null, t.matrix ? "seat matrix" : null, figures ? "cut off" : null].filter((x): x is string => !!x))
+    : list([t.schedule ? "schedule" : null, t.matrix ? "seat matrix" : null, t.merit ? "merit list" : null].filter((x): x is string => !!x)) || "official notices";
   const kindsHeld = KIND_ORDER.filter((k) => notices.some((x) => x.kind === k));
   const top = lastYear?.rows[0];
   const deep = lastYear?.rows[lastYear.rows.length - 1];
@@ -128,6 +139,7 @@ export default async function StateRoundResultPage(props: Props) {
       round: r,
       year,
       authority: who,
+      has,
       result_date: result ? day(result.on) : "",
       result_title: result ? short(result.title) : "",
       latest_date: notices[0] ? day(notices[0].on) : "",
@@ -136,7 +148,7 @@ export default async function StateRoundResultPage(props: Props) {
       printed: figures?.roundPrinted ?? "",
       quota: figures?.mainQuota ?? lastYear?.quota ?? "",
       last: general?.last ? n(general.last) : "",
-      colleges: general?.colleges ? n(general.colleges) : lastYear ? n(lastYear.colleges) : "",
+      colleges: general?.colleges ? n(general.colleges) : "",
       last_year: lastYear?.year ?? "",
       top_branch: top?.name ?? "",
       top_rank: top ? n(top.last) : "",
@@ -160,12 +172,12 @@ export default async function StateRoundResultPage(props: Props) {
   // Out: the authority's result notice is here, or its allotment list is loaded (a list read before its notice was).
   const out = !!result || !!figures;
   const subtitle =
-    (result ? c.subtitle_out : figures ? c.subtitle_figures_only : c.subtitle_wait) +
+    (result ? (result.exact ? c.subtitle_out : c.subtitle_out_nodate) : figures ? c.subtitle_figures_only : c.subtitle_wait) +
     (figures && result ? ` ${c.subtitle_figures.trim()}` : "") +
     (lastYear ? ` ${c.subtitle_last.trim()}` : "");
 
   const faqs = [
-    { question: c.faq_out_q, answer: result ? c.faq_out_a : figures ? c.faq_out_figures_a : c.faq_wait_a },
+    { question: c.faq_out_q, answer: result ? (result.exact ? c.faq_out_a : c.faq_out_nodate_a) : figures ? c.faq_out_figures_a : c.faq_wait_a },
     notices.some((x) => x.kind === "result" || x.kind === "merit") ? { question: c.faq_where_q, answer: c.faq_where_a } : null,
     general?.last ? { question: c.faq_cut_q, answer: c.faq_cut_a } : null,
     lastYear && top && deep && top !== deep ? { question: c.faq_last_q, answer: c.faq_last_a } : null,
@@ -227,10 +239,10 @@ export default async function StateRoundResultPage(props: Props) {
             icon: "spark" as const,
             label: c.tile_result,
             value: out ? c.tile_result_out : c.tile_result_wait,
-            note: result ? day(result.on) : figures ? "allotment list" : `latest notice ${day(notices[0].on)}`,
+            note: result ? (result.exact ? day(result.on) : "official notice") : figures ? "allotment list" : "no result notice here yet",
           },
           ...(notices.length ? [{ icon: "authority" as const, label: c.tile_notices, value: n(notices.length), note: list(kindsHeld.slice(0, 3).map((k) => KIND_LABEL[k].toLowerCase())) }] : []),
-          ...(general?.last ? [{ icon: "down" as const, label: c.tile_last, value: `AIR ${n(general.last)}`, note: `${r.toLowerCase()}, ${n(general.colleges)} colleges` }] : []),
+          ...(general?.last ? [{ icon: "down" as const, label: c.tile_last, value: `AIR ${n(general.last)}`, note: `${general.quota}, ${n(general.colleges)} colleges` }] : []),
           ...(lastYear ? [{ icon: "compare" as const, label: (cLast ?? c).tile_branches, value: n(lastYear.rows.length), note: `${r.toLowerCase()}, branch by branch` }] : []),
         ]}
         aside={authority ? <StateAuthority a={authority} state={s} level="pg" /> : undefined}
@@ -261,7 +273,7 @@ export default async function StateRoundResultPage(props: Props) {
                   )}
                   <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12.5px] text-muted-foreground">
                     <span className="rounded-full bg-primary-soft px-2 py-0.5 text-[11.5px] font-semibold text-primary-strong">{KIND_LABEL[x.kind]}</span>
-                    <time dateTime={x.on.slice(0, 10)}>{day(x.on)}</time>
+                    <time dateTime={x.on.slice(0, 10)}>{x.exact ? day(x.on) : `listed ${day(x.on)}`}</time>
                     {x.authority && <span>{x.authority}</span>}
                   </p>
                   <NoticeSummary brief={x.brief} points={x.points} />
@@ -400,6 +412,7 @@ export default async function StateRoundResultPage(props: Props) {
               </tbody>
             </table>
           </div>
+          {cLast.last_note && <p className="mt-2 text-[12.5px] leading-relaxed text-muted-foreground">{cLast.last_note}</p>}
         </section>
       )}
 
