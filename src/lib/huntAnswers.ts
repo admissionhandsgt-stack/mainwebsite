@@ -23,6 +23,9 @@ import { branchMoneyDraft, cityMoneyDraft, type MoneyScope } from "@/lib/branchM
 import { cityIn, CITY_WORDS } from "@/lib/cityKey";
 import { approxFeeFor } from "@/lib/chance";
 import { cityPagePath } from "@/lib/cityQueries";
+import { getCollegeCutoffs } from "@/lib/collegeQueries";
+import { generalBands } from "@/lib/cutoffBands";
+import { ssSeats } from "@/lib/huntSs";
 import { bindsAiq, getOfficialBond, getOfficialStateByName, govtBond, hasOwnBond, money, rangeText, yearsText, serviceYears } from "@/lib/officialBond";
 import { getOfficialStipend, getOfficialStipendState, hasOwnStipend, type GovtStipend } from "@/lib/officialStipend";
 
@@ -243,7 +246,7 @@ function fitsSearch(q: string, c: { name: string; state: string | null }, states
   return true;
 }
 
-async function collegeByPhrase(q: string, states: PgState[] = []): Promise<College | null> {
+async function collegeByPhrase(q: string, states: PgState[] = [], level: "pg" | "ug" = "pg"): Promise<College | null> {
   const m = fold(q).match(/ ((?:[a-z]+ ){1,4})(medical college|institute of medical sciences|medical sciences|medical university)(?: ([a-z]{3,}))?/);
   if (!m) return null;
   const before = m[1].trim().split(" ").filter((w) => !NOT_A_NAME.has(w) || w === "government");
@@ -261,7 +264,7 @@ async function collegeByPhrase(q: string, states: PgState[] = []): Promise<Colle
              EXISTS (SELECT 1 FROM seat_options so JOIN courses co ON co.id = so.course_id
                       WHERE so.institute_id = i.id AND co.name !~* '^(DNB|DrNB|FNB|Diploma|PG Diploma)') AS mdms
         FROM institutes i LEFT JOIN states s ON s.id = i.state_id
-       WHERE i.level = 'pg' AND i.is_active AND i.slug IS NOT NULL
+       WHERE i.level = ${level} AND i.is_active AND i.slug IS NOT NULL
          AND lower(regexp_replace(i.name, '[^A-Za-z]+', ' ', 'g')) LIKE ${phrase}
        LIMIT 4`)) as unknown as (College & { mdms: boolean })[];
     const fit = rows.filter((r) => fitsSearch(q, r, states));
@@ -272,8 +275,8 @@ async function collegeByPhrase(q: string, states: PgState[] = []): Promise<Colle
   return null;
 }
 
-async function collegeIn(q: string, states: PgState[]): Promise<College | null> {
-  const byPhrase = await collegeByPhrase(q, states).catch(() => null);
+async function collegeIn(q: string, states: PgState[], level: "pg" | "ug" = "pg"): Promise<College | null> {
+  const byPhrase = await collegeByPhrase(q, states, level).catch(() => null);
   if (byPhrase) return byPhrase;
   const st = stateIn(q, states);
   let words = fold(q).trim().split(" ").filter((w) => w.length >= 2 && !NOT_A_NAME.has(w) && !/^\d+$/.test(w));
@@ -290,7 +293,7 @@ async function collegeIn(q: string, states: PgState[]): Promise<College | null> 
            EXISTS (SELECT 1 FROM seat_options so JOIN courses co ON co.id = so.course_id
                     WHERE so.institute_id = i.id AND co.name !~* '^(DNB|DrNB|FNB|Diploma|PG Diploma)') AS mdms
       FROM institutes i LEFT JOIN states s ON s.id = i.state_id
-     WHERE i.level = 'pg' AND i.is_active AND i.slug IS NOT NULL AND ${sql.join(words.map(like), sql` AND `)}
+     WHERE i.level = ${level} AND i.is_active AND i.slug IS NOT NULL AND ${sql.join(words.map(like), sql` AND `)}
      LIMIT 6`)) as unknown as (College & { mdms: boolean })[];
   const fit = rows.filter((r) => fitsSearch(q, r, states));
   const mdms = fit.filter((r) => r.mdms);
@@ -926,18 +929,71 @@ const SEATS = /how many (pg|md|ms|md ?\/ ?ms|post ?graduate)? ?seats|seats in in
 const LOW = /low (score|rank|marks)|just (qualified|eligible|passed)|clinical branch|clinical at|less marks|kam marks/i;
 const CUTOFF = /cut ?off|closing rank|rank (needed|required)|kitn[ae] rank|which rank|rank for/i;
 
+const UG_ASK = /\b(ug|mbbs|bds|neet ug|neet-ug)\b/i;
+const PG_ASK = /\b(pg|md|ms|dnb|neet pg|neet-pg|post ?grad\w*)\b/i;
+
+/**
+ * "sms jaipur cut off", "lady hardinge medical college cut off neet ug 2026", "mysore medical college cut off 2026"
+ * (2026-11-24: the cut-off theme was 10,200 impressions in ten days at 0.43% clicks, and a college named with no branch
+ * or round had no answer). The college page's own bands — a band of ranks, general category, merit quotas — never a rank.
+ * The level the search names; with none, PG first (the counselling in progress), then MBBS.
+ */
+async function collegeCut(q: string, states: PgState[]): Promise<Draft | null> {
+  const ug = UG_ASK.test(q);
+  const pg = PG_ASK.test(q);
+  const levels: ("pg" | "ug")[] = ug && !pg ? ["ug"] : pg && !ug ? ["pg"] : ["pg", "ug"];
+  const rest = withoutBranchWords(q).replace(/\b(ug|mbbs|bds|marks?|score|cut|off|neet|nirf)\b/gi, " ").replace(/\s+/g, " ").trim();
+  for (const level of levels) {
+    const c = await collegeIn(rest, states, level).catch(() => null);
+    if (!c) continue;
+    const nm = collegeName(c.name);
+    const label = nm.place && !nm.short.toLowerCase().includes(nm.place.toLowerCase()) ? `${nm.short}, ${nm.place}` : nm.short;
+    if (level === "pg") {
+      const live = await collegeBranch(q, { slug: c.slug, label }, true).catch(() => null);
+      if (live) return live;
+    }
+    const rows = generalBands(await getCollegeCutoffs(c.slug, level).catch(() => []), 6);
+    if (!rows.length) continue;
+    const exam = level === "ug" ? "NEET UG" : "NEET PG";
+    const first = rows[0];
+    const line = (r: (typeof rows)[number]) => `${r.course}, ${r.quota}${r.year ? ` (${r.year})` : ""}: open category ${r.band}.`;
+    return {
+      page: `/${level === "ug" ? "mbbs-india" : "md-ms-india"}/colleges/${c.slug}`,
+      kind: `college-cut:${level}`,
+      lead: `${label}, ${exam} cut off${first.year ? ` ${first.year}` : ""}: ${first.course}, ${first.quota} — open category ${first.band} (a band of ranks, not the exact rank).`,
+      pointsTitle: rows.length > 1 ? "Other seats here:" : undefined,
+      points: rows.slice(1, 6).map(line),
+      checks: [
+        "Your category and quota: a reserved category, a state quota and a management seat each close at their own ranks.",
+        "Which round you are reading: later rounds can reach much further down the list, or close tighter.",
+        "The fee and bond of the seat before you lock it.",
+      ],
+      source: `The counselling authorities' published allotment results. Each figure is a band of ranks, not the rank itself.`,
+      what: `${label} fees, seats and cut off page`,
+      predictor: true,
+    };
+  }
+  return null;
+}
+
 /** Which builder answers a question, from our live data — or none. Shared by the hunt and the site's search answers. */
 async function pickDraft(q: string, all: string, hasText: boolean, states: PgState[]): Promise<Draft | null> {
   if (WEBSITE.test(q) || bareCounselling(q)) {
     const d = await authoritySite(q, states);
     if (d) return d;
   }
+  // A DM / MCh / DrNB course's seats ("dm cardiology seats in india") — NEET SS, lib/huntSs.ts. Not under a state's name.
+  if (/\bseats?\b/i.test(q) && (SUPER_SPECIALTY.test(q) || /\b(dm|m\.?\s?ch|drnb)\b/i.test(q)) && !stateIn(q, states)) {
+    const d = await ssSeats(q);
+    if (d) return d;
+  }
   // A branch, a round, a college or a state in any spelling, asking for a cut off ("neet pg 2026 md radio cut off",
   // "sms jaipur radiology round 2", "md radiology cut off rajasthan") — lib/huntBranch.ts. Not a fee or stipend question.
   const bw = branchWord(q);
   const cutAsked = (CUTOFF.test(q) || /\b(rank|round|closing|allot\w*)\b/i.test(q)) && !STIPEND.test(q) && !/fee|cost|tuition/i.test(q);
-  // AIIMS, JIPMER, PGIMER… fill their PG seats through INI-CET: no NEET PG figure answers their cut off.
-  if (cutAsked && INI_CET.test(q)) return null;
+  // AIIMS, JIPMER, PGIMER… fill their PG seats through INI-CET: no NEET PG figure answers their cut off. Their MBBS seats
+  // are NEET UG's (MCC), so a search that says UG or MBBS goes on.
+  if (cutAsked && INI_CET.test(q) && !(UG_ASK.test(q) && !PG_ASK.test(q))) return null;
   if (cutAsked && (bw || roundIn(q))) {
     // What is left once the branch, round, year and category words go: a college's name, or only a place.
     const rest = withoutBranchWords(q);
@@ -957,6 +1013,11 @@ async function pickDraft(q: string, all: string, hasText: boolean, states: PgSta
       const d = await roundOverall(q);
       if (d) return d;
     }
+  }
+  // A college named, no branch or round: its own bands (collegeCut). Not a state or a place alone.
+  if (cutAsked && !bw && !roundIn(q) && !SUPER_SPECIALTY.test(q)) {
+    const d = await collegeCut(q, states);
+    if (d) return d;
   }
   // A branch's fees, stipend or bond — in India, a state, a city or one college ("md radiology fees", "ms ortho fees in
   // pune", "kmc manipal radiology fees", "md medicine stipend maharashtra", "md radiology bond") — lib/branchMoney.ts.

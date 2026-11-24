@@ -3307,6 +3307,14 @@ Owner: "itne pending task complete karo" (Meta's Conversions API token comes lat
   (answered since this day — `bareCounselling` in lib/huntAnswers.ts, "haryana neet pg counselling" → who runs it, its
   site, its latest notices; never when a date, fee, result or counsellor is asked), "dm <course> seats in india" (NEET SS
   pages; `SUPER_SPECIALTY` stops them), a PG college's cut off with no branch named, hospital names alone (no answer exists).
+  **Both built the same evening:** `lib/huntSs.ts` `ssSeats` — "dm cardiology seats in india", "interventional radiology
+  seats", "mch neurosurgery seats", "drnb cardiology seats": NMC's approved DM/MCh seats and colleges (a course's every name
+  alternative summed, colleges counted once) plus MCC's NEET SS round 1 allotments of the latest year we hold; DrNB from MCC's
+  allotments alone; every word the search uses for the course must be in one course's name, the closest name wins, a tie or a
+  state named gets no answer; on `/neet-ss/<slug>`. And `collegeCut` in lib/huntAnswers.ts — "sms jaipur cut off", "lady
+  hardinge medical college cut off neet ug 2026", "grmc gwalior cut off marks 2026": the college page's own bands (PG: MCC's
+  live bands of the year in progress via `collegeBranch(…, anyBranch)`; MBBS: `generalBands`), the level the search names,
+  PG first when it names none; `collegeIn` takes a level now. Their MBBS (UG-worded) AIIMS searches pass the INI-CET guard.
 - **Research specs (Sonnet agents, 2026-11-11), in `D:/Admisson Hands/seo_data/research_2026_11/`:** `lead_magnet_pdf.md`
   (state PG fee & stipend PDF over WhatsApp: tap → prefilled message → free-form document reply inside the 24-hour window;
   Maharashtra first), `hinglish_pages.md` (no /hi/ section; a Hinglish FAQ block on 8 existing pages and two "kaise hoti hai"

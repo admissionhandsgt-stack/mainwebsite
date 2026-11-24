@@ -278,10 +278,11 @@ export async function branchState(q: string, state: { name: string; slug: string
 
 /* ------------------------------------------------------- college × branch / round --- */
 
-export async function collegeBranch(q: string, c: { slug: string; label: string }): Promise<Draft | null> {
+export async function collegeBranch(q: string, c: { slug: string; label: string }, anyBranch = false): Promise<Draft | null> {
   const b = branchWord(q);
   const asked = roundIn(q);
-  if (!b && !asked) return null;
+  // `anyBranch`: "sms jaipur cut off" names neither — the branches families ask about most lead (2026-11-24).
+  if (!b && !asked && !anyBranch) return null;
   const live = await getCollegeLiveBands(c.slug).catch(() => null);
   if (!live?.rows.length) return null;
   const rows = live.rows.filter((r) => (b ? b.course.test(r.course) : true) && /all india|aiq|open seat|central/i.test(r.quota));
