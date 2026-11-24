@@ -687,8 +687,9 @@ CENTAC's older Drive files. **Check `scripts/tmp/held_notices.mjs` whenever a st
 **Who runs a state's PG counselling — `lib/pgAuthority.ts` (same day).** `getPgAuthority(state)` is what the PG counselling,
 PG state and city pages read: the admin's "State counselling authorities" row when its scope covers PG, else — for the
 states in `FROM_NOTICES` only (Haryana, J&K, Jharkhand, Tripura; each a government body on its own counselling page) — the
-body whose page the state's newest approved PG notice came from. Haryana's row named UHSR Rohtak for UG and PG; it runs
-MBBS only (dmer.haryana.gov.in: uhsrugcounselling.com for MBBS, DMER's portal for MD/MS), so the row is scope "UG" now
+body whose page the state's newest approved PG notice came from. Haryana's row sent PG candidates to UHSR Rohtak's
+uhsr.ac.in; the MD/MS counselling runs on DMER Haryana's portal (dmer.haryana.gov.in: uhsrugcounselling.com for MBBS, DMER's
+portal for MD/MS; UHSR Rohtak carries out the document verification there), so the row is scope "UG" now
 (`scripts/sql/haryana_pg_authority_2026_11_24.sql`, shipped list too). Rajasthan's and Odisha's PG bodies
 (pg.neetrajasthan.com, dmetodisha.in) are not in either list yet: no government page was found linking them — their PG
 pages show notices but no authority card, and "pgmcc odisha" gets no bot answer.
@@ -2200,6 +2201,44 @@ Search Console, 12 Oct – 8 Nov: college pages carry 94k of the site's impressi
 - **A college title's year is its band's year** (`collegeTitle`), not the page's newest row's.
 - **DNB ↔ MD/MS twin pages link each other** (`getPgTwin` in `collegeQueries.ts`): within a state, exactly two entries
   with one short name + place, one ending in a PIN code — 46 pairs; ambiguous groups get no link.
+
+## A state's own round, as a page — `/neet-pg-counselling/<year>/<round-slug>/<state>` (2026-11-24)
+
+Owner: *"jaise humne round wise MCC ka result page banaya hai aise sab states ka banaye usko indexing and keywords target
+kare"*. Demand was measured first (`scripts/tmp/state_round_demand.mjs`): 458 of the 7,891 autocomplete searches the
+research bot holds name a state with a round, result, merit list, seat matrix or schedule ("haryana neet pg round 2
+result", "maharashtra neet pg merit list 2026", "wbmcc neet pg counselling round 3"), across 25 states, and Search Console
+showed us for almost none of them (185 impressions in 28 days) because no page answered them. `lib/stateRoundPages.ts`,
+`app/neet-pg-counselling/[year]/[round]/[state]/page.tsx` — the state twin of MCC's round page, one level under it.
+
+- **What a page holds** (nothing new is collected; it was all on the site, never per round): the state authority's own
+  notices for that round — owner-approved in Zyn, each linked to the authority's file, labelled result / merit list / seat
+  matrix / schedule / registration (`noticeKind`, from the title's words) — the round's result in group figures where the
+  allotment list is loaded (`getStateRoundOf`, the same `state_round_cuts` figures as the PG state page: by quota, category
+  and branch, 3+ colleges, never a college's closing rank), the same round last year branch by branch from the state's own
+  results (`closing_ranks`, the state's main merit quota, open category, 3+ colleges), "what to do next" (general, true of
+  every state: no state's own rule is typed), FAQs built only from facts the page has, the state's other rounds, the round
+  in other states, the state's other pages.
+- **Which round a notice is about:** Zyn's `round` when it has one, else the first round the title names (`roundOrder`:
+  "Round-2", "Round -1", "Round1", "Round- II", "2nd round", "second phase", "Phase II"; a mop-up round is the third, a
+  stray round the fourth). A notice that names no round is on the state pages only.
+- **"Is the result out?"** is answered from a notice that is a list, a result or the allotments themselves — "first round
+  seat allotment SCHEDULE" and "allotment facility for OPTION confirmation" are not results — or from a loaded allotment
+  list. A `published_on` after today is a date inside the notice, so the approval time is used.
+- **Which pages exist:** the running counselling year only (`getCounsellingYear`), a state × round with a notice or
+  figures: 49 on the first day (rounds 1 and 2; round 3 and stray pages appear as the states post them), 40 indexable. A
+  page with neither figures, a result notice nor two notices is `noindex, follow` and out of the sitemap; any other state,
+  round or year is a 404. In the states sitemap, dated by the round's newest notice or the day its list was loaded.
+- **Titles say only what the page has:** "<State> NEET PG Round 2 Result 2026: Merit List & Seat Matrix" when a result is
+  out, "… Round 2 Counselling 2026: Schedule & Seat Matrix" while awaited; "Merit List", "Seat Matrix", "Schedule" and
+  "Cut Off" appear only when that kind of notice or figure is on the page.
+- **Linked from** MCC's round page ("Round 2 in the states, 2026", every state with that round), the PG state page and
+  the state's counselling page (`components/states/StateRoundLinks`, under the latest notices), and each other.
+- **Freshness:** a published notice re-reads its state's round pages at once (`take()` in lib/zynNotices.ts); the page
+  watcher reads them hourly (`tierOf`), not with the live pages every ten minutes; the edge treats them as live pages.
+- Words: Admin → Content → "Page: a state's NEET PG round (result, merit list, seat matrix)" (`page.pg_state_round`).
+  Judge on Search Console ~3 weeks after (around 15 Dec): impressions for "<state> neet pg round N result / merit list /
+  seat matrix". **A state's Round 2 list, once loaded into `state_round_cuts`, gives its page figures by itself.**
 
 ## State counselling rounds of the year in progress (2026-11-04) — never in the predictor
 

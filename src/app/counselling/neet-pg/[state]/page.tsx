@@ -17,6 +17,7 @@ import { counsellingYear, getCounselPgStates, getCounselUgStates, sameState } fr
 import DataHero from "@/components/hero/DataHero";
 import StateAuthority from "@/components/states/StateAuthority";
 import StateNotices from "@/components/states/StateNotices";
+import StateRoundLinks from "@/components/states/StateRoundLinks";
 import SectionHead from "@/components/ui/SectionHead";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
 import ExpertCompare from "@/components/lead/ExpertCompare";
@@ -235,6 +236,8 @@ export default async function CounselPgStatePage(props: Props) {
       <WhereNow level="pg" placement="counsel_pg_state" stateName={p.name} feesHref={fee ? `/md-ms-india/fees/${p.slug}` : undefined} />
 
       <StateNotices state={p.name} level="pg" />
+      {/* The state's own rounds, each a page: its notices, result and last year's same round (2026-11-24). */}
+      <StateRoundLinks state={p.name} />
 
       <RouteCards title={c.routes_title} cards={routeCards}>
         {mccSplit && mcc && (

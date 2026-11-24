@@ -1,7 +1,7 @@
--- Haryana (2026-11-24): Pt. B.D. Sharma UHS, Rohtak runs the MBBS/BDS counselling only. MD/MS counselling is DMER
--- Haryana's, on hry.online-counselling.co.in — dmer.haryana.gov.in links uhsrugcounselling.com for MBBS and that portal
--- for PG (its notices: FinalRound1Combined.pdf, FinalRound1DNB.pdf). The row said "UG and PG", so every Haryana PG page
--- named UHSR and uhsr.ac.in as the PG authority. With scope "UG" the PG pages take the authority from DMER Haryana's own
+-- Haryana (2026-11-24): the MD/MS counselling runs on DMER Haryana's own portal, hry.online-counselling.co.in —
+-- dmer.haryana.gov.in links uhsrugcounselling.com for MBBS and that portal for PG (its notices: FinalRound1Combined.pdf,
+-- FinalRound1DNB.pdf); Pt. B.D. Sharma UHS, Rohtak carries out the document verification there. The row said "UG and PG",
+-- so every Haryana PG page sent candidates to uhsr.ac.in as the PG counselling site. With scope "UG" the PG pages take the authority from DMER Haryana's own
 -- approved notices (lib/pgAuthority.ts). Guarded on the old values: an admin's edit is never overwritten.
 --
 -- Run after the release that carries lib/pgAuthority.ts, then:

@@ -494,8 +494,12 @@ async function take(n: ZynNotice, recheck = false): Promise<"published" | "held"
   if (status === "published") {
     const { notifyChange, schedulePaths, statePaths } = await import("@/lib/notifyChange");
     const mcc = /\bMCC\b/i.test(n.authority ?? "") || scheduleStatus === "applied" || scheduleStatus === "flagged";
+    // The state's own round pages list this notice too (lib/stateRoundPages.ts).
+    const rounds = n.state
+      ? await import("@/lib/stateRoundPages").then((m) => m.getStateRoundLinks(n.state!)).then((r) => r.entries.map((e) => e.path)).catch(() => [] as string[])
+      : [];
     await notifyChange(
-      ["/neet-counselling-updates", ...(n.state ? statePaths(n.state) : []), ...(mcc ? await schedulePaths() : [])],
+      ["/neet-counselling-updates", ...(n.state ? statePaths(n.state) : []), ...rounds, ...(mcc ? await schedulePaths() : [])],
       `notice ${n.id}: ${n.title.slice(0, 80)}`,
     ).catch(() => undefined);
   }

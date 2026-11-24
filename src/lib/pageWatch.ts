@@ -396,6 +396,9 @@ async function takeLease(): Promise<boolean> {
 }
 
 function tierOf(path: string, group: string): Tier {
+  // A state's own round page (/neet-pg-counselling/<year>/<round>/<state>, ~50 and growing): hourly, and at once when
+  // one of its notices is published — not with the handful of live pages every 10 minutes.
+  if (/^\/neet-pg-counselling\/\d{4}\/[^/]+\/[^/]+$/.test(path)) return "hub";
   if (LIVE_PAGE.test(path)) return "live";
   if (group === "hubs") return "hub";
   if (group === "states" || group === "branches") return "data";

@@ -38,6 +38,7 @@ import ScheduleRevisionNote from "@/components/mcc/ScheduleRevisionNote";
 import CounselCard from "@/components/lead/CounselCard";
 import { getSeatMatrixOverview } from "@/lib/pgSeatData";
 import { ROUND_RULES, SOURCES } from "@/lib/choiceFillingRules";
+import { getStateRoundIndex } from "@/lib/stateRoundPages";
 
 /**
  * /neet-pg-counselling/<year>/<round> (2026-10-21) — one round of MCC's NEET PG counselling, built by
@@ -246,11 +247,15 @@ export default async function RoundResultPage(props: { params: Promise<Params> }
   if (!d) notFound();
   const { year, spec, current, state, result, prev, when, steps, row, nextWhen, rule } = d;
   const path = roundPath(year, spec.slug);
-  const [branchPages, pgStates, matrix] = await Promise.all([
+  const [branchPages, pgStates, matrix, stateIndex] = await Promise.all([
     getBranches(),
     getPgStates(),
     year === current ? getSeatMatrixOverview() : Promise.resolve(null),
+    // The same round in each state's own counselling (lib/stateRoundPages.ts): the running year only.
+    year === current ? getStateRoundIndex().catch(() => null) : Promise.resolve(null),
   ]);
+  const stateRounds = (stateIndex?.entries ?? []).filter((e) => e.order === spec.order).sort((a, b) => a.state.localeCompare(b.state));
+  const stateCopy = stateRounds.length ? await pageCopy("page.pg_state_round", { round: spec.label, year }) : null;
   const stateSlug = new Map(pgStates.map((s) => [s.name, s.slug]));
   const branchSlugs = branchPages.map((b) => b.slug);
   const hasBranch = new Set(branchSlugs);
@@ -732,6 +737,23 @@ export default async function RoundResultPage(props: { params: Promise<Params> }
             <Link href="/neet-college-predictor?course=pg" className="font-semibold text-primary-strong hover:underline dark:text-primary">
               {copy.cta}
             </Link>
+          </p>
+        </section>
+      )}
+
+      {/* ------------------------------ the same round, state by state ------------------------------ */}
+      {stateCopy && stateRounds.length > 0 && (
+        <section className="container-custom pb-10 md:pb-14" id="states">
+          <SectionHead icon="map" title={stateCopy.hub_title} intro={stateCopy.hub_intro} />
+          <p className="mt-5 text-[14.5px] leading-relaxed">
+            {stateRounds.map((e, i) => (
+              <span key={e.path}>
+                {i > 0 && <span className="text-muted-foreground"> · </span>}
+                <Link href={e.path} className="text-primary-strong hover:underline dark:text-primary">
+                  {e.state} {spec.label.toLowerCase()}
+                </Link>
+              </span>
+            ))}
           </p>
         </section>
       )}

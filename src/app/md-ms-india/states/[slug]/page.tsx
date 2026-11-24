@@ -1,6 +1,7 @@
 import { pageOgImage } from "@/lib/ogImage";
 import { getNmcPgForState } from "@/lib/nmcData";
 import StateNotices from "@/components/states/StateNotices";
+import StateRoundLinks from "@/components/states/StateRoundLinks";
 import { fitTitle, fitDescription, count } from "@/lib/seoTitle";
 import { getPgAuthority } from "@/lib/pgAuthority";
 import StateAuthority from "@/components/states/StateAuthority";
@@ -331,6 +332,8 @@ export default async function PgStatePage(props: Props) {
 
       {/* ------------- the counselling authority's latest notices (owner-approved Zyn notices + the state board feed) ------------- */}
       <StateNotices state={p.name} level="pg" />
+      {/* The state's own rounds, each a page: its notices, result and last year's same round (2026-11-24). */}
+      <StateRoundLinks state={p.name} />
 
       {/* ------------- the state's own round of the year in progress (not read by the predictor) ------------- */}
       {round && roundCopy && (round.byQuota.length > 0 || round.byBranch.length > 0) && (

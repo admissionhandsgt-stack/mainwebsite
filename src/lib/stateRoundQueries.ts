@@ -53,8 +53,8 @@ export const CATEGORY_LABEL: Record<string, string> = {
 const COLLEGE = sql`COALESCE(c.institute_id::text, c.college_printed)`;
 const OPEN_MERIT = sql`NOT c.pwd AND c.additional_category IS NULL AND NOT c.in_service AND c.closing_air > 0`;
 
-export const getStateRound = unstable_cache(
-  async (stateSlug: string): Promise<StateRound | null> => {
+/** A state's round: its latest one, or — `pick` — one named round of one year (the state's own round page). */
+async function build(stateSlug: string, pick?: { year: number; round: string }): Promise<StateRound | null> {
     const head = rows<Record<string, unknown>>(
       await db.execute(sql`
         SELECT c.state_id, c.year, c.round, MIN(c.round_printed) AS round_printed, MIN(c.counselling) AS counselling,
@@ -62,6 +62,7 @@ export const getStateRound = unstable_cache(
                COUNT(DISTINCT ${COLLEGE})::int AS colleges
           FROM state_round_cuts c JOIN states s ON s.id = c.state_id
          WHERE s.slug = ${stateSlug} AND c.level = 'pg'
+           ${pick ? sql`AND c.year = ${pick.year} AND c.round = ${pick.round}` : sql``}
          GROUP BY c.state_id, c.year, c.round
          ORDER BY c.year DESC, c.round DESC
          LIMIT 1`),
@@ -138,7 +139,16 @@ export const getStateRound = unstable_cache(
       byCategory: byCategory.filter((c) => c.last != null),
       byBranch,
     };
-  },
-  ["state-round-v1"],
+}
+
+export const getStateRound = unstable_cache((stateSlug: string) => build(stateSlug), ["state-round-v1"], {
+  revalidate: 3600,
+  tags: ["state-round", "seat-data"],
+});
+
+/** One named round ("R1") of one year — /neet-pg-counselling/<year>/<round>/<state> (lib/stateRoundPages.ts). */
+export const getStateRoundOf = unstable_cache(
+  (stateSlug: string, year: number, round: string) => build(stateSlug, { year, round }),
+  ["state-round-of-v1"],
   { revalidate: 3600, tags: ["state-round", "seat-data"] },
 );

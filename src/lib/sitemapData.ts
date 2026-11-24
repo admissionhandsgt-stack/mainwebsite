@@ -415,6 +415,15 @@ async function buildSitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry[]
   } catch (error) {
     console.error("[sitemap] PG states could not be listed", error);
   }
+  // A state's own NEET PG round (2026-11-24, lib/stateRoundPages.ts): the indexable ones, each dated by its newest
+  // notice or the day its allotment list was loaded — never the day of the request.
+  try {
+    const { getStateRoundIndex } = await import("@/lib/stateRoundPages");
+    for (const e of (await getStateRoundIndex()).entries)
+      if (e.indexable) out.states.push({ url: `${BASE}${e.path}`, lastModified: e.newest || undefined, changeFrequency: "daily", priority: 0.7 });
+  } catch (error) {
+    console.error("[sitemap] state round pages could not be listed", error);
+  }
   // The counselling-guidance pages by state (2026-11-11): dated like the state's data page — its newest notice or the
   // level's data, never the day of the request.
   try {

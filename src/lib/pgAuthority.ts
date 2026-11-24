@@ -3,9 +3,10 @@
  *
  * The admin's "State counselling authorities" row where it covers PG. Where it does not, the body whose own page the
  * state's newest owner-approved PG notice came from (Zyn) — for the states in `FROM_NOTICES` only, each checked: a state's
- * PG counselling is not always its MBBS board's. Haryana's row named UHSR Rohtak for both, but dmer.haryana.gov.in links
- * uhsrugcounselling.com for MBBS and hry.online-counselling.co.in (DMER Haryana) for MD/MS — so the PG pages named the
- * wrong body and site while "haryana neet pg counselling" was the site's most-shown state search.
+ * PG counselling is not always on its MBBS board's site. Haryana's row sent PG candidates to UHSR Rohtak's uhsr.ac.in,
+ * but dmer.haryana.gov.in links uhsrugcounselling.com for MBBS and DMER Haryana's own portal,
+ * hry.online-counselling.co.in, for MD/MS (UHSR Rohtak carries out the document verification there) — so the PG pages
+ * linked the wrong site while "haryana neet pg counselling" was the site's most-shown state search.
  */
 import { unstable_cache } from "next/cache";
 import { sql } from "drizzle-orm";
