@@ -2260,6 +2260,15 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
 - Words: Admin → Content → "Page: a state's NEET PG round (result, merit list, seat matrix)" (`page.pg_state_round`).
   Judge on Search Console ~3 weeks after (around 15 Dec): impressions for "<state> neet pg round N result / merit list /
   seat matrix". **A state's Round 2 list, once loaded into `state_round_cuts`, gives its page figures by itself.**
+- **Round 2 loaded 2026-11-25** from the counsellor tool's round-closing feed (zyn-81): Karnataka (KEA provisional, 23 Nov),
+  Gujarat, Tamil Nadu (GQ + MQ in one run with `--also "TN Mgmt PG"`: the import replaces the whole state × round),
+  Kerala (CEE provisional), Rajasthan, Haryana (provisional, before grievances), Chhattisgarh, J&K and Goa — runner
+  `scripts/tmp/sr_r2_run.sh [--apply]` (git-excluded), backups `D:/Admisson Hands/pg_handoff/state_round_backups/`. The
+  feed's source titles carry the tool's working notes, so `--printed` is the board's own title + date written by hand;
+  `source_url` keeps only a real address. **A provisional list replaced by a final one is re-run the same way** (same
+  key and round). Then `bash scripts/revalidate_tags.sh --purge state-round` (accepted by the route since this change).
+  Still only in the feed: Round 1 of AP and Telangana (Govt + Mgmt — the Mgmt keys name the state "<State> Management",
+  asked to fix), Puducherry, HP, Jharkhand, Tripura, NEIGRIHMS, Arunachal, Sikkim.
 
 ## State counselling rounds of the year in progress (2026-11-04) — never in the predictor
 

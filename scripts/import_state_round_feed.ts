@@ -7,7 +7,12 @@
  * them out of the open-merit figures). Only group figures over 3+ colleges ever reach a page (lib/stateRoundQueries.ts).
  *
  *   npx tsx --env-file=.env.local scripts/import_state_round_feed.ts "<feed key>" --round R1 \
- *       --printed "<round as the list names it>" --counselling "<authority>" [--note "<line for the page>"] [--apply --backup <f>]
+ *       --printed "<round as the list names it>" --counselling "<authority>" [--note "<line for the page>"] \
+ *       [--also "<second feed key of the same state>"] [--apply --backup <f>]
+ *
+ * --also (2026-11-25): a state whose round comes as two lists (Tamil Nadu's Government and Management quota) is loaded in
+ * one go — the import replaces the whole state × year × round, so loading them one after the other kept only the second.
+ * Each line keeps the official file its list came from (the feed's round source) as `source_url`.
  *
  * Dry run by default (prints what maps and what does not). --apply replaces that state's year × round in one transaction.
  */
@@ -21,6 +26,7 @@ const round = opt("--round") ?? "R1";
 const printed = opt("--printed");
 const counselling = opt("--counselling");
 const note = opt("--note") ?? null;
+const also = opt("--also");
 const apply = args.includes("--apply");
 const backup = opt("--backup");
 const YEAR = 2026;
@@ -45,10 +51,24 @@ type Line = {
 const sql = postgres(process.env.DATABASE_URL!, { max: 1 });
 const sync = (await sql<{ value: string }[]>`SELECT value FROM integrations WHERE key IN ('zyn.notices.key','counselor.sync_key') ORDER BY key DESC`)[0]?.value;
 if (!sync) throw new Error("no sync key in integrations");
-const res = await fetch(`https://ah.aismartscan.in/api/integrations/website/round-closing?c=${encodeURIComponent(key)}`, { headers: { "X-AH-Sync-Key": sync } });
-if (!res.ok) throw new Error(`feed answered ${res.status}`);
-const feed = (await res.json()) as { counselling: string; label: string; lines: Line[] };
-const lines = feed.lines.filter((l) => l.rounds?.[round]?.closing_air);
+const FEED = "https://ah.aismartscan.in/api/integrations/website/round-closing";
+const list = (await (await fetch(FEED, { headers: { "X-AH-Sync-Key": sync } })).json()) as {
+  counsellings: { key: string; rounds: { round: string; source?: { url?: string } }[] }[];
+};
+// Only a real address is kept: Haryana's "url" is the portal followed by where on it the file sits.
+const sourceOf = (k: string) =>
+  list.counsellings.find((c) => c.key === k)?.rounds.find((r) => r.round === round)?.source?.url?.match(/^https?:\/\/[^\s()]+/)?.[0] ?? null;
+const lines: (Line & { source: string | null })[] = [];
+for (const k of [key, ...(also ? [also] : [])]) {
+  const res = await fetch(`${FEED}?c=${encodeURIComponent(k)}`, { headers: { "X-AH-Sync-Key": sync } });
+  if (!res.ok) throw new Error(`feed answered ${res.status} for ${k}`);
+  const feed = (await res.json()) as { counselling: string; label: string; lines: Line[] };
+  const mine = feed.lines.filter((l) => l.rounds?.[round]?.closing_air);
+  console.log(`  ${k}: ${mine.length} ${round} lines`);
+  lines.push(...mine.map((l) => ({ ...l, source: sourceOf(k) })));
+}
+const named = [...new Set(lines.map((l) => l.state))];
+if (named.length > 1) throw new Error(`the lists name more than one state: ${named.join(", ")}`);
 const stateName = lines[0]?.state;
 if (!stateName) throw new Error(`no ${round} lines for ${key}`);
 
@@ -74,7 +94,7 @@ const rows = lines.map((l) => {
     round,
     round_printed: printed,
     counselling,
-    source_url: null as string | null,
+    source_url: l.source,
     institute_id: instituteId,
     college_printed: l.college,
     inst_code: null as string | null,
@@ -97,7 +117,7 @@ const rows = lines.map((l) => {
   };
 });
 
-console.log(`${key} (${stateName}) ${round}: ${lines.length} lines, ${new Set(lines.map((l) => l.college_id)).size} colleges`);
+console.log(`${[key, also].filter(Boolean).join(" + ")} (${stateName}) ${round}: ${lines.length} lines, ${new Set(lines.map((l) => l.college_id)).size} colleges`);
 console.log(`  colleges not in our PG list (kept by name, no institute): ${noInst.size}`, [...noInst].slice(0, 10));
 console.log(`  branch names not in our courses (kept as printed): ${noCourse.size}`, [...noCourse].slice(0, 10));
 console.log(`  pwd lines ${rows.filter((r) => r.pwd).length}, in-service lines ${rows.filter((r) => r.in_service).length}`);

@@ -17,7 +17,7 @@ import { queueGroups } from "@/lib/pageWatch";
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-const ALLOWED = new Set(["official-bond", "official-stipend", "college-research", "seat-terms", "seat-data", "mcc", "mcc-results", "nmc", "sitemap", "content"]);
+const ALLOWED = new Set(["official-bond", "official-stipend", "college-research", "seat-terms", "seat-data", "mcc", "mcc-results", "nmc", "sitemap", "content", "state-round"]);
 
 /** Which sitemap page families read each tag's data. */
 const FEEDS: Record<string, string[]> = {
@@ -30,6 +30,8 @@ const FEEDS: Record<string, string[]> = {
   nmc: ["hubs", "states", "branches", "ug-colleges", "pg-colleges"],
   content: ["hubs", "states", "branches"],
   sitemap: ["hubs"],
+  // A state's round list (scripts/import_state_round_feed.ts): its round pages and PG state pages are in the states sitemap.
+  "state-round": ["states"],
 };
 
 function authorised(request: Request): boolean {
