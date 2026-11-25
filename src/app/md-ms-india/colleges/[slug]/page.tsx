@@ -31,6 +31,7 @@ import { SEARCH_NAME } from "@/lib/branchStateQueries";
 import { getLatestLiveRound } from "@/lib/mccResults";
 import SeatTerms, { termsKey } from "@/components/colleges/SeatTerms";
 import { leavingFor } from "@/lib/officialLeaving";
+import { getSeatLeaving } from "@/lib/seatLeaving";
 import CollegeOfficialBond from "@/components/bond/CollegeOfficialBond";
 import { CollegeOfficialStipend } from "@/components/stipend/OfficialStipend";
 import { getOfficialCollegeStipend, getOfficialStipendState } from "@/lib/officialStipend";
@@ -142,7 +143,9 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
   const officialBond = !!bondVerified || !!bondStateRule;
   // What leaving each listed seat costs, from the official 2026-27 rules only — never the listing's own figures
   // (lib/officialLeaving.ts).
-  const officialRules = terms.length && !officialBond ? await getOfficialBond().catch(() => null) : null;
+  const [officialRules, perSeat] = terms.length && !officialBond
+    ? await Promise.all([getOfficialBond().catch(() => null), getSeatLeaving(college.slug).catch(() => ({}))])
+    : [null, {}];
   const leaving = Object.fromEntries(
     terms.map((t) => [
       termsKey(t),
@@ -151,6 +154,7 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
         states: officialRules?.states ?? [],
         collegeState: college.state ?? null,
         privateCollege: s.type !== "Government",
+        perSeat,
       }),
     ]),
   );

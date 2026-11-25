@@ -509,6 +509,15 @@ Two datasets from the PG data session (`pg-4f`), handed over as CSV in `D:/Admis
   stipend tile say to ask in writing), and the bot's answers never quote a listing leaving figure. The listing's stipend,
   service bond and hostel still show, under their caveat. Copy: `terms_intro`, `terms_caveat` (college page),
   `other_intro` (bond hub), all with `was` — re-run `seed_page_copy.mjs` after the deploy.
+  **Per seat, the same evening:** the PG tool session's `pg_handoff/from_pg/seat_leaving_terms_2026-27.json` (`public_text`
+  built from official_bond_2026_27.json: English, no source notes, no listing figure; statuses official 1,956 /
+  official_none_stated 151 / dnb_no_sum_set 2,269 / not_confirmed 36, public_text "") is loaded into `pg_seat_leaving`
+  (migration 0069; `npx tsx --env-file=.env.local scripts/import_seat_leaving.ts [file] [--apply --backup <f>]`, refuses
+  any text with a source bracket or the tool's Hinglish words) and read by `lib/seatLeaving.ts` (tag `seat-leaving`). It
+  matched 3,914 of the site's 4,117 college × seat types. `leavingFor(…, { perSeat })`: an "official" or DNB row gives that
+  seat's own words (first sentence, ≤460 characters, linked to the state's bond page) — e.g. Rajasthan's ₹10 L PG surety
+  bond on private seats; MCC seats keep MCC's rule; a "none stated" row keeps the state rule; any row adds "The college's
+  own terms (…): …" where the college's own document says something (589 rows); a not-confirmed row is never used.
 - **No allotment row's rank reaches a page** (the chance-view rule). `mcc_allotments` feeds round counts,
   and since 2026-10-21 the round pages' branch figures — the last rank admitted per branch × seat family ×
   category, only over three or more colleges (`groupRank`'s rule). A round's list is its fresh allotments plus

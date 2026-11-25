@@ -17,7 +17,7 @@ import { queueGroups } from "@/lib/pageWatch";
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-const ALLOWED = new Set(["official-bond", "official-stipend", "college-research", "seat-terms", "seat-data", "mcc", "mcc-results", "nmc", "sitemap", "content", "state-round", "search-faqs"]);
+const ALLOWED = new Set(["official-bond", "official-stipend", "college-research", "seat-terms", "seat-data", "mcc", "mcc-results", "nmc", "sitemap", "content", "state-round", "search-faqs", "seat-leaving"]);
 
 /** Which sitemap page families read each tag's data. */
 const FEEDS: Record<string, string[]> = {
@@ -35,6 +35,8 @@ const FEEDS: Record<string, string[]> = {
   // The "Questions people ask" answers are rebuilt from live data but cached an hour per question; a fix to a builder
   // (lib/huntAnswers.ts) shows at once only when this tag is dropped. They sit on pages of every family.
   "search-faqs": ["hubs", "states", "branches", "pg-colleges"],
+  // A college × seat type's official seat-leaving terms (scripts/import_seat_leaving.ts): the PG college pages.
+  "seat-leaving": ["pg-colleges"],
 };
 
 function authorised(request: Request): boolean {

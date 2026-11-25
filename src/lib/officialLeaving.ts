@@ -118,18 +118,56 @@ export function stateLeaving(state: OfficialState, opts: { privateCollege: boole
 }
 
 /**
+ * The college's own official terms inside a per-seat row ("… The college's own terms (2026-27): …"), as one short
+ * sentence to add — never a "not found / ask the college" note.
+ */
+function ownTerms(text: string): string | null {
+  const m = text.match(/The college's own terms \(([^)]*)\):\s*([\s\S]+)$/);
+  if (!m || /not found|ask the college|not stated/i.test(m[2])) return null;
+  const body = shortText(m[2], 260);
+  return body ? `The college's own terms (${m[1]}): ${body}` : null;
+}
+const beforeOwn = (text: string) => text.replace(/\s*The college's own terms \([^)]*\):[\s\S]*$/, "").trim();
+
+/**
  * The rule for one listed seat: by the counselling the listing names. MCC → MCC; a state named in the counselling (or
  * "Open States", the college's own state's counselling) → that state's rules when the official file holds them.
+ * `perSeat` (2026-11-25, lib/seatLeaving.ts): the official words for this college × seat type, from the PG tool session's
+ * research, win over the state-level rule where they say something — the state's or the college's own 2026-27 terms for
+ * that seat. MCC seats keep MCC's fuller rule, with the college's own terms added; a "none stated" row keeps the state rule
+ * (its wording reads better), plus the college's own terms; a not-confirmed row is never used.
  */
 export function leavingFor(
   t: { counselling: string | null; seatType: string; family?: string },
-  ctx: { mcc: OfficialState | null; states: OfficialState[]; collegeState: string | null; privateCollege: boolean },
+  ctx: {
+    mcc: OfficialState | null;
+    states: OfficialState[];
+    collegeState: string | null;
+    privateCollege: boolean;
+    perSeat?: Record<string, { status: string; text: string }>;
+  },
 ): LeavingRule {
   const counselling = t.counselling ?? "";
-  if (/\bMCC\b/i.test(counselling)) return mccLeaving(ctx.mcc);
+  const row = ctx.perSeat?.[t.seatType.trim().toLowerCase()];
+  const usable = row && row.text && row.status !== "not_confirmed" ? row : null;
+  const own = usable ? ownTerms(usable.text) : null;
+  const plus = (r: LeavingRule) => (own ? { ...r, sub: `${r.sub.replace(/\.?$/, ".")} ${own}` } : r);
+  if (/\bMCC\b/i.test(counselling)) return plus(mccLeaving(ctx.mcc));
   if (/DNB Sponsored/i.test(counselling)) return LEAVING_FALLBACK;
   const dnb = t.family === "dnb" || /\b(DNB|DrNB|NBE)\b/i.test(t.seatType);
   const named = ctx.states.find((s) => counselling.toLowerCase().includes(s.state.toLowerCase()));
   const state = named ?? (/open states/i.test(counselling) && ctx.collegeState ? ctx.states.find((s) => s.state === ctx.collegeState) : undefined);
-  return state ? stateLeaving(state, { privateCollege: ctx.privateCollege, dnb }) : LEAVING_FALLBACK;
+  if (usable && (usable.status === "official" || usable.status === "dnb_no_sum_set")) {
+    const main = shortText(beforeOwn(usable.text), 460);
+    if (main) {
+      const cap = main.charAt(0).toUpperCase() + main.slice(1);
+      return plus({
+        value: state ? `${state.state}'s 2026-27 rules` : "Official 2026-27 terms",
+        sub: cap,
+        href: state ? `/md-ms-india/bond/${state.slug}` : null,
+        hrefLabel: state ? `${state.state}'s rules in full` : null,
+      });
+    }
+  }
+  return plus(state ? stateLeaving(state, { privateCollege: ctx.privateCollege, dnb }) : LEAVING_FALLBACK);
 }
