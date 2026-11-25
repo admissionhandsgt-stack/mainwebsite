@@ -535,8 +535,9 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
                 { label: "With a bond", value: String(bond!.govt.withBond) },
                 { label: "Usual length", value: bond!.govt.withBond ? years(bond!.govt.typicalYears) : "No bond listed" },
                 { label: "Bond penalty", value: big(bond!.govt.penaltyMedian), sub: bond!.govt.penaltyMedian ? "middle value" : undefined },
-                ...(bond!.govt.exitMedian ? [{ label: "Leaving the seat", value: big(bond!.govt.exitMedian), sub: "middle penalty" }] : []),
-                ...(bond!.govt.debarYears ? [{ label: "Barred for", value: years(bond!.govt.debarYears), sub: "after leaving a seat" }] : []),
+                // The listing's seat-leaving penalty is never shown (2026-11-25, lib/officialLeaving.ts); this state's rules are
+                // not in the official file, so the tile says what to ask for.
+                { label: "Leaving the seat", value: "Ask in writing", sub: "not in an official 2026-27 document we hold" },
               ].map((f) => (
                 <div key={f.label} className="rounded-2xl border border-border bg-card px-4 py-3.5">
                   <dt className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">{f.label}</dt>

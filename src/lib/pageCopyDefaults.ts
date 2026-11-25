@@ -3731,15 +3731,19 @@ export const PAGE_COPY = {
       terms_intro: {
         label: "Terms line — {year}",
         value:
-          "What each type of seat here pays and binds you to: the stipend in each year, the service bond, and the penalty for leaving the seat once you have joined. As listed for the {year} counselling.",
+          "What each type of seat here pays and binds you to: the stipend in each year and the service bond, as listed for the {year} counselling, and what leaving the seat costs under the counselling's own 2026-27 rules.",
         long: true,
+        was: [
+          "What each type of seat here pays and binds you to: the stipend in each year, the service bond, and the penalty for leaving the seat once you have joined. As listed for the {year} counselling.",
+        ],
       },
       terms_caveat: {
         label: "Terms caveat",
         value:
-          "As listed for the counselling. This is not an official notice: bond and penalty rules change from year to year, so confirm them in the state's notice or with the college before you pay a fee or sign a bond.",
+          "The stipend, bond and hostel are as listed for the counselling, not an official notice: they change from year to year, so confirm them in the state's notice or with the college before you pay a fee or sign a bond. What leaving the seat costs is from the counselling's own 2026-27 rules.",
         long: true,
         was: [
+          "As listed for the counselling. This is not an official notice: bond and penalty rules change from year to year, so confirm them in the state's notice or with the college before you pay a fee or sign a bond.",
           "Compiled from counselling notices and college fee schedules by a third-party data service. This is not an official notice. Bond and penalty rules change from year to year, so confirm them in the state's notice or with the college before you pay a fee or sign a bond.",
         ],
       },
@@ -3962,8 +3966,11 @@ export const PAGE_COPY = {
       other_intro: {
         label: "Line over the states not read yet",
         value:
-          "We have not read these states' own documents yet. These figures are as listed for the counselling, not an official notice: confirm with the state's notice or the college before you pay a fee or sign a bond.",
+          "We have not read these states' own documents yet. These bond figures are as listed for the counselling, not an official notice: confirm with the state's notice or the college before you pay a fee or sign a bond. What leaving a seat costs here is not in an official 2026-27 document we hold, so ask the college or the counselling authority in writing.",
         long: true,
+        was: [
+          "We have not read these states' own documents yet. These figures are as listed for the counselling, not an official notice: confirm with the state's notice or the college before you pay a fee or sign a bond.",
+        ],
       },
       insight_states: { label: "Card: states with official rules", value: "States read from their own notices" },
       insight_top: { label: "Card: highest government bond", value: "Highest government-college bond" },

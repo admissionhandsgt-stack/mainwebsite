@@ -29,13 +29,14 @@ import MccSeats from "@/components/colleges/MccSeats";
 import DeemedBranches, { deemedBranches, feeText } from "@/components/colleges/DeemedBranches";
 import { SEARCH_NAME } from "@/lib/branchStateQueries";
 import { getLatestLiveRound } from "@/lib/mccResults";
-import SeatTerms from "@/components/colleges/SeatTerms";
+import SeatTerms, { termsKey } from "@/components/colleges/SeatTerms";
+import { leavingFor } from "@/lib/officialLeaving";
 import CollegeOfficialBond from "@/components/bond/CollegeOfficialBond";
 import { CollegeOfficialStipend } from "@/components/stipend/OfficialStipend";
 import { getOfficialCollegeStipend, getOfficialStipendState } from "@/lib/officialStipend";
 import { getStipends } from "@/lib/cutoffHubQueries";
 import { collegeBondText, listedBondText, listedExitText } from "@/components/bond/OfficialBond";
-import { getOfficialCollegeBond, getOfficialStateByName, govtBond, isCentralInstitution, rangeText, yearsText, serviceYears } from "@/lib/officialBond";
+import { getOfficialBond, getOfficialCollegeBond, getOfficialStateByName, govtBond, isCentralInstitution, rangeText, yearsText, serviceYears } from "@/lib/officialBond";
 import TelegramStrip from "@/components/engage/TelegramStrip";
 import { jsonLd as toJsonLd } from "@/lib/jsonLd";
 import ExpertPlaybook from "@/components/lead/ExpertPlaybook";
@@ -139,6 +140,20 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
       ? bondState
       : null;
   const officialBond = !!bondVerified || !!bondStateRule;
+  // What leaving each listed seat costs, from the official 2026-27 rules only — never the listing's own figures
+  // (lib/officialLeaving.ts).
+  const officialRules = terms.length && !officialBond ? await getOfficialBond().catch(() => null) : null;
+  const leaving = Object.fromEntries(
+    terms.map((t) => [
+      termsKey(t),
+      leavingFor(t, {
+        mcc: officialRules?.mcc ?? null,
+        states: officialRules?.states ?? [],
+        collegeState: college.state ?? null,
+        privateCollege: s.type !== "Government",
+      }),
+    ]),
+  );
   const listedTerms = s.kind === "pg" && !isCentralInstitution(college.name) ? foldListed(terms) : null;
   const bondListed = !officialBond && listedTerms && (listedBondText(listedTerms) || listedExitText(listedTerms)) ? listedTerms : null;
   // The same rule for the stipend: a state government college with no row of its own shows the state's rate, unless the
@@ -574,6 +589,7 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
                 <SeatTerms
                   terms={terms}
                   hideBond={officialBond}
+                  leaving={leaving}
                   hideStipend={officialStipend || !!stipendReported}
                   copy={{
                     eyebrow: termsCopy.terms_eyebrow,

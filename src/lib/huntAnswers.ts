@@ -310,8 +310,9 @@ function bondChecks(t: SeatTerms | undefined): string[] {
   const out: string[] = [];
   if (t.bondYears) out.push(`Service bond: ${t.bondYears} year${t.bondYears === 1 ? "" : "s"} after the course${t.bondPenalty ? `, ${inr(t.bondPenalty)} to break it` : ""}${t.bondVaries ? "; it differs between branches here" : ""}.`);
   else if (t.bondYears === 0 && !t.bondUnknown) out.push("No service bond is listed for this seat type.");
-  if (t.exitPenalty) out.push(`Leaving the seat after joining: ${inr(t.exitPenalty)}${t.exitDebarYears ? `, and a ${t.exitDebarYears}-year bar from counselling` : ""}${t.exitRefundStipend ? ", and the stipend paid back" : ""}.`);
-  else if (t.exitFullCourseFee) out.push("Leaving the seat after joining: the fee for the whole course is listed as payable.");
+  // The listing's seat-leaving terms are never quoted (2026-11-25, lib/officialLeaving.ts): no official 2026 document backs
+  // them. The question to ask is said instead.
+  out.push("What leaving the seat costs under the counselling's own 2026-27 rules, round by round, before you join.");
   if (t.hostelMin) out.push(`Hostel: ${inr(t.hostelMin)}${t.hostelMax && t.hostelMax !== t.hostelMin ? ` – ${inr(t.hostelMax)}` : ""}${t.hostelPeriod ? ` a ${t.hostelPeriod}` : ""}${t.hostelMess ? ", mess included" : ""}.`);
   return out;
 }
@@ -485,7 +486,6 @@ async function stateStipend(st: PgState): Promise<Draft | null> {
       ...(b && b.govt.withBond
         ? [`${b.govt.withBond} of ${b.govt.colleges} government colleges here list a service bond${b.govt.typicalYears ? ` (typically ${b.govt.typicalYears} year${b.govt.typicalYears === 1 ? "" : "s"})` : ""}${b.govt.penaltyMedian ? `; breaking it costs ${inr(b.govt.penaltyMedian)} in the middle` : ""}.`]
         : []),
-      ...(b?.govt.exitMedian ? [`Leaving a government seat after joining: ${inr(b.govt.exitMedian)} in the middle${b.govt.debarYears ? `, with a ${b.govt.debarYears}-year bar` : ""}.`] : []),
       "Income tax is deducted at source on the stipend, so the amount credited is lower.",
     ],
     source: `the stipend as listed for the counselling (not an official notice), its latest year${b && b.govt.withBond ? `; ${CAVEAT}` : ""}.`,
@@ -600,8 +600,8 @@ async function bond(st: PgState | null): Promise<Draft | null> {
       kind: "bond-state",
       lead: `In ${s.state}, ${s.govt.withBond} of ${s.govt.colleges} government PG colleges list a service bond${s.govt.typicalYears ? `, typically ${s.govt.typicalYears} year${s.govt.typicalYears === 1 ? "" : "s"}` : ""}${s.govt.penaltyMedian ? `; breaking it costs ${inr(s.govt.penaltyMedian)} in the middle${span(s.govt.penaltyLow, s.govt.penaltyHigh)}` : ""}.`,
       points: [
-        ...(s.govt.exitMedian ? [`Leaving the seat after joining: ${inr(s.govt.exitMedian)} in the middle${s.govt.debarYears ? `, and a ${s.govt.debarYears}-year bar from counselling` : ""}.`] : []),
-        ...(s.other.colleges ? [`Private and deemed colleges: ${s.other.withBond} of ${s.other.colleges} list a bond${s.other.exitMedian ? `; leaving one costs ${inr(s.other.exitMedian)} in the middle` : ""}.`] : []),
+        ...(s.other.colleges ? [`Private and deemed colleges: ${s.other.withBond} of ${s.other.colleges} list a bond.`] : []),
+        "What leaving a seat costs here is not in an official 2026-27 document we hold: ask the college or the counselling authority in writing.",
       ],
       checks: ["The bond and penalty in the state's own counselling notice for your year — they change.", "Whether the bond is served in a government post (and paid) or only as a penalty.", "Whether original certificates are kept by the college until the course ends."],
       source: `${CAVEAT}.`,
@@ -614,7 +614,7 @@ async function bond(st: PgState | null): Promise<Draft | null> {
     lead: `${b.govtBonded} of ${b.govtColleges} government PG colleges bind MD/MS graduates to a service bond${b.penaltyMedian ? `; breaking it costs ${inr(b.penaltyMedian)} in the middle${span(b.penaltyLow, b.penaltyHigh)}` : ""}.`,
     points: [
       `Bond length: ${b.byYears[1]} colleges 1 year, ${b.byYears[2]} colleges 2 years, ${b.byYears[3]} colleges 3 years.`,
-      ...(b.exitMedian ? [`Leaving a seat after joining: ${inr(b.exitMedian)} in the middle; ${b.exitColleges} of ${b.allColleges} colleges list a seat-leaving penalty.`] : []),
+      "What leaving a seat costs is set by each counselling's own rules, round by round: MCC's for its seats, each state's for its own.",
     ],
     checks: ["Your state's own counselling notice for the bond and penalty in your year.", "Whether the bond is a paid government posting or a penalty only.", "Whether the college keeps your original certificates."],
     source: `${CAVEAT}.`,

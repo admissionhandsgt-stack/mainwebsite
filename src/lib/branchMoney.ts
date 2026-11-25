@@ -304,7 +304,7 @@ async function feesDraft(bw: BranchWord, m: BranchMoney, s: MoneyScope): Promise
       points,
       checks: [
         ...(t?.bondYears ? [`Service bond: ${t.bondYears} year${t.bondYears === 1 ? "" : "s"}${t.bondPenalty ? `, ${inr(t.bondPenalty)} to break it` : ""}.`] : []),
-        ...(t?.exitPenalty ? [`Leaving the seat after joining: ${inr(t.exitPenalty)}.`] : []),
+        "What leaving the seat costs under the counselling's own 2026-27 rules, round by round, before you join.",
         "Whether the figure is the whole year's fee, and what hostel, mess and the caution deposit add.",
       ],
       source: `${anyOfficial ? "the college's own 2026-27 fee notice" : "the fee listed for the 2026 counselling"}${t ? `; ${TERMS_CAVEAT}` : ""}.`,
@@ -475,7 +475,6 @@ async function bondDraft(bw: BranchWord, m: BranchMoney, s: MoneyScope): Promise
             ? `${B} at ${s.label}: no service bond is listed for the ${t.seatType || "main"} seat.`
             : `${B} at ${s.label}: the listing does not state a service bond.`,
       points: [
-        ...(t.exitPenalty ? [`Leaving the seat after joining: ${inr(t.exitPenalty)}.`] : []),
         ...(t.y1 ? [`Stipend, year 1: ${inr(t.y1)} a month.`] : []),
       ],
       checks: ["The bond and penalty in the state's own counselling notice for your year — they change.", "Whether the college keeps your original certificates until the course ends."],
@@ -487,13 +486,11 @@ async function bondDraft(bw: BranchWord, m: BranchMoney, s: MoneyScope): Promise
   const govt = all.filter((t) => t.govt);
   const bonded = govt.filter((t) => t.bondYears && t.bondYears > 0);
   const penalties = bonded.map((t) => t.bondPenalty).filter((v): v is number => v != null);
-  const exits = all.map((t) => t.exitPenalty).filter((v): v is number => v != null);
   const privateBonded = all.filter((t) => !t.govt && t.bondYears && t.bondYears > 0).length;
   const privateAll = all.filter((t) => !t.govt).length;
   if (govt.length < MIN && s.kind === "india") return null;
   const points: string[] = [];
   if (penalties.length >= MIN) points.push(`Bond penalty at government colleges: ${inr(median(penalties))} in the middle (${penalties.length} colleges).`);
-  if (exits.length >= MIN) points.push(`Leaving the seat after joining: ${inr(median(exits))} in the middle, where a college lists a penalty (${exits.length} colleges).`);
   if (privateAll) points.push(`Private and deemed colleges: ${privateBonded} of ${privateAll} list a bond for ${B}.`);
   if (s.kind === "india") {
     const byState = new Map<string, { all: number; bonded: number }>();

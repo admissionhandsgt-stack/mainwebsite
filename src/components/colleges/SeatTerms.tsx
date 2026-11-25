@@ -1,6 +1,7 @@
 import { BedDouble, DoorOpen, Info, ScrollText, Wallet } from "lucide-react";
 import type { ReactNode } from "react";
 import Link from "@/components/ui/Link";
+import { LEAVING_FALLBACK, type LeavingRule } from "@/lib/officialLeaving";
 import SectionHead from "@/components/ui/SectionHead";
 import type { SeatFamily, SeatTerms as Terms } from "@/lib/pgSeatData";
 
@@ -70,14 +71,11 @@ function bondText(t: Terms): { value: string; sub?: string } {
   return { value: `${years(t.bondYears)}${t.bondPenalty ? ` · ${big(t.bondPenalty)} if not served` : ""}`, sub: vary };
 }
 
-function exitText(t: Terms): { value: string; sub?: string } {
-  const sub = [t.exitFullCourseFee ? "The whole course fee is kept" : null, t.exitRefundStipend ? "Stipend received is paid back" : null]
-    .filter(Boolean)
-    .join(" · ");
-  if (t.exitNoPenalty && !t.exitPenalty) return { value: "No penalty listed", sub: sub || undefined };
-  const parts = [t.exitPenalty ? `${big(t.exitPenalty)} penalty` : null, t.exitDebarYears ? `barred ${years(t.exitDebarYears)}` : null].filter(Boolean);
-  return { value: parts.length ? parts.join(" · ") : "Not stated", sub: sub || undefined };
-}
+/**
+ * The listing's seat-leaving figures are never shown (2026-11-25, lib/officialLeaving.ts: its "₹5 L penalty · stipend paid
+ * back" on DNB seats was contradicted by the hospital itself). The row carries the counselling's official 2026-27 rule.
+ */
+export const termsKey = (t: { counselling: string | null; seatType: string }) => `${t.counselling ?? ""}|${t.seatType}`;
 
 function hostelText(t: Terms): string | null {
   if (!t.hostelPeriod || !t.hostelMin) return null;
@@ -85,7 +83,7 @@ function hostelText(t: Terms): string | null {
   return `${range} a ${t.hostelPeriod}${t.hostelMess ? " · mess included" : ""}`;
 }
 
-function Row({ icon: Icon, label, value, sub }: { icon: typeof Wallet; label: string; value: ReactNode; sub?: string }) {
+function Row({ icon: Icon, label, value, sub, href, hrefLabel }: { icon: typeof Wallet; label: string; value: ReactNode; sub?: string; href?: string | null; hrefLabel?: string | null }) {
   return (
     // A <dl> may hold only dt/dd or a div of them, so the icon sits inside the dt (absolutely placed) rather than
     // beside a nested div — axe flagged the old wrapper on every PG college page (definition-list, dlitem).
@@ -98,15 +96,22 @@ function Row({ icon: Icon, label, value, sub }: { icon: typeof Wallet; label: st
       </dt>
       <dd className="tnum mt-0.5 text-[14.5px] font-semibold leading-snug text-foreground">{value}</dd>
       {sub && <dd className="mt-0.5 text-[12.5px] leading-snug text-muted-foreground">{sub}</dd>}
+      {href && hrefLabel && (
+        <dd className="mt-0.5 text-[12.5px]">
+          <Link href={href} className="font-semibold text-primary-strong hover:underline dark:text-primary">
+            {hrefLabel} →
+          </Link>
+        </dd>
+      )}
     </div>
   );
 }
 
-function Card({ t, copy, hideBond, hideStipend }: { t: Terms; copy: SeatTermsCopy; hideBond?: boolean; hideStipend?: boolean }) {
+function Card({ t, copy, hideBond, hideStipend, leaving }: { t: Terms; copy: SeatTermsCopy; hideBond?: boolean; hideStipend?: boolean; leaving?: Record<string, LeavingRule> }) {
   const counselling = t.counselling && /^AIQ - MCC/i.test(t.counselling) ? "MCC" : t.counselling;
   const stipend = stipendText(t.stipend);
   const bond = bondText(t);
-  const exit = exitText(t);
+  const exit = leaving?.[termsKey(t)] ?? LEAVING_FALLBACK;
   const hostel = hostelText(t);
   const name = SEAT_TYPE[t.seatType] ?? t.seatType;
   return (
@@ -119,7 +124,7 @@ function Card({ t, copy, hideBond, hideStipend }: { t: Terms; copy: SeatTermsCop
       <dl className="mt-4 space-y-3.5">
         {stipend && !hideStipend && <Row icon={Wallet} label={copy.stipend} value={stipend} />}
         {!hideBond && <Row icon={ScrollText} label={copy.bond} value={bond.value} sub={bond.sub} />}
-        {!hideBond && <Row icon={DoorOpen} label={copy.exit} value={exit.value} sub={exit.sub} />}
+        {!hideBond && <Row icon={DoorOpen} label={copy.exit} value={exit.value} sub={exit.sub} href={exit.href} hrefLabel={exit.hrefLabel} />}
         {hostel && <Row icon={BedDouble} label={copy.hostel} value={hostel} />}
       </dl>
     </article>
@@ -132,7 +137,20 @@ const SHOWN = 6;
  * `hideBond` (2026-11-16): the college's bond and seat-leaving terms come from an official document instead (the box
  * above, components/bond/CollegeOfficialBond), so the listing's figures for them are not shown; stipend and hostel stay.
  */
-export default function SeatTerms({ terms, copy, hideBond, hideStipend }: { terms: Terms[]; copy: SeatTermsCopy; hideBond?: boolean; hideStipend?: boolean }) {
+export default function SeatTerms({
+  terms,
+  copy,
+  hideBond,
+  hideStipend,
+  leaving,
+}: {
+  terms: Terms[];
+  copy: SeatTermsCopy;
+  hideBond?: boolean;
+  hideStipend?: boolean;
+  /** The official seat-leaving rule per listed seat (`termsKey`), lib/officialLeaving.ts. */
+  leaving?: Record<string, LeavingRule>;
+}) {
   // With the bond hidden, a card with neither stipend nor hostel would say nothing.
   const shown = terms.filter((t) => (!hideBond) || (!hideStipend && stipendText(t.stipend)) || hostelText(t));
   if (!shown.length) return null;
@@ -143,7 +161,7 @@ export default function SeatTerms({ terms, copy, hideBond, hideStipend }: { term
       <SectionHead icon="document" eyebrow={copy.eyebrow} title={copy.title} intro={copy.intro} />
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
         {first.map((t) => (
-          <Card key={`${t.counselling}|${t.seatType}`} t={t} copy={copy} hideBond={hideBond} hideStipend={hideStipend} />
+          <Card key={`${t.counselling}|${t.seatType}`} t={t} copy={copy} hideBond={hideBond} hideStipend={hideStipend} leaving={leaving} />
         ))}
       </div>
       {rest.length > 0 && (
@@ -153,7 +171,7 @@ export default function SeatTerms({ terms, copy, hideBond, hideStipend }: { term
           </summary>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             {rest.map((t) => (
-              <Card key={`${t.counselling}|${t.seatType}`} t={t} copy={copy} hideBond={hideBond} hideStipend={hideStipend} />
+              <Card key={`${t.counselling}|${t.seatType}`} t={t} copy={copy} hideBond={hideBond} hideStipend={hideStipend} leaving={leaving} />
             ))}
           </div>
         </details>

@@ -330,7 +330,6 @@ export default async function BondPage() {
                     <th scope="col" className="px-4 py-3 font-semibold">State</th>
                     <th scope="col" className="px-4 py-3 text-right font-semibold">Colleges</th>
                     <th scope="col" className="px-4 py-3 text-right font-semibold">With a bond</th>
-                    <th scope="col" className="px-4 py-3 text-right font-semibold">Leaving the seat</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -347,7 +346,6 @@ export default async function BondPage() {
                       </th>
                       <td className="tnum px-4 py-2.5 text-right text-muted-foreground">{s.other.colleges}</td>
                       <td className="tnum px-4 py-2.5 text-right">{s.other.withBond || "–"}</td>
-                      <td className="tnum px-4 py-2.5 text-right font-semibold">{big(s.other.exitMedian)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -414,7 +412,6 @@ export default async function BondPage() {
                               <th scope="col" className="px-4 py-2.5 font-semibold">College</th>
                               <th scope="col" className="px-4 py-2.5 font-semibold">Bond</th>
                               <th scope="col" className="px-4 py-2.5 text-right font-semibold">Bond penalty</th>
-                              <th scope="col" className="px-4 py-2.5 text-right font-semibold">Leaving the seat</th>
                               <th scope="col" className="px-4 py-2.5 text-right font-semibold">Stipend, year 1</th>
                             </tr>
                           </thead>
@@ -428,10 +425,6 @@ export default async function BondPage() {
                                 </th>
                                 <td className="px-4 py-2.5">{years(c.bondYears)}</td>
                                 <td className="tnum px-4 py-2.5 text-right">{c.bondYears ? big(c.bondPenalty) : "—"}</td>
-                                <td className="tnum px-4 py-2.5 text-right">
-                                  {big(c.exitPenalty)}
-                                  {c.exitDebarYears ? <span className="block text-[12px] text-muted-foreground">barred {years(c.exitDebarYears)}</span> : null}
-                                </td>
                                 <td className="tnum px-4 py-2.5 text-right">{c.stipendY1 ? `${rupees(c.stipendY1)} /mo` : "—"}</td>
                               </tr>
                             ))}

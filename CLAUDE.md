@@ -492,6 +492,23 @@ Two datasets from the PG data session (`pg-4f`), handed over as CSV in `D:/Admis
   third party's compilation as ours.
   Spot-checked 2026-10-20 against public reporting: Uttarakhand 2 years / ₹2.5 Cr, Delhi 1 year / ₹20 L,
   Kerala ₹50 L to leave the seat — all three match.
+- **The listing's seat-leaving terms never reach a page (2026-11-25, owner: "galat claim na ho and khali bhi na rahe …
+  bich ka rasta").** A doctor called the Jalaun DNB hospital, which said it has no penalty, while its page showed the
+  listing's "₹5 L penalty · Stipend received is paid back". `pg_seat_terms` carries rupee penalties no official 2026
+  document backs: ₹5 L + stipend on 1,307 DNB / NBE lines (MCC's 2026 bulletin sets no money penalty; WB's 2026 notice: "no
+  discontinuation bond for DNB courses at present"), Goa ₹50 L, Jharkhand ₹30 L + stipend, Uttarakhand ₹15 L, Gujarat ₹1–5 L.
+  Now `lib/officialLeaving.ts` gives each listed seat the **official** rule for its counselling instead: an MCC seat
+  (counselling "AIQ - MCC 2026") → MCC's 2026 rules (free exit in Round 1; from Round 2 the deposit is forfeited, with the
+  amounts from the official file; no resigning a joined Round 3 / stray seat; MCC sets no money penalty for leaving the
+  course); a state's counselling (or "Open States", the college's own state) in the official bond file → that state's
+  course-leaving rule (`course_leaving_penalty`) or its latest round rule that says something, with a link to its bond page —
+  on a DNB seat only the round rule, plus "the hospital's own terms are not in an official document we hold, so ask in
+  writing"; anything else (NBEMS-sponsored DNB, Manipur, NEIGRIHMS, Haryana's empty file) → "Not in an official 2026-27
+  document we hold" + what to ask for in writing. `listedExitText` returns null (bond box, bond tables, the college page's
+  meta), the bond hub's and stipend page's listing "Leaving the seat" columns and tiles are gone (the hub's note and the
+  stipend tile say to ask in writing), and the bot's answers never quote a listing leaving figure. The listing's stipend,
+  service bond and hostel still show, under their caveat. Copy: `terms_intro`, `terms_caveat` (college page),
+  `other_intro` (bond hub), all with `was` — re-run `seed_page_copy.mjs` after the deploy.
 - **No allotment row's rank reaches a page** (the chance-view rule). `mcc_allotments` feeds round counts,
   and since 2026-10-21 the round pages' branch figures — the last rank admitted per branch × seat family ×
   category, only over three or more colleges (`groupRank`'s rule). A round's list is its fresh allotments plus

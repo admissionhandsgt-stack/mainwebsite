@@ -257,11 +257,12 @@ export function listedBondText(l: ListedTerms | null | undefined): string | null
   if (!l.bondYears) return "0 years · no service bond";
   return `${l.bondYears} year${l.bondYears === 1 ? "" : "s"}${l.bondPenalty ? ` · ${money(l.bondPenalty)} if not served` : ""}`;
 }
-/** What leaving the seat costs, as listed. */
-export function listedExitText(l: ListedTerms | null | undefined): string | null {
-  if (!l) return null;
-  if (l.exitPenalty) return `${money(l.exitPenalty)} to leave the seat`;
-  if (l.exitFullCourseFee) return "The full course fee to leave the seat";
+/**
+ * What leaving the seat costs, as listed: never shown since 2026-11-25 (lib/officialLeaving.ts). The listing's rupee
+ * penalties had no official 2026 document behind them (₹5 L + stipend on DNB seats, which a hospital denied); a page
+ * gives the counselling's official rule instead, or says what to ask for in writing.
+ */
+export function listedExitText(_l: ListedTerms | null | undefined): string | null {
   return null;
 }
 /**
