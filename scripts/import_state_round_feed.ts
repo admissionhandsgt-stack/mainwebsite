@@ -7,8 +7,11 @@
  * them out of the open-merit figures). Only group figures over 3+ colleges ever reach a page (lib/stateRoundQueries.ts).
  *
  *   npx tsx --env-file=.env.local scripts/import_state_round_feed.ts "<feed key>" --round R1 \
- *       --printed "<round as the list names it>" --counselling "<authority>" [--note "<line for the page>"] \
+ *       --counselling "<authority>" [--printed "<the board's title, date>"] [--note "<line for the page>"] \
  *       [--also "<second feed key of the same state>"] [--apply --backup <f>]
+ *
+ * The list's name on the page is the tool's `printed` (the board's own title and date, added 2026-11-25 — blank until the
+ * tool has checked that file); --printed is used when it is blank, and always with --also.
  *
  * --also (2026-11-25): a state whose round comes as two lists (Tamil Nadu's Government and Management quota) is loaded in
  * one go — the import replaces the whole state × year × round, so loading them one after the other kept only the second.
@@ -30,7 +33,7 @@ const also = opt("--also");
 const apply = args.includes("--apply");
 const backup = opt("--backup");
 const YEAR = 2026;
-if (!key || !printed || !counselling) throw new Error('usage: import_state_round_feed.ts "<key>" --printed "…" --counselling "…" [--note "…"] [--apply --backup f]');
+if (!key || !counselling) throw new Error('usage: import_state_round_feed.ts "<key>" --counselling "…" [--printed "…"] [--note "…"] [--also "<key>"] [--apply --backup f]');
 if (apply && !backup) throw new Error("--apply needs --backup <file>");
 
 type Line = {
@@ -53,8 +56,15 @@ const sync = (await sql<{ value: string }[]>`SELECT value FROM integrations WHER
 if (!sync) throw new Error("no sync key in integrations");
 const FEED = "https://ah.aismartscan.in/api/integrations/website/round-closing";
 const list = (await (await fetch(FEED, { headers: { "X-AH-Sync-Key": sync } })).json()) as {
-  counsellings: { key: string; rounds: { round: string; source?: { url?: string } }[] }[];
+  counsellings: { key: string; rounds: { round: string; source?: { url?: string; printed?: string } }[] }[];
 };
+// The board's own title and date (the tool's `printed`, 2026-11-25), filled once the tool has checked the file; "" until
+// then — and after a newer file replaces it — so a hand title (--printed) is the fallback.
+const feedPrinted = list.counsellings.find((c) => c.key === key)?.rounds.find((r) => r.round === round)?.source?.printed?.trim() || null;
+// Two lists loaded together (--also) are named by hand: the feed names each list on its own.
+const roundPrinted = also ? printed : (feedPrinted ?? printed);
+if (!roundPrinted) throw new Error(`no title for ${key} ${round}: the feed's printed is empty — pass --printed "<the board's title, date>"`);
+console.log(`  list named: ${roundPrinted}${also || !feedPrinted ? " (hand title)" : " (the feed's printed)"}`);
 // Only a real address is kept: Haryana's "url" is the portal followed by where on it the file sits.
 const sourceOf = (k: string) =>
   list.counsellings.find((c) => c.key === k)?.rounds.find((r) => r.round === round)?.source?.url?.match(/^https?:\/\/[^\s()]+/)?.[0] ?? null;
@@ -92,7 +102,7 @@ const rows = lines.map((l) => {
     state_id: state.id,
     year: YEAR,
     round,
-    round_printed: printed,
+    round_printed: roundPrinted,
     counselling,
     source_url: l.source,
     institute_id: instituteId,

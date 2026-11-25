@@ -2267,8 +2267,16 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
   feed's source titles carry the tool's working notes, so `--printed` is the board's own title + date written by hand;
   `source_url` keeps only a real address. **A provisional list replaced by a final one is re-run the same way** (same
   key and round). Then `bash scripts/revalidate_tags.sh --purge state-round` (accepted by the route since this change).
-  Still only in the feed: Round 1 of AP and Telangana (Govt + Mgmt — the Mgmt keys name the state "<State> Management",
-  asked to fix), Puducherry, HP, Jharkhand, Tripura, NEIGRIHMS, Arunachal, Sikkim.
+  Same day, after zyn-81's answers: the feed's round source carries `printed` (the board's own title and date, keyed to
+  the file's sha256; "" until the tool has checked a new file), which the import now uses — `--printed` is the fallback,
+  and always the name with `--also`. Rajasthan's Round 2 "Provisional" list is its only Round 2 result (no "may change"
+  note). Round 1 added: Andhra Pradesh (CQ + MQ, `--also "AP Mgmt PG"`; Dr NTR UHS allots by NEET PG AIR), Telangana (CQ +
+  MQ), Puducherry, Himachal, Jharkhand — runner `scripts/tmp/sr_r1_run.sh`. Not loaded on purpose: Tripura, NEIGRIHMS,
+  Arunachal, Sikkim (one or two colleges each, so never a figure). **The tool's college ids are `institutes.source_id`
+  and final:** Banas, JIET and Vyas moved from our 99101–99103 to 9404, 9424, 9426. New PG colleges the tool lists that we
+  hold no institute for (PES 9407, BGS 9405, SR Patil Bagalkot 9408, Shri Kalyan GMC Sikar 9425, 11 new TN GMCs 9428–9438,
+  Kanyakumari Medical Mission 9439, 13 new Telangana GMCs 9442–9453…) are kept by printed name — creating them makes new
+  public college pages, which is the owner's call.
 
 ## State counselling rounds of the year in progress (2026-11-04) — never in the predictor
 
