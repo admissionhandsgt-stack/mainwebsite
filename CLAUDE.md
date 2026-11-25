@@ -2276,13 +2276,15 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
   and final:** Banas, JIET and Vyas moved from our 99101–99103 to 9404, 9424, 9426. New PG colleges the tool lists that we
   hold no institute for (PES 9407, BGS 9405, SR Patil Bagalkot 9408, Shri Kalyan GMC Sikar 9425, 11 new TN GMCs 9428–9438,
   Kanyakumari Medical Mission 9439, 13 new Telangana GMCs 9442–9453…) were kept by printed name until the owner's OK.
-  **Created the same day (owner: "haan banado"): 30 PG institutes 4675–4704** under the tool's ids
+  **Created the same day (owner: "haan banado"): 30 PG institutes 4705–4734** (the dry run had used up 4675–4704: a rolled-back transaction keeps its sequence numbers) under the tool's ids
   (`scripts/sql/new_pg_colleges_2026_11_25.mjs`, dry run by default; backup and `--restore`
   `D:/Admisson Hands/match_backups/new_pg_colleges_2026_11_25.json`): each paired with its NMC code (`nmc_institutes`,
   admin, level pg — NMC's register lists only their MBBS so far) and given MCC's 2026 Round 2 rows that named it with no
   institute (112 seat-matrix and 237 allotment rows, MD/MS only: "Government Medical College" + town, or the college's own
-  name). MCC's "Government Medical College, The Nilgiris" row filed under Telangana (and its allotment "…The Nilgiris,
-  Sangareddy, Telangana") is left unmatched — it could be either college. No fee written (no 2026-27 notice held). Their
+  name). MCC's code 905808, "Government Medical College, The Nilgiris" filed under Telangana with Sangareddy's address, is
+  GMC The Nilgiris (its three AIQ courses are that college's NMC courses; Sangareddy is 905805 — zyn-81): its 3 matrix rows
+  and 5 allotments are on 4717 with state Tamil Nadu. The matched allotments carry their college's state, as the round
+  ingest gives every match (242 rows; backup `mcc_nilgiris_and_states_2026_11_25.json`). No fee written (no 2026-27 notice held). Their
   state lists were reloaded so every line attaches (KAR R2, RJ R2, TN R2, TEL R1).
 
 ## State counselling rounds of the year in progress (2026-11-04) — never in the predictor

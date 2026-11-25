@@ -4,11 +4,12 @@
  * They were in the states' 2026 allotment lists (KEA, Rajasthan, Tamil Nadu, KNRUHS) and in MCC's Round 2 under its own
  * names, with no institute of ours — so they had no page and their seats counted only by printed name.
  *
+ * (Applied 2026-11-25 as institutes 4705–4734; the dry run had used up 4675–4704.)
  * Per college: the institute (PG), its NMC pairing (the college code NMC's register gives it; the register lists only its
  * MBBS so far, and its MD/MS courses follow at a later weekly sync), and MCC's 2026 seat-matrix and allotment rows that
  * name it and had no institute (MD/MS AIQ rows only: the pattern needs "Government Medical College" + the town, or the
  * college's own name). Not matched on purpose: MCC's "Government Medical College, The Nilgiris" row filed under
- * Telangana and its allotment "…The Nilgiris, Sangareddy, Telangana" — it could be either college.
+ * Telangana and its allotment "…The Nilgiris, Sangareddy, Telangana" — matched afterwards to GMC The Nilgiris (see CLAUDE.md).
  * No fee is written: none of them has a 2026-27 notice we hold.
  *
  *   node --env-file=.env.local scripts/sql/new_pg_colleges_2026_11_25.mjs            # dry run (rolled back)
