@@ -97,6 +97,40 @@ export function clean(text: string): string {
     .replace(/\s{2,}/g, " ")
     .trim();
 }
+/**
+ * A sentence of the researchers' working notes, not a document's terms (2026-11-25): a college's official bond block had
+ * printed "The listing's '1 year / Rs 50 lakh' therefore joins two different rules", "The 2026-27 KEA PG e-brochure was
+ * not found online", "Aggregator claims … (mdmsenquiry/futeducation)", "careeredwise lists … single blog report,
+ * unverified", "Aside on stipend: … the listing's Rs 1,00,000 is wrong" on 251 college pages. The page states the terms;
+ * how they were checked, and what a listing or another site says, is not the reader's business (owner, 2026-10-21:
+ * "bharosa girata hai").
+ */
+export const RESEARCH_NOTE =
+  /\b(the (counselling )?listing|listing's|aggregator|meducate|careeredwise|mdmsenquiry|futeducation|shiksha|collegedunia|careers360|blog|could not be found|(was|were) not found online|not confirmed in words|found in a search|domains? (is|are) unrelated|unverified|html comment)\b|^\(?aside\b/i;
+/** Sentences, without breaking after "e.g.", "i.e.", "Dr.", "S.No.", "Rs." or "Govt.". */
+function splitSentences(t: string): string[] {
+  const out: string[] = [];
+  for (const p of t.split(/(?<=[.;])\s+(?=[A-Z'"‘(])/)) {
+    if (out.length && /\b(e\.g|i\.e|viz|vs|Dr|No|Nos|S\.No|Rs|St|Sr|Prof|Govt|approx|incl)\.$/i.test(out[out.length - 1])) out[out.length - 1] += ` ${p}`;
+    else out.push(p);
+  }
+  return out;
+}
+/** A college row's printed text with the working notes taken out, and "not found — ask the college" said plainly. */
+export function publicTerms(text: string | null): string | null {
+  if (!text) return null;
+  const t = text
+    .replace(/The college's own bond terms were not found\s*[-–—]\s*ask the college\.?/gi, "Ask the college for its own bond terms in writing.")
+    .replace(/[;,]?\s*the college's own terms (were )?not found\s*[-–—]\s*ask the college\.?/gi, "; ask the college in writing for its own terms.")
+    .replace(/No course-leaving bond in the state Rules \/ GRs read/gi, "No course-leaving bond is set in the state's rules")
+    // Odisha: keep the state's exemption and its leaving rule, without the verdict on the listing.
+    .replace(/, so 0 years is right; but the counselling listing's blank exit penalty is wrong: the same guidelines/gi, "; the same guidelines")
+    .replace(/\s*\([^()]*\b(not readable online|not found|whether|unverified|search(ed)?|secondary guides?|reported (as|by))\b[^()]*\)/gi, "")
+    // An internal status code in brackets ("(none_in_official_documents, not an explicit 'no bond' statement)").
+    .replace(/\s*\([^()]*\b[a-z]+_[a-z_]+\b[^()]*\)/g, "");
+  const kept = splitSentences(t).filter((s) => !RESEARCH_NOTE.test(s));
+  return kept.join(" ").replace(/\s{2,}/g, " ").trim() || null;
+}
 export function deepClean<T>(v: T): T {
   if (typeof v === "string") return clean(v) as T;
   if (Array.isArray(v)) return v.map(deepClean) as T;
@@ -231,13 +265,13 @@ async function load(): Promise<OfficialBond | null> {
         type: str(d.type) ?? "Private",
         // A not_verified row never shows a figure (the PG data session's rule): only "ask the college".
         years: official ? num(d.service_bond_years) : null,
-        what: official ? str(d.service_bond_what) : null,
+        what: official ? publicTerms(str(d.service_bond_what)) : null,
         amount: official ? num(d.service_bond_amount_inr) : null,
         branches: branches?.length ? branches : null,
-        ifNotServed: official ? str(d.if_not_served) : null,
-        leaving: r.status === "not_verified" ? null : str(d.college_leaving_penalty),
-        deposit: r.status === "not_verified" ? null : str(d.security_deposit),
-        session: str(d.session),
+        ifNotServed: official ? publicTerms(str(d.if_not_served)) : null,
+        leaving: r.status === "not_verified" ? null : publicTerms(str(d.college_leaving_penalty)),
+        deposit: r.status === "not_verified" ? null : publicTerms(str(d.security_deposit)),
+        session: publicTerms(str(d.session)),
         source:
           r.status === "not_verified"
             ? null
@@ -258,7 +292,7 @@ async function load(): Promise<OfficialBond | null> {
   }
 }
 
-export const getOfficialBond = unstable_cache(load, ["official-bond-v5"], { revalidate: 3600, tags: ["official-bond"] });
+export const getOfficialBond = unstable_cache(load, ["official-bond-v6"], { revalidate: 3600, tags: ["official-bond"] });
 
 export async function getOfficialBondState(slug: string): Promise<{ state: OfficialState; colleges: OfficialCollege[]; all: OfficialBond } | null> {
   const all = await getOfficialBond();

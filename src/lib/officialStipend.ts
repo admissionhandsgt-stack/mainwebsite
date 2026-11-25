@@ -2,7 +2,7 @@ import { unstable_cache } from "next/cache";
 import { sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { logError } from "@/lib/logger";
-import { deepClean, safeUrl, type JsonObject, type Source } from "@/lib/officialBond";
+import { deepClean, publicTerms, safeUrl, type JsonObject, type Source } from "@/lib/officialBond";
 
 /**
  * Official PG (MD/MS) stipend, 2026-27 (migration 0066, loaded by scripts/import_official_stipend.ts). Read by the PG data
@@ -240,14 +240,16 @@ async function load(): Promise<OfficialStipend | null> {
         history: (() => {
           const seg = (str(d.notes) ?? "").split(" | ").find((x) => /^History\b/.test(x.trim()));
           if (!seg || r.status === "not_verified") return null;
-          return seg
-            .replace(/^History\s*\([^)]*\)\s*:\s*/i, "")
-            .replace(/\s*\((?:[^()]*https?:[^()]*|[^()]*(?:read by eye|checked|signature)[^()]*)\)/gi, "")
-            .replace(/\s{2,}/g, " ")
-            .trim();
+          return publicTerms(
+            seg
+              .replace(/^History\s*\([^)]*\)\s*:\s*/i, "")
+              .replace(/\s*\((?:[^()]*https?:[^()]*|[^()]*(?:read by eye|checked|signature)[^()]*)\)/gi, "")
+              .replace(/\s{2,}/g, " ")
+              .trim(),
+          );
         })(),
         branches: branches?.length ? branches : null,
-        asWritten: r.status === "not_verified" ? null : sentences(str(d.as_written)),
+        asWritten: r.status === "not_verified" ? null : publicTerms(sentences(str(d.as_written))),
         session: str(d.session),
         periodUnstated: /no ['"‘]?per month|period (is )?not (stated|printed)|does not say per month|no period/i.test(str(d.notes) ?? ""),
         source:
@@ -263,7 +265,7 @@ async function load(): Promise<OfficialStipend | null> {
   }
 }
 
-export const getOfficialStipend = unstable_cache(load, ["official-stipend-v9"], { revalidate: 3600, tags: ["official-stipend"] });
+export const getOfficialStipend = unstable_cache(load, ["official-stipend-v10"], { revalidate: 3600, tags: ["official-stipend"] });
 
 export async function getOfficialStipendState(name: string) {
   const all = await getOfficialStipend();

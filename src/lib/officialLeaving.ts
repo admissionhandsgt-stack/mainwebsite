@@ -92,6 +92,12 @@ export function stateLeaving(state: OfficialState, opts: { privateCollege: boole
     roundText = shortText(when ? `${when}: ${text}` : text);
   }
   if (opts.dnb) {
+    // The state's own words about DNB first (West Bengal: "No discontinuation bond for DNB courses at present."); a round
+    // rule that names a sum without saying DNB is the degree seats' bond ("Rs 5L Degree / Rs 2L Diploma"), not this seat's.
+    const dnbCourse = courseText ? dnbSentences(tidy(courseText)) : null;
+    const dnbCourseText = dnbCourse ? shortText(dnbCourse) : null;
+    if (dnbCourseText) return { value: `${name}'s 2026-27 rules`, sub: dnbCourseText, ...link };
+    if (roundText && /(Rs\.?|₹)\s?[\d,.]+|\blakh\b|crore/i.test(roundText) && !dnbSentences(roundText)) roundText = null;
     if (!roundText) return { ...LEAVING_FALLBACK, ...link };
     return {
       value: `${name}'s 2026-27 rules`,
@@ -130,6 +136,16 @@ function ownTerms(text: string): string | null {
 const beforeOwn = (text: string) => text.replace(/\s*The college's own terms \([^)]*\):[\s\S]*$/, "").trim();
 
 /**
+ * On a DNB seat, only the sentences about DNB. A state's row can set a PG degree / diploma penalty and then say DNB has
+ * none — West Bengal's "Rs 5 lakh for PG Degree seats, Rs 2 lakh for PG Diploma seats. No discontinuation bond for DNB
+ * courses at present." — and a DNB hospital's page must not lead with the degree seats' ₹5 lakh (the Jalaun call).
+ */
+function dnbSentences(text: string): string | null {
+  const keep = text.split(/(?<=\.)\s+(?=[A-Z])/).filter((s) => /\b(DNB|DrNB|NBE|NBEMS|National Board)\b/i.test(s));
+  return keep.length ? keep.join(" ") : null;
+}
+
+/**
  * The rule for one listed seat: by the counselling the listing names. MCC → MCC; a state named in the counselling (or
  * "Open States", the college's own state's counselling) → that state's rules when the official file holds them.
  * `perSeat` (2026-11-25, lib/seatLeaving.ts): the official words for this college × seat type, from the PG tool session's
@@ -158,7 +174,9 @@ export function leavingFor(
   const named = ctx.states.find((s) => counselling.toLowerCase().includes(s.state.toLowerCase()));
   const state = named ?? (/open states/i.test(counselling) && ctx.collegeState ? ctx.states.find((s) => s.state === ctx.collegeState) : undefined);
   if (usable && (usable.status === "official" || usable.status === "dnb_no_sum_set")) {
-    const main = shortText(beforeOwn(usable.text), 460);
+    // A DNB seat with no sentence about DNB in its row takes the state's round rule below, as every other DNB seat does.
+    const body = dnb && usable.status === "official" ? dnbSentences(beforeOwn(usable.text)) : beforeOwn(usable.text);
+    const main = body ? shortText(body, 460) : null;
     if (main) {
       const cap = main.charAt(0).toUpperCase() + main.slice(1);
       return plus({

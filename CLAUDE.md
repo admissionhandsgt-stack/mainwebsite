@@ -518,6 +518,12 @@ Two datasets from the PG data session (`pg-4f`), handed over as CSV in `D:/Admis
   seat's own words (first sentence, ≤460 characters, linked to the state's bond page) — e.g. Rajasthan's ₹10 L PG surety
   bond on private seats; MCC seats keep MCC's rule; a "none stated" row keeps the state rule; any row adds "The college's
   own terms (…): …" where the college's own document says something (589 rows); a not-confirmed row is never used.
+  **A DNB seat never leads with a degree seat's sum** (`dnbSentences`): a per-seat or state row that sets ₹5 L for PG
+  degree seats and then says "No discontinuation bond for DNB courses at present" (West Bengal) shows only its DNB
+  sentence on a DNB seat, and a state round rule naming a sum without saying DNB falls back to "ask in writing". The
+  per-seat words show only where the college has no official bond block of its own (DNB hospitals, MCC-less private
+  seats): 2,067 listed seats take MCC's rule, 844 the state's or the per-seat words, 174 the fallback
+  (`scripts/tmp/harness/leaving_sweep.ts` flags a sum on a DNB seat or a note word; 0 on 2026-11-25).
 - **No allotment row's rank reaches a page** (the chance-view rule). `mcc_allotments` feeds round counts,
   and since 2026-10-21 the round pages' branch figures — the last rank admitted per branch × seat family ×
   category, only over three or more colleges (`groupRank`'s rule). A round's list is its fresh allotments plus
@@ -2432,6 +2438,14 @@ states + MCC, 302 colleges, every figure with its URL, page and quote. It replac
   kimsmedicalcollege.org, pimslko.edu.in — compromised sites per zyn-92).
 - **Never shown as a figure:** a `lead_not_verified` government bond (Jharkhand), anything "not stated", a not_verified
   college (only "ask the college"). Researchers' notes about their own reading are filtered (`INTERNAL` in the state page).
+  **A college's own rows too (2026-11-25, `publicTerms()` / `RESEARCH_NOTE` in lib/officialBond.ts, applied in both
+  loaders):** the college bond and stipend blocks had printed the research file's working notes on 251 pages — "The
+  listing's '1 year / Rs 50 lakh' therefore joins two different rules", "The 2026-27 KEA PG e-brochure was not found
+  online", "Aggregator claims … (mdmsenquiry/futeducation)", "careeredwise lists … single blog report, unverified",
+  "Aside on stipend: … the listing's Rs 1,00,000 is wrong", "(none_in_official_documents, …)". A sentence comparing the
+  listing, naming another site, or saying what was or was not found is dropped; "not found - ask the college" reads
+  "ask the college in writing"; note brackets go. Check a re-import with `scripts/tmp/harness/public_terms_diff.ts`
+  (every changed sentence; no field may be emptied) and `college_notes_scan.ts`.
 - **Pages:** `/md-ms-india/bond/<state>` (25, `components/bond/OfficialBond.tsx` renders each state's own shape: government
   bond → leaving the course → round by round → deposit → private colleges' own bonds with DataTools → government colleges
   by name → notes → FAQ; copy "Page: PG bond in a state"); `/md-ms-india/bond` leads with the official table + MCC's rules
