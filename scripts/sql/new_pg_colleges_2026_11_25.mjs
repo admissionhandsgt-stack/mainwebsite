@@ -61,9 +61,11 @@ const COLLEGES = [
   [9452, "Government Medical College, Rajanna Sircilla", "Telangana", G, "Sircilla", "Rajanna Sircilla", "TS/038/G/1", gmc("sircilla")],
   [9453, "Government Medical College, Sangareddy", "Telangana", G, "Sangareddy", "Sangareddy", "TS/040/G/1", gmc("sangareddy")],
   [9454, "Government Medical College, Wanaparthy", "Telangana", G, "Wanaparthy", "Wanaparthy", "TS/043/G/1", gmc("wanaparthy")],
+  // Added the same evening (owner: "banado"): in Dr NTR UHS's Round 2 list; MCC prints it with its address.
+  [9403, "Government Medical College, Paderu", "Andhra Pradesh", G, "Paderu", "Alluri Sitharama Raju", "AP/014/G/1", gmc("paderu")],
 ];
 // The muddled MCC row ("The Nilgiris" in Telangana) stays unmatched for both colleges it could be.
-const otherState = { "Tamil Nadu": "%telangana%", Telangana: "%nilgiris%", Rajasthan: "%xxxx%", Karnataka: "%xxxx%" };
+const otherState = { "Tamil Nadu": "%telangana%", Telangana: "%nilgiris%", Rajasthan: "%xxxx%", Karnataka: "%xxxx%", "Andhra Pradesh": "%xxxx%" };
 
 const slugify = (s) =>
   s.toLowerCase().replace(/&/g, " ").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 170);

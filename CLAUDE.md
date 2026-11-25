@@ -2286,6 +2286,9 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
   and 5 allotments are on 4717 with state Tamil Nadu. The matched allotments carry their college's state, as the round
   ingest gives every match (242 rows; backup `mcc_nilgiris_and_states_2026_11_25.json`). No fee written (no 2026-27 notice held). Their
   state lists were reloaded so every line attaches (KAR R2, RJ R2, TN R2, TEL R1).
+  The same evening GMC Paderu (tool 9403, NMC AP/014/G/1, owner: "banado") was added by the same script — institute 4736,
+  6 MCC matrix rows and 12 Round 2 allotments — and AP R2 (Dr NTR UHS CQ Phase-II, provisional, 25 Nov) reloaded. AP's MQ
+  Phase-II list is not out yet: when it is, load `AP Govt PG` R2 with `--also "AP Mgmt PG"` (one run replaces the round).
 
 ## State counselling rounds of the year in progress (2026-11-04) — never in the predictor
 
