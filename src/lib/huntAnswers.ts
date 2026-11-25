@@ -26,8 +26,8 @@ import { cityPagePath } from "@/lib/cityQueries";
 import { getCollegeCutoffs } from "@/lib/collegeQueries";
 import { generalBands } from "@/lib/cutoffBands";
 import { ssSeats } from "@/lib/huntSs";
-import { bindsAiq, getOfficialBond, getOfficialStateByName, govtBond, hasOwnBond, money, rangeText, yearsText, serviceYears } from "@/lib/officialBond";
-import { getOfficialStipend, getOfficialStipendState, hasOwnStipend, type GovtStipend } from "@/lib/officialStipend";
+import { bindsAiq, getOfficialBond, getOfficialStateByName, govtBond, hasOwnBond, isCentralInstitution, money, rangeText, yearsText, serviceYears } from "@/lib/officialBond";
+import { getOfficialCollegeStipend, getOfficialStipend, getOfficialStipendState, hasOwnStipend, type GovtStipend } from "@/lib/officialStipend";
 
 /**
  * Answers the daily hunt writes (2026-11-10; owner, with his own AIIMS New Delhi answer as the model: "aise detailed
@@ -59,7 +59,8 @@ const fold = (s: string) => ` ${s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim
 const span = (lo: number | null | undefined, hi: number | null | undefined) => (lo != null && hi != null && lo !== hi ? ` (${inr(lo)} – ${inr(hi)})` : "");
 const has = (q: string, word: string) => fold(q).includes(` ${word.toLowerCase()} `);
 /** Said once, in the source line, wherever a bond or seat-leaving figure appears (pg_seat_terms is a compilation). */
-const CAVEAT = "bond and seat-leaving terms as listed for the 2026 counselling, not an official notice — confirm with the state's notice or the college before you pay a fee or sign a bond";
+// Seat-leaving terms are never quoted from the listing (2026-11-25, lib/officialLeaving.ts), so the caveat names the bond only.
+const CAVEAT = "the service bond as listed for the 2026 counselling, not an official notice — confirm with the state's notice or the college before you pay a fee or sign a bond";
 
 export type Draft = {
   /** Our page the answer links to. */
@@ -360,7 +361,7 @@ async function listedFees(c: College, label: string, q: string, quotaAsked: RegE
 async function college(c: College, q: string): Promise<Draft | null> {
   const nm = collegeName(c.name);
   const label = nm.place && !nm.short.toLowerCase().includes(nm.place.toLowerCase()) ? `${nm.short}, ${nm.place}` : nm.short;
-  const [stipend, fees, terms] = await Promise.all([
+  const [stipend, fees, terms, ownStipend, stateStipendRule] = await Promise.all([
     db.execute(sql`
       SELECT f.stipend_y1_inr AS y1, f.stipend_y2_inr AS y2, f.stipend_y3_inr AS y3, f.year
         FROM fees f WHERE f.institute_id = ${c.id} AND f.level = 'pg' AND f.stipend_y1_inr > 0 AND f.stipend_periodicity = 'per_month'
@@ -372,13 +373,34 @@ async function college(c: College, q: string): Promise<Draft | null> {
          AND f.fee_periodicity IN ('per year', 'first year')
        GROUP BY q.label, f.fee_periodicity ORDER BY MIN(f.fee_inr) LIMIT 4`),
     getCollegeSeatTerms(c.slug).catch(() => [] as SeatTerms[]),
+    getOfficialCollegeStipend(c.slug).catch(() => null),
+    c.state ? getOfficialStipendState(c.state).catch(() => null) : Promise.resolve(null),
   ]);
-  const s = (stipend as unknown as { y1: number; y2: number | null; y3: number | null }[])[0];
+  const listedRow = (stipend as unknown as { y1: number; y2: number | null; y3: number | null }[])[0];
   const f = fees as unknown as { quota: string | null; lo: number; hi: number; label: string | null; period: string }[];
   const per = (period: string) => (period === "first year" ? "in year 1" : "a year");
   const main = terms.find((t) => t.family === "state") ?? terms.find((t) => t.family === "aiq") ?? terms[0];
   const tStipend = main?.stipend?.[0] ? main.stipend : null;
-  const y1 = s?.y1 ?? tStipend?.[0] ?? null;
+  // The stipend in the same order as the college page (2026-11-25: this answer called the listing's figure "what the college
+  // publishes" — Goa Medical College ₹80,000 against its own notice's ₹60,000): the college's own official row; then, for a
+  // state government college, the state's official government rate; then the listing, said to be the listing.
+  const govtRate = stateStipendRule?.state.govt;
+  const own = ownStipend && ownStipend.status.startsWith("official") && ownStipend.y[0] ? ownStipend : null;
+  const useState =
+    !own && !!govtRate?.y[0] && (govtRate.kind === "figures" || govtRate.kind === "disclosure") &&
+    c.ownership === "government" && !isCentralInstitution(c.name);
+  const sy: [number | null, number | null, number | null] = own
+    ? own.y
+    : useState
+      ? govtRate!.y
+      : [listedRow?.y1 ?? tStipend?.[0] ?? null, listedRow?.y2 ?? tStipend?.[1] ?? null, listedRow?.y3 ?? tStipend?.[2] ?? null];
+  const noStipend = !own && ownStipend?.status === "states_no_stipend";
+  const y1 = noStipend ? null : sy[0];
+  const stipendFrom = own
+    ? own.status === "official_2026_27" ? "the college's own 2026-27 notice" : "the latest stipend sheet the college published"
+    : useState
+      ? `${c.state}'s 2026-27 rate for government colleges`
+      : "as listed for the counselling, not an official notice";
   const asksFee = /fee|cost|tuition/i.test(q);
   if (!y1 && !f.length) return null;
   // A fee question is answered with a fee, never with the stipend ("fees of afmc pune"); a management or NRI fee
@@ -388,29 +410,29 @@ async function college(c: College, q: string): Promise<Draft | null> {
   if (asksFee && quotaAsked && !f.some((r) => quotaAsked.test(r.quota ?? ""))) return null;
 
   const points: string[] = [];
+  if (noStipend) points.push("The college's own documents state that it pays no stipend.");
   if (y1) {
-    const y2 = s?.y2 ?? tStipend?.[1];
-    const y3 = s?.y3 ?? tStipend?.[2];
-    points.push(`Stipend, year 1: ${inr(y1)} a month${y2 ? `; year 2: ${inr(y2)}` : ""}${y3 ? `; year 3: ${inr(y3)}` : ""}.`);
+    const [, y2, y3] = sy;
+    points.push(`Stipend, year 1: ${inr(y1)} a month${y2 ? `; year 2: ${inr(y2)}` : ""}${y3 ? `; year 3: ${inr(y3)}` : ""} — ${stipendFrom}.`);
   }
   for (const r of f) points.push(`${r.quota ?? "Fee"}: ${inr(r.lo)}${r.hi !== r.lo ? ` – ${inr(r.hi)} (by branch)` : ""} ${per(r.period)}${/tuition/i.test(r.label ?? "") ? ", tuition alone" : ""} — the college's 2026-27 notice.`);
 
   const lead =
     (asksFee || !y1) && f.length
       ? `At ${label}${c.state ? ` (${c.state})` : ""}, the 2026-27 PG fee starts at ${inr(f[0].lo)} ${per(f[0].period)} on a ${f[0].quota ?? "state"} seat${f.length > 1 ? `, and other quotas cost more` : ""}${y1 ? `; the stipend is ${inr(y1)} a month in the first year` : ""}.`
-      : `At ${label}${c.state ? ` (${c.state})` : ""}, a first-year MD/MS resident's stipend is ${inr(y1)} a month${f.length ? `, and the 2026-27 fee starts at ${inr(f[0].lo)} ${per(f[0].period)}` : ""}.`;
+      : `At ${label}${c.state ? ` (${c.state})` : ""}, a first-year MD/MS resident's stipend is ${inr(y1)} a month (${stipendFrom})${f.length ? `, and the 2026-27 fee starts at ${inr(f[0].lo)} ${per(f[0].period)}` : ""}.`;
   const compareState = c.state ? await getStateStipend(c.state).catch(() => null) : null;
   return {
     page: `/md-ms-india/colleges/${c.slug}`,
     kind: "college",
     lead,
-    pointsTitle: "What the college publishes:",
+    pointsTitle: "The figures, with where each comes from:",
     points,
     checks: [...bondChecks(main), "Ask the college whether the stipend is paid from month one, and what is deducted from it."],
-    source: [f.length ? "the college's own 2026-27 fee notice" : null, y1 ? "the stipend the college publishes" : null, main ? CAVEAT : null].filter(Boolean).join("; ") + ".",
+    source: [f.length ? "the college's own 2026-27 fee notice" : null, y1 ? `the stipend: ${stipendFrom}` : null, main?.bondYears ? CAVEAT : null].filter(Boolean).join("; ") + ".",
     compare:
       compareState && y1
-        ? `For comparison, the median first-year stipend across ${compareState.colleges} PG colleges in ${c.state} is ${inr(compareState.median)} a month${compareState.govtMedian ? ` (government colleges ${inr(compareState.govtMedian)})` : ""}.`
+        ? `For comparison, the median first-year stipend as listed for the counselling across ${compareState.colleges} PG colleges in ${c.state} is ${inr(compareState.median)} a month${compareState.govtMedian ? ` (government colleges ${inr(compareState.govtMedian)})` : ""}.`
         : undefined,
     what: `fee, stipend and seat table for ${label}`,
     predictor: true,
