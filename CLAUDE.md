@@ -2345,6 +2345,24 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
   Telangana's second phase (KNRUHS CQ, 25 Nov, new — its note: seats of this phase only; 25 under court orders),
   Gujarat, J&K, Tamil Nadu (with zyn-52's PwD flag on TN's 36 "TN Govt - PwD Quota" lines) and Puducherry Round 1.
 
+## NEET PG cut off reduction — /neet-pg-cut-off-reduction (2026-11-26)
+
+Owner: *"cut off reduction 2026-2027 session ka page bhi banado, kabhi bhi update aa sakta hai … koi bhi advance ya galat
+dawa nhi thokna … previous year ka dal denge, is saal ka abhi update nhi hai, jab hoga automatic dal jaye"*.
+`lib/cutoffReduction.ts` reads NBEMS's and MCC's notice lists as the alert feed records them (`alert_feed_seen`, sources
+`nbems` and `mcc-pg`, every two hours) and the owner-approved Zyn notices: a title that lowers or revises the year's NEET PG
+qualifying percentile / cut off (dental, SS, UG and internship "cut-off date" notices excluded) is this year's notice, and
+the page turns to "Notice Out" with its link by itself; a state's notice after it is listed once a central one exists. Until
+then the page says "no notice lowering it is listed here yet" — never that one is coming or that none will. Figures:
+`lib/neetPgQualifying.ts` (NBEMS's notices: 2026 262/244/226 of 720; 2025 276/255/235 of 800, lowered on 13.01.2026 to
+103/90/−40 for round 3) — checked twice on 2026-11-26: AMRU Himachal's official copy prints NBEMS's notice word for word
+(incl. "no change in the NEET-PG 2025 rank as published"), and NBEMS's own score_ranks put every one of those scores at its
+stated percentile. "Candidates at or above" counts score_ranks. natboard.edu.in answers bots 403 (its human check) — never
+try to get past it; read an official state copy instead. NEET MDS 2026 (lowered 14 Oct 2026) is a section of its own. A
+revised 2026 table, once NBEMS posts one, goes into `NEET_PG_QUALIFYING` as a "lowered" row (the page then prints it beside
+the result's). Copy: "Page: NEET PG cut off reduction". Linked from /neet-pg-cutoff and /neet-pg-marks-vs-rank; hubs sitemap,
+dated by its newest notice.
+
 ## State counselling rounds of the year in progress (2026-11-04) — never in the predictor
 
 Owner's rule, 2026-11-04: *"Predictor mai 2026 round 1 ka data use mat karo bas feed karke rakho"*.

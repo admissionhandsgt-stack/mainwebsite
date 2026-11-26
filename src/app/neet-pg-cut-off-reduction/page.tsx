@@ -260,7 +260,15 @@ export default async function NeetPgCutOffReductionPage() {
       {r && (
         <section className="container-custom pt-10 md:pt-14" id="qualifying">
           <SectionHead icon="chart" title={c.cur_title} intro={c.cur_intro} />
-          <div className="mt-5">{table(r, d.tCur, `NEET PG ${d.year} — ${r.label.replace(/^NEET PG \d{4} — /, "")}, ${r.date}`)}</div>
+          {/* Once NBEMS lowers this year's cut off and its revised table is typed in (lib/neetPgQualifying.ts), it stands beside the result's. */}
+          {d.cur.lowered ? (
+            <div className="mt-5 grid gap-5 lg:grid-cols-2">
+              {table(r, d.tCur, `NEET PG ${d.year} — declared with the result, ${r.date}`)}
+              {table(d.cur.lowered, d.tCur, `NEET PG ${d.year} — lowered, ${d.cur.lowered.date}`)}
+            </div>
+          ) : (
+            <div className="mt-5">{table(r, d.tCur, `NEET PG ${d.year} — ${r.label.replace(/^NEET PG \d{4} — /, "")}, ${r.date}`)}</div>
+          )}
           <p className="mt-2 text-[12.5px] leading-relaxed text-muted-foreground">
             {c.cur_note}{" "}
             <a href={r.source} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary-strong hover:underline dark:text-primary">
