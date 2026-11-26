@@ -103,6 +103,14 @@ const courses = new Map((await sql<{ id: number; name: string }[]>`SELECT id, na
 function normCategory(stateName: string, code: string, quota = ""): { category: string; pwd?: boolean; additional?: string } {
   const c = code.trim();
   switch (stateName) {
+    case "West Bengal": {
+      // As Round 1's adapter stores them: "<cat>-In-Service" and "<cat>-PwD" carry their flag in the line already, and
+      // MQ is the management merit list (open).
+      if (c === "MQ") return { category: "GEN" };
+      const m = c.match(/^(GEN|EWS|OBC|SC|ST)(?:-(In-Service|PwD))?$/);
+      if (m) return { category: m[1], ...(m[2] === "PwD" ? { pwd: true } : {}) };
+      return { category: c };
+    }
     case "Punjab": {
       // 2025's BFUHS codes, as Round 1's adapter stores them: GEN-IP / EWS-IP are the general and EWS seats of the
       // Institutional Preference quota (the quota says so), BC is OBC, NRI-I / NRI-II the NRI lists, and CMC's
