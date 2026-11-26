@@ -314,6 +314,11 @@ export default async function NeetPgCutoffPage(props: Props) {
             </div>
           ))}
         </div>
+        <p className="mt-4 text-[14px]">
+          <Link href="/neet-pg-cut-off-reduction" className="font-semibold text-primary-strong hover:underline dark:text-primary">
+            Has the NEET PG {NEET_PG_QUALIFYING[0].year} cut off been reduced? Every NBEMS reduction notice →
+          </Link>
+        </p>
       </section>
 
       {year && (

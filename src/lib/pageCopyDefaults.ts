@@ -4140,6 +4140,133 @@ export const PAGE_COPY = {
       hub_intro: { label: "On MCC's round page: the states line — {round}", value: "Each state's counselling authority runs its own rounds for the state-quota seats, on its own dates. Its notices and result for {round}, state by state.", long: true, was: ["Each state runs its own {round} for its state-quota seats, on its own dates. The state authority's notices and result, state by state."] },
     },
   },
+  "page.pg_cut_reduction": {
+    group: "Page: NEET PG cut off reduction",
+    fields: {
+      eyebrow: { label: "Hero eyebrow — {session}", value: "NBEMS · {session} session" },
+      title: { label: "Hero title — {year}", value: "NEET PG cut off reduction {year}" },
+      accent_wait: { label: "Hero title, coloured part, no reduction notice listed — {session}", value: "qualifying percentile, {session}" },
+      accent_out: { label: "Hero title, coloured part, a reduction notice is listed — {session}", value: "revised qualifying percentile, {session}" },
+      subtitle_wait: {
+        label: "Hero line, no reduction notice listed — {year}, {gen}, {gen_pct}, {pwd}, {res}, {out_of}, {prev_year}, {prev_date}",
+        value:
+          "No notice lowering the NEET PG {year} qualifying percentile is listed here yet. The cut off declared with the result stands: {gen} marks for General/EWS ({gen_pct} percentile), {pwd} for General PwBD and {res} for SC/ST/OBC, out of {out_of}. In {prev_year}, NBEMS lowered it on {prev_date}, for round 3 of the counselling — that change is below.",
+        long: true,
+      },
+      subtitle_out: {
+        label: "Hero line, a reduction notice is listed — {notice_by}, {notice_title}, {notice_date}",
+        value: "{notice_by} has posted “{notice_title}” ({notice_date}). It is linked below, beside the cut off declared with the result.",
+        long: true,
+      },
+      source: {
+        label: "Source line",
+        value: "From NBEMS's own notices and NEET PG result, and the counselling authorities' notices as published. Counts of candidates are read from NBEMS's published scores and ranks.",
+        long: true,
+      },
+      cta: { label: "Hero button", value: "Check your PG chances" },
+      tile_status: { label: "Tile: reduction — {year}", value: "{year} reduction notice" },
+      tile_status_wait: { label: "Tile: none listed", value: "Not listed yet" },
+      tile_status_out: { label: "Tile: listed", value: "Posted" },
+      tile_cur: { label: "Tile: this year's cut off — {year}", value: "{year} qualifying cut off" },
+      tile_prev: { label: "Tile: last year lowered to — {prev_year}", value: "{prev_year}: lowered to" },
+      tile_more: { label: "Tile: more candidates — {prev_year}", value: "{prev_year}: more eligible" },
+      status_title: { label: "Status heading — {year}", value: "Has the NEET PG {year} cut off been reduced?" },
+      status_wait: {
+        label: "Status line, none listed — {year}",
+        value:
+          "Not by any notice listed here so far. A reduction is the Health Ministry's decision and NBEMS notifies it on natboard.edu.in; this page lists NBEMS's or MCC's notice when it appears in their notice lists, and does not forecast one.",
+        long: true,
+      },
+      status_out: {
+        label: "Status line, listed — {notice_by}, {notice_date}",
+        value: "Yes, by the notice below ({notice_by}, {notice_date}). Read the notice itself for the revised scores and the round it applies to.",
+        long: true,
+      },
+      states_title: { label: "Heading over the states' notices", value: "What the counselling authorities posted after it" },
+      cur_title: { label: "This year's cut off heading — {year}", value: "NEET PG {year} qualifying cut off, as declared with the result" },
+      cur_intro: {
+        label: "…line — {date}, {year}",
+        value:
+          "From NBEMS's result notice of {date}. Qualifying makes a candidate eligible to take part in counselling; it is not a seat. “Candidates at or above” counts the ranks at that score in NBEMS's published NEET PG {year} result.",
+        long: true,
+      },
+      cur_note: { label: "Under this year's table", value: "The percentiles are the minimum qualifying criteria in NBEMS's information bulletin.", long: true },
+      prev_title: { label: "Last year heading — {prev_year}", value: "NEET PG {prev_year}: how the cut off was lowered" },
+      prev_intro: {
+        label: "…line — {prev_year}, {prev_date}",
+        value:
+          "NBEMS's notice of {prev_date} lowered the minimum qualifying percentile for the third round of the {prev_year} counselling, on the Health Ministry's direction. The ranks published with the result did not change.",
+        long: true,
+      },
+      prev_note: {
+        label: "Under last year's tables — {prev_year}, {p_gen_from}, {p_gen_to}, {p_reach_from}, {p_reach_to}, {p_more}",
+        value:
+          "General/EWS: {p_reach_from} candidates scored {p_gen_from} or more; {p_reach_to} scored {p_gen_to} or more — {p_more} more on the General/EWS criteria. Candidates at or above counts every category's ranks together.",
+        long: true,
+      },
+      mds_title: { label: "NEET MDS heading — {year}, {mds_date}", value: "NEET MDS {year}: lowered on {mds_date}" },
+      mds_intro: {
+        label: "…line — {year}",
+        value: "For dental PG (MDS), NBEMS lowered the NEET MDS {year} qualifying percentiles. That notice is for MDS only; it does not change NEET PG.",
+        long: true,
+      },
+      earlier_title: { label: "Earlier notices heading", value: "Earlier NBEMS notices lowering the NEET PG cut off" },
+      earlier_intro: {
+        label: "…line",
+        value: "As NBEMS's notice list reads in our notice feed. Not every year's notice is in it; NBEMS's own notice board on natboard.edu.in has them all.",
+        long: true,
+      },
+      lead_title: { label: "Enquiry heading", value: "Just below the cut off, or just above it?" },
+      lead_body: {
+        label: "Enquiry line",
+        value: "A counsellor reads your score and rank against MCC's and the states' rounds, and plans what to do if the cut off moves — or if it does not.",
+        long: true,
+      },
+      faq_title: { label: "FAQ heading — {year}", value: "NEET PG cut off reduction {year}: questions" },
+      faq_will_q: { label: "FAQ: will it be reduced — {year}", value: "Will the NEET PG {year} cut off be reduced?" },
+      faq_will_a: {
+        label: "…answer, none listed — {prev_year}, {prev_date}",
+        value:
+          "No notice lowering it is listed here yet. A reduction is decided by the Health Ministry and notified by NBEMS. In {prev_year} it was lowered after two rounds of counselling, by NBEMS's notice of {prev_date}, for round 3; whether it happens this year is not known until NBEMS posts a notice.",
+        long: true,
+      },
+      faq_will_out_a: {
+        label: "…answer, listed — {notice_by}, {notice_title}, {notice_date}",
+        value: "{notice_by} has posted “{notice_title}” ({notice_date}). The notice is linked on this page; it gives the revised scores and the round they apply to.",
+        long: true,
+      },
+      faq_what_q: { label: "FAQ: this year's cut off — {year}", value: "What is the NEET PG {year} qualifying cut off?" },
+      faq_what_a: {
+        label: "…answer — {gen}, {gen_pct}, {pwd}, {pwd_pct}, {res}, {res_pct}, {out_of}, {date}",
+        value:
+          "{gen} marks for General/EWS ({gen_pct} percentile), {pwd} for General PwBD ({pwd_pct}) and {res} for SC/ST/OBC including their PwBD ({res_pct}), out of {out_of}, as NBEMS declared with the result on {date}.",
+        long: true,
+      },
+      faq_prev_q: { label: "FAQ: last year's reduction — {prev_year}", value: "How much was the NEET PG {prev_year} cut off reduced?" },
+      faq_prev_a: {
+        label: "…answer — {p_gen_from}, {p_gen_to}, {p_gen_pct_from}, {p_gen_pct_to}, {p_pwd_from}, {p_pwd_to}, {p_res_from}, {p_res_to}, {p_out_of}, {prev_date}, {p_more}",
+        value:
+          "General/EWS from {p_gen_from} to {p_gen_to} marks ({p_gen_pct_from} to {p_gen_pct_to} percentile), General PwBD from {p_pwd_from} to {p_pwd_to}, SC/ST/OBC from {p_res_from} to {p_res_to}, out of {p_out_of}, by NBEMS's notice of {prev_date}. {p_more} more candidates scored at or above the lowered General/EWS cut off than the original.",
+        long: true,
+      },
+      faq_rank_q: { label: "FAQ: does it change the rank", value: "Does a cut off reduction change my NEET PG rank?" },
+      faq_rank_a: {
+        label: "…answer — {prev_year}",
+        value: "No. NBEMS's {prev_year} notice said there was no change in the rank published with the result. A reduction changes who is eligible to take part in counselling.",
+        long: true,
+      },
+      faq_who_q: { label: "FAQ: who becomes eligible", value: "Who becomes eligible after a NEET PG cut off reduction?" },
+      faq_who_a: {
+        label: "…answer — {prev_year}",
+        value:
+          "Candidates whose score is at or above the lowered cut off for their category, subject to the bulletin's other eligibility conditions. In {prev_year} they took part from round 3, registering on MCC's and the states' own dates.",
+        long: true,
+      },
+      faq_mds_q: { label: "FAQ: NEET MDS — {year}", value: "Was the NEET MDS {year} cut off reduced?" },
+      faq_mds_a: { label: "…answer — {year}, {mds_date}", value: "Yes. NBEMS lowered the NEET MDS {year} qualifying percentiles by its notice of {mds_date}. It applies to MDS (dental PG) only, not to NEET PG.", long: true },
+      links_title: { label: "Links heading", value: "More on NEET PG cut off and counselling" },
+    },
+  },
   "page.pg_bond_state": {
     group: "Page: PG bond in a state (official rules)",
     fields: {

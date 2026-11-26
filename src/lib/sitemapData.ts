@@ -62,6 +62,8 @@ const STATIC: { path: string; priority: number; freq: SitemapEntry["changeFreque
   { path: "/neet-pg-cutoff", priority: 0.9, freq: "weekly" },
   // NBEMS's score and rank of every candidate (2026-10-26): "neet pg marks vs rank".
   { path: "/neet-pg-marks-vs-rank", priority: 0.9, freq: "weekly" },
+  // NEET PG cut off reduction (2026-11-26): NBEMS's and MCC's notices lowering the qualifying percentile, by themselves.
+  { path: "/neet-pg-cut-off-reduction", priority: 0.8, freq: "daily" },
   { path: "/md-ms-india/stipend", priority: 0.8, freq: "monthly" },
   { path: "/bds-india", priority: 0.8, freq: "weekly" },
   { path: "/ayush-colleges", priority: 0.6, freq: "monthly" },
@@ -340,6 +342,11 @@ async function buildSitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry[]
   const NMC_HUBS = new Set(["/mbbs-india/new-medical-colleges"]);
   /** The notices hub changes with its newest notice. */
   const NOTICE_HUBS = new Set(["/neet-counselling-updates"]);
+  /** The cut off reduction page changes with its newest notice, or else with NBEMS's result data it counts from. */
+  const reductionDay = await import("@/lib/cutoffReduction")
+    .then((m) => m.getCutReduction())
+    .then((r) => r.newest ?? "")
+    .catch(() => "");
   const hubDay = newest(
     await Promise.all((["pg", "ug"] as const).map(async (l) => istStamp((await getHubNotices(l, 1).catch(() => []))[0]?.on))),
   );
@@ -368,7 +375,9 @@ async function buildSitemapGroups(): Promise<Record<SitemapGroup, SitemapEntry[]
             ? nmcDay
             : NOTICE_HUBS.has(s.path)
               ? hubDay || undefined
-              : undefined;
+              : s.path === "/neet-pg-cut-off-reduction"
+                ? reductionDay || undefined
+                : undefined;
     out.hubs.push({ url: BASE + s.path, lastModified, changeFrequency: s.freq, priority: s.priority });
   }
 

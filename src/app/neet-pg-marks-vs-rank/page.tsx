@@ -339,8 +339,12 @@ export default async function NeetPgMarksVsRankPage() {
             ))}
           </div>
         </div>
+        <p className="mt-4 text-[14px]">
+          <Link href="/neet-pg-cut-off-reduction" className="font-semibold text-primary-strong hover:underline dark:text-primary">
+            Just below the NEET PG {q.year} qualifying score? Whether the cut off has been reduced, from NBEMS's notices →
+          </Link>
+        </p>
       </section>
-
 
       <DataPageEnd
         telegram={{ placement: "marks_rank" }}
