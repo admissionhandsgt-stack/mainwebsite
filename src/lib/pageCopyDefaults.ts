@@ -4144,9 +4144,9 @@ export const PAGE_COPY = {
     group: "Page: NEET PG cut off reduction",
     fields: {
       eyebrow: { label: "Hero eyebrow — {session}", value: "NBEMS · {session} session" },
-      title: { label: "Hero title — {year}", value: "NEET PG cut off reduction {year}" },
-      accent_wait: { label: "Hero title, coloured part, no reduction notice listed — {session}", value: "qualifying percentile, {session}" },
-      accent_out: { label: "Hero title, coloured part, a reduction notice is listed — {session}", value: "revised qualifying percentile, {session}" },
+      title: { label: "Hero title", value: "NEET PG cut off reduction" },
+      accent_wait: { label: "Hero title, coloured part, no reduction notice listed — {year}, {session}", value: "{year}: qualifying percentile, {session} session" },
+      accent_out: { label: "Hero title, coloured part, a reduction notice is listed — {year}, {session}", value: "{year}: revised qualifying percentile, {session} session" },
       subtitle_wait: {
         label: "Hero line, no reduction notice listed — {year}, {gen}, {gen_pct}, {pwd}, {res}, {out_of}, {prev_year}, {prev_date}",
         value:
