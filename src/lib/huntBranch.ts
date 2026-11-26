@@ -76,7 +76,7 @@ export type BranchWord = (typeof BRANCH_WORDS)[number];
 /** DM / MCh courses people name without the degree ("interventional radiology", "critical care medicine"): NEET SS, not
  *  NEET PG. Shared with the national seat answer, so India's MD/MS total never answers them either. */
 export const SUPER_SPECIALTY =
-  /\b(interventional|neuro ?-?radiology|neuroradiology|cardiology|neurology|nephrology|gastroenterology|endocrinology|rheumatology|hepatology|neonatology|medical oncology|surgical oncology|clinical (h(a)?ematology|immunology|pharmacology)|critical care|infectious diseases?)\b/i;
+  /\b(interventional|neuro ?-?radiology|neuroradiology|cardiology|neurology|nephrology|gastroenterology|endocrinology|rheumatology|hepatology|neonatology|medical oncology|surgical oncology|clinical (h(a)?ematology|immunology|pharmacology)|critical care|infectious diseases?|traumatology)\b/i;
 
 export function branchWord(q: string): BranchWord | null {
   // DM / MCh / DrNB are super-specialities (NEET SS): "mch head and neck surgery" is not general surgery.

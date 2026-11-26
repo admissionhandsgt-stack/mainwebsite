@@ -26,7 +26,8 @@ import { cityPagePath } from "@/lib/cityQueries";
 import { getCollegeCutoffs } from "@/lib/collegeQueries";
 import { generalBands } from "@/lib/cutoffBands";
 import { ssSeats } from "@/lib/huntSs";
-import { bindsAiq, getOfficialBond, getOfficialStateByName, govtBond, hasOwnBond, isCentralInstitution, money, rangeText, yearsText, serviceYears } from "@/lib/officialBond";
+import { getCounsellingYear } from "@/lib/mccResults";
+import { bindsAiq, clean, getOfficialBond, getOfficialCollegeBond, getOfficialStateByName, govtBond, hasOwnBond, isCentralInstitution, money, noOwnBond, OWN_BOND_TEXT, publicTerms, rangeText, yearsText, serviceYears } from "@/lib/officialBond";
 import { getOfficialCollegeStipend, getOfficialStipend, getOfficialStipendState, hasOwnStipend, type GovtStipend } from "@/lib/officialStipend";
 
 /**
@@ -207,7 +208,8 @@ const NOT_A_NAME = new Set(
     "to kitna kitni kitne kya hai milta milti milega ka ki ke me mein se 2023 2024 2025 2026 2027 college colleges medical government govt " +
     "private deemed university india residents resident junior jr doctor doctors student students admission counselling counseling quota " +
     "management nri total details list branch branches wise state best highest lowest top compare vs hostel tuition first second third " +
-    "1st 2nd 3rd do does can i my get given gross net hand in-hand ctc amount new old structure institute sciences hospital cost costs charges"
+    "1st 2nd 3rd do does can i my get given gross net hand in-hand ctc amount new old structure institute sciences hospital cost costs charges " +
+    "with without from by on under near which dnb drnb fnb diploma course courses"
   ).split(" "),
 );
 
@@ -268,7 +270,9 @@ async function collegeByPhrase(q: string, states: PgState[] = [], level: "pg" | 
        WHERE i.level = ${level} AND i.is_active AND i.slug IS NOT NULL
          AND lower(regexp_replace(i.name, '[^A-Za-z]+', ' ', 'g')) LIKE ${phrase}
        LIMIT 4`)) as unknown as (College & { mdms: boolean })[];
-    const fit = rows.filter((r) => fitsSearch(q, r, states));
+    // The place the search names after the name is the college's own (2026-11-26 audit: "government homeopathic medical
+    // college jalgaon" matched the one in Kathua on the name alone).
+    const fit = rows.filter((r) => fitsSearch(q, r, states) && (!after || fold(`${r.name} ${r.state ?? ""}`).includes(` ${after}`)));
     const mdms = fit.filter((r) => r.mdms);
     const pick = mdms.length === 1 ? mdms[0] : fit.length === 1 ? fit[0] : null;
     if (pick) return { id: Number(pick.id), slug: pick.slug, name: pick.name, state: pick.state, ownership: pick.ownership };
@@ -276,11 +280,25 @@ async function collegeByPhrase(q: string, states: PgState[] = [], level: "pg" | 
   return null;
 }
 
+/** What a hospital treats, not which hospital it is: dropped before a name is matched (2026-11-26 audit). */
+const SPECIALTY_WORD = new Set(
+  "plastic surgery surgical cardiac cardio heart cancer oncology onco eye eyes neuro ortho orthopaedic kidney child children women maternity dental trauma spine skin chest tb mental psychiatric".split(" "),
+);
+/**
+ * A search word fits a college's name when a name word is that word, or the word with at most two letters more
+ * ("bharath" for "bharat", "missions" for "mission") — never a longer word it only starts ("bharat" is not Bharatpur, "shah"
+ * is not Shahdol: 2026-11-26 audit, "bharat medical college fees" and "mp shah medical college pg stipend").
+ */
+function nameFits(w: string, name: string): boolean {
+  if (COLLEGE_ACRONYM[w]) return true;
+  return fold(name).trim().split(" ").some((nw) => nw === w || (nw.startsWith(w) && nw.length - w.length <= 2));
+}
+
 async function collegeIn(q: string, states: PgState[], level: "pg" | "ug" = "pg"): Promise<College | null> {
   const byPhrase = await collegeByPhrase(q, states, level).catch(() => null);
   if (byPhrase) return byPhrase;
   const st = stateIn(q, states);
-  let words = fold(q).trim().split(" ").filter((w) => w.length >= 2 && !NOT_A_NAME.has(w) && !/^\d+$/.test(w));
+  let words = fold(q).trim().split(" ").filter((w) => w.length >= 2 && !NOT_A_NAME.has(w) && !SPECIALTY_WORD.has(w) && !/^\d+$/.test(w));
   if (st) words = words.filter((w) => !fold(st.name).includes(` ${w} `));
   if (!words.length || words.length > 5 || !words.some((w) => w.length >= 3)) return null;
   const like = (w: string): SQL =>
@@ -296,7 +314,7 @@ async function collegeIn(q: string, states: PgState[], level: "pg" | "ug" = "pg"
       FROM institutes i LEFT JOIN states s ON s.id = i.state_id
      WHERE i.level = ${level} AND i.is_active AND i.slug IS NOT NULL AND ${sql.join(words.map(like), sql` AND `)}
      LIMIT 6`)) as unknown as (College & { mdms: boolean })[];
-  const fit = rows.filter((r) => fitsSearch(q, r, states));
+  const fit = rows.filter((r) => words.every((w) => nameFits(w, r.name)) && fitsSearch(q, r, states));
   const mdms = fit.filter((r) => r.mdms);
   const pick = mdms.length === 1 ? mdms[0] : fit.length === 1 ? fit[0] : null;
   return pick ? { id: Number(pick.id), slug: pick.slug, name: pick.name, state: pick.state, ownership: pick.ownership } : null;
@@ -304,17 +322,60 @@ async function collegeIn(q: string, states: PgState[], level: "pg" | "ug" = "pg"
 
 const branchIn = (q: string) => CLINICAL.find((c) => c.re.test(q)) ?? null;
 
+/**
+ * A rule's words cut to a length without breaking a word (2026-11-26 audit: "…After the course starts, the R", "Choice 4 q"):
+ * the whole text when short, else up to its last full sentence that fits, else its last whole word and "…".
+ */
+function clip(text: string, max: number): string {
+  const t = text.replace(/\s+/g, " ").trim();
+  if (t.length <= max) return t;
+  const head = t.slice(0, max);
+  const sentence = head.match(/^.*[.;](?=\s|$)/)?.[0];
+  if (sentence && sentence.length >= max * 0.5) return sentence.replace(/;$/, ".");
+  return `${head.replace(/\s+\S*$/, "").replace(/[\s,;:(–-]+$/, "")}…`;
+}
+
 /* ------------------------------------------------------------------- builders --- */
 
-function bondChecks(t: SeatTerms | undefined): string[] {
-  if (!t) return [];
+/**
+ * A college's service bond from the official 2026-27 documents, in the college page's own order (2026-11-26 audit: the
+ * answers quoted the listing's "1 year, ₹50 lakh" at Bangalore Medical College while Karnataka's own rules say 3 years,
+ * ₹25–50 lakh, and "1 year, ₹20 lakh" at Delhi's state hospitals where Delhi's documents set no bond): the college's own
+ * official row; else, for a state government college that is not a central institution, the state's government bond;
+ * null when neither is read — the listing's line is used then, said to be the listing.
+ */
+async function officialBondCheck(c: College): Promise<string | null> {
+  const [row, state] = await Promise.all([
+    getOfficialCollegeBond(c.slug).catch(() => null),
+    c.state ? getOfficialStateByName(c.state).catch(() => null) : Promise.resolve(null),
+  ]);
+  if (row && row.status !== "not_verified") {
+    const own =
+      OWN_BOND_TEXT[row.ourId] ??
+      (row.status === "none_in_official_documents" || noOwnBond(row)
+        ? "no service bond of its own (0 years)"
+        : [row.years ? `${row.years} year${row.years === 1 ? "" : "s"}` : null, row.amount ? `${money(row.amount)} if not served` : null].filter(Boolean).join(", ") || null);
+    return own ? `Service bond: ${own}, from the college's own documents${row.session ? ` (${row.session})` : ""}.` : null;
+  }
+  if (!state || c.ownership !== "government" || isCentralInstitution(c.name)) return null;
+  const g = govtBond(state);
+  if (g.flag === "lead") return null;
+  if (g.flag === "not_notified") return `Service bond: ${state.state} has not notified a government service bond for this batch yet.`;
+  if (g.zero) return `Service bond: none (0 years) — none is stated in ${state.state}'s own 2026-27 documents.`;
+  const parts = [serviceYears(g), rangeText(g.min, g.max) ? `${rangeText(g.min, g.max)} if not served` : null].filter(Boolean);
+  return parts.length ? `Service bond: ${parts.join(", ")}, under ${state.state}'s own 2026-27 rules for its government colleges.` : null;
+}
+
+function bondChecks(t: SeatTerms | undefined, official?: string | null): string[] {
+  if (!t && !official) return [];
   const out: string[] = [];
-  if (t.bondYears) out.push(`Service bond: ${t.bondYears} year${t.bondYears === 1 ? "" : "s"} after the course${t.bondPenalty ? `, ${inr(t.bondPenalty)} to break it` : ""}${t.bondVaries ? "; it differs between branches here" : ""}.`);
-  else if (t.bondYears === 0 && !t.bondUnknown) out.push("No service bond is listed for this seat type.");
+  if (official) out.push(official);
+  else if (t?.bondYears) out.push(`Service bond: ${t.bondYears} year${t.bondYears === 1 ? "" : "s"} after the course${t.bondPenalty ? `, ${inr(t.bondPenalty)} to break it` : ""}${t.bondVaries ? "; it differs between branches here" : ""}, as listed for the counselling.`);
+  else if (t?.bondYears === 0 && !t.bondUnknown) out.push("No service bond is listed for this seat type.");
   // The listing's seat-leaving terms are never quoted (2026-11-25, lib/officialLeaving.ts): no official 2026 document backs
   // them. The question to ask is said instead.
   out.push("What leaving the seat costs under the counselling's own 2026-27 rules, round by round, before you join.");
-  if (t.hostelMin) out.push(`Hostel: ${inr(t.hostelMin)}${t.hostelMax && t.hostelMax !== t.hostelMin ? ` – ${inr(t.hostelMax)}` : ""}${t.hostelPeriod ? ` a ${t.hostelPeriod}` : ""}${t.hostelMess ? ", mess included" : ""}.`);
+  if (t?.hostelMin) out.push(`Hostel: ${inr(t.hostelMin)}${t.hostelMax && t.hostelMax !== t.hostelMin ? ` – ${inr(t.hostelMax)}` : ""}${t.hostelPeriod ? ` a ${t.hostelPeriod}` : ""}${t.hostelMess ? ", mess included" : ""}.`);
   return out;
 }
 
@@ -345,14 +406,16 @@ async function listedFees(c: College, label: string, q: string, quotaAsked: RegE
   const first = list[0];
   if (!band(first)) return null;
   const main = terms.find((t) => t.family === "state") ?? terms.find((t) => t.family === "aiq") ?? terms[0];
+  const officialBond = await officialBondCheck(c);
+  const listedBond = !officialBond && !!main?.bondYears;
   return {
     page: `/md-ms-india/colleges/${c.slug}`,
     kind: "college-fee-listed",
     lead: `${label}${c.state ? ` (${c.state})` : ""} has not published its 2026-27 PG fee yet; as listed for last year's counselling, its ${first.quota} seats cost ${band(first)}.`,
     pointsTitle: "Fees as listed for last year's counselling:",
     points: list.slice(0, 4).map((r) => `${r.quota}: ${band(r)}.`),
-    checks: [...bondChecks(main), "Ask the college for its 2026-27 fee notice, and what hostel and deposits add, before you pay."],
-    source: `fees as listed for last year's counselling, shown as approximate brackets (*); the college's 2026-27 notice is awaited${main ? `; ${CAVEAT}` : ""}.`,
+    checks: [...bondChecks(main, officialBond), "Ask the college for its 2026-27 fee notice, and what hostel and deposits add, before you pay."],
+    source: `fees as listed for last year's counselling, shown as approximate brackets (*); the college's 2026-27 notice is awaited${listedBond ? `; ${CAVEAT}` : officialBond ? "; the service bond: the official 2026-27 documents" : ""}.`,
     what: `fee, stipend and seat table for ${label}`,
     predictor: true,
   };
@@ -421,15 +484,20 @@ async function college(c: College, q: string): Promise<Draft | null> {
     (asksFee || !y1) && f.length
       ? `At ${label}${c.state ? ` (${c.state})` : ""}, the 2026-27 PG fee starts at ${inr(f[0].lo)} ${per(f[0].period)} on a ${f[0].quota ?? "state"} seat${f.length > 1 ? `, and other quotas cost more` : ""}${y1 ? `; the stipend is ${inr(y1)} a month in the first year` : ""}.`
       : `At ${label}${c.state ? ` (${c.state})` : ""}, a first-year MD/MS resident's stipend is ${inr(y1)} a month (${stipendFrom})${f.length ? `, and the 2026-27 fee starts at ${inr(f[0].lo)} ${per(f[0].period)}` : ""}.`;
-  const compareState = c.state ? await getStateStipend(c.state).catch(() => null) : null;
+  const [compareState, officialBond] = await Promise.all([c.state ? getStateStipend(c.state).catch(() => null) : Promise.resolve(null), officialBondCheck(c)]);
+  const listedBond = !officialBond && !!main?.bondYears;
   return {
     page: `/md-ms-india/colleges/${c.slug}`,
     kind: "college",
     lead,
     pointsTitle: "The figures, with where each comes from:",
     points,
-    checks: [...bondChecks(main), "Ask the college whether the stipend is paid from month one, and what is deducted from it."],
-    source: [f.length ? "the college's own 2026-27 fee notice" : null, y1 ? `the stipend: ${stipendFrom}` : null, main?.bondYears ? CAVEAT : null].filter(Boolean).join("; ") + ".",
+    checks: [...bondChecks(main, officialBond), "Ask the college whether the stipend is paid from month one, and what is deducted from it."],
+    source: [
+      f.length ? "the college's own 2026-27 fee notice" : null,
+      y1 ? `the stipend: ${stipendFrom}` : null,
+      listedBond ? CAVEAT : officialBond ? "the service bond: the official 2026-27 documents" : null,
+    ].filter(Boolean).join("; ") + ".",
     compare:
       compareState && y1
         ? `For comparison, the median first-year stipend as listed for the counselling across ${compareState.colleges} PG colleges in ${c.state} is ${inr(compareState.median)} a month${compareState.govtMedian ? ` (government colleges ${inr(compareState.govtMedian)})` : ""}.`
@@ -476,7 +544,10 @@ async function stateStipend(st: PgState): Promise<Draft | null> {
       lead: rate
         ? `In ${st.name}, government colleges pay MD/MS residents ${rate}, ${g.label ? "per the state counselling authority's prospectus" : g.kind === "disclosure" ? "as an official government-college document gives it" : "under the state's own order"}.`
         : g.kind === "formula" && g.asWritten
-          ? `In ${st.name}, the state's order sets the government-college PG stipend by a formula: ${g.asWritten.split(/(?<=\.)\s/)[0]}`
+          ? // "Formula, no rupee total in the orders." (West Bengal) is the research file's note, not the order's words.
+            /^formula\b|no rupee/i.test(g.asWritten.trim())
+            ? `In ${st.name}, the state's order sets the government-college PG stipend by a formula and prints no rupee total; ask the college what it pays in each year, in writing.`
+            : `In ${st.name}, the state's order sets the government-college PG stipend by a formula: ${g.asWritten.split(/(?<=\.)\s/)[0]}`
           : `${st.name} has no official order with the government-college rupee figure; ask the college what it pays in each year, in writing.`,
       pointsTitle: "Private and deemed colleges:",
       points: [
@@ -587,7 +658,11 @@ async function bond(st: PgState | null): Promise<Draft | null> {
               : `${os.state}'s own 2026-27 rules set the government-college bond as printed on its bond page.`,
       points: [
         ...(bindsAiq(os) ? ["The bond binds All India Quota seats in the state's government colleges too."] : []),
-        ...rows.slice(0, 2).map((r) => `${String(r.when ?? "").slice(0, 80)}: ${String(r.government ?? "").slice(0, 160)}`),
+        ...rows
+          .slice(0, 2)
+          .map((r) => [clip(publicTerms(clean(String(r.when ?? ""))) ?? "", 90), clip(publicTerms(clean(String(r.government ?? ""))) ?? "", 220)] as const)
+          .filter(([, text]) => !!text)
+          .map(([when, text]) => (when ? `${when}: ${text}` : text)),
         ...(own.length ? [`Private and deemed colleges: ${ownBond.length} of ${own.length} print their own service bond${ownBond[0] ? `, e.g. ${collegeName(ownBond[0].name).short}` : ""}.`] : []),
       ],
       checks: ["Whether the bond is served in a government post (and paid) or only as a penalty.", "Whether original certificates are kept by the college until the course ends.", "The college's own course-leaving terms, in writing, before you pay."],
@@ -948,7 +1023,7 @@ const BOND = /\bbond\b|penalt|seat leaving|leav(e|ing) (the |my )?seat/i;
 const CHOICE = /upgrad|freeze|float|choice fill|lock(ing)? (my )?choices|choice (list|order)|free exit|resign/i;
 const MARKS = /\b(-?\d{2,3})\s*(marks?|score|no\.?|number)\b|\b(marks?|score)\s*(of\s*)?(-?\d{2,3})\b/i;
 const SEATS = /how many (pg|md|ms|md ?\/ ?ms|post ?graduate)? ?seats|seats in india|total (pg|md|ms)? ?seats|statistic|how many candidates|candidates appeared/i;
-const LOW = /low (score|rank|marks)|just (qualified|eligible|passed)|clinical branch|clinical at|less marks|kam marks/i;
+const LOW = /low (score|rank|marks)|just (qualified|eligible|passed)|clinical (branch\w*|seat\w*) (at|with|in) (low|less|\d)|clinical at|less marks|kam marks/i;
 const CUTOFF = /cut ?off|closing rank|rank (needed|required)|kitn[ae] rank|which rank|rank for/i;
 
 const UG_ASK = /\b(ug|mbbs|bds|neet ug|neet-ug)\b/i;
@@ -960,6 +1035,9 @@ const PG_ASK = /\b(pg|md|ms|dnb|neet pg|neet-pg|post ?grad\w*)\b/i;
  * or round had no answer). The college page's own bands — a band of ranks, general category, merit quotas — never a rank.
  * The level the search names; with none, PG first (the counselling in progress), then MBBS.
  */
+const CLINICAL_RE =
+  /general medicine|emergency medicine|respiratory medicine|tuberculosis|general surgery|paediatric|pediatric|obstetric|gynae|orthop|radio.?diagnosis|radiology|dermat|anaes|\bent\b|otorhino|ophthal|psychiat|pulmon|mbbs|bds/i;
+
 async function collegeCut(q: string, states: PgState[]): Promise<Draft | null> {
   const ug = UG_ASK.test(q);
   const pg = PG_ASK.test(q);
@@ -970,11 +1048,20 @@ async function collegeCut(q: string, states: PgState[]): Promise<Draft | null> {
     if (!c) continue;
     const nm = collegeName(c.name);
     const label = nm.place && !nm.short.toLowerCase().includes(nm.place.toLowerCase()) ? `${nm.short}, ${nm.place}` : nm.short;
-    if (level === "pg") {
+    // A year the search names is the year answered (2026-11-26 audit: "karwar medical college cut off 2025" got 2026's
+    // bands). MCC's year in progress answers a PG search that names it or no year at all.
+    const askedYear = q.match(/\b(20\d\d)\b/)?.[1] ?? null;
+    if (level === "pg" && (!askedYear || Number(askedYear) === (await getCounsellingYear().catch(() => 0)))) {
       const live = await collegeBranch(q, { slug: c.slug, label }, true).catch(() => null);
       if (live) return live;
     }
-    const rows = generalBands(await getCollegeCutoffs(c.slug, level).catch(() => []), 6);
+    // The clinical branches lead: a cut off search reads the first line, and "MD Pathology ≈ 2L–3L" told it little.
+    // Newest year first, then the clinical branches (KMC Manipal's 2025 rows must not give way to a 2024 one).
+    const clinical = (course: string) => (CLINICAL_RE.test(course) ? 0 : 1);
+    const rows = generalBands(await getCollegeCutoffs(c.slug, level).catch(() => []), 12)
+      .filter((r) => !askedYear || String(r.year ?? "") === askedYear)
+      .sort((a, b) => Number(b.year ?? 0) - Number(a.year ?? 0) || clinical(a.course) - clinical(b.course))
+      .slice(0, 6);
     if (!rows.length) continue;
     const exam = level === "ug" ? "NEET UG" : "NEET PG";
     const first = rows[0];
@@ -1114,7 +1201,11 @@ async function pickDraft(q: string, all: string, hasText: boolean, states: PgSta
   }
   // A state's or India's stipend — not for a search about one hospital or college we could not find ("batra hospital
   // delhi dnb stipend" is not answered by Delhi's median).
-  if (STIPEND.test(q) && !/\b(hospital|college|institute|aiims|jipmer|pgimer)\b/i.test(q)) {
+  const unread = fold(withoutBranchWords(q))
+    .trim()
+    .split(" ")
+    .filter((w) => w.length >= 2 && !NOT_A_NAME.has(w) && !/^\d+$/.test(w) && STATE_ALIAS[w] === undefined && !CITY_WORDS.has(w) && !states.some((st) => fold(st.name).includes(` ${w} `)));
+  if (STIPEND.test(q) && !/\b(hospital|college|institute|aiims|jipmer|pgimer)\b/i.test(q) && !unread.some((w) => !/^(stipend|pg|neet|med|medical|student|students|wise|per)$/.test(w))) {
     const st = stateIn(q, states);
     const d = await (st ? stateStipend(st) : nationalStipend());
     if (d) return d;

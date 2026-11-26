@@ -3387,6 +3387,26 @@ Owner: "itne pending task complete karo" (Meta's Conversions API token comes lat
   medicare, cpt, fee schedule) and is re-checked at render; a Delhi/Puducherry stipend search takes the state's figure
   (Delhi's stipend page counts 92 colleges, the city answer 15). Local check of every live answer:
   `npx tsx --tsconfig scripts/tmp/harness/tsconfig.json --env-file=.env.local scripts/tmp/harness/faq_audit.ts`.
+  **Third audit, 2026-11-26** (owner: "kuch galat answers claim to nhi hai"; all 294 live read off the live pages —
+  `node --env-file=.env.local scripts/tmp/harness/faq_live_dump.mjs <out>`, under a minute, where faq_audit.ts took 35 —
+  then every question rebuilt by the new code beside the live text, `scripts/tmp/harness/faq_regress2.ts <dump> <out>`):
+  27 switched off (`scripts/tmp/faq_off_1126.mjs`). Wrong colleges: "mp shah" read as Shahdol and "bharat" as Bharatpur
+  (a search word now fits a name word whole or with ≤2 more letters, `nameFits`), "government homeopathic medical college
+  jalgaon" as Kathua's (a place after the name must be in the college's name or state), "medical college with highest
+  stipend" as Metro Heart Institute *with* Multispecialty ("with" and other connectors are not a name), "dnb plastic surgery
+  cutoff" as Sushrut Institute of Plastic Surgery (specialty words are not a name, `SPECIALTY_WORD`), "mgm pondicherry pg
+  stipend" answered with Puducherry's rate (a stipend search with an unread name word gets no state figure), "ms
+  traumatology and surgery seats" as General Surgery (traumatology is in `SUPER_SPECIALTY`), "clinical branches in neet pg"
+  as a low-rank question (`LOW` needs a low score or rank). Two on stipend pages that are 404 now; nine duplicates of another
+  answer on the same page; eight Gemini answers that were stale (MCC's seat-matrix page with past PwD portal dates, a 2017
+  page) or misleading — "dm endocrinology seats in india" answered with one college's 5 seats where NMC lists 122 at 41
+  colleges, DM Onco Pathology "2 seats in India" (58 at 15): three of those now render from `ssSeats`. **And every college
+  answer's bond line followed the listing while the college page showed the official rule** (Bangalore Medical College "1
+  year, ₹50 lakh" against Karnataka's own 3 years, ₹25–50 L; Delhi's state hospitals "1 year, ₹20 lakh" where Delhi's
+  documents set none): `officialBondCheck` now takes the page's order — the college's own official row, else a state
+  government college's state rule, else the listing labelled "as listed for the counselling". A year the search names is
+  the year answered ("karwar … cut off 2025"); cut-off answers lead with the newest year, then a clinical branch; a state's
+  round rules in bond answers end on a whole sentence (`clip`), never "…the R".
   **Does it help? Measured 2026-11-24** (`scripts/tmp/faq_effect.mjs`: the 114 searches answered 11–16 Nov that sat at
   #3–20 before, Search Console 1–10 Nov against 17–23 Nov, beside 5,868 unanswered searches of the same band, word count
   and page families): answered searches moved #6.8 → #6.0 (median −1.0; 62 better, 19 worse), kept their impressions
