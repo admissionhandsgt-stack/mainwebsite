@@ -100,9 +100,19 @@ const courses = new Map((await sql<{ id: number; name: string }[]>`SELECT id, na
  * marks a separate list that stays out of the open-merit figures (KEA's H-suffix list, CENTAC's freedom-fighter and
  * ex-serviceman lists); `pwd` a disability seat the code alone names (Gujarat's "-PH").
  */
-function normCategory(stateName: string, code: string): { category: string; pwd?: boolean; additional?: string } {
+function normCategory(stateName: string, code: string, quota = ""): { category: string; pwd?: boolean; additional?: string } {
   const c = code.trim();
   switch (stateName) {
+    case "Punjab": {
+      // 2025's BFUHS codes, as Round 1's adapter stores them: GEN-IP / EWS-IP are the general and EWS seats of the
+      // Institutional Preference quota (the quota says so), BC is OBC, NRI-I / NRI-II the NRI lists, and CMC's
+      // Category B minority seats are Christian minority seats.
+      if (/CMC Minority/i.test(quota)) return { category: "Christian minority" };
+      const m = c.match(/^(GEN|EWS|SC|BC)(-PwD)?(?:-IP)?$/);
+      if (m) return { category: m[1] === "BC" ? "OBC" : m[1], ...(m[2] ? { pwd: true } : {}) };
+      if (/^NRI(-I{1,2})?$/.test(c)) return { category: "NRI" };
+      return { category: c };
+    }
     case "Karnataka": {
       // GMP / OPN / MNG are the general merit of the private, open and institutional seats (the quota says which).
       if (/^GMPH?$/.test(c)) return { category: "GEN", ...(c === "GMPH" ? { additional: "H (KEA's H-suffix list)" } : {}) };
@@ -169,7 +179,7 @@ const noInst = new Map<string, number>();
 const noCourse = new Map<string, number>();
 const rows = lines.map((l) => {
   const r = l.rounds[round];
-  const cat = normCategory(stateName, l.category);
+  const cat = normCategory(stateName, l.category, l.quota);
   const instituteId = inst.get(l.college_id) ?? null;
   const courseId = courses.get(l.branch) ?? null;
   if (!instituteId) noInst.set(`${l.college_id} ${l.college}`, (noInst.get(`${l.college_id} ${l.college}`) ?? 0) + 1);
