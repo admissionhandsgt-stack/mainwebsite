@@ -17,6 +17,12 @@
  * one go — the import replaces the whole state × year × round, so loading them one after the other kept only the second.
  * Each line keeps the official file its list came from (the feed's round source) as `source_url`.
  *
+ * Categories (2026-11-26): the feed carries each board's own codes — KEA's "GM", "2AG", "GMH"; Gujarat's "GQ-OP";
+ * J&K's "OM"; CEE Kerala's "SM"; Tamil Nadu's "OC Open"; CENTAC's "UGE". The read side counts the open category as "GEN"
+ * (and Karnataka's groups as "KA-2A" …), so the Round 2 lists loaded on 25 Nov showed no figures for Karnataka, Gujarat,
+ * J&K and Kerala, and Tamil Nadu only its management seats. `normCategory` stores what the Round 1 adapters of
+ * import_state_round.ts store for the same code; a code it does not know is kept as printed (out of every figure).
+ *
  * Dry run by default (prints what maps and what does not). --apply replaces that state's year × round in one transaction.
  */
 import { writeFileSync } from "node:fs";
@@ -89,10 +95,72 @@ const inst = new Map(
 );
 const courses = new Map((await sql<{ id: number; name: string }[]>`SELECT id, name FROM courses WHERE level = 'pg'`).map((r) => [r.name, r.id]));
 
+/**
+ * The board's category code as the Round 1 adapters (scripts/import_state_round.ts) store it, per state. `additional`
+ * marks a separate list that stays out of the open-merit figures (KEA's H-suffix list, CENTAC's freedom-fighter and
+ * ex-serviceman lists); `pwd` a disability seat the code alone names (Gujarat's "-PH").
+ */
+function normCategory(stateName: string, code: string): { category: string; pwd?: boolean; additional?: string } {
+  const c = code.trim();
+  switch (stateName) {
+    case "Karnataka": {
+      // GMP / OPN / MNG are the general merit of the private, open and institutional seats (the quota says which).
+      if (/^GMPH?$/.test(c)) return { category: "GEN", ...(c === "GMPH" ? { additional: "H (KEA's H-suffix list)" } : {}) };
+      if (c === "OPN" || c === "MNG") return { category: "GEN" };
+      if (c === "NRI") return { category: "NRI" };
+      // Minority codes stay as printed (MEH and MMH are minority codes, not the H list).
+      if (/^(ME|MEH|MM|MMH|MU|MC|MA|RC[123])$/.test(c)) return { category: c };
+      const h = /H$/.test(c) ? { additional: "H (KEA's H-suffix list)" } : {};
+      const base = c.replace(/[GH]$/, "");
+      const KA: Record<string, string> = { GM: "GEN", "1": "KA-1", "2A": "KA-2A", "2B": "KA-2B", "3A": "KA-3A", "3B": "KA-3B", ST: "ST" };
+      return { category: KA[base] ?? c, ...h };
+    }
+    case "Gujarat": {
+      // "GQ-OP", "UQ-SE", "MQ-MQ", "NQ-NRI", "GQ-EW-PH": seat type, then the category; OP open, SE SEBC, EW EWS; a
+      // management seat's category is the management merit list itself (open).
+      const parts = c.split("-");
+      const CAT: Record<string, string> = { OP: "GEN", SE: "OBC", EW: "EWS", SC: "SC", ST: "ST", MQ: "GEN", NRI: "NRI" };
+      const base = parts.length >= 2 ? parts[1] : c;
+      return { category: CAT[base] ?? c, ...(parts.includes("PH") ? { pwd: true } : {}) };
+    }
+    case "Jammu and Kashmir":
+      // OM open merit; MQ the management merit list (open), as in Round 1.
+      return { category: c === "OM" || c === "MQ" ? "GEN" : c };
+    case "Kerala":
+      // SM state merit (open); NR / NC / NM the NRI seats.
+      if (c === "SM") return { category: "GEN" };
+      if (/^(NR|NC|NM)$/.test(c)) return { category: "NRI" };
+      return { category: c };
+    case "Tamil Nadu": {
+      // "OC Open" is the open category of the open pool; "BC Open", "MBC Open"… the reserved categories of that pool.
+      const m = c.match(/^(OC|BC|MBC|BCM|SCA|SC|ST)\s+Open$/);
+      if (m) return { category: m[1] === "OC" ? "GEN" : m[1] };
+      return { category: c };
+    }
+    case "Goa": {
+      // "Group 1 - GEN"
+      const m = c.match(/^Group\s*\d+\s*-\s*(.+)$/i);
+      return { category: m ? m[1].trim() : c };
+    }
+    case "Pondicherry":
+    case "Puducherry": {
+      // CENTAC: U (UT seats) / A (management seats) + GE general, OB OBC, MB MBC, EB EBC, BM BC Muslim, BT, SC, ST;
+      // "-FF" freedom fighters' and "-ESM" ex-servicemen's lists stay out of the figures.
+      const m = c.match(/^[UA](GE|OB|MB|EB|BM|BT|SC|ST)(?:-(FF|ESM))?$/);
+      if (!m) return { category: c };
+      const CAT: Record<string, string> = { GE: "GEN", OB: "OBC", MB: "MBC", EB: "EBC", BM: "BCM", BT: "BT", SC: "SC", ST: "ST" };
+      return { category: CAT[m[1]], ...(m[2] ? { additional: m[2] === "FF" ? "freedom fighter" : "ex-serviceman" } : {}) };
+    }
+    default:
+      return { category: c };
+  }
+}
+
 const noInst = new Map<string, number>();
 const noCourse = new Map<string, number>();
 const rows = lines.map((l) => {
   const r = l.rounds[round];
+  const cat = normCategory(stateName, l.category);
   const instituteId = inst.get(l.college_id) ?? null;
   const courseId = courses.get(l.branch) ?? null;
   if (!instituteId) noInst.set(`${l.college_id} ${l.college}`, (noInst.get(`${l.college_id} ${l.college}`) ?? 0) + 1);
@@ -112,10 +180,10 @@ const rows = lines.map((l) => {
     course_printed: l.branch,
     quota: l.quota,
     seat_type_printed: l.quota_label,
-    category: l.category,
+    category: cat.category,
     category_printed: l.category,
-    pwd: !!l.pwd,
-    additional_category: l.women_only ? "women" : null,
+    pwd: !!l.pwd || !!cat.pwd,
+    additional_category: l.women_only ? "women" : cat.additional ?? null,
     in_service: !!l.in_service,
     seats_allotted: r.seats ?? null,
     opening_air: r.opening_air ?? null,
@@ -131,6 +199,9 @@ console.log(`${[key, also].filter(Boolean).join(" + ")} (${stateName}) ${round}:
 console.log(`  colleges not in our PG list (kept by name, no institute): ${noInst.size}`, [...noInst].slice(0, 10));
 console.log(`  branch names not in our courses (kept as printed): ${noCourse.size}`, [...noCourse].slice(0, 10));
 console.log(`  pwd lines ${rows.filter((r) => r.pwd).length}, in-service lines ${rows.filter((r) => r.in_service).length}`);
+const catCount = new Map<string, number>();
+for (const r of rows) catCount.set(r.category_printed === r.category ? r.category : `${r.category_printed}→${r.category}`, (catCount.get(r.category_printed === r.category ? r.category : `${r.category_printed}→${r.category}`) ?? 0) + 1);
+console.log(`  categories: ${[...catCount].sort((a, b) => b[1] - a[1]).map(([k, n]) => `${k} ${n}`).join(", ")}`);
 const old = await sql`SELECT * FROM state_round_cuts WHERE level = 'pg' AND state_id = ${state.id} AND year = ${YEAR} AND round = ${round}`;
 console.log(`  replaces ${old.length} existing rows${apply ? "" : " (dry run — pass --apply --backup <file>)"}`);
 

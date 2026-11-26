@@ -2321,6 +2321,29 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
   The same evening GMC Paderu (tool 9403, NMC AP/014/G/1, owner: "banado") was added by the same script — institute 4736,
   6 MCC matrix rows and 12 Round 2 allotments — and AP R2 (Dr NTR UHS CQ Phase-II, provisional, 25 Nov) reloaded. AP's MQ
   Phase-II list is not out yet: when it is, load `AP Govt PG` R2 with `--also "AP Mgmt PG"` (one run replaces the round).
+- **The next round's page goes live before its result (2026-11-26, owner: "sab states ke round 2 ke pages banake index
+  kardo, competitors result aane ke 1-2 din pehle hi page live kardete hai").** `getStateRoundIndex` marks each state's
+  next round `ahead` — the latest round that is out (its list loaded, or a result notice) plus one — and makes its page
+  even with no notice of its own when it has real content: last year's same round (5+ branches) or the round before in
+  figures. Indexed; the sitemap dates it by the round before. Such a page carries: a dates table from the admin's
+  `pg_schedule` (the states' window and joining date, MCC's own round, the schedule PDF linked; "dates may change" when
+  the row has a revision), the round before this year by quota (when its quota differs from last year's), and one
+  table of last year's round before and this round beside this year's round before (one quota, open category, 3+
+  colleges a branch, "past rounds, not a forecast" — a later round can close below the one before it). Title as
+  searched: "<State> NEET PG Round 2 Result 2026: Date & 2025 Cut Off"; FAQs "When will … come?" (MCC's window, "a state
+  can run later than that") and last year's two rounds. Never "not out": "no result notice is listed here yet". On the
+  first day: Round 2 for 28 states (25 indexed) and Round 3 for the 10 whose Round 2 is out. A state with neither content
+  (one or two colleges) or no round out yet (Delhi — its state quota is MCC's) gets no page ahead. Copy: the `*_ahead`,
+  `dates_*`, `prev_*`, `compare_*`, `faq_when_*`, `faq_move_*` fields of "Page: a state's NEET PG round".
+- **The feed carries each board's own category codes (found 2026-11-26).** KEA's "GM", "2AG", "GMH"; Gujarat's "GQ-OP";
+  J&K's "OM"; CEE's "SM"; TN's "OC Open"; CENTAC's "UGE". The read side counts the open category as "GEN", so the Round 2
+  lists loaded on 25 Nov had shown no figures for Karnataka, Gujarat, J&K and Kerala (Tamil Nadu only its management
+  seats), and Puducherry's Round 1 none. `normCategory` in import_state_round_feed.ts now stores what the Round 1
+  adapters store for the same code (a code it does not know stays as printed, out of every figure); the dry run prints
+  every `printed→stored` pair — read it for a new state. Reloaded the same day (`scripts/tmp/sr_r2b_run.sh`, backups
+  `…_before_2026_11_26.json`): KEA's and CEE's final Round 2 lists (26 Nov), Rajasthan's revised Round 2 (25 Nov),
+  Telangana's second phase (KNRUHS CQ, 25 Nov, new — its note: seats of this phase only; 25 under court orders),
+  Gujarat, J&K, Tamil Nadu (with zyn-52's PwD flag on TN's 36 "TN Govt - PwD Quota" lines) and Puducherry Round 1.
 
 ## State counselling rounds of the year in progress (2026-11-04) — never in the predictor
 

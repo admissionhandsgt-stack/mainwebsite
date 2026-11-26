@@ -1,4 +1,4 @@
-import { ArrowDownRight, ArrowUpRight, Building2, Landmark, Scale, Sparkles, Users } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, Building2, CalendarDays, Landmark, Scale, Sparkles, Users } from "lucide-react";
 
 /**
  * Three to four headline findings under a data page's hero (2026-10-18): each a
@@ -15,6 +15,7 @@ const ICONS = {
   authority: Landmark,
   people: Users,
   spark: Sparkles,
+  calendar: CalendarDays,
 } as const;
 export type InsightIcon = keyof typeof ICONS;
 

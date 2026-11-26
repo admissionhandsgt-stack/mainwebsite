@@ -24,6 +24,9 @@ import { getPgStates, getPgStatePage, OPEN_CATEGORY_CODES } from "@/lib/pgStateQ
 import { stateKey } from "@/lib/stateNotices";
 import { getStateRoundOf, type StateRound } from "@/lib/stateRoundQueries";
 import { getCounsellingYear, ROUNDS, type RoundSpec } from "@/lib/mccResults";
+import { getPgProcessContent } from "@/lib/pgProcessContent";
+import { getPgAuthority } from "@/lib/pgAuthority";
+import { NEET_PG_SCHEDULE, type ScheduleRound } from "@/lib/neetPgSchedule";
 import { logError } from "@/lib/logger";
 
 const rows = <T,>(r: unknown) => r as unknown as T[];
@@ -184,6 +187,13 @@ export interface RoundEntry {
   /** The newest thing on the page: a notice's date or the list's own date (YYYY-MM-DD, IST). */
   newest: string | null;
   indexable: boolean;
+  /**
+   * The state's next round, before its result (2026-11-26, owner: "competitors result aane ke 1-2 din pehle hi page live
+   * kardete hai"): the round before it is out (its list is loaded or its result notice is here) and this one is not.
+   * Such a page exists even with no notice of its own — it carries MCC's schedule for the state rounds, the round before
+   * it and last year's same round — and is indexed when that is real content.
+   */
+  ahead: boolean;
 }
 
 const istDay = (iso: string) => new Date(new Date(iso).getTime() + 5.5 * 3600_000).toISOString().slice(0, 10);
@@ -207,13 +217,14 @@ export const getStateRoundIndex = unstable_cache(
       const entries: RoundEntry[] = [];
       for (const st of states) {
         const mine = notices.filter((n) => stateKey(n.state) === stateKey(st.name));
+        const own: RoundEntry[] = [];
         for (const spec of STATE_ROUNDS) {
           const ns = mine.filter((n) => n.order === spec.order);
           const cut = cutMap.get(`${st.slug}|${label(spec.order)}`);
           const figures = (cut?.colleges ?? 0) >= 3;
           if (!ns.length && !figures) continue;
           const results = ns.filter((n) => n.kind === "result").length;
-          entries.push({
+          own.push({
             state: st.name,
             slug: st.slug,
             order: spec.order,
@@ -225,8 +236,41 @@ export const getStateRoundIndex = unstable_cache(
             // The later of the newest notice and the day the allotment list was loaded.
             newest: [ns.length ? istDay(ns[0].on) : "", figures ? (cut?.loaded ?? "") : ""].sort().pop() || null,
             indexable: figures || results > 0 || ns.length >= 2,
+            ahead: false,
           });
         }
+        // The state's next round, before its result: the latest round that is out, plus one.
+        const out = own.filter((e) => e.figures || e.results > 0);
+        const prev = out.length ? out.reduce((a, b) => (b.order > a.order ? b : a)) : null;
+        const spec = prev ? STATE_ROUNDS.find((r) => r.order === prev.order + 1) : undefined;
+        if (prev && spec) {
+          const existing = own.find((e) => e.order === spec.order);
+          // Real content without a notice of its own: last year's same round (five branches or more), or the round
+          // before it in figures. A state with neither (one or two colleges) gets no page ahead of its result.
+          const last = await lastYearRound(st.slug, spec.order).catch(() => null);
+          const content = (last?.rows.length ?? 0) >= 5 || prev.figures;
+          if (existing) {
+            existing.ahead = true;
+            existing.indexable ||= content;
+            existing.newest = [existing.newest ?? "", prev.newest ?? ""].sort().pop() || null;
+          } else if (content) {
+            own.push({
+              state: st.name,
+              slug: st.slug,
+              order: spec.order,
+              roundSlug: spec.slug,
+              path: stateRoundPath(year, spec.slug, st.slug),
+              notices: 0,
+              results: 0,
+              figures: false,
+              // Dated by what it shows: the round before it (its notice or its list).
+              newest: prev.newest,
+              indexable: true,
+              ahead: true,
+            });
+          }
+        }
+        entries.push(...own.sort((a, b) => a.order - b.order));
       }
       return { year, entries };
     } catch (error) {
@@ -234,7 +278,7 @@ export const getStateRoundIndex = unstable_cache(
       return { year: new Date().getFullYear(), entries: [] };
     }
   },
-  ["state-round-index-v2"],
+  ["state-round-index-v3"],
   { revalidate: 900, tags: ["alerts", "state-round", "seat-data"] },
 );
 
@@ -297,6 +341,23 @@ export interface StateRoundPage {
   /** This state's other rounds, and this round in other states. */
   otherRounds: RoundEntry[];
   otherStates: RoundEntry[];
+  /**
+   * A page made ahead of the round's result (`entry.ahead`): the round before it, this year (its figures, where its list
+   * is loaded) and last year (the same quota), and the branch table that sets the three side by side — how far this round
+   * went beyond the one before it last year. Null on any other page.
+   */
+  before: {
+    spec: RoundSpec;
+    path: string;
+    figures: StateRound | null;
+    lastYear: LastYearRound | null;
+    /** Branch by branch, one quota (last year's main merit quota), open category; `now` only when this year's quota is the same. */
+    compare: { name: string; slug: string; prevLast: number | null; last: number; now: number | null }[];
+    /** This year's figures are on the same quota as last year's, so the `now` column means the same seats. */
+    sameQuota: boolean;
+  } | null;
+  /** MCC's schedule for this round (the states' window and joining date), while the round's result is not out. */
+  when: { state: string | null; stateJoinBy: string | null; aiq: string | null; sourceUrl: string; row: ScheduleRound } | null;
 }
 
 export async function getStateRoundPage(yearText: string, roundSlug: string, stateSlug: string): Promise<StateRoundPage | null> {
@@ -314,8 +375,45 @@ export async function getStateRoundPage(yearText: string, roundSlug: string, sta
   ]);
   const st = states.find((s) => s.slug === stateSlug);
   if (!st) return null;
-  const notices = all.filter((n) => stateKey(n.state) === stateKey(st.name) && n.order === spec.order).map(({ state: _s, ...n }) => n);
+  const ofState = all.filter((n) => stateKey(n.state) === stateKey(st.name));
+  const notices = ofState.filter((n) => n.order === spec.order).map(({ state: _s, ...n }) => n);
   const result = notices.find((n) => n.kind === "result") ?? null;
+  const out = !!result || !!figures;
+
+  // Ahead of the result: the round before, this year and last year, side by side with last year's same round.
+  let before: StateRoundPage["before"] = null;
+  const prevSpec = entry.ahead ? STATE_ROUNDS.find((r) => r.order === spec.order - 1) : undefined;
+  if (prevSpec) {
+    const prevEntry = entries.find((e) => e.slug === stateSlug && e.order === prevSpec.order);
+    const [prevFigures, prevLast] = await Promise.all([
+      prevEntry?.figures ? getStateRoundOf(stateSlug, year, label(prevSpec.order)).catch(() => null) : Promise.resolve(null),
+      lastYearRound(stateSlug, prevSpec.order).catch(() => null),
+    ]);
+    const sameQuota = !!prevFigures && !!lastYear && prevFigures.mainQuota === lastYear.quota;
+    const prevBySlug = new Map((prevLast?.quota === lastYear?.quota ? prevLast?.rows ?? [] : []).map((r) => [r.slug, r.last]));
+    const nowBySlug = new Map(sameQuota ? prevFigures!.byBranch.filter((b) => b.slug && b.last != null).map((b) => [b.slug!, b.last!]) : []);
+    before = {
+      spec: prevSpec,
+      path: stateRoundPath(year, prevSpec.slug, stateSlug),
+      figures: prevFigures,
+      lastYear: prevLast,
+      compare: (lastYear?.rows ?? []).map((r) => ({ name: r.name, slug: r.slug, prevLast: prevBySlug.get(r.slug) ?? null, last: r.last, now: nowBySlug.get(r.slug) ?? null })),
+      sameQuota,
+    };
+  }
+
+  // MCC's schedule sets the window for the states' rounds too; shown while this round's result is not out.
+  let when: StateRoundPage["when"] = null;
+  if (!out && spec.schedule) {
+    const schedule = await getPgProcessContent()
+      .then((c) => c.schedule)
+      .catch(() => [] as ScheduleRound[]);
+    const row = schedule.find((r) => r.round.trim().toLowerCase() === spec.schedule);
+    const v = (x: string | undefined) => (x && x.trim() && x.trim() !== "—" ? x.trim() : null);
+    if (row && (v(row.state) || v(row.aiq)))
+      when = { state: v(row.state), stateJoinBy: v(row.stateJoinBy), aiq: v(row.aiq), sourceUrl: row.sourceUrl || NEET_PG_SCHEDULE.sources[0].url, row };
+  }
+
   return {
     year,
     spec,
@@ -323,9 +421,16 @@ export async function getStateRoundPage(yearText: string, roundSlug: string, sta
     entry,
     notices,
     result,
-    authority: notices.find((n) => n.authority)?.authority ?? null,
+    // The body this round's notices come from; on a page ahead of any notice, the body of the state's other PG notices.
+    authority:
+      notices.find((n) => n.authority)?.authority ??
+      ofState.find((n) => n.authority)?.authority ??
+      (await getPgAuthority(st.name).catch(() => null))?.authority ??
+      null,
     figures,
     lastYear,
+    before,
+    when,
     otherRounds: entries.filter((e) => e.slug === stateSlug && e.order !== spec.order).sort((a, b) => a.order - b.order),
     otherStates: entries.filter((e) => e.order === spec.order && e.slug !== stateSlug).sort((a, b) => a.state.localeCompare(b.state)),
   };
