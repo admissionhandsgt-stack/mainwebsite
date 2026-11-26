@@ -2350,6 +2350,11 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
   sends Punjab in 2025's codes (GEN-IP, EWS-IP, BC, NRI-I, CMC's GEN), which `normCategory` turns into what Round 1's
   adapter stored (GEN, EWS, OBC, NRI, Christian minority); the quota names stay 2025's ("Punjab BFUHS Institutional
   Preference Quota", "Punjab Domicile Seats"), so Round 1 and Round 2 carry different quota names.
+  Then West Bengal (WBMCC provisional R2, 26 Nov: "<cat>-In-Service" / "-PwD" / MQ translated) and Uttar Pradesh (DGME
+  UP's R1+R2 list, R2 allotted 26 Nov: BC→OBC, "-PH" PwD, BS / SS → BSOP / SSOP). Kept by printed name, no institute
+  yet (the owner's OK is needed to create them): WB 9462 Jhargram GMC, 9465 Sarat Chandra Chattopadhyay GMC Uluberia;
+  UP 9402 Kalyan Singh Cancer Institute, 9456 Ajay Sangaal Shamli, 9457 ASMC Sultanpur, 9458 Baba Kina Ram ASMC
+  Chandauli, 9459 Dr B.S. Kushwah Kanpur, 9460 KMC Maharajganj, 9461 Shri Siddhi Vinayak Sambhal.
 
 ## NEET PG cut off reduction — /neet-pg-cut-off-reduction (2026-11-26)
 

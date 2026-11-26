@@ -103,6 +103,14 @@ const courses = new Map((await sql<{ id: number; name: string }[]>`SELECT id, na
 function normCategory(stateName: string, code: string, quota = ""): { category: string; pwd?: boolean; additional?: string } {
   const c = code.trim();
   switch (stateName) {
+    case "Uttar Pradesh": {
+      // As Round 1's adapter stores them: BC is OBC, "-PH" / "-PwD" carry the PwD flag, and BS / SS (the in-service
+      // diploma lists) are BSOP / SSOP.
+      if (c === "BS" || c === "SS") return { category: `${c}OP` };
+      const m = c.match(/^(GEN|EWS|BC|OBC|SC|ST)(?:-(PH|PwD))?$/);
+      if (m) return { category: m[1] === "BC" ? "OBC" : m[1], ...(m[2] ? { pwd: true } : {}) };
+      return { category: c };
+    }
     case "West Bengal": {
       // As Round 1's adapter stores them: "<cat>-In-Service" and "<cat>-PwD" carry their flag in the line already, and
       // MQ is the management merit list (open).
