@@ -355,7 +355,7 @@ async function officialBondCheck(c: College): Promise<string | null> {
       (row.status === "none_in_official_documents" || noOwnBond(row)
         ? "no service bond of its own (0 years)"
         : [row.years ? `${row.years} year${row.years === 1 ? "" : "s"}` : null, row.amount ? `${money(row.amount)} if not served` : null].filter(Boolean).join(", ") || null);
-    return own ? `Service bond: ${own}, from the college's own documents${row.session ? ` (${row.session})` : ""}.` : null;
+    return own ? `Service bond: ${own}, from the college's own documents${row.session ? `, ${row.session}` : ""}.` : null;
   }
   if (!state || c.ownership !== "government" || isCentralInstitution(c.name)) return null;
   const g = govtBond(state);
