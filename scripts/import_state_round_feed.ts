@@ -137,6 +137,15 @@ function normCategory(stateName: string, code: string): { category: string; pwd?
       if (m) return { category: m[1] === "OC" ? "GEN" : m[1] };
       return { category: c };
     }
+    case "Maharashtra": {
+      // The tool writes the CET Cell's categories its own way: MGT the management (institutional) merit list (open);
+      // VJ / NT1 / NT2 / NT3 are VJ(A), NT(B), NT(C), NT(D); "<cat>-In-Service", "<cat> Service" and "<cat>-PwD" carry
+      // their flag in the line already.
+      const MH: Record<string, string> = { GEN: "GEN", OPEN: "GEN", MGT: "GEN", OBC: "OBC", SC: "SC", ST: "ST", EWS: "EWS", SEBC: "SEBC", VJ: "VJA", NT1: "NTB", NT2: "NTC", NT3: "NTD" };
+      const m = c.match(/^(\w+?)(?:[-\s](?:In-Service|Service|PwD))?$/);
+      const base = m ? m[1] : c;
+      return { category: MH[base] ?? c, ...(/-PwD$/.test(c) ? { pwd: true } : {}) };
+    }
     case "Goa": {
       // "Group 1 - GEN"
       const m = c.match(/^Group\s*\d+\s*-\s*(.+)$/i);
@@ -201,6 +210,9 @@ console.log(`  branch names not in our courses (kept as printed): ${noCourse.siz
 console.log(`  pwd lines ${rows.filter((r) => r.pwd).length}, in-service lines ${rows.filter((r) => r.in_service).length}`);
 const catCount = new Map<string, number>();
 for (const r of rows) catCount.set(r.category_printed === r.category ? r.category : `${r.category_printed}→${r.category}`, (catCount.get(r.category_printed === r.category ? r.category : `${r.category_printed}→${r.category}`) ?? 0) + 1);
+const quotaCount = new Map<string, number>();
+for (const r of rows) quotaCount.set(r.quota, (quotaCount.get(r.quota) ?? 0) + 1);
+console.log(`  quotas: ${[...quotaCount].sort((a, b) => b[1] - a[1]).map(([k, n]) => `${k} ${n}`).join(", ")}`);
 console.log(`  categories: ${[...catCount].sort((a, b) => b[1] - a[1]).map(([k, n]) => `${k} ${n}`).join(", ")}`);
 const old = await sql`SELECT * FROM state_round_cuts WHERE level = 'pg' AND state_id = ${state.id} AND year = ${YEAR} AND round = ${round}`;
 console.log(`  replaces ${old.length} existing rows${apply ? "" : " (dry run — pass --apply --backup <file>)"}`);
