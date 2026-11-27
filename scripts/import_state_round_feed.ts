@@ -103,6 +103,15 @@ const courses = new Map((await sql<{ id: number; name: string }[]>`SELECT id, na
 function normCategory(stateName: string, code: string, quota = ""): { category: string; pwd?: boolean; additional?: string } {
   const c = code.trim();
   switch (stateName) {
+    case "Odisha": {
+      // As Round 1's adapter stores them: UR is GEN, SEBC is OBC, "-PwD" carries the flag, and the Green Card and
+      // ex-serviceman lists ("-GC", "-Ex-Serviceman") are additional lists, out of the open-merit figures.
+      const m = c.match(/^(GEN|UR|SEBC|SC|ST|EWS)(?:-(PwD|GC|Ex-Serviceman))?$/i);
+      if (!m) return { category: c };
+      const base = { UR: "GEN", SEBC: "OBC" }[m[1].toUpperCase()] ?? m[1].toUpperCase();
+      if (!m[2]) return { category: base };
+      return /^pwd$/i.test(m[2]) ? { category: base, pwd: true } : { category: base, additional: m[2] };
+    }
     case "Uttar Pradesh": {
       // As Round 1's adapter stores them: BC is OBC, "-PH" / "-PwD" carry the PwD flag, and BS / SS (the in-service
       // diploma lists) are BSOP / SSOP.

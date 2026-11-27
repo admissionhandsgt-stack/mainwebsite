@@ -2383,6 +2383,12 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
   "Bhubanesw ar"… and college pages printed them ("PG bond at Muzaffarnagar Medical College, Muzaffarna gar").
   `scripts/sql/district_split_words_2026_11_27.mjs` rejoined them (backup `D:/Admisson Hands/match_backups/district_split_words_before_2026_11_27.json`);
   re-run its dry run after any PG institute import.
+- **Odisha's Round 2 (PGMCC provisional, 27 Nov 2026; loaded 2026-11-27, zyn-27):** 331 lines, Round 2's new seats only
+  (264 fresh, 93 upgraded). The feed's codes are read as Round 1's adapter stored them: UR → GEN, SEBC → OBC, "-PwD" the
+  flag, "-GC" (Green Card) and "-Ex-Serviceman" additional lists out of the figures. Counselling "DMET Odisha" as in
+  Round 1. **Reload with the final list the same way** (key "Odisha PG", R2; drop the "provisional" note). Kept by printed
+  name until the owner's OK: 9416 GMC Phulbani (NMC OD/003/G/1), 9417 GMC Keonjhar (Dharanidhar, OD/005/G/1), 9418 GMC
+  Sundargarh (OD/006/G/1), 9420 PMP Medical College Talcher (OD/014/G/1) — their first Odisha PG lines, 50 in all.
 
 ## NEET PG cut off reduction — /neet-pg-cut-off-reduction (2026-11-26)
 
