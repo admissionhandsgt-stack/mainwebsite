@@ -2366,7 +2366,8 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
   Gujarat, J&K, Tamil Nadu (with zyn-52's PwD flag on TN's 36 "TN Govt - PwD Quota" lines) and Puducherry Round 1.
   The same evening: Andhra Pradesh's final Phase-II list (26 Nov, figures equal to the provisional one; its note came
   off) and Punjab's Round 2 (BFUHS provisional, 26 Nov — note: new allotments only, objections till 27 Nov 3 PM, a
-  revised result 27 Nov if anything changes; **reload it the same way when BFUHS posts the revised list**). The feed
+  revised result 27 Nov if anything changes). BFUHS's revised provisional list (27 Nov, after the objections) replaced it
+  on 2026-11-27: 218 lines at 20 colleges as before, note reworded; backup `r2_Punjab_PG_before_2026_11_27_revised.json`. The feed
   sends Punjab in 2025's codes (GEN-IP, EWS-IP, BC, NRI-I, CMC's GEN), which `normCategory` turns into what Round 1's
   adapter stored (GEN, EWS, OBC, NRI, Christian minority); the quota names stay 2025's ("Punjab BFUHS Institutional
   Preference Quota", "Punjab Domicile Seats"), so Round 1 and Round 2 carry different quota names.
