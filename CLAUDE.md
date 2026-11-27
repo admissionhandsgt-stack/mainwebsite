@@ -2338,7 +2338,9 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
   state lists were reloaded so every line attaches (KAR R2, RJ R2, TN R2, TEL R1).
   The same evening GMC Paderu (tool 9403, NMC AP/014/G/1, owner: "banado") was added by the same script — institute 4736,
   6 MCC matrix rows and 12 Round 2 allotments — and AP R2 (Dr NTR UHS CQ Phase-II, provisional, 25 Nov) reloaded. AP's MQ
-  Phase-II list is not out yet: when it is, load `AP Govt PG` R2 with `--also "AP Mgmt PG"` (one run replaces the round).
+  Phase-II final list (27 Nov; no provisional one) went in on 2026-11-27 with the CQ final in one run (`AP Govt PG` R2
+  `--also "AP Mgmt PG"`, `--printed` naming both lists): 1,189 lines, 37 colleges. The board now prints CASF as "CA-SF";
+  the feed's quota label is Round 1's "AP Management Quota-CA SF". Backup `r2_AP_Govt_PG_before_2026_11_27_mq.json`.
 - **The next round's page goes live before its result (2026-11-26, owner: "sab states ke round 2 ke pages banake index
   kardo, competitors result aane ke 1-2 din pehle hi page live kardete hai").** `getStateRoundIndex` marks each state's
   next round `ahead` — the latest round that is out (its list loaded, or a result notice) plus one — and makes its page
