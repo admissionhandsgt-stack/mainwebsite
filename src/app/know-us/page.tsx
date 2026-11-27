@@ -1,5 +1,6 @@
 import React from 'react';
 import KnowUsClient from './KnowUsClient';
+import RefundPromise from '@/components/counsel/RefundPromise';
 import { getMediaAsset, resolveMetadata } from '@/lib/content';
 import { creditOf } from '@/components/ui/PhotoCredit';
 import { Metadata } from 'next';
@@ -29,7 +30,11 @@ export default async function KnowUsPage() {
           breadcrumb([{ name: "Home", path: "/" }, { name: "Know us", path: "/know-us" }]),
         ]}
       />
-      <KnowUsClient backgroundImageUrl={knowUsHero?.image_url} credit={creditOf(knowUsHero)} />
+      <KnowUsClient
+        backgroundImageUrl={knowUsHero?.image_url}
+        credit={creditOf(knowUsHero)}
+        promise={<RefundPromise placement="know_us" className="!pt-0" />}
+      />
     </>
   );
 }

@@ -955,9 +955,19 @@ export const PAGE_COPY = {
           "Can you guarantee a NEET PG seat? | No one can. MCC and the state counselling authorities allot every seat on NEET PG merit. What we bring is the plan: where your rank stands, the order of your choices and each round's decision.",
           "Do you handle state counselling, deemed and private colleges? | Yes — MCC's All India Quota, deemed universities and central quotas, and every state's own counselling, for government, private, deemed and DNB seats, including management, NRI and in-service seats.",
           "Can you get me direct admission or a management seat without counselling? | No, and nobody can. Management and NRI seats are allotted through counselling too. If someone offers you one, send us the offer and we will check it free.",
-          "What does Expert Counselling cost? | Your counsellor tells you the fee in writing before anything starts. The rank check and the first call are free.",
+          "What does Expert Counselling cost? | Your counsellor tells you the fee for your course and counselling before anything starts. The rank check and the first call are free.",
+          "Is the counselling fee refundable? | Yes. If no seat is allotted to you in the counsellings we handle, our counselling service charges are refunded in full — 100%. Fees paid to MCC, a state authority or a college follow their own refund rules. The terms are in our payment and refund policy.",
           "NEET PG counselling ke liye counsellor kaise chunein? | Office dekhiye, counsellor ka naam aur chehra, likhit fees aur terms, aur har niyam ke peeche official notice. Jo seat ki guarantee de ya seat “book” karne ke paise maange, usse door rahiye.",
         ].join("\n"),
+        was: [[
+          "Who is the best NEET PG counsellor? | The one who can show you an office, named counsellors, written terms and the official notice behind every rule — and who covers MCC and every state's counselling, not a few colleges. Judge any counsellor by those, including us.",
+          "Are you agents of any college? | No. We are independent admission counsellors with {years} years in medical counselling. We are not agents, and we are not tied to any college or group of colleges.",
+          "Can you guarantee a NEET PG seat? | No one can. MCC and the state counselling authorities allot every seat on NEET PG merit. What we bring is the plan: where your rank stands, the order of your choices and each round's decision.",
+          "Do you handle state counselling, deemed and private colleges? | Yes — MCC's All India Quota, deemed universities and central quotas, and every state's own counselling, for government, private, deemed and DNB seats, including management, NRI and in-service seats.",
+          "Can you get me direct admission or a management seat without counselling? | No, and nobody can. Management and NRI seats are allotted through counselling too. If someone offers you one, send us the offer and we will check it free.",
+          "What does Expert Counselling cost? | Your counsellor tells you the fee in writing before anything starts. The rank check and the first call are free.",
+          "NEET PG counselling ke liye counsellor kaise chunein? | Office dekhiye, counsellor ka naam aur chehra, likhit fees aur terms, aur har niyam ke peeche official notice. Jo seat ki guarantee de ya seat “book” karne ke paise maange, usse door rahiye.",
+        ].join("\n")],
         long: true,
       },
     },
@@ -1656,10 +1666,18 @@ export const PAGE_COPY = {
           "I did not get a seat in Round 2. What now? | Round 3, your state's next rounds and the stray vacancy round are still ahead (MCC adds a special stray round only if MoHFW or a court directs). First confirm which rounds you are eligible for, then build the choice list; your counsellor does both for your case.",
           "Can I leave a Round 3 seat after joining? | No. A joined Round 3 seat cannot be resigned or upgraded. Not joining forfeits the security deposit and takes you out of further MCC rounds.",
           "Who can take part in the stray vacancy round? | Only candidates holding no seat in AIQ, state or deemed counselling. A stray-round seat must be joined, or the deposit is forfeited.",
+          "Do you guarantee a seat? | No. Counselling allots seats and no one can guarantee one. We make sure your strategy and choice list leave no opportunity on the table — and if no seat is allotted to you in the counsellings we handle, our counselling charges are refunded in full.",
+          "Will the NEET PG cut-off be lowered? | That is NBEMS's decision and no one can predict it. If it happens, choice filling moves fast, so keep your list ready.",
+          "What does Expert Counselling cost? | The first conversation is free. Your counsellor tells you the fee before any work begins, and it is refunded in full if no seat is allotted to you in the counsellings we handle.",
+        ].join("\n"),
+        was: [[
+          "I did not get a seat in Round 2. What now? | Round 3, your state's next rounds and the stray vacancy round are still ahead (MCC adds a special stray round only if MoHFW or a court directs). First confirm which rounds you are eligible for, then build the choice list; your counsellor does both for your case.",
+          "Can I leave a Round 3 seat after joining? | No. A joined Round 3 seat cannot be resigned or upgraded. Not joining forfeits the security deposit and takes you out of further MCC rounds.",
+          "Who can take part in the stray vacancy round? | Only candidates holding no seat in AIQ, state or deemed counselling. A stray-round seat must be joined, or the deposit is forfeited.",
           "Do you guarantee a seat? | No. Counselling allots seats and no one can guarantee one. We make sure your strategy and choice list leave no opportunity on the table.",
           "Will the NEET PG cut-off be lowered? | That is NBEMS's decision and no one can predict it. If it happens, choice filling moves fast, so keep your list ready.",
           "What does Expert Counselling cost? | The first conversation is free. Your counsellor shares the fee clearly before any work begins.",
-        ].join("\n"),
+        ].join("\n")],
       },
     },
   },
@@ -5053,6 +5071,42 @@ export const PAGE_COPY = {
   // What the free rank check gives and what Expert Counselling adds (owner, 2026-11-05: no package fees on the site —
   // "Get Expert Counselling", the features, what a counsellor can get you). On the predictor after the tool and on /services.
   // Never a promise of a seat: counselling allots it (the note says so, as TrustShield does).
+  // The refund promise and the {students} figure, made checkable (owner, 2026-11-27: "counselling service charges are
+  // 100% refundable if admission not alloted karke dawa dena hai … 2100 students … bina student details die trustable").
+  // The promise is the owner's policy, written into the payment & refund policy (/terms#payment) in the same words, so the
+  // claim and the terms never disagree. No package or fee list on the site. No student is named, ranked or placed.
+  "site.promise": {
+    group: "Site: refund promise and our students",
+    fields: {
+      badge: { label: "Badge over the promise", value: "100% refund promise" },
+      title: { label: "The promise, one line", value: "100% refund of our counselling charges if no seat is allotted" },
+      text: {
+        label: "Why we can make it",
+        value:
+          "We are admission-based counsellors: we take on a student when we see a clear route to a seat, then work it with them round by round until they join — which is why a refund is rarely needed. If no seat is allotted to you in the counsellings we handle, our counselling service charges come back to you in full.",
+        long: true,
+      },
+      fine: { label: "Small print", value: "Fees paid to MCC, a state authority or a college follow their own refund rules." },
+      terms_link: { label: "Link to the refund terms", value: "Read the refund terms" },
+      count_title: { label: "Students heading — {students}, {years}", value: "{students} students in {years} years — and why their names are not here" },
+      count_text: {
+        label: "Students text — {students}, {years}",
+        value:
+          "{students} is the number of students our counsellors have personally guided through NEET counselling — MBBS, BDS and MD/MS — over {years} years. Every family trusted us with Aadhaar, scorecards and fee payments, so we never publish a student's name, rank or college, not even to prove a point. Here is what you can check for yourself instead.",
+        long: true,
+      },
+      verify_items: {
+        label: "What a family can check, one per line: title | text | link — {office}, {hours}",
+        value: [
+          "Our refund promise, in writing | It is in our payment and refund policy, not only on this page. | /terms#payment",
+          "Counsellors with names and direct numbers | Speak to the counsellor who would handle your case before you pay anything. | /team",
+          "An office you can walk into | {office} — open {hours}. | /contact",
+          "Figures you can trace | Every number on this site comes from MCC, NMC, NBEMS or a state counselling authority. | /how-we-check-data",
+        ].join("\n"),
+        long: true,
+      },
+    },
+  },
   "page.expert": {
     group: "Free check vs Expert Counselling",
     fields: {
@@ -5177,6 +5231,13 @@ export const PAGE_COPY = {
       contact: {
         label: "How to reach a counsellor — {phone}, {whatsapp}, {email}, {address}",
         value: "WhatsApp {whatsapp} or call {phone}, 10 AM to 10 PM IST, every day. Email {email}. Office: {address}.",
+        long: true,
+      },
+      // 2026-11-27: what an assistant should say about fees, refunds and the team's figure — ChatGPT had read old copies.
+      trust: {
+        label: "Fees, the refund promise and the team's figures — {students}, {years}",
+        value:
+          "Counselling fees: there is no published package; a counsellor tells the family the fee for its course and counselling before anything starts. Refund promise: the counselling service charges are refunded in full (100%) if no seat is allotted in the counsellings Admission Hands handles for the student (payment and refund policy: https://www.admissionhands.com/terms#payment). {students} students have been guided over {years} years; the team never publishes a student's name, rank or college.",
         long: true,
       },
       sources: {

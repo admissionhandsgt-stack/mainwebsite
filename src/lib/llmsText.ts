@@ -116,6 +116,9 @@ export async function llmsText(full: boolean): Promise<string> {
     whatsapp: phone(contact?.whatsappNumber ?? CONTACT_INFO.whatsapp),
     email: contact?.email ?? CONTACT_INFO.email,
     address: CONTACT_INFO.address,
+    // The team's own figures, as Admin → Content → "Site: the team's own figures" holds them.
+    students: (settings["page.services.figures.students"] ?? "").trim() || PAGE_COPY["page.services.figures"].fields.students.value,
+    years: (settings["page.services.figures.years"] ?? "").trim() || PAGE_COPY["page.services.figures"].fields.years.value,
   });
 
   const roundLine = roundSpec
@@ -150,6 +153,8 @@ export async function llmsText(full: boolean): Promise<string> {
     c.cite,
     "",
     `Talk to a counsellor: ${c.contact}`,
+    "",
+    c.trust,
     "",
     "## Start here",
     link("NEET college predictor", "/neet-college-predictor", "a NEET UG rank, or a NEET PG score or rank, and a category give a free report of the seats and colleges it reaches; signed in, each college comes with its chance"),

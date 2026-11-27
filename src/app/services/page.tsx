@@ -6,6 +6,7 @@ import { getServicesPage } from '@/lib/servicesContent';
 import { Metadata } from 'next';
 import StructuredData, { webPage, breadcrumb } from "@/components/seo/StructuredData";
 import ExpertCompare from "@/components/lead/ExpertCompare";
+import RefundPromise from "@/components/counsel/RefundPromise";
 
 export const revalidate = 0;
 
@@ -42,7 +43,12 @@ export default async function ServicesPage() {
           breadcrumb([{ name: "Home", path: "/" }, { name: "Services", path: "/services" }]),
         ]}
       />
-      <ServicesClient heroImages={heroImages} heroCredit={creditOf(serviceHero)} data={data} compare={<ExpertCompare placement="services" freeLink />} />
+      <ServicesClient heroImages={heroImages} heroCredit={creditOf(serviceHero)} data={data} compare={
+          <>
+            <ExpertCompare placement="services" freeLink promise={false} />
+            <RefundPromise placement="services" className="!pt-0" />
+          </>
+        } />
     </>
   );
 }

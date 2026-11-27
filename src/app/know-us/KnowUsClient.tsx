@@ -21,9 +21,11 @@ interface KnowUsClientProps {
   backgroundImageUrl?: string;
   /** Which college the backdrop shows, who photographed it, on what terms. */
   credit?: PhotoCreditInfo;
+  /** The refund promise and how the students figure is counted (components/counsel/RefundPromise), rendered on the server. */
+  promise?: React.ReactNode;
 }
 
-export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClientProps) {
+export default function KnowUsClient({ backgroundImageUrl, credit, promise }: KnowUsClientProps) {
   const CTA = useCTA();
   // No CMS row, no photograph. The file this used to fall back to is the
   // AI-generated office with a nameplate reading "Priya Sharma — Senior
@@ -168,6 +170,8 @@ export default function KnowUsClient({ backgroundImageUrl, credit }: KnowUsClien
           </div>
         </div>
       </section>
+
+      {promise}
 
       {/* ═══════════════ WHAT WE DELIVER ═══════════════ */}
       <section className="py-10 md:py-14 bg-white dark:bg-slate-900/40 border-y border-slate-100 dark:border-slate-800/60">

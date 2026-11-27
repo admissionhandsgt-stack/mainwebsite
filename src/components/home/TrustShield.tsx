@@ -3,6 +3,7 @@ import { AlertTriangle, BadgeCheck, Building2, Database, MapPin, ShieldCheck, Us
 import { OFFICE, CONTACT_INFO } from "@/lib/constants";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { TeamFigure } from "@/components/engage/TeamFigures";
+import RefundPromise from "@/components/counsel/RefundPromise";
 
 /**
  * 15+ years, and how a family can check that for themselves.
@@ -95,6 +96,7 @@ export default function TrustShield({ compact = false }: { compact?: boolean }) 
                 </li>
               ))}
             </ul>
+            <RefundPromise variant="strip" placement="home_trust" className="mt-3" />
           </div>
 
           <div className="overflow-hidden rounded-2xl border border-signal-borderline/30 bg-card">

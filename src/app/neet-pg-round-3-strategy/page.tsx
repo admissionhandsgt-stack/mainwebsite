@@ -16,6 +16,7 @@ import {
   Wallet,
 } from "lucide-react";
 import QuickPgForm from "@/components/lead/QuickPgForm";
+import RefundPromise from "@/components/counsel/RefundPromise";
 import ScheduleRevisionNote from "@/components/mcc/ScheduleRevisionNote";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { CONTACT_INFO } from "@/lib/constants";
@@ -167,6 +168,7 @@ export default async function NeetPgRound3Page() {
             <div className="mt-4">
               <QuickPgForm source={SOURCE} waHref={wa(c.wa_text)} copy={formCopy} stacked formName="round3_form" />
             </div>
+            <RefundPromise variant="strip" placement="r3_form" className="mt-4" />
           </div>
         </div>
       </section>

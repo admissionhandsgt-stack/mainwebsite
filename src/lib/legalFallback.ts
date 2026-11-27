@@ -39,14 +39,20 @@ Admission Hands is an independent educational consultancy. We are NOT affiliated
   {
     slug: 'payment',
     title: 'Payment & Refund Policy',
-    lastUpdated: '2025-04-30',
+    lastUpdated: '2026-11-27',
+    // The refund promise is the owner's policy (2026-11-27); the site's RefundPromise blocks say the same, in these terms.
     content: `## Payment & Refund Policy
 
-Our consultancy fees are structured based on the level of service required and will be clearly communicated in writing before engagement.
+Our counselling service charges depend on the course and the counselling. Your counsellor tells you the amount before anything starts.
 
-- A non-refundable registration fee is required to initiate our services.
-- Once services have commenced (including counseling guidance, document preparation, or preference list generation), fees paid are strictly non-refundable.
-- Any fees paid directly to counseling authorities (MCC, State bodies) or colleges are governed by their respective refund policies. We are not responsible for refunds from third parties.
+### 100% refund if no seat is allotted
+
+We are admission-based counsellors: we take on a student when we see a clear route to a seat, and we work the case round by round until the student joins. If no seat is allotted to you in the counselling rounds we handle for you, the counselling service charges you paid us are refunded in full — 100%.
+
+- The refund covers everything you paid Admission Hands as counselling service charges.
+- It is made once the last round of those counsellings is over and no seat has been allotted to you.
+- If a seat is allotted to you and you choose not to take it, this refund does not apply.
+- Fees paid to counselling authorities (MCC, state bodies) or to colleges — registration fees, security deposits, tuition — are not paid to us. They follow those bodies' own refund rules.
 
 ## User Responsibilities
 

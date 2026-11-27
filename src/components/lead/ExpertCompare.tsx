@@ -2,6 +2,7 @@ import { ArrowRight, Check, Phone, Sparkles } from "lucide-react";
 import Link from "@/components/ui/Link";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import CounsellorFaces from "@/components/lead/CounsellorFaces";
+import RefundPromise from "@/components/counsel/RefundPromise";
 import { CONTACT_INFO } from "@/lib/constants";
 import { pageCopy } from "@/lib/pageCopy";
 
@@ -12,8 +13,11 @@ import { pageCopy } from "@/lib/pageCopy";
  * Words: Admin → Content → "Free check vs Expert Counselling" (lists one item per line).
  * On the predictor right after the tool, where a free report has just been read, and on /services.
  */
-/** `freeLink`: the free card ends with a link to the predictor (not on the predictor itself). */
-export default async function ExpertCompare({ placement, freeLink = false }: { placement: string; freeLink?: boolean }) {
+/**
+ * `freeLink`: the free card ends with a link to the predictor (not on the predictor itself). `promise`: the refund promise
+ * as a strip above the buttons (2026-11-27) — off where the page carries RefundPromise's full block right after (/services).
+ */
+export default async function ExpertCompare({ placement, freeLink = false, promise = true }: { placement: string; freeLink?: boolean; promise?: boolean }) {
   const c = await pageCopy("page.expert", {});
   const lines = (v: string) => v.split("\n").map((s) => s.trim()).filter(Boolean);
   const free = lines(c.free_items);
@@ -76,6 +80,7 @@ export default async function ExpertCompare({ placement, freeLink = false }: { p
               </li>
             ))}
           </ul>
+          {promise && <RefundPromise variant="strip" placement={`expert_${placement}`} className="mt-5" />}
           <div className="mt-6 flex flex-wrap gap-3">
             <a
               href={wa}

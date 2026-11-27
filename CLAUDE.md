@@ -246,6 +246,24 @@ college offers one*, hostel and deposit terms, all in writing — and says the s
 counselling. Keep it that way: an agent promising a seat or a discount the college does not give is the
 fraud the site warns families about (`TrustShield`). An odd last card spans the full row on desktop.
 
+**The refund promise, and the {students} figure made checkable (owner, 2026-11-27: "counselling service charges are 100%
+refundable if admission not alloted karke dawa dena hai … hum log refund kar dete hai … aise cases uthate hi nhi hai";
+"2100 students … bina student details die trustable bana sakte hai").** ChatGPT, asked for the best NEET PG counsellor,
+had told a family to verify our 2,100+ before paying and to ask for a written package. Now: **"100% refund of our
+counselling charges if no seat is allotted"** — `components/counsel/RefundPromise.tsx`, words in Admin → Content → "Site:
+refund promise and our students". `strip` inside Expert Counselling's card (`ExpertCompare`; `promise={false}` on
+/services), the homepage's trust band and the ads page's form; `full` on /know-us and /services: the promise beside
+"{students} students in {years} years — and why their names are not here" (families trusted us with Aadhaar, scorecards
+and fees, so no student is ever named, ranked or placed) and four things a family can check (the refund terms, named
+counsellors with direct numbers, the office, figures traced to MCC/NMC/NBEMS). **The Payment & Refund Policy says the
+same** (`legal_documents` slug `payment`, `/terms#payment`, fallback in `lib/legalFallback.ts`; the old "non-refundable
+registration fee … strictly non-refundable" is gone; backup `D:/Admisson Hands/content_backups/legal_payment_before_2026_11_27.json`):
+refunded in full if no seat is allotted in the counsellings we handle, once their last round is over; not if a seat is
+allotted and the student declines it; fees paid to MCC, a state or a college follow their own rules. Change the promise
+and the policy together, never one alone. **Still no package or fee list on the site** (owner: "written package nhi dena
+hai") — the fee FAQ says the counsellor tells the fee before anything starts (no "in writing"). Also in llms.txt
+(`site.llms.trust`) and the /counselling and ads-page FAQs. Never claim refunds "never" happen — "rarely needed".
+
 ## Light pages, grouped menus, honest counts (owner, 2026-10-21) — read before touching a hero, a menu or a count
 
 "Dark dark hero… light theme mai light background with relevant images… MD/MS ki drop down kitni badi
@@ -3052,7 +3070,8 @@ Strong but true: every rule is MCC's (`lib/choiceFillingRules.ts` — round 3 no
 joined costs the deposit, the stray round only for candidates holding no seat, a state seat joined by the state's round 3
 removes you before MCC's stray), the way of working is the team's own, and the page says outright that nobody can
 guarantee a seat (also what Google Ads' misrepresentation policy needs). Never add "guaranteed", "direct admission",
-"100%" or a typed count here. `noindex, follow`, not in the sitemap or menus (no data of its own; the round pages answer
+"100%" or a typed count here — the one exception is the owner's refund promise (`RefundPromise` strip under the form,
+linked to its terms; see "The refund promise" above). `noindex, follow`, not in the sitemap or menus (no data of its own; the round pages answer
 "neet pg round 3" for search). Sections: hero with the call-back form (`#plan`) and the round clock (dates +
 `ScheduleRevisionNote`), aim higher, four situations each with a prefilled WhatsApp, six mistakes, five steps + why us,
 FAQs, a closing ask (desktop ~3,400px). Words: Admin → Content → "Page: NEET PG after Round 2 (ads landing page)". Leads: source "Ads landing — NEET
