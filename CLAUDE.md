@@ -2351,10 +2351,20 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
   adapter stored (GEN, EWS, OBC, NRI, Christian minority); the quota names stay 2025's ("Punjab BFUHS Institutional
   Preference Quota", "Punjab Domicile Seats"), so Round 1 and Round 2 carry different quota names.
   Then West Bengal (WBMCC provisional R2, 26 Nov: "<cat>-In-Service" / "-PwD" / MQ translated) and Uttar Pradesh (DGME
-  UP's R1+R2 list, R2 allotted 26 Nov: BC→OBC, "-PH" PwD, BS / SS → BSOP / SSOP). Kept by printed name, no institute
-  yet (the owner's OK is needed to create them): WB 9462 Jhargram GMC, 9465 Sarat Chandra Chattopadhyay GMC Uluberia;
-  UP 9402 Kalyan Singh Cancer Institute, 9456 Ajay Sangaal Shamli, 9457 ASMC Sultanpur, 9458 Baba Kina Ram ASMC
-  Chandauli, 9459 Dr B.S. Kushwah Kanpur, 9460 KMC Maharajganj, 9461 Shri Siddhi Vinayak Sambhal.
+  UP's R1+R2 list, R2 allotted 26 Nov: BC→OBC, "-PH" PwD, BS / SS → BSOP / SSOP). Their new colleges were kept by
+  printed name until **2026-11-27 (owner: "ye bhi okay hai"): 9 PG institutes 4755–4763** under the tool's ids
+  (`scripts/sql/new_pg_colleges_2026_11_27.mjs`, backup and `--restore` `D:/Admisson Hands/match_backups/new_pg_colleges_2026_11_27.json`):
+  WB 9462 Jhargram GMC, 9465 Sarat Chandra Chattopadhyay GMC Uluberia; UP 9402 Kalyan Singh Super Speciality Cancer
+  Institute, Lucknow (not in NMC's register, so no NMC pairing), 9456 Ajay Sangaal Shamli, 9457 ASMC Sultanpur, 9458 Baba
+  Kina Ram ASMC Chandauli, 9459 Dr B.S. Kushwah Kanpur, 9460 KMC Maharajganj, 9461 Shri Siddhi Vinayak Sambhal — each
+  paired with its NMC code, plus MCC's 2026 rows naming Jhargram, Uluberia and the cancer institute (11 matrix, 17
+  allotments). WB R2 and UP R2 reloaded the same day: every line attaches. **Still unmatched:** MCC's "Kalyan Singh
+  Government Medical College" MD/MS rows (Bulandshahr's first MD/MS seats, 10 matrix + 14 allotments) — our PG entry 504
+  is its DNB twin, so an MD/MS entry needs the owner's OK.
+- **Districts split by a line break (fixed 2026-11-27):** 32 PG institutes held "Muzaffarna gar", "Visakhapatn am",
+  "Bhubanesw ar"… and college pages printed them ("PG bond at Muzaffarnagar Medical College, Muzaffarna gar").
+  `scripts/sql/district_split_words_2026_11_27.mjs` rejoined them (backup `D:/Admisson Hands/match_backups/district_split_words_before_2026_11_27.json`);
+  re-run its dry run after any PG institute import.
 
 ## NEET PG cut off reduction — /neet-pg-cut-off-reduction (2026-11-26)
 
