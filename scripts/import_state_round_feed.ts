@@ -186,6 +186,27 @@ function normCategory(stateName: string, code: string, quota = ""): { category: 
       const m = c.match(/^Group\s*\d+\s*-\s*(.+)$/i);
       return { category: m ? m[1].trim() : c };
     }
+    case "Uttarakhand": {
+      // As Round 1's adapter stores them: UR is GEN; UR-MNG (management seats) is plain GEN and UR-NRI is GEN marked
+      // "NRI merit list"; "-Female" seats are the women's list, kept apart as "WOMEN"; "-PwD" / "-DPW" carry the PwD
+      // flag; "-FF" is the freedom fighters' list. A tag not known here keeps the code as printed, out of the figures.
+      const [head, ...tags] = c.split("-");
+      const CAT: Record<string, string> = { UR: "GEN", GEN: "GEN", EWS: "EWS", OBC: "OBC", SC: "SC", ST: "ST" };
+      const base = CAT[head.toUpperCase()];
+      if (!base) return { category: c };
+      let pwd = false;
+      let additional: string | undefined;
+      for (const t of tags) {
+        const u = t.toUpperCase();
+        if (u === "MNG") continue;
+        if (u === "NRI") additional ??= "NRI merit list";
+        else if (u === "FEMALE" || u === "WOMEN") additional = "WOMEN";
+        else if (u === "PWD" || u === "DPW" || u === "PH") pwd = true;
+        else if (u === "FF") additional = "FF";
+        else return { category: c };
+      }
+      return { category: base, ...(pwd ? { pwd: true } : {}), ...(additional ? { additional } : {}) };
+    }
     case "Pondicherry":
     case "Puducherry": {
       // CENTAC: U (UT seats) / A (management seats) + GE general, OB OBC, MB MBC, EB EBC, BM BC Muslim, BT, SC, ST;

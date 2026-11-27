@@ -2392,6 +2392,11 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
   Round 1. **Reload with the final list the same way** (key "Odisha PG", R2; drop the "provisional" note). Kept by printed
   name until the owner's OK: 9416 GMC Phulbani (NMC OD/003/G/1), 9417 GMC Keonjhar (Dharanidhar, OD/005/G/1), 9418 GMC
   Sundargarh (OD/006/G/1), 9420 PMP Medical College Talcher (OD/014/G/1) — their first Odisha PG lines, 50 in all.
+- **Uttarakhand's Round 2 (HNBUMU provisional broad sheet, 27 Nov 2026; loaded 2026-11-27, zyn-27):** 108 lines, 7 colleges,
+  key "UK PG" R2. The sheet is cumulative; the figures are this round's fresh and upgraded seats only. The feed's codes
+  differ from Round 1's: `normCategory` reads UR-MNG as GEN, UR-NRI as GEN + "NRI merit list", "-Female" as the base
+  category on the women's list (out of the open figures, as Round 1's "(WOMEN)"), -PwD/-DPW the flag, -FF its own list.
+  Objections close 28 Nov, 11 AM: **reload with the final list the same way** and drop the note's "may change".
 
 ## NEET PG cut off reduction — /neet-pg-cut-off-reduction (2026-11-26)
 
