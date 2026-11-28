@@ -332,13 +332,19 @@ export function collegeFaqs(
   }
 
   if (ownership) {
+    const est = college.establishedYear ? `, established in ${college.establishedYear}` : "";
+    const uni = college.university ? `, affiliated to ${college.university}` : "";
     faqs.push({
       q: `Is ${name} a government or private ${place}?`,
       a:
-        `It is a ${ownership} ${college.ownership && college.ownership !== "other" ? "institution" : "college in the National Medical Commission's register"}` +
-        (college.establishedYear ? `, established in ${college.establishedYear}` : "") +
-        (college.university ? `, affiliated to ${college.university}` : "") +
-        ".",
+        ownership === "deemed"
+          ? // Set only where MCC counsels its seats as deemed and a second source agrees (college_types_2026_11_28.mjs).
+            `It is neither: it is a deemed-to-be university college${est}${uni}. Its ${course} seats are filled in MCC's ` +
+            `deemed-university counselling, which is open to candidates from every state.`
+          : `It is a ${ownership} ${college.ownership && college.ownership !== "other" ? "institution" : "college in the National Medical Commission's register"}` +
+            est +
+            uni +
+            ".",
     });
   }
 

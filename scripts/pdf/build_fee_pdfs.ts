@@ -105,7 +105,8 @@ async function build(slug: string) {
       : ob?.flag === "not_notified"
         ? `<div class="card"><b>Not notified yet</b><span>${esc(m.state)} has not notified a government service bond for 2026-27</span></div>`
         : !ob && bond && bond.govt.colleges
-          ? `<div class="card"><b>${bond.govt.withBond} of ${bond.govt.colleges}</b><span>government colleges list a service bond${bond.govt.typicalYears ? `, usually ${bond.govt.typicalYears} year${bond.govt.typicalYears === 1 ? "" : "s"}` : ""}${bond.govt.penaltyMedian ? `; breaking it costs ${money(bond.govt.penaltyMedian)}` : ""}</span></div>`
+          ? // No figure: the counselling listing's bond count, years and amount are never quoted (owner, 2026-11-28).
+            `<div class="card"><b>Ask in writing</b><span>Government colleges' service bond in ${esc(m.state)}: set in the admission papers you sign; ask for the years and the amount before you join</span></div>`
           : "";
   const auth = authority && authority.scope === "UG and PG" ? authority : null;
   const date = m.updated ? new Date(`${m.updated}T00:00:00+05:30`).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "";

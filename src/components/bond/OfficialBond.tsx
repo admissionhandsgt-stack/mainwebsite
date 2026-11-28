@@ -252,10 +252,14 @@ export function sourceWords(status: string, session: string | null): string {
 export const LISTED = "as listed for the counselling";
 
 /** A college's bond as listed for the counselling (`ListedTerms`, lib/pgSeatData.ts), in words. */
-export function listedBondText(l: ListedTerms | null | undefined): string | null {
-  if (!l || l.bondUnknown) return null;
-  if (!l.bondYears) return "0 years · no service bond";
-  return `${l.bondYears} year${l.bondYears === 1 ? "" : "s"}${l.bondPenalty ? ` · ${money(l.bondPenalty)} if not served` : ""}`;
+/**
+ * The service bond as listed: never shown since 2026-11-28 (owner: "figure agar nahi hai to clear smartly way se handle karna
+ * hai … bond figures hum claim kie bina"), as the seat-leaving figures before it. Where no official document gives a
+ * college's bond, the page says so and what to get in writing (CollegeOfficialBond's ask block), never the listing's years
+ * or amount.
+ */
+export function listedBondText(_l: ListedTerms | null | undefined): string | null {
+  return null;
 }
 /**
  * What leaving the seat costs, as listed: never shown since 2026-11-25 (lib/officialLeaving.ts). The listing's rupee
@@ -282,32 +286,30 @@ export function listedStipendText(l: ListedTerms | null | undefined): string | n
 }
 
 /**
- * Every private and deemed college of a state, one row each in the same three columns (owner, 2026-11-16: no row of "ask
- * the college", and no college left out — "humko kya hi information hai colleges ki then?"): the college with where its
- * terms come from, its service bond (branch by branch where printed), and what leaving the course costs with the deposit.
- * A college whose own notice is not read shows its terms as listed for the counselling, marked so, with the caveat (`note`)
- * under the table; one with nothing listed follows the state's rules shown above the table.
+ * Every private and deemed college of a state, one row each in the same three columns (owner, 2026-11-16: no college left
+ * out — "humko kya hi information hai colleges ki then?"): the college with where its terms come from, its service bond
+ * (branch by branch where printed), and what leaving the course costs with the deposit. A college with no bond figure in an
+ * official notice or document says so and that its bond is in the admission papers (owner, 2026-11-28: no figure is
+ * claimed without one — the counselling listing's years and amount never show), with `note` under the table.
  */
 export function CollegeBondTable({
   id,
   colleges,
-  listed = {},
   note,
 }: {
   id: string;
   colleges: OfficialCollege[];
+  /** Kept for callers; the listing's terms are no longer shown. */
   listed?: Record<string, ListedTerms>;
   note: string;
 }) {
   let anyListed = false;
   const body = colleges.map((c) => {
-    const l = c.instituteId != null ? listed[String(c.instituteId)] : undefined;
     const fromListing = c.status === "not_verified";
-    const bond = fromListing ? listedBondText(l) : collegeBondText(c);
-    const exit = listedExitText(l);
-    if (fromListing && (bond || exit)) anyListed = true;
-    if (!fromListing && !c.leaving && !c.deposit && exit) anyListed = true;
-    const amt = fromListing ? l?.bondPenalty : (c.amount ?? (c.branches ? Math.max(...c.branches.map((b) => b[1])) : null));
+    const bond = fromListing ? null : collegeBondText(c);
+    const exit: string | null = null;
+    if (fromListing) anyListed = true;
+    const amt = fromListing ? null : (c.amount ?? (c.branches ? Math.max(...c.branches.map((b) => b[1])) : null));
     return (
       <tr
         key={`${c.instituteId}-${c.name}`}
@@ -327,12 +329,15 @@ export function CollegeBondTable({
             <span className="text-foreground">{c.name}</span>
           )}
           <span className="mt-0.5 block text-[12px] font-normal text-muted-foreground">
-            {c.type} · {fromListing ? (bond || exit ? LISTED : "the state's rules above") : sourceWords(c.status, c.session)}
+            {c.type} · {fromListing ? "no official figure" : sourceWords(c.status, c.session)}
           </span>
         </th>
         <td className="px-4 py-2.5 text-[13.5px] leading-snug">
           {fromListing ? (
-            <span className={bond ? "font-semibold text-foreground" : "text-foreground"}>{bond ?? "As the state's rules for private seats above"}</span>
+            <span className="text-foreground">
+              In its admission papers: get it in writing
+              <span className="mt-0.5 block text-[12.5px] text-muted-foreground">The state's rules for private seats above apply too.</span>
+            </span>
           ) : (
             <>
               <span className={`text-foreground ${!bond || bond.length < 80 ? "font-semibold" : ""}`}>{bond ?? "As its notice prints it"}</span>

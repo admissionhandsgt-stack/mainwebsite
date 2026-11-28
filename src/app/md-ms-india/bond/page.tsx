@@ -29,9 +29,6 @@ import { sourcesOf } from "@/lib/officialBond";
  */
 
 const PATH = "/md-ms-india/bond";
-const rupees = (v: number) => `₹${v.toLocaleString("en-IN")}`;
-const big = (v: number | null | undefined) => (v == null ? "—" : money(v));
-const years = (y: number | null | undefined) => (y == null ? "—" : y === 0 ? "No bond" : `${y} year${y === 1 ? "" : "s"}`);
 const list = (xs: string[]) => (xs.length <= 1 ? xs.join("") : `${xs.slice(0, -1).join(", ")} and ${xs[xs.length - 1]}`);
 const isObj = (v: unknown): v is JsonObject => !!v && typeof v === "object" && !Array.isArray(v);
 const str = (v: unknown) => (typeof v === "string" && v.trim() ? v.trim() : null);
@@ -81,7 +78,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function BondPage() {
   const [b, pgStates, f] = await Promise.all([getBondByState(), getPgStates(), officialFigures()]);
-  const stateSlug = new Map(pgStates.map((p) => [p.name, p.slug]));
   const official = new Map((f?.rows ?? []).map((r) => [r.s.state, r]));
   // The compilation, only for states whose own documents have not been read.
   const govtStates = b?.states.filter((s) => s.govt.colleges > 0) ?? [];
@@ -103,20 +99,14 @@ export default async function BondPage() {
   };
   const notNotified = (f?.rows ?? []).filter((r) => r.g.flag === "not_notified").map((r) => r.s.state);
   const lead = (f?.rows ?? []).filter((r) => r.g.flag === "lead").map((r) => r.s.state);
-  // A state whose government bond is only a lead (Jharkhand): its government colleges' bond as listed for the counselling,
-  // marked so (owner, 2026-11-16: never "not confirmed" where we hold a figure).
-  const listedGovt = (state: string) => {
-    const x = b?.states.find((y) => y.state === state)?.govt;
-    if (!x?.colleges) return null;
-    if (!x.typicalYears) return x.withBond === 0 ? "0 years (no service bond)" : null;
-    return `${x.typicalYears} year${x.typicalYears === 1 ? "" : "s"}${x.penaltyMedian ? `, ${money(x.penaltyMedian)} if not served` : ""}`;
-  };
+  // A state whose government bond is only a lead (Jharkhand), or whose documents are not read: no figure is quoted — the
+  // counselling listing's years and amount never reach a page (owner, 2026-11-28: "bond figures hum claim kie bina").
   const noFigure = (f?.rows ?? []).filter((r) => !r.g.flag && !r.g.zero && !r.g.years && !r.g.min).map((r) => r.s.state);
   const zeroStates = (f?.rows ?? []).filter((r) => r.g.zero).map((r) => r.s.state);
   const bondStates = (f?.rows ?? []).filter((r) => !r.g.flag && (r.g.years || r.g.min));
   const otherLine = [
     notNotified.length ? `${list(notNotified)} ${notNotified.length > 1 ? "have" : "has"} not notified one for ${f?.session} yet.` : "",
-    ...lead.map((st) => (listedGovt(st) ? `${st}'s government colleges: ${listedGovt(st)}, as listed for the counselling.` : "")),
+    lead.length ? `${list(lead)}'s own 2026-27 documents do not print the government bond, so no figure is quoted for ${lead.length > 1 ? "them" : "it"}.` : "",
     zeroStates.length ? `${list(zeroStates)} carry no government service bond (0 years): none is stated in their 2026-27 documents.` : "",
     noFigure.length ? `${list(noFigure)} print no fixed figure; their pages give the rules as printed.` : "",
   ]
@@ -261,7 +251,7 @@ export default async function BondPage() {
                         </Link>
                       </th>
                       <td className="px-4 py-2.5">
-                        {g.flag === "not_notified" ? "Not notified yet" : g.flag === "lead" ? (listedGovt(s.state) ? `${listedGovt(s.state)} (as listed)` : "As listed for the counselling") : g.zero ? "0 years (no service bond)" : (yearsText(g.years, g.yearsMax) ?? <span className="text-muted-foreground">As printed</span>)}
+                        {g.flag === "not_notified" ? "Not notified yet" : g.flag === "lead" ? <span className="text-muted-foreground">Not in its documents yet</span> : g.zero ? "0 years (no service bond)" : (yearsText(g.years, g.yearsMax) ?? <span className="text-muted-foreground">As printed</span>)}
                       </td>
                       <td className="tnum px-4 py-2.5 text-right font-semibold">
                         {g.flag !== "lead" && rangeText(g.min, g.max) ? rangeText(g.min, g.max) : <span className="font-normal text-muted-foreground">{g.words ? "No fixed figure" : "—"}</span>}
@@ -286,72 +276,27 @@ export default async function BondPage() {
       {/* ---------------------- MCC's seats ---------------------- */}
       {mcc && <MccRules mcc={mcc} title={oc.mcc_title} intro={oc.mcc_intro} />}
 
-      {/* ---------------------- states not read yet: the compilation, with its caveat ---------------------- */}
+      {/* ---------------------- states not read yet: named, no figure (owner, 2026-11-28) ---------------------- */}
       {(otherGovt.length > 0 || otherPrivate.length > 0) && (
         <section className="container-custom py-8 md:py-10" id="other-states">
-          <SectionHead icon="list" eyebrow="As listed for the counselling" title={oc.other_title} intro={oc.other_intro} />
-          {otherGovt.length > 0 && (
-            <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
-              <table className="dt w-full min-w-[640px] text-left text-sm">
-                <caption className="px-4 pt-3 text-left text-[13px] font-semibold text-muted-foreground">Government colleges</caption>
-                <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
-                  <tr>
-                    <th scope="col" className="px-4 py-3 font-semibold">State</th>
-                    <th scope="col" className="px-4 py-3 text-right font-semibold">Colleges</th>
-                    <th scope="col" className="px-4 py-3 text-right font-semibold">With a bond</th>
-                    <th scope="col" className="px-4 py-3 font-semibold">Usual length</th>
-                    <th scope="col" className="px-4 py-3 text-right font-semibold">Bond penalty</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
-                  {otherGovt.map((s) => (
-                    <tr key={s.state}>
-                      <th scope="row" className="px-4 py-2.5 font-medium">
-                        <Link href={`#${s.anchor}`} className="text-foreground hover:text-primary hover:underline">
-                          {s.state}
-                        </Link>
-                      </th>
-                      <td className="tnum px-4 py-2.5 text-right text-muted-foreground">{s.govt.colleges}</td>
-                      <td className="tnum px-4 py-2.5 text-right">{s.govt.withBond}</td>
-                      <td className="px-4 py-2.5">{s.govt.withBond ? years(s.govt.typicalYears) : "No bond listed"}</td>
-                      <td className="tnum px-4 py-2.5 text-right font-semibold">{big(s.govt.penaltyMedian)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-          {otherPrivate.length > 0 && (
-            <div className="mt-4 overflow-x-auto rounded-2xl border border-border bg-card">
-              <table className="dt w-full min-w-[560px] text-left text-sm">
-                <caption className="px-4 pt-3 text-left text-[13px] font-semibold text-muted-foreground">Private, deemed and society-run colleges</caption>
-                <thead className="border-b border-border bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
-                  <tr>
-                    <th scope="col" className="px-4 py-3 font-semibold">State</th>
-                    <th scope="col" className="px-4 py-3 text-right font-semibold">Colleges</th>
-                    <th scope="col" className="px-4 py-3 text-right font-semibold">With a bond</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
-                  {otherPrivate.map((s) => (
-                    <tr key={s.state}>
-                      <th scope="row" className="px-4 py-2.5 font-medium">
-                        {stateSlug.get(s.state) ? (
-                          <Link href={`/md-ms-india/states/${stateSlug.get(s.state)}`} className="text-foreground hover:text-primary hover:underline">
-                            {s.state}
-                          </Link>
-                        ) : (
-                          <span className="text-foreground">{s.state}</span>
-                        )}
-                      </th>
-                      <td className="tnum px-4 py-2.5 text-right text-muted-foreground">{s.other.colleges}</td>
-                      <td className="tnum px-4 py-2.5 text-right">{s.other.withBond || "–"}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+          <SectionHead icon="list" eyebrow="Documents not read yet" title={oc.other_title} intro={oc.other_intro} />
+          <p className="mt-5 text-[14.5px] leading-relaxed text-foreground">
+            {[...new Set([...otherGovt.map((s) => s.state), ...otherPrivate.map((s) => s.state)])].map((st, i, all) => {
+              const g = otherGovt.find((s) => s.state === st);
+              return (
+                <span key={st}>
+                  {g ? (
+                    <Link href={`#${g.anchor}`} className="font-semibold text-primary-strong hover:underline dark:text-primary">
+                      {st}
+                    </Link>
+                  ) : (
+                    <span className="font-semibold">{st}</span>
+                  )}
+                  {i < all.length - 1 ? " · " : ""}
+                </span>
+              );
+            })}
+          </p>
         </section>
       )}
 
@@ -379,7 +324,7 @@ export default async function BondPage() {
                     <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4">
                       <span className="font-heading text-[16px] font-bold text-foreground">{s.state}</span>
                       <span className="tnum text-[13px] text-muted-foreground">
-                        {o ? "Official rules" : `${s.govt.withBond} of ${s.govt.colleges} with a bond`}
+                        {o ? "Official rules" : `${s.govt.colleges} government college${s.govt.colleges === 1 ? "" : "s"}`}
                       </span>
                     </summary>
                     {o ? (
@@ -388,7 +333,7 @@ export default async function BondPage() {
                           {o.g.flag === "not_notified"
                             ? `${s.state} has not notified a government service bond for ${f?.session} yet.`
                             : o.g.flag === "lead"
-                              ? `Government colleges, as listed for the counselling: ${listedGovt(s.state) ?? "see the colleges below"}.`
+                              ? `Government colleges: ${s.state}'s own 2026-27 documents do not print the bond, so no figure is quoted here — ask the college or the state's counselling authority for it in writing.`
                               : `Government colleges: ${[yearsText(o.g.years, o.g.yearsMax) ? `${yearsText(o.g.years, o.g.yearsMax)} of service` : null, rangeText(o.g.min, o.g.max) ? `${rangeText(o.g.min, o.g.max)} if not served` : null].filter(Boolean).join(", ") || "as the state's rules print it"}.`}{" "}
                           <Link href={`/md-ms-india/bond/${o.s.slug}`} className="font-semibold text-primary-strong hover:underline dark:text-primary">
                             {s.state}'s rules in full →
@@ -405,32 +350,18 @@ export default async function BondPage() {
                         </ul>
                       </div>
                     ) : (
-                      <div className="overflow-x-auto border-t border-border">
-                        <table className="dt w-full min-w-[720px] text-left text-sm">
-                          <thead className="bg-surface-1 text-[12px] uppercase tracking-wide text-muted-foreground">
-                            <tr>
-                              <th scope="col" className="px-4 py-2.5 font-semibold">College</th>
-                              <th scope="col" className="px-4 py-2.5 font-semibold">Bond</th>
-                              <th scope="col" className="px-4 py-2.5 text-right font-semibold">Bond penalty</th>
-                              <th scope="col" className="px-4 py-2.5 text-right font-semibold">Stipend, year 1</th>
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-border">
-                            {s.govt.list.map((c) => (
-                              <tr key={c.slug} data-sub="">
-                                <th scope="row" className="px-4 py-2.5 font-medium">
-                                  <Link href={`/md-ms-india/colleges/${c.slug}#seat-terms`} className="text-foreground hover:text-primary hover:underline">
-                                    {c.name}
-                                  </Link>
-                                </th>
-                                <td className="px-4 py-2.5">{years(c.bondYears)}</td>
-                                <td className="tnum px-4 py-2.5 text-right">{c.bondYears ? big(c.bondPenalty) : "—"}</td>
-                                <td className="tnum px-4 py-2.5 text-right">{c.stipendY1 ? `${rupees(c.stipendY1)} /mo` : "—"}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                        <p className="px-4 py-3 text-[12.5px] text-muted-foreground">{oc.other_intro}</p>
+                      // Not read yet: no figure (the listing's years and amount never reach a page) — the colleges, and what to ask.
+                      <div className="border-t border-border px-5 py-4">
+                        <p className="text-[14px] leading-relaxed text-foreground">{oc.other_intro}</p>
+                        <ul className="mt-3 grid gap-x-6 gap-y-1.5 text-[14px] sm:grid-cols-2 lg:grid-cols-3">
+                          {s.govt.list.map((c) => (
+                            <li key={c.slug} data-sub="">
+                              <Link href={`/md-ms-india/colleges/${c.slug}#official-bond`} className="text-foreground hover:text-primary hover:underline">
+                                {c.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                     )}
                   </details>

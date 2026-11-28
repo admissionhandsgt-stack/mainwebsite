@@ -41,14 +41,6 @@ const barName = (raw: string) => {
  */
 
 const rupees = (v: number | null | undefined) => (v == null ? "—" : `₹${v.toLocaleString("en-IN")}`);
-const big = (v: number | null | undefined) => {
-  if (v == null) return "—";
-  const trim = (x: number) => x.toFixed(2).replace(/\.?0+$/, "");
-  if (v >= 1e7) return `₹${trim(v / 1e7)} Cr`;
-  if (v >= 1e5) return `₹${trim(v / 1e5)} L`;
-  return rupees(v);
-};
-const years = (y: number | null | undefined) => (y ? `${y} year${y === 1 ? "" : "s"}` : "—");
 const OWN: Record<string, string> = { government: "Govt", private: "Private", deemed: "Deemed", other: "Other" };
 
 /** The state's year-1 government figure as a title may carry it: "Govt ₹77,662", "Govt ₹56,100 Basic + DA"; none otherwise. */
@@ -142,9 +134,8 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
     ? og.flag === "not_notified"
       ? `${s.state} has not notified a government service bond for this batch yet.`
       : og.flag === "lead"
-        ? bond?.govt.typicalYears
-          ? `${bond.govt.typicalYears} year${bond.govt.typicalYears === 1 ? "" : "s"}${bond.govt.penaltyMedian ? `, ${rupees(bond.govt.penaltyMedian)} if not served` : ""}, as listed for the counselling.`
-          : null
+        ? // Only a lead in the state's documents: no figure (never the listing's — owner, 2026-11-28).
+          `${s.state}'s own 2026-27 documents do not print the government bond, so no figure is quoted; ask the college or the state's counselling authority for it in writing.`
         : [serviceYears(og), rangeText(og.min, og.max) ? `${rangeText(og.min, og.max)} if not served` : null]
             .filter(Boolean)
             .join(", ") || og.words || null
@@ -193,10 +184,7 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
     top_college_short: top ? collegeName(top.name).short : undefined,
     top_stipend: rupees(top?.y1),
     year: bondAll?.year,
-    bond_bonded: bond?.govt.withBond,
-    bond_colleges: bond?.govt.colleges,
-    bond_years: years(bond?.govt.typicalYears),
-    bond_penalty: big(bond?.govt.penaltyMedian),
+    // The listing's bond figures never reach a page (owner, 2026-11-28): no {bond_*} token is filled.
   };
   const [copy, body, oc, heroImage] = await Promise.all([
     pageCopy("page.pg_stipend_state.hero", tokens),
@@ -237,18 +225,15 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
         ]),
     ...(official && ogLine
       ? [{ question: body.faq5_q, answer: `${ogLine.replace(/\.$/, "")}${official && bindsAiq(official.state) ? ". It binds All India Quota seats in the state's government colleges too" : ""}. From ${s.state}'s own 2026-27 rules; the state's bond page has every rule and each private college's own bond.` }]
-      : showBond && bond!.govt.withBond > 0 && bond!.govt.penaltyMedian
-        ? [{ question: body.faq5_q, answer: body.faq5_a }]
-        : []),
+      : []),
   ];
 
   if (!stip) faqs.push(
     ...(await hinglishFaqs("stipend_state", {
       ...tokens,
-      // The bond question only where the state's government colleges list one — and not where the official rules are
-      // read: that line speaks of the listing's middle figure, and the English answer above gives the official one.
-      bond_years: !official && bond && bond.govt.withBond > 0 ? years(bond.govt.typicalYears) : undefined,
-      bond_penalty: !official && bond && bond.govt.withBond > 0 ? big(bond.govt.penaltyMedian) : undefined,
+      // The Hinglish bond line speaks of the listing's figures, which never reach a page (owner, 2026-11-28): left out.
+      bond_years: undefined,
+      bond_penalty: undefined,
       private_median: s.govtMedian !== s.privateMedian ? tokens.private_median : undefined,
     })),
   );
@@ -337,9 +322,7 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
           ...(s.y3Median ? [{ icon: "spark" as const, label: "Year 3 median", value: rupees(s.y3Median), note: `year 1: ${rupees(s.median)}` }] : []),
           ...(official && og && !og.flag && (og.years || og.min)
             ? [{ icon: "authority" as const, label: "Govt-college bond", value: yearsText(og.years, og.yearsMax) ?? rangeText(og.min, og.max)!, note: rangeText(og.min, og.max) ? `${rangeText(og.min, og.max)} if not served · official` : "official 2026-27 rules" }]
-            : !official && showBond && bond!.govt.withBond > 0
-              ? [{ icon: "authority" as const, label: "Govt colleges with a bond", value: `${bond!.govt.withBond} of ${bond!.govt.colleges}`, note: `usually ${years(bond!.govt.typicalYears)}` }]
-              : []),
+            : []),
         ]}
       />
       <FeePdfCta state={s.state} placement="pdf_stipend_state" />
@@ -524,19 +507,17 @@ export default async function StateStipendPage(props: { params: Promise<{ state:
         </section>
       )}
 
-      {/* -------------------------- the bond: the listing, for a state not read yet -------------------------- */}
+      {/* -------------------------- the bond, for a state whose documents are not read: no figure -------------------------- */}
       {!official && showBond && (
         <section className="border-t border-border bg-surface-1 py-8 md:py-10">
           <div className="container-custom">
             <SectionHead icon="document" eyebrow="Service bond" title={body.bond_title} intro={body.bond_intro} />
-            <dl className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+            <dl className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
               {[
                 { label: "Government colleges", value: String(bond!.govt.colleges) },
-                { label: "With a bond", value: String(bond!.govt.withBond) },
-                { label: "Usual length", value: bond!.govt.withBond ? years(bond!.govt.typicalYears) : "No bond listed" },
-                { label: "Bond penalty", value: big(bond!.govt.penaltyMedian), sub: bond!.govt.penaltyMedian ? "middle value" : undefined },
-                // The listing's seat-leaving penalty is never shown (2026-11-25, lib/officialLeaving.ts); this state's rules are
-                // not in the official file, so the tile says what to ask for.
+                // The counselling listing's bond years and amount never reach a page (owner, 2026-11-28), nor its
+                // seat-leaving penalty (2026-11-25, lib/officialLeaving.ts): this state's own documents are not read.
+                { label: "Service bond", value: "Ask in writing", sub: "set in the admission papers you sign" },
                 { label: "Leaving the seat", value: "Ask in writing", sub: "not in an official 2026-27 document we hold" },
               ].map((f) => (
                 <div key={f.label} className="rounded-2xl border border-border bg-card px-4 py-3.5">

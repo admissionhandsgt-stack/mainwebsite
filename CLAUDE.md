@@ -2399,6 +2399,37 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
   every new college of 25, 27 and 28 Nov** (34, MCC's exact matrix name, kind mdms, no state — MCC files The Nilgiris
   under Telangana) are in `scripts/data/mcc_name_decisions.json`, so a re-import of MCC's handoff keeps the matches;
   add one for each new college from now on.
+- **The college-mapping audit of 2026-11-28 (owner: "sare colleges ki mapping ekdum ache se double verification ke validate
+  karo kuch galat to nahi hai", after Dhanalakshmi Srinivasan Medical College showed Deemed in the counsellor tool and
+  Private on Google).** The tool was right: it moved from Tamil Nadu's counselling to MCC's deemed counselling in 2026 (MCC's
+  12 Nov added-seats notice lists its 141 seats in the Deemed matrix, MCC's Round 2 allotted 49, MCC's NEET UG 2026 results
+  allot its MBBS seats as deemed, no TN 2026 line); NMC's register still says MGR University. Google's answer in the owner's
+  screenshot was about the engineering college. What it changed:
+  - **21 more PG institutes** (`scripts/sql/new_pg_colleges_2026_11_28b.mjs`, source_ids 99105–99125 ours, backup
+    `D:/Admisson Hands/match_backups/new_pg_colleges_2026_11_28b.json`): 17 government colleges whose first MD/MS seats came
+    with MCC's 12 Nov notice and which we held only as their NBEMS/PIN entry or an MBBS entry (GMCs Alibag, Ambernath,
+    Hingoli, Jalna, G.T. Hospital Mumbai, Nashik — not 202, which is NMC's separate MPGIMER Nashik —, Osmanabad, Satara,
+    Alwar; SLN Koraput; Barasat, Coochbehar, Deben Mahata Purulia, Dr B C Roy Multi Speciality IIT Kharagpur (not in NMC's
+    register), Jalpaiguri, PC Sen Arambagh, Tamralipto Tamluk) and 4 deemed (Graphic Era Dehradun, KLE JGMM Hubballi,
+    IMS & SUM Campus II Phulnakhara — NMC wrongly names ABVMU Lucknow, so the university is set by hand —, DY Patil
+    University School of Medicine Ambi). Every 2026 MD/MS matrix row now has an institute (only DNB rows are unmatched).
+  - **MCC Round 2's address-style names** (`scripts/sql/mcc_round2_names_2026_11_28.mjs`, exact names, backup
+    `…/mcc_round2_names_2026_11_28.json`): the five GMCs above, the AFMS institutions (AFMC, INHS Asvini, the Command
+    Hospitals, IAM), Karpaga Vinayaga (2059) and bare "Amrita School of Medicine" = Faridabad (796; Kochi's rows say
+    Elamkara) — 287 rows; no 2026 MD/MS allotment is unmatched now.
+  - **College types from two sources** (`scripts/sql/college_types_2026_11_28.mjs`, backup `…/college_types_2026_11_28.json`,
+    `--restore`): MBBS colleges on NMC's register now carry `institutes.ownership` too — government/private from NMC,
+    **deemed only where MCC allotted their seats in the deemed counselling AND a second source agrees** (NMC names a deemed
+    university, or the same college's PG seats are in MCC's 2026 Deemed matrix): 63 MBBS colleges (Kasturba Manipal and
+    Mangalore, JSS, SRM, Amrita, Dhanalakshmi Perambalur…) had read "It is a private college". PG: Dhanalakshmi Perambalur
+    → deemed; Gujarat's GMERS and municipal colleges private → government (NMC: Government; the state's own societies /
+    corporations); AFMS other → government. Left on purpose (review list): MGIMS Sevagram (ours government, NMC private —
+    a government-aided society), MM Sadopur (NMC names a deemed university, Haryana counsels it as a state private
+    university — stored private), MGM Vashi (only MCC says deemed; left unwritten). NMC's own field is wrong for Bombay
+    Hospital (filed "Government"): `NMC_MANAGEMENT_FIX` in lib/nmcData.ts. District Hospital Palakkad (364) had been
+    auto-paired with P K Das Institute's NMC code; the pairing went to P K Das's own MD/MS entry (1984). The MBBS directory,
+    MBBS state pages (`getNmcUgIndex` reads Deemed for a deemed college) and the FAQ ("It is neither: it is a
+    deemed-to-be university college…") follow. **Re-run its dry run after any import that adds colleges or MCC rows.**
 - **Districts split by a line break (fixed 2026-11-27):** 32 PG institutes held "Muzaffarna gar", "Visakhapatn am",
   "Bhubanesw ar"… and college pages printed them ("PG bond at Muzaffarnagar Medical College, Muzaffarna gar").
   `scripts/sql/district_split_words_2026_11_27.mjs` rejoined them (backup `D:/Admisson Hands/match_backups/district_split_words_before_2026_11_27.json`);
@@ -2592,6 +2623,21 @@ states + MCC, 302 colleges, every figure with its URL, page and quote. It replac
   boxes (chip "As listed", plus NMC's at-par rule against the state's government rate), the bond FAQ, and Jharkhand's
   government bond (only a lead in its documents: 3 years, ₹30 L as listed). Karnataka-type states with no rupee order
   show the listed government median. Only a college with nothing listed anywhere points to the state's rules above.
+- **…but never the listing's BOND figure (2026-11-28, owner: "figure agar nahi hai to clear smartly way se handle karna hai
+  aisa likhna bond figures hum claim kie bina empty information ko handle kar sake").** Supersedes the rule above for the
+  bond (the listing's stipend still shows, marked and with its caveat). `listedBondText` returns null like
+  `listedExitText`; no page, PDF, email or bot answer prints the counselling listing's bond years, amount or "N of M list a
+  bond" count. Where no official document gives a college's bond, `CollegeOfficialBond`'s ask block says so plainly and is
+  useful: the bond is set in the admission papers you sign, what to get in writing (whether the seat carries one, years,
+  the amount if not served, what leaving costs), the state's official private-seat rules where read, and that our
+  counsellors check it — words in Admin → Content "Page: PG college pages — MCC seats, bond and stipend" (`bond_ask_*`).
+  SeatTerms prints no bond row (its official "Leaving the seat" row stays). Bond state pages: an unread college row reads
+  "no official figure · In its admission papers: get it in writing" (no sort amount); a lead state (Jharkhand) quotes no
+  figure (`govt_lead`). The hub names the ten small states/UTs whose documents are not read (A&N, Arunachal, Chandigarh,
+  DNH, Ladakh, Manipur, Meghalaya, Mizoram, Nagaland, Sikkim) and lists their government colleges by name only. Stipend
+  state, counselling state, branch × state and city pages: the state's own rules or "Ask in writing", never the listing.
+  Bot: `bondChecks` says what to ask; a state not read gets no bond answer; India's bond answer comes from the states' own
+  rules; `branchMoney` bond answers are off. Copy changed with `was` — re-run `seed_page_copy.mjs` after the deploy.
 - **The deep check of the 156 unread colleges (same night; owner: "government figure par nhi jaana… deep jao blogs news
   forums… sahi info").** Six research agents, every figure with URL, quote and date and a status: official / corroborated
   (2+ independent sources) / single_report / conflicting / not_found. Stipend: official 1 · corroborated 3 · conflicting 15

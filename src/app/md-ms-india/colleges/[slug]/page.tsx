@@ -36,7 +36,7 @@ import CollegeOfficialBond from "@/components/bond/CollegeOfficialBond";
 import { CollegeOfficialStipend } from "@/components/stipend/OfficialStipend";
 import { getOfficialCollegeStipend, getOfficialStipendState } from "@/lib/officialStipend";
 import { getStipends } from "@/lib/cutoffHubQueries";
-import { collegeBondText, listedBondText, listedExitText } from "@/components/bond/OfficialBond";
+import { collegeBondText } from "@/components/bond/OfficialBond";
 import { getOfficialBond, getOfficialCollegeBond, getOfficialStateByName, govtBond, isCentralInstitution, rangeText, yearsText, serviceYears } from "@/lib/officialBond";
 import TelegramStrip from "@/components/engage/TelegramStrip";
 import { jsonLd as toJsonLd } from "@/lib/jsonLd";
@@ -132,9 +132,11 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
   ]);
   // A state's government bond is shown on a state government college with no row of its own — never on a DNB-only
   // hospital (National Board seats) or a central institution (AIIMS, ESIC, …), whose terms are their own.
-  // A row whose own notice is not read is not an official figure (owner, 2026-11-16: "Not confirmed yet" on a college page
-  // "bharosa girata hai… what is the difference?"): the college's terms as listed for the counselling show instead, marked
-  // so, with the state's rules for its seats. Likewise a state whose government bond is only a lead (Jharkhand).
+  // A row whose own notice is not read is not an official figure, and neither is the counselling listing: since 2026-11-28
+  // (owner: "figure agar nahi hai to clear smartly way se handle karna hai … bond figures hum claim kie bina") such a college
+  // shows no bond figure at all — that the bond is set in its admission papers, what to get in writing, and the state's
+  // official rules for private seats (CollegeOfficialBond's ask block). Likewise a state whose government bond is only a
+  // lead (Jharkhand).
   const bondVerified = bondRow && bondRow.status !== "not_verified" ? bondRow : null;
   const bondStateRule =
     !bondVerified && bondState && s.kind === "pg" && s.type === "Government" && !isCentralInstitution(college.name) && govtBond(bondState).flag !== "lead"
@@ -159,7 +161,7 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
     ]),
   );
   const listedTerms = s.kind === "pg" && !isCentralInstitution(college.name) ? foldListed(terms) : null;
-  const bondListed = !officialBond && listedTerms && (listedBondText(listedTerms) || listedExitText(listedTerms)) ? listedTerms : null;
+  const bondAsk = !officialBond && s.kind === "pg" && !isCentralInstitution(college.name) && (!!bondRow || !!listedTerms);
   // The same rule for the stipend: a state government college with no row of its own shows the state's rate, unless the
   // state has no official figure; a central institution or a DNB-only hospital never takes a state's rate.
   const stipendVerified = stipendRow && stipendRow.status !== "not_verified" ? stipendRow : null;
@@ -209,8 +211,8 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
     // row or the state's rule, never from the listing.
     const bondAnswer = bondVerified
       ? `${collegeBondText(bondVerified) ?? "No service bond of its own"}${bondVerified.leaving ? `. Leaving the course: ${bondVerified.leaving}` : ""}${bondVerified.session ? ` (${bondVerified.session}, from the college's own notice)` : " (from the college's own notice)"}.`
-      : bondListed
-        ? `As listed for the counselling: ${[listedBondText(bondListed) ? `service bond ${listedBondText(bondListed)}` : null, listedExitText(bondListed)].filter(Boolean).join("; ")}. That is the counselling listing, not the college's own notice; our counsellors confirm it with the college before you lock the seat.`
+      : bondAsk
+        ? termsCopy.bond_ask_faq || null
       : bondStateRule
         ? (() => {
             const g = govtBond(bondStateRule);
@@ -560,13 +562,22 @@ export default async function CollegePage(props0: { params: Promise<{ slug: stri
             )}
 
             {/* -------- the official bond (the college's own notice, or its state's rule) -------- */}
-            {(officialBond || bondListed) && (
+            {(officialBond || bondAsk) && (
               <div className="mt-12">
                 <CollegeOfficialBond
                   name={s.place && !s.short.toLowerCase().includes(s.place.toLowerCase()) ? `${s.short}, ${s.place}` : s.short}
                   row={bondVerified}
-                  state={bondVerified || bondListed ? bondState : bondStateRule}
-                  listed={bondListed}
+                  state={bondVerified || bondAsk ? bondState : bondStateRule}
+                  ask={
+                    bondAsk
+                      ? {
+                          chip: termsCopy.bond_ask_chip,
+                          line: termsCopy.bond_ask_line,
+                          items: (termsCopy.bond_ask_items ?? "").split("\n").map((x) => x.trim()).filter(Boolean),
+                          after: termsCopy.bond_ask_after,
+                        }
+                      : null
+                  }
                   privateSeats={s.type !== "Government"}
                 />
               </div>

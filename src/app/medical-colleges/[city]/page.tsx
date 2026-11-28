@@ -127,10 +127,10 @@ export default async function CityPage(props: { params: Promise<{ city: string }
     stipend: lakh(p.stipend?.median),
     stipend_colleges: p.stipend?.colleges,
     govt_stipend: lakh(p.stipend?.govtMedian),
-    // The FAQ's bond line speaks of the listing; where the state's own rules are read, the section above gives those.
-    bonded: !obLine && p.bond?.govt ? p.bond.bonded : undefined,
-    govt_terms: obLine ? undefined : p.bond?.govt,
-    bond_years: !obLine && p.bond?.years ? `${p.bond.years} year${p.bond.years === 1 ? "" : "s"}` : undefined,
+    // The FAQ's bond line speaks of the listing's figures, which never reach a page (owner, 2026-11-28): left out.
+    bonded: undefined,
+    govt_terms: undefined,
+    bond_years: undefined,
     authority: authority && authority.scope === "UG and PG" ? authority.authority : `${p.city.state}'s own counselling authority`,
     mbbs: p.mbbs.length >= 2 ? p.mbbs.length : undefined,
     mbbs_seats: mbbsSeats ? n(mbbsSeats) : undefined,
@@ -326,13 +326,7 @@ export default async function CityPage(props: { params: Promise<{ city: string }
                 {p.stipend.otherMedian ? `; private and deemed ${lakh(p.stipend.otherMedian)}` : ""}.
               </li>
             )}
-            {!obLine && p.bond?.govt ? (
-              <li className="rounded-xl border border-border bg-card px-4 py-2.5">
-                Bond: {p.bond.bonded} of {p.bond.govt} government colleges list a service bond
-                {p.bond.years ? `, usually ${p.bond.years} year${p.bond.years === 1 ? "" : "s"}` : ""}
-                {p.bond.penaltyMedian ? `; breaking it costs ${lakh(p.bond.penaltyMedian)} in the middle` : ""}.
-              </li>
-            ) : null}
+            {/* The counselling listing's bond count, years and amount never reach a page (owner, 2026-11-28). */}
           </ul>
           <p className="mt-3 flex gap-2 text-[13px] leading-relaxed text-muted-foreground">
             <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />

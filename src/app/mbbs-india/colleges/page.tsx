@@ -75,7 +75,8 @@ export default async function CollegesPage() {
       .filter((c) => !(c.collegeType ?? '').toLowerCase().includes('deemed'))
       .map((c) => {
         const x = nmc[c.slug];
-        return x ? { ...c, collegeType: c.collegeType ?? x.management, intake: x.seats ?? c.intake } : c;
+        // A college verified as deemed (MCC's deemed counselling + a second source) says so even where the CMS says Private.
+        return x ? { ...c, collegeType: x.management === 'Deemed' ? 'Deemed' : c.collegeType ?? x.management, intake: x.seats ?? c.intake } : c;
       });
 
     const byState = new Map<string, typeof colleges>();

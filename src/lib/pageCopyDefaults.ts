@@ -2417,8 +2417,10 @@ export const PAGE_COPY = {
       bond_title: { label: "Bond box heading — {state}", value: "The bond that comes with a government seat in {state}" },
       bond_intro: {
         label: "Bond box line — {state}, {year}",
-        value: "{state}'s government colleges, on their All India and state-quota MD/MS seats, as listed for the {year} counselling.",
+        value:
+          "{state}'s own 2026-27 bond documents are not ones we hold, so no bond figure is quoted here. A government seat's bond is set in the admission papers you sign: ask the college or the counselling authority for the years and the amount in writing.",
         long: true,
+        was: ["{state}'s government colleges, on their All India and state-quota MD/MS seats, as listed for the {year} counselling."],
       },
       bond_link: { label: "Bond box link", value: "Every state's bond, side by side" },
       faq1_q: { label: "Question 1 — {state}", value: "What is the PG stipend in {state}?" },
@@ -3754,23 +3756,29 @@ export const PAGE_COPY = {
       seats_pwd: { label: "Seats note, when a PwD column shows", value: "PwD seats are counted once, in the PwD column." },
       seats_total: { label: "Seats table, total row", value: "All seats MCC fills here" },
       seats_link: { label: "Link to the full seat matrix — {year}", value: "The whole {year} seat matrix" },
-      terms_eyebrow: { label: "Terms eyebrow — {year}", value: "Bond, stipend and exit · {year}" },
-      terms_title: { label: "Terms heading — {college}", value: "Bond, stipend and seat-leaving rules at {college}" },
+      terms_eyebrow: { label: "Terms eyebrow — {year}", value: "Stipend, hostel and exit · {year}", was: ["Bond, stipend and exit · {year}"] },
+      terms_title: {
+        label: "Terms heading — {college}",
+        value: "Stipend, hostel and seat-leaving rules at {college}",
+        was: ["Bond, stipend and seat-leaving rules at {college}"],
+      },
       terms_intro: {
         label: "Terms line — {year}",
         value:
-          "What each type of seat here pays and binds you to: the stipend in each year and the service bond, as listed for the {year} counselling, and what leaving the seat costs under the counselling's own 2026-27 rules.",
+          "What each type of seat here pays you and what leaving it costs: the stipend in each year and the hostel, as listed for the {year} counselling, and what leaving the seat costs under the counselling's own 2026-27 rules. The service bond is in the box above.",
         long: true,
         was: [
+          "What each type of seat here pays and binds you to: the stipend in each year and the service bond, as listed for the {year} counselling, and what leaving the seat costs under the counselling's own 2026-27 rules.",
           "What each type of seat here pays and binds you to: the stipend in each year, the service bond, and the penalty for leaving the seat once you have joined. As listed for the {year} counselling.",
         ],
       },
       terms_caveat: {
         label: "Terms caveat",
         value:
-          "The stipend, bond and hostel are as listed for the counselling, not an official notice: they change from year to year, so confirm them in the state's notice or with the college before you pay a fee or sign a bond. What leaving the seat costs is from the counselling's own 2026-27 rules.",
+          "The stipend and hostel are as listed for the counselling, not an official notice: they change from year to year, so confirm them in the state's notice or with the college before you pay a fee. What leaving the seat costs is from the counselling's own 2026-27 rules.",
         long: true,
         was: [
+          "The stipend, bond and hostel are as listed for the counselling, not an official notice: they change from year to year, so confirm them in the state's notice or with the college before you pay a fee or sign a bond. What leaving the seat costs is from the counselling's own 2026-27 rules.",
           "As listed for the counselling. This is not an official notice: bond and penalty rules change from year to year, so confirm them in the state's notice or with the college before you pay a fee or sign a bond.",
           "Compiled from counselling notices and college fee schedules by a third-party data service. This is not an official notice. Bond and penalty rules change from year to year, so confirm them in the state's notice or with the college before you pay a fee or sign a bond.",
         ],
@@ -3781,6 +3789,35 @@ export const PAGE_COPY = {
       terms_hostel: { label: "Card label: hostel", value: "Hostel" },
       terms_more: { label: "Button: more seat types — {count}", value: "{count} more seat types" },
       terms_link: { label: "Link to the bond page", value: "Every state's PG bond, side by side" },
+      // A college whose bond no official document gives (owner, 2026-11-28: no listed figure, handled clearly).
+      bond_ask_chip: { label: "Bond box, no official figure: the chip", value: "Get it in writing" },
+      bond_ask_line: {
+        label: "Bond box, no official figure: the first line — {college}",
+        value:
+          "{college}'s service bond for 2026-27 is not in an official notice or document we hold, so we don't print a figure for it. The bond is set in the admission papers the college gives you to sign.",
+        long: true,
+      },
+      bond_ask_items: {
+        label: "Bond box, no official figure: what to ask in writing (one per line)",
+        value: [
+          "Whether your seat (state quota, management or NRI) carries a service bond at all",
+          "How many years you would serve, and where",
+          "The amount you pay if you do not serve it",
+          "What leaving the course costs after you join",
+        ].join("\n"),
+        long: true,
+      },
+      bond_ask_after: {
+        label: "Bond box, no official figure: the last line",
+        value: "Our counsellors check these terms with the college for your seat before you lock it.",
+        long: true,
+      },
+      bond_ask_faq: {
+        label: "FAQ answer: PG bond, no official figure — {college}",
+        value:
+          "{college} has not published its 2026-27 service bond in an official notice or document we hold, so we don't quote a figure. Ask the college in writing whether your seat carries a bond, for how many years, and what it costs if you do not serve it; the bond is set in the admission papers you sign. Our counsellors check it for your seat.",
+        long: true,
+      },
     },
   },
   "page.pg_branch.mcc": {
@@ -3990,13 +4027,18 @@ export const PAGE_COPY = {
         value: "MCC sets no service bond of its own. What it does set is what leaving a seat costs, round by round, and the security deposit.",
         long: true,
       },
-      other_title: { label: "Heading over the states not read yet", value: "Other states, as listed for the counselling" },
+      other_title: {
+        label: "Heading over the states not read yet",
+        value: "Other states and union territories",
+        was: ["Other states, as listed for the counselling"],
+      },
       other_intro: {
         label: "Line over the states not read yet",
         value:
-          "We have not read these states' own documents yet. These bond figures are as listed for the counselling, not an official notice: confirm with the state's notice or the college before you pay a fee or sign a bond. What leaving a seat costs here is not in an official 2026-27 document we hold, so ask the college or the counselling authority in writing.",
+          "Their own 2026-27 bond documents are not ones we hold, so no bond figure is quoted for them here. A college's bond is set in the admission papers you sign: ask the college or the counselling authority in writing whether your seat carries one, for how many years and what it costs if you do not serve it. Our counsellors check it for your seat.",
         long: true,
         was: [
+          "We have not read these states' own documents yet. These bond figures are as listed for the counselling, not an official notice: confirm with the state's notice or the college before you pay a fee or sign a bond. What leaving a seat costs here is not in an official 2026-27 document we hold, so ask the college or the counselling authority in writing.",
           "We have not read these states' own documents yet. These figures are as listed for the counselling, not an official notice: confirm with the state's notice or the college before you pay a fee or sign a bond.",
         ],
       },
@@ -4315,8 +4357,11 @@ export const PAGE_COPY = {
       govt_lead: {
         label: "When the government bond is only a lead",
         value:
+          "{state}'s own 2026-27 documents do not print the government bond, so no figure is quoted here. The bond is set in the admission papers you sign: ask the college or the state's counselling authority for the years and the amount in writing before you join. Our counsellors check it for your seat.",
+        was: [
           "{state}'s own 2026-27 documents do not print the government bond, so the figure here is as listed for the counselling. Our counsellors confirm it with the state's counselling authority before you sign.",
-        was: ["No official document confirms the government bond yet. Ask the state's counselling authority before you rely on any figure."],
+          "No official document confirms the government bond yet. Ask the state's counselling authority before you rely on any figure.",
+        ],
         long: true,
       },
       govt_not_notified: { label: "When the state has not notified it — {session}", value: "The state has not notified a service bond for the {session} batch yet.", long: true },
@@ -4328,18 +4373,20 @@ export const PAGE_COPY = {
       private_intro: {
         label: "Private colleges line",
         value:
-          "The state's rules for private seats, then each college's own bond as its own notice prints it. A college whose own notice is not read shows its terms as listed for the counselling.",
+          "The state's rules for private seats, then each college's own bond as its own notice prints it. A college with no bond figure in an official notice says so: its bond is in the admission papers you sign.",
         was: [
+          "The state's rules for private seats, then each college's own bond as its own notice prints it. A college whose own notice is not read shows its terms as listed for the counselling.",
           "The state's rules for private seats, then each college's own bond as its own notice prints it. Where we have not read a college's current documents, the row says so.",
           "The state's rules for private seats, then each college's own bond as its own notice prints it. Colleges whose terms are not confirmed yet are named under the table.",
         ],
         long: true,
       },
       ask: {
-        label: "Under the college table, when a row shows terms as listed for the counselling",
+        label: "Under the college table, when a row has no official bond figure",
         value:
-          "A row marked “as listed for the counselling” shows the college's bond and seat-leaving terms as listed for the 2026 counselling, not its own notice. Our counsellors confirm them with the college before you lock a seat.",
+          "A row marked “no official figure” is a college whose 2026-27 bond is not in an official notice or document we hold, so no figure is printed for it. Its bond is set in the admission papers you sign: ask for the years and the amount in writing. Our counsellors check them with the college for your seat.",
         was: [
+          "A row marked “as listed for the counselling” shows the college's bond and seat-leaving terms as listed for the 2026 counselling, not its own notice. Our counsellors confirm them with the college before you lock a seat.",
           "Not read yet: ask the college",
           "{n} more colleges: their 2026-27 bond terms are not confirmed in an official document yet. The state's rules above apply to their seats, and our counsellors confirm each college's own terms before you put it on your list.",
         ],

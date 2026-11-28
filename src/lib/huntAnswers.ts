@@ -373,8 +373,8 @@ function bondChecks(t: SeatTerms | undefined, official?: string | null): string[
   if (!t && !official) return [];
   const out: string[] = [];
   if (official) out.push(official);
-  else if (t?.bondYears) out.push(`Service bond: ${t.bondYears} year${t.bondYears === 1 ? "" : "s"} after the course${t.bondPenalty ? `, ${inr(t.bondPenalty)} to break it` : ""}${t.bondVaries ? "; it differs between branches here" : ""}, as listed for the counselling.`);
-  else if (t?.bondYears === 0 && !t.bondUnknown) out.push("No service bond is listed for this seat type.");
+  // No official figure: the counselling listing's bond years and amount are never quoted (owner, 2026-11-28) — what to ask.
+  else out.push("Whether your seat carries a service bond, for how many years and what it costs if you do not serve it, in writing: no official 2026-27 figure is published for it.");
   // The listing's seat-leaving terms are never quoted (2026-11-25, lib/officialLeaving.ts): no official 2026 document backs
   // them. The question to ask is said instead.
   out.push("What leaving the seat costs under the counselling's own 2026-27 rules, round by round, before you join.");
@@ -410,7 +410,7 @@ async function listedFees(c: College, label: string, q: string, quotaAsked: RegE
   if (!band(first)) return null;
   const main = terms.find((t) => t.family === "state") ?? terms.find((t) => t.family === "aiq") ?? terms[0];
   const officialBond = await officialBondCheck(c);
-  const listedBond = !officialBond && !!main?.bondYears;
+  const listedBond = false; // the listing's bond is never quoted (2026-11-28)
   return {
     page: `/md-ms-india/colleges/${c.slug}`,
     kind: "college-fee-listed",
@@ -488,7 +488,7 @@ async function college(c: College, q: string): Promise<Draft | null> {
       ? `At ${label}${c.state ? ` (${c.state})` : ""}, the 2026-27 PG fee starts at ${inr(f[0].lo)} ${per(f[0].period)} on a ${f[0].quota ?? "state"} seat${f.length > 1 ? `, and other quotas cost more` : ""}${y1 ? `; the stipend is ${inr(y1)} a month in the first year` : ""}.`
       : `At ${label}${c.state ? ` (${c.state})` : ""}, a first-year MD/MS resident's stipend is ${inr(y1)} a month (${stipendFrom})${f.length ? `, and the 2026-27 fee starts at ${inr(f[0].lo)} ${per(f[0].period)}` : ""}.`;
   const [compareState, officialBond] = await Promise.all([c.state ? getStateStipend(c.state).catch(() => null) : Promise.resolve(null), officialBondCheck(c)]);
-  const listedBond = !officialBond && !!main?.bondYears;
+  const listedBond = false; // the listing's bond is never quoted (2026-11-28)
   return {
     page: `/md-ms-india/colleges/${c.slug}`,
     kind: "college",
@@ -579,12 +579,11 @@ async function stateStipend(st: PgState): Promise<Draft | null> {
       ...(top.length ? [`Highest published: ${top.map((c) => `${collegeName(c.name).short} ${inr(c.y1)}`).join(", ")}.`] : []),
     ],
     checks: [
-      ...(b && b.govt.withBond
-        ? [`${b.govt.withBond} of ${b.govt.colleges} government colleges here list a service bond${b.govt.typicalYears ? ` (typically ${b.govt.typicalYears} year${b.govt.typicalYears === 1 ? "" : "s"})` : ""}${b.govt.penaltyMedian ? `; breaking it costs ${inr(b.govt.penaltyMedian)} in the middle` : ""}.`]
-        : []),
+      // The listing's bond count and figures are never quoted (owner, 2026-11-28): what to ask instead.
+      ...(b && b.govt.colleges ? ["Whether your seat carries a service bond, for how many years and what it costs if you do not serve it, in writing."] : []),
       "Income tax is deducted at source on the stipend, so the amount credited is lower.",
     ],
-    source: `the stipend as listed for the counselling (not an official notice), its latest year${b && b.govt.withBond ? `; ${CAVEAT}` : ""}.`,
+    source: "the stipend as listed for the counselling (not an official notice), its latest year.",
     compare:
       all && pos >= 0
         ? `For comparison, the national median is ${inr(all.median)} a month; ${st.name} is ${pos === 0 ? "the highest" : `number ${pos + 1}`} of ${ranked.length} states by its government colleges' median.`
@@ -647,13 +646,8 @@ async function bond(st: PgState | null): Promise<Draft | null> {
         g.flag === "not_notified"
           ? `${os.state} has not notified a government service bond for the 2026-27 batch yet; its own rules still set what leaving a seat or the course costs.`
           : g.flag === "lead"
-            ? await (async () => {
-                // Only a lead in the state's own documents (Jharkhand): the government colleges' bond as listed, marked so.
-                const x = (await getBondByState().catch(() => null))?.states.find((y) => y.state === os.state)?.govt;
-                return x?.typicalYears
-                  ? `${os.state}'s government colleges bind MD/MS graduates to ${x.typicalYears} year${x.typicalYears === 1 ? "" : "s"} of service${x.penaltyMedian ? ` or about ${inr(x.penaltyMedian)} if not served` : ""}, as listed for the counselling.`
-                  : `${os.state}'s government-college bond is set out on its bond page, with what leaving a seat or the course costs.`;
-              })()
+            ? // Only a lead in the state's own documents (Jharkhand): no figure — the listing's is never quoted (2026-11-28).
+              `${os.state}'s own 2026-27 documents do not print the government-college bond, so no figure is quoted; ask the college or the state's counselling authority for it in writing. Its rules still set what leaving a seat costs.`
             : parts.length
               ? g.zero
                 ? `In ${os.state}, government colleges carry no service bond (0 years): none is stated in the state's own 2026-27 documents. Its rules still set what leaving a seat costs.`
@@ -691,34 +685,27 @@ async function bond(st: PgState | null): Promise<Draft | null> {
       what: "official state-wise bond and seat-leaving rules",
     };
   }
-  const b = await getBondByState().catch(() => null);
-  if (!b) return null;
-  const s = st ? b.states.find((x) => x.state === st.name) : undefined;
-  if (s && s.govt.colleges) {
-    return {
-      page: `/md-ms-india/bond#${s.anchor}`,
-      kind: "bond-state",
-      lead: `In ${s.state}, ${s.govt.withBond} of ${s.govt.colleges} government PG colleges list a service bond${s.govt.typicalYears ? `, typically ${s.govt.typicalYears} year${s.govt.typicalYears === 1 ? "" : "s"}` : ""}${s.govt.penaltyMedian ? `; breaking it costs ${inr(s.govt.penaltyMedian)} in the middle${span(s.govt.penaltyLow, s.govt.penaltyHigh)}` : ""}.`,
-      points: [
-        ...(s.other.colleges ? [`Private and deemed colleges: ${s.other.withBond} of ${s.other.colleges} list a bond.`] : []),
-        "What leaving a seat costs here is not in an official 2026-27 document we hold: ask the college or the counselling authority in writing.",
-      ],
-      checks: ["The bond and penalty in the state's own counselling notice for your year — they change.", "Whether the bond is served in a government post (and paid) or only as a penalty.", "Whether original certificates are kept by the college until the course ends."],
-      source: `${CAVEAT}.`,
-      what: "state-wise bond and penalty table",
-    };
-  }
+  // A state whose own rules are not read gets no answer: the counselling listing's bond figures are never quoted (owner,
+  // 2026-11-28: "bond figures hum claim kie bina"). India as a whole: from the states' own rules only.
+  if (st || !official) return null;
+  const rows = official.states
+    .filter((x) => x.slug !== "mcc")
+    .map((x) => ({ x, g: govtBond(x) }))
+    .filter((r) => !r.g.flag);
+  const bonded = rows.filter((r) => !r.g.zero && (r.g.years || r.g.min));
+  const byAmount = bonded.filter((r) => r.g.max).sort((a, z) => (z.g.max ?? 0) - (a.g.max ?? 0));
+  if (!bonded.length) return null;
   return {
     page: "/md-ms-india/bond",
     kind: "bond",
-    lead: `${b.govtBonded} of ${b.govtColleges} government PG colleges bind MD/MS graduates to a service bond${b.penaltyMedian ? `; breaking it costs ${inr(b.penaltyMedian)} in the middle${span(b.penaltyLow, b.penaltyHigh)}` : ""}.`,
+    lead: `${bonded.length} of the ${rows.length} states whose own 2026-27 rules we hold bind government-college MD/MS graduates to a service bond${byAmount[0] ? `; the highest is ${inr(byAmount[0].g.max!)} if it is not served (${byAmount[0].x.state})` : ""}.`,
     points: [
-      `Bond length: ${b.byYears[1]} colleges 1 year, ${b.byYears[2]} colleges 2 years, ${b.byYears[3]} colleges 3 years.`,
+      ...byAmount.slice(0, 3).map((r) => `${r.x.state}: ${[serviceYears(r.g), rangeText(r.g.min, r.g.max) ? `${rangeText(r.g.min, r.g.max)} if not served` : null].filter(Boolean).join(", ")}.`),
       "What leaving a seat costs is set by each counselling's own rules, round by round: MCC's for its seats, each state's for its own.",
     ],
     checks: ["Your state's own counselling notice for the bond and penalty in your year.", "Whether the bond is a paid government posting or a penalty only.", "Whether the college keeps your original certificates."],
-    source: `${CAVEAT}.`,
-    what: "state-wise bond and penalty table",
+    source: "each state's own 2026-27 bulletin, orders and gazette.",
+    what: "official state-wise bond rules",
   };
 }
 

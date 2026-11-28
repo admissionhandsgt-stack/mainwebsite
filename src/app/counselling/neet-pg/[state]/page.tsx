@@ -94,15 +94,9 @@ async function load(slug: string) {
             return parts.length ? `${p.name}'s government colleges bind MD/MS graduates to ${parts.join(", ")}, as the state's own 2026-27 rules print it.` : null;
           })()
     : null;
-  const bondLine = official
-    ? officialLine
-    : b && b.govt.colleges >= 3
-      ? b.govt.withBond === 0
-        ? `None of the ${b.govt.colleges} government colleges in ${p.name} lists a service bond for its PG seats.`
-        : `${b.govt.withBond} of the ${b.govt.colleges} government colleges in ${p.name} list a service bond for their PG seats${
-            b.govt.typicalYears ? `, typically ${b.govt.typicalYears} ${b.govt.typicalYears === 1 ? "year" : "years"}` : ""
-          }${b.govt.penaltyMedian ? `, with a median penalty of ${money(b.govt.penaltyMedian)}` : ""}.`
-      : null;
+  // Only the state's own rules: the counselling listing's bond count, years and amount never reach a page (owner,
+  // 2026-11-28: "bond figures hum claim kie bina").
+  const bondLine = official ? officialLine : null;
 
   const tokens = {
     state: p.name,
@@ -171,7 +165,7 @@ export default async function CounselPgStatePage(props: Props) {
     ...(official
       ? [{ label: `PG bond in ${p.name}`, href: `/md-ms-india/bond/${official.slug}`, note: "The state's own 2026-27 rules, round by round" }]
       : b
-        ? [{ label: "Service bond by state", href: `/md-ms-india/bond#${b.anchor}`, note: "As listed for the counselling" }]
+        ? [{ label: "Service bond by state", href: `/md-ms-india/bond#${b.anchor}`, note: "Each state's own rules, where we hold them" }]
         : []),
     { label: "NEET PG choice filling", href: "/neet-pg-choice-filling", note: "MCC's rules for each round" },
     ...(ug ? [{ label: `MBBS counselling in ${ug.name}`, href: `/counselling/mbbs/${ug.slug}` }] : []),
@@ -270,11 +264,8 @@ export default async function CounselPgStatePage(props: Props) {
             {official && og && !og.flag && (og.years || og.min) ? (
               <Tile label="Govt-college bond" value={yearsText(og.years, og.yearsMax) ?? rangeText(og.min, og.max)!} note={rangeText(og.min, og.max) ? `${rangeText(og.min, og.max)} if not served · official` : "official 2026-27 rules"} />
             ) : !official && b && b.govt.colleges >= 3 ? (
-              <Tile
-                label="Service bond"
-                value={`${b.govt.withBond} of ${b.govt.colleges}`}
-                note={`government colleges${b.govt.typicalYears ? `, ~${b.govt.typicalYears} yr` : ""} · as listed`}
-              />
+              // No figure: the counselling listing's bond count and years never reach a page (owner, 2026-11-28).
+              <Tile label="Service bond" value="Ask in writing" note="set in the admission papers you sign" />
             ) : null}
           </div>
           <p className="mt-3 max-w-[90ch] text-[12.5px] leading-relaxed text-muted-foreground">{c.money_note}</p>

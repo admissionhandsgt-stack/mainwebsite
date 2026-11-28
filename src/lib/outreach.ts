@@ -116,15 +116,15 @@ async function stipendDraft(kind: Kind, name: string | null, org: string): Promi
         hi,
         "",
         `${me} We keep a state-wise table of the first-year MD/MS stipend that ${st.colleges.toLocaleString("en-IN")} medical colleges publish${
-          bond ? `, and of the service bond and seat-leaving penalty listed for the ${bond.year} counselling` : ""
+          bond ? ", and each state's service bond from its own 2026-27 rules" : ""
         }. It may be useful for ${org}'s work on resident doctors' pay:`,
         "",
         ...(top && low ? [`• The median first-year stipend runs from ${inr(low.median)} a month (${low.state}) to ${inr(top.median)} (${top.state}).`] : []),
         ...(govtTop ? [`• In government colleges, ${govtTop.state} pays most: ${inr(govtTop.govtMedian)} a month.`] : []),
-        ...(bond?.govtBonded ? [`• ${bond.govtBonded} of ${bond.govtColleges} government PG colleges list a service bond; the middle penalty is ${lakh(bond.penaltyMedian)}.`] : []),
         "",
         `Stipend by state and college: ${SITE}/md-ms-india/stipend`,
-        ...(bond ? [`Bond and penalties by state: ${SITE}/md-ms-india/bond (as listed for the counselling, not an official notice)`] : []),
+        // The counselling listing's bond figures are never quoted (owner, 2026-11-28); the page gives each state's own rules.
+        ...(bond ? [`Service bond by state, from each state's own rules: ${SITE}/md-ms-india/bond`] : []),
         "",
         "Free to use with a link. If a state's figure looks wrong to you, tell me and I'll check it against the notice.",
         "",

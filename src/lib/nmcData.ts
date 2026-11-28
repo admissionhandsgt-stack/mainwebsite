@@ -78,7 +78,7 @@ async function load(slug: string, level: Level): Promise<NmcFacts | null> {
       name: String(first.college_name),
       state: (first.state_name as string) ?? null,
       university: (first.university_name as string) ?? null,
-      management: (first.management_type as string) ?? null,
+      management: NMC_MANAGEMENT_FIX[String(first.college_code)] ?? (first.management_type as string) ?? null,
       inceptionYear: first.inception_year == null ? null : Number(first.inception_year),
       mbbsSeats: mbbs?.approved_seat == null ? null : Number(mbbs.approved_seat),
       mbbsPrevious: mbbs?.previous_approved_seat == null ? null : Number(mbbs.previous_approved_seat),
@@ -97,16 +97,27 @@ async function load(slug: string, level: Level): Promise<NmcFacts | null> {
   }
 }
 
+/**
+ * NMC codes whose management field is wrong in NMC's register (checked 2026-11-28, scripts/sql/college_types_2026_11_28.mjs):
+ * Bombay Hospital Institute of Medical Sciences is a private trust hospital (Bombay Hospital Trust), filed as "Government".
+ */
+const NMC_MANAGEMENT_FIX: Record<string, string> = { "PG/MH/03/G/1": "Private" };
+
 export const getNmcFacts = (slug: string, level: Level) =>
   unstable_cache(() => load(slug, level), ["nmc-facts-v1", level, slug], { revalidate: 86400, tags: ["nmc"] })();
 
-/** NMC's ownership and approved MBBS seats for every matched UG college — for the directory's badges. */
+/**
+ * NMC's ownership and approved MBBS seats for every matched UG college — for the directory's badges. NMC files every deemed
+ * university as "Private"; a college we verified as deemed (institutes.ownership, set by
+ * scripts/sql/college_types_2026_11_28.mjs from MCC's deemed counselling plus a second source) reads "Deemed".
+ */
 export const getNmcUgIndex = unstable_cache(
   async (): Promise<Record<string, { management: string | null; seats: number | null }>> => {
     try {
       const r = rowsOf<{ slug: string; management: string | null; seats: number | null }>(
         await db.execute(sql`
-          SELECT i.slug, c.management_type AS management, c.approved_seat AS seats
+          SELECT i.slug, CASE WHEN i.ownership::text = 'deemed' THEN 'Deemed' ELSE c.management_type END AS management,
+                 c.approved_seat AS seats
             FROM institutes i
             JOIN nmc_institutes m ON m.institute_id = i.id
             JOIN nmc_courses c ON c.college_code = m.college_code AND c.course_type = 'M.B.B.S.'

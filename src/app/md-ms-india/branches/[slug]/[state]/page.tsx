@@ -360,16 +360,13 @@ export default async function BranchStatePage(props: Props) {
                 </p>
               </Link>
             )}
-            {bond && bond.govt.withBond > 0 && (
+            {/* No figure here: the counselling listing's bond years and amount never reach a page (owner, 2026-11-28). */}
+            {bond && bond.govt.colleges > 0 && (
               <Link href={`/md-ms-india/bond#${bond.anchor}`} className="rounded-2xl border border-border bg-card p-5 transition-colors hover:border-primary/40">
                 <p className="text-[12px] font-bold uppercase tracking-[0.12em] text-primary-strong">Service bond</p>
-                <p className="mt-2 font-heading text-lg font-bold text-foreground">
-                  {bond.govt.typicalYears ? `${bond.govt.typicalYears}-year bond` : "A bond"} on government seats
-                </p>
+                <p className="mt-2 font-heading text-lg font-bold text-foreground">What a government seat in {p.state} binds you to</p>
                 <p className="mt-1 text-[14px] leading-relaxed text-muted-foreground">
-                  {bond.govt.withBond} of {bond.govt.colleges} government colleges
-                  {bond.govt.penaltyMedian ? `, penalty median ${money(bond.govt.penaltyMedian)}` : ""} — as listed for the counselling, not an
-                  official notice; confirm with the state&apos;s notice before you sign →
+                  From {p.state}&apos;s own 2026-27 rules where we hold them; a private seat&apos;s bond is in the admission papers you sign →
                 </p>
               </Link>
             )}

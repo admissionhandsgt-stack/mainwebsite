@@ -303,7 +303,7 @@ async function feesDraft(bw: BranchWord, m: BranchMoney, s: MoneyScope): Promise
       pointsTitle: "Quota by quota:",
       points,
       checks: [
-        ...(t?.bondYears ? [`Service bond: ${t.bondYears} year${t.bondYears === 1 ? "" : "s"}${t.bondPenalty ? `, ${inr(t.bondPenalty)} to break it` : ""}.`] : []),
+        "Whether your seat carries a service bond, for how many years and what it costs if you do not serve it, in writing.",
         "What leaving the seat costs under the counselling's own 2026-27 rules, round by round, before you join.",
         "Whether the figure is the whole year's fee, and what hostel, mess and the caution deposit add.",
       ],
@@ -399,7 +399,7 @@ async function stipendDraft(bw: BranchWord, m: BranchMoney, s: MoneyScope): Prom
       kind,
       lead: `A first-year ${B} resident at ${s.label} is paid ${inr(t.y1)} a month${t.y2 ? `, ${inr(t.y2)} in year 2` : ""}${t.y3 ? ` and ${inr(t.y3)} in year 3` : ""} (as listed for the ${t.seatType || "counselling"}).`,
       checks: [
-        ...(t.bondYears ? [`Service bond: ${t.bondYears} year${t.bondYears === 1 ? "" : "s"}${t.bondPenalty ? `, ${inr(t.bondPenalty)} to break it` : ""}.`] : []),
+        "Whether your seat carries a service bond, for how many years and what it costs if you do not serve it, in writing.",
         "Whether the stipend is paid from the first month, and what is deducted from it (income tax is deducted at source).",
       ],
       source: `${TERMS_CAVEAT}.`,
@@ -448,7 +448,13 @@ async function stipendDraft(bw: BranchWord, m: BranchMoney, s: MoneyScope): Prom
 
 /* --------------------------------------------------------------------- bond --- */
 
+/** The listing's bond is never quoted (2026-11-28): the branch-bond answer is off. */
+const BOND_FROM_LISTING_OFF = true;
+
 async function bondDraft(bw: BranchWord, m: BranchMoney, s: MoneyScope): Promise<Draft | null> {
+  // Every figure here is the counselling listing's bond, which is never quoted (owner, 2026-11-28: "bond figures hum claim
+  // kie bina"): no answer. A state's bond is answered from its own rules (huntAnswers `bond`).
+  if (BOND_FROM_LISTING_OFF) return null;
   const terms = inScope(m.terms, s);
   if (!terms.length) return null;
   const B = SEARCH_NAME[m.course] ?? m.course;

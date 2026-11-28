@@ -231,9 +231,11 @@ function summarise(
         : null
       : TYPE[college.ownership] ?? null;
   // NMC's register is the regulator's word on ownership, but it files a deemed university
-  // under "Private" — a curated "Deemed" is the more exact of the two and is kept.
+  // under "Private" — a curated "Deemed" is the more exact of the two and is kept. Since 2026-11-28 an MBBS college's
+  // ownership is set too (scripts/sql/college_types_2026_11_28.mjs: deemed only on MCC's deemed counselling plus a second
+  // source), so a deemed MBBS college says Deemed even where the CMS row says Private.
   const nmcType = nmc?.management ? NMC_TYPE[nmc.management.toLowerCase()] ?? null : null;
-  const type = curated === "Deemed" ? curated : nmcType ?? curated;
+  const type = curated === "Deemed" || college.ownership === "deemed" ? "Deemed" : nmcType ?? curated;
   // Approved intake from NMC beats a count derived from counselling rows.
   const nmcSeats = level === "ug" ? nmc?.mbbsSeats ?? null : kind === "pg" && nmc?.pgSeats ? nmc.pgSeats : null;
 

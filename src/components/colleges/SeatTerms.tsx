@@ -1,4 +1,4 @@
-import { BedDouble, DoorOpen, Info, ScrollText, Wallet } from "lucide-react";
+import { BedDouble, DoorOpen, Info, Wallet } from "lucide-react";
 import type { ReactNode } from "react";
 import Link from "@/components/ui/Link";
 import { LEAVING_FALLBACK, type LeavingRule } from "@/lib/officialLeaving";
@@ -6,8 +6,10 @@ import SectionHead from "@/components/ui/SectionHead";
 import type { SeatFamily, SeatTerms as Terms } from "@/lib/pgSeatData";
 
 /**
- * "Bond, stipend and seat-leaving rules" on a PG college page (2026-10-20): one card per type of
- * seat — the stipend each year, the service bond, what leaving the seat costs, the hostel.
+ * "Stipend, hostel and seat-leaving rules" on a PG college page (2026-10-20): one card per type of
+ * seat — the stipend each year, what leaving the seat costs, the hostel. The listing's service bond is
+ * never shown since 2026-11-28 (owner: no bond figure is claimed where no official document gives one):
+ * the bond is the box above (components/bond/CollegeOfficialBond).
  *
  * The figures are a third-party compilation (pg_seat_terms), so the caveat is part of the
  * component, not an option: it says what the source is and to confirm before paying. Words from
@@ -40,35 +42,14 @@ const SEAT_TYPE: Record<string, string> = {
   "DNB Post MBBS": "DNB, after MBBS",
   "NBE Diploma": "NBE diploma",
 };
-const VARY: Record<string, string> = {
-  "service status": "Different for in-service candidates",
-  category: "Differs by category",
-  "course type": "Differs by course",
-  quota: "Differs by quota",
-};
-
-/** ₹12,34,567 for a monthly figure; ₹40 L / ₹1.2 Cr for a penalty. */
+/** ₹12,34,567 for a monthly figure or a hostel fee. */
 const rupees = (v: number) => `₹${v.toLocaleString("en-IN")}`;
-const big = (v: number) => {
-  const trim = (x: number) => x.toFixed(2).replace(/\.?0+$/, "");
-  if (v >= 1e7) return `₹${trim(v / 1e7)} Cr`;
-  if (v >= 1e5) return `₹${trim(v / 1e5)} L`;
-  return rupees(v);
-};
-const years = (y: number) => `${y} year${y === 1 ? "" : "s"}`;
 
 function stipendText(s: Terms["stipend"]): ReactNode {
   const [y1, y2, y3] = s;
   if (!y1 && !y2 && !y3) return null;
   if (y1 && y1 === y2 && y2 === y3) return `${rupees(y1)}, all three years`;
   return [y1, y2, y3].map((v, i) => (v ? `Y${i + 1} ${rupees(v)}` : null)).filter(Boolean).join(" · ");
-}
-
-function bondText(t: Terms): { value: string; sub?: string } {
-  if (t.bondUnknown) return { value: "Not stated" };
-  const vary = t.bondVaries ? "Not the same for every course here" : t.bondVaryBy ? VARY[t.bondVaryBy] : undefined;
-  if (!t.bondYears) return { value: "No bond listed", sub: vary };
-  return { value: `${years(t.bondYears)}${t.bondPenalty ? ` · ${big(t.bondPenalty)} if not served` : ""}`, sub: vary };
 }
 
 /**
@@ -110,7 +91,6 @@ function Row({ icon: Icon, label, value, sub, href, hrefLabel }: { icon: typeof 
 function Card({ t, copy, hideBond, hideStipend, leaving }: { t: Terms; copy: SeatTermsCopy; hideBond?: boolean; hideStipend?: boolean; leaving?: Record<string, LeavingRule> }) {
   const counselling = t.counselling && /^AIQ - MCC/i.test(t.counselling) ? "MCC" : t.counselling;
   const stipend = stipendText(t.stipend);
-  const bond = bondText(t);
   const exit = leaving?.[termsKey(t)] ?? LEAVING_FALLBACK;
   const hostel = hostelText(t);
   const name = SEAT_TYPE[t.seatType] ?? t.seatType;
@@ -123,7 +103,6 @@ function Card({ t, copy, hideBond, hideStipend, leaving }: { t: Terms; copy: Sea
       {counselling && <p className="mt-0.5 text-[12.5px] text-muted-foreground">Counselling: {counselling}</p>}
       <dl className="mt-4 space-y-3.5">
         {stipend && !hideStipend && <Row icon={Wallet} label={copy.stipend} value={stipend} />}
-        {!hideBond && <Row icon={ScrollText} label={copy.bond} value={bond.value} sub={bond.sub} />}
         {!hideBond && <Row icon={DoorOpen} label={copy.exit} value={exit.value} sub={exit.sub} href={exit.href} hrefLabel={exit.hrefLabel} />}
         {hostel && <Row icon={BedDouble} label={copy.hostel} value={hostel} />}
       </dl>
