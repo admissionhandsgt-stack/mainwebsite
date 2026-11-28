@@ -2469,6 +2469,9 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
 - **Telangana's Round 2 is both lists since 2026-11-28 (zyn-27):** KNRUHS's Competent Authority Quota second phase (25 Nov)
   and its Management Quota second phase (final, 28 Nov) in one run — `"TEL Govt PG" --round R2 --also "TEL Mgmt PG"`,
   `--printed` naming both, the note counting the seats under court orders on each list (25 and 75): 654 lines, 49 colleges.
+  KNRUHS re-issued the MQ list the same evening (revised, 28-11-2026; 191 lines): reloaded the same way, 664 lines, the note
+  saying "some seats" went under court orders — the feed carries no court-order mark per line, so a count comes only from
+  zyn-27 (backup `r2_TEL_Govt_PG_before_2026_11_28_revised.json`).
   Arundathi Institute of Medical Sciences, Medchal (tool 9441, NMC TS/002/P/4, private) got its PG entry first
   (`scripts/sql/new_pg_colleges_2026_11_28c.mjs`, institute 5470) — its first PG seats are on the MQ list.
 - **Himachal Pradesh's Round 2 (AMRU provisional allocation, 28 Nov 2026; loaded 2026-11-28, zyn-27):** 107 lines, 7 colleges,
@@ -2479,7 +2482,9 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
   key "UK PG" R2. The sheet is cumulative; the figures are this round's fresh and upgraded seats only. The feed's codes
   differ from Round 1's: `normCategory` reads UR-MNG as GEN, UR-NRI as GEN + "NRI merit list", "-Female" as the base
   category on the women's list (out of the open figures, as Round 1's "(WOMEN)"), -PwD/-DPW the flag, -FF its own list.
-  Objections close 28 Nov, 11 AM: **reload with the final list the same way** and drop the note's "may change".
+  Objections closed 28 Nov, 11 AM; HNBUMU's **revised** provisional sheet (28 Nov, after the objections: 165 seats, 4 more
+  fresh All India) was reloaded the same day under the feed's own title (109 lines; backup
+  `r2_UK_PG_before_2026_11_28_revised.json`). Still provisional: **reload with the final list** and drop "may change".
 
 ## NEET PG cut off reduction — /neet-pg-cut-off-reduction (2026-11-26)
 
