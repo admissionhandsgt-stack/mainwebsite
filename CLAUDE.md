@@ -2470,8 +2470,8 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
   and its Management Quota second phase (final, 28 Nov) in one run — `"TEL Govt PG" --round R2 --also "TEL Mgmt PG"`,
   `--printed` naming both, the note counting the seats under court orders on each list (25 and 75): 654 lines, 49 colleges.
   KNRUHS re-issued the MQ list the same evening (revised, 28-11-2026; 191 lines): reloaded the same way, 664 lines, the note
-  saying "some seats" went under court orders — the feed carries no court-order mark per line, so a count comes only from
-  zyn-27 (backup `r2_TEL_Govt_PG_before_2026_11_28_revised.json`).
+  now 25 (CAQ) and 77 (revised MQ, 32 of them allotted in this phase) under court orders — the feed carries no court-order
+  mark per line, so the counts come from zyn-27's reader (backup `r2_TEL_Govt_PG_before_2026_11_28_revised.json`).
   Arundathi Institute of Medical Sciences, Medchal (tool 9441, NMC TS/002/P/4, private) got its PG entry first
   (`scripts/sql/new_pg_colleges_2026_11_28c.mjs`, institute 5470) — its first PG seats are on the MQ list.
 - **Himachal Pradesh's Round 2 (AMRU provisional allocation, 28 Nov 2026; loaded 2026-11-28, zyn-27):** 107 lines, 7 colleges,
