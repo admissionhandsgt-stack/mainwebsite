@@ -2465,6 +2465,10 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
   flag, "-GC" (Green Card) and "-Ex-Serviceman" additional lists out of the figures. Counselling "DMET Odisha" as in
   Round 1. **Reload with the final list the same way** (key "Odisha PG", R2; drop the "provisional" note). Its 50 lines at
   four new colleges were kept by printed name until those colleges were created on 2026-11-28 (above); reloaded then.
+- **Himachal Pradesh's Round 2 (AMRU provisional allocation, 28 Nov 2026; loaded 2026-11-28, zyn-27):** 107 lines, 7 colleges,
+  key "HP PG" R2, counselling "Atal Medical and Research University (AMRU), Himachal Pradesh" as in Round 1; the codes are
+  Round 1's own (GEN, GEN-Govt-Doctor…), 61 in-service lines flagged. **Reload with AMRU's final allocation the same way**
+  (due 28 Nov) and drop the "may change" from the note.
 - **Uttarakhand's Round 2 (HNBUMU provisional broad sheet, 27 Nov 2026; loaded 2026-11-27, zyn-27):** 108 lines, 7 colleges,
   key "UK PG" R2. The sheet is cumulative; the figures are this round's fresh and upgraded seats only. The feed's codes
   differ from Round 1's: `normCategory` reads UR-MNG as GEN, UR-NRI as GEN + "NRI merit list", "-Female" as the base
