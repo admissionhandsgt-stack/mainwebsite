@@ -70,11 +70,12 @@ const rows = await sql`
   ugdeemed AS (
     SELECT DISTINCT cr.institute_id FROM closing_ranks cr JOIN counsellings co ON co.id = cr.counselling_id
       JOIN ugyear u ON u.institute_id = cr.institute_id AND u.y = cr.year
-     WHERE cr.level = 'ug' AND co.name ILIKE 'Deemed%')
-  SELECT i.id, i.level, i.name, i.ownership::text own, nmc.code, nmc.mgmt, nmc.uni,
+     WHERE cr.level = 'ug' AND co.name ILIKE 'Deemed%'),
+  terms AS (SELECT institute_id, mode() WITHIN GROUP (ORDER BY institute_type) itype FROM pg_seat_terms GROUP BY 1)
+  SELECT i.id, i.level, i.name, i.ownership::text own, nmc.code, nmc.mgmt, nmc.uni, terms.itype,
          (i.id IN (SELECT institute_id FROM pgdeemed)) pg_deemed_self,
          (i.id IN (SELECT institute_id FROM ugdeemed)) ug_deemed_self
-    FROM institutes i LEFT JOIN nmc ON nmc.institute_id = i.id
+    FROM institutes i LEFT JOIN nmc ON nmc.institute_id = i.id LEFT JOIN terms ON terms.institute_id = i.id
    WHERE i.is_active`;
 
 // The other level's evidence for the same NMC college.
@@ -112,6 +113,11 @@ for (const r of rows) {
     } else if (r.own === "deemed") {
       review.push({ r, note: "ours deemed, but no seat in MCC's 2026 Deemed matrix" });
     } else if (mgmt === "government" && (r.own === "private" || r.own === "other")) (to = "government"), (why = `NMC: Government${NMC_WRONG[r.code] ? "" : ""}`);
+    // A DNB hospital NMC does not list, typed "other": government where NBEMS's own type says so (public sector, railway,
+    // ESIC, municipal) or it is an armed forces hospital — the counsellor tool (from NBEMS / MCC) agrees on every one (zyn-27,
+    // 2026-11-28, 19 hospitals).
+    else if (!r.code && r.own === "other" && (/^NBE - (Government|Public Sector) Institute$|AFMS/.test(r.itype ?? "") || /\b(Command Hospital|Air Force Hospital|Base Hospital|Army Hospital)\b/i.test(r.name)))
+      (to = "government"), (why = `NBEMS: ${r.itype ?? "armed forces hospital"}`);
     else if ((mgmt === "private" || mgmt === "trust") && r.own === "government" && !uniDeemed(r)) review.push({ r, note: `NMC: ${r.mgmt}, ours government — left` });
   }
   if (to && to !== r.own) changes.push({ id: r.id, level: r.level, name: r.name, from: r.own, to, why });
