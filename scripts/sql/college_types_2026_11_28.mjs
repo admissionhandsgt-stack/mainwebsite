@@ -38,6 +38,17 @@ if (apply && !backup) throw new Error("--apply needs --backup <file>");
 
 /** NMC codes whose management field is wrong: Bombay Hospital Institute is a private trust hospital. */
 const NMC_WRONG = { "PG/MH/03/G/1": "private" };
+/**
+ * Decided by hand on a second source the rules above cannot read (owner's screenshots, 2026-11-28, each checked):
+ *  - 4033 MGM Medical College, Vashi (MBBS): MCC allots its seats as deemed (2025, 2026) and MGM Institute of Health
+ *    Sciences' own 2025-26 document for "MGM Medical College, Vashi" is issued as a Deemed to be University u/s 3 of the
+ *    UGC Act (mgmuhs.com); NMC's register still names MUHS.
+ *  - 135 MGIMS Sevagram (PG): NMC says Private; run by the Kasturba Health Society, a charitable trust funded by the
+ *    Government of India and Maharashtra — a government-aided private college, as its MBBS entry already reads.
+ * Institute of Child Health, Kolkata (448) stays government: NMC's register (code PG/WB/06/G/1, Government) and MCC both say
+ * so, though a trust manages it; its DNB entry (1002) is private, as NBEMS types it.
+ */
+const HAND = { 4033: "deemed", 135: "private" };
 const PAIR_DROP = [{ institute_id: 364, college_code: "KL/029/P/3" }];
 const PAIR_ADD = [{ institute_id: 1984, college_code: "KL/029/P/3", level: "pg" }];
 const DEEMED_QUOTAS = ["Self-Financed Merit Seat", "Non-Resident Indian", "Jain Minority Quota", "Muslim Minority Quota"];
@@ -93,6 +104,10 @@ for (const r of rows) {
   const mgmt = (NMC_WRONG[r.code] ?? r.mgmt ?? "").toLowerCase();
   let to = null;
   let why = "";
+  if (HAND[r.id]) {
+    if (HAND[r.id] !== r.own) changes.push({ id: r.id, level: r.level, name: r.name, from: r.own, to: HAND[r.id], why: "decided by hand (see HAND)" });
+    continue;
+  }
   if (r.level === "ug") {
     if (!r.code) continue;
     const second = uniDeemed(r) || twinPgDeemed(r);
