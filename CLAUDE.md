@@ -2379,9 +2379,20 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
   Institute, Lucknow (not in NMC's register, so no NMC pairing), 9456 Ajay Sangaal Shamli, 9457 ASMC Sultanpur, 9458 Baba
   Kina Ram ASMC Chandauli, 9459 Dr B.S. Kushwah Kanpur, 9460 KMC Maharajganj, 9461 Shri Siddhi Vinayak Sambhal — each
   paired with its NMC code, plus MCC's 2026 rows naming Jhargram, Uluberia and the cancer institute (11 matrix, 17
-  allotments). WB R2 and UP R2 reloaded the same day: every line attaches. **Still unmatched:** MCC's "Kalyan Singh
-  Government Medical College" MD/MS rows (Bulandshahr's first MD/MS seats, 10 matrix + 14 allotments) — our PG entry 504
-  is its DNB twin, so an MD/MS entry needs the owner's OK.
+  allotments). WB R2 and UP R2 reloaded the same day: every line attaches. Kalyan Singh GMC, Bulandshahr's MD/MS entry
+  followed on 2026-11-28 (see the next batch).
+- **Five more PG institutes 4769–4773, 2026-11-28 (owner: "ok kardo sab new colleges ko badhiya se"):**
+  `scripts/sql/new_pg_colleges_2026_11_28.mjs` (backup and `--restore` `D:/Admisson Hands/match_backups/new_pg_colleges_2026_11_28.json`).
+  Odisha, under the tool's ids: 9416 GMC & Hospital Phulbani (OD/003/G/1), 9417 GMC Keonjhar (OD/005/G/1 — NMC now
+  calls it Dharanidhar Medical College and Hospital; MCC, PGMCC and our MBBS entry still print GMC Keonjhar, and the NMC
+  card shows the new name), 9418 GMC & Hospital Sundargarh (OD/006/G/1; MCC prints it "…CHHITABHANGA, SANKARA,
+  SUNDARAGADA"), 9420 Pabitra Mohan Pradhan MC Talcher (OD/014/G/1). Then Kalyan Singh GMC, Bulandshahr (UP/047/G/5),
+  source_id **99104 — ours**, as the tool lists no MD/MS line for it; change it if the tool gives one. It is the MD/MS
+  twin of 504 (DNB) and the two pages link each other (`pgTwinMap`, tag `seat-data`: refresh it after creating a
+  twin). MCC's 2026 rows: 46 matrix, 67 allotments. Odisha R2 reloaded: all 331 lines attach. **MCC name decisions for
+  every new college of 25, 27 and 28 Nov** (34, MCC's exact matrix name, kind mdms, no state — MCC files The Nilgiris
+  under Telangana) are in `scripts/data/mcc_name_decisions.json`, so a re-import of MCC's handoff keeps the matches;
+  add one for each new college from now on.
 - **Districts split by a line break (fixed 2026-11-27):** 32 PG institutes held "Muzaffarna gar", "Visakhapatn am",
   "Bhubanesw ar"… and college pages printed them ("PG bond at Muzaffarnagar Medical College, Muzaffarna gar").
   `scripts/sql/district_split_words_2026_11_27.mjs` rejoined them (backup `D:/Admisson Hands/match_backups/district_split_words_before_2026_11_27.json`);
@@ -2389,9 +2400,8 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
 - **Odisha's Round 2 (PGMCC provisional, 27 Nov 2026; loaded 2026-11-27, zyn-27):** 331 lines, Round 2's new seats only
   (264 fresh, 93 upgraded). The feed's codes are read as Round 1's adapter stored them: UR → GEN, SEBC → OBC, "-PwD" the
   flag, "-GC" (Green Card) and "-Ex-Serviceman" additional lists out of the figures. Counselling "DMET Odisha" as in
-  Round 1. **Reload with the final list the same way** (key "Odisha PG", R2; drop the "provisional" note). Kept by printed
-  name until the owner's OK: 9416 GMC Phulbani (NMC OD/003/G/1), 9417 GMC Keonjhar (Dharanidhar, OD/005/G/1), 9418 GMC
-  Sundargarh (OD/006/G/1), 9420 PMP Medical College Talcher (OD/014/G/1) — their first Odisha PG lines, 50 in all.
+  Round 1. **Reload with the final list the same way** (key "Odisha PG", R2; drop the "provisional" note). Its 50 lines at
+  four new colleges were kept by printed name until those colleges were created on 2026-11-28 (above); reloaded then.
 - **Uttarakhand's Round 2 (HNBUMU provisional broad sheet, 27 Nov 2026; loaded 2026-11-27, zyn-27):** 108 lines, 7 colleges,
   key "UK PG" R2. The sheet is cumulative; the figures are this round's fresh and upgraded seats only. The feed's codes
   differ from Round 1's: `normCategory` reads UR-MNG as GEN, UR-NRI as GEN + "NRI merit list", "-Female" as the base
