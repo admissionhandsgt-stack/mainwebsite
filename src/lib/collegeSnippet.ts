@@ -36,6 +36,7 @@ import { getNmcFacts, type NmcFacts } from "@/lib/nmcData";
 import { getCollegeLiveBands, type LiveBands } from "@/lib/collegeLiveBands";
 import { getNirf } from "@/lib/nirf";
 import { TITLE_TEST, titleGroup } from "@/lib/titleTest";
+import { getCollegeMccCourses } from "@/lib/pgSeatData";
 
 /** Google shows about 60 characters of a title. */
 const TITLE = 62;
@@ -62,7 +63,9 @@ export const loadCollegePage = cache(async (slug: string, level: Level) => {
   const ownYear = cutoffs.reduce<number | null>((m, c) => (c.latestYear != null && (m == null || c.latestYear > m) ? c.latestYear : m), null);
   const liveAll = level === "pg" ? await getCollegeLiveBands(slug, cutoffs) : null;
   const live = liveAll && (ownYear == null || liveAll.year > ownYear) ? liveAll : null;
-  const summary = summarise(level, college, cutoffs, fees, extras, index, nmc, live);
+  // No closing ranks of its own (an institute first counselled in 2026): MCC's courses there say whether it is a DNB page.
+  const mccCourses = level === "pg" && !cutoffs.length ? await getCollegeMccCourses(slug).catch((): string[] => []) : [];
+  const summary = summarise(level, college, cutoffs, fees, extras, index, nmc, live, mccCourses);
   if (summary.kind === "pg") await preferOfficialStipend(slug, college.state, summary).catch(() => undefined);
   return { college, cutoffs, fees, extras, nmc, live, summary };
 });
@@ -193,6 +196,8 @@ function summarise(
   index: Record<string, number>,
   nmc: NmcFacts | null,
   live: LiveBands | null = null,
+  /** The courses MCC lists here — used only when the college has no closing ranks of its own. */
+  fallbackCourses: string[] = [],
 ): CollegeSummary {
   const n = collegeName(college.name);
   let place = n.place;
@@ -204,7 +209,7 @@ function summarise(
     if (p && !n.short.toLowerCase().includes(p.toLowerCase())) place = p;
   }
 
-  const courses = Array.from(new Set(cutoffs.map((c) => c.course)));
+  const courses = cutoffs.length ? Array.from(new Set(cutoffs.map((c) => c.course))) : Array.from(new Set(fallbackCourses));
   const kind: CollegeSummary["kind"] = level === "ug" ? "ug" : isDnbOnly(courses) ? "dnb" : "pg";
   const course = level === "ug" ? ugCourseLabel(college.name, courses) : kind === "dnb" ? "DNB" : "MD/MS";
 

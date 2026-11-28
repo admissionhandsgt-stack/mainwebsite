@@ -147,8 +147,11 @@ const loadSitemapData = singleFlight(unstable_cache(
           -- A UG page needs rounds or NMC's record (2026-11-16 deep test): 134 UG pages had only a scraped fee row —
           -- AYUSH and veterinary colleges whose fee is filed under "MBBS" — were listed here, linked from no page, and
           -- one (Nagpur Veterinary) was even noindex, because the page drops fees under ₹1,000 and this test did not.
+          -- A PG institute first counselled in 2026 has MCC's seat matrix and nothing else yet (2026-11-28); the thin ones
+          -- (one National Board course, two rows at most — lib/thinPages.ts) are dropped below like the others.
           AND (EXISTS (SELECT 1 FROM seat_options so WHERE so.institute_id = i.id)
                OR (i.level = 'pg' AND EXISTS (SELECT 1 FROM fees f WHERE f.institute_id = i.id AND f.fee_inr > 0))
+               OR (i.level = 'pg' AND EXISTS (SELECT 1 FROM mcc_seat_matrix m WHERE m.institute_id = i.id))
                OR EXISTS (SELECT 1 FROM nmc_institutes n WHERE n.institute_id = i.id))
         ORDER BY i.level, i.slug
       `),

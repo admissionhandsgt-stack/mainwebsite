@@ -2443,8 +2443,19 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
     (history), or one of our entries at that PIN with the same name (letters only) or a distinctive shared word — never by a
     PIN alone (that paired Gleneagles with Wadia Children's) and never on "women"/"children" (Ankura ≠ Rainbow): 1,731
     allotment and 90 matrix rows; 69 `dnb` decisions in mcc_name_decisions.json. Left: 228 names / 559 allotments (1.1% of
-    2026's) — DNB hospitals we hold no entry for (Marengo Asia Gurugram, KIMS Gachibowli, Medica, ESIC Andheri…); creating
-    them is the owner's call.
+    2026's) — DNB hospitals we held no entry for.
+  - **…and created (owner: "Yes go AHEAD")** by `scripts/sql/new_dnb_hospitals_2026_11_28.mjs` (backup
+    `…/new_dnb_hospitals_2026_11_28.json`, `--restore`): first 79 rows went to 14 hospitals we DID hold under a former name
+    or with no PIN in MCC's text (`EXISTING`, each decided by hand: Narayana Hrudayalaya ex-Sparsh 1004, Manipal EM Bypass
+    ex-Medica 319, Care/CIMS Ahmedabad 813, Arambagh SDH 1197, YCM Pimpri → PCMC PGI 59, GMC Jammu 57…); then **108 new
+    PG institutes** (source_ids 99126–99233, ours), one per hospital, named NBEMS's way "<Name>, <City>, <State>-<PIN>"
+    (the PIN MCC prints after the state; the six-digit numbers in brackets in the matrix are NBEMS codes, never a PIN; city
+    from the places our own entries name, else the town MCC prints before the state), typed only where the name says so
+    (Pvt Ltd/LLP → private 19, ESIC/district/sadar/civil/municipal/autonomous state medical college → government 20, else
+    other 69). Every 2026 MCC row now has an institute. Pages: with no closing ranks, a college page takes its DNB-vs-MD/MS
+    type from MCC's own courses there (`getCollegeMccCourses`, lib/pgSeatData.ts); the thin rule (lib/thinPages.ts) also
+    covers an MCC-only DNB hospital with one course and ≤2 matrix rows (89 of the 108), and the sitemap lists a PG entry
+    with MCC matrix rows unless thin (19 of the 108).
 - **Districts split by a line break (fixed 2026-11-27):** 32 PG institutes held "Muzaffarna gar", "Visakhapatn am",
   "Bhubanesw ar"… and college pages printed them ("PG bond at Muzaffarnagar Medical College, Muzaffarna gar").
   `scripts/sql/district_split_words_2026_11_27.mjs` rejoined them (backup `D:/Admisson Hands/match_backups/district_split_words_before_2026_11_27.json`);

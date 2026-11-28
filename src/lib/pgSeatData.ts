@@ -128,6 +128,35 @@ async function loadCollegeMatrix(slug: string): Promise<CollegeMatrix | null> {
 export const getCollegeSeatMatrix = (slug: string) =>
   unstable_cache(() => loadCollegeMatrix(slug), ["mcc-college-v1", slug], { revalidate: DAY, tags: ["mcc"] })();
 
+/**
+ * The courses MCC lists or allotted at one PG institute, in our course names where MCC's map to one ("DNB General Medicine",
+ * "Diploma in Anaesthesia"). For a page with no closing ranks of its own — a DNB hospital or college first counselled in
+ * 2026 (scripts/sql/new_dnb_hospitals_2026_11_28.mjs) — they decide whether it is a DNB or an MD/MS page.
+ */
+export const getCollegeMccCourses = (slug: string) =>
+  unstable_cache(
+    async (): Promise<string[]> => {
+      try {
+        const r = rows<{ course: string }>(
+          await db.execute(sql`
+            SELECT DISTINCT COALESCE(c.name, x.mcc_course) AS course
+              FROM institutes i
+              JOIN (SELECT institute_id, course_id, mcc_course FROM mcc_seat_matrix
+                    UNION ALL SELECT institute_id, course_id, mcc_course FROM mcc_allotments) x ON x.institute_id = i.id
+              LEFT JOIN courses c ON c.id = x.course_id
+             WHERE i.slug = ${slug} AND i.level = 'pg'`),
+        );
+        // MCC's own labels where no course of ours is mapped: "(NBEMS) Diploma in …", "DNB- General Medicine".
+        return r.map((x) => String(x.course).replace(/^\(NBEMS\)\s*/i, "").replace(/^DNB\s*-\s*/i, "DNB ").trim()).filter(Boolean);
+      } catch (error) {
+        logError(error, { route: `pgSeatData:mccCourses:${slug}` });
+        return [];
+      }
+    },
+    ["mcc-college-courses-v1", slug],
+    { revalidate: DAY, tags: ["mcc"] },
+  )();
+
 export interface BranchMatrix {
   year: number;
   total: number;

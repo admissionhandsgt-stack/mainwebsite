@@ -25,6 +25,18 @@ export const getThinDnbSlugs = unstable_cache(
        GROUP BY i.id, i.slug
       HAVING bool_and(c.name ~* '^(DNB|DrNB|FNB|Diploma|PG Diploma)')
          AND COUNT(DISTINCT so.course_id) = 1
+         AND COUNT(*) <= 2
+      UNION
+      -- A hospital first counselled in 2026 has no seat options yet, only MCC's rows (2026-11-28): the same test on those —
+      -- every row a National Board one, one course, at most two rows of MCC's matrix.
+      SELECT i.slug
+        FROM institutes i
+        JOIN mcc_seat_matrix m ON m.institute_id = i.id
+       WHERE i.level = 'pg' AND i.is_active AND i.slug IS NOT NULL
+         AND NOT EXISTS (SELECT 1 FROM seat_options so WHERE so.institute_id = i.id)
+       GROUP BY i.id, i.slug
+      HAVING bool_and(m.seat_matrix = 'DNB')
+         AND COUNT(DISTINCT m.mcc_course) = 1
          AND COUNT(*) <= 2`)) as unknown as { slug: string }[];
     return r.map((x) => x.slug);
   },
