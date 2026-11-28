@@ -125,20 +125,29 @@ export async function buildSeeds(): Promise<string[]> {
   for (const h of JOURNEY_SEEDS) out.add(h);
   for (const st of TOP_STATES) for (const i of ["neet pg counselling documents required", "in service quota neet pg", "neet pg domicile rules"]) out.add(`${st} ${i}`);
   for (const st of states) for (const i of PG_STATE_SEASON) out.add(`${st} ${i}`);
-  for (const st of STATE_SHORT) out.add(`${st} pg counselling round 2`);
+  for (const st of STATE_SHORT) out.add(`${st} pg counselling round 3`);
   // NEET PG only while that is the season (lib/researchFocus.ts): MBBS / NEET UG seeds rest until "serp.focus" = all.
   const list = [...out];
   return (await pgFocus()) ? list.filter((s) => !ugOnly(s)) : list;
 }
 
-/** The NEET PG counselling in progress, as searched around a round (round 2's result is due 16 Nov 2026). */
+/**
+ * The NEET PG counselling in progress, as searched around a round. Moved on 2026-11-28 (owner: the bot "path se bhatak raha
+ * hai"): the seeds still asked about Round 2 a week after its result; the season is Round 3, the stray round, the states'
+ * later rounds and the cut-off reduction. Move them again when the season moves.
+ */
 const PG_SEASON = [
-  "neet pg round 2 result", "neet pg round 2 seat matrix", "neet pg round 2 result date", "neet pg round 3 date",
-  "neet pg stray vacancy round 2026", "neet pg upgradation", "neet pg resignation round 2", "neet pg security deposit refund",
-  "neet pg round 2 reporting", "neet pg round 2 cut off", "neet pg 2026 cut off percentile", "dnb counselling 2026",
-  "neet pg round 2 choice filling", "neet pg round 2 allotment", "aiq round 2 result neet pg", "neet pg state round 2",
-  "deemed university pg round 2", "neet pg vacant seats round 2", "neet pg virtual vacancy", "neet pg newly added seats",
+  "neet pg round 3 result", "neet pg round 3 result date", "neet pg round 3 seat matrix", "neet pg round 3 choice filling",
+  "neet pg round 3 cut off", "neet pg round 3 allotment", "neet pg round 3 vacant seats", "neet pg round 3 reporting",
+  "neet pg counselling round 3 date", "neet pg round 3 resignation", "deemed university pg round 3", "dnb round 3 counselling",
+  "neet pg stray vacancy round 2026", "neet pg stray round date", "neet pg stray round seat matrix", "neet pg special stray round",
+  "neet pg mop up round 2026", "neet pg round 2 cut off", "neet pg round 2 result", "neet pg upgradation",
+  "neet pg security deposit refund", "neet pg cut off reduction 2026", "neet pg percentile reduction 2026",
+  "neet pg 2026 cut off percentile", "dnb counselling 2026", "neet pg virtual vacancy", "neet pg newly added seats",
+  "neet pg 2027 exam date", "neet pg 2027",
 ];
+/** The seeds asked first every hour (collectSuggestions): the season and the families looking for help. */
+const SEASON_FIRST = /\b(round 3|stray|mop ?up|special stray|2027|percentile|cut off reduction|round 2 result|merit list 2026|counsellor|counselling guidance|counselling consultants)\b/i;
 /**
  * The stages a NEET PG candidate and the family go through, beyond the data pages (owner, 2026-11-12: "candidates unke
  * guardians kin conditions se gujarte honge kaise searches karte honge kesi help support dhundte honge un sab keywords ko
@@ -172,7 +181,7 @@ const JOURNEY_SEEDS = [
   "options after mbbs without neet pg", "is neet pg compulsory after mbbs", "neet pg ki counselling kaise hoti hai",
   "neet pg counselling kab hai", "neet pg me admission kaise le", "neet pg me kitni seat hoti hai",
 ];
-const PG_STATE_SEASON =["neet pg round 2", "pg counselling round 2 result", "pg merit list 2026"];
+const PG_STATE_SEASON = ["neet pg round 3", "pg counselling round 3 result", "pg counselling round 2 result", "pg merit list 2026", "neet pg mop up round", "pg stray round 2026"];
 
 async function ask(url: string, pick: (j: unknown) => unknown): Promise<string[]> {
   try {
@@ -188,13 +197,23 @@ async function ask(url: string, pick: (j: unknown) => unknown): Promise<string[]
 const tidy = (q: string) => q.toLowerCase().replace(/\s+/g, " ").trim();
 
 /** Ask both engines about `count` seeds (least recently asked first); store what comes back. */
-export async function collectSuggestions(count = 16): Promise<{ seeds: number; found: number; added: number }> {
+export async function collectSuggestions(count = 24): Promise<{ seeds: number; found: number; added: number }> {
   const seeds = await buildSeeds();
   const focus = await pgFocus();
   await db.execute(sql`INSERT INTO serp_seeds (seed) SELECT unnest(${`{${seeds.map((s) => `"${s.replace(/"/g, "")}"`).join(",")}}`}::text[]) ON CONFLICT DO NOTHING`);
-  const due = (await db.execute(sql`
+  // The season's seeds first (up to half the hour's seeds, each at most once a day), then the rest in turn (2026-11-28).
+  const season = seeds.filter((s) => SEASON_FIRST.test(s));
+  const first = season.length
+    ? ((await db.execute(sql`
+        SELECT seed FROM serp_seeds WHERE seed IN (${sql.join(season.map((s) => sql`${s}`), sql`, `)})
+           AND (last_run IS NULL OR last_run < now() - interval '1 day')
+         ORDER BY last_run NULLS FIRST, seed LIMIT ${Math.ceil(count / 2)}`)) as unknown as { seed: string }[])
+    : [];
+  const taken = new Set(first.map((r) => r.seed));
+  const rest = (await db.execute(sql`
     SELECT seed FROM serp_seeds WHERE seed IN (${sql.join(seeds.map((s) => sql`${s}`), sql`, `)})
      ORDER BY last_run NULLS FIRST, seed LIMIT ${count}`)) as unknown as { seed: string }[];
+  const due = [...first, ...rest.filter((r) => !taken.has(r.seed))].slice(0, count);
   let found = 0;
   let added = 0;
   for (const { seed } of due) {

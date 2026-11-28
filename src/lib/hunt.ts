@@ -196,7 +196,12 @@ const PG_SEASON_QUERIES: { q: string; forums?: boolean; range: "week" | "month" 
   { q: "NEET PG stray vacancy round strategy", forums: true, range: "month" },
   { q: "NEET PG deemed university fees round 2", forums: true, range: "week" },
 ];
-const PER_DAY_WEB = 12;
+/**
+ * Web searches a day for the hunt, per Tavily key. Was 12 (24 with both keys, ~720 credits a month) until 2026-11-28: 624
+ * drafted answers sat unposted while the search-answer research starved; research gets the difference (lib/serpResearch.ts
+ * HUNT_PER_DAY). Raise it again once the drafts are being posted.
+ */
+const PER_DAY_WEB = 3;
 const looksLikeAQuestion = (t: string) => /\?|\b(how|what|which|should|can|is|any|help|advice|doubt|kya|kaise|kitna|kaunsa)\b/i.test(t);
 
 export async function buildWebHunt(base = `http://127.0.0.1:${process.env.PORT ?? 8150}`): Promise<{ added: number; searched: number; skipped?: string }> {

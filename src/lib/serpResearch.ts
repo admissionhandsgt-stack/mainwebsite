@@ -37,8 +37,12 @@ const OURS = /(^|\.)admissionhands\.com$/i;
 const OFFICIAL = /(\.gov\.in|\.nic\.in|^nmc\.org\.in|^natboard\.edu\.in|^nbe\.edu\.in|^mcc\.nic\.in|^nirfindia\.org)$/i;
 const BASE = `http://127.0.0.1:${process.env.PORT ?? 8150}`;
 const JUNK = /^(yes|no|ok|hi|hello|fees\??|stipend\??|round \d\??)$/i;
-/** Searches a month the daily hunt and new-site discovery need (lib/hunt.ts: 24 a day, plus ~20 twice a week). */
-const HUNT_PER_DAY = 30;
+/**
+ * Searches a day the daily hunt needs (lib/hunt.ts: 3 a key, 6 with both keys). Was 30 until 2026-11-28: the hunt had
+ * drafted 624 answers and none was posted, while research got ~12 searches a day and studied 9 on the 28th (owner: "bot
+ * ka research broader and more aggressive and targeted kardo"). Research gets the difference.
+ */
+const HUNT_PER_DAY = 8;
 /** Outreach discovery: three runs a day, six searches each (lib/hunt.ts findNewSites), kept out of research's share. */
 const DISCOVER_PER_DAY = 18;
 
@@ -76,6 +80,14 @@ async function gscQueries(): Promise<Map<string, GscRow>> {
 
 const isOpportunity = (r: GscRow) =>
   r.position >= 3 && r.position <= 20 && r.impressions >= 20 && r.query.split(/\s+/).length >= 3 && !JUNK.test(r.query.trim()) && !/admission ?hands/i.test(r.query);
+
+/** What a family decides with — the counselling, the money, the cut off, a counsellor. */
+const INTENT = /\b(round|result|merit list|seat matrix|counsell?ing|counsellor|choice filling|stray|mop ?up|cut ?off|closing rank|fees?|stipend|bond|quota|deemed|management|nri|upgrad\w*|resign\w*|refund)\b/i;
+/** The season in progress (move it with the season, like serpSuggest's PG_SEASON). */
+const SEASON = /\b(round 3|3rd round|stray|mop ?up|round 2|2nd round|2026|2027|percentile)\b/i;
+/** A search's worth: its impressions, doubled for a deciding question, half again in season, and more on page 1's lower half. */
+const worth = (r: GscRow) =>
+  r.impressions * (INTENT.test(r.query) ? 2 : 1) * (SEASON.test(r.query) ? 1.5 : 1) * (r.position >= 4 && r.position <= 10 ? 1.3 : 1);
 
 /* ------------------------------------------------------------------ facts */
 
@@ -319,8 +331,8 @@ export async function allowance(): Promise<number> {
   const reserve = Math.ceil((hoursLeft / 24) * (HUNT_PER_DAY + DISCOVER_PER_DAY));
   const free = u.budget - u.used - reserve;
   if (free <= 0) return 0;
-  // Front-loaded (the owner wants research now): spread over a third of the hours left, at most 6 an hour.
-  return Math.max(1, Math.min(6, Math.floor(free / Math.max(24, hoursLeft / 3))));
+  // Front-loaded (the owner wants research now): spread over a third of the hours left, at most 8 an hour.
+  return Math.max(1, Math.min(8, Math.floor(free / Math.max(24, hoursLeft / 3))));
 }
 
 /* ------------------------------------------------------------------ the run */
@@ -331,7 +343,7 @@ export interface Advice {
 }
 
 export async function runResearch(limit?: number): Promise<{ researched: number; ours: number; suggested?: number; published?: number; skipped?: string }> {
-  const sug = await collectSuggestions(16).catch(() => ({ seeds: 0, found: 0, added: 0 }));
+  const sug = await collectSuggestions(24).catch(() => ({ seeds: 0, found: 0, added: 0 }));
   const budget = limit ?? (await allowance());
   if (budget <= 0) return { researched: 0, ours: 0, suggested: sug.added, skipped: "web search budget kept for the daily hunt" };
 
@@ -341,18 +353,24 @@ export async function runResearch(limit?: number): Promise<{ researched: number;
   const gsc = await gscQueries();
   // NEET PG only while that is the season (lib/researchFocus.ts).
   const focus = await pgFocus();
+  // Search Console's searches go through the same filters as suggestions (2026-11-28: hospital names, a BAMS stipend and a
+  // 2024 stray-round list had been studied), must ask something, and are ranked by what they are worth, not impressions alone.
   const opps = [...gsc.values()]
-    .filter((r) => isOpportunity(r) && !recent.has(r.query.toLowerCase()) && !(focus && ugOnly(r.query)))
-    .sort((a, b) => b.impressions - a.impressions);
-  // Real searches we are not shown for, or only past page 2: the most recurring first.
+    .filter((r) => isOpportunity(r) && worthStudying(r.query) && ASKS.test(r.query) && !recent.has(r.query.toLowerCase()) && !(focus && ugOnly(r.query)))
+    .sort((a, b) => worth(b) - worth(a));
+  // Real searches we are not shown for, or only past page 2: the season's first, then the most recurring.
   const sugRows = (await db.execute(sql`
     SELECT query, times_seen FROM serp_suggest
      WHERE researched_on IS NULL OR researched_on < current_date - 21
-     ORDER BY times_seen DESC, last_seen DESC LIMIT 200`)) as unknown as { query: string; times_seen: number }[];
-  const gaps = sugRows.filter((s) => worthStudying(s.query) && !recent.has(s.query) && !((gsc.get(s.query)?.position ?? 99) <= 20) && !(focus && ugOnly(s.query)));
+     ORDER BY times_seen DESC, last_seen DESC LIMIT 300`)) as unknown as { query: string; times_seen: number }[];
+  const gaps = sugRows
+    .filter((s) => worthStudying(s.query) && !recent.has(s.query) && !((gsc.get(s.query)?.position ?? 99) <= 20) && !(focus && ugOnly(s.query)))
+    .sort((a, b) => Number(SEASON.test(b.query)) - Number(SEASON.test(a.query)) || Number(INTENT.test(b.query)) - Number(INTENT.test(a.query)) || b.times_seen - a.times_seen);
 
-  const nGsc = Math.min(opps.length, Math.ceil(budget / 2));
-  const nSug = Math.min(gaps.length, budget - nGsc);
+  // Half each; an odd slot alternates by the hour, so a one-search hour still studies a suggestion every other hour.
+  const half = Math.floor(budget / 2) + (budget % 2 && new Date().getUTCHours() % 2 === 0 ? 1 : 0);
+  const nSug = Math.min(gaps.length, half);
+  const nGsc = Math.min(opps.length, budget - nSug);
   const plan: { query: string; kind: "gsc" | "suggest"; gsc?: GscRow; seen?: number }[] = [
     ...opps.slice(0, nGsc + Math.max(0, budget - nGsc - nSug)).map((g) => ({ query: g.query, kind: "gsc" as const, gsc: g })),
     ...gaps.slice(0, nSug).map((s) => ({ query: s.query, kind: "suggest" as const, gsc: gsc.get(s.query), seen: s.times_seen })),
