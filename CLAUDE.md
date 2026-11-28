@@ -3478,6 +3478,20 @@ Owner: "itne pending task complete karo" (Meta's Conversions API token comes lat
   sites, single), the long-search H2 advice (5+ words with a question word, from the owner's reels), priority. Telegram review
   each hour 08:00–23:00 IST (`digest()`, the night's wait for the morning); `serp.digest` = `weekly` (integrations) moves it to
   Monday 09:00, `off` stops it. Figures found are leads — verify against the official source before a page prints them.
+- **Broader, aimed at the season (2026-11-28, owner: "bot ka research broader and more aggressive and targeted kardo… path se
+  bhatak raha hai").** Found: research had ~12 Tavily searches a day (studied 9 on the 28th) while the daily hunt took 24 a day
+  and had 624 drafts nobody posted; Search Console picks skipped the relevance filters (hospital names, a BAMS stipend, a 2024
+  stray list were studied); seeds still said Round 2. Now: `HUNT_PER_DAY` 8 (lib/serpResearch.ts) and the hunt 3 web searches
+  a key (lib/hunt.ts), research's hourly cap 8, autocomplete 24 seeds an hour with the season's first (`PG_SEASON`,
+  `SEASON_FIRST` in lib/serpSuggest.ts: round 3, stray, mop-up, special stray, cut off reduction, 2027 — **move these with the
+  season**); Search Console picks pass `worthStudying` and must ask something (`ASKS`), ranked by `worth` = impressions × 2
+  for a deciding word (`INTENT`: round, result, cut off, fees, stipend, bond, quota, counsellor…) × 1.5 in season (`SEASON`)
+  × 1.3 at #4–10; suggestions sorted season → intent → times seen; an odd slot alternates suggestion / Search Console by hour.
+  If the hunt's drafts start being posted again, give it its searches back (HUNT_PER_DAY, PER_DAY_WEB).
+- **Google's December 2026 core update** was pre-announced (Search Central, late Nov 2026). Any before/after measured across
+  it — the bot answers' effect (17–23 Nov sat in the November update), the PG title test (decide ~9 Dec) — compares two
+  algorithms as well as two versions of a page: read the control group's move first, and avoid template-wide changes to
+  titles or descriptions while it rolls out.
 - **The bot implements, not only advises — search answers on our pages** (owner: "review to ara hai lekin usko hum
   website mai kese implement + target karenge… implementation bhi to chaiye"). `lib/searchFaq.ts` + `search_faqs`
   (migration 0059): a real search a page is shown for (Search Console's page) or the hub autocomplete points to goes on
