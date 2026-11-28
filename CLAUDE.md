@@ -2465,6 +2465,11 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
   flag, "-GC" (Green Card) and "-Ex-Serviceman" additional lists out of the figures. Counselling "DMET Odisha" as in
   Round 1. **Reload with the final list the same way** (key "Odisha PG", R2; drop the "provisional" note). Its 50 lines at
   four new colleges were kept by printed name until those colleges were created on 2026-11-28 (above); reloaded then.
+- **Telangana's Round 2 is both lists since 2026-11-28 (zyn-27):** KNRUHS's Competent Authority Quota second phase (25 Nov)
+  and its Management Quota second phase (final, 28 Nov) in one run — `"TEL Govt PG" --round R2 --also "TEL Mgmt PG"`,
+  `--printed` naming both, the note counting the seats under court orders on each list (25 and 75): 654 lines, 49 colleges.
+  Arundathi Institute of Medical Sciences, Medchal (tool 9441, NMC TS/002/P/4, private) got its PG entry first
+  (`scripts/sql/new_pg_colleges_2026_11_28c.mjs`, institute 5470) — its first PG seats are on the MQ list.
 - **Himachal Pradesh's Round 2 (AMRU provisional allocation, 28 Nov 2026; loaded 2026-11-28, zyn-27):** 107 lines, 7 colleges,
   key "HP PG" R2, counselling "Atal Medical and Research University (AMRU), Himachal Pradesh" as in Round 1; the codes are
   Round 1's own (GEN, GEN-Govt-Doctor…), 61 in-service lines flagged. **Reload with AMRU's final allocation the same way**
