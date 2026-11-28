@@ -92,11 +92,16 @@ const SPECIFIC = /^\/(md-ms-india\/(branches|states|colleges|stipend|fees|bond)|
  */
 function belongsElsewhere(page: string, d: Draft): boolean {
   const target = d.page.split("#")[0];
-  if (SPECIFIC.test(page) || !SPECIFIC.test(target) || target === page) return false;
+  if (!SPECIFIC.test(target) || target === page) return false;
+  // A state's stipend, bond and fee pages are each the page for their own money: "karnataka pg bond" sat on Karnataka's
+  // stipend page as well as its bond page (2026-11-28).
+  if (SPECIFIC.test(page)) return moneyOf(page) !== null && moneyOf(target) !== null && moneyOf(page) !== moneyOf(target);
   return !(d.kind === "authority" && lastPart(page) === lastPart(target));
 }
+const moneyOf = (p: string) => /^\/md-ms-india\/(stipend|bond|fees)\//.exec(p)?.[1] ?? null;
 function pageFits(page: string, d: Draft, q: string): boolean {
   if (!SPECIFIC.test(page)) return true; // a hub (cutoff, marks vs rank, a round page) takes any of its searches
+  if (belongsElsewhere(page, d)) return false;
   if (lastPart(page) === lastPart(d.page) || d.page.startsWith(`${page}/`)) return true;
   // A branch page keeps a round answer about the same branch…
   const m = /^\/md-ms-india\/branches\/([^/]+)$/.exec(page);
@@ -310,7 +315,7 @@ export async function rehomeSearchFaqs(): Promise<{ moved: number; dropped: numb
   const touched = new Set<string>();
   for (const r of rows) {
     const page = r.page.split("#")[0];
-    if (SPECIFIC.test(page)) continue;
+    if (SPECIFIC.test(page) && !moneyOf(page)) continue;
     const d = await draftFor(r.question).catch(() => null);
     if (!d || !belongsElsewhere(page, d)) continue;
     const target = d.page.split("#")[0];
