@@ -93,16 +93,6 @@ if (!state) throw new Error(`no state ${stateName}`);
 const inst = new Map(
   (await sql<{ id: number; source_id: number }[]>`SELECT id, source_id FROM institutes WHERE level = 'pg' AND source_id IN ${sql([...new Set(lines.map((l) => l.college_id))])}`).map((r) => [r.source_id, r.id]),
 );
-// The tool keys a college, not its course type, but our PG list holds some hospitals twice: the entry carrying the
-// tool's id, and a separate MD/MS entry. Tool college_id → our source_id of that MD/MS entry; only MD and MS degree
-// lines go there (DNB and diploma lines stay on the entry with the tool's id). 6273 is Kalyan Singh GMC, Bulandshahr:
-// 504 is its DNB entry, 99104 its MD/MS entry (created 2026-11-28; zyn-27: "no separate MD/MS id and none is planned").
-const MDMS_ENTRY = new Map<number, number>([[6273, 99104]]);
-const mdmsInst = new Map(
-  (await sql<{ id: number; source_id: number }[]>`SELECT id, source_id FROM institutes WHERE level = 'pg' AND source_id IN ${sql([...MDMS_ENTRY.values()])}`).map((r) => [r.source_id, r.id]),
-);
-const mdmsEntryOf = (collegeId: number, branch: string) =>
-  MDMS_ENTRY.has(collegeId) && /^(MD|MS)\b/.test(branch) ? mdmsInst.get(MDMS_ENTRY.get(collegeId)!) : undefined;
 const courses = new Map((await sql<{ id: number; name: string }[]>`SELECT id, name FROM courses WHERE level = 'pg'`).map((r) => [r.name, r.id]));
 
 /**
@@ -236,7 +226,7 @@ const noCourse = new Map<string, number>();
 const rows = lines.map((l) => {
   const r = l.rounds[round];
   const cat = normCategory(stateName, l.category, l.quota);
-  const instituteId = mdmsEntryOf(l.college_id, l.branch) ?? inst.get(l.college_id) ?? null;
+  const instituteId = inst.get(l.college_id) ?? null;
   const courseId = courses.get(l.branch) ?? null;
   if (!instituteId) noInst.set(`${l.college_id} ${l.college}`, (noInst.get(`${l.college_id} ${l.college}`) ?? 0) + 1);
   if (!courseId) noCourse.set(l.branch, (noCourse.get(l.branch) ?? 0) + 1);

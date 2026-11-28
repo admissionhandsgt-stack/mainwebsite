@@ -2387,9 +2387,7 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
   calls it Dharanidhar Medical College and Hospital; MCC, PGMCC and our MBBS entry still print GMC Keonjhar, and the NMC
   card shows the new name), 9418 GMC & Hospital Sundargarh (OD/006/G/1; MCC prints it "…CHHITABHANGA, SANKARA,
   SUNDARAGADA"), 9420 Pabitra Mohan Pradhan MC Talcher (OD/014/G/1). Then Kalyan Singh GMC, Bulandshahr (UP/047/G/5),
-  source_id **99104 — ours**: the tool keys a college, not its course type, so its MD/MS and DNB seats both come as
-  6273 (our 504) and no separate id is planned (zyn-27); `MDMS_ENTRY` in import_state_round_feed.ts sends 6273's MD and
-  MS degree lines to 99104 (add a pair there for any other twin the tool files under one id). It is the MD/MS
+  source_id **99104 — ours**, as the tool lists no MD/MS line for it; change it if the tool gives one. It is the MD/MS
   twin of 504 (DNB) and the two pages link each other (`pgTwinMap`, tag `seat-data`: refresh it after creating a
   twin). MCC's 2026 rows: 46 matrix, 67 allotments. Odisha R2 reloaded: all 331 lines attach. **MCC name decisions for
   every new college of 25, 27 and 28 Nov** (34, MCC's exact matrix name, kind mdms, no state — MCC files The Nilgiris
