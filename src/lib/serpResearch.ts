@@ -346,7 +346,7 @@ export async function runResearch(limit?: number): Promise<{ researched: number;
   const sug = await collectSuggestions(24).catch(() => ({ seeds: 0, found: 0, added: 0 }));
   // No web search left this month (it resets on the 1st) means nothing is studied — but the run goes on: answering
   // Search Console's searches from our own data and moving hub answers cost no search (until 2026-11-28 a spent
-  // budget skipped those too, from about the 20th of every month).
+  // budget skipped those too: on 27 Nov, 2 answers were placed).
   const budget = Math.max(0, limit ?? (await allowance()));
 
   const recent = new Set(

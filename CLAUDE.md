@@ -3521,8 +3521,8 @@ Owner: "itne pending task complete karo" (Meta's Conversions API token comes lat
   × 1.3 at #4–10; suggestions sorted season → intent → times seen; an odd slot alternates suggestion / Search Console by hour.
   If the hunt's drafts start being posted again, give it its searches back (HUNT_PER_DAY, PER_DAY_WEB). **A spent month
   (1,696 of 1,800 used by 28 Nov) stops only the studying**: until that day the run returned before answering Search
-  Console's searches from our own data and before `rehomeSearchFaqs`, both of which cost no search — since about 20 Nov
-  it had placed almost nothing.
+  Console's searches from our own data and before `rehomeSearchFaqs`, both of which cost no search (it bit on 27–28 Nov,
+  when the old 30-a-day reserve passed what was left: 2 answers placed on the 27th).
 - **Google's December 2026 core update** was pre-announced (Search Central, late Nov 2026). Any before/after measured across
   it — the bot answers' effect (17–23 Nov sat in the November update), the PG title test (decide ~9 Dec) — compares two
   algorithms as well as two versions of a page: read the control group's move first, and avoid template-wide changes to
