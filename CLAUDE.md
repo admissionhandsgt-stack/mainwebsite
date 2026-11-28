@@ -740,9 +740,10 @@ states in `FROM_NOTICES` only (Haryana, J&K, Jharkhand, Tripura; each a governme
 body whose page the state's newest approved PG notice came from. Haryana's row sent PG candidates to UHSR Rohtak's
 uhsr.ac.in; the MD/MS counselling runs on DMER Haryana's portal (dmer.haryana.gov.in: uhsrugcounselling.com for MBBS, DMER's
 portal for MD/MS; UHSR Rohtak carries out the document verification there), so the row is scope "UG" now
-(`scripts/sql/haryana_pg_authority_2026_11_24.sql`, shipped list too). Rajasthan's and Odisha's PG bodies
-(pg.neetrajasthan.com, dmetodisha.in) are not in either list yet: no government page was found linking them — their PG
-pages show notices but no authority card, and "pgmcc odisha" gets no bot answer.
+(`scripts/sql/haryana_pg_authority_2026_11_24.sql`, shipped list too). Rajasthan's PG body (pg.neetrajasthan.com) is
+not in either list yet: no government page was found linking it — its PG pages show notices but no authority card.
+Odisha's is since 2026-11-28: DMET Odisha's government page dmet.odisha.gov.in/en/light/sub-subpage/pg-medical-counselling
+links dmetodisha.in (PGMCC Odisha), so it is in `PORTAL_HOSTS` and Odisha in `FROM_NOTICES`.
 
 ## NEET PG round results, published by themselves (2026-10-21)
 
@@ -2997,6 +2998,34 @@ branches, in the order they filled"** on `/md-ms-india/branches` (`#top-branches
 order they filled"): the running round's MD/MS AIQ open last rank per branch (`getLatestLiveRound().byCourse`, 3+ colleges, as the
 round page prints it) with the score, top 10, plus an FAQ "Which are the top branches in NEET PG?". It follows the round by itself.
 `scripts/tmp/gsc_decision.mjs` and `gsc_striking.mjs` re-run both studies. (3) The "top 10 SEO tools" reel: nothing new for us.
+
+## Keyword cannibalisation check (2026-11-28, owner: "yes cannibalisation check", from a reel)
+
+`node --env-file=.env.local scripts/tmp/cannib_1128.mjs` (git-excluded; query × page over 28 days, a split = 2+ of our
+pages each with ≥15% and ≥10 of a search's impressions; writes cannib_1128.json, prints the page-family pairs);
+`cannib_urls.mjs "<search>"` shows the exact URLs, `cannib_pageq.mjs contains "<url part>"` a page's searches. On 29 Oct –
+25 Nov: 170 of 26,566 searches split, 6.9% of impressions — small, but every big split had a cause in our own code:
+- **The search-answer bot put state answers on national hubs** ("karnataka pg bond", "rajasthan pg bond", "himachal
+  pradesh neet pg stipend" on /md-ms-india/bond and /md-ms-india/stipend — placed before the state pages existed or the 15
+  Nov move rule). Now a hub never renders an answer whose builder names a specific page (`belongsElsewhere` in
+  lib/searchFaq.ts), and `rehomeSearchFaqs()` (each hourly research run) moves such rows to their page, or deletes them when
+  it is full. An authority answer stays on any page of its state. Dry run: `scripts/tmp/harness/rehome_dry.ts`.
+- **The cut off category views took the general searches.** /neet-pg-cutoff?category=OBC (631 impressions), SC-PwD (453),
+  GEN-PwD (227) were shown for "neet pg cut off rank branch wise", even "neet pg cutoff", because their titles opened with
+  the main page's words. Their titles and H1 now lead with the category ("NEET PG OBC Cut Off 2026 Round 2 & 2025: Branch
+  Wise", `accent_category`); each keeps its own canonical for the searches that name it.
+- **Stipend state titles said "& Bond"** (Karnataka, Assam) while /md-ms-india/bond/<state> exists — the bond page ranked
+  higher whenever Google showed it. Stipend titles no longer name the bond; the description does only where the state has
+  no bond page.
+- **"pgmcc" (649 a month) showed /neet-pg-counselling/2025.** A finished year's page now leads with the running year
+  (`past_note`, `past_link`); a state's earlier round page links its newest round under the hero (`newer_*`).
+- **"pgmcc odisha" (340, no click) — no page named the body.** dmetodisha.in is linked from DMET Odisha's own government
+  page, so it is in `PORTAL_HOSTS` and Odisha in `FROM_NOTICES`: the PG pages name PGMCC Odisha (DMET). A bare "pgmcc" still
+  maps to Odisha in `STATE_ALIAS`; it is two words or fewer, so no answer reaches a page.
+- Left as they are: "<college> cut off" with no level split between a college's MBBS and PG pages (they link each other;
+  both sit at #8–10 — a ranking-strength problem, not a split to fix), the branch page vs the one college that teaches a
+  branch, the counselling-state page vs a state round page. Re-run after ~3 weeks (around 20 Dec, after the December core
+  update has settled) and compare the same pairs.
 
 ## Search Console's "not indexed" audit and what it changed (2026-11-11)
 
