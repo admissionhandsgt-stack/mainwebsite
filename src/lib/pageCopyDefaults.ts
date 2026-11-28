@@ -1900,7 +1900,10 @@ export const PAGE_COPY = {
         label: "Source line",
         long: true,
         value:
+          "Seats: NMC's college and course register. Fees: each college's 2026-27 notice where it has published one, else the fee listed for the 2026 counselling. Stipend: the college's published figure. Bond: the state's own 2026-27 rules where we hold them; otherwise no figure is quoted — ask for it in writing.",
+        was: [
           "Seats: NMC's college and course register. Fees: each college's 2026-27 notice where it has published one, else the fee listed for the 2026 counselling. Stipend: the college's published figure. Bond: as listed for the counselling, not an official notice — confirm with the state's notice.",
+        ],
       },
       colleges_title: { label: "Colleges table — heading — {city}", value: "MD/MS colleges in {city}" },
       colleges_intro: {
@@ -3990,9 +3993,10 @@ export const PAGE_COPY = {
       source: {
         label: "Source line — {session}, {as_of}",
         value:
-          "From each state's own {session} bulletin, prospectus, orders or gazette, and each college's own notice, read on {as_of}. The few states not read yet are marked: their figures are as listed for the counselling, so confirm before you pay or sign.",
+          "From each state's own {session} bulletin, prospectus, orders or gazette, and each college's own notice, read on {as_of}. Where no such document gives a bond, no figure is quoted: ask for it in writing before you pay or sign.",
         long: true,
         was: [
+          "From each state's own {session} bulletin, prospectus, orders or gazette, and each college's own notice, read on {as_of}. The few states not read yet are marked: their figures are as listed for the counselling, so confirm before you pay or sign.",
           "From each state's own {session} bulletin, prospectus, orders or gazette, and each college's own notice, read on {as_of}. Every figure links its document. The few states not read yet are marked: their figures are as listed for the counselling, so confirm before you pay or sign.",
           "As listed for the {year} counselling. This is not an official notice: confirm with the state's notice or the college before you pay a fee or sign a bond.",
           "As listed for the {year} counselling, compiled from counselling notices and college fee schedules by a third-party data service. This is not an official notice. Confirm with the state's notice or the college before you pay a fee or sign a bond.",

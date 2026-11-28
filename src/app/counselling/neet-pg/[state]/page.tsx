@@ -115,7 +115,7 @@ async function load(slug: string) {
     bond_line: bondLine ?? "",
     bond_caveat: official
       ? `Bond terms are from ${p.name}'s own 2026-27 rules; its PG bond page has every rule.`
-      : `Bond terms are as listed for the counselling, not an official notice — confirm with ${p.name}'s notice or the college before you pay a fee or sign a bond.`,
+      : `${p.name}'s own bond documents are not ones we hold, so no bond figure is quoted: a seat's bond is in the admission papers you sign, so ask for it in writing.`,
   };
   const c = await pageCopy("page.counsel_pg", tokens);
   return { p, states, authority, nmcSeats, mcc, mccSplit, stipend, fee, b, bondLine, feeParts, c, year, contact, round, official, og };
