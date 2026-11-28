@@ -2430,6 +2430,21 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
     auto-paired with P K Das Institute's NMC code; the pairing went to P K Das's own MD/MS entry (1984). The MBBS directory,
     MBBS state pages (`getNmcUgIndex` reads Deemed for a deemed college) and the FAQ ("It is neither: it is a
     deemed-to-be university college…") follow. **Re-run its dry run after any import that adds colleges or MCC rows.**
+  - **Two decided by hand, from the owner's screenshots, each checked** (`HAND` in the script): MGM Medical College, Vashi is
+    deemed (MCC allots it as deemed, and MGM Institute of Health Sciences' own 2025-26 document for it is issued as a
+    Deemed to be University; NMC still names MUHS); MGIMS Sevagram is private (NMC; the Kasturba Health Society trust,
+    government-aided). Institute of Child Health, Kolkata stays government on its MD/MS entry (NMC's register, code
+    PG/WB/06/G/1 Government, and MCC say so; Google calls it trust-run) and private on its DNB entry (NBEMS). 19 DNB hospitals
+    typed "other" became government where NBEMS types them public sector, government, railway, ESIC, municipal or AFMS — the
+    counsellor tool (zyn-27) agrees on all; its comparison of every PG college found the 59 deemed colleges identical.
+  - **MCC's 2026 DNB hospital names** (`scripts/sql/mcc_dnb_names_2026_11_28.mjs`, backup
+    `…/mcc_dnb_names_2026_11_28.json`): ~550 DNB names in MCC's 2026 lists had no institute — Round 1 prints
+    "<name>, <address>, <state>-<PIN>,<address again>". Matched by the same name + PIN as an earlier, already matched MCC name
+    (history), or one of our entries at that PIN with the same name (letters only) or a distinctive shared word — never by a
+    PIN alone (that paired Gleneagles with Wadia Children's) and never on "women"/"children" (Ankura ≠ Rainbow): 1,731
+    allotment and 90 matrix rows; 69 `dnb` decisions in mcc_name_decisions.json. Left: 228 names / 559 allotments (1.1% of
+    2026's) — DNB hospitals we hold no entry for (Marengo Asia Gurugram, KIMS Gachibowli, Medica, ESIC Andheri…); creating
+    them is the owner's call.
 - **Districts split by a line break (fixed 2026-11-27):** 32 PG institutes held "Muzaffarna gar", "Visakhapatn am",
   "Bhubanesw ar"… and college pages printed them ("PG bond at Muzaffarnagar Medical College, Muzaffarna gar").
   `scripts/sql/district_split_words_2026_11_27.mjs` rejoined them (backup `D:/Admisson Hands/match_backups/district_split_words_before_2026_11_27.json`);
