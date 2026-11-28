@@ -27,6 +27,10 @@ import { collegeName } from "@/lib/collegeName";
 import { cityOf, type City } from "@/lib/cityKey";
 import { cityPagePath, getCityPage } from "@/lib/cityQueries";
 
+/** A bare quota code as words: "MNG" → "management" ("costs ₹36.1 lakh a year on a MNG seat", 2026-11-28). */
+const QUOTA_CODE: Record<string, string> = { MNG: "management", MGT: "management", MGMT: "management", MQ: "management", NRI: "NRI", GQ: "government quota" };
+const quotaWords = (q: string) => QUOTA_CODE[q.trim().toUpperCase()] ?? q;
+
 const rows = <T,>(r: unknown) => r as unknown as T[];
 const n = (v: number | null | undefined) => (v == null ? "—" : Math.round(v).toLocaleString("en-IN"));
 const inr = (v: number | null | undefined) => {
@@ -299,7 +303,7 @@ async function feesDraft(bw: BranchWord, m: BranchMoney, s: MoneyScope): Promise
     return {
       page,
       kind: kindFor("branch-fees", m, s),
-      lead: `${B} at ${s.label} costs ${feeText(lowest)} on a ${lowest.quota} seat${points.length > 1 ? "; other quotas cost more" : ""}.`,
+      lead: `${B} at ${s.label} costs ${feeText(lowest)} on a ${quotaWords(lowest.quota)} seat${points.length > 1 ? "; other quotas cost more" : ""}.`,
       pointsTitle: "Quota by quota:",
       points,
       checks: [

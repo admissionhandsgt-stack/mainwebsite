@@ -30,6 +30,10 @@ import { getCounsellingYear } from "@/lib/mccResults";
 import { bindsAiq, clean, getOfficialBond, getOfficialCollegeBond, getOfficialStateByName, govtBond, hasOwnBond, isCentralInstitution, money, noOwnBond, OWN_BOND_TEXT, publicTerms, rangeText, yearsText, serviceYears } from "@/lib/officialBond";
 import { getOfficialCollegeStipend, getOfficialStipend, getOfficialStipendState, hasOwnStipend, type GovtStipend } from "@/lib/officialStipend";
 
+/** A bare quota code as words: "MNG" → "management" ("costs ₹36.1 lakh a year on a MNG seat", 2026-11-28). */
+const QUOTA_CODE: Record<string, string> = { MNG: "management", MGT: "management", MGMT: "management", MQ: "management", NRI: "NRI", GQ: "government quota" };
+const quotaWords = (q: string) => QUOTA_CODE[q.trim().toUpperCase()] ?? q;
+
 /**
  * Answers the daily hunt writes (2026-11-10; owner, with his own AIIMS New Delhi answer as the model: "aise detailed
  * answers bane outreach mai post karne ke liye… as per specific questions… signup wala etc bhi rehna chaiye").
@@ -87,7 +91,9 @@ export type Answer = { page: string; kind: string; answer: string };
 
 async function render(d: Draft): Promise<Answer> {
   const c = await pageCopy("site.hunt_answer", { what: d.what, url: `${SITE}${d.page}` });
-  const pred = await pageCopy("site.hunt_answer", { url: `${SITE}/neet-college-predictor?course=pg` });
+  // The predictor opens on the answer's own course: an MBBS college's cut off linked the MD/MS predictor (2026-11-28).
+  const ug = /^\/(mbbs-india|bds-india|neet-ug)/.test(d.page) || /:ug\b/.test(d.kind);
+  const pred = await pageCopy("site.hunt_answer", { url: `${SITE}/neet-college-predictor?course=${ug ? "mbbs" : "pg"}` });
   const out: string[] = [d.lead];
   if (d.link) out.push("", `Official site: ${d.link.url}`);
   if (d.points?.length) {
@@ -485,7 +491,7 @@ async function college(c: College, q: string): Promise<Draft | null> {
 
   const lead =
     (asksFee || !y1) && f.length
-      ? `At ${label}${c.state ? ` (${c.state})` : ""}, the 2026-27 PG fee starts at ${inr(f[0].lo)} ${per(f[0].period)} on a ${f[0].quota ?? "state"} seat${f.length > 1 ? `, and other quotas cost more` : ""}${y1 ? `; the stipend is ${inr(y1)} a month in the first year` : ""}.`
+      ? `At ${label}${c.state ? ` (${c.state})` : ""}, the 2026-27 PG fee starts at ${inr(f[0].lo)} ${per(f[0].period)} on a ${quotaWords(f[0].quota ?? "state")} seat${f.length > 1 ? `, and other quotas cost more` : ""}${y1 ? `; the stipend is ${inr(y1)} a month in the first year` : ""}.`
       : `At ${label}${c.state ? ` (${c.state})` : ""}, a first-year MD/MS resident's stipend is ${inr(y1)} a month (${stipendFrom})${f.length ? `, and the 2026-27 fee starts at ${inr(f[0].lo)} ${per(f[0].period)}` : ""}.`;
   const [compareState, officialBond] = await Promise.all([c.state ? getStateStipend(c.state).catch(() => null) : Promise.resolve(null), officialBondCheck(c)]);
   const listedBond = false; // the listing's bond is never quoted (2026-11-28)
