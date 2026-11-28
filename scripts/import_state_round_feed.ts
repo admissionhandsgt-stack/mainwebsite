@@ -207,6 +207,18 @@ function normCategory(stateName: string, code: string, quota = ""): { category: 
       }
       return { category: base, ...(pwd ? { pwd: true } : {}), ...(additional ? { additional } : {}) };
     }
+    case "Bihar": {
+      // As Round 1's adapter stores them (BCECEB PGMAC-2026, 2026-11-28): UR/GEN is GEN; "EBC-GEN", "BC-GEN" are EBC and
+      // BC; a "-Female"/"-FEM" seat is the one-third horizontal list for Bihar women ("Female seat"); RCG is the Reserved
+      // Category Girls list; DQ the disabled quota (PwD); MM, SM, NRI as printed. A code not known here stays as printed.
+      const u = c.toUpperCase().replace(/\s+/g, "");
+      if (u === "RCG") return { category: "RCG", additional: "Reserved Category Girls (RCG)" };
+      if (u === "DQ") return { category: "DQ", pwd: true };
+      if (u === "MM" || u === "SM" || u === "NRI") return { category: u };
+      const m = u.match(/^(UR|GEN|EBC|BC|SC|ST|EWS)(?:-(GEN|FEM|FEMALE))?$/);
+      if (!m) return { category: c };
+      return { category: m[1] === "UR" ? "GEN" : m[1], ...(m[2] === "FEM" || m[2] === "FEMALE" ? { additional: "Female seat" } : {}) };
+    }
     case "Pondicherry":
     case "Puducherry": {
       // CENTAC: U (UT seats) / A (management seats) + GE general, OB OBC, MB MBC, EB EBC, BM BC Muslim, BT, SC, ST;

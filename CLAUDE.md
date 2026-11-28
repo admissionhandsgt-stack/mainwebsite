@@ -2476,8 +2476,15 @@ showed us for almost none of them (185 impressions in 28 days) because no page a
   (`scripts/sql/new_pg_colleges_2026_11_28c.mjs`, institute 5470) — its first PG seats are on the MQ list.
 - **Himachal Pradesh's Round 2 (AMRU provisional allocation, 28 Nov 2026; loaded 2026-11-28, zyn-27):** 107 lines, 7 colleges,
   key "HP PG" R2, counselling "Atal Medical and Research University (AMRU), Himachal Pradesh" as in Round 1; the codes are
-  Round 1's own (GEN, GEN-Govt-Doctor…), 61 in-service lines flagged. **Reload with AMRU's final allocation the same way**
-  (due 28 Nov) and drop the "may change" from the note.
+  Round 1's own (GEN, GEN-Govt-Doctor…), 61 in-service lines flagged. AMRU's **final** allocation (28 Nov; zyn-27 checked it
+  line by line: every figure as the provisional list) replaced it the same evening, no note (backup
+  `r2_HP_PG_before_2026_11_28_final.json`).
+- **Bihar's Round 2 (BCECEB PGMAC-2026 Round-2 seat allotment result, 28 Nov 2026; loaded 2026-11-28, zyn-27):** 218 lines,
+  25 colleges, key "Bihar PG" R2, counselling as Round 1's. The Board's schedule (Adv. 2026/05) calls it the provisional
+  seat allotment result; the figures are this round's fresh and upgraded seats (retained seats out — the Board's own
+  opening/closing rank file includes them, so 31 lines differ from it). New `normCategory` case "Bihar", as Round 1's
+  adapter stored: UR/GEN → GEN, EBC-GEN → EBC, BC-GEN → BC, "-Female"/"-FEM" → the base + "Female seat", RCG its own list,
+  DQ the PwD flag. G.G.S. Sadar Hospital Patna's one D.C.H. seat is not placed (not in the tool). Admission 30 Nov – 1 Dec.
 - **Uttarakhand's Round 2 (HNBUMU provisional broad sheet, 27 Nov 2026; loaded 2026-11-27, zyn-27):** 108 lines, 7 colleges,
   key "UK PG" R2. The sheet is cumulative; the figures are this round's fresh and upgraded seats only. The feed's codes
   differ from Round 1's: `normCategory` reads UR-MNG as GEN, UR-NRI as GEN + "NRI merit list", "-Female" as the base
