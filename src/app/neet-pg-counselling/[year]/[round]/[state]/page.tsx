@@ -194,8 +194,15 @@ export default async function StateRoundResultPage(props: Props) {
   // One branch for the "how did it go last year" answer: General Medicine where it is listed, else the first.
   const move = compare?.find((x) => x.prevLast != null && /general medicine/i.test(x.name)) ?? compare?.find((x) => x.prevLast != null) ?? null;
 
+  // The state's newest later round, linked under the hero: "haryana neet pg counselling 2026" split between Haryana's
+  // Round 1 and Round 2 pages, and Round 1 linked Round 2 only far down the page (cannibalisation check, 2026-11-28).
+  // A later round whose result is out comes first; else the one made ahead of its result.
+  const later = p.otherRounds.filter((e) => e.order > spec.order && e.indexable);
+  const newer = [...later].reverse().find((e) => e.results > 0 || e.figures) ?? later[later.length - 1] ?? null;
+  const newerOut = !!newer && (newer.results > 0 || newer.figures);
   const [c, heroImage, authority, bondState, counsel, stipends, fees] = await Promise.all([
     pageCopy("page.pg_state_round", {
+      newer_round: newer ? STATE_ROUND_LABEL[newer.order] : "",
       state: s,
       round: r,
       year,
@@ -348,6 +355,17 @@ export default async function StateRoundResultPage(props: Props) {
         ]}
         aside={authority ? <StateAuthority a={authority} state={s} level="pg" /> : undefined}
       />
+
+      {newer && (
+        <section className="container-custom pt-8">
+          <p className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border border-primary/30 bg-primary-soft px-5 py-4 text-[15px] leading-relaxed text-foreground">
+            <span>{newerOut ? c.newer_out : c.newer_next}</span>
+            <Link href={newer.path} className="font-semibold text-primary-strong hover:underline dark:text-primary">
+              {c.newer_link} →
+            </Link>
+          </p>
+        </section>
+      )}
 
       {/* ------------------------------------------------------- the authority's notices for this round */}
       {notices.length > 0 && (
