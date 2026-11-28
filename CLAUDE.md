@@ -3010,7 +3010,7 @@ pages each with ≥15% and ≥10 of a search's impressions; writes cannib_1128.j
   Nov move rule). Now a hub never renders an answer whose builder names a specific page (`belongsElsewhere` in
   lib/searchFaq.ts), and `rehomeSearchFaqs()` (each hourly research run) moves such rows to their page, or deletes them when
   it is full. An authority answer stays on any page of its state. A state's stipend, bond and fee pages each keep only
-  their own kind (`moneyOf`): nine "<state> pg bond" answers sat on stipend pages too. Applied the same day: 13 moved to
+  their own kind (`moneyOf`): nine "<state> pg bond" answers sat on stipend pages too. Applied the same day: 9 moved to
   their own page, 6 dropped (a duplicate of an answer already there). Dry run: `scripts/tmp/harness/rehome_dry.ts`
   (`--apply` runs the real function).
 - **The cut off category views took the general searches.** /neet-pg-cutoff?category=OBC (631 impressions), SC-PwD (453),
