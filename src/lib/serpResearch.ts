@@ -344,8 +344,10 @@ export interface Advice {
 
 export async function runResearch(limit?: number): Promise<{ researched: number; ours: number; suggested?: number; published?: number; skipped?: string }> {
   const sug = await collectSuggestions(24).catch(() => ({ seeds: 0, found: 0, added: 0 }));
-  const budget = limit ?? (await allowance());
-  if (budget <= 0) return { researched: 0, ours: 0, suggested: sug.added, skipped: "web search budget kept for the daily hunt" };
+  // No web search left this month (it resets on the 1st) means nothing is studied — but the run goes on: answering
+  // Search Console's searches from our own data and moving hub answers cost no search (until 2026-11-28 a spent
+  // budget skipped those too, from about the 20th of every month).
+  const budget = Math.max(0, limit ?? (await allowance()));
 
   const recent = new Set(
     ((await db.execute(sql`SELECT DISTINCT lower(query) AS q FROM serp_research WHERE run_on > current_date - 21`)) as unknown as { q: string }[]).map((r) => r.q),
@@ -387,9 +389,13 @@ export async function runResearch(limit?: number): Promise<{ researched: number;
   let officialTried = 0;
   const OFFICIAL_PER_RUN = 2;
   let ours = 0;
+  let spent = budget === 0;
   for (const item of plan) {
     const found = await webSearchAnswer(item.query, 10);
-    if (!found) return { researched, ours, suggested: sug.added, published, skipped: "web search budget used up for the month" };
+    if (!found) {
+      spent = true; // the month's searches ran out mid-run: the free answering below still runs
+      break;
+    }
     const results = found.results.map((x, i) => ({ rank: i + 1, url: x.url, domain: host(x.url), title: x.title, snippet: x.content.slice(0, 300) }));
     const mine = results.find((x) => OURS.test(x.domain));
     if (mine) ours++;
@@ -478,7 +484,7 @@ export async function runResearch(limit?: number): Promise<{ researched: number;
   }
   // A hub's answers whose own page is a specific one move there (lib/searchFaq.ts, the 2026-11-28 cannibalisation check).
   if (Date.now() < deadline + 60_000) await rehomeSearchFaqs().catch(() => undefined);
-  return { researched, ours, suggested: sug.added, published };
+  return { researched, ours, suggested: sug.added, published, ...(spent ? { skipped: "no web search left this month: answered from our own data only" } : {}) };
 }
 
 /* ------------------------------------------------------------------ reading it back */
