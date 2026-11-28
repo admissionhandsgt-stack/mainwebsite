@@ -43,6 +43,9 @@ async function chosen(searchParams: Awaited<Props["searchParams"]>) {
 
 // Our closing-rank data says GEN where MCC's allotment lists say Open; the other codes are the same.
 const MCC_CAT: Record<string, CutCat> = { GEN: "Open", OBC: "OBC", EWS: "EWS", SC: "SC", ST: "ST" };
+/** A category code as it is read and typed: "SC-PwD" → "SC PwD". */
+const catLabel = (c: string) => c.replace(/-/g, " ");
+
 /** The categories of the all-category table, in MCC's order. */
 const ALL_CATS = ["GEN", "EWS", "OBC", "SC", "ST"] as const;
 
@@ -78,19 +81,24 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       `NEET PG cutoff, NEET PG cutoff branch wise, NEET PG cutoff 2025, ${live ? `NEET PG cutoff ${live.year}, NEET PG ${live.year} ${live.spec.label.toLowerCase()} cutoff, ` : ""}MD radiology cutoff, NEET PG cutoff OBC, NEET PG cutoff SC, AIQ PG cutoff, NEET PG closing rank`,
   });
   if (category === "GEN") return base;
-  // A category view is its own page for the searches that name the category.
+  // A category view is its own page for the searches that name the category, so its title leads with the category, as
+  // those are typed ("neet pg obc cut off", "neet pg sc st cut off"). It used to open with the main page's own words
+  // ("NEET PG Cutoff 2026 … OBC: Branch Wise"), and Google showed the OBC, SC-PwD and GEN-PwD views for the general
+  // searches — "neet pg cut off rank branch wise", even "neet pg cutoff" — against the main page (cannibalisation check,
+  // 2026-11-28: ~1,300 impressions a month on those three).
+  const cat = catLabel(category);
   return {
     ...base,
     title: fitTitle(
-      `NEET PG Cutoff${lead}${y} ${category}: Branch Wise AIQ Rank`,
-      `NEET PG Cutoff${y} ${category}: Branch Wise AIQ Closing Ranks`,
-      `NEET PG Cutoff${y} ${category}: Branch Wise AIQ Ranks`,
-      `NEET PG ${category} Cutoff${y} Branch Wise`,
+      `NEET PG ${cat} Cut Off${lead}${y}: Branch Wise AIQ Rank`,
+      `NEET PG ${cat} Cut Off${lead}${y}: Branch Wise`,
+      `NEET PG ${cat} Cut Off${y}: Branch Wise AIQ Closing Ranks`,
+      `NEET PG ${cat} Cut Off${y} Branch Wise`,
     ),
     description: fitDescription(
-      `NEET PG ${category} cutoff${leadD} branch wise: All India Quota closing ranks for every MD/MS branch in the ${category} category. Published MCC results.`,
-      `NEET PG ${category} cutoff${leadD} branch wise: AIQ closing ranks for every MD/MS branch.`,
-      `NEET PG${y} ${category} cutoff branch wise: AIQ closing ranks for every MD/MS branch, round 1 and the last round.`,
+      `NEET PG ${cat} cut off${leadD} branch wise: All India Quota closing ranks for every MD/MS branch in the ${cat} category. Published MCC results.`,
+      `NEET PG ${cat} cut off${leadD} branch wise: AIQ closing ranks for every MD/MS branch.`,
+      `NEET PG${y} ${cat} cut off branch wise: AIQ closing ranks for every MD/MS branch, round 1 and the last round.`,
     ),
     alternates: { canonical: `${PATH}?category=${encodeURIComponent(category)}` },
   };
@@ -129,7 +137,7 @@ export default async function NeetPgCutoffPage(props: Props) {
   const [copy, heroImage, pgStates] = await Promise.all([
     // The H1 names the running year's round beside the complete year, as the title does ("NEET PG cutoff 2026 Round 1
     // & 2025") — it said 2025 alone under a 2026 title.
-    pageCopy("page.neet_pg_cutoff.hero", { year: live && year ? `${live.year} ${live.spec.label} & ${year.year}` : year?.year ?? "" }),
+    pageCopy("page.neet_pg_cutoff.hero", { year: live && year ? `${live.year} ${live.spec.label} & ${year.year}` : year?.year ?? "", category: catLabel(category) }),
     pageHeroImage("page.neet_pg_cutoff.hero"),
     // "neet pg cut off branch wise maharashtra" is searched as often as the national
     // table; this page is the strongest PG page we have and linked no state at all.
@@ -233,7 +241,7 @@ export default async function NeetPgCutoffPage(props: Props) {
         crumbs={[{ label: "Home", href: "/" }, { label: "MD/MS in India", href: "/md-ms-india" }, { label: "NEET PG cutoff" }]}
         eyebrow={copy.eyebrow}
         title={copy.title}
-        accent={copy.accent}
+        accent={category === "GEN" ? copy.accent : copy.accent_category}
         subtitle={copy.subtitle}
         stats={
           gen

@@ -108,8 +108,10 @@ const hostOf = (u: string | null) => {
  * portal's own hryapi host) and every ACPPGMEC Gujarat file (medadmgujarat.ncode.in, linked 158 times from
  * medadmgujarat.org/pg) had been held as "not on an official domain": 12 notices in three weeks, while "haryana neet pg
  * counselling" was the most-shown state search of the site and its page listed no notice at all.
+ * dmetodisha.in (2026-11-28): PGMCC Odisha's portal, linked as "PG MEDICAL COUNSELLING (CLICK THE LINK)" from DMET
+ * Odisha's own government page, dmet.odisha.gov.in/en/light/sub-subpage/pg-medical-counselling.
  */
-const PORTAL_HOSTS = ["hry.online-counselling.co.in", "hryapi.online-counselling.co.in", "medadmgujarat.ncode.in"];
+const PORTAL_HOSTS = ["hry.online-counselling.co.in", "hryapi.online-counselling.co.in", "medadmgujarat.ncode.in", "dmetodisha.in"];
 /** Where a reader goes when Zyn's `page` is the address a portal's notices are read from, not a page for people. */
 const PORTAL_HOME: Record<string, string> = { "hryapi.online-counselling.co.in": "https://hry.online-counselling.co.in/" };
 

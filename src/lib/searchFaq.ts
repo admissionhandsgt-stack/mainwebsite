@@ -85,6 +85,16 @@ const lastPart = (p: string) => p.split("/").filter(Boolean).pop() ?? "";
 /** Pages about one branch, state or college: an answer about another one moves to its own page. NEET SS and MDS pages
  *  are their own courses: an MD answer there ("md radiology fees" on DM Neuro Radiology) moves too (2026-11-13 audit). */
 const SPECIFIC = /^\/(md-ms-india\/(branches|states|colleges|stipend|fees|bond)|mbbs-india\/colleges|counselling\/(neet-pg|mbbs)|medical-colleges|neet-ss|neet-mds)\//;
+/**
+ * True when an answer shown on `page`, a hub, has a specific page of its own (a state's bond or stipend page, a branch,
+ * a college). An authority answer stays on any page of the state it names ("haryana neet pg website" on Haryana's round
+ * page), as the offer rule below keeps it.
+ */
+function belongsElsewhere(page: string, d: Draft): boolean {
+  const target = d.page.split("#")[0];
+  if (SPECIFIC.test(page) || !SPECIFIC.test(target) || target === page) return false;
+  return !(d.kind === "authority" && lastPart(page) === lastPart(target));
+}
 function pageFits(page: string, d: Draft, q: string): boolean {
   if (!SPECIFIC.test(page)) return true; // a hub (cutoff, marks vs rank, a round page) takes any of its searches
   if (lastPart(page) === lastPart(d.page) || d.page.startsWith(`${page}/`)) return true;
@@ -250,6 +260,10 @@ export async function getSearchFaqs(path: string | null): Promise<SearchFaq[]> {
       // A search the guards now refuse is not shown even if it was placed before them.
       if (notOurs(x.question)) return null;
       const d = await answer(x.question).catch(() => null);
+      // A hub never shows an answer whose own page is a specific one (a state's bond or stipend page, a branch, a
+      // college): "karnataka pg bond" on the national bond page made two of our pages compete for one search
+      // (cannibalisation check, 2026-11-28). `rehomeSearchFaqs` moves such a row to its own page.
+      if (d && belongsElsewhere(path, d)) return null;
       return d ? { id: x.id, question: x.question, heading: asHeading(x.question), draft: d } : null;
     }),
   );
@@ -279,6 +293,50 @@ export async function listSearchFaqs(): Promise<{ id: number; page: string; ques
   } catch {
     return [];
   }
+}
+
+/**
+ * Moves a hub's answers to their own page (2026-11-28). An answer placed on a hub before its specific page existed (the
+ * state bond pages came on 16 Nov; four bond-state answers sat on /md-ms-india/bond) or before the 15 Nov move rule
+ * stays there for good otherwise. Each live data answer on a hub whose builder now names a specific page goes to that
+ * page when it has room and no answer from the same builder; else it is deleted (the hourly offer never puts it back on
+ * the hub, so nothing regrows). Official answers and staff removals are left alone. Called by the hourly research run.
+ */
+export async function rehomeSearchFaqs(): Promise<{ moved: number; dropped: number }> {
+  const rows = (await db.execute(sql`
+    SELECT id, page, question, kind FROM search_faqs
+     WHERE status = 'live' AND kind IS DISTINCT FROM 'official'`)) as unknown as { id: number; page: string; question: string; kind: string | null }[];
+  let moved = 0, dropped = 0;
+  const touched = new Set<string>();
+  for (const r of rows) {
+    const page = r.page.split("#")[0];
+    if (SPECIFIC.test(page)) continue;
+    const d = await draftFor(r.question).catch(() => null);
+    if (!d || !belongsElsewhere(page, d)) continue;
+    const target = d.page.split("#")[0];
+    const room = await roomOn(target, r.question.toLowerCase());
+    const family = (k: string) => (k === "college-fee-listed" ? "college" : k);
+    let ok = false;
+    if (room.same === 0 && room.live < PER_PAGE && !room.kinds.some((k) => family(k) === family(d.kind))) {
+      // (page, lower(question)) is unique: a stale official miss of the same search on the target refuses the move.
+      ok = await db
+        .execute(sql`UPDATE search_faqs SET page = ${target}, kind = ${d.kind}, updated_at = now() WHERE id = ${r.id}`)
+        .then(() => true, () => false);
+    }
+    if (ok) {
+      moved++;
+      touched.add(target);
+    } else {
+      await db.execute(sql`DELETE FROM search_faqs WHERE id = ${r.id}`);
+      dropped++;
+    }
+    touched.add(page);
+  }
+  if (moved || dropped) {
+    revalidateTag("search-faqs");
+    void import("@/lib/pageWatch").then((m) => m.checkPaths([...touched], "search answers moved to their own page")).catch(() => undefined);
+  }
+  return { moved, dropped };
 }
 
 export async function setSearchFaqStatus(id: number, status: "live" | "removed") {

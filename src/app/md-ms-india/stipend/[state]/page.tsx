@@ -61,10 +61,12 @@ export async function generateMetadata(props: { params: Promise<{ state: string 
   const page = await load(params.state);
   if (!page) return { title: "State not found", robots: { index: false } };
   const { data: s } = page;
-  // The page carries the state's government-seat bond too; "neet pg bond and stipend state wise", "neet pg
-  // bond in rajasthan" are searched (autocomplete, Oct 2026). The title names it, never its figures — those are
-  // a compilation's and stay on the page with their caveat.
-  const hasBond = !!(await getBondByState())?.states.some((b) => b.state === s.state);
+  // The page carries the state's government-seat bond too, but since the state bond pages (2026-11-16) its title no
+  // longer names the bond, and its description does only where the state has no bond page of its own: "karnataka pg
+  // bond", "assam pg bond" were split between the two pages (cannibalisation check, 2026-11-28; the bond page ranked
+  // higher whenever Google showed it).
+  const ownBondPage = !!(await getOfficialBondState(page.slug).catch(() => null));
+  const hasBond = !ownBondPage && !!(await getBondByState())?.states.some((b) => b.state === s.state);
   // The government-college figure leads where there is one: "stipend for pg medical students in tamilnadu government
   // colleges", "pg stipend in government medical colleges kerala" are among these pages' top queries (GSC, Oct–Nov
   // 2026), and the pages sat at position ~6 with CTR under 1% (2026-11-10). The best-paying college is named in the
@@ -79,8 +81,8 @@ export async function generateMetadata(props: { params: Promise<{ state: string 
     const own = off.colleges.filter(hasOwnStipend).length;
     return resolveMetadata(`/md-ms-india/stipend/${page.slug}`, {
       title: fitTitle(
-        ...(offFig ? [`${s.state} PG Stipend 2026-27: ${offFig} a Month, College Wise & Bond`, `${s.state} PG Stipend 2026-27: ${offFig} a Month`, `${s.state} PG Stipend: ${offFig} a Month`] : []),
-        `${s.state} PG Stipend 2026-27: Govt & Private, College Wise & Bond`,
+        ...(offFig ? [`${s.state} PG Stipend 2026-27: ${offFig} a Month, College Wise`, `${s.state} PG Stipend 2026-27: ${offFig} a Month`, `${s.state} PG Stipend: ${offFig} a Month`] : []),
+        `${s.state} PG Stipend 2026-27: Govt & Private, College Wise`,
         `${s.state} PG Stipend 2026-27: College Wise`,
         `${s.state} PG Stipend`,
       ),
@@ -95,9 +97,7 @@ export async function generateMetadata(props: { params: Promise<{ state: string 
     // "rajasthan pg stipend", "pg stipend in rajasthan", "rajasthan neet pg stipend". No year:
     // the figures are each college's latest published stipend, not one year's.
     title: fitTitle(
-      ...(govt && hasBond ? [`${s.state} PG Stipend: Govt ${govt} a Month, College Wise & Bond`] : []),
       ...(govt ? [`${s.state} PG Stipend: Govt ${govt} a Month, College Wise`] : []),
-      ...(hasBond ? [`${s.state} PG Stipend & Bond: ${rupees(s.median)} a Month, College Wise`, `${s.state} PG Stipend & Bond: MD/MS College Wise`] : []),
       `${s.state} PG Stipend: ${rupees(s.median)} a Month, College Wise`,
       `${s.state} PG Stipend: MD/MS Stipend College Wise`,
       `${s.state} PG Stipend`,
@@ -112,7 +112,7 @@ export async function generateMetadata(props: { params: Promise<{ state: string 
       ...(best ? [`PG stipend in ${s.state}: median ${rupees(s.median)} a month in year 1 across ${s.colleges} colleges. Highest: ${best}. College wise${hasBond ? ", with the bond" : ""}.`] : []),
       `MD/MS stipend in ${s.state}: median ${rupees(s.median)} a month in year 1 across ${s.colleges} colleges${
         s.govtMedian && s.privateMedian ? ` (govt ${rupees(s.govtMedian)}, private ${rupees(s.privateMedian)})` : ""
-      }. Year 1–3 stipend for every college, and the bond.`,
+      }. Year 1–3 stipend for every college${hasBond ? ", and the bond" : ""}.`,
       `MD/MS stipend in ${s.state}: median ${rupees(s.median)} a month across ${s.colleges} colleges, year 1 to 3, college by college.`,
     ),
     keywords: `${s.state} PG stipend, PG stipend in ${s.state}, ${s.state} NEET PG stipend, MD MS stipend ${s.state}, resident doctor stipend ${s.state}`,

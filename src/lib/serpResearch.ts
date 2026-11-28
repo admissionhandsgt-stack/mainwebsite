@@ -27,7 +27,7 @@ import { webSearchAnswer, webSearchUsage, type WebResult } from "@/lib/webSearch
 import { collectSuggestions, worthStudying } from "@/lib/serpSuggest";
 import { sitemapGroups } from "@/lib/sitemapData";
 import { getIntegration, setIntegration } from "@/lib/integrations";
-import { offerSearchFaq, PER_RUN as FAQ_PER_RUN } from "@/lib/searchFaq";
+import { offerSearchFaq, rehomeSearchFaqs, PER_RUN as FAQ_PER_RUN } from "@/lib/searchFaq";
 import { pgFocus, ugOnly } from "@/lib/researchFocus";
 import { COLLEGE_ACRONYM } from "@/lib/huntAnswers";
 
@@ -476,6 +476,8 @@ export async function runResearch(limit?: number): Promise<{ researched: number;
     if (published >= FAQ_PER_RUN || Date.now() > deadline) break;
     if (await offerSearchFaq({ query: o.query, page: o.page, impressions: o.impressions, position: o.position }).catch(() => false)) published++;
   }
+  // A hub's answers whose own page is a specific one move there (lib/searchFaq.ts, the 2026-11-28 cannibalisation check).
+  if (Date.now() < deadline + 60_000) await rehomeSearchFaqs().catch(() => undefined);
   return { researched, ours, suggested: sug.added, published };
 }
 

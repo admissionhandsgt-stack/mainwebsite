@@ -82,6 +82,7 @@ export default async function CounsellingYearPage(props: { params: Promise<Param
   const listed = (year === current ? scheduled.map((s) => s.round) : rounds.map((r) => r.spec.label)).map((s) => s.toLowerCase());
   const tokens = {
     year,
+    current,
     rounds_count: listed.length,
     rounds_list: listed.length > 1 ? `${listed.slice(0, -1).join(", ")} and ${listed[listed.length - 1]}` : listed[0],
     allotted_so_far: n(allotted),
@@ -161,6 +162,19 @@ export default async function CounsellingYearPage(props: { params: Promise<Param
           />
         }
       />
+
+      {/* A finished year points to the running one first: "pgmcc" showed this 2025 page at #8 above the 2026 page
+          (cannibalisation check, 2026-11-28). */}
+      {year !== current && (
+        <section className="container-custom pt-8">
+          <p className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border border-primary/30 bg-primary-soft px-5 py-4 text-[15px] leading-relaxed text-foreground">
+            <span>{body.past_note}</span>
+            <Link href={`/neet-pg-counselling/${current}`} className="font-semibold text-primary-strong hover:underline dark:text-primary">
+              {body.past_link} →
+            </Link>
+          </p>
+        </section>
+      )}
 
       {/* The next result's alert on Telegram (2026-10-22) — nothing between counsellings. */}
       <TelegramRoundAlert placement="round_alert_hub" className="pt-10" />

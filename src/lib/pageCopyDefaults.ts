@@ -2600,6 +2600,7 @@ export const PAGE_COPY = {
       eyebrow: { label: "Hero eyebrow", value: "NEET PG · All India Quota" },
       title: { label: "Hero title — {year}", value: "NEET PG cutoff {year}:" },
       accent: { label: "Hero title, coloured part", value: "branch wise, by category" },
+      accent_category: { label: "Hero title, coloured part, on a category's own page — {category}", value: "{category} category, branch wise" },
       subtitle: {
         label: "Hero line",
         value: "Where All India Quota MD, MS and diploma seats actually ran out, from MCC's published round results. Ranks are AIR.",
@@ -5074,6 +5075,12 @@ export const PAGE_COPY = {
     group: "Page: NEET PG counselling (year) — body",
     fields: {
       rounds_title: { label: "Rounds heading — {year}", value: "{year} rounds" },
+      past_note: {
+        label: "A finished year's page: the line under the hero — {year}, {current}",
+        value: "This is MCC's {year} counselling, now complete. The NEET PG {current} counselling is under way.",
+        long: true,
+      },
+      past_link: { label: "A finished year's page: the link to the running year — {current}", value: "NEET PG counselling {current}: round by round" },
       rounds_intro: {
         label: "Rounds line",
         value: "Open a round for its seats by branch, quota, category and state, and the last rank admitted in each branch.",

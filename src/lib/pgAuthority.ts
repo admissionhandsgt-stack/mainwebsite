@@ -38,8 +38,11 @@ export const pgNoticePages = unstable_cache(
  * States whose PG authority is read from their approved notices: a government body on its own counselling page
  * (dmer.haryana.gov.in's portal, jkbopee.gov.in, jceceb.jharkhand.gov.in, trmcc.admissions.nic.in). A state is added
  * here only after its notice source is checked to be the body that allots the seats, not a college posting a notice.
+ * Odisha (2026-11-28): PGMCC Odisha posts on dmetodisha.in, and DMET Odisha's government site links it from its own "PG
+ * Medical Counselling" page (dmet.odisha.gov.in/en/light/sub-subpage/pg-medical-counselling) — "pgmcc odisha" was
+ * shown on three of our pages at #7–9 with no click, none naming the body.
  */
-const FROM_NOTICES = new Set(["Haryana", "Jammu and Kashmir", "Jharkhand", "Tripura"].map((s) => stateKey(s)));
+const FROM_NOTICES = new Set(["Haryana", "Jammu and Kashmir", "Jharkhand", "Tripura", "Odisha"].map((s) => stateKey(s)));
 
 /** "DMER Haryana (hry.online-counselling.co.in)" → "DMER Haryana"; "JKBOPEE (J&K and Ladakh) · Jammu and Kashmir" → "JKBOPEE (J&K and Ladakh)". */
 export const authorityLabel = (a: string) =>
